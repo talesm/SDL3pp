@@ -32,8 +32,6 @@ using SensorRaw = SDL_Sensor*;
 // Forward decl
 struct SensorRef;
 
-using SensorParam = SensorRef;
-
 /**
  * This is a unique ID for a sensor for the time it is connected to the system,
  * and is never reused for the lifetime of the application.
@@ -146,7 +144,7 @@ public:
   }
 
   /**
-   * Constructs from SensorParam.
+   * Constructs from SensorRef.
    *
    * @param resource a SensorRaw to be wrapped.
    *
@@ -455,7 +453,7 @@ inline SensorRef GetSensorFromID(SensorID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetSensorProperties(SensorParam sensor)
+inline PropertiesRef GetSensorProperties(SensorRef sensor)
 {
   return {CheckError(SDL_GetSensorProperties(sensor))};
 }
@@ -474,7 +472,7 @@ inline PropertiesRef Sensor::GetProperties()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetSensorName(SensorParam sensor)
+inline const char* GetSensorName(SensorRef sensor)
 {
   return SDL_GetSensorName(sensor);
 }
@@ -489,7 +487,7 @@ inline const char* Sensor::GetName() { return SDL::GetSensorName(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline SensorType GetSensorType(SensorParam sensor)
+inline SensorType GetSensorType(SensorRef sensor)
 {
   return SDL_GetSensorType(sensor);
 }
@@ -504,7 +502,7 @@ inline SensorType Sensor::GetType() { return SDL::GetSensorType(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int GetSensorNonPortableType(SensorParam sensor)
+inline int GetSensorNonPortableType(SensorRef sensor)
 {
   return SDL_GetSensorNonPortableType(sensor);
 }
@@ -523,7 +521,7 @@ inline int Sensor::GetNonPortableType()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline SensorID GetSensorID(SensorParam sensor)
+inline SensorID GetSensorID(SensorRef sensor)
 {
   return SDL_GetSensorID(sensor);
 }
@@ -542,7 +540,7 @@ inline SensorID Sensor::GetID() { return SDL::GetSensorID(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetSensorData(SensorParam sensor, float* data, int num_values)
+inline void GetSensorData(SensorRef sensor, float* data, int num_values)
 {
   CheckError(SDL_GetSensorData(sensor, data, num_values));
 }

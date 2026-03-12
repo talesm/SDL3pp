@@ -18,7 +18,7 @@
   *
   * Properties can be added to and retrieved from a property group through the
   * following functions:
-@@ -112,8 +113,6 @@
+@@ -110,8 +111,6 @@
   * @since This datatype is available since SDL 3.2.0.
   *
   * @sa Properties.Enumerate
@@ -27,7 +27,7 @@
   */
  using EnumeratePropertiesCB =
    std::function<void(PropertiesID props, const char* name)>;
-@@ -175,6 +174,8 @@
+@@ -173,6 +172,8 @@
   * @since This datatype is available since SDL 3.2.0.
   *
   * @cat resource
@@ -36,7 +36,7 @@
   */
  class Properties
  {
-@@ -219,8 +220,8 @@
+@@ -217,8 +218,8 @@
     *
     * All properties are automatically destroyed when Quit() is called.
     *
@@ -47,7 +47,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -382,7 +383,6 @@
+@@ -380,7 +381,6 @@
     *              property.
     * @param cleanup the function to call when this property is deleted, or
     *                nullptr if no cleanup is necessary.
@@ -55,7 +55,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -665,7 +665,6 @@
+@@ -663,7 +663,6 @@
     * properties. The properties are locked during enumeration.
     *
     * @param callback the function to call for each property.
@@ -63,7 +63,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -674,6 +673,13 @@
+@@ -672,6 +671,13 @@
     */
    void Enumerate(EnumeratePropertiesCB callback);
  
@@ -77,7 +77,7 @@
    Uint64 GetCount();
  };
  
-@@ -775,7 +781,7 @@
+@@ -773,7 +779,7 @@
     * or want to guarantee that properties being queried aren't freed in another
     * thread.
     *
@@ -86,7 +86,7 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -800,8 +806,6 @@
+@@ -798,8 +804,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -95,7 +95,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -825,8 +829,6 @@
+@@ -823,8 +827,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -104,7 +104,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -883,7 +885,7 @@
+@@ -881,7 +883,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -113,7 +113,7 @@
  }
  
  /**
-@@ -891,8 +893,8 @@
+@@ -889,8 +891,8 @@
   *
   * All properties are automatically destroyed when Quit() is called.
   *
@@ -124,7 +124,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -902,7 +904,7 @@
+@@ -900,7 +902,7 @@
   */
  inline Properties CreateProperties()
  {
@@ -133,7 +133,7 @@
  }
  
  inline Properties Properties::Create() { return SDL::CreateProperties(); }
-@@ -1055,7 +1057,6 @@
+@@ -1053,7 +1055,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -141,7 +141,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1071,7 +1072,12 @@
+@@ -1069,7 +1070,12 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -155,7 +155,7 @@
  }
  
  inline void Properties::SetPointerPropertyWithCleanup(
-@@ -1507,7 +1513,6 @@
+@@ -1503,7 +1509,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -163,8 +163,8 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1517,7 +1522,13 @@
- inline void EnumerateProperties(PropertiesParam props,
+@@ -1513,7 +1518,13 @@
+ inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
 -  static_assert(false, "Not implemented");
@@ -178,7 +178,7 @@
  }
  
  inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1531,9 +1542,19 @@
+@@ -1527,9 +1538,19 @@
    SDL::EnumerateProperties(m_resource, callback);
  }
  
@@ -190,7 +190,7 @@
 + * @param props
 + * @return Uint64
 + */
- inline Uint64 CountProperties(PropertiesParam props)
+ inline Uint64 CountProperties(PropertiesRef props)
  {
 -  static_assert(false, "Not implemented");
 +  Uint64 count = 0;

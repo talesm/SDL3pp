@@ -25,7 +25,7 @@ const transform = {
   baseVersions,
   paramTypeMap: {
     "const char *": "StringParam",
-    "TTF_TextEngine *": "TextEngineParam",
+    "TTF_TextEngine *": "TextEngineRef",
   },
   returnTypeMap: {
     "TTF_TextEngine *": "TextEngine"
@@ -149,7 +149,7 @@ const transform = {
         "WaitAsyncIOResult": {
           kind: "function",
           type: "std::optional<AsyncIOOutcome>",
-          parameters: [{ type: "AsyncIOQueueParam", name: "queue" }],
+          parameters: [{ type: "AsyncIOQueueRef", name: "queue" }],
           hints: { methodName: "WaitResult" },
         },
       }
@@ -493,7 +493,7 @@ const transform = {
             "SDL_OpenAudioDevice": {
               name: "ctor",
               parameters: [
-                { type: "AudioDeviceParam" },
+                { type: "AudioDeviceRef" },
                 { type: "OptionalRef<const AudioSpec>" }
               ]
             },
@@ -502,7 +502,7 @@ const transform = {
               constexpr: true,
               immutable: true,
               type: "auto",
-              parameters: [{ type: "AudioDeviceParam", name: "other" }],
+              parameters: [{ type: "AudioDeviceRef", name: "other" }],
               hints: { default: true }
             },
             "SDL_GetAudioDeviceName": "immutable",
@@ -550,7 +550,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [{
-            type: "AudioDeviceParam",
+            type: "AudioDeviceRef",
             name: "devid"
           }, {
             type: "AudioPostmixCB",
@@ -582,7 +582,7 @@ const transform = {
               parameters: [
                 {
                   name: "devid",
-                  type: "AudioDeviceParam"
+                  type: "AudioDeviceRef"
                 },
                 {
                   name: "spec",
@@ -697,7 +697,7 @@ const transform = {
           parameters: [
             {
               name: "devid",
-              type: "AudioDeviceParam"
+              type: "AudioDeviceRef"
             },
             {
               name: "spec",
@@ -716,7 +716,7 @@ const transform = {
           parameters: [
             {
               name: "devid",
-              type: "AudioDeviceParam"
+              type: "AudioDeviceRef"
             },
             {
               name: "spec",
@@ -733,7 +733,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [
-            { name: "stream", type: "AudioStreamParam" },
+            { name: "stream", type: "AudioStreamRef" },
             { name: "callback", type: "AudioStreamCB" },
           ],
           hints: { methodName: "SetGetCallback" },
@@ -743,7 +743,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [
-            { name: "stream", type: "AudioStreamParam" },
+            { name: "stream", type: "AudioStreamRef" },
             { name: "callback", type: "AudioStreamCB" },
           ],
           hints: { methodName: "SetPutCallback" },
@@ -754,7 +754,7 @@ const transform = {
           type: "void",
           parameters: [{
             name: "stream",
-            type: "AudioStreamParam"
+            type: "AudioStreamRef"
           },
           {
             type: "SourceBytes",
@@ -1035,7 +1035,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowParam"
+              "type": "WindowRef"
             },
             {
               "name": "filters",
@@ -1062,7 +1062,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowParam"
+              "type": "WindowRef"
             },
             {
               "name": "filters",
@@ -1085,7 +1085,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowParam"
+              "type": "WindowRef"
             },
             {
               "name": "default_location",
@@ -1131,7 +1131,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowParam"
+              "type": "WindowRef"
             },
             {
               "name": "filters",
@@ -1159,7 +1159,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowParam"
+              "type": "WindowRef"
             },
             {
               "name": "filters",
@@ -1183,7 +1183,7 @@ const transform = {
             },
             {
               "name": "window",
-              "type": "WindowParam"
+              "type": "WindowRef"
             },
             {
               "name": "default_location",
@@ -3171,7 +3171,7 @@ const transform = {
           }
         },
         "SDL_ShowSimpleMessageBox": {
-          parameters: [{}, {}, {}, { type: "WindowParam" }]
+          parameters: [{}, {}, {}, { type: "WindowRef" }]
         }
       }
     },
@@ -4117,7 +4117,7 @@ const transform = {
           type: "void",
           after: "SDL_SetPointerPropertyWithCleanup",
           parameters: [{
-            type: "PropertiesParam",
+            type: "PropertiesRef",
             name: "props"
           }, {
             type: "StringParam",
@@ -4137,7 +4137,7 @@ const transform = {
           type: "void",
           after: "SDL_EnumerateProperties",
           parameters: [{
-            type: "PropertiesParam",
+            type: "PropertiesRef",
             name: "props"
           }, {
             type: "EnumeratePropertiesCB",
@@ -4148,7 +4148,7 @@ const transform = {
           kind: "function",
           type: "Uint64",
           parameters: [{
-            type: "PropertiesParam",
+            type: "PropertiesRef",
             name: "props"
           }],
           hints: { methodName: "GetCount" },
@@ -4751,7 +4751,7 @@ const transform = {
               type: "",
               parameters: [
                 {
-                  "type": "WindowParam",
+                  "type": "WindowRef",
                   "name": "window"
                 }
               ]
@@ -4888,7 +4888,7 @@ const transform = {
           kind: "function",
           type: "Point",
           immutable: true,
-          parameters: [{ type: "RendererParam", name: "renderer" }],
+          parameters: [{ type: "RendererRef", name: "renderer" }],
           hints: { methodName: "GetOutputSize" },
         },
         "SDL_GetCurrentRenderOutputSize": {
@@ -4899,7 +4899,7 @@ const transform = {
           kind: "function",
           type: "Point",
           immutable: true,
-          parameters: [{ type: "RendererParam", name: "renderer" }],
+          parameters: [{ type: "RendererRef", name: "renderer" }],
           hints: { methodName: "GetCurrentOutputSize" },
         },
         "SDL_GetRendererProperties": { immutable: true },
@@ -4907,7 +4907,7 @@ const transform = {
         "ResetRenderTarget": {
           kind: "function",
           type: "void",
-          parameters: [{ type: "RendererParam", name: "renderer" }],
+          parameters: [{ type: "RendererRef", name: "renderer" }],
           hints: { methodName: "ResetTarget" },
         },
         "SDL_GetRenderTarget": {
@@ -4930,7 +4930,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [
-            { type: "RendererParam", name: "renderer" },
+            { type: "RendererRef", name: "renderer" },
             { type: "PointRaw *", name: "size" },
             { name: "mode", type: "RendererLogicalPresentation *" },
           ],
@@ -4975,7 +4975,7 @@ const transform = {
         "ResetRenderViewport": {
           kind: "function",
           type: "void",
-          parameters: [{ type: "RendererParam", name: "renderer" }],
+          parameters: [{ type: "RendererRef", name: "renderer" }],
           hints: { methodName: "ResetViewport" },
         },
         "SDL_GetRenderViewport": {
@@ -5007,7 +5007,7 @@ const transform = {
         "ResetRenderClipRect": {
           kind: "function",
           type: "void",
-          parameters: [{ type: "RendererParam", name: "renderer" }],
+          parameters: [{ type: "RendererRef", name: "renderer" }],
           hints: { methodName: "ResetClipRect" },
         },
         "SDL_GetRenderClipRect": {
@@ -5038,7 +5038,7 @@ const transform = {
           kind: "function",
           immutable: true,
           type: "FPoint",
-          parameters: [{ type: "RendererParam", name: "renderer" }],
+          parameters: [{ type: "RendererRef", name: "renderer" }],
           hints: { methodName: "GetScale" },
         },
         "SDL_SetRenderDrawColor": {
@@ -5069,7 +5069,7 @@ const transform = {
           kind: "function",
           immutable: true,
           type: "Color",
-          parameters: [{ type: "RendererParam", name: "renderer" }],
+          parameters: [{ type: "RendererRef", name: "renderer" }],
           hints: { methodName: "GetDrawColor" },
         },
         "SDL_GetRenderDrawColorFloat": {
@@ -5080,7 +5080,7 @@ const transform = {
           kind: "function",
           immutable: true,
           type: "FColor",
-          parameters: [{ type: "RendererParam", name: "renderer" }],
+          parameters: [{ type: "RendererRef", name: "renderer" }],
           hints: { methodName: "GetDrawColorFloat" },
         },
         "SDL_SetRenderColorScale": { hints: { methodName: "SetColorScale" } },
@@ -5178,7 +5178,7 @@ const transform = {
             {},
             {
               "name": "texture",
-              "type": "TextureParam"
+              "type": "TextureRef"
             },
             {
               "name": "srcrect",
@@ -5195,7 +5195,7 @@ const transform = {
             {},
             {
               "name": "texture",
-              "type": "TextureParam"
+              "type": "TextureRef"
             },
             {
               "name": "srcrect",
@@ -5224,7 +5224,7 @@ const transform = {
             {},
             {
               "name": "texture",
-              "type": "TextureParam"
+              "type": "TextureRef"
             },
             {
               "name": "srcrect",
@@ -5249,7 +5249,7 @@ const transform = {
             {},
             {
               "name": "texture",
-              "type": "TextureParam"
+              "type": "TextureRef"
             },
             {
               "name": "srcrect",
@@ -5270,7 +5270,7 @@ const transform = {
             {},
             {
               "name": "texture",
-              "type": "TextureParam"
+              "type": "TextureRef"
             },
             {
               "name": "srcrect",
@@ -5307,7 +5307,7 @@ const transform = {
             {},
             {
               "name": "texture",
-              "type": "TextureParam"
+              "type": "TextureRef"
             },
             {
               "name": "vertices",
@@ -5324,7 +5324,7 @@ const transform = {
             {},
             {
               "name": "texture",
-              "type": "TextureParam"
+              "type": "TextureRef"
             },
             {
               "name": "xy",
@@ -5484,7 +5484,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [
-            { type: "TextureParam", name: "texture" },
+            { type: "TextureRef", name: "texture" },
             { type: "Color", name: "c" },
           ]
         },
@@ -5492,7 +5492,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [
-            { type: "TextureParam", name: "texture" },
+            { type: "TextureRef", name: "texture" },
             { type: "FColor", name: "c" },
           ]
         },
@@ -5528,7 +5528,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [
-            { type: "TextureParam", name: "texture" },
+            { type: "TextureRef", name: "texture" },
             { type: "SurfaceConstRef", name: "surface" },
             { type: "OptionalRef<const RectRaw>", name: "rect", default: "std::nullopt" },
           ]
@@ -6439,7 +6439,7 @@ const transform = {
           kind: "function",
           type: "std::string",
           parameters: [
-            { name: "storage", type: "StorageParam" },
+            { name: "storage", type: "StorageRef" },
             { name: "path", type: "StringParam" }
           ],
         },
@@ -6449,7 +6449,7 @@ const transform = {
           template: [{ type: "class", name: "T" }],
           type: "std::vector<T>",
           parameters: [
-            { name: "storage", type: "StorageParam" },
+            { name: "storage", type: "StorageRef" },
             { name: "path", type: "StringParam" }
           ],
         },
@@ -6467,7 +6467,7 @@ const transform = {
           type: "void",
           name: "EnumerateStorageDirectory",
           parameters: [
-            { name: "storage", type: "StorageParam" },
+            { name: "storage", type: "StorageRef" },
             { name: "path", type: "StringParam" },
             { name: "callback", type: "EnumerateDirectoryCB" }
           ]
@@ -6478,7 +6478,7 @@ const transform = {
           type: "std::vector<Path>",
           name: "EnumerateStorageDirectory",
           parameters: [
-            { name: "storage", type: "StorageParam" },
+            { name: "storage", type: "StorageRef" },
             { name: "path", type: "StringParam" }
           ]
         },
@@ -6790,7 +6790,7 @@ const transform = {
           after: "SDL_SetSurfaceColorKey",
           kind: "function",
           type: "void",
-          parameters: [{ type: "SurfaceParam", name: "surface" }]
+          parameters: [{ type: "SurfaceRef", name: "surface" }]
         },
         "SDL_SurfaceHasColorKey": { parameters: [{ type: "SurfaceConstRef" }] },
         "SDL_GetSurfaceColorKey": {
@@ -6806,7 +6806,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [
-            { type: "SurfaceParam", name: "surface" },
+            { type: "SurfaceRef", name: "surface" },
             { type: "Color", name: "color" },
           ]
         },
@@ -6829,7 +6829,7 @@ const transform = {
         "ResetSurfaceClipRect": {
           kind: "function",
           type: "void",
-          parameters: [{ type: "SurfaceParam", name: "surface" }],
+          parameters: [{ type: "SurfaceRef", name: "surface" }],
         },
         "SDL_GetSurfaceClipRect": {
           type: "Rect",
@@ -6869,7 +6869,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [
-            { type: "SurfaceParam", name: "dst" },
+            { type: "SurfaceRef", name: "dst" },
             { type: "Uint32", name: "color" },
           ]
         },
@@ -6892,7 +6892,7 @@ const transform = {
             {
             },
             {
-              type: "SurfaceParam",
+              type: "SurfaceRef",
               name: "src"
             },
             {
@@ -6907,7 +6907,7 @@ const transform = {
         },
         "SDL_BlitSurface": {
           parameters: [{
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "src"
           },
           {
@@ -6915,7 +6915,7 @@ const transform = {
             name: "srcrect"
           },
           {
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "dst"
           },
           {
@@ -6929,7 +6929,7 @@ const transform = {
           static: false,
           parameters: [
             {
-              type: "SurfaceParam",
+              type: "SurfaceRef",
               name: "src"
             },
             {
@@ -6946,7 +6946,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [{
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "src"
           },
           {
@@ -6954,7 +6954,7 @@ const transform = {
             name: "srcrect"
           },
           {
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "dst"
           },
           {
@@ -6967,7 +6967,7 @@ const transform = {
             {
             },
             {
-              type: "SurfaceParam",
+              type: "SurfaceRef",
               name: "src"
             },
             {
@@ -6982,7 +6982,7 @@ const transform = {
         },
         "SDL_BlitSurfaceUnchecked": {
           parameters: [{
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "src"
           },
           {
@@ -6990,7 +6990,7 @@ const transform = {
             name: "srcrect"
           },
           {
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "dst"
           },
           {
@@ -7003,7 +7003,7 @@ const transform = {
             {
             },
             {
-              type: "SurfaceParam",
+              type: "SurfaceRef",
               name: "src"
             },
             {
@@ -7022,7 +7022,7 @@ const transform = {
         },
         "SDL_BlitSurfaceScaled": {
           parameters: [{
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "src"
           },
           {
@@ -7030,7 +7030,7 @@ const transform = {
             name: "srcrect"
           },
           {
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "dst"
           },
           {
@@ -7047,7 +7047,7 @@ const transform = {
             {
             },
             {
-              type: "SurfaceParam",
+              type: "SurfaceRef",
               name: "src"
             },
             {
@@ -7066,7 +7066,7 @@ const transform = {
         },
         "SDL_BlitSurfaceUncheckedScaled": {
           parameters: [{
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "src"
           },
           {
@@ -7074,7 +7074,7 @@ const transform = {
             name: "srcrect"
           },
           {
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "dst"
           },
           {
@@ -7091,7 +7091,7 @@ const transform = {
             {
             },
             {
-              type: "SurfaceParam",
+              type: "SurfaceRef",
               name: "src"
             },
             {
@@ -7110,7 +7110,7 @@ const transform = {
         },
         "SDL_StretchSurface": {
           parameters: [{
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "src"
           },
           {
@@ -7118,7 +7118,7 @@ const transform = {
             name: "srcrect"
           },
           {
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "dst"
           },
           {
@@ -7135,7 +7135,7 @@ const transform = {
             {
             },
             {
-              type: "SurfaceParam",
+              type: "SurfaceRef",
               name: "src"
             },
             {
@@ -7150,7 +7150,7 @@ const transform = {
         },
         "SDL_BlitSurfaceTiled": {
           parameters: [{
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "src"
           },
           {
@@ -7158,7 +7158,7 @@ const transform = {
             name: "srcrect"
           },
           {
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "dst"
           },
           {
@@ -7171,7 +7171,7 @@ const transform = {
             {
             },
             {
-              type: "SurfaceParam",
+              type: "SurfaceRef",
               name: "src"
             },
             {
@@ -7194,7 +7194,7 @@ const transform = {
         },
         "SDL_BlitSurfaceTiledWithScale": {
           parameters: [{
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "src"
           },
           {
@@ -7210,7 +7210,7 @@ const transform = {
             name: "scaleMode"
           },
           {
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "dst"
           },
           {
@@ -7222,7 +7222,7 @@ const transform = {
           parameters: [{
           },
           {
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "src"
           },
           {
@@ -7262,7 +7262,7 @@ const transform = {
         },
         "SDL_BlitSurface9Grid": {
           parameters: [{
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "src"
           },
           {
@@ -7286,7 +7286,7 @@ const transform = {
             name: "bottom_height"
           },
           {
-            type: "SurfaceParam",
+            type: "SurfaceRef",
             name: "dst"
           },
           {
@@ -7905,13 +7905,13 @@ const transform = {
             },
             "SDL_GetTrayMenuParentEntry": {
               name: "GetParentEntry",
-              type: "TrayEntryParam",
+              type: "TrayEntryRef",
               immutable: true,
               proto: true,
             },
             "SDL_GetTrayMenuParentTray": {
               name: "GetParentTray",
-              type: "TrayParam",
+              type: "TrayRef",
               immutable: true,
               proto: true,
             },
@@ -8109,7 +8109,7 @@ const transform = {
               parameters: [
                 {
                   name: "parent",
-                  type: "WindowParam"
+                  type: "WindowRef"
                 },
                 {
                   name: "offset",
@@ -8167,20 +8167,20 @@ const transform = {
           kind: "function",
           type: "Point",
           immutable: true,
-          parameters: [{ type: "WindowParam", name: "window" }]
+          parameters: [{ type: "WindowRef", name: "window" }]
         },
         "SDL_GetWindowSize": { immutable: true },
         "GetWindowSize": {
           kind: "function",
           type: "Point",
           immutable: true,
-          parameters: [{ type: "WindowParam", name: "window" }]
+          parameters: [{ type: "WindowRef", name: "window" }]
         },
         "SetWindowRect": {
           kind: "function",
           type: "void",
           parameters: [
-            { type: "WindowParam", name: "window" },
+            { type: "WindowRef", name: "window" },
             { type: "Rect", name: "rect" },
           ]
         },
@@ -8188,7 +8188,7 @@ const transform = {
           kind: "function",
           type: "Rect",
           immutable: true,
-          parameters: [{ type: "WindowParam", name: "window" }]
+          parameters: [{ type: "WindowRef", name: "window" }]
         },
         "SDL_GetWindowSafeArea": {
           type: "Rect",
@@ -8202,7 +8202,7 @@ const transform = {
           kind: "function",
           type: "Point",
           immutable: true,
-          parameters: [{ type: "WindowParam", name: "window" }]
+          parameters: [{ type: "WindowRef", name: "window" }]
         },
         "SDL_SetWindowMinimumSize": { parameters: [{}, { type: "const PointRaw &", name: "p" }] },
         "SDL_GetWindowMinimumSize": { immutable: true },
@@ -8232,7 +8232,7 @@ const transform = {
           kind: "function",
           type: "void",
           parameters: [
-            { name: "window", type: "WindowParam" },
+            { name: "window", type: "WindowRef" },
             { name: "callback", type: "HitTestCB" },
           ]
         },
@@ -8289,7 +8289,7 @@ const transform = {
             "SDL_GL_MakeCurrent": {
               name: "MakeCurrent",
               static: false,
-              parameters: [{ type: "WindowParam", name: "window" }]
+              parameters: [{ type: "WindowRef", name: "window" }]
             },
             "SDL_GL_DestroyContext": {
               name: "Destroy",
@@ -8387,7 +8387,7 @@ const transform = {
           type: "Surface",
           name: "LoadSurfaceTyped",
           parameters: [
-            { name: "src", type: "IOStreamParam" },
+            { name: "src", type: "IOStreamRef" },
             { name: "type", type: "StringParam" },
             { name: "closeio", type: "bool", default: "false" },
           ]
@@ -8669,7 +8669,7 @@ const transform = {
           type: "Animation",
           name: "LoadAnimationTyped",
           parameters: [
-            { name: "src", type: "IOStreamParam" },
+            { name: "src", type: "IOStreamRef" },
             { name: "type", type: "StringParam" },
             { name: "closeio", type: "bool", default: "false" },
           ]
@@ -9342,7 +9342,7 @@ const transform = {
                   "name": "p"
                 },
                 {
-                  "type": "SurfaceParam",
+                  "type": "SurfaceRef",
                   "name": "surface"
                 }
               ]
@@ -9362,11 +9362,11 @@ const transform = {
               "type": "",
               "parameters": [
                 {
-                  "type": "TextEngineParam",
+                  "type": "TextEngineRef",
                   "name": "engine"
                 },
                 {
-                  "type": "FontParam",
+                  "type": "FontRef",
                   "name": "font"
                 },
                 {
@@ -9381,12 +9381,12 @@ const transform = {
                 {},
                 {
                   name: "engine",
-                  type: "TextEngineParam"
+                  type: "TextEngineRef"
                 }
               ],
             },
             "TTF_GetTextEngine": {
-              type: "TextEngineParam",
+              type: "TextEngineRef",
               immutable: true
             },
             "TTF_SetTextFont": "function",
@@ -9559,25 +9559,25 @@ const transform = {
           after: "TTF_GetTextColor",
           kind: "function",
           type: "Color",
-          parameters: [{ type: "TextParam", name: "text" }],
+          parameters: [{ type: "TextRef", name: "text" }],
         },
         "GetTextColorFloat": {
           after: "TTF_GetTextColorFloat",
           kind: "function",
           type: "FColor",
-          parameters: [{ type: "TextParam", name: "text" }],
+          parameters: [{ type: "TextRef", name: "text" }],
         },
         "GetTextPosition": {
           after: "TTF_GetTextPosition",
           kind: "function",
           type: "Point",
-          parameters: [{ type: "TextParam", name: "text" }]
+          parameters: [{ type: "TextRef", name: "text" }]
         },
         "GetTextSize": {
           after: "TTF_GetTextSize",
           kind: "function",
           type: "Point",
-          parameters: [{ type: "TextParam", name: "text" }]
+          parameters: [{ type: "TextRef", name: "text" }]
         },
         "TTF_SubStringFlags": {
           enum: "TTF_SUBSTRING_",

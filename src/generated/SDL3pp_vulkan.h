@@ -177,7 +177,7 @@ inline std::span<char const* const> Vulkan_GetInstanceExtensions()
  * @sa Vulkan_GetInstanceExtensions
  * @sa Vulkan_DestroySurface
  */
-inline void Vulkan_CreateSurface(WindowParam window,
+inline void Vulkan_CreateSurface(WindowRef window,
                                  VkInstance instance,
                                  const struct VkAllocationCallbacks* allocator,
                                  VkSurfaceKHR* surface)

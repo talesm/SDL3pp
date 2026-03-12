@@ -27,8 +27,6 @@ using MetalViewRaw = SDL_MetalView;
 // Forward decl
 struct MetalViewRef;
 
-using MetalViewParam = MetalViewRef;
-
 /**
  * A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
  *
@@ -48,7 +46,7 @@ public:
   }
 
   /**
-   * Constructs from MetalViewParam.
+   * Constructs from MetalViewRef.
    *
    * @param resource a MetalViewRaw to be wrapped.
    *
@@ -94,7 +92,7 @@ public:
    * @sa MetalView.Metal_DestroyView
    * @sa MetalView.GetLayer
    */
-  MetalView(WindowParam window);
+  MetalView(WindowRef window);
 
   /// Destructor
   ~MetalView() { SDL_Metal_DestroyView(m_resource); }
@@ -233,12 +231,12 @@ struct MetalViewRef : MetalView
  * @sa MetalView.Metal_DestroyView
  * @sa MetalView.GetLayer
  */
-inline MetalView Metal_CreateView(WindowParam window)
+inline MetalView Metal_CreateView(WindowRef window)
 {
   return MetalView(window);
 }
 
-inline MetalView::MetalView(WindowParam window)
+inline MetalView::MetalView(WindowRef window)
   : m_resource(SDL_Metal_CreateView(window))
 {
 }
@@ -274,7 +272,7 @@ inline void MetalView::Metal_DestroyView() { Metal_DestroyView(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void* Metal_GetLayer(MetalViewParam view)
+inline void* Metal_GetLayer(MetalViewRef view)
 {
   return SDL_Metal_GetLayer(view);
 }

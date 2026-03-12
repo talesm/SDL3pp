@@ -17,7 +17,7 @@
   *
   * Process control support.
   *
-@@ -350,8 +350,6 @@
+@@ -348,8 +348,6 @@
     *
     * The data should be freed with free().
     *
@@ -26,7 +26,7 @@
     * @param exitcode a pointer filled in with the process exit code if the
     *                 process has exited, may be nullptr.
     * @returns the data or nullptr on failure; call GetError() for more
-@@ -367,10 +365,37 @@
+@@ -365,10 +363,37 @@
     */
    StringResult Read(int* exitcode = nullptr);
  
@@ -65,16 +65,16 @@
    }
  
    /**
-@@ -744,7 +769,7 @@
+@@ -742,7 +767,7 @@
   */
- inline PropertiesRef GetProcessProperties(ProcessParam process)
+ inline PropertiesRef GetProcessProperties(ProcessRef process)
  {
 -  return CheckError(SDL_GetProcessProperties(process));
 +  return {CheckError(SDL_GetProcessProperties(process))};
  }
  
  inline PropertiesRef Process::GetProperties() const
-@@ -766,8 +791,6 @@
+@@ -764,8 +789,6 @@
   * The data should be freed with free().
   *
   * @param process The process to read.
@@ -83,9 +83,9 @@
   * @param exitcode a pointer filled in with the process exit code if the process
   *                 has exited, may be nullptr.
   * @returns the data or nullptr on failure; call GetError() for more
-@@ -783,7 +806,9 @@
+@@ -781,7 +804,9 @@
   */
- inline StringResult ReadProcess(ProcessParam process, int* exitcode = nullptr)
+ inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
  {
 -  return SDL_ReadProcess(process, exitcode);
 +  size_t size = 0;
@@ -94,18 +94,18 @@
  }
  
  inline StringResult Process::Read(int* exitcode)
-@@ -817,7 +842,7 @@
+@@ -815,7 +840,7 @@
   */
- inline IOStreamRef GetProcessInput(ProcessParam process)
+ inline IOStreamRef GetProcessInput(ProcessRef process)
  {
 -  return SDL_GetProcessInput(process);
 +  return {SDL_GetProcessInput(process)};
  }
  
  inline IOStreamRef Process::GetInput()
-@@ -849,7 +874,7 @@
+@@ -847,7 +872,7 @@
   */
- inline IOStreamRef GetProcessOutput(ProcessParam process)
+ inline IOStreamRef GetProcessOutput(ProcessRef process)
  {
 -  return SDL_GetProcessOutput(process);
 +  return {SDL_GetProcessOutput(process)};

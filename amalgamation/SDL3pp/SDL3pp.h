@@ -9038,8 +9038,6 @@ using PaletteRaw = SDL_Palette*;
 // Forward decl
 struct PaletteRef;
 
-using PaletteParam = PaletteRef;
-
 /// Safely wrap Palette for non owning const parameters
 struct PaletteConstRef
 {
@@ -11429,7 +11427,7 @@ public:
   }
 
   /**
-   * Constructs from PaletteParam.
+   * Constructs from PaletteRef.
    *
    * @param resource a PaletteRaw to be wrapped.
    *
@@ -11799,7 +11797,7 @@ inline Palette::Palette(int ncolors)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetPaletteColors(PaletteParam palette,
+inline void SetPaletteColors(PaletteRef palette,
                              SpanRef<const ColorRaw> colors,
                              int firstcolor = 0)
 {
@@ -12140,8 +12138,6 @@ using PropertiesID = SDL_PropertiesID;
 // Forward decl
 struct PropertiesRef;
 
-using PropertiesParam = PropertiesRef;
-
 // Forward decl
 struct PropertiesLock;
 
@@ -12281,7 +12277,7 @@ public:
   }
 
   /**
-   * Constructs from PropertiesParam.
+   * Constructs from PropertiesRef.
    *
    * @param resource a PropertiesID to be wrapped.
    *
@@ -12388,7 +12384,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Copy(PropertiesParam dst);
+  void Copy(PropertiesRef dst);
 
   /**
    * Lock a group of properties.
@@ -13019,12 +13015,12 @@ inline Properties Properties::Create() { return SDL::CreateProperties(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void CopyProperties(PropertiesParam src, PropertiesParam dst)
+inline void CopyProperties(PropertiesRef src, PropertiesRef dst)
 {
   CheckError(SDL_CopyProperties(src, dst));
 }
 
-inline void Properties::Copy(PropertiesParam dst)
+inline void Properties::Copy(PropertiesRef dst)
 {
   SDL::CopyProperties(m_resource, dst);
 }
@@ -13050,7 +13046,7 @@ inline void Properties::Copy(PropertiesParam dst)
  *
  * @sa Properties.Unlock
  */
-inline void LockProperties(PropertiesParam props)
+inline void LockProperties(PropertiesRef props)
 {
   CheckError(SDL_LockProperties(props));
 }
@@ -13074,7 +13070,7 @@ inline PropertiesLock::PropertiesLock(PropertiesRef resource)
  *
  * @sa Properties.Lock
  */
-inline void UnlockProperties(PropertiesParam props)
+inline void UnlockProperties(PropertiesRef props)
 {
   SDL_UnlockProperties(props);
 }
@@ -13121,7 +13117,7 @@ inline void PropertiesLock::reset()
  * @sa Properties.SetPointerProperty
  * @sa CleanupPropertyCallback
  */
-inline void SetPointerPropertyWithCleanup(PropertiesParam props,
+inline void SetPointerPropertyWithCleanup(PropertiesRef props,
                                           StringParam name,
                                           void* value,
                                           CleanupPropertyCallback cleanup,
@@ -13159,7 +13155,7 @@ inline void SetPointerPropertyWithCleanup(PropertiesParam props,
  * @sa Properties.SetPointerProperty
  * @sa CleanupPropertyCallback
  */
-inline void SetPointerPropertyWithCleanup(PropertiesParam props,
+inline void SetPointerPropertyWithCleanup(PropertiesRef props,
                                           StringParam name,
                                           void* value,
                                           CleanupPropertyCB cleanup)
@@ -13211,7 +13207,7 @@ inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
  * @sa Properties.SetPointerPropertyWithCleanup
  * @sa Properties.SetStringProperty
  */
-inline void SetPointerProperty(PropertiesParam props,
+inline void SetPointerProperty(PropertiesRef props,
                                StringParam name,
                                void* value)
 {
@@ -13241,7 +13237,7 @@ inline void Properties::SetPointerProperty(StringParam name, void* value)
  *
  * @sa Properties.GetStringProperty
  */
-inline void SetStringProperty(PropertiesParam props,
+inline void SetStringProperty(PropertiesRef props,
                               StringParam name,
                               StringParam value)
 {
@@ -13267,7 +13263,7 @@ inline void Properties::SetStringProperty(StringParam name, StringParam value)
  *
  * @sa Properties.GetNumberProperty
  */
-inline void SetNumberProperty(PropertiesParam props,
+inline void SetNumberProperty(PropertiesRef props,
                               StringParam name,
                               Sint64 value)
 {
@@ -13293,9 +13289,7 @@ inline void Properties::SetNumberProperty(StringParam name, Sint64 value)
  *
  * @sa Properties.GetFloatProperty
  */
-inline void SetFloatProperty(PropertiesParam props,
-                             StringParam name,
-                             float value)
+inline void SetFloatProperty(PropertiesRef props, StringParam name, float value)
 {
   CheckError(SDL_SetFloatProperty(props, name, value));
 }
@@ -13319,7 +13313,7 @@ inline void Properties::SetFloatProperty(StringParam name, float value)
  *
  * @sa Properties.GetBooleanProperty
  */
-inline void SetBooleanProperty(PropertiesParam props,
+inline void SetBooleanProperty(PropertiesRef props,
                                StringParam name,
                                bool value)
 {
@@ -13344,7 +13338,7 @@ inline void Properties::SetBooleanProperty(StringParam name, bool value)
  *
  * @sa Properties.GetPropertyType
  */
-inline bool HasProperty(PropertiesParam props, StringParam name)
+inline bool HasProperty(PropertiesRef props, StringParam name)
 {
   return SDL_HasProperty(props, name);
 }
@@ -13367,7 +13361,7 @@ inline bool Properties::HasProperty(StringParam name)
  *
  * @sa Properties.HasProperty
  */
-inline PropertyType GetPropertyType(PropertiesParam props, StringParam name)
+inline PropertyType GetPropertyType(PropertiesRef props, StringParam name)
 {
   return SDL_GetPropertyType(props, name);
 }
@@ -13408,7 +13402,7 @@ inline PropertyType Properties::GetPropertyType(StringParam name)
  * @sa Properties.HasProperty
  * @sa Properties.SetPointerProperty
  */
-inline void* GetPointerProperty(PropertiesParam props,
+inline void* GetPointerProperty(PropertiesRef props,
                                 StringParam name,
                                 void* default_value)
 {
@@ -13443,7 +13437,7 @@ inline void* Properties::GetPointerProperty(StringParam name,
  * @sa Properties.HasProperty
  * @sa Properties.SetStringProperty
  */
-inline const char* GetStringProperty(PropertiesParam props,
+inline const char* GetStringProperty(PropertiesRef props,
                                      StringParam name,
                                      StringParam default_value)
 {
@@ -13477,7 +13471,7 @@ inline const char* Properties::GetStringProperty(StringParam name,
  * @sa Properties.HasProperty
  * @sa Properties.SetNumberProperty
  */
-inline Sint64 GetNumberProperty(PropertiesParam props,
+inline Sint64 GetNumberProperty(PropertiesRef props,
                                 StringParam name,
                                 Sint64 default_value)
 {
@@ -13510,7 +13504,7 @@ inline Sint64 Properties::GetNumberProperty(StringParam name,
  * @sa Properties.HasProperty
  * @sa Properties.SetFloatProperty
  */
-inline float GetFloatProperty(PropertiesParam props,
+inline float GetFloatProperty(PropertiesRef props,
                               StringParam name,
                               float default_value)
 {
@@ -13542,7 +13536,7 @@ inline float Properties::GetFloatProperty(StringParam name, float default_value)
  * @sa Properties.HasProperty
  * @sa Properties.SetBooleanProperty
  */
-inline bool GetBooleanProperty(PropertiesParam props,
+inline bool GetBooleanProperty(PropertiesRef props,
                                StringParam name,
                                bool default_value)
 {
@@ -13565,7 +13559,7 @@ inline bool Properties::GetBooleanProperty(StringParam name, bool default_value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ClearProperty(PropertiesParam props, StringParam name)
+inline void ClearProperty(PropertiesRef props, StringParam name)
 {
   CheckError(SDL_ClearProperty(props, name));
 }
@@ -13590,7 +13584,7 @@ inline void Properties::ClearProperty(StringParam name)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void EnumerateProperties(PropertiesParam props,
+inline void EnumerateProperties(PropertiesRef props,
                                 EnumeratePropertiesCallback callback,
                                 void* userdata)
 {
@@ -13611,7 +13605,7 @@ inline void EnumerateProperties(PropertiesParam props,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void EnumerateProperties(PropertiesParam props,
+inline void EnumerateProperties(PropertiesRef props,
                                 EnumeratePropertiesCB callback)
 {
   return EnumerateProperties(
@@ -13642,7 +13636,7 @@ inline void Properties::Enumerate(EnumeratePropertiesCB callback)
  * @param props
  * @return Uint64
  */
-inline Uint64 CountProperties(PropertiesParam props)
+inline Uint64 CountProperties(PropertiesRef props)
 {
   Uint64 count = 0;
   EnumerateProperties(props, [&](auto, const char*) { count++; });
@@ -13719,8 +13713,6 @@ using EnvironmentRaw = SDL_Environment*;
 // Forward decl
 struct EnvironmentRef;
 
-using EnvironmentParam = EnvironmentRef;
-
 // Forward decl
 struct IConv;
 
@@ -13729,8 +13721,6 @@ using IConvRaw = SDL_iconv_t;
 
 // Forward decl
 struct IConvRef;
-
-using IConvParam = IConvRef;
 
 #ifdef SDL3PP_DOC
 
@@ -14591,7 +14581,7 @@ public:
   }
 
   /**
-   * Constructs from EnvironmentParam.
+   * Constructs from EnvironmentRef.
    *
    * @param resource a EnvironmentRaw to be wrapped.
    *
@@ -14909,8 +14899,7 @@ inline Environment::Environment(bool populated)
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline const char* GetEnvironmentVariable(EnvironmentParam env,
-                                          StringParam name)
+inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
   return SDL_GetEnvironmentVariable(env, name);
 }
@@ -14939,7 +14928,7 @@ inline const char* Environment::GetVariable(StringParam name)
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
+inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
 {
   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
 }
@@ -14969,7 +14958,7 @@ inline OwnArray<char*> Environment::GetVariables()
  * @sa Environment.GetVariables
  * @sa Environment.UnsetVariable
  */
-inline void SetEnvironmentVariable(EnvironmentParam env,
+inline void SetEnvironmentVariable(EnvironmentRef env,
                                    StringParam name,
                                    StringParam value,
                                    bool overwrite)
@@ -15003,7 +14992,7 @@ inline void Environment::SetVariable(StringParam name,
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
+inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
   CheckError(SDL_UnsetEnvironmentVariable(env, name));
 }
@@ -19594,7 +19583,7 @@ public:
   }
 
   /**
-   * Constructs from IConvParam.
+   * Constructs from IConvRef.
    *
    * @param resource a IConvRaw to be wrapped.
    *
@@ -20161,8 +20150,6 @@ using AsyncIORaw = SDL_AsyncIO*;
 // Forward decl
 struct AsyncIORef;
 
-using AsyncIOParam = AsyncIORef;
-
 // Forward decl
 struct AsyncIOQueue;
 
@@ -20171,8 +20158,6 @@ using AsyncIOQueueRaw = SDL_AsyncIOQueue*;
 
 // Forward decl
 struct AsyncIOQueueRef;
-
-using AsyncIOQueueParam = AsyncIOQueueRef;
 
 /**
  * The asynchronous I/O operation structure.
@@ -20198,7 +20183,7 @@ public:
   }
 
   /**
-   * Constructs from AsyncIOParam.
+   * Constructs from AsyncIORef.
    *
    * @param resource a AsyncIORaw to be wrapped.
    *
@@ -20349,7 +20334,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Close(bool flush, AsyncIOQueueParam queue, void* userdata);
+  bool Close(bool flush, AsyncIOQueueRef queue, void* userdata);
 
   /**
    * Use this function to get the size of the data stream in an AsyncIO.
@@ -20403,7 +20388,7 @@ public:
   void Read(void* ptr,
             Uint64 offset,
             Uint64 size,
-            AsyncIOQueueParam queue,
+            AsyncIOQueueRef queue,
             void* userdata);
 
   /**
@@ -20442,7 +20427,7 @@ public:
   void Write(void* ptr,
              Uint64 offset,
              Uint64 size,
-             AsyncIOQueueParam queue,
+             AsyncIOQueueRef queue,
              void* userdata);
 };
 
@@ -20574,7 +20559,7 @@ public:
   }
 
   /**
-   * Constructs from AsyncIOQueueParam.
+   * Constructs from AsyncIOQueueRef.
    *
    * @param resource a AsyncIOQueueRaw to be wrapped.
    *
@@ -20929,7 +20914,7 @@ inline AsyncIO::AsyncIO(StringParam file, StringParam mode)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 GetAsyncIOSize(AsyncIOParam asyncio)
+inline Sint64 GetAsyncIOSize(AsyncIORef asyncio)
 {
   return CheckError(SDL_GetAsyncIOSize(asyncio));
 }
@@ -20971,11 +20956,11 @@ inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(m_resource); }
  * @sa AsyncIO.Write
  * @sa AsyncIOQueue.AsyncIOQueue
  */
-inline void ReadAsyncIO(AsyncIOParam asyncio,
+inline void ReadAsyncIO(AsyncIORef asyncio,
                         void* ptr,
                         Uint64 offset,
                         Uint64 size,
-                        AsyncIOQueueParam queue,
+                        AsyncIOQueueRef queue,
                         void* userdata)
 {
   CheckError(SDL_ReadAsyncIO(asyncio, ptr, offset, size, queue, userdata));
@@ -20984,7 +20969,7 @@ inline void ReadAsyncIO(AsyncIOParam asyncio,
 inline void AsyncIO::Read(void* ptr,
                           Uint64 offset,
                           Uint64 size,
-                          AsyncIOQueueParam queue,
+                          AsyncIOQueueRef queue,
                           void* userdata)
 {
   SDL::ReadAsyncIO(m_resource, ptr, offset, size, queue, userdata);
@@ -21024,11 +21009,11 @@ inline void AsyncIO::Read(void* ptr,
  * @sa AsyncIO.Read
  * @sa AsyncIOQueue.AsyncIOQueue
  */
-inline void WriteAsyncIO(AsyncIOParam asyncio,
+inline void WriteAsyncIO(AsyncIORef asyncio,
                          void* ptr,
                          Uint64 offset,
                          Uint64 size,
-                         AsyncIOQueueParam queue,
+                         AsyncIOQueueRef queue,
                          void* userdata)
 {
   CheckError(SDL_WriteAsyncIO(asyncio, ptr, offset, size, queue, userdata));
@@ -21037,7 +21022,7 @@ inline void WriteAsyncIO(AsyncIOParam asyncio,
 inline void AsyncIO::Write(void* ptr,
                            Uint64 offset,
                            Uint64 size,
-                           AsyncIOQueueParam queue,
+                           AsyncIOQueueRef queue,
                            void* userdata)
 {
   SDL::WriteAsyncIO(m_resource, ptr, offset, size, queue, userdata);
@@ -21091,13 +21076,13 @@ inline void AsyncIO::Write(void* ptr,
  */
 inline bool CloseAsyncIO(AsyncIORaw asyncio,
                          bool flush,
-                         AsyncIOQueueParam queue,
+                         AsyncIOQueueRef queue,
                          void* userdata)
 {
   return SDL_CloseAsyncIO(asyncio, flush, queue, userdata);
 }
 
-inline bool AsyncIO::Close(bool flush, AsyncIOQueueParam queue, void* userdata)
+inline bool AsyncIO::Close(bool flush, AsyncIOQueueRef queue, void* userdata)
 {
   return CloseAsyncIO(release(), flush, queue, userdata);
 }
@@ -21183,7 +21168,7 @@ inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
  *
  * @sa AsyncIOQueue.WaitResult
  */
-inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueParam queue)
+inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueRef queue)
 {
   if (AsyncIOOutcome outcome; SDL_GetAsyncIOResult(queue, &outcome)) {
     return outcome;
@@ -21235,7 +21220,7 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
  *
  * @sa AsyncIOQueue.Signal
  */
-inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
+inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue,
                                                        Milliseconds timeout)
 {
   if (AsyncIOOutcome outcome;
@@ -21283,7 +21268,7 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
  *
  * @sa AsyncIOQueue.Signal
  */
-inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue)
+inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue)
 {
   if (AsyncIOOutcome outcome; SDL_WaitAsyncIOResult(queue, &outcome, -1)) {
     return outcome;
@@ -21324,7 +21309,7 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
  *
  * @sa AsyncIOQueue.WaitResult
  */
-inline void SignalAsyncIOQueue(AsyncIOQueueParam queue)
+inline void SignalAsyncIOQueue(AsyncIOQueueRef queue)
 {
   SDL_SignalAsyncIOQueue(queue);
 }
@@ -21363,7 +21348,7 @@ inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(m_resource); }
  * @sa IOStream.LoadFile
  */
 inline void LoadFileAsync(StringParam file,
-                          AsyncIOQueueParam queue,
+                          AsyncIOQueueRef queue,
                           void* userdata)
 {
   CheckError(SDL_LoadFileAsync(file, queue, userdata));
@@ -24125,8 +24110,6 @@ using HidDeviceRaw = SDL_hid_device*;
 // Forward decl
 struct HidDeviceRef;
 
-using HidDeviceParam = HidDeviceRef;
-
 /**
  * HID underlying bus types.
  *
@@ -24193,7 +24176,7 @@ public:
   }
 
   /**
-   * Constructs from HidDeviceParam.
+   * Constructs from HidDeviceRef.
    *
    * @param resource a HidDeviceRaw to be wrapped.
    *
@@ -24751,7 +24734,7 @@ inline HidDevice hid_open_path(StringParam path)
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline PropertiesRef hid_get_properties(HidDeviceParam dev)
+inline PropertiesRef hid_get_properties(HidDeviceRef dev)
 {
   return CheckError(SDL_hid_get_properties(dev));
 }
@@ -24792,7 +24775,7 @@ constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_write(HidDeviceParam dev, SourceBytes data)
+inline int hid_write(HidDeviceRef dev, SourceBytes data)
 {
   return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
 }
@@ -24818,7 +24801,7 @@ inline int HidDevice::write(SourceBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_read_timeout(HidDeviceParam dev,
+inline int hid_read_timeout(HidDeviceRef dev,
                             TargetBytes data,
                             Milliseconds timeout)
 {
@@ -24846,7 +24829,7 @@ inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_read(HidDeviceParam dev, TargetBytes data)
+inline int hid_read(HidDeviceRef dev, TargetBytes data)
 {
   return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
 }
@@ -24872,7 +24855,7 @@ inline int HidDevice::read(TargetBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_set_nonblocking(HidDeviceParam dev, bool nonblock)
+inline void hid_set_nonblocking(HidDeviceRef dev, bool nonblock)
 {
   CheckErrorIfNot(SDL_hid_set_nonblocking(dev, nonblock), 0);
 }
@@ -24902,7 +24885,7 @@ inline void HidDevice::set_nonblocking(bool nonblock)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_send_feature_report(HidDeviceParam dev, SourceBytes data)
+inline int hid_send_feature_report(HidDeviceRef dev, SourceBytes data)
 {
   return SDL_hid_send_feature_report(
     dev, data.data_as<Uint8>(), data.size_bytes());
@@ -24932,7 +24915,7 @@ inline int HidDevice::send_feature_report(SourceBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_get_feature_report(HidDeviceParam dev, TargetBytes data)
+inline int hid_get_feature_report(HidDeviceRef dev, TargetBytes data)
 {
   return SDL_hid_get_feature_report(
     dev, data.data_as<Uint8>(), data.size_bytes());
@@ -24962,7 +24945,7 @@ inline int HidDevice::get_feature_report(TargetBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_get_input_report(HidDeviceParam dev, TargetBytes data)
+inline int hid_get_input_report(HidDeviceRef dev, TargetBytes data)
 {
   return SDL_hid_get_input_report(
     dev, data.data_as<Uint8>(), data.size_bytes());
@@ -24998,7 +24981,7 @@ inline void HidDevice::close() { hid_close(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_manufacturer_string(HidDeviceParam dev,
+inline void hid_get_manufacturer_string(HidDeviceRef dev,
                                         wchar_t* string,
                                         size_t maxlen)
 {
@@ -25020,7 +25003,7 @@ inline void HidDevice::get_manufacturer_string(wchar_t* string, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_product_string(HidDeviceParam dev,
+inline void hid_get_product_string(HidDeviceRef dev,
                                    wchar_t* string,
                                    size_t maxlen)
 {
@@ -25042,7 +25025,7 @@ inline void HidDevice::get_product_string(wchar_t* string, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_serial_number_string(HidDeviceParam dev,
+inline void hid_get_serial_number_string(HidDeviceRef dev,
                                          wchar_t* string,
                                          size_t maxlen)
 {
@@ -25065,7 +25048,7 @@ inline void HidDevice::get_serial_number_string(wchar_t* string, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_indexed_string(HidDeviceParam dev,
+inline void hid_get_indexed_string(HidDeviceRef dev,
                                    int string_index,
                                    wchar_t* string,
                                    size_t maxlen)
@@ -25092,7 +25075,7 @@ inline void HidDevice::get_indexed_string(int string_index,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline hid_device_info* hid_get_device_info(HidDeviceParam dev)
+inline hid_device_info* hid_get_device_info(HidDeviceRef dev)
 {
   return CheckError(SDL_hid_get_device_info(dev));
 }
@@ -25115,7 +25098,7 @@ inline hid_device_info* HidDevice::get_device_info()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_get_report_descriptor(HidDeviceParam dev, TargetBytes buf)
+inline int hid_get_report_descriptor(HidDeviceRef dev, TargetBytes buf)
 {
   return SDL_hid_get_report_descriptor(
     dev, buf.data_as<Uint8>(), buf.size_bytes());
@@ -25158,8 +25141,6 @@ using IOStreamRaw = SDL_IOStream*;
 
 // Forward decl
 struct IOStreamRef;
-
-using IOStreamParam = IOStreamRef;
 
 /**
  * IOStream status, set by a read or write operation.
@@ -25244,7 +25225,7 @@ public:
   }
 
   /**
-   * Constructs from IOStreamParam.
+   * Constructs from IOStreamRef.
    *
    * @param resource a IOStreamRaw to be wrapped.
    *
@@ -27155,7 +27136,7 @@ inline void IOStream::Close() { CloseIO(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetIOProperties(IOStreamParam context)
+inline PropertiesRef GetIOProperties(IOStreamRef context)
 {
   return {CheckError(SDL_GetIOProperties(context))};
 }
@@ -27183,7 +27164,7 @@ inline PropertiesRef IOStream::GetProperties() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStatus GetIOStatus(IOStreamParam context)
+inline IOStatus GetIOStatus(IOStreamRef context)
 {
   return SDL_GetIOStatus(context);
 }
@@ -27204,7 +27185,7 @@ inline IOStatus IOStream::GetStatus() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 GetIOSize(IOStreamParam context)
+inline Sint64 GetIOSize(IOStreamRef context)
 {
   return CheckError(SDL_GetIOSize(context));
 }
@@ -27237,7 +27218,7 @@ inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(m_resource); }
  *
  * @sa IOStream.Tell
  */
-inline Sint64 SeekIO(IOStreamParam context, Sint64 offset, IOWhence whence)
+inline Sint64 SeekIO(IOStreamRef context, Sint64 offset, IOWhence whence)
 {
   return SDL_SeekIO(context, offset, whence);
 }
@@ -27265,7 +27246,7 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
  *
  * @sa IOStream.Seek
  */
-inline Sint64 TellIO(IOStreamParam context) { return SDL_TellIO(context); }
+inline Sint64 TellIO(IOStreamRef context) { return SDL_TellIO(context); }
 
 inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
 
@@ -27296,7 +27277,7 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
  * @sa IOStream.Write
  * @sa IOStream.GetStatus
  */
-inline size_t ReadIO(IOStreamParam context, TargetBytes buf)
+inline size_t ReadIO(IOStreamRef context, TargetBytes buf)
 {
   return SDL_ReadIO(context, buf.data(), buf.size_bytes());
 }
@@ -27339,7 +27320,7 @@ inline size_t IOStream::Read(TargetBytes buf)
  * @sa IOStream.Flush
  * @sa IOStream.GetStatus
  */
-inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
+inline size_t WriteIO(IOStreamRef context, SourceBytes buf)
 {
   return SDL_WriteIO(context, buf.data(), buf.size_bytes());
 }
@@ -27370,7 +27351,7 @@ inline size_t IOStream::Write(SourceBytes buf)
  * @sa IOStream.vprintf
  * @sa IOStream.Write
  */
-inline size_t IOprintf(IOStreamParam context,
+inline size_t IOprintf(IOStreamRef context,
                        SDL_PRINTF_FORMAT_STRING const char* fmt,
                        ...)
 {
@@ -27402,7 +27383,7 @@ inline size_t IOprintf(IOStreamParam context,
  * @sa IOStream.printf
  * @sa IOStream.Write
  */
-inline size_t IOvprintf(IOStreamParam context,
+inline size_t IOvprintf(IOStreamRef context,
                         SDL_PRINTF_FORMAT_STRING const char* fmt,
                         va_list ap)
 {
@@ -27432,7 +27413,7 @@ inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
  * @sa IOStream.Open
  * @sa IOStream.Write
  */
-inline void FlushIO(IOStreamParam context) { CheckError(SDL_FlushIO(context)); }
+inline void FlushIO(IOStreamRef context) { CheckError(SDL_FlushIO(context)); }
 
 inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
 
@@ -27458,7 +27439,7 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * @sa LoadFile
  * @sa IOStream.SaveFile
  */
-inline StringResult LoadFile(IOStreamParam src, bool closeio = true)
+inline StringResult LoadFile(IOStreamRef src, bool closeio = true)
 {
   size_t datasize = 0;
   auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, closeio));
@@ -27537,7 +27518,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
+inline void SaveFile(IOStreamRef src, SourceBytes data, bool closeio = false)
 {
   CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
 }
@@ -27582,7 +27563,7 @@ inline void IOStream::SaveFile(SourceBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint8 ReadU8(IOStreamParam src)
+inline Uint8 ReadU8(IOStreamRef src)
 {
   Uint8 value;
   CheckError(SDL_ReadU8(src, &value));
@@ -27605,7 +27586,7 @@ inline Uint8 ReadU8(IOStreamParam src)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint8 ReadS8(IOStreamParam src)
+inline Sint8 ReadS8(IOStreamRef src)
 {
   Sint8 value;
   CheckError(SDL_ReadS8(src, &value));
@@ -27632,7 +27613,7 @@ inline Sint8 ReadS8(IOStreamParam src)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint16 ReadU16LE(IOStreamParam src)
+inline Uint16 ReadU16LE(IOStreamRef src)
 {
   Uint16 value;
   CheckError(SDL_ReadU16LE(src, &value));
@@ -27661,7 +27642,7 @@ inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint16 ReadS16LE(IOStreamParam src)
+inline Sint16 ReadS16LE(IOStreamRef src)
 {
   Sint16 value;
   CheckError(SDL_ReadS16LE(src, &value));
@@ -27690,7 +27671,7 @@ inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint16 ReadU16BE(IOStreamParam src)
+inline Uint16 ReadU16BE(IOStreamRef src)
 {
   Uint16 value;
   CheckError(SDL_ReadU16BE(src, &value));
@@ -27719,7 +27700,7 @@ inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint16 ReadS16BE(IOStreamParam src)
+inline Sint16 ReadS16BE(IOStreamRef src)
 {
   Sint16 value;
   CheckError(SDL_ReadS16BE(src, &value));
@@ -27748,7 +27729,7 @@ inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint32 ReadU32LE(IOStreamParam src)
+inline Uint32 ReadU32LE(IOStreamRef src)
 {
   Uint32 value;
   CheckError(SDL_ReadU32LE(src, &value));
@@ -27777,7 +27758,7 @@ inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint32 ReadS32LE(IOStreamParam src)
+inline Sint32 ReadS32LE(IOStreamRef src)
 {
   Sint32 value;
   CheckError(SDL_ReadS32LE(src, &value));
@@ -27806,7 +27787,7 @@ inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint32 ReadU32BE(IOStreamParam src)
+inline Uint32 ReadU32BE(IOStreamRef src)
 {
   Uint32 value;
   CheckError(SDL_ReadU32BE(src, &value));
@@ -27835,7 +27816,7 @@ inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint32 ReadS32BE(IOStreamParam src)
+inline Sint32 ReadS32BE(IOStreamRef src)
 {
   Sint32 value;
   CheckError(SDL_ReadS32BE(src, &value));
@@ -27864,7 +27845,7 @@ inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint64 ReadU64LE(IOStreamParam src)
+inline Uint64 ReadU64LE(IOStreamRef src)
 {
   Uint64 value;
   CheckError(SDL_ReadU64LE(src, &value));
@@ -27893,7 +27874,7 @@ inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 ReadS64LE(IOStreamParam src)
+inline Sint64 ReadS64LE(IOStreamRef src)
 {
   Sint64 value;
   CheckError(SDL_ReadS64LE(src, &value));
@@ -27922,7 +27903,7 @@ inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint64 ReadU64BE(IOStreamParam src)
+inline Uint64 ReadU64BE(IOStreamRef src)
 {
   Uint64 value;
   CheckError(SDL_ReadU64BE(src, &value));
@@ -27951,7 +27932,7 @@ inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 ReadS64BE(IOStreamParam src)
+inline Sint64 ReadS64BE(IOStreamRef src)
 {
   Sint64 value;
   CheckError(SDL_ReadS64BE(src, &value));
@@ -27971,7 +27952,7 @@ inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU8(IOStreamParam dst, Uint8 value)
+inline void WriteU8(IOStreamRef dst, Uint8 value)
 {
   CheckError(SDL_WriteU8(dst, value));
 }
@@ -27989,7 +27970,7 @@ inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(m_resource, value); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS8(IOStreamParam dst, Sint8 value)
+inline void WriteS8(IOStreamRef dst, Sint8 value)
 {
   CheckError(SDL_WriteS8(dst, value));
 }
@@ -28011,7 +27992,7 @@ inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(m_resource, value); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU16LE(IOStreamParam dst, Uint16 value)
+inline void WriteU16LE(IOStreamRef dst, Uint16 value)
 {
   CheckError(SDL_WriteU16LE(dst, value));
 }
@@ -28036,7 +28017,7 @@ inline void IOStream::WriteU16LE(Uint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS16LE(IOStreamParam dst, Sint16 value)
+inline void WriteS16LE(IOStreamRef dst, Sint16 value)
 {
   CheckError(SDL_WriteS16LE(dst, value));
 }
@@ -28061,7 +28042,7 @@ inline void IOStream::WriteS16LE(Sint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU16BE(IOStreamParam dst, Uint16 value)
+inline void WriteU16BE(IOStreamRef dst, Uint16 value)
 {
   CheckError(SDL_WriteU16BE(dst, value));
 }
@@ -28086,7 +28067,7 @@ inline void IOStream::WriteU16BE(Uint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS16BE(IOStreamParam dst, Sint16 value)
+inline void WriteS16BE(IOStreamRef dst, Sint16 value)
 {
   CheckError(SDL_WriteS16BE(dst, value));
 }
@@ -28111,7 +28092,7 @@ inline void IOStream::WriteS16BE(Sint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU32LE(IOStreamParam dst, Uint32 value)
+inline void WriteU32LE(IOStreamRef dst, Uint32 value)
 {
   CheckError(SDL_WriteU32LE(dst, value));
 }
@@ -28136,7 +28117,7 @@ inline void IOStream::WriteU32LE(Uint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS32LE(IOStreamParam dst, Sint32 value)
+inline void WriteS32LE(IOStreamRef dst, Sint32 value)
 {
   CheckError(SDL_WriteS32LE(dst, value));
 }
@@ -28161,7 +28142,7 @@ inline void IOStream::WriteS32LE(Sint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU32BE(IOStreamParam dst, Uint32 value)
+inline void WriteU32BE(IOStreamRef dst, Uint32 value)
 {
   CheckError(SDL_WriteU32BE(dst, value));
 }
@@ -28186,7 +28167,7 @@ inline void IOStream::WriteU32BE(Uint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS32BE(IOStreamParam dst, Sint32 value)
+inline void WriteS32BE(IOStreamRef dst, Sint32 value)
 {
   CheckError(SDL_WriteS32BE(dst, value));
 }
@@ -28211,7 +28192,7 @@ inline void IOStream::WriteS32BE(Sint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU64LE(IOStreamParam dst, Uint64 value)
+inline void WriteU64LE(IOStreamRef dst, Uint64 value)
 {
   CheckError(SDL_WriteU64LE(dst, value));
 }
@@ -28236,7 +28217,7 @@ inline void IOStream::WriteU64LE(Uint64 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS64LE(IOStreamParam dst, Sint64 value)
+inline void WriteS64LE(IOStreamRef dst, Sint64 value)
 {
   CheckError(SDL_WriteS64LE(dst, value));
 }
@@ -28261,7 +28242,7 @@ inline void IOStream::WriteS64LE(Sint64 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU64BE(IOStreamParam dst, Uint64 value)
+inline void WriteU64BE(IOStreamRef dst, Uint64 value)
 {
   CheckError(SDL_WriteU64BE(dst, value));
 }
@@ -28286,7 +28267,7 @@ inline void IOStream::WriteU64BE(Uint64 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS64BE(IOStreamParam dst, Sint64 value)
+inline void WriteS64BE(IOStreamRef dst, Sint64 value)
 {
   CheckError(SDL_WriteS64BE(dst, value));
 }
@@ -28341,8 +28322,6 @@ using SharedObjectRaw = SDL_SharedObject*;
 // Forward decl
 struct SharedObjectRef;
 
-using SharedObjectParam = SharedObjectRef;
-
 /**
  * An opaque datatype that represents a loaded shared object.
  *
@@ -28366,7 +28345,7 @@ public:
   }
 
   /**
-   * Constructs from SharedObjectParam.
+   * Constructs from SharedObjectRef.
    *
    * @param resource a SharedObjectRaw to be wrapped.
    *
@@ -28595,7 +28574,7 @@ inline SharedObject::SharedObject(StringParam sofile)
  *
  * @sa SharedObject.SharedObject
  */
-inline FunctionPointer LoadFunction(SharedObjectParam handle, StringParam name)
+inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
 {
   return SDL_LoadFunction(handle, name);
 }
@@ -32237,8 +32216,6 @@ using SensorRaw = SDL_Sensor*;
 // Forward decl
 struct SensorRef;
 
-using SensorParam = SensorRef;
-
 /**
  * This is a unique ID for a sensor for the time it is connected to the system,
  * and is never reused for the lifetime of the application.
@@ -32351,7 +32328,7 @@ public:
   }
 
   /**
-   * Constructs from SensorParam.
+   * Constructs from SensorRef.
    *
    * @param resource a SensorRaw to be wrapped.
    *
@@ -32660,7 +32637,7 @@ inline SensorRef GetSensorFromID(SensorID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetSensorProperties(SensorParam sensor)
+inline PropertiesRef GetSensorProperties(SensorRef sensor)
 {
   return {CheckError(SDL_GetSensorProperties(sensor))};
 }
@@ -32679,7 +32656,7 @@ inline PropertiesRef Sensor::GetProperties()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetSensorName(SensorParam sensor)
+inline const char* GetSensorName(SensorRef sensor)
 {
   return SDL_GetSensorName(sensor);
 }
@@ -32694,7 +32671,7 @@ inline const char* Sensor::GetName() { return SDL::GetSensorName(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline SensorType GetSensorType(SensorParam sensor)
+inline SensorType GetSensorType(SensorRef sensor)
 {
   return SDL_GetSensorType(sensor);
 }
@@ -32709,7 +32686,7 @@ inline SensorType Sensor::GetType() { return SDL::GetSensorType(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int GetSensorNonPortableType(SensorParam sensor)
+inline int GetSensorNonPortableType(SensorRef sensor)
 {
   return SDL_GetSensorNonPortableType(sensor);
 }
@@ -32728,7 +32705,7 @@ inline int Sensor::GetNonPortableType()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline SensorID GetSensorID(SensorParam sensor)
+inline SensorID GetSensorID(SensorRef sensor)
 {
   return SDL_GetSensorID(sensor);
 }
@@ -32747,7 +32724,7 @@ inline SensorID Sensor::GetID() { return SDL::GetSensorID(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetSensorData(SensorParam sensor, float* data, int num_values)
+inline void GetSensorData(SensorRef sensor, float* data, int num_values)
 {
   CheckError(SDL_GetSensorData(sensor, data, num_values));
 }
@@ -33814,8 +33791,6 @@ using AudioDeviceID = SDL_AudioDeviceID;
 // Forward decl
 struct AudioDeviceRef;
 
-using AudioDeviceParam = AudioDeviceRef;
-
 // Forward decl
 struct AudioStream;
 
@@ -33824,8 +33799,6 @@ using AudioStreamRaw = SDL_AudioStream*;
 
 // Forward decl
 struct AudioStreamRef;
-
-using AudioStreamParam = AudioStreamRef;
 
 // Forward decl
 struct AudioStreamLock;
@@ -34495,7 +34468,7 @@ public:
   }
 
   /**
-   * Constructs from AudioDeviceParam.
+   * Constructs from AudioDeviceRef.
    *
    * @param resource a AudioDeviceID to be wrapped.
    *
@@ -34592,7 +34565,7 @@ public:
    * @sa AudioDevice.Close
    * @sa AudioDevice.GetFormat
    */
-  AudioDevice(AudioDeviceParam devid, OptionalRef<const AudioSpec> spec);
+  AudioDevice(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec);
 
   /// Destructor
   ~AudioDevice() { SDL_CloseAudioDevice(m_resource); }
@@ -34942,7 +34915,7 @@ public:
    * @sa AudioStream.Unbind
    * @sa AudioStream.GetDevice
    */
-  void BindAudioStream(AudioStreamParam stream);
+  void BindAudioStream(AudioStreamRef stream);
 
   /**
    * Set a callback that fires when data is about to be fed to an audio device.
@@ -35363,7 +35336,7 @@ public:
   }
 
   /**
-   * Constructs from AudioStreamParam.
+   * Constructs from AudioStreamRef.
    *
    * @param resource a AudioStreamRaw to be wrapped.
    *
@@ -35469,7 +35442,7 @@ public:
    * @sa AudioStream.GetDevice
    * @sa AudioStream.ResumeDevice
    */
-  AudioStream(AudioDeviceParam devid,
+  AudioStream(AudioDeviceRef devid,
               OptionalRef<const AudioSpec> spec = std::nullopt,
               AudioStreamCallback callback = nullptr,
               void* userdata = nullptr);
@@ -35527,7 +35500,7 @@ public:
    * @sa AudioStream.GetDevice
    * @sa AudioStream.ResumeDevice
    */
-  AudioStream(AudioDeviceParam devid,
+  AudioStream(AudioDeviceRef devid,
               OptionalRef<const AudioSpec> spec,
               AudioStreamCB callback);
 
@@ -36942,7 +36915,7 @@ inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
  * @sa GetAudioPlaybackDevices
  * @sa GetAudioRecordingDevices
  */
-inline const char* GetAudioDeviceName(AudioDeviceParam devid)
+inline const char* GetAudioDeviceName(AudioDeviceRef devid)
 {
   return CheckError(SDL_GetAudioDeviceName(devid));
 }
@@ -36982,7 +36955,7 @@ inline const char* AudioDevice::GetName() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline AudioSpec GetAudioDeviceFormat(AudioDeviceParam devid,
+inline AudioSpec GetAudioDeviceFormat(AudioDeviceRef devid,
                                       int* sample_frames = nullptr)
 {
   AudioSpec spec;
@@ -37014,7 +36987,7 @@ inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
  *
  * @sa AudioStream.SetInputChannelMap
  */
-inline OwnArray<int> GetAudioDeviceChannelMap(AudioDeviceParam devid)
+inline OwnArray<int> GetAudioDeviceChannelMap(AudioDeviceRef devid)
 {
   int count;
   auto data = SDL_GetAudioDeviceChannelMap(devid, &count);
@@ -37096,13 +37069,13 @@ inline OwnArray<int> AudioDevice::GetChannelMap() const
  * @sa AudioDevice.Close
  * @sa AudioDevice.GetFormat
  */
-inline AudioDevice OpenAudioDevice(AudioDeviceParam devid,
+inline AudioDevice OpenAudioDevice(AudioDeviceRef devid,
                                    OptionalRef<const AudioSpec> spec)
 {
   return AudioDevice(devid, spec);
 }
 
-inline AudioDevice::AudioDevice(AudioDeviceParam devid,
+inline AudioDevice::AudioDevice(AudioDeviceRef devid,
                                 OptionalRef<const AudioSpec> spec)
   : m_resource(CheckError(SDL_OpenAudioDevice(devid, spec)))
 {
@@ -37131,7 +37104,7 @@ inline AudioDevice::AudioDevice(AudioDeviceParam devid,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool IsAudioDevicePhysical(AudioDeviceParam devid)
+inline bool IsAudioDevicePhysical(AudioDeviceRef devid)
 {
   return SDL_IsAudioDevicePhysical(devid);
 }
@@ -37153,7 +37126,7 @@ inline bool AudioDevice::IsPhysical() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool IsAudioDevicePlayback(AudioDeviceParam devid)
+inline bool IsAudioDevicePlayback(AudioDeviceRef devid)
 {
   return SDL_IsAudioDevicePlayback(devid);
 }
@@ -37191,7 +37164,7 @@ inline bool AudioDevice::IsPlayback() const
  * @sa AudioDevice.Resume
  * @sa AudioDevice.Paused
  */
-inline void PauseAudioDevice(AudioDeviceParam devid)
+inline void PauseAudioDevice(AudioDeviceRef devid)
 {
   CheckError(SDL_PauseAudioDevice(devid));
 }
@@ -37222,7 +37195,7 @@ inline void AudioDevice::Pause() { SDL::PauseAudioDevice(m_resource); }
  * @sa AudioDevice.Paused
  * @sa AudioDevice.Pause
  */
-inline void ResumeAudioDevice(AudioDeviceParam devid)
+inline void ResumeAudioDevice(AudioDeviceRef devid)
 {
   CheckError(SDL_ResumeAudioDevice(devid));
 }
@@ -37249,7 +37222,7 @@ inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(m_resource); }
  * @sa AudioDevice.Pause
  * @sa AudioDevice.Resume
  */
-inline bool AudioDevicePaused(AudioDeviceParam devid)
+inline bool AudioDevicePaused(AudioDeviceRef devid)
 {
   return SDL_AudioDevicePaused(devid);
 }
@@ -37280,7 +37253,7 @@ inline bool AudioDevice::Paused() const
  *
  * @sa AudioDevice.SetGain
  */
-inline float GetAudioDeviceGain(AudioDeviceParam devid)
+inline float GetAudioDeviceGain(AudioDeviceRef devid)
 {
   return SDL_GetAudioDeviceGain(devid);
 }
@@ -37322,7 +37295,7 @@ inline float AudioDevice::GetGain() const
  *
  * @sa AudioDevice.GetGain
  */
-inline void SetAudioDeviceGain(AudioDeviceParam devid, float gain)
+inline void SetAudioDeviceGain(AudioDeviceRef devid, float gain)
 {
   CheckError(SDL_SetAudioDeviceGain(devid, gain));
 }
@@ -37394,7 +37367,7 @@ inline void AudioDevice::Close() { CloseAudioDevice(release()); }
  * @sa AudioStream.Unbind
  * @sa AudioStream.GetDevice
  */
-inline void BindAudioStreams(AudioDeviceParam devid,
+inline void BindAudioStreams(AudioDeviceRef devid,
                              std::span<AudioStreamRef> streams)
 {
   CheckError(SDL_BindAudioStreams(
@@ -37426,12 +37399,12 @@ inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
  * @sa AudioStream.Unbind
  * @sa AudioStream.GetDevice
  */
-inline void BindAudioStream(AudioDeviceParam devid, AudioStreamParam stream)
+inline void BindAudioStream(AudioDeviceRef devid, AudioStreamRef stream)
 {
   CheckError(SDL_BindAudioStream(devid, stream));
 }
 
-inline void AudioDevice::BindAudioStream(AudioStreamParam stream)
+inline void AudioDevice::BindAudioStream(AudioStreamRef stream)
 {
   SDL::BindAudioStream(m_resource, stream);
 }
@@ -37474,7 +37447,7 @@ inline void UnbindAudioStreams(std::span<AudioStreamRef> streams)
  *
  * @sa AudioDevice.BindAudioStream
  */
-inline void UnbindAudioStream(AudioStreamParam stream)
+inline void UnbindAudioStream(AudioStreamRef stream)
 {
   SDL_UnbindAudioStream(stream);
 }
@@ -37499,7 +37472,7 @@ inline void AudioStream::Unbind() { SDL::UnbindAudioStream(m_resource); }
  * @sa AudioDevice.BindAudioStream
  * @sa AudioDevice.BindAudioStreams
  */
-inline AudioDeviceRef GetAudioStreamDevice(AudioStreamParam stream)
+inline AudioDeviceRef GetAudioStreamDevice(AudioStreamRef stream)
 {
   return {SDL_GetAudioStreamDevice(stream)};
 }
@@ -37541,7 +37514,7 @@ inline AudioStream::AudioStream(OptionalRef<const AudioSpec> src_spec,
 {
 }
 
-inline AudioStream::AudioStream(AudioDeviceParam devid,
+inline AudioStream::AudioStream(AudioDeviceRef devid,
                                 OptionalRef<const AudioSpec> spec,
                                 AudioStreamCallback callback,
                                 void* userdata)
@@ -37550,7 +37523,7 @@ inline AudioStream::AudioStream(AudioDeviceParam devid,
 {
 }
 
-inline AudioStream::AudioStream(AudioDeviceParam devid,
+inline AudioStream::AudioStream(AudioDeviceRef devid,
                                 OptionalRef<const AudioSpec> spec,
                                 AudioStreamCB callback)
   : AudioStream(devid, spec)
@@ -37584,7 +37557,7 @@ inline AudioStream::AudioStream(AudioDeviceParam devid,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetAudioStreamProperties(AudioStreamParam stream)
+inline PropertiesRef GetAudioStreamProperties(AudioStreamRef stream)
 {
   return {CheckError(SDL_GetAudioStreamProperties(stream))};
 }
@@ -37620,7 +37593,7 @@ constexpr auto _AUTO_CLEANUP_BOOLEAN =
  *
  * @sa AudioStream.SetFormat
  */
-inline void GetAudioStreamFormat(AudioStreamParam stream,
+inline void GetAudioStreamFormat(AudioStreamRef stream,
                                  AudioSpec* src_spec,
                                  AudioSpec* dst_spec)
 {
@@ -37667,7 +37640,7 @@ inline void AudioStream::GetFormat(AudioSpec* src_spec,
  * @sa AudioStream.GetFormat
  * @sa AudioStream.SetFrequencyRatio
  */
-inline void SetAudioStreamFormat(AudioStreamParam stream,
+inline void SetAudioStreamFormat(AudioStreamRef stream,
                                  OptionalRef<const AudioSpec> src_spec,
                                  OptionalRef<const AudioSpec> dst_spec)
 {
@@ -37694,7 +37667,7 @@ inline void AudioStream::SetFormat(OptionalRef<const AudioSpec> src_spec,
  *
  * @sa AudioStream.SetFrequencyRatio
  */
-inline float GetAudioStreamFrequencyRatio(AudioStreamParam stream)
+inline float GetAudioStreamFrequencyRatio(AudioStreamRef stream)
 {
   return SDL_GetAudioStreamFrequencyRatio(stream);
 }
@@ -37729,7 +37702,7 @@ inline float AudioStream::GetFrequencyRatio() const
  * @sa AudioStream.GetFrequencyRatio
  * @sa AudioStream.SetFormat
  */
-inline void SetAudioStreamFrequencyRatio(AudioStreamParam stream, float ratio)
+inline void SetAudioStreamFrequencyRatio(AudioStreamRef stream, float ratio)
 {
   CheckError(SDL_SetAudioStreamFrequencyRatio(stream, ratio));
 }
@@ -37758,7 +37731,7 @@ inline void AudioStream::SetFrequencyRatio(float ratio)
  *
  * @sa AudioStream.SetGain
  */
-inline float GetAudioStreamGain(AudioStreamParam stream)
+inline float GetAudioStreamGain(AudioStreamRef stream)
 {
   return SDL_GetAudioStreamGain(stream);
 }
@@ -37790,7 +37763,7 @@ inline float AudioStream::GetGain() const
  *
  * @sa AudioStream.GetGain
  */
-inline void SetAudioStreamGain(AudioStreamParam stream, float gain)
+inline void SetAudioStreamGain(AudioStreamRef stream, float gain)
 {
   CheckError(SDL_SetAudioStreamGain(stream, gain));
 }
@@ -37820,7 +37793,7 @@ inline void AudioStream::SetGain(float gain)
  *
  * @sa AudioStream.SetInputChannelMap
  */
-inline OwnArray<int> GetAudioStreamInputChannelMap(AudioStreamParam stream)
+inline OwnArray<int> GetAudioStreamInputChannelMap(AudioStreamRef stream)
 {
   int count;
   auto data = SDL_GetAudioStreamInputChannelMap(stream, &count);
@@ -37853,7 +37826,7 @@ inline OwnArray<int> AudioStream::GetInputChannelMap() const
  *
  * @sa AudioStream.SetInputChannelMap
  */
-inline OwnArray<int> GetAudioStreamOutputChannelMap(AudioStreamParam stream)
+inline OwnArray<int> GetAudioStreamOutputChannelMap(AudioStreamRef stream)
 {
   int count;
   auto data = SDL_GetAudioStreamOutputChannelMap(stream, &count);
@@ -37922,7 +37895,7 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
  *
  * @sa AudioStream.SetInputChannelMap
  */
-inline void SetAudioStreamInputChannelMap(AudioStreamParam stream,
+inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
                                           std::span<int> chmap)
 {
   CheckError(
@@ -37988,7 +37961,7 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
  *
  * @sa AudioStream.SetInputChannelMap
  */
-inline void SetAudioStreamOutputChannelMap(AudioStreamParam stream,
+inline void SetAudioStreamOutputChannelMap(AudioStreamRef stream,
                                            std::span<int> chmap)
 {
   CheckError(
@@ -38026,7 +37999,7 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  * @sa AudioStream.GetData
  * @sa AudioStream.GetQueued
  */
-inline void PutAudioStreamData(AudioStreamParam stream, SourceBytes buf)
+inline void PutAudioStreamData(AudioStreamRef stream, SourceBytes buf)
 {
   CheckError(SDL_PutAudioStreamData(stream, buf.data(), buf.size_bytes()));
 }
@@ -38081,7 +38054,7 @@ inline void AudioStream::PutData(SourceBytes buf)
  * @sa AudioStream.GetData
  * @sa AudioStream.GetQueued
  */
-inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
+inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                                      SourceBytes buf,
                                      AudioStreamDataCompleteCallback callback,
                                      void* userdata)
@@ -38131,7 +38104,7 @@ inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
  * @sa AudioStream.GetData
  * @sa AudioStream.GetQueued
  */
-inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
+inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                                      SourceBytes buf,
                                      AudioStreamDataCompleteCB callback)
 {
@@ -38203,7 +38176,7 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
  * @sa AudioStream.GetData
  * @sa AudioStream.GetQueued
  */
-inline void PutAudioStreamPlanarData(AudioStreamParam stream,
+inline void PutAudioStreamPlanarData(AudioStreamRef stream,
                                      const void* const* channel_buffers,
                                      int num_channels,
                                      int num_samples)
@@ -38249,7 +38222,7 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
  * @sa AudioStream.GetAvailable
  * @sa AudioStream.PutData
  */
-inline int GetAudioStreamData(AudioStreamParam stream, TargetBytes buf)
+inline int GetAudioStreamData(AudioStreamRef stream, TargetBytes buf)
 {
   return SDL_GetAudioStreamData(stream, buf.data(), buf.size_bytes());
 }
@@ -38282,7 +38255,7 @@ inline int AudioStream::GetData(TargetBytes buf)
  * @sa AudioStream.GetData
  * @sa AudioStream.PutData
  */
-inline int GetAudioStreamAvailable(AudioStreamParam stream)
+inline int GetAudioStreamAvailable(AudioStreamRef stream)
 {
   return SDL_GetAudioStreamAvailable(stream);
 }
@@ -38327,7 +38300,7 @@ inline int AudioStream::GetAvailable() const
  * @sa AudioStream.PutData
  * @sa AudioStream.Clear
  */
-inline int GetAudioStreamQueued(AudioStreamParam stream)
+inline int GetAudioStreamQueued(AudioStreamRef stream)
 {
   return SDL_GetAudioStreamQueued(stream);
 }
@@ -38354,7 +38327,7 @@ inline int AudioStream::GetQueued() const
  *
  * @sa AudioStream.PutData
  */
-inline void FlushAudioStream(AudioStreamParam stream)
+inline void FlushAudioStream(AudioStreamRef stream)
 {
   CheckError(SDL_FlushAudioStream(stream));
 }
@@ -38379,7 +38352,7 @@ inline void AudioStream::Flush() { SDL::FlushAudioStream(m_resource); }
  * @sa AudioStream.GetQueued
  * @sa AudioStream.PutData
  */
-inline void ClearAudioStream(AudioStreamParam stream)
+inline void ClearAudioStream(AudioStreamRef stream)
 {
   CheckError(SDL_ClearAudioStream(stream));
 }
@@ -38407,7 +38380,7 @@ inline void AudioStream::Clear() { SDL::ClearAudioStream(m_resource); }
  *
  * @sa AudioStream.ResumeDevice
  */
-inline void PauseAudioStreamDevice(AudioStreamParam stream)
+inline void PauseAudioStreamDevice(AudioStreamRef stream)
 {
   CheckError(SDL_PauseAudioStreamDevice(stream));
 }
@@ -38437,7 +38410,7 @@ inline void AudioStream::PauseDevice()
  *
  * @sa AudioStream.PauseDevice
  */
-inline void ResumeAudioStreamDevice(AudioStreamParam stream)
+inline void ResumeAudioStreamDevice(AudioStreamRef stream)
 {
   CheckError(SDL_ResumeAudioStreamDevice(stream));
 }
@@ -38464,7 +38437,7 @@ inline void AudioStream::ResumeDevice()
  * @sa AudioStream.PauseDevice
  * @sa AudioStream.ResumeDevice
  */
-inline bool AudioStreamDevicePaused(AudioStreamParam stream)
+inline bool AudioStreamDevicePaused(AudioStreamRef stream)
 {
   return SDL_AudioStreamDevicePaused(stream);
 }
@@ -38499,7 +38472,7 @@ inline bool AudioStream::DevicePaused() const
  *
  * @sa AudioStream.Unlock
  */
-inline void LockAudioStream(AudioStreamParam stream)
+inline void LockAudioStream(AudioStreamRef stream)
 {
   CheckError(SDL_LockAudioStream(stream));
 }
@@ -38527,7 +38500,7 @@ inline AudioStreamLock::AudioStreamLock(AudioStreamRef resource)
  *
  * @sa AudioStream.Lock
  */
-inline void UnlockAudioStream(AudioStreamParam stream)
+inline void UnlockAudioStream(AudioStreamRef stream)
 {
   CheckError(SDL_UnlockAudioStream(stream));
 }
@@ -38586,7 +38559,7 @@ inline void AudioStreamLock::reset()
  *
  * @sa AudioStream.SetPutCallback
  */
-inline void SetAudioStreamGetCallback(AudioStreamParam stream,
+inline void SetAudioStreamGetCallback(AudioStreamRef stream,
                                       AudioStreamCallback callback,
                                       void* userdata)
 {
@@ -38632,7 +38605,7 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
  *
  * @sa AudioStream.SetPutCallback
  */
-inline void SetAudioStreamGetCallback(AudioStreamParam stream,
+inline void SetAudioStreamGetCallback(AudioStreamRef stream,
                                       AudioStreamCB callback)
 {
   SetAudioStreamGetCallback(stream, callback.wrapper, callback.data);
@@ -38694,7 +38667,7 @@ inline void AudioStream::SetGetCallback(AudioStreamCB callback)
  *
  * @sa AudioStream.SetGetCallback
  */
-inline void SetAudioStreamPutCallback(AudioStreamParam stream,
+inline void SetAudioStreamPutCallback(AudioStreamRef stream,
                                       AudioStreamCallback callback,
                                       void* userdata)
 {
@@ -38744,7 +38717,7 @@ inline void SetAudioStreamPutCallback(AudioStreamParam stream,
  *
  * @sa AudioStream.SetGetCallback
  */
-inline void SetAudioStreamPutCallback(AudioStreamParam stream,
+inline void SetAudioStreamPutCallback(AudioStreamRef stream,
                                       AudioStreamCB callback)
 {
   SetAudioStreamPutCallback(stream, callback.wrapper, callback.data);
@@ -38843,7 +38816,7 @@ inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
  * @sa AudioStream.GetDevice
  * @sa AudioStream.ResumeDevice
  */
-inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
+inline AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
                                          OptionalRef<const AudioSpec> spec,
                                          AudioStreamCallback callback = nullptr,
                                          void* userdata = nullptr)
@@ -38904,7 +38877,7 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
  * @sa AudioStream.GetDevice
  * @sa AudioStream.ResumeDevice
  */
-inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
+inline AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
                                          OptionalRef<const AudioSpec> spec,
                                          AudioStreamCB callback)
 {
@@ -38975,7 +38948,7 @@ inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetAudioPostmixCallback(AudioDeviceParam devid,
+inline void SetAudioPostmixCallback(AudioDeviceRef devid,
                                     AudioPostmixCallback callback,
                                     void* userdata)
 {
@@ -39032,7 +39005,7 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetAudioPostmixCallback(AudioDeviceParam devid,
+inline void SetAudioPostmixCallback(AudioDeviceRef devid,
                                     AudioPostmixCB callback)
 {
   SetAudioPostmixCallback(devid, callback.wrapper, callback.data);
@@ -39115,7 +39088,7 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  *
  * @sa LoadWAV
  */
-inline OwnArray<Uint8> LoadWAV(IOStreamParam src,
+inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
                                AudioSpec* spec,
                                bool closeio = false)
 {
@@ -40259,8 +40232,6 @@ using ProcessRaw = SDL_Process*;
 // Forward decl
 struct ProcessRef;
 
-using ProcessParam = ProcessRef;
-
 /**
  * Description of where standard I/O should be directed when creating a process.
  *
@@ -40340,7 +40311,7 @@ public:
   }
 
   /**
-   * Constructs from ProcessParam.
+   * Constructs from ProcessRef.
    *
    * @param resource a ProcessRaw to be wrapped.
    *
@@ -40477,7 +40448,7 @@ public:
    * @sa Process.Wait
    * @sa Process.Destroy
    */
-  Process(PropertiesParam props);
+  Process(PropertiesRef props);
 
   /// Destructor
   ~Process() { SDL_DestroyProcess(m_resource); }
@@ -40828,7 +40799,7 @@ inline Process::Process(const char* const* args, bool pipe_stdio)
 {
 }
 
-inline Process::Process(PropertiesParam props)
+inline Process::Process(PropertiesRef props)
   : m_resource(SDL_CreateProcessWithProperties(props))
 {
 }
@@ -40903,7 +40874,7 @@ inline Process::Process(PropertiesParam props)
  * @sa Process.Wait
  * @sa Process.Destroy
  */
-inline Process CreateProcessWithProperties(PropertiesParam props)
+inline Process CreateProcessWithProperties(PropertiesRef props)
 {
   return Process(props);
 }
@@ -40987,7 +40958,7 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  * @sa Process.Process
  * @sa Process.Process
  */
-inline PropertiesRef GetProcessProperties(ProcessParam process)
+inline PropertiesRef GetProcessProperties(ProcessRef process)
 {
   return {CheckError(SDL_GetProcessProperties(process))};
 }
@@ -41024,7 +40995,7 @@ inline PropertiesRef Process::GetProperties() const
  * @sa Process.Process
  * @sa Process.Destroy
  */
-inline StringResult ReadProcess(ProcessParam process, int* exitcode = nullptr)
+inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
 {
   size_t size = 0;
   auto data = static_cast<char*>(SDL_ReadProcess(process, &size, exitcode));
@@ -41060,7 +41031,7 @@ inline StringResult Process::Read(int* exitcode)
  * @sa Process.Process
  * @sa Process.GetOutput
  */
-inline IOStreamRef GetProcessInput(ProcessParam process)
+inline IOStreamRef GetProcessInput(ProcessRef process)
 {
   return {SDL_GetProcessInput(process)};
 }
@@ -41092,7 +41063,7 @@ inline IOStreamRef Process::GetInput()
  * @sa Process.Process
  * @sa Process.GetInput
  */
-inline IOStreamRef GetProcessOutput(ProcessParam process)
+inline IOStreamRef GetProcessOutput(ProcessRef process)
 {
   return {SDL_GetProcessOutput(process)};
 }
@@ -41121,7 +41092,7 @@ inline IOStreamRef Process::GetOutput()
  * @sa Process.Wait
  * @sa Process.Destroy
  */
-inline void KillProcess(ProcessParam process, bool force)
+inline void KillProcess(ProcessRef process, bool force)
 {
   CheckError(SDL_KillProcess(process, force));
 }
@@ -41159,7 +41130,7 @@ inline void Process::Kill(bool force) { SDL::KillProcess(m_resource, force); }
  * @sa Process.Kill
  * @sa Process.Destroy
  */
-inline bool WaitProcess(ProcessParam process, bool block, int* exitcode)
+inline bool WaitProcess(ProcessRef process, bool block, int* exitcode)
 {
   return SDL_WaitProcess(process, block, exitcode);
 }
@@ -41415,8 +41386,6 @@ using StorageRaw = SDL_Storage*;
 // Forward decl
 struct StorageRef;
 
-using StorageParam = StorageRef;
-
 /**
  * Function interface for Storage.
  *
@@ -41458,7 +41427,7 @@ public:
   }
 
   /**
-   * Constructs from StorageParam.
+   * Constructs from StorageRef.
    *
    * @param resource a StorageRaw to be wrapped.
    *
@@ -41503,7 +41472,7 @@ public:
    * @sa Storage.Storage
    * @sa Storage.ReadFile
    */
-  Storage(StringParam override, PropertiesParam props);
+  Storage(StringParam override, PropertiesRef props);
 
   /**
    * Opens up a container for a user's unique read/write filesystem.
@@ -41529,7 +41498,7 @@ public:
    * @sa Storage.Ready
    * @sa Storage.WriteFile
    */
-  Storage(StringParam org, StringParam app, PropertiesParam props);
+  Storage(StringParam org, StringParam app, PropertiesRef props);
 
   /**
    * Opens up a container for local filesystem storage.
@@ -42007,17 +41976,17 @@ struct StorageRef : Storage
  * @sa Storage.Storage
  * @sa Storage.ReadFile
  */
-inline Storage OpenTitleStorage(StringParam override, PropertiesParam props)
+inline Storage OpenTitleStorage(StringParam override, PropertiesRef props)
 {
   return Storage(std::move(override), props);
 }
 
-inline Storage::Storage(StringParam override, PropertiesParam props)
+inline Storage::Storage(StringParam override, PropertiesRef props)
   : m_resource(CheckError(SDL_OpenTitleStorage(override, props)))
 {
 }
 
-inline Storage::Storage(StringParam org, StringParam app, PropertiesParam props)
+inline Storage::Storage(StringParam org, StringParam app, PropertiesRef props)
   : m_resource(CheckError(SDL_OpenUserStorage(org, app, props)))
 {
 }
@@ -42058,7 +42027,7 @@ inline Storage::Storage(const StorageInterface& iface, void* userdata)
  */
 inline Storage OpenUserStorage(StringParam org,
                                StringParam app,
-                               PropertiesParam props)
+                               PropertiesRef props)
 {
   return Storage(std::move(org), std::move(app), props);
 }
@@ -42157,7 +42126,7 @@ inline bool Storage::Close() { return CloseStorage(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool StorageReady(StorageParam storage)
+inline bool StorageReady(StorageRef storage)
 {
   return SDL_StorageReady(storage);
 }
@@ -42177,7 +42146,7 @@ inline bool Storage::Ready() { return SDL::StorageReady(m_resource); }
  * @sa Storage.ReadFile
  * @sa Storage.Ready
  */
-inline std::optional<Uint64> GetStorageFileSize(StorageParam storage,
+inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
                                                 StringParam path)
 {
   if (Uint64 length; SDL_GetStorageFileSize(storage, path, &length)) {
@@ -42211,7 +42180,7 @@ inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
  * @sa Storage.Ready
  * @sa Storage.WriteFile
  */
-inline bool ReadStorageFile(StorageParam storage,
+inline bool ReadStorageFile(StorageRef storage,
                             StringParam path,
                             TargetBytes destination)
 {
@@ -42234,7 +42203,7 @@ inline bool ReadStorageFile(StorageParam storage,
  * @sa Storage.Ready
  * @sa Storage.WriteFile
  */
-inline std::string ReadStorageFile(StorageParam storage, StringParam path)
+inline std::string ReadStorageFile(StorageRef storage, StringParam path)
 {
   auto sz = GetStorageFileSize(storage, path.c_str());
   if (!sz || *sz == 0) return {};
@@ -42270,7 +42239,7 @@ inline std::string Storage::ReadFile(StringParam path)
  * @sa Storage.WriteFile
  */
 template<class T>
-inline std::vector<T> ReadStorageFileAs(StorageParam storage, StringParam path)
+inline std::vector<T> ReadStorageFileAs(StorageRef storage, StringParam path)
 {
   auto sz = GetStorageFileSize(storage, path.c_str());
   if (!sz || *sz == 0) return {};
@@ -42299,7 +42268,7 @@ inline std::vector<T> Storage::ReadFileAs(StringParam path)
  * @sa Storage.ReadFile
  * @sa Storage.Ready
  */
-inline void WriteStorageFile(StorageParam storage,
+inline void WriteStorageFile(StorageRef storage,
                              StringParam path,
                              SourceBytes source)
 {
@@ -42323,7 +42292,7 @@ inline void Storage::WriteFile(StringParam path, SourceBytes source)
  *
  * @sa Storage.Ready
  */
-inline void CreateStorageDirectory(StorageParam storage, StringParam path)
+inline void CreateStorageDirectory(StorageRef storage, StringParam path)
 {
   CheckError(SDL_CreateStorageDirectory(storage, path));
 }
@@ -42357,7 +42326,7 @@ inline void Storage::CreateDirectory(StringParam path)
  *
  * @sa Storage.Ready
  */
-inline void EnumerateStorageDirectory(StorageParam storage,
+inline void EnumerateStorageDirectory(StorageRef storage,
                                       StringParam path,
                                       EnumerateDirectoryCallback callback,
                                       void* userdata)
@@ -42388,7 +42357,7 @@ inline void EnumerateStorageDirectory(StorageParam storage,
  *
  * @sa Storage.Ready
  */
-inline void EnumerateStorageDirectory(StorageParam storage,
+inline void EnumerateStorageDirectory(StorageRef storage,
                                       StringParam path,
                                       EnumerateDirectoryCB callback)
 {
@@ -42425,7 +42394,7 @@ inline void EnumerateStorageDirectory(StorageParam storage,
  *
  * @sa Storage.Ready
  */
-inline std::vector<Path> EnumerateStorageDirectory(StorageParam storage,
+inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                    StringParam path)
 {
   std::vector<Path> r;
@@ -42466,7 +42435,7 @@ inline void Storage::EnumerateDirectory(StringParam path,
  *
  * @sa Storage.Ready
  */
-inline void RemoveStoragePath(StorageParam storage, StringParam path)
+inline void RemoveStoragePath(StorageRef storage, StringParam path)
 {
   CheckError(SDL_RemoveStoragePath(storage, path));
 }
@@ -42488,7 +42457,7 @@ inline void Storage::RemovePath(StringParam path)
  *
  * @sa Storage.Ready
  */
-inline void RenameStoragePath(StorageParam storage,
+inline void RenameStoragePath(StorageRef storage,
                               StringParam oldpath,
                               StringParam newpath)
 {
@@ -42512,7 +42481,7 @@ inline void Storage::RenamePath(StringParam oldpath, StringParam newpath)
  *
  * @sa Storage.Ready
  */
-inline void CopyStorageFile(StorageParam storage,
+inline void CopyStorageFile(StorageRef storage,
                             StringParam oldpath,
                             StringParam newpath)
 {
@@ -42536,7 +42505,7 @@ inline void Storage::CopyFile(StringParam oldpath, StringParam newpath)
  *
  * @sa Storage.Ready
  */
-inline PathInfo GetStoragePathInfo(StorageParam storage, StringParam path)
+inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
 {
   if (PathInfo info; SDL_GetStoragePathInfo(storage, path, &info)) {
     return info;
@@ -42560,7 +42529,7 @@ inline PathInfo Storage::GetPathInfo(StringParam path)
  * @sa Storage.Ready
  * @sa Storage.WriteFile
  */
-inline Uint64 GetStorageSpaceRemaining(StorageParam storage)
+inline Uint64 GetStorageSpaceRemaining(StorageRef storage)
 {
   return SDL_GetStorageSpaceRemaining(storage);
 }
@@ -42603,7 +42572,7 @@ inline Uint64 Storage::GetSpaceRemaining()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnArray<char*> GlobStorageDirectory(StorageParam storage,
+inline OwnArray<char*> GlobStorageDirectory(StorageRef storage,
                                             StringParam path,
                                             StringParam pattern,
                                             GlobFlags flags)
@@ -42656,8 +42625,6 @@ using SurfaceRaw = SDL_Surface*;
 
 // Forward decl
 struct SurfaceRef;
-
-using SurfaceParam = SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
 struct SurfaceConstRef
@@ -42810,7 +42777,7 @@ public:
   }
 
   /**
-   * Constructs from SurfaceParam.
+   * Constructs from SurfaceRef.
    *
    * @param resource a SurfaceRaw to be wrapped.
    *
@@ -42969,7 +42936,7 @@ public:
    * @sa Surface.Surface
    * @sa LoadSurfaceTyped
    */
-  Surface(IOStreamParam src, bool closeio = false);
+  Surface(IOStreamRef src, bool closeio = false);
 
   /**
    * Safely borrows the from SurfaceRaw.
@@ -43007,7 +42974,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  static Surface LoadBMP(IOStreamParam src, bool closeio = false);
+  static Surface LoadBMP(IOStreamRef src, bool closeio = false);
 
   /**
    * Load a BMP image from a file.
@@ -43052,7 +43019,7 @@ public:
    * @sa Surface.LoadPNG
    * @sa Surface.SavePNG
    */
-  static Surface LoadPNG(IOStreamParam src, bool closeio = false);
+  static Surface LoadPNG(IOStreamRef src, bool closeio = false);
 
   /**
    * Load a PNG image from a file.
@@ -43261,7 +43228,7 @@ public:
    * @sa Palette.Palette
    * @sa Surface.GetPalette
    */
-  void SetPalette(PaletteParam palette);
+  void SetPalette(PaletteRef palette);
 
   /**
    * Get the palette used by a surface.
@@ -43300,7 +43267,7 @@ public:
    * @sa Surface.GetImages
    * @sa Surface.HasAlternateImages
    */
-  void AddAlternateImage(SurfaceParam image);
+  void AddAlternateImage(SurfaceRef image);
 
   /**
    * Return whether a surface has alternate versions available.
@@ -43415,7 +43382,7 @@ public:
    * @sa Surface.LoadBMP
    * @sa Surface.SaveBMP
    */
-  void SaveBMP(IOStreamParam dst, bool closeio = false) const;
+  void SaveBMP(IOStreamRef dst, bool closeio = false) const;
 
   /**
    * Save a surface to a file in BMP format.
@@ -43457,7 +43424,7 @@ public:
    * @sa Surface.LoadPNG
    * @sa Surface.SavePNG
    */
-  void SavePNG(IOStreamParam dst, bool closeio = false) const;
+  void SavePNG(IOStreamRef dst, bool closeio = false) const;
 
   /**
    * Save a surface to a file in PNG format.
@@ -43902,9 +43869,9 @@ public:
    * @sa Surface.Destroy
    */
   Surface Convert(PixelFormat format,
-                  PaletteParam palette,
+                  PaletteRef palette,
                   Colorspace colorspace,
-                  PropertiesParam props) const;
+                  PropertiesRef props) const;
 
   /**
    * Premultiply the alpha in a surface.
@@ -44072,7 +44039,7 @@ public:
    *
    * @sa Surface.BlitScaled
    */
-  void Blit(SurfaceParam src,
+  void Blit(SurfaceRef src,
             OptionalRef<const RectRaw> srcrect,
             OptionalRef<const RectRaw> dstrect);
 
@@ -44146,7 +44113,7 @@ public:
    * @sa Surface.Blit
    * @sa Surface.BlitScaled
    */
-  void BlitAt(SurfaceParam src,
+  void BlitAt(SurfaceRef src,
               OptionalRef<const RectRaw> srcrect,
               const PointRaw& dstpos);
 
@@ -44170,7 +44137,7 @@ public:
    *
    * @sa Surface.Blit
    */
-  void BlitUnchecked(SurfaceParam src,
+  void BlitUnchecked(SurfaceRef src,
                      const RectRaw& srcrect,
                      const RectRaw& dstrect);
 
@@ -44194,7 +44161,7 @@ public:
    *
    * @sa Surface.Blit
    */
-  void BlitScaled(SurfaceParam src,
+  void BlitScaled(SurfaceRef src,
                   OptionalRef<const RectRaw> srcrect,
                   OptionalRef<const RectRaw> dstrect,
                   ScaleMode scaleMode);
@@ -44220,7 +44187,7 @@ public:
    *
    * @sa Surface.BlitScaled
    */
-  void BlitUncheckedScaled(SurfaceParam src,
+  void BlitUncheckedScaled(SurfaceRef src,
                            const RectRaw& srcrect,
                            const RectRaw& dstrect,
                            ScaleMode scaleMode);
@@ -44246,7 +44213,7 @@ public:
    *
    * @sa Surface.BlitScaled
    */
-  void Stretch(SurfaceParam src,
+  void Stretch(SurfaceRef src,
                OptionalRef<RectRaw> srcrect,
                OptionalRef<RectRaw> dstrect,
                ScaleMode scaleMode);
@@ -44274,7 +44241,7 @@ public:
    *
    * @sa Surface.Blit
    */
-  void BlitTiled(SurfaceParam src,
+  void BlitTiled(SurfaceRef src,
                  OptionalRef<const RectRaw> srcrect,
                  OptionalRef<const RectRaw> dstrect);
 
@@ -44303,7 +44270,7 @@ public:
    *
    * @sa Surface.Blit
    */
-  void BlitTiledWithScale(SurfaceParam src,
+  void BlitTiledWithScale(SurfaceRef src,
                           OptionalRef<const RectRaw> srcrect,
                           float scale,
                           ScaleMode scaleMode,
@@ -44341,7 +44308,7 @@ public:
    *
    * @sa Surface.Blit
    */
-  void Blit9Grid(SurfaceParam src,
+  void Blit9Grid(SurfaceRef src,
                  OptionalRef<const RectRaw> srcrect,
                  int left_width,
                  int right_width,
@@ -45068,7 +45035,7 @@ constexpr auto ROTATION_FLOAT = SDL_PROP_SURFACE_ROTATION_FLOAT;
  *
  * @sa Surface.GetColorspace
  */
-inline void SetSurfaceColorspace(SurfaceParam surface, Colorspace colorspace)
+inline void SetSurfaceColorspace(SurfaceRef surface, Colorspace colorspace)
 {
   CheckError(SDL_SetSurfaceColorspace(surface, colorspace));
 }
@@ -45133,7 +45100,7 @@ inline Colorspace Surface::GetColorspace() const
  *
  * @sa Palette.SetColors
  */
-inline Palette CreateSurfacePalette(SurfaceParam surface)
+inline Palette CreateSurfacePalette(SurfaceRef surface)
 {
   return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
 }
@@ -45163,12 +45130,12 @@ inline Palette Surface::CreatePalette()
  * @sa Palette.Palette
  * @sa Surface.GetPalette
  */
-inline void SetSurfacePalette(SurfaceParam surface, PaletteParam palette)
+inline void SetSurfacePalette(SurfaceRef surface, PaletteRef palette)
 {
   CheckError(SDL_SetSurfacePalette(surface, palette));
 }
 
-inline void Surface::SetPalette(PaletteParam palette)
+inline void Surface::SetPalette(PaletteRef palette)
 {
   SDL::SetSurfacePalette(m_resource, palette);
 }
@@ -45221,12 +45188,12 @@ inline Palette Surface::GetPalette() const
  * @sa Surface.GetImages
  * @sa Surface.HasAlternateImages
  */
-inline void AddSurfaceAlternateImage(SurfaceParam surface, SurfaceParam image)
+inline void AddSurfaceAlternateImage(SurfaceRef surface, SurfaceRef image)
 {
   CheckError(SDL_AddSurfaceAlternateImage(surface, image));
 }
 
-inline void Surface::AddAlternateImage(SurfaceParam image)
+inline void Surface::AddAlternateImage(SurfaceRef image)
 {
   SDL::AddSurfaceAlternateImage(m_resource, image);
 }
@@ -45307,7 +45274,7 @@ inline OwnArray<SurfaceRaw> Surface::GetImages() const
  * @sa Surface.GetImages
  * @sa Surface.HasAlternateImages
  */
-inline void RemoveSurfaceAlternateImages(SurfaceParam surface)
+inline void RemoveSurfaceAlternateImages(SurfaceRef surface)
 {
   SDL_RemoveSurfaceAlternateImages(surface);
 }
@@ -45342,7 +45309,7 @@ inline void Surface::RemoveAlternateImages()
  * @sa Surface.MustLock
  * @sa Surface.Unlock
  */
-inline void LockSurface(SurfaceParam surface)
+inline void LockSurface(SurfaceRef surface)
 {
   CheckError(SDL_LockSurface(surface));
 }
@@ -45368,7 +45335,7 @@ inline SurfaceLock::SurfaceLock(SurfaceRef resource)
  *
  * @sa Surface.Lock
  */
-inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
+inline void UnlockSurface(SurfaceRef surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock(SurfaceLock&& lock)
 {
@@ -45405,7 +45372,7 @@ inline void SurfaceLock::reset()
  * @sa Surface.Destroy
  * @sa LoadSurface
  */
-inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
+inline Surface LoadSurface(IOStreamRef src, bool closeio = false)
 {
   return Surface{SDL_LoadSurface_IO(src, closeio)};
 }
@@ -45454,7 +45421,7 @@ inline Surface LoadSurface(StringParam file)
  * @sa Surface.LoadBMP
  * @sa Surface.SaveBMP
  */
-inline Surface LoadBMP(IOStreamParam src, bool closeio = false)
+inline Surface LoadBMP(IOStreamRef src, bool closeio = false)
 {
   return Surface(SDL_LoadBMP_IO(src, closeio));
 }
@@ -45479,7 +45446,7 @@ inline Surface LoadBMP(IOStreamParam src, bool closeio = false)
  */
 inline Surface LoadBMP(StringParam file) { return Surface(SDL_LoadBMP(file)); }
 
-inline Surface Surface::LoadBMP(IOStreamParam src, bool closeio)
+inline Surface Surface::LoadBMP(IOStreamRef src, bool closeio)
 {
   return SDL::LoadBMP(src, closeio);
 }
@@ -45513,7 +45480,7 @@ inline Surface Surface::LoadBMP(StringParam file)
  * @sa Surface.SaveBMP
  */
 inline void SaveBMP(SurfaceConstRef surface,
-                    IOStreamParam dst,
+                    IOStreamRef dst,
                     bool closeio = false)
 {
   CheckError(SDL_SaveBMP_IO(surface, dst, closeio));
@@ -45545,7 +45512,7 @@ inline void SaveBMP(SurfaceConstRef surface, StringParam file)
   CheckError(SDL_SaveBMP(surface, file));
 }
 
-inline void Surface::SaveBMP(IOStreamParam dst, bool closeio) const
+inline void Surface::SaveBMP(IOStreamRef dst, bool closeio) const
 {
   SDL::SaveBMP(m_resource, dst, closeio);
 }
@@ -45581,7 +45548,7 @@ inline void Surface::SaveBMP(StringParam file) const
  * @sa Surface.LoadPNG
  * @sa Surface.SavePNG
  */
-inline Surface LoadPNG(IOStreamParam src, bool closeio = false)
+inline Surface LoadPNG(IOStreamRef src, bool closeio = false)
 {
   return Surface(SDL_LoadPNG_IO(src, closeio));
 }
@@ -45610,7 +45577,7 @@ inline Surface LoadPNG(IOStreamParam src, bool closeio = false)
  */
 inline Surface LoadPNG(StringParam file) { return Surface(SDL_LoadPNG(file)); }
 
-inline Surface Surface::LoadPNG(IOStreamParam src, bool closeio)
+inline Surface Surface::LoadPNG(IOStreamRef src, bool closeio)
 {
   return SDL::LoadPNG(src, closeio);
 }
@@ -45638,7 +45605,7 @@ inline Surface Surface::LoadPNG(StringParam file)
  * @sa Surface.SavePNG
  */
 inline void SavePNG(SurfaceConstRef surface,
-                    IOStreamParam dst,
+                    IOStreamRef dst,
                     bool closeio = false)
 {
   CheckError(SDL_SavePNG_IO(surface, dst, closeio));
@@ -45664,7 +45631,7 @@ inline void SavePNG(SurfaceConstRef surface, StringParam file)
   CheckError(SDL_SavePNG(surface, file));
 }
 
-inline void Surface::SavePNG(IOStreamParam dst, bool closeio) const
+inline void Surface::SavePNG(IOStreamRef dst, bool closeio) const
 {
   SDL::SavePNG(m_resource, dst, closeio);
 }
@@ -45695,7 +45662,7 @@ inline void Surface::SavePNG(StringParam file) const
  * @sa Surface.Lock
  * @sa Surface.Unlock
  */
-inline void SetSurfaceRLE(SurfaceParam surface, bool enabled)
+inline void SetSurfaceRLE(SurfaceRef surface, bool enabled)
 {
   CheckError(SDL_SetSurfaceRLE(surface, enabled));
 }
@@ -45748,7 +45715,7 @@ inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(m_resource); }
  * @sa Surface.SetRLE
  * @sa Surface.HasColorKey
  */
-inline void SetSurfaceColorKey(SurfaceParam surface, std::optional<Uint32> key)
+inline void SetSurfaceColorKey(SurfaceRef surface, std::optional<Uint32> key)
 {
   CheckError(SDL_SetSurfaceColorKey(surface, key.has_value(), key.value_or(0)));
 }
@@ -45768,7 +45735,7 @@ inline void Surface::SetColorKey(std::optional<Uint32> key)
  * @param surface the Surface structure to update.
  * @throws Error on failure.
  */
-inline void ClearSurfaceColorKey(SurfaceParam surface)
+inline void ClearSurfaceColorKey(SurfaceRef surface)
 {
   SetSurfaceColorKey(surface, std::nullopt);
 }
@@ -45853,7 +45820,7 @@ inline std::optional<Uint32> Surface::GetColorKey() const
  * @sa Surface.GetColorMod
  * @sa Surface.SetAlphaMod
  */
-inline void SetSurfaceColorMod(SurfaceParam surface, Uint8 r, Uint8 g, Uint8 b)
+inline void SetSurfaceColorMod(SurfaceRef surface, Uint8 r, Uint8 g, Uint8 b)
 {
   CheckError(SDL_SetSurfaceColorMod(surface, r, g, b));
 }
@@ -45913,7 +45880,7 @@ inline void Surface::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
  * @sa Surface.GetAlphaMod
  * @sa Surface.SetColorMod
  */
-inline void SetSurfaceAlphaMod(SurfaceParam surface, Uint8 alpha)
+inline void SetSurfaceAlphaMod(SurfaceRef surface, Uint8 alpha)
 {
   CheckError(SDL_SetSurfaceAlphaMod(surface, alpha));
 }
@@ -45964,7 +45931,7 @@ inline Uint8 Surface::GetAlphaMod() const
  * @param color the color to be multiplied in blit operations
  * @throws Error on failure.
  */
-inline void SetSurfaceMod(SurfaceParam surface, Color color)
+inline void SetSurfaceMod(SurfaceRef surface, Color color)
 {
   SetSurfaceColorMod(surface, color.r, color.g, color.b);
   SetSurfaceAlphaMod(surface, color.a);
@@ -46008,7 +45975,7 @@ inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(m_resource); }
  *
  * @sa Surface.GetBlendMode
  */
-inline void SetSurfaceBlendMode(SurfaceParam surface, BlendMode blendMode)
+inline void SetSurfaceBlendMode(SurfaceRef surface, BlendMode blendMode)
 {
   CheckError(SDL_SetSurfaceBlendMode(surface, blendMode));
 }
@@ -46065,7 +46032,7 @@ inline BlendMode Surface::GetBlendMode() const
  *
  * @sa Surface.GetClipRect
  */
-inline bool SetSurfaceClipRect(SurfaceParam surface,
+inline bool SetSurfaceClipRect(SurfaceRef surface,
                                OptionalRef<const RectRaw> rect)
 {
   return SDL_SetSurfaceClipRect(surface, rect);
@@ -46081,7 +46048,7 @@ inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
  *
  * @sa SetSurfaceClipRect()
  */
-inline void ResetSurfaceClipRect(SurfaceParam surface)
+inline void ResetSurfaceClipRect(SurfaceRef surface)
 {
   SetSurfaceClipRect(surface, std::nullopt);
 }
@@ -46130,7 +46097,7 @@ inline Rect Surface::GetClipRect() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void FlipSurface(SurfaceParam surface, FlipMode flip)
+inline void FlipSurface(SurfaceRef surface, FlipMode flip)
 {
   CheckError(SDL_FlipSurface(surface, flip));
 }
@@ -46166,7 +46133,7 @@ inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline Surface RotateSurface(SurfaceParam surface, float angle)
+inline Surface RotateSurface(SurfaceRef surface, float angle)
 {
   return Surface{SDL_RotateSurface(surface, angle)};
 }
@@ -46305,18 +46272,18 @@ inline Surface Surface::Convert(PixelFormat format) const
  */
 inline Surface ConvertSurfaceAndColorspace(SurfaceConstRef surface,
                                            PixelFormat format,
-                                           PaletteParam palette,
+                                           PaletteRef palette,
                                            Colorspace colorspace,
-                                           PropertiesParam props)
+                                           PropertiesRef props)
 {
   return Surface{SDL_ConvertSurfaceAndColorspace(
     surface, format, palette, colorspace, props)};
 }
 
 inline Surface Surface::Convert(PixelFormat format,
-                                PaletteParam palette,
+                                PaletteRef palette,
                                 Colorspace colorspace,
-                                PropertiesParam props) const
+                                PropertiesRef props) const
 {
   return SDL::ConvertSurfaceAndColorspace(
     m_resource, format, palette, colorspace, props);
@@ -46386,12 +46353,12 @@ inline void ConvertPixels(const PointRaw& size,
 inline void ConvertPixelsAndColorspace(const PointRaw& size,
                                        PixelFormat src_format,
                                        Colorspace src_colorspace,
-                                       PropertiesParam src_properties,
+                                       PropertiesRef src_properties,
                                        const void* src,
                                        int src_pitch,
                                        PixelFormat dst_format,
                                        Colorspace dst_colorspace,
-                                       PropertiesParam dst_properties,
+                                       PropertiesRef dst_properties,
                                        void* dst,
                                        int dst_pitch)
 {
@@ -46466,7 +46433,7 @@ inline void PremultiplyAlpha(const PointRaw& size,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void PremultiplySurfaceAlpha(SurfaceParam surface, bool linear)
+inline void PremultiplySurfaceAlpha(SurfaceRef surface, bool linear)
 {
   CheckError(SDL_PremultiplySurfaceAlpha(surface, linear));
 }
@@ -46493,7 +46460,7 @@ inline void Surface::PremultiplyAlpha(bool linear)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ClearSurface(SurfaceParam surface, const FColorRaw& c)
+inline void ClearSurface(SurfaceRef surface, const FColorRaw& c)
 {
   CheckError(SDL_ClearSurface(surface, c.r, c.g, c.b, c.a));
 }
@@ -46528,7 +46495,7 @@ inline void Surface::Clear(const FColorRaw& c)
  *
  * @sa Surface.FillRects
  */
-inline void FillSurfaceRect(SurfaceParam dst,
+inline void FillSurfaceRect(SurfaceRef dst,
                             OptionalRef<const RectRaw> rect,
                             Uint32 color)
 {
@@ -46551,7 +46518,7 @@ inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
  * @param color the color to fill with.
  * @throws Error on failure.
  */
-inline void FillSurface(SurfaceParam dst, Uint32 color)
+inline void FillSurface(SurfaceRef dst, Uint32 color)
 {
   FillSurfaceRect(dst, std::nullopt, color);
 }
@@ -46582,7 +46549,7 @@ inline void Surface::Fill(Uint32 color) { SDL::FillSurface(m_resource, color); }
  *
  * @sa Surface.FillRect
  */
-inline void FillSurfaceRects(SurfaceParam dst,
+inline void FillSurfaceRects(SurfaceRef dst,
                              SpanRef<const RectRaw> rects,
                              Uint32 color)
 {
@@ -46664,22 +46631,22 @@ inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
  *
  * @sa Surface.BlitScaled
  */
-inline void BlitSurface(SurfaceParam src,
+inline void BlitSurface(SurfaceRef src,
                         OptionalRef<const RectRaw> srcrect,
-                        SurfaceParam dst,
+                        SurfaceRef dst,
                         OptionalRef<const RectRaw> dstrect)
 {
   CheckError(SDL_BlitSurface(src, srcrect, dst, dstrect));
 }
 
-inline void Surface::Blit(SurfaceParam src,
+inline void Surface::Blit(SurfaceRef src,
                           OptionalRef<const RectRaw> srcrect,
                           OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurface(src, srcrect, m_resource, dstrect);
 }
 
-inline void Surface::BlitAt(SurfaceParam src,
+inline void Surface::BlitAt(SurfaceRef src,
                             OptionalRef<const RectRaw> srcrect,
                             const PointRaw& dstpos)
 {
@@ -46753,9 +46720,9 @@ inline void Surface::BlitAt(SurfaceParam src,
  *
  * @sa Surface.BlitSurface
  */
-inline void BlitSurfaceAt(SurfaceParam src,
+inline void BlitSurfaceAt(SurfaceRef src,
                           OptionalRef<const RectRaw> srcrect,
-                          SurfaceParam dst,
+                          SurfaceRef dst,
                           const PointRaw& dstpos)
 {
   BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
@@ -46782,15 +46749,15 @@ inline void BlitSurfaceAt(SurfaceParam src,
  *
  * @sa Surface.Blit
  */
-inline void BlitSurfaceUnchecked(SurfaceParam src,
+inline void BlitSurfaceUnchecked(SurfaceRef src,
                                  const RectRaw& srcrect,
-                                 SurfaceParam dst,
+                                 SurfaceRef dst,
                                  const RectRaw& dstrect)
 {
   CheckError(SDL_BlitSurfaceUnchecked(src, &srcrect, dst, &dstrect));
 }
 
-inline void Surface::BlitUnchecked(SurfaceParam src,
+inline void Surface::BlitUnchecked(SurfaceRef src,
                                    const RectRaw& srcrect,
                                    const RectRaw& dstrect)
 {
@@ -46818,16 +46785,16 @@ inline void Surface::BlitUnchecked(SurfaceParam src,
  *
  * @sa Surface.Blit
  */
-inline void BlitSurfaceScaled(SurfaceParam src,
+inline void BlitSurfaceScaled(SurfaceRef src,
                               OptionalRef<const RectRaw> srcrect,
-                              SurfaceParam dst,
+                              SurfaceRef dst,
                               OptionalRef<const RectRaw> dstrect,
                               ScaleMode scaleMode)
 {
   CheckError(SDL_BlitSurfaceScaled(src, srcrect, dst, dstrect, scaleMode));
 }
 
-inline void Surface::BlitScaled(SurfaceParam src,
+inline void Surface::BlitScaled(SurfaceRef src,
                                 OptionalRef<const RectRaw> srcrect,
                                 OptionalRef<const RectRaw> dstrect,
                                 ScaleMode scaleMode)
@@ -46857,9 +46824,9 @@ inline void Surface::BlitScaled(SurfaceParam src,
  *
  * @sa Surface.BlitScaled
  */
-inline void BlitSurfaceUncheckedScaled(SurfaceParam src,
+inline void BlitSurfaceUncheckedScaled(SurfaceRef src,
                                        const RectRaw& srcrect,
-                                       SurfaceParam dst,
+                                       SurfaceRef dst,
                                        const RectRaw& dstrect,
                                        ScaleMode scaleMode)
 {
@@ -46867,7 +46834,7 @@ inline void BlitSurfaceUncheckedScaled(SurfaceParam src,
     SDL_BlitSurfaceUncheckedScaled(src, &srcrect, dst, &dstrect, scaleMode));
 }
 
-inline void Surface::BlitUncheckedScaled(SurfaceParam src,
+inline void Surface::BlitUncheckedScaled(SurfaceRef src,
                                          const RectRaw& srcrect,
                                          const RectRaw& dstrect,
                                          ScaleMode scaleMode)
@@ -46897,16 +46864,16 @@ inline void Surface::BlitUncheckedScaled(SurfaceParam src,
  *
  * @sa Surface.BlitScaled
  */
-inline void StretchSurface(SurfaceParam src,
+inline void StretchSurface(SurfaceRef src,
                            OptionalRef<RectRaw> srcrect,
-                           SurfaceParam dst,
+                           SurfaceRef dst,
                            OptionalRef<RectRaw> dstrect,
                            ScaleMode scaleMode)
 {
   CheckError(SDL_StretchSurface(src, srcrect, dst, dstrect, scaleMode));
 }
 
-inline void Surface::Stretch(SurfaceParam src,
+inline void Surface::Stretch(SurfaceRef src,
                              OptionalRef<RectRaw> srcrect,
                              OptionalRef<RectRaw> dstrect,
                              ScaleMode scaleMode)
@@ -46938,15 +46905,15 @@ inline void Surface::Stretch(SurfaceParam src,
  *
  * @sa Surface.Blit
  */
-inline void BlitSurfaceTiled(SurfaceParam src,
+inline void BlitSurfaceTiled(SurfaceRef src,
                              OptionalRef<const RectRaw> srcrect,
-                             SurfaceParam dst,
+                             SurfaceRef dst,
                              OptionalRef<const RectRaw> dstrect)
 {
   CheckError(SDL_BlitSurfaceTiled(src, srcrect, dst, dstrect));
 }
 
-inline void Surface::BlitTiled(SurfaceParam src,
+inline void Surface::BlitTiled(SurfaceRef src,
                                OptionalRef<const RectRaw> srcrect,
                                OptionalRef<const RectRaw> dstrect)
 {
@@ -46979,18 +46946,18 @@ inline void Surface::BlitTiled(SurfaceParam src,
  *
  * @sa Surface.Blit
  */
-inline void BlitSurfaceTiledWithScale(SurfaceParam src,
+inline void BlitSurfaceTiledWithScale(SurfaceRef src,
                                       OptionalRef<const RectRaw> srcrect,
                                       float scale,
                                       ScaleMode scaleMode,
-                                      SurfaceParam dst,
+                                      SurfaceRef dst,
                                       OptionalRef<const RectRaw> dstrect)
 {
   CheckError(SDL_BlitSurfaceTiledWithScale(
     src, srcrect, scale, scaleMode, dst, dstrect));
 }
 
-inline void Surface::BlitTiledWithScale(SurfaceParam src,
+inline void Surface::BlitTiledWithScale(SurfaceRef src,
                                         OptionalRef<const RectRaw> srcrect,
                                         float scale,
                                         ScaleMode scaleMode,
@@ -47033,13 +47000,13 @@ inline void Surface::BlitTiledWithScale(SurfaceParam src,
  *
  * @sa Surface.Blit
  */
-inline void BlitSurface9Grid(SurfaceParam src,
+inline void BlitSurface9Grid(SurfaceRef src,
                              OptionalRef<const RectRaw> srcrect,
                              int left_width,
                              int right_width,
                              int top_height,
                              int bottom_height,
-                             SurfaceParam dst,
+                             SurfaceRef dst,
                              OptionalRef<const RectRaw> dstrect,
                              float scale = 1,
                              ScaleMode scaleMode = SCALEMODE_NEAREST)
@@ -47056,7 +47023,7 @@ inline void BlitSurface9Grid(SurfaceParam src,
                                   dstrect));
 }
 
-inline void Surface::Blit9Grid(SurfaceParam src,
+inline void Surface::Blit9Grid(SurfaceRef src,
                                OptionalRef<const RectRaw> srcrect,
                                int left_width,
                                int right_width,
@@ -47437,9 +47404,7 @@ inline FColor Surface::ReadPixelFloat(const PointRaw& p) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteSurfacePixel(SurfaceParam surface,
-                              const PointRaw& p,
-                              ColorRaw c)
+inline void WriteSurfacePixel(SurfaceRef surface, const PointRaw& p, ColorRaw c)
 {
   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
 }
@@ -47489,7 +47454,7 @@ inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteSurfacePixelFloat(SurfaceParam surface,
+inline void WriteSurfacePixelFloat(SurfaceRef surface,
                                    const PointRaw& p,
                                    const FColorRaw& c)
 {
@@ -47652,8 +47617,6 @@ using ThreadRaw = SDL_Thread*;
 // Forward decl
 struct ThreadRef;
 
-using ThreadParam = ThreadRef;
-
 /**
  * The SDL thread priority.
  *
@@ -47773,7 +47736,7 @@ public:
   }
 
   /**
-   * Constructs from ThreadParam.
+   * Constructs from ThreadRef.
    *
    * @param resource a ThreadRaw to be wrapped.
    *
@@ -47900,7 +47863,7 @@ public:
    * @sa Thread.Thread
    * @sa Thread.Wait
    */
-  Thread(PropertiesParam props);
+  Thread(PropertiesRef props);
 
   /// Destructor
   ~Thread() { SDL_DetachThread(m_resource); }
@@ -48180,7 +48143,7 @@ inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
 {
 }
 
-inline Thread::Thread(PropertiesParam props)
+inline Thread::Thread(PropertiesRef props)
   : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
 {
 }
@@ -48249,7 +48212,7 @@ inline Thread::Thread(PropertiesParam props)
  * @sa Thread.Thread
  * @sa Thread.Wait
  */
-inline Thread CreateThreadWithProperties(PropertiesParam props)
+inline Thread CreateThreadWithProperties(PropertiesRef props)
 {
   return Thread(props);
 }
@@ -48280,7 +48243,7 @@ constexpr auto CREATE_STACKSIZE_NUMBER =
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetThreadName(ThreadParam thread)
+inline const char* GetThreadName(ThreadRef thread)
 {
   return SDL_GetThreadName(thread);
 }
@@ -48327,7 +48290,7 @@ inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
  *
  * @sa GetCurrentThreadID
  */
-inline ThreadID GetThreadID(ThreadParam thread)
+inline ThreadID GetThreadID(ThreadRef thread)
 {
   return SDL_GetThreadID(thread);
 }
@@ -48393,7 +48356,7 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  * @sa Thread.Thread
  * @sa Thread.Detach
  */
-inline void WaitThread(ThreadParam thread, int* status)
+inline void WaitThread(ThreadRef thread, int* status)
 {
   SDL_WaitThread(thread, status);
 }
@@ -48413,7 +48376,7 @@ inline void Thread::Wait(int* status) { SDL::WaitThread(m_resource, status); }
  *
  * @sa ThreadState
  */
-inline ThreadState GetThreadState(ThreadParam thread)
+inline ThreadState GetThreadState(ThreadRef thread)
 {
   return SDL_GetThreadState(thread);
 }
@@ -48580,8 +48543,6 @@ using CameraRaw = SDL_Camera*;
 // Forward decl
 struct CameraRef;
 
-using CameraParam = CameraRef;
-
 // Forward decl
 struct CameraFrame;
 
@@ -48681,7 +48642,7 @@ public:
   }
 
   /**
-   * Constructs from CameraParam.
+   * Constructs from CameraRef.
    *
    * @param resource a CameraRaw to be wrapped.
    *
@@ -49399,7 +49360,7 @@ inline Camera::Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec)
  * @sa Camera.Camera
  * @sa Camera.Close
  */
-inline CameraPermissionState GetCameraPermissionState(CameraParam camera)
+inline CameraPermissionState GetCameraPermissionState(CameraRef camera)
 {
   return SDL_GetCameraPermissionState(camera);
 }
@@ -49422,7 +49383,7 @@ inline CameraPermissionState Camera::GetPermissionState()
  *
  * @sa Camera.Camera
  */
-inline CameraID GetCameraID(CameraParam camera)
+inline CameraID GetCameraID(CameraRef camera)
 {
   return CheckError(SDL_GetCameraID(camera));
 }
@@ -49440,7 +49401,7 @@ inline CameraID Camera::GetID() { return SDL::GetCameraID(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetCameraProperties(CameraParam camera)
+inline PropertiesRef GetCameraProperties(CameraRef camera)
 {
   return {CheckError(SDL_GetCameraProperties(camera))};
 }
@@ -49471,7 +49432,7 @@ inline PropertiesRef Camera::GetProperties()
  *
  * @sa Camera.Camera
  */
-inline std::optional<CameraSpec> GetCameraFormat(CameraParam camera)
+inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
 {
   if (CameraSpec spec; SDL_GetCameraFormat(camera, &spec)) return spec;
   return std::nullopt;
@@ -49522,7 +49483,7 @@ inline std::optional<CameraSpec> Camera::GetFormat()
  *
  * @sa Camera.ReleaseFrame
  */
-inline Surface AcquireCameraFrame(CameraParam camera,
+inline Surface AcquireCameraFrame(CameraRef camera,
                                   Uint64* timestampNS = nullptr)
 {
   return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
@@ -49566,7 +49527,7 @@ inline CameraFrame::CameraFrame(CameraRef resource, Uint64* timestampNS)
  *
  * @sa Camera.AcquireFrame
  */
-inline void ReleaseCameraFrame(CameraParam camera, SurfaceParam frame)
+inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
 {
   SDL_ReleaseCameraFrame(camera, frame);
 }
@@ -49631,8 +49592,6 @@ using MutexRaw = SDL_Mutex*;
 // Forward decl
 struct MutexRef;
 
-using MutexParam = MutexRef;
-
 // Forward decl
 struct RWLock;
 
@@ -49641,8 +49600,6 @@ using RWLockRaw = SDL_RWLock*;
 
 // Forward decl
 struct RWLockRef;
-
-using RWLockParam = RWLockRef;
 
 // Forward decl
 struct Semaphore;
@@ -49653,8 +49610,6 @@ using SemaphoreRaw = SDL_Semaphore*;
 // Forward decl
 struct SemaphoreRef;
 
-using SemaphoreParam = SemaphoreRef;
-
 // Forward decl
 struct Condition;
 
@@ -49663,8 +49618,6 @@ using ConditionRaw = SDL_Condition*;
 
 // Forward decl
 struct ConditionRef;
-
-using ConditionParam = ConditionRef;
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -49698,7 +49651,7 @@ public:
   }
 
   /**
-   * Constructs from MutexParam.
+   * Constructs from MutexRef.
    *
    * @param resource a MutexRaw to be wrapped.
    *
@@ -49976,7 +49929,7 @@ inline Mutex::Mutex()
  * @sa Mutex.TryLock
  * @sa Mutex.Unlock
  */
-inline void LockMutex(MutexParam mutex) { SDL_LockMutex(mutex); }
+inline void LockMutex(MutexRef mutex) { SDL_LockMutex(mutex); }
 
 inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
 
@@ -50001,7 +49954,7 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  * @sa Mutex.Lock
  * @sa Mutex.Unlock
  */
-inline void TryLockMutex(MutexParam mutex)
+inline void TryLockMutex(MutexRef mutex)
 {
   CheckError(SDL_TryLockMutex(mutex));
 }
@@ -50028,7 +49981,7 @@ inline void Mutex::TryLock() { SDL::TryLockMutex(m_resource); }
  * @sa Mutex.Lock
  * @sa Mutex.TryLock
  */
-inline void UnlockMutex(MutexParam mutex) { SDL_UnlockMutex(mutex); }
+inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 
 inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
 
@@ -50085,7 +50038,7 @@ public:
   }
 
   /**
-   * Constructs from RWLockParam.
+   * Constructs from RWLockRef.
    *
    * @param resource a RWLockRaw to be wrapped.
    *
@@ -50501,7 +50454,7 @@ inline RWLock::RWLock()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
-inline void LockRWLockForReading(RWLockParam rwlock)
+inline void LockRWLockForReading(RWLockRef rwlock)
 {
   SDL_LockRWLockForReading(rwlock);
 }
@@ -50539,7 +50492,7 @@ inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
-inline void LockRWLockForWriting(RWLockParam rwlock)
+inline void LockRWLockForWriting(RWLockRef rwlock)
 {
   SDL_LockRWLockForWriting(rwlock);
 }
@@ -50571,7 +50524,7 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForReading(RWLockParam rwlock)
+inline void TryLockRWLockForReading(RWLockRef rwlock)
 {
   CheckError(SDL_TryLockRWLockForReading(rwlock));
 }
@@ -50611,7 +50564,7 @@ inline void RWLock::TryLockForReading()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForWriting(RWLockParam rwlock)
+inline void TryLockRWLockForWriting(RWLockRef rwlock)
 {
   CheckError(SDL_TryLockRWLockForWriting(rwlock));
 }
@@ -50647,7 +50600,7 @@ inline void RWLock::TryLockForWriting()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.TryLockForWriting
  */
-inline void UnlockRWLock(RWLockParam rwlock) { SDL_UnlockRWLock(rwlock); }
+inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 
 inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
 
@@ -50700,7 +50653,7 @@ public:
   }
 
   /**
-   * Constructs from SemaphoreParam.
+   * Constructs from SemaphoreRef.
    *
    * @param resource a SemaphoreRaw to be wrapped.
    *
@@ -51015,7 +50968,7 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  * @sa Semaphore.TryWait
  * @sa Semaphore.WaitTimeout
  */
-inline void WaitSemaphore(SemaphoreParam sem) { SDL_WaitSemaphore(sem); }
+inline void WaitSemaphore(SemaphoreRef sem) { SDL_WaitSemaphore(sem); }
 
 inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
 
@@ -51038,7 +50991,7 @@ inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
  * @sa Semaphore.Wait
  * @sa Semaphore.WaitTimeout
  */
-inline bool TryWaitSemaphore(SemaphoreParam sem)
+inline bool TryWaitSemaphore(SemaphoreRef sem)
 {
   return SDL_TryWaitSemaphore(sem);
 }
@@ -51065,7 +51018,7 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
  * @sa Semaphore.TryWait
  * @sa Semaphore.Wait
  */
-inline bool WaitSemaphoreTimeout(SemaphoreParam sem,
+inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                  std::chrono::milliseconds timeout)
 {
   return SDL_WaitSemaphoreTimeout(sem, timeout.count());
@@ -51089,7 +51042,7 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  * @sa Semaphore.Wait
  * @sa Semaphore.WaitTimeout
  */
-inline void SignalSemaphore(SemaphoreParam sem) { SDL_SignalSemaphore(sem); }
+inline void SignalSemaphore(SemaphoreRef sem) { SDL_SignalSemaphore(sem); }
 
 inline void Semaphore::Signal() { SDL::SignalSemaphore(m_resource); }
 
@@ -51103,7 +51056,7 @@ inline void Semaphore::Signal() { SDL::SignalSemaphore(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint32 GetSemaphoreValue(SemaphoreParam sem)
+inline Uint32 GetSemaphoreValue(SemaphoreRef sem)
 {
   return SDL_GetSemaphoreValue(sem);
 }
@@ -51140,7 +51093,7 @@ public:
   }
 
   /**
-   * Constructs from ConditionParam.
+   * Constructs from ConditionRef.
    *
    * @param resource a ConditionRaw to be wrapped.
    *
@@ -51278,7 +51231,7 @@ public:
    * @sa Condition.Signal
    * @sa Condition.WaitTimeout
    */
-  void Wait(MutexParam mutex);
+  void Wait(MutexRef mutex);
 
   /**
    * Wait until a condition variable is signaled or a certain time has passed.
@@ -51307,7 +51260,7 @@ public:
    * @sa Condition.Signal
    * @sa Condition.Wait
    */
-  bool WaitTimeout(MutexParam mutex, std::chrono::milliseconds timeout);
+  bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout);
 };
 
 /**
@@ -51420,7 +51373,7 @@ inline void Condition::Destroy() { DestroyCondition(release()); }
  * @sa Condition.Wait
  * @sa Condition.WaitTimeout
  */
-inline void SignalCondition(ConditionParam cond) { SDL_SignalCondition(cond); }
+inline void SignalCondition(ConditionRef cond) { SDL_SignalCondition(cond); }
 
 inline void Condition::Signal() { SDL::SignalCondition(m_resource); }
 
@@ -51437,7 +51390,7 @@ inline void Condition::Signal() { SDL::SignalCondition(m_resource); }
  * @sa Condition.Wait
  * @sa Condition.WaitTimeout
  */
-inline void BroadcastCondition(ConditionParam cond)
+inline void BroadcastCondition(ConditionRef cond)
 {
   SDL_BroadcastCondition(cond);
 }
@@ -51470,12 +51423,12 @@ inline void Condition::Broadcast() { SDL::BroadcastCondition(m_resource); }
  * @sa Condition.Signal
  * @sa Condition.WaitTimeout
  */
-inline void WaitCondition(ConditionParam cond, MutexParam mutex)
+inline void WaitCondition(ConditionRef cond, MutexRef mutex)
 {
   SDL_WaitCondition(cond, mutex);
 }
 
-inline void Condition::Wait(MutexParam mutex)
+inline void Condition::Wait(MutexRef mutex)
 {
   SDL::WaitCondition(m_resource, mutex);
 }
@@ -51508,14 +51461,14 @@ inline void Condition::Wait(MutexParam mutex)
  * @sa Condition.Signal
  * @sa Condition.Wait
  */
-inline bool WaitConditionTimeout(ConditionParam cond,
-                                 MutexParam mutex,
+inline bool WaitConditionTimeout(ConditionRef cond,
+                                 MutexRef mutex,
                                  std::chrono::milliseconds timeout)
 {
   return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
 }
 
-inline bool Condition::WaitTimeout(MutexParam mutex,
+inline bool Condition::WaitTimeout(MutexRef mutex,
                                    std::chrono::milliseconds timeout)
 {
   return SDL::WaitConditionTimeout(m_resource, mutex, timeout);
@@ -51762,8 +51715,6 @@ using TrayRaw = SDL_Tray*;
 // Forward decl
 struct TrayRef;
 
-using TrayParam = TrayRef;
-
 /// Alias to raw representation for TrayMenu.
 struct TrayMenu;
 
@@ -51782,7 +51733,8 @@ using TrayEntryRaw = SDL_TrayEntry*;
 // Forward decl
 struct TrayEntryScoped;
 
-using TrayEntryParam = TrayEntry;
+/// Alias to TrayEntry for non owning parameters.
+using TrayEntryRef = TrayEntry;
 
 /**
  * Flags that control the creation of system tray entries.
@@ -51857,7 +51809,7 @@ public:
   }
 
   /**
-   * Constructs from TrayParam.
+   * Constructs from TrayRef.
    *
    * @param resource a TrayRaw to be wrapped.
    *
@@ -51906,7 +51858,7 @@ public:
    * @sa Tray.GetMenu
    * @sa Tray.Destroy
    */
-  Tray(SurfaceParam icon, StringParam tooltip);
+  Tray(SurfaceRef icon, StringParam tooltip);
 
   /// Destructor
   ~Tray() { SDL_DestroyTray(m_resource); }
@@ -51966,7 +51918,7 @@ public:
    *
    * @sa Tray.Tray
    */
-  void SetIcon(SurfaceParam icon);
+  void SetIcon(SurfaceRef icon);
 
   /**
    * Updates the system tray icon's tooltip.
@@ -52202,7 +52154,7 @@ public:
    * @sa TrayEntry.CreateSubmenu
    * @sa TrayMenu.GetParentTray
    */
-  TrayEntryParam GetParentEntry() const;
+  TrayEntryRef GetParentEntry() const;
 
   /**
    * Gets the tray for which this menu is the first-level menu, if the current
@@ -52221,7 +52173,7 @@ public:
    * @sa Tray.CreateMenu
    * @sa TrayMenu.GetParentEntry
    */
-  TrayParam GetParentTray() const;
+  TrayRef GetParentTray() const;
 };
 
 /**
@@ -52243,7 +52195,7 @@ public:
   }
 
   /**
-   * Constructs from TrayEntryParam.
+   * Constructs from TrayEntryRef.
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */
@@ -52557,12 +52509,12 @@ struct TrayEntryScoped : TrayEntry
  * @sa Tray.GetMenu
  * @sa Tray.Destroy
  */
-inline Tray CreateTray(SurfaceParam icon, StringParam tooltip)
+inline Tray CreateTray(SurfaceRef icon, StringParam tooltip)
 {
   return Tray(icon, std::move(tooltip));
 }
 
-inline Tray::Tray(SurfaceParam icon, StringParam tooltip)
+inline Tray::Tray(SurfaceRef icon, StringParam tooltip)
   : m_resource(SDL_CreateTray(icon, tooltip))
 {
 }
@@ -52580,12 +52532,12 @@ inline Tray::Tray(SurfaceParam icon, StringParam tooltip)
  *
  * @sa Tray.Tray
  */
-inline void SetTrayIcon(TrayParam tray, SurfaceParam icon)
+inline void SetTrayIcon(TrayRef tray, SurfaceRef icon)
 {
   SDL_SetTrayIcon(tray, icon);
 }
 
-inline void Tray::SetIcon(SurfaceParam icon)
+inline void Tray::SetIcon(SurfaceRef icon)
 {
   SDL::SetTrayIcon(m_resource, icon);
 }
@@ -52603,7 +52555,7 @@ inline void Tray::SetIcon(SurfaceParam icon)
  *
  * @sa Tray.Tray
  */
-inline void SetTrayTooltip(TrayParam tray, StringParam tooltip)
+inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
 {
   SDL_SetTrayTooltip(tray, tooltip);
 }
@@ -52635,7 +52587,7 @@ inline void Tray::SetTooltip(StringParam tooltip)
  * @sa Tray.GetMenu
  * @sa TrayMenu.GetParentTray
  */
-inline TrayMenu CreateTrayMenu(TrayParam tray)
+inline TrayMenu CreateTrayMenu(TrayRef tray)
 {
   return SDL_CreateTrayMenu(tray);
 }
@@ -52664,7 +52616,7 @@ inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(m_resource); }
  * @sa TrayEntry.GetSubmenu
  * @sa TrayMenu.GetParentEntry
  */
-inline TrayMenu CreateTraySubmenu(TrayEntryParam entry)
+inline TrayMenu CreateTraySubmenu(TrayEntryRef entry)
 {
   return SDL_CreateTraySubmenu(entry);
 }
@@ -52696,7 +52648,7 @@ inline TrayMenu TrayEntry::CreateSubmenu()
  * @sa Tray.Tray
  * @sa Tray.CreateMenu
  */
-inline TrayMenu GetTrayMenu(TrayParam tray) { return SDL_GetTrayMenu(tray); }
+inline TrayMenu GetTrayMenu(TrayRef tray) { return SDL_GetTrayMenu(tray); }
 
 inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(m_resource); }
 
@@ -52722,7 +52674,7 @@ inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(m_resource); }
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.CreateSubmenu
  */
-inline TrayMenu GetTraySubmenu(TrayEntryParam entry)
+inline TrayMenu GetTraySubmenu(TrayEntryRef entry)
 {
   return SDL_GetTraySubmenu(entry);
 }
@@ -52839,7 +52791,7 @@ inline TrayEntry TrayMenu::InsertEntry(int pos,
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.GetLabel
  */
-inline void SetTrayEntryLabel(TrayEntryParam entry, StringParam label)
+inline void SetTrayEntryLabel(TrayEntryRef entry, StringParam label)
 {
   SDL_SetTrayEntryLabel(entry, label);
 }
@@ -52866,7 +52818,7 @@ inline void TrayEntry::SetLabel(StringParam label)
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.SetLabel
  */
-inline const char* GetTrayEntryLabel(TrayEntryParam entry)
+inline const char* GetTrayEntryLabel(TrayEntryRef entry)
 {
   return SDL_GetTrayEntryLabel(entry);
 }
@@ -52893,7 +52845,7 @@ inline const char* TrayEntry::GetLabel() const
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.GetChecked
  */
-inline void SetTrayEntryChecked(TrayEntryParam entry, bool checked)
+inline void SetTrayEntryChecked(TrayEntryRef entry, bool checked)
 {
   SDL_SetTrayEntryChecked(entry, checked);
 }
@@ -52920,7 +52872,7 @@ inline void TrayEntry::SetChecked(bool checked)
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.SetChecked
  */
-inline bool GetTrayEntryChecked(TrayEntryParam entry)
+inline bool GetTrayEntryChecked(TrayEntryRef entry)
 {
   return SDL_GetTrayEntryChecked(entry);
 }
@@ -52945,7 +52897,7 @@ inline bool TrayEntry::GetChecked() const
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.GetEnabled
  */
-inline void SetTrayEntryEnabled(TrayEntryParam entry, bool enabled)
+inline void SetTrayEntryEnabled(TrayEntryRef entry, bool enabled)
 {
   SDL_SetTrayEntryEnabled(entry, enabled);
 }
@@ -52970,7 +52922,7 @@ inline void TrayEntry::SetEnabled(bool enabled)
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.SetEnabled
  */
-inline bool GetTrayEntryEnabled(TrayEntryParam entry)
+inline bool GetTrayEntryEnabled(TrayEntryRef entry)
 {
   return SDL_GetTrayEntryEnabled(entry);
 }
@@ -52996,7 +52948,7 @@ inline bool TrayEntry::GetEnabled() const
  * @sa TrayMenu.GetEntries
  * @sa TrayMenu.InsertEntry
  */
-inline void SetTrayEntryCallback(TrayEntryParam entry,
+inline void SetTrayEntryCallback(TrayEntryRef entry,
                                  TrayCallback callback,
                                  void* userdata)
 {
@@ -53018,7 +52970,7 @@ inline void TrayEntry::SetCallback(TrayCallback callback, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ClickTrayEntry(TrayEntryParam entry) { SDL_ClickTrayEntry(entry); }
+inline void ClickTrayEntry(TrayEntryRef entry) { SDL_ClickTrayEntry(entry); }
 
 inline void TrayEntry::Click() { SDL::ClickTrayEntry(m_resource); }
 
@@ -53053,7 +53005,7 @@ inline void Tray::Destroy() { DestroyTray(release()); }
  *
  * @sa TrayMenu.InsertEntry
  */
-inline TrayMenu GetTrayEntryParent(TrayEntryParam entry)
+inline TrayMenu GetTrayEntryParent(TrayEntryRef entry)
 {
   return SDL_GetTrayEntryParent(entry);
 }
@@ -53081,12 +53033,12 @@ inline TrayMenu TrayEntry::GetParent()
  * @sa TrayEntry.CreateSubmenu
  * @sa TrayMenu.GetParentTray
  */
-inline TrayEntryParam GetTrayMenuParentEntry(TrayMenuRaw menu)
+inline TrayEntryRef GetTrayMenuParentEntry(TrayMenuRaw menu)
 {
   return SDL_GetTrayMenuParentEntry(menu);
 }
 
-inline TrayEntryParam TrayMenu::GetParentEntry() const
+inline TrayEntryRef TrayMenu::GetParentEntry() const
 {
   return SDL::GetTrayMenuParentEntry(m_trayMenu);
 }
@@ -53109,12 +53061,12 @@ inline TrayEntryParam TrayMenu::GetParentEntry() const
  * @sa Tray.CreateMenu
  * @sa TrayMenu.GetParentEntry
  */
-inline TrayParam GetTrayMenuParentTray(TrayMenuRaw menu)
+inline TrayRef GetTrayMenuParentTray(TrayMenuRaw menu)
 {
   return SDL_GetTrayMenuParentTray(menu);
 }
 
-inline TrayParam TrayMenu::GetParentTray() const
+inline TrayRef TrayMenu::GetParentTray() const
 {
   return SDL::GetTrayMenuParentTray(m_trayMenu);
 }
@@ -53184,8 +53136,6 @@ using WindowRaw = SDL_Window*;
 // Forward decl
 struct WindowRef;
 
-using WindowParam = WindowRef;
-
 // Forward decl
 struct GLContext;
 
@@ -53195,7 +53145,8 @@ using GLContextRaw = SDL_GLContext;
 // Forward decl
 struct GLContextScoped;
 
-using GLContextParam = GLContext;
+/// Alias to GLContext for non owning parameters.
+using GLContextRef = GLContext;
 
 // Forward decl
 struct RendererRef;
@@ -53882,7 +53833,7 @@ public:
   }
 
   /**
-   * Constructs from WindowParam.
+   * Constructs from WindowRef.
    *
    * @param resource a WindowRaw to be wrapped.
    *
@@ -54089,7 +54040,7 @@ public:
    * @sa Window.Destroy
    * @sa Window.GetParent
    */
-  Window(WindowParam parent,
+  Window(WindowRef parent,
          const PointRaw& offset,
          const PointRaw& size,
          WindowFlags flags = 0);
@@ -54238,7 +54189,7 @@ public:
    * @sa Window.Window
    * @sa Window.Destroy
    */
-  Window(PropertiesParam props);
+  Window(PropertiesRef props);
 
   /// Destructor
   ~Window() { SDL_DestroyWindow(m_resource); }
@@ -54684,7 +54635,7 @@ public:
    *
    * @sa Surface.AddAlternateImage
    */
-  void SetIcon(SurfaceParam icon);
+  void SetIcon(SurfaceRef icon);
 
   /**
    * Request that the window's position be set.
@@ -55683,7 +55634,7 @@ public:
    *
    * @sa Window.SetModal
    */
-  void SetParent(WindowParam parent);
+  void SetParent(WindowRef parent);
 
   /**
    * Toggle the state of the window as modal.
@@ -55845,7 +55796,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetShape(SurfaceParam shape);
+  void SetShape(SurfaceRef shape);
 
   /**
    * Request a window to demand attention from the user.
@@ -56062,7 +56013,7 @@ public:
    * @sa Window.StopTextInput
    * @sa Window.IsTextInputActive
    */
-  void StartTextInput(PropertiesParam props);
+  void StartTextInput(PropertiesRef props);
 
   /**
    * Check whether or not Unicode text input events are enabled for a window.
@@ -56423,7 +56374,7 @@ public:
   }
 
   /**
-   * Constructs from GLContextParam.
+   * Constructs from GLContextRef.
    *
    * @param resource a GLContextRaw to be wrapped.
    */
@@ -56469,7 +56420,7 @@ public:
    * @sa GLContext.Destroy
    * @sa GLContext.MakeCurrent
    */
-  GLContext(WindowParam window);
+  GLContext(WindowRef window);
 
   /// Converts to underlying GLContextRaw.
   constexpr operator GLContextRaw() const noexcept { return m_resource; }
@@ -56529,7 +56480,7 @@ public:
    *
    * @sa GLContext.GLContext
    */
-  void MakeCurrent(WindowParam window);
+  void MakeCurrent(WindowRef window);
 };
 
 /// RAII owning version GLContext.
@@ -57394,7 +57345,7 @@ inline Display Display::GetForRect(const RectRaw& rect)
  * @sa Display.GetBounds
  * @sa GetDisplays
  */
-inline Display GetDisplayForWindow(WindowParam window)
+inline Display GetDisplayForWindow(WindowRef window)
 {
   return CheckError(SDL_GetDisplayForWindow(window));
 }
@@ -57421,7 +57372,7 @@ inline Display Window::GetDisplay() const
  *
  * @sa Window.GetDisplayScale
  */
-inline float GetWindowPixelDensity(WindowParam window)
+inline float GetWindowPixelDensity(WindowRef window)
 {
   return SDL_GetWindowPixelDensity(window);
 }
@@ -57452,7 +57403,7 @@ inline float Window::GetPixelDensity() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline float GetWindowDisplayScale(WindowParam window)
+inline float GetWindowDisplayScale(WindowRef window)
 {
   return SDL_GetWindowDisplayScale(window);
 }
@@ -57493,7 +57444,7 @@ inline float Window::GetDisplayScale() const
  * @sa Window.SetFullscreen
  * @sa Window.Sync
  */
-inline void SetWindowFullscreenMode(WindowParam window,
+inline void SetWindowFullscreenMode(WindowRef window,
                                     OptionalRef<const DisplayMode> mode)
 {
   CheckError(SDL_SetWindowFullscreenMode(window, mode));
@@ -57518,7 +57469,7 @@ inline void Window::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
  * @sa Window.SetFullscreenMode
  * @sa Window.SetFullscreen
  */
-inline const DisplayMode& GetWindowFullscreenMode(WindowParam window)
+inline const DisplayMode& GetWindowFullscreenMode(WindowRef window)
 {
   return *SDL_GetWindowFullscreenMode(window);
 }
@@ -57539,7 +57490,7 @@ inline const DisplayMode& Window::GetFullscreenMode() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnPtr<void> GetWindowICCProfile(WindowParam window)
+inline OwnPtr<void> GetWindowICCProfile(WindowRef window)
 {
   size_t size;
   return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(window, &size))};
@@ -57561,7 +57512,7 @@ inline OwnPtr<void> Window::GetICCProfile() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PixelFormat GetWindowPixelFormat(WindowParam window)
+inline PixelFormat GetWindowPixelFormat(WindowRef window)
 {
   return CheckError(SDL_GetWindowPixelFormat(window));
 }
@@ -57686,7 +57637,7 @@ inline Window::Window(StringParam title,
 {
 }
 
-inline Window::Window(WindowParam parent,
+inline Window::Window(WindowRef parent,
                       const PointRaw& offset,
                       const PointRaw& size,
                       WindowFlags flags)
@@ -57695,7 +57646,7 @@ inline Window::Window(WindowParam parent,
 {
 }
 
-inline Window::Window(PropertiesParam props)
+inline Window::Window(PropertiesRef props)
   : m_resource(SDL_CreateWindowWithProperties(props))
 {
 }
@@ -57771,7 +57722,7 @@ inline Window::Window(PropertiesParam props)
  * @sa Window.Destroy
  * @sa Window.GetParent
  */
-inline Window CreatePopupWindow(WindowParam parent,
+inline Window CreatePopupWindow(WindowRef parent,
                                 const PointRaw& offset,
                                 const PointRaw& size,
                                 WindowFlags flags)
@@ -57923,7 +57874,7 @@ inline Window CreatePopupWindow(WindowParam parent,
  * @sa Window.Window
  * @sa Window.Destroy
  */
-inline Window CreateWindowWithProperties(PropertiesParam props)
+inline Window CreateWindowWithProperties(PropertiesRef props)
 {
   return Window(props);
 }
@@ -58167,7 +58118,7 @@ constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
  *
  * @sa Window.FromID
  */
-inline WindowID GetWindowID(WindowParam window)
+inline WindowID GetWindowID(WindowRef window)
 {
   return CheckError(SDL_GetWindowID(window));
 }
@@ -58213,7 +58164,7 @@ inline WindowRef Window::FromID(WindowID id)
  *
  * @sa Window.Window
  */
-inline WindowRef GetWindowParent(WindowParam window)
+inline WindowRef GetWindowParent(WindowRef window)
 {
   return {CheckError(SDL_GetWindowParent(window))};
 }
@@ -58347,7 +58298,7 @@ inline WindowRef Window::GetParent() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetWindowProperties(WindowParam window)
+inline PropertiesRef GetWindowProperties(WindowRef window)
 {
   return {CheckError(SDL_GetWindowProperties(window))};
 }
@@ -58376,7 +58327,7 @@ inline PropertiesRef Window::GetProperties() const
  * @sa Window.SetFillDocument
  * @sa Window.Show
  */
-inline WindowFlags GetWindowFlags(WindowParam window)
+inline WindowFlags GetWindowFlags(WindowRef window)
 {
   return SDL_GetWindowFlags(window);
 }
@@ -58401,7 +58352,7 @@ inline WindowFlags Window::GetFlags() const
  *
  * @sa Window.GetTitle
  */
-inline void SetWindowTitle(WindowParam window, StringParam title)
+inline void SetWindowTitle(WindowRef window, StringParam title)
 {
   CheckError(SDL_SetWindowTitle(window, title));
 }
@@ -58423,7 +58374,7 @@ inline void Window::SetTitle(StringParam title)
  *
  * @sa Window.SetTitle
  */
-inline const char* GetWindowTitle(WindowParam window)
+inline const char* GetWindowTitle(WindowRef window)
 {
   return SDL_GetWindowTitle(window);
 }
@@ -58456,12 +58407,12 @@ inline const char* Window::GetTitle() const
  *
  * @sa Surface.AddAlternateImage
  */
-inline void SetWindowIcon(WindowParam window, SurfaceParam icon)
+inline void SetWindowIcon(WindowRef window, SurfaceRef icon)
 {
   CheckError(SDL_SetWindowIcon(window, icon));
 }
 
-inline void Window::SetIcon(SurfaceParam icon)
+inline void Window::SetIcon(SurfaceRef icon)
 {
   SDL::SetWindowIcon(m_resource, icon);
 }
@@ -58501,7 +58452,7 @@ inline void Window::SetIcon(SurfaceParam icon)
  * @sa Window.GetPosition
  * @sa Window.Sync
  */
-inline void SetWindowPosition(WindowParam window, const PointRaw& p)
+inline void SetWindowPosition(WindowRef window, const PointRaw& p)
 {
   CheckError(SDL_SetWindowPosition(window, p.x, p.y));
 }
@@ -58533,7 +58484,7 @@ inline void Window::SetPosition(const PointRaw& p)
  *
  * @sa Window.SetPosition
  */
-inline void GetWindowPosition(WindowParam window, int* x, int* y)
+inline void GetWindowPosition(WindowRef window, int* x, int* y)
 {
   CheckError(SDL_GetWindowPosition(window, x, y));
 }
@@ -58557,7 +58508,7 @@ inline void GetWindowPosition(WindowParam window, int* x, int* y)
  *
  * @sa Window.SetPosition
  */
-inline Point GetWindowPosition(WindowParam window)
+inline Point GetWindowPosition(WindowRef window)
 {
   Point p;
   GetWindowPosition(window, &p.x, &p.y);
@@ -58607,7 +58558,7 @@ inline Point Window::GetPosition() const
  * @sa Window.SetFullscreenMode
  * @sa Window.Sync
  */
-inline void SetWindowSize(WindowParam window, const PointRaw& size)
+inline void SetWindowSize(WindowRef window, const PointRaw& size)
 {
   CheckError(SDL_SetWindowSize(window, size.x, size.y));
 }
@@ -58638,7 +58589,7 @@ inline void Window::SetSize(const PointRaw& size)
  * @sa Window.SetSize
  * @sa EVENT_WINDOW_RESIZED
  */
-inline void GetWindowSize(WindowParam window, int* w, int* h)
+inline void GetWindowSize(WindowRef window, int* w, int* h)
 {
   CheckError(SDL_GetWindowSize(window, w, h));
 }
@@ -58663,7 +58614,7 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
  * @sa Window.SetSize
  * @sa EVENT_WINDOW_RESIZED
  */
-inline Point GetWindowSize(WindowParam window)
+inline Point GetWindowSize(WindowRef window)
 {
   Point p;
   GetWindowSize(window, &p.x, &p.y);
@@ -58689,7 +58640,7 @@ inline Point Window::GetSize() const { return SDL::GetWindowSize(m_resource); }
  * @sa WindowRef.SetPosition()
  * @sa WindowRef.SetSize()
  */
-inline void SetWindowRect(WindowParam window, Rect rect)
+inline void SetWindowRect(WindowRef window, Rect rect)
 {
   SetWindowPosition(window, rect.GetTopLeft());
   SetWindowSize(window, rect.GetSize());
@@ -58711,7 +58662,7 @@ inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(m_resource, rect); }
  * @return Rect with the position and size
  * @throws Error on failure.
  */
-inline Rect GetWindowRect(WindowParam window)
+inline Rect GetWindowRect(WindowRef window)
 {
   return Rect{GetWindowPosition(window), GetWindowSize(window)};
 }
@@ -58735,7 +58686,7 @@ inline Rect Window::GetRect() const { return SDL::GetWindowRect(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Rect GetWindowSafeArea(WindowParam window)
+inline Rect GetWindowSafeArea(WindowRef window)
 {
   Rect rect;
   CheckError(SDL_GetWindowSafeArea(window, &rect));
@@ -58784,7 +58735,7 @@ inline Rect Window::GetSafeArea() const
  * @sa Window.GetAspectRatio
  * @sa Window.Sync
  */
-inline void SetWindowAspectRatio(WindowParam window,
+inline void SetWindowAspectRatio(WindowRef window,
                                  float min_aspect,
                                  float max_aspect)
 {
@@ -58812,7 +58763,7 @@ inline void Window::SetAspectRatio(float min_aspect, float max_aspect)
  *
  * @sa Window.SetAspectRatio
  */
-inline void GetWindowAspectRatio(WindowParam window,
+inline void GetWindowAspectRatio(WindowRef window,
                                  float* min_aspect,
                                  float* max_aspect)
 {
@@ -58857,7 +58808,7 @@ inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
  *
  * @sa Window.GetSize
  */
-inline void GetWindowBordersSize(WindowParam window,
+inline void GetWindowBordersSize(WindowRef window,
                                  int* top,
                                  int* left,
                                  int* bottom,
@@ -58891,7 +58842,7 @@ inline void Window::GetBordersSize(int* top,
  * @sa Window.Window
  * @sa Window.GetSize
  */
-inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
+inline void GetWindowSizeInPixels(WindowRef window, int* w, int* h)
 {
   CheckError(SDL_GetWindowSizeInPixels(window, w, h));
 }
@@ -58911,7 +58862,7 @@ inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
  * @sa Window.Window
  * @sa Window.GetSize
  */
-inline Point GetWindowSizeInPixels(WindowParam window)
+inline Point GetWindowSizeInPixels(WindowRef window)
 {
   Point p;
   GetWindowSizeInPixels(window, &p.x, &p.y);
@@ -58942,7 +58893,7 @@ inline Point Window::GetSizeInPixels() const
  * @sa Window.GetMinimumSize
  * @sa Window.SetMaximumSize
  */
-inline void SetWindowMinimumSize(WindowParam window, const PointRaw& p)
+inline void SetWindowMinimumSize(WindowRef window, const PointRaw& p)
 {
   CheckError(SDL_SetWindowMinimumSize(window, p.x, p.y));
 }
@@ -58969,7 +58920,7 @@ inline void Window::SetMinimumSize(const PointRaw& p)
  * @sa Window.GetMaximumSize
  * @sa Window.SetMinimumSize
  */
-inline void GetWindowMinimumSize(WindowParam window, int* w, int* h)
+inline void GetWindowMinimumSize(WindowRef window, int* w, int* h)
 {
   CheckError(SDL_GetWindowMinimumSize(window, w, h));
 }
@@ -58993,7 +58944,7 @@ inline void Window::GetMinimumSize(int* w, int* h) const
  * @sa Window.GetMaximumSize
  * @sa Window.SetMinimumSize
  */
-inline void SetWindowMaximumSize(WindowParam window, const PointRaw& p)
+inline void SetWindowMaximumSize(WindowRef window, const PointRaw& p)
 {
   CheckError(SDL_SetWindowMaximumSize(window, p.x, p.y));
 }
@@ -59020,7 +58971,7 @@ inline void Window::SetMaximumSize(const PointRaw& p)
  * @sa Window.GetMinimumSize
  * @sa Window.SetMaximumSize
  */
-inline void GetWindowMaximumSize(WindowParam window, int* w, int* h)
+inline void GetWindowMaximumSize(WindowRef window, int* w, int* h)
 {
   CheckError(SDL_GetWindowMaximumSize(window, w, h));
 }
@@ -59049,7 +59000,7 @@ inline void Window::GetMaximumSize(int* w, int* h) const
  *
  * @sa Window.GetFlags
  */
-inline void SetWindowBordered(WindowParam window, bool bordered)
+inline void SetWindowBordered(WindowRef window, bool bordered)
 {
   CheckError(SDL_SetWindowBordered(window, bordered));
 }
@@ -59078,7 +59029,7 @@ inline void Window::SetBordered(bool bordered)
  *
  * @sa Window.GetFlags
  */
-inline void SetWindowResizable(WindowParam window, bool resizable)
+inline void SetWindowResizable(WindowRef window, bool resizable)
 {
   CheckError(SDL_SetWindowResizable(window, resizable));
 }
@@ -59104,7 +59055,7 @@ inline void Window::SetResizable(bool resizable)
  *
  * @sa Window.GetFlags
  */
-inline void SetWindowAlwaysOnTop(WindowParam window, bool on_top)
+inline void SetWindowAlwaysOnTop(WindowRef window, bool on_top)
 {
   CheckError(SDL_SetWindowAlwaysOnTop(window, on_top));
 }
@@ -59144,7 +59095,7 @@ inline void Window::SetAlwaysOnTop(bool on_top)
  *
  * @sa Window.GetFlags
  */
-inline void SetWindowFillDocument(WindowParam window, bool fill)
+inline void SetWindowFillDocument(WindowRef window, bool fill)
 {
   CheckError(SDL_SetWindowFillDocument(window, fill));
 }
@@ -59169,10 +59120,7 @@ inline void Window::SetFillDocument(bool fill)
  * @sa Window.Hide
  * @sa Window.Raise
  */
-inline void ShowWindow(WindowParam window)
-{
-  CheckError(SDL_ShowWindow(window));
-}
+inline void ShowWindow(WindowRef window) { CheckError(SDL_ShowWindow(window)); }
 
 inline void Window::Show() { SDL::ShowWindow(m_resource); }
 
@@ -59189,10 +59137,7 @@ inline void Window::Show() { SDL::ShowWindow(m_resource); }
  * @sa Window.Show
  * @sa WINDOW_HIDDEN
  */
-inline void HideWindow(WindowParam window)
-{
-  CheckError(SDL_HideWindow(window));
-}
+inline void HideWindow(WindowRef window) { CheckError(SDL_HideWindow(window)); }
 
 inline void Window::Hide() { SDL::HideWindow(m_resource); }
 
@@ -59212,7 +59157,7 @@ inline void Window::Hide() { SDL::HideWindow(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void RaiseWindow(WindowParam window)
+inline void RaiseWindow(WindowRef window)
 {
   CheckError(SDL_RaiseWindow(window));
 }
@@ -59250,7 +59195,7 @@ inline void Window::Raise() { SDL::RaiseWindow(m_resource); }
  * @sa Window.Restore
  * @sa Window.Sync
  */
-inline void MaximizeWindow(WindowParam window)
+inline void MaximizeWindow(WindowRef window)
 {
   CheckError(SDL_MaximizeWindow(window));
 }
@@ -59283,7 +59228,7 @@ inline void Window::Maximize() { SDL::MaximizeWindow(m_resource); }
  * @sa Window.Restore
  * @sa Window.Sync
  */
-inline void MinimizeWindow(WindowParam window)
+inline void MinimizeWindow(WindowRef window)
 {
   CheckError(SDL_MinimizeWindow(window));
 }
@@ -59317,7 +59262,7 @@ inline void Window::Minimize() { SDL::MinimizeWindow(m_resource); }
  * @sa Window.Minimize
  * @sa Window.Sync
  */
-inline void RestoreWindow(WindowParam window)
+inline void RestoreWindow(WindowRef window)
 {
   CheckError(SDL_RestoreWindow(window));
 }
@@ -59353,7 +59298,7 @@ inline void Window::Restore() { SDL::RestoreWindow(m_resource); }
  * @sa Window.Sync
  * @sa WINDOW_FULLSCREEN
  */
-inline void SetWindowFullscreen(WindowParam window, bool fullscreen)
+inline void SetWindowFullscreen(WindowRef window, bool fullscreen)
 {
   CheckError(SDL_SetWindowFullscreen(window, fullscreen));
 }
@@ -59391,10 +59336,7 @@ inline void Window::SetFullscreen(bool fullscreen)
  * @sa Window.Restore
  * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
  */
-inline void SyncWindow(WindowParam window)
-{
-  CheckError(SDL_SyncWindow(window));
-}
+inline void SyncWindow(WindowRef window) { CheckError(SDL_SyncWindow(window)); }
 
 inline void Window::Sync() { SDL::SyncWindow(m_resource); }
 
@@ -59411,7 +59353,7 @@ inline void Window::Sync() { SDL::SyncWindow(m_resource); }
  *
  * @sa Window.GetSurface
  */
-inline bool WindowHasSurface(WindowParam window)
+inline bool WindowHasSurface(WindowRef window)
 {
   return SDL_WindowHasSurface(window);
 }
@@ -59448,7 +59390,7 @@ inline bool Window::HasSurface() const
  * @sa Window.UpdateSurface
  * @sa Window.UpdateSurfaceRects
  */
-inline Surface GetWindowSurface(WindowParam window)
+inline Surface GetWindowSurface(WindowRef window)
 {
   return Surface::Borrow(SDL_GetWindowSurface(window));
 }
@@ -59481,7 +59423,7 @@ inline Surface Window::GetSurface()
  *
  * @sa Window.GetSurfaceVSync
  */
-inline void SetWindowSurfaceVSync(WindowParam window, int vsync)
+inline void SetWindowSurfaceVSync(WindowRef window, int vsync)
 {
   CheckError(SDL_SetWindowSurfaceVSync(window, vsync));
 }
@@ -59509,7 +59451,7 @@ constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
  *
  * @sa Window.SetSurfaceVSync
  */
-inline int GetWindowSurfaceVSync(WindowParam window)
+inline int GetWindowSurfaceVSync(WindowRef window)
 {
   int vsync;
   CheckError(SDL_GetWindowSurfaceVSync(window, &vsync));
@@ -59539,7 +59481,7 @@ inline int Window::GetSurfaceVSync() const
  * @sa Window.GetSurface
  * @sa Window.UpdateSurfaceRects
  */
-inline void UpdateWindowSurface(WindowParam window)
+inline void UpdateWindowSurface(WindowRef window)
 {
   CheckError(SDL_UpdateWindowSurface(window));
 }
@@ -59571,7 +59513,7 @@ inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
  * @sa Window.GetSurface
  * @sa Window.UpdateSurface
  */
-inline void UpdateWindowSurfaceRects(WindowParam window,
+inline void UpdateWindowSurfaceRects(WindowRef window,
                                      SpanRef<const RectRaw> rects)
 {
   CheckError(SDL_UpdateWindowSurfaceRects(window, rects.data(), rects.size()));
@@ -59595,7 +59537,7 @@ inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
  * @sa Window.GetSurface
  * @sa Window.HasSurface
  */
-inline void DestroyWindowSurface(WindowParam window)
+inline void DestroyWindowSurface(WindowRef window)
 {
   CheckError(SDL_DestroyWindowSurface(window));
 }
@@ -59631,7 +59573,7 @@ inline void Window::DestroySurface() { SDL::DestroyWindowSurface(m_resource); }
  * @sa Window.GetKeyboardGrab
  * @sa Window.SetMouseGrab
  */
-inline void SetWindowKeyboardGrab(WindowParam window, bool grabbed)
+inline void SetWindowKeyboardGrab(WindowRef window, bool grabbed)
 {
   CheckError(SDL_SetWindowKeyboardGrab(window, grabbed));
 }
@@ -59658,7 +59600,7 @@ inline void Window::SetKeyboardGrab(bool grabbed)
  * @sa Window.SetMouseRect
  * @sa Window.SetKeyboardGrab
  */
-inline void SetWindowMouseGrab(WindowParam window, bool grabbed)
+inline void SetWindowMouseGrab(WindowRef window, bool grabbed)
 {
   CheckError(SDL_SetWindowMouseGrab(window, grabbed));
 }
@@ -59680,7 +59622,7 @@ inline void Window::SetMouseGrab(bool grabbed)
  *
  * @sa Window.SetKeyboardGrab
  */
-inline bool GetWindowKeyboardGrab(WindowParam window)
+inline bool GetWindowKeyboardGrab(WindowRef window)
 {
   return SDL_GetWindowKeyboardGrab(window);
 }
@@ -59705,7 +59647,7 @@ inline bool Window::GetKeyboardGrab() const
  * @sa Window.SetMouseGrab
  * @sa Window.SetKeyboardGrab
  */
-inline bool GetWindowMouseGrab(WindowParam window)
+inline bool GetWindowMouseGrab(WindowRef window)
 {
   return SDL_GetWindowMouseGrab(window);
 }
@@ -59750,7 +59692,7 @@ inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
  * @sa Window.GetMouseGrab
  * @sa Window.SetMouseGrab
  */
-inline void SetWindowMouseRect(WindowParam window, const RectRaw& rect)
+inline void SetWindowMouseRect(WindowRef window, const RectRaw& rect)
 {
   CheckError(SDL_SetWindowMouseRect(window, &rect));
 }
@@ -59775,7 +59717,7 @@ inline void Window::SetMouseRect(const RectRaw& rect)
  * @sa Window.GetMouseGrab
  * @sa Window.SetMouseGrab
  */
-inline const RectRaw* GetWindowMouseRect(WindowParam window)
+inline const RectRaw* GetWindowMouseRect(WindowRef window)
 {
   return SDL_GetWindowMouseRect(window);
 }
@@ -59803,7 +59745,7 @@ inline const RectRaw* Window::GetMouseRect() const
  *
  * @sa Window.GetOpacity
  */
-inline void SetWindowOpacity(WindowParam window, float opacity)
+inline void SetWindowOpacity(WindowRef window, float opacity)
 {
   CheckError(SDL_SetWindowOpacity(window, opacity));
 }
@@ -59829,7 +59771,7 @@ inline void Window::SetOpacity(float opacity)
  *
  * @sa Window.SetOpacity
  */
-inline float GetWindowOpacity(WindowParam window)
+inline float GetWindowOpacity(WindowRef window)
 {
   return SDL_GetWindowOpacity(window);
 }
@@ -59870,12 +59812,12 @@ inline float Window::GetOpacity() const
  *
  * @sa Window.SetModal
  */
-inline void SetWindowParent(WindowParam window, WindowParam parent)
+inline void SetWindowParent(WindowRef window, WindowRef parent)
 {
   CheckError(SDL_SetWindowParent(window, parent));
 }
 
-inline void Window::SetParent(WindowParam parent)
+inline void Window::SetParent(WindowRef parent)
 {
   SDL::SetWindowParent(m_resource, parent);
 }
@@ -59897,7 +59839,7 @@ inline void Window::SetParent(WindowParam parent)
  * @sa Window.SetParent
  * @sa WINDOW_MODAL
  */
-inline void SetWindowModal(WindowParam window, bool modal)
+inline void SetWindowModal(WindowRef window, bool modal)
 {
   CheckError(SDL_SetWindowModal(window, modal));
 }
@@ -59918,7 +59860,7 @@ inline void Window::SetModal(bool modal)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetWindowFocusable(WindowParam window, bool focusable)
+inline void SetWindowFocusable(WindowRef window, bool focusable)
 {
   CheckError(SDL_SetWindowFocusable(window, focusable));
 }
@@ -59948,7 +59890,7 @@ inline void Window::SetFocusable(bool focusable)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ShowWindowSystemMenu(WindowParam window, const PointRaw& p)
+inline void ShowWindowSystemMenu(WindowRef window, const PointRaw& p)
 {
   CheckError(SDL_ShowWindowSystemMenu(window, p.x, p.y));
 }
@@ -59999,7 +59941,7 @@ inline void Window::ShowSystemMenu(const PointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetWindowHitTest(WindowParam window,
+inline void SetWindowHitTest(WindowRef window,
                              HitTest callback,
                              void* callback_data)
 {
@@ -60046,7 +59988,7 @@ inline void SetWindowHitTest(WindowParam window,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetWindowHitTest(WindowParam window, HitTestCB callback)
+inline void SetWindowHitTest(WindowRef window, HitTestCB callback)
 {
   SetWindowHitTest(window, callback.wrapper, callback.data);
 }
@@ -60085,12 +60027,12 @@ inline void Window::SetHitTest(HitTestCB callback)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetWindowShape(WindowParam window, SurfaceParam shape)
+inline void SetWindowShape(WindowRef window, SurfaceRef shape)
 {
   CheckError(SDL_SetWindowShape(window, shape));
 }
 
-inline void Window::SetShape(SurfaceParam shape)
+inline void Window::SetShape(SurfaceRef shape)
 {
   SDL::SetWindowShape(m_resource, shape);
 }
@@ -60106,7 +60048,7 @@ inline void Window::SetShape(SurfaceParam shape)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void FlashWindow(WindowParam window, FlashOperation operation)
+inline void FlashWindow(WindowRef window, FlashOperation operation)
 {
   CheckError(SDL_FlashWindow(window, operation));
 }
@@ -60130,7 +60072,7 @@ inline void Window::Flash(FlashOperation operation)
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline void SetWindowProgressState(WindowParam window, ProgressState state)
+inline void SetWindowProgressState(WindowRef window, ProgressState state)
 {
   CheckError(SDL_SetWindowProgressState(window, state));
 }
@@ -60151,7 +60093,7 @@ inline void Window::SetProgressState(ProgressState state)
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline ProgressState GetWindowProgressState(WindowParam window)
+inline ProgressState GetWindowProgressState(WindowRef window)
 {
   return SDL_GetWindowProgressState(window);
 }
@@ -60173,7 +60115,7 @@ inline ProgressState Window::GetProgressState()
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline void SetWindowProgressValue(WindowParam window, float value)
+inline void SetWindowProgressValue(WindowRef window, float value)
 {
   CheckError(SDL_SetWindowProgressValue(window, value));
 }
@@ -60194,7 +60136,7 @@ inline void Window::SetProgressValue(float value)
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline float GetWindowProgressValue(WindowParam window)
+inline float GetWindowProgressValue(WindowRef window)
 {
   return SDL_GetWindowProgressValue(window);
 }
@@ -60507,14 +60449,14 @@ inline void GL_GetAttribute(GLAttr attr, int* value)
  * @sa GLContext.Destroy
  * @sa GLContext.MakeCurrent
  */
-inline GLContext GL_CreateContext(WindowParam window)
+inline GLContext GL_CreateContext(WindowRef window)
 {
   return GLContext(window);
 }
 
 inline GLContext Window::CreateGLContext() { return GLContext(m_resource); }
 
-inline GLContext::GLContext(WindowParam window)
+inline GLContext::GLContext(WindowRef window)
   : m_resource(SDL_GL_CreateContext(window))
 {
 }
@@ -60534,7 +60476,7 @@ inline GLContext::GLContext(WindowParam window)
  *
  * @sa GLContext.GLContext
  */
-inline void GL_MakeCurrent(WindowParam window, GLContext context)
+inline void GL_MakeCurrent(WindowRef window, GLContext context)
 {
   CheckError(SDL_GL_MakeCurrent(window, context.get()));
 }
@@ -60544,7 +60486,7 @@ inline void Window::MakeCurrent(GLContext context)
   SDL::GL_MakeCurrent(m_resource, context);
 }
 
-inline void GLContext::MakeCurrent(WindowParam window)
+inline void GLContext::MakeCurrent(WindowRef window)
 {
   SDL::GL_MakeCurrent(window, m_resource);
 }
@@ -60617,7 +60559,7 @@ inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline EGLSurface EGL_GetWindowSurface(WindowParam window)
+inline EGLSurface EGL_GetWindowSurface(WindowRef window)
 {
   return SDL_EGL_GetWindowSurface(window);
 }
@@ -60732,7 +60674,7 @@ inline void GL_GetSwapInterval(int* interval)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GL_SwapWindow(WindowParam window)
+inline void GL_SwapWindow(WindowRef window)
 {
   CheckError(SDL_GL_SwapWindow(window));
 }
@@ -60929,7 +60871,7 @@ using DialogFileCB =
  */
 inline void ShowOpenFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowParam window,
+                               WindowRef window,
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -60992,7 +60934,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFileDialog(DialogFileCB callback,
-                               WindowParam window,
+                               WindowRef window,
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -61054,7 +60996,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  */
 inline void ShowSaveFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowParam window = {},
+                               WindowRef window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
@@ -61111,7 +61053,7 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowSaveFileDialog(DialogFileCB callback,
-                               WindowParam window = {},
+                               WindowRef window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
@@ -61168,7 +61110,7 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
  */
 inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                  void* userdata,
-                                 WindowParam window = {},
+                                 WindowRef window = {},
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
@@ -61218,7 +61160,7 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFolderDialog(DialogFileCB callback,
-                                 WindowParam window = {},
+                                 WindowRef window = {},
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
@@ -61299,7 +61241,7 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
 inline void ShowFileDialogWithProperties(FileDialogType type,
                                          DialogFileCallback callback,
                                          void* userdata,
-                                         PropertiesParam props)
+                                         PropertiesRef props)
 {
   SDL_ShowFileDialogWithProperties(type, callback, userdata, props);
 }
@@ -63595,8 +63537,6 @@ using GPUDeviceRaw = SDL_GPUDevice*;
 // Forward decl
 struct GPUDeviceRef;
 
-using GPUDeviceParam = GPUDeviceRef;
-
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
 
@@ -63755,7 +63695,7 @@ public:
    * @sa GPUComputePass.DispatchIndirect
    * @sa GPUDevice.ReleaseBuffer
    */
-  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo& createinfo);
+  GPUBuffer(GPUDeviceRef device, const GPUBufferCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUBuffer.
@@ -63833,7 +63773,7 @@ public:
    * @sa GPUCopyPass.DownloadFromTexture
    * @sa GPUDevice.ReleaseTransferBuffer
    */
-  GPUTransferBuffer(GPUDeviceParam device,
+  GPUTransferBuffer(GPUDeviceRef device,
                     const GPUTransferBufferCreateInfo& createinfo);
 
   /**
@@ -63955,7 +63895,7 @@ public:
    * @sa GPUDevice.ReleaseTexture
    * @sa GPUDevice.TextureSupportsFormat
    */
-  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo& createinfo);
+  GPUTexture(GPUDeviceRef device, const GPUTextureCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUTexture.
@@ -64027,7 +63967,7 @@ public:
    * @sa GPURenderPass.BindFragmentSamplers
    * @sa GPUDevice.ReleaseSampler
    */
-  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo);
+  GPUSampler(GPUDeviceRef device, const GPUSamplerCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUSampler.
@@ -64145,7 +64085,7 @@ public:
    * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
    * @sa GPUDevice.ReleaseShader
    */
-  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo& createinfo);
+  GPUShader(GPUDeviceRef device, const GPUShaderCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUShader.
@@ -64237,7 +64177,7 @@ public:
    * @sa GPUComputePass.BindPipeline
    * @sa GPUDevice.ReleaseComputePipeline
    */
-  GPUComputePipeline(GPUDeviceParam device,
+  GPUComputePipeline(GPUDeviceRef device,
                      const GPUComputePipelineCreateInfo& createinfo);
 
   /**
@@ -64315,7 +64255,7 @@ public:
    * @sa GPURenderPass.BindPipeline
    * @sa GPUDevice.ReleaseGraphicsPipeline
    */
-  GPUGraphicsPipeline(GPUDeviceParam device,
+  GPUGraphicsPipeline(GPUDeviceRef device,
                       const GPUGraphicsPipelineCreateInfo& createinfo);
 
   /**
@@ -65533,7 +65473,7 @@ public:
    * @sa GPUDevice.SetAllowedFramesInFlight
    */
   GPUTexture AcquireSwapchainTexture(
-    WindowParam window,
+    WindowRef window,
     Uint32* swapchain_texture_width = nullptr,
     Uint32* swapchain_texture_height = nullptr);
 
@@ -65577,7 +65517,7 @@ public:
    * @sa GPUCommandBuffer.AcquireSwapchainTexture
    */
   GPUTexture WaitAndAcquireSwapchainTexture(
-    WindowParam window,
+    WindowRef window,
     Uint32* swapchain_texture_width = nullptr,
     Uint32* swapchain_texture_height = nullptr);
 
@@ -66276,7 +66216,7 @@ public:
   }
 
   /**
-   * Constructs from GPUDeviceParam.
+   * Constructs from GPUDeviceRef.
    *
    * @param resource a GPUDeviceRaw to be wrapped.
    *
@@ -66441,7 +66381,7 @@ public:
    * @sa GPUDevice.Destroy
    * @sa GPUSupportsProperties
    */
-  GPUDevice(PropertiesParam props);
+  GPUDevice(PropertiesRef props);
 
   /// Destructor
   ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
@@ -67086,7 +67026,7 @@ public:
    * @sa GPUDevice.ClaimWindow
    */
   bool WindowSupportsSwapchainComposition(
-    WindowParam window,
+    WindowRef window,
     GPUSwapchainComposition swapchain_composition);
 
   /**
@@ -67102,8 +67042,7 @@ public:
    *
    * @sa GPUDevice.ClaimWindow
    */
-  bool WindowSupportsPresentMode(WindowParam window,
-                                 GPUPresentMode present_mode);
+  bool WindowSupportsPresentMode(WindowRef window, GPUPresentMode present_mode);
 
   /**
    * Claims a window, creating a swapchain structure for it.
@@ -67129,7 +67068,7 @@ public:
    * @sa GPUDevice.WindowSupportsPresentMode
    * @sa GPUDevice.WindowSupportsSwapchainComposition
    */
-  void ClaimWindow(WindowParam window);
+  void ClaimWindow(WindowRef window);
 
   /**
    * Unclaims a window, destroying its swapchain structure.
@@ -67140,7 +67079,7 @@ public:
    *
    * @sa GPUDevice.ClaimWindow
    */
-  void ReleaseWindow(WindowParam window);
+  void ReleaseWindow(WindowRef window);
 
   /**
    * Changes the swapchain parameters for the given claimed window.
@@ -67165,7 +67104,7 @@ public:
    * @sa GPUDevice.WindowSupportsPresentMode
    * @sa GPUDevice.WindowSupportsSwapchainComposition
    */
-  bool SetSwapchainParameters(WindowParam window,
+  bool SetSwapchainParameters(WindowRef window,
                               GPUSwapchainComposition swapchain_composition,
                               GPUPresentMode present_mode);
 
@@ -67205,7 +67144,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  GPUTextureFormat GetSwapchainTextureFormat(WindowParam window);
+  GPUTextureFormat GetSwapchainTextureFormat(WindowRef window);
 
   /**
    * Blocks the thread until a swapchain texture is available to be acquired.
@@ -67222,7 +67161,7 @@ public:
    * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
    * @sa GPUDevice.SetAllowedFramesInFlight
    */
-  void WaitForSwapchain(WindowParam window);
+  void WaitForSwapchain(WindowRef window);
 
   /**
    * Blocks the thread until the GPU is completely idle.
@@ -68201,7 +68140,7 @@ inline bool GPUSupportsShaderFormats(GPUShaderFormat format_flags,
  *
  * @sa GPUDevice.GPUDevice
  */
-inline bool GPUSupportsProperties(PropertiesParam props)
+inline bool GPUSupportsProperties(PropertiesRef props)
 {
   return SDL_GPUSupportsProperties(props);
 }
@@ -68246,7 +68185,7 @@ inline GPUDevice::GPUDevice(GPUShaderFormat format_flags,
 {
 }
 
-inline GPUDevice::GPUDevice(PropertiesParam props)
+inline GPUDevice::GPUDevice(PropertiesRef props)
   : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
 {
 }
@@ -68360,7 +68299,7 @@ inline GPUDevice::GPUDevice(PropertiesParam props)
  * @sa GPUDevice.Destroy
  * @sa GPUSupportsProperties
  */
-inline GPUDevice CreateGPUDeviceWithProperties(PropertiesParam props)
+inline GPUDevice CreateGPUDeviceWithProperties(PropertiesRef props)
 {
   return GPUDevice(props);
 }
@@ -68544,7 +68483,7 @@ inline const char* GetGPUDriver(int index) { return SDL_GetGPUDriver(index); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetGPUDeviceDriver(GPUDeviceParam device)
+inline const char* GetGPUDeviceDriver(GPUDeviceRef device)
 {
   return SDL_GetGPUDeviceDriver(device);
 }
@@ -68563,7 +68502,7 @@ inline const char* GPUDevice::GetDriver()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceParam device)
+inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceRef device)
 {
   return SDL_GetGPUShaderFormats(device);
 }
@@ -68677,7 +68616,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline PropertiesRef GetGPUDeviceProperties(GPUDeviceParam device)
+inline PropertiesRef GetGPUDeviceProperties(GPUDeviceRef device)
 {
   return CheckError(SDL_GetGPUDeviceProperties(device));
 }
@@ -68735,7 +68674,7 @@ inline PropertiesRef GPUDevice::GetProperties()
  * @sa GPUDevice.ReleaseComputePipeline
  */
 inline GPUComputePipeline CreateGPUComputePipeline(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUComputePipelineCreateInfo& createinfo)
 {
   return GPUComputePipeline(device, createinfo);
@@ -68748,7 +68687,7 @@ inline GPUComputePipeline GPUDevice::CreateComputePipeline(
 }
 
 inline GPUComputePipeline::GPUComputePipeline(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUComputePipelineCreateInfo& createinfo)
   : m_gPUComputePipeline(
       CheckError(SDL_CreateGPUComputePipeline(device, &createinfo)))
@@ -68784,7 +68723,7 @@ constexpr auto CREATE_NAME_STRING =
  * @sa GPUDevice.ReleaseGraphicsPipeline
  */
 inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUGraphicsPipelineCreateInfo& createinfo)
 {
   return GPUGraphicsPipeline(device, createinfo);
@@ -68797,7 +68736,7 @@ inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
 }
 
 inline GPUGraphicsPipeline::GPUGraphicsPipeline(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUGraphicsPipelineCreateInfo& createinfo)
   : m_gPUGraphicsPipeline(
       CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo)))
@@ -68832,7 +68771,7 @@ constexpr auto CREATE_NAME_STRING =
  * @sa GPURenderPass.BindFragmentSamplers
  * @sa GPUDevice.ReleaseSampler
  */
-inline GPUSampler CreateGPUSampler(GPUDeviceParam device,
+inline GPUSampler CreateGPUSampler(GPUDeviceRef device,
                                    const GPUSamplerCreateInfo& createinfo)
 {
   return GPUSampler(device, createinfo);
@@ -68844,7 +68783,7 @@ inline GPUSampler GPUDevice::CreateSampler(
   return GPUSampler(m_resource, createinfo);
 }
 
-inline GPUSampler::GPUSampler(GPUDeviceParam device,
+inline GPUSampler::GPUSampler(GPUDeviceRef device,
                               const GPUSamplerCreateInfo& createinfo)
   : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
 {
@@ -68926,7 +68865,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
  * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
  * @sa GPUDevice.ReleaseShader
  */
-inline GPUShader CreateGPUShader(GPUDeviceParam device,
+inline GPUShader CreateGPUShader(GPUDeviceRef device,
                                  const GPUShaderCreateInfo& createinfo)
 {
   return GPUShader(device, createinfo);
@@ -68937,7 +68876,7 @@ inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
   return GPUShader(m_resource, createinfo);
 }
 
-inline GPUShader::GPUShader(GPUDeviceParam device,
+inline GPUShader::GPUShader(GPUDeviceRef device,
                             const GPUShaderCreateInfo& createinfo)
   : m_gPUShader(CheckError(SDL_CreateGPUShader(device, &createinfo)))
 {
@@ -69007,7 +68946,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
  * @sa GPUDevice.ReleaseTexture
  * @sa GPUDevice.TextureSupportsFormat
  */
-inline GPUTexture CreateGPUTexture(GPUDeviceParam device,
+inline GPUTexture CreateGPUTexture(GPUDeviceRef device,
                                    const GPUTextureCreateInfo& createinfo)
 {
   return GPUTexture(device, createinfo);
@@ -69019,7 +68958,7 @@ inline GPUTexture GPUDevice::CreateTexture(
   return GPUTexture(m_resource, createinfo);
 }
 
-inline GPUTexture::GPUTexture(GPUDeviceParam device,
+inline GPUTexture::GPUTexture(GPUDeviceRef device,
                               const GPUTextureCreateInfo& createinfo)
   : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, &createinfo)))
 {
@@ -69096,7 +69035,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
  * @sa GPUComputePass.DispatchIndirect
  * @sa GPUDevice.ReleaseBuffer
  */
-inline GPUBuffer CreateGPUBuffer(GPUDeviceParam device,
+inline GPUBuffer CreateGPUBuffer(GPUDeviceRef device,
                                  const GPUBufferCreateInfo& createinfo)
 {
   return GPUBuffer(device, createinfo);
@@ -69107,7 +69046,7 @@ inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
   return GPUBuffer(m_resource, createinfo);
 }
 
-inline GPUBuffer::GPUBuffer(GPUDeviceParam device,
+inline GPUBuffer::GPUBuffer(GPUDeviceRef device,
                             const GPUBufferCreateInfo& createinfo)
   : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, &createinfo)))
 {
@@ -69147,7 +69086,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
  * @sa GPUDevice.ReleaseTransferBuffer
  */
 inline GPUTransferBuffer CreateGPUTransferBuffer(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(device, createinfo);
@@ -69160,7 +69099,7 @@ inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
 }
 
 inline GPUTransferBuffer::GPUTransferBuffer(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUTransferBufferCreateInfo& createinfo)
   : m_gPUTransferBuffer(
       CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
@@ -69191,7 +69130,7 @@ constexpr auto CREATE_NAME_STRING =
  *
  * @sa GPUBuffer.GPUBuffer
  */
-inline void SetGPUBufferName(GPUDeviceParam device,
+inline void SetGPUBufferName(GPUDeviceRef device,
                              GPUBuffer buffer,
                              StringParam text)
 {
@@ -69220,7 +69159,7 @@ inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
  *
  * @sa GPUTexture.GPUTexture
  */
-inline void SetGPUTextureName(GPUDeviceParam device,
+inline void SetGPUTextureName(GPUDeviceRef device,
                               GPUTexture texture,
                               StringParam text)
 {
@@ -69331,7 +69270,7 @@ inline void GPUCommandBuffer::PopDebugGroup()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUTexture(GPUDeviceParam device, GPUTexture texture)
+inline void ReleaseGPUTexture(GPUDeviceRef device, GPUTexture texture)
 {
   SDL_ReleaseGPUTexture(device, texture);
 }
@@ -69351,7 +69290,7 @@ inline void GPUDevice::ReleaseTexture(GPUTexture texture)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUSampler(GPUDeviceParam device, GPUSampler sampler)
+inline void ReleaseGPUSampler(GPUDeviceRef device, GPUSampler sampler)
 {
   SDL_ReleaseGPUSampler(device, sampler);
 }
@@ -69371,7 +69310,7 @@ inline void GPUDevice::ReleaseSampler(GPUSampler sampler)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUBuffer(GPUDeviceParam device, GPUBuffer buffer)
+inline void ReleaseGPUBuffer(GPUDeviceRef device, GPUBuffer buffer)
 {
   SDL_ReleaseGPUBuffer(device, buffer);
 }
@@ -69391,7 +69330,7 @@ inline void GPUDevice::ReleaseBuffer(GPUBuffer buffer)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUTransferBuffer(GPUDeviceParam device,
+inline void ReleaseGPUTransferBuffer(GPUDeviceRef device,
                                      GPUTransferBuffer transfer_buffer)
 {
   SDL_ReleaseGPUTransferBuffer(device, transfer_buffer);
@@ -69412,7 +69351,7 @@ inline void GPUDevice::ReleaseTransferBuffer(GPUTransferBuffer transfer_buffer)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUComputePipeline(GPUDeviceParam device,
+inline void ReleaseGPUComputePipeline(GPUDeviceRef device,
                                       GPUComputePipeline compute_pipeline)
 {
   SDL_ReleaseGPUComputePipeline(device, compute_pipeline);
@@ -69434,7 +69373,7 @@ inline void GPUDevice::ReleaseComputePipeline(
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUShader(GPUDeviceParam device, GPUShader shader)
+inline void ReleaseGPUShader(GPUDeviceRef device, GPUShader shader)
 {
   SDL_ReleaseGPUShader(device, shader);
 }
@@ -69454,7 +69393,7 @@ inline void GPUDevice::ReleaseShader(GPUShader shader)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUGraphicsPipeline(GPUDeviceParam device,
+inline void ReleaseGPUGraphicsPipeline(GPUDeviceRef device,
                                        GPUGraphicsPipeline graphics_pipeline)
 {
   SDL_ReleaseGPUGraphicsPipeline(device, graphics_pipeline);
@@ -69490,7 +69429,7 @@ inline void GPUDevice::ReleaseGraphicsPipeline(
  * @sa GPUCommandBuffer.Submit
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
-inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceParam device)
+inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceRef device)
 {
   return SDL_AcquireGPUCommandBuffer(device);
 }
@@ -70440,7 +70379,7 @@ inline void GPUComputePass::End() { SDL::EndGPUComputePass(m_gPUComputePass); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void* MapGPUTransferBuffer(GPUDeviceParam device,
+inline void* MapGPUTransferBuffer(GPUDeviceRef device,
                                   GPUTransferBuffer transfer_buffer,
                                   bool cycle)
 {
@@ -70461,7 +70400,7 @@ inline void* GPUDevice::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void UnmapGPUTransferBuffer(GPUDeviceParam device,
+inline void UnmapGPUTransferBuffer(GPUDeviceRef device,
                                    GPUTransferBuffer transfer_buffer)
 {
   SDL_UnmapGPUTransferBuffer(device, transfer_buffer);
@@ -70757,8 +70696,8 @@ inline void GPUCommandBuffer::BlitTexture(const GPUBlitInfo& info)
  * @sa GPUDevice.ClaimWindow
  */
 inline bool WindowSupportsGPUSwapchainComposition(
-  GPUDeviceParam device,
-  WindowParam window,
+  GPUDeviceRef device,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition)
 {
   return SDL_WindowSupportsGPUSwapchainComposition(
@@ -70766,7 +70705,7 @@ inline bool WindowSupportsGPUSwapchainComposition(
 }
 
 inline bool GPUDevice::WindowSupportsSwapchainComposition(
-  WindowParam window,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition)
 {
   return SDL::WindowSupportsGPUSwapchainComposition(
@@ -70787,14 +70726,14 @@ inline bool GPUDevice::WindowSupportsSwapchainComposition(
  *
  * @sa GPUDevice.ClaimWindow
  */
-inline bool WindowSupportsGPUPresentMode(GPUDeviceParam device,
-                                         WindowParam window,
+inline bool WindowSupportsGPUPresentMode(GPUDeviceRef device,
+                                         WindowRef window,
                                          GPUPresentMode present_mode)
 {
   return SDL_WindowSupportsGPUPresentMode(device, window, present_mode);
 }
 
-inline bool GPUDevice::WindowSupportsPresentMode(WindowParam window,
+inline bool GPUDevice::WindowSupportsPresentMode(WindowRef window,
                                                  GPUPresentMode present_mode)
 {
   return SDL::WindowSupportsGPUPresentMode(m_resource, window, present_mode);
@@ -70825,12 +70764,12 @@ inline bool GPUDevice::WindowSupportsPresentMode(WindowParam window,
  * @sa GPUDevice.WindowSupportsPresentMode
  * @sa GPUDevice.WindowSupportsSwapchainComposition
  */
-inline void ClaimWindowForGPUDevice(GPUDeviceParam device, WindowParam window)
+inline void ClaimWindowForGPUDevice(GPUDeviceRef device, WindowRef window)
 {
   CheckError(SDL_ClaimWindowForGPUDevice(device, window));
 }
 
-inline void GPUDevice::ClaimWindow(WindowParam window)
+inline void GPUDevice::ClaimWindow(WindowRef window)
 {
   SDL::ClaimWindowForGPUDevice(m_resource, window);
 }
@@ -70845,13 +70784,12 @@ inline void GPUDevice::ClaimWindow(WindowParam window)
  *
  * @sa GPUDevice.ClaimWindow
  */
-inline void ReleaseWindowFromGPUDevice(GPUDeviceParam device,
-                                       WindowParam window)
+inline void ReleaseWindowFromGPUDevice(GPUDeviceRef device, WindowRef window)
 {
   SDL_ReleaseWindowFromGPUDevice(device, window);
 }
 
-inline void GPUDevice::ReleaseWindow(WindowParam window)
+inline void GPUDevice::ReleaseWindow(WindowRef window)
 {
   SDL::ReleaseWindowFromGPUDevice(m_resource, window);
 }
@@ -70879,8 +70817,8 @@ inline void GPUDevice::ReleaseWindow(WindowParam window)
  * @sa GPUDevice.WindowSupportsSwapchainComposition
  */
 inline bool SetGPUSwapchainParameters(
-  GPUDeviceParam device,
-  WindowParam window,
+  GPUDeviceRef device,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition,
   GPUPresentMode present_mode)
 {
@@ -70889,7 +70827,7 @@ inline bool SetGPUSwapchainParameters(
 }
 
 inline bool GPUDevice::SetSwapchainParameters(
-  WindowParam window,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition,
   GPUPresentMode present_mode)
 {
@@ -70922,7 +70860,7 @@ inline bool GPUDevice::SetSwapchainParameters(
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool SetGPUAllowedFramesInFlight(GPUDeviceParam device,
+inline bool SetGPUAllowedFramesInFlight(GPUDeviceRef device,
                                         Uint32 allowed_frames_in_flight)
 {
   return SDL_SetGPUAllowedFramesInFlight(device, allowed_frames_in_flight);
@@ -70944,13 +70882,13 @@ inline bool GPUDevice::SetAllowedFramesInFlight(Uint32 allowed_frames_in_flight)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline GPUTextureFormat GetGPUSwapchainTextureFormat(GPUDeviceParam device,
-                                                     WindowParam window)
+inline GPUTextureFormat GetGPUSwapchainTextureFormat(GPUDeviceRef device,
+                                                     WindowRef window)
 {
   return SDL_GetGPUSwapchainTextureFormat(device, window);
 }
 
-inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
+inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowRef window)
 {
   return SDL::GetGPUSwapchainTextureFormat(m_resource, window);
 }
@@ -71003,7 +70941,7 @@ inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
  */
 inline GPUTexture AcquireGPUSwapchainTexture(
   GPUCommandBuffer command_buffer,
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width = nullptr,
   Uint32* swapchain_texture_height = nullptr)
 {
@@ -71017,7 +70955,7 @@ inline GPUTexture AcquireGPUSwapchainTexture(
 }
 
 inline GPUTexture GPUCommandBuffer::AcquireSwapchainTexture(
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width,
   Uint32* swapchain_texture_height)
 {
@@ -71043,12 +70981,12 @@ inline GPUTexture GPUCommandBuffer::AcquireSwapchainTexture(
  * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
  * @sa GPUDevice.SetAllowedFramesInFlight
  */
-inline void WaitForGPUSwapchain(GPUDeviceParam device, WindowParam window)
+inline void WaitForGPUSwapchain(GPUDeviceRef device, WindowRef window)
 {
   CheckError(SDL_WaitForGPUSwapchain(device, window));
 }
 
-inline void GPUDevice::WaitForSwapchain(WindowParam window)
+inline void GPUDevice::WaitForSwapchain(WindowRef window)
 {
   SDL::WaitForGPUSwapchain(m_resource, window);
 }
@@ -71095,7 +71033,7 @@ inline void GPUDevice::WaitForSwapchain(WindowParam window)
  */
 inline GPUTexture WaitAndAcquireGPUSwapchainTexture(
   GPUCommandBuffer command_buffer,
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width = nullptr,
   Uint32* swapchain_texture_height = nullptr)
 {
@@ -71109,7 +71047,7 @@ inline GPUTexture WaitAndAcquireGPUSwapchainTexture(
 }
 
 inline GPUTexture GPUCommandBuffer::WaitAndAcquireSwapchainTexture(
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width,
   Uint32* swapchain_texture_height)
 {
@@ -71225,7 +71163,7 @@ inline void GPUCommandBuffer::Cancel()
  *
  * @sa GPUDevice.WaitForFences
  */
-inline void WaitForGPUIdle(GPUDeviceParam device)
+inline void WaitForGPUIdle(GPUDeviceRef device)
 {
   CheckError(SDL_WaitForGPUIdle(device));
 }
@@ -71246,7 +71184,7 @@ inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(m_resource); }
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  * @sa GPUDevice.WaitForIdle
  */
-inline void WaitForGPUFences(GPUDeviceParam device,
+inline void WaitForGPUFences(GPUDeviceRef device,
                              bool wait_all,
                              std::span<GPUFence* const> fences)
 {
@@ -71271,7 +71209,7 @@ inline void GPUDevice::WaitForFences(bool wait_all,
  *
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
-inline bool QueryGPUFence(GPUDeviceParam device, GPUFence* fence)
+inline bool QueryGPUFence(GPUDeviceRef device, GPUFence* fence)
 {
   return SDL_QueryGPUFence(device, fence);
 }
@@ -71293,7 +71231,7 @@ inline bool GPUDevice::QueryFence(GPUFence* fence)
  *
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
-inline void ReleaseGPUFence(GPUDeviceParam device, GPUFence* fence)
+inline void ReleaseGPUFence(GPUDeviceRef device, GPUFence* fence)
 {
   SDL_ReleaseGPUFence(device, fence);
 }
@@ -71329,7 +71267,7 @@ inline Uint32 GPUTextureFormatTexelBlockSize(GPUTextureFormat format)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GPUTextureSupportsFormat(GPUDeviceParam device,
+inline bool GPUTextureSupportsFormat(GPUDeviceRef device,
                                      GPUTextureFormat format,
                                      GPUTextureType type,
                                      GPUTextureUsageFlags usage)
@@ -71354,7 +71292,7 @@ inline bool GPUDevice::TextureSupportsFormat(GPUTextureFormat format,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GPUTextureSupportsSampleCount(GPUDeviceParam device,
+inline bool GPUTextureSupportsSampleCount(GPUDeviceRef device,
                                           GPUTextureFormat format,
                                           GPUSampleCount sample_count)
 {
@@ -71434,7 +71372,7 @@ inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
  *
  * @sa AddEventWatch
  */
-inline void GDKSuspendGPU(GPUDeviceParam device) { SDL_GDKSuspendGPU(device); }
+inline void GDKSuspendGPU(GPUDeviceRef device) { SDL_GDKSuspendGPU(device); }
 
 inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
 
@@ -71451,7 +71389,7 @@ inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
  *
  * @sa AddEventWatch
  */
-inline void GDKResumeGPU(GPUDeviceParam device) { SDL_GDKResumeGPU(device); }
+inline void GDKResumeGPU(GPUDeviceRef device) { SDL_GDKResumeGPU(device); }
 
 inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(m_resource); }
 
@@ -71508,8 +71446,6 @@ using JoystickRaw = SDL_Joystick*;
 
 // Forward decl
 struct JoystickRef;
-
-using JoystickParam = JoystickRef;
 
 /// Alias to raw representation for JoystickID.
 using JoystickIDRaw = SDL_JoystickID;
@@ -71863,7 +71799,7 @@ public:
   }
 
   /**
-   * Constructs from JoystickParam.
+   * Constructs from JoystickRef.
    *
    * @param resource a JoystickRaw to be wrapped.
    *
@@ -73260,9 +73196,7 @@ inline bool JoystickID::IsJoystickVirtual()
  * @sa Joystick.SetVirtualTouchpad
  * @sa SDL_SetJoystickVirtualSensorData
  */
-inline void SetJoystickVirtualAxis(JoystickParam joystick,
-                                   int axis,
-                                   Sint16 value)
+inline void SetJoystickVirtualAxis(JoystickRef joystick, int axis, Sint16 value)
 {
   CheckError(SDL_SetJoystickVirtualAxis(joystick, axis, value));
 }
@@ -73296,7 +73230,7 @@ inline void Joystick::SetVirtualAxis(int axis, Sint16 value)
  * @sa Joystick.SetVirtualTouchpad
  * @sa SDL_SetJoystickVirtualSensorData
  */
-inline void SetJoystickVirtualBall(JoystickParam joystick,
+inline void SetJoystickVirtualBall(JoystickRef joystick,
                                    int ball,
                                    Sint16 xrel,
                                    Sint16 yrel)
@@ -73332,7 +73266,7 @@ inline void Joystick::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
  * @sa Joystick.SetVirtualTouchpad
  * @sa SDL_SetJoystickVirtualSensorData
  */
-inline void SetJoystickVirtualButton(JoystickParam joystick,
+inline void SetJoystickVirtualButton(JoystickRef joystick,
                                      int button,
                                      bool down)
 {
@@ -73367,7 +73301,7 @@ inline void Joystick::SetVirtualButton(int button, bool down)
  * @sa Joystick.SetVirtualTouchpad
  * @sa SDL_SetJoystickVirtualSensorData
  */
-inline void SetJoystickVirtualHat(JoystickParam joystick, int hat, Uint8 value)
+inline void SetJoystickVirtualHat(JoystickRef joystick, int hat, Uint8 value)
 {
   CheckError(SDL_SetJoystickVirtualHat(joystick, hat, value));
 }
@@ -73404,7 +73338,7 @@ inline void Joystick::SetVirtualHat(int hat, Uint8 value)
  * @sa Joystick.SetVirtualHat
  * @sa SDL_SetJoystickVirtualSensorData
  */
-inline void SetJoystickVirtualTouchpad(JoystickParam joystick,
+inline void SetJoystickVirtualTouchpad(JoystickRef joystick,
                                        int touchpad,
                                        int finger,
                                        bool down,
@@ -73451,7 +73385,7 @@ inline void Joystick::SetVirtualTouchpad(int touchpad,
  * @sa Joystick.SetVirtualHat
  * @sa Joystick.SetVirtualTouchpad
  */
-inline void SendJoystickVirtualSensorData(JoystickParam joystick,
+inline void SendJoystickVirtualSensorData(JoystickRef joystick,
                                           SensorType type,
                                           Uint64 sensor_timestamp,
                                           const float* data,
@@ -73494,7 +73428,7 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetJoystickProperties(JoystickParam joystick)
+inline PropertiesRef GetJoystickProperties(JoystickRef joystick)
 {
   return {CheckError(SDL_GetJoystickProperties(joystick))};
 }
@@ -73532,7 +73466,7 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
  *
  * @sa JoystickID.GetJoystickNameForID
  */
-inline const char* GetJoystickName(JoystickParam joystick)
+inline const char* GetJoystickName(JoystickRef joystick)
 {
   return SDL_GetJoystickName(joystick);
 }
@@ -73555,7 +73489,7 @@ inline const char* Joystick::GetName()
  *
  * @sa JoystickID.GetJoystickPathForID
  */
-inline const char* GetJoystickPath(JoystickParam joystick)
+inline const char* GetJoystickPath(JoystickRef joystick)
 {
   return SDL_GetJoystickPath(joystick);
 }
@@ -73580,7 +73514,7 @@ inline const char* Joystick::GetPath()
  *
  * @sa Joystick.SetPlayerIndex
  */
-inline int GetJoystickPlayerIndex(JoystickParam joystick)
+inline int GetJoystickPlayerIndex(JoystickRef joystick)
 {
   return SDL_GetJoystickPlayerIndex(joystick);
 }
@@ -73604,7 +73538,7 @@ inline int Joystick::GetPlayerIndex()
  *
  * @sa Joystick.GetPlayerIndex
  */
-inline void SetJoystickPlayerIndex(JoystickParam joystick, int player_index)
+inline void SetJoystickPlayerIndex(JoystickRef joystick, int player_index)
 {
   CheckError(SDL_SetJoystickPlayerIndex(joystick, player_index));
 }
@@ -73630,7 +73564,7 @@ inline void Joystick::SetPlayerIndex(int player_index)
  * @sa JoystickID.GetJoystickGUIDForID
  * @sa GUID.ToString
  */
-inline GUID GetJoystickGUID(JoystickParam joystick)
+inline GUID GetJoystickGUID(JoystickRef joystick)
 {
   return SDL_GetJoystickGUID(joystick);
 }
@@ -73651,7 +73585,7 @@ inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(m_resource); }
  *
  * @sa JoystickID.GetJoystickVendorForID
  */
-inline Uint16 GetJoystickVendor(JoystickParam joystick)
+inline Uint16 GetJoystickVendor(JoystickRef joystick)
 {
   return SDL_GetJoystickVendor(joystick);
 }
@@ -73675,7 +73609,7 @@ inline Uint16 Joystick::GetVendor()
  *
  * @sa JoystickID.GetJoystickProductForID
  */
-inline Uint16 GetJoystickProduct(JoystickParam joystick)
+inline Uint16 GetJoystickProduct(JoystickRef joystick)
 {
   return SDL_GetJoystickProduct(joystick);
 }
@@ -73699,7 +73633,7 @@ inline Uint16 Joystick::GetProduct()
  *
  * @sa JoystickID.GetJoystickProductVersionForID
  */
-inline Uint16 GetJoystickProductVersion(JoystickParam joystick)
+inline Uint16 GetJoystickProductVersion(JoystickRef joystick)
 {
   return SDL_GetJoystickProductVersion(joystick);
 }
@@ -73721,7 +73655,7 @@ inline Uint16 Joystick::GetProductVersion()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint16 GetJoystickFirmwareVersion(JoystickParam joystick)
+inline Uint16 GetJoystickFirmwareVersion(JoystickRef joystick)
 {
   return SDL_GetJoystickFirmwareVersion(joystick);
 }
@@ -73744,7 +73678,7 @@ inline Uint16 Joystick::GetFirmwareVersion()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetJoystickSerial(JoystickParam joystick)
+inline const char* GetJoystickSerial(JoystickRef joystick)
 {
   return SDL_GetJoystickSerial(joystick);
 }
@@ -73766,7 +73700,7 @@ inline const char* Joystick::GetSerial()
  *
  * @sa JoystickID.GetJoystickTypeForID
  */
-inline JoystickType GetJoystickType(JoystickParam joystick)
+inline JoystickType GetJoystickType(JoystickRef joystick)
 {
   return SDL_GetJoystickType(joystick);
 }
@@ -73814,7 +73748,7 @@ inline void GetJoystickGUIDInfo(GUID guid,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool JoystickConnected(JoystickParam joystick)
+inline bool JoystickConnected(JoystickRef joystick)
 {
   return SDL_JoystickConnected(joystick);
 }
@@ -73832,7 +73766,7 @@ inline bool Joystick::Connected() { return SDL::JoystickConnected(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline JoystickID GetJoystickID(JoystickParam joystick)
+inline JoystickID GetJoystickID(JoystickRef joystick)
 {
   return CheckError(SDL_GetJoystickID(joystick));
 }
@@ -73859,7 +73793,7 @@ inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(m_resource); }
  * @sa Joystick.GetNumButtons
  * @sa Joystick.GetNumHats
  */
-inline int GetNumJoystickAxes(JoystickParam joystick)
+inline int GetNumJoystickAxes(JoystickRef joystick)
 {
   return CheckError(SDL_GetNumJoystickAxes(joystick));
 }
@@ -73890,7 +73824,7 @@ inline int Joystick::GetNumAxes()
  * @sa Joystick.GetNumButtons
  * @sa Joystick.GetNumHats
  */
-inline int GetNumJoystickBalls(JoystickParam joystick)
+inline int GetNumJoystickBalls(JoystickRef joystick)
 {
   return CheckError(SDL_GetNumJoystickBalls(joystick));
 }
@@ -73916,7 +73850,7 @@ inline int Joystick::GetNumBalls()
  * @sa Joystick.GetNumBalls
  * @sa Joystick.GetNumButtons
  */
-inline int GetNumJoystickHats(JoystickParam joystick)
+inline int GetNumJoystickHats(JoystickRef joystick)
 {
   return CheckError(SDL_GetNumJoystickHats(joystick));
 }
@@ -73942,7 +73876,7 @@ inline int Joystick::GetNumHats()
  * @sa Joystick.GetNumBalls
  * @sa Joystick.GetNumHats
  */
-inline int GetNumJoystickButtons(JoystickParam joystick)
+inline int GetNumJoystickButtons(JoystickRef joystick)
 {
   return CheckError(SDL_GetNumJoystickButtons(joystick));
 }
@@ -74024,7 +73958,7 @@ inline void UpdateJoysticks() { SDL_UpdateJoysticks(); }
  *
  * @sa Joystick.GetNumAxes
  */
-inline Sint16 GetJoystickAxis(JoystickParam joystick, int axis)
+inline Sint16 GetJoystickAxis(JoystickRef joystick, int axis)
 {
   return SDL_GetJoystickAxis(joystick, axis);
 }
@@ -74050,7 +73984,7 @@ inline Sint16 Joystick::GetAxis(int axis)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GetJoystickAxisInitialState(JoystickParam joystick,
+inline bool GetJoystickAxisInitialState(JoystickRef joystick,
                                         int axis,
                                         Sint16* state)
 {
@@ -74082,7 +74016,7 @@ inline bool Joystick::GetAxisInitialState(int axis, Sint16* state)
  *
  * @sa Joystick.GetNumBalls
  */
-inline void GetJoystickBall(JoystickParam joystick, int ball, int* dx, int* dy)
+inline void GetJoystickBall(JoystickRef joystick, int ball, int* dx, int* dy)
 {
   CheckError(SDL_GetJoystickBall(joystick, ball, dx, dy));
 }
@@ -74107,7 +74041,7 @@ inline void Joystick::GetBall(int ball, int* dx, int* dy)
  *
  * @sa Joystick.GetNumHats
  */
-inline Uint8 GetJoystickHat(JoystickParam joystick, int hat)
+inline Uint8 GetJoystickHat(JoystickRef joystick, int hat)
 {
   return SDL_GetJoystickHat(joystick, hat);
 }
@@ -74131,7 +74065,7 @@ inline Uint8 Joystick::GetHat(int hat)
  *
  * @sa Joystick.GetNumButtons
  */
-inline bool GetJoystickButton(JoystickParam joystick, int button)
+inline bool GetJoystickButton(JoystickRef joystick, int button)
 {
   return SDL_GetJoystickButton(joystick, button);
 }
@@ -74162,7 +74096,7 @@ inline bool Joystick::GetButton(int button)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RumbleJoystick(JoystickParam joystick,
+inline bool RumbleJoystick(JoystickRef joystick,
                            Uint16 low_frequency_rumble,
                            Uint16 high_frequency_rumble,
                            Uint32 duration_ms)
@@ -74206,7 +74140,7 @@ inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
  *
  * @sa Joystick.Rumble
  */
-inline void RumbleJoystickTriggers(JoystickParam joystick,
+inline void RumbleJoystickTriggers(JoystickRef joystick,
                                    Uint16 left_rumble,
                                    Uint16 right_rumble,
                                    Uint32 duration_ms)
@@ -74242,7 +74176,7 @@ inline void Joystick::RumbleTriggers(Uint16 left_rumble,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetJoystickLED(JoystickParam joystick,
+inline void SetJoystickLED(JoystickRef joystick,
                            Uint8 red,
                            Uint8 green,
                            Uint8 blue)
@@ -74267,9 +74201,7 @@ inline void Joystick::SetLED(Uint8 red, Uint8 green, Uint8 blue)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SendJoystickEffect(JoystickParam joystick,
-                               const void* data,
-                               int size)
+inline void SendJoystickEffect(JoystickRef joystick, const void* data, int size)
 {
   CheckError(SDL_SendJoystickEffect(joystick, data, size));
 }
@@ -74305,8 +74237,7 @@ inline void Joystick::Close() { CloseJoystick(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline JoystickConnectionState GetJoystickConnectionState(
-  JoystickParam joystick)
+inline JoystickConnectionState GetJoystickConnectionState(JoystickRef joystick)
 {
   return CheckError(SDL_GetJoystickConnectionState(joystick));
 }
@@ -74336,7 +74267,7 @@ inline JoystickConnectionState Joystick::GetConnectionState()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PowerState GetJoystickPowerInfo(JoystickParam joystick, int* percent)
+inline PowerState GetJoystickPowerInfo(JoystickRef joystick, int* percent)
 {
   return SDL_GetJoystickPowerInfo(joystick, percent);
 }
@@ -74567,7 +74498,7 @@ inline void Window::StartTextInput()
   CheckError(SDL_StartTextInput(m_resource));
 }
 
-inline void Window::StartTextInput(PropertiesParam props)
+inline void Window::StartTextInput(PropertiesRef props)
 {
   CheckError(SDL_StartTextInputWithProperties(m_resource, props));
 }
@@ -74862,7 +74793,7 @@ struct MessageBox : MessageBoxRaw
    */
   constexpr MessageBox(
     MessageBoxFlags flags,
-    WindowParam window,
+    WindowRef window,
     const char* title,
     const char* message,
     std::span<const MessageBoxButtonData> buttons,
@@ -74909,7 +74840,7 @@ struct MessageBox : MessageBoxRaw
    * @param newWindow the new window value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetWindow(WindowParam newWindow) noexcept
+  constexpr MessageBox& SetWindow(WindowRef newWindow) noexcept
   {
     window = newWindow;
     return *this;
@@ -75148,7 +75079,7 @@ inline void MessageBox::Show(int* buttonid) const
 inline void ShowSimpleMessageBox(MessageBoxFlags flags,
                                  StringParam title,
                                  StringParam message,
-                                 WindowParam window)
+                                 WindowRef window)
 {
   CheckError(SDL_ShowSimpleMessageBox(flags, title, message, window));
 }
@@ -75176,8 +75107,6 @@ using MetalViewRaw = SDL_MetalView;
 // Forward decl
 struct MetalViewRef;
 
-using MetalViewParam = MetalViewRef;
-
 /**
  * A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
  *
@@ -75197,7 +75126,7 @@ public:
   }
 
   /**
-   * Constructs from MetalViewParam.
+   * Constructs from MetalViewRef.
    *
    * @param resource a MetalViewRaw to be wrapped.
    *
@@ -75243,7 +75172,7 @@ public:
    * @sa MetalView.Destroy
    * @sa MetalView.GetLayer
    */
-  MetalView(WindowParam window);
+  MetalView(WindowRef window);
 
   /// Destructor
   ~MetalView() { SDL_Metal_DestroyView(m_resource); }
@@ -75382,12 +75311,12 @@ struct MetalViewRef : MetalView
  * @sa MetalView.Destroy
  * @sa MetalView.GetLayer
  */
-inline MetalView Metal_CreateView(WindowParam window)
+inline MetalView Metal_CreateView(WindowRef window)
 {
   return MetalView(window);
 }
 
-inline MetalView::MetalView(WindowParam window)
+inline MetalView::MetalView(WindowRef window)
   : m_resource(SDL_Metal_CreateView(window))
 {
 }
@@ -75423,7 +75352,7 @@ inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void* Metal_GetLayer(MetalViewParam view)
+inline void* Metal_GetLayer(MetalViewRef view)
 {
   return SDL_Metal_GetLayer(view);
 }
@@ -75477,8 +75406,6 @@ using CursorRaw = SDL_Cursor*;
 
 // Forward decl
 struct CursorRef;
-
-using CursorParam = CursorRef;
 
 /**
  * Cursor types for Cursor.Cursor().
@@ -75590,7 +75517,7 @@ public:
   }
 
   /**
-   * Constructs from CursorParam.
+   * Constructs from CursorRef.
    *
    * @param resource a CursorRaw to be wrapped.
    *
@@ -75694,7 +75621,7 @@ public:
    * @sa Cursor.Destroy
    * @sa Cursor.Set
    */
-  Cursor(SurfaceParam surface, const PointRaw& hot);
+  Cursor(SurfaceRef surface, const PointRaw& hot);
 
   /**
    * Create a system cursor.
@@ -76363,7 +76290,7 @@ inline Cursor::Cursor(const Uint8* data,
 {
 }
 
-inline Cursor::Cursor(SurfaceParam surface, const PointRaw& hot)
+inline Cursor::Cursor(SurfaceRef surface, const PointRaw& hot)
   : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
 {
 }
@@ -76403,7 +76330,7 @@ inline Cursor::Cursor(SystemCursor id)
  * @sa Cursor.Destroy
  * @sa Cursor.Set
  */
-inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
+inline Cursor CreateColorCursor(SurfaceRef surface, const PointRaw& hot)
 {
   return Cursor(surface, hot);
 }
@@ -76497,7 +76424,7 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  *
  * @sa GetCursor
  */
-inline void SetCursor(CursorParam cursor) { CheckError(SDL_SetCursor(cursor)); }
+inline void SetCursor(CursorRef cursor) { CheckError(SDL_SetCursor(cursor)); }
 
 inline void Cursor::Set() { SDL::SetCursor(m_resource); }
 
@@ -76665,8 +76592,6 @@ using GamepadRaw = SDL_Gamepad*;
 
 // Forward decl
 struct GamepadRef;
-
-using GamepadParam = GamepadRef;
 
 /**
  * Standard gamepad types.
@@ -76990,7 +76915,7 @@ public:
   }
 
   /**
-   * Constructs from GamepadParam.
+   * Constructs from GamepadRef.
    *
    * @param resource a GamepadRaw to be wrapped.
    *
@@ -77865,7 +77790,7 @@ inline int AddGamepadMapping(StringParam mapping)
  * @sa SDL_HINT_GAMECONTROLLERCONFIG_FILE
  * @sa EVENT_GAMEPAD_ADDED
  */
-inline int AddGamepadMappingsFromIO(IOStreamParam src, bool closeio)
+inline int AddGamepadMappingsFromIO(IOStreamRef src, bool closeio)
 {
   return SDL_AddGamepadMappingsFromIO(src, closeio);
 }
@@ -77974,7 +77899,7 @@ inline StringResult GetGamepadMappingForGUID(GUID guid)
  * @sa GetGamepadMappingForGUID
  * @sa SetGamepadMapping
  */
-inline StringResult GetGamepadMapping(GamepadParam gamepad)
+inline StringResult GetGamepadMapping(GamepadRef gamepad)
 {
   return StringResult(SDL_GetGamepadMapping(gamepad));
 }
@@ -78355,7 +78280,7 @@ inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetGamepadProperties(GamepadParam gamepad)
+inline PropertiesRef GetGamepadProperties(GamepadRef gamepad)
 {
   return {CheckError(SDL_GetGamepadProperties(gamepad))};
 }
@@ -78391,7 +78316,7 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline JoystickID GetGamepadID(GamepadParam gamepad)
+inline JoystickID GetGamepadID(GamepadRef gamepad)
 {
   return CheckError(SDL_GetGamepadID(gamepad));
 }
@@ -78411,7 +78336,7 @@ inline JoystickID Gamepad::GetID() { return SDL::GetGamepadID(m_resource); }
  *
  * @sa GetGamepadNameForID
  */
-inline const char* GetGamepadName(GamepadParam gamepad)
+inline const char* GetGamepadName(GamepadRef gamepad)
 {
   return SDL_GetGamepadName(gamepad);
 }
@@ -78434,7 +78359,7 @@ inline const char* Gamepad::GetName()
  *
  * @sa GetGamepadPathForID
  */
-inline const char* GetGamepadPath(GamepadParam gamepad)
+inline const char* GetGamepadPath(GamepadRef gamepad)
 {
   return SDL_GetGamepadPath(gamepad);
 }
@@ -78456,7 +78381,7 @@ inline const char* Gamepad::GetPath()
  *
  * @sa GetGamepadTypeForID
  */
-inline GamepadType GetGamepadType(GamepadParam gamepad)
+inline GamepadType GetGamepadType(GamepadRef gamepad)
 {
   return SDL_GetGamepadType(gamepad);
 }
@@ -78478,7 +78403,7 @@ inline GamepadType Gamepad::GetType()
  *
  * @sa GetRealGamepadTypeForID
  */
-inline GamepadType GetRealGamepadType(GamepadParam gamepad)
+inline GamepadType GetRealGamepadType(GamepadRef gamepad)
 {
   return SDL_GetRealGamepadType(gamepad);
 }
@@ -78502,7 +78427,7 @@ inline GamepadType Gamepad::GetRealType()
  *
  * @sa Gamepad.SetPlayerIndex
  */
-inline int GetGamepadPlayerIndex(GamepadParam gamepad)
+inline int GetGamepadPlayerIndex(GamepadRef gamepad)
 {
   return SDL_GetGamepadPlayerIndex(gamepad);
 }
@@ -78526,7 +78451,7 @@ inline int Gamepad::GetPlayerIndex()
  *
  * @sa Gamepad.GetPlayerIndex
  */
-inline void SetGamepadPlayerIndex(GamepadParam gamepad, int player_index)
+inline void SetGamepadPlayerIndex(GamepadRef gamepad, int player_index)
 {
   CheckError(SDL_SetGamepadPlayerIndex(gamepad, player_index));
 }
@@ -78550,7 +78475,7 @@ inline void Gamepad::SetPlayerIndex(int player_index)
  *
  * @sa GetGamepadVendorForID
  */
-inline Uint16 GetGamepadVendor(GamepadParam gamepad)
+inline Uint16 GetGamepadVendor(GamepadRef gamepad)
 {
   return SDL_GetGamepadVendor(gamepad);
 }
@@ -78571,7 +78496,7 @@ inline Uint16 Gamepad::GetVendor() { return SDL::GetGamepadVendor(m_resource); }
  *
  * @sa GetGamepadProductForID
  */
-inline Uint16 GetGamepadProduct(GamepadParam gamepad)
+inline Uint16 GetGamepadProduct(GamepadRef gamepad)
 {
   return SDL_GetGamepadProduct(gamepad);
 }
@@ -78595,7 +78520,7 @@ inline Uint16 Gamepad::GetProduct()
  *
  * @sa GetGamepadProductVersionForID
  */
-inline Uint16 GetGamepadProductVersion(GamepadParam gamepad)
+inline Uint16 GetGamepadProductVersion(GamepadRef gamepad)
 {
   return SDL_GetGamepadProductVersion(gamepad);
 }
@@ -78617,7 +78542,7 @@ inline Uint16 Gamepad::GetProductVersion()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint16 GetGamepadFirmwareVersion(GamepadParam gamepad)
+inline Uint16 GetGamepadFirmwareVersion(GamepadRef gamepad)
 {
   return SDL_GetGamepadFirmwareVersion(gamepad);
 }
@@ -78639,7 +78564,7 @@ inline Uint16 Gamepad::GetFirmwareVersion()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetGamepadSerial(GamepadParam gamepad)
+inline const char* GetGamepadSerial(GamepadRef gamepad)
 {
   return SDL_GetGamepadSerial(gamepad);
 }
@@ -78662,7 +78587,7 @@ inline const char* Gamepad::GetSerial()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint64 GetGamepadSteamHandle(GamepadParam gamepad)
+inline Uint64 GetGamepadSteamHandle(GamepadRef gamepad)
 {
   return SDL_GetGamepadSteamHandle(gamepad);
 }
@@ -78683,7 +78608,7 @@ inline Uint64 Gamepad::GetSteamHandle()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline JoystickConnectionState GetGamepadConnectionState(GamepadParam gamepad)
+inline JoystickConnectionState GetGamepadConnectionState(GamepadRef gamepad)
 {
   return CheckError(SDL_GetGamepadConnectionState(gamepad));
 }
@@ -78712,7 +78637,7 @@ inline JoystickConnectionState Gamepad::GetConnectionState()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PowerState GetGamepadPowerInfo(GamepadParam gamepad, int* percent)
+inline PowerState GetGamepadPowerInfo(GamepadRef gamepad, int* percent)
 {
   return SDL_GetGamepadPowerInfo(gamepad, percent);
 }
@@ -78733,7 +78658,7 @@ inline PowerState Gamepad::GetPowerInfo(int* percent)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GamepadConnected(GamepadParam gamepad)
+inline bool GamepadConnected(GamepadRef gamepad)
 {
   return SDL_GamepadConnected(gamepad);
 }
@@ -78760,7 +78685,7 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline JoystickRef GetGamepadJoystick(GamepadParam gamepad)
+inline JoystickRef GetGamepadJoystick(GamepadRef gamepad)
 {
   return {SDL_GetGamepadJoystick(gamepad)};
 }
@@ -78817,7 +78742,7 @@ inline bool GamepadEventsEnabled() { return SDL_GamepadEventsEnabled(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadParam gamepad)
+inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadRef gamepad)
 {
   int count;
   auto r = (SDL_GetGamepadBindings(gamepad, &count));
@@ -78946,7 +78871,7 @@ inline const char* GetGamepadStringForAxis(GamepadAxis axis)
  * @sa Gamepad.HasButton
  * @sa Gamepad.GetAxis
  */
-inline bool GamepadHasAxis(GamepadParam gamepad, GamepadAxis axis)
+inline bool GamepadHasAxis(GamepadRef gamepad, GamepadAxis axis)
 {
   return SDL_GamepadHasAxis(gamepad, axis);
 }
@@ -78982,7 +78907,7 @@ inline bool Gamepad::HasAxis(GamepadAxis axis)
  * @sa Gamepad.HasAxis
  * @sa Gamepad.GetButton
  */
-inline Sint16 GetGamepadAxis(GamepadParam gamepad, GamepadAxis axis)
+inline Sint16 GetGamepadAxis(GamepadRef gamepad, GamepadAxis axis)
 {
   return SDL_GetGamepadAxis(gamepad, axis);
 }
@@ -79050,7 +78975,7 @@ inline const char* GetGamepadStringForButton(GamepadButton button)
  *
  * @sa Gamepad.HasAxis
  */
-inline bool GamepadHasButton(GamepadParam gamepad, GamepadButton button)
+inline bool GamepadHasButton(GamepadRef gamepad, GamepadButton button)
 {
   return SDL_GamepadHasButton(gamepad, button);
 }
@@ -79074,7 +78999,7 @@ inline bool Gamepad::HasButton(GamepadButton button)
  * @sa Gamepad.HasButton
  * @sa Gamepad.GetAxis
  */
-inline bool GetGamepadButton(GamepadParam gamepad, GamepadButton button)
+inline bool GetGamepadButton(GamepadRef gamepad, GamepadButton button)
 {
   return SDL_GetGamepadButton(gamepad, button);
 }
@@ -79116,7 +79041,7 @@ inline GamepadButtonLabel GetGamepadButtonLabelForType(GamepadType type,
  *
  * @sa GetGamepadButtonLabelForType
  */
-inline GamepadButtonLabel GetGamepadButtonLabel(GamepadParam gamepad,
+inline GamepadButtonLabel GetGamepadButtonLabel(GamepadRef gamepad,
                                                 GamepadButton button)
 {
   return SDL_GetGamepadButtonLabel(gamepad, button);
@@ -79139,7 +79064,7 @@ inline GamepadButtonLabel Gamepad::GetButtonLabel(GamepadButton button)
  *
  * @sa Gamepad.GetNumTouchpadFingers
  */
-inline int GetNumGamepadTouchpads(GamepadParam gamepad)
+inline int GetNumGamepadTouchpads(GamepadRef gamepad)
 {
   return SDL_GetNumGamepadTouchpads(gamepad);
 }
@@ -79164,7 +79089,7 @@ inline int Gamepad::GetNumTouchpads()
  * @sa Gamepad.GetTouchpadFinger
  * @sa Gamepad.GetNumTouchpads
  */
-inline int GetNumGamepadTouchpadFingers(GamepadParam gamepad, int touchpad)
+inline int GetNumGamepadTouchpadFingers(GamepadRef gamepad, int touchpad)
 {
   return SDL_GetNumGamepadTouchpadFingers(gamepad, touchpad);
 }
@@ -79195,7 +79120,7 @@ inline int Gamepad::GetNumTouchpadFingers(int touchpad)
  *
  * @sa Gamepad.GetNumTouchpadFingers
  */
-inline void GetGamepadTouchpadFinger(GamepadParam gamepad,
+inline void GetGamepadTouchpadFinger(GamepadRef gamepad,
                                      int touchpad,
                                      int finger,
                                      bool* down,
@@ -79233,7 +79158,7 @@ inline void Gamepad::GetTouchpadFinger(int touchpad,
  * @sa Gamepad.GetSensorDataRate
  * @sa Gamepad.SetSensorEnabled
  */
-inline bool GamepadHasSensor(GamepadParam gamepad, SensorType type)
+inline bool GamepadHasSensor(GamepadRef gamepad, SensorType type)
 {
   return SDL_GamepadHasSensor(gamepad, type);
 }
@@ -79258,7 +79183,7 @@ inline bool Gamepad::HasSensor(SensorType type)
  * @sa Gamepad.HasSensor
  * @sa Gamepad.SensorEnabled
  */
-inline void SetGamepadSensorEnabled(GamepadParam gamepad,
+inline void SetGamepadSensorEnabled(GamepadRef gamepad,
                                     SensorType type,
                                     bool enabled)
 {
@@ -79283,7 +79208,7 @@ inline void Gamepad::SetSensorEnabled(SensorType type, bool enabled)
  *
  * @sa Gamepad.SetSensorEnabled
  */
-inline bool GamepadSensorEnabled(GamepadParam gamepad, SensorType type)
+inline bool GamepadSensorEnabled(GamepadRef gamepad, SensorType type)
 {
   return SDL_GamepadSensorEnabled(gamepad, type);
 }
@@ -79304,7 +79229,7 @@ inline bool Gamepad::SensorEnabled(SensorType type)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline float GetGamepadSensorDataRate(GamepadParam gamepad, SensorType type)
+inline float GetGamepadSensorDataRate(GamepadRef gamepad, SensorType type)
 {
   return SDL_GetGamepadSensorDataRate(gamepad, type);
 }
@@ -79330,7 +79255,7 @@ inline float Gamepad::GetSensorDataRate(SensorType type)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetGamepadSensorData(GamepadParam gamepad,
+inline void GetGamepadSensorData(GamepadRef gamepad,
                                  SensorType type,
                                  float* data,
                                  int num_values)
@@ -79364,7 +79289,7 @@ inline void Gamepad::GetSensorData(SensorType type, float* data, int num_values)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void RumbleGamepad(GamepadParam gamepad,
+inline void RumbleGamepad(GamepadRef gamepad,
                           Uint16 low_frequency_rumble,
                           Uint16 high_frequency_rumble,
                           Uint32 duration_ms)
@@ -79408,7 +79333,7 @@ inline void Gamepad::Rumble(Uint16 low_frequency_rumble,
  *
  * @sa Gamepad.Rumble
  */
-inline void RumbleGamepadTriggers(GamepadParam gamepad,
+inline void RumbleGamepadTriggers(GamepadRef gamepad,
                                   Uint16 left_rumble,
                                   Uint16 right_rumble,
                                   Uint32 duration_ms)
@@ -79444,7 +79369,7 @@ inline void Gamepad::RumbleTriggers(Uint16 left_rumble,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetGamepadLED(GamepadParam gamepad,
+inline void SetGamepadLED(GamepadRef gamepad,
                           Uint8 red,
                           Uint8 green,
                           Uint8 blue)
@@ -79469,7 +79394,7 @@ inline void Gamepad::SetLED(Uint8 red, Uint8 green, Uint8 blue)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SendGamepadEffect(GamepadParam gamepad, const void* data, int size)
+inline void SendGamepadEffect(GamepadRef gamepad, const void* data, int size)
 {
   CheckError(SDL_SendGamepadEffect(gamepad, data, size));
 }
@@ -79507,7 +79432,7 @@ inline void Gamepad::Close() { CloseGamepad(release()); }
  *
  * @sa Gamepad.GetAppleSFSymbolsNameForAxis
  */
-inline const char* GetGamepadAppleSFSymbolsNameForButton(GamepadParam gamepad,
+inline const char* GetGamepadAppleSFSymbolsNameForButton(GamepadRef gamepad,
                                                          GamepadButton button)
 {
   return SDL_GetGamepadAppleSFSymbolsNameForButton(gamepad, button);
@@ -79531,7 +79456,7 @@ inline const char* Gamepad::GetAppleSFSymbolsNameForButton(GamepadButton button)
  *
  * @sa Gamepad.GetAppleSFSymbolsNameForButton
  */
-inline const char* GetGamepadAppleSFSymbolsNameForAxis(GamepadParam gamepad,
+inline const char* GetGamepadAppleSFSymbolsNameForAxis(GamepadRef gamepad,
                                                        GamepadAxis axis)
 {
   return SDL_GetGamepadAppleSFSymbolsNameForAxis(gamepad, axis);
@@ -79648,8 +79573,6 @@ using HapticRaw = SDL_Haptic*;
 
 // Forward decl
 struct HapticRef;
-
-using HapticParam = HapticRef;
 
 /**
  * @name Haptic effects
@@ -80313,7 +80236,7 @@ public:
   }
 
   /**
-   * Constructs from HapticParam.
+   * Constructs from HapticRef.
    *
    * @param resource a HapticRaw to be wrapped.
    *
@@ -80384,7 +80307,7 @@ public:
    * @sa Haptic.Close
    * @sa IsJoystickHaptic
    */
-  Haptic(JoystickParam joystick);
+  Haptic(JoystickRef joystick);
 
   /**
    * Try to open a haptic device from the current mouse.
@@ -80887,7 +80810,7 @@ inline Haptic::Haptic(HapticID instance_id)
 {
 }
 
-inline Haptic::Haptic(JoystickParam joystick)
+inline Haptic::Haptic(JoystickRef joystick)
   : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
 {
 }
@@ -80915,7 +80838,7 @@ inline HapticRef GetHapticFromID(HapticID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline HapticID GetHapticID(HapticParam haptic)
+inline HapticID GetHapticID(HapticRef haptic)
 {
   return CheckError(SDL_GetHapticID(haptic));
 }
@@ -80933,7 +80856,7 @@ inline HapticID Haptic::GetID() { return SDL::GetHapticID(m_resource); }
  *
  * @sa GetHapticNameForID
  */
-inline const char* GetHapticName(HapticParam haptic)
+inline const char* GetHapticName(HapticRef haptic)
 {
   return SDL_GetHapticName(haptic);
 }
@@ -80979,7 +80902,7 @@ inline Haptic Haptic::OpenFromMouse() { return SDL::OpenHapticFromMouse(); }
  *
  * @sa Haptic.Haptic
  */
-inline bool IsJoystickHaptic(JoystickParam joystick)
+inline bool IsJoystickHaptic(JoystickRef joystick)
 {
   return SDL_IsJoystickHaptic(joystick);
 }
@@ -81004,7 +80927,7 @@ inline bool IsJoystickHaptic(JoystickParam joystick)
  * @sa Haptic.Close
  * @sa IsJoystickHaptic
  */
-inline Haptic OpenHapticFromJoystick(JoystickParam joystick)
+inline Haptic OpenHapticFromJoystick(JoystickRef joystick)
 {
   return Haptic(joystick);
 }
@@ -81038,7 +80961,7 @@ inline void Haptic::Close() { CloseHaptic(release()); }
  * @sa Haptic.GetMaxEffectsPlaying
  * @sa Haptic.GetFeatures
  */
-inline int GetMaxHapticEffects(HapticParam haptic)
+inline int GetMaxHapticEffects(HapticRef haptic)
 {
   return SDL_GetMaxHapticEffects(haptic);
 }
@@ -81062,7 +80985,7 @@ inline int Haptic::GetMaxEffects()
  * @sa Haptic.GetMaxEffects
  * @sa Haptic.GetFeatures
  */
-inline int GetMaxHapticEffectsPlaying(HapticParam haptic)
+inline int GetMaxHapticEffectsPlaying(HapticRef haptic)
 {
   return SDL_GetMaxHapticEffectsPlaying(haptic);
 }
@@ -81084,7 +81007,7 @@ inline int Haptic::GetMaxEffectsPlaying()
  * @sa Haptic.EffectSupported
  * @sa Haptic.GetMaxEffects
  */
-inline Uint32 GetHapticFeatures(HapticParam haptic)
+inline Uint32 GetHapticFeatures(HapticRef haptic)
 {
   return SDL_GetHapticFeatures(haptic);
 }
@@ -81106,7 +81029,7 @@ inline Uint32 Haptic::GetFeatures()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int GetNumHapticAxes(HapticParam haptic)
+inline int GetNumHapticAxes(HapticRef haptic)
 {
   return CheckError(SDL_GetNumHapticAxes(haptic));
 }
@@ -81125,8 +81048,7 @@ inline int Haptic::GetNumAxes() { return SDL::GetNumHapticAxes(m_resource); }
  * @sa Haptic.CreateEffect
  * @sa Haptic.GetFeatures
  */
-inline bool HapticEffectSupported(HapticParam haptic,
-                                  const HapticEffect& effect)
+inline bool HapticEffectSupported(HapticRef haptic, const HapticEffect& effect)
 {
   return SDL_HapticEffectSupported(haptic, &effect);
 }
@@ -81151,7 +81073,7 @@ inline bool Haptic::EffectSupported(const HapticEffect& effect)
  * @sa Haptic.RunEffect
  * @sa Haptic.UpdateEffect
  */
-inline HapticEffectID CreateHapticEffect(HapticParam haptic,
+inline HapticEffectID CreateHapticEffect(HapticRef haptic,
                                          const HapticEffect& effect)
 {
   return CheckError(SDL_CreateHapticEffect(haptic, &effect));
@@ -81181,7 +81103,7 @@ inline HapticEffectID Haptic::CreateEffect(const HapticEffect& effect)
  * @sa Haptic.CreateEffect
  * @sa Haptic.RunEffect
  */
-inline void UpdateHapticEffect(HapticParam haptic,
+inline void UpdateHapticEffect(HapticRef haptic,
                                HapticEffectID effect,
                                const HapticEffect& data)
 {
@@ -81214,7 +81136,7 @@ inline void Haptic::UpdateEffect(HapticEffectID effect,
  * @sa Haptic.StopEffect
  * @sa Haptic.StopEffects
  */
-inline void RunHapticEffect(HapticParam haptic,
+inline void RunHapticEffect(HapticRef haptic,
                             HapticEffectID effect,
                             Uint32 iterations)
 {
@@ -81238,7 +81160,7 @@ inline void Haptic::RunEffect(HapticEffectID effect, Uint32 iterations)
  * @sa Haptic.RunEffect
  * @sa Haptic.StopEffects
  */
-inline void StopHapticEffect(HapticParam haptic, HapticEffectID effect)
+inline void StopHapticEffect(HapticRef haptic, HapticEffectID effect)
 {
   CheckError(SDL_StopHapticEffect(haptic, effect));
 }
@@ -81261,7 +81183,7 @@ inline void Haptic::StopEffect(HapticEffectID effect)
  *
  * @sa Haptic.CreateEffect
  */
-inline void DestroyHapticEffect(HapticParam haptic, HapticEffectID effect)
+inline void DestroyHapticEffect(HapticRef haptic, HapticEffectID effect)
 {
   SDL_DestroyHapticEffect(haptic, effect);
 }
@@ -81285,7 +81207,7 @@ inline void Haptic::DestroyEffect(HapticEffectID effect)
  *
  * @sa Haptic.GetFeatures
  */
-inline bool GetHapticEffectStatus(HapticParam haptic, HapticEffectID effect)
+inline bool GetHapticEffectStatus(HapticRef haptic, HapticEffectID effect)
 {
   return SDL_GetHapticEffectStatus(haptic, effect);
 }
@@ -81313,7 +81235,7 @@ inline bool Haptic::GetEffectStatus(HapticEffectID effect)
  *
  * @sa Haptic.GetFeatures
  */
-inline void SetHapticGain(HapticParam haptic, int gain)
+inline void SetHapticGain(HapticRef haptic, int gain)
 {
   CheckError(SDL_SetHapticGain(haptic, gain));
 }
@@ -81336,7 +81258,7 @@ inline void Haptic::SetGain(int gain) { SDL::SetHapticGain(m_resource, gain); }
  *
  * @sa Haptic.GetFeatures
  */
-inline void SetHapticAutocenter(HapticParam haptic, int autocenter)
+inline void SetHapticAutocenter(HapticRef haptic, int autocenter)
 {
   CheckError(SDL_SetHapticAutocenter(haptic, autocenter));
 }
@@ -81362,7 +81284,7 @@ inline void Haptic::SetAutocenter(int autocenter)
  *
  * @sa Haptic.Resume
  */
-inline void PauseHaptic(HapticParam haptic)
+inline void PauseHaptic(HapticRef haptic)
 {
   CheckError(SDL_PauseHaptic(haptic));
 }
@@ -81381,7 +81303,7 @@ inline void Haptic::Pause() { SDL::PauseHaptic(m_resource); }
  *
  * @sa Haptic.Pause
  */
-inline void ResumeHaptic(HapticParam haptic)
+inline void ResumeHaptic(HapticRef haptic)
 {
   CheckError(SDL_ResumeHaptic(haptic));
 }
@@ -81399,7 +81321,7 @@ inline void Haptic::Resume() { SDL::ResumeHaptic(m_resource); }
  * @sa Haptic.RunEffect
  * @sa Haptic.StopEffects
  */
-inline void StopHapticEffects(HapticParam haptic)
+inline void StopHapticEffects(HapticRef haptic)
 {
   CheckError(SDL_StopHapticEffects(haptic));
 }
@@ -81416,7 +81338,7 @@ inline void Haptic::StopEffects() { SDL::StopHapticEffects(m_resource); }
  *
  * @sa Haptic.InitRumble
  */
-inline bool HapticRumbleSupported(HapticParam haptic)
+inline bool HapticRumbleSupported(HapticRef haptic)
 {
   return SDL_HapticRumbleSupported(haptic);
 }
@@ -81438,7 +81360,7 @@ inline bool Haptic::RumbleSupported()
  * @sa Haptic.StopRumble
  * @sa Haptic.RumbleSupported
  */
-inline void InitHapticRumble(HapticParam haptic)
+inline void InitHapticRumble(HapticRef haptic)
 {
   CheckError(SDL_InitHapticRumble(haptic));
 }
@@ -81458,7 +81380,7 @@ inline void Haptic::InitRumble() { SDL::InitHapticRumble(m_resource); }
  * @sa Haptic.InitRumble
  * @sa Haptic.StopRumble
  */
-inline void PlayHapticRumble(HapticParam haptic, float strength, Uint32 length)
+inline void PlayHapticRumble(HapticRef haptic, float strength, Uint32 length)
 {
   CheckError(SDL_PlayHapticRumble(haptic, strength, length));
 }
@@ -81478,7 +81400,7 @@ inline void Haptic::PlayRumble(float strength, Uint32 length)
  *
  * @sa Haptic.PlayRumble
  */
-inline void StopHapticRumble(HapticParam haptic)
+inline void StopHapticRumble(HapticRef haptic)
 {
   CheckError(SDL_StopHapticRumble(haptic));
 }
@@ -82319,8 +82241,6 @@ using RendererRaw = SDL_Renderer*;
 // Forward decl
 struct RendererRef;
 
-using RendererParam = RendererRef;
-
 // Forward decl
 struct Texture;
 
@@ -82329,8 +82249,6 @@ using TextureRaw = SDL_Texture*;
 
 // Forward decl
 struct TextureRef;
-
-using TextureParam = TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
 struct TextureConstRef
@@ -82372,8 +82290,6 @@ using GPURenderStateRaw = SDL_GPURenderState*;
 
 // Forward decl
 struct GPURenderStateRef;
-
-using GPURenderStateParam = GPURenderStateRef;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
@@ -82523,7 +82439,7 @@ public:
   }
 
   /**
-   * Constructs from RendererParam.
+   * Constructs from RendererRef.
    *
    * @param resource a RendererRaw to be wrapped.
    *
@@ -82580,7 +82496,7 @@ public:
    * @sa GetRenderDriver
    * @sa Renderer.GetName
    */
-  Renderer(WindowParam window)
+  Renderer(WindowRef window)
     : m_resource(CheckError(SDL_CreateRenderer(window, nullptr)))
   {
   }
@@ -82617,7 +82533,7 @@ public:
    * @sa GetRenderDriver
    * @sa Renderer.GetName
    */
-  Renderer(WindowParam window, StringParam name);
+  Renderer(WindowRef window, StringParam name);
 
   /**
    * Create a 2D rendering context for a window, with the specified properties.
@@ -82680,7 +82596,7 @@ public:
    * @sa Renderer.Destroy
    * @sa Renderer.GetName
    */
-  Renderer(PropertiesParam props);
+  Renderer(PropertiesRef props);
 
   /**
    * Create a 2D software rendering context for a surface.
@@ -82700,7 +82616,7 @@ public:
    *
    * @sa Renderer.Destroy
    */
-  Renderer(SurfaceParam surface);
+  Renderer(SurfaceRef surface);
 
   /// Destructor
   ~Renderer() { SDL_DestroyRenderer(m_resource); }
@@ -83007,7 +82923,7 @@ public:
    * @sa Texture.Texture
    * @sa Texture.Destroy
    */
-  Texture CreateTextureFromSurface(SurfaceParam surface);
+  Texture CreateTextureFromSurface(SurfaceRef surface);
 
   /**
    * Create a texture for a rendering context with the specified properties.
@@ -83133,7 +83049,7 @@ public:
    * @sa Texture.GetSize
    * @sa Texture.Update
    */
-  Texture CreateTextureWithProperties(PropertiesParam props);
+  Texture CreateTextureWithProperties(PropertiesRef props);
 
   /**
    * Set a texture as the current rendering target.
@@ -83158,7 +83074,7 @@ public:
    *
    * @sa Renderer.GetTarget
    */
-  void SetTarget(TextureParam texture);
+  void SetTarget(TextureRef texture);
 
   /**
    * Set target texture back to window
@@ -83954,7 +83870,7 @@ public:
    * @sa Renderer.RenderTextureRotated
    * @sa Renderer.RenderTextureTiled
    */
-  void RenderTexture(TextureParam texture,
+  void RenderTexture(TextureRef texture,
                      OptionalRef<const FRectRaw> srcrect,
                      OptionalRef<const FRectRaw> dstrect);
 
@@ -83982,7 +83898,7 @@ public:
    *
    * @sa Renderer.RenderTexture
    */
-  void RenderTextureRotated(TextureParam texture,
+  void RenderTextureRotated(TextureRef texture,
                             OptionalRef<const FRectRaw> srcrect,
                             OptionalRef<const FRectRaw> dstrect,
                             double angle,
@@ -84013,7 +83929,7 @@ public:
    *
    * @sa Renderer.RenderTexture
    */
-  void RenderTextureAffine(TextureParam texture,
+  void RenderTextureAffine(TextureRef texture,
                            OptionalRef<const FRectRaw> srcrect,
                            OptionalRef<const FPointRaw> origin,
                            OptionalRef<const FPointRaw> right,
@@ -84042,7 +83958,7 @@ public:
    *
    * @sa Renderer.RenderTexture
    */
-  void RenderTextureTiled(TextureParam texture,
+  void RenderTextureTiled(TextureRef texture,
                           OptionalRef<const FRectRaw> srcrect,
                           float scale,
                           OptionalRef<const FRectRaw> dstrect);
@@ -84078,7 +83994,7 @@ public:
    * @sa Renderer.RenderTexture
    * @sa Renderer.RenderTexture9GridTiled
    */
-  void RenderTexture9Grid(TextureParam texture,
+  void RenderTexture9Grid(TextureRef texture,
                           OptionalRef<const FRectRaw> srcrect,
                           float left_width,
                           float right_width,
@@ -84123,7 +84039,7 @@ public:
    * @sa Renderer.RenderTexture
    * @sa Renderer.RenderTexture9Grid
    */
-  void RenderTexture9GridTiled(TextureParam texture,
+  void RenderTexture9GridTiled(TextureRef texture,
                                const FRectRaw& srcrect,
                                float left_width,
                                float right_width,
@@ -84154,7 +84070,7 @@ public:
    * @sa Renderer.RenderGeometryRaw
    * @sa Renderer.SetRenderTextureAddressMode
    */
-  void RenderGeometry(TextureParam texture,
+  void RenderGeometry(TextureRef texture,
                       std::span<const Vertex> vertices,
                       std::span<const int> indices = {});
 
@@ -84185,7 +84101,7 @@ public:
    * @sa Renderer.RenderGeometry
    * @sa Renderer.SetRenderTextureAddressMode
    */
-  void RenderGeometryRaw(TextureParam texture,
+  void RenderGeometryRaw(TextureRef texture,
                          const float* xy,
                          int xy_stride,
                          const FColor* color,
@@ -84588,7 +84504,7 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    */
-  void SetGPURenderState(GPURenderStateParam state);
+  void SetGPURenderState(GPURenderStateRef state);
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
@@ -84676,7 +84592,7 @@ public:
   }
 
   /**
-   * Constructs from TextureParam.
+   * Constructs from TextureRef.
    *
    * @param resource a TextureRaw to be wrapped.
    *
@@ -84725,7 +84641,7 @@ public:
    * @sa Texture.GetSize
    * @sa Texture.Update
    */
-  Texture(RendererParam renderer,
+  Texture(RendererRef renderer,
           PixelFormat format,
           TextureAccess access,
           const PointRaw& size);
@@ -84753,7 +84669,7 @@ public:
    * @sa Texture.Texture
    * @sa Texture.Destroy
    */
-  Texture(RendererParam renderer, SurfaceParam surface);
+  Texture(RendererRef renderer, SurfaceRef surface);
 
   /**
    * Create a texture for a rendering context with the specified properties.
@@ -84879,7 +84795,7 @@ public:
    * @sa Texture.GetSize
    * @sa Texture.Update
    */
-  Texture(RendererParam renderer, PropertiesParam props);
+  Texture(RendererRef renderer, PropertiesRef props);
 
   /**
    * Load an image from a filesystem path into a texture.
@@ -84910,7 +84826,7 @@ public:
    * @sa LoadTextureTyped
    * @sa Texture.Texture
    */
-  Texture(RendererParam renderer, StringParam file);
+  Texture(RendererRef renderer, StringParam file);
 
   /**
    * Load an image from an SDL data source into a texture.
@@ -84952,7 +84868,7 @@ public:
    * @sa Texture.Texture
    * @sa LoadTextureTyped
    */
-  Texture(RendererParam renderer, IOStreamParam src, bool closeio = false);
+  Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
 
   /**
    * Safely borrows the from TextureRaw.
@@ -85181,7 +85097,7 @@ public:
    * @sa Palette.Palette
    * @sa Texture.GetPalette
    */
-  void SetPalette(PaletteParam palette);
+  void SetPalette(PaletteRef palette);
 
   /**
    * Get the palette used by a texture.
@@ -86278,22 +86194,22 @@ inline Window::Window(StringParam title,
  * @sa GetRenderDriver
  * @sa Renderer.GetName
  */
-inline Renderer CreateRenderer(WindowParam window, StringParam name)
+inline Renderer CreateRenderer(WindowRef window, StringParam name)
 {
   return Renderer(window, std::move(name));
 }
 
-inline Renderer::Renderer(WindowParam window, StringParam name)
+inline Renderer::Renderer(WindowRef window, StringParam name)
   : m_resource(SDL_CreateRenderer(window, name))
 {
 }
 
-inline Renderer::Renderer(PropertiesParam props)
+inline Renderer::Renderer(PropertiesRef props)
   : m_resource(SDL_CreateRendererWithProperties(props))
 {
 }
 
-inline Renderer::Renderer(SurfaceParam surface)
+inline Renderer::Renderer(SurfaceRef surface)
   : m_resource(SDL_CreateSoftwareRenderer(surface))
 {
 }
@@ -86360,7 +86276,7 @@ inline Renderer::Renderer(SurfaceParam surface)
  * @sa Renderer.Destroy
  * @sa Renderer.GetName
  */
-inline Renderer CreateRendererWithProperties(PropertiesParam props)
+inline Renderer CreateRendererWithProperties(PropertiesRef props)
 {
   return Renderer(props);
 }
@@ -86516,7 +86432,7 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
  * @sa GPURenderState.GPURenderState
  * @sa Renderer.SetGPURenderState
  */
-inline RendererRef CreateGPURenderer(GPUDeviceParam device, WindowParam window)
+inline RendererRef CreateGPURenderer(GPUDeviceRef device, WindowRef window)
 {
   return SDL_CreateGPURenderer(device, window);
 }
@@ -86532,7 +86448,7 @@ inline RendererRef CreateGPURenderer(GPUDeviceParam device, WindowParam window)
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline GPUDeviceRef GetGPURendererDevice(RendererParam renderer)
+inline GPUDeviceRef GetGPURendererDevice(RendererRef renderer)
 {
   return SDL_GetGPURendererDevice(renderer);
 }
@@ -86563,7 +86479,7 @@ inline GPUDeviceRef Renderer::GetGPUDevice()
  *
  * @sa Renderer.Destroy
  */
-inline Renderer CreateSoftwareRenderer(SurfaceParam surface)
+inline Renderer CreateSoftwareRenderer(SurfaceRef surface)
 {
   return Renderer(surface);
 }
@@ -86584,7 +86500,7 @@ inline RendererRef Window::GetRenderer() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline WindowRef GetRenderWindow(RendererParam renderer)
+inline WindowRef GetRenderWindow(RendererRef renderer)
 {
   return {CheckError(SDL_GetRenderWindow(renderer))};
 }
@@ -86608,7 +86524,7 @@ inline WindowRef Renderer::GetWindow()
  * @sa Renderer.Renderer
  * @sa Renderer.Renderer
  */
-inline const char* GetRendererName(RendererParam renderer)
+inline const char* GetRendererName(RendererRef renderer)
 {
   return SDL_GetRendererName(renderer);
 }
@@ -86703,7 +86619,7 @@ inline const char* Renderer::GetName() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetRendererProperties(RendererParam renderer)
+inline PropertiesRef GetRendererProperties(RendererRef renderer)
 {
   return {CheckError(SDL_GetRendererProperties(renderer))};
 }
@@ -86733,7 +86649,7 @@ inline PropertiesRef Renderer::GetProperties() const
  *
  * @sa Renderer.GetCurrentOutputSize
  */
-inline void GetRenderOutputSize(RendererParam renderer, int* w, int* h)
+inline void GetRenderOutputSize(RendererRef renderer, int* w, int* h)
 {
   CheckError(SDL_GetRenderOutputSize(renderer, w, h));
 }
@@ -86757,7 +86673,7 @@ inline void GetRenderOutputSize(RendererParam renderer, int* w, int* h)
  *
  * @sa Renderer.GetCurrentOutputSize
  */
-inline Point GetRenderOutputSize(RendererParam renderer)
+inline Point GetRenderOutputSize(RendererRef renderer)
 {
   Point p;
   GetRenderOutputSize(renderer, &p.x, &p.y);
@@ -86794,7 +86710,7 @@ inline Point Renderer::GetOutputSize() const
  *
  * @sa Renderer.GetOutputSize
  */
-inline void GetCurrentRenderOutputSize(RendererParam renderer, int* w, int* h)
+inline void GetCurrentRenderOutputSize(RendererRef renderer, int* w, int* h)
 {
   CheckError(SDL_GetCurrentRenderOutputSize(renderer, w, h));
 }
@@ -86818,7 +86734,7 @@ inline void GetCurrentRenderOutputSize(RendererParam renderer, int* w, int* h)
  *
  * @sa Renderer.GetOutputSize
  */
-inline Point GetCurrentRenderOutputSize(RendererParam renderer)
+inline Point GetCurrentRenderOutputSize(RendererRef renderer)
 {
   Point p;
   GetCurrentRenderOutputSize(renderer, &p.x, &p.y);
@@ -86857,7 +86773,7 @@ inline Point Renderer::GetCurrentOutputSize() const
  * @sa Texture.GetSize
  * @sa Texture.Update
  */
-inline Texture CreateTexture(RendererParam renderer,
+inline Texture CreateTexture(RendererRef renderer,
                              PixelFormat format,
                              TextureAccess access,
                              const PointRaw& size)
@@ -86872,7 +86788,7 @@ inline Texture Renderer::CreateTexture(PixelFormat format,
   return Texture(m_resource, format, access, size);
 }
 
-inline Texture::Texture(RendererParam renderer,
+inline Texture::Texture(RendererRef renderer,
                         PixelFormat format,
                         TextureAccess access,
                         const PointRaw& size)
@@ -86880,12 +86796,12 @@ inline Texture::Texture(RendererParam renderer,
 {
 }
 
-inline Texture::Texture(RendererParam renderer, SurfaceParam surface)
+inline Texture::Texture(RendererRef renderer, SurfaceRef surface)
   : m_resource(SDL_CreateTextureFromSurface(renderer, surface))
 {
 }
 
-inline Texture::Texture(RendererParam renderer, PropertiesParam props)
+inline Texture::Texture(RendererRef renderer, PropertiesRef props)
   : m_resource(SDL_CreateTextureWithProperties(renderer, props))
 {
 }
@@ -86915,13 +86831,13 @@ inline Texture::Texture(RendererParam renderer, PropertiesParam props)
  * @sa Texture.Texture
  * @sa Texture.Destroy
  */
-inline Texture CreateTextureFromSurface(RendererParam renderer,
-                                        SurfaceParam surface)
+inline Texture CreateTextureFromSurface(RendererRef renderer,
+                                        SurfaceRef surface)
 {
   return Texture(renderer, surface);
 }
 
-inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
+inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
 {
   return Texture(m_resource, surface);
 }
@@ -87049,13 +86965,13 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  * @sa Texture.GetSize
  * @sa Texture.Update
  */
-inline Texture CreateTextureWithProperties(RendererParam renderer,
-                                           PropertiesParam props)
+inline Texture CreateTextureWithProperties(RendererRef renderer,
+                                           PropertiesRef props)
 {
   return Texture(renderer, props);
 }
 
-inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
+inline Texture Renderer::CreateTextureWithProperties(PropertiesRef props)
 {
   return Texture(m_resource, props);
 }
@@ -87457,12 +87373,12 @@ inline PixelFormat Texture::GetFormat() const
  * @sa Palette.Palette
  * @sa Texture.GetPalette
  */
-inline void SetTexturePalette(TextureParam texture, PaletteParam palette)
+inline void SetTexturePalette(TextureRef texture, PaletteRef palette)
 {
   CheckError(SDL_SetTexturePalette(texture, palette));
 }
 
-inline void Texture::SetPalette(PaletteParam palette)
+inline void Texture::SetPalette(PaletteRef palette)
 {
   SDL::SetTexturePalette(m_resource, palette);
 }
@@ -87480,7 +87396,7 @@ inline void Texture::SetPalette(PaletteParam palette)
  *
  * @sa Texture.SetPalette
  */
-inline Palette GetTexturePalette(TextureParam texture)
+inline Palette GetTexturePalette(TextureRef texture)
 {
   return Palette::Borrow(SDL_GetTexturePalette(texture));
 }
@@ -87518,7 +87434,7 @@ inline Palette Texture::GetPalette()
  * @sa Texture.SetAlphaMod
  * @sa Texture.SetColorModFloat
  */
-inline void SetTextureColorMod(TextureParam texture, Uint8 r, Uint8 g, Uint8 b)
+inline void SetTextureColorMod(TextureRef texture, Uint8 r, Uint8 g, Uint8 b)
 {
   CheckError(SDL_SetTextureColorMod(texture, r, g, b));
 }
@@ -87554,7 +87470,7 @@ inline void Texture::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
  * @sa Texture.SetAlphaModFloat
  * @sa Texture.SetColorMod
  */
-inline void SetTextureColorModFloat(TextureParam texture,
+inline void SetTextureColorModFloat(TextureRef texture,
                                     float r,
                                     float g,
                                     float b)
@@ -87650,7 +87566,7 @@ inline void Texture::GetColorModFloat(float* r, float* g, float* b) const
  * @sa Texture.SetAlphaModFloat
  * @sa Texture.SetColorMod
  */
-inline void SetTextureAlphaMod(TextureParam texture, Uint8 alpha)
+inline void SetTextureAlphaMod(TextureRef texture, Uint8 alpha)
 {
   CheckError(SDL_SetTextureAlphaMod(texture, alpha));
 }
@@ -87683,7 +87599,7 @@ inline void Texture::SetAlphaMod(Uint8 alpha)
  * @sa Texture.SetAlphaMod
  * @sa Texture.SetColorModFloat
  */
-inline void SetTextureAlphaModFloat(TextureParam texture, float alpha)
+inline void SetTextureAlphaModFloat(TextureRef texture, float alpha)
 {
   CheckError(SDL_SetTextureAlphaModFloat(texture, alpha));
 }
@@ -87770,7 +87686,7 @@ inline float Texture::GetAlphaModFloat() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetTextureMod(TextureParam texture, Color c)
+inline void SetTextureMod(TextureRef texture, Color c)
 {
   SetTextureColorMod(texture, c.r, c.g, c.b);
   SetTextureAlphaMod(texture, c.a);
@@ -87801,7 +87717,7 @@ inline void Texture::SetMod(Color c) { SDL::SetTextureMod(m_resource, c); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetTextureModFloat(TextureParam texture, FColor c)
+inline void SetTextureModFloat(TextureRef texture, FColor c)
 {
   SetTextureColorModFloat(texture, c.r, c.g, c.b);
   SetTextureAlphaModFloat(texture, c.a);
@@ -87879,7 +87795,7 @@ inline FColor Texture::GetModFloat() const
  *
  * @sa Texture.GetBlendMode
  */
-inline void SetTextureBlendMode(TextureParam texture, BlendMode blendMode)
+inline void SetTextureBlendMode(TextureRef texture, BlendMode blendMode)
 {
   CheckError(SDL_SetTextureBlendMode(texture, blendMode));
 }
@@ -87931,7 +87847,7 @@ inline BlendMode Texture::GetBlendMode() const
  *
  * @sa Texture.GetScaleMode
  */
-inline void SetTextureScaleMode(TextureParam texture, ScaleMode scaleMode)
+inline void SetTextureScaleMode(TextureRef texture, ScaleMode scaleMode)
 {
   CheckError(SDL_SetTextureScaleMode(texture, scaleMode));
 }
@@ -87997,7 +87913,7 @@ inline ScaleMode Texture::GetScaleMode() const
  * @sa Texture.UpdateNV
  * @sa Texture.UpdateYUV
  */
-inline void UpdateTexture(TextureParam texture,
+inline void UpdateTexture(TextureRef texture,
                           OptionalRef<const RectRaw> rect,
                           const void* pixels,
                           int pitch)
@@ -88035,7 +87951,7 @@ inline void UpdateTexture(TextureParam texture,
  * @sa Texture.UpdateNV
  * @sa Texture.UpdateYUV
  */
-inline void UpdateTexture(TextureParam texture,
+inline void UpdateTexture(TextureRef texture,
                           SurfaceConstRef surface,
                           OptionalRef<const RectRaw> rect = std::nullopt)
 {
@@ -88080,7 +87996,7 @@ inline void Texture::Update(SurfaceConstRef surface,
  * @sa Texture.UpdateNV
  * @sa Texture.Update
  */
-inline void UpdateYUVTexture(TextureParam texture,
+inline void UpdateYUVTexture(TextureRef texture,
                              OptionalRef<const RectRaw> rect,
                              const Uint8* Yplane,
                              int Ypitch,
@@ -88129,7 +88045,7 @@ inline void Texture::UpdateYUV(OptionalRef<const RectRaw> rect,
  * @sa Texture.Update
  * @sa Texture.UpdateYUV
  */
-inline void UpdateNVTexture(TextureParam texture,
+inline void UpdateNVTexture(TextureRef texture,
                             OptionalRef<const RectRaw> rect,
                             const Uint8* Yplane,
                             int Ypitch,
@@ -88176,7 +88092,7 @@ inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
  * @sa Texture.LockToSurface
  * @sa Texture.Unlock
  */
-inline void LockTexture(TextureParam texture,
+inline void LockTexture(TextureRef texture,
                         OptionalRef<const RectRaw> rect,
                         void** pixels,
                         int* pitch)
@@ -88232,7 +88148,7 @@ inline TextureLock::TextureLock(TextureRef resource,
  * @sa Texture.Unlock
  */
 inline Surface LockTextureToSurface(
-  TextureParam texture,
+  TextureRef texture,
   OptionalRef<const RectRaw> rect = std::nullopt)
 {
   SurfaceRaw surface = nullptr;
@@ -88272,7 +88188,7 @@ inline TextureSurfaceLock::TextureSurfaceLock(TextureRef resource,
  *
  * @sa Texture.Lock
  */
-inline void UnlockTexture(TextureParam texture) { SDL_UnlockTexture(texture); }
+inline void UnlockTexture(TextureRef texture) { SDL_UnlockTexture(texture); }
 
 inline void Texture::Unlock(TextureLock&& lock)
 {
@@ -88325,12 +88241,12 @@ inline void TextureLock::reset()
  *
  * @sa Renderer.GetTarget
  */
-inline void SetRenderTarget(RendererParam renderer, TextureParam texture)
+inline void SetRenderTarget(RendererRef renderer, TextureRef texture)
 {
   CheckError(SDL_SetRenderTarget(renderer, texture));
 }
 
-inline void Renderer::SetTarget(TextureParam texture)
+inline void Renderer::SetTarget(TextureRef texture)
 {
   SDL::SetRenderTarget(m_resource, texture);
 }
@@ -88350,7 +88266,7 @@ inline void Renderer::SetTarget(TextureParam texture)
  * @sa SetTarget(nullptr)
  * @sa GetTarget()
  */
-inline void ResetRenderTarget(RendererParam renderer)
+inline void ResetRenderTarget(RendererRef renderer)
 {
   SetRenderTarget(renderer, nullptr);
 }
@@ -88372,7 +88288,7 @@ inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(m_resource); }
  *
  * @sa Renderer.SetTarget
  */
-inline Texture GetRenderTarget(RendererParam renderer)
+inline Texture GetRenderTarget(RendererRef renderer)
 {
   if (auto texture = SDL_GetRenderTarget(renderer))
     return Texture::Borrow(texture);
@@ -88427,7 +88343,7 @@ inline Texture Renderer::GetTarget() const
  * @sa Renderer.GetLogicalPresentation
  * @sa Renderer.GetLogicalPresentationRect
  */
-inline void SetRenderLogicalPresentation(RendererParam renderer,
+inline void SetRenderLogicalPresentation(RendererRef renderer,
                                          const PointRaw& size,
                                          RendererLogicalPresentation mode)
 {
@@ -88461,7 +88377,7 @@ inline void Renderer::SetLogicalPresentation(const PointRaw& size,
  *
  * @sa Renderer.SetLogicalPresentation
  */
-inline void GetRenderLogicalPresentation(RendererParam renderer,
+inline void GetRenderLogicalPresentation(RendererRef renderer,
                                          int* w,
                                          int* h,
                                          RendererLogicalPresentation* mode)
@@ -88490,7 +88406,7 @@ inline void GetRenderLogicalPresentation(RendererParam renderer,
  *
  * @sa Renderer.SetLogicalPresentation
  */
-inline void GetRenderLogicalPresentation(RendererParam renderer,
+inline void GetRenderLogicalPresentation(RendererRef renderer,
                                          PointRaw* size,
                                          RendererLogicalPresentation* mode)
 {
@@ -88534,7 +88450,7 @@ inline void Renderer::GetLogicalPresentation(PointRaw* size,
  *
  * @sa Renderer.SetLogicalPresentation
  */
-inline FRect GetRenderLogicalPresentationRect(RendererParam renderer)
+inline FRect GetRenderLogicalPresentationRect(RendererRef renderer)
 {
   FRect rect;
   CheckError(SDL_GetRenderLogicalPresentationRect(renderer, &rect));
@@ -88568,7 +88484,7 @@ inline FRect Renderer::GetLogicalPresentationRect() const
  * @sa Renderer.SetLogicalPresentation
  * @sa Renderer.SetScale
  */
-inline FPoint RenderCoordinatesFromWindow(RendererParam renderer,
+inline FPoint RenderCoordinatesFromWindow(RendererRef renderer,
                                           const FPointRaw& window_coord)
 {
   FPoint p;
@@ -88606,7 +88522,7 @@ inline FPoint Renderer::RenderCoordinatesFromWindow(
  * @sa Renderer.SetScale
  * @sa Renderer.SetViewport
  */
-inline FPoint RenderCoordinatesToWindow(RendererParam renderer,
+inline FPoint RenderCoordinatesToWindow(RendererRef renderer,
                                         const FPointRaw& coord)
 {
   FPoint p;
@@ -88652,8 +88568,7 @@ inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
  *
  * @sa Renderer.RenderCoordinatesFromWindow
  */
-inline void ConvertEventToRenderCoordinates(RendererParam renderer,
-                                            Event* event)
+inline void ConvertEventToRenderCoordinates(RendererRef renderer, Event* event)
 {
   CheckError(SDL_ConvertEventToRenderCoordinates(renderer, event));
 }
@@ -88687,7 +88602,7 @@ inline void Renderer::ConvertEventToRenderCoordinates(Event* event) const
  * @sa Renderer.GetViewport
  * @sa Renderer.ViewportSet
  */
-inline void SetRenderViewport(RendererParam renderer,
+inline void SetRenderViewport(RendererRef renderer,
                               OptionalRef<const RectRaw> rect)
 {
   CheckError(SDL_SetRenderViewport(renderer, rect));
@@ -88714,7 +88629,7 @@ inline void Renderer::SetViewport(OptionalRef<const RectRaw> rect)
  * @sa SetViewport()
  * @sa ViewportSet()
  */
-inline void ResetRenderViewport(RendererParam renderer)
+inline void ResetRenderViewport(RendererRef renderer)
 {
   SetRenderViewport(renderer, std::nullopt);
 }
@@ -88738,7 +88653,7 @@ inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(m_resource); }
  * @sa Renderer.ViewportSet
  * @sa Renderer.SetViewport
  */
-inline Rect GetRenderViewport(RendererParam renderer)
+inline Rect GetRenderViewport(RendererRef renderer)
 {
   Rect rect;
   CheckError(SDL_GetRenderViewport(renderer, &rect));
@@ -88770,7 +88685,7 @@ inline Rect Renderer::GetViewport() const
  * @sa Renderer.GetViewport
  * @sa Renderer.SetViewport
  */
-inline bool RenderViewportSet(RendererParam renderer)
+inline bool RenderViewportSet(RendererRef renderer)
 {
   return SDL_RenderViewportSet(renderer);
 }
@@ -88798,7 +88713,7 @@ inline bool Renderer::ViewportSet() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Rect GetRenderSafeArea(RendererParam renderer)
+inline Rect GetRenderSafeArea(RendererRef renderer)
 {
   Rect rect;
   CheckError(SDL_GetRenderSafeArea(renderer, &rect));
@@ -88828,7 +88743,7 @@ inline Rect Renderer::GetSafeArea() const
  * @sa Renderer.GetClipRect
  * @sa Renderer.IsClipEnabled
  */
-inline void SetRenderClipRect(RendererParam renderer,
+inline void SetRenderClipRect(RendererRef renderer,
                               OptionalRef<const RectRaw> rect)
 {
   CheckError(SDL_SetRenderClipRect(renderer, rect));
@@ -88855,7 +88770,7 @@ inline void Renderer::SetClipRect(OptionalRef<const RectRaw> rect)
  * @sa SetClipRect()
  * @sa ClipEnabled()
  */
-inline void ResetRenderClipRect(RendererParam renderer)
+inline void ResetRenderClipRect(RendererRef renderer)
 {
   SetRenderClipRect(renderer, std::nullopt);
 }
@@ -88880,7 +88795,7 @@ inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(m_resource); }
  * @sa Renderer.IsClipEnabled
  * @sa Renderer.SetClipRect
  */
-inline Rect GetRenderClipRect(RendererParam renderer)
+inline Rect GetRenderClipRect(RendererRef renderer)
 {
   Rect rect;
   CheckError(SDL_GetRenderClipRect(renderer, &rect));
@@ -88909,7 +88824,7 @@ inline Rect Renderer::GetClipRect() const
  * @sa Renderer.GetClipRect
  * @sa Renderer.SetClipRect
  */
-inline bool RenderClipEnabled(RendererParam renderer)
+inline bool RenderClipEnabled(RendererRef renderer)
 {
   return SDL_RenderClipEnabled(renderer);
 }
@@ -88943,7 +88858,7 @@ inline bool Renderer::IsClipEnabled() const
  *
  * @sa Renderer.GetScale
  */
-inline void SetRenderScale(RendererParam renderer, const FPointRaw& scale)
+inline void SetRenderScale(RendererRef renderer, const FPointRaw& scale)
 {
   CheckError(SDL_SetRenderScale(renderer, scale.x, scale.y));
 }
@@ -88970,7 +88885,7 @@ inline void Renderer::SetScale(const FPointRaw& scale)
  *
  * @sa Renderer.SetScale
  */
-inline void GetRenderScale(RendererParam renderer, float* scaleX, float* scaleY)
+inline void GetRenderScale(RendererRef renderer, float* scaleX, float* scaleY)
 {
   CheckError(SDL_GetRenderScale(renderer, scaleX, scaleY));
 }
@@ -88990,7 +88905,7 @@ inline void GetRenderScale(RendererParam renderer, float* scaleX, float* scaleY)
  *
  * @sa Renderer.SetScale
  */
-inline FPoint GetRenderScale(RendererParam renderer)
+inline FPoint GetRenderScale(RendererRef renderer)
 {
   FPoint p;
   GetRenderScale(renderer, &p.x, &p.y);
@@ -89024,7 +88939,7 @@ inline FPoint Renderer::GetScale() const
  * @sa Renderer.GetDrawColor
  * @sa Renderer.SetDrawColorFloat
  */
-inline void SetRenderDrawColor(RendererParam renderer, ColorRaw c)
+inline void SetRenderDrawColor(RendererRef renderer, ColorRaw c)
 {
   CheckError(SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a));
 }
@@ -89051,7 +88966,7 @@ inline void Renderer::SetDrawColor(ColorRaw c)
  * @sa Renderer.GetDrawColorFloat
  * @sa Renderer.SetDrawColor
  */
-inline void SetRenderDrawColorFloat(RendererParam renderer, const FColorRaw& c)
+inline void SetRenderDrawColorFloat(RendererRef renderer, const FColorRaw& c)
 {
   CheckError(SDL_SetRenderDrawColorFloat(renderer, c.r, c.g, c.b, c.a));
 }
@@ -89082,7 +88997,7 @@ inline void Renderer::SetDrawColorFloat(const FColorRaw& c)
  * @sa Renderer.GetDrawColorFloat
  * @sa Renderer.SetDrawColor
  */
-inline void GetRenderDrawColor(RendererParam renderer,
+inline void GetRenderDrawColor(RendererRef renderer,
                                Uint8* r,
                                Uint8* g,
                                Uint8* b,
@@ -89105,7 +89020,7 @@ inline void GetRenderDrawColor(RendererParam renderer,
  * @sa Renderer.GetDrawColorFloat
  * @sa Renderer.SetDrawColor
  */
-inline Color GetRenderDrawColor(RendererParam renderer)
+inline Color GetRenderDrawColor(RendererRef renderer)
 {
   Color c;
   GetRenderDrawColor(renderer, &c.r, &c.g, &c.b, &c.a);
@@ -89143,7 +89058,7 @@ inline Color Renderer::GetDrawColor() const
  * @sa Renderer.SetDrawColorFloat
  * @sa Renderer.GetDrawColor
  */
-inline void GetRenderDrawColorFloat(RendererParam renderer,
+inline void GetRenderDrawColorFloat(RendererRef renderer,
                                     float* r,
                                     float* g,
                                     float* b,
@@ -89166,7 +89081,7 @@ inline void GetRenderDrawColorFloat(RendererParam renderer,
  * @sa Renderer.SetDrawColorFloat
  * @sa Renderer.GetDrawColor
  */
-inline FColor GetRenderDrawColorFloat(RendererParam renderer)
+inline FColor GetRenderDrawColorFloat(RendererRef renderer)
 {
   FColor c;
   GetRenderDrawColorFloat(renderer, &c.r, &c.g, &c.b, &c.a);
@@ -89206,7 +89121,7 @@ inline FColor Renderer::GetDrawColorFloat() const
  *
  * @sa Renderer.GetColorScale
  */
-inline void SetRenderColorScale(RendererParam renderer, float scale)
+inline void SetRenderColorScale(RendererRef renderer, float scale)
 {
   CheckError(SDL_SetRenderColorScale(renderer, scale));
 }
@@ -89229,7 +89144,7 @@ inline void Renderer::SetColorScale(float scale)
  *
  * @sa Renderer.SetColorScale
  */
-inline float GetRenderColorScale(RendererParam renderer)
+inline float GetRenderColorScale(RendererRef renderer)
 {
   float scale;
   CheckError(SDL_GetRenderColorScale(renderer, &scale));
@@ -89256,7 +89171,7 @@ inline float Renderer::GetColorScale() const
  *
  * @sa Renderer.GetDrawBlendMode
  */
-inline void SetRenderDrawBlendMode(RendererParam renderer, BlendMode blendMode)
+inline void SetRenderDrawBlendMode(RendererRef renderer, BlendMode blendMode)
 {
   CheckError(SDL_SetRenderDrawBlendMode(renderer, blendMode));
 }
@@ -89279,7 +89194,7 @@ inline void Renderer::SetDrawBlendMode(BlendMode blendMode)
  *
  * @sa Renderer.SetDrawBlendMode
  */
-inline BlendMode GetRenderDrawBlendMode(RendererParam renderer)
+inline BlendMode GetRenderDrawBlendMode(RendererRef renderer)
 {
   BlendMode blendMode;
   CheckError(SDL_GetRenderDrawBlendMode(renderer, &blendMode));
@@ -89308,7 +89223,7 @@ inline BlendMode Renderer::GetDrawBlendMode() const
  *
  * @sa Renderer.SetDrawColor
  */
-inline void RenderClear(RendererParam renderer)
+inline void RenderClear(RendererRef renderer)
 {
   CheckError(SDL_RenderClear(renderer));
 }
@@ -89328,7 +89243,7 @@ inline void Renderer::RenderClear() { SDL::RenderClear(m_resource); }
  *
  * @sa Renderer.RenderPoints
  */
-inline void RenderPoint(RendererParam renderer, const FPointRaw& p)
+inline void RenderPoint(RendererRef renderer, const FPointRaw& p)
 {
   CheckError(SDL_RenderPoint(renderer, p.x, p.y));
 }
@@ -89351,8 +89266,7 @@ inline void Renderer::RenderPoint(const FPointRaw& p)
  *
  * @sa Renderer.RenderPoint
  */
-inline void RenderPoints(RendererParam renderer,
-                         SpanRef<const FPointRaw> points)
+inline void RenderPoints(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
   CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
 }
@@ -89376,7 +89290,7 @@ inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
  *
  * @sa Renderer.RenderLines
  */
-inline void RenderLine(RendererParam renderer,
+inline void RenderLine(RendererRef renderer,
                        const FPointRaw& p1,
                        const FPointRaw& p2)
 {
@@ -89402,7 +89316,7 @@ inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
  *
  * @sa Renderer.RenderLine
  */
-inline void RenderLines(RendererParam renderer, SpanRef<const FPointRaw> points)
+inline void RenderLines(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
   CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
 }
@@ -89426,7 +89340,7 @@ inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
  *
  * @sa Renderer.RenderRects
  */
-inline void RenderRect(RendererParam renderer, OptionalRef<const FRectRaw> rect)
+inline void RenderRect(RendererRef renderer, OptionalRef<const FRectRaw> rect)
 {
   CheckError(SDL_RenderRect(renderer, rect));
 }
@@ -89450,7 +89364,7 @@ inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
  *
  * @sa Renderer.RenderRect
  */
-inline void RenderRects(RendererParam renderer, SpanRef<const FRectRaw> rects)
+inline void RenderRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
   CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
 }
@@ -89475,7 +89389,7 @@ inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
  *
  * @sa Renderer.RenderFillRects
  */
-inline void RenderFillRect(RendererParam renderer,
+inline void RenderFillRect(RendererRef renderer,
                            OptionalRef<const FRectRaw> rect)
 {
   CheckError(SDL_RenderFillRect(renderer, rect));
@@ -89500,8 +89414,7 @@ inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
  *
  * @sa Renderer.RenderFillRect
  */
-inline void RenderFillRects(RendererParam renderer,
-                            SpanRef<const FRectRaw> rects)
+inline void RenderFillRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
   CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
 }
@@ -89530,15 +89443,15 @@ inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
  * @sa Renderer.RenderTextureRotated
  * @sa Renderer.RenderTextureTiled
  */
-inline void RenderTexture(RendererParam renderer,
-                          TextureParam texture,
+inline void RenderTexture(RendererRef renderer,
+                          TextureRef texture,
                           OptionalRef<const FRectRaw> srcrect,
                           OptionalRef<const FRectRaw> dstrect)
 {
   CheckError(SDL_RenderTexture(renderer, texture, srcrect, dstrect));
 }
 
-inline void Renderer::RenderTexture(TextureParam texture,
+inline void Renderer::RenderTexture(TextureRef texture,
                                     OptionalRef<const FRectRaw> srcrect,
                                     OptionalRef<const FRectRaw> dstrect)
 {
@@ -89570,8 +89483,8 @@ inline void Renderer::RenderTexture(TextureParam texture,
  *
  * @sa Renderer.RenderTexture
  */
-inline void RenderTextureRotated(RendererParam renderer,
-                                 TextureParam texture,
+inline void RenderTextureRotated(RendererRef renderer,
+                                 TextureRef texture,
                                  OptionalRef<const FRectRaw> srcrect,
                                  OptionalRef<const FRectRaw> dstrect,
                                  double angle,
@@ -89582,7 +89495,7 @@ inline void RenderTextureRotated(RendererParam renderer,
     renderer, texture, srcrect, dstrect, angle, center, flip));
 }
 
-inline void Renderer::RenderTextureRotated(TextureParam texture,
+inline void Renderer::RenderTextureRotated(TextureRef texture,
                                            OptionalRef<const FRectRaw> srcrect,
                                            OptionalRef<const FRectRaw> dstrect,
                                            double angle,
@@ -89618,8 +89531,8 @@ inline void Renderer::RenderTextureRotated(TextureParam texture,
  *
  * @sa Renderer.RenderTexture
  */
-inline void RenderTextureAffine(RendererParam renderer,
-                                TextureParam texture,
+inline void RenderTextureAffine(RendererRef renderer,
+                                TextureRef texture,
                                 OptionalRef<const FRectRaw> srcrect,
                                 OptionalRef<const FPointRaw> origin,
                                 OptionalRef<const FPointRaw> right,
@@ -89629,7 +89542,7 @@ inline void RenderTextureAffine(RendererParam renderer,
     SDL_RenderTextureAffine(renderer, texture, srcrect, origin, right, down));
 }
 
-inline void Renderer::RenderTextureAffine(TextureParam texture,
+inline void Renderer::RenderTextureAffine(TextureRef texture,
                                           OptionalRef<const FRectRaw> srcrect,
                                           OptionalRef<const FPointRaw> origin,
                                           OptionalRef<const FPointRaw> right,
@@ -89662,8 +89575,8 @@ inline void Renderer::RenderTextureAffine(TextureParam texture,
  *
  * @sa Renderer.RenderTexture
  */
-inline void RenderTextureTiled(RendererParam renderer,
-                               TextureParam texture,
+inline void RenderTextureTiled(RendererRef renderer,
+                               TextureRef texture,
                                OptionalRef<const FRectRaw> srcrect,
                                float scale,
                                OptionalRef<const FRectRaw> dstrect)
@@ -89672,7 +89585,7 @@ inline void RenderTextureTiled(RendererParam renderer,
     SDL_RenderTextureTiled(renderer, texture, srcrect, scale, dstrect));
 }
 
-inline void Renderer::RenderTextureTiled(TextureParam texture,
+inline void Renderer::RenderTextureTiled(TextureRef texture,
                                          OptionalRef<const FRectRaw> srcrect,
                                          float scale,
                                          OptionalRef<const FRectRaw> dstrect)
@@ -89712,8 +89625,8 @@ inline void Renderer::RenderTextureTiled(TextureParam texture,
  * @sa Renderer.RenderTexture
  * @sa Renderer.RenderTexture9GridTiled
  */
-inline void RenderTexture9Grid(RendererParam renderer,
-                               TextureParam texture,
+inline void RenderTexture9Grid(RendererRef renderer,
+                               TextureRef texture,
                                OptionalRef<const FRectRaw> srcrect,
                                float left_width,
                                float right_width,
@@ -89733,7 +89646,7 @@ inline void RenderTexture9Grid(RendererParam renderer,
                                     dstrect));
 }
 
-inline void Renderer::RenderTexture9Grid(TextureParam texture,
+inline void Renderer::RenderTexture9Grid(TextureRef texture,
                                          OptionalRef<const FRectRaw> srcrect,
                                          float left_width,
                                          float right_width,
@@ -89790,8 +89703,8 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
  * @sa Renderer.RenderTexture
  * @sa Renderer.RenderTexture9Grid
  */
-inline void RenderTexture9GridTiled(RendererParam renderer,
-                                    TextureParam texture,
+inline void RenderTexture9GridTiled(RendererRef renderer,
+                                    TextureRef texture,
                                     const FRectRaw& srcrect,
                                     float left_width,
                                     float right_width,
@@ -89813,7 +89726,7 @@ inline void RenderTexture9GridTiled(RendererParam renderer,
                                          tileScale));
 }
 
-inline void Renderer::RenderTexture9GridTiled(TextureParam texture,
+inline void Renderer::RenderTexture9GridTiled(TextureRef texture,
                                               const FRectRaw& srcrect,
                                               float left_width,
                                               float right_width,
@@ -89857,8 +89770,8 @@ inline void Renderer::RenderTexture9GridTiled(TextureParam texture,
  * @sa Renderer.RenderGeometryRaw
  * @sa Renderer.SetRenderTextureAddressMode
  */
-inline void RenderGeometry(RendererParam renderer,
-                           TextureParam texture,
+inline void RenderGeometry(RendererRef renderer,
+                           TextureRef texture,
                            std::span<const Vertex> vertices,
                            std::span<const int> indices = {})
 {
@@ -89870,7 +89783,7 @@ inline void RenderGeometry(RendererParam renderer,
                                 indices.size()));
 }
 
-inline void Renderer::RenderGeometry(TextureParam texture,
+inline void Renderer::RenderGeometry(TextureRef texture,
                                      std::span<const Vertex> vertices,
                                      std::span<const int> indices)
 {
@@ -89904,8 +89817,8 @@ inline void Renderer::RenderGeometry(TextureParam texture,
  * @sa Renderer.RenderGeometry
  * @sa Renderer.SetRenderTextureAddressMode
  */
-inline void RenderGeometryRaw(RendererParam renderer,
-                              TextureParam texture,
+inline void RenderGeometryRaw(RendererRef renderer,
+                              TextureRef texture,
                               const float* xy,
                               int xy_stride,
                               const FColor* color,
@@ -89931,7 +89844,7 @@ inline void RenderGeometryRaw(RendererParam renderer,
                                    size_indices));
 }
 
-inline void Renderer::RenderGeometryRaw(TextureParam texture,
+inline void Renderer::RenderGeometryRaw(TextureRef texture,
                                         const float* xy,
                                         int xy_stride,
                                         const FColor* color,
@@ -89977,7 +89890,7 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
  * @sa Renderer.RenderGeometryRaw
  * @sa Renderer.GetRenderTextureAddressMode
  */
-inline void SetRenderTextureAddressMode(RendererParam renderer,
+inline void SetRenderTextureAddressMode(RendererRef renderer,
                                         TextureAddressMode u_mode,
                                         TextureAddressMode v_mode)
 {
@@ -90008,7 +89921,7 @@ inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
  *
  * @sa Renderer.SetRenderTextureAddressMode
  */
-inline void GetRenderTextureAddressMode(RendererParam renderer,
+inline void GetRenderTextureAddressMode(RendererRef renderer,
                                         TextureAddressMode* u_mode,
                                         TextureAddressMode* v_mode)
 {
@@ -90048,7 +89961,7 @@ inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Surface RenderReadPixels(RendererParam renderer,
+inline Surface RenderReadPixels(RendererRef renderer,
                                 OptionalRef<const RectRaw> rect = {})
 {
   return Surface{CheckError(SDL_RenderReadPixels(renderer, rect))};
@@ -90104,7 +90017,7 @@ inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
  * @sa Renderer.SetDrawBlendMode
  * @sa Renderer.SetDrawColor
  */
-inline void RenderPresent(RendererParam renderer)
+inline void RenderPresent(RendererRef renderer)
 {
   CheckError(SDL_RenderPresent(renderer));
 }
@@ -90180,7 +90093,7 @@ inline void Renderer::Destroy() { DestroyRenderer(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void FlushRenderer(RendererParam renderer)
+inline void FlushRenderer(RendererRef renderer)
 {
   CheckError(SDL_FlushRenderer(renderer));
 }
@@ -90203,7 +90116,7 @@ inline void Renderer::Flush() { SDL::FlushRenderer(m_resource); }
  *
  * @sa Renderer.GetRenderMetalCommandEncoder
  */
-inline void* GetRenderMetalLayer(RendererParam renderer)
+inline void* GetRenderMetalLayer(RendererRef renderer)
 {
   return CheckError(SDL_GetRenderMetalLayer(renderer));
 }
@@ -90234,7 +90147,7 @@ inline void* Renderer::GetRenderMetalLayer()
  *
  * @sa Renderer.GetRenderMetalLayer
  */
-inline void* GetRenderMetalCommandEncoder(RendererParam renderer)
+inline void* GetRenderMetalCommandEncoder(RendererRef renderer)
 {
   return CheckError(SDL_GetRenderMetalCommandEncoder(renderer));
 }
@@ -90270,7 +90183,7 @@ inline void* Renderer::GetRenderMetalCommandEncoder()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void AddVulkanRenderSemaphores(RendererParam renderer,
+inline void AddVulkanRenderSemaphores(RendererRef renderer,
                                       Uint32 wait_stage_mask,
                                       Sint64 wait_semaphore,
                                       Sint64 signal_semaphore)
@@ -90309,7 +90222,7 @@ inline void Renderer::AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
  *
  * @sa Renderer.GetVSync
  */
-inline void SetRenderVSync(RendererParam renderer, int vsync)
+inline void SetRenderVSync(RendererRef renderer, int vsync)
 {
   CheckError(SDL_SetRenderVSync(renderer, vsync));
 }
@@ -90339,7 +90252,7 @@ constexpr int RENDERER_VSYNC_ADAPTIVE = SDL_RENDERER_VSYNC_ADAPTIVE;
  *
  * @sa Renderer.SetVSync
  */
-inline int GetRenderVSync(RendererParam renderer)
+inline int GetRenderVSync(RendererRef renderer)
 {
   int vsync;
   CheckError(SDL_GetRenderVSync(renderer, &vsync));
@@ -90400,7 +90313,7 @@ constexpr int DEBUG_TEXT_FONT_CHARACTER_SIZE =
  * @sa Renderer.RenderDebugTextFormat
  * @sa DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
-inline void RenderDebugText(RendererParam renderer,
+inline void RenderDebugText(RendererRef renderer,
                             const FPointRaw& p,
                             StringParam str)
 {
@@ -90437,7 +90350,7 @@ inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
  * @sa DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
 template<class... ARGS>
-inline void RenderDebugTextFormat(RendererParam renderer,
+inline void RenderDebugTextFormat(RendererRef renderer,
                                   const FPointRaw& p,
                                   std::string_view fmt,
                                   ARGS... args)
@@ -90471,7 +90384,7 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
  *
  * @sa Renderer.GetDefaultTextureScaleMode
  */
-inline void SetDefaultTextureScaleMode(RendererParam renderer,
+inline void SetDefaultTextureScaleMode(RendererRef renderer,
                                        ScaleMode scale_mode)
 {
   CheckError(SDL_SetDefaultTextureScaleMode(renderer, scale_mode));
@@ -90497,7 +90410,7 @@ inline void Renderer::SetDefaultTextureScaleMode(ScaleMode scale_mode)
  *
  * @sa Renderer.SetDefaultTextureScaleMode
  */
-inline void GetDefaultTextureScaleMode(RendererParam renderer,
+inline void GetDefaultTextureScaleMode(RendererRef renderer,
                                        ScaleMode* scale_mode)
 {
   CheckError(SDL_GetDefaultTextureScaleMode(renderer, scale_mode));
@@ -90529,7 +90442,7 @@ public:
   constexpr GPURenderState() = default;
 
   /**
-   * Constructs from GPURenderStateParam.
+   * Constructs from GPURenderStateRef.
    *
    * @param resource a GPURenderStateRaw to be wrapped.
    *
@@ -90572,7 +90485,7 @@ public:
    * @sa Renderer.SetGPURenderState
    * @sa GPURenderState.Destroy
    */
-  GPURenderState(RendererParam renderer,
+  GPURenderState(RendererRef renderer,
                  const GPURenderStateCreateInfo& createinfo);
 
   /// Destructor
@@ -90712,7 +90625,7 @@ struct GPURenderStateRef : GPURenderState
  * @sa GPURenderState.Destroy
  */
 inline GPURenderState CreateGPURenderState(
-  RendererParam renderer,
+  RendererRef renderer,
   const GPURenderStateCreateInfo& createinfo)
 {
   return GPURenderState(renderer, createinfo);
@@ -90725,7 +90638,7 @@ inline GPURenderState Renderer::CreateGPURenderState(
 }
 
 inline GPURenderState::GPURenderState(
-  RendererParam renderer,
+  RendererRef renderer,
   const GPURenderStateCreateInfo& createinfo)
   : m_resource(SDL_CreateGPURenderState(renderer, &createinfo))
 {
@@ -90748,7 +90661,7 @@ inline GPURenderState::GPURenderState(
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline void SetGPURenderStateFragmentUniforms(GPURenderStateParam state,
+inline void SetGPURenderStateFragmentUniforms(GPURenderStateRef state,
                                               Uint32 slot_index,
                                               const void* data,
                                               Uint32 length)
@@ -90780,12 +90693,12 @@ inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline void SetGPURenderState(RendererParam renderer, GPURenderStateParam state)
+inline void SetGPURenderState(RendererRef renderer, GPURenderStateRef state)
 {
   CheckError(SDL_SetGPURenderState(renderer, state));
 }
 
-inline void Renderer::SetGPURenderState(GPURenderStateParam state)
+inline void Renderer::SetGPURenderState(GPURenderStateRef state)
 {
   SDL::SetGPURenderState(m_resource, state);
 }
@@ -91072,7 +90985,7 @@ using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
  *
  * @sa SetiOSEventPump
  */
-inline void SetiOSAnimationCallback(WindowParam window,
+inline void SetiOSAnimationCallback(WindowRef window,
                                     int interval,
                                     iOSAnimationCallback callback,
                                     void* callbackParam)
@@ -92253,8 +92166,6 @@ using AnimationRaw = IMG_Animation*;
 // Forward decl
 struct AnimationRef;
 
-using AnimationParam = AnimationRef;
-
 /// Safely wrap Animation for non owning const parameters
 struct AnimationConstRef
 {
@@ -92296,8 +92207,6 @@ using AnimationEncoderRaw = IMG_AnimationEncoder*;
 // Forward decl
 struct AnimationEncoderRef;
 
-using AnimationEncoderParam = AnimationEncoderRef;
-
 // Forward decl
 struct AnimationDecoder;
 
@@ -92307,7 +92216,6 @@ using AnimationDecoderRaw = IMG_AnimationDecoder*;
 // Forward decl
 struct AnimationDecoderRef;
 
-using AnimationDecoderParam = AnimationDecoderRef;
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 #ifdef SDL3PP_DOC
@@ -92435,7 +92343,7 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  * @sa Surface.Surface
  * @sa LoadSurfaceTyped
  */
-inline Surface LoadSurface(IOStreamParam src, bool closeio)
+inline Surface LoadSurface(IOStreamRef src, bool closeio)
 {
   return Surface{IMG_Load_IO(src, closeio)};
 }
@@ -92445,7 +92353,7 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamParam src, bool closeio)
+inline Surface::Surface(IOStreamRef src, bool closeio)
   : m_resource(IMG_Load_IO(src, closeio))
 {
 }
@@ -92503,7 +92411,7 @@ inline Surface::Surface(IOStreamParam src, bool closeio)
  * @sa Surface.Surface
  * @sa Surface.Surface
  */
-inline Surface LoadSurfaceTyped(IOStreamParam src,
+inline Surface LoadSurfaceTyped(IOStreamRef src,
                                 StringParam type,
                                 bool closeio = false)
 {
@@ -92538,7 +92446,7 @@ inline Surface LoadSurfaceTyped(IOStreamParam src,
  * @sa LoadTextureTyped
  * @sa Texture.Texture
  */
-inline Texture LoadTexture(RendererParam renderer, StringParam file)
+inline Texture LoadTexture(RendererRef renderer, StringParam file)
 {
   return Texture(IMG_LoadTexture(renderer, file));
 }
@@ -92582,19 +92490,19 @@ inline Texture LoadTexture(RendererParam renderer, StringParam file)
  * @sa Texture.Texture
  * @sa LoadTextureTyped
  */
-inline Texture LoadTexture(RendererParam renderer,
-                           IOStreamParam src,
+inline Texture LoadTexture(RendererRef renderer,
+                           IOStreamRef src,
                            bool closeio = false)
 {
   return Texture(IMG_LoadTexture_IO(renderer, src, closeio));
 }
 
-inline Texture::Texture(RendererParam renderer, StringParam file)
+inline Texture::Texture(RendererRef renderer, StringParam file)
   : m_resource(IMG_LoadTexture(renderer, file))
 {
 }
 
-inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
+inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
   : m_resource(IMG_LoadTexture_IO(renderer, src, closeio))
 {
 }
@@ -92646,8 +92554,8 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
  * @sa Texture.Texture
  * @sa Texture.Destroy
  */
-inline Texture LoadTextureTyped(RendererParam renderer,
-                                IOStreamParam src,
+inline Texture LoadTextureTyped(RendererRef renderer,
+                                IOStreamRef src,
                                 StringParam type,
                                 bool closeio = false)
 {
@@ -92687,7 +92595,7 @@ inline Texture LoadTextureTyped(RendererParam renderer,
  * @sa LoadGPUTextureTyped
  * @sa LoadGPUTexture
  */
-inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
+inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
                                  GPUCopyPass copy_pass,
                                  StringParam file,
                                  int* width = nullptr,
@@ -92738,9 +92646,9 @@ inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
  * @sa LoadGPUTexture
  * @sa LoadGPUTextureTyped
  */
-inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
+inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
                                  GPUCopyPass copy_pass,
-                                 IOStreamParam src,
+                                 IOStreamRef src,
                                  bool closeio = false,
                                  int* width = nullptr,
                                  int* height = nullptr)
@@ -92798,9 +92706,9 @@ inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
  * @sa LoadGPUTexture
  * @sa LoadGPUTexture
  */
-inline GPUTexture LoadGPUTextureTyped(GPUDeviceParam device,
+inline GPUTexture LoadGPUTextureTyped(GPUDeviceRef device,
                                       GPUCopyPass copy_pass,
-                                      IOStreamParam src,
+                                      IOStreamRef src,
                                       StringParam type,
                                       bool closeio = false,
                                       int* width = nullptr,
@@ -92863,7 +92771,7 @@ inline Surface GetClipboardImage() { return Surface{IMG_GetClipboardImage()}; }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isANI(IOStreamParam src) { return IMG_isANI(src); }
+inline bool isANI(IOStreamRef src) { return IMG_isANI(src); }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -92908,7 +92816,7 @@ inline bool isANI(IOStreamParam src) { return IMG_isANI(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isAVIF(IOStreamParam src) { return IMG_isAVIF(src); }
+inline bool isAVIF(IOStreamRef src) { return IMG_isAVIF(src); }
 
 /**
  * Detect CUR image data on a readable/seekable IOStream.
@@ -92951,7 +92859,7 @@ inline bool isAVIF(IOStreamParam src) { return IMG_isAVIF(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isCUR(IOStreamParam src) { return IMG_isCUR(src); }
+inline bool isCUR(IOStreamRef src) { return IMG_isCUR(src); }
 
 /**
  * Detect BMP image data on a readable/seekable IOStream.
@@ -92994,7 +92902,7 @@ inline bool isCUR(IOStreamParam src) { return IMG_isCUR(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isBMP(IOStreamParam src) { return IMG_isBMP(src); }
+inline bool isBMP(IOStreamRef src) { return IMG_isBMP(src); }
 
 /**
  * Detect GIF image data on a readable/seekable IOStream.
@@ -93037,7 +92945,7 @@ inline bool isBMP(IOStreamParam src) { return IMG_isBMP(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isGIF(IOStreamParam src) { return IMG_isGIF(src); }
+inline bool isGIF(IOStreamRef src) { return IMG_isGIF(src); }
 
 /**
  * Detect ICO image data on a readable/seekable IOStream.
@@ -93080,7 +92988,7 @@ inline bool isGIF(IOStreamParam src) { return IMG_isGIF(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isICO(IOStreamParam src) { return IMG_isICO(src); }
+inline bool isICO(IOStreamRef src) { return IMG_isICO(src); }
 
 /**
  * Detect JPG image data on a readable/seekable IOStream.
@@ -93123,7 +93031,7 @@ inline bool isICO(IOStreamParam src) { return IMG_isICO(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isJPG(IOStreamParam src) { return IMG_isJPG(src); }
+inline bool isJPG(IOStreamRef src) { return IMG_isJPG(src); }
 
 /**
  * Detect JXL image data on a readable/seekable IOStream.
@@ -93166,7 +93074,7 @@ inline bool isJPG(IOStreamParam src) { return IMG_isJPG(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isJXL(IOStreamParam src) { return IMG_isJXL(src); }
+inline bool isJXL(IOStreamRef src) { return IMG_isJXL(src); }
 
 /**
  * Detect LBM image data on a readable/seekable IOStream.
@@ -93209,7 +93117,7 @@ inline bool isJXL(IOStreamParam src) { return IMG_isJXL(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isLBM(IOStreamParam src) { return IMG_isLBM(src); }
+inline bool isLBM(IOStreamRef src) { return IMG_isLBM(src); }
 
 /**
  * Detect PCX image data on a readable/seekable IOStream.
@@ -93252,7 +93160,7 @@ inline bool isLBM(IOStreamParam src) { return IMG_isLBM(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isPCX(IOStreamParam src) { return IMG_isPCX(src); }
+inline bool isPCX(IOStreamRef src) { return IMG_isPCX(src); }
 
 /**
  * Detect PNG image data on a readable/seekable IOStream.
@@ -93295,7 +93203,7 @@ inline bool isPCX(IOStreamParam src) { return IMG_isPCX(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isPNG(IOStreamParam src) { return IMG_isPNG(src); }
+inline bool isPNG(IOStreamRef src) { return IMG_isPNG(src); }
 
 /**
  * Detect PNM image data on a readable/seekable IOStream.
@@ -93338,7 +93246,7 @@ inline bool isPNG(IOStreamParam src) { return IMG_isPNG(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isPNM(IOStreamParam src) { return IMG_isPNM(src); }
+inline bool isPNM(IOStreamRef src) { return IMG_isPNM(src); }
 
 /**
  * Detect QOI image data on a readable/seekable IOStream.
@@ -93381,7 +93289,7 @@ inline bool isPNM(IOStreamParam src) { return IMG_isPNM(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isQOI(IOStreamParam src) { return IMG_isQOI(src); }
+inline bool isQOI(IOStreamRef src) { return IMG_isQOI(src); }
 
 /**
  * Detect SVG image data on a readable/seekable IOStream.
@@ -93424,7 +93332,7 @@ inline bool isQOI(IOStreamParam src) { return IMG_isQOI(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isSVG(IOStreamParam src) { return IMG_isSVG(src); }
+inline bool isSVG(IOStreamRef src) { return IMG_isSVG(src); }
 
 /**
  * Detect TIFF image data on a readable/seekable IOStream.
@@ -93467,7 +93375,7 @@ inline bool isSVG(IOStreamParam src) { return IMG_isSVG(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isTIF(IOStreamParam src) { return IMG_isTIF(src); }
+inline bool isTIF(IOStreamRef src) { return IMG_isTIF(src); }
 
 /**
  * Detect WEBP image data on a readable/seekable IOStream.
@@ -93510,7 +93418,7 @@ inline bool isTIF(IOStreamParam src) { return IMG_isTIF(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isWEBP(IOStreamParam src) { return IMG_isWEBP(src); }
+inline bool isWEBP(IOStreamRef src) { return IMG_isWEBP(src); }
 
 /**
  * Detect XCF image data on a readable/seekable IOStream.
@@ -93553,7 +93461,7 @@ inline bool isWEBP(IOStreamParam src) { return IMG_isWEBP(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isXCF(IOStreamParam src) { return IMG_isXCF(src); }
+inline bool isXCF(IOStreamRef src) { return IMG_isXCF(src); }
 
 /**
  * Detect XPM image data on a readable/seekable IOStream.
@@ -93596,7 +93504,7 @@ inline bool isXCF(IOStreamParam src) { return IMG_isXCF(src); }
  * @sa isXCF
  * @sa isXV
  */
-inline bool isXPM(IOStreamParam src) { return IMG_isXPM(src); }
+inline bool isXPM(IOStreamRef src) { return IMG_isXPM(src); }
 
 /**
  * Detect XV image data on a readable/seekable IOStream.
@@ -93639,7 +93547,7 @@ inline bool isXPM(IOStreamParam src) { return IMG_isXPM(src); }
  * @sa isXCF
  * @sa isXPM
  */
-inline bool isXV(IOStreamParam src) { return IMG_isXV(src); }
+inline bool isXV(IOStreamRef src) { return IMG_isXV(src); }
 
 /**
  * Load a AVIF image directly.
@@ -93673,7 +93581,7 @@ inline bool isXV(IOStreamParam src) { return IMG_isXV(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadAVIF(IOStreamParam src)
+inline Surface LoadAVIF(IOStreamRef src)
 {
   return Surface(IMG_LoadAVIF_IO(src));
 }
@@ -93710,10 +93618,7 @@ inline Surface LoadAVIF(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadBMP(IOStreamParam src)
-{
-  return Surface{IMG_LoadBMP_IO(src)};
-}
+inline Surface LoadBMP(IOStreamRef src) { return Surface{IMG_LoadBMP_IO(src)}; }
 
 /**
  * Load a CUR image directly.
@@ -93747,10 +93652,7 @@ inline Surface LoadBMP(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadCUR(IOStreamParam src)
-{
-  return Surface{IMG_LoadCUR_IO(src)};
-}
+inline Surface LoadCUR(IOStreamRef src) { return Surface{IMG_LoadCUR_IO(src)}; }
 
 /**
  * Load a GIF image directly.
@@ -93784,10 +93686,7 @@ inline Surface LoadCUR(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadGIF(IOStreamParam src)
-{
-  return Surface{IMG_LoadGIF_IO(src)};
-}
+inline Surface LoadGIF(IOStreamRef src) { return Surface{IMG_LoadGIF_IO(src)}; }
 
 /**
  * Load a ICO image directly.
@@ -93821,10 +93720,7 @@ inline Surface LoadGIF(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadICO(IOStreamParam src)
-{
-  return Surface{IMG_LoadICO_IO(src)};
-}
+inline Surface LoadICO(IOStreamRef src) { return Surface{IMG_LoadICO_IO(src)}; }
 
 /**
  * Load a JPG image directly.
@@ -93858,10 +93754,7 @@ inline Surface LoadICO(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadJPG(IOStreamParam src)
-{
-  return Surface{IMG_LoadJPG_IO(src)};
-}
+inline Surface LoadJPG(IOStreamRef src) { return Surface{IMG_LoadJPG_IO(src)}; }
 
 /**
  * Load a JXL image directly.
@@ -93895,10 +93788,7 @@ inline Surface LoadJPG(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadJXL(IOStreamParam src)
-{
-  return Surface{IMG_LoadJXL_IO(src)};
-}
+inline Surface LoadJXL(IOStreamRef src) { return Surface{IMG_LoadJXL_IO(src)}; }
 
 /**
  * Load a LBM image directly.
@@ -93932,10 +93822,7 @@ inline Surface LoadJXL(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadLBM(IOStreamParam src)
-{
-  return Surface{IMG_LoadLBM_IO(src)};
-}
+inline Surface LoadLBM(IOStreamRef src) { return Surface{IMG_LoadLBM_IO(src)}; }
 
 /**
  * Load a PCX image directly.
@@ -93969,10 +93856,7 @@ inline Surface LoadLBM(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadPCX(IOStreamParam src)
-{
-  return Surface{IMG_LoadPCX_IO(src)};
-}
+inline Surface LoadPCX(IOStreamRef src) { return Surface{IMG_LoadPCX_IO(src)}; }
 
 /**
  * Load a PNG image directly.
@@ -94006,10 +93890,7 @@ inline Surface LoadPCX(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadPNG(IOStreamParam src)
-{
-  return Surface{IMG_LoadPNG_IO(src)};
-}
+inline Surface LoadPNG(IOStreamRef src) { return Surface{IMG_LoadPNG_IO(src)}; }
 
 /**
  * Load a PNM image directly.
@@ -94043,10 +93924,7 @@ inline Surface LoadPNG(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadPNM(IOStreamParam src)
-{
-  return Surface{IMG_LoadPNM_IO(src)};
-}
+inline Surface LoadPNM(IOStreamRef src) { return Surface{IMG_LoadPNM_IO(src)}; }
 
 /**
  * Load a SVG image directly.
@@ -94081,10 +93959,7 @@ inline Surface LoadPNM(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadSVG(IOStreamParam src)
-{
-  return Surface{IMG_LoadSVG_IO(src)};
-}
+inline Surface LoadSVG(IOStreamRef src) { return Surface{IMG_LoadSVG_IO(src)}; }
 
 /**
  * Load an SVG image, scaled to a specific size.
@@ -94106,7 +93981,7 @@ inline Surface LoadSVG(IOStreamParam src)
  *
  * @sa LoadSVG
  */
-inline Surface LoadSizedSVG(IOStreamParam src, const PointRaw& size)
+inline Surface LoadSizedSVG(IOStreamRef src, const PointRaw& size)
 {
   return Surface{IMG_LoadSizedSVG_IO(src, size.x, size.y)};
 }
@@ -94143,10 +94018,7 @@ inline Surface LoadSizedSVG(IOStreamParam src, const PointRaw& size)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadQOI(IOStreamParam src)
-{
-  return Surface{IMG_LoadQOI_IO(src)};
-}
+inline Surface LoadQOI(IOStreamRef src) { return Surface{IMG_LoadQOI_IO(src)}; }
 
 /**
  * Load a TGA image directly.
@@ -94180,10 +94052,7 @@ inline Surface LoadQOI(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadTGA(IOStreamParam src)
-{
-  return Surface{IMG_LoadTGA_IO(src)};
-}
+inline Surface LoadTGA(IOStreamRef src) { return Surface{IMG_LoadTGA_IO(src)}; }
 
 /**
  * Load a TIFF image directly.
@@ -94217,10 +94086,7 @@ inline Surface LoadTGA(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadTIF(IOStreamParam src)
-{
-  return Surface{IMG_LoadTIF_IO(src)};
-}
+inline Surface LoadTIF(IOStreamRef src) { return Surface{IMG_LoadTIF_IO(src)}; }
 
 /**
  * Load a WEBP image directly.
@@ -94254,7 +94120,7 @@ inline Surface LoadTIF(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadWEBP(IOStreamParam src)
+inline Surface LoadWEBP(IOStreamRef src)
 {
   return Surface{IMG_LoadWEBP_IO(src)};
 }
@@ -94291,10 +94157,7 @@ inline Surface LoadWEBP(IOStreamParam src)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadXCF(IOStreamParam src)
-{
-  return Surface{IMG_LoadXCF_IO(src)};
-}
+inline Surface LoadXCF(IOStreamRef src) { return Surface{IMG_LoadXCF_IO(src)}; }
 
 /**
  * Load a XPM image directly.
@@ -94328,10 +94191,7 @@ inline Surface LoadXCF(IOStreamParam src)
  * @sa LoadXCF
  * @sa LoadXV
  */
-inline Surface LoadXPM(IOStreamParam src)
-{
-  return Surface{IMG_LoadXPM_IO(src)};
-}
+inline Surface LoadXPM(IOStreamRef src) { return Surface{IMG_LoadXPM_IO(src)}; }
 
 /**
  * Load a XV image directly.
@@ -94365,7 +94225,7 @@ inline Surface LoadXPM(IOStreamParam src)
  * @sa LoadXCF
  * @sa LoadXPM
  */
-inline Surface LoadXV(IOStreamParam src) { return Surface{IMG_LoadXV_IO(src)}; }
+inline Surface LoadXV(IOStreamRef src) { return Surface{IMG_LoadXV_IO(src)}; }
 
 /**
  * Load an XPM image from a memory array.
@@ -94430,7 +94290,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  * @sa SaveTGA
  * @sa SaveWEBP
  */
-inline void Save(SurfaceParam surface, StringParam file)
+inline void Save(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_Save(surface, file));
 }
@@ -94466,8 +94326,8 @@ inline void Save(SurfaceParam surface, StringParam file)
  * @sa SaveTGA
  * @sa SaveWEBP
  */
-inline void SaveTyped(SurfaceParam surface,
-                      IOStreamParam dst,
+inline void SaveTyped(SurfaceRef surface,
+                      IOStreamRef dst,
                       StringParam type,
                       bool closeio = false)
 {
@@ -94491,7 +94351,7 @@ inline void SaveTyped(SurfaceParam surface,
  *
  * @sa SaveAVIF
  */
-inline void SaveAVIF(SurfaceParam surface, StringParam file, int quality)
+inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
 {
   CheckError(IMG_SaveAVIF(surface, file, quality));
 }
@@ -94516,8 +94376,8 @@ inline void SaveAVIF(SurfaceParam surface, StringParam file, int quality)
  *
  * @sa SaveAVIF
  */
-inline void SaveAVIF(SurfaceParam surface,
-                     IOStreamParam dst,
+inline void SaveAVIF(SurfaceRef surface,
+                     IOStreamRef dst,
                      int quality,
                      bool closeio = false)
 {
@@ -94539,7 +94399,7 @@ inline void SaveAVIF(SurfaceParam surface,
  *
  * @sa SaveBMP
  */
-inline void SaveBMP(SurfaceParam surface, StringParam file)
+inline void SaveBMP(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SaveBMP(surface, file));
 }
@@ -94562,9 +94422,7 @@ inline void SaveBMP(SurfaceParam surface, StringParam file)
  *
  * @sa SaveBMP
  */
-inline void SaveBMP(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SaveBMP(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SaveBMP_IO(surface, dst, closeio));
 }
@@ -94582,7 +94440,7 @@ inline void SaveBMP(SurfaceParam surface,
  *
  * @sa SaveCUR
  */
-inline void SaveCUR(SurfaceParam surface, StringParam file)
+inline void SaveCUR(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SaveCUR(surface, file));
 }
@@ -94605,9 +94463,7 @@ inline void SaveCUR(SurfaceParam surface, StringParam file)
  *
  * @sa SaveCUR
  */
-inline void SaveCUR(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SaveCUR(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SaveCUR_IO(surface, dst, closeio));
 }
@@ -94625,7 +94481,7 @@ inline void SaveCUR(SurfaceParam surface,
  *
  * @sa SaveGIF
  */
-inline void SaveGIF(SurfaceParam surface, StringParam file)
+inline void SaveGIF(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SaveGIF(surface, file));
 }
@@ -94648,9 +94504,7 @@ inline void SaveGIF(SurfaceParam surface, StringParam file)
  *
  * @sa SaveGIF
  */
-inline void SaveGIF(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SaveGIF(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SaveGIF_IO(surface, dst, closeio));
 }
@@ -94668,7 +94522,7 @@ inline void SaveGIF(SurfaceParam surface,
  *
  * @sa SaveICO
  */
-inline void SaveICO(SurfaceParam surface, StringParam file)
+inline void SaveICO(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SaveICO(surface, file));
 }
@@ -94691,9 +94545,7 @@ inline void SaveICO(SurfaceParam surface, StringParam file)
  *
  * @sa SaveICO
  */
-inline void SaveICO(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SaveICO(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SaveICO_IO(surface, dst, closeio));
 }
@@ -94715,7 +94567,7 @@ inline void SaveICO(SurfaceParam surface,
  *
  * @sa SaveJPG
  */
-inline void SaveJPG(SurfaceParam surface, StringParam file, int quality)
+inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
 {
   CheckError(IMG_SaveJPG(surface, file, quality));
 }
@@ -94740,8 +94592,8 @@ inline void SaveJPG(SurfaceParam surface, StringParam file, int quality)
  *
  * @sa SaveJPG
  */
-inline void SaveJPG(SurfaceParam surface,
-                    IOStreamParam dst,
+inline void SaveJPG(SurfaceRef surface,
+                    IOStreamRef dst,
                     int quality,
                     bool closeio = false)
 {
@@ -94761,7 +94613,7 @@ inline void SaveJPG(SurfaceParam surface,
  *
  * @sa SavePNG
  */
-inline void SavePNG(SurfaceParam surface, StringParam file)
+inline void SavePNG(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SavePNG(surface, file));
 }
@@ -94784,9 +94636,7 @@ inline void SavePNG(SurfaceParam surface, StringParam file)
  *
  * @sa SavePNG
  */
-inline void SavePNG(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SavePNG(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
 }
@@ -94806,7 +94656,7 @@ inline void SavePNG(SurfaceParam surface,
  *
  * @sa SaveTGA
  */
-inline void SaveTGA(SurfaceParam surface, StringParam file)
+inline void SaveTGA(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SaveTGA(surface, file));
 }
@@ -94829,9 +94679,7 @@ inline void SaveTGA(SurfaceParam surface, StringParam file)
  *
  * @sa SaveTGA
  */
-inline void SaveTGA(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SaveTGA(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SaveTGA_IO(surface, dst, closeio));
 }
@@ -94853,7 +94701,7 @@ inline void SaveTGA(SurfaceParam surface,
  *
  * @sa SaveWEBP
  */
-inline void SaveWEBP(SurfaceParam surface, StringParam file, float quality)
+inline void SaveWEBP(SurfaceRef surface, StringParam file, float quality)
 {
   CheckError(IMG_SaveWEBP(surface, file, quality));
 }
@@ -94880,8 +94728,8 @@ inline void SaveWEBP(SurfaceParam surface, StringParam file, float quality)
  *
  * @sa SaveWEBP
  */
-inline void SaveWEBP(SurfaceParam surface,
-                     IOStreamParam dst,
+inline void SaveWEBP(SurfaceRef surface,
+                     IOStreamRef dst,
                      float quality,
                      bool closeio = false)
 {
@@ -94907,7 +94755,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationParam.
+   * Constructs from AnimationRef.
    *
    * @param resource a AnimationRaw to be wrapped.
    *
@@ -94983,7 +94831,7 @@ public:
    * @sa LoadWEBPAnimation
    * @sa Animation.Free
    */
-  Animation(IOStreamParam src, bool closeio = false);
+  Animation(IOStreamRef src, bool closeio = false);
 
   /// member access to underlying AnimationRaw.
   constexpr const AnimationRaw operator->() const noexcept
@@ -95117,7 +94965,7 @@ public:
    * @sa Animation.SaveGIF
    * @sa Animation.SaveWEBP
    */
-  void SaveTyped(IOStreamParam dst, StringParam type, bool closeio = false);
+  void SaveTyped(IOStreamRef dst, StringParam type, bool closeio = false);
 
   /**
    * Save an animation in ANI format to an IOStream.
@@ -95139,7 +94987,7 @@ public:
    * @sa Animation.SaveGIF
    * @sa Animation.SaveWEBP
    */
-  void SaveANI(IOStreamParam dst, bool closeio = false);
+  void SaveANI(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in APNG format to an IOStream.
@@ -95161,7 +95009,7 @@ public:
    * @sa Animation.SaveGIF
    * @sa Animation.SaveWEBP
    */
-  void SaveAPNG(IOStreamParam dst, bool closeio = false);
+  void SaveAPNG(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in AVIF format to an IOStream.
@@ -95185,7 +95033,7 @@ public:
    * @sa Animation.SaveGIF
    * @sa Animation.SaveWEBP
    */
-  void SaveAVIF(IOStreamParam dst, int quality, bool closeio = false);
+  void SaveAVIF(IOStreamRef dst, int quality, bool closeio = false);
 
   /**
    * Save an animation in GIF format to an IOStream.
@@ -95207,7 +95055,7 @@ public:
    * @sa Animation.SaveAVIF
    * @sa Animation.SaveWEBP
    */
-  void SaveGIF(IOStreamParam dst, bool closeio = false);
+  void SaveGIF(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in WEBP format to an IOStream.
@@ -95233,7 +95081,7 @@ public:
    * @sa Animation.SaveAVIF
    * @sa Animation.SaveGIF
    */
-  void SaveWEBP(IOStreamParam dst, int quality, bool closeio = false);
+  void SaveWEBP(IOStreamRef dst, int quality, bool closeio = false);
 
   /**
    * Create an animated cursor from an animation.
@@ -95435,7 +95283,7 @@ inline Animation LoadAnimation(StringParam file)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
+inline Animation LoadAnimation(IOStreamRef src, bool closeio = false)
 {
   return Animation(src, closeio);
 }
@@ -95445,7 +95293,7 @@ inline Animation::Animation(StringParam file)
 {
 }
 
-inline Animation::Animation(IOStreamParam src, bool closeio)
+inline Animation::Animation(IOStreamRef src, bool closeio)
   : m_resource(IMG_LoadAnimation_IO(src, closeio))
 {
 }
@@ -95484,7 +95332,7 @@ inline Animation::Animation(IOStreamParam src, bool closeio)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadAnimationTyped(IOStreamParam src,
+inline Animation LoadAnimationTyped(IOStreamRef src,
                                     StringParam type,
                                     bool closeio = false)
 {
@@ -95519,7 +95367,7 @@ inline Animation LoadAnimationTyped(IOStreamParam src,
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadANIAnimation(IOStreamParam src)
+inline Animation LoadANIAnimation(IOStreamRef src)
 {
   return Animation(IMG_LoadANIAnimation_IO(src));
 }
@@ -95550,7 +95398,7 @@ inline Animation LoadANIAnimation(IOStreamParam src)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadAPNGAnimation(IOStreamParam src)
+inline Animation LoadAPNGAnimation(IOStreamRef src)
 {
   return Animation(IMG_LoadAPNGAnimation_IO(src));
 }
@@ -95581,7 +95429,7 @@ inline Animation LoadAPNGAnimation(IOStreamParam src)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadAVIFAnimation(IOStreamParam src)
+inline Animation LoadAVIFAnimation(IOStreamRef src)
 {
   return Animation(IMG_LoadAVIFAnimation_IO(src));
 }
@@ -95611,7 +95459,7 @@ inline Animation LoadAVIFAnimation(IOStreamParam src)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadGIFAnimation(IOStreamParam src)
+inline Animation LoadGIFAnimation(IOStreamRef src)
 {
   return Animation(IMG_LoadGIFAnimation_IO(src));
 }
@@ -95639,7 +95487,7 @@ inline Animation LoadGIFAnimation(IOStreamParam src)
  * @sa LoadGIFAnimation
  * @sa Animation.Free
  */
-inline Animation LoadWEBPAnimation(IOStreamParam src)
+inline Animation LoadWEBPAnimation(IOStreamRef src)
 {
   return Animation{IMG_LoadWEBPAnimation_IO(src)};
 }
@@ -95664,7 +95512,7 @@ inline Animation LoadWEBPAnimation(IOStreamParam src)
  * @sa Animation.SaveGIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveAnimation(AnimationParam anim, StringParam file)
+inline void SaveAnimation(AnimationRef anim, StringParam file)
 {
   CheckError(IMG_SaveAnimation(anim, file));
 }
@@ -95700,15 +95548,15 @@ inline void Animation::Save(StringParam file)
  * @sa Animation.SaveGIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveAnimationTyped(AnimationParam anim,
-                               IOStreamParam dst,
+inline void SaveAnimationTyped(AnimationRef anim,
+                               IOStreamRef dst,
                                StringParam type,
                                bool closeio = false)
 {
   CheckError(IMG_SaveAnimationTyped_IO(anim, dst, closeio, type));
 }
 
-inline void Animation::SaveTyped(IOStreamParam dst,
+inline void Animation::SaveTyped(IOStreamRef dst,
                                  StringParam type,
                                  bool closeio)
 {
@@ -95736,14 +95584,14 @@ inline void Animation::SaveTyped(IOStreamParam dst,
  * @sa Animation.SaveGIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveANIAnimation(AnimationParam anim,
-                             IOStreamParam dst,
+inline void SaveANIAnimation(AnimationRef anim,
+                             IOStreamRef dst,
                              bool closeio = false)
 {
   CheckError(IMG_SaveANIAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveANI(IOStreamParam dst, bool closeio)
+inline void Animation::SaveANI(IOStreamRef dst, bool closeio)
 {
   SDL::SaveANIAnimation(m_resource, dst, closeio);
 }
@@ -95769,14 +95617,14 @@ inline void Animation::SaveANI(IOStreamParam dst, bool closeio)
  * @sa Animation.SaveGIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveAPNGAnimation(AnimationParam anim,
-                              IOStreamParam dst,
+inline void SaveAPNGAnimation(AnimationRef anim,
+                              IOStreamRef dst,
                               bool closeio = false)
 {
   CheckError(IMG_SaveAPNGAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveAPNG(IOStreamParam dst, bool closeio)
+inline void Animation::SaveAPNG(IOStreamRef dst, bool closeio)
 {
   SDL::SaveAPNGAnimation(m_resource, dst, closeio);
 }
@@ -95804,15 +95652,15 @@ inline void Animation::SaveAPNG(IOStreamParam dst, bool closeio)
  * @sa Animation.SaveGIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveAVIFAnimation(AnimationParam anim,
-                              IOStreamParam dst,
+inline void SaveAVIFAnimation(AnimationRef anim,
+                              IOStreamRef dst,
                               int quality,
                               bool closeio = false)
 {
   CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, quality, closeio));
 }
 
-inline void Animation::SaveAVIF(IOStreamParam dst, int quality, bool closeio)
+inline void Animation::SaveAVIF(IOStreamRef dst, int quality, bool closeio)
 {
   SDL::SaveAVIFAnimation(m_resource, dst, quality, closeio);
 }
@@ -95838,14 +95686,14 @@ inline void Animation::SaveAVIF(IOStreamParam dst, int quality, bool closeio)
  * @sa Animation.SaveAVIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveGIFAnimation(AnimationParam anim,
-                             IOStreamParam dst,
+inline void SaveGIFAnimation(AnimationRef anim,
+                             IOStreamRef dst,
                              bool closeio = false)
 {
   CheckError(IMG_SaveGIFAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveGIF(IOStreamParam dst, bool closeio)
+inline void Animation::SaveGIF(IOStreamRef dst, bool closeio)
 {
   SDL::SaveGIFAnimation(m_resource, dst, closeio);
 }
@@ -95875,15 +95723,15 @@ inline void Animation::SaveGIF(IOStreamParam dst, bool closeio)
  * @sa Animation.SaveAVIF
  * @sa Animation.SaveGIF
  */
-inline void SaveWEBPAnimation(AnimationParam anim,
-                              IOStreamParam dst,
+inline void SaveWEBPAnimation(AnimationRef anim,
+                              IOStreamRef dst,
                               int quality,
                               bool closeio = false)
 {
   CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, quality, closeio));
 }
 
-inline void Animation::SaveWEBP(IOStreamParam dst, int quality, bool closeio)
+inline void Animation::SaveWEBP(IOStreamRef dst, int quality, bool closeio)
 {
   SDL::SaveWEBPAnimation(m_resource, dst, quality, closeio);
 }
@@ -95902,7 +95750,7 @@ inline void Animation::SaveWEBP(IOStreamParam dst, int quality, bool closeio)
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
  */
-inline Cursor CreateAnimatedCursor(AnimationParam anim, const PointRaw& hotspot)
+inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
 {
   return Cursor{
     CheckError(IMG_CreateAnimatedCursor(anim, hotspot.x, hotspot.y))};
@@ -95955,7 +95803,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationEncoderParam.
+   * Constructs from AnimationEncoderRef.
    *
    * @param resource a AnimationEncoderRaw to be wrapped.
    *
@@ -96038,7 +95886,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(IOStreamParam dst, StringParam type, bool closeio = false);
+  AnimationEncoder(IOStreamRef dst, StringParam type, bool closeio = false);
 
   /**
    * Create an animation encoder with the specified properties.
@@ -96087,7 +95935,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(PropertiesParam props);
+  AnimationEncoder(PropertiesRef props);
 
   /// Destructor
   ~AnimationEncoder() { IMG_CloseAnimationEncoder(m_resource); }
@@ -96156,7 +96004,7 @@ public:
    * @sa AnimationEncoder.AnimationEncoder
    * @sa AnimationEncoder.Close
    */
-  void AddFrame(SurfaceParam surface, Uint64 duration);
+  void AddFrame(SurfaceRef surface, Uint64 duration);
 };
 
 /**
@@ -96275,7 +96123,7 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
-inline AnimationEncoder CreateAnimationEncoder(IOStreamParam dst,
+inline AnimationEncoder CreateAnimationEncoder(IOStreamRef dst,
                                                StringParam type,
                                                bool closeio = false)
 {
@@ -96287,14 +96135,14 @@ inline AnimationEncoder::AnimationEncoder(StringParam file)
 {
 }
 
-inline AnimationEncoder::AnimationEncoder(IOStreamParam dst,
+inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
                                           StringParam type,
                                           bool closeio)
   : m_resource(IMG_CreateAnimationEncoder_IO(dst, closeio, type))
 {
 }
 
-inline AnimationEncoder::AnimationEncoder(PropertiesParam props)
+inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
   : m_resource(IMG_CreateAnimationEncoderWithProperties(props))
 {
 }
@@ -96346,7 +96194,7 @@ inline AnimationEncoder::AnimationEncoder(PropertiesParam props)
  * @sa AnimationEncoder.Close
  */
 inline AnimationEncoder CreateAnimationEncoderWithProperties(
-  PropertiesParam props)
+  PropertiesRef props)
 {
   return AnimationEncoder(props);
 }
@@ -96403,14 +96251,14 @@ constexpr auto CREATE_GIF_USE_LUT_BOOLEAN =
  * @sa AnimationEncoder.AnimationEncoder
  * @sa AnimationEncoder.Close
  */
-inline void AddAnimationEncoderFrame(AnimationEncoderParam encoder,
-                                     SurfaceParam surface,
+inline void AddAnimationEncoderFrame(AnimationEncoderRef encoder,
+                                     SurfaceRef surface,
                                      Uint64 duration)
 {
   CheckError(IMG_AddAnimationEncoderFrame(encoder, surface, duration));
 }
 
-inline void AnimationEncoder::AddFrame(SurfaceParam surface, Uint64 duration)
+inline void AnimationEncoder::AddFrame(SurfaceRef surface, Uint64 duration)
 {
   SDL::AddAnimationEncoderFrame(m_resource, surface, duration);
 }
@@ -96474,7 +96322,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationDecoderParam.
+   * Constructs from AnimationDecoderRef.
    *
    * @param resource a AnimationDecoderRaw to be wrapped.
    *
@@ -96559,7 +96407,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(IOStreamParam src, StringParam type, bool closeio = false);
+  AnimationDecoder(IOStreamRef src, StringParam type, bool closeio = false);
 
   /**
    * Create an animation decoder with the specified properties.
@@ -96599,7 +96447,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(PropertiesParam props);
+  AnimationDecoder(PropertiesRef props);
 
   /// Destructor
   ~AnimationDecoder() { IMG_CloseAnimationDecoder(m_resource); }
@@ -96844,7 +96692,7 @@ inline AnimationDecoder CreateAnimationDecoder(StringParam file)
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
  */
-inline AnimationDecoder CreateAnimationDecoder(IOStreamParam src,
+inline AnimationDecoder CreateAnimationDecoder(IOStreamRef src,
                                                StringParam type,
                                                bool closeio = false)
 {
@@ -96856,14 +96704,14 @@ inline AnimationDecoder::AnimationDecoder(StringParam file)
 {
 }
 
-inline AnimationDecoder::AnimationDecoder(IOStreamParam src,
+inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
                                           StringParam type,
                                           bool closeio)
   : m_resource(IMG_CreateAnimationDecoder_IO(src, closeio, type))
 {
 }
 
-inline AnimationDecoder::AnimationDecoder(PropertiesParam props)
+inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
   : m_resource(IMG_CreateAnimationDecoderWithProperties(props))
 {
 }
@@ -96907,7 +96755,7 @@ inline AnimationDecoder::AnimationDecoder(PropertiesParam props)
  * @sa AnimationDecoder.Close
  */
 inline AnimationDecoder CreateAnimationDecoderWithProperties(
-  PropertiesParam props)
+  PropertiesRef props)
 {
   return AnimationDecoder(props);
 }
@@ -96966,8 +96814,7 @@ constexpr auto CREATE_GIF_NUM_COLORS_NUMBER =
  * @sa AnimationDecoder.AnimationDecoder
  * @sa AnimationDecoder.AnimationDecoder
  */
-inline PropertiesRef GetAnimationDecoderProperties(
-  AnimationDecoderParam decoder)
+inline PropertiesRef GetAnimationDecoderProperties(AnimationDecoderRef decoder)
 {
   return IMG_GetAnimationDecoderProperties(decoder);
 }
@@ -97020,7 +96867,7 @@ constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
  */
-inline Surface GetAnimationDecoderFrame(AnimationDecoderParam decoder,
+inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                         Uint64* duration)
 {
   SDL_Surface* frame = nullptr;
@@ -97045,7 +96892,7 @@ inline Surface AnimationDecoder::GetFrame(Uint64* duration)
  * @sa AnimationDecoder.GetFrame
  */
 inline AnimationDecoderStatus GetAnimationDecoderStatus(
-  AnimationDecoderParam decoder)
+  AnimationDecoderRef decoder)
 {
   return IMG_GetAnimationDecoderStatus(decoder);
 }
@@ -97073,7 +96920,7 @@ inline AnimationDecoderStatus AnimationDecoder::GetStatus()
  * @sa AnimationDecoder.GetFrame
  * @sa AnimationDecoder.Close
  */
-inline void ResetAnimationDecoder(AnimationDecoderParam decoder)
+inline void ResetAnimationDecoder(AnimationDecoderRef decoder)
 {
   CheckError(IMG_ResetAnimationDecoder(decoder));
 }
@@ -97165,8 +97012,6 @@ using FontRaw = TTF_Font*;
 // Forward decl
 struct FontRef;
 
-using FontParam = FontRef;
-
 // Forward decl
 struct TextEngine;
 
@@ -97174,18 +97019,18 @@ struct TextEngine;
 using TextEngineRaw = TTF_TextEngine*;
 
 /// Safely wrap TextEngine for non owning parameters
-struct TextEngineParam
+struct TextEngineRef
 {
   TextEngineRaw value; ///< parameter's TextEngineRaw
 
   /// Constructs from TextEngineRaw
-  constexpr TextEngineParam(TextEngineRaw value)
+  constexpr TextEngineRef(TextEngineRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr TextEngineParam(std::nullptr_t = nullptr)
+  constexpr TextEngineRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -97194,7 +97039,7 @@ struct TextEngineParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const TextEngineParam& other) const = default;
+  constexpr auto operator<=>(const TextEngineRef& other) const = default;
 
   /// Converts to underlying TextEngineRaw
   constexpr operator TextEngineRaw() const { return value; }
@@ -97208,8 +97053,6 @@ using TextRaw = TTF_Text*;
 
 // Forward decl
 struct TextRef;
-
-using TextParam = TextRef;
 
 /// Safely wrap Text for non owning const parameters
 struct TextConstRef
@@ -97533,7 +97376,7 @@ public:
   }
 
   /**
-   * Constructs from FontParam.
+   * Constructs from FontRef.
    *
    * @param resource a FontRaw to be wrapped.
    *
@@ -97602,7 +97445,7 @@ public:
    *
    * @sa Font.Close
    */
-  Font(IOStreamParam src, float ptsize, bool closeio = false);
+  Font(IOStreamRef src, float ptsize, bool closeio = false);
 
   /**
    * Create a font with the specified properties.
@@ -97647,7 +97490,7 @@ public:
    *
    * @sa Font.Close
    */
-  Font(PropertiesParam props);
+  Font(PropertiesRef props);
 
   /// Destructor
   ~Font() { TTF_CloseFont(m_resource); }
@@ -97778,7 +97621,7 @@ public:
    * @sa Font.ClearFallbacks
    * @sa Font.RemoveFallback
    */
-  void AddFallback(FontParam fallback);
+  void AddFallback(FontRef fallback);
 
   /**
    * Remove a fallback font.
@@ -97795,7 +97638,7 @@ public:
    * @sa Font.AddFallback
    * @sa Font.ClearFallbacks
    */
-  void RemoveFallback(FontParam fallback);
+  void RemoveFallback(FontRef fallback);
 
   /**
    * Remove all fallback fonts.
@@ -99104,7 +98947,7 @@ inline Font OpenFont(StringParam file, float ptsize)
  *
  * @sa Font.Close
  */
-inline Font OpenFont(IOStreamParam src, float ptsize, bool closeio = false)
+inline Font OpenFont(IOStreamRef src, float ptsize, bool closeio = false)
 {
   return Font(src, ptsize, closeio);
 }
@@ -99114,12 +98957,12 @@ inline Font::Font(StringParam file, float ptsize)
 {
 }
 
-inline Font::Font(IOStreamParam src, float ptsize, bool closeio)
+inline Font::Font(IOStreamRef src, float ptsize, bool closeio)
   : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
 {
 }
 
-inline Font::Font(PropertiesParam props)
+inline Font::Font(PropertiesRef props)
   : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
 {
 }
@@ -99166,10 +99009,7 @@ inline Font::Font(PropertiesParam props)
  *
  * @sa Font.Close
  */
-inline Font OpenFontWithProperties(PropertiesParam props)
-{
-  return Font(props);
-}
+inline Font OpenFontWithProperties(PropertiesRef props) { return Font(props); }
 
 namespace prop::Font {
 
@@ -99229,7 +99069,7 @@ constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
  *
  * @sa Font.Close
  */
-inline Font CopyFont(FontParam existing_font)
+inline Font CopyFont(FontRef existing_font)
 {
   return Font(CheckError(TTF_CopyFont(existing_font)));
 }
@@ -99256,7 +99096,7 @@ inline Font Font::Copy() const { return SDL::CopyFont(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline PropertiesRef GetFontProperties(FontParam font)
+inline PropertiesRef GetFontProperties(FontRef font)
 {
   return {CheckError(TTF_GetFontProperties(font))};
 }
@@ -99281,7 +99121,7 @@ inline PropertiesRef Font::GetProperties()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Uint32 GetFontGeneration(FontParam font)
+inline Uint32 GetFontGeneration(FontRef font)
 {
   return TTF_GetFontGeneration(font);
 }
@@ -99313,12 +99153,12 @@ inline Uint32 Font::GetGeneration() const
  * @sa Font.ClearFallbacks
  * @sa Font.RemoveFallback
  */
-inline void AddFallbackFont(FontParam font, FontParam fallback)
+inline void AddFallbackFont(FontRef font, FontRef fallback)
 {
   CheckError(TTF_AddFallbackFont(font, fallback));
 }
 
-inline void Font::AddFallback(FontParam fallback)
+inline void Font::AddFallback(FontRef fallback)
 {
   SDL::AddFallbackFont(m_resource, fallback);
 }
@@ -99339,12 +99179,12 @@ inline void Font::AddFallback(FontParam fallback)
  * @sa Font.AddFallback
  * @sa Font.ClearFallbacks
  */
-inline void RemoveFallbackFont(FontParam font, FontParam fallback)
+inline void RemoveFallbackFont(FontRef font, FontRef fallback)
 {
   TTF_RemoveFallbackFont(font, fallback);
 }
 
-inline void Font::RemoveFallback(FontParam fallback)
+inline void Font::RemoveFallback(FontRef fallback)
 {
   SDL::RemoveFallbackFont(m_resource, fallback);
 }
@@ -99364,7 +99204,7 @@ inline void Font::RemoveFallback(FontParam fallback)
  * @sa Font.AddFallback
  * @sa Font.RemoveFallback
  */
-inline void ClearFallbackFonts(FontParam font) { TTF_ClearFallbackFonts(font); }
+inline void ClearFallbackFonts(FontRef font) { TTF_ClearFallbackFonts(font); }
 
 inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(m_resource); }
 
@@ -99385,7 +99225,7 @@ inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(m_resource); }
  *
  * @sa Font.GetSize
  */
-inline void SetFontSize(FontParam font, float ptsize)
+inline void SetFontSize(FontRef font, float ptsize)
 {
   CheckError(TTF_SetFontSize(font, ptsize));
 }
@@ -99415,7 +99255,7 @@ inline void Font::SetSize(float ptsize)
  * @sa Font.GetSize
  * @sa TTF_GetFontSizeDPI
  */
-inline void SetFontSizeDPI(FontParam font, float ptsize, int hdpi, int vdpi)
+inline void SetFontSizeDPI(FontRef font, float ptsize, int hdpi, int vdpi)
 {
   CheckError(TTF_SetFontSizeDPI(font, ptsize, hdpi, vdpi));
 }
@@ -99440,7 +99280,7 @@ inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
  * @sa Font.SetSize
  * @sa Font.SetSizeDPI
  */
-inline float GetFontSize(FontParam font) { return TTF_GetFontSize(font); }
+inline float GetFontSize(FontRef font) { return TTF_GetFontSize(font); }
 
 inline float Font::GetSize() const { return SDL::GetFontSize(m_resource); }
 
@@ -99459,7 +99299,7 @@ inline float Font::GetSize() const { return SDL::GetFontSize(m_resource); }
  *
  * @sa Font.SetSizeDPI
  */
-inline void GetFontDPI(FontParam font, int* hdpi, int* vdpi)
+inline void GetFontDPI(FontRef font, int* hdpi, int* vdpi)
 {
   CheckError(TTF_GetFontDPI(font, hdpi, vdpi));
 }
@@ -99493,7 +99333,7 @@ inline void Font::GetDPI(int* hdpi, int* vdpi) const
  *
  * @sa Font.GetStyle
  */
-inline void SetFontStyle(FontParam font, FontStyleFlags style)
+inline void SetFontStyle(FontRef font, FontStyleFlags style)
 {
   TTF_SetFontStyle(font, style);
 }
@@ -99523,7 +99363,7 @@ inline void Font::SetStyle(FontStyleFlags style)
  *
  * @sa Font.SetStyle
  */
-inline FontStyleFlags GetFontStyle(FontParam font)
+inline FontStyleFlags GetFontStyle(FontRef font)
 {
   return TTF_GetFontStyle(font);
 }
@@ -99554,7 +99394,7 @@ inline FontStyleFlags Font::GetStyle() const
  *
  * @sa Font.GetOutline
  */
-inline void SetFontOutline(FontParam font, int outline)
+inline void SetFontOutline(FontRef font, int outline)
 {
   CheckError(TTF_SetFontOutline(font, outline));
 }
@@ -99576,7 +99416,7 @@ inline void Font::SetOutline(int outline)
  *
  * @sa Font.SetOutline
  */
-inline int GetFontOutline(FontParam font) { return TTF_GetFontOutline(font); }
+inline int GetFontOutline(FontRef font) { return TTF_GetFontOutline(font); }
 
 inline int Font::GetOutline() const { return SDL::GetFontOutline(m_resource); }
 
@@ -99604,7 +99444,7 @@ inline int Font::GetOutline() const { return SDL::GetFontOutline(m_resource); }
  *
  * @sa Font.GetHinting
  */
-inline void SetFontHinting(FontParam font, HintingFlags hinting)
+inline void SetFontHinting(FontRef font, HintingFlags hinting)
 {
   TTF_SetFontHinting(font, hinting);
 }
@@ -99624,7 +99464,7 @@ inline void Font::SetHinting(HintingFlags hinting)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline int GetNumFontFaces(FontParam font) { return TTF_GetNumFontFaces(font); }
+inline int GetNumFontFaces(FontRef font) { return TTF_GetNumFontFaces(font); }
 
 inline int Font::GetNumFaces() const
 {
@@ -99652,7 +99492,7 @@ inline int Font::GetNumFaces() const
  *
  * @sa Font.SetHinting
  */
-inline HintingFlags GetFontHinting(FontParam font)
+inline HintingFlags GetFontHinting(FontRef font)
 {
   return TTF_GetFontHinting(font);
 }
@@ -99685,7 +99525,7 @@ inline HintingFlags Font::GetHinting() const
  *
  * @sa Font.GetSDF
  */
-inline void SetFontSDF(FontParam font, bool enabled)
+inline void SetFontSDF(FontRef font, bool enabled)
 {
   CheckError(TTF_SetFontSDF(font, enabled));
 }
@@ -99704,7 +99544,7 @@ inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(m_resource, enabled); }
  *
  * @sa Font.SetSDF
  */
-inline bool GetFontSDF(FontParam font) { return TTF_GetFontSDF(font); }
+inline bool GetFontSDF(FontRef font) { return TTF_GetFontSDF(font); }
 
 inline bool Font::GetSDF() const { return SDL::GetFontSDF(m_resource); }
 
@@ -99721,7 +99561,7 @@ inline bool Font::GetSDF() const { return SDL::GetFontSDF(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.2.2.
  */
-inline int GetFontWeight(FontParam font) { return TTF_GetFontWeight(font); }
+inline int GetFontWeight(FontRef font) { return TTF_GetFontWeight(font); }
 
 inline int Font::GetWeight() const { return SDL::GetFontWeight(m_resource); }
 
@@ -99772,7 +99612,7 @@ constexpr int FONT_WEIGHT_EXTRA_BLACK =
  *
  * @sa Font.GetWrapAlignment
  */
-inline void SetFontWrapAlignment(FontParam font, HorizontalAlignment align)
+inline void SetFontWrapAlignment(FontRef font, HorizontalAlignment align)
 {
   TTF_SetFontWrapAlignment(font, align);
 }
@@ -99794,7 +99634,7 @@ inline void Font::SetWrapAlignment(HorizontalAlignment align)
  *
  * @sa Font.SetWrapAlignment
  */
-inline HorizontalAlignment GetFontWrapAlignment(FontParam font)
+inline HorizontalAlignment GetFontWrapAlignment(FontRef font)
 {
   return TTF_GetFontWrapAlignment(font);
 }
@@ -99816,7 +99656,7 @@ inline HorizontalAlignment Font::GetWrapAlignment() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline int GetFontHeight(FontParam font) { return TTF_GetFontHeight(font); }
+inline int GetFontHeight(FontRef font) { return TTF_GetFontHeight(font); }
 
 inline int Font::GetHeight() const { return SDL::GetFontHeight(m_resource); }
 
@@ -99832,7 +99672,7 @@ inline int Font::GetHeight() const { return SDL::GetFontHeight(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline int GetFontAscent(FontParam font) { return TTF_GetFontAscent(font); }
+inline int GetFontAscent(FontRef font) { return TTF_GetFontAscent(font); }
 
 inline int Font::GetAscent() const { return SDL::GetFontAscent(m_resource); }
 
@@ -99848,7 +99688,7 @@ inline int Font::GetAscent() const { return SDL::GetFontAscent(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline int GetFontDescent(FontParam font) { return TTF_GetFontDescent(font); }
+inline int GetFontDescent(FontRef font) { return TTF_GetFontDescent(font); }
 
 inline int Font::GetDescent() const { return SDL::GetFontDescent(m_resource); }
 
@@ -99867,7 +99707,7 @@ inline int Font::GetDescent() const { return SDL::GetFontDescent(m_resource); }
  *
  * @sa Font.GetLineSkip
  */
-inline void SetFontLineSkip(FontParam font, int lineskip)
+inline void SetFontLineSkip(FontRef font, int lineskip)
 {
   TTF_SetFontLineSkip(font, lineskip);
 }
@@ -99889,7 +99729,7 @@ inline void Font::SetLineSkip(int lineskip)
  *
  * @sa Font.SetLineSkip
  */
-inline int GetFontLineSkip(FontParam font) { return TTF_GetFontLineSkip(font); }
+inline int GetFontLineSkip(FontRef font) { return TTF_GetFontLineSkip(font); }
 
 inline int Font::GetLineSkip() const
 {
@@ -99916,7 +99756,7 @@ inline int Font::GetLineSkip() const
  *
  * @sa Font.GetKerning
  */
-inline void SetFontKerning(FontParam font, bool enabled)
+inline void SetFontKerning(FontRef font, bool enabled)
 {
   TTF_SetFontKerning(font, enabled);
 }
@@ -99938,7 +99778,7 @@ inline void Font::SetKerning(bool enabled)
  *
  * @sa Font.SetKerning
  */
-inline bool GetFontKerning(FontParam font) { return TTF_GetFontKerning(font); }
+inline bool GetFontKerning(FontRef font) { return TTF_GetFontKerning(font); }
 
 inline bool Font::GetKerning() const { return SDL::GetFontKerning(m_resource); }
 
@@ -99958,7 +99798,7 @@ inline bool Font::GetKerning() const { return SDL::GetFontKerning(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline bool FontIsFixedWidth(FontParam font)
+inline bool FontIsFixedWidth(FontRef font)
 {
   return TTF_FontIsFixedWidth(font);
 }
@@ -99982,7 +99822,7 @@ inline bool Font::IsFixedWidth() const
  *
  * @sa Font.SetSDF
  */
-inline bool FontIsScalable(FontParam font) { return TTF_FontIsScalable(font); }
+inline bool FontIsScalable(FontRef font) { return TTF_FontIsScalable(font); }
 
 inline bool Font::IsScalable() const { return SDL::FontIsScalable(m_resource); }
 
@@ -100002,7 +99842,7 @@ inline bool Font::IsScalable() const { return SDL::FontIsScalable(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline const char* GetFontFamilyName(FontParam font)
+inline const char* GetFontFamilyName(FontRef font)
 {
   return TTF_GetFontFamilyName(font);
 }
@@ -100028,7 +99868,7 @@ inline const char* Font::GetFamilyName() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline const char* GetFontStyleName(FontParam font)
+inline const char* GetFontStyleName(FontRef font)
 {
   return TTF_GetFontStyleName(font);
 }
@@ -100055,7 +99895,7 @@ inline const char* Font::GetStyleName() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void SetFontDirection(FontParam font, Direction direction)
+inline void SetFontDirection(FontRef font, Direction direction)
 {
   CheckError(TTF_SetFontDirection(font, direction));
 }
@@ -100078,7 +99918,7 @@ inline void Font::SetDirection(Direction direction)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Direction GetFontDirection(FontParam font)
+inline Direction GetFontDirection(FontRef font)
 {
   return TTF_GetFontDirection(font);
 }
@@ -100144,7 +99984,7 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
  *
  * @sa StringToTag
  */
-inline void SetFontScript(FontParam font, Uint32 script)
+inline void SetFontScript(FontRef font, Uint32 script)
 {
   CheckError(TTF_SetFontScript(font, script));
 }
@@ -100169,7 +100009,7 @@ inline void Font::SetScript(Uint32 script)
  *
  * @sa TagToString
  */
-inline Uint32 GetFontScript(FontParam font) { return TTF_GetFontScript(font); }
+inline Uint32 GetFontScript(FontRef font) { return TTF_GetFontScript(font); }
 
 inline Uint32 Font::GetScript() const { return SDL::GetFontScript(m_resource); }
 
@@ -100214,7 +100054,7 @@ inline Uint32 Font::GetGlyphScript(Uint32 ch)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void SetFontLanguage(FontParam font, StringParam language_bcp47)
+inline void SetFontLanguage(FontRef font, StringParam language_bcp47)
 {
   CheckError(TTF_SetFontLanguage(font, language_bcp47));
 }
@@ -100236,7 +100076,7 @@ inline void Font::SetLanguage(StringParam language_bcp47)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline bool FontHasGlyph(FontParam font, Uint32 ch)
+inline bool FontHasGlyph(FontRef font, Uint32 ch)
 {
   return TTF_FontHasGlyph(font, ch);
 }
@@ -100261,7 +100101,7 @@ inline bool Font::HasGlyph(Uint32 ch) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Surface GetGlyphImage(FontParam font, Uint32 ch, ImageType* image_type)
+inline Surface GetGlyphImage(FontRef font, Uint32 ch, ImageType* image_type)
 {
   return Surface{TTF_GetGlyphImage(font, ch, image_type)};
 }
@@ -100289,7 +100129,7 @@ inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Surface GetGlyphImageForIndex(FontParam font,
+inline Surface GetGlyphImageForIndex(FontRef font,
                                      Uint32 glyph_index,
                                      ImageType* image_type)
 {
@@ -100330,7 +100170,7 @@ inline Surface Font::GetGlyphImageForIndex(Uint32 glyph_index,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetGlyphMetrics(FontParam font,
+inline void GetGlyphMetrics(FontRef font,
                             Uint32 ch,
                             int* minx,
                             int* maxx,
@@ -100365,7 +100205,7 @@ inline void Font::GetGlyphMetrics(Uint32 ch,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline int GetGlyphKerning(FontParam font, Uint32 previous_ch, Uint32 ch)
+inline int GetGlyphKerning(FontRef font, Uint32 previous_ch, Uint32 ch)
 {
   if (int r; TTF_GetGlyphKerning(font, previous_ch, ch, &r)) return r;
   throw Error();
@@ -100393,7 +100233,7 @@ inline int Font::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetStringSize(FontParam font, std::string_view text, int* w, int* h)
+inline void GetStringSize(FontRef font, std::string_view text, int* w, int* h)
 {
   CheckError(TTF_GetStringSize(font, text.data(), text.size(), w, h));
 }
@@ -100426,7 +100266,7 @@ inline void Font::GetStringSize(std::string_view text, int* w, int* h) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetStringSizeWrapped(FontParam font,
+inline void GetStringSizeWrapped(FontRef font,
                                  std::string_view text,
                                  int wrap_width,
                                  int* w,
@@ -100467,7 +100307,7 @@ inline void Font::GetStringSizeWrapped(std::string_view text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void MeasureString(FontParam font,
+inline void MeasureString(FontRef font,
                           std::string_view text,
                           int max_width,
                           int* measured_width,
@@ -100523,7 +100363,7 @@ inline void Font::MeasureString(std::string_view text,
  * @sa Font.RenderText_Solid
  * @sa Font.RenderText_Solid_Wrapped
  */
-inline Surface RenderText_Solid(FontParam font, std::string_view text, Color fg)
+inline Surface RenderText_Solid(FontRef font, std::string_view text, Color fg)
 {
   return Surface{TTF_RenderText_Solid(font, text.data(), text.size(), fg)};
 }
@@ -100565,7 +100405,7 @@ inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
  * @sa Font.RenderText_Shaded_Wrapped
  * @sa Font.RenderText_Solid
  */
-inline Surface RenderText_Solid_Wrapped(FontParam font,
+inline Surface RenderText_Solid_Wrapped(FontRef font,
                                         std::string_view text,
                                         Color fg,
                                         int wrapLength)
@@ -100608,7 +100448,7 @@ inline Surface Font::RenderText_Solid_Wrapped(std::string_view text,
  * @sa Font.RenderGlyph_LCD
  * @sa Font.RenderGlyph_Shaded
  */
-inline Surface RenderGlyph_Solid(FontParam font, Uint32 ch, ColorRaw fg)
+inline Surface RenderGlyph_Solid(FontRef font, Uint32 ch, ColorRaw fg)
 {
   return Surface(TTF_RenderGlyph_Solid(font, ch, fg));
 }
@@ -100652,7 +100492,7 @@ inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
  * @sa Font.RenderText_Shaded_Wrapped
  * @sa Font.RenderText_Solid
  */
-inline Surface RenderText_Shaded(FontParam font,
+inline Surface RenderText_Shaded(FontRef font,
                                  std::string_view text,
                                  Color fg,
                                  Color bg)
@@ -100701,7 +100541,7 @@ inline Surface Font::RenderText_Shaded(std::string_view text,
  * @sa Font.RenderText_Shaded
  * @sa Font.RenderText_Solid_Wrapped
  */
-inline Surface RenderText_Shaded_Wrapped(FontParam font,
+inline Surface RenderText_Shaded_Wrapped(FontRef font,
                                          std::string_view text,
                                          Color fg,
                                          Color bg,
@@ -100748,7 +100588,7 @@ inline Surface Font::RenderText_Shaded_Wrapped(std::string_view text,
  * @sa Font.RenderGlyph_LCD
  * @sa Font.RenderGlyph_Solid
  */
-inline Surface RenderGlyph_Shaded(FontParam font,
+inline Surface RenderGlyph_Shaded(FontRef font,
                                   Uint32 ch,
                                   ColorRaw fg,
                                   ColorRaw bg)
@@ -100795,9 +100635,7 @@ inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
  * @sa Font.RenderText_Shaded
  * @sa Font.RenderText_Solid
  */
-inline Surface RenderText_Blended(FontParam font,
-                                  std::string_view text,
-                                  Color fg)
+inline Surface RenderText_Blended(FontRef font, std::string_view text, Color fg)
 {
   return Surface(TTF_RenderText_Blended(font, text.data(), text.size(), fg));
 }
@@ -100839,7 +100677,7 @@ inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
  * @sa Font.RenderText_Shaded_Wrapped
  * @sa Font.RenderText_Solid_Wrapped
  */
-inline Surface RenderText_Blended_Wrapped(FontParam font,
+inline Surface RenderText_Blended_Wrapped(FontRef font,
                                           std::string_view text,
                                           Color fg,
                                           int wrap_width)
@@ -100882,7 +100720,7 @@ inline Surface Font::RenderText_Blended_Wrapped(std::string_view text,
  * @sa Font.RenderGlyph_Shaded
  * @sa Font.RenderGlyph_Solid
  */
-inline Surface RenderGlyph_Blended(FontParam font, Uint32 ch, ColorRaw fg)
+inline Surface RenderGlyph_Blended(FontRef font, Uint32 ch, ColorRaw fg)
 {
   return Surface(TTF_RenderGlyph_Blended(font, ch, fg));
 }
@@ -100925,7 +100763,7 @@ inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
  * @sa Font.RenderText_Shaded
  * @sa Font.RenderText_Solid
  */
-inline Surface RenderText_LCD(FontParam font,
+inline Surface RenderText_LCD(FontRef font,
                               std::string_view text,
                               Color fg,
                               Color bg)
@@ -100973,7 +100811,7 @@ inline Surface Font::RenderText_LCD(std::string_view text,
  * @sa Font.RenderText_Shaded_Wrapped
  * @sa Font.RenderText_Solid_Wrapped
  */
-inline Surface RenderText_LCD_Wrapped(FontParam font,
+inline Surface RenderText_LCD_Wrapped(FontRef font,
                                       std::string_view text,
                                       Color fg,
                                       Color bg,
@@ -101020,7 +100858,7 @@ inline Surface Font::RenderText_LCD_Wrapped(std::string_view text,
  * @sa Font.RenderGlyph_Shaded
  * @sa Font.RenderGlyph_Solid
  */
-inline Surface RenderGlyph_LCD(FontParam font,
+inline Surface RenderGlyph_LCD(FontRef font,
                                Uint32 ch,
                                ColorRaw fg,
                                ColorRaw bg)
@@ -101105,7 +100943,7 @@ public:
   }
 
   /**
-   * Constructs from TextEngineParam.
+   * Constructs from TextEngineRef.
    *
    * @param resource a TextEngineRaw to be wrapped.
    *
@@ -101177,7 +101015,7 @@ public:
    *
    * @sa Text.Destroy
    */
-  Text CreateText(FontParam font, std::string_view text);
+  Text CreateText(FontRef font, std::string_view text);
 };
 
 /// A surface based text engine
@@ -101235,7 +101073,7 @@ struct RendererTextEngine : TextEngine
    * @sa Text.DrawRenderer
    * @sa RendererTextEngine.RendererTextEngine
    */
-  RendererTextEngine(RendererParam renderer);
+  RendererTextEngine(RendererRef renderer);
 
   /**
    * Create a text engine for drawing text on an SDL renderer, with the
@@ -101261,7 +101099,7 @@ struct RendererTextEngine : TextEngine
    * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    */
-  RendererTextEngine(PropertiesParam props);
+  RendererTextEngine(PropertiesRef props);
 
   ~RendererTextEngine() { Destroy(); }
 
@@ -101300,7 +101138,7 @@ struct GPUTextEngine : TextEngine
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
-  GPUTextEngine(GPUDeviceParam device);
+  GPUTextEngine(GPUDeviceRef device);
 
   /**
    * Create a text engine for drawing text with the SDL GPU API, with the
@@ -101326,7 +101164,7 @@ struct GPUTextEngine : TextEngine
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
-  GPUTextEngine(PropertiesParam props);
+  GPUTextEngine(PropertiesRef props);
 
   ~GPUTextEngine() { Destroy(); }
 
@@ -101433,7 +101271,7 @@ public:
   }
 
   /**
-   * Constructs from TextParam.
+   * Constructs from TextRef.
    *
    * @param resource a TextRaw to be wrapped.
    *
@@ -101476,7 +101314,7 @@ public:
    *
    * @sa Text.Destroy
    */
-  Text(TextEngineParam engine, FontParam font, std::string_view text);
+  Text(TextEngineRef engine, FontRef font, std::string_view text);
 
   /// member access to underlying TextRaw.
   constexpr const TextRaw operator->() const noexcept { return m_resource; }
@@ -101547,7 +101385,7 @@ public:
    * @sa SurfaceTextEngine.SurfaceTextEngine
    * @sa Text.Text
    */
-  void DrawSurface(Point p, SurfaceParam surface) const;
+  void DrawSurface(Point p, SurfaceRef surface) const;
 
   /**
    * Draw text to an SDL renderer.
@@ -101626,7 +101464,7 @@ public:
    *
    * @sa Text.GetEngine
    */
-  void SetEngine(TextEngineParam engine);
+  void SetEngine(TextEngineRef engine);
 
   /**
    * Get the text engine used by a text object.
@@ -101641,7 +101479,7 @@ public:
    *
    * @sa Text.SetEngine
    */
-  TextEngineParam GetEngine() const;
+  TextEngineRef GetEngine() const;
 
   /**
    * Set the font used by a text object.
@@ -101663,7 +101501,7 @@ public:
    *
    * @sa Text.GetFont
    */
-  bool SetFont(FontParam font);
+  bool SetFont(FontRef font);
 
   /**
    * Get the font used by a text object.
@@ -102483,12 +102321,12 @@ inline SurfaceTextEngine::SurfaceTextEngine()
  * @sa SurfaceTextEngine.SurfaceTextEngine
  * @sa Text.Text
  */
-inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceParam surface)
+inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceRef surface)
 {
   CheckError(TTF_DrawSurfaceText(text, p.x, p.y, surface));
 }
 
-inline void Text::DrawSurface(Point p, SurfaceParam surface) const
+inline void Text::DrawSurface(Point p, SurfaceRef surface) const
 {
   SDL::DrawSurfaceText(m_resource, p, surface);
 }
@@ -102535,17 +102373,17 @@ inline void SurfaceTextEngine::Destroy()
  * @sa Text.DrawRenderer
  * @sa RendererTextEngine.RendererTextEngine
  */
-inline RendererTextEngine CreateRendererTextEngine(RendererParam renderer)
+inline RendererTextEngine CreateRendererTextEngine(RendererRef renderer)
 {
   return RendererTextEngine(renderer);
 }
 
-inline RendererTextEngine::RendererTextEngine(RendererParam renderer)
+inline RendererTextEngine::RendererTextEngine(RendererRef renderer)
   : TextEngine(TTF_CreateRendererTextEngine(renderer))
 {
 }
 
-inline RendererTextEngine::RendererTextEngine(PropertiesParam props)
+inline RendererTextEngine::RendererTextEngine(PropertiesRef props)
   : TextEngine(TTF_CreateRendererTextEngineWithProperties(props))
 {
 }
@@ -102575,7 +102413,7 @@ inline RendererTextEngine::RendererTextEngine(PropertiesParam props)
  * @sa Text.DrawRenderer
  */
 inline RendererTextEngine CreateRendererTextEngineWithProperties(
-  PropertiesParam props)
+  PropertiesRef props)
 {
   return RendererTextEngine(props);
 }
@@ -102665,17 +102503,17 @@ inline void RendererTextEngine::Destroy()
  * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
-inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
+inline GPUTextEngine CreateGPUTextEngine(GPUDeviceRef device)
 {
   return GPUTextEngine(device);
 }
 
-inline GPUTextEngine::GPUTextEngine(GPUDeviceParam device)
+inline GPUTextEngine::GPUTextEngine(GPUDeviceRef device)
   : TextEngine(TTF_CreateGPUTextEngine(device))
 {
 }
 
-inline GPUTextEngine::GPUTextEngine(PropertiesParam props)
+inline GPUTextEngine::GPUTextEngine(PropertiesRef props)
   : TextEngine(TTF_CreateGPUTextEngineWithProperties(props))
 {
 }
@@ -102704,7 +102542,7 @@ inline GPUTextEngine::GPUTextEngine(PropertiesParam props)
  * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
-inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesParam props)
+inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
 {
   return GPUTextEngine(props);
 }
@@ -102795,7 +102633,7 @@ inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
  *
  * @sa GPUTextEngine.GetGPUWinding
  */
-inline void SetGPUTextEngineWinding(TextEngineParam engine,
+inline void SetGPUTextEngineWinding(TextEngineRef engine,
                                     GPUTextEngineWinding winding)
 {
   TTF_SetGPUTextEngineWinding(engine, winding);
@@ -102822,7 +102660,7 @@ inline void GPUTextEngine::SetGPUWinding(GPUTextEngineWinding winding)
  *
  * @sa GPUTextEngine.SetGPUWinding
  */
-inline GPUTextEngineWinding GetGPUTextEngineWinding(TextEngineParam engine)
+inline GPUTextEngineWinding GetGPUTextEngineWinding(TextEngineRef engine)
 {
   return TTF_GetGPUTextEngineWinding(engine);
 }
@@ -102849,19 +102687,19 @@ inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding() const
  *
  * @sa Text.Destroy
  */
-inline Text CreateText(TextEngineParam engine,
-                       FontParam font,
+inline Text CreateText(TextEngineRef engine,
+                       FontRef font,
                        std::string_view text)
 {
   return Text(engine, font, text);
 }
 
-inline Text TextEngine::CreateText(FontParam font, std::string_view text)
+inline Text TextEngine::CreateText(FontRef font, std::string_view text)
 {
   return Text(m_resource, font, text);
 }
 
-inline Text::Text(TextEngineParam engine, FontParam font, std::string_view text)
+inline Text::Text(TextEngineRef engine, FontRef font, std::string_view text)
   : m_resource(TTF_CreateText(engine, font, text.data(), text.size()))
 {
 }
@@ -102904,12 +102742,12 @@ inline PropertiesRef Text::GetProperties() const
  *
  * @sa Text.GetEngine
  */
-inline void SetTextEngine(TextParam text, TextEngineParam engine)
+inline void SetTextEngine(TextRef text, TextEngineRef engine)
 {
   CheckError(TTF_SetTextEngine(text, engine));
 }
 
-inline void Text::SetEngine(TextEngineParam engine)
+inline void Text::SetEngine(TextEngineRef engine)
 {
   SDL::SetTextEngine(m_resource, engine);
 }
@@ -102928,12 +102766,12 @@ inline void Text::SetEngine(TextEngineParam engine)
  *
  * @sa Text.SetEngine
  */
-inline TextEngineParam GetTextEngine(TextConstRef text)
+inline TextEngineRef GetTextEngine(TextConstRef text)
 {
   return CheckError(TTF_GetTextEngine(text));
 }
 
-inline TextEngineParam Text::GetEngine() const
+inline TextEngineRef Text::GetEngine() const
 {
   return SDL::GetTextEngine(m_resource);
 }
@@ -102959,12 +102797,12 @@ inline TextEngineParam Text::GetEngine() const
  *
  * @sa Text.GetFont
  */
-inline bool SetTextFont(TextParam text, FontParam font)
+inline bool SetTextFont(TextRef text, FontRef font)
 {
   return TTF_SetTextFont(text, font);
 }
 
-inline bool Text::SetFont(FontParam font)
+inline bool Text::SetFont(FontRef font)
 {
   return SDL::SetTextFont(m_resource, font);
 }
@@ -103005,7 +102843,7 @@ inline FontRef Text::GetFont() const { return SDL::GetTextFont(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void SetTextDirection(TextParam text, Direction direction)
+inline void SetTextDirection(TextRef text, Direction direction)
 {
   CheckError(TTF_SetTextDirection(text, direction));
 }
@@ -103055,7 +102893,7 @@ inline Direction Text::GetDirection() const
  *
  * @sa StringToTag
  */
-inline void SetTextScript(TextParam text, Uint32 script)
+inline void SetTextScript(TextRef text, Uint32 script)
 {
   CheckError(TTF_SetTextScript(text, script));
 }
@@ -103106,7 +102944,7 @@ inline Uint32 Text::GetScript() const { return SDL::GetTextScript(m_resource); }
  * @sa Text.GetColor
  * @sa Text.SetColorFloat
  */
-inline void SetTextColor(TextParam text, Color c)
+inline void SetTextColor(TextRef text, Color c)
 {
   CheckError(TTF_SetTextColor(text, c.r, c.g, c.b, c.a));
 }
@@ -103130,7 +102968,7 @@ inline void Text::SetColor(Color c) { SDL::SetTextColor(m_resource, c); }
  * @sa Text.GetColorFloat
  * @sa Text.SetColor
  */
-inline void SetTextColorFloat(TextParam text, FColor c)
+inline void SetTextColorFloat(TextRef text, FColor c)
 {
   CheckError(TTF_SetTextColorFloat(text, c.r, c.g, c.b, c.a));
 }
@@ -103186,7 +103024,7 @@ inline void GetTextColor(TextConstRef text,
  * @sa Text.GetColorFloat
  * @sa Text.SetColor
  */
-inline Color GetTextColor(TextParam text)
+inline Color GetTextColor(TextRef text)
 {
   Color c;
   GetTextColor(text, &c.r, &c.g, &c.b, &c.a);
@@ -103246,7 +103084,7 @@ inline void GetTextColorFloat(TextConstRef text,
  * @sa Text.GetColor
  * @sa Text.SetColorFloat
  */
-inline FColor GetTextColorFloat(TextParam text)
+inline FColor GetTextColorFloat(TextRef text)
 {
   FColor c;
   GetTextColorFloat(text, &c.r, &c.g, &c.b, &c.a);
@@ -103282,7 +103120,7 @@ inline FColor Text::GetColorFloat() const
  *
  * @sa Text.GetPosition
  */
-inline void SetTextPosition(TextParam text, const PointRaw& p)
+inline void SetTextPosition(TextRef text, const PointRaw& p)
 {
   CheckError(TTF_SetTextPosition(text, p.x, p.y));
 }
@@ -103329,7 +103167,7 @@ inline void GetTextPosition(TextConstRef text, int* x, int* y)
  *
  * @sa Text.SetPosition
  */
-inline Point GetTextPosition(TextParam text)
+inline Point GetTextPosition(TextRef text)
 {
   Point p;
   GetTextPosition(text, &p.x, &p.y);
@@ -103363,7 +103201,7 @@ inline Point Text::GetPosition() const
  *
  * @sa Text.GetWrapWidth
  */
-inline void SetTextWrapWidth(TextParam text, int wrap_width)
+inline void SetTextWrapWidth(TextRef text, int wrap_width)
 {
   CheckError(TTF_SetTextWrapWidth(text, wrap_width));
 }
@@ -103420,7 +103258,7 @@ inline int Text::GetWrapWidth() const
  *
  * @sa Text.IsWrapWhitespaceVisible
  */
-inline void SetTextWrapWhitespaceVisible(TextParam text, bool visible)
+inline void SetTextWrapWhitespaceVisible(TextRef text, bool visible)
 {
   CheckError(TTF_SetTextWrapWhitespaceVisible(text, visible));
 }
@@ -103471,7 +103309,7 @@ inline bool Text::IsWrapWhitespaceVisible() const
  * @sa Text.DeleteString
  * @sa Text.InsertString
  */
-inline void SetTextString(TextParam text, std::string_view string)
+inline void SetTextString(TextRef text, std::string_view string)
 {
   CheckError(TTF_SetTextString(text, string.data(), string.size()));
 }
@@ -103503,9 +103341,7 @@ inline void Text::SetString(std::string_view string)
  * @sa Text.DeleteString
  * @sa Text.SetString
  */
-inline void InsertTextString(TextParam text,
-                             int offset,
-                             std::string_view string)
+inline void InsertTextString(TextRef text, int offset, std::string_view string)
 {
   CheckError(TTF_InsertTextString(text, offset, string.data(), string.size()));
 }
@@ -103533,7 +103369,7 @@ inline void Text::InsertString(int offset, std::string_view string)
  * @sa Text.InsertString
  * @sa Text.SetString
  */
-inline void AppendTextString(TextParam text, std::string_view string)
+inline void AppendTextString(TextRef text, std::string_view string)
 {
   CheckError(TTF_AppendTextString(text, string.data(), string.size()));
 }
@@ -103566,7 +103402,7 @@ inline void Text::AppendString(std::string_view string)
  * @sa Text.InsertString
  * @sa Text.SetString
  */
-inline void DeleteTextString(TextParam text, int offset, int length)
+inline void DeleteTextString(TextRef text, int offset, int length)
 {
   CheckError(TTF_DeleteTextString(text, offset, length));
 }
@@ -103613,7 +103449,7 @@ inline void GetTextSize(TextConstRef text, int* w, int* h)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Point GetTextSize(TextParam text)
+inline Point GetTextSize(TextRef text)
 {
   Point p;
   GetTextSize(text, &p.x, &p.y);
@@ -103823,7 +103659,7 @@ inline void Text::GetNextSubString(const SubString& substring,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void UpdateText(TextParam text) { CheckError(TTF_UpdateText(text)); }
+inline void UpdateText(TextRef text) { CheckError(TTF_UpdateText(text)); }
 
 inline void Text::Update() { SDL::UpdateText(m_resource); }
 

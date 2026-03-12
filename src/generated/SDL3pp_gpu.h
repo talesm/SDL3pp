@@ -382,8 +382,6 @@ using GPUDeviceRaw = SDL_GPUDevice*;
 // Forward decl
 struct GPUDeviceRef;
 
-using GPUDeviceParam = GPUDeviceRef;
-
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
 
@@ -542,7 +540,7 @@ public:
    * @sa GPUComputePass.DispatchIndirect
    * @sa GPUDevice.ReleaseBuffer
    */
-  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo& createinfo);
+  GPUBuffer(GPUDeviceRef device, const GPUBufferCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUBuffer.
@@ -620,7 +618,7 @@ public:
    * @sa GPUCopyPass.DownloadFromTexture
    * @sa GPUDevice.ReleaseTransferBuffer
    */
-  GPUTransferBuffer(GPUDeviceParam device,
+  GPUTransferBuffer(GPUDeviceRef device,
                     const GPUTransferBufferCreateInfo& createinfo);
 
   /**
@@ -742,7 +740,7 @@ public:
    * @sa GPUDevice.ReleaseTexture
    * @sa GPUDevice.TextureSupportsFormat
    */
-  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo& createinfo);
+  GPUTexture(GPUDeviceRef device, const GPUTextureCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUTexture.
@@ -814,7 +812,7 @@ public:
    * @sa GPURenderPass.BindFragmentSamplers
    * @sa GPUDevice.ReleaseSampler
    */
-  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo);
+  GPUSampler(GPUDeviceRef device, const GPUSamplerCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUSampler.
@@ -932,7 +930,7 @@ public:
    * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
    * @sa GPUDevice.ReleaseShader
    */
-  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo& createinfo);
+  GPUShader(GPUDeviceRef device, const GPUShaderCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUShader.
@@ -1024,7 +1022,7 @@ public:
    * @sa GPUComputePass.BindPipeline
    * @sa GPUDevice.ReleaseComputePipeline
    */
-  GPUComputePipeline(GPUDeviceParam device,
+  GPUComputePipeline(GPUDeviceRef device,
                      const GPUComputePipelineCreateInfo& createinfo);
 
   /**
@@ -1102,7 +1100,7 @@ public:
    * @sa GPURenderPass.BindPipeline
    * @sa GPUDevice.ReleaseGraphicsPipeline
    */
-  GPUGraphicsPipeline(GPUDeviceParam device,
+  GPUGraphicsPipeline(GPUDeviceRef device,
                       const GPUGraphicsPipelineCreateInfo& createinfo);
 
   /**
@@ -2343,7 +2341,7 @@ public:
    * @sa GPUDevice.SetAllowedFramesInFlight
    */
   GPUTexture AcquireSwapchainTexture(
-    WindowParam window,
+    WindowRef window,
     Uint32* swapchain_texture_width = nullptr,
     Uint32* swapchain_texture_height = nullptr);
 
@@ -2388,7 +2386,7 @@ public:
    * @sa GPUCommandBuffer.AcquireSwapchainTexture
    */
   GPUTexture WaitAndAcquireSwapchainTexture(
-    WindowParam window,
+    WindowRef window,
     Uint32* swapchain_texture_width = nullptr,
     Uint32* swapchain_texture_height = nullptr);
 
@@ -3087,7 +3085,7 @@ public:
   }
 
   /**
-   * Constructs from GPUDeviceParam.
+   * Constructs from GPUDeviceRef.
    *
    * @param resource a GPUDeviceRaw to be wrapped.
    *
@@ -3252,7 +3250,7 @@ public:
    * @sa GPUDevice.Destroy
    * @sa GPUSupportsProperties
    */
-  GPUDevice(PropertiesParam props);
+  GPUDevice(PropertiesRef props);
 
   /// Destructor
   ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
@@ -3897,7 +3895,7 @@ public:
    * @sa GPUDevice.ClaimWindow
    */
   bool WindowSupportsSwapchainComposition(
-    WindowParam window,
+    WindowRef window,
     GPUSwapchainComposition swapchain_composition);
 
   /**
@@ -3913,8 +3911,7 @@ public:
    *
    * @sa GPUDevice.ClaimWindow
    */
-  bool WindowSupportsPresentMode(WindowParam window,
-                                 GPUPresentMode present_mode);
+  bool WindowSupportsPresentMode(WindowRef window, GPUPresentMode present_mode);
 
   /**
    * Claims a window, creating a swapchain structure for it.
@@ -3940,7 +3937,7 @@ public:
    * @sa GPUDevice.WindowSupportsPresentMode
    * @sa GPUDevice.WindowSupportsSwapchainComposition
    */
-  void ClaimWindow(WindowParam window);
+  void ClaimWindow(WindowRef window);
 
   /**
    * Unclaims a window, destroying its swapchain structure.
@@ -3951,7 +3948,7 @@ public:
    *
    * @sa GPUDevice.ClaimWindow
    */
-  void ReleaseWindow(WindowParam window);
+  void ReleaseWindow(WindowRef window);
 
   /**
    * Changes the swapchain parameters for the given claimed window.
@@ -3976,7 +3973,7 @@ public:
    * @sa GPUDevice.WindowSupportsPresentMode
    * @sa GPUDevice.WindowSupportsSwapchainComposition
    */
-  bool SetSwapchainParameters(WindowParam window,
+  bool SetSwapchainParameters(WindowRef window,
                               GPUSwapchainComposition swapchain_composition,
                               GPUPresentMode present_mode);
 
@@ -4016,7 +4013,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  GPUTextureFormat GetSwapchainTextureFormat(WindowParam window);
+  GPUTextureFormat GetSwapchainTextureFormat(WindowRef window);
 
   /**
    * Blocks the thread until a swapchain texture is available to be acquired.
@@ -4033,7 +4030,7 @@ public:
    * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
    * @sa GPUDevice.SetAllowedFramesInFlight
    */
-  void WaitForSwapchain(WindowParam window);
+  void WaitForSwapchain(WindowRef window);
 
   /**
    * Blocks the thread until the GPU is completely idle.
@@ -5009,7 +5006,7 @@ inline bool GPUSupportsShaderFormats(GPUShaderFormat format_flags,
  *
  * @sa GPUDevice.GPUDevice
  */
-inline bool GPUSupportsProperties(PropertiesParam props)
+inline bool GPUSupportsProperties(PropertiesRef props)
 {
   return SDL_GPUSupportsProperties(props);
 }
@@ -5054,7 +5051,7 @@ inline GPUDevice::GPUDevice(GPUShaderFormat format_flags,
 {
 }
 
-inline GPUDevice::GPUDevice(PropertiesParam props)
+inline GPUDevice::GPUDevice(PropertiesRef props)
   : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
 {
 }
@@ -5168,7 +5165,7 @@ inline GPUDevice::GPUDevice(PropertiesParam props)
  * @sa GPUDevice.Destroy
  * @sa GPUSupportsProperties
  */
-inline GPUDevice CreateGPUDeviceWithProperties(PropertiesParam props)
+inline GPUDevice CreateGPUDeviceWithProperties(PropertiesRef props)
 {
   return GPUDevice(props);
 }
@@ -5384,7 +5381,7 @@ inline const char* GetGPUDriver(int index) { return SDL_GetGPUDriver(index); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetGPUDeviceDriver(GPUDeviceParam device)
+inline const char* GetGPUDeviceDriver(GPUDeviceRef device)
 {
   return SDL_GetGPUDeviceDriver(device);
 }
@@ -5403,7 +5400,7 @@ inline const char* GPUDevice::GetDriver()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceParam device)
+inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceRef device)
 {
   return SDL_GetGPUShaderFormats(device);
 }
@@ -5517,7 +5514,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline PropertiesRef GetGPUDeviceProperties(GPUDeviceParam device)
+inline PropertiesRef GetGPUDeviceProperties(GPUDeviceRef device)
 {
   return CheckError(SDL_GetGPUDeviceProperties(device));
 }
@@ -5579,7 +5576,7 @@ inline PropertiesRef GPUDevice::GetProperties()
  * @sa GPUDevice.ReleaseComputePipeline
  */
 inline GPUComputePipeline CreateGPUComputePipeline(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUComputePipelineCreateInfo& createinfo)
 {
   return GPUComputePipeline(device, createinfo);
@@ -5592,7 +5589,7 @@ inline GPUComputePipeline GPUDevice::CreateComputePipeline(
 }
 
 inline GPUComputePipeline::GPUComputePipeline(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUComputePipelineCreateInfo& createinfo)
   : m_gPUComputePipeline(
       CheckError(SDL_CreateGPUComputePipeline(device, &createinfo)))
@@ -5628,7 +5625,7 @@ constexpr auto CREATE_NAME_STRING =
  * @sa GPUDevice.ReleaseGraphicsPipeline
  */
 inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUGraphicsPipelineCreateInfo& createinfo)
 {
   return GPUGraphicsPipeline(device, createinfo);
@@ -5641,7 +5638,7 @@ inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
 }
 
 inline GPUGraphicsPipeline::GPUGraphicsPipeline(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUGraphicsPipelineCreateInfo& createinfo)
   : m_gPUGraphicsPipeline(
       CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo)))
@@ -5676,7 +5673,7 @@ constexpr auto CREATE_NAME_STRING =
  * @sa GPURenderPass.BindFragmentSamplers
  * @sa GPUDevice.ReleaseSampler
  */
-inline GPUSampler CreateGPUSampler(GPUDeviceParam device,
+inline GPUSampler CreateGPUSampler(GPUDeviceRef device,
                                    const GPUSamplerCreateInfo& createinfo)
 {
   return GPUSampler(device, createinfo);
@@ -5688,7 +5685,7 @@ inline GPUSampler GPUDevice::CreateSampler(
   return GPUSampler(m_resource, createinfo);
 }
 
-inline GPUSampler::GPUSampler(GPUDeviceParam device,
+inline GPUSampler::GPUSampler(GPUDeviceRef device,
                               const GPUSamplerCreateInfo& createinfo)
   : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
 {
@@ -5770,7 +5767,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
  * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
  * @sa GPUDevice.ReleaseShader
  */
-inline GPUShader CreateGPUShader(GPUDeviceParam device,
+inline GPUShader CreateGPUShader(GPUDeviceRef device,
                                  const GPUShaderCreateInfo& createinfo)
 {
   return GPUShader(device, createinfo);
@@ -5781,7 +5778,7 @@ inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
   return GPUShader(m_resource, createinfo);
 }
 
-inline GPUShader::GPUShader(GPUDeviceParam device,
+inline GPUShader::GPUShader(GPUDeviceRef device,
                             const GPUShaderCreateInfo& createinfo)
   : m_gPUShader(CheckError(SDL_CreateGPUShader(device, &createinfo)))
 {
@@ -5851,7 +5848,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
  * @sa GPUDevice.ReleaseTexture
  * @sa GPUDevice.TextureSupportsFormat
  */
-inline GPUTexture CreateGPUTexture(GPUDeviceParam device,
+inline GPUTexture CreateGPUTexture(GPUDeviceRef device,
                                    const GPUTextureCreateInfo& createinfo)
 {
   return GPUTexture(device, createinfo);
@@ -5863,7 +5860,7 @@ inline GPUTexture GPUDevice::CreateTexture(
   return GPUTexture(m_resource, createinfo);
 }
 
-inline GPUTexture::GPUTexture(GPUDeviceParam device,
+inline GPUTexture::GPUTexture(GPUDeviceRef device,
                               const GPUTextureCreateInfo& createinfo)
   : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, &createinfo)))
 {
@@ -5940,7 +5937,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
  * @sa GPUComputePass.DispatchIndirect
  * @sa GPUDevice.ReleaseBuffer
  */
-inline GPUBuffer CreateGPUBuffer(GPUDeviceParam device,
+inline GPUBuffer CreateGPUBuffer(GPUDeviceRef device,
                                  const GPUBufferCreateInfo& createinfo)
 {
   return GPUBuffer(device, createinfo);
@@ -5951,7 +5948,7 @@ inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
   return GPUBuffer(m_resource, createinfo);
 }
 
-inline GPUBuffer::GPUBuffer(GPUDeviceParam device,
+inline GPUBuffer::GPUBuffer(GPUDeviceRef device,
                             const GPUBufferCreateInfo& createinfo)
   : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, &createinfo)))
 {
@@ -5991,7 +5988,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
  * @sa GPUDevice.ReleaseTransferBuffer
  */
 inline GPUTransferBuffer CreateGPUTransferBuffer(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(device, createinfo);
@@ -6004,7 +6001,7 @@ inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
 }
 
 inline GPUTransferBuffer::GPUTransferBuffer(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUTransferBufferCreateInfo& createinfo)
   : m_gPUTransferBuffer(
       CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
@@ -6035,7 +6032,7 @@ constexpr auto CREATE_NAME_STRING =
  *
  * @sa GPUBuffer.GPUBuffer
  */
-inline void SetGPUBufferName(GPUDeviceParam device,
+inline void SetGPUBufferName(GPUDeviceRef device,
                              GPUBuffer buffer,
                              StringParam text)
 {
@@ -6064,7 +6061,7 @@ inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
  *
  * @sa GPUTexture.GPUTexture
  */
-inline void SetGPUTextureName(GPUDeviceParam device,
+inline void SetGPUTextureName(GPUDeviceRef device,
                               GPUTexture texture,
                               StringParam text)
 {
@@ -6175,7 +6172,7 @@ inline void GPUCommandBuffer::PopDebugGroup()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUTexture(GPUDeviceParam device, GPUTexture texture)
+inline void ReleaseGPUTexture(GPUDeviceRef device, GPUTexture texture)
 {
   SDL_ReleaseGPUTexture(device, texture);
 }
@@ -6195,7 +6192,7 @@ inline void GPUDevice::ReleaseTexture(GPUTexture texture)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUSampler(GPUDeviceParam device, GPUSampler sampler)
+inline void ReleaseGPUSampler(GPUDeviceRef device, GPUSampler sampler)
 {
   SDL_ReleaseGPUSampler(device, sampler);
 }
@@ -6215,7 +6212,7 @@ inline void GPUDevice::ReleaseSampler(GPUSampler sampler)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUBuffer(GPUDeviceParam device, GPUBuffer buffer)
+inline void ReleaseGPUBuffer(GPUDeviceRef device, GPUBuffer buffer)
 {
   SDL_ReleaseGPUBuffer(device, buffer);
 }
@@ -6235,7 +6232,7 @@ inline void GPUDevice::ReleaseBuffer(GPUBuffer buffer)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUTransferBuffer(GPUDeviceParam device,
+inline void ReleaseGPUTransferBuffer(GPUDeviceRef device,
                                      GPUTransferBuffer transfer_buffer)
 {
   SDL_ReleaseGPUTransferBuffer(device, transfer_buffer);
@@ -6256,7 +6253,7 @@ inline void GPUDevice::ReleaseTransferBuffer(GPUTransferBuffer transfer_buffer)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUComputePipeline(GPUDeviceParam device,
+inline void ReleaseGPUComputePipeline(GPUDeviceRef device,
                                       GPUComputePipeline compute_pipeline)
 {
   SDL_ReleaseGPUComputePipeline(device, compute_pipeline);
@@ -6278,7 +6275,7 @@ inline void GPUDevice::ReleaseComputePipeline(
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUShader(GPUDeviceParam device, GPUShader shader)
+inline void ReleaseGPUShader(GPUDeviceRef device, GPUShader shader)
 {
   SDL_ReleaseGPUShader(device, shader);
 }
@@ -6298,7 +6295,7 @@ inline void GPUDevice::ReleaseShader(GPUShader shader)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUGraphicsPipeline(GPUDeviceParam device,
+inline void ReleaseGPUGraphicsPipeline(GPUDeviceRef device,
                                        GPUGraphicsPipeline graphics_pipeline)
 {
   SDL_ReleaseGPUGraphicsPipeline(device, graphics_pipeline);
@@ -6334,7 +6331,7 @@ inline void GPUDevice::ReleaseGraphicsPipeline(
  * @sa GPUCommandBuffer.Submit
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
-inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceParam device)
+inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceRef device)
 {
   return SDL_AcquireGPUCommandBuffer(device);
 }
@@ -7287,7 +7284,7 @@ inline void GPUComputePass::End() { SDL::EndGPUComputePass(m_gPUComputePass); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void* MapGPUTransferBuffer(GPUDeviceParam device,
+inline void* MapGPUTransferBuffer(GPUDeviceRef device,
                                   GPUTransferBuffer transfer_buffer,
                                   bool cycle)
 {
@@ -7308,7 +7305,7 @@ inline void* GPUDevice::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void UnmapGPUTransferBuffer(GPUDeviceParam device,
+inline void UnmapGPUTransferBuffer(GPUDeviceRef device,
                                    GPUTransferBuffer transfer_buffer)
 {
   SDL_UnmapGPUTransferBuffer(device, transfer_buffer);
@@ -7604,8 +7601,8 @@ inline void GPUCommandBuffer::BlitTexture(const GPUBlitInfo& info)
  * @sa GPUDevice.ClaimWindow
  */
 inline bool WindowSupportsGPUSwapchainComposition(
-  GPUDeviceParam device,
-  WindowParam window,
+  GPUDeviceRef device,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition)
 {
   return SDL_WindowSupportsGPUSwapchainComposition(
@@ -7613,7 +7610,7 @@ inline bool WindowSupportsGPUSwapchainComposition(
 }
 
 inline bool GPUDevice::WindowSupportsSwapchainComposition(
-  WindowParam window,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition)
 {
   return SDL::WindowSupportsGPUSwapchainComposition(
@@ -7634,14 +7631,14 @@ inline bool GPUDevice::WindowSupportsSwapchainComposition(
  *
  * @sa GPUDevice.ClaimWindow
  */
-inline bool WindowSupportsGPUPresentMode(GPUDeviceParam device,
-                                         WindowParam window,
+inline bool WindowSupportsGPUPresentMode(GPUDeviceRef device,
+                                         WindowRef window,
                                          GPUPresentMode present_mode)
 {
   return SDL_WindowSupportsGPUPresentMode(device, window, present_mode);
 }
 
-inline bool GPUDevice::WindowSupportsPresentMode(WindowParam window,
+inline bool GPUDevice::WindowSupportsPresentMode(WindowRef window,
                                                  GPUPresentMode present_mode)
 {
   return SDL::WindowSupportsGPUPresentMode(m_resource, window, present_mode);
@@ -7672,12 +7669,12 @@ inline bool GPUDevice::WindowSupportsPresentMode(WindowParam window,
  * @sa GPUDevice.WindowSupportsPresentMode
  * @sa GPUDevice.WindowSupportsSwapchainComposition
  */
-inline void ClaimWindowForGPUDevice(GPUDeviceParam device, WindowParam window)
+inline void ClaimWindowForGPUDevice(GPUDeviceRef device, WindowRef window)
 {
   CheckError(SDL_ClaimWindowForGPUDevice(device, window));
 }
 
-inline void GPUDevice::ClaimWindow(WindowParam window)
+inline void GPUDevice::ClaimWindow(WindowRef window)
 {
   SDL::ClaimWindowForGPUDevice(m_resource, window);
 }
@@ -7692,13 +7689,12 @@ inline void GPUDevice::ClaimWindow(WindowParam window)
  *
  * @sa GPUDevice.ClaimWindow
  */
-inline void ReleaseWindowFromGPUDevice(GPUDeviceParam device,
-                                       WindowParam window)
+inline void ReleaseWindowFromGPUDevice(GPUDeviceRef device, WindowRef window)
 {
   SDL_ReleaseWindowFromGPUDevice(device, window);
 }
 
-inline void GPUDevice::ReleaseWindow(WindowParam window)
+inline void GPUDevice::ReleaseWindow(WindowRef window)
 {
   SDL::ReleaseWindowFromGPUDevice(m_resource, window);
 }
@@ -7726,8 +7722,8 @@ inline void GPUDevice::ReleaseWindow(WindowParam window)
  * @sa GPUDevice.WindowSupportsSwapchainComposition
  */
 inline bool SetGPUSwapchainParameters(
-  GPUDeviceParam device,
-  WindowParam window,
+  GPUDeviceRef device,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition,
   GPUPresentMode present_mode)
 {
@@ -7736,7 +7732,7 @@ inline bool SetGPUSwapchainParameters(
 }
 
 inline bool GPUDevice::SetSwapchainParameters(
-  WindowParam window,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition,
   GPUPresentMode present_mode)
 {
@@ -7769,7 +7765,7 @@ inline bool GPUDevice::SetSwapchainParameters(
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool SetGPUAllowedFramesInFlight(GPUDeviceParam device,
+inline bool SetGPUAllowedFramesInFlight(GPUDeviceRef device,
                                         Uint32 allowed_frames_in_flight)
 {
   return SDL_SetGPUAllowedFramesInFlight(device, allowed_frames_in_flight);
@@ -7791,13 +7787,13 @@ inline bool GPUDevice::SetAllowedFramesInFlight(Uint32 allowed_frames_in_flight)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline GPUTextureFormat GetGPUSwapchainTextureFormat(GPUDeviceParam device,
-                                                     WindowParam window)
+inline GPUTextureFormat GetGPUSwapchainTextureFormat(GPUDeviceRef device,
+                                                     WindowRef window)
 {
   return SDL_GetGPUSwapchainTextureFormat(device, window);
 }
 
-inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
+inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowRef window)
 {
   return SDL::GetGPUSwapchainTextureFormat(m_resource, window);
 }
@@ -7850,7 +7846,7 @@ inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
  */
 inline GPUTexture AcquireGPUSwapchainTexture(
   GPUCommandBuffer command_buffer,
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width = nullptr,
   Uint32* swapchain_texture_height = nullptr)
 {
@@ -7859,7 +7855,7 @@ inline GPUTexture AcquireGPUSwapchainTexture(
 }
 
 inline GPUTexture GPUCommandBuffer::AcquireSwapchainTexture(
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width,
   Uint32* swapchain_texture_height)
 {
@@ -7885,12 +7881,12 @@ inline GPUTexture GPUCommandBuffer::AcquireSwapchainTexture(
  * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
  * @sa GPUDevice.SetAllowedFramesInFlight
  */
-inline void WaitForGPUSwapchain(GPUDeviceParam device, WindowParam window)
+inline void WaitForGPUSwapchain(GPUDeviceRef device, WindowRef window)
 {
   CheckError(SDL_WaitForGPUSwapchain(device, window));
 }
 
-inline void GPUDevice::WaitForSwapchain(WindowParam window)
+inline void GPUDevice::WaitForSwapchain(WindowRef window)
 {
   SDL::WaitForGPUSwapchain(m_resource, window);
 }
@@ -7937,7 +7933,7 @@ inline void GPUDevice::WaitForSwapchain(WindowParam window)
  */
 inline GPUTexture WaitAndAcquireGPUSwapchainTexture(
   GPUCommandBuffer command_buffer,
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width = nullptr,
   Uint32* swapchain_texture_height = nullptr)
 {
@@ -7946,7 +7942,7 @@ inline GPUTexture WaitAndAcquireGPUSwapchainTexture(
 }
 
 inline GPUTexture GPUCommandBuffer::WaitAndAcquireSwapchainTexture(
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width,
   Uint32* swapchain_texture_height)
 {
@@ -8062,7 +8058,7 @@ inline void GPUCommandBuffer::Cancel()
  *
  * @sa GPUDevice.WaitForFences
  */
-inline void WaitForGPUIdle(GPUDeviceParam device)
+inline void WaitForGPUIdle(GPUDeviceRef device)
 {
   CheckError(SDL_WaitForGPUIdle(device));
 }
@@ -8084,7 +8080,7 @@ inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(m_resource); }
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  * @sa GPUDevice.WaitForIdle
  */
-inline void WaitForGPUFences(GPUDeviceParam device,
+inline void WaitForGPUFences(GPUDeviceRef device,
                              bool wait_all,
                              std::span<GPUFence* const> fences)
 {
@@ -8108,7 +8104,7 @@ inline void GPUDevice::WaitForFences(bool wait_all,
  *
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
-inline bool QueryGPUFence(GPUDeviceParam device, GPUFence* fence)
+inline bool QueryGPUFence(GPUDeviceRef device, GPUFence* fence)
 {
   return SDL_QueryGPUFence(device, fence);
 }
@@ -8130,7 +8126,7 @@ inline bool GPUDevice::QueryFence(GPUFence* fence)
  *
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
-inline void ReleaseGPUFence(GPUDeviceParam device, GPUFence* fence)
+inline void ReleaseGPUFence(GPUDeviceRef device, GPUFence* fence)
 {
   SDL_ReleaseGPUFence(device, fence);
 }
@@ -8166,7 +8162,7 @@ inline Uint32 GPUTextureFormatTexelBlockSize(GPUTextureFormat format)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GPUTextureSupportsFormat(GPUDeviceParam device,
+inline bool GPUTextureSupportsFormat(GPUDeviceRef device,
                                      GPUTextureFormat format,
                                      GPUTextureType type,
                                      GPUTextureUsageFlags usage)
@@ -8191,7 +8187,7 @@ inline bool GPUDevice::TextureSupportsFormat(GPUTextureFormat format,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GPUTextureSupportsSampleCount(GPUDeviceParam device,
+inline bool GPUTextureSupportsSampleCount(GPUDeviceRef device,
                                           GPUTextureFormat format,
                                           GPUSampleCount sample_count)
 {
@@ -8273,7 +8269,7 @@ inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
  *
  * @sa AddEventWatch
  */
-inline void GDKSuspendGPU(GPUDeviceParam device) { SDL_GDKSuspendGPU(device); }
+inline void GDKSuspendGPU(GPUDeviceRef device) { SDL_GDKSuspendGPU(device); }
 
 inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
 
@@ -8290,7 +8286,7 @@ inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
  *
  * @sa AddEventWatch
  */
-inline void GDKResumeGPU(GPUDeviceParam device) { SDL_GDKResumeGPU(device); }
+inline void GDKResumeGPU(GPUDeviceRef device) { SDL_GDKResumeGPU(device); }
 
 inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(m_resource); }
 

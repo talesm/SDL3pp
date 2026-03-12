@@ -52,8 +52,6 @@ using EnvironmentRaw = SDL_Environment*;
 // Forward decl
 struct EnvironmentRef;
 
-using EnvironmentParam = EnvironmentRef;
-
 // Forward decl
 struct IConv;
 
@@ -62,8 +60,6 @@ using IConvRaw = SDL_iconv_t;
 
 // Forward decl
 struct IConvRef;
-
-using IConvParam = IConvRef;
 
 #ifdef SDL3PP_DOC
 
@@ -924,7 +920,7 @@ public:
   }
 
   /**
-   * Constructs from EnvironmentParam.
+   * Constructs from EnvironmentRef.
    *
    * @param resource a EnvironmentRaw to be wrapped.
    *
@@ -1242,8 +1238,7 @@ inline Environment::Environment(bool populated)
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline const char* GetEnvironmentVariable(EnvironmentParam env,
-                                          StringParam name)
+inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
   return SDL_GetEnvironmentVariable(env, name);
 }
@@ -1272,7 +1267,7 @@ inline const char* Environment::GetVariable(StringParam name)
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
+inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
 {
   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
 }
@@ -1302,7 +1297,7 @@ inline OwnArray<char*> Environment::GetVariables()
  * @sa Environment.GetVariables
  * @sa Environment.UnsetVariable
  */
-inline void SetEnvironmentVariable(EnvironmentParam env,
+inline void SetEnvironmentVariable(EnvironmentRef env,
                                    StringParam name,
                                    StringParam value,
                                    bool overwrite)
@@ -1336,7 +1331,7 @@ inline void Environment::SetVariable(StringParam name,
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
+inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
   CheckError(SDL_UnsetEnvironmentVariable(env, name));
 }
@@ -5927,7 +5922,7 @@ public:
   }
 
   /**
-   * Constructs from IConvParam.
+   * Constructs from IConvRef.
    *
    * @param resource a IConvRaw to be wrapped.
    *

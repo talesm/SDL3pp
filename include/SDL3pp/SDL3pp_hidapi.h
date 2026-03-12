@@ -47,8 +47,6 @@ using HidDeviceRaw = SDL_hid_device*;
 // Forward decl
 struct HidDeviceRef;
 
-using HidDeviceParam = HidDeviceRef;
-
 /**
  * HID underlying bus types.
  *
@@ -115,7 +113,7 @@ public:
   }
 
   /**
-   * Constructs from HidDeviceParam.
+   * Constructs from HidDeviceRef.
    *
    * @param resource a HidDeviceRaw to be wrapped.
    *
@@ -673,7 +671,7 @@ inline HidDevice hid_open_path(StringParam path)
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline PropertiesRef hid_get_properties(HidDeviceParam dev)
+inline PropertiesRef hid_get_properties(HidDeviceRef dev)
 {
   return CheckError(SDL_hid_get_properties(dev));
 }
@@ -714,7 +712,7 @@ constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_write(HidDeviceParam dev, SourceBytes data)
+inline int hid_write(HidDeviceRef dev, SourceBytes data)
 {
   return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
 }
@@ -740,7 +738,7 @@ inline int HidDevice::write(SourceBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_read_timeout(HidDeviceParam dev,
+inline int hid_read_timeout(HidDeviceRef dev,
                             TargetBytes data,
                             Milliseconds timeout)
 {
@@ -768,7 +766,7 @@ inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_read(HidDeviceParam dev, TargetBytes data)
+inline int hid_read(HidDeviceRef dev, TargetBytes data)
 {
   return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
 }
@@ -794,7 +792,7 @@ inline int HidDevice::read(TargetBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_set_nonblocking(HidDeviceParam dev, bool nonblock)
+inline void hid_set_nonblocking(HidDeviceRef dev, bool nonblock)
 {
   CheckErrorIfNot(SDL_hid_set_nonblocking(dev, nonblock), 0);
 }
@@ -824,7 +822,7 @@ inline void HidDevice::set_nonblocking(bool nonblock)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_send_feature_report(HidDeviceParam dev, SourceBytes data)
+inline int hid_send_feature_report(HidDeviceRef dev, SourceBytes data)
 {
   return SDL_hid_send_feature_report(
     dev, data.data_as<Uint8>(), data.size_bytes());
@@ -854,7 +852,7 @@ inline int HidDevice::send_feature_report(SourceBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_get_feature_report(HidDeviceParam dev, TargetBytes data)
+inline int hid_get_feature_report(HidDeviceRef dev, TargetBytes data)
 {
   return SDL_hid_get_feature_report(
     dev, data.data_as<Uint8>(), data.size_bytes());
@@ -884,7 +882,7 @@ inline int HidDevice::get_feature_report(TargetBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_get_input_report(HidDeviceParam dev, TargetBytes data)
+inline int hid_get_input_report(HidDeviceRef dev, TargetBytes data)
 {
   return SDL_hid_get_input_report(
     dev, data.data_as<Uint8>(), data.size_bytes());
@@ -920,7 +918,7 @@ inline void HidDevice::close() { hid_close(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_manufacturer_string(HidDeviceParam dev,
+inline void hid_get_manufacturer_string(HidDeviceRef dev,
                                         wchar_t* string,
                                         size_t maxlen)
 {
@@ -942,7 +940,7 @@ inline void HidDevice::get_manufacturer_string(wchar_t* string, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_product_string(HidDeviceParam dev,
+inline void hid_get_product_string(HidDeviceRef dev,
                                    wchar_t* string,
                                    size_t maxlen)
 {
@@ -964,7 +962,7 @@ inline void HidDevice::get_product_string(wchar_t* string, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_serial_number_string(HidDeviceParam dev,
+inline void hid_get_serial_number_string(HidDeviceRef dev,
                                          wchar_t* string,
                                          size_t maxlen)
 {
@@ -987,7 +985,7 @@ inline void HidDevice::get_serial_number_string(wchar_t* string, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_indexed_string(HidDeviceParam dev,
+inline void hid_get_indexed_string(HidDeviceRef dev,
                                    int string_index,
                                    wchar_t* string,
                                    size_t maxlen)
@@ -1014,7 +1012,7 @@ inline void HidDevice::get_indexed_string(int string_index,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline hid_device_info* hid_get_device_info(HidDeviceParam dev)
+inline hid_device_info* hid_get_device_info(HidDeviceRef dev)
 {
   return CheckError(SDL_hid_get_device_info(dev));
 }
@@ -1037,7 +1035,7 @@ inline hid_device_info* HidDevice::get_device_info()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_get_report_descriptor(HidDeviceParam dev, TargetBytes buf)
+inline int hid_get_report_descriptor(HidDeviceRef dev, TargetBytes buf)
 {
   return SDL_hid_get_report_descriptor(
     dev, buf.data_as<Uint8>(), buf.size_bytes());

@@ -9,7 +9,7 @@
   *
   * SDL offers several thread synchronization primitives. This document can't
   * cover the complicated topic of thread safety, but reading up on what each of
-@@ -97,7 +97,7 @@
+@@ -89,7 +89,7 @@
  
  public:
    /// Default ctor
@@ -18,7 +18,7 @@
      : m_resource(0)
    {
    }
-@@ -484,7 +484,7 @@
+@@ -476,7 +476,7 @@
  
  public:
    /// Default ctor
@@ -27,7 +27,7 @@
      : m_resource(0)
    {
    }
-@@ -1250,8 +1250,8 @@
+@@ -1242,8 +1242,8 @@
     * pointed to by `sem` has a positive value or the specified time has elapsed.
     * If the call is successful it will atomically decrement the semaphore value.
     *
@@ -38,7 +38,7 @@
     * @returns true if the wait succeeds or false if the wait times out.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -1458,8 +1458,8 @@
+@@ -1450,8 +1450,8 @@
   * call is successful it will atomically decrement the semaphore value.
   *
   * @param sem the semaphore to wait on.
@@ -49,8 +49,8 @@
   * @returns true if the wait succeeds or false if the wait times out.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1473,7 +1473,7 @@
- inline bool WaitSemaphoreTimeout(SemaphoreParam sem,
+@@ -1465,7 +1465,7 @@
+ inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                   std::chrono::milliseconds timeout)
  {
 -  return SDL_WaitSemaphoreTimeout(sem, timeout);
@@ -58,7 +58,7 @@
  }
  
  inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
-@@ -1539,7 +1539,7 @@
+@@ -1531,7 +1531,7 @@
  
  public:
    /// Default ctor
@@ -67,7 +67,7 @@
      : m_resource(0)
    {
    }
-@@ -1699,8 +1699,8 @@
+@@ -1691,8 +1691,8 @@
     * behavior.
     *
     * @param mutex the mutex used to coordinate thread access.
@@ -78,7 +78,7 @@
     * @returns true if the condition variable is signaled, false if the condition
     *          is not signaled in the allotted time.
     *
-@@ -1900,8 +1900,8 @@
+@@ -1892,8 +1892,8 @@
   *
   * @param cond the condition variable to wait on.
   * @param mutex the mutex used to coordinate thread access.
@@ -89,16 +89,16 @@
   * @returns true if the condition variable is signaled, false if the condition
   *          is not signaled in the allotted time.
   *
-@@ -1917,7 +1917,7 @@
-                                  MutexParam mutex,
+@@ -1909,7 +1909,7 @@
+                                  MutexRef mutex,
                                   std::chrono::milliseconds timeout)
  {
 -  return SDL_WaitConditionTimeout(cond, mutex, timeout);
 +  return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
  }
  
- inline bool Condition::WaitTimeout(MutexParam mutex,
-@@ -1950,8 +1950,8 @@
+ inline bool Condition::WaitTimeout(MutexRef mutex,
+@@ -1942,8 +1942,8 @@
   *
   * Here is an example of using this:
   *

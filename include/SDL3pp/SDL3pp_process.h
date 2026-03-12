@@ -39,8 +39,6 @@ using ProcessRaw = SDL_Process*;
 // Forward decl
 struct ProcessRef;
 
-using ProcessParam = ProcessRef;
-
 /**
  * Description of where standard I/O should be directed when creating a process.
  *
@@ -120,7 +118,7 @@ public:
   }
 
   /**
-   * Constructs from ProcessParam.
+   * Constructs from ProcessRef.
    *
    * @param resource a ProcessRaw to be wrapped.
    *
@@ -257,7 +255,7 @@ public:
    * @sa Process.Wait
    * @sa Process.Destroy
    */
-  Process(PropertiesParam props);
+  Process(PropertiesRef props);
 
   /// Destructor
   ~Process() { SDL_DestroyProcess(m_resource); }
@@ -608,7 +606,7 @@ inline Process::Process(const char* const* args, bool pipe_stdio)
 {
 }
 
-inline Process::Process(PropertiesParam props)
+inline Process::Process(PropertiesRef props)
   : m_resource(SDL_CreateProcessWithProperties(props))
 {
 }
@@ -683,7 +681,7 @@ inline Process::Process(PropertiesParam props)
  * @sa Process.Wait
  * @sa Process.Destroy
  */
-inline Process CreateProcessWithProperties(PropertiesParam props)
+inline Process CreateProcessWithProperties(PropertiesRef props)
 {
   return Process(props);
 }
@@ -767,7 +765,7 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  * @sa Process.Process
  * @sa Process.Process
  */
-inline PropertiesRef GetProcessProperties(ProcessParam process)
+inline PropertiesRef GetProcessProperties(ProcessRef process)
 {
   return {CheckError(SDL_GetProcessProperties(process))};
 }
@@ -804,7 +802,7 @@ inline PropertiesRef Process::GetProperties() const
  * @sa Process.Process
  * @sa Process.Destroy
  */
-inline StringResult ReadProcess(ProcessParam process, int* exitcode = nullptr)
+inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
 {
   size_t size = 0;
   auto data = static_cast<char*>(SDL_ReadProcess(process, &size, exitcode));
@@ -840,7 +838,7 @@ inline StringResult Process::Read(int* exitcode)
  * @sa Process.Process
  * @sa Process.GetOutput
  */
-inline IOStreamRef GetProcessInput(ProcessParam process)
+inline IOStreamRef GetProcessInput(ProcessRef process)
 {
   return {SDL_GetProcessInput(process)};
 }
@@ -872,7 +870,7 @@ inline IOStreamRef Process::GetInput()
  * @sa Process.Process
  * @sa Process.GetInput
  */
-inline IOStreamRef GetProcessOutput(ProcessParam process)
+inline IOStreamRef GetProcessOutput(ProcessRef process)
 {
   return {SDL_GetProcessOutput(process)};
 }
@@ -901,7 +899,7 @@ inline IOStreamRef Process::GetOutput()
  * @sa Process.Wait
  * @sa Process.Destroy
  */
-inline void KillProcess(ProcessParam process, bool force)
+inline void KillProcess(ProcessRef process, bool force)
 {
   CheckError(SDL_KillProcess(process, force));
 }
@@ -939,7 +937,7 @@ inline void Process::Kill(bool force) { SDL::KillProcess(m_resource, force); }
  * @sa Process.Kill
  * @sa Process.Destroy
  */
-inline bool WaitProcess(ProcessParam process, bool block, int* exitcode)
+inline bool WaitProcess(ProcessRef process, bool block, int* exitcode)
 {
   return SDL_WaitProcess(process, block, exitcode);
 }

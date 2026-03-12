@@ -49,8 +49,6 @@ using WindowRaw = SDL_Window*;
 // Forward decl
 struct WindowRef;
 
-using WindowParam = WindowRef;
-
 // Forward decl
 struct GLContext;
 
@@ -60,7 +58,8 @@ using GLContextRaw = SDL_GLContext*;
 // Forward decl
 struct GLContextScoped;
 
-using GLContextParam = GLContext;
+/// Alias to GLContext for non owning parameters.
+using GLContextRef = GLContext;
 
 // Forward decl
 struct RendererRef;
@@ -775,7 +774,7 @@ public:
   }
 
   /**
-   * Constructs from WindowParam.
+   * Constructs from WindowRef.
    *
    * @param resource a WindowRaw to be wrapped.
    *
@@ -988,7 +987,7 @@ public:
    * @sa Window.Destroy
    * @sa Window.GetParent
    */
-  Window(WindowParam parent,
+  Window(WindowRef parent,
          const PointRaw& offset,
          const PointRaw& size,
          WindowFlags flags = 0);
@@ -1137,7 +1136,7 @@ public:
    * @sa Window.Window
    * @sa Window.Destroy
    */
-  Window(PropertiesParam props);
+  Window(PropertiesRef props);
 
   /// Destructor
   ~Window() { SDL_DestroyWindow(m_resource); }
@@ -1584,7 +1583,7 @@ public:
    *
    * @sa Surface.AddAlternateImage
    */
-  void SetIcon(SurfaceParam icon);
+  void SetIcon(SurfaceRef icon);
 
   /**
    * Request that the window's position be set.
@@ -2569,7 +2568,7 @@ public:
    *
    * @sa Window.SetModal
    */
-  void SetParent(WindowParam parent);
+  void SetParent(WindowRef parent);
 
   /**
    * Toggle the state of the window as modal.
@@ -2732,7 +2731,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetShape(SurfaceParam shape);
+  void SetShape(SurfaceRef shape);
 
   /**
    * Request a window to demand attention from the user.
@@ -2961,7 +2960,7 @@ public:
    * @sa Window.StopTextInput
    * @sa Window.IsTextInputActive
    */
-  void StartTextInput(PropertiesParam props);
+  void StartTextInput(PropertiesRef props);
 
   /**
    * Check whether or not Unicode text input events are enabled for a window.
@@ -3323,7 +3322,7 @@ public:
   }
 
   /**
-   * Constructs from GLContextParam.
+   * Constructs from GLContextRef.
    *
    * @param resource a GLContextRaw to be wrapped.
    */
@@ -3369,7 +3368,7 @@ public:
    * @sa GLContext.Destroy
    * @sa GLContext.MakeCurrent
    */
-  GLContext(WindowParam window);
+  GLContext(WindowRef window);
 
   /// Converts to underlying GLContextRaw.
   constexpr operator GLContextRaw() const noexcept { return m_resource; }
@@ -3433,7 +3432,7 @@ public:
    *
    * @sa GLContext.GLContext
    */
-  void MakeCurrent(WindowParam window);
+  void MakeCurrent(WindowRef window);
 };
 
 /// RAII owning version GLContext.
@@ -4294,7 +4293,7 @@ inline Display Display::GetForRect(const RectRaw& rect)
  * @sa Display.GetBounds
  * @sa GetDisplays
  */
-inline Display GetDisplayForWindow(WindowParam window)
+inline Display GetDisplayForWindow(WindowRef window)
 {
   return CheckError(SDL_GetDisplayForWindow(window));
 }
@@ -4321,7 +4320,7 @@ inline Display Window::GetDisplay() const
  *
  * @sa Window.GetDisplayScale
  */
-inline float GetWindowPixelDensity(WindowParam window)
+inline float GetWindowPixelDensity(WindowRef window)
 {
   return SDL_GetWindowPixelDensity(window);
 }
@@ -4352,7 +4351,7 @@ inline float Window::GetPixelDensity() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline float GetWindowDisplayScale(WindowParam window)
+inline float GetWindowDisplayScale(WindowRef window)
 {
   return SDL_GetWindowDisplayScale(window);
 }
@@ -4393,7 +4392,7 @@ inline float Window::GetDisplayScale() const
  * @sa Window.SetFullscreen
  * @sa Window.Sync
  */
-inline void SetWindowFullscreenMode(WindowParam window,
+inline void SetWindowFullscreenMode(WindowRef window,
                                     OptionalRef<const DisplayMode> mode)
 {
   CheckError(SDL_SetWindowFullscreenMode(window, mode));
@@ -4418,7 +4417,7 @@ inline void Window::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
  * @sa Window.SetFullscreenMode
  * @sa Window.SetFullscreen
  */
-inline const DisplayMode& GetWindowFullscreenMode(WindowParam window)
+inline const DisplayMode& GetWindowFullscreenMode(WindowRef window)
 {
   return SDL_GetWindowFullscreenMode(window);
 }
@@ -4440,7 +4439,7 @@ inline const DisplayMode& Window::GetFullscreenMode() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnPtr<void> GetWindowICCProfile(WindowParam window)
+inline OwnPtr<void> GetWindowICCProfile(WindowRef window)
 {
   return CheckError(SDL_GetWindowICCProfile(window));
 }
@@ -4461,7 +4460,7 @@ inline OwnPtr<void> Window::GetICCProfile() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PixelFormat GetWindowPixelFormat(WindowParam window)
+inline PixelFormat GetWindowPixelFormat(WindowRef window)
 {
   return CheckError(SDL_GetWindowPixelFormat(window));
 }
@@ -4585,7 +4584,7 @@ inline Window::Window(StringParam title,
 {
 }
 
-inline Window::Window(WindowParam parent,
+inline Window::Window(WindowRef parent,
                       const PointRaw& offset,
                       const PointRaw& size,
                       WindowFlags flags)
@@ -4593,7 +4592,7 @@ inline Window::Window(WindowParam parent,
 {
 }
 
-inline Window::Window(PropertiesParam props)
+inline Window::Window(PropertiesRef props)
   : m_resource(SDL_CreateWindowWithProperties(props))
 {
 }
@@ -4672,7 +4671,7 @@ inline Window::Window(PropertiesParam props)
  * @sa Window.Destroy
  * @sa Window.GetParent
  */
-inline Window CreatePopupWindow(WindowParam parent,
+inline Window CreatePopupWindow(WindowRef parent,
                                 const PointRaw& offset,
                                 const PointRaw& size,
                                 WindowFlags flags)
@@ -4824,7 +4823,7 @@ inline Window CreatePopupWindow(WindowParam parent,
  * @sa Window.Window
  * @sa Window.Destroy
  */
-inline Window CreateWindowWithProperties(PropertiesParam props)
+inline Window CreateWindowWithProperties(PropertiesRef props)
 {
   return Window(props);
 }
@@ -5072,7 +5071,7 @@ constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
  *
  * @sa Window.FromID
  */
-inline WindowID GetWindowID(WindowParam window)
+inline WindowID GetWindowID(WindowRef window)
 {
   return CheckError(SDL_GetWindowID(window));
 }
@@ -5118,7 +5117,7 @@ inline WindowRef Window::FromID(WindowID id)
  *
  * @sa Window.Window
  */
-inline WindowRef GetWindowParent(WindowParam window)
+inline WindowRef GetWindowParent(WindowRef window)
 {
   return CheckError(SDL_GetWindowParent(window));
 }
@@ -5252,7 +5251,7 @@ inline WindowRef Window::GetParent() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetWindowProperties(WindowParam window)
+inline PropertiesRef GetWindowProperties(WindowRef window)
 {
   return CheckError(SDL_GetWindowProperties(window));
 }
@@ -5281,7 +5280,7 @@ inline PropertiesRef Window::GetProperties() const
  * @sa Window.SetFillDocument
  * @sa Window.Show
  */
-inline WindowFlags GetWindowFlags(WindowParam window)
+inline WindowFlags GetWindowFlags(WindowRef window)
 {
   return SDL_GetWindowFlags(window);
 }
@@ -5306,7 +5305,7 @@ inline WindowFlags Window::GetFlags() const
  *
  * @sa Window.GetTitle
  */
-inline void SetWindowTitle(WindowParam window, StringParam title)
+inline void SetWindowTitle(WindowRef window, StringParam title)
 {
   CheckError(SDL_SetWindowTitle(window, title));
 }
@@ -5328,7 +5327,7 @@ inline void Window::SetTitle(StringParam title)
  *
  * @sa Window.SetTitle
  */
-inline const char* GetWindowTitle(WindowParam window)
+inline const char* GetWindowTitle(WindowRef window)
 {
   return SDL_GetWindowTitle(window);
 }
@@ -5361,12 +5360,12 @@ inline const char* Window::GetTitle() const
  *
  * @sa Surface.AddAlternateImage
  */
-inline void SetWindowIcon(WindowParam window, SurfaceParam icon)
+inline void SetWindowIcon(WindowRef window, SurfaceRef icon)
 {
   CheckError(SDL_SetWindowIcon(window, icon));
 }
 
-inline void Window::SetIcon(SurfaceParam icon)
+inline void Window::SetIcon(SurfaceRef icon)
 {
   SDL::SetWindowIcon(m_resource, icon);
 }
@@ -5408,7 +5407,7 @@ inline void Window::SetIcon(SurfaceParam icon)
  * @sa Window.GetPosition
  * @sa Window.Sync
  */
-inline void SetWindowPosition(WindowParam window, const PointRaw& p)
+inline void SetWindowPosition(WindowRef window, const PointRaw& p)
 {
   CheckError(SDL_SetWindowPosition(window, p));
 }
@@ -5440,7 +5439,7 @@ inline void Window::SetPosition(const PointRaw& p)
  *
  * @sa Window.SetPosition
  */
-inline void GetWindowPosition(WindowParam window, int* x, int* y)
+inline void GetWindowPosition(WindowRef window, int* x, int* y)
 {
   CheckError(SDL_GetWindowPosition(window, x, y));
 }
@@ -5467,7 +5466,7 @@ inline void GetWindowPosition(WindowParam window, int* x, int* y)
  *
  * @sa Window.SetPosition
  */
-inline Point GetWindowPosition(WindowParam window)
+inline Point GetWindowPosition(WindowRef window)
 {
   static_assert(false, "Not implemented");
 }
@@ -5516,7 +5515,7 @@ inline Point Window::GetPosition() const
  * @sa Window.SetFullscreenMode
  * @sa Window.Sync
  */
-inline void SetWindowSize(WindowParam window, const PointRaw& size)
+inline void SetWindowSize(WindowRef window, const PointRaw& size)
 {
   CheckError(SDL_SetWindowSize(window, size));
 }
@@ -5547,7 +5546,7 @@ inline void Window::SetSize(const PointRaw& size)
  * @sa Window.SetSize
  * @sa EVENT_WINDOW_RESIZED
  */
-inline void GetWindowSize(WindowParam window, int* w, int* h)
+inline void GetWindowSize(WindowRef window, int* w, int* h)
 {
   CheckError(SDL_GetWindowSize(window, w, h));
 }
@@ -5573,7 +5572,7 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
  * @sa Window.SetSize
  * @sa EVENT_WINDOW_RESIZED
  */
-inline Point GetWindowSize(WindowParam window)
+inline Point GetWindowSize(WindowRef window)
 {
   static_assert(false, "Not implemented");
 }
@@ -5585,14 +5584,14 @@ inline void Window::GetSize(int* w, int* h) const
 
 inline Point Window::GetSize() const { return SDL::GetWindowSize(m_resource); }
 
-inline void SetWindowRect(WindowParam window, Rect rect)
+inline void SetWindowRect(WindowRef window, Rect rect)
 {
   static_assert(false, "Not implemented");
 }
 
 inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(m_resource, rect); }
 
-inline Rect GetWindowRect(WindowParam window)
+inline Rect GetWindowRect(WindowRef window)
 {
   static_assert(false, "Not implemented");
 }
@@ -5618,7 +5617,7 @@ inline Rect Window::GetRect() const { return SDL::GetWindowRect(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Rect GetWindowSafeArea(WindowParam window)
+inline Rect GetWindowSafeArea(WindowRef window)
 {
   return CheckError(SDL_GetWindowSafeArea(window));
 }
@@ -5665,7 +5664,7 @@ inline Rect Window::GetSafeArea() const
  * @sa Window.GetAspectRatio
  * @sa Window.Sync
  */
-inline void SetWindowAspectRatio(WindowParam window,
+inline void SetWindowAspectRatio(WindowRef window,
                                  float min_aspect,
                                  float max_aspect)
 {
@@ -5693,7 +5692,7 @@ inline void Window::SetAspectRatio(float min_aspect, float max_aspect)
  *
  * @sa Window.SetAspectRatio
  */
-inline void GetWindowAspectRatio(WindowParam window,
+inline void GetWindowAspectRatio(WindowRef window,
                                  float* min_aspect,
                                  float* max_aspect)
 {
@@ -5738,7 +5737,7 @@ inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
  *
  * @sa Window.GetSize
  */
-inline void GetWindowBordersSize(WindowParam window,
+inline void GetWindowBordersSize(WindowRef window,
                                  int* top,
                                  int* left,
                                  int* bottom,
@@ -5772,7 +5771,7 @@ inline void Window::GetBordersSize(int* top,
  * @sa Window.Window
  * @sa Window.GetSize
  */
-inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
+inline void GetWindowSizeInPixels(WindowRef window, int* w, int* h)
 {
   CheckError(SDL_GetWindowSizeInPixels(window, w, h));
 }
@@ -5794,7 +5793,7 @@ inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
  * @sa Window.Window
  * @sa Window.GetSize
  */
-inline Point GetWindowSizeInPixels(WindowParam window)
+inline Point GetWindowSizeInPixels(WindowRef window)
 {
   static_assert(false, "Not implemented");
 }
@@ -5824,7 +5823,7 @@ inline Point Window::GetSizeInPixels() const
  * @sa Window.GetMinimumSize
  * @sa Window.SetMaximumSize
  */
-inline void SetWindowMinimumSize(WindowParam window, const PointRaw& p)
+inline void SetWindowMinimumSize(WindowRef window, const PointRaw& p)
 {
   CheckError(SDL_SetWindowMinimumSize(window, p));
 }
@@ -5851,7 +5850,7 @@ inline void Window::SetMinimumSize(const PointRaw& p)
  * @sa Window.GetMaximumSize
  * @sa Window.SetMinimumSize
  */
-inline void GetWindowMinimumSize(WindowParam window, int* w, int* h)
+inline void GetWindowMinimumSize(WindowRef window, int* w, int* h)
 {
   CheckError(SDL_GetWindowMinimumSize(window, w, h));
 }
@@ -5876,7 +5875,7 @@ inline void Window::GetMinimumSize(int* w, int* h) const
  * @sa Window.GetMaximumSize
  * @sa Window.SetMinimumSize
  */
-inline void SetWindowMaximumSize(WindowParam window, const PointRaw& p)
+inline void SetWindowMaximumSize(WindowRef window, const PointRaw& p)
 {
   CheckError(SDL_SetWindowMaximumSize(window, p));
 }
@@ -5903,7 +5902,7 @@ inline void Window::SetMaximumSize(const PointRaw& p)
  * @sa Window.GetMinimumSize
  * @sa Window.SetMaximumSize
  */
-inline void GetWindowMaximumSize(WindowParam window, int* w, int* h)
+inline void GetWindowMaximumSize(WindowRef window, int* w, int* h)
 {
   CheckError(SDL_GetWindowMaximumSize(window, w, h));
 }
@@ -5932,7 +5931,7 @@ inline void Window::GetMaximumSize(int* w, int* h) const
  *
  * @sa Window.GetFlags
  */
-inline void SetWindowBordered(WindowParam window, bool bordered)
+inline void SetWindowBordered(WindowRef window, bool bordered)
 {
   CheckError(SDL_SetWindowBordered(window, bordered));
 }
@@ -5961,7 +5960,7 @@ inline void Window::SetBordered(bool bordered)
  *
  * @sa Window.GetFlags
  */
-inline void SetWindowResizable(WindowParam window, bool resizable)
+inline void SetWindowResizable(WindowRef window, bool resizable)
 {
   CheckError(SDL_SetWindowResizable(window, resizable));
 }
@@ -5987,7 +5986,7 @@ inline void Window::SetResizable(bool resizable)
  *
  * @sa Window.GetFlags
  */
-inline void SetWindowAlwaysOnTop(WindowParam window, bool on_top)
+inline void SetWindowAlwaysOnTop(WindowRef window, bool on_top)
 {
   CheckError(SDL_SetWindowAlwaysOnTop(window, on_top));
 }
@@ -6027,7 +6026,7 @@ inline void Window::SetAlwaysOnTop(bool on_top)
  *
  * @sa Window.GetFlags
  */
-inline void SetWindowFillDocument(WindowParam window, bool fill)
+inline void SetWindowFillDocument(WindowRef window, bool fill)
 {
   CheckError(SDL_SetWindowFillDocument(window, fill));
 }
@@ -6056,10 +6055,7 @@ inline void Window::SetFillDocument(bool fill)
  * @sa Window.Hide
  * @sa Window.Raise
  */
-inline void ShowWindow(WindowParam window)
-{
-  CheckError(SDL_ShowWindow(window));
-}
+inline void ShowWindow(WindowRef window) { CheckError(SDL_ShowWindow(window)); }
 
 inline void Window::Show() { SDL::ShowWindow(m_resource); }
 
@@ -6076,10 +6072,7 @@ inline void Window::Show() { SDL::ShowWindow(m_resource); }
  * @sa Window.Show
  * @sa WINDOW_HIDDEN
  */
-inline void HideWindow(WindowParam window)
-{
-  CheckError(SDL_HideWindow(window));
-}
+inline void HideWindow(WindowRef window) { CheckError(SDL_HideWindow(window)); }
 
 inline void Window::Hide() { SDL::HideWindow(m_resource); }
 
@@ -6099,7 +6092,7 @@ inline void Window::Hide() { SDL::HideWindow(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void RaiseWindow(WindowParam window)
+inline void RaiseWindow(WindowRef window)
 {
   CheckError(SDL_RaiseWindow(window));
 }
@@ -6137,7 +6130,7 @@ inline void Window::Raise() { SDL::RaiseWindow(m_resource); }
  * @sa Window.Restore
  * @sa Window.Sync
  */
-inline void MaximizeWindow(WindowParam window)
+inline void MaximizeWindow(WindowRef window)
 {
   CheckError(SDL_MaximizeWindow(window));
 }
@@ -6170,7 +6163,7 @@ inline void Window::Maximize() { SDL::MaximizeWindow(m_resource); }
  * @sa Window.Restore
  * @sa Window.Sync
  */
-inline void MinimizeWindow(WindowParam window)
+inline void MinimizeWindow(WindowRef window)
 {
   CheckError(SDL_MinimizeWindow(window));
 }
@@ -6204,7 +6197,7 @@ inline void Window::Minimize() { SDL::MinimizeWindow(m_resource); }
  * @sa Window.Minimize
  * @sa Window.Sync
  */
-inline void RestoreWindow(WindowParam window)
+inline void RestoreWindow(WindowRef window)
 {
   CheckError(SDL_RestoreWindow(window));
 }
@@ -6240,7 +6233,7 @@ inline void Window::Restore() { SDL::RestoreWindow(m_resource); }
  * @sa Window.Sync
  * @sa WINDOW_FULLSCREEN
  */
-inline void SetWindowFullscreen(WindowParam window, bool fullscreen)
+inline void SetWindowFullscreen(WindowRef window, bool fullscreen)
 {
   CheckError(SDL_SetWindowFullscreen(window, fullscreen));
 }
@@ -6278,10 +6271,7 @@ inline void Window::SetFullscreen(bool fullscreen)
  * @sa Window.Restore
  * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
  */
-inline void SyncWindow(WindowParam window)
-{
-  CheckError(SDL_SyncWindow(window));
-}
+inline void SyncWindow(WindowRef window) { CheckError(SDL_SyncWindow(window)); }
 
 inline void Window::Sync() { SDL::SyncWindow(m_resource); }
 
@@ -6298,7 +6288,7 @@ inline void Window::Sync() { SDL::SyncWindow(m_resource); }
  *
  * @sa Window.GetSurface
  */
-inline bool WindowHasSurface(WindowParam window)
+inline bool WindowHasSurface(WindowRef window)
 {
   return SDL_WindowHasSurface(window);
 }
@@ -6335,7 +6325,7 @@ inline bool Window::HasSurface() const
  * @sa Window.UpdateSurface
  * @sa Window.UpdateSurfaceRects
  */
-inline Surface GetWindowSurface(WindowParam window)
+inline Surface GetWindowSurface(WindowRef window)
 {
   return SDL_GetWindowSurface(window);
 }
@@ -6368,7 +6358,7 @@ inline Surface Window::GetSurface()
  *
  * @sa Window.GetSurfaceVSync
  */
-inline void SetWindowSurfaceVSync(WindowParam window, int vsync)
+inline void SetWindowSurfaceVSync(WindowRef window, int vsync)
 {
   CheckError(SDL_SetWindowSurfaceVSync(window, vsync));
 }
@@ -6396,7 +6386,7 @@ constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
  *
  * @sa Window.SetSurfaceVSync
  */
-inline int GetWindowSurfaceVSync(WindowParam window)
+inline int GetWindowSurfaceVSync(WindowRef window)
 {
   return CheckError(SDL_GetWindowSurfaceVSync(window));
 }
@@ -6424,7 +6414,7 @@ inline int Window::GetSurfaceVSync() const
  * @sa Window.GetSurface
  * @sa Window.UpdateSurfaceRects
  */
-inline void UpdateWindowSurface(WindowParam window)
+inline void UpdateWindowSurface(WindowRef window)
 {
   CheckError(SDL_UpdateWindowSurface(window));
 }
@@ -6457,7 +6447,7 @@ inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
  * @sa Window.GetSurface
  * @sa Window.UpdateSurface
  */
-inline void UpdateWindowSurfaceRects(WindowParam window,
+inline void UpdateWindowSurfaceRects(WindowRef window,
                                      SpanRef<const RectRaw> rects)
 {
   CheckError(SDL_UpdateWindowSurfaceRects(window, rects));
@@ -6481,7 +6471,7 @@ inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
  * @sa Window.GetSurface
  * @sa Window.HasSurface
  */
-inline void DestroyWindowSurface(WindowParam window)
+inline void DestroyWindowSurface(WindowRef window)
 {
   CheckError(SDL_DestroyWindowSurface(window));
 }
@@ -6517,7 +6507,7 @@ inline void Window::DestroySurface() { SDL::DestroyWindowSurface(m_resource); }
  * @sa Window.GetKeyboardGrab
  * @sa Window.SetMouseGrab
  */
-inline void SetWindowKeyboardGrab(WindowParam window, bool grabbed)
+inline void SetWindowKeyboardGrab(WindowRef window, bool grabbed)
 {
   CheckError(SDL_SetWindowKeyboardGrab(window, grabbed));
 }
@@ -6544,7 +6534,7 @@ inline void Window::SetKeyboardGrab(bool grabbed)
  * @sa Window.SetMouseRect
  * @sa Window.SetKeyboardGrab
  */
-inline void SetWindowMouseGrab(WindowParam window, bool grabbed)
+inline void SetWindowMouseGrab(WindowRef window, bool grabbed)
 {
   CheckError(SDL_SetWindowMouseGrab(window, grabbed));
 }
@@ -6566,7 +6556,7 @@ inline void Window::SetMouseGrab(bool grabbed)
  *
  * @sa Window.SetKeyboardGrab
  */
-inline bool GetWindowKeyboardGrab(WindowParam window)
+inline bool GetWindowKeyboardGrab(WindowRef window)
 {
   return SDL_GetWindowKeyboardGrab(window);
 }
@@ -6591,7 +6581,7 @@ inline bool Window::GetKeyboardGrab() const
  * @sa Window.SetMouseGrab
  * @sa Window.SetKeyboardGrab
  */
-inline bool GetWindowMouseGrab(WindowParam window)
+inline bool GetWindowMouseGrab(WindowRef window)
 {
   return SDL_GetWindowMouseGrab(window);
 }
@@ -6636,7 +6626,7 @@ inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
  * @sa Window.GetMouseGrab
  * @sa Window.SetMouseGrab
  */
-inline void SetWindowMouseRect(WindowParam window, const RectRaw& rect)
+inline void SetWindowMouseRect(WindowRef window, const RectRaw& rect)
 {
   CheckError(SDL_SetWindowMouseRect(window, rect));
 }
@@ -6661,7 +6651,7 @@ inline void Window::SetMouseRect(const RectRaw& rect)
  * @sa Window.GetMouseGrab
  * @sa Window.SetMouseGrab
  */
-inline const RectRaw* GetWindowMouseRect(WindowParam window)
+inline const RectRaw* GetWindowMouseRect(WindowRef window)
 {
   return SDL_GetWindowMouseRect(window);
 }
@@ -6689,7 +6679,7 @@ inline const RectRaw* Window::GetMouseRect() const
  *
  * @sa Window.GetOpacity
  */
-inline void SetWindowOpacity(WindowParam window, float opacity)
+inline void SetWindowOpacity(WindowRef window, float opacity)
 {
   CheckError(SDL_SetWindowOpacity(window, opacity));
 }
@@ -6715,7 +6705,7 @@ inline void Window::SetOpacity(float opacity)
  *
  * @sa Window.SetOpacity
  */
-inline float GetWindowOpacity(WindowParam window)
+inline float GetWindowOpacity(WindowRef window)
 {
   return SDL_GetWindowOpacity(window);
 }
@@ -6756,12 +6746,12 @@ inline float Window::GetOpacity() const
  *
  * @sa Window.SetModal
  */
-inline void SetWindowParent(WindowParam window, WindowParam parent)
+inline void SetWindowParent(WindowRef window, WindowRef parent)
 {
   CheckError(SDL_SetWindowParent(window, parent));
 }
 
-inline void Window::SetParent(WindowParam parent)
+inline void Window::SetParent(WindowRef parent)
 {
   SDL::SetWindowParent(m_resource, parent);
 }
@@ -6783,7 +6773,7 @@ inline void Window::SetParent(WindowParam parent)
  * @sa Window.SetParent
  * @sa WINDOW_MODAL
  */
-inline void SetWindowModal(WindowParam window, bool modal)
+inline void SetWindowModal(WindowRef window, bool modal)
 {
   CheckError(SDL_SetWindowModal(window, modal));
 }
@@ -6804,7 +6794,7 @@ inline void Window::SetModal(bool modal)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetWindowFocusable(WindowParam window, bool focusable)
+inline void SetWindowFocusable(WindowRef window, bool focusable)
 {
   CheckError(SDL_SetWindowFocusable(window, focusable));
 }
@@ -6836,7 +6826,7 @@ inline void Window::SetFocusable(bool focusable)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ShowWindowSystemMenu(WindowParam window, const PointRaw& p)
+inline void ShowWindowSystemMenu(WindowRef window, const PointRaw& p)
 {
   CheckError(SDL_ShowWindowSystemMenu(window, p));
 }
@@ -6887,7 +6877,7 @@ inline void Window::ShowSystemMenu(const PointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetWindowHitTest(WindowParam window,
+inline void SetWindowHitTest(WindowRef window,
                              HitTest callback,
                              void* callback_data)
 {
@@ -6935,7 +6925,7 @@ inline void SetWindowHitTest(WindowParam window,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetWindowHitTest(WindowParam window, HitTestCB callback)
+inline void SetWindowHitTest(WindowRef window, HitTestCB callback)
 {
   static_assert(false, "Not implemented");
 }
@@ -6974,12 +6964,12 @@ inline void Window::SetHitTest(HitTestCB callback)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetWindowShape(WindowParam window, SurfaceParam shape)
+inline void SetWindowShape(WindowRef window, SurfaceRef shape)
 {
   CheckError(SDL_SetWindowShape(window, shape));
 }
 
-inline void Window::SetShape(SurfaceParam shape)
+inline void Window::SetShape(SurfaceRef shape)
 {
   SDL::SetWindowShape(m_resource, shape);
 }
@@ -6995,7 +6985,7 @@ inline void Window::SetShape(SurfaceParam shape)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void FlashWindow(WindowParam window, FlashOperation operation)
+inline void FlashWindow(WindowRef window, FlashOperation operation)
 {
   CheckError(SDL_FlashWindow(window, operation));
 }
@@ -7019,7 +7009,7 @@ inline void Window::Flash(FlashOperation operation)
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline void SetWindowProgressState(WindowParam window, ProgressState state)
+inline void SetWindowProgressState(WindowRef window, ProgressState state)
 {
   CheckError(SDL_SetWindowProgressState(window, state));
 }
@@ -7048,7 +7038,7 @@ inline void Window::SetProgressState(ProgressState state)
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline ProgressState GetWindowProgressState(WindowParam window)
+inline ProgressState GetWindowProgressState(WindowRef window)
 {
   return SDL_GetWindowProgressState(window);
 }
@@ -7078,7 +7068,7 @@ inline ProgressState Window::GetProgressState()
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline void SetWindowProgressValue(WindowParam window, float value)
+inline void SetWindowProgressValue(WindowRef window, float value)
 {
   CheckError(SDL_SetWindowProgressValue(window, value));
 }
@@ -7107,7 +7097,7 @@ inline void Window::SetProgressValue(float value)
  *
  * @since This function is available since SDL 3.4.0.
  */
-inline float GetWindowProgressValue(WindowParam window)
+inline float GetWindowProgressValue(WindowRef window)
 {
   return SDL_GetWindowProgressValue(window);
 }
@@ -7424,14 +7414,14 @@ inline void GL_GetAttribute(GLAttr attr, int* value)
  * @sa GLContext.Destroy
  * @sa GLContext.MakeCurrent
  */
-inline GLContext GL_CreateContext(WindowParam window)
+inline GLContext GL_CreateContext(WindowRef window)
 {
   return GLContext(window);
 }
 
 inline GLContext Window::CreateGLContext() { return GLContext(m_resource); }
 
-inline GLContext::GLContext(WindowParam window)
+inline GLContext::GLContext(WindowRef window)
   : m_resource(SDL_GL_CreateContext(window))
 {
 }
@@ -7451,7 +7441,7 @@ inline GLContext::GLContext(WindowParam window)
  *
  * @sa GLContext.GLContext
  */
-inline void GL_MakeCurrent(WindowParam window, GLContext context)
+inline void GL_MakeCurrent(WindowRef window, GLContext context)
 {
   CheckError(SDL_GL_MakeCurrent(window, context));
 }
@@ -7461,7 +7451,7 @@ inline void Window::MakeCurrent(GLContext context)
   SDL::GL_MakeCurrent(m_resource, context);
 }
 
-inline void GLContext::MakeCurrent(WindowParam window)
+inline void GLContext::MakeCurrent(WindowRef window)
 {
   SDL::Window::MakeCurrent(m_resource, window);
 }
@@ -7534,7 +7524,7 @@ inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline EGLSurface EGL_GetWindowSurface(WindowParam window)
+inline EGLSurface EGL_GetWindowSurface(WindowRef window)
 {
   return SDL_EGL_GetWindowSurface(window);
 }
@@ -7649,7 +7639,7 @@ inline void GL_GetSwapInterval(int* interval)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GL_SwapWindow(WindowParam window)
+inline void GL_SwapWindow(WindowRef window)
 {
   CheckError(SDL_GL_SwapWindow(window));
 }

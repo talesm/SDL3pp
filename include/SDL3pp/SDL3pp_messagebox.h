@@ -162,7 +162,7 @@ struct MessageBox : MessageBoxRaw
    */
   constexpr MessageBox(
     MessageBoxFlags flags,
-    WindowParam window,
+    WindowRef window,
     const char* title,
     const char* message,
     std::span<const MessageBoxButtonData> buttons,
@@ -209,7 +209,7 @@ struct MessageBox : MessageBoxRaw
    * @param newWindow the new window value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetWindow(WindowParam newWindow) noexcept
+  constexpr MessageBox& SetWindow(WindowRef newWindow) noexcept
   {
     window = newWindow;
     return *this;
@@ -448,7 +448,7 @@ inline void MessageBox::Show(int* buttonid) const
 inline void ShowSimpleMessageBox(MessageBoxFlags flags,
                                  StringParam title,
                                  StringParam message,
-                                 WindowParam window)
+                                 WindowRef window)
 {
   CheckError(SDL_ShowSimpleMessageBox(flags, title, message, window));
 }

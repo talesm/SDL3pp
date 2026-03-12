@@ -66,8 +66,6 @@ using CameraRaw = SDL_Camera*;
 // Forward decl
 struct CameraRef;
 
-using CameraParam = CameraRef;
-
 // Forward decl
 struct CameraFrame;
 
@@ -169,7 +167,7 @@ public:
   }
 
   /**
-   * Constructs from CameraParam.
+   * Constructs from CameraRef.
    *
    * @param resource a CameraRaw to be wrapped.
    *
@@ -882,7 +880,7 @@ inline Camera::Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec)
  * @sa Camera.Camera
  * @sa Camera.Close
  */
-inline CameraPermissionState GetCameraPermissionState(CameraParam camera)
+inline CameraPermissionState GetCameraPermissionState(CameraRef camera)
 {
   return SDL_GetCameraPermissionState(camera);
 }
@@ -905,7 +903,7 @@ inline CameraPermissionState Camera::GetPermissionState()
  *
  * @sa Camera.Camera
  */
-inline CameraID GetCameraID(CameraParam camera)
+inline CameraID GetCameraID(CameraRef camera)
 {
   return CheckError(SDL_GetCameraID(camera));
 }
@@ -923,7 +921,7 @@ inline CameraID Camera::GetID() { return SDL::GetCameraID(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetCameraProperties(CameraParam camera)
+inline PropertiesRef GetCameraProperties(CameraRef camera)
 {
   return CheckError(SDL_GetCameraProperties(camera));
 }
@@ -955,7 +953,7 @@ inline PropertiesRef Camera::GetProperties()
  *
  * @sa Camera.Camera
  */
-inline std::optional<CameraSpec> GetCameraFormat(CameraParam camera)
+inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
 {
   return CheckError(SDL_GetCameraFormat(camera));
 }
@@ -1005,7 +1003,7 @@ inline std::optional<CameraSpec> Camera::GetFormat()
  *
  * @sa Camera.ReleaseFrame
  */
-inline Surface AcquireCameraFrame(CameraParam camera,
+inline Surface AcquireCameraFrame(CameraRef camera,
                                   Uint64* timestampNS = nullptr)
 {
   return CheckError(SDL_AcquireCameraFrame(camera, timestampNS));
@@ -1048,7 +1046,7 @@ inline CameraFrame::CameraFrame(CameraRef resource)
  *
  * @sa Camera.AcquireFrame
  */
-inline void ReleaseCameraFrame(CameraParam camera, SurfaceParam frame)
+inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
 {
   SDL_ReleaseCameraFrame(camera, frame);
 }

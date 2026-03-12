@@ -49,8 +49,6 @@ using SharedObjectRaw = SDL_SharedObject*;
 // Forward decl
 struct SharedObjectRef;
 
-using SharedObjectParam = SharedObjectRef;
-
 /**
  * An opaque datatype that represents a loaded shared object.
  *
@@ -74,7 +72,7 @@ public:
   }
 
   /**
-   * Constructs from SharedObjectParam.
+   * Constructs from SharedObjectRef.
    *
    * @param resource a SharedObjectRaw to be wrapped.
    *
@@ -303,7 +301,7 @@ inline SharedObject::SharedObject(StringParam sofile)
  *
  * @sa SharedObject.SharedObject
  */
-inline FunctionPointer LoadFunction(SharedObjectParam handle, StringParam name)
+inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
 {
   return SDL_LoadFunction(handle, name);
 }

@@ -36,8 +36,6 @@ using MutexRaw = SDL_Mutex*;
 // Forward decl
 struct MutexRef;
 
-using MutexParam = MutexRef;
-
 // Forward decl
 struct RWLock;
 
@@ -46,8 +44,6 @@ using RWLockRaw = SDL_RWLock*;
 
 // Forward decl
 struct RWLockRef;
-
-using RWLockParam = RWLockRef;
 
 // Forward decl
 struct Semaphore;
@@ -58,8 +54,6 @@ using SemaphoreRaw = SDL_Semaphore*;
 // Forward decl
 struct SemaphoreRef;
 
-using SemaphoreParam = SemaphoreRef;
-
 // Forward decl
 struct Condition;
 
@@ -68,8 +62,6 @@ using ConditionRaw = SDL_Condition*;
 
 // Forward decl
 struct ConditionRef;
-
-using ConditionParam = ConditionRef;
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -103,7 +95,7 @@ public:
   }
 
   /**
-   * Constructs from MutexParam.
+   * Constructs from MutexRef.
    *
    * @param resource a MutexRaw to be wrapped.
    *
@@ -381,7 +373,7 @@ inline Mutex::Mutex()
  * @sa Mutex.TryLock
  * @sa Mutex.Unlock
  */
-inline void LockMutex(MutexParam mutex) { SDL_LockMutex(mutex); }
+inline void LockMutex(MutexRef mutex) { SDL_LockMutex(mutex); }
 
 inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
 
@@ -406,7 +398,7 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  * @sa Mutex.Lock
  * @sa Mutex.Unlock
  */
-inline void TryLockMutex(MutexParam mutex)
+inline void TryLockMutex(MutexRef mutex)
 {
   CheckError(SDL_TryLockMutex(mutex));
 }
@@ -433,7 +425,7 @@ inline void Mutex::TryLock() { SDL::TryLockMutex(m_resource); }
  * @sa Mutex.Lock
  * @sa Mutex.TryLock
  */
-inline void UnlockMutex(MutexParam mutex) { SDL_UnlockMutex(mutex); }
+inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 
 inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
 
@@ -490,7 +482,7 @@ public:
   }
 
   /**
-   * Constructs from RWLockParam.
+   * Constructs from RWLockRef.
    *
    * @param resource a RWLockRaw to be wrapped.
    *
@@ -906,7 +898,7 @@ inline RWLock::RWLock()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
-inline void LockRWLockForReading(RWLockParam rwlock)
+inline void LockRWLockForReading(RWLockRef rwlock)
 {
   SDL_LockRWLockForReading(rwlock);
 }
@@ -944,7 +936,7 @@ inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
-inline void LockRWLockForWriting(RWLockParam rwlock)
+inline void LockRWLockForWriting(RWLockRef rwlock)
 {
   SDL_LockRWLockForWriting(rwlock);
 }
@@ -976,7 +968,7 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForReading(RWLockParam rwlock)
+inline void TryLockRWLockForReading(RWLockRef rwlock)
 {
   CheckError(SDL_TryLockRWLockForReading(rwlock));
 }
@@ -1016,7 +1008,7 @@ inline void RWLock::TryLockForReading()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForWriting(RWLockParam rwlock)
+inline void TryLockRWLockForWriting(RWLockRef rwlock)
 {
   CheckError(SDL_TryLockRWLockForWriting(rwlock));
 }
@@ -1052,7 +1044,7 @@ inline void RWLock::TryLockForWriting()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.TryLockForWriting
  */
-inline void UnlockRWLock(RWLockParam rwlock) { SDL_UnlockRWLock(rwlock); }
+inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 
 inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
 
@@ -1105,7 +1097,7 @@ public:
   }
 
   /**
-   * Constructs from SemaphoreParam.
+   * Constructs from SemaphoreRef.
    *
    * @param resource a SemaphoreRaw to be wrapped.
    *
@@ -1420,7 +1412,7 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  * @sa Semaphore.TryWait
  * @sa Semaphore.WaitTimeout
  */
-inline void WaitSemaphore(SemaphoreParam sem) { SDL_WaitSemaphore(sem); }
+inline void WaitSemaphore(SemaphoreRef sem) { SDL_WaitSemaphore(sem); }
 
 inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
 
@@ -1443,7 +1435,7 @@ inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
  * @sa Semaphore.Wait
  * @sa Semaphore.WaitTimeout
  */
-inline bool TryWaitSemaphore(SemaphoreParam sem)
+inline bool TryWaitSemaphore(SemaphoreRef sem)
 {
   return SDL_TryWaitSemaphore(sem);
 }
@@ -1470,7 +1462,7 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
  * @sa Semaphore.TryWait
  * @sa Semaphore.Wait
  */
-inline bool WaitSemaphoreTimeout(SemaphoreParam sem,
+inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                  std::chrono::milliseconds timeout)
 {
   return SDL_WaitSemaphoreTimeout(sem, timeout.count());
@@ -1494,7 +1486,7 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  * @sa Semaphore.Wait
  * @sa Semaphore.WaitTimeout
  */
-inline void SignalSemaphore(SemaphoreParam sem) { SDL_SignalSemaphore(sem); }
+inline void SignalSemaphore(SemaphoreRef sem) { SDL_SignalSemaphore(sem); }
 
 inline void Semaphore::Signal() { SDL::SignalSemaphore(m_resource); }
 
@@ -1508,7 +1500,7 @@ inline void Semaphore::Signal() { SDL::SignalSemaphore(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint32 GetSemaphoreValue(SemaphoreParam sem)
+inline Uint32 GetSemaphoreValue(SemaphoreRef sem)
 {
   return SDL_GetSemaphoreValue(sem);
 }
@@ -1545,7 +1537,7 @@ public:
   }
 
   /**
-   * Constructs from ConditionParam.
+   * Constructs from ConditionRef.
    *
    * @param resource a ConditionRaw to be wrapped.
    *
@@ -1683,7 +1675,7 @@ public:
    * @sa Condition.Signal
    * @sa Condition.WaitTimeout
    */
-  void Wait(MutexParam mutex);
+  void Wait(MutexRef mutex);
 
   /**
    * Wait until a condition variable is signaled or a certain time has passed.
@@ -1712,7 +1704,7 @@ public:
    * @sa Condition.Signal
    * @sa Condition.Wait
    */
-  bool WaitTimeout(MutexParam mutex, std::chrono::milliseconds timeout);
+  bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout);
 };
 
 /**
@@ -1825,7 +1817,7 @@ inline void Condition::Destroy() { DestroyCondition(release()); }
  * @sa Condition.Wait
  * @sa Condition.WaitTimeout
  */
-inline void SignalCondition(ConditionParam cond) { SDL_SignalCondition(cond); }
+inline void SignalCondition(ConditionRef cond) { SDL_SignalCondition(cond); }
 
 inline void Condition::Signal() { SDL::SignalCondition(m_resource); }
 
@@ -1842,7 +1834,7 @@ inline void Condition::Signal() { SDL::SignalCondition(m_resource); }
  * @sa Condition.Wait
  * @sa Condition.WaitTimeout
  */
-inline void BroadcastCondition(ConditionParam cond)
+inline void BroadcastCondition(ConditionRef cond)
 {
   SDL_BroadcastCondition(cond);
 }
@@ -1875,12 +1867,12 @@ inline void Condition::Broadcast() { SDL::BroadcastCondition(m_resource); }
  * @sa Condition.Signal
  * @sa Condition.WaitTimeout
  */
-inline void WaitCondition(ConditionParam cond, MutexParam mutex)
+inline void WaitCondition(ConditionRef cond, MutexRef mutex)
 {
   SDL_WaitCondition(cond, mutex);
 }
 
-inline void Condition::Wait(MutexParam mutex)
+inline void Condition::Wait(MutexRef mutex)
 {
   SDL::WaitCondition(m_resource, mutex);
 }
@@ -1913,14 +1905,14 @@ inline void Condition::Wait(MutexParam mutex)
  * @sa Condition.Signal
  * @sa Condition.Wait
  */
-inline bool WaitConditionTimeout(ConditionParam cond,
-                                 MutexParam mutex,
+inline bool WaitConditionTimeout(ConditionRef cond,
+                                 MutexRef mutex,
                                  std::chrono::milliseconds timeout)
 {
   return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
 }
 
-inline bool Condition::WaitTimeout(MutexParam mutex,
+inline bool Condition::WaitTimeout(MutexRef mutex,
                                    std::chrono::milliseconds timeout)
 {
   return SDL::WaitConditionTimeout(m_resource, mutex, timeout);

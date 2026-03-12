@@ -77,8 +77,6 @@ using GamepadRaw = SDL_Gamepad*;
 // Forward decl
 struct GamepadRef;
 
-using GamepadParam = GamepadRef;
-
 /**
  * Standard gamepad types.
  *
@@ -401,7 +399,7 @@ public:
   }
 
   /**
-   * Constructs from GamepadParam.
+   * Constructs from GamepadRef.
    *
    * @param resource a GamepadRaw to be wrapped.
    *
@@ -1279,7 +1277,7 @@ inline int AddGamepadMapping(StringParam mapping)
  * @sa SDL_HINT_GAMECONTROLLERCONFIG_FILE
  * @sa EVENT_GAMEPAD_ADDED
  */
-inline int AddGamepadMappingsFromIO(IOStreamParam src, bool closeio)
+inline int AddGamepadMappingsFromIO(IOStreamRef src, bool closeio)
 {
   return SDL_AddGamepadMappingsFromIO(src, closeio);
 }
@@ -1389,7 +1387,7 @@ inline StringResult GetGamepadMappingForGUID(GUID guid)
  * @sa GetGamepadMappingForGUID
  * @sa SetGamepadMapping
  */
-inline StringResult GetGamepadMapping(GamepadParam gamepad)
+inline StringResult GetGamepadMapping(GamepadRef gamepad)
 {
   return SDL_GetGamepadMapping(gamepad);
 }
@@ -1768,7 +1766,7 @@ inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetGamepadProperties(GamepadParam gamepad)
+inline PropertiesRef GetGamepadProperties(GamepadRef gamepad)
 {
   return CheckError(SDL_GetGamepadProperties(gamepad));
 }
@@ -1804,7 +1802,7 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline JoystickID GetGamepadID(GamepadParam gamepad)
+inline JoystickID GetGamepadID(GamepadRef gamepad)
 {
   return CheckError(SDL_GetGamepadID(gamepad));
 }
@@ -1824,7 +1822,7 @@ inline JoystickID Gamepad::GetID() { return SDL::GetGamepadID(m_resource); }
  *
  * @sa GetGamepadNameForID
  */
-inline const char* GetGamepadName(GamepadParam gamepad)
+inline const char* GetGamepadName(GamepadRef gamepad)
 {
   return SDL_GetGamepadName(gamepad);
 }
@@ -1847,7 +1845,7 @@ inline const char* Gamepad::GetName()
  *
  * @sa GetGamepadPathForID
  */
-inline const char* GetGamepadPath(GamepadParam gamepad)
+inline const char* GetGamepadPath(GamepadRef gamepad)
 {
   return SDL_GetGamepadPath(gamepad);
 }
@@ -1869,7 +1867,7 @@ inline const char* Gamepad::GetPath()
  *
  * @sa GetGamepadTypeForID
  */
-inline GamepadType GetGamepadType(GamepadParam gamepad)
+inline GamepadType GetGamepadType(GamepadRef gamepad)
 {
   return SDL_GetGamepadType(gamepad);
 }
@@ -1891,7 +1889,7 @@ inline GamepadType Gamepad::GetType()
  *
  * @sa GetRealGamepadTypeForID
  */
-inline GamepadType GetRealGamepadType(GamepadParam gamepad)
+inline GamepadType GetRealGamepadType(GamepadRef gamepad)
 {
   return SDL_GetRealGamepadType(gamepad);
 }
@@ -1915,7 +1913,7 @@ inline GamepadType Gamepad::GetRealType()
  *
  * @sa Gamepad.SetPlayerIndex
  */
-inline int GetGamepadPlayerIndex(GamepadParam gamepad)
+inline int GetGamepadPlayerIndex(GamepadRef gamepad)
 {
   return SDL_GetGamepadPlayerIndex(gamepad);
 }
@@ -1939,7 +1937,7 @@ inline int Gamepad::GetPlayerIndex()
  *
  * @sa Gamepad.GetPlayerIndex
  */
-inline void SetGamepadPlayerIndex(GamepadParam gamepad, int player_index)
+inline void SetGamepadPlayerIndex(GamepadRef gamepad, int player_index)
 {
   CheckError(SDL_SetGamepadPlayerIndex(gamepad, player_index));
 }
@@ -1963,7 +1961,7 @@ inline void Gamepad::SetPlayerIndex(int player_index)
  *
  * @sa GetGamepadVendorForID
  */
-inline Uint16 GetGamepadVendor(GamepadParam gamepad)
+inline Uint16 GetGamepadVendor(GamepadRef gamepad)
 {
   return SDL_GetGamepadVendor(gamepad);
 }
@@ -1984,7 +1982,7 @@ inline Uint16 Gamepad::GetVendor() { return SDL::GetGamepadVendor(m_resource); }
  *
  * @sa GetGamepadProductForID
  */
-inline Uint16 GetGamepadProduct(GamepadParam gamepad)
+inline Uint16 GetGamepadProduct(GamepadRef gamepad)
 {
   return SDL_GetGamepadProduct(gamepad);
 }
@@ -2008,7 +2006,7 @@ inline Uint16 Gamepad::GetProduct()
  *
  * @sa GetGamepadProductVersionForID
  */
-inline Uint16 GetGamepadProductVersion(GamepadParam gamepad)
+inline Uint16 GetGamepadProductVersion(GamepadRef gamepad)
 {
   return SDL_GetGamepadProductVersion(gamepad);
 }
@@ -2030,7 +2028,7 @@ inline Uint16 Gamepad::GetProductVersion()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint16 GetGamepadFirmwareVersion(GamepadParam gamepad)
+inline Uint16 GetGamepadFirmwareVersion(GamepadRef gamepad)
 {
   return SDL_GetGamepadFirmwareVersion(gamepad);
 }
@@ -2052,7 +2050,7 @@ inline Uint16 Gamepad::GetFirmwareVersion()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetGamepadSerial(GamepadParam gamepad)
+inline const char* GetGamepadSerial(GamepadRef gamepad)
 {
   return SDL_GetGamepadSerial(gamepad);
 }
@@ -2075,7 +2073,7 @@ inline const char* Gamepad::GetSerial()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint64 GetGamepadSteamHandle(GamepadParam gamepad)
+inline Uint64 GetGamepadSteamHandle(GamepadRef gamepad)
 {
   return SDL_GetGamepadSteamHandle(gamepad);
 }
@@ -2096,7 +2094,7 @@ inline Uint64 Gamepad::GetSteamHandle()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline JoystickConnectionState GetGamepadConnectionState(GamepadParam gamepad)
+inline JoystickConnectionState GetGamepadConnectionState(GamepadRef gamepad)
 {
   return CheckError(SDL_GetGamepadConnectionState(gamepad));
 }
@@ -2125,7 +2123,7 @@ inline JoystickConnectionState Gamepad::GetConnectionState()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PowerState GetGamepadPowerInfo(GamepadParam gamepad, int* percent)
+inline PowerState GetGamepadPowerInfo(GamepadRef gamepad, int* percent)
 {
   return SDL_GetGamepadPowerInfo(gamepad, percent);
 }
@@ -2146,7 +2144,7 @@ inline PowerState Gamepad::GetPowerInfo(int* percent)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GamepadConnected(GamepadParam gamepad)
+inline bool GamepadConnected(GamepadRef gamepad)
 {
   return SDL_GamepadConnected(gamepad);
 }
@@ -2173,7 +2171,7 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline JoystickRef GetGamepadJoystick(GamepadParam gamepad)
+inline JoystickRef GetGamepadJoystick(GamepadRef gamepad)
 {
   return SDL_GetGamepadJoystick(gamepad);
 }
@@ -2233,7 +2231,7 @@ inline bool GamepadEventsEnabled() { return SDL_GamepadEventsEnabled(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadParam gamepad)
+inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadRef gamepad)
 {
   return SDL_GetGamepadBindings(gamepad);
 }
@@ -2360,7 +2358,7 @@ inline const char* GetGamepadStringForAxis(GamepadAxis axis)
  * @sa Gamepad.HasButton
  * @sa Gamepad.GetAxis
  */
-inline bool GamepadHasAxis(GamepadParam gamepad, GamepadAxis axis)
+inline bool GamepadHasAxis(GamepadRef gamepad, GamepadAxis axis)
 {
   return SDL_GamepadHasAxis(gamepad, axis);
 }
@@ -2396,7 +2394,7 @@ inline bool Gamepad::HasAxis(GamepadAxis axis)
  * @sa Gamepad.HasAxis
  * @sa Gamepad.GetButton
  */
-inline Sint16 GetGamepadAxis(GamepadParam gamepad, GamepadAxis axis)
+inline Sint16 GetGamepadAxis(GamepadRef gamepad, GamepadAxis axis)
 {
   return SDL_GetGamepadAxis(gamepad, axis);
 }
@@ -2464,7 +2462,7 @@ inline const char* GetGamepadStringForButton(GamepadButton button)
  *
  * @sa Gamepad.HasAxis
  */
-inline bool GamepadHasButton(GamepadParam gamepad, GamepadButton button)
+inline bool GamepadHasButton(GamepadRef gamepad, GamepadButton button)
 {
   return SDL_GamepadHasButton(gamepad, button);
 }
@@ -2488,7 +2486,7 @@ inline bool Gamepad::HasButton(GamepadButton button)
  * @sa Gamepad.HasButton
  * @sa Gamepad.GetAxis
  */
-inline bool GetGamepadButton(GamepadParam gamepad, GamepadButton button)
+inline bool GetGamepadButton(GamepadRef gamepad, GamepadButton button)
 {
   return SDL_GetGamepadButton(gamepad, button);
 }
@@ -2530,7 +2528,7 @@ inline GamepadButtonLabel GetGamepadButtonLabelForType(GamepadType type,
  *
  * @sa GetGamepadButtonLabelForType
  */
-inline GamepadButtonLabel GetGamepadButtonLabel(GamepadParam gamepad,
+inline GamepadButtonLabel GetGamepadButtonLabel(GamepadRef gamepad,
                                                 GamepadButton button)
 {
   return SDL_GetGamepadButtonLabel(gamepad, button);
@@ -2553,7 +2551,7 @@ inline GamepadButtonLabel Gamepad::GetButtonLabel(GamepadButton button)
  *
  * @sa Gamepad.GetNumTouchpadFingers
  */
-inline int GetNumGamepadTouchpads(GamepadParam gamepad)
+inline int GetNumGamepadTouchpads(GamepadRef gamepad)
 {
   return SDL_GetNumGamepadTouchpads(gamepad);
 }
@@ -2578,7 +2576,7 @@ inline int Gamepad::GetNumTouchpads()
  * @sa Gamepad.GetTouchpadFinger
  * @sa Gamepad.GetNumTouchpads
  */
-inline int GetNumGamepadTouchpadFingers(GamepadParam gamepad, int touchpad)
+inline int GetNumGamepadTouchpadFingers(GamepadRef gamepad, int touchpad)
 {
   return SDL_GetNumGamepadTouchpadFingers(gamepad, touchpad);
 }
@@ -2609,7 +2607,7 @@ inline int Gamepad::GetNumTouchpadFingers(int touchpad)
  *
  * @sa Gamepad.GetNumTouchpadFingers
  */
-inline void GetGamepadTouchpadFinger(GamepadParam gamepad,
+inline void GetGamepadTouchpadFinger(GamepadRef gamepad,
                                      int touchpad,
                                      int finger,
                                      bool* down,
@@ -2647,7 +2645,7 @@ inline void Gamepad::GetTouchpadFinger(int touchpad,
  * @sa Gamepad.GetSensorDataRate
  * @sa Gamepad.SetSensorEnabled
  */
-inline bool GamepadHasSensor(GamepadParam gamepad, SensorType type)
+inline bool GamepadHasSensor(GamepadRef gamepad, SensorType type)
 {
   return SDL_GamepadHasSensor(gamepad, type);
 }
@@ -2672,7 +2670,7 @@ inline bool Gamepad::HasSensor(SensorType type)
  * @sa Gamepad.HasSensor
  * @sa Gamepad.SensorEnabled
  */
-inline void SetGamepadSensorEnabled(GamepadParam gamepad,
+inline void SetGamepadSensorEnabled(GamepadRef gamepad,
                                     SensorType type,
                                     bool enabled)
 {
@@ -2697,7 +2695,7 @@ inline void Gamepad::SetSensorEnabled(SensorType type, bool enabled)
  *
  * @sa Gamepad.SetSensorEnabled
  */
-inline bool GamepadSensorEnabled(GamepadParam gamepad, SensorType type)
+inline bool GamepadSensorEnabled(GamepadRef gamepad, SensorType type)
 {
   return SDL_GamepadSensorEnabled(gamepad, type);
 }
@@ -2718,7 +2716,7 @@ inline bool Gamepad::SensorEnabled(SensorType type)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline float GetGamepadSensorDataRate(GamepadParam gamepad, SensorType type)
+inline float GetGamepadSensorDataRate(GamepadRef gamepad, SensorType type)
 {
   return SDL_GetGamepadSensorDataRate(gamepad, type);
 }
@@ -2744,7 +2742,7 @@ inline float Gamepad::GetSensorDataRate(SensorType type)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetGamepadSensorData(GamepadParam gamepad,
+inline void GetGamepadSensorData(GamepadRef gamepad,
                                  SensorType type,
                                  float* data,
                                  int num_values)
@@ -2778,7 +2776,7 @@ inline void Gamepad::GetSensorData(SensorType type, float* data, int num_values)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void RumbleGamepad(GamepadParam gamepad,
+inline void RumbleGamepad(GamepadRef gamepad,
                           Uint16 low_frequency_rumble,
                           Uint16 high_frequency_rumble,
                           Uint32 duration_ms)
@@ -2822,7 +2820,7 @@ inline void Gamepad::Rumble(Uint16 low_frequency_rumble,
  *
  * @sa Gamepad.Rumble
  */
-inline void RumbleGamepadTriggers(GamepadParam gamepad,
+inline void RumbleGamepadTriggers(GamepadRef gamepad,
                                   Uint16 left_rumble,
                                   Uint16 right_rumble,
                                   Uint32 duration_ms)
@@ -2858,7 +2856,7 @@ inline void Gamepad::RumbleTriggers(Uint16 left_rumble,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetGamepadLED(GamepadParam gamepad,
+inline void SetGamepadLED(GamepadRef gamepad,
                           Uint8 red,
                           Uint8 green,
                           Uint8 blue)
@@ -2883,7 +2881,7 @@ inline void Gamepad::SetLED(Uint8 red, Uint8 green, Uint8 blue)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SendGamepadEffect(GamepadParam gamepad, const void* data, int size)
+inline void SendGamepadEffect(GamepadRef gamepad, const void* data, int size)
 {
   CheckError(SDL_SendGamepadEffect(gamepad, data, size));
 }
@@ -2921,7 +2919,7 @@ inline void Gamepad::Close() { CloseGamepad(release()); }
  *
  * @sa Gamepad.GetAppleSFSymbolsNameForAxis
  */
-inline const char* GetGamepadAppleSFSymbolsNameForButton(GamepadParam gamepad,
+inline const char* GetGamepadAppleSFSymbolsNameForButton(GamepadRef gamepad,
                                                          GamepadButton button)
 {
   return SDL_GetGamepadAppleSFSymbolsNameForButton(gamepad, button);
@@ -2945,7 +2943,7 @@ inline const char* Gamepad::GetAppleSFSymbolsNameForButton(GamepadButton button)
  *
  * @sa Gamepad.GetAppleSFSymbolsNameForButton
  */
-inline const char* GetGamepadAppleSFSymbolsNameForAxis(GamepadParam gamepad,
+inline const char* GetGamepadAppleSFSymbolsNameForAxis(GamepadRef gamepad,
                                                        GamepadAxis axis)
 {
   return SDL_GetGamepadAppleSFSymbolsNameForAxis(gamepad, axis);

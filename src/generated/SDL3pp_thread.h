@@ -38,8 +38,6 @@ using ThreadRaw = SDL_Thread*;
 // Forward decl
 struct ThreadRef;
 
-using ThreadParam = ThreadRef;
-
 /**
  * The SDL thread priority.
  *
@@ -160,7 +158,7 @@ public:
   }
 
   /**
-   * Constructs from ThreadParam.
+   * Constructs from ThreadRef.
    *
    * @param resource a ThreadRaw to be wrapped.
    *
@@ -287,7 +285,7 @@ public:
    * @sa Thread.Thread
    * @sa Thread.Wait
    */
-  Thread(PropertiesParam props);
+  Thread(PropertiesRef props);
 
   /// Destructor
   ~Thread() { SDL_DetachThread(m_resource); }
@@ -567,7 +565,7 @@ inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
 {
 }
 
-inline Thread::Thread(PropertiesParam props)
+inline Thread::Thread(PropertiesRef props)
   : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
 {
 }
@@ -636,7 +634,7 @@ inline Thread::Thread(PropertiesParam props)
  * @sa Thread.Thread
  * @sa Thread.Wait
  */
-inline Thread CreateThreadWithProperties(PropertiesParam props)
+inline Thread CreateThreadWithProperties(PropertiesRef props)
 {
   return Thread(props);
 }
@@ -667,7 +665,7 @@ constexpr auto CREATE_STACKSIZE_NUMBER =
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetThreadName(ThreadParam thread)
+inline const char* GetThreadName(ThreadRef thread)
 {
   return SDL_GetThreadName(thread);
 }
@@ -714,7 +712,7 @@ inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
  *
  * @sa GetCurrentThreadID
  */
-inline ThreadID GetThreadID(ThreadParam thread)
+inline ThreadID GetThreadID(ThreadRef thread)
 {
   return SDL_GetThreadID(thread);
 }
@@ -780,7 +778,7 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  * @sa Thread.Thread
  * @sa Thread.Detach
  */
-inline void WaitThread(ThreadParam thread, int* status)
+inline void WaitThread(ThreadRef thread, int* status)
 {
   SDL_WaitThread(thread, status);
 }
@@ -800,7 +798,7 @@ inline void Thread::Wait(int* status) { SDL::WaitThread(m_resource, status); }
  *
  * @sa ThreadState
  */
-inline ThreadState GetThreadState(ThreadParam thread)
+inline ThreadState GetThreadState(ThreadRef thread)
 {
   return SDL_GetThreadState(thread);
 }

@@ -53,8 +53,6 @@ using CursorRaw = SDL_Cursor*;
 // Forward decl
 struct CursorRef;
 
-using CursorParam = CursorRef;
-
 /**
  * Cursor types for Cursor.Cursor().
  *
@@ -165,7 +163,7 @@ public:
   }
 
   /**
-   * Constructs from CursorParam.
+   * Constructs from CursorRef.
    *
    * @param resource a CursorRaw to be wrapped.
    *
@@ -273,7 +271,7 @@ public:
    * @sa Cursor.Destroy
    * @sa Cursor.Set
    */
-  Cursor(SurfaceParam surface, const PointRaw& hot);
+  Cursor(SurfaceRef surface, const PointRaw& hot);
 
   /**
    * Create a system cursor.
@@ -947,7 +945,7 @@ inline Cursor::Cursor(const Uint8* data,
 {
 }
 
-inline Cursor::Cursor(SurfaceParam surface, const PointRaw& hot)
+inline Cursor::Cursor(SurfaceRef surface, const PointRaw& hot)
   : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
 {
 }
@@ -988,7 +986,7 @@ inline Cursor::Cursor(SystemCursor id)
  * @sa Cursor.Destroy
  * @sa Cursor.Set
  */
-inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
+inline Cursor CreateColorCursor(SurfaceRef surface, const PointRaw& hot)
 {
   return Cursor(surface, hot);
 }
@@ -1082,7 +1080,7 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  *
  * @sa GetCursor
  */
-inline void SetCursor(CursorParam cursor) { CheckError(SDL_SetCursor(cursor)); }
+inline void SetCursor(CursorRef cursor) { CheckError(SDL_SetCursor(cursor)); }
 
 inline void Cursor::Set() { SDL::SetCursor(m_resource); }
 

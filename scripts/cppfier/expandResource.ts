@@ -40,16 +40,15 @@ export function expandResource(
 
   const rawName = resourceEntry.rawName || `${targetName}Raw`;
   const constRawName = `const ${rawName}`;
-  const paramType = `${targetName}Param`;
+  const refName = `${targetName}Ref`;
   const enableMemberAccess =
     resourceEntry.enableMemberAccess ?? sourceEntry.kind === "struct";
   const enableConstParam = resourceEntry.enableConstParam ?? enableMemberAccess;
-  const constParamType = enableConstParam ? `${targetName}ConstRef` : paramType;
+  const constParamType = enableConstParam ? `${targetName}ConstRef` : refName;
   if (!targetEntry.kind) targetEntry.kind = "struct";
   const hasShared = !!resourceEntry.shared;
   const hasScoped = resourceEntry.owning === false;
   const hasRef = resourceEntry.ref ?? !hasScoped;
-  const refName = `${targetName}Ref`;
   const scopedName = `${targetName}Scoped`;
 
   const type = targetEntry.type ?? sourceName;
@@ -97,15 +96,16 @@ export function expandResource(
     };
   }
 
-  if (hasRef || hasScoped) {
+  if (hasScoped) {
     referenceAliases.push({
       kind: "alias",
-      name: paramType,
-      type: hasRef ? refName : targetName,
+      name: refName,
+      type: targetName,
+      doc: [`Alias to ${targetName} for non owning parameters.`],
     });
-  } else {
+  } else if (!hasRef) {
     referenceAliases.push(
-      createParam(paramType, targetName, rawName, nullValue, memberAccess),
+      createParam(refName, targetName, rawName, nullValue, memberAccess),
     );
   }
 
@@ -126,7 +126,7 @@ export function expandResource(
     pointerType,
     targetName,
     constPointerType,
-    paramType,
+    refName,
     enableConstParam,
     constParamType,
     hasShared,
@@ -140,11 +140,11 @@ export function expandResource(
     hasScoped,
     targetName,
     constRawName,
-    paramType,
+    refName,
     rawName,
   );
   if (hasShared) {
-    addBorrowFunction(ctors, targetName, resourceEntry, paramType, rawName);
+    addBorrowFunction(ctors, targetName, resourceEntry, refName, rawName);
   } else if (!hasScoped) {
     ctors[`${targetName}#3`].hints.changeAccess = "protected";
     ctors[`${targetName}#4`].hints.changeAccess = "public";
@@ -180,7 +180,7 @@ export function expandResource(
       sourceEntries,
       file.transform,
       subEntries,
-      paramType,
+      refName,
       constParamType,
       targetName,
     );
@@ -194,7 +194,7 @@ export function expandResource(
       context,
       sourceName,
       targetName,
-      paramType,
+      refName,
       constParamType,
       blockedNames,
     );
@@ -202,7 +202,7 @@ export function expandResource(
       sourceEntries,
       file.transform,
       subEntries,
-      paramType,
+      refName,
       constParamType,
       targetName,
     );
@@ -256,7 +256,7 @@ export function expandResource(
     ctors,
     targetName,
     destroyFunction,
-    paramType,
+    refName,
     subEntries,
   );
 

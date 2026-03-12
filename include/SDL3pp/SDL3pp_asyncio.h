@@ -95,8 +95,6 @@ using AsyncIORaw = SDL_AsyncIO*;
 // Forward decl
 struct AsyncIORef;
 
-using AsyncIOParam = AsyncIORef;
-
 // Forward decl
 struct AsyncIOQueue;
 
@@ -105,8 +103,6 @@ using AsyncIOQueueRaw = SDL_AsyncIOQueue*;
 
 // Forward decl
 struct AsyncIOQueueRef;
-
-using AsyncIOQueueParam = AsyncIOQueueRef;
 
 /**
  * The asynchronous I/O operation structure.
@@ -132,7 +128,7 @@ public:
   }
 
   /**
-   * Constructs from AsyncIOParam.
+   * Constructs from AsyncIORef.
    *
    * @param resource a AsyncIORaw to be wrapped.
    *
@@ -283,7 +279,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Close(bool flush, AsyncIOQueueParam queue, void* userdata);
+  bool Close(bool flush, AsyncIOQueueRef queue, void* userdata);
 
   /**
    * Use this function to get the size of the data stream in an AsyncIO.
@@ -337,7 +333,7 @@ public:
   void Read(void* ptr,
             Uint64 offset,
             Uint64 size,
-            AsyncIOQueueParam queue,
+            AsyncIOQueueRef queue,
             void* userdata);
 
   /**
@@ -376,7 +372,7 @@ public:
   void Write(void* ptr,
              Uint64 offset,
              Uint64 size,
-             AsyncIOQueueParam queue,
+             AsyncIOQueueRef queue,
              void* userdata);
 };
 
@@ -508,7 +504,7 @@ public:
   }
 
   /**
-   * Constructs from AsyncIOQueueParam.
+   * Constructs from AsyncIOQueueRef.
    *
    * @param resource a AsyncIOQueueRaw to be wrapped.
    *
@@ -863,7 +859,7 @@ inline AsyncIO::AsyncIO(StringParam file, StringParam mode)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 GetAsyncIOSize(AsyncIOParam asyncio)
+inline Sint64 GetAsyncIOSize(AsyncIORef asyncio)
 {
   return CheckError(SDL_GetAsyncIOSize(asyncio));
 }
@@ -905,11 +901,11 @@ inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(m_resource); }
  * @sa AsyncIO.Write
  * @sa AsyncIOQueue.AsyncIOQueue
  */
-inline void ReadAsyncIO(AsyncIOParam asyncio,
+inline void ReadAsyncIO(AsyncIORef asyncio,
                         void* ptr,
                         Uint64 offset,
                         Uint64 size,
-                        AsyncIOQueueParam queue,
+                        AsyncIOQueueRef queue,
                         void* userdata)
 {
   CheckError(SDL_ReadAsyncIO(asyncio, ptr, offset, size, queue, userdata));
@@ -918,7 +914,7 @@ inline void ReadAsyncIO(AsyncIOParam asyncio,
 inline void AsyncIO::Read(void* ptr,
                           Uint64 offset,
                           Uint64 size,
-                          AsyncIOQueueParam queue,
+                          AsyncIOQueueRef queue,
                           void* userdata)
 {
   SDL::ReadAsyncIO(m_resource, ptr, offset, size, queue, userdata);
@@ -958,11 +954,11 @@ inline void AsyncIO::Read(void* ptr,
  * @sa AsyncIO.Read
  * @sa AsyncIOQueue.AsyncIOQueue
  */
-inline void WriteAsyncIO(AsyncIOParam asyncio,
+inline void WriteAsyncIO(AsyncIORef asyncio,
                          void* ptr,
                          Uint64 offset,
                          Uint64 size,
-                         AsyncIOQueueParam queue,
+                         AsyncIOQueueRef queue,
                          void* userdata)
 {
   CheckError(SDL_WriteAsyncIO(asyncio, ptr, offset, size, queue, userdata));
@@ -971,7 +967,7 @@ inline void WriteAsyncIO(AsyncIOParam asyncio,
 inline void AsyncIO::Write(void* ptr,
                            Uint64 offset,
                            Uint64 size,
-                           AsyncIOQueueParam queue,
+                           AsyncIOQueueRef queue,
                            void* userdata)
 {
   SDL::WriteAsyncIO(m_resource, ptr, offset, size, queue, userdata);
@@ -1025,13 +1021,13 @@ inline void AsyncIO::Write(void* ptr,
  */
 inline bool CloseAsyncIO(AsyncIORaw asyncio,
                          bool flush,
-                         AsyncIOQueueParam queue,
+                         AsyncIOQueueRef queue,
                          void* userdata)
 {
   return SDL_CloseAsyncIO(asyncio, flush, queue, userdata);
 }
 
-inline bool AsyncIO::Close(bool flush, AsyncIOQueueParam queue, void* userdata)
+inline bool AsyncIO::Close(bool flush, AsyncIOQueueRef queue, void* userdata)
 {
   return CloseAsyncIO(release(), flush, queue, userdata);
 }
@@ -1117,7 +1113,7 @@ inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
  *
  * @sa AsyncIOQueue.WaitResult
  */
-inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueParam queue)
+inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueRef queue)
 {
   if (AsyncIOOutcome outcome; SDL_GetAsyncIOResult(queue, &outcome)) {
     return outcome;
@@ -1169,7 +1165,7 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
  *
  * @sa AsyncIOQueue.Signal
  */
-inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
+inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue,
                                                        Milliseconds timeout)
 {
   if (AsyncIOOutcome outcome;
@@ -1217,7 +1213,7 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
  *
  * @sa AsyncIOQueue.Signal
  */
-inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue)
+inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue)
 {
   if (AsyncIOOutcome outcome; SDL_WaitAsyncIOResult(queue, &outcome, -1)) {
     return outcome;
@@ -1258,7 +1254,7 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
  *
  * @sa AsyncIOQueue.WaitResult
  */
-inline void SignalAsyncIOQueue(AsyncIOQueueParam queue)
+inline void SignalAsyncIOQueue(AsyncIOQueueRef queue)
 {
   SDL_SignalAsyncIOQueue(queue);
 }
@@ -1297,7 +1293,7 @@ inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(m_resource); }
  * @sa IOStream.LoadFile
  */
 inline void LoadFileAsync(StringParam file,
-                          AsyncIOQueueParam queue,
+                          AsyncIOQueueRef queue,
                           void* userdata)
 {
   CheckError(SDL_LoadFileAsync(file, queue, userdata));

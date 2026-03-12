@@ -30,8 +30,6 @@ using FontRaw = TTF_Font*;
 // Forward decl
 struct FontRef;
 
-using FontParam = FontRef;
-
 // Forward decl
 struct TextEngine;
 
@@ -39,18 +37,18 @@ struct TextEngine;
 using TextEngineRaw = TTF_TextEngine*;
 
 /// Safely wrap TextEngine for non owning parameters
-struct TextEngineParam
+struct TextEngineRef
 {
   TextEngineRaw value; ///< parameter's TextEngineRaw
 
   /// Constructs from TextEngineRaw
-  constexpr TextEngineParam(TextEngineRaw value)
+  constexpr TextEngineRef(TextEngineRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr TextEngineParam(std::nullptr_t = nullptr)
+  constexpr TextEngineRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -59,7 +57,7 @@ struct TextEngineParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const TextEngineParam& other) const = default;
+  constexpr auto operator<=>(const TextEngineRef& other) const = default;
 
   /// Converts to underlying TextEngineRaw
   constexpr operator TextEngineRaw() const { return value; }
@@ -73,8 +71,6 @@ using TextRaw = TTF_Text*;
 
 // Forward decl
 struct TextRef;
-
-using TextParam = TextRef;
 
 /// Safely wrap Text for non owning const parameters
 struct TextConstRef
@@ -384,7 +380,7 @@ public:
   }
 
   /**
-   * Constructs from FontParam.
+   * Constructs from FontRef.
    *
    * @param resource a FontRaw to be wrapped.
    *
@@ -457,7 +453,7 @@ public:
    *
    * @sa Font.Close
    */
-  Font(IOStreamParam src, float ptsize, bool closeio = false);
+  Font(IOStreamRef src, float ptsize, bool closeio = false);
 
   /**
    * Create a font with the specified properties.
@@ -502,7 +498,7 @@ public:
    *
    * @sa Font.Close
    */
-  Font(PropertiesParam props);
+  Font(PropertiesRef props);
 
   /// Destructor
   ~Font() { TTF_CloseFont(m_resource); }
@@ -636,7 +632,7 @@ public:
    * @sa Font.ClearFallbacks
    * @sa Font.RemoveFallback
    */
-  void AddFallback(FontParam fallback);
+  void AddFallback(FontRef fallback);
 
   /**
    * Remove a fallback font.
@@ -653,7 +649,7 @@ public:
    * @sa Font.AddFallback
    * @sa Font.ClearFallbacks
    */
-  void RemoveFallback(FontParam fallback);
+  void RemoveFallback(FontRef fallback);
 
   /**
    * Remove all fallback fonts.
@@ -1956,7 +1952,7 @@ inline Font OpenFont(StringParam file, float ptsize)
  *
  * @sa Font.Close
  */
-inline Font OpenFont(IOStreamParam src, float ptsize, bool closeio = false)
+inline Font OpenFont(IOStreamRef src, float ptsize, bool closeio = false)
 {
   return Font(src, ptsize, closeio);
 }
@@ -1966,12 +1962,12 @@ inline Font::Font(StringParam file, float ptsize)
 {
 }
 
-inline Font::Font(IOStreamParam src, float ptsize, bool closeio)
+inline Font::Font(IOStreamRef src, float ptsize, bool closeio)
   : m_resource(CheckError(TTF_OpenFontIO(src, ptsize, closeio)))
 {
 }
 
-inline Font::Font(PropertiesParam props)
+inline Font::Font(PropertiesRef props)
   : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
 {
 }
@@ -2018,10 +2014,7 @@ inline Font::Font(PropertiesParam props)
  *
  * @sa Font.Close
  */
-inline Font OpenFontWithProperties(PropertiesParam props)
-{
-  return Font(props);
-}
+inline Font OpenFontWithProperties(PropertiesRef props) { return Font(props); }
 
 namespace prop::Font {
 
@@ -2080,7 +2073,7 @@ constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
  *
  * @sa Font.Close
  */
-inline Font CopyFont(FontParam existing_font)
+inline Font CopyFont(FontRef existing_font)
 {
   return CheckError(TTF_CopyFont(existing_font));
 }
@@ -2107,7 +2100,7 @@ inline Font Font::Copy() const { return SDL::CopyFont(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline PropertiesRef GetFontProperties(FontParam font)
+inline PropertiesRef GetFontProperties(FontRef font)
 {
   return CheckError(TTF_GetFontProperties(font));
 }
@@ -2132,7 +2125,7 @@ inline PropertiesRef Font::GetProperties()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Uint32 GetFontGeneration(FontParam font)
+inline Uint32 GetFontGeneration(FontRef font)
 {
   return TTF_GetFontGeneration(font);
 }
@@ -2164,12 +2157,12 @@ inline Uint32 Font::GetGeneration() const
  * @sa Font.ClearFallbacks
  * @sa Font.RemoveFallback
  */
-inline void AddFallbackFont(FontParam font, FontParam fallback)
+inline void AddFallbackFont(FontRef font, FontRef fallback)
 {
   CheckError(TTF_AddFallbackFont(font, fallback));
 }
 
-inline void Font::AddFallback(FontParam fallback)
+inline void Font::AddFallback(FontRef fallback)
 {
   SDL::AddFallbackFont(m_resource, fallback);
 }
@@ -2190,12 +2183,12 @@ inline void Font::AddFallback(FontParam fallback)
  * @sa Font.AddFallback
  * @sa Font.ClearFallbacks
  */
-inline void RemoveFallbackFont(FontParam font, FontParam fallback)
+inline void RemoveFallbackFont(FontRef font, FontRef fallback)
 {
   TTF_RemoveFallbackFont(font, fallback);
 }
 
-inline void Font::RemoveFallback(FontParam fallback)
+inline void Font::RemoveFallback(FontRef fallback)
 {
   SDL::RemoveFallbackFont(m_resource, fallback);
 }
@@ -2215,7 +2208,7 @@ inline void Font::RemoveFallback(FontParam fallback)
  * @sa Font.AddFallback
  * @sa Font.RemoveFallback
  */
-inline void ClearFallbackFonts(FontParam font) { TTF_ClearFallbackFonts(font); }
+inline void ClearFallbackFonts(FontRef font) { TTF_ClearFallbackFonts(font); }
 
 inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(m_resource); }
 
@@ -2236,7 +2229,7 @@ inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(m_resource); }
  *
  * @sa Font.GetSize
  */
-inline void SetFontSize(FontParam font, float ptsize)
+inline void SetFontSize(FontRef font, float ptsize)
 {
   CheckError(TTF_SetFontSize(font, ptsize));
 }
@@ -2266,7 +2259,7 @@ inline void Font::SetSize(float ptsize)
  * @sa Font.GetSize
  * @sa TTF_GetFontSizeDPI
  */
-inline void SetFontSizeDPI(FontParam font, float ptsize, int hdpi, int vdpi)
+inline void SetFontSizeDPI(FontRef font, float ptsize, int hdpi, int vdpi)
 {
   CheckError(TTF_SetFontSizeDPI(font, ptsize, hdpi, vdpi));
 }
@@ -2291,7 +2284,7 @@ inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
  * @sa Font.SetSize
  * @sa Font.SetSizeDPI
  */
-inline float GetFontSize(FontParam font) { return TTF_GetFontSize(font); }
+inline float GetFontSize(FontRef font) { return TTF_GetFontSize(font); }
 
 inline float Font::GetSize() const { return SDL::GetFontSize(m_resource); }
 
@@ -2310,7 +2303,7 @@ inline float Font::GetSize() const { return SDL::GetFontSize(m_resource); }
  *
  * @sa Font.SetSizeDPI
  */
-inline void GetFontDPI(FontParam font, int* hdpi, int* vdpi)
+inline void GetFontDPI(FontRef font, int* hdpi, int* vdpi)
 {
   CheckError(TTF_GetFontDPI(font, hdpi, vdpi));
 }
@@ -2344,7 +2337,7 @@ inline void Font::GetDPI(int* hdpi, int* vdpi) const
  *
  * @sa Font.GetStyle
  */
-inline void SetFontStyle(FontParam font, FontStyleFlags style)
+inline void SetFontStyle(FontRef font, FontStyleFlags style)
 {
   TTF_SetFontStyle(font, style);
 }
@@ -2374,7 +2367,7 @@ inline void Font::SetStyle(FontStyleFlags style)
  *
  * @sa Font.SetStyle
  */
-inline FontStyleFlags GetFontStyle(FontParam font)
+inline FontStyleFlags GetFontStyle(FontRef font)
 {
   return TTF_GetFontStyle(font);
 }
@@ -2405,7 +2398,7 @@ inline FontStyleFlags Font::GetStyle() const
  *
  * @sa Font.GetOutline
  */
-inline void SetFontOutline(FontParam font, int outline)
+inline void SetFontOutline(FontRef font, int outline)
 {
   CheckError(TTF_SetFontOutline(font, outline));
 }
@@ -2427,7 +2420,7 @@ inline void Font::SetOutline(int outline)
  *
  * @sa Font.SetOutline
  */
-inline int GetFontOutline(FontParam font) { return TTF_GetFontOutline(font); }
+inline int GetFontOutline(FontRef font) { return TTF_GetFontOutline(font); }
 
 inline int Font::GetOutline() const { return SDL::GetFontOutline(m_resource); }
 
@@ -2455,7 +2448,7 @@ inline int Font::GetOutline() const { return SDL::GetFontOutline(m_resource); }
  *
  * @sa Font.GetHinting
  */
-inline void SetFontHinting(FontParam font, HintingFlags hinting)
+inline void SetFontHinting(FontRef font, HintingFlags hinting)
 {
   TTF_SetFontHinting(font, hinting);
 }
@@ -2475,7 +2468,7 @@ inline void Font::SetHinting(HintingFlags hinting)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline int GetNumFontFaces(FontParam font) { return TTF_GetNumFontFaces(font); }
+inline int GetNumFontFaces(FontRef font) { return TTF_GetNumFontFaces(font); }
 
 inline int Font::GetNumFaces() const
 {
@@ -2503,7 +2496,7 @@ inline int Font::GetNumFaces() const
  *
  * @sa Font.SetHinting
  */
-inline HintingFlags GetFontHinting(FontParam font)
+inline HintingFlags GetFontHinting(FontRef font)
 {
   return TTF_GetFontHinting(font);
 }
@@ -2536,7 +2529,7 @@ inline HintingFlags Font::GetHinting() const
  *
  * @sa Font.GetSDF
  */
-inline void SetFontSDF(FontParam font, bool enabled)
+inline void SetFontSDF(FontRef font, bool enabled)
 {
   CheckError(TTF_SetFontSDF(font, enabled));
 }
@@ -2555,7 +2548,7 @@ inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(m_resource, enabled); }
  *
  * @sa Font.SetSDF
  */
-inline bool GetFontSDF(FontParam font) { return TTF_GetFontSDF(font); }
+inline bool GetFontSDF(FontRef font) { return TTF_GetFontSDF(font); }
 
 inline bool Font::GetSDF() const { return SDL::GetFontSDF(m_resource); }
 
@@ -2572,7 +2565,7 @@ inline bool Font::GetSDF() const { return SDL::GetFontSDF(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.4.0.
  */
-inline int GetFontWeight(FontParam font) { return TTF_GetFontWeight(font); }
+inline int GetFontWeight(FontRef font) { return TTF_GetFontWeight(font); }
 
 #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
@@ -2667,7 +2660,7 @@ constexpr int FONT_WEIGHT_EXTRA_BLACK =
  *
  * @sa Font.GetWrapAlignment
  */
-inline void SetFontWrapAlignment(FontParam font, HorizontalAlignment align)
+inline void SetFontWrapAlignment(FontRef font, HorizontalAlignment align)
 {
   TTF_SetFontWrapAlignment(font, align);
 }
@@ -2689,7 +2682,7 @@ inline void Font::SetWrapAlignment(HorizontalAlignment align)
  *
  * @sa Font.SetWrapAlignment
  */
-inline HorizontalAlignment GetFontWrapAlignment(FontParam font)
+inline HorizontalAlignment GetFontWrapAlignment(FontRef font)
 {
   return TTF_GetFontWrapAlignment(font);
 }
@@ -2711,7 +2704,7 @@ inline HorizontalAlignment Font::GetWrapAlignment() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline int GetFontHeight(FontParam font) { return TTF_GetFontHeight(font); }
+inline int GetFontHeight(FontRef font) { return TTF_GetFontHeight(font); }
 
 inline int Font::GetHeight() const { return SDL::GetFontHeight(m_resource); }
 
@@ -2727,7 +2720,7 @@ inline int Font::GetHeight() const { return SDL::GetFontHeight(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline int GetFontAscent(FontParam font) { return TTF_GetFontAscent(font); }
+inline int GetFontAscent(FontRef font) { return TTF_GetFontAscent(font); }
 
 inline int Font::GetAscent() const { return SDL::GetFontAscent(m_resource); }
 
@@ -2743,7 +2736,7 @@ inline int Font::GetAscent() const { return SDL::GetFontAscent(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline int GetFontDescent(FontParam font) { return TTF_GetFontDescent(font); }
+inline int GetFontDescent(FontRef font) { return TTF_GetFontDescent(font); }
 
 inline int Font::GetDescent() const { return SDL::GetFontDescent(m_resource); }
 
@@ -2762,7 +2755,7 @@ inline int Font::GetDescent() const { return SDL::GetFontDescent(m_resource); }
  *
  * @sa Font.GetLineSkip
  */
-inline void SetFontLineSkip(FontParam font, int lineskip)
+inline void SetFontLineSkip(FontRef font, int lineskip)
 {
   TTF_SetFontLineSkip(font, lineskip);
 }
@@ -2784,7 +2777,7 @@ inline void Font::SetLineSkip(int lineskip)
  *
  * @sa Font.SetLineSkip
  */
-inline int GetFontLineSkip(FontParam font) { return TTF_GetFontLineSkip(font); }
+inline int GetFontLineSkip(FontRef font) { return TTF_GetFontLineSkip(font); }
 
 inline int Font::GetLineSkip() const
 {
@@ -2811,7 +2804,7 @@ inline int Font::GetLineSkip() const
  *
  * @sa Font.GetKerning
  */
-inline void SetFontKerning(FontParam font, bool enabled)
+inline void SetFontKerning(FontRef font, bool enabled)
 {
   TTF_SetFontKerning(font, enabled);
 }
@@ -2833,7 +2826,7 @@ inline void Font::SetKerning(bool enabled)
  *
  * @sa Font.SetKerning
  */
-inline bool GetFontKerning(FontParam font) { return TTF_GetFontKerning(font); }
+inline bool GetFontKerning(FontRef font) { return TTF_GetFontKerning(font); }
 
 inline bool Font::GetKerning() const { return SDL::GetFontKerning(m_resource); }
 
@@ -2853,7 +2846,7 @@ inline bool Font::GetKerning() const { return SDL::GetFontKerning(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline bool FontIsFixedWidth(FontParam font)
+inline bool FontIsFixedWidth(FontRef font)
 {
   return TTF_FontIsFixedWidth(font);
 }
@@ -2877,7 +2870,7 @@ inline bool Font::IsFixedWidth() const
  *
  * @sa Font.SetSDF
  */
-inline bool FontIsScalable(FontParam font) { return TTF_FontIsScalable(font); }
+inline bool FontIsScalable(FontRef font) { return TTF_FontIsScalable(font); }
 
 inline bool Font::IsScalable() const { return SDL::FontIsScalable(m_resource); }
 
@@ -2897,7 +2890,7 @@ inline bool Font::IsScalable() const { return SDL::FontIsScalable(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline const char* GetFontFamilyName(FontParam font)
+inline const char* GetFontFamilyName(FontRef font)
 {
   return TTF_GetFontFamilyName(font);
 }
@@ -2923,7 +2916,7 @@ inline const char* Font::GetFamilyName() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline const char* GetFontStyleName(FontParam font)
+inline const char* GetFontStyleName(FontRef font)
 {
   return TTF_GetFontStyleName(font);
 }
@@ -2950,7 +2943,7 @@ inline const char* Font::GetStyleName() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void SetFontDirection(FontParam font, Direction direction)
+inline void SetFontDirection(FontRef font, Direction direction)
 {
   CheckError(TTF_SetFontDirection(font, direction));
 }
@@ -2973,7 +2966,7 @@ inline void Font::SetDirection(Direction direction)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Direction GetFontDirection(FontParam font)
+inline Direction GetFontDirection(FontRef font)
 {
   return TTF_GetFontDirection(font);
 }
@@ -3039,7 +3032,7 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
  *
  * @sa StringToTag
  */
-inline void SetFontScript(FontParam font, Uint32 script)
+inline void SetFontScript(FontRef font, Uint32 script)
 {
   CheckError(TTF_SetFontScript(font, script));
 }
@@ -3064,7 +3057,7 @@ inline void Font::SetScript(Uint32 script)
  *
  * @sa TagToString
  */
-inline Uint32 GetFontScript(FontParam font) { return TTF_GetFontScript(font); }
+inline Uint32 GetFontScript(FontRef font) { return TTF_GetFontScript(font); }
 
 inline Uint32 Font::GetScript() const { return SDL::GetFontScript(m_resource); }
 
@@ -3109,7 +3102,7 @@ inline Uint32 Font::GetGlyphScript(Uint32 ch)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void SetFontLanguage(FontParam font, StringParam language_bcp47)
+inline void SetFontLanguage(FontRef font, StringParam language_bcp47)
 {
   CheckError(TTF_SetFontLanguage(font, language_bcp47));
 }
@@ -3131,7 +3124,7 @@ inline void Font::SetLanguage(StringParam language_bcp47)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline bool FontHasGlyph(FontParam font, Uint32 ch)
+inline bool FontHasGlyph(FontRef font, Uint32 ch)
 {
   return TTF_FontHasGlyph(font, ch);
 }
@@ -3156,7 +3149,7 @@ inline bool Font::HasGlyph(Uint32 ch) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Surface GetGlyphImage(FontParam font, Uint32 ch, ImageType* image_type)
+inline Surface GetGlyphImage(FontRef font, Uint32 ch, ImageType* image_type)
 {
   return TTF_GetGlyphImage(font, ch, image_type);
 }
@@ -3184,7 +3177,7 @@ inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Surface GetGlyphImageForIndex(FontParam font,
+inline Surface GetGlyphImageForIndex(FontRef font,
                                      Uint32 glyph_index,
                                      ImageType* image_type)
 {
@@ -3225,7 +3218,7 @@ inline Surface Font::GetGlyphImageForIndex(Uint32 glyph_index,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetGlyphMetrics(FontParam font,
+inline void GetGlyphMetrics(FontRef font,
                             Uint32 ch,
                             int* minx,
                             int* maxx,
@@ -3261,7 +3254,7 @@ inline void Font::GetGlyphMetrics(Uint32 ch,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline int GetGlyphKerning(FontParam font, Uint32 previous_ch, Uint32 ch)
+inline int GetGlyphKerning(FontRef font, Uint32 previous_ch, Uint32 ch)
 {
   return CheckError(TTF_GetGlyphKerning(font, previous_ch, ch));
 }
@@ -3290,7 +3283,7 @@ inline int Font::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetStringSize(FontParam font, std::string_view text, int* w, int* h)
+inline void GetStringSize(FontRef font, std::string_view text, int* w, int* h)
 {
   CheckError(TTF_GetStringSize(font, text, w, h));
 }
@@ -3325,7 +3318,7 @@ inline void Font::GetStringSize(std::string_view text, int* w, int* h) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetStringSizeWrapped(FontParam font,
+inline void GetStringSizeWrapped(FontRef font,
                                  std::string_view text,
                                  int wrap_width,
                                  int* w,
@@ -3367,7 +3360,7 @@ inline void Font::GetStringSizeWrapped(std::string_view text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void MeasureString(FontParam font,
+inline void MeasureString(FontRef font,
                           std::string_view text,
                           int max_width,
                           int* measured_width,
@@ -3421,7 +3414,7 @@ inline void Font::MeasureString(std::string_view text,
  * @sa Font.RenderText_Solid
  * @sa Font.RenderText_Solid_Wrapped
  */
-inline Surface RenderText_Solid(FontParam font, std::string_view text, Color fg)
+inline Surface RenderText_Solid(FontRef font, std::string_view text, Color fg)
 {
   return TTF_RenderText_Solid(font, text, fg);
 }
@@ -3465,7 +3458,7 @@ inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
  * @sa Font.RenderText_Shaded_Wrapped
  * @sa Font.RenderText_Solid
  */
-inline Surface RenderText_Solid_Wrapped(FontParam font,
+inline Surface RenderText_Solid_Wrapped(FontRef font,
                                         std::string_view text,
                                         Color fg,
                                         int wrapLength)
@@ -3507,7 +3500,7 @@ inline Surface Font::RenderText_Solid_Wrapped(std::string_view text,
  * @sa Font.RenderGlyph_LCD
  * @sa Font.RenderGlyph_Shaded
  */
-inline Surface RenderGlyph_Solid(FontParam font, Uint32 ch, ColorRaw fg)
+inline Surface RenderGlyph_Solid(FontRef font, Uint32 ch, ColorRaw fg)
 {
   return TTF_RenderGlyph_Solid(font, ch, fg);
 }
@@ -3553,7 +3546,7 @@ inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
  * @sa Font.RenderText_Shaded_Wrapped
  * @sa Font.RenderText_Solid
  */
-inline Surface RenderText_Shaded(FontParam font,
+inline Surface RenderText_Shaded(FontRef font,
                                  std::string_view text,
                                  Color fg,
                                  Color bg)
@@ -3604,7 +3597,7 @@ inline Surface Font::RenderText_Shaded(std::string_view text,
  * @sa Font.RenderText_Shaded
  * @sa Font.RenderText_Solid_Wrapped
  */
-inline Surface RenderText_Shaded_Wrapped(FontParam font,
+inline Surface RenderText_Shaded_Wrapped(FontRef font,
                                          std::string_view text,
                                          Color fg,
                                          Color bg,
@@ -3650,7 +3643,7 @@ inline Surface Font::RenderText_Shaded_Wrapped(std::string_view text,
  * @sa Font.RenderGlyph_LCD
  * @sa Font.RenderGlyph_Solid
  */
-inline Surface RenderGlyph_Shaded(FontParam font,
+inline Surface RenderGlyph_Shaded(FontRef font,
                                   Uint32 ch,
                                   ColorRaw fg,
                                   ColorRaw bg)
@@ -3699,9 +3692,7 @@ inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
  * @sa Font.RenderText_Shaded
  * @sa Font.RenderText_Solid
  */
-inline Surface RenderText_Blended(FontParam font,
-                                  std::string_view text,
-                                  Color fg)
+inline Surface RenderText_Blended(FontRef font, std::string_view text, Color fg)
 {
   return TTF_RenderText_Blended(font, text, fg);
 }
@@ -3745,7 +3736,7 @@ inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
  * @sa Font.RenderText_Shaded_Wrapped
  * @sa Font.RenderText_Solid_Wrapped
  */
-inline Surface RenderText_Blended_Wrapped(FontParam font,
+inline Surface RenderText_Blended_Wrapped(FontRef font,
                                           std::string_view text,
                                           Color fg,
                                           int wrap_width)
@@ -3787,7 +3778,7 @@ inline Surface Font::RenderText_Blended_Wrapped(std::string_view text,
  * @sa Font.RenderGlyph_Shaded
  * @sa Font.RenderGlyph_Solid
  */
-inline Surface RenderGlyph_Blended(FontParam font, Uint32 ch, ColorRaw fg)
+inline Surface RenderGlyph_Blended(FontRef font, Uint32 ch, ColorRaw fg)
 {
   return TTF_RenderGlyph_Blended(font, ch, fg);
 }
@@ -3832,7 +3823,7 @@ inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
  * @sa Font.RenderText_Shaded
  * @sa Font.RenderText_Solid
  */
-inline Surface RenderText_LCD(FontParam font,
+inline Surface RenderText_LCD(FontRef font,
                               std::string_view text,
                               Color fg,
                               Color bg)
@@ -3882,7 +3873,7 @@ inline Surface Font::RenderText_LCD(std::string_view text,
  * @sa Font.RenderText_Shaded_Wrapped
  * @sa Font.RenderText_Solid_Wrapped
  */
-inline Surface RenderText_LCD_Wrapped(FontParam font,
+inline Surface RenderText_LCD_Wrapped(FontRef font,
                                       std::string_view text,
                                       Color fg,
                                       Color bg,
@@ -3928,7 +3919,7 @@ inline Surface Font::RenderText_LCD_Wrapped(std::string_view text,
  * @sa Font.RenderGlyph_Shaded
  * @sa Font.RenderGlyph_Solid
  */
-inline Surface RenderGlyph_LCD(FontParam font,
+inline Surface RenderGlyph_LCD(FontRef font,
                                Uint32 ch,
                                ColorRaw fg,
                                ColorRaw bg)
@@ -4013,7 +4004,7 @@ public:
   }
 
   /**
-   * Constructs from TextEngineParam.
+   * Constructs from TextEngineRef.
    *
    * @param resource a TextEngineRaw to be wrapped.
    *
@@ -4087,7 +4078,7 @@ public:
    *
    * @sa Text.Destroy
    */
-  Text CreateText(FontParam font, std::string_view text);
+  Text CreateText(FontRef font, std::string_view text);
 };
 
 struct SurfaceTextEngine : TextEngine
@@ -4146,7 +4137,7 @@ struct RendererTextEngine : TextEngine
    * @sa Text.DrawRenderer
    * @sa RendererTextEngine.RendererTextEngine
    */
-  RendererTextEngine(RendererParam renderer);
+  RendererTextEngine(RendererRef renderer);
 
   /**
    * Create a text engine for drawing text on an SDL renderer, with the
@@ -4172,7 +4163,7 @@ struct RendererTextEngine : TextEngine
    * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    */
-  RendererTextEngine(PropertiesParam props);
+  RendererTextEngine(PropertiesRef props);
 
   ~RendererTextEngine() { Destroy(); }
 
@@ -4213,7 +4204,7 @@ struct GPUTextEngine : TextEngine
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
-  GPUTextEngine(GPUDeviceParam device);
+  GPUTextEngine(GPUDeviceRef device);
 
   /**
    * Create a text engine for drawing text with the SDL GPU API, with the
@@ -4238,7 +4229,7 @@ struct GPUTextEngine : TextEngine
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
-  GPUTextEngine(PropertiesParam props);
+  GPUTextEngine(PropertiesRef props);
 
   ~GPUTextEngine() { Destroy(); }
 
@@ -4257,8 +4248,7 @@ struct GPUTextEngine : TextEngine
    *
    * @sa GPUTextEngine.GetGPUWinding
    */
-  static void SetGPUWinding(TextEngineParam engine,
-                            GPUTextEngineWinding winding);
+  static void SetGPUWinding(TextEngineRef engine, GPUTextEngineWinding winding);
 
   /**
    * Get the winding order of the vertices returned by Text.GetGPUDrawData for a
@@ -4276,7 +4266,7 @@ struct GPUTextEngine : TextEngine
    *
    * @sa GPUTextEngine.SetGPUWinding
    */
-  GPUTextEngineWinding GetGPUWinding(TextEngineParam engine) const;
+  GPUTextEngineWinding GetGPUWinding(TextEngineRef engine) const;
 
   /**
    * Destroy a text engine created for drawing text with the SDL GPU API.
@@ -4353,7 +4343,7 @@ public:
   }
 
   /**
-   * Constructs from TextParam.
+   * Constructs from TextRef.
    *
    * @param resource a TextRaw to be wrapped.
    *
@@ -4398,7 +4388,7 @@ public:
    *
    * @sa Text.Destroy
    */
-  Text(TextEngineParam engine, FontParam font, std::string_view text);
+  Text(TextEngineRef engine, FontRef font, std::string_view text);
 
   /// member access to underlying TextRaw.
   constexpr const TextRaw operator->() const noexcept { return m_resource; }
@@ -4472,7 +4462,7 @@ public:
    * @sa SurfaceTextEngine.SurfaceTextEngine
    * @sa Text.Text
    */
-  void DrawSurface(Point p, SurfaceParam surface) const;
+  void DrawSurface(Point p, SurfaceRef surface) const;
 
   /**
    * Draw text to an SDL renderer.
@@ -4554,7 +4544,7 @@ public:
    *
    * @sa Text.GetEngine
    */
-  void SetEngine(TextEngineParam engine);
+  void SetEngine(TextEngineRef engine);
 
   /**
    * Get the text engine used by a text object.
@@ -4569,7 +4559,7 @@ public:
    *
    * @sa Text.SetEngine
    */
-  TextEngineParam GetEngine() const;
+  TextEngineRef GetEngine() const;
 
   /**
    * Set the font used by a text object.
@@ -4591,7 +4581,7 @@ public:
    *
    * @sa Text.GetFont
    */
-  bool SetFont(FontParam font);
+  bool SetFont(FontRef font);
 
   /**
    * Get the font used by a text object.
@@ -5386,12 +5376,12 @@ inline SurfaceTextEngine::SurfaceTextEngine()
  * @sa SurfaceTextEngine.SurfaceTextEngine
  * @sa Text.Text
  */
-inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceParam surface)
+inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceRef surface)
 {
   CheckError(TTF_DrawSurfaceText(text, p, surface));
 }
 
-inline void Text::DrawSurface(Point p, SurfaceParam surface) const
+inline void Text::DrawSurface(Point p, SurfaceRef surface) const
 {
   SDL::DrawSurfaceText(m_resource, p, surface);
 }
@@ -5438,17 +5428,17 @@ inline void SurfaceTextEngine::Destroy()
  * @sa Text.DrawRenderer
  * @sa RendererTextEngine.RendererTextEngine
  */
-inline RendererTextEngine CreateRendererTextEngine(RendererParam renderer)
+inline RendererTextEngine CreateRendererTextEngine(RendererRef renderer)
 {
   return RendererTextEngine(renderer);
 }
 
-inline RendererTextEngine::RendererTextEngine(RendererParam renderer)
+inline RendererTextEngine::RendererTextEngine(RendererRef renderer)
   : T(TTF_CreateRendererTextEngine(renderer))
 {
 }
 
-inline RendererTextEngine::RendererTextEngine(PropertiesParam props)
+inline RendererTextEngine::RendererTextEngine(PropertiesRef props)
   : T(TTF_CreateRendererTextEngineWithProperties(props))
 {
 }
@@ -5478,7 +5468,7 @@ inline RendererTextEngine::RendererTextEngine(PropertiesParam props)
  * @sa Text.DrawRenderer
  */
 inline RendererTextEngine CreateRendererTextEngineWithProperties(
-  PropertiesParam props)
+  PropertiesRef props)
 {
   return RendererTextEngine(props);
 }
@@ -5574,17 +5564,17 @@ inline void RendererTextEngine::Destroy()
  * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
-inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
+inline GPUTextEngine CreateGPUTextEngine(GPUDeviceRef device)
 {
   return GPUTextEngine(device);
 }
 
-inline GPUTextEngine::GPUTextEngine(GPUDeviceParam device)
+inline GPUTextEngine::GPUTextEngine(GPUDeviceRef device)
   : T(TTF_CreateGPUTextEngine(device))
 {
 }
 
-inline GPUTextEngine::GPUTextEngine(PropertiesParam props)
+inline GPUTextEngine::GPUTextEngine(PropertiesRef props)
   : T(TTF_CreateGPUTextEngineWithProperties(props))
 {
 }
@@ -5612,7 +5602,7 @@ inline GPUTextEngine::GPUTextEngine(PropertiesParam props)
  * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
-inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesParam props)
+inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
 {
   return GPUTextEngine(props);
 }
@@ -5691,14 +5681,14 @@ inline void DestroyGPUTextEngine(TextEngineRaw engine)
 
 inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
 
-inline void GPUTextEngine::SetGPUWinding(TextEngineParam engine,
+inline void GPUTextEngine::SetGPUWinding(TextEngineRef engine,
                                          GPUTextEngineWinding winding)
 {
   SDL::SetGPUTextEngineWinding(engine, winding);
 }
 
 inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding(
-  TextEngineParam engine) const
+  TextEngineRef engine) const
 {
   return SDL::GetGPUTextEngineWinding(engine);
 }
@@ -5722,19 +5712,19 @@ inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding(
  *
  * @sa Text.Destroy
  */
-inline Text CreateText(TextEngineParam engine,
-                       FontParam font,
+inline Text CreateText(TextEngineRef engine,
+                       FontRef font,
                        std::string_view text)
 {
   return Text(engine, font, text);
 }
 
-inline Text TextEngine::CreateText(FontParam font, std::string_view text)
+inline Text TextEngine::CreateText(FontRef font, std::string_view text)
 {
   return Text(m_resource, font, text);
 }
 
-inline Text::Text(TextEngineParam engine, FontParam font, std::string_view text)
+inline Text::Text(TextEngineRef engine, FontRef font, std::string_view text)
   : m_resource(TTF_CreateText(engine, font, text))
 {
 }
@@ -5777,12 +5767,12 @@ inline PropertiesRef Text::GetProperties() const
  *
  * @sa Text.GetEngine
  */
-inline void SetTextEngine(TextParam text, TextEngineParam engine)
+inline void SetTextEngine(TextRef text, TextEngineRef engine)
 {
   CheckError(TTF_SetTextEngine(text, engine));
 }
 
-inline void Text::SetEngine(TextEngineParam engine)
+inline void Text::SetEngine(TextEngineRef engine)
 {
   SDL::SetTextEngine(m_resource, engine);
 }
@@ -5801,12 +5791,12 @@ inline void Text::SetEngine(TextEngineParam engine)
  *
  * @sa Text.SetEngine
  */
-inline TextEngineParam GetTextEngine(TextConstRef text)
+inline TextEngineRef GetTextEngine(TextConstRef text)
 {
   return CheckError(TTF_GetTextEngine(text));
 }
 
-inline TextEngineParam Text::GetEngine() const
+inline TextEngineRef Text::GetEngine() const
 {
   return SDL::GetTextEngine(m_resource);
 }
@@ -5832,12 +5822,12 @@ inline TextEngineParam Text::GetEngine() const
  *
  * @sa Text.GetFont
  */
-inline bool SetTextFont(TextParam text, FontParam font)
+inline bool SetTextFont(TextRef text, FontRef font)
 {
   return TTF_SetTextFont(text, font);
 }
 
-inline bool Text::SetFont(FontParam font)
+inline bool Text::SetFont(FontRef font)
 {
   return SDL::SetTextFont(m_resource, font);
 }
@@ -5878,7 +5868,7 @@ inline FontRef Text::GetFont() const { return SDL::GetTextFont(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void SetTextDirection(TextParam text, Direction direction)
+inline void SetTextDirection(TextRef text, Direction direction)
 {
   CheckError(TTF_SetTextDirection(text, direction));
 }
@@ -5928,7 +5918,7 @@ inline Direction Text::GetDirection() const
  *
  * @sa StringToTag
  */
-inline void SetTextScript(TextParam text, Uint32 script)
+inline void SetTextScript(TextRef text, Uint32 script)
 {
   CheckError(TTF_SetTextScript(text, script));
 }
@@ -5982,7 +5972,7 @@ inline Uint32 Text::GetScript() const { return SDL::GetTextScript(m_resource); }
  * @sa Text.GetColor
  * @sa Text.SetColorFloat
  */
-inline void SetTextColor(TextParam text, Color c)
+inline void SetTextColor(TextRef text, Color c)
 {
   CheckError(TTF_SetTextColor(text, c));
 }
@@ -6009,7 +5999,7 @@ inline void Text::SetColor(Color c) { SDL::SetTextColor(m_resource, c); }
  * @sa Text.GetColorFloat
  * @sa Text.SetColor
  */
-inline void SetTextColorFloat(TextParam text, FColor c)
+inline void SetTextColorFloat(TextRef text, FColor c)
 {
   CheckError(TTF_SetTextColorFloat(text, c));
 }
@@ -6072,7 +6062,7 @@ inline void GetTextColor(TextConstRef text,
  * @sa Text.GetColorFloat
  * @sa Text.SetColor
  */
-inline Color GetTextColor(TextParam text)
+inline Color GetTextColor(TextRef text)
 {
   static_assert(false, "Not implemented");
 }
@@ -6137,7 +6127,7 @@ inline void GetTextColorFloat(TextConstRef text,
  * @sa Text.GetColor
  * @sa Text.SetColorFloat
  */
-inline FColor GetTextColorFloat(TextParam text)
+inline FColor GetTextColorFloat(TextRef text)
 {
   static_assert(false, "Not implemented");
 }
@@ -6171,7 +6161,7 @@ inline FColor Text::GetColorFloat()
  *
  * @sa Text.GetPosition
  */
-inline void SetTextPosition(TextParam text, const PointRaw& p)
+inline void SetTextPosition(TextRef text, const PointRaw& p)
 {
   CheckError(TTF_SetTextPosition(text, p));
 }
@@ -6218,7 +6208,7 @@ inline void GetTextPosition(TextConstRef text, int* x, int* y)
  *
  * @sa Text.SetPosition
  */
-inline Point GetTextPosition(TextParam text)
+inline Point GetTextPosition(TextRef text)
 {
   static_assert(false, "Not implemented");
 }
@@ -6247,7 +6237,7 @@ inline Point Text::GetPosition() { return SDL::GetTextPosition(m_resource); }
  *
  * @sa Text.GetWrapWidth
  */
-inline void SetTextWrapWidth(TextParam text, int wrap_width)
+inline void SetTextWrapWidth(TextRef text, int wrap_width)
 {
   CheckError(TTF_SetTextWrapWidth(text, wrap_width));
 }
@@ -6302,7 +6292,7 @@ inline int Text::GetWrapWidth() const
  *
  * @sa Text.IsWrapWhitespaceVisible
  */
-inline void SetTextWrapWhitespaceVisible(TextParam text, bool visible)
+inline void SetTextWrapWhitespaceVisible(TextRef text, bool visible)
 {
   CheckError(TTF_SetTextWrapWhitespaceVisible(text, visible));
 }
@@ -6355,7 +6345,7 @@ inline bool Text::IsWrapWhitespaceVisible() const
  * @sa Text.DeleteString
  * @sa Text.InsertString
  */
-inline void SetTextString(TextParam text, std::string_view string)
+inline void SetTextString(TextRef text, std::string_view string)
 {
   CheckError(TTF_SetTextString(text, string));
 }
@@ -6389,9 +6379,7 @@ inline void Text::SetString(std::string_view string)
  * @sa Text.DeleteString
  * @sa Text.SetString
  */
-inline void InsertTextString(TextParam text,
-                             int offset,
-                             std::string_view string)
+inline void InsertTextString(TextRef text, int offset, std::string_view string)
 {
   CheckError(TTF_InsertTextString(text, offset, string));
 }
@@ -6421,7 +6409,7 @@ inline void Text::InsertString(int offset, std::string_view string)
  * @sa Text.InsertString
  * @sa Text.SetString
  */
-inline void AppendTextString(TextParam text, std::string_view string)
+inline void AppendTextString(TextRef text, std::string_view string)
 {
   CheckError(TTF_AppendTextString(text, string));
 }
@@ -6454,7 +6442,7 @@ inline void Text::AppendString(std::string_view string)
  * @sa Text.InsertString
  * @sa Text.SetString
  */
-inline void DeleteTextString(TextParam text, int offset, int length)
+inline void DeleteTextString(TextRef text, int offset, int length)
 {
   CheckError(TTF_DeleteTextString(text, offset, length));
 }
@@ -6503,7 +6491,7 @@ inline void GetTextSize(TextConstRef text, int* w, int* h)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Point GetTextSize(TextParam text)
+inline Point GetTextSize(TextRef text)
 {
   static_assert(false, "Not implemented");
 }
@@ -6713,7 +6701,7 @@ inline void Text::GetNextSubString(const SubString& substring,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void UpdateText(TextParam text) { CheckError(TTF_UpdateText(text)); }
+inline void UpdateText(TextRef text) { CheckError(TTF_UpdateText(text)); }
 
 inline void Text::Update() { SDL::UpdateText(m_resource); }
 

@@ -101,8 +101,6 @@ using PaletteRaw = SDL_Palette*;
 // Forward decl
 struct PaletteRef;
 
-using PaletteParam = PaletteRef;
-
 /// Safely wrap Palette for non owning const parameters
 struct PaletteConstRef
 {
@@ -2492,7 +2490,7 @@ public:
   }
 
   /**
-   * Constructs from PaletteParam.
+   * Constructs from PaletteRef.
    *
    * @param resource a PaletteRaw to be wrapped.
    *
@@ -2862,7 +2860,7 @@ inline Palette::Palette(int ncolors)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetPaletteColors(PaletteParam palette,
+inline void SetPaletteColors(PaletteRef palette,
                              SpanRef<const ColorRaw> colors,
                              int firstcolor = 0)
 {
