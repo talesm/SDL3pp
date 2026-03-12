@@ -26,7 +26,6 @@ import {
   ResourceDefinition,
 } from "./types";
 import { combineObject, system } from "./utils";
-import { ref } from "node:process";
 
 export function expandResource(
   sourceEntries: Dict<ApiEntry>,
@@ -118,7 +117,6 @@ export function expandResource(
         constParamType,
         targetName,
         constRawName,
-        paramType,
         nullValue,
         memberAccess,
       ),
@@ -248,6 +246,7 @@ export function expandResource(
       constexpr: true,
       parameters: [],
       hints: { body: "return m_resource;", noexcept: true },
+      doc: [`Converts to underlying ${rawName}.`],
     };
   }
   populateTargetEntry(
@@ -361,7 +360,6 @@ function createConstParam(
   constParamType: string,
   targetName: string,
   constRawName: string,
-  paramType: string,
   nullValue: string,
   memberAccess: ApiEntryTransformMap,
 ): ApiEntryTransform {

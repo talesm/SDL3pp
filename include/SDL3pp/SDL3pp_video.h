@@ -3336,6 +3336,7 @@ public:
    */
   GLContext(WindowParam window);
 
+  /// Converts to underlying GLContextRaw.
   constexpr operator GLContextRaw() const noexcept { return m_resource; }
 
   /// Destructor

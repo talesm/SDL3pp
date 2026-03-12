@@ -501,6 +501,7 @@ public:
   {
   }
 
+  /// Converts to underlying TrayEntryRaw.
   constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
 
   /// Destructor
