@@ -19,13 +19,12 @@ New Version checklist:
 Next version
 ------------
 
-- [ ] Merge \*Ref with \*Param resources:
+- [x] Merge \*Ref with \*Param resource classes into a single class:
   - [x] Make \*Ref always non-owning
   - [x] Replace \*Param with \*Ref;
   - [x] Remove \*Param;
-  - [ ] Create \*ConstRef when it has \*ConstParam
-  - [ ] Replace \*ConstParam with \*ConstRef;
-  - [ ] Remove \*ConstParam;
+  - [x] Rename \*ConstRef to \*ConstParam
+- [ ] Wrap SDL_mixer
 
 Backlog
 -------
