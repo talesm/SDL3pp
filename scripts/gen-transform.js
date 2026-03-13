@@ -9,7 +9,7 @@ const currentVersion = ["0", "7", "4"]; // major, minor, patch
 
 /** @type {ApiTransform} */
 const transform = {
-  prefixes: ["SDL_", "IMG_", "TTF_"],
+  prefixes: ["SDL_", "IMG_", "TTF_", "MIX_"],
   definitionPrefix: "SDL_",
   sourceIncludePrefix: 'SDL3/',
   namespace: "SDL",
@@ -9703,6 +9703,32 @@ const transform = {
         "TTF_PROP_RENDERER_TEXT_ENGINE_": "prop::RendererTextEngine",
         "TTF_PROP_GPU_TEXT_ENGINE_": "prop::GpuTextEngine"
       },
+    },
+    "SDL_mixer.h": {
+      localIncludes: [
+        "SDL3pp_audio.h",
+        "SDL3pp_version.h",
+      ],
+      transform: {
+        "SDL_MIXER_MAJOR_VERSION": {
+          value: ""
+        },
+        "SDL_MIXER_MINOR_VERSION": {
+          value: ""
+        },
+        "SDL_MIXER_MICRO_VERSION": {
+          value: ""
+        },
+        "MIX": {
+          kind: "ns",
+          before: "MIX_Version",
+          entries: {},
+        },
+        "MIX_Version": { name: "MIX.Version" },
+        "MIX_Init": { name: "MIX.Init" },
+        "MIX_Quit": { name: "MIX.Quit" },
+        "MIX_WasInit": { name: "MIX.WasInit" }
+      }
     }
   }
 };
