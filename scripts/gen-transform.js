@@ -8787,10 +8787,23 @@ const transform = {
         "MIX_Audio": {
           resource: { free: "MIX_DestroyAudio" },
           entries: {
+            "MIX_LoadAudio_IO": "ctor",
+            "MIX_LoadAudio": "ctor",
+            "MIX_LoadAudioWithProperties": "ctor",
             "MIX_LoadRawAudio_IO": "ctor",
             "MIX_LoadRawAudio": "ctor",
           },
         },
+        "MIX_LoadAudio_IO": {
+          parameters: [{}, {}, {}, { default: "false" }],
+          type: "Audio",
+        },
+        "MIX_LoadAudio": { type: "Audio" },
+        "MIX_LoadAudioNoCopy": {
+          parameters: [{}, { type: "SourceBytes" }, { type: "bool", name: "free_when_done" }],
+          type: "Audio",
+        },
+        "MIX_LoadAudioWithProperties": { type: "Audio" },
         "MIX_LoadRawAudio_IO": {
           parameters: [{}, {}, {}, { default: "false" }],
           type: "Audio",
@@ -8800,7 +8813,7 @@ const transform = {
           type: "Audio",
         },
         "MIX_LoadRawAudioNoCopy": {
-          parameters: [{}, { type: "SourceBytes" }, { type: "const AudioSpec &", name: "spec" }, { type: "bool", name: "freeWhenDone", default: "false" }],
+          parameters: [{}, { type: "SourceBytes" }, { type: "const AudioSpec &", name: "spec" }, { type: "bool", name: "free_when_done" }],
           type: "Audio",
         },
         "MIX_CreateSineWaveAudio": { type: "Audio" },

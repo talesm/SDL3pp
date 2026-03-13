@@ -15,7 +15,159 @@
  namespace SDL {
  
  /**
-@@ -3413,6 +3416,8 @@
+@@ -22,9 +25,8 @@
+  * To use the library, first call MIX.Init(). Then create a mixer with
+  * Mixer.Mixer() (or Mixer.Mixer() to render to memory).
+  *
+- * Once you have a mixer, you can load sound data with Audio.Audio(),
+- * Audio.Audio(), or Audio.Audio(). Data gets loaded once and can be played over
+- * and over.
++ * Once you have a mixer, you can load sound data with Audio.Audio(). Data gets
++ * loaded once and can be played over and over.
+  *
+  * When loading audio, SDL_mixer can parse out several metadata tag formats,
+  * such as ID3 and APE tags, and exposes this information through the
+@@ -515,7 +517,7 @@
+    *
+    * This function loads data from an IOStream. There is also a version that
+    * loads from a path on the filesystem (Audio.Audio()), and one that accepts
+-   * properties for ultimate control (Audio.Audio()).
++   * properties for ultimate control (LoadAudioWithProperties()).
+    *
+    * The IOStream provided must be able to seek, or loading will fail. If the
+    * stream can't seek (data is coming from an HTTP connection, etc), consider
+@@ -536,7 +538,6 @@
+    * @sa Audio.Destroy
+    * @sa Track.SetAudio
+    * @sa Audio.Audio
+-   * @sa Audio.Audio
+    */
+   Audio LoadAudio_IO(IOStreamRef io, bool predecode, bool closeio = false);
+ 
+@@ -545,13 +546,13 @@
+    *
+    * This is equivalent to calling:
+    *
+-   * ```c
+-   * Audio.Audio(mixer, IOStream.FromFile(path, "rb"), predecode, true);
++   * ```cpp
++   * Audio audio(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+    * ```
+    *
+    * This function loads data from a path on the filesystem. There is also a
+    * version that loads from an IOStream (Audio.Audio()), and one that accepts
+-   * properties for ultimate control (Audio.Audio()).
++   * properties for ultimate control (LoadAudioWithProperties()).
+    *
+    * @param path the path on the filesystem to load data from.
+    * @param predecode if true, data will be fully uncompressed before returning.
+@@ -565,7 +566,6 @@
+    * @sa Audio.Destroy
+    * @sa Track.SetAudio
+    * @sa Audio.Audio
+-   * @sa Audio.Audio
+    */
+   Audio LoadAudio(StringParam path, bool predecode);
+ 
+@@ -584,11 +584,11 @@
+    * This function is meant to maximize efficiency: if the data is already in
+    * memory and can remain there, don't copy it. This data can be in any
+    * supported audio file format (WAV, MP3, etc); it will be decoded on the fly
+-   * while mixing. Unlike Audio.Audio(), there is no `predecode` option offered
+-   * here, as this is meant to optimize for data that's already in memory and
+-   * intends to exist there for significant time; since predecoding would only
+-   * need the file format data once, upfront, one could simply wrap it in
+-   * SDL_CreateIOFromConstMem() and pass that to Audio.Audio().
++   * while mixing. Unlike Mixer.LoadAudio(), there is no `predecode` option
++   * offered here, as this is meant to optimize for data that's already in
++   * memory and intends to exist there for significant time; since predecoding
++   * would only need the file format data once, upfront, one could simply wrap
++   * it in SDL_CreateIOFromConstMem() and pass that to Mixer.LoadAudio_IO().
+    *
+    * Audio objects can be shared between multiple mixers. The `mixer` parameter
+    * just suggests the most likely mixer to use this audio, in case some
+@@ -657,7 +657,7 @@
+    * @sa Track.SetAudio
+    * @sa Audio.Audio
+    * @sa Mixer.LoadRawAudioNoCopy
+-   * @sa Audio.Audio
++   * @sa Mixer.LoadAudio_IO
+    */
+   Audio LoadRawAudio_IO(IOStreamRef io,
+                         const AudioSpec& spec,
+@@ -694,7 +694,7 @@
+    * @sa Track.SetAudio
+    * @sa Audio.Audio
+    * @sa Mixer.LoadRawAudioNoCopy
+-   * @sa Audio.Audio
++   * @sa Mixer.LoadAudio_IO
+    */
+   Audio LoadRawAudio(SourceBytes data, const AudioSpec& spec);
+ 
+@@ -735,7 +735,7 @@
+    * @sa Track.SetAudio
+    * @sa Audio.Audio
+    * @sa Audio.Audio
+-   * @sa Audio.Audio
++   * @sa Mixer.LoadAudio_IO
+    */
+   Audio LoadRawAudioNoCopy(SourceBytes data,
+                            const AudioSpec& spec,
+@@ -773,7 +773,7 @@
+    *
+    * @sa Audio.Destroy
+    * @sa Track.SetAudio
+-   * @sa Audio.Audio
++   * @sa Mixer.LoadAudio_IO
+    */
+   Audio CreateSineWaveAudio(int hz, float amplitude, Sint64 ms);
+ 
+@@ -883,7 +883,7 @@
+    * @since This function is available since SDL_mixer 3.0.0.
+    *
+    * @sa Track.Play
+-   * @sa Audio.Audio
++   * @sa Mixer.LoadAudio
+    */
+   bool PlayAudio(AudioRef audio);
+ 
+@@ -1261,7 +1261,7 @@
+    * initialized, if available tracks to mix run out, the end of the buffer will
+    * be initialized with silence; this silence will not be counted in the return
+    * value, so the caller has the option to identify how much of the buffer has
+-   * legimitate contents vs appended silence. As such, any value >= 0 signifies
++   * legitimate contents vs appended silence. As such, any value >= 0 signifies
+    * success. A return value of -1 means failure (out of memory, invalid
+    * parameters, etc).
+    *
+@@ -1563,7 +1563,7 @@
+    * @sa Track.SetAudio
+    * @sa Audio.Audio
+    * @sa Mixer.LoadRawAudioNoCopy
+-   * @sa Audio.Audio
++   * @sa Mixer.LoadAudio_IO
+    */
+   Audio(MixerRef mixer,
+         IOStreamRef io,
+@@ -1603,7 +1603,7 @@
+    * @sa Track.SetAudio
+    * @sa Audio.Audio
+    * @sa Mixer.LoadRawAudioNoCopy
+-   * @sa Audio.Audio
++   * @sa Mixer.LoadAudio_IO
+    */
+   Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec);
+ 
+@@ -1914,7 +1914,7 @@
+  * A callback that fires when a Track is mixing at various stages.
+  *
+  * This callback is fired for different parts of the mixing pipeline, and gives
+- * the app visbility into the audio data that is being generated at various
++ * the app visibility into the audio data that is being generated at various
+  * stages.
+  *
+  * The audio data passed through here is _not_ const data; the app is permitted
+@@ -3548,6 +3548,8 @@
    constexpr operator GroupRaw() const noexcept { return get(); }
  };
  
@@ -24,7 +176,7 @@
  /**
   * The current major version of SDL_mixer headers.
   *
-@@ -3462,6 +3467,8 @@
+@@ -3597,6 +3599,8 @@
     (SDL_MIXER_MAJOR_VERSION > X || SDL_MIXER_MINOR_VERSION > Y ||              \
      SDL_MIXER_MICRO_VERSION >= Z))
  
@@ -33,18 +185,122 @@
  namespace MIX {
  
  /**
-@@ -4251,8 +4258,8 @@
+@@ -4019,7 +4023,7 @@
+  *
+  * This function loads data from an IOStream. There is also a version that loads
+  * from a path on the filesystem (Audio.Audio()), and one that accepts
+- * properties for ultimate control (Audio.Audio()).
++ * properties for ultimate control (LoadAudioWithProperties()).
+  *
+  * The IOStream provided must be able to seek, or loading will fail. If the
+  * stream can't seek (data is coming from an HTTP connection, etc), consider
+@@ -4041,7 +4045,7 @@
+  * @sa Audio.Destroy
+  * @sa Track.SetAudio
+  * @sa Audio.Audio
+- * @sa Audio.Audio
++ * @sa LoadAudioWithProperties
+  */
+ inline Audio LoadAudio_IO(MixerRef mixer,
+                           IOStreamRef io,
+@@ -4092,13 +4096,13 @@
+  *
+  * This is equivalent to calling:
+  *
+- * ```c
+- * Audio.Audio(mixer, IOStream.FromFile(path, "rb"), predecode, true);
++ * ```cpp
++ * Audio audio(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+  * ```
+  *
+  * This function loads data from a path on the filesystem. There is also a
+  * version that loads from an IOStream (Audio.Audio()), and one that accepts
+- * properties for ultimate control (Audio.Audio()).
++ * properties for ultimate control (LoadAudioWithProperties()).
+  *
+  * @param mixer a mixer this audio is intended to be used with. May be nullptr.
+  * @param path the path on the filesystem to load data from.
+@@ -4112,8 +4116,8 @@
+  *
+  * @sa Audio.Destroy
+  * @sa Track.SetAudio
+- * @sa Audio.Audio
+- * @sa Audio.Audio
++ * @sa Mixer.LoadAudio_IO
++ * @sa LoadAudioWithProperties
+  */
+ inline Audio LoadAudio(MixerRef mixer, StringParam path, bool predecode)
+ {
+@@ -4143,7 +4147,7 @@
+  * this is meant to optimize for data that's already in memory and intends to
+  * exist there for significant time; since predecoding would only need the file
+  * format data once, upfront, one could simply wrap it in
+- * SDL_CreateIOFromConstMem() and pass that to Audio.Audio().
++ * SDL_CreateIOFromConstMem() and pass that to Mixer.LoadAudio_IO().
+  *
+  * Audio objects can be shared between multiple mixers. The `mixer` parameter
+  * just suggests the most likely mixer to use this audio, in case some
+@@ -4179,14 +4183,14 @@
+  * @sa Audio.Destroy
+  * @sa Track.SetAudio
+  * @sa Mixer.LoadRawAudioNoCopy
+- * @sa Audio.Audio
++ * @sa Mixer.LoadAudio_IO
+  */
+ inline Audio LoadAudioNoCopy(MixerRef mixer,
+                              SourceBytes data,
+                              bool free_when_done)
+ {
+-  return MIX_LoadAudioNoCopy(
+-    mixer, data.data(), data.size_bytes(), free_when_done);
++  return Audio(
++    MIX_LoadAudioNoCopy(mixer, data.data(), data.size_bytes(), free_when_done));
+ }
+ 
+ inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
+@@ -4238,7 +4242,6 @@
+  * @sa Audio.Destroy
+  * @sa Track.SetAudio
+  * @sa Audio.Audio
+- * @sa Audio.Audio
+  */
+ inline Audio LoadAudioWithProperties(PropertiesRef props)
+ {
+@@ -4292,7 +4295,6 @@
+  * @sa Track.SetAudio
+  * @sa Audio.Audio
+  * @sa Mixer.LoadRawAudioNoCopy
+- * @sa Audio.Audio
+  */
+ inline Audio LoadRawAudio_IO(MixerRef mixer,
+                              IOStreamRef io,
+@@ -4341,7 +4343,6 @@
+  * @sa Track.SetAudio
+  * @sa Audio.Audio
+  * @sa Mixer.LoadRawAudioNoCopy
+- * @sa Audio.Audio
+  */
+ inline Audio LoadRawAudio(MixerRef mixer,
+                           SourceBytes data,
+@@ -4393,15 +4394,14 @@
+  * @sa Track.SetAudio
+  * @sa Audio.Audio
+  * @sa Audio.Audio
+- * @sa Audio.Audio
+  */
+ inline Audio LoadRawAudioNoCopy(MixerRef mixer,
+                                 SourceBytes data,
                                  const AudioSpec& spec,
-                                 bool freeWhenDone = false)
+                                 bool free_when_done)
  {
 -  return MIX_LoadRawAudioNoCopy(
--    mixer, data.data(), data.size_bytes(), &spec, freeWhenDone);
+-    mixer, data.data(), data.size_bytes(), &spec, free_when_done);
 +  return Audio(MIX_LoadRawAudioNoCopy(
-+    mixer, data.data(), data.size_bytes(), &spec, freeWhenDone));
++    mixer, data.data(), data.size_bytes(), &spec, free_when_done));
  }
  
  inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
-@@ -4303,7 +4310,7 @@
+@@ -4452,7 +4452,7 @@
                                   float amplitude,
                                   Sint64 ms)
  {
@@ -53,7 +309,26 @@
  }
  
  inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
-@@ -7295,4 +7302,6 @@
+@@ -4487,7 +4487,8 @@
+  *   out of sound to generate. This isn't necessarily always known to SDL_mixer,
+  *   though.
+  *
+- * Other properties, documented with Audio.Audio(), may also be present.
++ * Other properties, documented with LoadAudioWithProperties(), may also be
++ * present.
+  *
+  * Note that the metadata properties are whatever SDL_mixer finds in things like
+  * ID3 tags, and they often have very little standardized formatting, may be
+@@ -6913,7 +6914,7 @@
+  * initialized, if available tracks to mix run out, the end of the buffer will
+  * be initialized with silence; this silence will not be counted in the return
+  * value, so the caller has the option to identify how much of the buffer has
+- * legimitate contents vs appended silence. As such, any value >= 0 signifies
++ * legitimate contents vs appended silence. As such, any value >= 0 signifies
+  * success. A return value of -1 means failure (out of memory, invalid
+  * parameters, etc).
+  *
+@@ -7443,4 +7444,6 @@
  
  } // namespace SDL
  
