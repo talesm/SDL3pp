@@ -8784,6 +8784,32 @@ const transform = {
         "SDL3pp_version.h",
       ],
       transform: {
+        "MIX_Audio": {
+          resource: { free: "MIX_DestroyAudio" },
+          entries: {
+            "MIX_LoadRawAudio_IO": "ctor",
+            "MIX_LoadRawAudio": "ctor",
+          },
+        },
+        "MIX_LoadRawAudio_IO": {
+          parameters: [{}, {}, {}, { default: "false" }],
+          type: "Audio",
+        },
+        "MIX_LoadRawAudio": {
+          parameters: [{}, { type: "SourceBytes" }, { type: "const AudioSpec &", name: "spec" }],
+          type: "Audio",
+        },
+        "MIX_LoadRawAudioNoCopy": {
+          parameters: [{}, { type: "SourceBytes" }, { type: "const AudioSpec &", name: "spec" }, { type: "bool", name: "freeWhenDone", default: "false" }],
+          type: "Audio",
+        },
+        "MIX_CreateSineWaveAudio": { type: "Audio" },
+        "MIX_StereoGains": { before: "MIX_Track", },
+        "MIX_Point3D": { before: "MIX_Track", },
+        "MIX_TrackStoppedCallback": { before: "MIX_Track", },
+        "MIX_TrackMixCallback": { before: "MIX_Track", },
+        "MIX_GroupMixCallback": { before: "MIX_Group", },
+        "MIX_PostMixCallback": { before: "MIX_Mixer", },
         "SDL_MIXER_MAJOR_VERSION": {
           value: ""
         },
@@ -8801,7 +8827,6 @@ const transform = {
         "MIX_Version": { name: "MIX.Version" },
         "MIX_Init": { name: "MIX.Init" },
         "MIX_Quit": { name: "MIX.Quit" },
-        "MIX_WasInit": { name: "MIX.WasInit" }
       }
     },
     "SDL_ttf.h": {

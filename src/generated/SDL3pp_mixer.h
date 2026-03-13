@@ -148,6 +148,45 @@ using AudioDecoderRaw = MIX_AudioDecoder*;
 struct AudioDecoderRef;
 
 /**
+ * A callback that fires when all mixing has completed.
+ *
+ * This callback is fired when the mixer has completed all its work. If this
+ * mixer was created with Mixer.Mixer(), the data provided by this callback is
+ * what is being sent to the audio hardware, minus last conversions for format
+ * requirements. If this mixer was created with Mixer.Mixer(), this is what is
+ * being output from Mixer.Generate(), after final conversions.
+ *
+ * The audio data passed through here is _not_ const data; the app is permitted
+ * to change it in any way it likes, and those changes will replace the final
+ * mixer pipeline output.
+ *
+ * An audiospec is provided. SDL_mixer always does its mixing work in 32-bit
+ * float samples, even if the inputs or final output are not floating point. As
+ * such, `spec->format` will always be `AUDIO_F32` and `pcm` hardcoded to be a
+ * float pointer.
+ *
+ * `samples` is the number of float values pointed to by `pcm`: samples, not
+ * sample frames! There are no promises how many samples will be provided
+ * per-callback, and this number can vary wildly from call to call, depending on
+ * many factors.
+ *
+ * @param userdata an opaque pointer provided by the app for its personal use.
+ * @param mixer the mixer that is generating audio.
+ * @param spec the format of the data in `pcm`.
+ * @param pcm the raw PCM data in float32 format.
+ * @param samples the number of float values pointed to by `pcm`.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @sa Mixer.SetPostMixCallback
+ */
+using PostMixCallback = void(SDLCALL*)(void* userdata,
+                                       MixerRaw mixer,
+                                       const AudioSpec* spec,
+                                       float* pcm,
+                                       int samples);
+
+/**
  * An opaque object that represents a mixer.
  *
  * The Mixer is the toplevel object for this library. To use SDL_mixer, you must
@@ -618,11 +657,13 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Mixer.LoadRawAudio
+   * @sa Audio.Audio
    * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
-  AudioRef LoadRawAudio_IO(IOStreamRef io, const AudioSpec& spec, bool closeio);
+  Audio LoadRawAudio_IO(IOStreamRef io,
+                        const AudioSpec& spec,
+                        bool closeio = false);
 
   /**
    * Load raw PCM data from a memory buffer.
@@ -653,13 +694,11 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Mixer.LoadRawAudio_IO
+   * @sa Audio.Audio
    * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
-  AudioRef LoadRawAudio(const void* data,
-                        size_t datalen,
-                        const AudioSpec& spec);
+  Audio LoadRawAudio(SourceBytes data, const AudioSpec& spec);
 
   /**
    * Load raw PCM data from a memory buffer without making a copy.
@@ -696,14 +735,13 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Mixer.LoadRawAudio
-   * @sa Mixer.LoadRawAudio_IO
+   * @sa Audio.Audio
+   * @sa Audio.Audio
    * @sa Mixer.LoadAudio_IO
    */
-  AudioRef LoadRawAudioNoCopy(const void* data,
-                              size_t datalen,
-                              const AudioSpec& spec,
-                              bool free_when_done);
+  Audio LoadRawAudioNoCopy(SourceBytes data,
+                           const AudioSpec& spec,
+                           bool freeWhenDone = false);
 
   /**
    * Create a Audio that generates a sinewave.
@@ -739,7 +777,7 @@ public:
    * @sa Track.SetAudio
    * @sa Mixer.LoadAudio_IO
    */
-  AudioRef CreateSineWaveAudio(int hz, float amplitude, Sint64 ms);
+  Audio CreateSineWaveAudio(int hz, float amplitude, Sint64 ms);
 
   /**
    * Create a new track on a mixer.
@@ -1358,18 +1396,14 @@ public:
   constexpr Audio(AudioRef&& other) = delete;
 
   /**
-   * Create a Audio that generates a sinewave.
+   * Load raw PCM data from an IOStream.
    *
-   * This is useful just to have _something_ to play, perhaps for testing or
-   * debugging purposes.
+   * There are other options for _streaming_ raw PCM: an AudioStream can be
+   * connected to a track, as can an IOStream, and will read from those sources
+   * on-demand when it is time to mix the audio. This function is useful for
+   * loading static audio data that is meant to be played multiple times.
    *
-   * You specify its frequency in Hz (determines the pitch of the sinewave's
-   * audio) and amplitude (determines the volume of the sinewave: 1.0f is very
-   * loud, 0.0f is silent).
-   *
-   * A number of milliseconds of audio to generate can be specified. Specifying
-   * a value less than zero will generate infinite audio (when assigned to a
-   * Track, the sinewave will play forever).
+   * This function will load the raw data in its entirety and cache it in RAM.
    *
    * Audio objects can be shared between multiple mixers. The `mixer` parameter
    * just suggests the most likely mixer to use this audio, in case some
@@ -1378,10 +1412,10 @@ public:
    *
    * @param mixer a mixer this audio is intended to be used with. May be
    *              nullptr.
-   * @param hz the sinewave's frequency in Hz.
-   * @param amplitude the sinewave's amplitude from 0.0f to 1.0f.
-   * @param ms the maximum number of milliseconds of audio to generate, or less
-   *           than zero to generate infinite audio.
+   * @param io the IOStream to load data from.
+   * @param spec what format the raw data is in.
+   * @param closeio true if SDL_mixer should close `io` before returning
+   *                (success or failure).
    * @post an audio object that can be used to make sound on a mixer, or nullptr
    *       on failure; call GetError() for more information.
    *
@@ -1391,84 +1425,54 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
+   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
-  Audio(MixerRef mixer, int hz, float amplitude, Sint64 ms);
+  Audio(MixerRef mixer,
+        IOStreamRef io,
+        const AudioSpec& spec,
+        bool closeio = false);
 
   /**
-   * Create a AudioDecoder from a path on the filesystem.
+   * Load raw PCM data from a memory buffer.
    *
-   * Most apps won't need this, as SDL_mixer's usual interfaces will decode
-   * audio as needed. However, if one wants to decode an audio file into a
-   * memory buffer without playing it, this interface offers that.
+   * There are other options for _streaming_ raw PCM: an AudioStream can be
+   * connected to a track, as can an IOStream, and will read from those sources
+   * on-demand when it is time to mix the audio. This function is useful for
+   * loading static audio data that is meant to be played multiple times.
    *
-   * This function allows properties to be specified. This is intended to supply
-   * file-specific settings, such as where to find SoundFonts for a MIDI file,
-   * etc. In most cases, the caller should pass a zero to specify no extra
-   * properties.
+   * This function will load the raw data in its entirety and cache it in RAM,
+   * allocating a copy. If the original data will outlive the created Audio, you
+   * can use Mixer.LoadRawAudioNoCopy() to avoid extra allocations and copies.
    *
-   * Properties are discussed in [SDL's
-   * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .
+   * Audio objects can be shared between multiple mixers. The `mixer` parameter
+   * just suggests the most likely mixer to use this audio, in case some
+   * optimization might be applied, but this is not required, and a nullptr
+   * mixer may be specified.
    *
-   * When done with the audio decoder, it can be destroyed with
-   * AudioDecoder.Destroy().
-   *
-   * This function requires SDL_mixer to have been initialized with a successful
-   * call to MIX.Init(), but does not need an actual Mixer to have been created.
-   *
-   * @param path the path on the filesystem from which to load data.
-   * @param props decoder-specific properties. May be zero.
-   * @post an audio decoder, ready to decode.
+   * @param mixer a mixer this audio is intended to be used with. May be
+   *              nullptr.
+   * @param data the raw PCM data to load.
+   * @param datalen the size, in bytes, of the raw PCM data.
+   * @param spec what format the raw data is in.
+   * @post an audio object that can be used to make sound on a mixer, or nullptr
+   *       on failure; call GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa AudioDecoder.AudioDecoder
-   * @sa AudioDecoder.DecodeAudio
-   * @sa AudioDecoder.Destroy
+   * @sa Audio.Destroy
+   * @sa Track.SetAudio
+   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudioNoCopy
+   * @sa Mixer.LoadAudio_IO
    */
-  Audio(StringParam path, PropertiesRef props);
-
-  /**
-   * Create a AudioDecoder from an IOStream.
-   *
-   * Most apps won't need this, as SDL_mixer's usual interfaces will decode
-   * audio as needed. However, if one wants to decode an audio file into a
-   * memory buffer without playing it, this interface offers that.
-   *
-   * This function allows properties to be specified. This is intended to supply
-   * file-specific settings, such as where to find SoundFonts for a MIDI file,
-   * etc. In most cases, the caller should pass a zero to specify no extra
-   * properties.
-   *
-   * If `closeio` is true, then `io` will be closed when this decoder is done
-   * with it. If this function fails and `closeio` is true, then `io` will be
-   * closed before this function returns.
-   *
-   * When done with the audio decoder, it can be destroyed with
-   * AudioDecoder.Destroy().
-   *
-   * This function requires SDL_mixer to have been initialized with a successful
-   * call to MIX.Init(), but does not need an actual Mixer to have been created.
-   *
-   * @param io the i/o stream from which to load data.
-   * @param closeio if true, close the i/o stream when done with it.
-   * @param props decoder-specific properties. May be zero.
-   * @post an audio decoder, ready to decode.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa AudioDecoder.AudioDecoder
-   * @sa AudioDecoder.DecodeAudio
-   * @sa AudioDecoder.Destroy
-   */
-  Audio(IOStreamRef io, bool closeio, PropertiesRef props);
+  Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec);
 
   /// Destructor
-  ~Audio() { MIX_DestroyAudioDecoder(m_resource); }
+  ~Audio() { MIX_DestroyAudio(m_resource); }
 
   /// Assignment operator.
   constexpr Audio& operator=(Audio&& other) noexcept
@@ -1500,15 +1504,24 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Destroy the specified audio decoder.
+   * Destroy the specified audio.
    *
-   * Destroying a nullptr AudioDecoder is a legal no-op.
+   * Audio is reference-counted internally, so this function only unrefs it. If
+   * doing so causes the reference count to drop to zero, the Audio will be
+   * deallocated. This allows the system to safely operate if the audio is still
+   * assigned to a Track at the time of destruction. The actual destroying will
+   * happen when the track stops using it.
+   *
+   * But from the caller's perspective, once this function is called, it should
+   * assume the `audio` pointer has become invalid.
+   *
+   * Destroying a nullptr Audio is a legal no-op.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_mixer 3.0.0.
    */
-  void DestroyDecoder();
+  void Destroy();
 
   /**
    * Get the properties associated with a Audio.
@@ -1605,26 +1618,6 @@ public:
    * @since This function is available since SDL_mixer 3.0.0.
    */
   void GetFormat(AudioSpec* spec);
-
-  /**
-   * Destroy the specified audio.
-   *
-   * Audio is reference-counted internally, so this function only unrefs it. If
-   * doing so causes the reference count to drop to zero, the Audio will be
-   * deallocated. This allows the system to safely operate if the audio is still
-   * assigned to a Track at the time of destruction. The actual destroying will
-   * happen when the track stops using it.
-   *
-   * But from the caller's perspective, once this function is called, it should
-   * assume the `audio` pointer has become invalid.
-   *
-   * Destroying a nullptr Audio is a legal no-op.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  void Destroy();
 
   /**
    * Convert milliseconds to sample frames for a Audio's format.
@@ -1728,6 +1721,101 @@ struct AudioRef : Audio
   /// Converts to AudioRaw
   constexpr operator AudioRaw() const noexcept { return get(); }
 };
+
+/**
+ * A set of per-channel gains for tracks using Track.SetStereo().
+ *
+ * When forcing a track to stereo, the app can specify a per-channel gain, to
+ * further adjust the left or right outputs.
+ *
+ * When mixing audio that has been forced to stereo, each channel is modulated
+ * by these values. A value of 1.0f produces no change, 0.0f produces silence.
+ *
+ * A simple panning effect would be to set `left` to the desired value and
+ * `right` to `1.0f - left`.
+ *
+ * @since This struct is available since SDL_mixer 3.0.0.
+ *
+ * @sa Track.SetStereo
+ */
+using StereoGains = MIX_StereoGains;
+
+/**
+ * 3D coordinates for Track.Set3DPosition.
+ *
+ * The coordinates use a "right-handed" coordinate system, like OpenGL and
+ * OpenAL.
+ *
+ * @since This struct is available since SDL_mixer 3.0.0.
+ *
+ * @sa Track.Set3DPosition
+ */
+using Point3D = MIX_Point3D;
+
+/**
+ * A callback that fires when a Track is stopped.
+ *
+ * This callback is fired when a track completes playback, either because it ran
+ * out of data to mix (and all loops were completed as well), or it was
+ * explicitly stopped by the app. Pausing a track will not fire this callback.
+ *
+ * It is legal to adjust the track, including changing its input and restarting
+ * it. If this is done because it ran out of data in the middle of mixing, the
+ * mixer will start mixing the new track state in its current run without any
+ * gap in the audio.
+ *
+ * This callback will not fire when a playing track is destroyed.
+ *
+ * @param userdata an opaque pointer provided by the app for its personal use.
+ * @param track the track that has stopped.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @sa Track.SetStoppedCallback
+ */
+using TrackStoppedCallback = void(SDLCALL*)(void* userdata, TrackRaw track);
+
+/**
+ * A callback that fires when a Track is mixing at various stages.
+ *
+ * This callback is fired for different parts of the mixing pipeline, and gives
+ * the app visbility into the audio data that is being generated at various
+ * stages.
+ *
+ * The audio data passed through here is _not_ const data; the app is permitted
+ * to change it in any way it likes, and those changes will propagate through
+ * the mixing pipeline.
+ *
+ * An audiospec is provided. Different tracks might be in different formats, and
+ * an app needs to be able to handle that, but SDL_mixer always does its mixing
+ * work in 32-bit float samples, even if the inputs or final output are not
+ * floating point. As such, `spec->format` will always be `AUDIO_F32` and `pcm`
+ * hardcoded to be a float pointer.
+ *
+ * `samples` is the number of float values pointed to by `pcm`: samples, not
+ * sample frames! There are no promises how many samples will be provided
+ * per-callback, and this number can vary wildly from call to call, depending on
+ * many factors.
+ *
+ * Making changes to the track during this callback is undefined behavior.
+ * Change the data in `pcm` but not the track itself.
+ *
+ * @param userdata an opaque pointer provided by the app for its personal use.
+ * @param track the track that is being mixed.
+ * @param spec the format of the data in `pcm`.
+ * @param pcm the raw PCM data in float32 format.
+ * @param samples the number of float values pointed to by `pcm`.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @sa Track.SetRawCallback
+ * @sa Track.SetCookedCallback
+ */
+using TrackMixCallback = void(SDLCALL*)(void* userdata,
+                                        TrackRaw track,
+                                        const AudioSpec* spec,
+                                        float* pcm,
+                                        int samples);
 
 /**
  * An opaque object that represents a source of sound output to be mixed.
@@ -3036,6 +3124,44 @@ struct TrackRef : Track
 };
 
 /**
+ * A callback that fires when a Group has completed mixing.
+ *
+ * This callback is fired when a mixing group has finished mixing: all tracks in
+ * the group have mixed into a single buffer and are prepared to be mixed into
+ * all other groups for the final mix output.
+ *
+ * The audio data passed through here is _not_ const data; the app is permitted
+ * to change it in any way it likes, and those changes will propagate through
+ * the mixing pipeline.
+ *
+ * An audiospec is provided. Different groups might be in different formats, and
+ * an app needs to be able to handle that, but SDL_mixer always does its mixing
+ * work in 32-bit float samples, even if the inputs or final output are not
+ * floating point. As such, `spec->format` will always be `AUDIO_F32` and `pcm`
+ * hardcoded to be a float pointer.
+ *
+ * `samples` is the number of float values pointed to by `pcm`: samples, not
+ * sample frames! There are no promises how many samples will be provided
+ * per-callback, and this number can vary wildly from call to call, depending on
+ * many factors.
+ *
+ * @param userdata an opaque pointer provided by the app for its personal use.
+ * @param group the group that is being mixed.
+ * @param spec the format of the data in `pcm`.
+ * @param pcm the raw PCM data in float32 format.
+ * @param samples the number of float values pointed to by `pcm`.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @sa Group.SetPostMixCallback
+ */
+using GroupMixCallback = void(SDLCALL*)(void* userdata,
+                                        GroupRaw group,
+                                        const AudioSpec* spec,
+                                        float* pcm,
+                                        int samples);
+
+/**
  * An opaque object that represents a grouping of tracks.
  *
  * SDL_mixer offers callbacks at various stages of the mixing pipeline to allow
@@ -3411,8 +3537,6 @@ inline void Init() { CheckError(MIX_Init()); }
  * @sa MIX.Init
  */
 inline void Quit() { MIX_Quit(); }
-
-#error "WasInit (plc)"
 
 } // namespace MIX
 
@@ -4004,23 +4128,36 @@ inline AudioRef LoadAudioWithProperties(PropertiesRef props)
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Mixer.LoadRawAudio
+ * @sa Audio.Audio
  * @sa Mixer.LoadRawAudioNoCopy
  * @sa Mixer.LoadAudio_IO
  */
-inline AudioRef LoadRawAudio_IO(MixerRef mixer,
-                                IOStreamRef io,
-                                const AudioSpec& spec,
-                                bool closeio)
+inline Audio LoadRawAudio_IO(MixerRef mixer,
+                             IOStreamRef io,
+                             const AudioSpec& spec,
+                             bool closeio = false)
 {
-  return MIX_LoadRawAudio_IO(mixer, io, &spec, closeio);
+  return Audio(mixer, io, spec, closeio);
 }
 
-inline AudioRef Mixer::LoadRawAudio_IO(IOStreamRef io,
-                                       const AudioSpec& spec,
-                                       bool closeio)
+inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
+                                    const AudioSpec& spec,
+                                    bool closeio)
 {
-  return SDL::LoadRawAudio_IO(m_resource, io, spec, closeio);
+  return Audio(m_resource, io, spec, closeio);
+}
+
+inline Audio::Audio(MixerRef mixer,
+                    IOStreamRef io,
+                    const AudioSpec& spec,
+                    bool closeio)
+  : m_resource(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio))
+{
+}
+
+inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
+  : m_resource(MIX_LoadRawAudio(mixer, data.data(), data.size_bytes(), &spec))
+{
 }
 
 /**
@@ -4053,23 +4190,20 @@ inline AudioRef Mixer::LoadRawAudio_IO(IOStreamRef io,
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Mixer.LoadRawAudio_IO
+ * @sa Audio.Audio
  * @sa Mixer.LoadRawAudioNoCopy
  * @sa Mixer.LoadAudio_IO
  */
-inline AudioRef LoadRawAudio(MixerRef mixer,
-                             const void* data,
-                             size_t datalen,
-                             const AudioSpec& spec)
+inline Audio LoadRawAudio(MixerRef mixer,
+                          SourceBytes data,
+                          const AudioSpec& spec)
 {
-  return MIX_LoadRawAudio(mixer, data, datalen, &spec);
+  return Audio(mixer, std::move(data), spec);
 }
 
-inline AudioRef Mixer::LoadRawAudio(const void* data,
-                                    size_t datalen,
-                                    const AudioSpec& spec)
+inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
 {
-  return SDL::LoadRawAudio(m_resource, data, datalen, spec);
+  return Audio(m_resource, std::move(data), spec);
 }
 
 /**
@@ -4108,26 +4242,25 @@ inline AudioRef Mixer::LoadRawAudio(const void* data,
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Mixer.LoadRawAudio
- * @sa Mixer.LoadRawAudio_IO
+ * @sa Audio.Audio
+ * @sa Audio.Audio
  * @sa Mixer.LoadAudio_IO
  */
-inline AudioRef LoadRawAudioNoCopy(MixerRef mixer,
-                                   const void* data,
-                                   size_t datalen,
-                                   const AudioSpec& spec,
-                                   bool free_when_done)
+inline Audio LoadRawAudioNoCopy(MixerRef mixer,
+                                SourceBytes data,
+                                const AudioSpec& spec,
+                                bool freeWhenDone = false)
 {
-  return MIX_LoadRawAudioNoCopy(mixer, data, datalen, &spec, free_when_done);
+  return MIX_LoadRawAudioNoCopy(
+    mixer, data.data(), data.size_bytes(), &spec, freeWhenDone);
 }
 
-inline AudioRef Mixer::LoadRawAudioNoCopy(const void* data,
-                                          size_t datalen,
-                                          const AudioSpec& spec,
-                                          bool free_when_done)
+inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
+                                       const AudioSpec& spec,
+                                       bool freeWhenDone)
 {
   return SDL::LoadRawAudioNoCopy(
-    m_resource, data, datalen, spec, free_when_done);
+    m_resource, std::move(data), spec, freeWhenDone);
 }
 
 /**
@@ -4170,27 +4303,12 @@ inline Audio CreateSineWaveAudio(MixerRef mixer,
                                  float amplitude,
                                  Sint64 ms)
 {
-  return Audio(mixer, hz, amplitude, ms);
+  return MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms);
 }
 
-inline AudioRef Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
+inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
 {
-  return Audio(m_resource, hz, amplitude, ms);
-}
-
-inline Audio::Audio(MixerRef mixer, int hz, float amplitude, Sint64 ms)
-  : m_resource(MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms))
-{
-}
-
-inline Audio::Audio(StringParam path, PropertiesRef props)
-  : m_resource(AudioDecoder(std::move(path), props))
-{
-}
-
-inline Audio::Audio(IOStreamRef io, bool closeio, PropertiesRef props)
-  : m_resource(AudioDecoder(io, closeio, props))
-{
+  return SDL::CreateSineWaveAudio(m_resource, hz, amplitude, ms);
 }
 
 /**
@@ -4356,9 +4474,9 @@ inline void Audio::GetFormat(AudioSpec* spec)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  */
-inline void DestroyAudio(AudioRef audio) { MIX_DestroyAudio(audio); }
+inline void DestroyAudio(AudioRaw audio) { MIX_DestroyAudio(audio); }
 
-inline void Audio::Destroy() { SDL::DestroyAudio(m_resource); }
+inline void Audio::Destroy() { DestroyAudio(release()); }
 
 /**
  * Create a new track on a mixer.
@@ -6162,24 +6280,6 @@ inline void Track::SetOutputChannelMap(const int* chmap, int count)
 }
 
 /**
- * A set of per-channel gains for tracks using Track.SetStereo().
- *
- * When forcing a track to stereo, the app can specify a per-channel gain, to
- * further adjust the left or right outputs.
- *
- * When mixing audio that has been forced to stereo, each channel is modulated
- * by these values. A value of 1.0f produces no change, 0.0f produces silence.
- *
- * A simple panning effect would be to set `left` to the desired value and
- * `right` to `1.0f - left`.
- *
- * @since This struct is available since SDL_mixer 3.0.0.
- *
- * @sa Track.SetStereo
- */
-using StereoGains = MIX_StereoGains;
-
-/**
  * Force a track to stereo output, with optionally left/right panning.
  *
  * This will cause the output of the track to convert to stereo, and then mix it
@@ -6218,18 +6318,6 @@ inline void Track::SetStereo(const StereoGains& gains)
 {
   SDL::SetTrackStereo(m_resource, gains);
 }
-
-/**
- * 3D coordinates for Track.Set3DPosition.
- *
- * The coordinates use a "right-handed" coordinate system, like OpenGL and
- * OpenAL.
- *
- * @since This struct is available since SDL_mixer 3.0.0.
- *
- * @sa Track.Set3DPosition
- */
-using Point3D = MIX_Point3D;
 
 /**
  * Set a track's position in 3D space.
@@ -6446,29 +6534,6 @@ inline void Track::SetGroup(GroupRef group)
 }
 
 /**
- * A callback that fires when a Track is stopped.
- *
- * This callback is fired when a track completes playback, either because it ran
- * out of data to mix (and all loops were completed as well), or it was
- * explicitly stopped by the app. Pausing a track will not fire this callback.
- *
- * It is legal to adjust the track, including changing its input and restarting
- * it. If this is done because it ran out of data in the middle of mixing, the
- * mixer will start mixing the new track state in its current run without any
- * gap in the audio.
- *
- * This callback will not fire when a playing track is destroyed.
- *
- * @param userdata an opaque pointer provided by the app for its personal use.
- * @param track the track that has stopped.
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @sa Track.SetStoppedCallback
- */
-using TrackStoppedCallback = void(SDLCALL*)(void* userdata, TrackRaw track);
-
-/**
  * Set a callback that fires when a Track is stopped.
  *
  * When a track completes playback, either because it ran out of data to mix
@@ -6508,48 +6573,6 @@ inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
 {
   SDL::SetTrackStoppedCallback(m_resource, cb, userdata);
 }
-
-/**
- * A callback that fires when a Track is mixing at various stages.
- *
- * This callback is fired for different parts of the mixing pipeline, and gives
- * the app visbility into the audio data that is being generated at various
- * stages.
- *
- * The audio data passed through here is _not_ const data; the app is permitted
- * to change it in any way it likes, and those changes will propagate through
- * the mixing pipeline.
- *
- * An audiospec is provided. Different tracks might be in different formats, and
- * an app needs to be able to handle that, but SDL_mixer always does its mixing
- * work in 32-bit float samples, even if the inputs or final output are not
- * floating point. As such, `spec->format` will always be `AUDIO_F32` and `pcm`
- * hardcoded to be a float pointer.
- *
- * `samples` is the number of float values pointed to by `pcm`: samples, not
- * sample frames! There are no promises how many samples will be provided
- * per-callback, and this number can vary wildly from call to call, depending on
- * many factors.
- *
- * Making changes to the track during this callback is undefined behavior.
- * Change the data in `pcm` but not the track itself.
- *
- * @param userdata an opaque pointer provided by the app for its personal use.
- * @param track the track that is being mixed.
- * @param spec the format of the data in `pcm`.
- * @param pcm the raw PCM data in float32 format.
- * @param samples the number of float values pointed to by `pcm`.
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @sa Track.SetRawCallback
- * @sa Track.SetCookedCallback
- */
-using TrackMixCallback = void(SDLCALL*)(void* userdata,
-                                        TrackRaw track,
-                                        const AudioSpec* spec,
-                                        float* pcm,
-                                        int samples);
 
 /**
  * Set a callback that fires when a Track has initial decoded audio.
@@ -6637,44 +6660,6 @@ inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
 }
 
 /**
- * A callback that fires when a Group has completed mixing.
- *
- * This callback is fired when a mixing group has finished mixing: all tracks in
- * the group have mixed into a single buffer and are prepared to be mixed into
- * all other groups for the final mix output.
- *
- * The audio data passed through here is _not_ const data; the app is permitted
- * to change it in any way it likes, and those changes will propagate through
- * the mixing pipeline.
- *
- * An audiospec is provided. Different groups might be in different formats, and
- * an app needs to be able to handle that, but SDL_mixer always does its mixing
- * work in 32-bit float samples, even if the inputs or final output are not
- * floating point. As such, `spec->format` will always be `AUDIO_F32` and `pcm`
- * hardcoded to be a float pointer.
- *
- * `samples` is the number of float values pointed to by `pcm`: samples, not
- * sample frames! There are no promises how many samples will be provided
- * per-callback, and this number can vary wildly from call to call, depending on
- * many factors.
- *
- * @param userdata an opaque pointer provided by the app for its personal use.
- * @param group the group that is being mixed.
- * @param spec the format of the data in `pcm`.
- * @param pcm the raw PCM data in float32 format.
- * @param samples the number of float values pointed to by `pcm`.
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @sa Group.SetPostMixCallback
- */
-using GroupMixCallback = void(SDLCALL*)(void* userdata,
-                                        GroupRaw group,
-                                        const AudioSpec* spec,
-                                        float* pcm,
-                                        int samples);
-
-/**
  * Set a callback that fires when a mixer group has completed mixing.
  *
  * After all playing tracks in a mixer group have pulled in more data from their
@@ -6710,45 +6695,6 @@ inline void Group::SetPostMixCallback(GroupMixCallback cb, void* userdata)
 {
   SDL::SetGroupPostMixCallback(m_resource, cb, userdata);
 }
-
-/**
- * A callback that fires when all mixing has completed.
- *
- * This callback is fired when the mixer has completed all its work. If this
- * mixer was created with Mixer.Mixer(), the data provided by this callback is
- * what is being sent to the audio hardware, minus last conversions for format
- * requirements. If this mixer was created with Mixer.Mixer(), this is what is
- * being output from Mixer.Generate(), after final conversions.
- *
- * The audio data passed through here is _not_ const data; the app is permitted
- * to change it in any way it likes, and those changes will replace the final
- * mixer pipeline output.
- *
- * An audiospec is provided. SDL_mixer always does its mixing work in 32-bit
- * float samples, even if the inputs or final output are not floating point. As
- * such, `spec->format` will always be `AUDIO_F32` and `pcm` hardcoded to be a
- * float pointer.
- *
- * `samples` is the number of float values pointed to by `pcm`: samples, not
- * sample frames! There are no promises how many samples will be provided
- * per-callback, and this number can vary wildly from call to call, depending on
- * many factors.
- *
- * @param userdata an opaque pointer provided by the app for its personal use.
- * @param mixer the mixer that is generating audio.
- * @param spec the format of the data in `pcm`.
- * @param pcm the raw PCM data in float32 format.
- * @param samples the number of float values pointed to by `pcm`.
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @sa Mixer.SetPostMixCallback
- */
-using PostMixCallback = void(SDLCALL*)(void* userdata,
-                                       MixerRaw mixer,
-                                       const AudioSpec* spec,
-                                       float* pcm,
-                                       int samples);
 
 /**
  * Set a callback that fires when all mixing has completed.
@@ -7173,7 +7119,7 @@ struct AudioDecoderRef : AudioDecoder
  * @sa AudioDecoder.DecodeAudio
  * @sa AudioDecoder.Destroy
  */
-inline Audio CreateAudioDecoder(StringParam path, PropertiesRef props)
+inline AudioDecoder CreateAudioDecoder(StringParam path, PropertiesRef props)
 {
   return AudioDecoder(std::move(path), props);
 }
@@ -7225,9 +7171,9 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  * @sa AudioDecoder.DecodeAudio
  * @sa AudioDecoder.Destroy
  */
-inline Audio CreateAudioDecoder_IO(IOStreamRef io,
-                                   bool closeio,
-                                   PropertiesRef props)
+inline AudioDecoder CreateAudioDecoder_IO(IOStreamRef io,
+                                          bool closeio,
+                                          PropertiesRef props)
 {
   return AudioDecoder(io, closeio, props);
 }
@@ -7243,12 +7189,10 @@ inline Audio CreateAudioDecoder_IO(IOStreamRef io,
  *
  * @since This function is available since SDL_mixer 3.0.0.
  */
-inline void DestroyAudioDecoder(AudioRaw audiodecoder)
+inline void DestroyAudioDecoder(AudioDecoderRaw audiodecoder)
 {
   MIX_DestroyAudioDecoder(audiodecoder);
 }
-
-inline void Audio::DestroyDecoder() { DestroyAudioDecoder(release()); }
 
 inline void AudioDecoder::Destroy() { DestroyAudioDecoder(release()); }
 

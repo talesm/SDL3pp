@@ -15,7 +15,45 @@
  namespace SDL {
  
  /**
-@@ -7351,4 +7354,6 @@
+@@ -3413,6 +3416,8 @@
+   constexpr operator GroupRaw() const noexcept { return get(); }
+ };
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * The current major version of SDL_mixer headers.
+  *
+@@ -3462,6 +3467,8 @@
+    (SDL_MIXER_MAJOR_VERSION > X || SDL_MIXER_MINOR_VERSION > Y ||              \
+     SDL_MIXER_MICRO_VERSION >= Z))
+ 
++#endif // SDL3PP_DOC
++
+ namespace MIX {
+ 
+ /**
+@@ -4251,8 +4258,8 @@
+                                 const AudioSpec& spec,
+                                 bool freeWhenDone = false)
+ {
+-  return MIX_LoadRawAudioNoCopy(
+-    mixer, data.data(), data.size_bytes(), &spec, freeWhenDone);
++  return Audio(MIX_LoadRawAudioNoCopy(
++    mixer, data.data(), data.size_bytes(), &spec, freeWhenDone));
+ }
+ 
+ inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
+@@ -4303,7 +4310,7 @@
+                                  float amplitude,
+                                  Sint64 ms)
+ {
+-  return MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms);
++  return Audio(MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms));
+ }
+ 
+ inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
+@@ -7295,4 +7302,6 @@
  
  } // namespace SDL
  
