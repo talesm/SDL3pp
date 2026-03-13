@@ -24,7 +24,8 @@ Next version
   - [x] Replace \*Param with \*Ref;
   - [x] Remove \*Param;
   - [x] Rename \*ConstRef to \*ConstParam
-- [ ] Wrap SDL_mixer
+- [ ] Wrap SDL_mixer;
+- [ ] Remove overloading of `*_IO` variants, use `*FromIO` or similar;
 
 Backlog
 -------
