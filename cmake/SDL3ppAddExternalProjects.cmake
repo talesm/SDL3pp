@@ -38,22 +38,6 @@ if (SDL3PP_ENABLE_IMAGE)
   FetchContent_MakeAvailable(SDL3ImageExternal)
 endif (SDL3PP_ENABLE_IMAGE)
 
-if (SDL3PP_ENABLE_TTF)
-  set(SDLTTF_INSTALL ON) # passed to external/SDL
-  set(SDL3PP_USE_SDL3TTF_URL OFF CACHE STRING "Bundle SDL3_ttf with this named tag/branch")
-  set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
-  if(SDL3PP_USE_SDL3TTF_URL)
-    set(SDL3TTF_URL ${SDL3PP_USE_SDL3TTF_URL})
-  else ()
-    set(SDL3TTF_URL https://github.com/libsdl-org/SDL_ttf/releases/download/release-3.2.2/SDL3_ttf-3.2.2.tar.gz)
-  endif ()
-  FetchContent_Declare(SDL3TTFExternal
-    URL ${SDL3TTF_URL}
-    OVERRIDE_FIND_PACKAGE
-  )
-  FetchContent_MakeAvailable(SDL3TTFExternal)
-endif (SDL3PP_ENABLE_TTF)
-
 if (SDL3PP_ENABLE_MIXER)
   set(SDLMIXER_INSTALL ON) # passed to external/SDL
   set(SDL3PP_USE_SDL3MIXER_URL OFF CACHE STRING "Bundle SDL3_mixer with this named tag/branch")
@@ -69,3 +53,19 @@ if (SDL3PP_ENABLE_MIXER)
   )
   FetchContent_MakeAvailable(SDL3MixerExternal)
 endif (SDL3PP_ENABLE_MIXER)
+
+if (SDL3PP_ENABLE_TTF)
+  set(SDLTTF_INSTALL ON) # passed to external/SDL
+  set(SDL3PP_USE_SDL3TTF_URL OFF CACHE STRING "Bundle SDL3_ttf with this named tag/branch")
+  set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+  if(SDL3PP_USE_SDL3TTF_URL)
+    set(SDL3TTF_URL ${SDL3PP_USE_SDL3TTF_URL})
+  else ()
+    set(SDL3TTF_URL https://github.com/libsdl-org/SDL_ttf/releases/download/release-3.2.2/SDL3_ttf-3.2.2.tar.gz)
+  endif ()
+  FetchContent_Declare(SDL3TTFExternal
+    URL ${SDL3TTF_URL}
+    OVERRIDE_FIND_PACKAGE
+  )
+  FetchContent_MakeAvailable(SDL3TTFExternal)
+endif (SDL3PP_ENABLE_TTF)

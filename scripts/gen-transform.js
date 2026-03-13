@@ -8778,6 +8778,32 @@ const transform = {
         }
       }
     },
+    "SDL_mixer.h": {
+      localIncludes: [
+        "SDL3pp_audio.h",
+        "SDL3pp_version.h",
+      ],
+      transform: {
+        "SDL_MIXER_MAJOR_VERSION": {
+          value: ""
+        },
+        "SDL_MIXER_MINOR_VERSION": {
+          value: ""
+        },
+        "SDL_MIXER_MICRO_VERSION": {
+          value: ""
+        },
+        "MIX": {
+          kind: "ns",
+          before: "MIX_Version",
+          entries: {},
+        },
+        "MIX_Version": { name: "MIX.Version" },
+        "MIX_Init": { name: "MIX.Init" },
+        "MIX_Quit": { name: "MIX.Quit" },
+        "MIX_WasInit": { name: "MIX.WasInit" }
+      }
+    },
     "SDL_ttf.h": {
       localIncludes: [
         "SDL3pp_gpu.h",
@@ -9704,32 +9730,6 @@ const transform = {
         "TTF_PROP_GPU_TEXT_ENGINE_": "prop::GpuTextEngine"
       },
     },
-    "SDL_mixer.h": {
-      localIncludes: [
-        "SDL3pp_audio.h",
-        "SDL3pp_version.h",
-      ],
-      transform: {
-        "SDL_MIXER_MAJOR_VERSION": {
-          value: ""
-        },
-        "SDL_MIXER_MINOR_VERSION": {
-          value: ""
-        },
-        "SDL_MIXER_MICRO_VERSION": {
-          value: ""
-        },
-        "MIX": {
-          kind: "ns",
-          before: "MIX_Version",
-          entries: {},
-        },
-        "MIX_Version": { name: "MIX.Version" },
-        "MIX_Init": { name: "MIX.Init" },
-        "MIX_Quit": { name: "MIX.Quit" },
-        "MIX_WasInit": { name: "MIX.WasInit" }
-      }
-    }
   }
 };
 

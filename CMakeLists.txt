@@ -32,21 +32,21 @@ else ()
         endif ()
     endif ()
     
-    # SDL_ttf
-    if (SDL3PP_ENABLE_TTF)
-        find_package(SDL3_ttf QUIET)
-        set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
-        if (TARGET SDL3_ttf::SDL3_ttf)
-            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
-        endif ()
-    endif ()
-    
     # SDL_mixer
     if (SDL3PP_ENABLE_MIXER)
         find_package(SDL3_mixer QUIET)
         set(SDL3_MIXER_DEPENDENCY "find_dependency(SDL3_mixer QUIET)") # placeholder in cmake.in
         if (TARGET SDL3_mixer::SDL3_mixer)
             set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_mixer::SDL3_mixer)
+        endif ()
+    endif ()
+    
+    # SDL_ttf
+    if (SDL3PP_ENABLE_TTF)
+        find_package(SDL3_ttf QUIET)
+        set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
+        if (TARGET SDL3_ttf::SDL3_ttf)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
         endif ()
     endif ()
 endif ()
