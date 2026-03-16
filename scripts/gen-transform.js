@@ -8831,6 +8831,14 @@ const transform = {
         "MIX_DURATION_INFINITE": { kind: "var", type: "Sint64", constexpr: true },
         "MIX_SetTrackIOStream": { parameters: [{}, {}, { default: "false" }], },
         "MIX_SetTrackRawIOStream": { parameters: [{}, {}, {}, { default: "false" }], },
+        "MIX_GetTrackTags": {
+          type: "OwnArray<char*>",
+          parameters: [{}],
+        },
+        "MIX_GetTaggedTracks": {
+          type: "OwnArray<TrackRef>",
+          parameters: [{}, {}],
+        },
         "MIX_StereoGains": { before: "MIX_Track", },
         "MIX_Point3D": { before: "MIX_Track", },
         "MIX_TrackStoppedCallback": { before: "MIX_Track", },

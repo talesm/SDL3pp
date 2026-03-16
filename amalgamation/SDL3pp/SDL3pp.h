@@ -92965,8 +92965,6 @@ public:
    * Tracks are not provided in any guaranteed order.
    *
    * @param tag the tag to search.
-   * @param count a pointer filled in with the number of tracks returned, can be
-   *              nullptr.
    * @returns an array of the tracks, nullptr-terminated on success.
    * @throws Error on failure.
    *
@@ -92974,7 +92972,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    */
-  MIX_Track** GetTaggedTracks(StringParam tag, int* count);
+  OwnArray<TrackRef> GetTaggedTracks(StringParam tag);
 
   /**
    * Start (or restart) mixing all tracks with a specific tag for playback.
@@ -94507,7 +94505,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    */
-  char** GetTags(int* count);
+  OwnArray<char*> GetTags();
 
   /**
    * Seek a playing track to a new position in its input.
@@ -97199,14 +97197,16 @@ inline void Track::Untag(StringParam tag)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  */
-inline char** GetTrackTags(TrackRef track, int* count)
+inline OwnArray<char*> GetTrackTags(TrackRef track)
 {
-  return CheckError(MIX_GetTrackTags(track, count));
+  int count;
+  auto result = CheckError(MIX_GetTrackTags(track, &count));
+  return OwnArray<char*>(result, count);
 }
 
-inline char** Track::GetTags(int* count)
+inline OwnArray<char*> Track::GetTags()
 {
-  return SDL::GetTrackTags(m_resource, count);
+  return SDL::GetTrackTags(m_resource);
 }
 
 /**
@@ -97225,14 +97225,16 @@ inline char** Track::GetTags(int* count)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  */
-inline MIX_Track** GetTaggedTracks(MixerRef mixer, StringParam tag, int* count)
+inline OwnArray<TrackRef> GetTaggedTracks(MixerRef mixer, StringParam tag)
 {
-  return CheckError(MIX_GetTaggedTracks(mixer, tag, count));
+  int count;
+  auto result = CheckError(MIX_GetTaggedTracks(mixer, tag, &count));
+  return OwnArray<TrackRef>(reinterpret_cast<TrackRef*>(result), count);
 }
 
-inline MIX_Track** Mixer::GetTaggedTracks(StringParam tag, int* count)
+inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
 {
-  return SDL::GetTaggedTracks(m_resource, std::move(tag), count);
+  return SDL::GetTaggedTracks(m_resource, std::move(tag));
 }
 
 /**
