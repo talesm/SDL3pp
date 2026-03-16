@@ -5268,14 +5268,14 @@ public:
   }
 
   /// Increment operator.
-  constexpr SubStringIterator& operator++()
+  SubStringIterator& operator++()
   {
     m_text.GetNextSubString(m_subString, &m_subString);
     return *this;
   }
 
   /// Increment operator.
-  constexpr SubStringIterator operator++(int)
+  SubStringIterator operator++(int)
   {
     auto curr = *this;
     m_text.GetNextSubString(m_subString, &m_subString);
@@ -5283,14 +5283,14 @@ public:
   }
 
   /// Decrement operator.
-  constexpr SubStringIterator& operator--()
+  SubStringIterator& operator--()
   {
     m_text.GetPreviousSubString(m_subString, &m_subString);
     return *this;
   }
 
   /// Decrement operator.
-  constexpr SubStringIterator operator--(int)
+  SubStringIterator operator--(int)
   {
     auto curr = *this;
     m_text.GetPreviousSubString(m_subString, &m_subString);
