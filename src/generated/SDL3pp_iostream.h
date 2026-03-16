@@ -2009,9 +2009,20 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * @sa LoadFile
  * @sa IOStream.SaveFile
  */
-inline StringResult LoadFile(IOStreamRef src, bool closeio = true)
+inline StringResult LoadFile_IO(IOStreamRef src, bool closeio = true)
 {
   return SDL_LoadFile_IO(src, closeio);
+}
+
+inline StringResult IOStream::LoadFile()
+{
+  return SDL::LoadFile_IO(m_resource);
+}
+
+template<class T>
+inline OwnArray<T> LoadFileAs(StringParam file)
+{
+  static_assert(false, "Not implemented");
 }
 
 /**
@@ -2037,14 +2048,6 @@ inline StringResult LoadFile(IOStreamRef src, bool closeio = true)
  */
 inline StringResult LoadFile(StringParam file) { return SDL_LoadFile(file); }
 
-inline StringResult IOStream::LoadFile() { return SDL::LoadFile(m_resource); }
-
-template<class T>
-inline OwnArray<T> LoadFileAs(StringParam file)
-{
-  static_assert(false, "Not implemented");
-}
-
 /**
  * Save all the data into an SDL data stream.
  *
@@ -2063,9 +2066,14 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile(IOStreamRef src, SourceBytes data, bool closeio = true)
+inline void SaveFile_IO(IOStreamRef src, SourceBytes data, bool closeio = true)
 {
   CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
+}
+
+inline void IOStream::SaveFile(SourceBytes data)
+{
+  SDL::SaveFile_IO(m_resource, std::move(data));
 }
 
 /**
@@ -2087,11 +2095,6 @@ inline void SaveFile(IOStreamRef src, SourceBytes data, bool closeio = true)
 inline void SaveFile(StringParam file, SourceBytes data)
 {
   CheckError(SDL_SaveFile(file, data.data(), data.size_bytes()));
-}
-
-inline void IOStream::SaveFile(SourceBytes data)
-{
-  SDL::SaveFile(m_resource, std::move(data));
 }
 
 /**

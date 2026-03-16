@@ -2543,7 +2543,6 @@ const transform = {
           parameters: [{}]
         },
         "SDL_LoadFile_IO": {
-          name: "LoadFile",
           type: "StringResult",
           parameters: [{}, { name: "closeio", type: "bool", default: "true" }]
         },
@@ -2561,7 +2560,6 @@ const transform = {
           parameters: [{}, { type: "SourceBytes", name: "data" }]
         },
         "SDL_SaveFile_IO": {
-          name: "SaveFile",
           type: "void",
           parameters: [
             {},

@@ -27448,11 +27448,42 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * @sa LoadFile
  * @sa IOStream.SaveFile
  */
-inline StringResult LoadFile(IOStreamRef src, bool closeio = true)
+inline StringResult LoadFile_IO(IOStreamRef src, bool closeio = true)
 {
   size_t datasize = 0;
   auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, closeio));
   return StringResult{CheckError(data), datasize};
+}
+
+inline StringResult IOStream::LoadFile()
+{
+  return SDL::LoadFile_IO(m_resource);
+}
+
+/**
+ * Load all the data from a file path.
+ *
+ * The data is allocated with a zero byte at the end (null terminated) for
+ * convenience. This extra byte is not included in the value reported on
+ * the returned string.
+ *
+ * @param file the path to read all available data from.
+ * @returns the data.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IOStream.LoadFile
+ * @sa SaveFile
+ */
+template<class T>
+inline OwnArray<T> LoadFileAs(StringParam file)
+{
+  size_t datasize = 0;
+  auto data = static_cast<T*>(SDL_LoadFile(file, &datasize));
+  return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
 }
 
 /**
@@ -27480,37 +27511,6 @@ inline StringResult LoadFile(StringParam file)
   return StringResult{CheckError(data), datasize};
 }
 
-inline StringResult IOStream::LoadFile()
-{
-  return SDL::LoadFile(m_resource, false);
-}
-
-/**
- * Load all the data from a file path.
- *
- * The data is allocated with a zero byte at the end (null terminated) for
- * convenience. This extra byte is not included in the value reported on
- * the returned string.
- *
- * @param file the path to read all available data from.
- * @returns the data.
- * @throws Error on failure.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IOStream.LoadFile
- * @sa SaveFile
- */
-template<class T>
-inline OwnArray<T> LoadFileAs(StringParam file)
-{
-  size_t datasize = 0;
-  auto data = static_cast<T*>(SDL_LoadFile(file, &datasize));
-  return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
-}
-
 /**
  * Save all the data into an SDL data stream.
  *
@@ -27527,9 +27527,14 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile(IOStreamRef src, SourceBytes data, bool closeio = false)
+inline void SaveFile_IO(IOStreamRef src, SourceBytes data, bool closeio = true)
 {
   CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
+}
+
+inline void IOStream::SaveFile(SourceBytes data)
+{
+  SDL::SaveFile_IO(m_resource, std::move(data));
 }
 
 /**
@@ -27549,11 +27554,6 @@ inline void SaveFile(IOStreamRef src, SourceBytes data, bool closeio = false)
 inline void SaveFile(StringParam file, SourceBytes data)
 {
   CheckError(SDL_SaveFile(file, data.data(), data.size_bytes()));
-}
-
-inline void IOStream::SaveFile(SourceBytes data)
-{
-  SDL::SaveFile(m_resource, std::move(data));
 }
 
 /**

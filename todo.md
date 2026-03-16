@@ -27,6 +27,8 @@ Next version
 - [x] Wrap SDL_mixer;
 - [ ] Remove overloading of `*_IO` variants:
   - [x] SDL::LoadWAV_IO();
+  - [ ] SDL::LoadFile_IO();
+  - [ ] SDL::SaveFile_IO();
 - [x] Error handling fixes:
   - [x] SDL::GetClipboardMimeTypes();
   - [x] SDL::GetGamepadMappings();
