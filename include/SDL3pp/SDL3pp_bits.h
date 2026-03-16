@@ -31,7 +31,7 @@ namespace SDL {
  *
  * @since This function is available since SDL 3.2.0.
  */
-int MostSignificantBitIndex32(Uint32 x)
+inline int MostSignificantBitIndex32(Uint32 x)
 {
   return SDL_MostSignificantBitIndex32(x);
 }
@@ -54,7 +54,7 @@ int MostSignificantBitIndex32(Uint32 x)
  *
  * @since This function is available since SDL 3.2.0.
  */
-bool HasExactlyOneBitSet32(Uint32 x)
+inline bool HasExactlyOneBitSet32(Uint32 x)
 {
   return SDL_HasExactlyOneBitSet32(x);
 }

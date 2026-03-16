@@ -126,7 +126,7 @@ namespace SDL {
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
+inline Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
 
 /**
  * Byte-swap an unsigned 32-bit number.
@@ -147,7 +147,7 @@ Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
+inline Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
 
 /**
  * Byte-swap an unsigned 64-bit number.
@@ -168,7 +168,7 @@ Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
+inline Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
 
 /**
  * Byte-swap a floating point number.
@@ -189,7 +189,7 @@ Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-float SwapFloat(float x) { return SDL_SwapFloat(x); }
+inline float SwapFloat(float x) { return SDL_SwapFloat(x); }
 
 /**
  * Swap a 16-bit value from littleendian to native byte order.
@@ -269,7 +269,7 @@ constexpr float SwapFloatLE(float x) { return SDL_SwapFloatLE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
+inline Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
 
 /**
  * Swap a 32-bit value from bigendian to native byte order.
@@ -285,7 +285,7 @@ Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
+inline Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
 
 /**
  * Swap a 64-bit value from bigendian to native byte order.
@@ -301,7 +301,7 @@ Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
+inline Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
 
 /**
  * Swap a floating point value from bigendian to native byte order.
@@ -317,7 +317,7 @@ Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
+inline float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
 
 /// @}
 

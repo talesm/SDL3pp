@@ -46,7 +46,7 @@ namespace SDL {
  *
  * @since This function is available since SDL 3.2.0.
  */
-int MostSignificantBitIndex32(Uint32 x)
+inline int MostSignificantBitIndex32(Uint32 x)
 {
   return SDL_MostSignificantBitIndex32(x);
 }
@@ -69,7 +69,7 @@ int MostSignificantBitIndex32(Uint32 x)
  *
  * @since This function is available since SDL 3.2.0.
  */
-bool HasExactlyOneBitSet32(Uint32 x)
+inline bool HasExactlyOneBitSet32(Uint32 x)
 {
   return SDL_HasExactlyOneBitSet32(x);
 }
@@ -20021,7 +20021,7 @@ inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
  *
  * @since This function is available since SDL 3.2.0.
  */
-bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
+inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_mul_check_overflow(a, b, ret);
 }
@@ -20043,7 +20043,7 @@ bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This function is available since SDL 3.2.0.
  */
-bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
+inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_add_check_overflow(a, b, ret);
 }
@@ -23027,7 +23027,7 @@ inline int GetSystemPageSize() { return SDL_GetSystemPageSize(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
+inline Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
 
 /**
  * Byte-swap an unsigned 32-bit number.
@@ -23048,7 +23048,7 @@ Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
+inline Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
 
 /**
  * Byte-swap an unsigned 64-bit number.
@@ -23069,7 +23069,7 @@ Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
+inline Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
 
 /**
  * Byte-swap a floating point number.
@@ -23090,7 +23090,7 @@ Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-float SwapFloat(float x) { return SDL_SwapFloat(x); }
+inline float SwapFloat(float x) { return SDL_SwapFloat(x); }
 
 /**
  * Swap a 16-bit value from littleendian to native byte order.
@@ -23170,7 +23170,7 @@ constexpr float SwapFloatLE(float x) { return SDL_SwapFloatLE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
+inline Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
 
 /**
  * Swap a 32-bit value from bigendian to native byte order.
@@ -23186,7 +23186,7 @@ Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
+inline Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
 
 /**
  * Swap a 64-bit value from bigendian to native byte order.
@@ -23202,7 +23202,7 @@ Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
+inline Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
 
 /**
  * Swap a floating point value from bigendian to native byte order.
@@ -23218,7 +23218,7 @@ Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
+inline float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
 
 /// @}
 
@@ -28867,13 +28867,13 @@ constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs) noexcept
 }
 
 /// Comparison operator for Rect.
-bool operator==(const RectRaw& lhs, const RectRaw& rhs) noexcept
+inline bool operator==(const RectRaw& lhs, const RectRaw& rhs) noexcept
 {
   return SDL_RectsEqual(&lhs, &rhs);
 }
 
 /// Comparison operator for FRect.
-bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
+inline bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
 {
   return SDL_RectsEqualFloat(&lhs, &rhs);
 }
@@ -28992,7 +28992,7 @@ struct Point : PointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool InRect(const RectRaw& r) const;
+  inline bool InRect(const RectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -29411,7 +29411,7 @@ struct FPoint : FPointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool InRect(const FRectRaw& r) const;
+  inline bool InRect(const FRectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -29963,7 +29963,7 @@ struct Rect : RectRaw
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
+  inline bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
   {
     return GetLineIntersection(p1 ? &p1->x : nullptr,
                                p1 ? &p1->y : nullptr,
@@ -29990,7 +29990,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
+  inline bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
 
   /**
    * Convert an SDL_Rect to SDL_FRect
@@ -30002,7 +30002,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  operator SDL_FRect() const;
+  inline operator SDL_FRect() const;
 
   /// @sa operator ToFRect()
   constexpr operator FRect() const;
@@ -30024,7 +30024,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Empty() const;
+  inline bool Empty() const;
 
   /**
    * Determine whether two rectangles are equal.
@@ -30044,7 +30044,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Equal(const RectRaw& other) const;
+  inline bool Equal(const RectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -30054,7 +30054,7 @@ struct Rect : RectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  bool Contains(const PointRaw& p) const
+  inline bool Contains(const PointRaw& p) const
   {
     return SDL_PointInRect(&p, this);
   }
@@ -30067,7 +30067,7 @@ struct Rect : RectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  bool Contains(const RectRaw& other) const
+  inline bool Contains(const RectRaw& other) const
   {
     return GetUnion(other) == *this;
   }
@@ -30084,7 +30084,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.GetIntersection
    */
-  bool HasIntersection(const RectRaw& other) const;
+  inline bool HasIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles.
@@ -30101,7 +30101,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.HasIntersection
    */
-  Rect GetIntersection(const RectRaw& other) const;
+  inline Rect GetIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles.
@@ -30388,7 +30388,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static FRect GetEnclosingPoints(
+  inline static FRect GetEnclosingPoints(
     SpanRef<const FPointRaw> points,
     OptionalRef<const FRectRaw> clip = std::nullopt);
 
@@ -30560,7 +30560,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
+  inline bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
 
   /**
    * Determine whether a floating point rectangle takes no space.
@@ -30578,7 +30578,7 @@ struct FRect : FRectRaw
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  bool GetLineIntersection(FPoint* p1, FPoint* p2) const
+  inline bool GetLineIntersection(FPoint* p1, FPoint* p2) const
   {
     return GetLineIntersection(p1 ? &p1->x : nullptr,
                                p1 ? &p1->y : nullptr,
@@ -30603,7 +30603,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Empty() const;
+  inline bool Empty() const;
 
   /**
    * Determine whether two floating point rectangles are equal, within some
@@ -30629,7 +30629,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.Equal
    */
-  bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
+  inline bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
 
   /**
    * Determine whether two floating point rectangles are equal, within a default
@@ -30655,7 +30655,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.EqualEpsilon
    */
-  bool Equal(const FRectRaw& other) const;
+  inline bool Equal(const FRectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -30695,7 +30695,7 @@ struct FRect : FRectRaw
    *
    * @sa Rect.GetIntersection
    */
-  bool HasIntersection(const FRectRaw& other) const;
+  inline bool HasIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles with float precision.
@@ -30712,7 +30712,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.HasIntersection
    */
-  FRect GetIntersection(const FRectRaw& other) const;
+  inline FRect GetIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles with float precision.
@@ -30857,7 +30857,7 @@ struct FRect : FRectRaw
  *
  * @since This function is available since SDL 3.2.0.
  */
-FRect RectToFRect(const RectRaw& rect)
+inline FRect RectToFRect(const RectRaw& rect)
 {
   FRect frect;
   SDL_RectToFRect(&rect, &frect);
@@ -30887,7 +30887,7 @@ Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-bool PointInRect(const PointRaw& p, const RectRaw& r)
+inline bool PointInRect(const PointRaw& p, const RectRaw& r)
 {
   return SDL_PointInRect(&p, &r);
 }
@@ -30915,7 +30915,7 @@ bool Point::InRect(const RectRaw& r) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
+inline bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
 
 bool Rect::Empty() const { return SDL::RectEmpty(*this); }
 
@@ -30938,7 +30938,7 @@ bool Rect::Empty() const { return SDL::RectEmpty(*this); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-bool RectsEqual(const RectRaw& a, const RectRaw& b)
+inline bool RectsEqual(const RectRaw& a, const RectRaw& b)
 {
   return SDL_RectsEqual(&a, &b);
 }
@@ -30963,7 +30963,7 @@ bool Rect::Equal(const RectRaw& other) const
  *
  * @sa Rect.GetIntersection
  */
-bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
+inline bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
 {
   return SDL_HasRectIntersection(&A, &B);
 }
@@ -30989,7 +30989,7 @@ bool Rect::HasIntersection(const RectRaw& other) const
  *
  * @sa Rect.HasIntersection
  */
-Rect GetRectIntersection(const RectRaw& A, const RectRaw& B)
+inline Rect GetRectIntersection(const RectRaw& A, const RectRaw& B)
 {
   if (Rect result; SDL_GetRectIntersection(&A, &B, &result)) return result;
   return {};
@@ -31112,7 +31112,7 @@ inline bool Rect::GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
+inline bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
 {
   return SDL_PointInRectFloat(&p, &r);
 }
@@ -31140,7 +31140,7 @@ bool FPoint::InRect(const FRectRaw& r) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-bool RectEmptyFloat(const FRectRaw& r)
+inline bool RectEmptyFloat(const FRectRaw& r)
 {
   return SDL_RectEmptyFloat(&r);
 }
@@ -31172,7 +31172,7 @@ bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
  *
  * @sa FRect.Equal
  */
-bool RectsEqualEpsilon(const FRectRaw& a,
+inline bool RectsEqualEpsilon(const FRectRaw& a,
                                  const FRectRaw& b,
                                  const float epsilon)
 {
@@ -31210,7 +31210,7 @@ bool FRect::EqualEpsilon(const FRectRaw& other,
  *
  * @sa FRect.EqualEpsilon
  */
-bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
+inline bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
 {
   return SDL_RectsEqualFloat(&a, &b);
 }
@@ -31235,7 +31235,7 @@ bool FRect::Equal(const FRectRaw& other) const
  *
  * @sa Rect.GetIntersection
  */
-bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
+inline bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
   return SDL_HasRectIntersectionFloat(&A, &B);
 }
@@ -31261,7 +31261,7 @@ bool FRect::HasIntersection(const FRectRaw& other) const
  *
  * @sa FRect.HasIntersection
  */
-FRect GetRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
+inline FRect GetRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
   if (FRect r; SDL_GetRectIntersectionFloat(&A, &B, &r)) return r;
   return {};
@@ -31313,7 +31313,7 @@ constexpr FRect FRect::GetUnion(const FRectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-FRect GetRectEnclosingPointsFloat(
+inline FRect GetRectEnclosingPointsFloat(
   SpanRef<const FPointRaw> points,
   OptionalRef<const FRectRaw> clip = std::nullopt)
 {
@@ -31324,7 +31324,7 @@ FRect GetRectEnclosingPointsFloat(
   return {};
 }
 
-FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
+inline FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
                                           OptionalRef<const FRectRaw> clip)
 {
   return SDL::GetRectEnclosingPointsFloat(points, clip);
@@ -106944,7 +106944,7 @@ struct FontRef : Font
   ~FontRef() { release(); }
 
   /// Assignment operator.
-  constexpr FontRef& operator=(FontRef other) noexcept
+  FontRef& operator=(FontRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -110255,7 +110255,7 @@ struct TextRef : Text
   ~TextRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextRef& operator=(TextRef other) noexcept
+  TextRef& operator=(TextRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -110275,7 +110275,7 @@ class SubStringIterator
 
   SubString m_subString;
 
-  constexpr SubStringIterator(TextRef text)
+  SubStringIterator(TextRef text)
     : m_text(text)
     , m_subString(0)
   {
@@ -110283,7 +110283,7 @@ class SubStringIterator
 
 public:
   /// Default constructor.
-  constexpr SubStringIterator()
+  SubStringIterator()
     : SubStringIterator(TextRef{})
   {
   }

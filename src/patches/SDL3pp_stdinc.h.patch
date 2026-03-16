@@ -1102,7 +1102,7 @@
   * @since This function is available since SDL 3.2.0.
   */
 -constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
-+bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
++inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
  {
    return SDL_size_mul_check_overflow(a, b, ret);
  }
@@ -1111,7 +1111,7 @@
   * @since This function is available since SDL 3.2.0.
   */
 -constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
-+bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
++inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
  {
    return SDL_size_add_check_overflow(a, b, ret);
  }
