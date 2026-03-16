@@ -25,7 +25,8 @@ Next version
   - [x] Remove \*Param;
   - [x] Rename \*ConstRef to \*ConstParam
 - [x] Wrap SDL_mixer;
-- [ ] Remove overloading of `*_IO` variants, use `*FromIO` or similar;
+- [ ] Remove overloading of `*_IO` variants:
+  - [x] SDL::LoadWAV_IO();
 - [x] Error handling fixes:
   - [x] SDL::GetClipboardMimeTypes();
   - [x] SDL::GetGamepadMappings();

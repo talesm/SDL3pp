@@ -29,8 +29,9 @@ namespace SDL {
  * Audio streams can also use an app-provided callback to supply data on-demand,
  * which maps pretty closely to the SDL2 audio model.
  *
- * SDL also provides a simple .WAV loader in LoadWAV (and LoadWAV if you aren't
- * reading from a file) as a basic means to load sound data into your program.
+ * SDL also provides a simple .WAV loader in LoadWAV (and LoadWAV_IO if you
+ * aren't reading from a file) as a basic means to load sound data into your
+ * program.
  *
  * ## Logical audio devices
  *
@@ -5335,7 +5336,7 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  * Example:
  *
  * ```c
- * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec, &buf, &len);
+ * LoadWAV_IO(IOStream.FromFile("sample.wav", "rb"), true, &spec, &buf, &len);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a less
@@ -5371,9 +5372,9 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  * @sa free
  * @sa LoadWAV
  */
-inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
-                               AudioSpec* spec,
-                               bool closeio = false)
+inline OwnArray<Uint8> LoadWAV_IO(IOStreamRef src,
+                                  AudioSpec* spec,
+                                  bool closeio = false)
 {
   return SDL_LoadWAV_IO(src, spec, closeio);
 }
@@ -5384,7 +5385,7 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
  * This is a convenience function that is effectively the same as:
  *
  * ```c
- * LoadWAV(IOStream.FromFile(path, "rb"), true, spec, audio_buf, audio_len);
+ * LoadWAV_IO(IOStream.FromFile(path, "rb"), true, spec, audio_buf, audio_len);
  * ```
  *
  * @param path the file path of the WAV file to open.
@@ -5409,7 +5410,7 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa free
- * @sa LoadWAV
+ * @sa LoadWAV_IO
  */
 inline OwnArray<Uint8> LoadWAV(StringParam path, AudioSpec* spec)
 {

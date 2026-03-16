@@ -7178,7 +7178,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *   samples is zero.
  * - "ignore" - Ignore fact chunk entirely. (default)
  *
- * This hint should be set before calling LoadWAV() or LoadWAV()
+ * This hint should be set before calling LoadWAV() or LoadWAV_IO()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -7190,7 +7190,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * This sets an upper bound on the number of chunks in a WAVE file to avoid
  * wasting time on malformed or corrupt WAVE files. This defaults to "10000".
  *
- * This hint should be set before calling LoadWAV() or LoadWAV()
+ * This hint should be set before calling LoadWAV() or LoadWAV_IO()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -7218,7 +7218,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * - "ignore" - Ignore the RIFF chunk size and always search up to 4 GiB.
  * - "maximum" - Search for chunks until the end of file. (not recommended)
  *
- * This hint should be set before calling LoadWAV() or LoadWAV()
+ * This hint should be set before calling LoadWAV() or LoadWAV_IO()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -7238,7 +7238,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * - "dropframe" - Decode until the first incomplete sample frame.
  * - "dropblock" - Decode until the first incomplete block. (default)
  *
- * This hint should be set before calling LoadWAV() or LoadWAV()
+ * This hint should be set before calling LoadWAV() or LoadWAV_IO()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -33702,8 +33702,9 @@ inline void RemoveTimer(TimerID id) { CheckError(SDL_RemoveTimer(id)); }
  * Audio streams can also use an app-provided callback to supply data on-demand,
  * which maps pretty closely to the SDL2 audio model.
  *
- * SDL also provides a simple .WAV loader in LoadWAV (and LoadWAV if you aren't
- * reading from a file) as a basic means to load sound data into your program.
+ * SDL also provides a simple .WAV loader in LoadWAV (and LoadWAV_IO if you
+ * aren't reading from a file) as a basic means to load sound data into your
+ * program.
  *
  * ## Logical audio devices
  *
@@ -39071,7 +39072,7 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  * Example:
  *
  * ```cpp
- * LoadWAV(IOStream.FromFile("sample.wav", "rb"), spec);
+ * LoadWAV_IO(IOStream.FromFile("sample.wav", "rb"), spec);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a less
@@ -39098,9 +39099,9 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  *
  * @sa LoadWAV
  */
-inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
-                               AudioSpec* spec,
-                               bool closeio = false)
+inline OwnArray<Uint8> LoadWAV_IO(IOStreamRef src,
+                                  AudioSpec* spec,
+                                  bool closeio = false)
 {
   Uint8* buf;
   Uint32 len;
@@ -39113,8 +39114,8 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
  *
  * This is a convenience function that is effectively the same as:
  *
- * ```c
- * LoadWAV(IOStream.FromFile(path, "rb"), true, spec, audio_buf, audio_len);
+ * ```cpp
+ * LoadWAV_IO(IOStream.FromFile(path, "rb"), true, spec);
  * ```
  *
  * @param path the file path of the WAV file to open.
@@ -39130,7 +39131,7 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LoadWAV
+ * @sa LoadWAV_IO
  */
 inline OwnArray<Uint8> LoadWAV(StringParam path, AudioSpec* spec)
 {

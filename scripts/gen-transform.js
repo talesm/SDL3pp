@@ -799,7 +799,6 @@ const transform = {
           parameters: [{ type: "std::span<AudioStreamRef>" }]
         },
         "SDL_LoadWAV_IO": {
-          name: "LoadWAV",
           type: "OwnArray<Uint8>",
           parameters: [
             {},
