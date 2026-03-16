@@ -1325,16 +1325,18 @@
 +    return m_subString.offset == other.m_subString.offset;
    }
  
+-  constexpr SubStringIterator& operator++()
 +  /// Increment operator.
-   constexpr SubStringIterator& operator++()
++  SubStringIterator& operator++()
    {
 -    static_assert(false, "Not implemented");
 +    m_text.GetNextSubString(m_subString, &m_subString);
 +    return *this;
    }
  
+-  constexpr SubStringIterator operator++(int)
 +  /// Increment operator.
-   constexpr SubStringIterator operator++(int)
++  SubStringIterator operator++(int)
    {
 -    static_assert(false, "Not implemented");
 +    auto curr = *this;
@@ -1342,16 +1344,18 @@
 +    return curr;
    }
  
+-  constexpr SubStringIterator& operator--()
 +  /// Decrement operator.
-   constexpr SubStringIterator& operator--()
++  SubStringIterator& operator--()
    {
 -    static_assert(false, "Not implemented");
 +    m_text.GetPreviousSubString(m_subString, &m_subString);
 +    return *this;
    }
  
+-  constexpr SubStringIterator operator--(int)
 +  /// Decrement operator.
-   constexpr SubStringIterator operator--(int)
++  SubStringIterator operator--(int)
    {
 -    static_assert(false, "Not implemented");
 +    auto curr = *this;

@@ -9,3 +9,21 @@
   *
   * Functions for fiddling with bits and bitmasks.
   *
+@@ -31,7 +31,7 @@
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-constexpr int MostSignificantBitIndex32(Uint32 x)
++int MostSignificantBitIndex32(Uint32 x)
+ {
+   return SDL_MostSignificantBitIndex32(x);
+ }
+@@ -54,7 +54,7 @@
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-constexpr bool HasExactlyOneBitSet32(Uint32 x)
++bool HasExactlyOneBitSet32(Uint32 x)
+ {
+   return SDL_HasExactlyOneBitSet32(x);
+ }
