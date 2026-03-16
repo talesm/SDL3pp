@@ -8871,7 +8871,7 @@ const transform = {
           type: "void",
           parameters: [
             { name: "mixer", type: "MixerRef" },
-            { name: "callback", type: "PostMixCB" },
+            { name: "cb", type: "PostMixCB" },
           ],
         },
         "MIX_TrackStoppedCallback": {
@@ -8884,7 +8884,7 @@ const transform = {
           type: "void",
           parameters: [
             { name: "track", type: "TrackRef" },
-            { name: "callback", type: "TrackStoppedCB" },
+            { name: "cb", type: "TrackStoppedCB" },
           ],
         },
         "MIX_TrackMixCallback": {
@@ -8897,7 +8897,7 @@ const transform = {
           type: "void",
           parameters: [
             { name: "track", type: "TrackRef" },
-            { name: "callback", type: "TrackMixCB" },
+            { name: "cb", type: "TrackMixCB" },
           ],
         },
         "SetTrackCookedCallback": {
@@ -8906,7 +8906,7 @@ const transform = {
           type: "void",
           parameters: [
             { name: "track", type: "TrackRef" },
-            { name: "callback", type: "TrackMixCB" },
+            { name: "cb", type: "TrackMixCB" },
           ],
         },
         "MIX_GroupMixCallback": {
@@ -8919,7 +8919,7 @@ const transform = {
           type: "void",
           parameters: [
             { name: "group", type: "GroupRef" },
-            { name: "callback", type: "GroupMixCB" },
+            { name: "cb", type: "GroupMixCB" },
           ],
         },
         "MIX_CreateAudioDecoder": { parameters: [{}, { default: "nullptr" }] },

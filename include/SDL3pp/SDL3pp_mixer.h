@@ -650,7 +650,6 @@ public:
    * When done with a Audio, it can be freed with Audio.Destroy().
    *
    * @param data the buffer where the audio data lives.
-   * @param datalen the size, in bytes, of the buffer.
    * @param free_when_done if true, `data` will be given to free() when the
    *                       Audio is destroyed.
    * @returns an audio object that can be used to make sound on a mixer on
@@ -723,7 +722,6 @@ public:
    * mixer may be specified.
    *
    * @param data the raw PCM data to load.
-   * @param datalen the size, in bytes, of the raw PCM data.
    * @param spec what format the raw data is in.
    * @returns an audio object that can be used to make sound on a mixer on
    *          success.
@@ -763,7 +761,6 @@ public:
    * simply wants to avoid the extra copy.
    *
    * @param data the buffer where the raw PCM data lives.
-   * @param datalen the size, in bytes, of the buffer.
    * @param spec what format the raw data is in.
    * @param free_when_done if true, `data` will be given to free() when the
    *                       Audio is destroyed.
@@ -1282,15 +1279,13 @@ public:
    * callback.
    *
    * @param cb the function to call when the mixer mixes. May be nullptr.
-   * @param userdata an opaque pointer provided to the callback for its own
-   *                 personal use.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa PostMixCallback
    */
-  void SetPostMixCallback(PostMixCB callback);
+  void SetPostMixCallback(PostMixCB cb);
 
   /**
    * Generate mixer output when not driving an audio device.
@@ -1333,7 +1328,6 @@ public:
    * parameters, etc).
    *
    * @param buffer a pointer to a buffer to store audio in.
-   * @param buflen the number of bytes to store in buffer.
    * @returns The number of bytes of mixed audio, discounting appended silence,
    *          on success.
    * @throws Error on failure.
@@ -1487,7 +1481,7 @@ public:
    *
    * Locking a nullptr mixer is a safe no-op.
    *
-   * @param mixer the mixer to lock. May be nullptr.
+   * @param resource the mixer to lock. May be nullptr.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1519,8 +1513,6 @@ public:
    * times from the same thread that locked it, etc.
    *
    * Unlocking a nullptr mixer is a safe no-op.
-   *
-   * @param mixer the mixer to unlock. May be nullptr.
    *
    * @threadsafety This call must be paired with a previous Mixer.Lock call on
    *               the same thread.
@@ -1555,8 +1547,6 @@ public:
    * times from the same thread that locked it, etc.
    *
    * Unlocking a nullptr mixer is a safe no-op.
-   *
-   * @param mixer the mixer to unlock. May be nullptr.
    *
    * @threadsafety This call must be paired with a previous Mixer.Lock call on
    *               the same thread.
@@ -1825,7 +1815,6 @@ public:
    * @param mixer a mixer this audio is intended to be used with. May be
    *              nullptr.
    * @param data the raw PCM data to load.
-   * @param datalen the size, in bytes, of the raw PCM data.
    * @param spec what format the raw data is in.
    * @post an audio object that can be used to make sound on a mixer on success.
    * @throws Error on failure.
@@ -2215,7 +2204,7 @@ using TrackMixCallback = void(SDLCALL*)(void* userdata,
  * A callback that fires when a Track is mixing at various stages.
  *
  * This callback is fired for different parts of the mixing pipeline, and gives
- * the app visbility into the audio data that is being generated at various
+ * the app visibility into the audio data that is being generated at various
  * stages.
  *
  * The audio data passed through here is _not_ const data; the app is permitted
@@ -2640,8 +2629,6 @@ public:
    *
    * Tags are not provided in any guaranteed order.
    *
-   * @param count a pointer filled in with the number of tags returned, can be
-   *              nullptr.
    * @returns an array of the tags, nullptr-terminated on success.
    * @throws Error on failure.
    *
@@ -3276,7 +3263,6 @@ public:
    * array after this call.
    *
    * @param chmap the new channel map, nullptr to reset to default.
-   * @param count The number of channels in the map.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -3453,15 +3439,13 @@ public:
    * without any gap in the audio.
    *
    * @param cb the function to call when the track stops. May be nullptr.
-   * @param userdata an opaque pointer provided to the callback for its own
-   *                 personal use.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa TrackStoppedCallback
    */
-  void SetStoppedCallback(TrackStoppedCB callback);
+  void SetStoppedCallback(TrackStoppedCB cb);
 
   /**
    * Set a callback that fires when a Track has initial decoded audio.
@@ -3514,8 +3498,6 @@ public:
    * callback.
    *
    * @param cb the function to call when the track mixes. May be nullptr.
-   * @param userdata an opaque pointer provided to the callback for its own
-   *                 personal use.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_mixer 3.0.0.
@@ -3523,7 +3505,7 @@ public:
    * @sa TrackMixCallback
    * @sa Track.SetCookedCallback
    */
-  void SetRawCallback(TrackMixCB callback);
+  void SetRawCallback(TrackMixCB cb);
 
   /**
    * Set a callback that fires when the mixer has transformed a track's audio.
@@ -3582,8 +3564,6 @@ public:
    * callback.
    *
    * @param cb the function to call when the track mixes. May be nullptr.
-   * @param userdata an opaque pointer provided to the callback for its own
-   *                 personal use.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_mixer 3.0.0.
@@ -3591,7 +3571,7 @@ public:
    * @sa TrackMixCallback
    * @sa Track.SetRawCallback
    */
-  void SetCookedCallback(TrackMixCB callback);
+  void SetCookedCallback(TrackMixCB cb);
 };
 
 /**
@@ -4623,7 +4603,6 @@ inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
  *
  * @param mixer a mixer this audio is intended to be used with. May be nullptr.
  * @param data the buffer where the audio data lives.
- * @param datalen the size, in bytes, of the buffer.
  * @param free_when_done if true, `data` will be given to free() when the Audio
  *                       is destroyed.
  * @returns an audio object that can be used to make sound on a mixer on
@@ -4787,7 +4766,6 @@ inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
  *
  * @param mixer a mixer this audio is intended to be used with. May be nullptr.
  * @param data the raw PCM data to load.
- * @param datalen the size, in bytes, of the raw PCM data.
  * @param spec what format the raw data is in.
  * @returns an audio object that can be used to make sound on a mixer on
  *          success.
@@ -4837,7 +4815,6 @@ inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
  *
  * @param mixer a mixer this audio is intended to be used with. May be nullptr.
  * @param data the buffer where the raw PCM data lives.
- * @param datalen the size, in bytes, of the buffer.
  * @param spec what format the raw data is in.
  * @param free_when_done if true, `data` will be given to free() when the Audio
  *                       is destroyed.
@@ -5481,8 +5458,6 @@ inline void Track::Untag(StringParam tag)
  * Tags are not provided in any guaranteed order.
  *
  * @param track the track to query.
- * @param count a pointer filled in with the number of tags returned, can be
- *              nullptr.
  * @returns an array of the tags, nullptr-terminated on success.
  * @throws Error on failure.
  *
@@ -5509,8 +5484,6 @@ inline OwnArray<char*> Track::GetTags()
  *
  * @param mixer the mixer to query.
  * @param tag the tag to search.
- * @param count a pointer filled in with the number of tracks returned, can be
- *              nullptr.
  * @returns an array of the tracks, nullptr-terminated on success.
  * @throws Error on failure.
  *
@@ -6879,7 +6852,6 @@ inline float Track::GetFrequencyRatio()
  *
  * @param track the track to change.
  * @param chmap the new channel map, nullptr to reset to default.
- * @param count The number of channels in the map.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -7209,17 +7181,15 @@ inline void SetTrackStoppedCallback(TrackRef track,
  *
  * @param track the track to assign this callback to.
  * @param cb the function to call when the track stops. May be nullptr.
- * @param userdata an opaque pointer provided to the callback for its own
- *                 personal use.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa TrackStoppedCallback
  */
-inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB callback)
+inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB cb)
 {
-  SetTrackStoppedCallback(track, callback.wrapper, callback.data);
+  SetTrackStoppedCallback(track, cb.wrapper, cb.data);
 }
 
 inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
@@ -7227,9 +7197,9 @@ inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
   SDL::SetTrackStoppedCallback(m_resource, cb, userdata);
 }
 
-inline void Track::SetStoppedCallback(TrackStoppedCB callback)
+inline void Track::SetStoppedCallback(TrackStoppedCB cb)
 {
-  SDL::SetTrackStoppedCallback(m_resource, callback);
+  SDL::SetTrackStoppedCallback(m_resource, cb);
 }
 
 /**
@@ -7295,9 +7265,9 @@ inline void SetTrackRawCallback(TrackRef track,
  * @sa TrackMixCallback
  * @sa Track.SetCookedCallback
  */
-inline void SetTrackRawCallback(TrackRef track, TrackMixCB callback)
+inline void SetTrackRawCallback(TrackRef track, TrackMixCB cb)
 {
-  SetTrackRawCallback(track, callback.wrapper, callback.data);
+  SetTrackRawCallback(track, cb.wrapper, cb.data);
 }
 
 inline void Track::SetRawCallback(TrackMixCallback cb, void* userdata)
@@ -7305,9 +7275,9 @@ inline void Track::SetRawCallback(TrackMixCallback cb, void* userdata)
   SDL::SetTrackRawCallback(m_resource, cb, userdata);
 }
 
-inline void Track::SetRawCallback(TrackMixCB callback)
+inline void Track::SetRawCallback(TrackMixCB cb)
 {
-  SDL::SetTrackRawCallback(m_resource, callback);
+  SDL::SetTrackRawCallback(m_resource, cb);
 }
 
 /**
@@ -7379,9 +7349,9 @@ inline void SetTrackCookedCallback(TrackRef track,
  * @sa TrackMixCallback
  * @sa Track.SetRawCallback
  */
-inline void SetTrackCookedCallback(TrackRef track, TrackMixCB callback)
+inline void SetTrackCookedCallback(TrackRef track, TrackMixCB cb)
 {
-  SetTrackCookedCallback(track, callback.wrapper, callback.data);
+  SetTrackCookedCallback(track, cb.wrapper, cb.data);
 }
 
 inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
@@ -7389,9 +7359,9 @@ inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
   SDL::SetTrackCookedCallback(m_resource, cb, userdata);
 }
 
-inline void Track::SetCookedCallback(TrackMixCB callback)
+inline void Track::SetCookedCallback(TrackMixCB cb)
 {
-  SDL::SetTrackCookedCallback(m_resource, callback);
+  SDL::SetTrackCookedCallback(m_resource, cb);
 }
 
 /**
@@ -7449,9 +7419,9 @@ inline void SetGroupPostMixCallback(GroupRef group,
  *
  * @sa GroupMixCallback
  */
-inline void SetGroupPostMixCallback(GroupRef group, GroupMixCB callback)
+inline void SetGroupPostMixCallback(GroupRef group, GroupMixCB cb)
 {
-  SetGroupPostMixCallback(group, callback.wrapper, callback.data);
+  SetGroupPostMixCallback(group, cb.wrapper, cb.data);
 }
 
 inline void Group::SetPostMixCallback(GroupMixCallback cb, void* userdata)
@@ -7510,9 +7480,9 @@ inline void SetPostMixCallback(MixerRef mixer,
  *
  * @sa PostMixCallback
  */
-inline void SetPostMixCallback(MixerRef mixer, PostMixCB callback)
+inline void SetPostMixCallback(MixerRef mixer, PostMixCB cb)
 {
-  SetPostMixCallback(mixer, callback.wrapper, callback.data);
+  SetPostMixCallback(mixer, cb.wrapper, cb.data);
 }
 
 inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
@@ -7520,9 +7490,9 @@ inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
   SDL::SetPostMixCallback(m_resource, cb, userdata);
 }
 
-inline void Mixer::SetPostMixCallback(PostMixCB callback)
+inline void Mixer::SetPostMixCallback(PostMixCB cb)
 {
-  SDL::SetPostMixCallback(m_resource, callback);
+  SDL::SetPostMixCallback(m_resource, cb);
 }
 
 /**
@@ -7565,7 +7535,6 @@ inline void Mixer::SetPostMixCallback(PostMixCB callback)
  *
  * @param mixer the mixer for which to generate more audio.
  * @param buffer a pointer to a buffer to store audio in.
- * @param buflen the number of bytes to store in buffer.
  * @returns The number of bytes of mixed audio, discounting appended silence, on
  *          success.
  * @throws Error on failure.
@@ -7812,7 +7781,6 @@ public:
    * happened.
    *
    * @param buffer the memory buffer to store decoded audio.
-   * @param buflen the maximum number of bytes to store to `buffer`.
    * @param spec the format that audio data will be stored to `buffer`.
    * @returns number of bytes decoded on success.
    * @throws Error on failure.
@@ -8065,7 +8033,6 @@ inline void AudioDecoder::GetFormat(AudioSpec* spec)
  *
  * @param audiodecoder the decoder from which to retrieve more data.
  * @param buffer the memory buffer to store decoded audio.
- * @param buflen the maximum number of bytes to store to `buffer`.
  * @param spec the format that audio data will be stored to `buffer`.
  * @returns number of bytes decoded on success.
  * @throws Error on failure.

@@ -1294,7 +1294,7 @@ public:
    *
    * @sa PostMixCallback
    */
-  void SetPostMixCallback(PostMixCB callback);
+  void SetPostMixCallback(PostMixCB cb);
 
   /**
    * Generate mixer output when not driving an audio device.
@@ -3467,7 +3467,7 @@ public:
    *
    * @sa TrackStoppedCallback
    */
-  void SetStoppedCallback(TrackStoppedCB callback);
+  void SetStoppedCallback(TrackStoppedCB cb);
 
   /**
    * Set a callback that fires when a Track has initial decoded audio.
@@ -3529,7 +3529,7 @@ public:
    * @sa TrackMixCallback
    * @sa Track.SetCookedCallback
    */
-  void SetRawCallback(TrackMixCB callback);
+  void SetRawCallback(TrackMixCB cb);
 
   /**
    * Set a callback that fires when the mixer has transformed a track's audio.
@@ -3597,7 +3597,7 @@ public:
    * @sa TrackMixCallback
    * @sa Track.SetRawCallback
    */
-  void SetCookedCallback(TrackMixCB callback);
+  void SetCookedCallback(TrackMixCB cb);
 };
 
 /**
@@ -7216,7 +7216,7 @@ inline void SetTrackStoppedCallback(TrackRef track,
  *
  * @sa TrackStoppedCallback
  */
-inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB callback)
+inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB cb)
 {
   static_assert(false, "Not implemented");
 }
@@ -7226,9 +7226,9 @@ inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
   SDL::SetTrackStoppedCallback(m_resource, cb, userdata);
 }
 
-inline void Track::SetStoppedCallback(TrackStoppedCB callback)
+inline void Track::SetStoppedCallback(TrackStoppedCB cb)
 {
-  SDL::SetTrackStoppedCallback(m_resource, callback);
+  SDL::SetTrackStoppedCallback(m_resource, cb);
 }
 
 /**
@@ -7296,7 +7296,7 @@ inline void SetTrackRawCallback(TrackRef track,
  * @sa TrackMixCallback
  * @sa Track.SetCookedCallback
  */
-inline void SetTrackRawCallback(TrackRef track, TrackMixCB callback)
+inline void SetTrackRawCallback(TrackRef track, TrackMixCB cb)
 {
   static_assert(false, "Not implemented");
 }
@@ -7306,9 +7306,9 @@ inline void Track::SetRawCallback(TrackMixCallback cb, void* userdata)
   SDL::SetTrackRawCallback(m_resource, cb, userdata);
 }
 
-inline void Track::SetRawCallback(TrackMixCB callback)
+inline void Track::SetRawCallback(TrackMixCB cb)
 {
-  SDL::SetTrackRawCallback(m_resource, callback);
+  SDL::SetTrackRawCallback(m_resource, cb);
 }
 
 /**
@@ -7382,7 +7382,7 @@ inline void SetTrackCookedCallback(TrackRef track,
  * @sa TrackMixCallback
  * @sa Track.SetRawCallback
  */
-inline void SetTrackCookedCallback(TrackRef track, TrackMixCB callback)
+inline void SetTrackCookedCallback(TrackRef track, TrackMixCB cb)
 {
   static_assert(false, "Not implemented");
 }
@@ -7392,9 +7392,9 @@ inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
   SDL::SetTrackCookedCallback(m_resource, cb, userdata);
 }
 
-inline void Track::SetCookedCallback(TrackMixCB callback)
+inline void Track::SetCookedCallback(TrackMixCB cb)
 {
-  SDL::SetTrackCookedCallback(m_resource, callback);
+  SDL::SetTrackCookedCallback(m_resource, cb);
 }
 
 /**
@@ -7454,7 +7454,7 @@ inline void SetGroupPostMixCallback(GroupRef group,
  *
  * @sa GroupMixCallback
  */
-inline void SetGroupPostMixCallback(GroupRef group, GroupMixCB callback)
+inline void SetGroupPostMixCallback(GroupRef group, GroupMixCB cb)
 {
   static_assert(false, "Not implemented");
 }
@@ -7517,7 +7517,7 @@ inline void SetPostMixCallback(MixerRef mixer,
  *
  * @sa PostMixCallback
  */
-inline void SetPostMixCallback(MixerRef mixer, PostMixCB callback)
+inline void SetPostMixCallback(MixerRef mixer, PostMixCB cb)
 {
   static_assert(false, "Not implemented");
 }
@@ -7527,9 +7527,9 @@ inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
   SDL::SetPostMixCallback(m_resource, cb, userdata);
 }
 
-inline void Mixer::SetPostMixCallback(PostMixCB callback)
+inline void Mixer::SetPostMixCallback(PostMixCB cb)
 {
-  SDL::SetPostMixCallback(m_resource, callback);
+  SDL::SetPostMixCallback(m_resource, cb);
 }
 
 /**

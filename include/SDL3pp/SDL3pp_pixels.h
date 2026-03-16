@@ -2447,6 +2447,7 @@ class PaletteIndex
   int m_index;
 
 public:
+  /// Constructs a PaletteIndex for a specific palette and index.
   constexpr PaletteIndex(PaletteRaw palette, int index)
     : m_palette{palette}
     , m_index{index}
