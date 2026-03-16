@@ -8839,6 +8839,9 @@ const transform = {
           type: "OwnArray<TrackRef>",
           parameters: [{}, {}],
         },
+        "MIX_SetTrackOutputChannelMap": {
+          parameters: [{}, { type: "std::span<const int>" }],
+        },
         "MIX_StereoGains": { before: "MIX_Track", },
         "MIX_Point3D": { before: "MIX_Track", },
         "MIX_TrackStoppedCallback": { before: "MIX_Track", },

@@ -468,7 +468,16 @@
  }
  
  inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
-@@ -6938,7 +6939,7 @@
+@@ -6442,7 +6443,7 @@
+  */
+ inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
+ {
+-  CheckError(MIX_SetTrackOutputChannelMap(track, chmap));
++  CheckError(MIX_SetTrackOutputChannelMap(track, chmap.data(), chmap.size()));
+ }
+ 
+ inline void Track::SetOutputChannelMap(std::span<const int> chmap)
+@@ -6936,7 +6937,7 @@
   * initialized, if available tracks to mix run out, the end of the buffer will
   * be initialized with silence; this silence will not be counted in the return
   * value, so the caller has the option to identify how much of the buffer has
@@ -477,7 +486,7 @@
   * success. A return value of -1 means failure (out of memory, invalid
   * parameters, etc).
   *
-@@ -7027,7 +7028,7 @@
+@@ -7025,7 +7026,7 @@
     *
     * This function allows properties to be specified. This is intended to supply
     * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -486,7 +495,7 @@
     * properties.
     *
     * Properties are discussed in [SDL's
-@@ -7040,7 +7041,7 @@
+@@ -7038,7 +7039,7 @@
     * call to MIX.Init(), but does not need an actual Mixer to have been created.
     *
     * @param path the path on the filesystem from which to load data.
@@ -495,7 +504,7 @@
     * @post an audio decoder, ready to decode.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -7062,7 +7063,7 @@
+@@ -7060,7 +7061,7 @@
     *
     * This function allows properties to be specified. This is intended to supply
     * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -504,7 +513,7 @@
     * properties.
     *
     * If `closeio` is true, then `io` will be closed when this decoder is done
-@@ -7077,7 +7078,7 @@
+@@ -7075,7 +7076,7 @@
     *
     * @param io the i/o stream from which to load data.
     * @param closeio if true, close the i/o stream when done with it.
@@ -513,7 +522,7 @@
     * @post an audio decoder, ready to decode.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -7270,7 +7271,7 @@
+@@ -7268,7 +7269,7 @@
   *
   * This function allows properties to be specified. This is intended to supply
   * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -522,7 +531,7 @@
   * properties.
   *
   * Properties are discussed in [SDL's
-@@ -7283,7 +7284,7 @@
+@@ -7281,7 +7282,7 @@
   * call to MIX.Init(), but does not need an actual Mixer to have been created.
   *
   * @param path the path on the filesystem from which to load data.
@@ -531,7 +540,7 @@
   * @returns an audio decoder, ready to decode.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -7321,7 +7322,7 @@
+@@ -7319,7 +7320,7 @@
   *
   * This function allows properties to be specified. This is intended to supply
   * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -540,7 +549,7 @@
   * properties.
   *
   * If `closeio` is true, then `io` will be closed when this decoder is done with
-@@ -7336,7 +7337,7 @@
+@@ -7334,7 +7335,7 @@
   *
   * @param io the i/o stream from which to load data.
   * @param closeio if true, close the i/o stream when done with it.
@@ -549,7 +558,7 @@
   * @returns an audio decoder, ready to decode.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -7471,4 +7472,6 @@
+@@ -7469,4 +7470,6 @@
  
  } // namespace SDL
  

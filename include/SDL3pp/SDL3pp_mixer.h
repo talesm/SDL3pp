@@ -2987,7 +2987,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    */
-  void SetOutputChannelMap(const int* chmap, int count);
+  void SetOutputChannelMap(std::span<const int> chmap);
 
   /**
    * Force a track to stereo output, with optionally left/right panning.
@@ -6441,16 +6441,14 @@ inline float Track::GetFrequencyRatio()
  *
  * @since This function is available since SDL_mixer 3.0.0.
  */
-inline void SetTrackOutputChannelMap(TrackRef track,
-                                     const int* chmap,
-                                     int count)
+inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
 {
-  CheckError(MIX_SetTrackOutputChannelMap(track, chmap, count));
+  CheckError(MIX_SetTrackOutputChannelMap(track, chmap.data(), chmap.size()));
 }
 
-inline void Track::SetOutputChannelMap(const int* chmap, int count)
+inline void Track::SetOutputChannelMap(std::span<const int> chmap)
 {
-  SDL::SetTrackOutputChannelMap(m_resource, chmap, count);
+  SDL::SetTrackOutputChannelMap(m_resource, chmap);
 }
 
 /**
