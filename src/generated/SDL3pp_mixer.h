@@ -376,9 +376,9 @@ public:
    *
    * The following read-only properties are provided by SDL_mixer:
    *
-   * - `SDL_PROP_MIXER_DEVICE_NUMBER`: the AudioDevice that this mixer has
-   *   opened for playback. This will be zero (no device) if the mixer was
-   *   created with Mix_CreateMixer() instead of Mix_CreateMixerDevice().
+   * - `prop::Mixer.DEVICE_NUMBER`: the AudioDevice that this mixer has opened
+   *   for playback. This will be zero (no device) if the mixer was created with
+   *   Mix_CreateMixer() instead of Mix_CreateMixerDevice().
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -1495,20 +1495,20 @@ public:
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_AUDIO_LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be
-   *   used to load audio data. Required. This stream must be able to seek!
-   * - `SDL_PROP_AUDIO_LOAD_CLOSEIO_BOOLEAN`: true if SDL_mixer should close the
+   * - `prop::Audio.LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used
+   *   to load audio data. Required. This stream must be able to seek!
+   * - `prop::Audio.LOAD_CLOSEIO_BOOLEAN`: true if SDL_mixer should close the
    *   IOStream before returning (success or failure).
-   * - `SDL_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN`: true if SDL_mixer should fully
+   * - `prop::Audio.LOAD_PREDECODE_BOOLEAN`: true if SDL_mixer should fully
    *   decode and decompress the data before returning. Otherwise it will be
    *   stored in its original state and decompressed on demand.
-   * - `SDL_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER`: a pointer to a Mixer, in
-   *   case steps can be made to match its format when decoding. Optional.
-   * - `SDL_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing
+   * - `prop::Audio.LOAD_PREFERRED_MIXER_POINTER`: a pointer to a Mixer, in case
+   *   steps can be made to match its format when decoding. Optional.
+   * - `prop::Audio.LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing
    *   metadata tags, like ID3 and APE tags. This can be used to speed up
    *   loading _if the data definitely doesn't have these tags_. Some decoders
    *   will fail if these tags are present when this property is true.
-   * - `SDL_PROP_AUDIO_DECODER_STRING`: the name of the decoder to use for this
+   * - `prop::Audio.DECODER_STRING`: the name of the decoder to use for this
    *   data. Optional. If not specified, SDL_mixer will examine the data and
    *   choose the best decoder. These names are the same returned from
    *   GetAudioDecoder().
@@ -1670,21 +1670,21 @@ public:
    *
    * The following read-only properties are provided by SDL_mixer:
    *
-   * - `SDL_PROP_METADATA_TITLE_STRING`: the audio's title ("Smells Like Teen
+   * - `prop::MixMetadata.TITLE_STRING`: the audio's title ("Smells Like Teen
    *   Spirit").
-   * - `SDL_PROP_METADATA_ARTIST_STRING`: the audio's artist name ("Nirvana").
-   * - `SDL_PROP_METADATA_ALBUM_STRING`: the audio's album name ("Nevermind").
-   * - `SDL_PROP_METADATA_COPYRIGHT_STRING`: the audio's copyright info
+   * - `prop::MixMetadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
+   * - `prop::MixMetadata.ALBUM_STRING`: the audio's album name ("Nevermind").
+   * - `prop::MixMetadata.COPYRIGHT_STRING`: the audio's copyright info
    *   ("Copyright (c) 1991")
-   * - `SDL_PROP_METADATA_TRACK_NUMBER`: the audio's track number on the album
+   * - `prop::MixMetadata.TRACK_NUMBER`: the audio's track number on the album
    *   (1)
-   * - `SDL_PROP_METADATA_TOTAL_TRACKS_NUMBER`: the total tracks on the album
+   * - `prop::MixMetadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album
    *   (13)
-   * - `SDL_PROP_METADATA_YEAR_NUMBER`: the year the audio was released (1991)
-   * - `SDL_PROP_METADATA_DURATION_FRAMES_NUMBER`: The sample frames worth of
+   * - `prop::MixMetadata.YEAR_NUMBER`: the year the audio was released (1991)
+   * - `prop::MixMetadata.DURATION_FRAMES_NUMBER`: The sample frames worth of
    *   PCM data that comprise this audio. It might be off by a little if the
    *   decoder only knows the duration as a unit of time.
-   * - `SDL_PROP_METADATA_DURATION_INFINITE_BOOLEAN`: if true, audio never runs
+   * - `prop::MixMetadata.DURATION_INFINITE_BOOLEAN`: if true, audio never runs
    *   out of sound to generate. This isn't necessarily always known to
    *   SDL_mixer, though.
    *
@@ -1708,7 +1708,7 @@ public:
    * Get the length of a Audio's playback in sample frames.
    *
    * This information is also available via the
-   * SDL_PROP_METADATA_DURATION_FRAMES_NUMBER property, but it's common enough
+   * prop::MixMetadata.DURATION_FRAMES_NUMBER property, but it's common enough
    * to provide a simple accessor function.
    *
    * This reports the length of the data in _sample frames_, so sample-perfect
@@ -2479,8 +2479,8 @@ public:
    * This has no effect on a track that is stopped, or rather, starting a
    * stopped track later will set a new loop count, replacing this value.
    * Stopped tracks can specify a loop count while starting via
-   * SDL_PROP_PLAY_LOOPS_NUMBER. This function is intended to alter that count
-   * in the middle of playback.
+   * prop::Play.LOOPS_NUMBER. This function is intended to alter that count in
+   * the middle of playback.
    *
    * @param num_loops new number of times to loop. Zero to disable looping, -1
    *                  to loop infinitely.
@@ -2635,51 +2635,51 @@ public:
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_PLAY_LOOPS_NUMBER`: The number of times to loop the track when
-   *   it reaches the end. A value of 1 will loop to the start one time. Zero
-   *   will not loop at all. A value of -1 requests infinite loops. If the input
-   *   is not seekable and this value isn't zero, this function will report
-   *   success but the track will stop at the point it should loop. Default 0.
-   * - `SDL_PROP_PLAY_MAX_FRAME_NUMBER`: Mix at most to this sample frame
-   *   position in the track. This will be treated as if the input reach EOF at
-   *   this point in the audio file. If -1, mix all available audio without a
-   *   limit. Default -1.
-   * - `SDL_PROP_PLAY_MAX_MILLISECONDS_NUMBER`: The same as using the
-   *   SDL_PROP_PLAY_MAX_FRAME_NUMBER property, but the value is specified in
+   * - `prop::Play.LOOPS_NUMBER`: The number of times to loop the track when it
+   *   reaches the end. A value of 1 will loop to the start one time. Zero will
+   *   not loop at all. A value of -1 requests infinite loops. If the input is
+   *   not seekable and this value isn't zero, this function will report success
+   *   but the track will stop at the point it should loop. Default 0.
+   * - `prop::Play.MAX_FRAME_NUMBER`: Mix at most to this sample frame position
+   *   in the track. This will be treated as if the input reach EOF at this
+   *   point in the audio file. If -1, mix all available audio without a limit.
+   *   Default -1.
+   * - `prop::Play.MAX_MILLISECONDS_NUMBER`: The same as using the
+   *   prop::Play.MAX_FRAME_NUMBER property, but the value is specified in
    *   milliseconds instead of sample frames. If both properties are specified,
    *   the sample frames value is favored. Default -1.
-   * - `SDL_PROP_PLAY_START_FRAME_NUMBER`: Start mixing from this sample frame
+   * - `prop::Play.START_FRAME_NUMBER`: Start mixing from this sample frame
    *   position in the track's input. A value <= 0 will begin from the start of
    *   the track's input. If the input is not seekable and this value is > 0,
    *   this function will report failure. Default 0.
-   * - `SDL_PROP_PLAY_START_MILLISECOND_NUMBER`: The same as using the
-   *   SDL_PROP_PLAY_START_FRAME_NUMBER property, but the value is specified in
+   * - `prop::Play.START_MILLISECOND_NUMBER`: The same as using the
+   *   prop::Play.START_FRAME_NUMBER property, but the value is specified in
    *   milliseconds instead of sample frames. If both properties are specified,
    *   the sample frames value is favored. Default 0.
-   * - `SDL_PROP_PLAY_LOOP_START_FRAME_NUMBER`: If the track is looping, this is
+   * - `prop::Play.LOOP_START_FRAME_NUMBER`: If the track is looping, this is
    *   the sample frame position that the track will loop back to; this lets one
    *   play an intro at the start of a track on the first iteration, but have a
    *   loop point somewhere in the middle thereafter. A value <= 0 will begin
    *   the loop from the start of the track's input. Default 0.
-   * - `SDL_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER`: The same as using the
-   *   SDL_PROP_PLAY_LOOP_START_FRAME_NUMBER property, but the value is
-   *   specified in milliseconds instead of sample frames. If both properties
-   *   are specified, the sample frames value is favored. Default 0.
-   * - `SDL_PROP_PLAY_FADE_IN_FRAMES_NUMBER`: The number of sample frames over
+   * - `prop::Play.LOOP_START_MILLISECOND_NUMBER`: The same as using the
+   *   prop::Play.LOOP_START_FRAME_NUMBER property, but the value is specified
+   *   in milliseconds instead of sample frames. If both properties are
+   *   specified, the sample frames value is favored. Default 0.
+   * - `prop::Play.FADE_IN_FRAMES_NUMBER`: The number of sample frames over
    *   which to fade in the newly-started track. The track will begin mixing
    *   silence and reach full volume smoothly over this many sample frames. If
    *   the track loops before the fade-in is complete, it will continue to fade
    *   correctly from the loop point. A value <= 0 will disable fade-in, so the
    *   track starts mixing at full volume. Default 0.
-   * - `SDL_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER`: The same as using the
-   *   SDL_PROP_PLAY_FADE_IN_FRAMES_NUMBER property, but the value is specified
-   *   in milliseconds instead of sample frames. If both properties are
-   *   specified, the sample frames value is favored. Default 0.
-   * - `SDL_PROP_PLAY_FADE_IN_START_GAIN_FLOAT`: If fading in, start fading from
+   * - `prop::Play.FADE_IN_MILLISECONDS_NUMBER`: The same as using the
+   *   prop::Play.FADE_IN_FRAMES_NUMBER property, but the value is specified in
+   *   milliseconds instead of sample frames. If both properties are specified,
+   *   the sample frames value is favored. Default 0.
+   * - `prop::Play.FADE_IN_START_GAIN_FLOAT`: If fading in, start fading from
    *   this volume level. 0.0f is silence and 1.0f is full volume, every in
    *   between is a linear change in gain. The specified value will be clamped
    *   between 0.0f and 1.0f. Default 0.0f.
-   * - `SDL_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER`: At the end of mixing this
+   * - `prop::Play.APPEND_SILENCE_FRAMES_NUMBER`: At the end of mixing this
    *   track, after all loops are complete, append this many sample frames of
    *   silence as if it were part of the audio file. This allows for apps to
    *   implement effects in callbacks, like reverb, that need to generate
@@ -2687,11 +2687,11 @@ public:
    *   before starting a new sound on the track without having to manage it
    *   directly. A value <= 0 generates no silence before stopping the track.
    *   Default 0.
-   * - `SDL_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER`: The same as using the
-   *   SDL_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER property, but the value is
+   * - `prop::Play.APPEND_SILENCE_MILLISECONDS_NUMBER`: The same as using the
+   *   prop::Play.APPEND_SILENCE_FRAMES_NUMBER property, but the value is
    *   specified in milliseconds instead of sample frames. If both properties
    *   are specified, the sample frames value is favored. Default 0.
-   * - `SDL_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is
+   * - `prop::Play.HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is
    *   completely consumed for the track, the mixer will mark the track as
    *   stopped (and call any appropriate TrackStoppedCallback, etc); to play
    *   more, the track will need to be restarted. If false, the track will just
@@ -3852,8 +3852,8 @@ inline void Mixer::Destroy() { DestroyMixer(release()); }
  *
  * The following read-only properties are provided by SDL_mixer:
  *
- * - `SDL_PROP_MIXER_DEVICE_NUMBER`: the AudioDevice that this mixer has opened
- *   for playback. This will be zero (no device) if the mixer was created with
+ * - `prop::Mixer.DEVICE_NUMBER`: the AudioDevice that this mixer has opened for
+ *   playback. This will be zero (no device) if the mixer was created with
  *   Mix_CreateMixer() instead of Mix_CreateMixerDevice().
  *
  * @param mixer the mixer to query.
@@ -3874,7 +3874,11 @@ inline PropertiesRef Mixer::GetProperties()
   return SDL::GetMixerProperties(m_resource);
 }
 
-#define SDL_PROP_MIXER_DEVICE_NUMBER MIX_PROP_MIXER_DEVICE_NUMBER
+namespace prop::Mixer {
+
+constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER;
+
+} // namespace prop::Mixer
 
 /**
  * Get the audio format a mixer is generating.
@@ -4206,23 +4210,22 @@ inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_AUDIO_LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used
- *   to load audio data. Required. This stream must be able to seek!
- * - `SDL_PROP_AUDIO_LOAD_CLOSEIO_BOOLEAN`: true if SDL_mixer should close the
+ * - `prop::Audio.LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used to
+ *   load audio data. Required. This stream must be able to seek!
+ * - `prop::Audio.LOAD_CLOSEIO_BOOLEAN`: true if SDL_mixer should close the
  *   IOStream before returning (success or failure).
- * - `SDL_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN`: true if SDL_mixer should fully
- *   decode and decompress the data before returning. Otherwise it will be
- *   stored in its original state and decompressed on demand.
- * - `SDL_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER`: a pointer to a Mixer, in
- *   case steps can be made to match its format when decoding. Optional.
- * - `SDL_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing
+ * - `prop::Audio.LOAD_PREDECODE_BOOLEAN`: true if SDL_mixer should fully decode
+ *   and decompress the data before returning. Otherwise it will be stored in
+ *   its original state and decompressed on demand.
+ * - `prop::Audio.LOAD_PREFERRED_MIXER_POINTER`: a pointer to a Mixer, in case
+ *   steps can be made to match its format when decoding. Optional.
+ * - `prop::Audio.LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing
  *   metadata tags, like ID3 and APE tags. This can be used to speed up loading
  *   _if the data definitely doesn't have these tags_. Some decoders will fail
  *   if these tags are present when this property is true.
- * - `SDL_PROP_AUDIO_DECODER_STRING`: the name of the decoder to use for this
- *   data. Optional. If not specified, SDL_mixer will examine the data and
- *   choose the best decoder. These names are the same returned from
- *   GetAudioDecoder().
+ * - `prop::Audio.DECODER_STRING`: the name of the decoder to use for this data.
+ *   Optional. If not specified, SDL_mixer will examine the data and choose the
+ *   best decoder. These names are the same returned from GetAudioDecoder().
  *
  * Specific decoders might accept additional custom properties, such as where to
  * find soundfonts for MIDI playback, etc.
@@ -4245,21 +4248,23 @@ inline Audio LoadAudioWithProperties(PropertiesRef props)
   return Audio(props);
 }
 
-#define SDL_PROP_AUDIO_LOAD_IOSTREAM_POINTER                                   \
-  MIX_PROP_AUDIO_LOAD_IOSTREAM_POINTER
+namespace prop::Audio {
 
-#define SDL_PROP_AUDIO_LOAD_CLOSEIO_BOOLEAN MIX_PROP_AUDIO_LOAD_CLOSEIO_BOOLEAN
+constexpr auto LOAD_IOSTREAM_POINTER = MIX_PROP_AUDIO_LOAD_IOSTREAM_POINTER;
 
-#define SDL_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN                                  \
-  MIX_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN
+constexpr auto LOAD_CLOSEIO_BOOLEAN = MIX_PROP_AUDIO_LOAD_CLOSEIO_BOOLEAN;
 
-#define SDL_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER                            \
-  MIX_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER
+constexpr auto LOAD_PREDECODE_BOOLEAN = MIX_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN;
 
-#define SDL_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN                         \
-  MIX_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN
+constexpr auto LOAD_PREFERRED_MIXER_POINTER =
+  MIX_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER;
 
-#define SDL_PROP_AUDIO_DECODER_STRING MIX_PROP_AUDIO_DECODER_STRING
+constexpr auto LOAD_SKIP_METADATA_TAGS_BOOLEAN =
+  MIX_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN;
+
+constexpr auto DECODER_STRING = MIX_PROP_AUDIO_DECODER_STRING;
+
+} // namespace prop::Audio
 
 /**
  * Load raw PCM data from an IOStream.
@@ -4471,19 +4476,19 @@ inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
  *
  * The following read-only properties are provided by SDL_mixer:
  *
- * - `SDL_PROP_METADATA_TITLE_STRING`: the audio's title ("Smells Like Teen
+ * - `prop::MixMetadata.TITLE_STRING`: the audio's title ("Smells Like Teen
  *   Spirit").
- * - `SDL_PROP_METADATA_ARTIST_STRING`: the audio's artist name ("Nirvana").
- * - `SDL_PROP_METADATA_ALBUM_STRING`: the audio's album name ("Nevermind").
- * - `SDL_PROP_METADATA_COPYRIGHT_STRING`: the audio's copyright info
+ * - `prop::MixMetadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
+ * - `prop::MixMetadata.ALBUM_STRING`: the audio's album name ("Nevermind").
+ * - `prop::MixMetadata.COPYRIGHT_STRING`: the audio's copyright info
  *   ("Copyright (c) 1991")
- * - `SDL_PROP_METADATA_TRACK_NUMBER`: the audio's track number on the album (1)
- * - `SDL_PROP_METADATA_TOTAL_TRACKS_NUMBER`: the total tracks on the album (13)
- * - `SDL_PROP_METADATA_YEAR_NUMBER`: the year the audio was released (1991)
- * - `SDL_PROP_METADATA_DURATION_FRAMES_NUMBER`: The sample frames worth of PCM
+ * - `prop::MixMetadata.TRACK_NUMBER`: the audio's track number on the album (1)
+ * - `prop::MixMetadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album (13)
+ * - `prop::MixMetadata.YEAR_NUMBER`: the year the audio was released (1991)
+ * - `prop::MixMetadata.DURATION_FRAMES_NUMBER`: The sample frames worth of PCM
  *   data that comprise this audio. It might be off by a little if the decoder
  *   only knows the duration as a unit of time.
- * - `SDL_PROP_METADATA_DURATION_INFINITE_BOOLEAN`: if true, audio never runs
+ * - `prop::MixMetadata.DURATION_INFINITE_BOOLEAN`: if true, audio never runs
  *   out of sound to generate. This isn't necessarily always known to SDL_mixer,
  *   though.
  *
@@ -4512,32 +4517,35 @@ inline PropertiesRef Audio::GetProperties()
   return SDL::GetAudioProperties(m_resource);
 }
 
-#define SDL_PROP_METADATA_TITLE_STRING MIX_PROP_METADATA_TITLE_STRING
+namespace prop::MixMetadata {
 
-#define SDL_PROP_METADATA_ARTIST_STRING MIX_PROP_METADATA_ARTIST_STRING
+constexpr auto TITLE_STRING = MIX_PROP_METADATA_TITLE_STRING;
 
-#define SDL_PROP_METADATA_ALBUM_STRING MIX_PROP_METADATA_ALBUM_STRING
+constexpr auto ARTIST_STRING = MIX_PROP_METADATA_ARTIST_STRING;
 
-#define SDL_PROP_METADATA_COPYRIGHT_STRING MIX_PROP_METADATA_COPYRIGHT_STRING
+constexpr auto ALBUM_STRING = MIX_PROP_METADATA_ALBUM_STRING;
 
-#define SDL_PROP_METADATA_TRACK_NUMBER MIX_PROP_METADATA_TRACK_NUMBER
+constexpr auto COPYRIGHT_STRING = MIX_PROP_METADATA_COPYRIGHT_STRING;
 
-#define SDL_PROP_METADATA_TOTAL_TRACKS_NUMBER                                  \
-  MIX_PROP_METADATA_TOTAL_TRACKS_NUMBER
+constexpr auto TRACK_NUMBER = MIX_PROP_METADATA_TRACK_NUMBER;
 
-#define SDL_PROP_METADATA_YEAR_NUMBER MIX_PROP_METADATA_YEAR_NUMBER
+constexpr auto TOTAL_TRACKS_NUMBER = MIX_PROP_METADATA_TOTAL_TRACKS_NUMBER;
 
-#define SDL_PROP_METADATA_DURATION_FRAMES_NUMBER                               \
-  MIX_PROP_METADATA_DURATION_FRAMES_NUMBER
+constexpr auto YEAR_NUMBER = MIX_PROP_METADATA_YEAR_NUMBER;
 
-#define SDL_PROP_METADATA_DURATION_INFINITE_BOOLEAN                            \
-  MIX_PROP_METADATA_DURATION_INFINITE_BOOLEAN
+constexpr auto DURATION_FRAMES_NUMBER =
+  MIX_PROP_METADATA_DURATION_FRAMES_NUMBER;
+
+constexpr auto DURATION_INFINITE_BOOLEAN =
+  MIX_PROP_METADATA_DURATION_INFINITE_BOOLEAN;
+
+} // namespace prop::MixMetadata
 
 /**
  * Get the length of a Audio's playback in sample frames.
  *
  * This information is also available via the
- * SDL_PROP_METADATA_DURATION_FRAMES_NUMBER property, but it's common enough to
+ * prop::MixMetadata.DURATION_FRAMES_NUMBER property, but it's common enough to
  * provide a simple accessor function.
  *
  * This reports the length of the data in _sample frames_, so sample-perfect
@@ -5214,7 +5222,7 @@ inline int Track::GetLoops() { return SDL::GetTrackLoops(m_resource); }
  *
  * This has no effect on a track that is stopped, or rather, starting a stopped
  * track later will set a new loop count, replacing this value. Stopped tracks
- * can specify a loop count while starting via SDL_PROP_PLAY_LOOPS_NUMBER. This
+ * can specify a loop count while starting via prop::Play.LOOPS_NUMBER. This
  * function is intended to alter that count in the middle of playback.
  *
  * @param track the track to configure.
@@ -5526,79 +5534,78 @@ inline Sint64 FramesToMS(int sample_rate, Sint64 frames)
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_PLAY_LOOPS_NUMBER`: The number of times to loop the track when it
+ * - `prop::Play.LOOPS_NUMBER`: The number of times to loop the track when it
  *   reaches the end. A value of 1 will loop to the start one time. Zero will
  *   not loop at all. A value of -1 requests infinite loops. If the input is not
  *   seekable and this value isn't zero, this function will report success but
  *   the track will stop at the point it should loop. Default 0.
- * - `SDL_PROP_PLAY_MAX_FRAME_NUMBER`: Mix at most to this sample frame position
- *   in the track. This will be treated as if the input reach EOF at this point
- *   in the audio file. If -1, mix all available audio without a limit. Default
- *   -1.
- * - `SDL_PROP_PLAY_MAX_MILLISECONDS_NUMBER`: The same as using the
- *   SDL_PROP_PLAY_MAX_FRAME_NUMBER property, but the value is specified in
+ * - `prop::Play.MAX_FRAME_NUMBER`: Mix at most to this sample frame position in
+ *   the track. This will be treated as if the input reach EOF at this point in
+ *   the audio file. If -1, mix all available audio without a limit. Default -1.
+ * - `prop::Play.MAX_MILLISECONDS_NUMBER`: The same as using the
+ *   prop::Play.MAX_FRAME_NUMBER property, but the value is specified in
  *   milliseconds instead of sample frames. If both properties are specified,
  *   the sample frames value is favored. Default -1.
- * - `SDL_PROP_PLAY_START_FRAME_NUMBER`: Start mixing from this sample frame
+ * - `prop::Play.START_FRAME_NUMBER`: Start mixing from this sample frame
  *   position in the track's input. A value <= 0 will begin from the start of
  *   the track's input. If the input is not seekable and this value is > 0, this
  *   function will report failure. Default 0.
- * - `SDL_PROP_PLAY_START_MILLISECOND_NUMBER`: The same as using the
- *   SDL_PROP_PLAY_START_FRAME_NUMBER property, but the value is specified in
+ * - `prop::Play.START_MILLISECOND_NUMBER`: The same as using the
+ *   prop::Play.START_FRAME_NUMBER property, but the value is specified in
  *   milliseconds instead of sample frames. If both properties are specified,
  *   the sample frames value is favored. Default 0.
- * - `SDL_PROP_PLAY_LOOP_START_FRAME_NUMBER`: If the track is looping, this is
- *   the sample frame position that the track will loop back to; this lets one
- *   play an intro at the start of a track on the first iteration, but have a
- *   loop point somewhere in the middle thereafter. A value <= 0 will begin the
- *   loop from the start of the track's input. Default 0.
- * - `SDL_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER`: The same as using the
- *   SDL_PROP_PLAY_LOOP_START_FRAME_NUMBER property, but the value is specified
- *   in milliseconds instead of sample frames. If both properties are specified,
- *   the sample frames value is favored. Default 0.
- * - `SDL_PROP_PLAY_FADE_IN_FRAMES_NUMBER`: The number of sample frames over
- *   which to fade in the newly-started track. The track will begin mixing
- *   silence and reach full volume smoothly over this many sample frames. If the
- *   track loops before the fade-in is complete, it will continue to fade
- *   correctly from the loop point. A value <= 0 will disable fade-in, so the
- *   track starts mixing at full volume. Default 0.
- * - `SDL_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER`: The same as using the
- *   SDL_PROP_PLAY_FADE_IN_FRAMES_NUMBER property, but the value is specified in
+ * - `prop::Play.LOOP_START_FRAME_NUMBER`: If the track is looping, this is the
+ *   sample frame position that the track will loop back to; this lets one play
+ *   an intro at the start of a track on the first iteration, but have a loop
+ *   point somewhere in the middle thereafter. A value <= 0 will begin the loop
+ *   from the start of the track's input. Default 0.
+ * - `prop::Play.LOOP_START_MILLISECOND_NUMBER`: The same as using the
+ *   prop::Play.LOOP_START_FRAME_NUMBER property, but the value is specified in
  *   milliseconds instead of sample frames. If both properties are specified,
  *   the sample frames value is favored. Default 0.
- * - `SDL_PROP_PLAY_FADE_IN_START_GAIN_FLOAT`: If fading in, start fading from
- *   this volume level. 0.0f is silence and 1.0f is full volume, every in
- *   between is a linear change in gain. The specified value will be clamped
- *   between 0.0f and 1.0f. Default 0.0f.
- * - `SDL_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER`: At the end of mixing this
- *   track, after all loops are complete, append this many sample frames of
- *   silence as if it were part of the audio file. This allows for apps to
- *   implement effects in callbacks, like reverb, that need to generate samples
- *   past the end of the stream's audio, or perhaps introduce a delay before
- *   starting a new sound on the track without having to manage it directly. A
- *   value <= 0 generates no silence before stopping the track. Default 0.
- * - `SDL_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER`: The same as using the
- *   SDL_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER property, but the value is
+ * - `prop::Play.FADE_IN_FRAMES_NUMBER`: The number of sample frames over which
+ *   to fade in the newly-started track. The track will begin mixing silence and
+ *   reach full volume smoothly over this many sample frames. If the track loops
+ *   before the fade-in is complete, it will continue to fade correctly from the
+ *   loop point. A value <= 0 will disable fade-in, so the track starts mixing
+ *   at full volume. Default 0.
+ * - `prop::Play.FADE_IN_MILLISECONDS_NUMBER`: The same as using the
+ *   prop::Play.FADE_IN_FRAMES_NUMBER property, but the value is specified in
+ *   milliseconds instead of sample frames. If both properties are specified,
+ *   the sample frames value is favored. Default 0.
+ * - `prop::Play.FADE_IN_START_GAIN_FLOAT`: If fading in, start fading from this
+ *   volume level. 0.0f is silence and 1.0f is full volume, every in between is
+ *   a linear change in gain. The specified value will be clamped between 0.0f
+ *   and 1.0f. Default 0.0f.
+ * - `prop::Play.APPEND_SILENCE_FRAMES_NUMBER`: At the end of mixing this track,
+ *   after all loops are complete, append this many sample frames of silence as
+ *   if it were part of the audio file. This allows for apps to implement
+ *   effects in callbacks, like reverb, that need to generate samples past the
+ *   end of the stream's audio, or perhaps introduce a delay before starting a
+ *   new sound on the track without having to manage it directly. A value <= 0
+ *   generates no silence before stopping the track. Default 0.
+ * - `prop::Play.APPEND_SILENCE_MILLISECONDS_NUMBER`: The same as using the
+ *   prop::Play.APPEND_SILENCE_FRAMES_NUMBER property, but the value is
  *   specified in milliseconds instead of sample frames. If both properties are
  *   specified, the sample frames value is favored. Default 0.
- * - `SDL_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is
- *   completely consumed for the track, the mixer will mark the track as stopped
- *   (and call any appropriate TrackStoppedCallback, etc); to play more, the
- *   track will need to be restarted. If false, the track will just not
- *   contribute to the mix, but it will not be marked as stopped. There may be
- *   clever logic tricks this exposes generally, but this property is
- *   specifically useful when the track's input is an AudioStream assigned via
- *   Track.SetAudioStream(). Setting this property to true can be useful when
- *   pushing a complete piece of audio to the stream that has a definite ending,
- *   as the track will operate like any other audio was applied. Setting to
- *   false means as new data is added to the stream, the mixer will start using
- *   it as soon as possible, which is useful when audio should play immediately
- *   as it drips in: new VoIP packets, etc. Note that in this situation, if the
- *   audio runs out when needed, there _will_ be gaps in the mixed output, so
- *   try to buffer enough data to avoid this when possible. Note that a track is
- *   not consider exhausted until all its loops and appended silence have been
- *   mixed (and also, that loops don't mean anything when the input is an
- *   AudioStream). Default true.
+ * - `prop::Play.HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is completely
+ *   consumed for the track, the mixer will mark the track as stopped (and call
+ *   any appropriate TrackStoppedCallback, etc); to play more, the track will
+ *   need to be restarted. If false, the track will just not contribute to the
+ *   mix, but it will not be marked as stopped. There may be clever logic tricks
+ *   this exposes generally, but this property is specifically useful when the
+ *   track's input is an AudioStream assigned via Track.SetAudioStream().
+ *   Setting this property to true can be useful when pushing a complete piece
+ *   of audio to the stream that has a definite ending, as the track will
+ *   operate like any other audio was applied. Setting to false means as new
+ *   data is added to the stream, the mixer will start using it as soon as
+ *   possible, which is useful when audio should play immediately as it drips
+ *   in: new VoIP packets, etc. Note that in this situation, if the audio runs
+ *   out when needed, there _will_ be gaps in the mixed output, so try to buffer
+ *   enough data to avoid this when possible. Note that a track is not consider
+ *   exhausted until all its loops and appended silence have been mixed (and
+ *   also, that loops don't mean anything when the input is an AudioStream).
+ *   Default true.
  *
  * If this function fails, mixing of this track will not start (or restart, if
  * it was already started).
@@ -5627,40 +5634,42 @@ inline void Track::Play(PropertiesRef options)
   SDL::PlayTrack(m_resource, options);
 }
 
-#define SDL_PROP_PLAY_LOOPS_NUMBER MIX_PROP_PLAY_LOOPS_NUMBER
+namespace prop::Play {
 
-#define SDL_PROP_PLAY_MAX_FRAME_NUMBER MIX_PROP_PLAY_MAX_FRAME_NUMBER
+constexpr auto LOOPS_NUMBER = MIX_PROP_PLAY_LOOPS_NUMBER;
 
-#define SDL_PROP_PLAY_MAX_MILLISECONDS_NUMBER                                  \
-  MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER
+constexpr auto MAX_FRAME_NUMBER = MIX_PROP_PLAY_MAX_FRAME_NUMBER;
 
-#define SDL_PROP_PLAY_START_FRAME_NUMBER MIX_PROP_PLAY_START_FRAME_NUMBER
+constexpr auto MAX_MILLISECONDS_NUMBER = MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER;
 
-#define SDL_PROP_PLAY_START_MILLISECOND_NUMBER                                 \
-  MIX_PROP_PLAY_START_MILLISECOND_NUMBER
+constexpr auto START_FRAME_NUMBER = MIX_PROP_PLAY_START_FRAME_NUMBER;
 
-#define SDL_PROP_PLAY_LOOP_START_FRAME_NUMBER                                  \
-  MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER
+constexpr auto START_MILLISECOND_NUMBER =
+  MIX_PROP_PLAY_START_MILLISECOND_NUMBER;
 
-#define SDL_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER                            \
-  MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER
+constexpr auto LOOP_START_FRAME_NUMBER = MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER;
 
-#define SDL_PROP_PLAY_FADE_IN_FRAMES_NUMBER MIX_PROP_PLAY_FADE_IN_FRAMES_NUMBER
+constexpr auto LOOP_START_MILLISECOND_NUMBER =
+  MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER;
 
-#define SDL_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER                              \
-  MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER
+constexpr auto FADE_IN_FRAMES_NUMBER = MIX_PROP_PLAY_FADE_IN_FRAMES_NUMBER;
 
-#define SDL_PROP_PLAY_FADE_IN_START_GAIN_FLOAT                                 \
-  MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT
+constexpr auto FADE_IN_MILLISECONDS_NUMBER =
+  MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER;
 
-#define SDL_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER                             \
-  MIX_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER
+constexpr auto FADE_IN_START_GAIN_FLOAT =
+  MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT;
 
-#define SDL_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER                       \
-  MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER
+constexpr auto APPEND_SILENCE_FRAMES_NUMBER =
+  MIX_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER;
 
-#define SDL_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN                              \
-  MIX_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN
+constexpr auto APPEND_SILENCE_MILLISECONDS_NUMBER =
+  MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER;
+
+constexpr auto HALT_WHEN_EXHAUSTED_BOOLEAN =
+  MIX_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN;
+
+} // namespace prop::Play
 
 /**
  * Start (or restart) mixing all tracks with a specific tag for playback.
