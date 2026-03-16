@@ -5413,7 +5413,8 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  *             format details on successful return.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
  *                even in the case of an error.
- * @throws Error on failure.
+ * @returns an allocated buffer containing the audio data on success, or nullptr
+ * on failure.
  *
  * This function throws if the .WAV file cannot be opened, uses an unknown data
  * format, or is corrupt; call GetError() for more information.
@@ -5446,7 +5447,8 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
  * @param path the file path of the WAV file to open.
  * @param spec a pointer to an AudioSpec that will be set to the WAVE data's
  *             format details on successful return.
- * @throws Error on failure.
+ * @returns an allocated buffer containing the audio data on success, or nullptr
+ * on failure.
  *
  * This function throws if the .WAV file cannot be opened, uses an unknown data
  * format, or is corrupt,

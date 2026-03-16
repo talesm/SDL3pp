@@ -1337,8 +1337,8 @@ public:
   /**
    * Get parent of a window.
    *
-   * @returns the parent of the window on success.
-   * @throws Error on failure.
+   * @returns the parent of the window on success or nullptr if the window has
+   *          no parent.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2211,7 +2211,8 @@ public:
    *
    * On windowing systems where changes are immediate, this does nothing.
    *
-   * @throws Error on failure.
+   * @returns true on success or false if the operation timed out before the
+   *          window was in the requested state.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2225,7 +2226,7 @@ public:
    * @sa Window.Restore
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
-  void Sync();
+  bool Sync();
 
   /**
    * Return whether the window has a surface associated with it.
@@ -2255,8 +2256,8 @@ public:
    *
    * This function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.
    *
-   * @returns the surface associated with the window, or nullptr on failure;
-   *          call GetError() for more information.
+   * @returns the surface associated with the window on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -5068,8 +5069,8 @@ inline WindowRef Window::FromID(WindowID id)
  * Get parent of a window.
  *
  * @param window the window to query.
- * @returns the parent of the window on success.
- * @throws Error on failure.
+ * @returns the parent of the window on success or nullptr if the window has no
+ *          parent.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -5079,7 +5080,7 @@ inline WindowRef Window::FromID(WindowID id)
  */
 inline WindowRef GetWindowParent(WindowRef window)
 {
-  return {CheckError(SDL_GetWindowParent(window))};
+  return SDL_GetWindowParent(window);
 }
 
 inline WindowRef Window::GetParent() const
@@ -6235,7 +6236,8 @@ inline void Window::SetFullscreen(bool fullscreen)
  *
  * @param window the window for which to wait for the pending state to be
  *               applied.
- * @throws Error on failure.
+ * @returns true on success or false if the operation timed out before the
+ *          window was in the requested state.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -6249,9 +6251,9 @@ inline void Window::SetFullscreen(bool fullscreen)
  * @sa Window.Restore
  * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
  */
-inline void SyncWindow(WindowRef window) { CheckError(SDL_SyncWindow(window)); }
+inline bool SyncWindow(WindowRef window) { return SDL_SyncWindow(window); }
 
-inline void Window::Sync() { SDL::SyncWindow(m_resource); }
+inline bool Window::Sync() { return SDL::SyncWindow(m_resource); }
 
 /**
  * Return whether the window has a surface associated with it.
@@ -6291,8 +6293,8 @@ inline bool Window::HasSurface() const
  * This function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.
  *
  * @param window the window to query.
- * @returns the surface associated with the window, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the surface associated with the window on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -6305,7 +6307,7 @@ inline bool Window::HasSurface() const
  */
 inline Surface GetWindowSurface(WindowRef window)
 {
-  return Surface::Borrow(SDL_GetWindowSurface(window));
+  return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
 }
 
 inline Surface Window::GetSurface()

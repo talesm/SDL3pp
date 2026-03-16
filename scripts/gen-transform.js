@@ -9,7 +9,7 @@ const currentVersion = ["0", "7", "4"]; // major, minor, patch
 
 /** @type {ApiTransform} */
 const transform = {
-  prefixes: ["SDL_", "IMG_", "TTF_"],
+  prefixes: ["SDL_", "IMG_", "TTF_", "MIX_"],
   definitionPrefix: "SDL_",
   sourceIncludePrefix: 'SDL3/',
   namespace: "SDL",
@@ -8778,6 +8778,171 @@ const transform = {
         }
       }
     },
+    "SDL_mixer.h": {
+      localIncludes: [
+        "SDL3pp_audio.h",
+        "SDL3pp_version.h",
+      ],
+      namespacesMap: {
+        "MIX_PROP_MIXER_": "prop::Mixer",
+        "MIX_PROP_AUDIO_": "prop::Audio",
+        "MIX_PROP_METADATA_": "prop::MixMetadata",
+        "MIX_PROP_PLAY_": "prop::Play",
+      },
+      transform: {
+        "MIX_Mixer": {
+          lock: {
+            lockFunc: "MIX_LockMixer",
+            unlockFunc: "MIX_UnlockMixer",
+          },
+        },
+        "MIX_Audio": {
+          resource: { free: "MIX_DestroyAudio" },
+          entries: {
+            "MIX_LoadAudio_IO": "ctor",
+            "MIX_LoadAudio": "ctor",
+            "MIX_LoadAudioWithProperties": "ctor",
+            "MIX_LoadRawAudio_IO": "ctor",
+            "MIX_LoadRawAudio": "ctor",
+          },
+        },
+        "MIX_LoadAudio_IO": {
+          parameters: [{}, {}, {}, { default: "false" }],
+          type: "Audio",
+          hints: { mayFail: false },
+        },
+        "MIX_LoadAudio": {
+          type: "Audio",
+          hints: { mayFail: false },
+        },
+        "MIX_LoadAudioNoCopy": {
+          parameters: [{}, { type: "SourceBytes" }, { type: "bool", name: "free_when_done" }],
+          type: "Audio",
+        },
+        "MIX_LoadAudioWithProperties": { type: "Audio" },
+        "MIX_LoadRawAudio_IO": {
+          parameters: [{}, {}, {}, { default: "false" }],
+          type: "Audio",
+        },
+        "MIX_LoadRawAudio": {
+          parameters: [{}, { type: "SourceBytes" }, { type: "const AudioSpec &", name: "spec" }],
+          type: "Audio",
+        },
+        "MIX_LoadRawAudioNoCopy": {
+          parameters: [{}, { type: "SourceBytes" }, { type: "const AudioSpec &", name: "spec" }, { type: "bool", name: "free_when_done" }],
+          type: "Audio",
+        },
+        "MIX_CreateSineWaveAudio": { type: "Audio" },
+        "MIX_DURATION_UNKNOWN": { kind: "var", type: "Sint64", constexpr: true },
+        "MIX_DURATION_INFINITE": { kind: "var", type: "Sint64", constexpr: true },
+        "MIX_SetTrackIOStream": { parameters: [{}, {}, { default: "false" }], },
+        "MIX_SetTrackRawIOStream": { parameters: [{}, {}, {}, { default: "false" }], },
+        "MIX_GetTrackTags": {
+          type: "OwnArray<char*>",
+          parameters: [{}],
+        },
+        "MIX_GetTaggedTracks": {
+          type: "OwnArray<TrackRef>",
+          parameters: [{}, {}],
+        },
+        "MIX_TrackMSToFrames": { parameters: [{}, { type: "Milliseconds" }], },
+        "MIX_TrackFramesToMS": { type: "Milliseconds" },
+        "MIX_AudioMSToFrames": { parameters: [{}, { type: "Milliseconds" }], },
+        "MIX_AudioFramesToMS": { type: "Milliseconds" },
+        "MIX_MSToFrames": { parameters: [{}, { type: "Milliseconds" }], },
+        "MIX_FramesToMS": { type: "Milliseconds" },
+        "MIX_PlayTrack": { parameters: [{}, { default: "nullptr" }] },
+        "MIX_SetTrackOutputChannelMap": { parameters: [{}, { type: "std::span<const int>" }], },
+        "MIX_GetTrack3DPosition": {
+          type: "Point3D",
+          parameters: [{}],
+        },
+        "MIX_Generate": { parameters: [{}, { type: "TargetBytes" }], },
+        "MIX_DecodeAudio": { parameters: [{}, { type: "TargetBytes" }, { type: "const AudioSpec &", name: "spec" }], },
+        "MIX_StereoGains": { before: "MIX_Track", },
+        "MIX_Point3D": { before: "MIX_Track", },
+        "MIX_PostMixCallback": {
+          before: "MIX_Mixer",
+          callback: "lightweight",
+        },
+        "SetPostMixCallback": {
+          after: "MIX_SetPostMixCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "mixer", type: "MixerRef" },
+            { name: "cb", type: "PostMixCB" },
+          ],
+        },
+        "MIX_TrackStoppedCallback": {
+          before: "MIX_Track",
+          callback: "lightweight",
+        },
+        "SetTrackStoppedCallback": {
+          after: "MIX_SetTrackStoppedCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "track", type: "TrackRef" },
+            { name: "cb", type: "TrackStoppedCB" },
+          ],
+        },
+        "MIX_TrackMixCallback": {
+          before: "MIX_Track",
+          callback: "lightweight",
+        },
+        "SetTrackRawCallback": {
+          after: "MIX_SetTrackRawCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "track", type: "TrackRef" },
+            { name: "cb", type: "TrackMixCB" },
+          ],
+        },
+        "SetTrackCookedCallback": {
+          after: "MIX_SetTrackCookedCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "track", type: "TrackRef" },
+            { name: "cb", type: "TrackMixCB" },
+          ],
+        },
+        "MIX_GroupMixCallback": {
+          before: "MIX_Group",
+          callback: "lightweight",
+        },
+        "SetGroupPostMixCallback": {
+          after: "MIX_SetGroupPostMixCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "group", type: "GroupRef" },
+            { name: "cb", type: "GroupMixCB" },
+          ],
+        },
+        "MIX_CreateAudioDecoder": { parameters: [{}, { default: "nullptr" }] },
+        "MIX_CreateAudioDecoder_IO": { parameters: [{}, { default: "false" }, { default: "nullptr" }] },
+        "SDL_MIXER_MAJOR_VERSION": {
+          value: ""
+        },
+        "SDL_MIXER_MINOR_VERSION": {
+          value: ""
+        },
+        "SDL_MIXER_MICRO_VERSION": {
+          value: ""
+        },
+        "MIX": {
+          kind: "ns",
+          before: "MIX_Version",
+          entries: {},
+        },
+        "MIX_Version": { name: "MIX.Version" },
+        "MIX_Init": { name: "MIX.Init" },
+        "MIX_Quit": { name: "MIX.Quit" },
+      }
+    },
     "SDL_ttf.h": {
       localIncludes: [
         "SDL3pp_gpu.h",
@@ -9703,7 +9868,7 @@ const transform = {
         "TTF_PROP_RENDERER_TEXT_ENGINE_": "prop::RendererTextEngine",
         "TTF_PROP_GPU_TEXT_ENGINE_": "prop::GpuTextEngine"
       },
-    }
+    },
   }
 };
 

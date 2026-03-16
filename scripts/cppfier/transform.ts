@@ -2324,9 +2324,9 @@ export function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
       checkSignatureRules(targetEntry, context);
       if (context.enableException) {
         const r = getTagInGroup(targetEntry.doc, "@returns");
-        if (r) {
+        if (r && r.content.includes("SDL_GetError")) {
           const m = r.content.match(
-            /(.*) on success|(an? valid [^,]+), or (?:\w+) on failure/,
+            /(.*) on success|((an? valid )?[^,]+), or (?:\w+) on (?:failure|error)/,
           );
           if (m) {
             targetEntry.hints = { mayFail: true };

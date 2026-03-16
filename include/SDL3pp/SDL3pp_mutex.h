@@ -229,7 +229,7 @@ public:
    *
    * This function returns true if passed a nullptr mutex.
    *
-   * @throws Error on failure.
+   * @returns true on success, false if the mutex would block.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -238,7 +238,7 @@ public:
    * @sa Mutex.Lock
    * @sa Mutex.Unlock
    */
-  void TryLock();
+  bool TryLock();
 
   /**
    * Unlock the mutex.
@@ -389,7 +389,7 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  * This function returns true if passed a nullptr mutex.
  *
  * @param mutex the mutex to try to lock.
- * @throws Error on failure.
+ * @returns true on success, false if the mutex would block.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -398,12 +398,9 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  * @sa Mutex.Lock
  * @sa Mutex.Unlock
  */
-inline void TryLockMutex(MutexRef mutex)
-{
-  CheckError(SDL_TryLockMutex(mutex));
-}
+inline bool TryLockMutex(MutexRef mutex) { return SDL_TryLockMutex(mutex); }
 
-inline void Mutex::TryLock() { SDL::TryLockMutex(m_resource); }
+inline bool Mutex::TryLock() { return SDL::TryLockMutex(m_resource); }
 
 /**
  * Unlock the mutex.
@@ -683,7 +680,7 @@ public:
    *
    * This function returns true if passed a nullptr rwlock.
    *
-   * @throws Error on failure.
+   * @returns true on success, false if the lock would block.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -693,7 +690,7 @@ public:
    * @sa RWLock.TryLockForWriting
    * @sa RWLock.Unlock
    */
-  void TryLockForReading();
+  bool TryLockForReading();
 
   /**
    * Try to lock a read/write lock _for writing_ without blocking.
@@ -714,7 +711,7 @@ public:
    *
    * This function returns true if passed a nullptr rwlock.
    *
-   * @throws Error on failure.
+   * @returns true on success, false if the lock would block.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -724,7 +721,7 @@ public:
    * @sa RWLock.TryLockForReading
    * @sa RWLock.Unlock
    */
-  void TryLockForWriting();
+  bool TryLockForWriting();
 
   /**
    * Unlock the read/write lock.
@@ -958,7 +955,7 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  * This function returns true if passed a nullptr rwlock.
  *
  * @param rwlock the rwlock to try to lock.
- * @throws Error on failure.
+ * @returns true on success, false if the lock would block.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -968,14 +965,14 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForReading(RWLockRef rwlock)
+inline bool TryLockRWLockForReading(RWLockRef rwlock)
 {
-  CheckError(SDL_TryLockRWLockForReading(rwlock));
+  return SDL_TryLockRWLockForReading(rwlock);
 }
 
-inline void RWLock::TryLockForReading()
+inline bool RWLock::TryLockForReading()
 {
-  SDL::TryLockRWLockForReading(m_resource);
+  return SDL::TryLockRWLockForReading(m_resource);
 }
 
 /**
@@ -998,7 +995,7 @@ inline void RWLock::TryLockForReading()
  * This function returns true if passed a nullptr rwlock.
  *
  * @param rwlock the rwlock to try to lock.
- * @throws Error on failure.
+ * @returns true on success, false if the lock would block.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1008,14 +1005,14 @@ inline void RWLock::TryLockForReading()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForWriting(RWLockRef rwlock)
+inline bool TryLockRWLockForWriting(RWLockRef rwlock)
 {
-  CheckError(SDL_TryLockRWLockForWriting(rwlock));
+  return SDL_TryLockRWLockForWriting(rwlock);
 }
 
-inline void RWLock::TryLockForWriting()
+inline bool RWLock::TryLockForWriting()
 {
-  SDL::TryLockRWLockForWriting(m_resource);
+  return SDL::TryLockRWLockForWriting(m_resource);
 }
 
 /**

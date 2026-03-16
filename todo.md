@@ -24,7 +24,44 @@ Next version
   - [x] Replace \*Param with \*Ref;
   - [x] Remove \*Param;
   - [x] Rename \*ConstRef to \*ConstParam
-- [ ] Wrap SDL_mixer
+- [x] Wrap SDL_mixer;
+- [ ] Remove overloading of `*_IO` variants, use `*FromIO` or similar;
+- [x] Error handling fixes:
+  - [x] SDL::GetClipboardMimeTypes();
+  - [x] SDL::GetGamepadMappings();
+  - [x] SDL::GetGamepadJoystick();
+  - [x] SDL::AcquireGPUCommandBuffer();
+  - [x] SDL::MapGPUTransferBuffer();
+  - [x] SDL::SubmitGPUCommandBufferAndAcquireFence();
+  - [x] SDL::GetHapticFeatures();
+  - [x] SDL::AttachVirtualJoystick();
+  - [x] SDL::GetMouseNameForID();
+  - [x] SDL::GetPenDeviceType();
+  - [x] SDL::GetRendererName();
+  - [x] SDL::GetRendererFromTexture();
+  - [x] SDL::GetSensorID();
+  - [x] SDL::GetAndroidJNIEnv();
+  - [x] SDL::GetAndroidActivity();
+  - [x] SDL::GetTouchDeviceName();
+  - [x] SDL::CreateAnimationEncoder();
+  - [x] SDL::CreateAnimationEncoder_IO();
+  - [x] SDL::CreateAnimationEncoderWithProperties();
+  - [x] SDL::CreateAnimationDecoder();
+  - [x] SDL::CreateAnimationDecoder_IO();
+  - [x] SDL::CreateAnimationDecoderWithProperties();
+  - [x] SDL::GetGlyphImage();
+  - [x] SDL::GetGlyphImageForIndex();
+- [x] No longer throws:
+  - [x] SDL::GetEventFilter();
+  - [x] SDL::GetWindowFromEvent();
+  - [x] SDL::TryLockMutex();
+  - [x] SDL::TryLockRWLockForReading();
+  - [x] SDL::TryLockRWLockForReading();
+  - [x] SDL::GetRenderMetalLayer();
+  - [x] SDL::GetRenderMetalCommandEncoder();
+  - [x] SDL::GetWindowParent();
+  - [x] SDL::SyncWindow();
+  - [x] SDL::EGL_GetWindowSurface();
 
 Backlog
 -------

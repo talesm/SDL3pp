@@ -237,14 +237,14 @@ inline OwnArray<TouchID> GetTouchDevices() { return SDL_GetTouchDevices(); }
  * Get the touch device name as reported from the driver.
  *
  * @param touchID the touch device instance ID.
- * @returns touch device name, or nullptr on failure; call GetError() for more
- *          information.
+ * @returns touch device name on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline const char* GetTouchDeviceName(TouchID touchID)
 {
-  return SDL_GetTouchDeviceName(touchID);
+  return CheckError(SDL_GetTouchDeviceName(touchID));
 }
 
 /**

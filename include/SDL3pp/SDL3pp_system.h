@@ -309,8 +309,9 @@ inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
  * being that the SDL headers can avoid including jni.h.
  *
  * @returns a pointer to Java native interface object (JNIEnv) to which the
- *          current thread is attached, or nullptr on failure; call GetError()
- *          for more information.
+ *          current thread is attached on success.
+ *
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -318,7 +319,7 @@ inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
  *
  * @sa GetAndroidActivity
  */
-inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
+inline void* GetAndroidJNIEnv() { return CheckError(SDL_GetAndroidJNIEnv()); }
 
 /**
  * Retrieve the Java instance of the Android activity class.
@@ -334,8 +335,9 @@ inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
  * https://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/functions.html
  *
  * @returns the jobject representing the instance of the Activity class of the
- *          Android application, or nullptr on failure; call GetError() for more
- *          information.
+ *          Android application on success.
+ *
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -343,7 +345,10 @@ inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
  *
  * @sa GetAndroidJNIEnv
  */
-inline void* GetAndroidActivity() { return SDL_GetAndroidActivity(); }
+inline void* GetAndroidActivity()
+{
+  return CheckError(SDL_GetAndroidActivity());
+}
 
 /**
  * Query Android API level of the current device.

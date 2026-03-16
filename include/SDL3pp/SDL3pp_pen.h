@@ -204,8 +204,8 @@ constexpr PenDeviceType PEN_DEVICE_TYPE_INDIRECT =
  * prepared to get an PEN_DEVICE_TYPE_UNKNOWN result.
  *
  * @param instance_id the pen instance ID.
- * @returns the device type of the given pen, or PEN_DEVICE_TYPE_INVALID on
- *          failure; call GetError() for more information.
+ * @returns the device type of the given pen on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -213,7 +213,7 @@ constexpr PenDeviceType PEN_DEVICE_TYPE_INDIRECT =
  */
 inline PenDeviceType GetPenDeviceType(PenID instance_id)
 {
-  return SDL_GetPenDeviceType(instance_id);
+  return CheckError(SDL_GetPenDeviceType(instance_id));
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)

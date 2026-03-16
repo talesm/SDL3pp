@@ -89,7 +89,7 @@
  /**
   * Get the Android Java Native Interface Environment of the current thread.
   *
-@@ -516,13 +549,13 @@
+@@ -521,13 +554,13 @@
  /**
   * Callback that presents a response from a RequestAndroidPermission call.
   *
@@ -104,7 +104,7 @@
   * @sa RequestAndroidPermissionCallback
   */
  using RequestAndroidPermissionCB =
-@@ -594,7 +627,6 @@
+@@ -599,7 +632,6 @@
   *
   * @param permission the permission to request.
   * @param cb the callback to trigger when the request has a response.
@@ -112,7 +112,7 @@
   * @returns true if the request was submitted, false if there was an error
   *          submitting. The result of the request is only ever reported through
   *          the callback, not this return value.
-@@ -606,7 +638,12 @@
+@@ -611,7 +643,12 @@
  inline bool RequestAndroidPermission(StringParam permission,
                                       RequestAndroidPermissionCB cb)
  {
@@ -126,7 +126,7 @@
  }
  
  /**
-@@ -662,6 +699,8 @@
+@@ -667,6 +704,8 @@
    CheckError(SDL_SendAndroidMessage(command, param));
  }
  
@@ -135,7 +135,7 @@
  /**
   * Query if the current device is a tablet.
   *
-@@ -832,6 +871,8 @@
+@@ -837,6 +876,8 @@
    SDL_OnApplicationDidEnterForeground();
  }
  
@@ -144,7 +144,7 @@
  /**
   * Let iOS apps with external event handling report
   * onApplicationDidChangeStatusBarOrientation.
-@@ -852,8 +893,14 @@
+@@ -857,8 +898,14 @@
    SDL_OnApplicationDidChangeStatusBarOrientation();
  }
  
@@ -159,7 +159,7 @@
  using XUserHandle = ::XUserHandle;
  
  /**
-@@ -889,6 +936,7 @@
+@@ -894,6 +941,7 @@
  {
    return SDL_GetGDKDefaultUser(outUserHandle);
  }

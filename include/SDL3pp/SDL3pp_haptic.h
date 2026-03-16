@@ -960,8 +960,9 @@ public:
   /**
    * Get the haptic device's supported features in bitwise manner.
    *
-   * @returns a list of supported haptic features in bitwise manner (OR'd), or 0
-   *          on failure; call GetError() for more information.
+   * @returns a list of supported haptic features in bitwise manner (OR'd) on
+   *          success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1538,8 +1539,9 @@ inline int Haptic::GetMaxEffectsPlaying()
  * Get the haptic device's supported features in bitwise manner.
  *
  * @param haptic the Haptic device to query.
- * @returns a list of supported haptic features in bitwise manner (OR'd), or 0
- *          on failure; call GetError() for more information.
+ * @returns a list of supported haptic features in bitwise manner (OR'd) on
+ *          success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1548,7 +1550,7 @@ inline int Haptic::GetMaxEffectsPlaying()
  */
 inline Uint32 GetHapticFeatures(HapticRef haptic)
 {
-  return SDL_GetHapticFeatures(haptic);
+  return CheckError(SDL_GetHapticFeatures(haptic));
 }
 
 inline Uint32 Haptic::GetFeatures()

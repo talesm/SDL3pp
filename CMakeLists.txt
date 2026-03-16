@@ -13,6 +13,7 @@ include(GNUInstallDirs)
 option(SDL3PP_FORCE_BUNDLED "Force use of bundled SDL libraries" OFF)
 option(SDL3PP_ENABLE_IMAGE "Enable compilation of SDL_Image" ON)
 option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
+option(SDL3PP_ENABLE_MIXER "Enable compilation of SDL_MIXER" ON)
 
 if (SDL3PP_FORCE_BUNDLED)
     set(SDL3PP_DEPENDENCIES SDL3::SDL3)
@@ -28,6 +29,15 @@ else ()
         set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
         if (TARGET SDL3_image::SDL3_image)
             set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+        endif ()
+    endif ()
+    
+    # SDL_mixer
+    if (SDL3PP_ENABLE_MIXER)
+        find_package(SDL3_mixer QUIET)
+        set(SDL3_MIXER_DEPENDENCY "find_dependency(SDL3_mixer QUIET)") # placeholder in cmake.in
+        if (TARGET SDL3_mixer::SDL3_mixer)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_mixer::SDL3_mixer)
         endif ()
     endif ()
     

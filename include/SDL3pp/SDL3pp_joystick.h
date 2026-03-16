@@ -1722,8 +1722,8 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  * JoystickID.DetachVirtualJoystick().
  *
  * @param desc joystick description, initialized using InitInterface().
- * @returns the joystick instance ID, or 0 on failure; call GetError() for more
- *          information.
+ * @returns the joystick instance ID on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1739,7 +1739,7 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  */
 inline JoystickID AttachVirtualJoystick(const VirtualJoystickDesc& desc)
 {
-  return SDL_AttachVirtualJoystick(&desc);
+  return CheckError(SDL_AttachVirtualJoystick(&desc));
 }
 
 /**

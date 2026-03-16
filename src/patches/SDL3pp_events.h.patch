@@ -402,16 +402,7 @@
  }
  
  /**
-@@ -1738,7 +1772,7 @@
-  */
- inline WindowRef GetWindowFromEvent(const Event& event)
- {
--  return CheckError(SDL_GetWindowFromEvent(&event));
-+  return {CheckError(SDL_GetWindowFromEvent(&event))};
- }
- 
- #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -1746,26 +1780,26 @@
+@@ -1745,26 +1779,26 @@
  /**
   * Generate an English description of an event.
   *
@@ -450,7 +441,7 @@
   * @returns number of bytes needed for the full string, not counting the
   *          null-terminator byte.
   *
-@@ -1775,13 +1809,10 @@
+@@ -1774,13 +1808,10 @@
   */
  inline int GetEventDescription(const Event& event, TargetBytes buf)
  {
@@ -465,7 +456,7 @@
  /**
   * Generate an English description of an event.
   *
-@@ -1802,11 +1833,8 @@
+@@ -1801,11 +1832,8 @@
   * complete string, not counting the nullptr-terminator, whether the string was
   * truncated or not. Unlike snprintf(), though, this function never returns -1.
   *
@@ -479,7 +470,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1814,7 +1842,11 @@
+@@ -1813,7 +1841,11 @@
   */
  inline std::string GetEventDescription(const Event& event)
  {

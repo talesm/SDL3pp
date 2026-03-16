@@ -605,8 +605,8 @@ inline OwnArray<MouseID> GetMice()
  * This function returns "" if the mouse doesn't have a name.
  *
  * @param instance_id the mouse instance ID.
- * @returns the name of the selected mouse, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the name of the selected mouse on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -616,7 +616,7 @@ inline OwnArray<MouseID> GetMice()
  */
 inline const char* GetMouseNameForID(MouseID instance_id)
 {
-  return SDL_GetMouseNameForID(instance_id);
+  return CheckError(SDL_GetMouseNameForID(instance_id));
 }
 
 /**

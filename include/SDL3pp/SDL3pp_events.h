@@ -1551,7 +1551,7 @@ inline void SetEventFilter(EventFilterCB filter)
  * @param filter the current callback function will be stored here.
  * @param userdata the pointer that is passed to the current event filter will
  *                 be stored here.
- * @throws Error on failure.
+ * @returns true on success or false if there is no event filter set.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1559,9 +1559,9 @@ inline void SetEventFilter(EventFilterCB filter)
  *
  * @sa SetEventFilter
  */
-inline void GetEventFilter(EventFilter* filter, void** userdata)
+inline bool GetEventFilter(EventFilter* filter, void** userdata)
 {
-  CheckError(SDL_GetEventFilter(filter, userdata));
+  return SDL_GetEventFilter(filter, userdata);
 }
 
 /**
@@ -1759,8 +1759,7 @@ inline Uint32 RegisterEvents(int numevents)
  * Get window associated with an event.
  *
  * @param event an event containing a `windowID`.
- * @returns the associated window on success.
- * @throws Error on failure.
+ * @returns the associated window on success or nullptr if there is none.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1772,7 +1771,7 @@ inline Uint32 RegisterEvents(int numevents)
  */
 inline WindowRef GetWindowFromEvent(const Event& event)
 {
-  return {CheckError(SDL_GetWindowFromEvent(&event))};
+  return SDL_GetWindowFromEvent(&event);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)

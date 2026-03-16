@@ -503,8 +503,8 @@ public:
   /**
    * Get the name of a renderer.
    *
-   * @returns the name of the selected renderer, or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns the name of the selected renderer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -2075,8 +2075,8 @@ public:
    * This function returns `void *`, so SDL doesn't have to include Metal's
    * headers, but it can be safely cast to a `CAMetalLayer *`.
    *
-   * @returns a `CAMetalLayer *` on success.
-   * @throws Error on failure.
+   * @returns a `CAMetalLayer *` on success, or nullptr if the renderer isn't a
+   *          Metal renderer.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2097,8 +2097,8 @@ public:
    * doesn't apply to command encoders for render targets, just the window's
    * backbuffer. Check your return values!
    *
-   * @returns an `id<MTLRenderCommandEncoder>` on success.
-   * @throws Error on failure.
+   * @returns an `id<MTLRenderCommandEncoder>` on success, or nullptr if the
+   *          renderer isn't a Metal renderer or there was an error.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2849,8 +2849,8 @@ public:
   /**
    * Get the renderer that created an Texture.
    *
-   * @returns a pointer to the Renderer that created the texture, or nullptr on
-   *          failure; call GetError() for more information.
+   * @returns a pointer to the Renderer that created the texture on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -4322,8 +4322,8 @@ inline WindowRef Renderer::GetWindow()
  * Get the name of a renderer.
  *
  * @param renderer the rendering context.
- * @returns the name of the selected renderer, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the name of the selected renderer on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4334,7 +4334,7 @@ inline WindowRef Renderer::GetWindow()
  */
 inline const char* GetRendererName(RendererRef renderer)
 {
-  return SDL_GetRendererName(renderer);
+  return CheckError(SDL_GetRendererName(renderer));
 }
 
 inline const char* Renderer::GetName() const
@@ -5068,8 +5068,8 @@ inline PropertiesRef Texture::GetProperties() const
  * Get the renderer that created an Texture.
  *
  * @param texture the texture to query.
- * @returns a pointer to the Renderer that created the texture, or nullptr on
- *          failure; call GetError() for more information.
+ * @returns a pointer to the Renderer that created the texture on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -5077,7 +5077,7 @@ inline PropertiesRef Texture::GetProperties() const
  */
 inline RendererRef GetRendererFromTexture(TextureConstRef texture)
 {
-  return {SDL_GetRendererFromTexture(texture)};
+  return CheckError(SDL_GetRendererFromTexture(texture));
 }
 
 inline RendererRef Texture::GetRenderer() const
@@ -7915,8 +7915,8 @@ inline void Renderer::Flush() { SDL::FlushRenderer(m_resource); }
  * headers, but it can be safely cast to a `CAMetalLayer *`.
  *
  * @param renderer the renderer to query.
- * @returns a `CAMetalLayer *` on success.
- * @throws Error on failure.
+ * @returns a `CAMetalLayer *` on success, or nullptr if the renderer isn't a
+ *          Metal renderer.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -7926,7 +7926,7 @@ inline void Renderer::Flush() { SDL::FlushRenderer(m_resource); }
  */
 inline void* GetRenderMetalLayer(RendererRef renderer)
 {
-  return CheckError(SDL_GetRenderMetalLayer(renderer));
+  return SDL_GetRenderMetalLayer(renderer);
 }
 
 inline void* Renderer::GetRenderMetalLayer()
@@ -7946,8 +7946,8 @@ inline void* Renderer::GetRenderMetalLayer()
  * backbuffer. Check your return values!
  *
  * @param renderer the renderer to query.
- * @returns an `id<MTLRenderCommandEncoder>` on success.
- * @throws Error on failure.
+ * @returns an `id<MTLRenderCommandEncoder>` on success, or nullptr if the
+ *          renderer isn't a Metal renderer or there was an error.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -7957,7 +7957,7 @@ inline void* Renderer::GetRenderMetalLayer()
  */
 inline void* GetRenderMetalCommandEncoder(RendererRef renderer)
 {
-  return CheckError(SDL_GetRenderMetalCommandEncoder(renderer));
+  return SDL_GetRenderMetalCommandEncoder(renderer);
 }
 
 inline void* Renderer::GetRenderMetalCommandEncoder()
