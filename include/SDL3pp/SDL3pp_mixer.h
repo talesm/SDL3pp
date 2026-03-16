@@ -1726,10 +1726,10 @@ public:
    * frames in either direction.
    *
    * This will return a value >= 0 if a duration is known. It might also return
-   * SDL_DURATION_UNKNOWN or SDL_DURATION_INFINITE.
+   * DURATION_UNKNOWN or DURATION_INFINITE.
    *
-   * @returns the length of the audio in sample frames, or SDL_DURATION_UNKNOWN
-   *          or SDL_DURATION_INFINITE.
+   * @returns the length of the audio in sample frames, or DURATION_UNKNOWN or
+   *          DURATION_INFINITE.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -4564,11 +4564,11 @@ constexpr auto DURATION_INFINITE_BOOLEAN =
  * frames in either direction.
  *
  * This will return a value >= 0 if a duration is known. It might also return
- * SDL_DURATION_UNKNOWN or SDL_DURATION_INFINITE.
+ * DURATION_UNKNOWN or DURATION_INFINITE.
  *
  * @param audio the audio to query.
- * @returns the length of the audio in sample frames, or SDL_DURATION_UNKNOWN or
- *          SDL_DURATION_INFINITE.
+ * @returns the length of the audio in sample frames, or DURATION_UNKNOWN or
+ *          DURATION_INFINITE.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4581,9 +4581,11 @@ inline Sint64 GetAudioDuration(AudioRef audio)
 
 inline Sint64 Audio::GetDuration() { return SDL::GetAudioDuration(m_resource); }
 
-#define SDL_DURATION_UNKNOWN MIX_DURATION_UNKNOWN
+/// Unknown duration, when the length of the audio can't be determined.
+constexpr Sint64 DURATION_UNKNOWN = MIX_DURATION_UNKNOWN;
 
-#define SDL_DURATION_INFINITE MIX_DURATION_INFINITE
+/// Infinite duration, when the audio never runs out of sound to generate.
+constexpr Sint64 DURATION_INFINITE = MIX_DURATION_INFINITE;
 
 /**
  * Query the initial audio format of a Audio.

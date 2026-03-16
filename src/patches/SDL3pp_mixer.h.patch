@@ -185,7 +185,7 @@
  namespace MIX {
  
  /**
-@@ -4019,7 +4023,7 @@
+@@ -4023,7 +4027,7 @@
   *
   * This function loads data from an IOStream. There is also a version that loads
   * from a path on the filesystem (Audio.Audio()), and one that accepts
@@ -194,7 +194,7 @@
   *
   * The IOStream provided must be able to seek, or loading will fail. If the
   * stream can't seek (data is coming from an HTTP connection, etc), consider
-@@ -4041,7 +4045,7 @@
+@@ -4045,7 +4049,7 @@
   * @sa Audio.Destroy
   * @sa Track.SetAudio
   * @sa Audio.Audio
@@ -203,7 +203,7 @@
   */
  inline Audio LoadAudio_IO(MixerRef mixer,
                            IOStreamRef io,
-@@ -4092,13 +4096,13 @@
+@@ -4096,13 +4100,13 @@
   *
   * This is equivalent to calling:
   *
@@ -220,7 +220,7 @@
   *
   * @param mixer a mixer this audio is intended to be used with. May be nullptr.
   * @param path the path on the filesystem to load data from.
-@@ -4112,8 +4116,8 @@
+@@ -4116,8 +4120,8 @@
   *
   * @sa Audio.Destroy
   * @sa Track.SetAudio
@@ -231,7 +231,7 @@
   */
  inline Audio LoadAudio(MixerRef mixer, StringParam path, bool predecode)
  {
-@@ -4143,7 +4147,7 @@
+@@ -4147,7 +4151,7 @@
   * this is meant to optimize for data that's already in memory and intends to
   * exist there for significant time; since predecoding would only need the file
   * format data once, upfront, one could simply wrap it in
@@ -240,7 +240,7 @@
   *
   * Audio objects can be shared between multiple mixers. The `mixer` parameter
   * just suggests the most likely mixer to use this audio, in case some
-@@ -4179,14 +4183,14 @@
+@@ -4183,14 +4187,14 @@
   * @sa Audio.Destroy
   * @sa Track.SetAudio
   * @sa Mixer.LoadRawAudioNoCopy
@@ -258,7 +258,7 @@
  }
  
  inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
-@@ -4238,7 +4242,6 @@
+@@ -4241,7 +4245,6 @@
   * @sa Audio.Destroy
   * @sa Track.SetAudio
   * @sa Audio.Audio
@@ -266,7 +266,7 @@
   */
  inline Audio LoadAudioWithProperties(PropertiesRef props)
  {
-@@ -4292,7 +4295,6 @@
+@@ -4297,7 +4300,6 @@
   * @sa Track.SetAudio
   * @sa Audio.Audio
   * @sa Mixer.LoadRawAudioNoCopy
@@ -274,7 +274,7 @@
   */
  inline Audio LoadRawAudio_IO(MixerRef mixer,
                               IOStreamRef io,
-@@ -4341,7 +4343,6 @@
+@@ -4346,7 +4348,6 @@
   * @sa Track.SetAudio
   * @sa Audio.Audio
   * @sa Mixer.LoadRawAudioNoCopy
@@ -282,7 +282,7 @@
   */
  inline Audio LoadRawAudio(MixerRef mixer,
                            SourceBytes data,
-@@ -4393,15 +4394,14 @@
+@@ -4398,15 +4399,14 @@
   * @sa Track.SetAudio
   * @sa Audio.Audio
   * @sa Audio.Audio
@@ -300,7 +300,7 @@
  }
  
  inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
-@@ -4452,7 +4452,7 @@
+@@ -4457,7 +4457,7 @@
                                   float amplitude,
                                   Sint64 ms)
  {
@@ -309,7 +309,7 @@
  }
  
  inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
-@@ -4487,7 +4487,8 @@
+@@ -4492,7 +4492,8 @@
   *   out of sound to generate. This isn't necessarily always known to SDL_mixer,
   *   though.
   *
@@ -319,7 +319,18 @@
   *
   * Note that the metadata properties are whatever SDL_mixer finds in things like
   * ID3 tags, and they often have very little standardized formatting, may be
-@@ -6913,7 +6914,7 @@
+@@ -4580,8 +4581,10 @@
+ 
+ inline Sint64 Audio::GetDuration() { return SDL::GetAudioDuration(m_resource); }
+ 
++/// Unknown duration, when the length of the audio can't be determined.
+ constexpr Sint64 DURATION_UNKNOWN = MIX_DURATION_UNKNOWN;
+ 
++/// Infinite duration, when the audio never runs out of sound to generate.
+ constexpr Sint64 DURATION_INFINITE = MIX_DURATION_INFINITE;
+ 
+ /**
+@@ -6922,7 +6925,7 @@
   * initialized, if available tracks to mix run out, the end of the buffer will
   * be initialized with silence; this silence will not be counted in the return
   * value, so the caller has the option to identify how much of the buffer has
@@ -328,7 +339,7 @@
   * success. A return value of -1 means failure (out of memory, invalid
   * parameters, etc).
   *
-@@ -7443,4 +7444,6 @@
+@@ -7452,4 +7455,6 @@
  
  } // namespace SDL
  
