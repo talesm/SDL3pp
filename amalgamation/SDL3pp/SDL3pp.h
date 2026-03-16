@@ -99174,7 +99174,7 @@ public:
    *
    * This function allows properties to be specified. This is intended to supply
    * file-specific settings, such as where to find SoundFonts for a MIDI file,
-   * etc. In most cases, the caller should pass a zero to specify no extra
+   * etc. In most cases, the caller should pass a nullptr to specify no extra
    * properties.
    *
    * Properties are discussed in [SDL's
@@ -99187,7 +99187,7 @@ public:
    * call to MIX.Init(), but does not need an actual Mixer to have been created.
    *
    * @param path the path on the filesystem from which to load data.
-   * @param props decoder-specific properties. May be zero.
+   * @param props decoder-specific properties. May be nullptr.
    * @post an audio decoder, ready to decode.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -99198,7 +99198,7 @@ public:
    * @sa AudioDecoder.DecodeAudio
    * @sa AudioDecoder.Destroy
    */
-  AudioDecoder(StringParam path, PropertiesRef props);
+  AudioDecoder(StringParam path, PropertiesRef props = nullptr);
 
   /**
    * Create a AudioDecoder from an IOStream.
@@ -99209,7 +99209,7 @@ public:
    *
    * This function allows properties to be specified. This is intended to supply
    * file-specific settings, such as where to find SoundFonts for a MIDI file,
-   * etc. In most cases, the caller should pass a zero to specify no extra
+   * etc. In most cases, the caller should pass a nullptr to specify no extra
    * properties.
    *
    * If `closeio` is true, then `io` will be closed when this decoder is done
@@ -99224,7 +99224,7 @@ public:
    *
    * @param io the i/o stream from which to load data.
    * @param closeio if true, close the i/o stream when done with it.
-   * @param props decoder-specific properties. May be zero.
+   * @param props decoder-specific properties. May be nullptr.
    * @post an audio decoder, ready to decode.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -99235,7 +99235,9 @@ public:
    * @sa AudioDecoder.DecodeAudio
    * @sa AudioDecoder.Destroy
    */
-  AudioDecoder(IOStreamRef io, bool closeio, PropertiesRef props);
+  AudioDecoder(IOStreamRef io,
+               bool closeio = false,
+               PropertiesRef props = nullptr);
 
   /// Destructor
   ~AudioDecoder() { MIX_DestroyAudioDecoder(m_resource); }
@@ -99415,7 +99417,7 @@ struct AudioDecoderRef : AudioDecoder
  *
  * This function allows properties to be specified. This is intended to supply
  * file-specific settings, such as where to find SoundFonts for a MIDI file,
- * etc. In most cases, the caller should pass a zero to specify no extra
+ * etc. In most cases, the caller should pass a nullptr to specify no extra
  * properties.
  *
  * Properties are discussed in [SDL's
@@ -99428,7 +99430,7 @@ struct AudioDecoderRef : AudioDecoder
  * call to MIX.Init(), but does not need an actual Mixer to have been created.
  *
  * @param path the path on the filesystem from which to load data.
- * @param props decoder-specific properties. May be zero.
+ * @param props decoder-specific properties. May be nullptr.
  * @returns an audio decoder, ready to decode.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -99439,7 +99441,8 @@ struct AudioDecoderRef : AudioDecoder
  * @sa AudioDecoder.DecodeAudio
  * @sa AudioDecoder.Destroy
  */
-inline AudioDecoder CreateAudioDecoder(StringParam path, PropertiesRef props)
+inline AudioDecoder CreateAudioDecoder(StringParam path,
+                                       PropertiesRef props = nullptr)
 {
   return AudioDecoder(std::move(path), props);
 }
@@ -99465,7 +99468,7 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  *
  * This function allows properties to be specified. This is intended to supply
  * file-specific settings, such as where to find SoundFonts for a MIDI file,
- * etc. In most cases, the caller should pass a zero to specify no extra
+ * etc. In most cases, the caller should pass a nullptr to specify no extra
  * properties.
  *
  * If `closeio` is true, then `io` will be closed when this decoder is done with
@@ -99480,7 +99483,7 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  *
  * @param io the i/o stream from which to load data.
  * @param closeio if true, close the i/o stream when done with it.
- * @param props decoder-specific properties. May be zero.
+ * @param props decoder-specific properties. May be nullptr.
  * @returns an audio decoder, ready to decode.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -99492,8 +99495,8 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  * @sa AudioDecoder.Destroy
  */
 inline AudioDecoder CreateAudioDecoder_IO(IOStreamRef io,
-                                          bool closeio,
-                                          PropertiesRef props)
+                                          bool closeio = false,
+                                          PropertiesRef props = nullptr)
 {
   return AudioDecoder(io, closeio, props);
 }

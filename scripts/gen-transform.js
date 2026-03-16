@@ -8835,6 +8835,8 @@ const transform = {
         "MIX_TrackMixCallback": { before: "MIX_Track", },
         "MIX_GroupMixCallback": { before: "MIX_Group", },
         "MIX_PostMixCallback": { before: "MIX_Mixer", },
+        "MIX_CreateAudioDecoder": { parameters: [{}, { default: "nullptr" }] },
+        "MIX_CreateAudioDecoder_IO": { parameters: [{}, { default: "false" }, { default: "nullptr" }] },
         "SDL_MIXER_MAJOR_VERSION": {
           value: ""
         },

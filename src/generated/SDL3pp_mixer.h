@@ -7047,7 +7047,7 @@ public:
    * @sa AudioDecoder.DecodeAudio
    * @sa AudioDecoder.Destroy
    */
-  AudioDecoder(StringParam path, PropertiesRef props);
+  AudioDecoder(StringParam path, PropertiesRef props = nullptr);
 
   /**
    * Create a AudioDecoder from an IOStream.
@@ -7084,7 +7084,9 @@ public:
    * @sa AudioDecoder.DecodeAudio
    * @sa AudioDecoder.Destroy
    */
-  AudioDecoder(IOStreamRef io, bool closeio, PropertiesRef props);
+  AudioDecoder(IOStreamRef io,
+               bool closeio = false,
+               PropertiesRef props = nullptr);
 
   /// Destructor
   ~AudioDecoder() { MIX_DestroyAudioDecoder(m_resource); }
@@ -7288,7 +7290,8 @@ struct AudioDecoderRef : AudioDecoder
  * @sa AudioDecoder.DecodeAudio
  * @sa AudioDecoder.Destroy
  */
-inline AudioDecoder CreateAudioDecoder(StringParam path, PropertiesRef props)
+inline AudioDecoder CreateAudioDecoder(StringParam path,
+                                       PropertiesRef props = nullptr)
 {
   return AudioDecoder(std::move(path), props);
 }
@@ -7341,8 +7344,8 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  * @sa AudioDecoder.Destroy
  */
 inline AudioDecoder CreateAudioDecoder_IO(IOStreamRef io,
-                                          bool closeio,
-                                          PropertiesRef props)
+                                          bool closeio = false,
+                                          PropertiesRef props = nullptr)
 {
   return AudioDecoder(io, closeio, props);
 }

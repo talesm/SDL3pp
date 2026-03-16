@@ -453,7 +453,79 @@
   * success. A return value of -1 means failure (out of memory, invalid
   * parameters, etc).
   *
-@@ -7464,4 +7463,6 @@
+@@ -7023,7 +7022,7 @@
+    *
+    * This function allows properties to be specified. This is intended to supply
+    * file-specific settings, such as where to find SoundFonts for a MIDI file,
+-   * etc. In most cases, the caller should pass a zero to specify no extra
++   * etc. In most cases, the caller should pass a nullptr to specify no extra
+    * properties.
+    *
+    * Properties are discussed in [SDL's
+@@ -7036,7 +7035,7 @@
+    * call to MIX.Init(), but does not need an actual Mixer to have been created.
+    *
+    * @param path the path on the filesystem from which to load data.
+-   * @param props decoder-specific properties. May be zero.
++   * @param props decoder-specific properties. May be nullptr.
+    * @post an audio decoder, ready to decode.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+@@ -7058,7 +7057,7 @@
+    *
+    * This function allows properties to be specified. This is intended to supply
+    * file-specific settings, such as where to find SoundFonts for a MIDI file,
+-   * etc. In most cases, the caller should pass a zero to specify no extra
++   * etc. In most cases, the caller should pass a nullptr to specify no extra
+    * properties.
+    *
+    * If `closeio` is true, then `io` will be closed when this decoder is done
+@@ -7073,7 +7072,7 @@
+    *
+    * @param io the i/o stream from which to load data.
+    * @param closeio if true, close the i/o stream when done with it.
+-   * @param props decoder-specific properties. May be zero.
++   * @param props decoder-specific properties. May be nullptr.
+    * @post an audio decoder, ready to decode.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+@@ -7266,7 +7265,7 @@
+  *
+  * This function allows properties to be specified. This is intended to supply
+  * file-specific settings, such as where to find SoundFonts for a MIDI file,
+- * etc. In most cases, the caller should pass a zero to specify no extra
++ * etc. In most cases, the caller should pass a nullptr to specify no extra
+  * properties.
+  *
+  * Properties are discussed in [SDL's
+@@ -7279,7 +7278,7 @@
+  * call to MIX.Init(), but does not need an actual Mixer to have been created.
+  *
+  * @param path the path on the filesystem from which to load data.
+- * @param props decoder-specific properties. May be zero.
++ * @param props decoder-specific properties. May be nullptr.
+  * @returns an audio decoder, ready to decode.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -7317,7 +7316,7 @@
+  *
+  * This function allows properties to be specified. This is intended to supply
+  * file-specific settings, such as where to find SoundFonts for a MIDI file,
+- * etc. In most cases, the caller should pass a zero to specify no extra
++ * etc. In most cases, the caller should pass a nullptr to specify no extra
+  * properties.
+  *
+  * If `closeio` is true, then `io` will be closed when this decoder is done with
+@@ -7332,7 +7331,7 @@
+  *
+  * @param io the i/o stream from which to load data.
+  * @param closeio if true, close the i/o stream when done with it.
+- * @param props decoder-specific properties. May be zero.
++ * @param props decoder-specific properties. May be nullptr.
+  * @returns an audio decoder, ready to decode.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -7467,4 +7466,6 @@
  
  } // namespace SDL
  
