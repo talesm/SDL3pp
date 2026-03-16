@@ -12314,7 +12314,8 @@ public:
    *
    * All properties are automatically destroyed when Quit() is called.
    *
-   * @returns a valid ID for a new group of properties on success;
+   * @returns an ID for a new group of properties on success.
+   *
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -12987,7 +12988,8 @@ inline PropertiesRef GetGlobalProperties()
  *
  * All properties are automatically destroyed when Quit() is called.
  *
- * @returns a valid ID for a new group of properties on success;
+ * @returns an ID for a new group of properties on success.
+ *
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -22549,8 +22551,8 @@ inline bool HasClipboardData(StringParam mime_type)
 /**
  * Retrieve the list of mime types available in the clipboard.
  *
- * @returns a null terminated array of strings with mime types, or empty on
- *          failure; call GetError() for more information.
+ * @returns a null-terminated array of strings with mime types on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -22561,7 +22563,7 @@ inline bool HasClipboardData(StringParam mime_type)
 inline OwnArray<char*> GetClipboardMimeTypes()
 {
   size_t count = 0;
-  auto data = SDL_GetClipboardMimeTypes(&count);
+  auto data = CheckError(SDL_GetClipboardMimeTypes(&count));
   if (!data) return {};
   return OwnArray<char*>{data, count};
 }
@@ -32451,8 +32453,8 @@ public:
   /**
    * Get the instance ID of a sensor.
    *
-   * @returns the sensor instance ID, or 0 on failure; call GetError() for more
-   *          information.
+   * @returns the sensor instance ID on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -32706,14 +32708,14 @@ inline int Sensor::GetNonPortableType()
  * Get the instance ID of a sensor.
  *
  * @param sensor the Sensor object to inspect.
- * @returns the sensor instance ID, or 0 on failure; call GetError() for more
- *          information.
+ * @returns the sensor instance ID on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline SensorID GetSensorID(SensorRef sensor)
 {
-  return SDL_GetSensorID(sensor);
+  return CheckError(SDL_GetSensorID(sensor));
 }
 
 inline SensorID Sensor::GetID() { return SDL::GetSensorID(m_resource); }
@@ -55348,8 +55350,8 @@ public:
    *
    * This function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.
    *
-   * @returns the surface associated with the window, or nullptr on failure;
-   *          call GetError() for more information.
+   * @returns the surface associated with the window on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -55918,8 +55920,8 @@ public:
   /**
    * Get the EGL surface associated with the window.
    *
-   * @returns the EGLSurface pointer associated with the window, or nullptr on
-   *          failure.
+   * @returns the EGLSurface pointer associated with the window on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -59384,8 +59386,8 @@ inline bool Window::HasSurface() const
  * This function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.
  *
  * @param window the window to query.
- * @returns the surface associated with the window, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the surface associated with the window on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -59398,7 +59400,7 @@ inline bool Window::HasSurface() const
  */
 inline Surface GetWindowSurface(WindowRef window)
 {
-  return Surface::Borrow(SDL_GetWindowSurface(window));
+  return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
 }
 
 inline Surface Window::GetSurface()
@@ -60558,8 +60560,8 @@ inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
  * Get the EGL surface associated with the window.
  *
  * @param window the window to query.
- * @returns the EGLSurface pointer associated with the window, or nullptr on
- *          failure.
+ * @returns the EGLSurface pointer associated with the window on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -60567,7 +60569,7 @@ inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
  */
 inline EGLSurface EGL_GetWindowSurface(WindowRef window)
 {
-  return SDL_EGL_GetWindowSurface(window);
+  return CheckError(SDL_EGL_GetWindowSurface(window));
 }
 
 inline EGLSurface Window::GetEGLSurface()
@@ -65560,8 +65562,8 @@ public:
    * All commands in the submission are guaranteed to begin executing before any
    * command in a subsequent submission begins executing.
    *
-   * @returns a fence associated with the command buffer, or nullptr on failure;
-   *          call GetError() for more information.
+   * @returns a fence associated with the command buffer on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -66983,8 +66985,8 @@ public:
    * mipmaps. Interleaving commands between the two command buffers reduces the
    * total amount of passes overall which improves rendering performance.
    *
-   * @returns a command buffer, or nullptr on failure; call GetError() for more
-   *          information.
+   * @returns a command buffer on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67002,8 +67004,8 @@ public:
    *
    * @param transfer_buffer a transfer buffer.
    * @param cycle if true, cycles the transfer buffer if it is already bound.
-   * @returns the address of the mapped transfer buffer memory, or nullptr on
-   *          failure; call GetError() for more information.
+   * @returns the address of the mapped transfer buffer memory on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -69427,8 +69429,8 @@ inline void GPUDevice::ReleaseGraphicsPipeline(
  * total amount of passes overall which improves rendering performance.
  *
  * @param device a GPU context.
- * @returns a command buffer, or nullptr on failure; call GetError() for more
- *          information.
+ * @returns a command buffer on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -69437,7 +69439,7 @@ inline void GPUDevice::ReleaseGraphicsPipeline(
  */
 inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceRef device)
 {
-  return SDL_AcquireGPUCommandBuffer(device);
+  return CheckError(SDL_AcquireGPUCommandBuffer(device));
 }
 
 inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
@@ -70380,8 +70382,8 @@ inline void GPUComputePass::End() { SDL::EndGPUComputePass(m_gPUComputePass); }
  * @param device a GPU context.
  * @param transfer_buffer a transfer buffer.
  * @param cycle if true, cycles the transfer buffer if it is already bound.
- * @returns the address of the mapped transfer buffer memory, or nullptr on
- *          failure; call GetError() for more information.
+ * @returns the address of the mapped transfer buffer memory on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -70389,7 +70391,7 @@ inline void* MapGPUTransferBuffer(GPUDeviceRef device,
                                   GPUTransferBuffer transfer_buffer,
                                   bool cycle)
 {
-  return SDL_MapGPUTransferBuffer(device, transfer_buffer, cycle);
+  return CheckError(SDL_MapGPUTransferBuffer(device, transfer_buffer, cycle));
 }
 
 inline void* GPUDevice::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
@@ -71106,8 +71108,8 @@ inline void GPUCommandBuffer::Submit()
  * command in a subsequent submission begins executing.
  *
  * @param command_buffer a command buffer.
- * @returns a fence associated with the command buffer, or nullptr on failure;
- *          call GetError() for more information.
+ * @returns a fence associated with the command buffer on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -71120,7 +71122,7 @@ inline void GPUCommandBuffer::Submit()
 inline GPUFence* SubmitGPUCommandBufferAndAcquireFence(
   GPUCommandBuffer command_buffer)
 {
-  return SDL_SubmitGPUCommandBufferAndAcquireFence(command_buffer);
+  return CheckError(SDL_SubmitGPUCommandBufferAndAcquireFence(command_buffer));
 }
 
 inline GPUFence* GPUCommandBuffer::SubmitAndAcquireFence()
@@ -73112,8 +73114,8 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  * JoystickID.DetachVirtualJoystick().
  *
  * @param desc joystick description, initialized using InitInterface().
- * @returns the joystick instance ID, or 0 on failure; call GetError() for more
- *          information.
+ * @returns the joystick instance ID on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -73129,7 +73131,7 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  */
 inline JoystickID AttachVirtualJoystick(const VirtualJoystickDesc& desc)
 {
-  return SDL_AttachVirtualJoystick(&desc);
+  return CheckError(SDL_AttachVirtualJoystick(&desc));
 }
 
 /**
@@ -75965,8 +75967,8 @@ inline OwnArray<MouseID> GetMice()
  * This function returns "" if the mouse doesn't have a name.
  *
  * @param instance_id the mouse instance ID.
- * @returns the name of the selected mouse, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the name of the selected mouse on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -75976,7 +75978,7 @@ inline OwnArray<MouseID> GetMice()
  */
 inline const char* GetMouseNameForID(MouseID instance_id)
 {
-  return SDL_GetMouseNameForID(instance_id);
+  return CheckError(SDL_GetMouseNameForID(instance_id));
 }
 
 /**
@@ -77291,8 +77293,8 @@ public:
    * Joystick.Close() on it, for example, since doing so will likely cause SDL
    * to crash.
    *
-   * @returns an Joystick object, or nullptr on failure; call GetError() for
-   *          more information.
+   * @returns an Joystick object on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -77854,8 +77856,8 @@ inline void ReloadGamepadMappings() { CheckError(SDL_ReloadGamepadMappings()); }
 /**
  * Get the current gamepad mappings.
  *
- * @returns an array of the mapping strings, nullptr-terminated, or nullptr on
- *          failure; call GetError() for more information.
+ * @returns an array of the mapping strings, nullptr-terminated.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -77864,7 +77866,7 @@ inline void ReloadGamepadMappings() { CheckError(SDL_ReloadGamepadMappings()); }
 inline OwnArray<char*> GetGamepadMappings()
 {
   int count;
-  auto data = SDL_GetGamepadMappings(&count);
+  auto data = CheckError(SDL_GetGamepadMappings(&count));
   return OwnArray<char*>(data);
 }
 
@@ -78684,8 +78686,8 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
  * crash.
  *
  * @param gamepad the gamepad object that you want to get a joystick from.
- * @returns an Joystick object, or nullptr on failure; call GetError() for more
- *          information.
+ * @returns an Joystick object on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -78693,7 +78695,7 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
  */
 inline JoystickRef GetGamepadJoystick(GamepadRef gamepad)
 {
-  return {SDL_GetGamepadJoystick(gamepad)};
+  return CheckError(SDL_GetGamepadJoystick(gamepad));
 }
 
 inline JoystickRef Gamepad::GetJoystick()
@@ -80427,8 +80429,9 @@ public:
   /**
    * Get the haptic device's supported features in bitwise manner.
    *
-   * @returns a list of supported haptic features in bitwise manner (OR'd), or 0
-   *          on failure; call GetError() for more information.
+   * @returns a list of supported haptic features in bitwise manner (OR'd) on
+   *          success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -81005,8 +81008,9 @@ inline int Haptic::GetMaxEffectsPlaying()
  * Get the haptic device's supported features in bitwise manner.
  *
  * @param haptic the Haptic device to query.
- * @returns a list of supported haptic features in bitwise manner (OR'd), or 0
- *          on failure; call GetError() for more information.
+ * @returns a list of supported haptic features in bitwise manner (OR'd) on
+ *          success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -81015,7 +81019,7 @@ inline int Haptic::GetMaxEffectsPlaying()
  */
 inline Uint32 GetHapticFeatures(HapticRef haptic)
 {
-  return SDL_GetHapticFeatures(haptic);
+  return CheckError(SDL_GetHapticFeatures(haptic));
 }
 
 inline Uint32 Haptic::GetFeatures()
@@ -82701,8 +82705,8 @@ public:
   /**
    * Get the name of a renderer.
    *
-   * @returns the name of the selected renderer, or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns the name of the selected renderer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -85047,8 +85051,8 @@ public:
   /**
    * Get the renderer that created an Texture.
    *
-   * @returns a pointer to the Renderer that created the texture, or nullptr on
-   *          failure; call GetError() for more information.
+   * @returns a pointer to the Renderer that created the texture on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -86520,8 +86524,8 @@ inline WindowRef Renderer::GetWindow()
  * Get the name of a renderer.
  *
  * @param renderer the rendering context.
- * @returns the name of the selected renderer, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the name of the selected renderer on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -86532,7 +86536,7 @@ inline WindowRef Renderer::GetWindow()
  */
 inline const char* GetRendererName(RendererRef renderer)
 {
-  return SDL_GetRendererName(renderer);
+  return CheckError(SDL_GetRendererName(renderer));
 }
 
 inline const char* Renderer::GetName() const
@@ -87266,8 +87270,8 @@ inline PropertiesRef Texture::GetProperties() const
  * Get the renderer that created an Texture.
  *
  * @param texture the texture to query.
- * @returns a pointer to the Renderer that created the texture, or nullptr on
- *          failure; call GetError() for more information.
+ * @returns a pointer to the Renderer that created the texture on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -87275,7 +87279,7 @@ inline PropertiesRef Texture::GetProperties() const
  */
 inline RendererRef GetRendererFromTexture(TextureConstRef texture)
 {
-  return {SDL_GetRendererFromTexture(texture)};
+  return CheckError(SDL_GetRendererFromTexture(texture));
 }
 
 inline RendererRef Texture::GetRenderer() const
@@ -91033,8 +91037,9 @@ inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
  * being that the SDL headers can avoid including jni.h.
  *
  * @returns a pointer to Java native interface object (JNIEnv) to which the
- *          current thread is attached, or nullptr on failure; call GetError()
- *          for more information.
+ *          current thread is attached on success.
+ *
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -91042,7 +91047,7 @@ inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
  *
  * @sa GetAndroidActivity
  */
-inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
+inline void* GetAndroidJNIEnv() { return CheckError(SDL_GetAndroidJNIEnv()); }
 
 /**
  * Retrieve the Java instance of the Android activity class.
@@ -91058,8 +91063,9 @@ inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
  * https://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/functions.html
  *
  * @returns the jobject representing the instance of the Activity class of the
- *          Android application, or nullptr on failure; call GetError() for more
- *          information.
+ *          Android application on success.
+ *
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -91067,7 +91073,10 @@ inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
  *
  * @sa GetAndroidJNIEnv
  */
-inline void* GetAndroidActivity() { return SDL_GetAndroidActivity(); }
+inline void* GetAndroidActivity()
+{
+  return CheckError(SDL_GetAndroidActivity());
+}
 
 /**
  * Query Android API level of the current device.
@@ -91892,14 +91901,14 @@ inline OwnArray<TouchID> GetTouchDevices()
  * Get the touch device name as reported from the driver.
  *
  * @param touchID the touch device instance ID.
- * @returns touch device name, or nullptr on failure; call GetError() for more
- *          information.
+ * @returns touch device name on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline const char* GetTouchDeviceName(TouchID touchID)
 {
-  return SDL_GetTouchDeviceName(touchID);
+  return CheckError(SDL_GetTouchDeviceName(touchID));
 }
 
 /**
@@ -92130,8 +92139,8 @@ constexpr PenDeviceType PEN_DEVICE_TYPE_INDIRECT =
  * prepared to get an PEN_DEVICE_TYPE_UNKNOWN result.
  *
  * @param instance_id the pen instance ID.
- * @returns the device type of the given pen, or PEN_DEVICE_TYPE_INVALID on
- *          failure; call GetError() for more information.
+ * @returns the device type of the given pen on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -92139,7 +92148,7 @@ constexpr PenDeviceType PEN_DEVICE_TYPE_INDIRECT =
  */
 inline PenDeviceType GetPenDeviceType(PenID instance_id)
 {
-  return SDL_GetPenDeviceType(instance_id);
+  return CheckError(SDL_GetPenDeviceType(instance_id));
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -92420,8 +92429,8 @@ public:
    * @param devid the device to open for playback, or
    *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
    * @param spec the audio format to request from the device. May be nullptr.
-   * @post a mixer that can be used to play audio, or nullptr on failure; call
-   *       GetError() for more information.
+   * @post a mixer that can be used to play audio on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -92449,8 +92458,8 @@ public:
    * When done with the mixer, it can be destroyed with Mixer.Destroy().
    *
    * @param spec the audio format that mixer will generate.
-   * @post a mixer that can be used to generate audio, or nullptr on failure;
-   *       call GetError() for more information.
+   * @post a mixer that can be used to generate audio on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -92756,8 +92765,9 @@ public:
    * @param datalen the size, in bytes, of the buffer.
    * @param free_when_done if true, `data` will be given to free() when the
    *                       Audio is destroyed.
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -92789,8 +92799,9 @@ public:
    * @param spec what format the raw data is in.
    * @param closeio true if SDL_mixer should close `io` before returning
    *                (success or failure).
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -92826,8 +92837,9 @@ public:
    * @param data the raw PCM data to load.
    * @param datalen the size, in bytes, of the raw PCM data.
    * @param spec what format the raw data is in.
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -92867,8 +92879,9 @@ public:
    * @param spec what format the raw data is in.
    * @param free_when_done if true, `data` will be given to free() when the
    *                       Audio is destroyed.
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -92907,8 +92920,9 @@ public:
    * @param amplitude the sinewave's amplitude from 0.0f to 1.0f.
    * @param ms the maximum number of milliseconds of audio to generate, or less
    *           than zero to generate infinite audio.
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -92953,9 +92967,8 @@ public:
    * @param tag the tag to search.
    * @param count a pointer filled in with the number of tracks returned, can be
    *              nullptr.
-   * @returns an array of the tracks, nullptr-terminated, or nullptr on failure;
-   *          call GetError() for more information. The returned pointer should
-   *          be freed with free() when it is no longer needed.
+   * @returns an array of the tracks, nullptr-terminated on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -93660,8 +93673,8 @@ public:
    * to find soundfonts for MIDI playback, etc.
    *
    * @param props a set of properties on how to load audio.
-   * @post an audio object that can be used to make sound on a mixer, or nullptr
-   *       on failure; call GetError() for more information.
+   * @post an audio object that can be used to make sound on a mixer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -93695,8 +93708,8 @@ public:
    * @param spec what format the raw data is in.
    * @param closeio true if SDL_mixer should close `io` before returning
    *                (success or failure).
-   * @post an audio object that can be used to make sound on a mixer, or nullptr
-   *       on failure; call GetError() for more information.
+   * @post an audio object that can be used to make sound on a mixer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -93735,8 +93748,8 @@ public:
    * @param data the raw PCM data to load.
    * @param datalen the size, in bytes, of the raw PCM data.
    * @param spec what format the raw data is in.
-   * @post an audio object that can be used to make sound on a mixer, or nullptr
-   *       on failure; call GetError() for more information.
+   * @post an audio object that can be used to make sound on a mixer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -94485,9 +94498,8 @@ public:
    *
    * @param count a pointer filled in with the number of tags returned, can be
    *              nullptr.
-   * @returns an array of the tags, nullptr-terminated, or nullptr on failure;
-   *          call GetError() for more information. This is a single allocation
-   *          that should be freed with free() when it is no longer needed.
+   * @returns an array of the tags, nullptr-terminated on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -95913,8 +95925,8 @@ inline const char* GetAudioDecoder(int index)
  * @param devid the device to open for playback, or
  *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
  * @param spec the audio format to request from the device. May be nullptr.
- * @returns a mixer that can be used to play audio, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns a mixer that can be used to play audio on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -95929,12 +95941,12 @@ inline Mixer CreateMixerDevice(AudioDeviceRef devid, const AudioSpec& spec)
 }
 
 inline Mixer::Mixer(AudioDeviceRef devid, const AudioSpec& spec)
-  : m_resource(MIX_CreateMixerDevice(devid, &spec))
+  : m_resource(CheckError(MIX_CreateMixerDevice(devid, &spec)))
 {
 }
 
 inline Mixer::Mixer(const AudioSpec& spec)
-  : m_resource(MIX_CreateMixer(&spec))
+  : m_resource(CheckError(MIX_CreateMixer(&spec)))
 {
 }
 
@@ -95955,8 +95967,8 @@ inline Mixer::Mixer(const AudioSpec& spec)
  * When done with the mixer, it can be destroyed with Mixer.Destroy().
  *
  * @param spec the audio format that mixer will generate.
- * @returns a mixer that can be used to generate audio, or nullptr on failure;
- *          call GetError() for more information.
+ * @returns a mixer that can be used to generate audio on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -96221,7 +96233,7 @@ inline Audio::Audio(MixerRef mixer, StringParam path, bool predecode)
 }
 
 inline Audio::Audio(PropertiesRef props)
-  : m_resource(MIX_LoadAudioWithProperties(props))
+  : m_resource(CheckError(MIX_LoadAudioWithProperties(props)))
 {
 }
 
@@ -96229,12 +96241,13 @@ inline Audio::Audio(MixerRef mixer,
                     IOStreamRef io,
                     const AudioSpec& spec,
                     bool closeio)
-  : m_resource(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio))
+  : m_resource(CheckError(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio)))
 {
 }
 
 inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
-  : m_resource(MIX_LoadRawAudio(mixer, data.data(), data.size_bytes(), &spec))
+  : m_resource(CheckError(
+      MIX_LoadRawAudio(mixer, data.data(), data.size_bytes(), &spec)))
 {
 }
 
@@ -96320,8 +96333,9 @@ inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
  * @param datalen the size, in bytes, of the buffer.
  * @param free_when_done if true, `data` will be given to free() when the Audio
  *                       is destroyed.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -96336,8 +96350,8 @@ inline Audio LoadAudioNoCopy(MixerRef mixer,
                              SourceBytes data,
                              bool free_when_done)
 {
-  return Audio(
-    MIX_LoadAudioNoCopy(mixer, data.data(), data.size_bytes(), free_when_done));
+  return Audio(CheckError(MIX_LoadAudioNoCopy(
+    mixer, data.data(), data.size_bytes(), free_when_done)));
 }
 
 inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
@@ -96378,8 +96392,9 @@ inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
  * find soundfonts for MIDI playback, etc.
  *
  * @param props a set of properties on how to load audio.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -96432,8 +96447,9 @@ constexpr auto DECODER_STRING = MIX_PROP_AUDIO_DECODER_STRING;
  * @param spec what format the raw data is in.
  * @param closeio true if SDL_mixer should close `io` before returning (success
  *                or failure).
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -96480,8 +96496,9 @@ inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
  * @param data the raw PCM data to load.
  * @param datalen the size, in bytes, of the raw PCM data.
  * @param spec what format the raw data is in.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -96531,8 +96548,9 @@ inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
  * @param spec what format the raw data is in.
  * @param free_when_done if true, `data` will be given to free() when the Audio
  *                       is destroyed.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -96548,8 +96566,8 @@ inline Audio LoadRawAudioNoCopy(MixerRef mixer,
                                 const AudioSpec& spec,
                                 bool free_when_done)
 {
-  return Audio(MIX_LoadRawAudioNoCopy(
-    mixer, data.data(), data.size_bytes(), &spec, free_when_done));
+  return Audio(CheckError(MIX_LoadRawAudioNoCopy(
+    mixer, data.data(), data.size_bytes(), &spec, free_when_done)));
 }
 
 inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
@@ -96584,8 +96602,9 @@ inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
  * @param amplitude the sinewave's amplitude from 0.0f to 1.0f.
  * @param ms the maximum number of milliseconds of audio to generate, or less
  *           than zero to generate infinite audio.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -96600,7 +96619,7 @@ inline Audio CreateSineWaveAudio(MixerRef mixer,
                                  float amplitude,
                                  Sint64 ms)
 {
-  return Audio(MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms));
+  return Audio(CheckError(MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms)));
 }
 
 inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
@@ -97169,9 +97188,8 @@ inline void Track::Untag(StringParam tag)
  * @param track the track to query.
  * @param count a pointer filled in with the number of tags returned, can be
  *              nullptr.
- * @returns an array of the tags, nullptr-terminated, or nullptr on failure;
- *          call GetError() for more information. This is a single allocation
- *          that should be freed with free() when it is no longer needed.
+ * @returns an array of the tags, nullptr-terminated on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -97179,7 +97197,7 @@ inline void Track::Untag(StringParam tag)
  */
 inline char** GetTrackTags(TrackRef track, int* count)
 {
-  return MIX_GetTrackTags(track, count);
+  return CheckError(MIX_GetTrackTags(track, count));
 }
 
 inline char** Track::GetTags(int* count)
@@ -97196,9 +97214,8 @@ inline char** Track::GetTags(int* count)
  * @param tag the tag to search.
  * @param count a pointer filled in with the number of tracks returned, can be
  *              nullptr.
- * @returns an array of the tracks, nullptr-terminated, or nullptr on failure;
- *          call GetError() for more information. The returned pointer should be
- *          freed with free() when it is no longer needed.
+ * @returns an array of the tracks, nullptr-terminated on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -97206,7 +97223,7 @@ inline char** Track::GetTags(int* count)
  */
 inline MIX_Track** GetTaggedTracks(MixerRef mixer, StringParam tag, int* count)
 {
-  return MIX_GetTaggedTracks(mixer, tag, count);
+  return CheckError(MIX_GetTaggedTracks(mixer, tag, count));
 }
 
 inline MIX_Track** Mixer::GetTaggedTracks(StringParam tag, int* count)
@@ -103304,8 +103321,8 @@ public:
    * be encoded using WEBP.
    *
    * @param file the file where the animation will be saved.
-   * @post a new AnimationEncoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationEncoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -103335,8 +103352,8 @@ public:
    * @param type a filename extension that represent this data ("WEBP", etc).
    * @param closeio true to close the IOStream when done, false to leave it
    *                open.
-   * @post a new AnimationEncoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationEncoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -103384,8 +103401,8 @@ public:
    *   seconds. This defaults to 1000.
    *
    * @param props the properties of the animation encoder.
-   * @post a new AnimationEncoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationEncoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -103540,8 +103557,8 @@ struct AnimationEncoderRef : AnimationEncoder
  * encoded using WEBP.
  *
  * @param file the file where the animation will be saved.
- * @returns a new AnimationEncoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationEncoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -103572,8 +103589,8 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
  * @param dst an IOStream that will be used to save the stream.
  * @param type a filename extension that represent this data ("WEBP", etc).
  * @param closeio true to close the IOStream when done, false to leave it open.
- * @returns a new AnimationEncoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationEncoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -103590,19 +103607,19 @@ inline AnimationEncoder CreateAnimationEncoder(IOStreamRef dst,
 }
 
 inline AnimationEncoder::AnimationEncoder(StringParam file)
-  : m_resource(IMG_CreateAnimationEncoder(file))
+  : m_resource(CheckError(IMG_CreateAnimationEncoder(file)))
 {
 }
 
 inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
                                           StringParam type,
                                           bool closeio)
-  : m_resource(IMG_CreateAnimationEncoder_IO(dst, closeio, type))
+  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
 {
 }
 
 inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
-  : m_resource(IMG_CreateAnimationEncoderWithProperties(props))
+  : m_resource(CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
 {
 }
 
@@ -103642,8 +103659,8 @@ inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
  *   seconds. This defaults to 1000.
  *
  * @param props the properties of the animation encoder.
- * @returns a new AnimationEncoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationEncoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -103823,8 +103840,8 @@ public:
    * be decoded using WEBP.
    *
    * @param file the file containing a series of images.
-   * @post a new AnimationDecoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationDecoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -103855,8 +103872,8 @@ public:
    * @param closeio true to close the IOStream when done, false to leave it
    *                open.
    * @param type a filename extension that represent this data ("WEBP", etc).
-   * @post a new AnimationDecoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationDecoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -103895,8 +103912,8 @@ public:
    *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` is set.
    *
    * @param props the properties of the animation decoder.
-   * @post a new AnimationDecoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationDecoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -104107,8 +104124,8 @@ struct AnimationDecoderRef : AnimationDecoder
  * decoded using WEBP.
  *
  * @param file the file containing a series of images.
- * @returns a new AnimationDecoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationDecoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -104140,8 +104157,8 @@ inline AnimationDecoder CreateAnimationDecoder(StringParam file)
  * @param src an IOStream containing a series of images.
  * @param closeio true to close the IOStream when done, false to leave it open.
  * @param type a filename extension that represent this data ("WEBP", etc).
- * @returns a new AnimationDecoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationDecoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -104159,19 +104176,19 @@ inline AnimationDecoder CreateAnimationDecoder(IOStreamRef src,
 }
 
 inline AnimationDecoder::AnimationDecoder(StringParam file)
-  : m_resource(IMG_CreateAnimationDecoder(file))
+  : m_resource(CheckError(IMG_CreateAnimationDecoder(file)))
 {
 }
 
 inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
                                           StringParam type,
                                           bool closeio)
-  : m_resource(IMG_CreateAnimationDecoder_IO(src, closeio, type))
+  : m_resource(CheckError(IMG_CreateAnimationDecoder_IO(src, closeio, type)))
 {
 }
 
 inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
-  : m_resource(IMG_CreateAnimationDecoderWithProperties(props))
+  : m_resource(CheckError(IMG_CreateAnimationDecoderWithProperties(props)))
 {
 }
 
@@ -104202,8 +104219,8 @@ inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
  *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` is set.
  *
  * @param props the properties of the animation decoder.
- * @returns a new AnimationDecoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationDecoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -105697,8 +105714,8 @@ public:
    * @param ch the codepoint to check.
    * @param image_type a pointer filled in with the glyph image type, may be
    *                   nullptr.
-   * @returns an Surface containing the glyph, or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns an Surface containing the glyph on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -105716,8 +105733,8 @@ public:
    * @param glyph_index the index of the glyph to return.
    * @param image_type a pointer filled in with the glyph image type, may be
    *                   nullptr.
-   * @returns an Surface containing the glyph, or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns an Surface containing the glyph on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -107552,8 +107569,8 @@ inline bool Font::HasGlyph(Uint32 ch) const
  * @param ch the codepoint to check.
  * @param image_type a pointer filled in with the glyph image type, may be
  *                   nullptr.
- * @returns an Surface containing the glyph, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns an Surface containing the glyph on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
  *               font.
@@ -107562,7 +107579,7 @@ inline bool Font::HasGlyph(Uint32 ch) const
  */
 inline Surface GetGlyphImage(FontRef font, Uint32 ch, ImageType* image_type)
 {
-  return Surface{TTF_GetGlyphImage(font, ch, image_type)};
+  return Surface{CheckError(TTF_GetGlyphImage(font, ch, image_type))};
 }
 
 inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
@@ -107580,8 +107597,8 @@ inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
  * @param glyph_index the index of the glyph to return.
  * @param image_type a pointer filled in with the glyph image type, may be
  *                   nullptr.
- * @returns an Surface containing the glyph, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns an Surface containing the glyph on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
  *               font.
@@ -107592,7 +107609,8 @@ inline Surface GetGlyphImageForIndex(FontRef font,
                                      Uint32 glyph_index,
                                      ImageType* image_type)
 {
-  return Surface(TTF_GetGlyphImageForIndex(font, glyph_index, image_type));
+  return Surface(
+    CheckError(TTF_GetGlyphImageForIndex(font, glyph_index, image_type)));
 }
 
 inline Surface Font::GetGlyphImageForIndex(Uint32 glyph_index,

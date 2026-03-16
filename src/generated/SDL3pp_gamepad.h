@@ -770,8 +770,8 @@ public:
    * Joystick.Close() on it, for example, since doing so will likely cause SDL
    * to crash.
    *
-   * @returns an Joystick object, or nullptr on failure; call GetError() for
-   *          more information.
+   * @returns an Joystick object on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1337,16 +1337,17 @@ inline void ReloadGamepadMappings() { CheckError(SDL_ReloadGamepadMappings()); }
  *
  * @param count a pointer filled in with the number of mappings returned, can be
  *              nullptr.
- * @returns an array of the mapping strings, nullptr-terminated, or nullptr on
- *          failure; call GetError() for more information. This is a single
- *          allocation that should be freed with free() when it is no longer
- *          needed.
+ * @returns  nullptr-terminated on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnArray<char*> GetGamepadMappings() { return SDL_GetGamepadMappings(); }
+inline OwnArray<char*> GetGamepadMappings()
+{
+  return CheckError(SDL_GetGamepadMappings());
+}
 
 /**
  * Get the gamepad mapping string for a given GUID.
@@ -2164,8 +2165,8 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
  * crash.
  *
  * @param gamepad the gamepad object that you want to get a joystick from.
- * @returns an Joystick object, or nullptr on failure; call GetError() for more
- *          information.
+ * @returns an Joystick object on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2173,7 +2174,7 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
  */
 inline JoystickRef GetGamepadJoystick(GamepadRef gamepad)
 {
-  return SDL_GetGamepadJoystick(gamepad);
+  return CheckError(SDL_GetGamepadJoystick(gamepad));
 }
 
 inline JoystickRef Gamepad::GetJoystick()

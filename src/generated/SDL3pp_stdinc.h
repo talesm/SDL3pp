@@ -5777,8 +5777,8 @@ public:
    *
    * @param tocode The target character encoding, must not be nullptr.
    * @param fromcode The source character encoding, must not be nullptr.
-   * @post a handle that must be freed with IConv.close, or ICONV_ERROR on
-   *       failure.
+   * @post a handle that must be freed with IConv.close on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -5944,8 +5944,8 @@ struct IConvRef : IConv
  *
  * @param tocode The target character encoding, must not be nullptr.
  * @param fromcode The source character encoding, must not be nullptr.
- * @returns a handle that must be freed with IConv.close, or ICONV_ERROR on
- *          failure.
+ * @returns a handle that must be freed with IConv.close on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -5961,7 +5961,7 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 }
 
 inline IConv::IConv(StringParam tocode, StringParam fromcode)
-  : m_resource(SDL_iconv_open(tocode, fromcode))
+  : m_resource(CheckError(SDL_iconv_open(tocode, fromcode)))
 {
 }
 

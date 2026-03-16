@@ -218,7 +218,8 @@ public:
    *
    * All properties are automatically destroyed when Quit() is called.
    *
-   * @returns a valid ID for a new group of properties on success;
+   * @returns an ID for a new group of properties on success.
+   *
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -891,7 +892,8 @@ inline PropertiesRef GetGlobalProperties()
  *
  * All properties are automatically destroyed when Quit() is called.
  *
- * @returns a valid ID for a new group of properties on success;
+ * @returns an ID for a new group of properties on success.
+ *
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.

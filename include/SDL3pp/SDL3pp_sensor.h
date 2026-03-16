@@ -261,8 +261,8 @@ public:
   /**
    * Get the instance ID of a sensor.
    *
-   * @returns the sensor instance ID, or 0 on failure; call GetError() for more
-   *          information.
+   * @returns the sensor instance ID on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -516,14 +516,14 @@ inline int Sensor::GetNonPortableType()
  * Get the instance ID of a sensor.
  *
  * @param sensor the Sensor object to inspect.
- * @returns the sensor instance ID, or 0 on failure; call GetError() for more
- *          information.
+ * @returns the sensor instance ID on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
 inline SensorID GetSensorID(SensorRef sensor)
 {
-  return SDL_GetSensorID(sensor);
+  return CheckError(SDL_GetSensorID(sensor));
 }
 
 inline SensorID Sensor::GetID() { return SDL::GetSensorID(m_resource); }

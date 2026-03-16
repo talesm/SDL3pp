@@ -217,8 +217,9 @@ public:
    *
    * All properties are automatically destroyed when Quit() is called.
    *
-   * @returns an ID for a new group of properties, or 0 on failure; call
-   *          GetError() for more information.
+   * @returns an ID for a new group of properties on success.
+   *
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -889,8 +890,9 @@ inline PropertiesRef GetGlobalProperties()
  *
  * All properties are automatically destroyed when Quit() is called.
  *
- * @returns an ID for a new group of properties, or 0 on failure; call
- *          GetError() for more information.
+ * @returns an ID for a new group of properties on success.
+ *
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -900,7 +902,7 @@ inline PropertiesRef GetGlobalProperties()
  */
 inline Properties CreateProperties()
 {
-  return Properties(SDL_CreateProperties());
+  return Properties(CheckError(SDL_CreateProperties()));
 }
 
 inline Properties Properties::Create() { return SDL::CreateProperties(); }

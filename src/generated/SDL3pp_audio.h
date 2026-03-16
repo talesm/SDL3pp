@@ -958,8 +958,8 @@ public:
    * default might change in general, and the string will be the name of a
    * specific device and not the abstract system default.
    *
-   * @returns the name of the audio device, or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns the name of the audio device on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -3131,9 +3131,8 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  *
  * @param count a pointer filled in with the number of devices returned, may be
  *              nullptr.
- * @returns a 0 terminated array of device instance IDs, or nullptr on failure;
- *          call GetError() for more information. This should be freed with
- *          free() when it is no longer needed.
+ * @returns a 0 terminated array of device instance IDs on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -3144,7 +3143,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  */
 inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
 {
-  return SDL_GetAudioRecordingDevices();
+  return CheckError(SDL_GetAudioRecordingDevices());
 }
 
 /**
@@ -3160,8 +3159,8 @@ inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
  * not the abstract system default.
  *
  * @param devid the instance ID of the device to query.
- * @returns the name of the audio device, or nullptr on failure; call GetError()
- *          for more information.
+ * @returns the name of the audio device on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -3172,7 +3171,7 @@ inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
  */
 inline const char* GetAudioDeviceName(AudioDeviceRef devid)
 {
-  return SDL_GetAudioDeviceName(devid);
+  return CheckError(SDL_GetAudioDeviceName(devid));
 }
 
 inline const char* AudioDevice::GetName() const

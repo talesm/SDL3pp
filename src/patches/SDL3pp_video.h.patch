@@ -1038,8 +1038,8 @@
   */
  inline Surface GetWindowSurface(WindowRef window)
  {
--  return SDL_GetWindowSurface(window);
-+  return Surface::Borrow(SDL_GetWindowSurface(window));
+-  return CheckError(SDL_GetWindowSurface(window));
++  return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
  }
  
  inline Surface Window::GetSurface()

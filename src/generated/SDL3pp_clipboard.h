@@ -384,9 +384,8 @@ inline bool HasClipboardData(StringParam mime_type)
  *
  * @param num_mime_types a pointer filled with the number of mime types, may be
  *                       nullptr.
- * @returns a null-terminated array of strings with mime types, or nullptr on
- *          failure; call GetError() for more information. This should be freed
- *          with free() when it is no longer needed.
+ * @returns a null-terminated array of strings with mime types on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -396,7 +395,7 @@ inline bool HasClipboardData(StringParam mime_type)
  */
 inline OwnArray<char*> GetClipboardMimeTypes()
 {
-  return SDL_GetClipboardMimeTypes();
+  return CheckError(SDL_GetClipboardMimeTypes());
 }
 
 /// @}

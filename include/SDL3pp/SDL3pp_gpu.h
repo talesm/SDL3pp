@@ -2399,8 +2399,8 @@ public:
    * All commands in the submission are guaranteed to begin executing before any
    * command in a subsequent submission begins executing.
    *
-   * @returns a fence associated with the command buffer, or nullptr on failure;
-   *          call GetError() for more information.
+   * @returns a fence associated with the command buffer on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -3822,8 +3822,8 @@ public:
    * mipmaps. Interleaving commands between the two command buffers reduces the
    * total amount of passes overall which improves rendering performance.
    *
-   * @returns a command buffer, or nullptr on failure; call GetError() for more
-   *          information.
+   * @returns a command buffer on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -3841,8 +3841,8 @@ public:
    *
    * @param transfer_buffer a transfer buffer.
    * @param cycle if true, cycles the transfer buffer if it is already bound.
-   * @returns the address of the mapped transfer buffer memory, or nullptr on
-   *          failure; call GetError() for more information.
+   * @returns the address of the mapped transfer buffer memory on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -6266,8 +6266,8 @@ inline void GPUDevice::ReleaseGraphicsPipeline(
  * total amount of passes overall which improves rendering performance.
  *
  * @param device a GPU context.
- * @returns a command buffer, or nullptr on failure; call GetError() for more
- *          information.
+ * @returns a command buffer on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -6276,7 +6276,7 @@ inline void GPUDevice::ReleaseGraphicsPipeline(
  */
 inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceRef device)
 {
-  return SDL_AcquireGPUCommandBuffer(device);
+  return CheckError(SDL_AcquireGPUCommandBuffer(device));
 }
 
 inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
@@ -7219,8 +7219,8 @@ inline void GPUComputePass::End() { SDL::EndGPUComputePass(m_gPUComputePass); }
  * @param device a GPU context.
  * @param transfer_buffer a transfer buffer.
  * @param cycle if true, cycles the transfer buffer if it is already bound.
- * @returns the address of the mapped transfer buffer memory, or nullptr on
- *          failure; call GetError() for more information.
+ * @returns the address of the mapped transfer buffer memory on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -7228,7 +7228,7 @@ inline void* MapGPUTransferBuffer(GPUDeviceRef device,
                                   GPUTransferBuffer transfer_buffer,
                                   bool cycle)
 {
-  return SDL_MapGPUTransferBuffer(device, transfer_buffer, cycle);
+  return CheckError(SDL_MapGPUTransferBuffer(device, transfer_buffer, cycle));
 }
 
 inline void* GPUDevice::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
@@ -7945,8 +7945,8 @@ inline void GPUCommandBuffer::Submit()
  * command in a subsequent submission begins executing.
  *
  * @param command_buffer a command buffer.
- * @returns a fence associated with the command buffer, or nullptr on failure;
- *          call GetError() for more information.
+ * @returns a fence associated with the command buffer on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -7959,7 +7959,7 @@ inline void GPUCommandBuffer::Submit()
 inline GPUFence* SubmitGPUCommandBufferAndAcquireFence(
   GPUCommandBuffer command_buffer)
 {
-  return SDL_SubmitGPUCommandBufferAndAcquireFence(command_buffer);
+  return CheckError(SDL_SubmitGPUCommandBufferAndAcquireFence(command_buffer));
 }
 
 inline GPUFence* GPUCommandBuffer::SubmitAndAcquireFence()

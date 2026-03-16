@@ -503,8 +503,8 @@ public:
   /**
    * Get the name of a renderer.
    *
-   * @returns the name of the selected renderer, or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns the name of the selected renderer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -2849,8 +2849,8 @@ public:
   /**
    * Get the renderer that created an Texture.
    *
-   * @returns a pointer to the Renderer that created the texture, or nullptr on
-   *          failure; call GetError() for more information.
+   * @returns a pointer to the Renderer that created the texture on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -4322,8 +4322,8 @@ inline WindowRef Renderer::GetWindow()
  * Get the name of a renderer.
  *
  * @param renderer the rendering context.
- * @returns the name of the selected renderer, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the name of the selected renderer on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4334,7 +4334,7 @@ inline WindowRef Renderer::GetWindow()
  */
 inline const char* GetRendererName(RendererRef renderer)
 {
-  return SDL_GetRendererName(renderer);
+  return CheckError(SDL_GetRendererName(renderer));
 }
 
 inline const char* Renderer::GetName() const
@@ -5068,8 +5068,8 @@ inline PropertiesRef Texture::GetProperties() const
  * Get the renderer that created an Texture.
  *
  * @param texture the texture to query.
- * @returns a pointer to the Renderer that created the texture, or nullptr on
- *          failure; call GetError() for more information.
+ * @returns a pointer to the Renderer that created the texture on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -5077,7 +5077,7 @@ inline PropertiesRef Texture::GetProperties() const
  */
 inline RendererRef GetRendererFromTexture(TextureConstRef texture)
 {
-  return {SDL_GetRendererFromTexture(texture)};
+  return CheckError(SDL_GetRendererFromTexture(texture));
 }
 
 inline RendererRef Texture::GetRenderer() const

@@ -415,8 +415,8 @@ inline bool HasClipboardData(StringParam mime_type)
 /**
  * Retrieve the list of mime types available in the clipboard.
  *
- * @returns a null terminated array of strings with mime types, or empty on
- *          failure; call GetError() for more information.
+ * @returns a null-terminated array of strings with mime types on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -427,7 +427,7 @@ inline bool HasClipboardData(StringParam mime_type)
 inline OwnArray<char*> GetClipboardMimeTypes()
 {
   size_t count = 0;
-  auto data = SDL_GetClipboardMimeTypes(&count);
+  auto data = CheckError(SDL_GetClipboardMimeTypes(&count));
   if (!data) return {};
   return OwnArray<char*>{data, count};
 }

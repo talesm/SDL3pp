@@ -275,8 +275,8 @@ public:
    * @param devid the device to open for playback, or
    *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
    * @param spec the audio format to request from the device. May be nullptr.
-   * @post a mixer that can be used to play audio, or nullptr on failure; call
-   *       GetError() for more information.
+   * @post a mixer that can be used to play audio on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -304,8 +304,8 @@ public:
    * When done with the mixer, it can be destroyed with Mixer.Destroy().
    *
    * @param spec the audio format that mixer will generate.
-   * @post a mixer that can be used to generate audio, or nullptr on failure;
-   *       call GetError() for more information.
+   * @post a mixer that can be used to generate audio on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -526,8 +526,9 @@ public:
    * @param predecode if true, data will be fully uncompressed before returning.
    * @param closeio true if SDL_mixer should close `io` before returning
    *                (success or failure).
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -555,8 +556,9 @@ public:
    *
    * @param path the path on the filesystem to load data from.
    * @param predecode if true, data will be fully uncompressed before returning.
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -613,8 +615,9 @@ public:
    * @param datalen the size, in bytes, of the buffer.
    * @param free_when_done if true, `data` will be given to free() when the
    *                       Audio is destroyed.
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -646,8 +649,9 @@ public:
    * @param spec what format the raw data is in.
    * @param closeio true if SDL_mixer should close `io` before returning
    *                (success or failure).
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -683,8 +687,9 @@ public:
    * @param data the raw PCM data to load.
    * @param datalen the size, in bytes, of the raw PCM data.
    * @param spec what format the raw data is in.
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -724,8 +729,9 @@ public:
    * @param spec what format the raw data is in.
    * @param free_when_done if true, `data` will be given to free() when the
    *                       Audio is destroyed.
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -764,8 +770,9 @@ public:
    * @param amplitude the sinewave's amplitude from 0.0f to 1.0f.
    * @param ms the maximum number of milliseconds of audio to generate, or less
    *           than zero to generate infinite audio.
-   * @returns an audio object that can be used to make sound on a mixer, or
-   *          nullptr on failure; call GetError() for more information.
+   * @returns an audio object that can be used to make sound on a mixer on
+   *          success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -810,9 +817,8 @@ public:
    * @param tag the tag to search.
    * @param count a pointer filled in with the number of tracks returned, can be
    *              nullptr.
-   * @returns an array of the tracks, nullptr-terminated, or nullptr on failure;
-   *          call GetError() for more information. The returned pointer should
-   *          be freed with free() when it is no longer needed.
+   * @returns  nullptr-terminated on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1438,8 +1444,8 @@ public:
    * @param predecode if true, data will be fully uncompressed before returning.
    * @param closeio true if SDL_mixer should close `io` before returning
    *                (success or failure).
-   * @post an audio object that can be used to make sound on a mixer, or nullptr
-   *       on failure; call GetError() for more information.
+   * @post an audio object that can be used to make sound on a mixer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1469,8 +1475,8 @@ public:
    *              nullptr.
    * @param path the path on the filesystem to load data from.
    * @param predecode if true, data will be fully uncompressed before returning.
-   * @post an audio object that can be used to make sound on a mixer, or nullptr
-   *       on failure; call GetError() for more information.
+   * @post an audio object that can be used to make sound on a mixer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1517,8 +1523,8 @@ public:
    * to find soundfonts for MIDI playback, etc.
    *
    * @param props a set of properties on how to load audio.
-   * @post an audio object that can be used to make sound on a mixer, or nullptr
-   *       on failure; call GetError() for more information.
+   * @post an audio object that can be used to make sound on a mixer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1552,8 +1558,8 @@ public:
    * @param spec what format the raw data is in.
    * @param closeio true if SDL_mixer should close `io` before returning
    *                (success or failure).
-   * @post an audio object that can be used to make sound on a mixer, or nullptr
-   *       on failure; call GetError() for more information.
+   * @post an audio object that can be used to make sound on a mixer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1592,8 +1598,8 @@ public:
    * @param data the raw PCM data to load.
    * @param datalen the size, in bytes, of the raw PCM data.
    * @param spec what format the raw data is in.
-   * @post an audio object that can be used to make sound on a mixer, or nullptr
-   *       on failure; call GetError() for more information.
+   * @post an audio object that can be used to make sound on a mixer on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -2342,9 +2348,8 @@ public:
    *
    * @param count a pointer filled in with the number of tags returned, can be
    *              nullptr.
-   * @returns an array of the tags, nullptr-terminated, or nullptr on failure;
-   *          call GetError() for more information. This is a single allocation
-   *          that should be freed with free() when it is no longer needed.
+   * @returns  nullptr-terminated on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -3766,8 +3771,8 @@ inline const char* GetAudioDecoder(int index)
  * @param devid the device to open for playback, or
  *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
  * @param spec the audio format to request from the device. May be nullptr.
- * @returns a mixer that can be used to play audio, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns a mixer that can be used to play audio on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -3782,12 +3787,12 @@ inline Mixer CreateMixerDevice(AudioDeviceRef devid, const AudioSpec& spec)
 }
 
 inline Mixer::Mixer(AudioDeviceRef devid, const AudioSpec& spec)
-  : m_resource(MIX_CreateMixerDevice(devid, &spec))
+  : m_resource(CheckError(MIX_CreateMixerDevice(devid, &spec)))
 {
 }
 
 inline Mixer::Mixer(const AudioSpec& spec)
-  : m_resource(MIX_CreateMixer(&spec))
+  : m_resource(CheckError(MIX_CreateMixer(&spec)))
 {
 }
 
@@ -3808,8 +3813,8 @@ inline Mixer::Mixer(const AudioSpec& spec)
  * When done with the mixer, it can be destroyed with Mixer.Destroy().
  *
  * @param spec the audio format that mixer will generate.
- * @returns a mixer that can be used to generate audio, or nullptr on failure;
- *          call GetError() for more information.
+ * @returns a mixer that can be used to generate audio on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4035,8 +4040,9 @@ inline void Mixer::Unlock() { SDL::UnlockMixer(m_resource); }
  * @param predecode if true, data will be fully uncompressed before returning.
  * @param closeio true if SDL_mixer should close `io` before returning (success
  *                or failure).
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4064,17 +4070,17 @@ inline Audio::Audio(MixerRef mixer,
                     IOStreamRef io,
                     bool predecode,
                     bool closeio)
-  : m_resource(MIX_LoadAudio_IO(mixer, io, predecode, closeio))
+  : m_resource(CheckError(MIX_LoadAudio_IO(mixer, io, predecode, closeio)))
 {
 }
 
 inline Audio::Audio(MixerRef mixer, StringParam path, bool predecode)
-  : m_resource(MIX_LoadAudio(mixer, path, predecode))
+  : m_resource(CheckError(MIX_LoadAudio(mixer, path, predecode)))
 {
 }
 
 inline Audio::Audio(PropertiesRef props)
-  : m_resource(MIX_LoadAudioWithProperties(props))
+  : m_resource(CheckError(MIX_LoadAudioWithProperties(props)))
 {
 }
 
@@ -4082,12 +4088,13 @@ inline Audio::Audio(MixerRef mixer,
                     IOStreamRef io,
                     const AudioSpec& spec,
                     bool closeio)
-  : m_resource(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio))
+  : m_resource(CheckError(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio)))
 {
 }
 
 inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
-  : m_resource(MIX_LoadRawAudio(mixer, data.data(), data.size_bytes(), &spec))
+  : m_resource(CheckError(
+      MIX_LoadRawAudio(mixer, data.data(), data.size_bytes(), &spec)))
 {
 }
 
@@ -4107,8 +4114,9 @@ inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
  * @param mixer a mixer this audio is intended to be used with. May be nullptr.
  * @param path the path on the filesystem to load data from.
  * @param predecode if true, data will be fully uncompressed before returning.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4173,8 +4181,9 @@ inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
  * @param datalen the size, in bytes, of the buffer.
  * @param free_when_done if true, `data` will be given to free() when the Audio
  *                       is destroyed.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4189,8 +4198,8 @@ inline Audio LoadAudioNoCopy(MixerRef mixer,
                              SourceBytes data,
                              bool free_when_done)
 {
-  return MIX_LoadAudioNoCopy(
-    mixer, data.data(), data.size_bytes(), free_when_done);
+  return CheckError(
+    MIX_LoadAudioNoCopy(mixer, data.data(), data.size_bytes(), free_when_done));
 }
 
 inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
@@ -4231,8 +4240,9 @@ inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
  * find soundfonts for MIDI playback, etc.
  *
  * @param props a set of properties on how to load audio.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4286,8 +4296,9 @@ constexpr auto DECODER_STRING = MIX_PROP_AUDIO_DECODER_STRING;
  * @param spec what format the raw data is in.
  * @param closeio true if SDL_mixer should close `io` before returning (success
  *                or failure).
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4335,8 +4346,9 @@ inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
  * @param data the raw PCM data to load.
  * @param datalen the size, in bytes, of the raw PCM data.
  * @param spec what format the raw data is in.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4387,8 +4399,9 @@ inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
  * @param spec what format the raw data is in.
  * @param free_when_done if true, `data` will be given to free() when the Audio
  *                       is destroyed.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4405,8 +4418,8 @@ inline Audio LoadRawAudioNoCopy(MixerRef mixer,
                                 const AudioSpec& spec,
                                 bool free_when_done)
 {
-  return MIX_LoadRawAudioNoCopy(
-    mixer, data.data(), data.size_bytes(), &spec, free_when_done);
+  return CheckError(MIX_LoadRawAudioNoCopy(
+    mixer, data.data(), data.size_bytes(), &spec, free_when_done));
 }
 
 inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
@@ -4441,8 +4454,9 @@ inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
  * @param amplitude the sinewave's amplitude from 0.0f to 1.0f.
  * @param ms the maximum number of milliseconds of audio to generate, or less
  *           than zero to generate infinite audio.
- * @returns an audio object that can be used to make sound on a mixer, or
- *          nullptr on failure; call GetError() for more information.
+ * @returns an audio object that can be used to make sound on a mixer on
+ *          success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4457,7 +4471,7 @@ inline Audio CreateSineWaveAudio(MixerRef mixer,
                                  float amplitude,
                                  Sint64 ms)
 {
-  return MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms);
+  return CheckError(MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms));
 }
 
 inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
@@ -5023,9 +5037,8 @@ inline void Track::Untag(StringParam tag)
  * @param track the track to query.
  * @param count a pointer filled in with the number of tags returned, can be
  *              nullptr.
- * @returns an array of the tags, nullptr-terminated, or nullptr on failure;
- *          call GetError() for more information. This is a single allocation
- *          that should be freed with free() when it is no longer needed.
+ * @returns  nullptr-terminated on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -5033,7 +5046,7 @@ inline void Track::Untag(StringParam tag)
  */
 inline char** GetTrackTags(TrackRef track, int* count)
 {
-  return MIX_GetTrackTags(track, count);
+  return CheckError(MIX_GetTrackTags(track, count));
 }
 
 inline char** Track::GetTags(int* count)
@@ -5050,9 +5063,8 @@ inline char** Track::GetTags(int* count)
  * @param tag the tag to search.
  * @param count a pointer filled in with the number of tracks returned, can be
  *              nullptr.
- * @returns an array of the tracks, nullptr-terminated, or nullptr on failure;
- *          call GetError() for more information. The returned pointer should be
- *          freed with free() when it is no longer needed.
+ * @returns  nullptr-terminated on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -5060,7 +5072,7 @@ inline char** Track::GetTags(int* count)
  */
 inline MIX_Track** GetTaggedTracks(MixerRef mixer, StringParam tag, int* count)
 {
-  return MIX_GetTaggedTracks(mixer, tag, count);
+  return CheckError(MIX_GetTaggedTracks(mixer, tag, count));
 }
 
 inline MIX_Track** Mixer::GetTaggedTracks(StringParam tag, int* count)

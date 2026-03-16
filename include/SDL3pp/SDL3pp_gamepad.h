@@ -769,8 +769,8 @@ public:
    * Joystick.Close() on it, for example, since doing so will likely cause SDL
    * to crash.
    *
-   * @returns an Joystick object, or nullptr on failure; call GetError() for
-   *          more information.
+   * @returns an Joystick object on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1332,8 +1332,8 @@ inline void ReloadGamepadMappings() { CheckError(SDL_ReloadGamepadMappings()); }
 /**
  * Get the current gamepad mappings.
  *
- * @returns an array of the mapping strings, nullptr-terminated, or nullptr on
- *          failure; call GetError() for more information.
+ * @returns an array of the mapping strings, nullptr-terminated.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1342,7 +1342,7 @@ inline void ReloadGamepadMappings() { CheckError(SDL_ReloadGamepadMappings()); }
 inline OwnArray<char*> GetGamepadMappings()
 {
   int count;
-  auto data = SDL_GetGamepadMappings(&count);
+  auto data = CheckError(SDL_GetGamepadMappings(&count));
   return OwnArray<char*>(data);
 }
 
@@ -2162,8 +2162,8 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
  * crash.
  *
  * @param gamepad the gamepad object that you want to get a joystick from.
- * @returns an Joystick object, or nullptr on failure; call GetError() for more
- *          information.
+ * @returns an Joystick object on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2171,7 +2171,7 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
  */
 inline JoystickRef GetGamepadJoystick(GamepadRef gamepad)
 {
-  return {SDL_GetGamepadJoystick(gamepad)};
+  return CheckError(SDL_GetGamepadJoystick(gamepad));
 }
 
 inline JoystickRef Gamepad::GetJoystick()

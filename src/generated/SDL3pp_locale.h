@@ -67,10 +67,8 @@ using Locale = SDL_Locale;
  *
  * @param count a pointer filled in with the number of locales returned, may be
  *              nullptr.
- * @returns a nullptr terminated array of locale pointers, or nullptr on
- *          failure; call GetError() for more information. This is a single
- *          allocation that should be freed with free() when it is no longer
- *          needed.
+ * @returns a nullptr terminated array of locale pointers on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -78,7 +76,7 @@ using Locale = SDL_Locale;
  */
 inline OwnArray<Locale*> GetPreferredLocales()
 {
-  return SDL_GetPreferredLocales();
+  return CheckError(SDL_GetPreferredLocales());
 }
 
 /// @}

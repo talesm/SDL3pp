@@ -8803,8 +8803,12 @@ const transform = {
         "MIX_LoadAudio_IO": {
           parameters: [{}, {}, {}, { default: "false" }],
           type: "Audio",
+          hints: { mayFail: false },
         },
-        "MIX_LoadAudio": { type: "Audio" },
+        "MIX_LoadAudio": {
+          type: "Audio",
+          hints: { mayFail: false },
+        },
         "MIX_LoadAudioNoCopy": {
           parameters: [{}, { type: "SourceBytes" }, { type: "bool", name: "free_when_done" }],
           type: "Audio",

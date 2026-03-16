@@ -2255,8 +2255,8 @@ public:
    *
    * This function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.
    *
-   * @returns the surface associated with the window, or nullptr on failure;
-   *          call GetError() for more information.
+   * @returns the surface associated with the window on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2825,8 +2825,8 @@ public:
   /**
    * Get the EGL surface associated with the window.
    *
-   * @returns the EGLSurface pointer associated with the window, or nullptr on
-   *          failure.
+   * @returns the EGLSurface pointer associated with the window on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -6291,8 +6291,8 @@ inline bool Window::HasSurface() const
  * This function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.
  *
  * @param window the window to query.
- * @returns the surface associated with the window, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the surface associated with the window on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -6305,7 +6305,7 @@ inline bool Window::HasSurface() const
  */
 inline Surface GetWindowSurface(WindowRef window)
 {
-  return Surface::Borrow(SDL_GetWindowSurface(window));
+  return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
 }
 
 inline Surface Window::GetSurface()
@@ -7465,8 +7465,8 @@ inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
  * Get the EGL surface associated with the window.
  *
  * @param window the window to query.
- * @returns the EGLSurface pointer associated with the window, or nullptr on
- *          failure.
+ * @returns the EGLSurface pointer associated with the window on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -7474,7 +7474,7 @@ inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
  */
 inline EGLSurface EGL_GetWindowSurface(WindowRef window)
 {
-  return SDL_EGL_GetWindowSurface(window);
+  return CheckError(SDL_EGL_GetWindowSurface(window));
 }
 
 inline EGLSurface Window::GetEGLSurface()

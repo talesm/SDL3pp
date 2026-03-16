@@ -1259,8 +1259,8 @@ public:
    * @param ch the codepoint to check.
    * @param image_type a pointer filled in with the glyph image type, may be
    *                   nullptr.
-   * @returns an Surface containing the glyph, or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns an Surface containing the glyph on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -1278,8 +1278,8 @@ public:
    * @param glyph_index the index of the glyph to return.
    * @param image_type a pointer filled in with the glyph image type, may be
    *                   nullptr.
-   * @returns an Surface containing the glyph, or nullptr on failure; call
-   *          GetError() for more information.
+   * @returns an Surface containing the glyph on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -3114,8 +3114,8 @@ inline bool Font::HasGlyph(Uint32 ch) const
  * @param ch the codepoint to check.
  * @param image_type a pointer filled in with the glyph image type, may be
  *                   nullptr.
- * @returns an Surface containing the glyph, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns an Surface containing the glyph on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
  *               font.
@@ -3124,7 +3124,7 @@ inline bool Font::HasGlyph(Uint32 ch) const
  */
 inline Surface GetGlyphImage(FontRef font, Uint32 ch, ImageType* image_type)
 {
-  return Surface{TTF_GetGlyphImage(font, ch, image_type)};
+  return Surface{CheckError(TTF_GetGlyphImage(font, ch, image_type))};
 }
 
 inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
@@ -3142,8 +3142,8 @@ inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
  * @param glyph_index the index of the glyph to return.
  * @param image_type a pointer filled in with the glyph image type, may be
  *                   nullptr.
- * @returns an Surface containing the glyph, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns an Surface containing the glyph on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
  *               font.
@@ -3154,7 +3154,8 @@ inline Surface GetGlyphImageForIndex(FontRef font,
                                      Uint32 glyph_index,
                                      ImageType* image_type)
 {
-  return Surface(TTF_GetGlyphImageForIndex(font, glyph_index, image_type));
+  return Surface(
+    CheckError(TTF_GetGlyphImageForIndex(font, glyph_index, image_type)));
 }
 
 inline Surface Font::GetGlyphImageForIndex(Uint32 glyph_index,

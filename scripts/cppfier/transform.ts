@@ -2326,7 +2326,7 @@ export function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
         const r = getTagInGroup(targetEntry.doc, "@returns");
         if (r) {
           const m = r.content.match(
-            /(.*) on success|(an? valid [^,]+), or (?:\w+) on failure/,
+            /(.*) on success|((an? valid )?[^,]+), or (?:\w+) on failure/,
           );
           if (m) {
             targetEntry.hints = { mayFail: true };

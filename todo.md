@@ -26,6 +26,31 @@ Next version
   - [x] Rename \*ConstRef to \*ConstParam
 - [ ] Wrap SDL_mixer;
 - [ ] Remove overloading of `*_IO` variants, use `*FromIO` or similar;
+- [x] Error handling fixes:
+  - [x] SDL_GetClipboardMimeTypes();
+  - [x] SDL_GetGamepadMappings();
+  - [x] SDL_GetGamepadJoystick();
+  - [x] SDL_AcquireGPUCommandBuffer();
+  - [x] SDL_MapGPUTransferBuffer();
+  - [x] SDL_SubmitGPUCommandBufferAndAcquireFence();
+  - [x] SDL_GetHapticFeatures();
+  - [x] SDL_AttachVirtualJoystick();
+  - [x] SDL_GetMouseNameForID();
+  - [x] SDL_GetPenDeviceType();
+  - [x] SDL_GetRendererName();
+  - [x] SDL_GetRendererFromTexture();
+  - [x] SDL_GetSensorID();
+  - [x] SDL_GetAndroidJNIEnv();
+  - [x] SDL_GetAndroidActivity();
+  - [x] SDL_GetTouchDeviceName();
+  - [x] IMG_CreateAnimationEncoder();
+  - [x] IMG_CreateAnimationEncoder_IO();
+  - [x] IMG_CreateAnimationEncoderWithProperties();
+  - [x] IMG_CreateAnimationDecoder();
+  - [x] IMG_CreateAnimationDecoder_IO();
+  - [x] IMG_CreateAnimationDecoderWithProperties();
+  - [x] TTF_GetGlyphImage();
+  - [x] TTF_GetGlyphImageForIndex();
 
 Backlog
 -------

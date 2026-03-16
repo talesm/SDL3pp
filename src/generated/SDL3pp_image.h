@@ -3850,8 +3850,8 @@ public:
    * be encoded using WEBP.
    *
    * @param file the file where the animation will be saved.
-   * @post a new AnimationEncoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationEncoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -3885,8 +3885,8 @@ public:
    * @param closeio true to close the IOStream when done, false to leave it
    *                open.
    * @param type a filename extension that represent this data ("WEBP", etc).
-   * @post a new AnimationEncoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationEncoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -3938,8 +3938,8 @@ public:
    *   seconds. This defaults to 1000.
    *
    * @param props the properties of the animation encoder.
-   * @post a new AnimationEncoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationEncoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -4107,8 +4107,8 @@ struct AnimationEncoderRef : AnimationEncoder
  * encoded using WEBP.
  *
  * @param file the file where the animation will be saved.
- * @returns a new AnimationEncoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationEncoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -4143,8 +4143,8 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
  * @param dst an IOStream that will be used to save the stream.
  * @param closeio true to close the IOStream when done, false to leave it open.
  * @param type a filename extension that represent this data ("WEBP", etc).
- * @returns a new AnimationEncoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationEncoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -4165,7 +4165,7 @@ inline AnimationEncoder CreateAnimationEncoder(IOStreamRef dst,
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 inline AnimationEncoder::AnimationEncoder(StringParam file)
-  : m_resource(IMG_CreateAnimationEncoder(file))
+  : m_resource(CheckError(IMG_CreateAnimationEncoder(file)))
 {
 }
 
@@ -4176,7 +4176,7 @@ inline AnimationEncoder::AnimationEncoder(StringParam file)
 inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
                                           StringParam type,
                                           bool closeio)
-  : m_resource(IMG_CreateAnimationEncoder_IO(dst, type, closeio))
+  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, type, closeio)))
 {
 }
 
@@ -4185,7 +4185,7 @@ inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
-  : m_resource(IMG_CreateAnimationEncoderWithProperties(props))
+  : m_resource(CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
 {
 }
 
@@ -4229,8 +4229,8 @@ inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
  *   seconds. This defaults to 1000.
  *
  * @param props the properties of the animation encoder.
- * @returns a new AnimationEncoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationEncoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -4437,8 +4437,8 @@ public:
    * be decoded using WEBP.
    *
    * @param file the file containing a series of images.
-   * @post a new AnimationDecoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationDecoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -4473,8 +4473,8 @@ public:
    * @param closeio true to close the IOStream when done, false to leave it
    *                open.
    * @param type a filename extension that represent this data ("WEBP", etc).
-   * @post a new AnimationDecoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationDecoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -4517,8 +4517,8 @@ public:
    *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` is set.
    *
    * @param props the properties of the animation decoder.
-   * @post a new AnimationDecoder, or nullptr on failure; call GetError() for
-   *       more information.
+   * @post a new AnimationDecoder on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
@@ -4761,8 +4761,8 @@ struct AnimationDecoderRef : AnimationDecoder
  * decoded using WEBP.
  *
  * @param file the file containing a series of images.
- * @returns a new AnimationDecoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationDecoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -4798,8 +4798,8 @@ inline AnimationDecoder CreateAnimationDecoder(StringParam file)
  * @param src an IOStream containing a series of images.
  * @param closeio true to close the IOStream when done, false to leave it open.
  * @param type a filename extension that represent this data ("WEBP", etc).
- * @returns a new AnimationDecoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationDecoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
@@ -4821,7 +4821,7 @@ inline AnimationDecoder CreateAnimationDecoder(IOStreamRef src,
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 inline AnimationDecoder::AnimationDecoder(StringParam file)
-  : m_resource(IMG_CreateAnimationDecoder(file))
+  : m_resource(CheckError(IMG_CreateAnimationDecoder(file)))
 {
 }
 
@@ -4832,7 +4832,7 @@ inline AnimationDecoder::AnimationDecoder(StringParam file)
 inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
                                           StringParam type,
                                           bool closeio)
-  : m_resource(IMG_CreateAnimationDecoder_IO(src, type, closeio))
+  : m_resource(CheckError(IMG_CreateAnimationDecoder_IO(src, type, closeio)))
 {
 }
 
@@ -4841,7 +4841,7 @@ inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
-  : m_resource(IMG_CreateAnimationDecoderWithProperties(props))
+  : m_resource(CheckError(IMG_CreateAnimationDecoderWithProperties(props)))
 {
 }
 
@@ -4876,8 +4876,8 @@ inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
  *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` is set.
  *
  * @param props the properties of the animation decoder.
- * @returns a new AnimationDecoder, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns a new AnimationDecoder on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
  *
