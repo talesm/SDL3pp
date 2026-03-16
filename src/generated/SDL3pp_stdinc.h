@@ -1382,8 +1382,7 @@ inline const char* getenv_unsafe(StringParam name)
  * @param value the value of the variable to set.
  * @param overwrite 1 to overwrite the variable if it exists, 0 to return
  *                  success without setting the variable if it already exists.
- * @returns 0 on success.
- * @throws Error on failure.
+ * @returns 0 on success, -1 on error.
  *
  * @threadsafety This function is not thread safe, consider using
  *               Environment.SetVariable() instead.
@@ -1394,15 +1393,14 @@ inline const char* getenv_unsafe(StringParam name)
  */
 inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
 {
-  return CheckError(SDL_setenv_unsafe(name, value, overwrite));
+  return SDL_setenv_unsafe(name, value, overwrite);
 }
 
 /**
  * Clear a variable from the environment.
  *
  * @param name the name of the variable to unset.
- * @returns 0 on success.
- * @throws Error on failure.
+ * @returns 0 on success, -1 on error.
  *
  * @threadsafety This function is not thread safe, consider using
  *               Environment.UnsetVariable() instead.
@@ -1413,7 +1411,7 @@ inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
  */
 inline int unsetenv_unsafe(StringParam name)
 {
-  return CheckError(SDL_unsetenv_unsafe(name));
+  return SDL_unsetenv_unsafe(name);
 }
 
 /**
@@ -5777,8 +5775,8 @@ public:
    *
    * @param tocode The target character encoding, must not be nullptr.
    * @param fromcode The source character encoding, must not be nullptr.
-   * @post a handle that must be freed with IConv.close on success.
-   * @throws Error on failure.
+   * @post a handle that must be freed with IConv.close, or ICONV_ERROR on
+   *       failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -5863,8 +5861,7 @@ public:
    * @param inbytesleft The number of bytes in the input buffer.
    * @param outbuf Address of variable that points to the output buffer.
    * @param outbytesleft The number of bytes in the output buffer.
-   * @returns the number of conversions on success.
-   * @throws Error on failure.
+   * @returns the number of conversions on success, or a negative error code.
    *
    * @threadsafety Do not use the same IConv from two threads at once.
    *
@@ -5944,8 +5941,8 @@ struct IConvRef : IConv
  *
  * @param tocode The target character encoding, must not be nullptr.
  * @param fromcode The source character encoding, must not be nullptr.
- * @returns a handle that must be freed with IConv.close on success.
- * @throws Error on failure.
+ * @returns a handle that must be freed with IConv.close, or ICONV_ERROR on
+ *          failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -5961,7 +5958,7 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 }
 
 inline IConv::IConv(StringParam tocode, StringParam fromcode)
-  : m_resource(CheckError(SDL_iconv_open(tocode, fromcode)))
+  : m_resource(SDL_iconv_open(tocode, fromcode))
 {
 }
 
@@ -5969,8 +5966,7 @@ inline IConv::IConv(StringParam tocode, StringParam fromcode)
  * This function frees a context used for character set conversion.
  *
  * @param cd The character set conversion handle.
- * @returns 0 on success.
- * @throws Error on failure.
+ * @returns 0 on success, or -1 on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -5980,7 +5976,7 @@ inline IConv::IConv(StringParam tocode, StringParam fromcode)
  * @sa IConv.IConv
  * @sa iconv_string
  */
-inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
+inline int iconv_close(IConvRaw cd) { return SDL_iconv_close(cd); }
 
 inline int IConv::close() { return iconv_close(release()); }
 
@@ -6009,8 +6005,7 @@ inline int IConv::close() { return iconv_close(release()); }
  * @param inbytesleft The number of bytes in the input buffer.
  * @param outbuf Address of variable that points to the output buffer.
  * @param outbytesleft The number of bytes in the output buffer.
- * @returns the number of conversions on success.
- * @throws Error on failure.
+ * @returns the number of conversions on success, or a negative error code.
  *
  * @threadsafety Do not use the same IConv from two threads at once.
  *
@@ -6026,7 +6021,7 @@ inline size_t iconv(IConv cd,
                     char** outbuf,
                     size_t* outbytesleft)
 {
-  return CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft));
+  return SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft);
 }
 
 inline size_t IConv::iconv(const char** inbuf,

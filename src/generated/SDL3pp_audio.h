@@ -5354,7 +5354,9 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  *                  function.
  * @param audio_len a pointer filled with the length of the audio data buffer in
  *                  bytes.
- * @throws Error on failure.
+ * @returns true on success. `audio_buf` will be filled with a pointer to an
+ *          allocated buffer containing the audio data, and `audio_len` is
+ *          filled with the length of that audio buffer in bytes.
  *
  * This function returns false if the .WAV file cannot be opened, uses an
  * unknown data format, or is corrupt; call GetError() for more information.
@@ -5373,7 +5375,7 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
                                AudioSpec* spec,
                                bool closeio = false)
 {
-  return CheckError(SDL_LoadWAV_IO(src, spec, closeio));
+  return SDL_LoadWAV_IO(src, spec, closeio);
 }
 
 /**
@@ -5392,7 +5394,9 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
  *                  function.
  * @param audio_len a pointer filled with the length of the audio data buffer in
  *                  bytes.
- * @throws Error on failure.
+ * @returns true on success. `audio_buf` will be filled with a pointer to an
+ *          allocated buffer containing the audio data, and `audio_len` is
+ *          filled with the length of that audio buffer in bytes.
  *
  * This function returns false if the .WAV file cannot be opened, uses an
  * unknown data format, or is corrupt; call GetError() for more information.
@@ -5409,7 +5413,7 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
  */
 inline OwnArray<Uint8> LoadWAV(StringParam path, AudioSpec* spec)
 {
-  return CheckError(SDL_LoadWAV(path, spec));
+  return SDL_LoadWAV(path, spec);
 }
 
 /**

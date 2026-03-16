@@ -51,6 +51,17 @@ Next version
   - [x] IMG_CreateAnimationDecoderWithProperties();
   - [x] TTF_GetGlyphImage();
   - [x] TTF_GetGlyphImageForIndex();
+- [ ] No longer throws:
+  - [ ] SDL_GetEventFilter();
+  - [ ] SDL_GetWindowFromEvent();
+  - [ ] SDL_TryLockMutex();
+  - [ ] SDL_TryLockRWLockForReading();
+  - [ ] SDL_TryLockRWLockForReading();
+  - [ ] SDL_GetRenderMetalLayer();
+  - [ ] SDL_GetRenderMetalCommandEncoder();
+  - [ ] SDL_GetWindowParent();
+  - [ ] SDL_SyncWindow();
+  - [ ] SDL_EGL_GetWindowSurface();
 
 Backlog
 -------

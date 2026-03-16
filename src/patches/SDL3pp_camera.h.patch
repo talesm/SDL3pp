@@ -69,17 +69,6 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -398,8 +395,8 @@
-    *
-    * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
-    *                    error. Can be nullptr.
--   * @returns a new frame of video on success.
--   * @throws Error on failure.
-+   * @returns a new frame of video on success, nullptr if none is currently
-+   *          available.
-    *
-    * @threadsafety It is safe to call this function from any thread.
-    *
 @@ -426,7 +423,7 @@
     * The app should not use the surface again after calling this function;
     * assume the surface is freed and the pointer is invalid.
@@ -269,22 +258,11 @@
  }
  
  inline std::optional<CameraSpec> Camera::GetFormat()
-@@ -994,8 +997,8 @@
-  * @param camera opened camera device.
-  * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
-  *                    error. Can be nullptr.
-- * @returns a new frame of video on success.
-- * @throws Error on failure.
-+ * @returns a new frame of video on success, nullptr if none is currently
-+ *          available.
-  *
-  * @threadsafety It is safe to call this function from any thread.
-  *
 @@ -1006,7 +1009,7 @@
  inline Surface AcquireCameraFrame(CameraRef camera,
                                    Uint64* timestampNS = nullptr)
  {
--  return CheckError(SDL_AcquireCameraFrame(camera, timestampNS));
+-  return SDL_AcquireCameraFrame(camera, timestampNS);
 +  return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
  }
  

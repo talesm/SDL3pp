@@ -1045,7 +1045,7 @@
  }
  
  inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
-@@ -5334,46 +5397,41 @@
+@@ -5334,48 +5397,42 @@
   *
   * Example:
   *
@@ -1073,13 +1073,17 @@
 - *                  function.
 - * @param audio_len a pointer filled with the length of the audio data buffer in
 - *                  bytes.
-+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
-+ *                even in the case of an error.
-  * @throws Error on failure.
-  *
+- * @returns true on success. `audio_buf` will be filled with a pointer to an
+- *          allocated buffer containing the audio data, and `audio_len` is
+- *          filled with the length of that audio buffer in bytes.
+- *
 - * This function returns false if the .WAV file cannot be opened, uses an
 - * unknown data format, or is corrupt; call GetError() for more information.
-- *
++ * @param closeio if true, calls IOStream.Close() on `src` before returning,
++ *                even in the case of an error.
++ * @returns an allocated buffer containing the audio data on success, or nullptr
++ * on failure.
+  *
 - * When the application is done with the data returned in `audio_buf`, it should
 - * call free() to dispose of it.
 + * This function throws if the .WAV file cannot be opened, uses an unknown data
@@ -1096,7 +1100,7 @@
                                 AudioSpec* spec,
                                 bool closeio = false)
  {
--  return CheckError(SDL_LoadWAV_IO(src, spec, closeio));
+-  return SDL_LoadWAV_IO(src, spec, closeio);
 +  Uint8* buf;
 +  Uint32 len;
 +  if (!SDL_LoadWAV_IO(src, closeio, spec, &buf, &len)) return {};
@@ -1104,7 +1108,7 @@
  }
  
  /**
-@@ -5388,28 +5446,23 @@
+@@ -5390,30 +5447,24 @@
   * @param path the file path of the WAV file to open.
   * @param spec a pointer to an AudioSpec that will be set to the WAVE data's
   *             format details on successful return.
@@ -1112,11 +1116,15 @@
 - *                  function.
 - * @param audio_len a pointer filled with the length of the audio data buffer in
 - *                  bytes.
-  * @throws Error on failure.
-  *
+- * @returns true on success. `audio_buf` will be filled with a pointer to an
+- *          allocated buffer containing the audio data, and `audio_len` is
+- *          filled with the length of that audio buffer in bytes.
+- *
 - * This function returns false if the .WAV file cannot be opened, uses an
 - * unknown data format, or is corrupt; call GetError() for more information.
-- *
++ * @returns an allocated buffer containing the audio data on success, or nullptr
++ * on failure.
+  *
 - * When the application is done with the data returned in `audio_buf`, it should
 - * call free() to dispose of it.
 + * This function throws if the .WAV file cannot be opened, uses an unknown data
@@ -1131,7 +1139,7 @@
   */
  inline OwnArray<Uint8> LoadWAV(StringParam path, AudioSpec* spec)
  {
--  return CheckError(SDL_LoadWAV(path, spec));
+-  return SDL_LoadWAV(path, spec);
 +  Uint8* buf;
 +  Uint32 len;
 +  if (!SDL_LoadWAV(path, spec, &buf, &len)) return {};
@@ -1139,7 +1147,7 @@
  }
  
  /**
-@@ -5435,7 +5488,6 @@
+@@ -5439,7 +5490,6 @@
   * @param src the source audio buffer to be mixed.
   * @param format the AudioFormat structure representing the desired audio
   *               format.
@@ -1147,7 +1155,7 @@
   * @param volume ranges from 0.0 - 1.0, and should be set to 1.0 for full audio
   *               volume.
   * @throws Error on failure.
-@@ -5449,7 +5501,8 @@
+@@ -5453,7 +5503,8 @@
                       AudioFormat format,
                       float volume)
  {
@@ -1157,7 +1165,7 @@
  }
  
  /**
-@@ -5475,7 +5528,6 @@
+@@ -5479,7 +5530,6 @@
   * @param src the source audio buffer to be mixed.
   * @param format the AudioFormat structure representing the desired audio
   *               format.
@@ -1165,7 +1173,7 @@
   * @param volume ranges from 0.0 - 1.0, and should be set to 1.0 for full audio
   *               volume.
   * @throws Error on failure.
-@@ -5489,7 +5541,13 @@
+@@ -5493,7 +5543,13 @@
                       AudioFormat format,
                       float volume)
  {
@@ -1180,7 +1188,7 @@
  }
  
  /**
-@@ -5507,11 +5565,7 @@
+@@ -5511,11 +5567,7 @@
   *
   * @param src_spec the format details of the input audio.
   * @param src_data the audio data to be converted.
@@ -1192,7 +1200,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -5522,8 +5576,15 @@
+@@ -5526,8 +5578,15 @@
                                             SourceBytes src_data,
                                             const AudioSpec& dst_spec)
  {

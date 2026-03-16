@@ -1191,8 +1191,8 @@ public:
    * Destroying the mixer will also destroy all its still-existing mixing
    * groups.
    *
-   * @returns a newly-created mixing group, or nullptr on error; call GetError()
-   *          for more information.
+   * @returns a newly-created mixing group on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -2107,8 +2107,8 @@ public:
    *
    * This is the mixer pointer that was passed to Track.Track().
    *
-   * @returns the mixer associated with the track, or nullptr on error; call
-   *          GetError() for more information.
+   * @returns the mixer associated with the track on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -3373,8 +3373,8 @@ public:
    * groups.
    *
    * @param mixer the mixer on which to create a mixing group.
-   * @post a newly-created mixing group, or nullptr on error; call GetError()
-   *       for more information.
+   * @post a newly-created mixing group on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -3455,8 +3455,8 @@ public:
    *
    * This is the mixer pointer that was passed to Group.Group().
    *
-   * @returns the mixer associated with the group, or nullptr on error; call
-   *          GetError() for more information.
+   * @returns the mixer associated with the group on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -4733,8 +4733,8 @@ inline PropertiesRef Track::GetProperties()
  * This is the mixer pointer that was passed to Track.Track().
  *
  * @param track the track to query.
- * @returns the mixer associated with the track, or nullptr on error; call
- *          GetError() for more information.
+ * @returns the mixer associated with the track on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4742,7 +4742,7 @@ inline PropertiesRef Track::GetProperties()
  */
 inline MixerRef GetTrackMixer(TrackRef track)
 {
-  return MIX_GetTrackMixer(track);
+  return CheckError(MIX_GetTrackMixer(track));
 }
 
 inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(m_resource); }
@@ -6583,8 +6583,8 @@ inline void Track::Get3DPosition(Point3D* position)
  * Destroying the mixer will also destroy all its still-existing mixing groups.
  *
  * @param mixer the mixer on which to create a mixing group.
- * @returns a newly-created mixing group, or nullptr on error; call GetError()
- *          for more information.
+ * @returns a newly-created mixing group on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -6599,7 +6599,7 @@ inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 inline GroupRef Mixer::CreateGroup() { return Group(m_resource); }
 
 inline Group::Group(MixerRef mixer)
-  : m_resource(MIX_CreateGroup(mixer))
+  : m_resource(CheckError(MIX_CreateGroup(mixer)))
 {
 }
 
@@ -6654,8 +6654,8 @@ inline PropertiesRef Group::GetProperties()
  * This is the mixer pointer that was passed to Group.Group().
  *
  * @param group the group to query.
- * @returns the mixer associated with the group, or nullptr on error; call
- *          GetError() for more information.
+ * @returns the mixer associated with the group on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -6663,7 +6663,7 @@ inline PropertiesRef Group::GetProperties()
  */
 inline MixerRef GetGroupMixer(GroupRef group)
 {
-  return MIX_GetGroupMixer(group);
+  return CheckError(MIX_GetGroupMixer(group));
 }
 
 inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(m_resource); }

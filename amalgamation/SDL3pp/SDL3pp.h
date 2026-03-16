@@ -39085,7 +39085,8 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  *             format details on successful return.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
  *                even in the case of an error.
- * @throws Error on failure.
+ * @returns an allocated buffer containing the audio data on success, or nullptr
+ * on failure.
  *
  * This function throws if the .WAV file cannot be opened, uses an unknown data
  * format, or is corrupt; call GetError() for more information.
@@ -39118,7 +39119,8 @@ inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
  * @param path the file path of the WAV file to open.
  * @param spec a pointer to an AudioSpec that will be set to the WAVE data's
  *             format details on successful return.
- * @throws Error on failure.
+ * @returns an allocated buffer containing the audio data on success, or nullptr
+ * on failure.
  *
  * This function throws if the .WAV file cannot be opened, uses an unknown data
  * format, or is corrupt,
@@ -49793,7 +49795,7 @@ public:
    *
    * This function returns true if passed a nullptr mutex.
    *
-   * @throws Error on failure.
+   * @returns true on success, false if the mutex would block.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -49802,7 +49804,7 @@ public:
    * @sa Mutex.Lock
    * @sa Mutex.Unlock
    */
-  void TryLock();
+  bool TryLock();
 
   /**
    * Unlock the mutex.
@@ -49953,7 +49955,7 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  * This function returns true if passed a nullptr mutex.
  *
  * @param mutex the mutex to try to lock.
- * @throws Error on failure.
+ * @returns true on success, false if the mutex would block.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -49962,12 +49964,9 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  * @sa Mutex.Lock
  * @sa Mutex.Unlock
  */
-inline void TryLockMutex(MutexRef mutex)
-{
-  CheckError(SDL_TryLockMutex(mutex));
-}
+inline bool TryLockMutex(MutexRef mutex) { return SDL_TryLockMutex(mutex); }
 
-inline void Mutex::TryLock() { SDL::TryLockMutex(m_resource); }
+inline bool Mutex::TryLock() { return SDL::TryLockMutex(m_resource); }
 
 /**
  * Unlock the mutex.
@@ -50247,7 +50246,7 @@ public:
    *
    * This function returns true if passed a nullptr rwlock.
    *
-   * @throws Error on failure.
+   * @returns true on success, false if the lock would block.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -50257,7 +50256,7 @@ public:
    * @sa RWLock.TryLockForWriting
    * @sa RWLock.Unlock
    */
-  void TryLockForReading();
+  bool TryLockForReading();
 
   /**
    * Try to lock a read/write lock _for writing_ without blocking.
@@ -50278,7 +50277,7 @@ public:
    *
    * This function returns true if passed a nullptr rwlock.
    *
-   * @throws Error on failure.
+   * @returns true on success, false if the lock would block.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -50288,7 +50287,7 @@ public:
    * @sa RWLock.TryLockForReading
    * @sa RWLock.Unlock
    */
-  void TryLockForWriting();
+  bool TryLockForWriting();
 
   /**
    * Unlock the read/write lock.
@@ -50522,7 +50521,7 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  * This function returns true if passed a nullptr rwlock.
  *
  * @param rwlock the rwlock to try to lock.
- * @throws Error on failure.
+ * @returns true on success, false if the lock would block.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -50532,14 +50531,14 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForReading(RWLockRef rwlock)
+inline bool TryLockRWLockForReading(RWLockRef rwlock)
 {
-  CheckError(SDL_TryLockRWLockForReading(rwlock));
+  return SDL_TryLockRWLockForReading(rwlock);
 }
 
-inline void RWLock::TryLockForReading()
+inline bool RWLock::TryLockForReading()
 {
-  SDL::TryLockRWLockForReading(m_resource);
+  return SDL::TryLockRWLockForReading(m_resource);
 }
 
 /**
@@ -50562,7 +50561,7 @@ inline void RWLock::TryLockForReading()
  * This function returns true if passed a nullptr rwlock.
  *
  * @param rwlock the rwlock to try to lock.
- * @throws Error on failure.
+ * @returns true on success, false if the lock would block.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -50572,14 +50571,14 @@ inline void RWLock::TryLockForReading()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForWriting(RWLockRef rwlock)
+inline bool TryLockRWLockForWriting(RWLockRef rwlock)
 {
-  CheckError(SDL_TryLockRWLockForWriting(rwlock));
+  return SDL_TryLockRWLockForWriting(rwlock);
 }
 
-inline void RWLock::TryLockForWriting()
+inline bool RWLock::TryLockForWriting()
 {
-  SDL::TryLockRWLockForWriting(m_resource);
+  return SDL::TryLockRWLockForWriting(m_resource);
 }
 
 /**
@@ -54432,8 +54431,8 @@ public:
   /**
    * Get parent of a window.
    *
-   * @returns the parent of the window on success.
-   * @throws Error on failure.
+   * @returns the parent of the window on success or nullptr if the window has
+   *          no parent.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -55306,7 +55305,8 @@ public:
    *
    * On windowing systems where changes are immediate, this does nothing.
    *
-   * @throws Error on failure.
+   * @returns true on success or false if the operation timed out before the
+   *          window was in the requested state.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -55320,7 +55320,7 @@ public:
    * @sa Window.Restore
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
-  void Sync();
+  bool Sync();
 
   /**
    * Return whether the window has a surface associated with it.
@@ -55920,8 +55920,8 @@ public:
   /**
    * Get the EGL surface associated with the window.
    *
-   * @returns the EGLSurface pointer associated with the window on success.
-   * @throws Error on failure.
+   * @returns the EGLSurface pointer associated with the window, or nullptr on
+   *          failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -58163,8 +58163,8 @@ inline WindowRef Window::FromID(WindowID id)
  * Get parent of a window.
  *
  * @param window the window to query.
- * @returns the parent of the window on success.
- * @throws Error on failure.
+ * @returns the parent of the window on success or nullptr if the window has no
+ *          parent.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -58174,7 +58174,7 @@ inline WindowRef Window::FromID(WindowID id)
  */
 inline WindowRef GetWindowParent(WindowRef window)
 {
-  return {CheckError(SDL_GetWindowParent(window))};
+  return SDL_GetWindowParent(window);
 }
 
 inline WindowRef Window::GetParent() const
@@ -59330,7 +59330,8 @@ inline void Window::SetFullscreen(bool fullscreen)
  *
  * @param window the window for which to wait for the pending state to be
  *               applied.
- * @throws Error on failure.
+ * @returns true on success or false if the operation timed out before the
+ *          window was in the requested state.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -59344,9 +59345,9 @@ inline void Window::SetFullscreen(bool fullscreen)
  * @sa Window.Restore
  * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
  */
-inline void SyncWindow(WindowRef window) { CheckError(SDL_SyncWindow(window)); }
+inline bool SyncWindow(WindowRef window) { return SDL_SyncWindow(window); }
 
-inline void Window::Sync() { SDL::SyncWindow(m_resource); }
+inline bool Window::Sync() { return SDL::SyncWindow(m_resource); }
 
 /**
  * Return whether the window has a surface associated with it.
@@ -60560,8 +60561,8 @@ inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
  * Get the EGL surface associated with the window.
  *
  * @param window the window to query.
- * @returns the EGLSurface pointer associated with the window on success.
- * @throws Error on failure.
+ * @returns the EGLSurface pointer associated with the window, or nullptr on
+ *          failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -60569,7 +60570,7 @@ inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
  */
 inline EGLSurface EGL_GetWindowSurface(WindowRef window)
 {
-  return CheckError(SDL_EGL_GetWindowSurface(window));
+  return SDL_EGL_GetWindowSurface(window);
 }
 
 inline EGLSurface Window::GetEGLSurface()
@@ -62872,7 +62873,7 @@ inline void SetEventFilter(EventFilterCB filter)
  * @param filter the current callback function will be stored here.
  * @param userdata the pointer that is passed to the current event filter will
  *                 be stored here.
- * @throws Error on failure.
+ * @returns true on success or false if there is no event filter set.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -62880,9 +62881,9 @@ inline void SetEventFilter(EventFilterCB filter)
  *
  * @sa SetEventFilter
  */
-inline void GetEventFilter(EventFilter* filter, void** userdata)
+inline bool GetEventFilter(EventFilter* filter, void** userdata)
 {
-  CheckError(SDL_GetEventFilter(filter, userdata));
+  return SDL_GetEventFilter(filter, userdata);
 }
 
 /**
@@ -63080,8 +63081,7 @@ inline Uint32 RegisterEvents(int numevents)
  * Get window associated with an event.
  *
  * @param event an event containing a `windowID`.
- * @returns the associated window on success.
- * @throws Error on failure.
+ * @returns the associated window on success or nullptr if there is none.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -63093,7 +63093,7 @@ inline Uint32 RegisterEvents(int numevents)
  */
 inline WindowRef GetWindowFromEvent(const Event& event)
 {
-  return {CheckError(SDL_GetWindowFromEvent(&event))};
+  return SDL_GetWindowFromEvent(&event);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -84277,8 +84277,8 @@ public:
    * This function returns `void *`, so SDL doesn't have to include Metal's
    * headers, but it can be safely cast to a `CAMetalLayer *`.
    *
-   * @returns a `CAMetalLayer *` on success.
-   * @throws Error on failure.
+   * @returns a `CAMetalLayer *` on success, or nullptr if the renderer isn't a
+   *          Metal renderer.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -84299,8 +84299,8 @@ public:
    * doesn't apply to command encoders for render targets, just the window's
    * backbuffer. Check your return values!
    *
-   * @returns an `id<MTLRenderCommandEncoder>` on success.
-   * @throws Error on failure.
+   * @returns an `id<MTLRenderCommandEncoder>` on success, or nullptr if the
+   *          renderer isn't a Metal renderer or there was an error.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -90117,8 +90117,8 @@ inline void Renderer::Flush() { SDL::FlushRenderer(m_resource); }
  * headers, but it can be safely cast to a `CAMetalLayer *`.
  *
  * @param renderer the renderer to query.
- * @returns a `CAMetalLayer *` on success.
- * @throws Error on failure.
+ * @returns a `CAMetalLayer *` on success, or nullptr if the renderer isn't a
+ *          Metal renderer.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -90128,7 +90128,7 @@ inline void Renderer::Flush() { SDL::FlushRenderer(m_resource); }
  */
 inline void* GetRenderMetalLayer(RendererRef renderer)
 {
-  return CheckError(SDL_GetRenderMetalLayer(renderer));
+  return SDL_GetRenderMetalLayer(renderer);
 }
 
 inline void* Renderer::GetRenderMetalLayer()
@@ -90148,8 +90148,8 @@ inline void* Renderer::GetRenderMetalLayer()
  * backbuffer. Check your return values!
  *
  * @param renderer the renderer to query.
- * @returns an `id<MTLRenderCommandEncoder>` on success.
- * @throws Error on failure.
+ * @returns an `id<MTLRenderCommandEncoder>` on success, or nullptr if the
+ *          renderer isn't a Metal renderer or there was an error.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -90159,7 +90159,7 @@ inline void* Renderer::GetRenderMetalLayer()
  */
 inline void* GetRenderMetalCommandEncoder(RendererRef renderer)
 {
-  return CheckError(SDL_GetRenderMetalCommandEncoder(renderer));
+  return SDL_GetRenderMetalCommandEncoder(renderer);
 }
 
 inline void* Renderer::GetRenderMetalCommandEncoder()
@@ -93343,8 +93343,8 @@ public:
    * Destroying the mixer will also destroy all its still-existing mixing
    * groups.
    *
-   * @returns a newly-created mixing group, or nullptr on error; call GetError()
-   *          for more information.
+   * @returns a newly-created mixing group on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -94259,8 +94259,8 @@ public:
    *
    * This is the mixer pointer that was passed to Track.Track().
    *
-   * @returns the mixer associated with the track, or nullptr on error; call
-   *          GetError() for more information.
+   * @returns the mixer associated with the track on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -95525,8 +95525,8 @@ public:
    * groups.
    *
    * @param mixer the mixer on which to create a mixing group.
-   * @post a newly-created mixing group, or nullptr on error; call GetError()
-   *       for more information.
+   * @post a newly-created mixing group on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -95607,8 +95607,8 @@ public:
    *
    * This is the mixer pointer that was passed to Group.Group().
    *
-   * @returns the mixer associated with the group, or nullptr on error; call
-   *          GetError() for more information.
+   * @returns the mixer associated with the group on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -96885,8 +96885,8 @@ inline PropertiesRef Track::GetProperties()
  * This is the mixer pointer that was passed to Track.Track().
  *
  * @param track the track to query.
- * @returns the mixer associated with the track, or nullptr on error; call
- *          GetError() for more information.
+ * @returns the mixer associated with the track on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -96894,7 +96894,7 @@ inline PropertiesRef Track::GetProperties()
  */
 inline MixerRef GetTrackMixer(TrackRef track)
 {
-  return MIX_GetTrackMixer(track);
+  return CheckError(MIX_GetTrackMixer(track));
 }
 
 inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(m_resource); }
@@ -98735,8 +98735,8 @@ inline void Track::Get3DPosition(Point3D* position)
  * Destroying the mixer will also destroy all its still-existing mixing groups.
  *
  * @param mixer the mixer on which to create a mixing group.
- * @returns a newly-created mixing group, or nullptr on error; call GetError()
- *          for more information.
+ * @returns a newly-created mixing group on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -98751,7 +98751,7 @@ inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 inline GroupRef Mixer::CreateGroup() { return Group(m_resource); }
 
 inline Group::Group(MixerRef mixer)
-  : m_resource(MIX_CreateGroup(mixer))
+  : m_resource(CheckError(MIX_CreateGroup(mixer)))
 {
 }
 
@@ -98806,8 +98806,8 @@ inline PropertiesRef Group::GetProperties()
  * This is the mixer pointer that was passed to Group.Group().
  *
  * @param group the group to query.
- * @returns the mixer associated with the group, or nullptr on error; call
- *          GetError() for more information.
+ * @returns the mixer associated with the group on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -98815,7 +98815,7 @@ inline PropertiesRef Group::GetProperties()
  */
 inline MixerRef GetGroupMixer(GroupRef group)
 {
-  return MIX_GetGroupMixer(group);
+  return CheckError(MIX_GetGroupMixer(group));
 }
 
 inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(m_resource); }
