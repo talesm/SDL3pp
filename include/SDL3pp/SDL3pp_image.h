@@ -4538,18 +4538,6 @@ inline AnimationDecoder::AnimationDecoder(StringParam file)
 {
 }
 
-inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
-                                          StringParam type,
-                                          bool closeio)
-  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
-{
-}
-
-inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
-  : m_resource(CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
-{
-}
-
 /**
  * Create a decoder to read a series of images from an IOStream.
  *
