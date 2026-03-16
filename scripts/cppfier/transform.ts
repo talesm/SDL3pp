@@ -153,7 +153,7 @@ function stepExpandTypes(
   }
 }
 
-function isVersionAfter(version: VersionTag, tag: VersionTag) {
+export function isVersionAfter(version: VersionTag, tag: VersionTag) {
   if (version.major > tag.major) return true;
   if (version.major < tag.major) return false;
   if (version.minor > tag.minor) return true;

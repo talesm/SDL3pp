@@ -8168,8 +8168,6 @@ public:
 
   constexpr GPURenderState(GPURenderStateRef&& other) = delete;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
   /**
    * Create custom GPU render state.
    *
@@ -8189,8 +8187,6 @@ public:
    */
   GPURenderState(RendererRef renderer,
                  const GPURenderStateCreateInfo& createinfo);
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /// Destructor
   ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
@@ -8226,8 +8222,6 @@ public:
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
   /**
    * Destroy custom GPU render state.
    *
@@ -8239,10 +8233,6 @@ public:
    * @sa GPURenderState.GPURenderState
    */
   void Destroy();
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set fragment shader uniform variables in a custom GPU render state.
@@ -8261,8 +8251,6 @@ public:
    * @since This function is available since SDL 3.4.0.
    */
   void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)

@@ -2558,22 +2558,7 @@
      : GPURenderState(other.release())
    {
    }
-@@ -8168,8 +8276,6 @@
- 
-   constexpr GPURenderState(GPURenderStateRef&& other) = delete;
- 
--#if SDL_VERSION_ATLEAST(3, 4, 0)
--
-   /**
-    * Create custom GPU render state.
-    *
-@@ -8190,29 +8296,21 @@
-   GPURenderState(RendererRef renderer,
-                  const GPURenderStateCreateInfo& createinfo);
- 
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
--
-   /// Destructor
+@@ -8192,23 +8300,17 @@
    ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
  
    /// Assignment operator.
@@ -2600,21 +2585,19 @@
    {
      auto r = m_resource;
      m_resource = nullptr;
-@@ -8220,17 +8318,18 @@
+@@ -8216,15 +8318,18 @@
    }
  
    /// Comparison
 -  constexpr auto operator<=>(const GPURenderState& other) const noexcept =
 -    default;
 +  constexpr auto operator<=>(const GPURenderState& other) const = default;
- 
--  /// Converts to bool
--  constexpr explicit operator bool() const noexcept { return !!m_resource; }
++
 +  /// Comparison
 +  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
  
--#if SDL_VERSION_ATLEAST(3, 4, 0)
-+  /// Converts to bool
+   /// Converts to bool
+-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 +  constexpr explicit operator bool() const { return !!m_resource; }
  
    /**
@@ -2624,23 +2607,8 @@
     * @threadsafety This function should be called on the thread that created the
     *               renderer.
     *
-@@ -8240,10 +8339,6 @@
-    */
-   void Destroy();
- 
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
--
--#if SDL_VERSION_ATLEAST(3, 4, 0)
--
-   /**
-    * Set fragment shader uniform variables in a custom GPU render state.
-    *
-@@ -8261,12 +8356,8 @@
-    * @since This function is available since SDL 3.4.0.
-    */
+@@ -8253,8 +8358,6 @@
    void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
--
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
  };
  
 -#endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -2648,7 +2616,7 @@
  /**
   * Reference for GPURenderState.
   *
-@@ -8274,8 +8365,6 @@
+@@ -8262,8 +8365,6 @@
   */
  struct GPURenderStateRef : GPURenderState
  {
@@ -2657,7 +2625,7 @@
    /**
     * Constructs from raw GPURenderState.
     *
-@@ -8326,8 +8415,6 @@
+@@ -8314,8 +8415,6 @@
    constexpr operator GPURenderStateRaw() const noexcept { return get(); }
  };
  
@@ -2666,7 +2634,7 @@
  /**
   * Create custom GPU render state.
   *
-@@ -8352,20 +8439,12 @@
+@@ -8340,20 +8439,12 @@
    return GPURenderState(renderer, createinfo);
  }
  
@@ -2688,7 +2656,7 @@
  inline GPURenderState::GPURenderState(
    RendererRef renderer,
    const GPURenderStateCreateInfo& createinfo)
-@@ -8373,10 +8452,6 @@
+@@ -8361,10 +8452,6 @@
  {
  }
  
@@ -2699,7 +2667,7 @@
  /**
   * Set fragment shader uniform variables in a custom GPU render state.
   *
-@@ -8403,10 +8478,6 @@
+@@ -8391,10 +8478,6 @@
      SDL_SetGPURenderStateFragmentUniforms(state, slot_index, data, length));
  }
  
@@ -2710,7 +2678,7 @@
  inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
                                                  const void* data,
                                                  Uint32 length)
-@@ -8414,10 +8485,6 @@
+@@ -8402,10 +8485,6 @@
    SDL::SetGPURenderStateFragmentUniforms(m_resource, slot_index, data, length);
  }
  
@@ -2721,7 +2689,7 @@
  /**
   * Set custom GPU render state.
   *
-@@ -8439,19 +8506,11 @@
+@@ -8427,19 +8506,11 @@
    CheckError(SDL_SetGPURenderState(renderer, state));
  }
  
@@ -2741,7 +2709,7 @@
  /**
   * Destroy custom GPU render state.
   *
-@@ -8469,10 +8528,6 @@
+@@ -8457,10 +8528,6 @@
    SDL_DestroyGPURenderState(state);
  }
  
