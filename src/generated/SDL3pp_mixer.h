@@ -1778,7 +1778,7 @@ public:
    *
    * @sa Audio.FramesToMS
    */
-  Sint64 MSToFrames(Sint64 ms);
+  Sint64 MSToFrames(Milliseconds ms);
 
   /**
    * Convert sample frames for a Audio's format to milliseconds.
@@ -1801,7 +1801,7 @@ public:
    *
    * @sa Audio.MSToFrames
    */
-  Sint64 FramesToMS(Sint64 frames);
+  Milliseconds FramesToMS(Sint64 frames);
 };
 
 /**
@@ -2593,7 +2593,7 @@ public:
    *
    * @sa Track.FramesToMS
    */
-  Sint64 MSToFrames(Sint64 ms);
+  Sint64 MSToFrames(Milliseconds ms);
 
   /**
    * Convert sample frames for a track's current format to milliseconds.
@@ -2620,7 +2620,7 @@ public:
    *
    * @sa Track.MSToFrames
    */
-  Sint64 FramesToMS(Sint64 frames);
+  Milliseconds FramesToMS(Sint64 frames);
 
   /**
    * Start (or restart) mixing a track for playback.
@@ -2733,7 +2733,7 @@ public:
    * @sa Track.Pause
    * @sa Track.Playing
    */
-  void Play(PropertiesRef options);
+  void Play(PropertiesRef options = nullptr);
 
   /**
    * Halt a currently-playing track, possibly fading out over time.
@@ -5377,12 +5377,12 @@ inline Sint64 Track::GetRemaining()
  *
  * @sa Track.FramesToMS
  */
-inline Sint64 TrackMSToFrames(TrackRef track, Sint64 ms)
+inline Sint64 TrackMSToFrames(TrackRef track, Milliseconds ms)
 {
   return MIX_TrackMSToFrames(track, ms);
 }
 
-inline Sint64 Track::MSToFrames(Sint64 ms)
+inline Sint64 Track::MSToFrames(Milliseconds ms)
 {
   return SDL::TrackMSToFrames(m_resource, ms);
 }
@@ -5412,12 +5412,12 @@ inline Sint64 Track::MSToFrames(Sint64 ms)
  *
  * @sa Track.MSToFrames
  */
-inline Sint64 TrackFramesToMS(TrackRef track, Sint64 frames)
+inline Milliseconds TrackFramesToMS(TrackRef track, Sint64 frames)
 {
   return MIX_TrackFramesToMS(track, frames);
 }
 
-inline Sint64 Track::FramesToMS(Sint64 frames)
+inline Milliseconds Track::FramesToMS(Sint64 frames)
 {
   return SDL::TrackFramesToMS(m_resource, frames);
 }
@@ -5441,12 +5441,12 @@ inline Sint64 Track::FramesToMS(Sint64 frames)
  *
  * @sa Audio.FramesToMS
  */
-inline Sint64 AudioMSToFrames(AudioRef audio, Sint64 ms)
+inline Sint64 AudioMSToFrames(AudioRef audio, Milliseconds ms)
 {
   return MIX_AudioMSToFrames(audio, ms);
 }
 
-inline Sint64 Audio::MSToFrames(Sint64 ms)
+inline Sint64 Audio::MSToFrames(Milliseconds ms)
 {
   return SDL::AudioMSToFrames(m_resource, ms);
 }
@@ -5473,12 +5473,12 @@ inline Sint64 Audio::MSToFrames(Sint64 ms)
  *
  * @sa Audio.MSToFrames
  */
-inline Sint64 AudioFramesToMS(AudioRef audio, Sint64 frames)
+inline Milliseconds AudioFramesToMS(AudioRef audio, Sint64 frames)
 {
   return MIX_AudioFramesToMS(audio, frames);
 }
 
-inline Sint64 Audio::FramesToMS(Sint64 frames)
+inline Milliseconds Audio::FramesToMS(Sint64 frames)
 {
   return SDL::AudioFramesToMS(m_resource, frames);
 }
@@ -5499,7 +5499,7 @@ inline Sint64 Audio::FramesToMS(Sint64 frames)
  *
  * @sa FramesToMS
  */
-inline Sint64 MSToFrames(int sample_rate, Sint64 ms)
+inline Sint64 MSToFrames(int sample_rate, Milliseconds ms)
 {
   return MIX_MSToFrames(sample_rate, ms);
 }
@@ -5525,7 +5525,7 @@ inline Sint64 MSToFrames(int sample_rate, Sint64 ms)
  *
  * @sa MSToFrames
  */
-inline Sint64 FramesToMS(int sample_rate, Sint64 frames)
+inline Milliseconds FramesToMS(int sample_rate, Sint64 frames)
 {
   return MIX_FramesToMS(sample_rate, frames);
 }
@@ -5640,7 +5640,7 @@ inline Sint64 FramesToMS(int sample_rate, Sint64 frames)
  * @sa Track.Pause
  * @sa Track.Playing
  */
-inline void PlayTrack(TrackRef track, PropertiesRef options)
+inline void PlayTrack(TrackRef track, PropertiesRef options = nullptr)
 {
   CheckError(MIX_PlayTrack(track, options));
 }

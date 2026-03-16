@@ -477,6 +477,60 @@
  }
  
  inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
+@@ -5379,7 +5380,7 @@
+  */
+ inline Sint64 TrackMSToFrames(TrackRef track, Milliseconds ms)
+ {
+-  return MIX_TrackMSToFrames(track, ms);
++  return MIX_TrackMSToFrames(track, ms.count());
+ }
+ 
+ inline Sint64 Track::MSToFrames(Milliseconds ms)
+@@ -5414,7 +5415,7 @@
+  */
+ inline Milliseconds TrackFramesToMS(TrackRef track, Sint64 frames)
+ {
+-  return MIX_TrackFramesToMS(track, frames);
++  return Milliseconds(MIX_TrackFramesToMS(track, frames));
+ }
+ 
+ inline Milliseconds Track::FramesToMS(Sint64 frames)
+@@ -5443,7 +5444,7 @@
+  */
+ inline Sint64 AudioMSToFrames(AudioRef audio, Milliseconds ms)
+ {
+-  return MIX_AudioMSToFrames(audio, ms);
++  return MIX_AudioMSToFrames(audio, ms.count());
+ }
+ 
+ inline Sint64 Audio::MSToFrames(Milliseconds ms)
+@@ -5475,7 +5476,7 @@
+  */
+ inline Milliseconds AudioFramesToMS(AudioRef audio, Sint64 frames)
+ {
+-  return MIX_AudioFramesToMS(audio, frames);
++  return Milliseconds(MIX_AudioFramesToMS(audio, frames));
+ }
+ 
+ inline Milliseconds Audio::FramesToMS(Sint64 frames)
+@@ -5501,7 +5502,7 @@
+  */
+ inline Sint64 MSToFrames(int sample_rate, Milliseconds ms)
+ {
+-  return MIX_MSToFrames(sample_rate, ms);
++  return MIX_MSToFrames(sample_rate, ms.count());
+ }
+ 
+ /**
+@@ -5527,7 +5528,7 @@
+  */
+ inline Milliseconds FramesToMS(int sample_rate, Sint64 frames)
+ {
+-  return MIX_FramesToMS(sample_rate, frames);
++  return Milliseconds(MIX_FramesToMS(sample_rate, frames));
+ }
+ 
+ /**
 @@ -6442,7 +6443,7 @@
   */
  inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)

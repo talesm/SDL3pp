@@ -8839,6 +8839,13 @@ const transform = {
           type: "OwnArray<TrackRef>",
           parameters: [{}, {}],
         },
+        "MIX_TrackMSToFrames": { parameters: [{}, { type: "Milliseconds" }], },
+        "MIX_TrackFramesToMS": { type: "Milliseconds" },
+        "MIX_AudioMSToFrames": { parameters: [{}, { type: "Milliseconds" }], },
+        "MIX_AudioFramesToMS": { type: "Milliseconds" },
+        "MIX_MSToFrames": { parameters: [{}, { type: "Milliseconds" }], },
+        "MIX_FramesToMS": { type: "Milliseconds" },
+        "MIX_PlayTrack": { parameters: [{}, { default: "nullptr" }] },
         "MIX_SetTrackOutputChannelMap": { parameters: [{}, { type: "std::span<const int>" }], },
         "MIX_GetTrack3DPosition": {
           type: "Point3D",
