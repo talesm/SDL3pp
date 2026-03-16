@@ -486,7 +486,17 @@
   * success. A return value of -1 means failure (out of memory, invalid
   * parameters, etc).
   *
-@@ -7025,7 +7026,7 @@
+@@ -6955,7 +6956,8 @@
+  */
+ inline int Generate(MixerRef mixer, TargetBytes buffer)
+ {
+-  return CheckError(MIX_Generate(mixer, buffer.data(), buffer.size_bytes()));
++  return CheckError(MIX_Generate(mixer, buffer.data(), buffer.size_bytes()),
++                    -1);
+ }
+ 
+ inline int Mixer::Generate(TargetBytes buffer)
+@@ -7025,7 +7027,7 @@
     *
     * This function allows properties to be specified. This is intended to supply
     * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -495,7 +505,7 @@
     * properties.
     *
     * Properties are discussed in [SDL's
-@@ -7038,7 +7039,7 @@
+@@ -7038,7 +7040,7 @@
     * call to MIX.Init(), but does not need an actual Mixer to have been created.
     *
     * @param path the path on the filesystem from which to load data.
@@ -504,7 +514,7 @@
     * @post an audio decoder, ready to decode.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -7060,7 +7061,7 @@
+@@ -7060,7 +7062,7 @@
     *
     * This function allows properties to be specified. This is intended to supply
     * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -513,7 +523,7 @@
     * properties.
     *
     * If `closeio` is true, then `io` will be closed when this decoder is done
-@@ -7075,7 +7076,7 @@
+@@ -7075,7 +7077,7 @@
     *
     * @param io the i/o stream from which to load data.
     * @param closeio if true, close the i/o stream when done with it.
@@ -522,7 +532,18 @@
     * @post an audio decoder, ready to decode.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -7268,7 +7269,7 @@
+@@ -7190,8 +7192,8 @@
+    * @param buffer the memory buffer to store decoded audio.
+    * @param buflen the maximum number of bytes to store to `buffer`.
+    * @param spec the format that audio data will be stored to `buffer`.
+-   * @returns number of bytes decoded, or -1 on error; call GetError() for more
+-   *          information.
++   * @returns number of bytes decoded on success.
++   * @throws Error on failure.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -7268,7 +7270,7 @@
   *
   * This function allows properties to be specified. This is intended to supply
   * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -531,7 +552,7 @@
   * properties.
   *
   * Properties are discussed in [SDL's
-@@ -7281,7 +7282,7 @@
+@@ -7281,7 +7283,7 @@
   * call to MIX.Init(), but does not need an actual Mixer to have been created.
   *
   * @param path the path on the filesystem from which to load data.
@@ -540,7 +561,7 @@
   * @returns an audio decoder, ready to decode.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -7319,7 +7320,7 @@
+@@ -7319,7 +7321,7 @@
   *
   * This function allows properties to be specified. This is intended to supply
   * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -549,7 +570,7 @@
   * properties.
   *
   * If `closeio` is true, then `io` will be closed when this decoder is done with
-@@ -7334,7 +7335,7 @@
+@@ -7334,7 +7336,7 @@
   *
   * @param io the i/o stream from which to load data.
   * @param closeio if true, close the i/o stream when done with it.
@@ -558,7 +579,30 @@
   * @returns an audio decoder, ready to decode.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -7469,4 +7470,6 @@
+@@ -7443,8 +7445,8 @@
+  * @param buffer the memory buffer to store decoded audio.
+  * @param buflen the maximum number of bytes to store to `buffer`.
+  * @param spec the format that audio data will be stored to `buffer`.
+- * @returns number of bytes decoded, or -1 on error; call GetError() for more
+- *          information.
++ * @returns number of bytes decoded on success.
++ * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -7454,8 +7456,9 @@
+                        TargetBytes buffer,
+                        const AudioSpec& spec)
+ {
+-  return MIX_DecodeAudio(
+-    audiodecoder, buffer.data(), buffer.size_bytes(), &spec);
++  return CheckError(
++    MIX_DecodeAudio(audiodecoder, buffer.data(), buffer.size_bytes(), &spec),
++    -1);
+ }
+ 
+ inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
+@@ -7467,4 +7470,6 @@
  
  } // namespace SDL
  

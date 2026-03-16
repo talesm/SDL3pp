@@ -93431,7 +93431,7 @@ public:
    *
    * @sa Mixer.Mixer
    */
-  int Generate(void* buffer, int buflen);
+  int Generate(TargetBytes buffer);
 };
 
 /**
@@ -99106,14 +99106,15 @@ inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
  *
  * @sa Mixer.Mixer
  */
-inline int Generate(MixerRef mixer, void* buffer, int buflen)
+inline int Generate(MixerRef mixer, TargetBytes buffer)
 {
-  return CheckError(MIX_Generate(mixer, buffer, buflen));
+  return CheckError(MIX_Generate(mixer, buffer.data(), buffer.size_bytes()),
+                    -1);
 }
 
-inline int Mixer::Generate(void* buffer, int buflen)
+inline int Mixer::Generate(TargetBytes buffer)
 {
-  return SDL::Generate(m_resource, buffer, buflen);
+  return SDL::Generate(m_resource, std::move(buffer));
 }
 
 /**
@@ -99343,14 +99344,14 @@ public:
    * @param buffer the memory buffer to store decoded audio.
    * @param buflen the maximum number of bytes to store to `buffer`.
    * @param spec the format that audio data will be stored to `buffer`.
-   * @returns number of bytes decoded, or -1 on error; call GetError() for more
-   *          information.
+   * @returns number of bytes decoded on success.
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_mixer 3.0.0.
    */
-  int DecodeAudio(void* buffer, int buflen, const AudioSpec& spec);
+  int DecodeAudio(TargetBytes buffer, const AudioSpec& spec);
 };
 
 /**
@@ -99596,26 +99597,25 @@ inline void AudioDecoder::GetFormat(AudioSpec* spec)
  * @param buffer the memory buffer to store decoded audio.
  * @param buflen the maximum number of bytes to store to `buffer`.
  * @param spec the format that audio data will be stored to `buffer`.
- * @returns number of bytes decoded, or -1 on error; call GetError() for more
- *          information.
+ * @returns number of bytes decoded on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL_mixer 3.0.0.
  */
 inline int DecodeAudio(AudioDecoderRef audiodecoder,
-                       void* buffer,
-                       int buflen,
+                       TargetBytes buffer,
                        const AudioSpec& spec)
 {
-  return MIX_DecodeAudio(audiodecoder, buffer, buflen, &spec);
+  return CheckError(
+    MIX_DecodeAudio(audiodecoder, buffer.data(), buffer.size_bytes(), &spec),
+    -1);
 }
 
-inline int AudioDecoder::DecodeAudio(void* buffer,
-                                     int buflen,
-                                     const AudioSpec& spec)
+inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
 {
-  return SDL::DecodeAudio(m_resource, buffer, buflen, spec);
+  return SDL::DecodeAudio(m_resource, std::move(buffer), spec);
 }
 
 /// @}
