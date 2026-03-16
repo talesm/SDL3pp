@@ -2238,7 +2238,7 @@ public:
    *
    * @sa Track.SetRawIOStream
    */
-  void SetIOStream(IOStreamRef io, bool closeio);
+  void SetIOStream(IOStreamRef io, bool closeio = false);
 
   /**
    * Set a Track's input to an IOStream providing raw PCM data.
@@ -2287,7 +2287,9 @@ public:
    * @sa Track.SetAudioStream
    * @sa Track.SetIOStream
    */
-  void SetRawIOStream(IOStreamRef io, const AudioSpec& spec, bool closeio);
+  void SetRawIOStream(IOStreamRef io,
+                      const AudioSpec& spec,
+                      bool closeio = false);
 
   /**
    * Assign an arbitrary tag to a track.
@@ -4886,7 +4888,9 @@ inline void Track::SetAudioStream(AudioStreamRef stream)
  *
  * @sa Track.SetRawIOStream
  */
-inline void SetTrackIOStream(TrackRef track, IOStreamRef io, bool closeio)
+inline void SetTrackIOStream(TrackRef track,
+                             IOStreamRef io,
+                             bool closeio = false)
 {
   CheckError(MIX_SetTrackIOStream(track, io, closeio));
 }
@@ -4947,7 +4951,7 @@ inline void Track::SetIOStream(IOStreamRef io, bool closeio)
 inline void SetTrackRawIOStream(TrackRef track,
                                 IOStreamRef io,
                                 const AudioSpec& spec,
-                                bool closeio)
+                                bool closeio = false)
 {
   CheckError(MIX_SetTrackRawIOStream(track, io, &spec, closeio));
 }
