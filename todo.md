@@ -24,44 +24,44 @@ Next version
   - [x] Replace \*Param with \*Ref;
   - [x] Remove \*Param;
   - [x] Rename \*ConstRef to \*ConstParam
-- [ ] Wrap SDL_mixer;
+- [x] Wrap SDL_mixer;
 - [ ] Remove overloading of `*_IO` variants, use `*FromIO` or similar;
 - [x] Error handling fixes:
-  - [x] SDL_GetClipboardMimeTypes();
-  - [x] SDL_GetGamepadMappings();
-  - [x] SDL_GetGamepadJoystick();
-  - [x] SDL_AcquireGPUCommandBuffer();
-  - [x] SDL_MapGPUTransferBuffer();
-  - [x] SDL_SubmitGPUCommandBufferAndAcquireFence();
-  - [x] SDL_GetHapticFeatures();
-  - [x] SDL_AttachVirtualJoystick();
-  - [x] SDL_GetMouseNameForID();
-  - [x] SDL_GetPenDeviceType();
-  - [x] SDL_GetRendererName();
-  - [x] SDL_GetRendererFromTexture();
-  - [x] SDL_GetSensorID();
-  - [x] SDL_GetAndroidJNIEnv();
-  - [x] SDL_GetAndroidActivity();
-  - [x] SDL_GetTouchDeviceName();
-  - [x] IMG_CreateAnimationEncoder();
-  - [x] IMG_CreateAnimationEncoder_IO();
-  - [x] IMG_CreateAnimationEncoderWithProperties();
-  - [x] IMG_CreateAnimationDecoder();
-  - [x] IMG_CreateAnimationDecoder_IO();
-  - [x] IMG_CreateAnimationDecoderWithProperties();
-  - [x] TTF_GetGlyphImage();
-  - [x] TTF_GetGlyphImageForIndex();
-- [ ] No longer throws:
-  - [ ] SDL_GetEventFilter();
-  - [ ] SDL_GetWindowFromEvent();
-  - [ ] SDL_TryLockMutex();
-  - [ ] SDL_TryLockRWLockForReading();
-  - [ ] SDL_TryLockRWLockForReading();
-  - [ ] SDL_GetRenderMetalLayer();
-  - [ ] SDL_GetRenderMetalCommandEncoder();
-  - [ ] SDL_GetWindowParent();
-  - [ ] SDL_SyncWindow();
-  - [ ] SDL_EGL_GetWindowSurface();
+  - [x] SDL::GetClipboardMimeTypes();
+  - [x] SDL::GetGamepadMappings();
+  - [x] SDL::GetGamepadJoystick();
+  - [x] SDL::AcquireGPUCommandBuffer();
+  - [x] SDL::MapGPUTransferBuffer();
+  - [x] SDL::SubmitGPUCommandBufferAndAcquireFence();
+  - [x] SDL::GetHapticFeatures();
+  - [x] SDL::AttachVirtualJoystick();
+  - [x] SDL::GetMouseNameForID();
+  - [x] SDL::GetPenDeviceType();
+  - [x] SDL::GetRendererName();
+  - [x] SDL::GetRendererFromTexture();
+  - [x] SDL::GetSensorID();
+  - [x] SDL::GetAndroidJNIEnv();
+  - [x] SDL::GetAndroidActivity();
+  - [x] SDL::GetTouchDeviceName();
+  - [x] SDL::CreateAnimationEncoder();
+  - [x] SDL::CreateAnimationEncoder_IO();
+  - [x] SDL::CreateAnimationEncoderWithProperties();
+  - [x] SDL::CreateAnimationDecoder();
+  - [x] SDL::CreateAnimationDecoder_IO();
+  - [x] SDL::CreateAnimationDecoderWithProperties();
+  - [x] SDL::GetGlyphImage();
+  - [x] SDL::GetGlyphImageForIndex();
+- [x] No longer throws:
+  - [x] SDL::GetEventFilter();
+  - [x] SDL::GetWindowFromEvent();
+  - [x] SDL::TryLockMutex();
+  - [x] SDL::TryLockRWLockForReading();
+  - [x] SDL::TryLockRWLockForReading();
+  - [x] SDL::GetRenderMetalLayer();
+  - [x] SDL::GetRenderMetalCommandEncoder();
+  - [x] SDL::GetWindowParent();
+  - [x] SDL::SyncWindow();
+  - [x] SDL::EGL_GetWindowSurface();
 
 Backlog
 -------
