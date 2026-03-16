@@ -55,6 +55,7 @@ export function generateApi(config) {
 
 export interface GenerateApiFileConfig {
   parentVersion?: VersionTag;
+  previousVersionStr?: string;
   paramReplacements?: Dict<string>;
   delegatedReplacements?: Dict<string>;
 }
@@ -93,6 +94,10 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
 
     const result: string[] = [];
     for (const entry of Object.values(entries)) doGenerateEntries(entry);
+    if (config.previousVersionStr) {
+      result.push(`#endif // ${config.previousVersionStr}`);
+      config.previousVersionStr = undefined;
+    }
     return result.join("\n\n") + "\n";
 
     function doGenerateEntries(entry: ApiEntry) {
@@ -169,12 +174,19 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     const accessMod = entry.hints?.changeAccess
       ? `${prefix.slice(2)}${entry.hints?.changeAccess}:\n`
       : "";
-    if (!version || isVersionCovered(version, config.parentVersion))
-      return accessMod + doGenerate(entry);
+    const previousVersionStr = config.previousVersionStr
+      ? `#endif // ${config.previousVersionStr}\n\n`
+      : "";
+    if (!version || isVersionCovered(version, config.parentVersion)) {
+      config.previousVersionStr = undefined;
+      return `${previousVersionStr}${accessMod}${doGenerate(entry)}`;
+    }
     const versionStr = `${version.tag}_VERSION_ATLEAST(${version.major}, ${version.minor}, ${version.patch})`;
-    return `${accessMod}#if ${versionStr}\n\n${doGenerate(
-      entry,
-    )}\n\n#endif // ${versionStr}`;
+    if (versionStr === config.previousVersionStr) {
+      return `${accessMod}${doGenerate(entry)}`;
+    }
+    config.previousVersionStr = versionStr;
+    return `${previousVersionStr}${accessMod}#if ${versionStr}\n\n${doGenerate(entry)}`;
 
     function doGenerate(entry: ApiEntry) {
       switch (entry.kind) {
@@ -325,9 +337,12 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
   function generateNS(entry: ApiEntry) {
     const name = entry.name;
     const parentVersion = config.parentVersion;
+    const previousVersionStr = config.previousVersionStr;
+    config.previousVersionStr = undefined;
     config.parentVersion = entry.since ?? parentVersion;
     const subEntries = generateEntries(entry.entries ?? {}, "");
     config.parentVersion = parentVersion;
+    config.previousVersionStr = previousVersionStr;
     return `namespace ${name} {\n\n${subEntries}\n\n} // namespace ${name}\n`;
   }
 
@@ -336,10 +351,13 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     const parent = entry.type ? ` : ${entry.type}` : "";
     const subEntries = entry.entries ?? {};
     combineHints(entry);
+    const previousVersionStr = config.previousVersionStr;
+    config.previousVersionStr = undefined;
     const parentVersion = config.parentVersion;
     config.parentVersion = entry.since ?? parentVersion;
     const subEntriesStr = generateEntries(subEntries, prefix + "  ");
     config.parentVersion = parentVersion;
+    config.previousVersionStr = previousVersionStr;
     return `${signature}${parent}\n${prefix}{${subEntriesStr}\n${prefix}};`;
   }
 }

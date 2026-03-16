@@ -1800,10 +1800,6 @@ namespace SDL {
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_LG4FF "SDL_JOYSTICK_HIDAPI_LG4FF"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * A variable controlling whether the HIDAPI driver for 8BitDo controllers
  * should be used.
@@ -1820,10 +1816,6 @@ namespace SDL {
  * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_8BITDO "SDL_JOYSTICK_HIDAPI_8BITDO"
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for SInput controllers
@@ -1844,10 +1836,6 @@ namespace SDL {
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_SINPUT "SDL_JOYSTICK_HIDAPI_SINPUT"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * A variable controlling whether the HIDAPI driver for ZUIKI controllers should
  * be used.
@@ -1864,10 +1852,6 @@ namespace SDL {
  * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_ZUIKI "SDL_JOYSTICK_HIDAPI_ZUIKI"
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for Flydigi controllers
@@ -2137,10 +2121,6 @@ namespace SDL {
  * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_GIP "SDL_JOYSTICK_HIDAPI_GIP"
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP)
@@ -3435,10 +3415,6 @@ namespace SDL {
  */
 #define SDL_HINT_PS2_GS_WIDTH "SDL_PS2_GS_WIDTH"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * A variable controlling the height of the PS2's framebuffer in pixels.
  *
@@ -3447,10 +3423,6 @@ namespace SDL {
  * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_PS2_GS_HEIGHT "SDL_PS2_GS_HEIGHT"
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the signal is interlaced or progressive.
@@ -3463,10 +3435,6 @@ namespace SDL {
  * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_PS2_GS_PROGRESSIVE "SDL_PS2_GS_PROGRESSIVE"
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling the video mode of the console.
@@ -3867,10 +3835,6 @@ namespace SDL {
  */
 #define SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE                              \
   "SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE"
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether SDL will attempt to automatically set the

@@ -457,10 +457,6 @@ public:
    */
   static Surface LoadPNG_IO(IOStreamRef src, bool closeio = false);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
   /**
    * Load a PNG image from a file.
    *
@@ -876,10 +872,6 @@ public:
    * @sa Surface.SavePNG
    */
   void SavePNG_IO(IOStreamRef dst, bool closeio = false) const;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Save a surface to a file in PNG format.
@@ -2440,10 +2432,6 @@ constexpr auto TONEMAP_OPERATOR_STRING =
 
 constexpr auto HOTSPOT_X_NUMBER = SDL_PROP_SURFACE_HOTSPOT_X_NUMBER;
 
-#endif // SDL_VERSION_ATLEAST(3, 2, 6)
-
-#if SDL_VERSION_ATLEAST(3, 2, 6)
-
 constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
@@ -2815,10 +2803,6 @@ inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
   return SDL_LoadSurface_IO(src, closeio);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * Load a BMP or PNG image from a file.
  *
@@ -2992,18 +2976,10 @@ inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
   return Surface(SDL_LoadPNG_IO(src, closeio));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline Surface Surface::LoadPNG_IO(IOStreamRef src, bool closeio)
 {
   return SDL::LoadPNG_IO(src, closeio);
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a PNG image from a file.
@@ -3029,18 +3005,10 @@ inline Surface Surface::LoadPNG_IO(IOStreamRef src, bool closeio)
  */
 inline Surface LoadPNG(StringParam file) { return Surface(SDL_LoadPNG(file)); }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline Surface Surface::LoadPNG(StringParam file)
 {
   return SDL::LoadPNG(std::move(file));
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Save a surface to a seekable SDL data stream in PNG format.
@@ -3066,18 +3034,10 @@ inline void SavePNG_IO(SurfaceConstRef surface,
   CheckError(SDL_SavePNG_IO(surface, dst, closeio));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
 {
   SDL::SavePNG_IO(m_resource, dst, closeio);
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Save a surface to a file in PNG format.
@@ -3098,10 +3058,6 @@ inline void SavePNG(SurfaceConstRef surface, StringParam file)
 {
   CheckError(SDL_SavePNG(surface, file));
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 inline void Surface::SavePNG(StringParam file) const
 {
@@ -3559,10 +3515,6 @@ inline Surface RotateSurface(SurfaceRef surface, float angle)
 {
   return SDL_RotateSurface(surface, angle);
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 inline Surface Surface::Rotate(float angle)
 {
@@ -4220,10 +4172,6 @@ inline void StretchSurface(SurfaceRef src,
 {
   CheckError(SDL_StretchSurface(src, srcrect, dst, dstrect, scaleMode));
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 inline void Surface::Stretch(SurfaceRef src,
                              OptionalRef<RectRaw> srcrect,

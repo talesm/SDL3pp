@@ -751,10 +751,6 @@ inline Uint32 AddAtomicU32(AtomicU32Raw* a, int v)
   return SDL_AddAtomicU32(a, v);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline Uint32 AtomicU32::Add(int v) { return SDL::AddAtomicU32(this, v); }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)

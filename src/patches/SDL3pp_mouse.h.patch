@@ -70,18 +70,7 @@
  constexpr MouseButtonFlags ButtonMask(MouseButton button)
  {
    return SDL_BUTTON_MASK(button);
-@@ -522,10 +523,6 @@
-                                                     float* x,
-                                                     float* y);
- 
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
--
--#if SDL_VERSION_ATLEAST(3, 4, 0)
--
- /**
-  * A callback used to transform mouse motion delta from raw values.
-  *
-@@ -585,11 +582,8 @@
+@@ -581,11 +582,8 @@
   * functionality, including some game controllers, KVM switches, etc. You should
   * wait for input from a device before you consider it actively in use.
   *
@@ -95,7 +84,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -598,7 +592,12 @@
+@@ -594,7 +592,12 @@
   * @sa GetMouseNameForID
   * @sa HasMouse
   */
@@ -109,7 +98,7 @@
  
  /**
   * Get the name of a mouse.
-@@ -629,7 +628,7 @@
+@@ -625,7 +628,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -118,7 +107,7 @@
  
  /**
   * Query SDL's cache for the synchronous mouse button state and the
-@@ -747,7 +746,7 @@
+@@ -743,7 +746,7 @@
  
  inline void Window::WarpMouse(const FPointRaw& p)
  {
@@ -127,7 +116,7 @@
  }
  
  /**
-@@ -761,8 +760,7 @@
+@@ -757,8 +760,7 @@
   * Note that this function will appear to succeed, but not actually move the
   * mouse when used over Microsoft Remote Desktop.
   *
@@ -137,7 +126,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -773,7 +771,7 @@
+@@ -769,7 +771,7 @@
   */
  inline void WarpMouse(const FPointRaw& p)
  {
@@ -146,18 +135,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -799,10 +797,6 @@
-   CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
- }
- 
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
--
--#if SDL_VERSION_ATLEAST(3, 4, 0)
--
- /**
-  * Set a user-defined function by which to transform relative mouse inputs.
-  *
-@@ -811,7 +805,6 @@
+@@ -803,7 +805,6 @@
   *
   * @param callback a callback used to transform relative mouse motion, or
   *                 nullptr for default behavior.
@@ -165,7 +143,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -820,7 +813,7 @@
+@@ -812,7 +813,7 @@
   */
  inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
  {
@@ -174,7 +152,7 @@
  }
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -910,12 +903,9 @@
+@@ -902,12 +903,9 @@
   *
   * @param data the color value for each pixel of the cursor.
   * @param mask the mask value for each pixel of the cursor.
@@ -190,7 +168,7 @@
   * @returns a new cursor with the specified parameters on success.
   * @throws Error on failure.
   *
-@@ -941,12 +931,13 @@
+@@ -933,12 +931,13 @@
                        const Uint8* mask,
                        const PointRaw& size,
                        const PointRaw& hot)
@@ -206,7 +184,7 @@
  {
  }
  
-@@ -970,8 +961,7 @@
+@@ -962,8 +961,7 @@
   * upscaled and be used instead.
   *
   * @param surface an Surface structure representing the cursor image.
@@ -216,7 +194,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -1098,7 +1088,7 @@
+@@ -1090,7 +1088,7 @@
   *
   * @sa Cursor.Set
   */
@@ -225,7 +203,7 @@
  
  /**
   * Get the default cursor.
-@@ -1116,7 +1106,7 @@
+@@ -1108,7 +1106,7 @@
   */
  inline CursorRef GetDefaultCursor()
  {

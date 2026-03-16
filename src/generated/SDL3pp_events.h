@@ -262,10 +262,6 @@ constexpr EventType EVENT_TEXT_EDITING_CANDIDATES =
 constexpr EventType EVENT_SCREEN_KEYBOARD_SHOWN =
   SDL_EVENT_SCREEN_KEYBOARD_SHOWN; ///< The on-screen keyboard has been shown
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 constexpr EventType EVENT_SCREEN_KEYBOARD_HIDDEN =
   SDL_EVENT_SCREEN_KEYBOARD_HIDDEN; ///< The on-screen keyboard has been hidden
 
@@ -368,16 +364,8 @@ constexpr EventType EVENT_FINGER_CANCELED =
 constexpr EventType EVENT_PINCH_BEGIN =
   SDL_EVENT_PINCH_BEGIN; ///< Pinch gesture started
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 constexpr EventType EVENT_PINCH_UPDATE =
   SDL_EVENT_PINCH_UPDATE; ///< Pinch gesture updated
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_PINCH_END =
   SDL_EVENT_PINCH_END; ///< Pinch gesture ended
@@ -1776,10 +1764,6 @@ inline int GetEventDescription(const Event& event, TargetBytes buf)
 {
   return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Generate an English description of an event.

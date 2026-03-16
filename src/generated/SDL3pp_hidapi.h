@@ -694,10 +694,6 @@ inline PropertiesRef hid_get_properties(HidDeviceRef dev)
   return CheckError(SDL_hid_get_properties(dev));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline PropertiesRef HidDevice::hid_get_properties()
 {
   return SDL::hid_get_properties(m_resource);

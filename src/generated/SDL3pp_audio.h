@@ -1606,10 +1606,6 @@ using AudioStreamDataCompleteCallback = void(SDLCALL*)(void* userdata,
                                                        const void* buf,
                                                        int buflen);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * A callback that fires for completed AudioStream.PutDataNoCopy() data.
  *
@@ -2276,10 +2272,6 @@ public:
   void PutDataNoCopy(SourceBytes buf,
                      AudioStreamDataCompleteCallback callback,
                      void* userdata);
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Add external data to an audio stream without copying it.
@@ -4308,10 +4300,6 @@ inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
     stream, buf.data(), buf.size_bytes(), callback, userdata));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * Add external data to an audio stream without copying it.
  *
@@ -4363,10 +4351,6 @@ inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
   static_assert(false, "Not implemented");
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCallback callback,
                                        void* userdata)
@@ -4374,19 +4358,11 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
   SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback, userdata);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCB callback)
 {
   SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback);
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Add data to the stream with each channel in a separate array.
@@ -4444,10 +4420,6 @@ inline void PutAudioStreamPlanarData(AudioStreamRef stream,
   CheckError(SDL_PutAudioStreamPlanarData(
     stream, channel_buffers, num_channels, num_samples));
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
                                        int num_channels,

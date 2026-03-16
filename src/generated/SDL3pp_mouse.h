@@ -522,10 +522,6 @@ using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
                                                     float* x,
                                                     float* y);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * A callback used to transform mouse motion delta from raw values.
  *
@@ -798,10 +794,6 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCallback callback,
 {
   CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set a user-defined function by which to transform relative mouse inputs.

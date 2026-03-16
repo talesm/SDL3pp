@@ -189,18 +189,7 @@
     * @returns the current value of a pointer.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -751,10 +761,6 @@
-   return SDL_AddAtomicU32(a, v);
- }
- 
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
--
--#if SDL_VERSION_ATLEAST(3, 4, 0)
--
- inline Uint32 AtomicU32::Add(int v) { return SDL::AddAtomicU32(this, v); }
- 
- #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -762,19 +768,19 @@
+@@ -758,19 +768,19 @@
  template<class T>
  inline bool AtomicPointer<T>::CompareAndSwap(T* oldval, T* newval)
  {

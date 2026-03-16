@@ -6291,10 +6291,6 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_PS2_GS_PROGRESSIVE "SDL_PS2_GS_PROGRESSIVE"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * A variable controlling the video mode of the console.
  *
@@ -86498,7 +86494,7 @@ inline Renderer CreateSoftwareRenderer(SurfaceRef surface)
 
 inline RendererRef Window::GetRenderer() const
 {
-  return {CheckError(SDL_GetRenderer(m_resource))};
+  return CheckError(SDL_GetRenderer(m_resource));
 }
 
 /**
@@ -86514,7 +86510,7 @@ inline RendererRef Window::GetRenderer() const
  */
 inline WindowRef GetRenderWindow(RendererRef renderer)
 {
-  return {CheckError(SDL_GetRenderWindow(renderer))};
+  return CheckError(SDL_GetRenderWindow(renderer));
 }
 
 inline WindowRef Renderer::GetWindow()
@@ -86633,7 +86629,7 @@ inline const char* Renderer::GetName() const
  */
 inline PropertiesRef GetRendererProperties(RendererRef renderer)
 {
-  return {CheckError(SDL_GetRendererProperties(renderer))};
+  return CheckError(SDL_GetRendererProperties(renderer));
 }
 
 inline PropertiesRef Renderer::GetProperties() const
@@ -87066,10 +87062,6 @@ constexpr auto CREATE_VULKAN_TEXTURE_NUMBER =
 constexpr auto CREATE_VULKAN_LAYOUT_NUMBER =
   SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 constexpr auto CREATE_GPU_TEXTURE_POINTER =
   SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER;
 
@@ -87260,7 +87252,7 @@ constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
  */
 inline PropertiesRef GetTextureProperties(TextureConstRef texture)
 {
-  return {CheckError(SDL_GetTextureProperties(texture))};
+  return CheckError(SDL_GetTextureProperties(texture));
 }
 
 inline PropertiesRef Texture::GetProperties() const

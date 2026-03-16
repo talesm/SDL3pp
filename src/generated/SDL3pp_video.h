@@ -706,45 +706,21 @@ using EGLSurface = SDL_EGLSurface;
  */
 using ProgressState = SDL_ProgressState;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 /// An invalid progress state indicating an error; check GetError()
 constexpr ProgressState PROGRESS_STATE_INVALID = SDL_PROGRESS_STATE_INVALID;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 constexpr ProgressState PROGRESS_STATE_NONE =
   SDL_PROGRESS_STATE_NONE; ///< No progress bar is shown
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr ProgressState PROGRESS_STATE_INDETERMINATE =
   SDL_PROGRESS_STATE_INDETERMINATE; ///< The progress bar is shown in a
                                     ///< indeterminate state
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 constexpr ProgressState PROGRESS_STATE_NORMAL =
   SDL_PROGRESS_STATE_NORMAL; ///< The progress bar is shown in a normal state
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 constexpr ProgressState PROGRESS_STATE_PAUSED =
   SDL_PROGRESS_STATE_PAUSED; ///< The progress bar is shown in a paused state
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The progress bar is shown in a state indicating the application had an error
@@ -2761,10 +2737,6 @@ public:
    */
   void SetProgressState(ProgressState state);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
   /**
    * Get the state of the progress bar for the given window’s taskbar icon.
    *
@@ -2776,10 +2748,6 @@ public:
    * @since This function is available since SDL 3.4.0.
    */
   ProgressState GetProgressState();
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Sets the value of the progress bar for the given window’s taskbar icon.
@@ -2793,10 +2761,6 @@ public:
    * @since This function is available since SDL 3.4.0.
    */
   void SetProgressValue(float value);
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Get the value of the progress bar for the given window’s taskbar icon.
@@ -3915,10 +3879,6 @@ constexpr auto KMSDRM_PANEL_ORIENTATION_NUMBER =
 constexpr auto WAYLAND_WL_OUTPUT_POINTER =
   SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 constexpr auto WINDOWS_HMONITOR_POINTER =
   SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER;
 
@@ -4937,10 +4897,6 @@ constexpr auto CREATE_X11_WINDOW_NUMBER =
 constexpr auto CREATE_EMSCRIPTEN_CANVAS_ID_STRING =
   SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 constexpr auto CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
   SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
 
@@ -5044,10 +5000,6 @@ constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
 
 constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
   SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
   SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
@@ -6032,10 +5984,6 @@ inline void SetWindowFillDocument(WindowRef window, bool fill)
   CheckError(SDL_SetWindowFillDocument(window, fill));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline void Window::SetFillDocument(bool fill)
 {
   SDL::SetWindowFillDocument(m_resource, fill);
@@ -7016,18 +6964,10 @@ inline void SetWindowProgressState(WindowRef window, ProgressState state)
   CheckError(SDL_SetWindowProgressState(window, state));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline void Window::SetProgressState(ProgressState state)
 {
   SDL::SetWindowProgressState(m_resource, state);
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the state of the progress bar for the given window’s taskbar icon.
@@ -7045,18 +6985,10 @@ inline ProgressState GetWindowProgressState(WindowRef window)
   return SDL_GetWindowProgressState(window);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline ProgressState Window::GetProgressState()
 {
   return SDL::GetWindowProgressState(m_resource);
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Sets the value of the progress bar for the given window’s taskbar icon.
@@ -7075,18 +7007,10 @@ inline void SetWindowProgressValue(WindowRef window, float value)
   CheckError(SDL_SetWindowProgressValue(window, value));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline void Window::SetProgressValue(float value)
 {
   SDL::SetWindowProgressValue(m_resource, value);
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the value of the progress bar for the given window’s taskbar icon.
@@ -7103,10 +7027,6 @@ inline float GetWindowProgressValue(WindowRef window)
 {
   return SDL_GetWindowProgressValue(window);
 }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 inline float Window::GetProgressValue()
 {
