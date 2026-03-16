@@ -8855,10 +8855,67 @@ const transform = {
         "MIX_DecodeAudio": { parameters: [{}, { type: "TargetBytes" }, { type: "const AudioSpec &", name: "spec" }], },
         "MIX_StereoGains": { before: "MIX_Track", },
         "MIX_Point3D": { before: "MIX_Track", },
-        "MIX_TrackStoppedCallback": { before: "MIX_Track", },
-        "MIX_TrackMixCallback": { before: "MIX_Track", },
-        "MIX_GroupMixCallback": { before: "MIX_Group", },
-        "MIX_PostMixCallback": { before: "MIX_Mixer", },
+        "MIX_PostMixCallback": {
+          before: "MIX_Mixer",
+          callback: "lightweight",
+        },
+        "SetPostMixCallback": {
+          after: "MIX_SetPostMixCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "mixer", type: "MixerRef" },
+            { name: "callback", type: "PostMixCB" },
+          ],
+        },
+        "MIX_TrackStoppedCallback": {
+          before: "MIX_Track",
+          callback: "lightweight",
+        },
+        "SetTrackStoppedCallback": {
+          after: "MIX_SetTrackStoppedCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "track", type: "TrackRef" },
+            { name: "callback", type: "TrackStoppedCB" },
+          ],
+        },
+        "MIX_TrackMixCallback": {
+          before: "MIX_Track",
+          callback: "lightweight",
+        },
+        "SetTrackRawCallback": {
+          after: "MIX_SetTrackRawCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "track", type: "TrackRef" },
+            { name: "callback", type: "TrackMixCB" },
+          ],
+        },
+        "SetTrackCookedCallback": {
+          after: "MIX_SetTrackCookedCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "track", type: "TrackRef" },
+            { name: "callback", type: "TrackMixCB" },
+          ],
+        },
+        "MIX_GroupMixCallback": {
+          before: "MIX_Group",
+          callback: "lightweight",
+        },
+        "SetGroupPostMixCallback": {
+          after: "MIX_SetGroupPostMixCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "group", type: "GroupRef" },
+            { name: "callback", type: "GroupMixCB" },
+          ],
+        },
         "MIX_CreateAudioDecoder": { parameters: [{}, { default: "nullptr" }] },
         "MIX_CreateAudioDecoder_IO": { parameters: [{}, { default: "false" }, { default: "nullptr" }] },
         "SDL_MIXER_MAJOR_VERSION": {

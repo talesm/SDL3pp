@@ -189,6 +189,43 @@ using PostMixCallback = void(SDLCALL*)(void* userdata,
                                        int samples);
 
 /**
+ * A callback that fires when all mixing has completed.
+ *
+ * This callback is fired when the mixer has completed all its work. If this
+ * mixer was created with Mixer.Mixer(), the data provided by this callback is
+ * what is being sent to the audio hardware, minus last conversions for format
+ * requirements. If this mixer was created with Mixer.Mixer(), this is what is
+ * being output from Mixer.Generate(), after final conversions.
+ *
+ * The audio data passed through here is _not_ const data; the app is permitted
+ * to change it in any way it likes, and those changes will replace the final
+ * mixer pipeline output.
+ *
+ * An audiospec is provided. SDL_mixer always does its mixing work in 32-bit
+ * float samples, even if the inputs or final output are not floating point. As
+ * such, `spec->format` will always be `AUDIO_F32` and `pcm` hardcoded to be a
+ * float pointer.
+ *
+ * `samples` is the number of float values pointed to by `pcm`: samples, not
+ * sample frames! There are no promises how many samples will be provided
+ * per-callback, and this number can vary wildly from call to call, depending on
+ * many factors.
+ *
+ * @param mixer the mixer that is generating audio.
+ * @param spec the format of the data in `pcm`.
+ * @param pcm the raw PCM data in float32 format.
+ * @param samples the number of float values pointed to by `pcm`.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @sa Mixer.SetPostMixCallback
+ *
+ * @sa PostMixCallback
+ */
+using PostMixCB = MakeFrontCallback<
+  void(MixerRaw mixer, const AudioSpec* spec, float* pcm, int samples)>;
+
+/**
  * An opaque object that represents a mixer.
  *
  * The Mixer is the toplevel object for this library. To use SDL_mixer, you must
@@ -1228,6 +1265,31 @@ public:
   void SetPostMixCallback(PostMixCallback cb, void* userdata);
 
   /**
+   * Set a callback that fires when all mixing has completed.
+   *
+   * After all mixer groups have processed, their buffers are mixed together
+   * into a single buffer for the final output, at which point a callback can be
+   * fired. This lets an app view the data at the last moment before mixing
+   * completes. It can also change the data in any way it pleases during this
+   * callback, and the mixer will continue as if this data is the final output.
+   *
+   * Each mixer has its own unique callback.
+   *
+   * Passing a nullptr callback here is legal; it disables this mixer's
+   * callback.
+   *
+   * @param cb the function to call when the mixer mixes. May be nullptr.
+   * @param userdata an opaque pointer provided to the callback for its own
+   *                 personal use.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa PostMixCallback
+   */
+  void SetPostMixCallback(PostMixCB callback);
+
+  /**
    * Generate mixer output when not driving an audio device.
    *
    * SDL_mixer allows the creation of Mixer objects that are not connected to an
@@ -1913,6 +1975,30 @@ using Point3D = MIX_Point3D;
 using TrackStoppedCallback = void(SDLCALL*)(void* userdata, TrackRaw track);
 
 /**
+ * A callback that fires when a Track is stopped.
+ *
+ * This callback is fired when a track completes playback, either because it ran
+ * out of data to mix (and all loops were completed as well), or it was
+ * explicitly stopped by the app. Pausing a track will not fire this callback.
+ *
+ * It is legal to adjust the track, including changing its input and restarting
+ * it. If this is done because it ran out of data in the middle of mixing, the
+ * mixer will start mixing the new track state in its current run without any
+ * gap in the audio.
+ *
+ * This callback will not fire when a playing track is destroyed.
+ *
+ * @param track the track that has stopped.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @sa Track.SetStoppedCallback
+ *
+ * @sa TrackStoppedCallback
+ */
+using TrackStoppedCB = MakeFrontCallback<void(TrackRaw track)>;
+
+/**
  * A callback that fires when a Track is mixing at various stages.
  *
  * This callback is fired for different parts of the mixing pipeline, and gives
@@ -1953,6 +2039,45 @@ using TrackMixCallback = void(SDLCALL*)(void* userdata,
                                         const AudioSpec* spec,
                                         float* pcm,
                                         int samples);
+
+/**
+ * A callback that fires when a Track is mixing at various stages.
+ *
+ * This callback is fired for different parts of the mixing pipeline, and gives
+ * the app visbility into the audio data that is being generated at various
+ * stages.
+ *
+ * The audio data passed through here is _not_ const data; the app is permitted
+ * to change it in any way it likes, and those changes will propagate through
+ * the mixing pipeline.
+ *
+ * An audiospec is provided. Different tracks might be in different formats, and
+ * an app needs to be able to handle that, but SDL_mixer always does its mixing
+ * work in 32-bit float samples, even if the inputs or final output are not
+ * floating point. As such, `spec->format` will always be `AUDIO_F32` and `pcm`
+ * hardcoded to be a float pointer.
+ *
+ * `samples` is the number of float values pointed to by `pcm`: samples, not
+ * sample frames! There are no promises how many samples will be provided
+ * per-callback, and this number can vary wildly from call to call, depending on
+ * many factors.
+ *
+ * Making changes to the track during this callback is undefined behavior.
+ * Change the data in `pcm` but not the track itself.
+ *
+ * @param track the track that is being mixed.
+ * @param spec the format of the data in `pcm`.
+ * @param pcm the raw PCM data in float32 format.
+ * @param samples the number of float values pointed to by `pcm`.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @sa Track.SetRawCallback
+ * @sa Track.SetCookedCallback
+ * @sa TrackMixCallback
+ */
+using TrackMixCB = MakeFrontCallback<
+  void(TrackRaw track, const AudioSpec* spec, float* pcm, int samples)>;
 
 /**
  * An opaque object that represents a source of sound output to be mixed.
@@ -3137,6 +3262,37 @@ public:
   void SetStoppedCallback(TrackStoppedCallback cb, void* userdata);
 
   /**
+   * Set a callback that fires when a Track is stopped.
+   *
+   * When a track completes playback, either because it ran out of data to mix
+   * (and all loops were completed as well), or it was explicitly stopped by the
+   * app, it will fire the callback specified here.
+   *
+   * Each track has its own unique callback.
+   *
+   * Passing a nullptr callback here is legal; it disables this track's
+   * callback.
+   *
+   * Pausing a track will not fire the callback, nor will the callback fire on a
+   * playing track that is being destroyed.
+   *
+   * It is legal to adjust the track, including changing its input and
+   * restarting it. If this is done because it ran out of data in the middle of
+   * mixing, the mixer will start mixing the new track state in its current run
+   * without any gap in the audio.
+   *
+   * @param cb the function to call when the track stops. May be nullptr.
+   * @param userdata an opaque pointer provided to the callback for its own
+   *                 personal use.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa TrackStoppedCallback
+   */
+  void SetStoppedCallback(TrackStoppedCB callback);
+
+  /**
    * Set a callback that fires when a Track has initial decoded audio.
    *
    * As a track needs to mix more data, it pulls from its input (a Audio, an
@@ -3166,6 +3322,37 @@ public:
    * @sa Track.SetCookedCallback
    */
   void SetRawCallback(TrackMixCallback cb, void* userdata);
+
+  /**
+   * Set a callback that fires when a Track has initial decoded audio.
+   *
+   * As a track needs to mix more data, it pulls from its input (a Audio, an
+   * AudioStream, etc). This input might be a compressed file format, like MP3,
+   * so a little more data is uncompressed from it.
+   *
+   * Once the track has PCM data to start operating on, it can fire a callback
+   * before _any_ changes to the raw PCM input have happened. This lets an app
+   * view the data before it has gone through transformations such as gain, 3D
+   * positioning, fading, etc. It can also change the data in any way it pleases
+   * during this callback, and the mixer will continue as if this data came
+   * directly from the input.
+   *
+   * Each track has its own unique raw callback.
+   *
+   * Passing a nullptr callback here is legal; it disables this track's
+   * callback.
+   *
+   * @param cb the function to call when the track mixes. May be nullptr.
+   * @param userdata an opaque pointer provided to the callback for its own
+   *                 personal use.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa TrackMixCallback
+   * @sa Track.SetCookedCallback
+   */
+  void SetRawCallback(TrackMixCB callback);
 
   /**
    * Set a callback that fires when the mixer has transformed a track's audio.
@@ -3200,6 +3387,40 @@ public:
    * @sa Track.SetRawCallback
    */
   void SetCookedCallback(TrackMixCallback cb, void* userdata);
+
+  /**
+   * Set a callback that fires when the mixer has transformed a track's audio.
+   *
+   * As a track needs to mix more data, it pulls from its input (a Audio, an
+   * AudioStream, etc). This input might be a compressed file format, like MP3,
+   * so a little more data is uncompressed from it.
+   *
+   * Once the track has PCM data to start operating on, and its raw callback has
+   * completed, it will begin to transform the audio: gain, fading, frequency
+   * ratio, 3D positioning, etc.
+   *
+   * A callback can be fired after all these transformations, but before the
+   * transformed data is mixed into other tracks. This lets an app view the data
+   * at the last moment that it is still a part of this track. It can also
+   * change the data in any way it pleases during this callback, and the mixer
+   * will continue as if this data came directly from the input.
+   *
+   * Each track has its own unique cooked callback.
+   *
+   * Passing a nullptr callback here is legal; it disables this track's
+   * callback.
+   *
+   * @param cb the function to call when the track mixes. May be nullptr.
+   * @param userdata an opaque pointer provided to the callback for its own
+   *                 personal use.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa TrackMixCallback
+   * @sa Track.SetRawCallback
+   */
+  void SetCookedCallback(TrackMixCB callback);
 };
 
 /**
@@ -3298,6 +3519,42 @@ using GroupMixCallback = void(SDLCALL*)(void* userdata,
                                         const AudioSpec* spec,
                                         float* pcm,
                                         int samples);
+
+/**
+ * A callback that fires when a Group has completed mixing.
+ *
+ * This callback is fired when a mixing group has finished mixing: all tracks in
+ * the group have mixed into a single buffer and are prepared to be mixed into
+ * all other groups for the final mix output.
+ *
+ * The audio data passed through here is _not_ const data; the app is permitted
+ * to change it in any way it likes, and those changes will propagate through
+ * the mixing pipeline.
+ *
+ * An audiospec is provided. Different groups might be in different formats, and
+ * an app needs to be able to handle that, but SDL_mixer always does its mixing
+ * work in 32-bit float samples, even if the inputs or final output are not
+ * floating point. As such, `spec->format` will always be `AUDIO_F32` and `pcm`
+ * hardcoded to be a float pointer.
+ *
+ * `samples` is the number of float values pointed to by `pcm`: samples, not
+ * sample frames! There are no promises how many samples will be provided
+ * per-callback, and this number can vary wildly from call to call, depending on
+ * many factors.
+ *
+ * @param group the group that is being mixed.
+ * @param spec the format of the data in `pcm`.
+ * @param pcm the raw PCM data in float32 format.
+ * @param samples the number of float values pointed to by `pcm`.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @sa Group.SetPostMixCallback
+ *
+ * @sa GroupMixCallback
+ */
+using GroupMixCB = MakeFrontCallback<
+  void(GroupRaw group, const AudioSpec* spec, float* pcm, int samples)>;
 
 /**
  * An opaque object that represents a grouping of tracks.
@@ -6743,9 +7000,48 @@ inline void SetTrackStoppedCallback(TrackRef track,
   CheckError(MIX_SetTrackStoppedCallback(track, cb, userdata));
 }
 
+/**
+ * Set a callback that fires when a Track is stopped.
+ *
+ * When a track completes playback, either because it ran out of data to mix
+ * (and all loops were completed as well), or it was explicitly stopped by the
+ * app, it will fire the callback specified here.
+ *
+ * Each track has its own unique callback.
+ *
+ * Passing a nullptr callback here is legal; it disables this track's callback.
+ *
+ * Pausing a track will not fire the callback, nor will the callback fire on a
+ * playing track that is being destroyed.
+ *
+ * It is legal to adjust the track, including changing its input and restarting
+ * it. If this is done because it ran out of data in the middle of mixing, the
+ * mixer will start mixing the new track state in its current run without any
+ * gap in the audio.
+ *
+ * @param track the track to assign this callback to.
+ * @param cb the function to call when the track stops. May be nullptr.
+ * @param userdata an opaque pointer provided to the callback for its own
+ *                 personal use.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL_mixer 3.0.0.
+ *
+ * @sa TrackStoppedCallback
+ */
+inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB callback)
+{
+  SetTrackStoppedCallback(track, callback.wrapper, callback.data);
+}
+
 inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
 {
   SDL::SetTrackStoppedCallback(m_resource, cb, userdata);
+}
+
+inline void Track::SetStoppedCallback(TrackStoppedCB callback)
+{
+  SDL::SetTrackStoppedCallback(m_resource, callback);
 }
 
 /**
@@ -6784,9 +7080,46 @@ inline void SetTrackRawCallback(TrackRef track,
   CheckError(MIX_SetTrackRawCallback(track, cb, userdata));
 }
 
+/**
+ * Set a callback that fires when a Track has initial decoded audio.
+ *
+ * As a track needs to mix more data, it pulls from its input (a Audio, an
+ * AudioStream, etc). This input might be a compressed file format, like MP3, so
+ * a little more data is uncompressed from it.
+ *
+ * Once the track has PCM data to start operating on, it can fire a callback
+ * before _any_ changes to the raw PCM input have happened. This lets an app
+ * view the data before it has gone through transformations such as gain, 3D
+ * positioning, fading, etc. It can also change the data in any way it pleases
+ * during this callback, and the mixer will continue as if this data came
+ * directly from the input.
+ *
+ * Each track has its own unique raw callback.
+ *
+ * Passing a nullptr callback here is legal; it disables this track's callback.
+ *
+ * @param track the track to assign this callback to.
+ * @param cb the function to call when the track mixes. May be nullptr.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL_mixer 3.0.0.
+ *
+ * @sa TrackMixCallback
+ * @sa Track.SetCookedCallback
+ */
+inline void SetTrackRawCallback(TrackRef track, TrackMixCB callback)
+{
+  SetTrackRawCallback(track, callback.wrapper, callback.data);
+}
+
 inline void Track::SetRawCallback(TrackMixCallback cb, void* userdata)
 {
   SDL::SetTrackRawCallback(m_resource, cb, userdata);
+}
+
+inline void Track::SetRawCallback(TrackMixCB callback)
+{
+  SDL::SetTrackRawCallback(m_resource, callback);
 }
 
 /**
@@ -6828,9 +7161,49 @@ inline void SetTrackCookedCallback(TrackRef track,
   CheckError(MIX_SetTrackCookedCallback(track, cb, userdata));
 }
 
+/**
+ * Set a callback that fires when the mixer has transformed a track's audio.
+ *
+ * As a track needs to mix more data, it pulls from its input (a Audio, an
+ * AudioStream, etc). This input might be a compressed file format, like MP3, so
+ * a little more data is uncompressed from it.
+ *
+ * Once the track has PCM data to start operating on, and its raw callback has
+ * completed, it will begin to transform the audio: gain, fading, frequency
+ * ratio, 3D positioning, etc.
+ *
+ * A callback can be fired after all these transformations, but before the
+ * transformed data is mixed into other tracks. This lets an app view the data
+ * at the last moment that it is still a part of this track. It can also change
+ * the data in any way it pleases during this callback, and the mixer will
+ * continue as if this data came directly from the input.
+ *
+ * Each track has its own unique cooked callback.
+ *
+ * Passing a nullptr callback here is legal; it disables this track's callback.
+ *
+ * @param track the track to assign this callback to.
+ * @param cb the function to call when the track mixes. May be nullptr.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL_mixer 3.0.0.
+ *
+ * @sa TrackMixCallback
+ * @sa Track.SetRawCallback
+ */
+inline void SetTrackCookedCallback(TrackRef track, TrackMixCB callback)
+{
+  SetTrackCookedCallback(track, callback.wrapper, callback.data);
+}
+
 inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
 {
   SDL::SetTrackCookedCallback(m_resource, cb, userdata);
+}
+
+inline void Track::SetCookedCallback(TrackMixCB callback)
+{
+  SDL::SetTrackCookedCallback(m_resource, callback);
 }
 
 /**
@@ -6863,6 +7236,34 @@ inline void SetGroupPostMixCallback(GroupRef group,
                                     void* userdata)
 {
   CheckError(MIX_SetGroupPostMixCallback(group, cb, userdata));
+}
+
+/**
+ * Set a callback that fires when a mixer group has completed mixing.
+ *
+ * After all playing tracks in a mixer group have pulled in more data from their
+ * inputs, transformed it, and mixed together into a single buffer, a callback
+ * can be fired. This lets an app view the data at the last moment that it is
+ * still a part of this group. It can also change the data in any way it pleases
+ * during this callback, and the mixer will continue as if this data came
+ * directly from the group's mix buffer.
+ *
+ * Each group has its own unique callback. Tracks that aren't in an explicit
+ * Group are mixed in an internal grouping that is not available to the app.
+ *
+ * Passing a nullptr callback here is legal; it disables this group's callback.
+ *
+ * @param group the mixing group to assign this callback to.
+ * @param cb the function to call when the group mixes. May be nullptr.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL_mixer 3.0.0.
+ *
+ * @sa GroupMixCallback
+ */
+inline void SetGroupPostMixCallback(GroupRef group, GroupMixCB callback)
+{
+  SetGroupPostMixCallback(group, callback.wrapper, callback.data);
 }
 
 inline void Group::SetPostMixCallback(GroupMixCallback cb, void* userdata)
@@ -6900,9 +7301,40 @@ inline void SetPostMixCallback(MixerRef mixer,
   CheckError(MIX_SetPostMixCallback(mixer, cb, userdata));
 }
 
+/**
+ * Set a callback that fires when all mixing has completed.
+ *
+ * After all mixer groups have processed, their buffers are mixed together into
+ * a single buffer for the final output, at which point a callback can be fired.
+ * This lets an app view the data at the last moment before mixing completes. It
+ * can also change the data in any way it pleases during this callback, and the
+ * mixer will continue as if this data is the final output.
+ *
+ * Each mixer has its own unique callback.
+ *
+ * Passing a nullptr callback here is legal; it disables this mixer's callback.
+ *
+ * @param mixer the mixer to assign this callback to.
+ * @param cb the function to call when the mixer mixes. May be nullptr.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL_mixer 3.0.0.
+ *
+ * @sa PostMixCallback
+ */
+inline void SetPostMixCallback(MixerRef mixer, PostMixCB callback)
+{
+  SetPostMixCallback(mixer, callback.wrapper, callback.data);
+}
+
 inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
 {
   SDL::SetPostMixCallback(m_resource, cb, userdata);
+}
+
+inline void Mixer::SetPostMixCallback(PostMixCB callback)
+{
+  SDL::SetPostMixCallback(m_resource, callback);
 }
 
 /**

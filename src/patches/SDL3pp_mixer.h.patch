@@ -27,7 +27,7 @@
   *
   * When loading audio, SDL_mixer can parse out several metadata tag formats,
   * such as ID3 and APE tags, and exposes this information through the
-@@ -515,7 +517,7 @@
+@@ -552,7 +554,7 @@
     *
     * This function loads data from an IOStream. There is also a version that
     * loads from a path on the filesystem (Audio.Audio()), and one that accepts
@@ -36,7 +36,7 @@
     *
     * The IOStream provided must be able to seek, or loading will fail. If the
     * stream can't seek (data is coming from an HTTP connection, etc), consider
-@@ -526,9 +528,8 @@
+@@ -563,9 +565,8 @@
     * @param predecode if true, data will be fully uncompressed before returning.
     * @param closeio true if SDL_mixer should close `io` before returning
     *                (success or failure).
@@ -48,7 +48,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -537,7 +538,6 @@
+@@ -574,7 +575,6 @@
     * @sa Audio.Destroy
     * @sa Track.SetAudio
     * @sa Audio.Audio
@@ -56,7 +56,7 @@
     */
    Audio LoadAudio_IO(IOStreamRef io, bool predecode, bool closeio = false);
  
-@@ -546,19 +546,18 @@
+@@ -583,19 +583,18 @@
     *
     * This is equivalent to calling:
     *
@@ -81,7 +81,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -567,7 +566,6 @@
+@@ -604,7 +603,6 @@
     * @sa Audio.Destroy
     * @sa Track.SetAudio
     * @sa Audio.Audio
@@ -89,7 +89,7 @@
     */
    Audio LoadAudio(StringParam path, bool predecode);
  
-@@ -586,11 +584,11 @@
+@@ -623,11 +621,11 @@
     * This function is meant to maximize efficiency: if the data is already in
     * memory and can remain there, don't copy it. This data can be in any
     * supported audio file format (WAV, MP3, etc); it will be decoded on the fly
@@ -106,7 +106,7 @@
     *
     * Audio objects can be shared between multiple mixers. The `mixer` parameter
     * just suggests the most likely mixer to use this audio, in case some
-@@ -661,7 +659,7 @@
+@@ -698,7 +696,7 @@
     * @sa Track.SetAudio
     * @sa Audio.Audio
     * @sa Mixer.LoadRawAudioNoCopy
@@ -115,7 +115,7 @@
     */
    Audio LoadRawAudio_IO(IOStreamRef io,
                          const AudioSpec& spec,
-@@ -699,7 +697,7 @@
+@@ -736,7 +734,7 @@
     * @sa Track.SetAudio
     * @sa Audio.Audio
     * @sa Mixer.LoadRawAudioNoCopy
@@ -124,7 +124,7 @@
     */
    Audio LoadRawAudio(SourceBytes data, const AudioSpec& spec);
  
-@@ -741,7 +739,7 @@
+@@ -778,7 +776,7 @@
     * @sa Track.SetAudio
     * @sa Audio.Audio
     * @sa Audio.Audio
@@ -133,7 +133,7 @@
     */
    Audio LoadRawAudioNoCopy(SourceBytes data,
                             const AudioSpec& spec,
-@@ -780,7 +778,7 @@
+@@ -817,7 +815,7 @@
     *
     * @sa Audio.Destroy
     * @sa Track.SetAudio
@@ -142,7 +142,7 @@
     */
    Audio CreateSineWaveAudio(int hz, float amplitude, Sint64 ms);
  
-@@ -815,9 +813,7 @@
+@@ -852,9 +850,7 @@
     * Tracks are not provided in any guaranteed order.
     *
     * @param tag the tag to search.
@@ -153,7 +153,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -889,7 +885,7 @@
+@@ -926,7 +922,7 @@
     * @since This function is available since SDL_mixer 3.0.0.
     *
     * @sa Track.Play
@@ -162,7 +162,7 @@
     */
    bool PlayAudio(AudioRef audio);
  
-@@ -1267,7 +1263,7 @@
+@@ -1329,7 +1325,7 @@
     * initialized, if available tracks to mix run out, the end of the buffer will
     * be initialized with silence; this silence will not be counted in the return
     * value, so the caller has the option to identify how much of the buffer has
@@ -171,7 +171,7 @@
     * success. A return value of -1 means failure (out of memory, invalid
     * parameters, etc).
     *
-@@ -1444,8 +1440,8 @@
+@@ -1506,8 +1502,8 @@
     * @param predecode if true, data will be fully uncompressed before returning.
     * @param closeio true if SDL_mixer should close `io` before returning
     *                (success or failure).
@@ -182,7 +182,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -1475,8 +1471,8 @@
+@@ -1537,8 +1533,8 @@
     *              nullptr.
     * @param path the path on the filesystem to load data from.
     * @param predecode if true, data will be fully uncompressed before returning.
@@ -193,7 +193,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -1569,7 +1565,7 @@
+@@ -1631,7 +1627,7 @@
     * @sa Track.SetAudio
     * @sa Audio.Audio
     * @sa Mixer.LoadRawAudioNoCopy
@@ -202,7 +202,7 @@
     */
    Audio(MixerRef mixer,
          IOStreamRef io,
-@@ -1609,7 +1605,7 @@
+@@ -1671,7 +1667,7 @@
     * @sa Track.SetAudio
     * @sa Audio.Audio
     * @sa Mixer.LoadRawAudioNoCopy
@@ -211,7 +211,7 @@
     */
    Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec);
  
-@@ -1920,7 +1916,7 @@
+@@ -2006,7 +2002,7 @@
   * A callback that fires when a Track is mixing at various stages.
   *
   * This callback is fired for different parts of the mixing pipeline, and gives
@@ -220,7 +220,7 @@
   * stages.
   *
   * The audio data passed through here is _not_ const data; the app is permitted
-@@ -2350,7 +2346,7 @@
+@@ -2475,7 +2471,7 @@
     *
     * @param count a pointer filled in with the number of tags returned, can be
     *              nullptr.
@@ -229,7 +229,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -3074,7 +3070,7 @@
+@@ -3199,7 +3195,7 @@
     * If 3D positioning isn't enabled for this track, through a call to
     * Track.Set3DPosition(), this will return (0,0,0).
     *
@@ -238,7 +238,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -3555,6 +3551,8 @@
+@@ -3812,6 +3808,8 @@
    constexpr operator GroupRaw() const noexcept { return get(); }
  };
  
@@ -247,7 +247,7 @@
  /**
   * The current major version of SDL_mixer headers.
   *
-@@ -3604,6 +3602,8 @@
+@@ -3861,6 +3859,8 @@
     (SDL_MIXER_MAJOR_VERSION > X || SDL_MIXER_MINOR_VERSION > Y ||              \
      SDL_MIXER_MICRO_VERSION >= Z))
  
@@ -256,7 +256,7 @@
  namespace MIX {
  
  /**
-@@ -4030,7 +4030,7 @@
+@@ -4287,7 +4287,7 @@
   *
   * This function loads data from an IOStream. There is also a version that loads
   * from a path on the filesystem (Audio.Audio()), and one that accepts
@@ -265,7 +265,7 @@
   *
   * The IOStream provided must be able to seek, or loading will fail. If the
   * stream can't seek (data is coming from an HTTP connection, etc), consider
-@@ -4042,9 +4042,8 @@
+@@ -4299,9 +4299,8 @@
   * @param predecode if true, data will be fully uncompressed before returning.
   * @param closeio true if SDL_mixer should close `io` before returning (success
   *                or failure).
@@ -277,7 +277,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -4053,7 +4052,7 @@
+@@ -4310,7 +4309,7 @@
   * @sa Audio.Destroy
   * @sa Track.SetAudio
   * @sa Audio.Audio
@@ -286,7 +286,7 @@
   */
  inline Audio LoadAudio_IO(MixerRef mixer,
                            IOStreamRef io,
-@@ -4072,12 +4071,12 @@
+@@ -4329,12 +4328,12 @@
                      IOStreamRef io,
                      bool predecode,
                      bool closeio)
@@ -301,7 +301,7 @@
  {
  }
  
-@@ -4105,20 +4104,19 @@
+@@ -4362,20 +4361,19 @@
   *
   * This is equivalent to calling:
   *
@@ -327,7 +327,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -4126,8 +4124,8 @@
+@@ -4383,8 +4381,8 @@
   *
   * @sa Audio.Destroy
   * @sa Track.SetAudio
@@ -338,7 +338,7 @@
   */
  inline Audio LoadAudio(MixerRef mixer, StringParam path, bool predecode)
  {
-@@ -4157,7 +4155,7 @@
+@@ -4414,7 +4412,7 @@
   * this is meant to optimize for data that's already in memory and intends to
   * exist there for significant time; since predecoding would only need the file
   * format data once, upfront, one could simply wrap it in
@@ -347,7 +347,7 @@
   *
   * Audio objects can be shared between multiple mixers. The `mixer` parameter
   * just suggests the most likely mixer to use this audio, in case some
-@@ -4194,14 +4192,14 @@
+@@ -4451,14 +4449,14 @@
   * @sa Audio.Destroy
   * @sa Track.SetAudio
   * @sa Mixer.LoadRawAudioNoCopy
@@ -365,7 +365,7 @@
  }
  
  inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
-@@ -4253,7 +4251,6 @@
+@@ -4510,7 +4508,6 @@
   * @sa Audio.Destroy
   * @sa Track.SetAudio
   * @sa Audio.Audio
@@ -373,7 +373,7 @@
   */
  inline Audio LoadAudioWithProperties(PropertiesRef props)
  {
-@@ -4310,7 +4307,6 @@
+@@ -4567,7 +4564,6 @@
   * @sa Track.SetAudio
   * @sa Audio.Audio
   * @sa Mixer.LoadRawAudioNoCopy
@@ -381,7 +381,7 @@
   */
  inline Audio LoadRawAudio_IO(MixerRef mixer,
                               IOStreamRef io,
-@@ -4360,7 +4356,6 @@
+@@ -4617,7 +4613,6 @@
   * @sa Track.SetAudio
   * @sa Audio.Audio
   * @sa Mixer.LoadRawAudioNoCopy
@@ -389,7 +389,7 @@
   */
  inline Audio LoadRawAudio(MixerRef mixer,
                            SourceBytes data,
-@@ -4413,15 +4408,14 @@
+@@ -4670,15 +4665,14 @@
   * @sa Track.SetAudio
   * @sa Audio.Audio
   * @sa Audio.Audio
@@ -407,7 +407,7 @@
  }
  
  inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
-@@ -4473,7 +4467,7 @@
+@@ -4730,7 +4724,7 @@
                                   float amplitude,
                                   Sint64 ms)
  {
@@ -416,7 +416,7 @@
  }
  
  inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
-@@ -4508,7 +4502,8 @@
+@@ -4765,7 +4759,8 @@
   *   out of sound to generate. This isn't necessarily always known to SDL_mixer,
   *   though.
   *
@@ -426,7 +426,7 @@
   *
   * Note that the metadata properties are whatever SDL_mixer finds in things like
   * ID3 tags, and they often have very little standardized formatting, may be
-@@ -4596,8 +4591,10 @@
+@@ -4853,8 +4848,10 @@
  
  inline Sint64 Audio::GetDuration() { return SDL::GetAudioDuration(m_resource); }
  
@@ -437,7 +437,7 @@
  constexpr Sint64 DURATION_INFINITE = MIX_DURATION_INFINITE;
  
  /**
-@@ -5041,7 +5038,7 @@
+@@ -5298,7 +5295,7 @@
   * @param track the track to query.
   * @param count a pointer filled in with the number of tags returned, can be
   *              nullptr.
@@ -446,7 +446,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -5050,7 +5047,9 @@
+@@ -5307,7 +5304,9 @@
   */
  inline OwnArray<char*> GetTrackTags(TrackRef track)
  {
@@ -457,7 +457,7 @@
  }
  
  inline OwnArray<char*> Track::GetTags()
-@@ -5067,7 +5066,7 @@
+@@ -5324,7 +5323,7 @@
   * @param tag the tag to search.
   * @param count a pointer filled in with the number of tracks returned, can be
   *              nullptr.
@@ -466,7 +466,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -5076,7 +5075,9 @@
+@@ -5333,7 +5332,9 @@
   */
  inline OwnArray<TrackRef> GetTaggedTracks(MixerRef mixer, StringParam tag)
  {
@@ -477,7 +477,7 @@
  }
  
  inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
-@@ -5379,7 +5380,7 @@
+@@ -5636,7 +5637,7 @@
   */
  inline Sint64 TrackMSToFrames(TrackRef track, Milliseconds ms)
  {
@@ -486,7 +486,7 @@
  }
  
  inline Sint64 Track::MSToFrames(Milliseconds ms)
-@@ -5414,7 +5415,7 @@
+@@ -5671,7 +5672,7 @@
   */
  inline Milliseconds TrackFramesToMS(TrackRef track, Sint64 frames)
  {
@@ -495,7 +495,7 @@
  }
  
  inline Milliseconds Track::FramesToMS(Sint64 frames)
-@@ -5443,7 +5444,7 @@
+@@ -5700,7 +5701,7 @@
   */
  inline Sint64 AudioMSToFrames(AudioRef audio, Milliseconds ms)
  {
@@ -504,7 +504,7 @@
  }
  
  inline Sint64 Audio::MSToFrames(Milliseconds ms)
-@@ -5475,7 +5476,7 @@
+@@ -5732,7 +5733,7 @@
   */
  inline Milliseconds AudioFramesToMS(AudioRef audio, Sint64 frames)
  {
@@ -513,7 +513,7 @@
  }
  
  inline Milliseconds Audio::FramesToMS(Sint64 frames)
-@@ -5501,7 +5502,7 @@
+@@ -5758,7 +5759,7 @@
   */
  inline Sint64 MSToFrames(int sample_rate, Milliseconds ms)
  {
@@ -522,7 +522,7 @@
  }
  
  /**
-@@ -5527,7 +5528,7 @@
+@@ -5784,7 +5785,7 @@
   */
  inline Milliseconds FramesToMS(int sample_rate, Sint64 frames)
  {
@@ -531,7 +531,7 @@
  }
  
  /**
-@@ -6442,7 +6443,7 @@
+@@ -6699,7 +6700,7 @@
   */
  inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
  {
@@ -540,7 +540,7 @@
  }
  
  inline void Track::SetOutputChannelMap(std::span<const int> chmap)
-@@ -6549,7 +6550,7 @@
+@@ -6806,7 +6807,7 @@
   * Track.Set3DPosition(), this will return (0,0,0).
   *
   * @param track the track to query.
@@ -549,7 +549,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -6560,7 +6561,9 @@
+@@ -6817,7 +6818,9 @@
   */
  inline Point3D GetTrack3DPosition(TrackRef track)
  {
@@ -560,7 +560,88 @@
  }
  
  inline Point3D Track::Get3DPosition()
-@@ -6936,7 +6939,7 @@
+@@ -7028,7 +7031,7 @@
+  */
+ inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB callback)
+ {
+-  static_assert(false, "Not implemented");
++  SetTrackStoppedCallback(track, callback.wrapper, callback.data);
+ }
+ 
+ inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
+@@ -7097,8 +7100,6 @@
+  *
+  * @param track the track to assign this callback to.
+  * @param cb the function to call when the track mixes. May be nullptr.
+- * @param userdata an opaque pointer provided to the callback for its own
+- *                 personal use.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL_mixer 3.0.0.
+@@ -7108,7 +7109,7 @@
+  */
+ inline void SetTrackRawCallback(TrackRef track, TrackMixCB callback)
+ {
+-  static_assert(false, "Not implemented");
++  SetTrackRawCallback(track, callback.wrapper, callback.data);
+ }
+ 
+ inline void Track::SetRawCallback(TrackMixCallback cb, void* userdata)
+@@ -7183,8 +7184,6 @@
+  *
+  * @param track the track to assign this callback to.
+  * @param cb the function to call when the track mixes. May be nullptr.
+- * @param userdata an opaque pointer provided to the callback for its own
+- *                 personal use.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL_mixer 3.0.0.
+@@ -7194,7 +7193,7 @@
+  */
+ inline void SetTrackCookedCallback(TrackRef track, TrackMixCB callback)
+ {
+-  static_assert(false, "Not implemented");
++  SetTrackCookedCallback(track, callback.wrapper, callback.data);
+ }
+ 
+ inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
+@@ -7256,8 +7255,6 @@
+  *
+  * @param group the mixing group to assign this callback to.
+  * @param cb the function to call when the group mixes. May be nullptr.
+- * @param userdata an opaque pointer provided to the callback for its own
+- *                 personal use.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL_mixer 3.0.0.
+@@ -7266,7 +7263,7 @@
+  */
+ inline void SetGroupPostMixCallback(GroupRef group, GroupMixCB callback)
+ {
+-  static_assert(false, "Not implemented");
++  SetGroupPostMixCallback(group, callback.wrapper, callback.data);
+ }
+ 
+ inline void Group::SetPostMixCallback(GroupMixCallback cb, void* userdata)
+@@ -7319,8 +7316,6 @@
+  *
+  * @param mixer the mixer to assign this callback to.
+  * @param cb the function to call when the mixer mixes. May be nullptr.
+- * @param userdata an opaque pointer provided to the callback for its own
+- *                 personal use.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL_mixer 3.0.0.
+@@ -7329,7 +7324,7 @@
+  */
+ inline void SetPostMixCallback(MixerRef mixer, PostMixCB callback)
+ {
+-  static_assert(false, "Not implemented");
++  SetPostMixCallback(mixer, callback.wrapper, callback.data);
+ }
+ 
+ inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
+@@ -7376,7 +7371,7 @@
   * initialized, if available tracks to mix run out, the end of the buffer will
   * be initialized with silence; this silence will not be counted in the return
   * value, so the caller has the option to identify how much of the buffer has
@@ -569,7 +650,7 @@
   * success. A return value of -1 means failure (out of memory, invalid
   * parameters, etc).
   *
-@@ -6955,7 +6958,8 @@
+@@ -7395,7 +7390,8 @@
   */
  inline int Generate(MixerRef mixer, TargetBytes buffer)
  {
@@ -579,7 +660,7 @@
  }
  
  inline int Mixer::Generate(TargetBytes buffer)
-@@ -7025,7 +7029,7 @@
+@@ -7465,7 +7461,7 @@
     *
     * This function allows properties to be specified. This is intended to supply
     * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -588,7 +669,7 @@
     * properties.
     *
     * Properties are discussed in [SDL's
-@@ -7038,7 +7042,7 @@
+@@ -7478,7 +7474,7 @@
     * call to MIX.Init(), but does not need an actual Mixer to have been created.
     *
     * @param path the path on the filesystem from which to load data.
@@ -597,7 +678,7 @@
     * @post an audio decoder, ready to decode.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -7060,7 +7064,7 @@
+@@ -7500,7 +7496,7 @@
     *
     * This function allows properties to be specified. This is intended to supply
     * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -606,7 +687,7 @@
     * properties.
     *
     * If `closeio` is true, then `io` will be closed when this decoder is done
-@@ -7075,7 +7079,7 @@
+@@ -7515,7 +7511,7 @@
     *
     * @param io the i/o stream from which to load data.
     * @param closeio if true, close the i/o stream when done with it.
@@ -615,7 +696,7 @@
     * @post an audio decoder, ready to decode.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -7190,8 +7194,8 @@
+@@ -7630,8 +7626,8 @@
     * @param buffer the memory buffer to store decoded audio.
     * @param buflen the maximum number of bytes to store to `buffer`.
     * @param spec the format that audio data will be stored to `buffer`.
@@ -626,7 +707,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -7268,7 +7272,7 @@
+@@ -7708,7 +7704,7 @@
   *
   * This function allows properties to be specified. This is intended to supply
   * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -635,7 +716,7 @@
   * properties.
   *
   * Properties are discussed in [SDL's
-@@ -7281,7 +7285,7 @@
+@@ -7721,7 +7717,7 @@
   * call to MIX.Init(), but does not need an actual Mixer to have been created.
   *
   * @param path the path on the filesystem from which to load data.
@@ -644,7 +725,7 @@
   * @returns an audio decoder, ready to decode.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -7319,7 +7323,7 @@
+@@ -7759,7 +7755,7 @@
   *
   * This function allows properties to be specified. This is intended to supply
   * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -653,7 +734,7 @@
   * properties.
   *
   * If `closeio` is true, then `io` will be closed when this decoder is done with
-@@ -7334,7 +7338,7 @@
+@@ -7774,7 +7770,7 @@
   *
   * @param io the i/o stream from which to load data.
   * @param closeio if true, close the i/o stream when done with it.
@@ -662,7 +743,7 @@
   * @returns an audio decoder, ready to decode.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -7443,8 +7447,8 @@
+@@ -7883,8 +7879,8 @@
   * @param buffer the memory buffer to store decoded audio.
   * @param buflen the maximum number of bytes to store to `buffer`.
   * @param spec the format that audio data will be stored to `buffer`.
@@ -673,7 +754,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -7454,8 +7458,9 @@
+@@ -7894,8 +7890,9 @@
                         TargetBytes buffer,
                         const AudioSpec& spec)
  {
@@ -685,7 +766,7 @@
  }
  
  inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
-@@ -7467,4 +7472,6 @@
+@@ -7907,4 +7904,6 @@
  
  } // namespace SDL
  
