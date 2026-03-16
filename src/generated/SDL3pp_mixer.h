@@ -147,6 +147,9 @@ using AudioDecoderRaw = MIX_AudioDecoder*;
 // Forward decl
 struct AudioDecoderRef;
 
+// Forward decl
+struct MixerLock;
+
 /**
  * A callback that fires when all mixing has completed.
  *
@@ -496,7 +499,7 @@ public:
    *
    * @sa Mixer.Unlock
    */
-  void Lock();
+  MixerLock Lock();
 
   /**
    * Unlock a mixer previously locked by a call to Mixer.Lock().
@@ -518,7 +521,7 @@ public:
    *
    * @sa Mixer.Lock
    */
-  void Unlock();
+  void Unlock(MixerLock&& lock);
 
   /**
    * Load audio for playback from an IOStream.
@@ -1405,6 +1408,176 @@ struct MixerRef : Mixer
 
   /// Converts to MixerRaw
   constexpr operator MixerRaw() const noexcept { return get(); }
+};
+
+/**
+ * Lock a mixer by obtaining its internal mutex.
+ *
+ * While locked, the mixer will not be able to mix more audio or change its
+ * internal state in another thread. Those other threads will block until the
+ * mixer is unlocked again.
+ *
+ * Under the hood, this function calls Mutex.Lock(), so all the same rules
+ * apply: the lock can be recursive, it must be unlocked the same number of
+ * times from the same thread that locked it, etc.
+ *
+ * Just about every SDL_mixer API _also_ locks the mixer while doing its work,
+ * as does the SDL audio device thread while actual mixing is in progress, so
+ * basic use of this library never requires the app to explicitly lock the
+ * device to be thread safe. There are two scenarios where this can be useful,
+ * however:
+ *
+ * - The app has a provided a callback that the mixing thread might call, and
+ *   there is some app state that needs to be protected against race conditions
+ *   as changes are made and mixing progresses simultaneously. Any lock can be
+ *   used for this, but this is a conveniently-available lock.
+ * - The app wants to make multiple, atomic changes to the mix. For example, to
+ *   start several tracks at the exact same moment, one would lock the mixer,
+ *   call Track.Play multiple times, and then unlock again; all the tracks will
+ *   start mixing on the same sample frame.
+ *
+ * Each call to this function must be paired with a call to Mixer.Unlock from
+ * the same thread. It is safe to lock a mixer multiple times; it remains locked
+ * until the final matching unlock call.
+ *
+ * Do not lock the mixer for significant amounts of time, or it can cause audio
+ * dropouts. Just do simply things quickly and unlock again.
+ *
+ * Locking a nullptr mixer is a safe no-op.
+ *
+ * @param mixer the mixer to lock. May be nullptr.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL_mixer 3.0.0.
+ *
+ * @sa Mixer.Unlock
+ */
+class MixerLock
+{
+  MixerRef m_lock;
+
+public:
+  /**
+   * Lock a mixer by obtaining its internal mutex.
+   *
+   * While locked, the mixer will not be able to mix more audio or change its
+   * internal state in another thread. Those other threads will block until the
+   * mixer is unlocked again.
+   *
+   * Under the hood, this function calls Mutex.Lock(), so all the same rules
+   * apply: the lock can be recursive, it must be unlocked the same number of
+   * times from the same thread that locked it, etc.
+   *
+   * Just about every SDL_mixer API _also_ locks the mixer while doing its work,
+   * as does the SDL audio device thread while actual mixing is in progress, so
+   * basic use of this library never requires the app to explicitly lock the
+   * device to be thread safe. There are two scenarios where this can be useful,
+   * however:
+   *
+   * - The app has a provided a callback that the mixing thread might call, and
+   *   there is some app state that needs to be protected against race
+   *   conditions as changes are made and mixing progresses simultaneously. Any
+   *   lock can be used for this, but this is a conveniently-available lock.
+   * - The app wants to make multiple, atomic changes to the mix. For example,
+   *   to start several tracks at the exact same moment, one would lock the
+   *   mixer, call Track.Play multiple times, and then unlock again; all the
+   *   tracks will start mixing on the same sample frame.
+   *
+   * Each call to this function must be paired with a call to Mixer.Unlock from
+   * the same thread. It is safe to lock a mixer multiple times; it remains
+   * locked until the final matching unlock call.
+   *
+   * Do not lock the mixer for significant amounts of time, or it can cause
+   * audio dropouts. Just do simply things quickly and unlock again.
+   *
+   * Locking a nullptr mixer is a safe no-op.
+   *
+   * @param mixer the mixer to lock. May be nullptr.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa Mixer.Unlock
+   */
+  MixerLock(MixerRef resource);
+
+  /// Copy constructor
+  MixerLock(const MixerLock& other) = delete;
+
+  /// Move constructor
+  constexpr MixerLock(MixerLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Unlock a mixer previously locked by a call to Mixer.Lock().
+   *
+   * While locked, the mixer will not be able to mix more audio or change its
+   * internal state another thread. Those other threads will block until the
+   * mixer is unlocked again.
+   *
+   * Under the hood, this function calls Mutex.Lock(), so all the same rules
+   * apply: the lock can be recursive, it must be unlocked the same number of
+   * times from the same thread that locked it, etc.
+   *
+   * Unlocking a nullptr mixer is a safe no-op.
+   *
+   * @param mixer the mixer to unlock. May be nullptr.
+   *
+   * @threadsafety This call must be paired with a previous Mixer.Lock call on
+   *               the same thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa Mixer.Lock
+   */
+  ~MixerLock() { reset(); }
+
+  MixerLock& operator=(const MixerLock& other) = delete;
+
+  /// Assignment operator
+  MixerLock& operator=(MixerLock&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Unlock a mixer previously locked by a call to Mixer.Lock().
+   *
+   * While locked, the mixer will not be able to mix more audio or change its
+   * internal state another thread. Those other threads will block until the
+   * mixer is unlocked again.
+   *
+   * Under the hood, this function calls Mutex.Lock(), so all the same rules
+   * apply: the lock can be recursive, it must be unlocked the same number of
+   * times from the same thread that locked it, etc.
+   *
+   * Unlocking a nullptr mixer is a safe no-op.
+   *
+   * @param mixer the mixer to unlock. May be nullptr.
+   *
+   * @threadsafety This call must be paired with a previous Mixer.Lock call on
+   *               the same thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa Mixer.Lock
+   */
+  void reset();
+
+  /// Get the reference to locked resource.
+  MixerRef get() { return m_lock; }
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock.release(); }
 };
 
 /**
@@ -4227,7 +4400,13 @@ inline void Mixer::GetFormat(AudioSpec* spec)
  */
 inline void LockMixer(MixerRef mixer) { MIX_LockMixer(mixer); }
 
-inline void Mixer::Lock() { SDL::LockMixer(m_resource); }
+inline MixerLock Mixer::Lock() { return {MixerRef(*this)}; }
+
+inline MixerLock::MixerLock(MixerRef resource)
+  : m_lock(std::move(resource))
+{
+  LockMixer(m_lock);
+}
 
 /**
  * Unlock a mixer previously locked by a call to Mixer.Lock().
@@ -4253,7 +4432,18 @@ inline void Mixer::Lock() { SDL::LockMixer(m_resource); }
  */
 inline void UnlockMixer(MixerRef mixer) { MIX_UnlockMixer(mixer); }
 
-inline void Mixer::Unlock() { SDL::UnlockMixer(m_resource); }
+inline void Mixer::Unlock(MixerLock&& lock)
+{
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
+
+inline void MixerLock::reset()
+{
+  if (!m_lock) return;
+  UnlockMixer(m_lock);
+  m_lock = {};
+}
 
 /**
  * Load audio for playback from an IOStream.

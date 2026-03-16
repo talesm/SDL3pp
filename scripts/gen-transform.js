@@ -8790,6 +8790,12 @@ const transform = {
         "MIX_PROP_PLAY_": "prop::Play",
       },
       transform: {
+        "MIX_Mixer": {
+          lock: {
+            lockFunc: "MIX_LockMixer",
+            unlockFunc: "MIX_UnlockMixer",
+          },
+        },
         "MIX_Audio": {
           resource: { free: "MIX_DestroyAudio" },
           entries: {
