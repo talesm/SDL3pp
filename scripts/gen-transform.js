@@ -8840,6 +8840,10 @@ const transform = {
           parameters: [{}, {}],
         },
         "MIX_SetTrackOutputChannelMap": { parameters: [{}, { type: "std::span<const int>" }], },
+        "MIX_GetTrack3DPosition": {
+          type: "Point3D",
+          parameters: [{}],
+        },
         "MIX_Generate": { parameters: [{}, { type: "TargetBytes" }], },
         "MIX_DecodeAudio": { parameters: [{}, { type: "TargetBytes" }, { type: "const AudioSpec &", name: "spec" }], },
         "MIX_StereoGains": { before: "MIX_Track", },

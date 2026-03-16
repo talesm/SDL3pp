@@ -3083,7 +3083,7 @@ public:
    *
    * @sa Track.Set3DPosition
    */
-  void Get3DPosition(Point3D* position);
+  Point3D Get3DPosition();
 
   /**
    * Assign a track to a mixing group.
@@ -6558,14 +6558,14 @@ inline void Track::Set3DPosition(const Point3D& position)
  *
  * @sa Track.Set3DPosition
  */
-inline void GetTrack3DPosition(TrackRef track, Point3D* position)
+inline Point3D GetTrack3DPosition(TrackRef track)
 {
-  CheckError(MIX_GetTrack3DPosition(track, position));
+  return CheckError(MIX_GetTrack3DPosition(track));
 }
 
-inline void Track::Get3DPosition(Point3D* position)
+inline Point3D Track::Get3DPosition()
 {
-  SDL::GetTrack3DPosition(m_resource, position);
+  return SDL::GetTrack3DPosition(m_resource);
 }
 
 /**

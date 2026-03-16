@@ -3070,7 +3070,7 @@ public:
    * If 3D positioning isn't enabled for this track, through a call to
    * Track.Set3DPosition(), this will return (0,0,0).
    *
-   * @param position on successful return, will contain the track's position.
+   * @returns the he track's position on successful return.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -3079,7 +3079,7 @@ public:
    *
    * @sa Track.Set3DPosition
    */
-  void Get3DPosition(Point3D* position);
+  Point3D Get3DPosition();
 
   /**
    * Assign a track to a mixing group.
@@ -6550,7 +6550,7 @@ inline void Track::Set3DPosition(const Point3D& position)
  * Track.Set3DPosition(), this will return (0,0,0).
  *
  * @param track the track to query.
- * @param position on successful return, will contain the track's position.
+ * @returns the he track's position on successful return.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -6559,14 +6559,16 @@ inline void Track::Set3DPosition(const Point3D& position)
  *
  * @sa Track.Set3DPosition
  */
-inline void GetTrack3DPosition(TrackRef track, Point3D* position)
+inline Point3D GetTrack3DPosition(TrackRef track)
 {
-  CheckError(MIX_GetTrack3DPosition(track, position));
+  Point3D position;
+  CheckError(MIX_GetTrack3DPosition(track, &position));
+  return position;
 }
 
-inline void Track::Get3DPosition(Point3D* position)
+inline Point3D Track::Get3DPosition()
 {
-  SDL::GetTrack3DPosition(m_resource, position);
+  return SDL::GetTrack3DPosition(m_resource);
 }
 
 /**

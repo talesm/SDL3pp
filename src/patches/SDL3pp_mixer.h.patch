@@ -229,6 +229,15 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
+@@ -3074,7 +3070,7 @@
+    * If 3D positioning isn't enabled for this track, through a call to
+    * Track.Set3DPosition(), this will return (0,0,0).
+    *
+-   * @param position on successful return, will contain the track's position.
++   * @returns the he track's position on successful return.
+    * @throws Error on failure.
+    *
+    * @threadsafety It is safe to call this function from any thread.
 @@ -3555,6 +3551,8 @@
    constexpr operator GroupRaw() const noexcept { return get(); }
  };
@@ -477,7 +486,27 @@
  }
  
  inline void Track::SetOutputChannelMap(std::span<const int> chmap)
-@@ -6936,7 +6937,7 @@
+@@ -6549,7 +6550,7 @@
+  * Track.Set3DPosition(), this will return (0,0,0).
+  *
+  * @param track the track to query.
+- * @param position on successful return, will contain the track's position.
++ * @returns the he track's position on successful return.
+  * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -6560,7 +6561,9 @@
+  */
+ inline Point3D GetTrack3DPosition(TrackRef track)
+ {
+-  return CheckError(MIX_GetTrack3DPosition(track));
++  Point3D position;
++  CheckError(MIX_GetTrack3DPosition(track, &position));
++  return position;
+ }
+ 
+ inline Point3D Track::Get3DPosition()
+@@ -6936,7 +6939,7 @@
   * initialized, if available tracks to mix run out, the end of the buffer will
   * be initialized with silence; this silence will not be counted in the return
   * value, so the caller has the option to identify how much of the buffer has
@@ -486,7 +515,7 @@
   * success. A return value of -1 means failure (out of memory, invalid
   * parameters, etc).
   *
-@@ -6955,7 +6956,8 @@
+@@ -6955,7 +6958,8 @@
   */
  inline int Generate(MixerRef mixer, TargetBytes buffer)
  {
@@ -496,7 +525,7 @@
  }
  
  inline int Mixer::Generate(TargetBytes buffer)
-@@ -7025,7 +7027,7 @@
+@@ -7025,7 +7029,7 @@
     *
     * This function allows properties to be specified. This is intended to supply
     * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -505,7 +534,7 @@
     * properties.
     *
     * Properties are discussed in [SDL's
-@@ -7038,7 +7040,7 @@
+@@ -7038,7 +7042,7 @@
     * call to MIX.Init(), but does not need an actual Mixer to have been created.
     *
     * @param path the path on the filesystem from which to load data.
@@ -514,7 +543,7 @@
     * @post an audio decoder, ready to decode.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -7060,7 +7062,7 @@
+@@ -7060,7 +7064,7 @@
     *
     * This function allows properties to be specified. This is intended to supply
     * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -523,7 +552,7 @@
     * properties.
     *
     * If `closeio` is true, then `io` will be closed when this decoder is done
-@@ -7075,7 +7077,7 @@
+@@ -7075,7 +7079,7 @@
     *
     * @param io the i/o stream from which to load data.
     * @param closeio if true, close the i/o stream when done with it.
@@ -532,7 +561,7 @@
     * @post an audio decoder, ready to decode.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -7190,8 +7192,8 @@
+@@ -7190,8 +7194,8 @@
     * @param buffer the memory buffer to store decoded audio.
     * @param buflen the maximum number of bytes to store to `buffer`.
     * @param spec the format that audio data will be stored to `buffer`.
@@ -543,7 +572,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -7268,7 +7270,7 @@
+@@ -7268,7 +7272,7 @@
   *
   * This function allows properties to be specified. This is intended to supply
   * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -552,7 +581,7 @@
   * properties.
   *
   * Properties are discussed in [SDL's
-@@ -7281,7 +7283,7 @@
+@@ -7281,7 +7285,7 @@
   * call to MIX.Init(), but does not need an actual Mixer to have been created.
   *
   * @param path the path on the filesystem from which to load data.
@@ -561,7 +590,7 @@
   * @returns an audio decoder, ready to decode.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -7319,7 +7321,7 @@
+@@ -7319,7 +7323,7 @@
   *
   * This function allows properties to be specified. This is intended to supply
   * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -570,7 +599,7 @@
   * properties.
   *
   * If `closeio` is true, then `io` will be closed when this decoder is done with
-@@ -7334,7 +7336,7 @@
+@@ -7334,7 +7338,7 @@
   *
   * @param io the i/o stream from which to load data.
   * @param closeio if true, close the i/o stream when done with it.
@@ -579,7 +608,7 @@
   * @returns an audio decoder, ready to decode.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -7443,8 +7445,8 @@
+@@ -7443,8 +7447,8 @@
   * @param buffer the memory buffer to store decoded audio.
   * @param buflen the maximum number of bytes to store to `buffer`.
   * @param spec the format that audio data will be stored to `buffer`.
@@ -590,7 +619,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -7454,8 +7456,9 @@
+@@ -7454,8 +7458,9 @@
                         TargetBytes buffer,
                         const AudioSpec& spec)
  {
@@ -602,7 +631,7 @@
  }
  
  inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
-@@ -7467,4 +7470,6 @@
+@@ -7467,4 +7472,6 @@
  
  } // namespace SDL
  
