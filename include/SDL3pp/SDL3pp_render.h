@@ -2631,7 +2631,7 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa LoadTextureTyped
+   * @sa LoadTextureTyped_IO
    * @sa Texture.Texture
    */
   Texture(RendererRef renderer, StringParam file);
@@ -2658,7 +2658,7 @@ public:
    * function and manage those details for you, determining the file type from
    * the filename's extension.
    *
-   * There is also LoadTextureTyped(), which is equivalent to this function
+   * There is also LoadTextureTyped_IO(), which is equivalent to this function
    * except a file extension (like "BMP", "JPG", etc) can be specified, in case
    * SDL_image cannot autodetect the file format.
    *
@@ -2674,7 +2674,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa Texture.Texture
-   * @sa LoadTextureTyped
+   * @sa LoadTextureTyped_IO
    */
   Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
 

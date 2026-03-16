@@ -694,15 +694,6 @@
     * @param renderer the Renderer to use to create the texture.
     * @param src an IOStream that data will be read from.
     * @param closeio true to close/free the IOStream before returning, false to
-@@ -2673,7 +2676,7 @@
-    * @sa Texture.Texture
-    * @sa LoadTextureTyped
-    */
--  Texture(RendererRef renderer, IOStreamRef src, bool closeio);
-+  Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
- 
-   /**
-    * Safely borrows the from TextureRaw.
 @@ -2870,27 +2873,19 @@
     */
    void GetSize(float* w, float* h) const;

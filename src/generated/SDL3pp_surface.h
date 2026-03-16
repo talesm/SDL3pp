@@ -314,7 +314,7 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa LoadSurfaceTyped
+   * @sa LoadSurfaceTyped_IO
    * @sa Surface.Surface
    */
   Surface(StringParam file);
@@ -348,7 +348,7 @@ public:
    * and manage those details for you, determining the file type from the
    * filename's extension.
    *
-   * There is also LoadSurfaceTyped(), which is equivalent to this function
+   * There is also LoadSurfaceTyped_IO(), which is equivalent to this function
    * except a file extension (like "BMP", "JPG", etc) can be specified, in case
    * SDL_image cannot autodetect the file format.
    *
@@ -367,9 +367,9 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa Surface.Surface
-   * @sa LoadSurfaceTyped
+   * @sa LoadSurfaceTyped_IO
    */
-  Surface(IOStreamRef src, bool closeio);
+  Surface(IOStreamRef src, bool closeio = false);
 
   /**
    * Safely borrows the from SurfaceRaw.
@@ -405,9 +405,9 @@ public:
    *
    * @sa Surface.Destroy
    * @sa Surface.LoadBMP
-   * @sa Surface.SaveBMP
+   * @sa Surface.SaveBMP_IO
    */
-  static Surface LoadBMP(IOStreamRef src, bool closeio = false);
+  static Surface LoadBMP_IO(IOStreamRef src, bool closeio = false);
 
   /**
    * Load a BMP image from a file.
@@ -424,7 +424,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Surface.Destroy
-   * @sa Surface.LoadBMP
+   * @sa Surface.LoadBMP_IO
    * @sa Surface.SaveBMP
    */
   static Surface LoadBMP(StringParam file);
@@ -453,9 +453,9 @@ public:
    *
    * @sa Surface.Destroy
    * @sa Surface.LoadPNG
-   * @sa Surface.SavePNG
+   * @sa Surface.SavePNG_IO
    */
-  static Surface LoadPNG(IOStreamRef src, bool closeio = false);
+  static Surface LoadPNG_IO(IOStreamRef src, bool closeio = false);
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -480,7 +480,7 @@ public:
    * @since This function is available since SDL 3.4.0.
    *
    * @sa Surface.Destroy
-   * @sa Surface.LoadPNG
+   * @sa Surface.LoadPNG_IO
    * @sa Surface.SavePNG
    */
   static Surface LoadPNG(StringParam file);
@@ -830,10 +830,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.LoadBMP
+   * @sa Surface.LoadBMP_IO
    * @sa Surface.SaveBMP
    */
-  void SaveBMP(IOStreamRef dst, bool closeio = false) const;
+  void SaveBMP_IO(IOStreamRef dst, bool closeio = false) const;
 
   /**
    * Save a surface to a file in BMP format.
@@ -853,7 +853,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Surface.LoadBMP
-   * @sa Surface.SaveBMP
+   * @sa Surface.SaveBMP_IO
    */
   void SaveBMP(StringParam file) const;
 
@@ -872,10 +872,10 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Surface.LoadPNG
+   * @sa Surface.LoadPNG_IO
    * @sa Surface.SavePNG
    */
-  void SavePNG(IOStreamRef dst, bool closeio = false) const;
+  void SavePNG_IO(IOStreamRef dst, bool closeio = false) const;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -893,7 +893,7 @@ public:
    * @since This function is available since SDL 3.4.0.
    *
    * @sa Surface.LoadPNG
-   * @sa Surface.SavePNG
+   * @sa Surface.SavePNG_IO
    */
   void SavePNG(StringParam file) const;
 
@@ -2810,7 +2810,7 @@ inline void SurfaceLock::reset()
  * @sa Surface.Destroy
  * @sa LoadSurface
  */
-inline Surface LoadSurface(IOStreamRef src, bool closeio = false)
+inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
 {
   return SDL_LoadSurface_IO(src, closeio);
 }
@@ -2834,7 +2834,7 @@ inline Surface LoadSurface(IOStreamRef src, bool closeio = false)
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Surface.Destroy
- * @sa LoadSurface
+ * @sa LoadSurface_IO
  */
 inline Surface LoadSurface(StringParam file) { return SDL_LoadSurface(file); }
 
@@ -2858,11 +2858,16 @@ inline Surface LoadSurface(StringParam file) { return SDL_LoadSurface(file); }
  *
  * @sa Surface.Destroy
  * @sa Surface.LoadBMP
- * @sa Surface.SaveBMP
+ * @sa Surface.SaveBMP_IO
  */
-inline Surface LoadBMP(IOStreamRef src, bool closeio = false)
+inline Surface LoadBMP_IO(IOStreamRef src, bool closeio = false)
 {
   return Surface(SDL_LoadBMP_IO(src, closeio));
+}
+
+inline Surface Surface::LoadBMP_IO(IOStreamRef src, bool closeio)
+{
+  return SDL::LoadBMP_IO(src, closeio);
 }
 
 /**
@@ -2880,15 +2885,10 @@ inline Surface LoadBMP(IOStreamRef src, bool closeio = false)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Surface.Destroy
- * @sa Surface.LoadBMP
+ * @sa Surface.LoadBMP_IO
  * @sa Surface.SaveBMP
  */
 inline Surface LoadBMP(StringParam file) { return Surface(SDL_LoadBMP(file)); }
-
-inline Surface Surface::LoadBMP(IOStreamRef src, bool closeio)
-{
-  return SDL::LoadBMP(src, closeio);
-}
 
 inline Surface Surface::LoadBMP(StringParam file)
 {
@@ -2915,14 +2915,19 @@ inline Surface Surface::LoadBMP(StringParam file)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.LoadBMP
+ * @sa Surface.LoadBMP_IO
  * @sa Surface.SaveBMP
  */
-inline void SaveBMP(SurfaceConstRef surface,
-                    IOStreamRef dst,
-                    bool closeio = false)
+inline void SaveBMP_IO(SurfaceConstRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(SDL_SaveBMP_IO(surface, dst, closeio));
+}
+
+inline void Surface::SaveBMP_IO(IOStreamRef dst, bool closeio) const
+{
+  SDL::SaveBMP_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -2944,16 +2949,11 @@ inline void SaveBMP(SurfaceConstRef surface,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Surface.LoadBMP
- * @sa Surface.SaveBMP
+ * @sa Surface.SaveBMP_IO
  */
 inline void SaveBMP(SurfaceConstRef surface, StringParam file)
 {
   CheckError(SDL_SaveBMP(surface, file));
-}
-
-inline void Surface::SaveBMP(IOStreamRef dst, bool closeio) const
-{
-  SDL::SaveBMP(m_resource, dst, closeio);
 }
 
 inline void Surface::SaveBMP(StringParam file) const
@@ -2985,11 +2985,20 @@ inline void Surface::SaveBMP(StringParam file) const
  *
  * @sa Surface.Destroy
  * @sa Surface.LoadPNG
- * @sa Surface.SavePNG
+ * @sa Surface.SavePNG_IO
  */
-inline Surface LoadPNG(IOStreamRef src, bool closeio = false)
+inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
 {
   return Surface(SDL_LoadPNG_IO(src, closeio));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+inline Surface Surface::LoadPNG_IO(IOStreamRef src, bool closeio)
+{
+  return SDL::LoadPNG_IO(src, closeio);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -3015,19 +3024,10 @@ inline Surface LoadPNG(IOStreamRef src, bool closeio = false)
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Surface.Destroy
- * @sa Surface.LoadPNG
+ * @sa Surface.LoadPNG_IO
  * @sa Surface.SavePNG
  */
 inline Surface LoadPNG(StringParam file) { return Surface(SDL_LoadPNG(file)); }
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-inline Surface Surface::LoadPNG(IOStreamRef src, bool closeio)
-{
-  return SDL::LoadPNG(src, closeio);
-}
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -3056,14 +3056,23 @@ inline Surface Surface::LoadPNG(StringParam file)
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Surface.LoadPNG
+ * @sa Surface.LoadPNG_IO
  * @sa Surface.SavePNG
  */
-inline void SavePNG(SurfaceConstRef surface,
-                    IOStreamRef dst,
-                    bool closeio = false)
+inline void SavePNG_IO(SurfaceConstRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(SDL_SavePNG_IO(surface, dst, closeio));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
+{
+  SDL::SavePNG_IO(m_resource, dst, closeio);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -3083,20 +3092,11 @@ inline void SavePNG(SurfaceConstRef surface,
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Surface.LoadPNG
- * @sa Surface.SavePNG
+ * @sa Surface.SavePNG_IO
  */
 inline void SavePNG(SurfaceConstRef surface, StringParam file)
 {
   CheckError(SDL_SavePNG(surface, file));
-}
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-inline void Surface::SavePNG(IOStreamRef dst, bool closeio) const
-{
-  SDL::SavePNG(m_resource, dst, closeio);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)

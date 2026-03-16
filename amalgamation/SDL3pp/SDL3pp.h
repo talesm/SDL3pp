@@ -42896,7 +42896,7 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa LoadSurfaceTyped
+   * @sa LoadSurfaceTyped_IO
    * @sa Surface.Surface
    */
   Surface(StringParam file);
@@ -42930,7 +42930,7 @@ public:
    * and manage those details for you, determining the file type from the
    * filename's extension.
    *
-   * There is also LoadSurfaceTyped(), which is equivalent to this function
+   * There is also LoadSurfaceTyped_IO(), which is equivalent to this function
    * except a file extension (like "BMP", "JPG", etc) can be specified, in case
    * SDL_image cannot autodetect the file format.
    *
@@ -42946,7 +42946,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa Surface.Surface
-   * @sa LoadSurfaceTyped
+   * @sa LoadSurfaceTyped_IO
    */
   Surface(IOStreamRef src, bool closeio = false);
 
@@ -42984,9 +42984,9 @@ public:
    *
    * @sa Surface.Destroy
    * @sa Surface.LoadBMP
-   * @sa Surface.SaveBMP
+   * @sa Surface.SaveBMP_IO
    */
-  static Surface LoadBMP(IOStreamRef src, bool closeio = false);
+  static Surface LoadBMP_IO(IOStreamRef src, bool closeio = false);
 
   /**
    * Load a BMP image from a file.
@@ -43003,7 +43003,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Surface.Destroy
-   * @sa Surface.LoadBMP
+   * @sa Surface.LoadBMP_IO
    * @sa Surface.SaveBMP
    */
   static Surface LoadBMP(StringParam file);
@@ -43029,9 +43029,9 @@ public:
    *
    * @sa Surface.Destroy
    * @sa Surface.LoadPNG
-   * @sa Surface.SavePNG
+   * @sa Surface.SavePNG_IO
    */
-  static Surface LoadPNG(IOStreamRef src, bool closeio = false);
+  static Surface LoadPNG_IO(IOStreamRef src, bool closeio = false);
 
   /**
    * Load a PNG image from a file.
@@ -43052,7 +43052,7 @@ public:
    * @since This function is available since SDL 3.4.0.
    *
    * @sa Surface.Destroy
-   * @sa Surface.LoadPNG
+   * @sa Surface.LoadPNG_IO
    * @sa Surface.SavePNG
    */
   static Surface LoadPNG(StringParam file);
@@ -43394,10 +43394,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.LoadBMP
+   * @sa Surface.LoadBMP_IO
    * @sa Surface.SaveBMP
    */
-  void SaveBMP(IOStreamRef dst, bool closeio = false) const;
+  void SaveBMP_IO(IOStreamRef dst, bool closeio = false) const;
 
   /**
    * Save a surface to a file in BMP format.
@@ -43417,7 +43417,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Surface.LoadBMP
-   * @sa Surface.SaveBMP
+   * @sa Surface.SaveBMP_IO
    */
   void SaveBMP(StringParam file) const;
 
@@ -43436,10 +43436,10 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Surface.LoadPNG
+   * @sa Surface.LoadPNG_IO
    * @sa Surface.SavePNG
    */
-  void SavePNG(IOStreamRef dst, bool closeio = false) const;
+  void SavePNG_IO(IOStreamRef dst, bool closeio = false) const;
 
   /**
    * Save a surface to a file in PNG format.
@@ -43453,7 +43453,7 @@ public:
    * @since This function is available since SDL 3.4.0.
    *
    * @sa Surface.LoadPNG
-   * @sa Surface.SavePNG
+   * @sa Surface.SavePNG_IO
    */
   void SavePNG(StringParam file) const;
 
@@ -45384,7 +45384,7 @@ inline void SurfaceLock::reset()
  * @sa Surface.Destroy
  * @sa LoadSurface
  */
-inline Surface LoadSurface(IOStreamRef src, bool closeio = false)
+inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
 {
   return Surface{SDL_LoadSurface_IO(src, closeio)};
 }
@@ -45404,7 +45404,7 @@ inline Surface LoadSurface(IOStreamRef src, bool closeio = false)
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Surface.Destroy
- * @sa LoadSurface
+ * @sa LoadSurface_IO
  */
 inline Surface LoadSurface(StringParam file)
 {
@@ -45431,11 +45431,16 @@ inline Surface LoadSurface(StringParam file)
  *
  * @sa Surface.Destroy
  * @sa Surface.LoadBMP
- * @sa Surface.SaveBMP
+ * @sa Surface.SaveBMP_IO
  */
-inline Surface LoadBMP(IOStreamRef src, bool closeio = false)
+inline Surface LoadBMP_IO(IOStreamRef src, bool closeio = false)
 {
   return Surface(SDL_LoadBMP_IO(src, closeio));
+}
+
+inline Surface Surface::LoadBMP_IO(IOStreamRef src, bool closeio)
+{
+  return SDL::LoadBMP_IO(src, closeio);
 }
 
 /**
@@ -45453,15 +45458,10 @@ inline Surface LoadBMP(IOStreamRef src, bool closeio = false)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Surface.Destroy
- * @sa Surface.LoadBMP
+ * @sa Surface.LoadBMP_IO
  * @sa Surface.SaveBMP
  */
 inline Surface LoadBMP(StringParam file) { return Surface(SDL_LoadBMP(file)); }
-
-inline Surface Surface::LoadBMP(IOStreamRef src, bool closeio)
-{
-  return SDL::LoadBMP(src, closeio);
-}
 
 inline Surface Surface::LoadBMP(StringParam file)
 {
@@ -45488,14 +45488,19 @@ inline Surface Surface::LoadBMP(StringParam file)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.LoadBMP
+ * @sa Surface.LoadBMP_IO
  * @sa Surface.SaveBMP
  */
-inline void SaveBMP(SurfaceConstRef surface,
-                    IOStreamRef dst,
-                    bool closeio = false)
+inline void SaveBMP_IO(SurfaceConstRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(SDL_SaveBMP_IO(surface, dst, closeio));
+}
+
+inline void Surface::SaveBMP_IO(IOStreamRef dst, bool closeio) const
+{
+  SDL::SaveBMP_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -45517,16 +45522,11 @@ inline void SaveBMP(SurfaceConstRef surface,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Surface.LoadBMP
- * @sa Surface.SaveBMP
+ * @sa Surface.SaveBMP_IO
  */
 inline void SaveBMP(SurfaceConstRef surface, StringParam file)
 {
   CheckError(SDL_SaveBMP(surface, file));
-}
-
-inline void Surface::SaveBMP(IOStreamRef dst, bool closeio) const
-{
-  SDL::SaveBMP(m_resource, dst, closeio);
 }
 
 inline void Surface::SaveBMP(StringParam file) const
@@ -45558,11 +45558,16 @@ inline void Surface::SaveBMP(StringParam file) const
  *
  * @sa Surface.Destroy
  * @sa Surface.LoadPNG
- * @sa Surface.SavePNG
+ * @sa Surface.SavePNG_IO
  */
-inline Surface LoadPNG(IOStreamRef src, bool closeio = false)
+inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
 {
   return Surface(SDL_LoadPNG_IO(src, closeio));
+}
+
+inline Surface Surface::LoadPNG_IO(IOStreamRef src, bool closeio)
+{
+  return SDL::LoadPNG_IO(src, closeio);
 }
 
 /**
@@ -45584,15 +45589,10 @@ inline Surface LoadPNG(IOStreamRef src, bool closeio = false)
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Surface.Destroy
- * @sa Surface.LoadPNG
+ * @sa Surface.LoadPNG_IO
  * @sa Surface.SavePNG
  */
 inline Surface LoadPNG(StringParam file) { return Surface(SDL_LoadPNG(file)); }
-
-inline Surface Surface::LoadPNG(IOStreamRef src, bool closeio)
-{
-  return SDL::LoadPNG(src, closeio);
-}
 
 inline Surface Surface::LoadPNG(StringParam file)
 {
@@ -45613,14 +45613,19 @@ inline Surface Surface::LoadPNG(StringParam file)
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Surface.LoadPNG
+ * @sa Surface.LoadPNG_IO
  * @sa Surface.SavePNG
  */
-inline void SavePNG(SurfaceConstRef surface,
-                    IOStreamRef dst,
-                    bool closeio = false)
+inline void SavePNG_IO(SurfaceConstRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(SDL_SavePNG_IO(surface, dst, closeio));
+}
+
+inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
+{
+  SDL::SavePNG_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -45636,16 +45641,11 @@ inline void SavePNG(SurfaceConstRef surface,
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Surface.LoadPNG
- * @sa Surface.SavePNG
+ * @sa Surface.SavePNG_IO
  */
 inline void SavePNG(SurfaceConstRef surface, StringParam file)
 {
   CheckError(SDL_SavePNG(surface, file));
-}
-
-inline void Surface::SavePNG(IOStreamRef dst, bool closeio) const
-{
-  SDL::SavePNG(m_resource, dst, closeio);
 }
 
 inline void Surface::SavePNG(StringParam file) const
@@ -84835,7 +84835,7 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa LoadTextureTyped
+   * @sa LoadTextureTyped_IO
    * @sa Texture.Texture
    */
   Texture(RendererRef renderer, StringParam file);
@@ -84862,7 +84862,7 @@ public:
    * function and manage those details for you, determining the file type from
    * the filename's extension.
    *
-   * There is also LoadTextureTyped(), which is equivalent to this function
+   * There is also LoadTextureTyped_IO(), which is equivalent to this function
    * except a file extension (like "BMP", "JPG", etc) can be specified, in case
    * SDL_image cannot autodetect the file format.
    *
@@ -84878,7 +84878,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa Texture.Texture
-   * @sa LoadTextureTyped
+   * @sa LoadTextureTyped_IO
    */
   Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
 
@@ -100367,10 +100367,20 @@ inline int Version() { return IMG_Version(); }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadSurfaceTyped
+ * @sa LoadSurfaceTyped_IO
  * @sa Surface.Surface
  */
 inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
+
+inline Surface::Surface(StringParam file)
+  : m_resource(IMG_Load(file))
+{
+}
+
+inline Surface::Surface(IOStreamRef src, bool closeio)
+  : m_resource(IMG_Load_IO(src, closeio))
+{
+}
 
 /**
  * Load an image from an SDL data source into a software surface.
@@ -100399,9 +100409,9 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
- * There is also LoadSurfaceTyped(), which is equivalent to this function except
- * a file extension (like "BMP", "JPG", etc) can be specified, in case SDL_image
- * cannot autodetect the file format.
+ * There is also LoadSurfaceTyped_IO(), which is equivalent to this function
+ * except a file extension (like "BMP", "JPG", etc) can be specified, in case
+ * SDL_image cannot autodetect the file format.
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to load
  * images directly into an Texture for use by the GPU without using a software
@@ -100415,21 +100425,11 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa Surface.Surface
- * @sa LoadSurfaceTyped
+ * @sa LoadSurfaceTyped_IO
  */
-inline Surface LoadSurface(IOStreamRef src, bool closeio)
+inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
 {
   return Surface{IMG_Load_IO(src, closeio)};
-}
-
-inline Surface::Surface(StringParam file)
-  : m_resource(IMG_Load(file))
-{
-}
-
-inline Surface::Surface(IOStreamRef src, bool closeio)
-  : m_resource(IMG_Load_IO(src, closeio))
-{
 }
 
 /**
@@ -100471,7 +100471,7 @@ inline Surface::Surface(IOStreamRef src, bool closeio)
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to load
  * images directly into an Texture for use by the GPU without using a software
- * surface: call LoadTextureTyped() instead.
+ * surface: call LoadTextureTyped_IO() instead.
  *
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
@@ -100485,9 +100485,9 @@ inline Surface::Surface(IOStreamRef src, bool closeio)
  * @sa Surface.Surface
  * @sa Surface.Surface
  */
-inline Surface LoadSurfaceTyped(IOStreamRef src,
-                                StringParam type,
-                                bool closeio = false)
+inline Surface LoadSurfaceTyped_IO(IOStreamRef src,
+                                   StringParam type,
+                                   bool closeio = false)
 {
   return Surface(IMG_LoadTyped_IO(src, closeio, type));
 }
@@ -100517,12 +100517,22 @@ inline Surface LoadSurfaceTyped(IOStreamRef src,
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadTextureTyped
+ * @sa LoadTextureTyped_IO
  * @sa Texture.Texture
  */
 inline Texture LoadTexture(RendererRef renderer, StringParam file)
 {
   return Texture(IMG_LoadTexture(renderer, file));
+}
+
+inline Texture::Texture(RendererRef renderer, StringParam file)
+  : m_resource(IMG_LoadTexture(renderer, file))
+{
+}
+
+inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
+  : m_resource(IMG_LoadTexture_IO(renderer, src, closeio))
+{
 }
 
 /**
@@ -100546,9 +100556,9 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
  * function and manage those details for you, determining the file type from the
  * filename's extension.
  *
- * There is also LoadTextureTyped(), which is equivalent to this function except
- * a file extension (like "BMP", "JPG", etc) can be specified, in case SDL_image
- * cannot autodetect the file format.
+ * There is also LoadTextureTyped_IO(), which is equivalent to this function
+ * except a file extension (like "BMP", "JPG", etc) can be specified, in case
+ * SDL_image cannot autodetect the file format.
  *
  * If you would rather decode an image to an Surface (a buffer of pixels in CPU
  * memory), call LoadSurface() instead.
@@ -100562,23 +100572,13 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa Texture.Texture
- * @sa LoadTextureTyped
+ * @sa LoadTextureTyped_IO
  */
-inline Texture LoadTexture(RendererRef renderer,
-                           IOStreamRef src,
-                           bool closeio = false)
+inline Texture LoadTexture_IO(RendererRef renderer,
+                              IOStreamRef src,
+                              bool closeio = false)
 {
   return Texture(IMG_LoadTexture_IO(renderer, src, closeio));
-}
-
-inline Texture::Texture(RendererRef renderer, StringParam file)
-  : m_resource(IMG_LoadTexture(renderer, file))
-{
-}
-
-inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
-  : m_resource(IMG_LoadTexture_IO(renderer, src, closeio))
-{
 }
 
 /**
@@ -100613,7 +100613,7 @@ inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
  * much like passing a nullptr for type.
  *
  * If you would rather decode an image to an Surface (a buffer of pixels in CPU
- * memory), call LoadSurfaceTyped() instead.
+ * memory), call LoadSurfaceTyped_IO() instead.
  *
  * @param renderer the Renderer to use to create the texture.
  * @param src an IOStream that data will be read from.
@@ -100628,10 +100628,10 @@ inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
  * @sa Texture.Texture
  * @sa Texture.Destroy
  */
-inline Texture LoadTextureTyped(RendererRef renderer,
-                                IOStreamRef src,
-                                StringParam type,
-                                bool closeio = false)
+inline Texture LoadTextureTyped_IO(RendererRef renderer,
+                                   IOStreamRef src,
+                                   StringParam type,
+                                   bool closeio = false)
 {
   return Texture(IMG_LoadTextureTyped_IO(renderer, src, closeio, type));
 }
@@ -100649,7 +100649,7 @@ inline Texture LoadTextureTyped(RendererRef renderer,
  *
  * There is a separate function to read files from an IOStream, if you need an
  * i/o abstraction to provide data from anywhere instead of a simple filesystem
- * read; that function is LoadGPUTexture().
+ * read; that function is LoadGPUTexture_IO().
  *
  * When done with the returned texture, the app should dispose of it with a call
  * to GPUDevice.ReleaseTexture().
@@ -100666,8 +100666,8 @@ inline Texture LoadTextureTyped(RendererRef renderer,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa LoadGPUTextureTyped
- * @sa LoadGPUTexture
+ * @sa LoadGPUTextureTyped_IO
+ * @sa LoadGPUTexture_IO
  */
 inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
                                  GPUCopyPass copy_pass,
@@ -100696,7 +100696,7 @@ inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
  * height) will call this function and manage those details for you, determining
  * the file type from the filename's extension.
  *
- * There is also LoadGPUTextureTyped(), which is equivalent to this function
+ * There is also LoadGPUTextureTyped_IO(), which is equivalent to this function
  * except a file extension (like "BMP", "JPG", etc) can be specified, in case
  * SDL_image cannot autodetect the file format.
  *
@@ -100718,14 +100718,14 @@ inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa LoadGPUTexture
- * @sa LoadGPUTextureTyped
+ * @sa LoadGPUTextureTyped_IO
  */
-inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
-                                 GPUCopyPass copy_pass,
-                                 IOStreamRef src,
-                                 bool closeio = false,
-                                 int* width = nullptr,
-                                 int* height = nullptr)
+inline GPUTexture LoadGPUTexture_IO(GPUDeviceRef device,
+                                    GPUCopyPass copy_pass,
+                                    IOStreamRef src,
+                                    bool closeio = false,
+                                    int* width = nullptr,
+                                    int* height = nullptr)
 {
   return IMG_LoadGPUTexture_IO(device, copy_pass, src, closeio, width, height);
 }
@@ -100754,9 +100754,9 @@ inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
  * height) will call this function and manage those details for you, determining
  * the file type from the filename's extension.
  *
- * There is also LoadGPUTexture(), which is equivalent to this function except
- * that it will rely on SDL_image to determine what type of data it is loading,
- * much like passing a nullptr for type.
+ * There is also LoadGPUTexture_IO(), which is equivalent to this function
+ * except that it will rely on SDL_image to determine what type of data it is
+ * loading, much like passing a nullptr for type.
  *
  * When done with the returned texture, the app should dispose of it with a call
  * to GPUDevice.ReleaseTexture().
@@ -100778,15 +100778,15 @@ inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa LoadGPUTexture
- * @sa LoadGPUTexture
+ * @sa LoadGPUTexture_IO
  */
-inline GPUTexture LoadGPUTextureTyped(GPUDeviceRef device,
-                                      GPUCopyPass copy_pass,
-                                      IOStreamRef src,
-                                      StringParam type,
-                                      bool closeio = false,
-                                      int* width = nullptr,
-                                      int* height = nullptr)
+inline GPUTexture LoadGPUTextureTyped_IO(GPUDeviceRef device,
+                                         GPUCopyPass copy_pass,
+                                         IOStreamRef src,
+                                         StringParam type,
+                                         bool closeio = false,
+                                         int* width = nullptr,
+                                         int* height = nullptr)
 {
   return IMG_LoadGPUTextureTyped_IO(
     device, copy_pass, src, closeio, type, width, height);
@@ -102868,7 +102868,7 @@ public:
    *
    * @sa Animation.CreateCursor
    * @sa Animation.Animation
-   * @sa LoadAnimationTyped
+   * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation
    * @sa LoadAPNGAnimation
    * @sa LoadAVIFAnimation
@@ -102897,7 +102897,7 @@ public:
    *
    * @sa Animation.CreateCursor
    * @sa Animation.Animation
-   * @sa LoadAnimationTyped
+   * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation
    * @sa LoadAPNGAnimation
    * @sa LoadAVIFAnimation
@@ -102960,7 +102960,7 @@ public:
    *
    * @sa Animation.Animation
    * @sa Animation.Animation
-   * @sa LoadAnimationTyped
+   * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation
    * @sa LoadAPNGAnimation
    * @sa LoadAVIFAnimation
@@ -103171,7 +103171,7 @@ public:
    *
    * @sa Animation.Animation
    * @sa Animation.Animation
-   * @sa LoadAnimationTyped
+   * @sa LoadAnimationTyped_IO
    */
   Cursor CreateCursor(const PointRaw& hotspot);
 
@@ -103317,7 +103317,7 @@ inline int Animation::GetDelay(int index) const
  *
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
- * @sa LoadAnimationTyped
+ * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation
  * @sa LoadAPNGAnimation
  * @sa LoadAVIFAnimation
@@ -103328,6 +103328,16 @@ inline int Animation::GetDelay(int index) const
 inline Animation LoadAnimation(StringParam file)
 {
   return Animation(std::move(file));
+}
+
+inline Animation::Animation(StringParam file)
+  : m_resource(IMG_LoadAnimation(file))
+{
+}
+
+inline Animation::Animation(IOStreamRef src, bool closeio)
+  : m_resource(IMG_LoadAnimation_IO(src, closeio))
+{
 }
 
 /**
@@ -103349,7 +103359,7 @@ inline Animation LoadAnimation(StringParam file)
  *
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
- * @sa LoadAnimationTyped
+ * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation
  * @sa LoadAPNGAnimation
  * @sa LoadAVIFAnimation
@@ -103357,19 +103367,9 @@ inline Animation LoadAnimation(StringParam file)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadAnimation(IOStreamRef src, bool closeio = false)
+inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
 {
   return Animation(src, closeio);
-}
-
-inline Animation::Animation(StringParam file)
-  : m_resource(IMG_LoadAnimation(file))
-{
-}
-
-inline Animation::Animation(IOStreamRef src, bool closeio)
-  : m_resource(IMG_LoadAnimation_IO(src, closeio))
-{
 }
 
 /**
@@ -103406,9 +103406,9 @@ inline Animation::Animation(IOStreamRef src, bool closeio)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadAnimationTyped(IOStreamRef src,
-                                    StringParam type,
-                                    bool closeio = false)
+inline Animation LoadAnimationTyped_IO(IOStreamRef src,
+                                       StringParam type,
+                                       bool closeio = false)
 {
   return Animation(IMG_LoadAnimationTyped_IO(src, closeio, type));
 }
@@ -103434,7 +103434,7 @@ inline Animation LoadAnimationTyped(IOStreamRef src,
  * @sa isANI
  * @sa Animation.Animation
  * @sa Animation.Animation
- * @sa LoadAnimationTyped
+ * @sa LoadAnimationTyped_IO
  * @sa LoadAPNGAnimation
  * @sa LoadAVIFAnimation
  * @sa LoadGIFAnimation
@@ -103465,7 +103465,7 @@ inline Animation LoadANIAnimation(IOStreamRef src)
  * @sa isPNG
  * @sa Animation.Animation
  * @sa Animation.Animation
- * @sa LoadAnimationTyped
+ * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation
  * @sa LoadAVIFAnimation
  * @sa LoadGIFAnimation
@@ -103496,7 +103496,7 @@ inline Animation LoadAPNGAnimation(IOStreamRef src)
  * @sa isAVIF
  * @sa Animation.Animation
  * @sa Animation.Animation
- * @sa LoadAnimationTyped
+ * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation
  * @sa LoadAPNGAnimation
  * @sa LoadGIFAnimation
@@ -103526,7 +103526,7 @@ inline Animation LoadAVIFAnimation(IOStreamRef src)
  * @sa isGIF
  * @sa Animation.Animation
  * @sa Animation.Animation
- * @sa LoadAnimationTyped
+ * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation
  * @sa LoadAPNGAnimation
  * @sa LoadAVIFAnimation
@@ -103554,7 +103554,7 @@ inline Animation LoadGIFAnimation(IOStreamRef src)
  * @sa isWEBP
  * @sa Animation.Animation
  * @sa Animation.Animation
- * @sa LoadAnimationTyped
+ * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation
  * @sa LoadAPNGAnimation
  * @sa LoadAVIFAnimation
@@ -103822,7 +103822,7 @@ inline void Animation::SaveWEBP(IOStreamRef dst, int quality, bool closeio)
  *
  * @sa Animation.Animation
  * @sa Animation.Animation
- * @sa LoadAnimationTyped
+ * @sa LoadAnimationTyped_IO
  */
 inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
 {
@@ -103847,7 +103847,8 @@ inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa Animation.Animation
- * @sa LoadAnimationTyped
+ * @sa Animation.Animation
+ * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation
  * @sa LoadAPNGAnimation
  * @sa LoadAVIFAnimation
@@ -104170,6 +104171,23 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
   return AnimationEncoder(std::move(file));
 }
 
+inline AnimationEncoder::AnimationEncoder(StringParam file)
+  : m_resource(CheckError(IMG_CreateAnimationEncoder(file)))
+{
+}
+
+inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
+                                          StringParam type,
+                                          bool closeio)
+  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
+{
+}
+
+inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
+  : m_resource(CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
+{
+}
+
 /**
  * Create an encoder to save a series of images to an IOStream.
  *
@@ -104197,28 +104215,11 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
-inline AnimationEncoder CreateAnimationEncoder(IOStreamRef dst,
-                                               StringParam type,
-                                               bool closeio = false)
+inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
+                                                  StringParam type,
+                                                  bool closeio = false)
 {
   return AnimationEncoder(dst, std::move(type), closeio);
-}
-
-inline AnimationEncoder::AnimationEncoder(StringParam file)
-  : m_resource(CheckError(IMG_CreateAnimationEncoder(file)))
-{
-}
-
-inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
-                                          StringParam type,
-                                          bool closeio)
-  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
-{
-}
-
-inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
-  : m_resource(CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
-{
 }
 
 /**
@@ -104738,6 +104739,23 @@ inline AnimationDecoder CreateAnimationDecoder(StringParam file)
   return AnimationDecoder(std::move(file));
 }
 
+inline AnimationDecoder::AnimationDecoder(StringParam file)
+  : m_resource(CheckError(IMG_CreateAnimationDecoder(file)))
+{
+}
+
+inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
+                                          StringParam type,
+                                          bool closeio)
+  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
+{
+}
+
+inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
+  : m_resource(CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
+{
+}
+
 /**
  * Create a decoder to read a series of images from an IOStream.
  *
@@ -104766,28 +104784,11 @@ inline AnimationDecoder CreateAnimationDecoder(StringParam file)
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
  */
-inline AnimationDecoder CreateAnimationDecoder(IOStreamRef src,
-                                               StringParam type,
-                                               bool closeio = false)
+inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
+                                                  StringParam type,
+                                                  bool closeio = false)
 {
   return AnimationDecoder(src, std::move(type), closeio);
-}
-
-inline AnimationDecoder::AnimationDecoder(StringParam file)
-  : m_resource(CheckError(IMG_CreateAnimationDecoder(file)))
-{
-}
-
-inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
-                                          StringParam type,
-                                          bool closeio)
-  : m_resource(CheckError(IMG_CreateAnimationDecoder_IO(src, closeio, type)))
-{
-}
-
-inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
-  : m_resource(CheckError(IMG_CreateAnimationDecoderWithProperties(props)))
-{
 }
 
 /**

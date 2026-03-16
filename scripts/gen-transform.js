@@ -6581,11 +6581,9 @@ const transform = {
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
             "SDL_LoadBMP_IO": {
-              name: "LoadBMP",
               parameters: [{}, { default: "false" }]
             },
             "SDL_LoadPNG_IO": {
-              name: "LoadPNG",
               parameters: [{}, { default: "false" }]
             },
             "SDL_MUSTLOCK": {
@@ -6750,28 +6748,15 @@ const transform = {
           parameters: [{ type: "SurfaceConstRef" }]
         },
         "SDL_LoadSurface_IO": {
-          name: "LoadSurface",
           parameters: [{}, { default: "false" }]
         },
         "SDL_LoadBMP_IO": {
-          name: "LoadBMP",
           parameters: [{}, { default: "false" }]
         },
-        "SDL_SaveBMP_IO": {
-          name: "SaveBMP",
-          parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }],
-          hints: { methodName: "SaveBMP" },
-        },
+        "SDL_SaveBMP_IO": { parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }] },
         "SDL_SaveBMP": { parameters: [{ type: "SurfaceConstRef" }, {}] },
-        "SDL_LoadPNG_IO": {
-          name: "LoadPNG",
-          parameters: [{}, { default: "false" }]
-        },
-        "SDL_SavePNG_IO": {
-          name: "SavePNG",
-          parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }],
-          hints: { methodName: "SavePNG" },
-        },
+        "SDL_LoadPNG_IO": { parameters: [{}, { default: "false" }] },
+        "SDL_SavePNG_IO": { parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }] },
         "SDL_SavePNG": { parameters: [{ type: "SurfaceConstRef" }, {}] },
         "SDL_SurfaceHasRLE": { parameters: [{ type: "SurfaceConstRef" }] },
         "SDL_SetSurfaceColorKey": {
@@ -8382,7 +8367,7 @@ const transform = {
         },
         "IMG_LoadTyped_IO": {
           type: "Surface",
-          name: "LoadSurfaceTyped",
+          name: "LoadSurfaceTyped_IO",
           parameters: [
             { name: "src", type: "IOStreamRef" },
             { name: "type", type: "StringParam" },
@@ -8400,9 +8385,11 @@ const transform = {
         "IMG_Load_IO": {
           type: "",
           name: "Surface::Surface",
+          parameters: [{}, { default: "false" }],
           link: {
             type: "Surface",
-            name: "LoadSurface",
+            name: "LoadSurface_IO",
+            parameters: [{}, { default: "false" }],
           }
         },
         "IMG_LoadTexture": {
@@ -8416,14 +8403,15 @@ const transform = {
         "IMG_LoadTexture_IO": {
           type: "",
           name: "Texture::Texture",
+          parameters: [{}, {}, { default: "false" }],
           link: {
-            name: "LoadTexture",
-            type: "Texture"
+            name: "LoadTexture_IO",
+            type: "Texture",
+            parameters: [{}, {}, { default: "false" }],
           }
         },
         "IMG_LoadTextureTyped_IO": {
           type: "Texture",
-          name: "LoadTextureTyped",
           parameters: [
             {},
             {},
@@ -8435,11 +8423,9 @@ const transform = {
           parameters: [{}, {}, {}, { default: "nullptr" }, { default: "nullptr" }],
         },
         "IMG_LoadGPUTexture_IO": {
-          name: "LoadGPUTexture",
           parameters: [{}, {}, {}, { default: "false" }, { default: "nullptr" }, { default: "nullptr" }],
         },
         "IMG_LoadGPUTextureTyped_IO": {
-          name: "LoadGPUTextureTyped",
           parameters: [{}, {}, {}, {
             name: "type",
             type: "StringParam",
@@ -8612,7 +8598,7 @@ const transform = {
           resource: { free: "IMG_FreeAnimation" },
           entries: {
             "IMG_LoadAnimation": "ctor",
-            "IMG_LoadAnimation_IO": { name: "ctor" },
+            "IMG_LoadAnimation_IO": "ctor",
           }
         },
         "GetAnimationWidth": {
@@ -8660,11 +8646,10 @@ const transform = {
         "IMG_LoadAnimation": { type: "Animation" },
         "IMG_LoadAnimation_IO": {
           type: "Animation",
-          name: "LoadAnimation"
+          parameters: [{}, { default: "false" }],
         },
         "IMG_LoadAnimationTyped_IO": {
           type: "Animation",
-          name: "LoadAnimationTyped",
           parameters: [
             { name: "src", type: "IOStreamRef" },
             { name: "type", type: "StringParam" },
@@ -8748,7 +8733,6 @@ const transform = {
           hints: { methodName: "CreateCursor" },
         },
         "IMG_CreateAnimationEncoder_IO": {
-          name: "CreateAnimationEncoder",
           parameters: [{}, {
             type: "StringParam",
             name: "type"
@@ -8759,7 +8743,6 @@ const transform = {
           }],
         },
         "IMG_CreateAnimationDecoder_IO": {
-          name: "CreateAnimationDecoder",
           parameters: [{}, {
             type: "StringParam",
             name: "type"
