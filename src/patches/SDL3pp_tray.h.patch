@@ -19,6 +19,15 @@
  using TrayMenuRaw = SDL_TrayMenu*;
  
  // Forward decl
+@@ -339,7 +342,7 @@
+   ~TrayRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr TrayRef& operator=(TrayRef other) noexcept
++  TrayRef& operator=(TrayRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -379,8 +382,6 @@
    /**
     * Returns a list of entries in the menu, in order.

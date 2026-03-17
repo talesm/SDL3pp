@@ -1085,7 +1085,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint8> TryReadU8()
+  std::optional<Uint8> TryReadU8() const
   {
     if (Uint8 value; SDL_ReadU8(get(), &value)) return value;
     return {};
@@ -1105,7 +1105,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint8> TryReadS8()
+  std::optional<Sint8> TryReadS8() const
   {
     if (Sint8 value; SDL_ReadS8(get(), &value)) return value;
     return {};
@@ -1129,7 +1129,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint16> TryReadU16LE()
+  std::optional<Uint16> TryReadU16LE() const
   {
     if (Uint16 value; SDL_ReadU16LE(get(), &value)) return value;
     return {};
@@ -1153,7 +1153,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint16> TryReadS16LE()
+  std::optional<Sint16> TryReadS16LE() const
   {
     if (Sint16 value; SDL_ReadS16LE(get(), &value)) return value;
     return {};
@@ -1177,7 +1177,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint16> TryReadU16BE()
+  std::optional<Uint16> TryReadU16BE() const
   {
     if (Uint16 value; SDL_ReadU16BE(get(), &value)) return value;
     return {};
@@ -1201,7 +1201,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint16> TryReadS16BE()
+  std::optional<Sint16> TryReadS16BE() const
   {
     if (Sint16 value; SDL_ReadS16BE(get(), &value)) return value;
     return {};
@@ -1225,7 +1225,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint32> TryReadU32LE()
+  std::optional<Uint32> TryReadU32LE() const
   {
     if (Uint32 value; SDL_ReadU32LE(get(), &value)) return value;
     return {};
@@ -1249,7 +1249,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint32> TryReadS32LE()
+  std::optional<Sint32> TryReadS32LE() const
   {
     if (Sint32 value; SDL_ReadS32LE(get(), &value)) return value;
     return {};
@@ -1273,7 +1273,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint32> TryReadU32BE()
+  std::optional<Uint32> TryReadU32BE() const
   {
     if (Uint32 value; SDL_ReadU32BE(get(), &value)) return value;
     return {};
@@ -1297,7 +1297,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint32> TryReadS32BE()
+  std::optional<Sint32> TryReadS32BE() const
   {
     if (Sint32 value; SDL_ReadS32BE(get(), &value)) return value;
     return {};
@@ -1321,7 +1321,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint64> TryReadU64LE()
+  std::optional<Uint64> TryReadU64LE() const
   {
     if (Uint64 value; SDL_ReadU64LE(get(), &value)) return value;
     return {};
@@ -1345,7 +1345,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint64> TryReadS64LE()
+  std::optional<Sint64> TryReadS64LE() const
   {
     if (Sint64 value; SDL_ReadS64LE(get(), &value)) return value;
     return {};
@@ -1369,7 +1369,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint64> TryReadU64BE()
+  std::optional<Uint64> TryReadU64BE() const
   {
     if (Uint64 value; SDL_ReadU64BE(get(), &value)) return value;
     return {};
@@ -1393,7 +1393,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint64> TryReadS64BE()
+  std::optional<Sint64> TryReadS64BE() const
   {
     if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
     return {};
@@ -1671,7 +1671,7 @@ struct IOStreamRef : IOStream
   ~IOStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr IOStreamRef& operator=(IOStreamRef other) noexcept
+  IOStreamRef& operator=(IOStreamRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

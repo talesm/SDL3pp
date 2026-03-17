@@ -58,6 +58,15 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
+@@ -474,7 +483,7 @@
+   ~CameraRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr CameraRef& operator=(CameraRef other) noexcept
++  CameraRef& operator=(CameraRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -484,8 +493,12 @@
    constexpr operator CameraRaw() const noexcept { return get(); }
  };
@@ -92,8 +101,9 @@
    CameraFrame(const CameraFrame& other) = delete;
  
    /// Move constructor
-   constexpr CameraFrame(CameraFrame&& other) noexcept
+-  constexpr CameraFrame(CameraFrame&& other) noexcept
 -    : m_lock(other.m_lock)
++  CameraFrame(CameraFrame&& other) noexcept
 +    : Surface(std::move(other))
 +    , m_lock(other.m_lock)
    {

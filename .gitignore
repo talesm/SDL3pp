@@ -1,4 +1,5 @@
 .vscode/
+.vs/
 .idea/
 build
 scripts/transform.json

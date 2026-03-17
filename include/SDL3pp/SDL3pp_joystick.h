@@ -1221,7 +1221,7 @@ struct JoystickRef : Joystick
   ~JoystickRef() { release(); }
 
   /// Assignment operator.
-  constexpr JoystickRef& operator=(JoystickRef other) noexcept
+  JoystickRef& operator=(JoystickRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

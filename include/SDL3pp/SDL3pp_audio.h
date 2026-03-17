@@ -1520,7 +1520,7 @@ struct AudioDeviceRef : AudioDevice
   ~AudioDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
+  AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -2976,7 +2976,7 @@ struct AudioStreamRef : AudioStream
   ~AudioStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioStreamRef& operator=(AudioStreamRef other) noexcept
+  AudioStreamRef& operator=(AudioStreamRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -3041,7 +3041,7 @@ public:
   AudioStreamLock(const AudioStreamLock& other) = delete;
 
   /// Move constructor
-  constexpr AudioStreamLock(AudioStreamLock&& other) noexcept
+  AudioStreamLock(AudioStreamLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};

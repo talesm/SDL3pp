@@ -342,7 +342,7 @@ struct TrayRef : Tray
   ~TrayRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrayRef& operator=(TrayRef other) noexcept
+  TrayRef& operator=(TrayRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

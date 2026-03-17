@@ -3021,7 +3021,7 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationRef& operator=(AnimationRef other) noexcept
+  AnimationRef& operator=(AnimationRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -3925,7 +3925,7 @@ struct AnimationEncoderRef : AnimationEncoder
   ~AnimationEncoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
+  AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -4492,7 +4492,7 @@ struct AnimationDecoderRef : AnimationDecoder
   ~AnimationDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
+  AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

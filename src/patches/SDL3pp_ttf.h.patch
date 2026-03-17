@@ -356,6 +356,15 @@
     * @param fg the foreground color for the text.
     * @param bg the background color for the text.
     * @param wrap_width the maximum width of the text surface or 0 to wrap on
+@@ -1892,7 +1908,7 @@
+   ~FontRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr FontRef& operator=(FontRef other) noexcept
++  FontRef& operator=(FontRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -1935,14 +1951,14 @@
   * last indexed size will be the default.
   *
@@ -1271,6 +1280,15 @@
  };
  
  /**
+@@ -5228,7 +5219,7 @@
+   ~TextRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr TextRef& operator=(TextRef other) noexcept
++  TextRef& operator=(TextRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -5238,53 +5229,75 @@
    constexpr operator TextRaw() const noexcept { return get(); }
  };
@@ -1293,7 +1311,7 @@
 -  constexpr operator bool() const { static_assert(false, "Not implemented"); }
 -
 -  constexpr const SubString& operator*() const
-+  constexpr SubStringIterator(TextRef text)
++  SubStringIterator(TextRef text)
 +    : m_text(text)
 +    , m_subString(0)
    {
@@ -1303,7 +1321,7 @@
 -  constexpr const SubString* operator->() const
 +public:
 +  /// Default constructor.
-+  constexpr SubStringIterator()
++  SubStringIterator()
 +    : SubStringIterator(TextRef{})
    {
 -    static_assert(false, "Not implemented");
@@ -1325,16 +1343,18 @@
 +    return m_subString.offset == other.m_subString.offset;
    }
  
+-  constexpr SubStringIterator& operator++()
 +  /// Increment operator.
-   constexpr SubStringIterator& operator++()
++  SubStringIterator& operator++()
    {
 -    static_assert(false, "Not implemented");
 +    m_text.GetNextSubString(m_subString, &m_subString);
 +    return *this;
    }
  
+-  constexpr SubStringIterator operator++(int)
 +  /// Increment operator.
-   constexpr SubStringIterator operator++(int)
++  SubStringIterator operator++(int)
    {
 -    static_assert(false, "Not implemented");
 +    auto curr = *this;
@@ -1342,16 +1362,18 @@
 +    return curr;
    }
  
+-  constexpr SubStringIterator& operator--()
 +  /// Decrement operator.
-   constexpr SubStringIterator& operator--()
++  SubStringIterator& operator--()
    {
 -    static_assert(false, "Not implemented");
 +    m_text.GetPreviousSubString(m_subString, &m_subString);
 +    return *this;
    }
  
+-  constexpr SubStringIterator operator--(int)
 +  /// Decrement operator.
-   constexpr SubStringIterator operator--(int)
++  SubStringIterator operator--(int)
    {
 -    static_assert(false, "Not implemented");
 +    auto curr = *this;

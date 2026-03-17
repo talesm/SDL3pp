@@ -498,6 +498,8 @@ constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 /// Min allowed time representation
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
+#undef FLT_EPSILON
+
 /**
  * Epsilon constant, used for comparing floating-point numbers.
  *
@@ -506,7 +508,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *
  * @since This constant is available since SDL 3.2.0.
  */
-constexpr float FLT_EPSILON = SDL_FLT_EPSILON;
+constexpr float FLT_EPSILON = 1.1920928955078125e-07F;
 
 /**
  * Concept of interface
@@ -1157,7 +1159,7 @@ struct EnvironmentRef : Environment
   ~EnvironmentRef() { release(); }
 
   /// Assignment operator.
-  constexpr EnvironmentRef& operator=(EnvironmentRef other) noexcept
+  EnvironmentRef& operator=(EnvironmentRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -6055,7 +6057,7 @@ public:
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
-               size_t* outbytesleft);
+               size_t* outbytesleft) const;
 };
 
 /**
@@ -6107,7 +6109,7 @@ struct IConvRef : IConv
   ~IConvRef() { release(); }
 
   /// Assignment operator.
-  constexpr IConvRef& operator=(IConvRef other) noexcept
+  IConvRef& operator=(IConvRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -6210,7 +6212,7 @@ inline size_t iconv(IConvRaw cd,
 inline size_t IConv::iconv(const char** inbuf,
                            size_t* inbytesleft,
                            char** outbuf,
-                           size_t* outbytesleft)
+                           size_t* outbytesleft) const
 {
   return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
 }
@@ -6353,7 +6355,7 @@ inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
+inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_mul_check_overflow(a, b, ret);
 }
@@ -6375,7 +6377,7 @@ constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
+inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_add_check_overflow(a, b, ret);
 }

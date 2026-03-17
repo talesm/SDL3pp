@@ -172,6 +172,15 @@
     * @returns an audio stream on success.
     * @throws Error on failure.
     *
+@@ -1522,7 +1520,7 @@
+   ~AudioDeviceRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
++  AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -1541,7 +1539,7 @@
   *
   * @since This constant is available since SDL 3.2.0.
@@ -490,6 +499,15 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
+@@ -2873,7 +2976,7 @@
+   ~AudioStreamRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr AudioStreamRef& operator=(AudioStreamRef other) noexcept
++  AudioStreamRef& operator=(AudioStreamRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -2899,15 +3002,7 @@
   * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
   * the same attributes (recursive locks are allowed, etc).
@@ -516,6 +534,15 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
+@@ -2946,7 +3041,7 @@
+   AudioStreamLock(const AudioStreamLock& other) = delete;
+ 
+   /// Move constructor
+-  constexpr AudioStreamLock(AudioStreamLock&& other) noexcept
++  AudioStreamLock(AudioStreamLock&& other) noexcept
+     : m_lock(other.m_lock)
+   {
+     other.m_lock = {};
 @@ -2957,10 +3052,6 @@
     *
     * This unlocks an audio stream after a call to AudioStream.Lock.

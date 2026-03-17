@@ -331,7 +331,7 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  constexpr SensorRef& operator=(SensorRef other) noexcept
+  SensorRef& operator=(SensorRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

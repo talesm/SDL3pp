@@ -547,7 +547,7 @@ struct ProcessRef : Process
   ~ProcessRef() { release(); }
 
   /// Assignment operator.
-  constexpr ProcessRef& operator=(ProcessRef other) noexcept
+  ProcessRef& operator=(ProcessRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

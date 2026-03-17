@@ -201,7 +201,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current window value.
    */
-  constexpr WindowRef GetWindow() const noexcept { return window; }
+  WindowRef GetWindow() const noexcept { return window; }
 
   /**
    * Set the window.
@@ -209,7 +209,7 @@ struct MessageBox : MessageBoxRaw
    * @param newWindow the new window value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetWindow(WindowRef newWindow) noexcept
+  MessageBox& SetWindow(WindowRef newWindow) noexcept
   {
     window = newWindow;
     return *this;

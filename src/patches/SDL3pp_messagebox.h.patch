@@ -112,6 +112,24 @@
     * Get the flags.
     *
     * @returns current flags value.
+@@ -192,7 +201,7 @@
+    *
+    * @returns current window value.
+    */
+-  constexpr WindowRef GetWindow() const noexcept { return window; }
++  WindowRef GetWindow() const noexcept { return window; }
+ 
+   /**
+    * Set the window.
+@@ -200,7 +209,7 @@
+    * @param newWindow the new window value.
+    * @returns Reference to self.
+    */
+-  constexpr MessageBox& SetWindow(WindowRef newWindow) noexcept
++  MessageBox& SetWindow(WindowRef newWindow) noexcept
+   {
+     window = newWindow;
+     return *this;
 @@ -219,7 +228,7 @@
     * @param newTitle the new title value.
     * @returns Reference to self.

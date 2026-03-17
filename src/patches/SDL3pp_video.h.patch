@@ -375,6 +375,15 @@
     *
     * @threadsafety This function should only be called on the main thread.
     *
+@@ -3145,7 +3146,7 @@
+   ~WindowRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr WindowRef& operator=(WindowRef other) noexcept
++  WindowRef& operator=(WindowRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -3371,9 +3372,6 @@
    /**
     * Delete an OpenGL context.

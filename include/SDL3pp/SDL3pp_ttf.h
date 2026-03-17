@@ -1908,7 +1908,7 @@ struct FontRef : Font
   ~FontRef() { release(); }
 
   /// Assignment operator.
-  constexpr FontRef& operator=(FontRef other) noexcept
+  FontRef& operator=(FontRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -5219,7 +5219,7 @@ struct TextRef : Text
   ~TextRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextRef& operator=(TextRef other) noexcept
+  TextRef& operator=(TextRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -5239,7 +5239,7 @@ class SubStringIterator
 
   SubString m_subString;
 
-  constexpr SubStringIterator(TextRef text)
+  SubStringIterator(TextRef text)
     : m_text(text)
     , m_subString(0)
   {
@@ -5247,7 +5247,7 @@ class SubStringIterator
 
 public:
   /// Default constructor.
-  constexpr SubStringIterator()
+  SubStringIterator()
     : SubStringIterator(TextRef{})
   {
   }
@@ -5268,14 +5268,14 @@ public:
   }
 
   /// Increment operator.
-  constexpr SubStringIterator& operator++()
+  SubStringIterator& operator++()
   {
     m_text.GetNextSubString(m_subString, &m_subString);
     return *this;
   }
 
   /// Increment operator.
-  constexpr SubStringIterator operator++(int)
+  SubStringIterator operator++(int)
   {
     auto curr = *this;
     m_text.GetNextSubString(m_subString, &m_subString);
@@ -5283,14 +5283,14 @@ public:
   }
 
   /// Decrement operator.
-  constexpr SubStringIterator& operator--()
+  SubStringIterator& operator--()
   {
     m_text.GetPreviousSubString(m_subString, &m_subString);
     return *this;
   }
 
   /// Decrement operator.
-  constexpr SubStringIterator operator--(int)
+  SubStringIterator operator--(int)
   {
     auto curr = *this;
     m_text.GetPreviousSubString(m_subString, &m_subString);

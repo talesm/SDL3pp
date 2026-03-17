@@ -3146,7 +3146,7 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 
   /// Assignment operator.
-  constexpr WindowRef& operator=(WindowRef other) noexcept
+  WindowRef& operator=(WindowRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

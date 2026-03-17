@@ -483,7 +483,7 @@ struct CameraRef : Camera
   ~CameraRef() { release(); }
 
   /// Assignment operator.
-  constexpr CameraRef& operator=(CameraRef other) noexcept
+  CameraRef& operator=(CameraRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -546,7 +546,7 @@ public:
   CameraFrame(const CameraFrame& other) = delete;
 
   /// Move constructor
-  constexpr CameraFrame(CameraFrame&& other) noexcept
+  CameraFrame(CameraFrame&& other) noexcept
     : Surface(std::move(other))
     , m_lock(other.m_lock)
   {

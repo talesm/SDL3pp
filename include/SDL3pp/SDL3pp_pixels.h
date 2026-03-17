@@ -2545,7 +2545,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Palette Borrow(PaletteRaw resource)
+  static Palette Borrow(PaletteRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -2689,7 +2689,7 @@ struct PaletteRef : Palette
   ~PaletteRef() { release(); }
 
   /// Assignment operator.
-  constexpr PaletteRef& operator=(PaletteRef other) noexcept
+  PaletteRef& operator=(PaletteRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

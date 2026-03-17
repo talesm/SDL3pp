@@ -499,7 +499,7 @@ struct ThreadRef : Thread
   ~ThreadRef() { release(); }
 
   /// Assignment operator.
-  constexpr ThreadRef& operator=(ThreadRef other) noexcept
+  ThreadRef& operator=(ThreadRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
