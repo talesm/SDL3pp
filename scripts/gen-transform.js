@@ -8439,7 +8439,6 @@ const transform = {
           since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
         },
         "IMG_SaveTyped_IO": {
-          name: "SaveTyped",
           parameters: [{}, {}, {
             name: "type",
             type: "StringParam"
@@ -8450,7 +8449,6 @@ const transform = {
           }],
         },
         "IMG_SaveAVIF_IO": {
-          name: "SaveAVIF",
           parameters: [
             {},
             {},
@@ -8459,23 +8457,18 @@ const transform = {
           ]
         },
         "IMG_SaveBMP_IO": {
-          name: "SaveBMP",
           parameters: [{}, {}, { default: "false" }],
         },
         "IMG_SaveCUR_IO": {
-          name: "SaveCUR",
           parameters: [{}, {}, { default: "false" }],
         },
         "IMG_SaveGIF_IO": {
-          name: "SaveGIF",
           parameters: [{}, {}, { default: "false" }],
         },
         "IMG_SaveICO_IO": {
-          name: "SaveICO",
           parameters: [{}, {}, { default: "false" }],
         },
         "IMG_SavePNG_IO": {
-          name: "SavePNG",
           parameters: [
             {},
             {},
@@ -8483,11 +8476,9 @@ const transform = {
           ]
         },
         "IMG_SaveTGA_IO": {
-          name: "SaveTGA",
           parameters: [{}, {}, { default: "false" }],
         },
         "IMG_SaveWEBP_IO": {
-          name: "SaveWEBP",
           parameters: [{}, {}, {
             name: "quality",
             type: "float"
@@ -8498,7 +8489,6 @@ const transform = {
           }],
         },
         "IMG_SaveJPG_IO": {
-          name: "SaveJPG",
           parameters: [
             {},
             {},

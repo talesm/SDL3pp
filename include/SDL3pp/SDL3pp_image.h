@@ -2198,7 +2198,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveTyped
+ * @sa SaveTyped_IO
  * @sa SaveAVIF
  * @sa SaveBMP
  * @sa SaveCUR
@@ -2235,20 +2235,20 @@ inline void Save(SurfaceRef surface, StringParam file)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Save
- * @sa SaveAVIF
- * @sa SaveBMP
- * @sa SaveCUR
- * @sa SaveGIF
- * @sa SaveICO
- * @sa SaveJPG
- * @sa SavePNG
- * @sa SaveTGA
- * @sa SaveWEBP
+ * @sa SaveAVIF_IO
+ * @sa SaveBMP_IO
+ * @sa SaveCUR_IO
+ * @sa SaveGIF_IO
+ * @sa SaveICO_IO
+ * @sa SaveJPG_IO
+ * @sa SavePNG_IO
+ * @sa SaveTGA_IO
+ * @sa SaveWEBP_IO
  */
-inline void SaveTyped(SurfaceRef surface,
-                      IOStreamRef dst,
-                      StringParam type,
-                      bool closeio = false)
+inline void SaveTyped_IO(SurfaceRef surface,
+                         IOStreamRef dst,
+                         StringParam type,
+                         bool closeio = false)
 {
   CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
 }
@@ -2268,7 +2268,7 @@ inline void SaveTyped(SurfaceRef surface,
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa SaveAVIF
+ * @sa SaveAVIF_IO
  */
 inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
 {
@@ -2295,10 +2295,10 @@ inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
  *
  * @sa SaveAVIF
  */
-inline void SaveAVIF(SurfaceRef surface,
-                     IOStreamRef dst,
-                     int quality,
-                     bool closeio = false)
+inline void SaveAVIF_IO(SurfaceRef surface,
+                        IOStreamRef dst,
+                        int quality,
+                        bool closeio = false)
 {
   CheckError(IMG_SaveAVIF_IO(surface, dst, closeio, quality));
 }
@@ -2316,7 +2316,7 @@ inline void SaveAVIF(SurfaceRef surface,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveBMP
+ * @sa SaveBMP_IO
  */
 inline void SaveBMP(SurfaceRef surface, StringParam file)
 {
@@ -2341,7 +2341,9 @@ inline void SaveBMP(SurfaceRef surface, StringParam file)
  *
  * @sa SaveBMP
  */
-inline void SaveBMP(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveBMP_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveBMP_IO(surface, dst, closeio));
 }
@@ -2357,7 +2359,7 @@ inline void SaveBMP(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveCUR
+ * @sa SaveCUR_IO
  */
 inline void SaveCUR(SurfaceRef surface, StringParam file)
 {
@@ -2382,7 +2384,9 @@ inline void SaveCUR(SurfaceRef surface, StringParam file)
  *
  * @sa SaveCUR
  */
-inline void SaveCUR(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveCUR_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveCUR_IO(surface, dst, closeio));
 }
@@ -2398,7 +2402,7 @@ inline void SaveCUR(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveGIF
+ * @sa SaveGIF_IO
  */
 inline void SaveGIF(SurfaceRef surface, StringParam file)
 {
@@ -2423,7 +2427,9 @@ inline void SaveGIF(SurfaceRef surface, StringParam file)
  *
  * @sa SaveGIF
  */
-inline void SaveGIF(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveGIF_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveGIF_IO(surface, dst, closeio));
 }
@@ -2439,7 +2445,7 @@ inline void SaveGIF(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveICO
+ * @sa SaveICO_IO
  */
 inline void SaveICO(SurfaceRef surface, StringParam file)
 {
@@ -2464,7 +2470,9 @@ inline void SaveICO(SurfaceRef surface, StringParam file)
  *
  * @sa SaveICO
  */
-inline void SaveICO(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveICO_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveICO_IO(surface, dst, closeio));
 }
@@ -2484,7 +2492,7 @@ inline void SaveICO(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa SaveJPG
+ * @sa SaveJPG_IO
  */
 inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
 {
@@ -2511,10 +2519,10 @@ inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
  *
  * @sa SaveJPG
  */
-inline void SaveJPG(SurfaceRef surface,
-                    IOStreamRef dst,
-                    int quality,
-                    bool closeio = false)
+inline void SaveJPG_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       int quality,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
 }
@@ -2530,7 +2538,7 @@ inline void SaveJPG(SurfaceRef surface,
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa SavePNG
+ * @sa SavePNG_IO
  */
 inline void SavePNG(SurfaceRef surface, StringParam file)
 {
@@ -2555,7 +2563,9 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
  *
  * @sa SavePNG
  */
-inline void SavePNG(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SavePNG_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
 }
@@ -2573,7 +2583,7 @@ inline void SavePNG(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveTGA
+ * @sa SaveTGA_IO
  */
 inline void SaveTGA(SurfaceRef surface, StringParam file)
 {
@@ -2598,7 +2608,9 @@ inline void SaveTGA(SurfaceRef surface, StringParam file)
  *
  * @sa SaveTGA
  */
-inline void SaveTGA(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveTGA_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveTGA_IO(surface, dst, closeio));
 }
@@ -2618,7 +2630,7 @@ inline void SaveTGA(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveWEBP
+ * @sa SaveWEBP_IO
  */
 inline void SaveWEBP(SurfaceRef surface, StringParam file, float quality)
 {
@@ -2647,10 +2659,10 @@ inline void SaveWEBP(SurfaceRef surface, StringParam file, float quality)
  *
  * @sa SaveWEBP
  */
-inline void SaveWEBP(SurfaceRef surface,
-                     IOStreamRef dst,
-                     float quality,
-                     bool closeio = false)
+inline void SaveWEBP_IO(SurfaceRef surface,
+                        IOStreamRef dst,
+                        float quality,
+                        bool closeio = false)
 {
   CheckError(IMG_SaveWEBP_IO(surface, dst, closeio, quality));
 }
