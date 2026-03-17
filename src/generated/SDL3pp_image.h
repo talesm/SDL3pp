@@ -2677,11 +2677,11 @@ public:
    * @sa Animation.CreateCursor
    * @sa Animation.Animation
    * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation
-   * @sa LoadAPNGAnimation
-   * @sa LoadAVIFAnimation
-   * @sa LoadGIFAnimation
-   * @sa LoadWEBPAnimation
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
    * @sa Animation.Free
    */
   Animation(StringParam file);
@@ -2706,11 +2706,11 @@ public:
    * @sa Animation.CreateCursor
    * @sa Animation.Animation
    * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation
-   * @sa LoadAPNGAnimation
-   * @sa LoadAVIFAnimation
-   * @sa LoadGIFAnimation
-   * @sa LoadWEBPAnimation
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
    * @sa Animation.Free
    */
   Animation(IOStreamRef src, bool closeio = false);
@@ -2769,11 +2769,11 @@ public:
    * @sa Animation.Animation
    * @sa Animation.Animation
    * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation
-   * @sa LoadAPNGAnimation
-   * @sa LoadAVIFAnimation
-   * @sa LoadGIFAnimation
-   * @sa LoadWEBPAnimation
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
    */
   void Free();
 
@@ -2801,12 +2801,12 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
   void Save(StringParam file);
 
@@ -2830,13 +2830,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveTyped(IOStreamRef dst, StringParam type, bool closeio = false);
+  void SaveTyped_IO(IOStreamRef dst, StringParam type, bool closeio = false);
 
   /**
    * Save an animation in ANI format to an IOStream.
@@ -2852,13 +2852,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveANI(IOStreamRef dst, bool closeio = false);
+  void SaveANI_IO(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in APNG format to an IOStream.
@@ -2874,13 +2874,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveAPNG(IOStreamRef dst, bool closeio = false);
+  void SaveAPNG_IO(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in AVIF format to an IOStream.
@@ -2898,13 +2898,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveAVIF(IOStreamRef dst, int quality, bool closeio = false);
+  void SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio = false);
 
   /**
    * Save an animation in GIF format to an IOStream.
@@ -2920,13 +2920,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveGIF(IOStreamRef dst, bool closeio = false);
+  void SaveGIF_IO(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in WEBP format to an IOStream.
@@ -2946,13 +2946,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
    */
-  void SaveWEBP(IOStreamRef dst, int quality, bool closeio = false);
+  void SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio = false);
 
   /**
    * Create an animated cursor from an animation.
@@ -3106,11 +3106,11 @@ inline int Animation::GetDelay(int index) const
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
 inline Animation LoadAnimation(StringParam file)
@@ -3148,11 +3148,11 @@ inline Animation::Animation(IOStreamRef src, bool closeio)
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
 inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
@@ -3187,11 +3187,11 @@ inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa Animation.Animation
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
 inline Animation LoadAnimationTyped_IO(IOStreamRef src,
@@ -3223,13 +3223,13 @@ inline Animation LoadAnimationTyped_IO(IOStreamRef src,
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadANIAnimation(IOStreamRef src)
+inline Animation LoadANIAnimation_IO(IOStreamRef src)
 {
   return IMG_LoadANIAnimation_IO(src);
 }
@@ -3254,13 +3254,13 @@ inline Animation LoadANIAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadAPNGAnimation(IOStreamRef src)
+inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
 {
   return IMG_LoadAPNGAnimation_IO(src);
 }
@@ -3285,13 +3285,13 @@ inline Animation LoadAPNGAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadAVIFAnimation(IOStreamRef src)
+inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
 {
   return IMG_LoadAVIFAnimation_IO(src);
 }
@@ -3315,13 +3315,13 @@ inline Animation LoadAVIFAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadGIFAnimation(IOStreamRef src)
+inline Animation LoadGIFAnimation_IO(IOStreamRef src)
 {
   return IMG_LoadGIFAnimation_IO(src);
 }
@@ -3343,13 +3343,13 @@ inline Animation LoadGIFAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadWEBPAnimation(IOStreamRef src)
+inline Animation LoadWEBPAnimation_IO(IOStreamRef src)
 {
   return IMG_LoadWEBPAnimation_IO(src);
 }
@@ -3367,12 +3367,12 @@ inline Animation LoadWEBPAnimation(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
 inline void SaveAnimation(AnimationRef anim, StringParam file)
 {
@@ -3404,25 +3404,25 @@ inline void Animation::Save(StringParam file)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveAnimationTyped(AnimationRef anim,
-                               IOStreamRef dst,
-                               StringParam type,
-                               bool closeio = false)
+inline void SaveAnimationTyped_IO(AnimationRef anim,
+                                  IOStreamRef dst,
+                                  StringParam type,
+                                  bool closeio = false)
 {
   CheckError(IMG_SaveAnimationTyped_IO(anim, dst, type, closeio));
 }
 
-inline void Animation::SaveTyped(IOStreamRef dst,
-                                 StringParam type,
-                                 bool closeio)
+inline void Animation::SaveTyped_IO(IOStreamRef dst,
+                                    StringParam type,
+                                    bool closeio)
 {
-  SDL::SaveAnimationTyped(m_resource, dst, std::move(type), closeio);
+  SDL::SaveAnimationTyped_IO(m_resource, dst, std::move(type), closeio);
 }
 
 /**
@@ -3440,22 +3440,22 @@ inline void Animation::SaveTyped(IOStreamRef dst,
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveANIAnimation(AnimationRef anim,
-                             IOStreamRef dst,
-                             bool closeio = false)
+inline void SaveANIAnimation_IO(AnimationRef anim,
+                                IOStreamRef dst,
+                                bool closeio = false)
 {
   CheckError(IMG_SaveANIAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveANI(IOStreamRef dst, bool closeio)
+inline void Animation::SaveANI_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveANIAnimation(m_resource, dst, closeio);
+  SDL::SaveANIAnimation_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -3473,22 +3473,22 @@ inline void Animation::SaveANI(IOStreamRef dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveAPNGAnimation(AnimationRef anim,
-                              IOStreamRef dst,
-                              bool closeio = false)
+inline void SaveAPNGAnimation_IO(AnimationRef anim,
+                                 IOStreamRef dst,
+                                 bool closeio = false)
 {
   CheckError(IMG_SaveAPNGAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveAPNG(IOStreamRef dst, bool closeio)
+inline void Animation::SaveAPNG_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveAPNGAnimation(m_resource, dst, closeio);
+  SDL::SaveAPNGAnimation_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -3508,23 +3508,23 @@ inline void Animation::SaveAPNG(IOStreamRef dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveAVIFAnimation(AnimationRef anim,
-                              IOStreamRef dst,
-                              int quality,
-                              bool closeio = false)
+inline void SaveAVIFAnimation_IO(AnimationRef anim,
+                                 IOStreamRef dst,
+                                 int quality,
+                                 bool closeio = false)
 {
   CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, quality, closeio));
 }
 
-inline void Animation::SaveAVIF(IOStreamRef dst, int quality, bool closeio)
+inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
 {
-  SDL::SaveAVIFAnimation(m_resource, dst, quality, closeio);
+  SDL::SaveAVIFAnimation_IO(m_resource, dst, quality, closeio);
 }
 
 /**
@@ -3542,22 +3542,22 @@ inline void Animation::SaveAVIF(IOStreamRef dst, int quality, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveGIFAnimation(AnimationRef anim,
-                             IOStreamRef dst,
-                             bool closeio = false)
+inline void SaveGIFAnimation_IO(AnimationRef anim,
+                                IOStreamRef dst,
+                                bool closeio = false)
 {
   CheckError(IMG_SaveGIFAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveGIF(IOStreamRef dst, bool closeio)
+inline void Animation::SaveGIF_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveGIFAnimation(m_resource, dst, closeio);
+  SDL::SaveGIFAnimation_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -3579,23 +3579,23 @@ inline void Animation::SaveGIF(IOStreamRef dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
  */
-inline void SaveWEBPAnimation(AnimationRef anim,
-                              IOStreamRef dst,
-                              int quality,
-                              bool closeio = false)
+inline void SaveWEBPAnimation_IO(AnimationRef anim,
+                                 IOStreamRef dst,
+                                 int quality,
+                                 bool closeio = false)
 {
   CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, quality, closeio));
 }
 
-inline void Animation::SaveWEBP(IOStreamRef dst, int quality, bool closeio)
+inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
 {
-  SDL::SaveWEBPAnimation(m_resource, dst, quality, closeio);
+  SDL::SaveWEBPAnimation_IO(m_resource, dst, quality, closeio);
 }
 
 /**
@@ -3637,11 +3637,11 @@ inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  */
 inline void FreeAnimation(AnimationRaw anim) { IMG_FreeAnimation(anim); }
 

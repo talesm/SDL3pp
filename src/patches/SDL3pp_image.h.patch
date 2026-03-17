@@ -850,7 +850,7 @@
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 @@ -3231,7 +3300,7 @@
   */
- inline Animation LoadANIAnimation(IOStreamRef src)
+ inline Animation LoadANIAnimation_IO(IOStreamRef src)
  {
 -  return IMG_LoadANIAnimation_IO(src);
 +  return Animation(IMG_LoadANIAnimation_IO(src));
@@ -859,7 +859,7 @@
  /**
 @@ -3262,7 +3331,7 @@
   */
- inline Animation LoadAPNGAnimation(IOStreamRef src)
+ inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
  {
 -  return IMG_LoadAPNGAnimation_IO(src);
 +  return Animation(IMG_LoadAPNGAnimation_IO(src));
@@ -868,7 +868,7 @@
  /**
 @@ -3293,7 +3362,7 @@
   */
- inline Animation LoadAVIFAnimation(IOStreamRef src)
+ inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
  {
 -  return IMG_LoadAVIFAnimation_IO(src);
 +  return Animation(IMG_LoadAVIFAnimation_IO(src));
@@ -877,7 +877,7 @@
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 @@ -3323,7 +3392,7 @@
   */
- inline Animation LoadGIFAnimation(IOStreamRef src)
+ inline Animation LoadGIFAnimation_IO(IOStreamRef src)
  {
 -  return IMG_LoadGIFAnimation_IO(src);
 +  return Animation(IMG_LoadGIFAnimation_IO(src));
@@ -886,7 +886,7 @@
  /**
 @@ -3351,7 +3420,7 @@
   */
- inline Animation LoadWEBPAnimation(IOStreamRef src)
+ inline Animation LoadWEBPAnimation_IO(IOStreamRef src)
  {
 -  return IMG_LoadWEBPAnimation_IO(src);
 +  return Animation{IMG_LoadWEBPAnimation_IO(src)};
@@ -894,14 +894,14 @@
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 @@ -3415,7 +3484,7 @@
-                                StringParam type,
-                                bool closeio = false)
+                                   StringParam type,
+                                   bool closeio = false)
  {
 -  CheckError(IMG_SaveAnimationTyped_IO(anim, dst, type, closeio));
 +  CheckError(IMG_SaveAnimationTyped_IO(anim, dst, closeio, type));
  }
  
- inline void Animation::SaveTyped(IOStreamRef dst,
+ inline void Animation::SaveTyped_IO(IOStreamRef dst,
 @@ -3499,10 +3568,10 @@
   *
   * @param anim the animation to save.

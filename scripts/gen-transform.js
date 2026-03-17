@@ -8558,28 +8558,12 @@ const transform = {
             { name: "closeio", type: "bool", default: "false" },
           ]
         },
-        "IMG_LoadANIAnimation_IO": {
-          type: "Animation",
-          name: "LoadANIAnimation"
-        },
-        "IMG_LoadAPNGAnimation_IO": {
-          type: "Animation",
-          name: "LoadAPNGAnimation"
-        },
-        "IMG_LoadAVIFAnimation_IO": {
-          type: "Animation",
-          name: "LoadAVIFAnimation"
-        },
-        "IMG_LoadGIFAnimation_IO": {
-          type: "Animation",
-          name: "LoadGIFAnimation"
-        },
-        "IMG_LoadWEBPAnimation_IO": {
-          type: "Animation",
-          name: "LoadWEBPAnimation"
-        },
+        "IMG_LoadANIAnimation_IO": { type: "Animation" },
+        "IMG_LoadAPNGAnimation_IO": { type: "Animation" },
+        "IMG_LoadAVIFAnimation_IO": { type: "Animation" },
+        "IMG_LoadGIFAnimation_IO": { type: "Animation" },
+        "IMG_LoadWEBPAnimation_IO": { type: "Animation" },
         "IMG_SaveAnimationTyped_IO": {
-          name: "SaveAnimationTyped",
           parameters: [{}, {}, {
             name: "type",
             type: "StringParam"
@@ -8588,21 +8572,10 @@ const transform = {
             type: "bool",
             default: "false"
           }],
-          hints: { methodName: "SaveTyped" },
         },
-        "IMG_SaveANIAnimation_IO": {
-          name: "SaveANIAnimation",
-          hints: { methodName: "SaveANI" },
-          parameters: [{}, {}, { default: "false" }],
-        },
-        "IMG_SaveAPNGAnimation_IO": {
-          name: "SaveAPNGAnimation",
-          hints: { methodName: "SaveAPNG" },
-          parameters: [{}, {}, { default: "false" }],
-        },
+        "IMG_SaveANIAnimation_IO": { parameters: [{}, {}, { default: "false" }] },
+        "IMG_SaveAPNGAnimation_IO": { parameters: [{}, {}, { default: "false" }] },
         "IMG_SaveAVIFAnimation_IO": {
-          name: "SaveAVIFAnimation",
-          hints: { methodName: "SaveAVIF" },
           parameters: [{}, {}, {
             name: "quality",
             type: "int"
@@ -8612,14 +8585,8 @@ const transform = {
             default: "false"
           }],
         },
-        "IMG_SaveGIFAnimation_IO": {
-          name: "SaveGIFAnimation",
-          hints: { methodName: "SaveGIF" },
-          parameters: [{}, {}, { default: "false" }],
-        },
+        "IMG_SaveGIFAnimation_IO": { parameters: [{}, {}, { default: "false" }] },
         "IMG_SaveWEBPAnimation_IO": {
-          name: "SaveWEBPAnimation",
-          hints: { methodName: "SaveWEBP" },
           parameters: [{}, {}, {
             name: "quality",
             type: "int"

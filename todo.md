@@ -25,7 +25,7 @@ Next version
   - [x] Remove \*Param;
   - [x] Rename \*ConstRef to \*ConstParam
 - [x] Wrap SDL_mixer;
-- [ ] Remove overloading of `*_IO` variants:
+- [x] Remove overloading of `*_IO` variants:
   - [x] SDL::LoadWAV_IO();
   - [x] SDL::LoadFile_IO();
   - [x] SDL::SaveFile_IO();
