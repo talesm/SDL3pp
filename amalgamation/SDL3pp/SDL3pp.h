@@ -101628,26 +101628,26 @@ inline bool isXV(IOStreamRef src) { return IMG_isXV(src); }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadAVIF(IOStreamRef src)
+inline Surface LoadAVIF_IO(IOStreamRef src)
 {
   return Surface(IMG_LoadAVIF_IO(src));
 }
@@ -101665,26 +101665,29 @@ inline Surface LoadAVIF(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadBMP(IOStreamRef src) { return Surface{IMG_LoadBMP_IO(src)}; }
+inline Surface LoadBMP_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadBMP_IO(src)};
+}
 
 /**
  * Load a CUR image directly.
@@ -101699,26 +101702,29 @@ inline Surface LoadBMP(IOStreamRef src) { return Surface{IMG_LoadBMP_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadCUR(IOStreamRef src) { return Surface{IMG_LoadCUR_IO(src)}; }
+inline Surface LoadCUR_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadCUR_IO(src)};
+}
 
 /**
  * Load a GIF image directly.
@@ -101733,26 +101739,29 @@ inline Surface LoadCUR(IOStreamRef src) { return Surface{IMG_LoadCUR_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadGIF(IOStreamRef src) { return Surface{IMG_LoadGIF_IO(src)}; }
+inline Surface LoadGIF_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadGIF_IO(src)};
+}
 
 /**
  * Load a ICO image directly.
@@ -101767,26 +101776,29 @@ inline Surface LoadGIF(IOStreamRef src) { return Surface{IMG_LoadGIF_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadICO(IOStreamRef src) { return Surface{IMG_LoadICO_IO(src)}; }
+inline Surface LoadICO_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadICO_IO(src)};
+}
 
 /**
  * Load a JPG image directly.
@@ -101801,26 +101813,29 @@ inline Surface LoadICO(IOStreamRef src) { return Surface{IMG_LoadICO_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadJPG(IOStreamRef src) { return Surface{IMG_LoadJPG_IO(src)}; }
+inline Surface LoadJPG_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadJPG_IO(src)};
+}
 
 /**
  * Load a JXL image directly.
@@ -101835,26 +101850,29 @@ inline Surface LoadJPG(IOStreamRef src) { return Surface{IMG_LoadJPG_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadJXL(IOStreamRef src) { return Surface{IMG_LoadJXL_IO(src)}; }
+inline Surface LoadJXL_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadJXL_IO(src)};
+}
 
 /**
  * Load a LBM image directly.
@@ -101869,26 +101887,29 @@ inline Surface LoadJXL(IOStreamRef src) { return Surface{IMG_LoadJXL_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadLBM(IOStreamRef src) { return Surface{IMG_LoadLBM_IO(src)}; }
+inline Surface LoadLBM_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadLBM_IO(src)};
+}
 
 /**
  * Load a PCX image directly.
@@ -101903,26 +101924,29 @@ inline Surface LoadLBM(IOStreamRef src) { return Surface{IMG_LoadLBM_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadPCX(IOStreamRef src) { return Surface{IMG_LoadPCX_IO(src)}; }
+inline Surface LoadPCX_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadPCX_IO(src)};
+}
 
 /**
  * Load a PNG image directly.
@@ -101937,26 +101961,29 @@ inline Surface LoadPCX(IOStreamRef src) { return Surface{IMG_LoadPCX_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadPNG(IOStreamRef src) { return Surface{IMG_LoadPNG_IO(src)}; }
+inline Surface LoadPNG_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadPNG_IO(src)};
+}
 
 /**
  * Load a PNM image directly.
@@ -101971,26 +101998,29 @@ inline Surface LoadPNG(IOStreamRef src) { return Surface{IMG_LoadPNG_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadPNM(IOStreamRef src) { return Surface{IMG_LoadPNM_IO(src)}; }
+inline Surface LoadPNM_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadPNM_IO(src)};
+}
 
 /**
  * Load a SVG image directly.
@@ -102005,27 +102035,30 @@ inline Surface LoadPNM(IOStreamRef src) { return Surface{IMG_LoadPNM_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSizedSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSizedSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadSVG(IOStreamRef src) { return Surface{IMG_LoadSVG_IO(src)}; }
+inline Surface LoadSVG_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadSVG_IO(src)};
+}
 
 /**
  * Load an SVG image, scaled to a specific size.
@@ -102045,9 +102078,9 @@ inline Surface LoadSVG(IOStreamRef src) { return Surface{IMG_LoadSVG_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadSVG
+ * @sa LoadSVG_IO
  */
-inline Surface LoadSizedSVG(IOStreamRef src, const PointRaw& size)
+inline Surface LoadSizedSVG_IO(IOStreamRef src, const PointRaw& size)
 {
   return Surface{IMG_LoadSizedSVG_IO(src, size.x, size.y)};
 }
@@ -102065,26 +102098,29 @@ inline Surface LoadSizedSVG(IOStreamRef src, const PointRaw& size)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadQOI(IOStreamRef src) { return Surface{IMG_LoadQOI_IO(src)}; }
+inline Surface LoadQOI_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadQOI_IO(src)};
+}
 
 /**
  * Load a TGA image directly.
@@ -102099,26 +102135,29 @@ inline Surface LoadQOI(IOStreamRef src) { return Surface{IMG_LoadQOI_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadTGA(IOStreamRef src) { return Surface{IMG_LoadTGA_IO(src)}; }
+inline Surface LoadTGA_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadTGA_IO(src)};
+}
 
 /**
  * Load a TIFF image directly.
@@ -102133,26 +102172,29 @@ inline Surface LoadTGA(IOStreamRef src) { return Surface{IMG_LoadTGA_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadTIF(IOStreamRef src) { return Surface{IMG_LoadTIF_IO(src)}; }
+inline Surface LoadTIF_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadTIF_IO(src)};
+}
 
 /**
  * Load a WEBP image directly.
@@ -102167,26 +102209,26 @@ inline Surface LoadTIF(IOStreamRef src) { return Surface{IMG_LoadTIF_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadWEBP(IOStreamRef src)
+inline Surface LoadWEBP_IO(IOStreamRef src)
 {
   return Surface{IMG_LoadWEBP_IO(src)};
 }
@@ -102204,26 +102246,29 @@ inline Surface LoadWEBP(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadXCF(IOStreamRef src) { return Surface{IMG_LoadXCF_IO(src)}; }
+inline Surface LoadXCF_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadXCF_IO(src)};
+}
 
 /**
  * Load a XPM image directly.
@@ -102238,26 +102283,29 @@ inline Surface LoadXCF(IOStreamRef src) { return Surface{IMG_LoadXCF_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadXPM(IOStreamRef src) { return Surface{IMG_LoadXPM_IO(src)}; }
+inline Surface LoadXPM_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadXPM_IO(src)};
+}
 
 /**
  * Load a XV image directly.
@@ -102272,26 +102320,29 @@ inline Surface LoadXPM(IOStreamRef src) { return Surface{IMG_LoadXPM_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
  */
-inline Surface LoadXV(IOStreamRef src) { return Surface{IMG_LoadXV_IO(src)}; }
+inline Surface LoadXV_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadXV_IO(src)};
+}
 
 /**
  * Load an XPM image from a memory array.

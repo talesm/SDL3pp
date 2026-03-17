@@ -27,8 +27,28 @@ Next version
 - [x] Wrap SDL_mixer;
 - [ ] Remove overloading of `*_IO` variants:
   - [x] SDL::LoadWAV_IO();
-  - [ ] SDL::LoadFile_IO();
-  - [ ] SDL::SaveFile_IO();
+  - [x] SDL::LoadFile_IO();
+  - [x] SDL::SaveFile_IO();
+  - [x] SDL::LoadAVIF_IO
+  - [x] SDL::LoadBMP_IO
+  - [x] SDL::LoadICO_IO
+  - [x] SDL::LoadCUR_IO
+  - [x] SDL::LoadGIF_IO
+  - [x] SDL::LoadJPG_IO
+  - [x] SDL::LoadJXL_IO
+  - [x] SDL::LoadLBM_IO
+  - [x] SDL::LoadPCX_IO
+  - [x] SDL::LoadPNG_IO
+  - [x] SDL::LoadPNM_IO
+  - [x] SDL::LoadSVG_IO
+  - [x] SDL::LoadQOI_IO
+  - [x] SDL::LoadTGA_IO
+  - [x] SDL::LoadTIF_IO
+  - [x] SDL::LoadXCF_IO
+  - [x] SDL::LoadXPM_IO
+  - [x] SDL::LoadXV_IO
+  - [x] SDL::LoadWEBP_IO
+  - [x] SDL::LoadSizedSVG_IO
 - [x] Error handling fixes:
   - [x] SDL::GetClipboardMimeTypes();
   - [x] SDL::GetGamepadMappings();
@@ -65,6 +85,9 @@ Next version
   - [x] SDL::GetWindowParent();
   - [x] SDL::SyncWindow();
   - [x] SDL::EGL_GetWindowSurface();
+- [ ] Fix warnings:
+  - [ ] Default initializing resources as nullptr;
+  - [ ] lock's get() const.
 
 Backlog
 -------
