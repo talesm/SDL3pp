@@ -45358,8 +45358,8 @@ inline void SurfaceLock::reset()
   m_lock = {};
 }
 
-#ifndef SDL3PP_ENABLE_IMAGE
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC) &&                   \
+  SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a BMP or PNG image from a seekable SDL data stream.
@@ -45406,8 +45406,8 @@ inline Surface LoadSurface(StringParam file)
 {
   return Surface{SDL_LoadSurface(file)};
 }
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-#endif // SDL3PP_ENABLE_IMAGE
+
+#endif // !defined(SDL3PP_ENABLE_IMAGE) && SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a BMP image from a seekable SDL data stream.

@@ -859,14 +859,16 @@
   * 0, then you can read and write to the surface at any time, and the pixel
   * format of the surface will not change.
   *
-@@ -2777,6 +2772,7 @@
+@@ -2777,7 +2772,8 @@
    m_lock = {};
  }
  
-+#ifndef SDL3PP_ENABLE_IMAGE
- #if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
++#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC) &&                   \
++  SDL_VERSION_ATLEAST(3, 4, 0)
  
  /**
+  * Load a BMP or PNG image from a seekable SDL data stream.
 @@ -2800,7 +2796,7 @@
   */
  inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
@@ -881,13 +883,13 @@
   * @sa LoadSurface_IO
   */
 -inline Surface LoadSurface(StringParam file) { return SDL_LoadSurface(file); }
--
 +inline Surface LoadSurface(StringParam file)
 +{
 +  return Surface{SDL_LoadSurface(file)};
 +}
- #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-+#endif // SDL3PP_ENABLE_IMAGE
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
++#endif // !defined(SDL3PP_ENABLE_IMAGE) && SDL_VERSION_ATLEAST(3, 4, 0)
  
  /**
   * Load a BMP image from a seekable SDL data stream.
