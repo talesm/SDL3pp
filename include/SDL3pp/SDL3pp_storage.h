@@ -268,7 +268,7 @@ class Storage
 public:
   /// Default ctor
   constexpr Storage(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

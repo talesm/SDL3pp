@@ -123,7 +123,7 @@ class AsyncIO
 public:
   /// Default ctor
   constexpr AsyncIO(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -499,7 +499,7 @@ class AsyncIOQueue
 public:
   /// Default ctor
   constexpr AsyncIOQueue(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

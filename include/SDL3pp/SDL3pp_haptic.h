@@ -770,7 +770,7 @@ class Haptic
 public:
   /// Default ctor
   constexpr Haptic(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

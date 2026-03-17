@@ -142,6 +142,7 @@ export function expandResource(
     constRawName,
     refName,
     rawName,
+    isStruct,
   );
   if (hasShared) {
     addBorrowFunction(ctors, targetName, resourceEntry, refName, rawName);
@@ -459,6 +460,7 @@ function createBaselineCtors(
   constRawName: string,
   paramType: string,
   rawName: string,
+  isStruct: boolean,
 ) {
   const ownershipDisclaimer = hasScoped
     ? []
@@ -471,7 +473,7 @@ function createBaselineCtors(
       constexpr: true,
       parameters: [{ name: "", type: "std::nullptr_t", default: "nullptr" }],
       hints: {
-        init: ["m_resource(0)"],
+        init: [isStruct ? "m_resource(nullptr)" : "m_resource(0)"],
         noexcept: true,
         changeAccess: "public",
       },

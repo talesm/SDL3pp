@@ -2632,7 +2632,7 @@ class Animation
 public:
   /// Default ctor
   constexpr Animation(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -3659,7 +3659,7 @@ class AnimationEncoder
 public:
   /// Default ctor
   constexpr AnimationEncoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -4198,7 +4198,7 @@ class AnimationDecoder
 public:
   /// Default ctor
   constexpr AnimationDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

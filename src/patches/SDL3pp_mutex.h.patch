@@ -15,7 +15,7 @@
    /// Default ctor
 -  constexpr Mutex(std::nullptr_t = nullptr) noexcept
 +  constexpr Mutex(std::nullptr_t) noexcept
-     : m_resource(0)
+     : m_resource(nullptr)
    {
    }
 @@ -473,7 +473,7 @@
@@ -24,7 +24,7 @@
    /// Default ctor
 -  constexpr RWLock(std::nullptr_t = nullptr) noexcept
 +  constexpr RWLock(std::nullptr_t) noexcept
-     : m_resource(0)
+     : m_resource(nullptr)
    {
    }
 @@ -1239,8 +1239,8 @@
@@ -64,7 +64,7 @@
    /// Default ctor
 -  constexpr Condition(std::nullptr_t = nullptr) noexcept
 +  constexpr Condition(std::nullptr_t) noexcept
-     : m_resource(0)
+     : m_resource(nullptr)
    {
    }
 @@ -1688,8 +1688,8 @@

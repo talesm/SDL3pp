@@ -242,7 +242,7 @@ class Renderer
 public:
   /// Default ctor
   constexpr Renderer(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -2395,7 +2395,7 @@ class Texture
 public:
   /// Default ctor
   constexpr Texture(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -8243,7 +8243,10 @@ class GPURenderState
 
 public:
   /// Default ctor
-  constexpr GPURenderState() = default;
+  constexpr GPURenderState(std::nullptr_t = nullptr) noexcept
+    : m_resource(nullptr)
+  {
+  }
 
   /**
    * Constructs from GPURenderStateRef.

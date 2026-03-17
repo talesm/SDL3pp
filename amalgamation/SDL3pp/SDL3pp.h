@@ -11425,7 +11425,7 @@ class Palette
 public:
   /// Default ctor
   constexpr Palette(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -14581,7 +14581,7 @@ class Environment
 public:
   /// Default ctor
   constexpr Environment(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -20183,7 +20183,7 @@ class AsyncIO
 public:
   /// Default ctor
   constexpr AsyncIO(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -20559,7 +20559,7 @@ class AsyncIOQueue
 public:
   /// Default ctor
   constexpr AsyncIOQueue(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -24176,7 +24176,7 @@ class HidDevice
 public:
   /// Default ctor
   constexpr HidDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -25225,7 +25225,7 @@ class IOStream
 public:
   /// Default ctor
   constexpr IOStream(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -28345,7 +28345,7 @@ class SharedObject
 public:
   /// Default ctor
   constexpr SharedObject(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -32328,7 +32328,7 @@ class Sensor
 public:
   /// Default ctor
   constexpr Sensor(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -35337,7 +35337,7 @@ class AudioStream
 public:
   /// Default ctor
   constexpr AudioStream(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -40314,7 +40314,7 @@ class Process
 public:
   /// Default ctor
   constexpr Process(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -41430,7 +41430,7 @@ class Storage
 public:
   /// Default ctor
   constexpr Storage(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -42780,7 +42780,7 @@ class Surface
 public:
   /// Default ctor
   constexpr Surface(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -47739,7 +47739,7 @@ class Thread
 public:
   /// Default ctor
   constexpr Thread(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -48645,7 +48645,7 @@ class Camera
 public:
   /// Default ctor
   constexpr Camera(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -49654,7 +49654,7 @@ class Mutex
 public:
   /// Default ctor
   constexpr Mutex(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -50038,7 +50038,7 @@ class RWLock
 public:
   /// Default ctor
   constexpr RWLock(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -50653,7 +50653,7 @@ class Semaphore
 public:
   /// Default ctor
   constexpr Semaphore(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -51093,7 +51093,7 @@ class Condition
 public:
   /// Default ctor
   constexpr Condition(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -51809,7 +51809,7 @@ class Tray
 public:
   /// Default ctor
   constexpr Tray(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -52195,7 +52195,7 @@ class TrayEntry
 public:
   /// Default ctor
   constexpr TrayEntry(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -53833,7 +53833,7 @@ class Window
 public:
   /// Default ctor
   constexpr Window(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -56375,7 +56375,7 @@ class GLContext
 public:
   /// Default ctor
   constexpr GLContext(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -66217,7 +66217,7 @@ class GPUDevice
 public:
   /// Default ctor
   constexpr GPUDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -71800,7 +71800,7 @@ class Joystick
 public:
   /// Default ctor
   constexpr Joystick(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -75518,7 +75518,7 @@ class Cursor
 public:
   /// Default ctor
   constexpr Cursor(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -76916,7 +76916,7 @@ class Gamepad
 public:
   /// Default ctor
   constexpr Gamepad(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -80237,7 +80237,7 @@ class Haptic
 public:
   /// Default ctor
   constexpr Haptic(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -82442,7 +82442,7 @@ class Renderer
 public:
   /// Default ctor
   constexpr Renderer(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -84595,7 +84595,7 @@ class Texture
 public:
   /// Default ctor
   constexpr Texture(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -90443,7 +90443,10 @@ class GPURenderState
 
 public:
   /// Default ctor
-  constexpr GPURenderState() = default;
+  constexpr GPURenderState(std::nullptr_t = nullptr) noexcept
+    : m_resource(nullptr)
+  {
+  }
 
   /**
    * Constructs from GPURenderStateRef.
@@ -92397,7 +92400,7 @@ class Mixer
 public:
   /// Default ctor
   constexpr Mixer(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -93733,7 +93736,7 @@ class Audio
 public:
   /// Default ctor
   constexpr Audio(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -94406,7 +94409,7 @@ class Track
 public:
   /// Default ctor
   constexpr Track(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -95877,7 +95880,7 @@ class Group
 public:
   /// Default ctor
   constexpr Group(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -99724,7 +99727,7 @@ class AudioDecoder
 public:
   /// Default ctor
   constexpr AudioDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -102879,7 +102882,7 @@ class Animation
 public:
   /// Default ctor
   constexpr Animation(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -103928,7 +103931,7 @@ class AnimationEncoder
 public:
   /// Default ctor
   constexpr AnimationEncoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -104447,7 +104450,7 @@ class AnimationDecoder
 public:
   /// Default ctor
   constexpr AnimationDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -105489,7 +105492,7 @@ class Font
 public:
   /// Default ctor
   constexpr Font(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -109057,7 +109060,7 @@ class TextEngine
 public:
   /// Default ctor
   constexpr TextEngine(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -109385,7 +109388,7 @@ class Text
 public:
   /// Default ctor
   constexpr Text(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

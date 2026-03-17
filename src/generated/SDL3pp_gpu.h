@@ -3080,7 +3080,7 @@ class GPUDevice
 public:
   /// Default ctor
   constexpr GPUDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

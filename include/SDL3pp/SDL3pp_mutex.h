@@ -90,7 +90,7 @@ class Mutex
 public:
   /// Default ctor
   constexpr Mutex(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -474,7 +474,7 @@ class RWLock
 public:
   /// Default ctor
   constexpr RWLock(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -1089,7 +1089,7 @@ class Semaphore
 public:
   /// Default ctor
   constexpr Semaphore(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -1529,7 +1529,7 @@ class Condition
 public:
   /// Default ctor
   constexpr Condition(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

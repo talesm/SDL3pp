@@ -113,7 +113,7 @@ class Process
 public:
   /// Default ctor
   constexpr Process(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

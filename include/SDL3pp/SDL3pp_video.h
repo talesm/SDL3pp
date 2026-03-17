@@ -741,7 +741,7 @@ class Window
 public:
   /// Default ctor
   constexpr Window(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -3283,7 +3283,7 @@ class GLContext
 public:
   /// Default ctor
   constexpr GLContext(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

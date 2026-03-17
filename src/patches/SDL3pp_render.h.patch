@@ -2242,19 +2242,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -8024,10 +8243,7 @@
- 
- public:
-   /// Default ctor
--  constexpr GPURenderState(std::nullptr_t = nullptr) noexcept
--    : m_resource(0)
--  {
--  }
-+  constexpr GPURenderState() = default;
- 
-   /**
-    * Constructs from GPURenderStateRef.
-@@ -8036,7 +8252,7 @@
+@@ -8036,7 +8255,7 @@
     *
     * This assumes the ownership, call release() if you need to take back.
     */
@@ -2263,7 +2251,7 @@
      : m_resource(resource)
    {
    }
-@@ -8047,7 +8263,7 @@
+@@ -8047,7 +8266,7 @@
  
  public:
    /// Move constructor
@@ -2272,7 +2260,7 @@
      : GPURenderState(other.release())
    {
    }
-@@ -8080,23 +8296,17 @@
+@@ -8080,23 +8299,17 @@
    ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
  
    /// Assignment operator.
@@ -2299,7 +2287,7 @@
    {
      auto r = m_resource;
      m_resource = nullptr;
-@@ -8104,15 +8314,18 @@
+@@ -8104,15 +8317,18 @@
    }
  
    /// Comparison
@@ -2321,7 +2309,7 @@
     * @threadsafety This function should be called on the thread that created the
     *               renderer.
     *
-@@ -8141,8 +8354,6 @@
+@@ -8141,8 +8357,6 @@
    void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
  };
  
@@ -2330,7 +2318,7 @@
  /**
   * Reference for GPURenderState.
   *
-@@ -8150,8 +8361,6 @@
+@@ -8150,8 +8364,6 @@
   */
  struct GPURenderStateRef : GPURenderState
  {
@@ -2339,7 +2327,7 @@
    /**
     * Constructs from raw GPURenderState.
     *
-@@ -8202,8 +8411,6 @@
+@@ -8202,8 +8414,6 @@
    constexpr operator GPURenderStateRaw() const noexcept { return get(); }
  };
  
@@ -2348,7 +2336,7 @@
  /**
   * Create custom GPU render state.
   *
-@@ -8228,7 +8435,7 @@
+@@ -8228,7 +8438,7 @@
    return GPURenderState(renderer, createinfo);
  }
  

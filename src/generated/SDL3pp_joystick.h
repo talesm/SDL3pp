@@ -406,7 +406,7 @@ class Joystick
 public:
   /// Default ctor
   constexpr Joystick(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

@@ -139,7 +139,7 @@ class Sensor
 public:
   /// Default ctor
   constexpr Sensor(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

@@ -249,7 +249,7 @@ class Mixer
 public:
   /// Default ctor
   constexpr Mixer(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -1603,7 +1603,7 @@ class Audio
 public:
   /// Default ctor
   constexpr Audio(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -2277,7 +2277,7 @@ class Track
 public:
   /// Default ctor
   constexpr Track(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -3757,7 +3757,7 @@ class Group
 public:
   /// Default ctor
   constexpr Group(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -7615,7 +7615,7 @@ class AudioDecoder
 public:
   /// Default ctor
   constexpr AudioDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

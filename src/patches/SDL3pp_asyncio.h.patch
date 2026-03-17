@@ -39,7 +39,7 @@
    /// Default ctor
 -  constexpr AsyncIOQueue(std::nullptr_t = nullptr) noexcept
 +  constexpr AsyncIOQueue(std::nullptr_t) noexcept
-     : m_resource(0)
+     : m_resource(nullptr)
    {
    }
 @@ -617,9 +623,8 @@

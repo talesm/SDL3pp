@@ -394,7 +394,7 @@ class Gamepad
 public:
   /// Default ctor
   constexpr Gamepad(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

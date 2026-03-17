@@ -113,7 +113,7 @@ class Tray
 public:
   /// Default ctor
   constexpr Tray(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -477,7 +477,7 @@ class TrayEntry
 public:
   /// Default ctor
   constexpr TrayEntry(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

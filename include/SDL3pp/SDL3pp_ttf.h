@@ -392,7 +392,7 @@ class Font
 public:
   /// Default ctor
   constexpr Font(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -3960,7 +3960,7 @@ class TextEngine
 public:
   /// Default ctor
   constexpr TextEngine(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -4288,7 +4288,7 @@ class Text
 public:
   /// Default ctor
   constexpr Text(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
