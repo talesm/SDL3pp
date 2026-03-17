@@ -6057,7 +6057,7 @@ public:
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
-               size_t* outbytesleft);
+               size_t* outbytesleft) const;
 };
 
 /**
@@ -6212,7 +6212,7 @@ inline size_t iconv(IConvRaw cd,
 inline size_t IConv::iconv(const char** inbuf,
                            size_t* inbytesleft,
                            char** outbuf,
-                           size_t* outbytesleft)
+                           size_t* outbytesleft) const
 {
   return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
 }

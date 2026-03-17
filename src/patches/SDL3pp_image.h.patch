@@ -695,6 +695,15 @@
     * @returns the new cursor on success.
     * @throws Error on failure.
     *
+@@ -3010,7 +3021,7 @@
+   ~AnimationRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr AnimationRef& operator=(AnimationRef other) noexcept
++  AnimationRef& operator=(AnimationRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -3020,29 +3031,26 @@
    constexpr operator AnimationRaw() const noexcept { return get(); }
  };
@@ -973,6 +982,15 @@
  };
  
  /**
+@@ -3914,7 +3925,7 @@
+   ~AnimationEncoderRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
++  AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -3924,8 +3935,6 @@
    constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
  };
@@ -1114,6 +1132,15 @@
  };
  
  /**
+@@ -4508,7 +4492,7 @@
+   ~AnimationDecoderRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
++  AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -4518,8 +4502,6 @@
    constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
  };

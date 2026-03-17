@@ -425,7 +425,7 @@ struct AsyncIORef : AsyncIO
   ~AsyncIORef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIORef& operator=(AsyncIORef other) noexcept
+  AsyncIORef& operator=(AsyncIORef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -787,7 +787,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
   ~AsyncIOQueueRef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIOQueueRef& operator=(AsyncIOQueueRef other) noexcept
+  AsyncIOQueueRef& operator=(AsyncIOQueueRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

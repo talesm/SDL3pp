@@ -11484,7 +11484,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Palette Borrow(PaletteRaw resource)
+  static Palette Borrow(PaletteRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -11628,7 +11628,7 @@ struct PaletteRef : Palette
   ~PaletteRef() { release(); }
 
   /// Assignment operator.
-  constexpr PaletteRef& operator=(PaletteRef other) noexcept
+  PaletteRef& operator=(PaletteRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -12824,7 +12824,7 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 
   /// Assignment operator.
-  constexpr PropertiesRef& operator=(PropertiesRef other) noexcept
+  PropertiesRef& operator=(PropertiesRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -12889,7 +12889,7 @@ public:
   PropertiesLock(const PropertiesLock& other) = delete;
 
   /// Move constructor
-  constexpr PropertiesLock(PropertiesLock&& other) noexcept
+  PropertiesLock(PropertiesLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};
@@ -19723,7 +19723,7 @@ public:
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
-               size_t* outbytesleft);
+               size_t* outbytesleft) const;
 };
 
 /**
@@ -19878,7 +19878,7 @@ inline size_t iconv(IConvRaw cd,
 inline size_t IConv::iconv(const char** inbuf,
                            size_t* inbytesleft,
                            char** outbuf,
-                           size_t* outbytesleft)
+                           size_t* outbytesleft) const
 {
   return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
 }
@@ -20487,7 +20487,7 @@ struct AsyncIORef : AsyncIO
   ~AsyncIORef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIORef& operator=(AsyncIORef other) noexcept
+  AsyncIORef& operator=(AsyncIORef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -20849,7 +20849,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
   ~AsyncIOQueueRef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIOQueueRef& operator=(AsyncIOQueueRef other) noexcept
+  AsyncIOQueueRef& operator=(AsyncIOQueueRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -26205,7 +26205,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint8> TryReadU8()
+  std::optional<Uint8> TryReadU8() const
   {
     if (Uint8 value; SDL_ReadU8(get(), &value)) return value;
     return {};
@@ -26225,7 +26225,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint8> TryReadS8()
+  std::optional<Sint8> TryReadS8() const
   {
     if (Sint8 value; SDL_ReadS8(get(), &value)) return value;
     return {};
@@ -26249,7 +26249,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint16> TryReadU16LE()
+  std::optional<Uint16> TryReadU16LE() const
   {
     if (Uint16 value; SDL_ReadU16LE(get(), &value)) return value;
     return {};
@@ -26273,7 +26273,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint16> TryReadS16LE()
+  std::optional<Sint16> TryReadS16LE() const
   {
     if (Sint16 value; SDL_ReadS16LE(get(), &value)) return value;
     return {};
@@ -26297,7 +26297,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint16> TryReadU16BE()
+  std::optional<Uint16> TryReadU16BE() const
   {
     if (Uint16 value; SDL_ReadU16BE(get(), &value)) return value;
     return {};
@@ -26321,7 +26321,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint16> TryReadS16BE()
+  std::optional<Sint16> TryReadS16BE() const
   {
     if (Sint16 value; SDL_ReadS16BE(get(), &value)) return value;
     return {};
@@ -26345,7 +26345,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint32> TryReadU32LE()
+  std::optional<Uint32> TryReadU32LE() const
   {
     if (Uint32 value; SDL_ReadU32LE(get(), &value)) return value;
     return {};
@@ -26369,7 +26369,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint32> TryReadS32LE()
+  std::optional<Sint32> TryReadS32LE() const
   {
     if (Sint32 value; SDL_ReadS32LE(get(), &value)) return value;
     return {};
@@ -26393,7 +26393,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint32> TryReadU32BE()
+  std::optional<Uint32> TryReadU32BE() const
   {
     if (Uint32 value; SDL_ReadU32BE(get(), &value)) return value;
     return {};
@@ -26417,7 +26417,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint32> TryReadS32BE()
+  std::optional<Sint32> TryReadS32BE() const
   {
     if (Sint32 value; SDL_ReadS32BE(get(), &value)) return value;
     return {};
@@ -26441,7 +26441,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint64> TryReadU64LE()
+  std::optional<Uint64> TryReadU64LE() const
   {
     if (Uint64 value; SDL_ReadU64LE(get(), &value)) return value;
     return {};
@@ -26465,7 +26465,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint64> TryReadS64LE()
+  std::optional<Sint64> TryReadS64LE() const
   {
     if (Sint64 value; SDL_ReadS64LE(get(), &value)) return value;
     return {};
@@ -26489,7 +26489,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint64> TryReadU64BE()
+  std::optional<Uint64> TryReadU64BE() const
   {
     if (Uint64 value; SDL_ReadU64BE(get(), &value)) return value;
     return {};
@@ -26513,7 +26513,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint64> TryReadS64BE()
+  std::optional<Sint64> TryReadS64BE() const
   {
     if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
     return {};
@@ -26791,7 +26791,7 @@ struct IOStreamRef : IOStream
   ~IOStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr IOStreamRef& operator=(IOStreamRef other) noexcept
+  IOStreamRef& operator=(IOStreamRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -32522,7 +32522,7 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  constexpr SensorRef& operator=(SensorRef other) noexcept
+  SensorRef& operator=(SensorRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -35191,7 +35191,7 @@ struct AudioDeviceRef : AudioDevice
   ~AudioDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
+  AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -36647,7 +36647,7 @@ struct AudioStreamRef : AudioStream
   ~AudioStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioStreamRef& operator=(AudioStreamRef other) noexcept
+  AudioStreamRef& operator=(AudioStreamRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -36712,7 +36712,7 @@ public:
   AudioStreamLock(const AudioStreamLock& other) = delete;
 
   /// Move constructor
-  constexpr AudioStreamLock(AudioStreamLock&& other) noexcept
+  AudioStreamLock(AudioStreamLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};
@@ -40750,7 +40750,7 @@ struct ProcessRef : Process
   ~ProcessRef() { release(); }
 
   /// Assignment operator.
-  constexpr ProcessRef& operator=(ProcessRef other) noexcept
+  ProcessRef& operator=(ProcessRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -42955,7 +42955,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Surface Borrow(SurfaceRaw resource)
+  static Surface Borrow(SurfaceRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -44591,7 +44591,7 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  constexpr SurfaceRef& operator=(SurfaceRef other) noexcept
+  SurfaceRef& operator=(SurfaceRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -44654,7 +44654,7 @@ public:
   SurfaceLock(const SurfaceLock& other) = delete;
 
   /// Move constructor
-  constexpr SurfaceLock(SurfaceLock&& other) noexcept
+  SurfaceLock(SurfaceLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};
@@ -48088,7 +48088,7 @@ struct ThreadRef : Thread
   ~ThreadRef() { release(); }
 
   /// Assignment operator.
-  constexpr ThreadRef& operator=(ThreadRef other) noexcept
+  ThreadRef& operator=(ThreadRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -48970,7 +48970,7 @@ struct CameraRef : Camera
   ~CameraRef() { release(); }
 
   /// Assignment operator.
-  constexpr CameraRef& operator=(CameraRef other) noexcept
+  CameraRef& operator=(CameraRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -49033,7 +49033,7 @@ public:
   CameraFrame(const CameraFrame& other) = delete;
 
   /// Move constructor
-  constexpr CameraFrame(CameraFrame&& other) noexcept
+  CameraFrame(CameraFrame&& other) noexcept
     : Surface(std::move(other))
     , m_lock(other.m_lock)
   {
@@ -52037,7 +52037,7 @@ struct TrayRef : Tray
   ~TrayRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrayRef& operator=(TrayRef other) noexcept
+  TrayRef& operator=(TrayRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -56240,7 +56240,7 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 
   /// Assignment operator.
-  constexpr WindowRef& operator=(WindowRef other) noexcept
+  WindowRef& operator=(WindowRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -72613,7 +72613,7 @@ struct JoystickRef : Joystick
   ~JoystickRef() { release(); }
 
   /// Assignment operator.
-  constexpr JoystickRef& operator=(JoystickRef other) noexcept
+  JoystickRef& operator=(JoystickRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -84568,7 +84568,7 @@ struct RendererRef : Renderer
   ~RendererRef() { release(); }
 
   /// Assignment operator.
-  constexpr RendererRef& operator=(RendererRef other) noexcept
+  RendererRef& operator=(RendererRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -84887,7 +84887,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Texture Borrow(TextureRaw resource)
+  static Texture Borrow(TextureRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -85717,7 +85717,7 @@ struct TextureRef : Texture
   ~TextureRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextureRef& operator=(TextureRef other) noexcept
+  TextureRef& operator=(TextureRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -85799,7 +85799,7 @@ public:
   TextureLock(const TextureLock& other) = delete;
 
   /// Move constructor
-  constexpr TextureLock(TextureLock&& other) noexcept
+  TextureLock(TextureLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};
@@ -85928,7 +85928,7 @@ public:
   TextureSurfaceLock(const TextureSurfaceLock& other) = delete;
 
   /// Move constructor
-  constexpr TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
+  TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
     : Surface(std::move(other))
     , m_lock(other.m_lock)
   {
@@ -90603,7 +90603,7 @@ struct GPURenderStateRef : GPURenderState
   ~GPURenderStateRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPURenderStateRef& operator=(GPURenderStateRef other) noexcept
+  GPURenderStateRef& operator=(GPURenderStateRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -103221,7 +103221,7 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationRef& operator=(AnimationRef other) noexcept
+  AnimationRef& operator=(AnimationRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -104125,7 +104125,7 @@ struct AnimationEncoderRef : AnimationEncoder
   ~AnimationEncoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
+  AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -104692,7 +104692,7 @@ struct AnimationDecoderRef : AnimationDecoder
   ~AnimationDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
+  AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

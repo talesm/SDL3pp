@@ -66,6 +66,15 @@
    Uint64 GetCount();
  };
  
+@@ -725,7 +731,7 @@
+   ~PropertiesRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr PropertiesRef& operator=(PropertiesRef other) noexcept
++  PropertiesRef& operator=(PropertiesRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -774,7 +780,7 @@
     * or want to guarantee that properties being queried aren't freed in another
     * thread.
@@ -75,6 +84,15 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
+@@ -790,7 +796,7 @@
+   PropertiesLock(const PropertiesLock& other) = delete;
+ 
+   /// Move constructor
+-  constexpr PropertiesLock(PropertiesLock&& other) noexcept
++  PropertiesLock(PropertiesLock&& other) noexcept
+     : m_lock(other.m_lock)
+   {
+     other.m_lock = {};
 @@ -799,8 +805,6 @@
    /**
     * Unlock a group of properties.

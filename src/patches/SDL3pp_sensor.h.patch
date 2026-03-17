@@ -9,6 +9,15 @@
   *
   * SDL sensor management.
   *
+@@ -331,7 +331,7 @@
+   ~SensorRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr SensorRef& operator=(SensorRef other) noexcept
++  SensorRef& operator=(SensorRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -356,15 +356,17 @@
  /**
   * Get a list of currently connected sensors.

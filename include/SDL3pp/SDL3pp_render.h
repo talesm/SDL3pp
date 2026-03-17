@@ -2366,7 +2366,7 @@ struct RendererRef : Renderer
   ~RendererRef() { release(); }
 
   /// Assignment operator.
-  constexpr RendererRef& operator=(RendererRef other) noexcept
+  RendererRef& operator=(RendererRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -2685,7 +2685,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Texture Borrow(TextureRaw resource)
+  static Texture Borrow(TextureRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -3515,7 +3515,7 @@ struct TextureRef : Texture
   ~TextureRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextureRef& operator=(TextureRef other) noexcept
+  TextureRef& operator=(TextureRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -3597,7 +3597,7 @@ public:
   TextureLock(const TextureLock& other) = delete;
 
   /// Move constructor
-  constexpr TextureLock(TextureLock&& other) noexcept
+  TextureLock(TextureLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};
@@ -3726,7 +3726,7 @@ public:
   TextureSurfaceLock(const TextureSurfaceLock& other) = delete;
 
   /// Move constructor
-  constexpr TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
+  TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
     : Surface(std::move(other))
     , m_lock(other.m_lock)
   {
@@ -8401,7 +8401,7 @@ struct GPURenderStateRef : GPURenderState
   ~GPURenderStateRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPURenderStateRef& operator=(GPURenderStateRef other) noexcept
+  GPURenderStateRef& operator=(GPURenderStateRef other) noexcept
   {
     std::swap(*this, other);
     return *this;

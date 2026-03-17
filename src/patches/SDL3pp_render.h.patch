@@ -595,6 +595,15 @@
      const GPURenderStateCreateInfo& createinfo);
  
    /**
+@@ -2336,7 +2366,7 @@
+   ~RendererRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr RendererRef& operator=(RendererRef other) noexcept
++  RendererRef& operator=(RendererRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -2406,10 +2436,8 @@
     * @param renderer the rendering context.
     * @param format one of the enumerated values in PixelFormat.
@@ -655,6 +664,15 @@
     * @param renderer the Renderer to use to create the texture.
     * @param src an IOStream that data will be read from.
     * @param closeio true to close/free the IOStream before returning, false to
+@@ -2666,7 +2685,7 @@
+    *
+    * This does not takes ownership!
+    */
+-  static constexpr Texture Borrow(TextureRaw resource)
++  static Texture Borrow(TextureRaw resource)
+   {
+     if (resource) {
+       ++resource->refcount;
 @@ -2854,27 +2873,19 @@
     */
    void GetSize(float* w, float* h) const;
@@ -843,6 +861,15 @@
     * @threadsafety This function should only be called on the main thread.
     *
     * @since This function is available since SDL 3.2.0.
+@@ -3437,7 +3515,7 @@
+   ~TextureRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr TextureRef& operator=(TextureRef other) noexcept
++  TextureRef& operator=(TextureRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -3491,8 +3569,8 @@
     *
     * You must use Texture.Unlock() to unlock the pixels and apply any changes.
@@ -854,7 +881,7 @@
     * @param rect an Rect structure representing the area to lock for access;
     *             nullptr to lock the entire texture.
     * @param pixels this is filled in with a pointer to the locked pixels,
-@@ -3510,7 +3588,10 @@
+@@ -3510,13 +3588,16 @@
     * @sa Texture.LockToSurface
     * @sa Texture.Unlock
     */
@@ -866,6 +893,13 @@
  
    /// Copy constructor
    TextureLock(const TextureLock& other) = delete;
+ 
+   /// Move constructor
+-  constexpr TextureLock(TextureLock&& other) noexcept
++  TextureLock(TextureLock&& other) noexcept
+     : m_lock(other.m_lock)
+   {
+     other.m_lock = {};
 @@ -3533,8 +3614,6 @@
     * Which is to say: locking and immediately unlocking a texture can result in
     * corrupted textures, depending on the renderer in use.
@@ -941,8 +975,9 @@
    TextureSurfaceLock(const TextureSurfaceLock& other) = delete;
  
    /// Move constructor
-   constexpr TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
+-  constexpr TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
 -    : m_lock(other.m_lock)
++  TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
 +    : Surface(std::move(other))
 +    , m_lock(other.m_lock)
    {
@@ -2339,6 +2374,15 @@
    /**
     * Constructs from raw GPURenderState.
     *
+@@ -8192,7 +8401,7 @@
+   ~GPURenderStateRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr GPURenderStateRef& operator=(GPURenderStateRef other) noexcept
++  GPURenderStateRef& operator=(GPURenderStateRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -8202,8 +8411,6 @@
    constexpr operator GPURenderStateRaw() const noexcept { return get(); }
  };

@@ -980,6 +980,15 @@
     *
     * @threadsafety Do not use the same IConv from two threads at once.
     *
+@@ -5874,7 +6057,7 @@
+   size_t iconv(const char** inbuf,
+                size_t* inbytesleft,
+                char** outbuf,
+-               size_t* outbytesleft);
++               size_t* outbytesleft) const;
+ };
+ 
+ /**
 @@ -5926,7 +6109,7 @@
    ~IConvRef() { release(); }
  
@@ -1018,7 +1027,7 @@
   *
   * @threadsafety Do not use the same IConv from two threads at once.
   *
-@@ -6015,13 +6200,13 @@
+@@ -6015,19 +6200,19 @@
   * @sa IConv.close
   * @sa iconv_string
   */
@@ -1034,6 +1043,13 @@
  }
  
  inline size_t IConv::iconv(const char** inbuf,
+                            size_t* inbytesleft,
+                            char** outbuf,
+-                           size_t* outbytesleft)
++                           size_t* outbytesleft) const
+ {
+   return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
+ }
 @@ -6053,14 +6238,10 @@
   * the number of bytes specified in `inbytesleft` whether there is a nullptr
   * character anywhere in the buffer.

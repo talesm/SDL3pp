@@ -65,6 +65,15 @@
    }
  
    /**
+@@ -522,7 +547,7 @@
+   ~ProcessRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr ProcessRef& operator=(ProcessRef other) noexcept
++  ProcessRef& operator=(ProcessRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -742,7 +767,7 @@
   */
  inline PropertiesRef GetProcessProperties(ProcessRef process)

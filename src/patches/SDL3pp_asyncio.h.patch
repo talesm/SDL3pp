@@ -33,6 +33,15 @@
  
    /**
     * Use this function to get the size of the data stream in an AsyncIO.
+@@ -419,7 +425,7 @@
+   ~AsyncIORef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr AsyncIORef& operator=(AsyncIORef other) noexcept
++  AsyncIORef& operator=(AsyncIORef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -492,7 +498,7 @@
  
  public:
@@ -83,6 +92,15 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
+@@ -787,7 +787,7 @@
+   ~AsyncIOQueueRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr AsyncIOQueueRef& operator=(AsyncIOQueueRef other) noexcept
++  AsyncIOQueueRef& operator=(AsyncIOQueueRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -1011,24 +1011,25 @@
   * @param queue a queue to add the new AsyncIO to.
   * @param userdata an app-defined pointer that will be provided with the task

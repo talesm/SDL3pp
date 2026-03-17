@@ -87,6 +87,15 @@
     * @param src an IOStream that data will be read from.
     * @param closeio true to close/free the IOStream before returning, false to
     *                leave it open.
+@@ -378,7 +367,7 @@
+    *
+    * This does not takes ownership!
+    */
+-  static constexpr Surface Borrow(SurfaceRaw resource)
++  static Surface Borrow(SurfaceRaw resource)
+   {
+     if (resource) {
+       ++resource->refcount;
 @@ -438,9 +427,6 @@
     * sources. If you want to load arbitrary images you should use libpng or
     * another image loading library designed with security in mind.
@@ -592,6 +601,15 @@
     * @throws Error on failure.
     *
     * @threadsafety This function can be called on different threads with
+@@ -1954,7 +2003,7 @@
+   ~SurfaceRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr SurfaceRef& operator=(SurfaceRef other) noexcept
++  SurfaceRef& operator=(SurfaceRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -1976,15 +2025,6 @@
   * 0, then you can read and write to the surface at any time, and the pixel
   * format of the surface will not change.
@@ -616,6 +634,15 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
+@@ -2027,7 +2066,7 @@
+   SurfaceLock(const SurfaceLock& other) = delete;
+ 
+   /// Move constructor
+-  constexpr SurfaceLock(SurfaceLock&& other) noexcept
++  SurfaceLock(SurfaceLock&& other) noexcept
+     : m_lock(other.m_lock)
+   {
+     other.m_lock = {};
 @@ -2036,8 +2075,6 @@
    /**
     * Release a surface after directly accessing the pixels.

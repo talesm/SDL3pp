@@ -367,7 +367,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Surface Borrow(SurfaceRaw resource)
+  static Surface Borrow(SurfaceRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -2003,7 +2003,7 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  constexpr SurfaceRef& operator=(SurfaceRef other) noexcept
+  SurfaceRef& operator=(SurfaceRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -2066,7 +2066,7 @@ public:
   SurfaceLock(const SurfaceLock& other) = delete;
 
   /// Move constructor
-  constexpr SurfaceLock(SurfaceLock&& other) noexcept
+  SurfaceLock(SurfaceLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};

@@ -731,7 +731,7 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 
   /// Assignment operator.
-  constexpr PropertiesRef& operator=(PropertiesRef other) noexcept
+  PropertiesRef& operator=(PropertiesRef other) noexcept
   {
     std::swap(*this, other);
     return *this;
@@ -796,7 +796,7 @@ public:
   PropertiesLock(const PropertiesLock& other) = delete;
 
   /// Move constructor
-  constexpr PropertiesLock(PropertiesLock&& other) noexcept
+  PropertiesLock(PropertiesLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};

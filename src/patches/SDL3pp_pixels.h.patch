@@ -1001,6 +1001,15 @@
    PaletteIndex& operator=(ColorRaw color);
  };
  
+@@ -2349,7 +2545,7 @@
+    *
+    * This does not takes ownership!
+    */
+-  static constexpr Palette Borrow(PaletteRaw resource)
++  static Palette Borrow(PaletteRaw resource)
+   {
+     if (resource) {
+       ++resource->refcount;
 @@ -2409,18 +2605,19 @@
     */
    void Destroy();
@@ -1043,6 +1052,15 @@
     */
    void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
  };
+@@ -2491,7 +2689,7 @@
+   ~PaletteRef() { release(); }
+ 
+   /// Assignment operator.
+-  constexpr PaletteRef& operator=(PaletteRef other) noexcept
++  PaletteRef& operator=(PaletteRef other) noexcept
+   {
+     std::swap(*this, other);
+     return *this;
 @@ -2604,8 +2802,8 @@
   * errors such as `Blit combination not supported` may occur.
   *
