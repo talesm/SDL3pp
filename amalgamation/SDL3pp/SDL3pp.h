@@ -105088,17 +105088,17 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamParam src, bool closeio)
-  : Surface(LoadBMP(std::move(src), closeio))
+inline Surface::Surface(IOStreamRef src, bool closeio)
+  : Surface(LoadBMP_IO(std::move(src), closeio))
 {
 }
 
-inline Texture::Texture(RendererParam renderer, StringParam file)
+inline Texture::Texture(RendererRef renderer, StringParam file)
   : Texture(std::move(renderer), Surface(std::move(file)))
 {
 }
 
-inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
+inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
   : Texture(std::move(renderer), Surface(std::move(src), closeio))
 {
 }

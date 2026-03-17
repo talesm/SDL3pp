@@ -85,14 +85,14 @@ Next version
   - [x] SDL::GetWindowParent();
   - [x] SDL::SyncWindow();
   - [x] SDL::EGL_GetWindowSurface();
-- [ ] Fix warnings for Default initializing resources as nullptr;
-- [ ] Make lock's get() const:
+- [x] Fix warnings for Default initializing resources as nullptr;
+- [x] Make lock's get() const:
   - [x] AudioStreamLock.get();
-  - [ ] CameraFrame.get();
-  - [ ] MixerLock.get();
-  - [ ] PropertiesLock.get();
-  - [ ] TextureLock.get();
-  - [ ] SurfaceLock.get();
+  - [x] CameraFrame.get();
+  - [x] MixerLock.get();
+  - [x] PropertiesLock.get();
+  - [x] TextureLock.get();
+  - [x] SurfaceLock.get();
 
 Backlog
 -------
