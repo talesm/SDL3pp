@@ -132,7 +132,7 @@
     *
     * @since This function is available since SDL 3.2.0.
 @@ -611,7 +622,11 @@
-   CameraRef get() { return m_lock; }
+   CameraRef get() const { return m_lock; }
  
    /// Releases the lock without unlocking.
 -  void release() { m_lock.release(); }

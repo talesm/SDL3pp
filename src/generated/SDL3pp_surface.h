@@ -2277,7 +2277,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  SurfaceRef get() { return m_lock; }
+  SurfaceRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }

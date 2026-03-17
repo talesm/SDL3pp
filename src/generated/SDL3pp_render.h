@@ -3577,7 +3577,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() { return m_lock; }
+  TextureRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -3721,7 +3721,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() { return m_lock; }
+  TextureRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }

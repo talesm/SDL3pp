@@ -608,7 +608,7 @@ struct CameraFrame : Surface
   void reset();
 
   /// Get the reference to locked resource.
-  CameraRef get() { return m_lock; }
+  CameraRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }

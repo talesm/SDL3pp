@@ -12930,7 +12930,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  PropertiesRef get() { return m_lock; }
+  PropertiesRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -36759,7 +36759,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  AudioStreamRef get() { return m_lock; }
+  AudioStreamRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -44860,7 +44860,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  SurfaceRef get() { return m_lock; }
+  SurfaceRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -49104,7 +49104,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  CameraRef get() { return m_lock; }
+  CameraRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release()
@@ -85854,7 +85854,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() { return m_lock; }
+  TextureRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -85985,7 +85985,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() { return m_lock; }
+  TextureRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release()
@@ -93704,7 +93704,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  MixerRef get() { return m_lock; }
+  MixerRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }

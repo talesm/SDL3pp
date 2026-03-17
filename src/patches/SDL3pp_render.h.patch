@@ -975,7 +975,7 @@
     *
     * @since This function is available since SDL 3.2.0.
 @@ -3724,7 +3788,11 @@
-   TextureRef get() { return m_lock; }
+   TextureRef get() const { return m_lock; }
  
    /// Releases the lock without unlocking.
 -  void release() { m_lock.release(); }

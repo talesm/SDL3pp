@@ -1463,6 +1463,7 @@ function expandTypes(
           kind: "function",
           name: `${targetName}.get`,
           type: controlType,
+          immutable: true,
           parameters: [],
           doc: [`Get the reference to locked resource.`],
           hints: {

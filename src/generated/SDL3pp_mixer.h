@@ -1574,7 +1574,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  MixerRef get() { return m_lock; }
+  MixerRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
