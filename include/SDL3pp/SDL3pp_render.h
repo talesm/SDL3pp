@@ -2432,10 +2432,6 @@ public:
   {
   }
 
-  constexpr Texture(const TextureRef& other) = delete;
-
-  constexpr Texture(TextureRef&& other) = delete;
-
   /**
    * Create a texture for a rendering context.
    *

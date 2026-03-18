@@ -11454,10 +11454,6 @@ public:
   {
   }
 
-  constexpr Palette(const PaletteRef& other) = delete;
-
-  constexpr Palette(PaletteRef&& other) = delete;
-
   /**
    * Create a palette structure with the specified number of color entries.
    *
@@ -42927,10 +42923,6 @@ public:
     : Surface(other.release())
   {
   }
-
-  constexpr Surface(const SurfaceRef& other) = delete;
-
-  constexpr Surface(SurfaceRef&& other) = delete;
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -84874,10 +84866,6 @@ public:
     : Texture(other.release())
   {
   }
-
-  constexpr Texture(const TextureRef& other) = delete;
-
-  constexpr Texture(TextureRef&& other) = delete;
 
   /**
    * Create a texture for a rendering context.

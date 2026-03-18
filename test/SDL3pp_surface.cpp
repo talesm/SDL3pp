@@ -103,6 +103,25 @@ SCENARIO("Reference counting")
           }
         }
       }
+      AND_WHEN("Copy SurfaceRef to another Surface")
+      {
+        Surface copy2(copy);
+        THEN("Reference count is increased")
+        {
+          CHECK(surface->refcount == 2);
+          CHECK(copy->refcount == 2);
+          CHECK(copy2->refcount == 2);
+        }
+        AND_WHEN("Destroy copy2")
+        {
+          copy2 = nullptr;
+          THEN("Reference count is unchanged")
+          {
+            CHECK(surface->refcount == 1);
+            CHECK(copy->refcount == 1);
+          }
+        }
+      }
     }
   }
 }

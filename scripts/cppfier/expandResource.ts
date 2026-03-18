@@ -149,8 +149,8 @@ export function expandResource(
   } else if (!hasScoped) {
     ctors[`${targetName}#3`].hints.changeAccess = "protected";
     ctors[`${targetName}#4`].hints.changeAccess = "public";
+    if (hasRef) deleteCtorsFromRef(ctors, refName, targetName);
   }
-  if (hasRef) deleteCtorsFromRef(ctors, refName, targetName);
   const subEntries = targetEntry.entries || {};
 
   wrapCustomCtors(subEntries, targetName, ctors);

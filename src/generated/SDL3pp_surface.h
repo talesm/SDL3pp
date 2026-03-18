@@ -224,10 +224,6 @@ public:
   {
   }
 
-  constexpr Surface(const SurfaceRef& other) = delete;
-
-  constexpr Surface(SurfaceRef&& other) = delete;
-
   /**
    * Allocate a new surface with a specific pixel format.
    *

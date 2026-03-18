@@ -20,7 +20,7 @@ Next version
 ------------
 
 - [x] Fix bug on copying Surface to SurfaceRef;
-- [ ] Investigate bug on copying SurfaceRef to Surface;
+- [x] Fix bug on copying SurfaceRef to Surface;
 - [ ] SurfaceLock and TextureLocks to use Surface instead of SurfaceRef.
 
 Backlog

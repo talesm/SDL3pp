@@ -2319,10 +2319,6 @@ public:
   {
   }
 
-  constexpr Palette(const PaletteRef& other) = delete;
-
-  constexpr Palette(PaletteRef&& other) = delete;
-
   /**
    * Create a palette structure with the specified number of color entries.
    *
