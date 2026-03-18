@@ -44737,7 +44737,7 @@ struct SurfaceRef : Surface
  */
 class SurfaceLock
 {
-  SurfaceRef m_lock;
+  Surface m_lock;
 
 public:
   /**
@@ -44772,7 +44772,7 @@ public:
 
   /// Move constructor
   constexpr SurfaceLock(SurfaceLock&& other) noexcept
-    : m_lock(other.m_lock)
+    : m_lock(std::move(other.m_lock))
   {
     other.m_lock = {};
   }
@@ -45444,7 +45444,7 @@ inline void LockSurface(SurfaceRef surface)
 inline SurfaceLock Surface::Lock() { return {SurfaceRef(*this)}; }
 
 inline SurfaceLock::SurfaceLock(SurfaceRef resource)
-  : m_lock(std::move(resource))
+  : m_lock(resource)
 {
   LockSurface(m_lock);
 }
