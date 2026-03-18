@@ -3006,6 +3006,18 @@ struct AnimationRef : Animation
   {
   }
 
+  /**
+   * Constructs from Animation.
+   *
+   * @param resource a Animation.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AnimationRef(Animation&& resource) noexcept
+    : Animation(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AnimationRef(const AnimationRef& other) noexcept
     : Animation(other.get())
@@ -3014,7 +3026,7 @@ struct AnimationRef : Animation
 
   /// Move constructor.
   constexpr AnimationRef(AnimationRef&& other) noexcept
-    : Animation(other.release())
+    : Animation(other.get())
   {
   }
 
@@ -3022,11 +3034,8 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationRef& operator=(AnimationRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AnimationRef& operator=(const AnimationRef& other) noexcept =
+    default;
 
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
@@ -3910,6 +3919,18 @@ struct AnimationEncoderRef : AnimationEncoder
   {
   }
 
+  /**
+   * Constructs from AnimationEncoder.
+   *
+   * @param resource a AnimationEncoder.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AnimationEncoderRef(AnimationEncoder&& resource) noexcept
+    : AnimationEncoder(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept
     : AnimationEncoder(other.get())
@@ -3918,7 +3939,7 @@ struct AnimationEncoderRef : AnimationEncoder
 
   /// Move constructor.
   constexpr AnimationEncoderRef(AnimationEncoderRef&& other) noexcept
-    : AnimationEncoder(other.release())
+    : AnimationEncoder(other.get())
   {
   }
 
@@ -3926,11 +3947,8 @@ struct AnimationEncoderRef : AnimationEncoder
   ~AnimationEncoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AnimationEncoderRef& operator=(
+    const AnimationEncoderRef& other) noexcept = default;
 
   /// Converts to AnimationEncoderRaw
   constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
@@ -4504,6 +4522,18 @@ struct AnimationDecoderRef : AnimationDecoder
   {
   }
 
+  /**
+   * Constructs from AnimationDecoder.
+   *
+   * @param resource a AnimationDecoder.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AnimationDecoderRef(AnimationDecoder&& resource) noexcept
+    : AnimationDecoder(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept
     : AnimationDecoder(other.get())
@@ -4512,7 +4542,7 @@ struct AnimationDecoderRef : AnimationDecoder
 
   /// Move constructor.
   constexpr AnimationDecoderRef(AnimationDecoderRef&& other) noexcept
-    : AnimationDecoder(other.release())
+    : AnimationDecoder(other.get())
   {
   }
 
@@ -4520,11 +4550,8 @@ struct AnimationDecoderRef : AnimationDecoder
   ~AnimationDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AnimationDecoderRef& operator=(
+    const AnimationDecoderRef& other) noexcept = default;
 
   /// Converts to AnimationDecoderRaw
   constexpr operator AnimationDecoderRaw() const noexcept { return get(); }

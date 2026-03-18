@@ -1987,6 +1987,18 @@ struct SurfaceRef : Surface
   {
   }
 
+  /**
+   * Constructs from Surface.
+   *
+   * @param resource a Surface.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SurfaceRef(Surface&& resource) noexcept
+    : Surface(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr SurfaceRef(const SurfaceRef& other) noexcept
     : Surface(other.get())
@@ -1995,7 +2007,7 @@ struct SurfaceRef : Surface
 
   /// Move constructor.
   constexpr SurfaceRef(SurfaceRef&& other) noexcept
-    : Surface(other.release())
+    : Surface(other.get())
   {
   }
 
@@ -2003,11 +2015,7 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  constexpr SurfaceRef& operator=(SurfaceRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept = default;
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }

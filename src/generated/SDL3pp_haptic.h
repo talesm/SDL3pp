@@ -1244,6 +1244,18 @@ struct HapticRef : Haptic
   {
   }
 
+  /**
+   * Constructs from Haptic.
+   *
+   * @param resource a Haptic.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr HapticRef(Haptic&& resource) noexcept
+    : Haptic(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr HapticRef(const HapticRef& other) noexcept
     : Haptic(other.get())
@@ -1252,7 +1264,7 @@ struct HapticRef : Haptic
 
   /// Move constructor.
   constexpr HapticRef(HapticRef&& other) noexcept
-    : Haptic(other.release())
+    : Haptic(other.get())
   {
   }
 
@@ -1260,11 +1272,7 @@ struct HapticRef : Haptic
   ~HapticRef() { release(); }
 
   /// Assignment operator.
-  constexpr HapticRef& operator=(HapticRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr HapticRef& operator=(const HapticRef& other) noexcept = default;
 
   /// Converts to HapticRaw
   constexpr operator HapticRaw() const noexcept { return get(); }

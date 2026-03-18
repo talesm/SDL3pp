@@ -389,6 +389,18 @@ struct CursorRef : Cursor
   {
   }
 
+  /**
+   * Constructs from Cursor.
+   *
+   * @param resource a Cursor.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr CursorRef(Cursor&& resource) noexcept
+    : Cursor(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr CursorRef(const CursorRef& other) noexcept
     : Cursor(other.get())
@@ -397,7 +409,7 @@ struct CursorRef : Cursor
 
   /// Move constructor.
   constexpr CursorRef(CursorRef&& other) noexcept
-    : Cursor(other.release())
+    : Cursor(other.get())
   {
   }
 
@@ -405,11 +417,7 @@ struct CursorRef : Cursor
   ~CursorRef() { release(); }
 
   /// Assignment operator.
-  constexpr CursorRef& operator=(CursorRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr CursorRef& operator=(const CursorRef& other) noexcept = default;
 
   /// Converts to CursorRaw
   constexpr operator CursorRaw() const noexcept { return get(); }

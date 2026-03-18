@@ -315,6 +315,18 @@ struct SensorRef : Sensor
   {
   }
 
+  /**
+   * Constructs from Sensor.
+   *
+   * @param resource a Sensor.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SensorRef(Sensor&& resource) noexcept
+    : Sensor(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr SensorRef(const SensorRef& other) noexcept
     : Sensor(other.get())
@@ -323,7 +335,7 @@ struct SensorRef : Sensor
 
   /// Move constructor.
   constexpr SensorRef(SensorRef&& other) noexcept
-    : Sensor(other.release())
+    : Sensor(other.get())
   {
   }
 
@@ -331,11 +343,7 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  constexpr SensorRef& operator=(SensorRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr SensorRef& operator=(const SensorRef& other) noexcept = default;
 
   /// Converts to SensorRaw
   constexpr operator SensorRaw() const noexcept { return get(); }

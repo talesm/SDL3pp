@@ -777,6 +777,18 @@ struct StorageRef : Storage
   {
   }
 
+  /**
+   * Constructs from Storage.
+   *
+   * @param resource a Storage.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr StorageRef(Storage&& resource) noexcept
+    : Storage(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr StorageRef(const StorageRef& other) noexcept
     : Storage(other.get())
@@ -785,7 +797,7 @@ struct StorageRef : Storage
 
   /// Move constructor.
   constexpr StorageRef(StorageRef&& other) noexcept
-    : Storage(other.release())
+    : Storage(other.get())
   {
   }
 
@@ -793,11 +805,7 @@ struct StorageRef : Storage
   ~StorageRef() { release(); }
 
   /// Assignment operator.
-  constexpr StorageRef& operator=(StorageRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr StorageRef& operator=(const StorageRef& other) noexcept = default;
 
   /// Converts to StorageRaw
   constexpr operator StorageRaw() const noexcept { return get(); }

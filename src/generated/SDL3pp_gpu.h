@@ -4171,6 +4171,18 @@ struct GPUDeviceRef : GPUDevice
   {
   }
 
+  /**
+   * Constructs from GPUDevice.
+   *
+   * @param resource a GPUDevice.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr GPUDeviceRef(GPUDevice&& resource) noexcept
+    : GPUDevice(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr GPUDeviceRef(const GPUDeviceRef& other) noexcept
     : GPUDevice(other.get())
@@ -4179,7 +4191,7 @@ struct GPUDeviceRef : GPUDevice
 
   /// Move constructor.
   constexpr GPUDeviceRef(GPUDeviceRef&& other) noexcept
-    : GPUDevice(other.release())
+    : GPUDevice(other.get())
   {
   }
 
@@ -4187,11 +4199,8 @@ struct GPUDeviceRef : GPUDevice
   ~GPUDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPUDeviceRef& operator=(GPUDeviceRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept =
+    default;
 
   /// Converts to GPUDeviceRaw
   constexpr operator GPUDeviceRaw() const noexcept { return get(); }

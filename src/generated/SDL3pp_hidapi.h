@@ -488,6 +488,18 @@ struct HidDeviceRef : HidDevice
   {
   }
 
+  /**
+   * Constructs from HidDevice.
+   *
+   * @param resource a HidDevice.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr HidDeviceRef(HidDevice&& resource) noexcept
+    : HidDevice(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr HidDeviceRef(const HidDeviceRef& other) noexcept
     : HidDevice(other.get())
@@ -496,7 +508,7 @@ struct HidDeviceRef : HidDevice
 
   /// Move constructor.
   constexpr HidDeviceRef(HidDeviceRef&& other) noexcept
-    : HidDevice(other.release())
+    : HidDevice(other.get())
   {
   }
 
@@ -504,11 +516,8 @@ struct HidDeviceRef : HidDevice
   ~HidDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr HidDeviceRef& operator=(HidDeviceRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr HidDeviceRef& operator=(const HidDeviceRef& other) noexcept =
+    default;
 
   /// Converts to HidDeviceRaw
   constexpr operator HidDeviceRaw() const noexcept { return get(); }

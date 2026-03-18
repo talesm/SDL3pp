@@ -1166,6 +1166,18 @@ struct GamepadRef : Gamepad
   {
   }
 
+  /**
+   * Constructs from Gamepad.
+   *
+   * @param resource a Gamepad.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr GamepadRef(Gamepad&& resource) noexcept
+    : Gamepad(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr GamepadRef(const GamepadRef& other) noexcept
     : Gamepad(other.get())
@@ -1174,7 +1186,7 @@ struct GamepadRef : Gamepad
 
   /// Move constructor.
   constexpr GamepadRef(GamepadRef&& other) noexcept
-    : Gamepad(other.release())
+    : Gamepad(other.get())
   {
   }
 
@@ -1182,11 +1194,7 @@ struct GamepadRef : Gamepad
   ~GamepadRef() { release(); }
 
   /// Assignment operator.
-  constexpr GamepadRef& operator=(GamepadRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr GamepadRef& operator=(const GamepadRef& other) noexcept = default;
 
   /// Converts to GamepadRaw
   constexpr operator GamepadRaw() const noexcept { return get(); }

@@ -1205,6 +1205,18 @@ struct JoystickRef : Joystick
   {
   }
 
+  /**
+   * Constructs from Joystick.
+   *
+   * @param resource a Joystick.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr JoystickRef(Joystick&& resource) noexcept
+    : Joystick(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr JoystickRef(const JoystickRef& other) noexcept
     : Joystick(other.get())
@@ -1213,7 +1225,7 @@ struct JoystickRef : Joystick
 
   /// Move constructor.
   constexpr JoystickRef(JoystickRef&& other) noexcept
-    : Joystick(other.release())
+    : Joystick(other.get())
   {
   }
 
@@ -1221,11 +1233,7 @@ struct JoystickRef : Joystick
   ~JoystickRef() { release(); }
 
   /// Assignment operator.
-  constexpr JoystickRef& operator=(JoystickRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr JoystickRef& operator=(const JoystickRef& other) noexcept = default;
 
   /// Converts to JoystickRaw
   constexpr operator JoystickRaw() const noexcept { return get(); }
