@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.8.1
+
+Small bugs related shared resource copying and locking.
+
+- Fix bug on copying Surface to SurfaceRef;
+- Fix bug on copying SurfaceRef to Surface;
+- SurfaceLock use Surface instead of SurfaceRef.
+
 ## Version 0.8.0
 
 This versions simplifies the handling of resource classes, reducing the number
