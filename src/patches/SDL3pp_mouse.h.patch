@@ -35,7 +35,7 @@
     * @post the new cursor on success.
     * @throws Error on failure.
     *
-@@ -447,17 +443,21 @@
+@@ -452,17 +448,21 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
@@ -62,7 +62,7 @@
  
  /**
   * A bitmask of pressed mouse buttons, as reported by GetMouseState, etc.
-@@ -486,6 +486,7 @@
+@@ -491,6 +491,7 @@
  
  constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
  
@@ -70,7 +70,7 @@
  constexpr MouseButtonFlags ButtonMask(MouseButton button)
  {
    return SDL_BUTTON_MASK(button);
-@@ -589,11 +590,8 @@
+@@ -594,11 +595,8 @@
   * functionality, including some game controllers, KVM switches, etc. You should
   * wait for input from a device before you consider it actively in use.
   *
@@ -84,7 +84,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -602,7 +600,12 @@
+@@ -607,7 +605,12 @@
   * @sa GetMouseNameForID
   * @sa HasMouse
   */
@@ -98,7 +98,7 @@
  
  /**
   * Get the name of a mouse.
-@@ -633,7 +636,7 @@
+@@ -638,7 +641,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -107,7 +107,7 @@
  
  /**
   * Query SDL's cache for the synchronous mouse button state and the
-@@ -751,7 +754,7 @@
+@@ -756,7 +759,7 @@
  
  inline void Window::WarpMouse(const FPointRaw& p)
  {
@@ -116,7 +116,7 @@
  }
  
  /**
-@@ -765,8 +768,7 @@
+@@ -770,8 +773,7 @@
   * Note that this function will appear to succeed, but not actually move the
   * mouse when used over Microsoft Remote Desktop.
   *
@@ -126,7 +126,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -777,7 +779,7 @@
+@@ -782,7 +784,7 @@
   */
  inline void WarpMouse(const FPointRaw& p)
  {
@@ -135,7 +135,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -811,7 +813,6 @@
+@@ -816,7 +818,6 @@
   *
   * @param callback a callback used to transform relative mouse motion, or
   *                 nullptr for default behavior.
@@ -143,7 +143,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -820,7 +821,7 @@
+@@ -825,7 +826,7 @@
   */
  inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
  {
@@ -152,7 +152,7 @@
  }
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -910,12 +911,9 @@
+@@ -915,12 +916,9 @@
   *
   * @param data the color value for each pixel of the cursor.
   * @param mask the mask value for each pixel of the cursor.
@@ -168,7 +168,7 @@
   * @returns a new cursor with the specified parameters on success.
   * @throws Error on failure.
   *
-@@ -941,12 +939,13 @@
+@@ -946,12 +944,13 @@
                        const Uint8* mask,
                        const PointRaw& size,
                        const PointRaw& hot)
@@ -184,7 +184,7 @@
  {
  }
  
-@@ -970,8 +969,7 @@
+@@ -975,8 +974,7 @@
   * upscaled and be used instead.
   *
   * @param surface an Surface structure representing the cursor image.
@@ -194,7 +194,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -1098,7 +1096,7 @@
+@@ -1103,7 +1101,7 @@
   *
   * @sa Cursor.Set
   */
@@ -203,7 +203,7 @@
  
  /**
   * Get the default cursor.
-@@ -1116,7 +1114,7 @@
+@@ -1121,7 +1119,7 @@
   */
  inline CursorRef GetDefaultCursor()
  {

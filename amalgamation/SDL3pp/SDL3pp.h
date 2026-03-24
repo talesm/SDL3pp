@@ -11591,7 +11591,7 @@ struct PaletteRef : Palette
    *
    * This does not takes ownership!
    */
-  PaletteRef(PaletteRaw resource) noexcept
+  constexpr PaletteRef(PaletteRaw resource) noexcept
     : Palette(resource)
   {
   }
@@ -11636,7 +11636,12 @@ struct PaletteRef : Palette
   ~PaletteRef() { release(); }
 
   /// Assignment operator.
-  constexpr PaletteRef& operator=(const PaletteRef& other) noexcept = default;
+  constexpr PaletteRef& operator=(const PaletteRef& other) noexcept
+  {
+    release();
+    Palette::operator=(Palette(other.get()));
+    return *this;
+  }
 
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }
@@ -12795,7 +12800,7 @@ struct PropertiesRef : Properties
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesID resource) noexcept
+  constexpr PropertiesRef(PropertiesID resource) noexcept
     : Properties(resource)
   {
   }
@@ -12840,8 +12845,12 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 
   /// Assignment operator.
-  constexpr PropertiesRef& operator=(const PropertiesRef& other) noexcept =
-    default;
+  constexpr PropertiesRef& operator=(const PropertiesRef& other) noexcept
+  {
+    release();
+    Properties::operator=(Properties(other.get()));
+    return *this;
+  }
 
   /// Converts to PropertiesID
   constexpr operator PropertiesID() const noexcept { return get(); }
@@ -14807,7 +14816,7 @@ struct EnvironmentRef : Environment
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentRaw resource) noexcept
+  constexpr EnvironmentRef(EnvironmentRaw resource) noexcept
     : Environment(resource)
   {
   }
@@ -14852,8 +14861,12 @@ struct EnvironmentRef : Environment
   ~EnvironmentRef() { release(); }
 
   /// Assignment operator.
-  constexpr EnvironmentRef& operator=(const EnvironmentRef& other) noexcept =
-    default;
+  constexpr EnvironmentRef& operator=(const EnvironmentRef& other) noexcept
+  {
+    release();
+    Environment::operator=(Environment(other.get()));
+    return *this;
+  }
 
   /// Converts to EnvironmentRaw
   constexpr operator EnvironmentRaw() const noexcept { return get(); }
@@ -19766,7 +19779,7 @@ struct IConvRef : IConv
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvRaw resource) noexcept
+  constexpr IConvRef(IConvRaw resource) noexcept
     : IConv(resource)
   {
   }
@@ -19811,7 +19824,12 @@ struct IConvRef : IConv
   ~IConvRef() { release(); }
 
   /// Assignment operator.
-  constexpr IConvRef& operator=(const IConvRef& other) noexcept = default;
+  constexpr IConvRef& operator=(const IConvRef& other) noexcept
+  {
+    release();
+    IConv::operator=(IConv(other.get()));
+    return *this;
+  }
 
   /// Converts to IConvRaw
   constexpr operator IConvRaw() const noexcept { return get(); }
@@ -20486,7 +20504,7 @@ struct AsyncIORef : AsyncIO
    *
    * This does not takes ownership!
    */
-  AsyncIORef(AsyncIORaw resource) noexcept
+  constexpr AsyncIORef(AsyncIORaw resource) noexcept
     : AsyncIO(resource)
   {
   }
@@ -20531,7 +20549,12 @@ struct AsyncIORef : AsyncIO
   ~AsyncIORef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIORef& operator=(const AsyncIORef& other) noexcept = default;
+  constexpr AsyncIORef& operator=(const AsyncIORef& other) noexcept
+  {
+    release();
+    AsyncIO::operator=(AsyncIO(other.get()));
+    return *this;
+  }
 
   /// Converts to AsyncIORaw
   constexpr operator AsyncIORaw() const noexcept { return get(); }
@@ -20856,7 +20879,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
    *
    * This does not takes ownership!
    */
-  AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
+  constexpr AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
     : AsyncIOQueue(resource)
   {
   }
@@ -20901,8 +20924,12 @@ struct AsyncIOQueueRef : AsyncIOQueue
   ~AsyncIOQueueRef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept =
-    default;
+  constexpr AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
+  {
+    release();
+    AsyncIOQueue::operator=(AsyncIOQueue(other.get()));
+    return *this;
+  }
 
   /// Converts to AsyncIOQueueRaw
   constexpr operator AsyncIOQueueRaw() const noexcept { return get(); }
@@ -24576,7 +24603,7 @@ struct HidDeviceRef : HidDevice
    *
    * This does not takes ownership!
    */
-  HidDeviceRef(HidDeviceRaw resource) noexcept
+  constexpr HidDeviceRef(HidDeviceRaw resource) noexcept
     : HidDevice(resource)
   {
   }
@@ -24621,8 +24648,12 @@ struct HidDeviceRef : HidDevice
   ~HidDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr HidDeviceRef& operator=(const HidDeviceRef& other) noexcept =
-    default;
+  constexpr HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
+  {
+    release();
+    HidDevice::operator=(HidDevice(other.get()));
+    return *this;
+  }
 
   /// Converts to HidDeviceRaw
   constexpr operator HidDeviceRaw() const noexcept { return get(); }
@@ -26816,7 +26847,7 @@ struct IOStreamRef : IOStream
    *
    * This does not takes ownership!
    */
-  IOStreamRef(IOStreamRaw resource) noexcept
+  constexpr IOStreamRef(IOStreamRaw resource) noexcept
     : IOStream(resource)
   {
   }
@@ -26861,7 +26892,12 @@ struct IOStreamRef : IOStream
   ~IOStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr IOStreamRef& operator=(const IOStreamRef& other) noexcept = default;
+  constexpr IOStreamRef& operator=(const IOStreamRef& other) noexcept
+  {
+    release();
+    IOStream::operator=(IOStream(other.get()));
+    return *this;
+  }
 
   /// Converts to IOStreamRaw
   constexpr operator IOStreamRaw() const noexcept { return get(); }
@@ -28553,7 +28589,7 @@ struct SharedObjectRef : SharedObject
    *
    * This does not takes ownership!
    */
-  SharedObjectRef(SharedObjectRaw resource) noexcept
+  constexpr SharedObjectRef(SharedObjectRaw resource) noexcept
     : SharedObject(resource)
   {
   }
@@ -28598,8 +28634,12 @@ struct SharedObjectRef : SharedObject
   ~SharedObjectRef() { release(); }
 
   /// Assignment operator.
-  constexpr SharedObjectRef& operator=(const SharedObjectRef& other) noexcept =
-    default;
+  constexpr SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
+  {
+    release();
+    SharedObject::operator=(SharedObject(other.get()));
+    return *this;
+  }
 
   /// Converts to SharedObjectRaw
   constexpr operator SharedObjectRaw() const noexcept { return get(); }
@@ -32564,7 +32604,7 @@ struct SensorRef : Sensor
    *
    * This does not takes ownership!
    */
-  SensorRef(SensorRaw resource) noexcept
+  constexpr SensorRef(SensorRaw resource) noexcept
     : Sensor(resource)
   {
   }
@@ -32609,7 +32649,12 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  constexpr SensorRef& operator=(const SensorRef& other) noexcept = default;
+  constexpr SensorRef& operator=(const SensorRef& other) noexcept
+  {
+    release();
+    Sensor::operator=(Sensor(other.get()));
+    return *this;
+  }
 
   /// Converts to SensorRaw
   constexpr operator SensorRaw() const noexcept { return get(); }
@@ -35241,7 +35286,7 @@ struct AudioDeviceRef : AudioDevice
    *
    * This does not takes ownership!
    */
-  AudioDeviceRef(AudioDeviceID resource) noexcept
+  constexpr AudioDeviceRef(AudioDeviceID resource) noexcept
     : AudioDevice(resource)
   {
   }
@@ -35286,8 +35331,12 @@ struct AudioDeviceRef : AudioDevice
   ~AudioDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept =
-    default;
+  constexpr AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept
+  {
+    release();
+    AudioDevice::operator=(AudioDevice(other.get()));
+    return *this;
+  }
 
   /// Converts to AudioDeviceID
   constexpr operator AudioDeviceID() const noexcept { return get(); }
@@ -36706,7 +36755,7 @@ struct AudioStreamRef : AudioStream
    *
    * This does not takes ownership!
    */
-  AudioStreamRef(AudioStreamRaw resource) noexcept
+  constexpr AudioStreamRef(AudioStreamRaw resource) noexcept
     : AudioStream(resource)
   {
   }
@@ -36751,8 +36800,12 @@ struct AudioStreamRef : AudioStream
   ~AudioStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioStreamRef& operator=(const AudioStreamRef& other) noexcept =
-    default;
+  constexpr AudioStreamRef& operator=(const AudioStreamRef& other) noexcept
+  {
+    release();
+    AudioStream::operator=(AudioStream(other.get()));
+    return *this;
+  }
 
   /// Converts to AudioStreamRaw
   constexpr operator AudioStreamRaw() const noexcept { return get(); }
@@ -40818,7 +40871,7 @@ struct ProcessRef : Process
    *
    * This does not takes ownership!
    */
-  ProcessRef(ProcessRaw resource) noexcept
+  constexpr ProcessRef(ProcessRaw resource) noexcept
     : Process(resource)
   {
   }
@@ -40863,7 +40916,12 @@ struct ProcessRef : Process
   ~ProcessRef() { release(); }
 
   /// Assignment operator.
-  constexpr ProcessRef& operator=(const ProcessRef& other) noexcept = default;
+  constexpr ProcessRef& operator=(const ProcessRef& other) noexcept
+  {
+    release();
+    Process::operator=(Process(other.get()));
+    return *this;
+  }
 
   /// Converts to ProcessRaw
   constexpr operator ProcessRaw() const noexcept { return get(); }
@@ -42033,7 +42091,7 @@ struct StorageRef : Storage
    *
    * This does not takes ownership!
    */
-  StorageRef(StorageRaw resource) noexcept
+  constexpr StorageRef(StorageRaw resource) noexcept
     : Storage(resource)
   {
   }
@@ -42078,7 +42136,12 @@ struct StorageRef : Storage
   ~StorageRef() { release(); }
 
   /// Assignment operator.
-  constexpr StorageRef& operator=(const StorageRef& other) noexcept = default;
+  constexpr StorageRef& operator=(const StorageRef& other) noexcept
+  {
+    release();
+    Storage::operator=(Storage(other.get()));
+    return *this;
+  }
 
   /// Converts to StorageRaw
   constexpr operator StorageRaw() const noexcept { return get(); }
@@ -44671,7 +44734,7 @@ struct SurfaceRef : Surface
    *
    * This does not takes ownership!
    */
-  SurfaceRef(SurfaceRaw resource) noexcept
+  constexpr SurfaceRef(SurfaceRaw resource) noexcept
     : Surface(resource)
   {
   }
@@ -44716,7 +44779,12 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept = default;
+  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept
+  {
+    release();
+    Surface::operator=(Surface(other.get()));
+    return *this;
+  }
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }
@@ -48176,7 +48244,7 @@ struct ThreadRef : Thread
    *
    * This does not takes ownership!
    */
-  ThreadRef(ThreadRaw resource) noexcept
+  constexpr ThreadRef(ThreadRaw resource) noexcept
     : Thread(resource)
   {
   }
@@ -48221,7 +48289,12 @@ struct ThreadRef : Thread
   ~ThreadRef() { release(); }
 
   /// Assignment operator.
-  constexpr ThreadRef& operator=(const ThreadRef& other) noexcept = default;
+  constexpr ThreadRef& operator=(const ThreadRef& other) noexcept
+  {
+    release();
+    Thread::operator=(Thread(other.get()));
+    return *this;
+  }
 
   /// Converts to ThreadRaw
   constexpr operator ThreadRaw() const noexcept { return get(); }
@@ -49066,7 +49139,7 @@ struct CameraRef : Camera
    *
    * This does not takes ownership!
    */
-  CameraRef(CameraRaw resource) noexcept
+  constexpr CameraRef(CameraRaw resource) noexcept
     : Camera(resource)
   {
   }
@@ -49111,7 +49184,12 @@ struct CameraRef : Camera
   ~CameraRef() { release(); }
 
   /// Assignment operator.
-  constexpr CameraRef& operator=(const CameraRef& other) noexcept = default;
+  constexpr CameraRef& operator=(const CameraRef& other) noexcept
+  {
+    release();
+    Camera::operator=(Camera(other.get()));
+    return *this;
+  }
 
   /// Converts to CameraRaw
   constexpr operator CameraRaw() const noexcept { return get(); }
@@ -49980,7 +50058,7 @@ struct MutexRef : Mutex
    *
    * This does not takes ownership!
    */
-  MutexRef(MutexRaw resource) noexcept
+  constexpr MutexRef(MutexRaw resource) noexcept
     : Mutex(resource)
   {
   }
@@ -50025,7 +50103,12 @@ struct MutexRef : Mutex
   ~MutexRef() { release(); }
 
   /// Assignment operator.
-  constexpr MutexRef& operator=(const MutexRef& other) noexcept = default;
+  constexpr MutexRef& operator=(const MutexRef& other) noexcept
+  {
+    release();
+    Mutex::operator=(Mutex(other.get()));
+    return *this;
+  }
 
   /// Converts to MutexRaw
   constexpr operator MutexRaw() const noexcept { return get(); }
@@ -50477,7 +50560,7 @@ struct RWLockRef : RWLock
    *
    * This does not takes ownership!
    */
-  RWLockRef(RWLockRaw resource) noexcept
+  constexpr RWLockRef(RWLockRaw resource) noexcept
     : RWLock(resource)
   {
   }
@@ -50522,7 +50605,12 @@ struct RWLockRef : RWLock
   ~RWLockRef() { release(); }
 
   /// Assignment operator.
-  constexpr RWLockRef& operator=(const RWLockRef& other) noexcept = default;
+  constexpr RWLockRef& operator=(const RWLockRef& other) noexcept
+  {
+    release();
+    RWLock::operator=(RWLock(other.get()));
+    return *this;
+  }
 
   /// Converts to RWLockRaw
   constexpr operator RWLockRaw() const noexcept { return get(); }
@@ -51013,7 +51101,7 @@ struct SemaphoreRef : Semaphore
    *
    * This does not takes ownership!
    */
-  SemaphoreRef(SemaphoreRaw resource) noexcept
+  constexpr SemaphoreRef(SemaphoreRaw resource) noexcept
     : Semaphore(resource)
   {
   }
@@ -51058,8 +51146,12 @@ struct SemaphoreRef : Semaphore
   ~SemaphoreRef() { release(); }
 
   /// Assignment operator.
-  constexpr SemaphoreRef& operator=(const SemaphoreRef& other) noexcept =
-    default;
+  constexpr SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
+  {
+    release();
+    Semaphore::operator=(Semaphore(other.get()));
+    return *this;
+  }
 
   /// Converts to SemaphoreRaw
   constexpr operator SemaphoreRaw() const noexcept { return get(); }
@@ -51448,7 +51540,7 @@ struct ConditionRef : Condition
    *
    * This does not takes ownership!
    */
-  ConditionRef(ConditionRaw resource) noexcept
+  constexpr ConditionRef(ConditionRaw resource) noexcept
     : Condition(resource)
   {
   }
@@ -51493,8 +51585,12 @@ struct ConditionRef : Condition
   ~ConditionRef() { release(); }
 
   /// Assignment operator.
-  constexpr ConditionRef& operator=(const ConditionRef& other) noexcept =
-    default;
+  constexpr ConditionRef& operator=(const ConditionRef& other) noexcept
+  {
+    release();
+    Condition::operator=(Condition(other.get()));
+    return *this;
+  }
 
   /// Converts to ConditionRaw
   constexpr operator ConditionRaw() const noexcept { return get(); }
@@ -52175,7 +52271,7 @@ struct TrayRef : Tray
    *
    * This does not takes ownership!
    */
-  TrayRef(TrayRaw resource) noexcept
+  constexpr TrayRef(TrayRaw resource) noexcept
     : Tray(resource)
   {
   }
@@ -52220,7 +52316,12 @@ struct TrayRef : Tray
   ~TrayRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrayRef& operator=(const TrayRef& other) noexcept = default;
+  constexpr TrayRef& operator=(const TrayRef& other) noexcept
+  {
+    release();
+    Tray::operator=(Tray(other.get()));
+    return *this;
+  }
 
   /// Converts to TrayRaw
   constexpr operator TrayRaw() const noexcept { return get(); }
@@ -56386,7 +56487,7 @@ struct WindowRef : Window
    *
    * This does not takes ownership!
    */
-  WindowRef(WindowRaw resource) noexcept
+  constexpr WindowRef(WindowRaw resource) noexcept
     : Window(resource)
   {
   }
@@ -56431,7 +56532,12 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 
   /// Assignment operator.
-  constexpr WindowRef& operator=(const WindowRef& other) noexcept = default;
+  constexpr WindowRef& operator=(const WindowRef& other) noexcept
+  {
+    release();
+    Window::operator=(Window(other.get()));
+    return *this;
+  }
 
   /// Converts to WindowRaw
   constexpr operator WindowRaw() const noexcept { return get(); }
@@ -67483,7 +67589,7 @@ struct GPUDeviceRef : GPUDevice
    *
    * This does not takes ownership!
    */
-  GPUDeviceRef(GPUDeviceRaw resource) noexcept
+  constexpr GPUDeviceRef(GPUDeviceRaw resource) noexcept
     : GPUDevice(resource)
   {
   }
@@ -67528,8 +67634,12 @@ struct GPUDeviceRef : GPUDevice
   ~GPUDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept =
-    default;
+  constexpr GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
+  {
+    release();
+    GPUDevice::operator=(GPUDevice(other.get()));
+    return *this;
+  }
 
   /// Converts to GPUDeviceRaw
   constexpr operator GPUDeviceRaw() const noexcept { return get(); }
@@ -72776,7 +72886,7 @@ struct JoystickRef : Joystick
    *
    * This does not takes ownership!
    */
-  JoystickRef(JoystickRaw resource) noexcept
+  constexpr JoystickRef(JoystickRaw resource) noexcept
     : Joystick(resource)
   {
   }
@@ -72821,7 +72931,12 @@ struct JoystickRef : Joystick
   ~JoystickRef() { release(); }
 
   /// Assignment operator.
-  constexpr JoystickRef& operator=(const JoystickRef& other) noexcept = default;
+  constexpr JoystickRef& operator=(const JoystickRef& other) noexcept
+  {
+    release();
+    Joystick::operator=(Joystick(other.get()));
+    return *this;
+  }
 
   /// Converts to JoystickRaw
   constexpr operator JoystickRaw() const noexcept { return get(); }
@@ -75460,7 +75575,7 @@ struct MetalViewRef : MetalView
    *
    * This does not takes ownership!
    */
-  MetalViewRef(MetalViewRaw resource) noexcept
+  constexpr MetalViewRef(MetalViewRaw resource) noexcept
     : MetalView(resource)
   {
   }
@@ -75505,8 +75620,12 @@ struct MetalViewRef : MetalView
   ~MetalViewRef() { release(); }
 
   /// Assignment operator.
-  constexpr MetalViewRef& operator=(const MetalViewRef& other) noexcept =
-    default;
+  constexpr MetalViewRef& operator=(const MetalViewRef& other) noexcept
+  {
+    release();
+    MetalView::operator=(MetalView(other.get()));
+    return *this;
+  }
 
   /// Converts to MetalViewRaw
   constexpr operator MetalViewRaw() const noexcept { return get(); }
@@ -75943,7 +76062,7 @@ struct CursorRef : Cursor
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorRaw resource) noexcept
+  constexpr CursorRef(CursorRaw resource) noexcept
     : Cursor(resource)
   {
   }
@@ -75988,7 +76107,12 @@ struct CursorRef : Cursor
   ~CursorRef() { release(); }
 
   /// Assignment operator.
-  constexpr CursorRef& operator=(const CursorRef& other) noexcept = default;
+  constexpr CursorRef& operator=(const CursorRef& other) noexcept
+  {
+    release();
+    Cursor::operator=(Cursor(other.get()));
+    return *this;
+  }
 
   /// Converts to CursorRaw
   constexpr operator CursorRaw() const noexcept { return get(); }
@@ -77891,7 +78015,7 @@ struct GamepadRef : Gamepad
    *
    * This does not takes ownership!
    */
-  GamepadRef(GamepadRaw resource) noexcept
+  constexpr GamepadRef(GamepadRaw resource) noexcept
     : Gamepad(resource)
   {
   }
@@ -77936,7 +78060,12 @@ struct GamepadRef : Gamepad
   ~GamepadRef() { release(); }
 
   /// Assignment operator.
-  constexpr GamepadRef& operator=(const GamepadRef& other) noexcept = default;
+  constexpr GamepadRef& operator=(const GamepadRef& other) noexcept
+  {
+    release();
+    Gamepad::operator=(Gamepad(other.get()));
+    return *this;
+  }
 
   /// Converts to GamepadRaw
   constexpr operator GamepadRaw() const noexcept { return get(); }
@@ -80939,7 +81068,7 @@ struct HapticRef : Haptic
    *
    * This does not takes ownership!
    */
-  HapticRef(HapticRaw resource) noexcept
+  constexpr HapticRef(HapticRaw resource) noexcept
     : Haptic(resource)
   {
   }
@@ -80984,7 +81113,12 @@ struct HapticRef : Haptic
   ~HapticRef() { release(); }
 
   /// Assignment operator.
-  constexpr HapticRef& operator=(const HapticRef& other) noexcept = default;
+  constexpr HapticRef& operator=(const HapticRef& other) noexcept
+  {
+    release();
+    Haptic::operator=(Haptic(other.get()));
+    return *this;
+  }
 
   /// Converts to HapticRaw
   constexpr operator HapticRaw() const noexcept { return get(); }
@@ -84772,7 +84906,7 @@ struct RendererRef : Renderer
    *
    * This does not takes ownership!
    */
-  RendererRef(RendererRaw resource) noexcept
+  constexpr RendererRef(RendererRaw resource) noexcept
     : Renderer(resource)
   {
   }
@@ -84817,7 +84951,12 @@ struct RendererRef : Renderer
   ~RendererRef() { release(); }
 
   /// Assignment operator.
-  constexpr RendererRef& operator=(const RendererRef& other) noexcept = default;
+  constexpr RendererRef& operator=(const RendererRef& other) noexcept
+  {
+    release();
+    Renderer::operator=(Renderer(other.get()));
+    return *this;
+  }
 
   /// Converts to RendererRaw
   constexpr operator RendererRaw() const noexcept { return get(); }
@@ -85925,7 +86064,7 @@ struct TextureRef : Texture
    *
    * This does not takes ownership!
    */
-  TextureRef(TextureRaw resource) noexcept
+  constexpr TextureRef(TextureRaw resource) noexcept
     : Texture(resource)
   {
   }
@@ -85970,7 +86109,12 @@ struct TextureRef : Texture
   ~TextureRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextureRef& operator=(const TextureRef& other) noexcept = default;
+  constexpr TextureRef& operator=(const TextureRef& other) noexcept
+  {
+    release();
+    Texture::operator=(Texture(other.get()));
+    return *this;
+  }
 
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
@@ -90828,7 +90972,7 @@ struct GPURenderStateRef : GPURenderState
    *
    * This does not takes ownership!
    */
-  GPURenderStateRef(GPURenderStateRaw resource) noexcept
+  constexpr GPURenderStateRef(GPURenderStateRaw resource) noexcept
     : GPURenderState(resource)
   {
   }
@@ -90874,7 +91018,12 @@ struct GPURenderStateRef : GPURenderState
 
   /// Assignment operator.
   constexpr GPURenderStateRef& operator=(
-    const GPURenderStateRef& other) noexcept = default;
+    const GPURenderStateRef& other) noexcept
+  {
+    release();
+    GPURenderState::operator=(GPURenderState(other.get()));
+    return *this;
+  }
 
   /// Converts to GPURenderStateRaw
   constexpr operator GPURenderStateRaw() const noexcept { return get(); }
@@ -93772,7 +93921,7 @@ struct MixerRef : Mixer
    *
    * This does not takes ownership!
    */
-  MixerRef(MixerRaw resource) noexcept
+  constexpr MixerRef(MixerRaw resource) noexcept
     : Mixer(resource)
   {
   }
@@ -93817,7 +93966,12 @@ struct MixerRef : Mixer
   ~MixerRef() { release(); }
 
   /// Assignment operator.
-  constexpr MixerRef& operator=(const MixerRef& other) noexcept = default;
+  constexpr MixerRef& operator=(const MixerRef& other) noexcept
+  {
+    release();
+    Mixer::operator=(Mixer(other.get()));
+    return *this;
+  }
 
   /// Converts to MixerRaw
   constexpr operator MixerRaw() const noexcept { return get(); }
@@ -94461,7 +94615,7 @@ struct AudioRef : Audio
    *
    * This does not takes ownership!
    */
-  AudioRef(AudioRaw resource) noexcept
+  constexpr AudioRef(AudioRaw resource) noexcept
     : Audio(resource)
   {
   }
@@ -94506,7 +94660,12 @@ struct AudioRef : Audio
   ~AudioRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioRef& operator=(const AudioRef& other) noexcept = default;
+  constexpr AudioRef& operator=(const AudioRef& other) noexcept
+  {
+    release();
+    Audio::operator=(Audio(other.get()));
+    return *this;
+  }
 
   /// Converts to AudioRaw
   constexpr operator AudioRaw() const noexcept { return get(); }
@@ -96021,7 +96180,7 @@ struct TrackRef : Track
    *
    * This does not takes ownership!
    */
-  TrackRef(TrackRaw resource) noexcept
+  constexpr TrackRef(TrackRaw resource) noexcept
     : Track(resource)
   {
   }
@@ -96066,7 +96225,12 @@ struct TrackRef : Track
   ~TrackRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrackRef& operator=(const TrackRef& other) noexcept = default;
+  constexpr TrackRef& operator=(const TrackRef& other) noexcept
+  {
+    release();
+    Track::operator=(Track(other.get()));
+    return *this;
+  }
 
   /// Converts to TrackRaw
   constexpr operator TrackRaw() const noexcept { return get(); }
@@ -96355,7 +96519,7 @@ struct GroupRef : Group
    *
    * This does not takes ownership!
    */
-  GroupRef(GroupRaw resource) noexcept
+  constexpr GroupRef(GroupRaw resource) noexcept
     : Group(resource)
   {
   }
@@ -96400,7 +96564,12 @@ struct GroupRef : Group
   ~GroupRef() { release(); }
 
   /// Assignment operator.
-  constexpr GroupRef& operator=(const GroupRef& other) noexcept = default;
+  constexpr GroupRef& operator=(const GroupRef& other) noexcept
+  {
+    release();
+    Group::operator=(Group(other.get()));
+    return *this;
+  }
 
   /// Converts to GroupRaw
   constexpr operator GroupRaw() const noexcept { return get(); }
@@ -100255,7 +100424,7 @@ struct AudioDecoderRef : AudioDecoder
    *
    * This does not takes ownership!
    */
-  AudioDecoderRef(AudioDecoderRaw resource) noexcept
+  constexpr AudioDecoderRef(AudioDecoderRaw resource) noexcept
     : AudioDecoder(resource)
   {
   }
@@ -100300,8 +100469,12 @@ struct AudioDecoderRef : AudioDecoder
   ~AudioDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept =
-    default;
+  constexpr AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept
+  {
+    release();
+    AudioDecoder::operator=(AudioDecoder(other.get()));
+    return *this;
+  }
 
   /// Converts to AudioDecoderRaw
   constexpr operator AudioDecoderRaw() const noexcept { return get(); }
@@ -103559,7 +103732,7 @@ struct AnimationRef : Animation
    *
    * This does not takes ownership!
    */
-  AnimationRef(AnimationRaw resource) noexcept
+  constexpr AnimationRef(AnimationRaw resource) noexcept
     : Animation(resource)
   {
   }
@@ -103604,8 +103777,12 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationRef& operator=(const AnimationRef& other) noexcept =
-    default;
+  constexpr AnimationRef& operator=(const AnimationRef& other) noexcept
+  {
+    release();
+    Animation::operator=(Animation(other.get()));
+    return *this;
+  }
 
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
@@ -104472,7 +104649,7 @@ struct AnimationEncoderRef : AnimationEncoder
    *
    * This does not takes ownership!
    */
-  AnimationEncoderRef(AnimationEncoderRaw resource) noexcept
+  constexpr AnimationEncoderRef(AnimationEncoderRaw resource) noexcept
     : AnimationEncoder(resource)
   {
   }
@@ -104518,7 +104695,12 @@ struct AnimationEncoderRef : AnimationEncoder
 
   /// Assignment operator.
   constexpr AnimationEncoderRef& operator=(
-    const AnimationEncoderRef& other) noexcept = default;
+    const AnimationEncoderRef& other) noexcept
+  {
+    release();
+    AnimationEncoder::operator=(AnimationEncoder(other.get()));
+    return *this;
+  }
 
   /// Converts to AnimationEncoderRaw
   constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
@@ -105048,7 +105230,7 @@ struct AnimationDecoderRef : AnimationDecoder
    *
    * This does not takes ownership!
    */
-  AnimationDecoderRef(AnimationDecoderRaw resource) noexcept
+  constexpr AnimationDecoderRef(AnimationDecoderRaw resource) noexcept
     : AnimationDecoder(resource)
   {
   }
@@ -105094,7 +105276,12 @@ struct AnimationDecoderRef : AnimationDecoder
 
   /// Assignment operator.
   constexpr AnimationDecoderRef& operator=(
-    const AnimationDecoderRef& other) noexcept = default;
+    const AnimationDecoderRef& other) noexcept
+  {
+    release();
+    AnimationDecoder::operator=(AnimationDecoder(other.get()));
+    return *this;
+  }
 
   /// Converts to AnimationDecoderRaw
   constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
@@ -107309,7 +107496,7 @@ struct FontRef : Font
    *
    * This does not takes ownership!
    */
-  FontRef(FontRaw resource) noexcept
+  constexpr FontRef(FontRaw resource) noexcept
     : Font(resource)
   {
   }
@@ -107354,7 +107541,12 @@ struct FontRef : Font
   ~FontRef() { release(); }
 
   /// Assignment operator.
-  constexpr FontRef& operator=(const FontRef& other) noexcept = default;
+  constexpr FontRef& operator=(const FontRef& other) noexcept
+  {
+    release();
+    Font::operator=(Font(other.get()));
+    return *this;
+  }
 
   /// Converts to FontRaw
   constexpr operator FontRaw() const noexcept { return get(); }
@@ -110628,7 +110820,7 @@ struct TextRef : Text
    *
    * This does not takes ownership!
    */
-  TextRef(TextRaw resource) noexcept
+  constexpr TextRef(TextRaw resource) noexcept
     : Text(resource)
   {
   }
@@ -110673,7 +110865,12 @@ struct TextRef : Text
   ~TextRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextRef& operator=(const TextRef& other) noexcept = default;
+  constexpr TextRef& operator=(const TextRef& other) noexcept
+  {
+    release();
+    Text::operator=(Text(other.get()));
+    return *this;
+  }
 
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }

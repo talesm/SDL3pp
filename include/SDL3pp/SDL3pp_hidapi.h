@@ -457,7 +457,7 @@ struct HidDeviceRef : HidDevice
    *
    * This does not takes ownership!
    */
-  HidDeviceRef(HidDeviceRaw resource) noexcept
+  constexpr HidDeviceRef(HidDeviceRaw resource) noexcept
     : HidDevice(resource)
   {
   }
@@ -502,8 +502,12 @@ struct HidDeviceRef : HidDevice
   ~HidDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr HidDeviceRef& operator=(const HidDeviceRef& other) noexcept =
-    default;
+  constexpr HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
+  {
+    release();
+    HidDevice::operator=(HidDevice(other.get()));
+    return *this;
+  }
 
   /// Converts to HidDeviceRaw
   constexpr operator HidDeviceRaw() const noexcept { return get(); }

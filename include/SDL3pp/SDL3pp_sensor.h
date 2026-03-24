@@ -298,7 +298,7 @@ struct SensorRef : Sensor
    *
    * This does not takes ownership!
    */
-  SensorRef(SensorRaw resource) noexcept
+  constexpr SensorRef(SensorRaw resource) noexcept
     : Sensor(resource)
   {
   }
@@ -343,7 +343,12 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  constexpr SensorRef& operator=(const SensorRef& other) noexcept = default;
+  constexpr SensorRef& operator=(const SensorRef& other) noexcept
+  {
+    release();
+    Sensor::operator=(Sensor(other.get()));
+    return *this;
+  }
 
   /// Converts to SensorRaw
   constexpr operator SensorRaw() const noexcept { return get(); }

@@ -392,7 +392,7 @@ struct AsyncIORef : AsyncIO
    *
    * This does not takes ownership!
    */
-  AsyncIORef(AsyncIORaw resource) noexcept
+  constexpr AsyncIORef(AsyncIORaw resource) noexcept
     : AsyncIO(resource)
   {
   }
@@ -437,7 +437,12 @@ struct AsyncIORef : AsyncIO
   ~AsyncIORef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIORef& operator=(const AsyncIORef& other) noexcept = default;
+  constexpr AsyncIORef& operator=(const AsyncIORef& other) noexcept
+  {
+    release();
+    AsyncIO::operator=(AsyncIO(other.get()));
+    return *this;
+  }
 
   /// Converts to AsyncIORaw
   constexpr operator AsyncIORaw() const noexcept { return get(); }
@@ -762,7 +767,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
    *
    * This does not takes ownership!
    */
-  AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
+  constexpr AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
     : AsyncIOQueue(resource)
   {
   }
@@ -807,8 +812,12 @@ struct AsyncIOQueueRef : AsyncIOQueue
   ~AsyncIOQueueRef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept =
-    default;
+  constexpr AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
+  {
+    release();
+    AsyncIOQueue::operator=(AsyncIOQueue(other.get()));
+    return *this;
+  }
 
   /// Converts to AsyncIOQueueRaw
   constexpr operator AsyncIOQueueRaw() const noexcept { return get(); }

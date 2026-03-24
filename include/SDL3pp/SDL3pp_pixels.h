@@ -2652,7 +2652,7 @@ struct PaletteRef : Palette
    *
    * This does not takes ownership!
    */
-  PaletteRef(PaletteRaw resource) noexcept
+  constexpr PaletteRef(PaletteRaw resource) noexcept
     : Palette(resource)
   {
   }
@@ -2697,7 +2697,12 @@ struct PaletteRef : Palette
   ~PaletteRef() { release(); }
 
   /// Assignment operator.
-  constexpr PaletteRef& operator=(const PaletteRef& other) noexcept = default;
+  constexpr PaletteRef& operator=(const PaletteRef& other) noexcept
+  {
+    release();
+    Palette::operator=(Palette(other.get()));
+    return *this;
+  }
 
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }

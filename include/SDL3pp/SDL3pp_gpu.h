@@ -4133,7 +4133,7 @@ struct GPUDeviceRef : GPUDevice
    *
    * This does not takes ownership!
    */
-  GPUDeviceRef(GPUDeviceRaw resource) noexcept
+  constexpr GPUDeviceRef(GPUDeviceRaw resource) noexcept
     : GPUDevice(resource)
   {
   }
@@ -4178,8 +4178,12 @@ struct GPUDeviceRef : GPUDevice
   ~GPUDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept =
-    default;
+  constexpr GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
+  {
+    release();
+    GPUDevice::operator=(GPUDevice(other.get()));
+    return *this;
+  }
 
   /// Converts to GPUDeviceRaw
   constexpr operator GPUDeviceRaw() const noexcept { return get(); }

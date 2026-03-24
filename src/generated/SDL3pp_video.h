@@ -3112,7 +3112,7 @@ struct WindowRef : Window
    *
    * This does not takes ownership!
    */
-  WindowRef(WindowRaw resource) noexcept
+  constexpr WindowRef(WindowRaw resource) noexcept
     : Window(resource)
   {
   }
@@ -3157,7 +3157,12 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 
   /// Assignment operator.
-  constexpr WindowRef& operator=(const WindowRef& other) noexcept = default;
+  constexpr WindowRef& operator=(const WindowRef& other) noexcept
+  {
+    release();
+    Window::operator=(Window(other.get()));
+    return *this;
+  }
 
   /// Converts to WindowRaw
   constexpr operator WindowRaw() const noexcept { return get(); }

@@ -1149,7 +1149,7 @@ struct GamepadRef : Gamepad
    *
    * This does not takes ownership!
    */
-  GamepadRef(GamepadRaw resource) noexcept
+  constexpr GamepadRef(GamepadRaw resource) noexcept
     : Gamepad(resource)
   {
   }
@@ -1194,7 +1194,12 @@ struct GamepadRef : Gamepad
   ~GamepadRef() { release(); }
 
   /// Assignment operator.
-  constexpr GamepadRef& operator=(const GamepadRef& other) noexcept = default;
+  constexpr GamepadRef& operator=(const GamepadRef& other) noexcept
+  {
+    release();
+    Gamepad::operator=(Gamepad(other.get()));
+    return *this;
+  }
 
   /// Converts to GamepadRaw
   constexpr operator GamepadRaw() const noexcept { return get(); }

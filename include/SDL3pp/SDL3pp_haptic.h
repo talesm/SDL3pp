@@ -1241,7 +1241,7 @@ struct HapticRef : Haptic
    *
    * This does not takes ownership!
    */
-  HapticRef(HapticRaw resource) noexcept
+  constexpr HapticRef(HapticRaw resource) noexcept
     : Haptic(resource)
   {
   }
@@ -1286,7 +1286,12 @@ struct HapticRef : Haptic
   ~HapticRef() { release(); }
 
   /// Assignment operator.
-  constexpr HapticRef& operator=(const HapticRef& other) noexcept = default;
+  constexpr HapticRef& operator=(const HapticRef& other) noexcept
+  {
+    release();
+    Haptic::operator=(Haptic(other.get()));
+    return *this;
+  }
 
   /// Converts to HapticRaw
   constexpr operator HapticRaw() const noexcept { return get(); }

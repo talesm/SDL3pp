@@ -277,7 +277,7 @@ struct MutexRef : Mutex
    *
    * This does not takes ownership!
    */
-  MutexRef(MutexRaw resource) noexcept
+  constexpr MutexRef(MutexRaw resource) noexcept
     : Mutex(resource)
   {
   }
@@ -322,7 +322,12 @@ struct MutexRef : Mutex
   ~MutexRef() { release(); }
 
   /// Assignment operator.
-  constexpr MutexRef& operator=(const MutexRef& other) noexcept = default;
+  constexpr MutexRef& operator=(const MutexRef& other) noexcept
+  {
+    release();
+    Mutex::operator=(Mutex(other.get()));
+    return *this;
+  }
 
   /// Converts to MutexRaw
   constexpr operator MutexRaw() const noexcept { return get(); }
@@ -774,7 +779,7 @@ struct RWLockRef : RWLock
    *
    * This does not takes ownership!
    */
-  RWLockRef(RWLockRaw resource) noexcept
+  constexpr RWLockRef(RWLockRaw resource) noexcept
     : RWLock(resource)
   {
   }
@@ -819,7 +824,12 @@ struct RWLockRef : RWLock
   ~RWLockRef() { release(); }
 
   /// Assignment operator.
-  constexpr RWLockRef& operator=(const RWLockRef& other) noexcept = default;
+  constexpr RWLockRef& operator=(const RWLockRef& other) noexcept
+  {
+    release();
+    RWLock::operator=(RWLock(other.get()));
+    return *this;
+  }
 
   /// Converts to RWLockRaw
   constexpr operator RWLockRaw() const noexcept { return get(); }
@@ -1310,7 +1320,7 @@ struct SemaphoreRef : Semaphore
    *
    * This does not takes ownership!
    */
-  SemaphoreRef(SemaphoreRaw resource) noexcept
+  constexpr SemaphoreRef(SemaphoreRaw resource) noexcept
     : Semaphore(resource)
   {
   }
@@ -1355,8 +1365,12 @@ struct SemaphoreRef : Semaphore
   ~SemaphoreRef() { release(); }
 
   /// Assignment operator.
-  constexpr SemaphoreRef& operator=(const SemaphoreRef& other) noexcept =
-    default;
+  constexpr SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
+  {
+    release();
+    Semaphore::operator=(Semaphore(other.get()));
+    return *this;
+  }
 
   /// Converts to SemaphoreRaw
   constexpr operator SemaphoreRaw() const noexcept { return get(); }
@@ -1745,7 +1759,7 @@ struct ConditionRef : Condition
    *
    * This does not takes ownership!
    */
-  ConditionRef(ConditionRaw resource) noexcept
+  constexpr ConditionRef(ConditionRaw resource) noexcept
     : Condition(resource)
   {
   }
@@ -1790,8 +1804,12 @@ struct ConditionRef : Condition
   ~ConditionRef() { release(); }
 
   /// Assignment operator.
-  constexpr ConditionRef& operator=(const ConditionRef& other) noexcept =
-    default;
+  constexpr ConditionRef& operator=(const ConditionRef& other) noexcept
+  {
+    release();
+    Condition::operator=(Condition(other.get()));
+    return *this;
+  }
 
   /// Converts to ConditionRaw
   constexpr operator ConditionRaw() const noexcept { return get(); }

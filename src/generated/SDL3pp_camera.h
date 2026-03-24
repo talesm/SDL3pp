@@ -441,7 +441,7 @@ struct CameraRef : Camera
    *
    * This does not takes ownership!
    */
-  CameraRef(CameraRaw resource) noexcept
+  constexpr CameraRef(CameraRaw resource) noexcept
     : Camera(resource)
   {
   }
@@ -486,7 +486,12 @@ struct CameraRef : Camera
   ~CameraRef() { release(); }
 
   /// Assignment operator.
-  constexpr CameraRef& operator=(const CameraRef& other) noexcept = default;
+  constexpr CameraRef& operator=(const CameraRef& other) noexcept
+  {
+    release();
+    Camera::operator=(Camera(other.get()));
+    return *this;
+  }
 
   /// Converts to CameraRaw
   constexpr operator CameraRaw() const noexcept { return get(); }

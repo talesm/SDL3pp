@@ -168,7 +168,7 @@ struct MetalViewRef : MetalView
    *
    * This does not takes ownership!
    */
-  MetalViewRef(MetalViewRaw resource) noexcept
+  constexpr MetalViewRef(MetalViewRaw resource) noexcept
     : MetalView(resource)
   {
   }
@@ -213,8 +213,12 @@ struct MetalViewRef : MetalView
   ~MetalViewRef() { release(); }
 
   /// Assignment operator.
-  constexpr MetalViewRef& operator=(const MetalViewRef& other) noexcept =
-    default;
+  constexpr MetalViewRef& operator=(const MetalViewRef& other) noexcept
+  {
+    release();
+    MetalView::operator=(MetalView(other.get()));
+    return *this;
+  }
 
   /// Converts to MetalViewRaw
   constexpr operator MetalViewRaw() const noexcept { return get(); }

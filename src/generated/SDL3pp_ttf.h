@@ -1859,7 +1859,7 @@ struct FontRef : Font
    *
    * This does not takes ownership!
    */
-  FontRef(FontRaw resource) noexcept
+  constexpr FontRef(FontRaw resource) noexcept
     : Font(resource)
   {
   }
@@ -1904,7 +1904,12 @@ struct FontRef : Font
   ~FontRef() { release(); }
 
   /// Assignment operator.
-  constexpr FontRef& operator=(const FontRef& other) noexcept = default;
+  constexpr FontRef& operator=(const FontRef& other) noexcept
+  {
+    release();
+    Font::operator=(Font(other.get()));
+    return *this;
+  }
 
   /// Converts to FontRaw
   constexpr operator FontRaw() const noexcept { return get(); }
@@ -5203,7 +5208,7 @@ struct TextRef : Text
    *
    * This does not takes ownership!
    */
-  TextRef(TextRaw resource) noexcept
+  constexpr TextRef(TextRaw resource) noexcept
     : Text(resource)
   {
   }
@@ -5248,7 +5253,12 @@ struct TextRef : Text
   ~TextRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextRef& operator=(const TextRef& other) noexcept = default;
+  constexpr TextRef& operator=(const TextRef& other) noexcept
+  {
+    release();
+    Text::operator=(Text(other.get()));
+    return *this;
+  }
 
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }

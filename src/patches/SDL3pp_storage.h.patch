@@ -237,7 +237,7 @@
     * @returns an array of strings on success.
     * @throws Error on failure.
     *
-@@ -994,8 +992,7 @@
+@@ -999,8 +997,7 @@
   *
   * @param storage a storage container to query.
   * @param path the relative path of the file to query.
@@ -247,7 +247,7 @@
   *          GetError() for more information.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -1006,7 +1003,10 @@
+@@ -1011,7 +1008,10 @@
  inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
                                                  StringParam path)
  {
@@ -259,7 +259,7 @@
  }
  
  inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
-@@ -1018,14 +1018,13 @@
+@@ -1023,14 +1023,13 @@
   * Synchronously read a file from a storage container into a client-provided
   * buffer.
   *
@@ -277,7 +277,7 @@
   * @returns true if the file was read or false on failure; call GetError() for
   *          more information.
   *
-@@ -1047,16 +1046,10 @@
+@@ -1052,16 +1051,10 @@
   * Synchronously read a file from a storage container into a client-provided
   * buffer.
   *
@@ -296,7 +296,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1066,7 +1059,11 @@
+@@ -1071,7 +1064,11 @@
   */
  inline std::string ReadStorageFile(StorageRef storage, StringParam path)
  {
@@ -309,7 +309,7 @@
  }
  
  inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
-@@ -1080,16 +1077,35 @@
+@@ -1085,16 +1082,35 @@
    return SDL::ReadStorageFile(m_resource, std::move(path));
  }
  
@@ -347,7 +347,7 @@
  }
  
  /**
-@@ -1098,9 +1114,7 @@
+@@ -1103,9 +1119,7 @@
   * @param storage a storage container to write to.
   * @param path the relative path of the file to write.
   * @param source a client-provided buffer to write from.
@@ -358,7 +358,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1112,7 +1126,8 @@
+@@ -1117,7 +1131,8 @@
                               StringParam path,
                               SourceBytes source)
  {
@@ -368,7 +368,7 @@
  }
  
  inline void Storage::WriteFile(StringParam path, SourceBytes source)
-@@ -1190,7 +1205,6 @@
+@@ -1195,7 +1210,6 @@
   * @param storage a storage container.
   * @param path the path of the directory to enumerate, or nullptr for the root.
   * @param callback a function that is called for each entry in the directory.
@@ -376,7 +376,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -1201,7 +1215,14 @@
+@@ -1206,7 +1220,14 @@
                                        StringParam path,
                                        EnumerateDirectoryCB callback)
  {
@@ -392,7 +392,7 @@
  }
  
  /**
-@@ -1220,8 +1241,7 @@
+@@ -1225,8 +1246,7 @@
   *
   * @param storage a storage container.
   * @param path the path of the directory to enumerate, or nullptr for the root.
@@ -402,7 +402,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -1231,7 +1251,12 @@
+@@ -1236,7 +1256,12 @@
  inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                     StringParam path)
  {
@@ -416,7 +416,7 @@
  }
  
  inline void Storage::EnumerateDirectory(StringParam path,
-@@ -1327,9 +1352,8 @@
+@@ -1332,9 +1357,8 @@
   *
   * @param storage a storage container.
   * @param path the path to query.
@@ -428,7 +428,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1337,7 +1361,10 @@
+@@ -1342,7 +1366,10 @@
   */
  inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
  {
@@ -440,7 +440,7 @@
  }
  
  inline PathInfo Storage::GetPathInfo(StringParam path)
-@@ -1391,8 +1418,6 @@
+@@ -1396,8 +1423,6 @@
   * @param pattern the pattern that files in the directory must match. Can be
   *                nullptr.
   * @param flags `SDL_GLOB_*` bitflags that affect this search.
@@ -449,7 +449,7 @@
   * @returns an array of strings on success.
   * @throws Error on failure.
   *
-@@ -1406,7 +1431,10 @@
+@@ -1411,7 +1436,10 @@
                                              StringParam pattern,
                                              GlobFlags flags)
  {

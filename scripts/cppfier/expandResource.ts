@@ -866,6 +866,7 @@ function createRefEntry(
     [refName]: {
       kind: "function",
       type: "",
+      constexpr: true,
       parameters: [
         {
           type: rawName,
@@ -964,7 +965,7 @@ function createRefEntry(
       constexpr: true,
       parameters: [{ type: `const ${refName} &`, name: "other" }],
       hints: {
-        default: true,
+        body: `release();${targetName}::operator=(${targetName}(other.get()));\nreturn *this;`,
         noexcept: true,
       },
       doc: [`Assignment operator.`],

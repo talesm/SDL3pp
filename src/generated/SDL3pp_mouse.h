@@ -372,7 +372,7 @@ struct CursorRef : Cursor
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorRaw resource) noexcept
+  constexpr CursorRef(CursorRaw resource) noexcept
     : Cursor(resource)
   {
   }
@@ -417,7 +417,12 @@ struct CursorRef : Cursor
   ~CursorRef() { release(); }
 
   /// Assignment operator.
-  constexpr CursorRef& operator=(const CursorRef& other) noexcept = default;
+  constexpr CursorRef& operator=(const CursorRef& other) noexcept
+  {
+    release();
+    Cursor::operator=(Cursor(other.get()));
+    return *this;
+  }
 
   /// Converts to CursorRaw
   constexpr operator CursorRaw() const noexcept { return get(); }

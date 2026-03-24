@@ -2303,7 +2303,7 @@ struct RendererRef : Renderer
    *
    * This does not takes ownership!
    */
-  RendererRef(RendererRaw resource) noexcept
+  constexpr RendererRef(RendererRaw resource) noexcept
     : Renderer(resource)
   {
   }
@@ -2348,7 +2348,12 @@ struct RendererRef : Renderer
   ~RendererRef() { release(); }
 
   /// Assignment operator.
-  constexpr RendererRef& operator=(const RendererRef& other) noexcept = default;
+  constexpr RendererRef& operator=(const RendererRef& other) noexcept
+  {
+    release();
+    Renderer::operator=(Renderer(other.get()));
+    return *this;
+  }
 
   /// Converts to RendererRaw
   constexpr operator RendererRaw() const noexcept { return get(); }
@@ -3408,7 +3413,7 @@ struct TextureRef : Texture
    *
    * This does not takes ownership!
    */
-  TextureRef(TextureRaw resource) noexcept
+  constexpr TextureRef(TextureRaw resource) noexcept
     : Texture(resource)
   {
   }
@@ -3453,7 +3458,12 @@ struct TextureRef : Texture
   ~TextureRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextureRef& operator=(const TextureRef& other) noexcept = default;
+  constexpr TextureRef& operator=(const TextureRef& other) noexcept
+  {
+    release();
+    Texture::operator=(Texture(other.get()));
+    return *this;
+  }
 
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
@@ -8171,7 +8181,7 @@ struct GPURenderStateRef : GPURenderState
    *
    * This does not takes ownership!
    */
-  GPURenderStateRef(GPURenderStateRaw resource) noexcept
+  constexpr GPURenderStateRef(GPURenderStateRaw resource) noexcept
     : GPURenderState(resource)
   {
   }
@@ -8217,7 +8227,12 @@ struct GPURenderStateRef : GPURenderState
 
   /// Assignment operator.
   constexpr GPURenderStateRef& operator=(
-    const GPURenderStateRef& other) noexcept = default;
+    const GPURenderStateRef& other) noexcept
+  {
+    release();
+    GPURenderState::operator=(GPURenderState(other.get()));
+    return *this;
+  }
 
   /// Converts to GPURenderStateRaw
   constexpr operator GPURenderStateRaw() const noexcept { return get(); }

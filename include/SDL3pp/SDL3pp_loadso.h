@@ -207,7 +207,7 @@ struct SharedObjectRef : SharedObject
    *
    * This does not takes ownership!
    */
-  SharedObjectRef(SharedObjectRaw resource) noexcept
+  constexpr SharedObjectRef(SharedObjectRaw resource) noexcept
     : SharedObject(resource)
   {
   }
@@ -252,8 +252,12 @@ struct SharedObjectRef : SharedObject
   ~SharedObjectRef() { release(); }
 
   /// Assignment operator.
-  constexpr SharedObjectRef& operator=(const SharedObjectRef& other) noexcept =
-    default;
+  constexpr SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
+  {
+    release();
+    SharedObject::operator=(SharedObject(other.get()));
+    return *this;
+  }
 
   /// Converts to SharedObjectRaw
   constexpr operator SharedObjectRaw() const noexcept { return get(); }

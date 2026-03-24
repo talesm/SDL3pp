@@ -514,7 +514,7 @@ struct ProcessRef : Process
    *
    * This does not takes ownership!
    */
-  ProcessRef(ProcessRaw resource) noexcept
+  constexpr ProcessRef(ProcessRaw resource) noexcept
     : Process(resource)
   {
   }
@@ -559,7 +559,12 @@ struct ProcessRef : Process
   ~ProcessRef() { release(); }
 
   /// Assignment operator.
-  constexpr ProcessRef& operator=(const ProcessRef& other) noexcept = default;
+  constexpr ProcessRef& operator=(const ProcessRef& other) noexcept
+  {
+    release();
+    Process::operator=(Process(other.get()));
+    return *this;
+  }
 
   /// Converts to ProcessRaw
   constexpr operator ProcessRaw() const noexcept { return get(); }

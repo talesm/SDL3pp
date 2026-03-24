@@ -698,7 +698,7 @@ struct PropertiesRef : Properties
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesID resource) noexcept
+  constexpr PropertiesRef(PropertiesID resource) noexcept
     : Properties(resource)
   {
   }
@@ -743,8 +743,12 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 
   /// Assignment operator.
-  constexpr PropertiesRef& operator=(const PropertiesRef& other) noexcept =
-    default;
+  constexpr PropertiesRef& operator=(const PropertiesRef& other) noexcept
+  {
+    release();
+    Properties::operator=(Properties(other.get()));
+    return *this;
+  }
 
   /// Converts to PropertiesID
   constexpr operator PropertiesID() const noexcept { return get(); }

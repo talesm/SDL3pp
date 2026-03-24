@@ -1638,7 +1638,7 @@ struct IOStreamRef : IOStream
    *
    * This does not takes ownership!
    */
-  IOStreamRef(IOStreamRaw resource) noexcept
+  constexpr IOStreamRef(IOStreamRaw resource) noexcept
     : IOStream(resource)
   {
   }
@@ -1683,7 +1683,12 @@ struct IOStreamRef : IOStream
   ~IOStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr IOStreamRef& operator=(const IOStreamRef& other) noexcept = default;
+  constexpr IOStreamRef& operator=(const IOStreamRef& other) noexcept
+  {
+    release();
+    IOStream::operator=(IOStream(other.get()));
+    return *this;
+  }
 
   /// Converts to IOStreamRaw
   constexpr operator IOStreamRaw() const noexcept { return get(); }

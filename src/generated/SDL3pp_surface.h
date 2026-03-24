@@ -1917,7 +1917,7 @@ struct SurfaceRef : Surface
    *
    * This does not takes ownership!
    */
-  SurfaceRef(SurfaceRaw resource) noexcept
+  constexpr SurfaceRef(SurfaceRaw resource) noexcept
     : Surface(resource)
   {
   }
@@ -1962,7 +1962,12 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept = default;
+  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept
+  {
+    release();
+    Surface::operator=(Surface(other.get()));
+    return *this;
+  }
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }

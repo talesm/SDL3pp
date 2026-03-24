@@ -466,7 +466,7 @@ struct ThreadRef : Thread
    *
    * This does not takes ownership!
    */
-  ThreadRef(ThreadRaw resource) noexcept
+  constexpr ThreadRef(ThreadRaw resource) noexcept
     : Thread(resource)
   {
   }
@@ -511,7 +511,12 @@ struct ThreadRef : Thread
   ~ThreadRef() { release(); }
 
   /// Assignment operator.
-  constexpr ThreadRef& operator=(const ThreadRef& other) noexcept = default;
+  constexpr ThreadRef& operator=(const ThreadRef& other) noexcept
+  {
+    release();
+    Thread::operator=(Thread(other.get()));
+    return *this;
+  }
 
   /// Converts to ThreadRaw
   constexpr operator ThreadRaw() const noexcept { return get(); }

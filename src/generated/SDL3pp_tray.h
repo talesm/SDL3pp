@@ -306,7 +306,7 @@ struct TrayRef : Tray
    *
    * This does not takes ownership!
    */
-  TrayRef(TrayRaw resource) noexcept
+  constexpr TrayRef(TrayRaw resource) noexcept
     : Tray(resource)
   {
   }
@@ -351,7 +351,12 @@ struct TrayRef : Tray
   ~TrayRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrayRef& operator=(const TrayRef& other) noexcept = default;
+  constexpr TrayRef& operator=(const TrayRef& other) noexcept
+  {
+    release();
+    Tray::operator=(Tray(other.get()));
+    return *this;
+  }
 
   /// Converts to TrayRaw
   constexpr operator TrayRaw() const noexcept { return get(); }

@@ -1188,7 +1188,7 @@ struct JoystickRef : Joystick
    *
    * This does not takes ownership!
    */
-  JoystickRef(JoystickRaw resource) noexcept
+  constexpr JoystickRef(JoystickRaw resource) noexcept
     : Joystick(resource)
   {
   }
@@ -1233,7 +1233,12 @@ struct JoystickRef : Joystick
   ~JoystickRef() { release(); }
 
   /// Assignment operator.
-  constexpr JoystickRef& operator=(const JoystickRef& other) noexcept = default;
+  constexpr JoystickRef& operator=(const JoystickRef& other) noexcept
+  {
+    release();
+    Joystick::operator=(Joystick(other.get()));
+    return *this;
+  }
 
   /// Converts to JoystickRaw
   constexpr operator JoystickRaw() const noexcept { return get(); }
