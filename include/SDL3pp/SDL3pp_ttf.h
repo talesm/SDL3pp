@@ -392,7 +392,7 @@ class Font
 public:
   /// Default ctor
   constexpr Font(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -1892,6 +1892,18 @@ struct FontRef : Font
   {
   }
 
+  /**
+   * Constructs from Font.
+   *
+   * @param resource a Font.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr FontRef(Font&& resource) noexcept
+    : Font(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr FontRef(const FontRef& other) noexcept
     : Font(other.get())
@@ -1900,7 +1912,7 @@ struct FontRef : Font
 
   /// Move constructor.
   constexpr FontRef(FontRef&& other) noexcept
-    : Font(other.release())
+    : Font(other.get())
   {
   }
 
@@ -1908,11 +1920,7 @@ struct FontRef : Font
   ~FontRef() { release(); }
 
   /// Assignment operator.
-  FontRef& operator=(FontRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr FontRef& operator=(const FontRef& other) noexcept = default;
 
   /// Converts to FontRaw
   constexpr operator FontRaw() const noexcept { return get(); }
@@ -3960,7 +3968,7 @@ class TextEngine
 public:
   /// Default ctor
   constexpr TextEngine(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -4288,7 +4296,7 @@ class Text
 public:
   /// Default ctor
   constexpr Text(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -5203,6 +5211,18 @@ struct TextRef : Text
   {
   }
 
+  /**
+   * Constructs from Text.
+   *
+   * @param resource a Text.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr TextRef(Text&& resource) noexcept
+    : Text(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr TextRef(const TextRef& other) noexcept
     : Text(other.get())
@@ -5211,7 +5231,7 @@ struct TextRef : Text
 
   /// Move constructor.
   constexpr TextRef(TextRef&& other) noexcept
-    : Text(other.release())
+    : Text(other.get())
   {
   }
 
@@ -5219,11 +5239,7 @@ struct TextRef : Text
   ~TextRef() { release(); }
 
   /// Assignment operator.
-  TextRef& operator=(TextRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr TextRef& operator=(const TextRef& other) noexcept = default;
 
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }

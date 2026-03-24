@@ -1,5 +1,93 @@
 # Changelog
 
+## Version 0.8.1
+
+Small bugs related shared resource copying and locking.
+
+- Fix bug on copying Surface to SurfaceRef;
+- Fix bug on copying SurfaceRef to Surface;
+- SurfaceLock use Surface instead of SurfaceRef.
+
+## Version 0.8.0
+
+This versions simplifies the handling of resource classes, reducing the number
+of auxiliary classes needed. It also wraps the SDL_mixer API.
+
+- Merge \*Ref with \*Param resource classes into a single class:
+  - Make \*Ref always non-owning
+  - Replace \*Param with \*Ref;
+  - Remove \*Param;
+  - Rename \*ConstRef to \*ConstParam
+- Wrap SDL_mixer;
+- Remove overloading of `*_IO` variants:
+  - SDL::LoadWAV_IO();
+  - SDL::LoadFile_IO();
+  - SDL::SaveFile_IO();
+  - SDL::LoadAVIF_IO
+  - SDL::LoadBMP_IO
+  - SDL::LoadICO_IO
+  - SDL::LoadCUR_IO
+  - SDL::LoadGIF_IO
+  - SDL::LoadJPG_IO
+  - SDL::LoadJXL_IO
+  - SDL::LoadLBM_IO
+  - SDL::LoadPCX_IO
+  - SDL::LoadPNG_IO
+  - SDL::LoadPNM_IO
+  - SDL::LoadSVG_IO
+  - SDL::LoadQOI_IO
+  - SDL::LoadTGA_IO
+  - SDL::LoadTIF_IO
+  - SDL::LoadXCF_IO
+  - SDL::LoadXPM_IO
+  - SDL::LoadXV_IO
+  - SDL::LoadWEBP_IO
+  - SDL::LoadSizedSVG_IO
+- Error handling fixes:
+  - SDL::GetClipboardMimeTypes();
+  - SDL::GetGamepadMappings();
+  - SDL::GetGamepadJoystick();
+  - SDL::AcquireGPUCommandBuffer();
+  - SDL::MapGPUTransferBuffer();
+  - SDL::SubmitGPUCommandBufferAndAcquireFence();
+  - SDL::GetHapticFeatures();
+  - SDL::AttachVirtualJoystick();
+  - SDL::GetMouseNameForID();
+  - SDL::GetPenDeviceType();
+  - SDL::GetRendererName();
+  - SDL::GetRendererFromTexture();
+  - SDL::GetSensorID();
+  - SDL::GetAndroidJNIEnv();
+  - SDL::GetAndroidActivity();
+  - SDL::GetTouchDeviceName();
+  - SDL::CreateAnimationEncoder();
+  - SDL::CreateAnimationEncoder_IO();
+  - SDL::CreateAnimationEncoderWithProperties();
+  - SDL::CreateAnimationDecoder();
+  - SDL::CreateAnimationDecoder_IO();
+  - SDL::CreateAnimationDecoderWithProperties();
+  - SDL::GetGlyphImage();
+  - SDL::GetGlyphImageForIndex();
+- No longer throws:
+  - SDL::GetEventFilter();
+  - SDL::GetWindowFromEvent();
+  - SDL::TryLockMutex();
+  - SDL::TryLockRWLockForReading();
+  - SDL::TryLockRWLockForReading();
+  - SDL::GetRenderMetalLayer();
+  - SDL::GetRenderMetalCommandEncoder();
+  - SDL::GetWindowParent();
+  - SDL::SyncWindow();
+  - SDL::EGL_GetWindowSurface();
+- Fix warnings for default ctors initializing resources as nullptr;
+- Make lock's get() const:
+  - AudioStreamLock.get();
+  - CameraFrame.get();
+  - MixerLock.get();
+  - PropertiesLock.get();
+  - TextureLock.get();
+  - SurfaceLock.get();
+
 ## Version 0.7.4
 
 - Add operator[] to SDL::Palette;

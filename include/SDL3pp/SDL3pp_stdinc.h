@@ -498,7 +498,7 @@ constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 /// Min allowed time representation
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
-#undef FLT_EPSILON
+#ifndef FLT_EPSILON
 
 /**
  * Epsilon constant, used for comparing floating-point numbers.
@@ -509,6 +509,8 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * @since This constant is available since SDL 3.2.0.
  */
 constexpr float FLT_EPSILON = 1.1920928955078125e-07F;
+
+#endif // FLT_EPSILON
 
 /**
  * Concept of interface
@@ -917,7 +919,7 @@ class Environment
 public:
   /// Default ctor
   constexpr Environment(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -1143,6 +1145,18 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /**
+   * Constructs from Environment.
+   *
+   * @param resource a Environment.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr EnvironmentRef(Environment&& resource) noexcept
+    : Environment(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr EnvironmentRef(const EnvironmentRef& other) noexcept
     : Environment(other.get())
@@ -1151,7 +1165,7 @@ struct EnvironmentRef : Environment
 
   /// Move constructor.
   constexpr EnvironmentRef(EnvironmentRef&& other) noexcept
-    : Environment(other.release())
+    : Environment(other.get())
   {
   }
 
@@ -1159,11 +1173,8 @@ struct EnvironmentRef : Environment
   ~EnvironmentRef() { release(); }
 
   /// Assignment operator.
-  EnvironmentRef& operator=(EnvironmentRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr EnvironmentRef& operator=(const EnvironmentRef& other) noexcept =
+    default;
 
   /// Converts to EnvironmentRaw
   constexpr operator EnvironmentRaw() const noexcept { return get(); }
@@ -6093,6 +6104,18 @@ struct IConvRef : IConv
   {
   }
 
+  /**
+   * Constructs from IConv.
+   *
+   * @param resource a IConv.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr IConvRef(IConv&& resource) noexcept
+    : IConv(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr IConvRef(const IConvRef& other) noexcept
     : IConv(other.get())
@@ -6101,7 +6124,7 @@ struct IConvRef : IConv
 
   /// Move constructor.
   constexpr IConvRef(IConvRef&& other) noexcept
-    : IConv(other.release())
+    : IConv(other.get())
   {
   }
 
@@ -6109,11 +6132,7 @@ struct IConvRef : IConv
   ~IConvRef() { release(); }
 
   /// Assignment operator.
-  IConvRef& operator=(IConvRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr IConvRef& operator=(const IConvRef& other) noexcept = default;
 
   /// Converts to IConvRaw
   constexpr operator IConvRaw() const noexcept { return get(); }

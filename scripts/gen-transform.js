@@ -5,7 +5,7 @@ import baseVersions from "./base.json" with { type: 'json' };
  * @import {ApiTransform} from "./cppfier/types"
  */
 
-const currentVersion = ["0", "7", "4"]; // major, minor, patch
+const currentVersion = ["0", "8", "1"]; // major, minor, patch
 
 /** @type {ApiTransform} */
 const transform = {
@@ -8438,96 +8438,7 @@ const transform = {
         "IMG_isANI": {
           since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
         },
-        "IMG_LoadAVIF_IO": {
-          "type": "Surface",
-          "name": "LoadAVIF"
-        },
-        "IMG_LoadBMP_IO": {
-          "type": "Surface",
-          "name": "LoadBMP",
-        },
-        "IMG_LoadICO_IO": {
-          "type": "Surface",
-          "name": "LoadICO"
-        },
-        "IMG_LoadCUR_IO": {
-          "type": "Surface",
-          "name": "LoadCUR"
-        },
-        "IMG_LoadGIF_IO": {
-          "type": "Surface",
-          "name": "LoadGIF"
-        },
-        "IMG_LoadJPG_IO": {
-          "type": "Surface",
-          "name": "LoadJPG"
-        },
-        "IMG_LoadJXL_IO": {
-          "type": "Surface",
-          "name": "LoadJXL"
-        },
-        "IMG_LoadLBM_IO": {
-          "type": "Surface",
-          "name": "LoadLBM"
-        },
-        "IMG_LoadPCX_IO": {
-          "type": "Surface",
-          "name": "LoadPCX"
-        },
-        "IMG_LoadPNG_IO": {
-          "type": "Surface",
-          "name": "LoadPNG"
-        },
-        "IMG_LoadPNM_IO": {
-          "type": "Surface",
-          "name": "LoadPNM"
-        },
-        "IMG_LoadSVG_IO": {
-          "type": "Surface",
-          "name": "LoadSVG"
-        },
-        "IMG_LoadQOI_IO": {
-          "type": "Surface",
-          "name": "LoadQOI"
-        },
-        "IMG_LoadTGA_IO": {
-          "type": "Surface",
-          "name": "LoadTGA"
-        },
-        "IMG_LoadTIF_IO": {
-          "type": "Surface",
-          "name": "LoadTIF"
-        },
-        "IMG_LoadXCF_IO": {
-          "type": "Surface",
-          "name": "LoadXCF"
-        },
-        "IMG_LoadXPM_IO": {
-          "type": "Surface",
-          "name": "LoadXPM"
-        },
-        "IMG_LoadXV_IO": {
-          "type": "Surface",
-          "name": "LoadXV"
-        },
-        "IMG_LoadWEBP_IO": {
-          "type": "Surface",
-          "name": "LoadWEBP"
-        },
-        "IMG_LoadSizedSVG_IO": {
-          "type": "Surface",
-          "name": "LoadSizedSVG"
-        },
-        "IMG_ReadXPMFromArray": {
-          "type": "Surface",
-          "name": "ReadXPMFromArray"
-        },
-        "IMG_ReadXPMFromArrayToRGB888": {
-          "type": "Surface",
-          "name": "ReadXPMFromArrayToRGB888"
-        },
         "IMG_SaveTyped_IO": {
-          name: "SaveTyped",
           parameters: [{}, {}, {
             name: "type",
             type: "StringParam"
@@ -8538,7 +8449,6 @@ const transform = {
           }],
         },
         "IMG_SaveAVIF_IO": {
-          name: "SaveAVIF",
           parameters: [
             {},
             {},
@@ -8547,23 +8457,18 @@ const transform = {
           ]
         },
         "IMG_SaveBMP_IO": {
-          name: "SaveBMP",
           parameters: [{}, {}, { default: "false" }],
         },
         "IMG_SaveCUR_IO": {
-          name: "SaveCUR",
           parameters: [{}, {}, { default: "false" }],
         },
         "IMG_SaveGIF_IO": {
-          name: "SaveGIF",
           parameters: [{}, {}, { default: "false" }],
         },
         "IMG_SaveICO_IO": {
-          name: "SaveICO",
           parameters: [{}, {}, { default: "false" }],
         },
         "IMG_SavePNG_IO": {
-          name: "SavePNG",
           parameters: [
             {},
             {},
@@ -8571,11 +8476,9 @@ const transform = {
           ]
         },
         "IMG_SaveTGA_IO": {
-          name: "SaveTGA",
           parameters: [{}, {}, { default: "false" }],
         },
         "IMG_SaveWEBP_IO": {
-          name: "SaveWEBP",
           parameters: [{}, {}, {
             name: "quality",
             type: "float"
@@ -8586,7 +8489,6 @@ const transform = {
           }],
         },
         "IMG_SaveJPG_IO": {
-          name: "SaveJPG",
           parameters: [
             {},
             {},
@@ -8656,28 +8558,12 @@ const transform = {
             { name: "closeio", type: "bool", default: "false" },
           ]
         },
-        "IMG_LoadANIAnimation_IO": {
-          type: "Animation",
-          name: "LoadANIAnimation"
-        },
-        "IMG_LoadAPNGAnimation_IO": {
-          type: "Animation",
-          name: "LoadAPNGAnimation"
-        },
-        "IMG_LoadAVIFAnimation_IO": {
-          type: "Animation",
-          name: "LoadAVIFAnimation"
-        },
-        "IMG_LoadGIFAnimation_IO": {
-          type: "Animation",
-          name: "LoadGIFAnimation"
-        },
-        "IMG_LoadWEBPAnimation_IO": {
-          type: "Animation",
-          name: "LoadWEBPAnimation"
-        },
+        "IMG_LoadANIAnimation_IO": { type: "Animation" },
+        "IMG_LoadAPNGAnimation_IO": { type: "Animation" },
+        "IMG_LoadAVIFAnimation_IO": { type: "Animation" },
+        "IMG_LoadGIFAnimation_IO": { type: "Animation" },
+        "IMG_LoadWEBPAnimation_IO": { type: "Animation" },
         "IMG_SaveAnimationTyped_IO": {
-          name: "SaveAnimationTyped",
           parameters: [{}, {}, {
             name: "type",
             type: "StringParam"
@@ -8686,21 +8572,10 @@ const transform = {
             type: "bool",
             default: "false"
           }],
-          hints: { methodName: "SaveTyped" },
         },
-        "IMG_SaveANIAnimation_IO": {
-          name: "SaveANIAnimation",
-          hints: { methodName: "SaveANI" },
-          parameters: [{}, {}, { default: "false" }],
-        },
-        "IMG_SaveAPNGAnimation_IO": {
-          name: "SaveAPNGAnimation",
-          hints: { methodName: "SaveAPNG" },
-          parameters: [{}, {}, { default: "false" }],
-        },
+        "IMG_SaveANIAnimation_IO": { parameters: [{}, {}, { default: "false" }] },
+        "IMG_SaveAPNGAnimation_IO": { parameters: [{}, {}, { default: "false" }] },
         "IMG_SaveAVIFAnimation_IO": {
-          name: "SaveAVIFAnimation",
-          hints: { methodName: "SaveAVIF" },
           parameters: [{}, {}, {
             name: "quality",
             type: "int"
@@ -8710,14 +8585,8 @@ const transform = {
             default: "false"
           }],
         },
-        "IMG_SaveGIFAnimation_IO": {
-          name: "SaveGIFAnimation",
-          hints: { methodName: "SaveGIF" },
-          parameters: [{}, {}, { default: "false" }],
-        },
+        "IMG_SaveGIFAnimation_IO": { parameters: [{}, {}, { default: "false" }] },
         "IMG_SaveWEBPAnimation_IO": {
-          name: "SaveWEBPAnimation",
-          hints: { methodName: "SaveWEBP" },
           parameters: [{}, {}, {
             name: "quality",
             type: "int"

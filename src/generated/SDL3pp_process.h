@@ -113,7 +113,7 @@ class Process
 public:
   /// Default ctor
   constexpr Process(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -506,6 +506,18 @@ struct ProcessRef : Process
   {
   }
 
+  /**
+   * Constructs from Process.
+   *
+   * @param resource a Process.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr ProcessRef(Process&& resource) noexcept
+    : Process(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr ProcessRef(const ProcessRef& other) noexcept
     : Process(other.get())
@@ -514,7 +526,7 @@ struct ProcessRef : Process
 
   /// Move constructor.
   constexpr ProcessRef(ProcessRef&& other) noexcept
-    : Process(other.release())
+    : Process(other.get())
   {
   }
 
@@ -522,11 +534,7 @@ struct ProcessRef : Process
   ~ProcessRef() { release(); }
 
   /// Assignment operator.
-  constexpr ProcessRef& operator=(ProcessRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr ProcessRef& operator=(const ProcessRef& other) noexcept = default;
 
   /// Converts to ProcessRaw
   constexpr operator ProcessRaw() const noexcept { return get(); }

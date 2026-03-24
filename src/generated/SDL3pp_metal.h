@@ -185,6 +185,18 @@ struct MetalViewRef : MetalView
   {
   }
 
+  /**
+   * Constructs from MetalView.
+   *
+   * @param resource a MetalView.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr MetalViewRef(MetalView&& resource) noexcept
+    : MetalView(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr MetalViewRef(const MetalViewRef& other) noexcept
     : MetalView(other.get())
@@ -193,7 +205,7 @@ struct MetalViewRef : MetalView
 
   /// Move constructor.
   constexpr MetalViewRef(MetalViewRef&& other) noexcept
-    : MetalView(other.release())
+    : MetalView(other.get())
   {
   }
 
@@ -201,11 +213,8 @@ struct MetalViewRef : MetalView
   ~MetalViewRef() { release(); }
 
   /// Assignment operator.
-  constexpr MetalViewRef& operator=(MetalViewRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr MetalViewRef& operator=(const MetalViewRef& other) noexcept =
+    default;
 
   /// Converts to MetalViewRaw
   constexpr operator MetalViewRaw() const noexcept { return get(); }

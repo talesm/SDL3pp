@@ -709,6 +709,18 @@ struct PropertiesRef : Properties
   {
   }
 
+  /**
+   * Constructs from Properties.
+   *
+   * @param resource a Properties.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr PropertiesRef(Properties&& resource) noexcept
+    : Properties(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr PropertiesRef(const PropertiesRef& other) noexcept
     : Properties(other.get())
@@ -717,7 +729,7 @@ struct PropertiesRef : Properties
 
   /// Move constructor.
   constexpr PropertiesRef(PropertiesRef&& other) noexcept
-    : Properties(other.release())
+    : Properties(other.get())
   {
   }
 
@@ -725,11 +737,8 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 
   /// Assignment operator.
-  constexpr PropertiesRef& operator=(PropertiesRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr PropertiesRef& operator=(const PropertiesRef& other) noexcept =
+    default;
 
   /// Converts to PropertiesID
   constexpr operator PropertiesID() const noexcept { return get(); }
@@ -835,7 +844,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  PropertiesRef get() { return m_lock; }
+  PropertiesRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }

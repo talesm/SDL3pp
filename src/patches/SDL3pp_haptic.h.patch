@@ -59,7 +59,7 @@
  /**
   * Used to play a device an infinite number of times.
   *
-@@ -1273,17 +1287,19 @@
+@@ -1281,17 +1295,19 @@
  /**
   * Get a list of currently connected haptic devices.
   *
@@ -84,7 +84,7 @@
  
  /**
   * Get the implementation dependent name of a haptic device.
-@@ -1350,7 +1366,7 @@
+@@ -1358,7 +1374,7 @@
   */
  inline HapticRef GetHapticFromID(HapticID instance_id)
  {

@@ -139,7 +139,7 @@ class Sensor
 public:
   /// Default ctor
   constexpr Sensor(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -315,6 +315,18 @@ struct SensorRef : Sensor
   {
   }
 
+  /**
+   * Constructs from Sensor.
+   *
+   * @param resource a Sensor.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SensorRef(Sensor&& resource) noexcept
+    : Sensor(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr SensorRef(const SensorRef& other) noexcept
     : Sensor(other.get())
@@ -323,7 +335,7 @@ struct SensorRef : Sensor
 
   /// Move constructor.
   constexpr SensorRef(SensorRef&& other) noexcept
-    : Sensor(other.release())
+    : Sensor(other.get())
   {
   }
 
@@ -331,11 +343,7 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  SensorRef& operator=(SensorRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr SensorRef& operator=(const SensorRef& other) noexcept = default;
 
   /// Converts to SensorRaw
   constexpr operator SensorRaw() const noexcept { return get(); }

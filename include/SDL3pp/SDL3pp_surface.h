@@ -194,7 +194,7 @@ class Surface
 public:
   /// Default ctor
   constexpr Surface(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -222,10 +222,6 @@ public:
     : Surface(other.release())
   {
   }
-
-  constexpr Surface(const SurfaceRef& other) = delete;
-
-  constexpr Surface(SurfaceRef&& other) = delete;
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -1987,6 +1983,18 @@ struct SurfaceRef : Surface
   {
   }
 
+  /**
+   * Constructs from Surface.
+   *
+   * @param resource a Surface.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SurfaceRef(Surface&& resource) noexcept
+    : Surface(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr SurfaceRef(const SurfaceRef& other) noexcept
     : Surface(other.get())
@@ -1995,7 +2003,7 @@ struct SurfaceRef : Surface
 
   /// Move constructor.
   constexpr SurfaceRef(SurfaceRef&& other) noexcept
-    : Surface(other.release())
+    : Surface(other.get())
   {
   }
 
@@ -2003,11 +2011,7 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  SurfaceRef& operator=(SurfaceRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept = default;
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }
@@ -2032,7 +2036,7 @@ struct SurfaceRef : Surface
  */
 class SurfaceLock
 {
-  SurfaceRef m_lock;
+  Surface m_lock;
 
 public:
   /**
@@ -2066,8 +2070,8 @@ public:
   SurfaceLock(const SurfaceLock& other) = delete;
 
   /// Move constructor
-  SurfaceLock(SurfaceLock&& other) noexcept
-    : m_lock(other.m_lock)
+  constexpr SurfaceLock(SurfaceLock&& other) noexcept
+    : m_lock(std::move(other.m_lock))
   {
     other.m_lock = {};
   }
@@ -2274,7 +2278,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  SurfaceRef get() { return m_lock; }
+  SurfaceRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -2739,7 +2743,7 @@ inline void LockSurface(SurfaceRef surface)
 inline SurfaceLock Surface::Lock() { return {SurfaceRef(*this)}; }
 
 inline SurfaceLock::SurfaceLock(SurfaceRef resource)
-  : m_lock(std::move(resource))
+  : m_lock(resource)
 {
   LockSurface(m_lock);
 }
@@ -2772,8 +2776,8 @@ inline void SurfaceLock::reset()
   m_lock = {};
 }
 
-#ifndef SDL3PP_ENABLE_IMAGE
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC) &&                   \
+  SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a BMP or PNG image from a seekable SDL data stream.
@@ -2820,8 +2824,8 @@ inline Surface LoadSurface(StringParam file)
 {
   return Surface{SDL_LoadSurface(file)};
 }
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-#endif // SDL3PP_ENABLE_IMAGE
+
+#endif // !defined(SDL3PP_ENABLE_IMAGE) && SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a BMP image from a seekable SDL data stream.

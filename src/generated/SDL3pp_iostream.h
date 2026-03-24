@@ -107,7 +107,7 @@ class IOStream
 public:
   /// Default ctor
   constexpr IOStream(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -1342,6 +1342,18 @@ struct IOStreamRef : IOStream
   {
   }
 
+  /**
+   * Constructs from IOStream.
+   *
+   * @param resource a IOStream.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr IOStreamRef(IOStream&& resource) noexcept
+    : IOStream(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr IOStreamRef(const IOStreamRef& other) noexcept
     : IOStream(other.get())
@@ -1350,7 +1362,7 @@ struct IOStreamRef : IOStream
 
   /// Move constructor.
   constexpr IOStreamRef(IOStreamRef&& other) noexcept
-    : IOStream(other.release())
+    : IOStream(other.get())
   {
   }
 
@@ -1358,11 +1370,7 @@ struct IOStreamRef : IOStream
   ~IOStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr IOStreamRef& operator=(IOStreamRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr IOStreamRef& operator=(const IOStreamRef& other) noexcept = default;
 
   /// Converts to IOStreamRaw
   constexpr operator IOStreamRaw() const noexcept { return get(); }

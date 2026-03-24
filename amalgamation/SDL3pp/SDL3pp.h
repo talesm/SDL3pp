@@ -1532,10 +1532,10 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #define SDL3PP_MAJOR_VERSION 0
 
 /// The current minor version of SDL3pp wrapper.
-#define SDL3PP_MINOR_VERSION 7
+#define SDL3PP_MINOR_VERSION 8
 
 /// The current patch version of SDL3pp wrapper.
-#define SDL3PP_PATCH_VERSION 4
+#define SDL3PP_PATCH_VERSION 1
 
 /// This is the version number macro for the current SDL3pp wrapper version.
 #define SDL3PP_VERSION                                                         \
@@ -11425,7 +11425,7 @@ class Palette
 public:
   /// Default ctor
   constexpr Palette(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -11453,10 +11453,6 @@ public:
     : Palette(other.release())
   {
   }
-
-  constexpr Palette(const PaletteRef& other) = delete;
-
-  constexpr Palette(PaletteRef&& other) = delete;
 
   /**
    * Create a palette structure with the specified number of color entries.
@@ -11612,6 +11608,18 @@ struct PaletteRef : Palette
   {
   }
 
+  /**
+   * Constructs from Palette.
+   *
+   * @param resource a Palette.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr PaletteRef(Palette&& resource) noexcept
+    : Palette(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr PaletteRef(const PaletteRef& other) noexcept
     : Palette(other.get())
@@ -11620,7 +11628,7 @@ struct PaletteRef : Palette
 
   /// Move constructor.
   constexpr PaletteRef(PaletteRef&& other) noexcept
-    : Palette(other.release())
+    : Palette(other.get())
   {
   }
 
@@ -11628,11 +11636,7 @@ struct PaletteRef : Palette
   ~PaletteRef() { release(); }
 
   /// Assignment operator.
-  PaletteRef& operator=(PaletteRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr PaletteRef& operator=(const PaletteRef& other) noexcept = default;
 
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }
@@ -12808,6 +12812,18 @@ struct PropertiesRef : Properties
   {
   }
 
+  /**
+   * Constructs from Properties.
+   *
+   * @param resource a Properties.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr PropertiesRef(Properties&& resource) noexcept
+    : Properties(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr PropertiesRef(const PropertiesRef& other) noexcept
     : Properties(other.get())
@@ -12816,7 +12832,7 @@ struct PropertiesRef : Properties
 
   /// Move constructor.
   constexpr PropertiesRef(PropertiesRef&& other) noexcept
-    : Properties(other.release())
+    : Properties(other.get())
   {
   }
 
@@ -12824,11 +12840,8 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 
   /// Assignment operator.
-  PropertiesRef& operator=(PropertiesRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr PropertiesRef& operator=(const PropertiesRef& other) noexcept =
+    default;
 
   /// Converts to PropertiesID
   constexpr operator PropertiesID() const noexcept { return get(); }
@@ -12930,7 +12943,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  PropertiesRef get() { return m_lock; }
+  PropertiesRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -14164,7 +14177,7 @@ constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 /// Min allowed time representation
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
-#undef FLT_EPSILON
+#ifndef FLT_EPSILON
 
 /**
  * Epsilon constant, used for comparing floating-point numbers.
@@ -14175,6 +14188,8 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * @since This constant is available since SDL 3.2.0.
  */
 constexpr float FLT_EPSILON = 1.1920928955078125e-07F;
+
+#endif // FLT_EPSILON
 
 /**
  * Concept of interface
@@ -14583,7 +14598,7 @@ class Environment
 public:
   /// Default ctor
   constexpr Environment(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -14809,6 +14824,18 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /**
+   * Constructs from Environment.
+   *
+   * @param resource a Environment.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr EnvironmentRef(Environment&& resource) noexcept
+    : Environment(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr EnvironmentRef(const EnvironmentRef& other) noexcept
     : Environment(other.get())
@@ -14817,7 +14844,7 @@ struct EnvironmentRef : Environment
 
   /// Move constructor.
   constexpr EnvironmentRef(EnvironmentRef&& other) noexcept
-    : Environment(other.release())
+    : Environment(other.get())
   {
   }
 
@@ -14825,11 +14852,8 @@ struct EnvironmentRef : Environment
   ~EnvironmentRef() { release(); }
 
   /// Assignment operator.
-  EnvironmentRef& operator=(EnvironmentRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr EnvironmentRef& operator=(const EnvironmentRef& other) noexcept =
+    default;
 
   /// Converts to EnvironmentRaw
   constexpr operator EnvironmentRaw() const noexcept { return get(); }
@@ -19759,6 +19783,18 @@ struct IConvRef : IConv
   {
   }
 
+  /**
+   * Constructs from IConv.
+   *
+   * @param resource a IConv.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr IConvRef(IConv&& resource) noexcept
+    : IConv(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr IConvRef(const IConvRef& other) noexcept
     : IConv(other.get())
@@ -19767,7 +19803,7 @@ struct IConvRef : IConv
 
   /// Move constructor.
   constexpr IConvRef(IConvRef&& other) noexcept
-    : IConv(other.release())
+    : IConv(other.get())
   {
   }
 
@@ -19775,11 +19811,7 @@ struct IConvRef : IConv
   ~IConvRef() { release(); }
 
   /// Assignment operator.
-  IConvRef& operator=(IConvRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr IConvRef& operator=(const IConvRef& other) noexcept = default;
 
   /// Converts to IConvRaw
   constexpr operator IConvRaw() const noexcept { return get(); }
@@ -20185,7 +20217,7 @@ class AsyncIO
 public:
   /// Default ctor
   constexpr AsyncIO(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -20471,6 +20503,18 @@ struct AsyncIORef : AsyncIO
   {
   }
 
+  /**
+   * Constructs from AsyncIO.
+   *
+   * @param resource a AsyncIO.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AsyncIORef(AsyncIO&& resource) noexcept
+    : AsyncIO(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AsyncIORef(const AsyncIORef& other) noexcept
     : AsyncIO(other.get())
@@ -20479,7 +20523,7 @@ struct AsyncIORef : AsyncIO
 
   /// Move constructor.
   constexpr AsyncIORef(AsyncIORef&& other) noexcept
-    : AsyncIO(other.release())
+    : AsyncIO(other.get())
   {
   }
 
@@ -20487,11 +20531,7 @@ struct AsyncIORef : AsyncIO
   ~AsyncIORef() { release(); }
 
   /// Assignment operator.
-  AsyncIORef& operator=(AsyncIORef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AsyncIORef& operator=(const AsyncIORef& other) noexcept = default;
 
   /// Converts to AsyncIORaw
   constexpr operator AsyncIORaw() const noexcept { return get(); }
@@ -20561,7 +20601,7 @@ class AsyncIOQueue
 public:
   /// Default ctor
   constexpr AsyncIOQueue(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -20833,6 +20873,18 @@ struct AsyncIOQueueRef : AsyncIOQueue
   {
   }
 
+  /**
+   * Constructs from AsyncIOQueue.
+   *
+   * @param resource a AsyncIOQueue.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AsyncIOQueueRef(AsyncIOQueue&& resource) noexcept
+    : AsyncIOQueue(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
     : AsyncIOQueue(other.get())
@@ -20841,7 +20893,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
 
   /// Move constructor.
   constexpr AsyncIOQueueRef(AsyncIOQueueRef&& other) noexcept
-    : AsyncIOQueue(other.release())
+    : AsyncIOQueue(other.get())
   {
   }
 
@@ -20849,11 +20901,8 @@ struct AsyncIOQueueRef : AsyncIOQueue
   ~AsyncIOQueueRef() { release(); }
 
   /// Assignment operator.
-  AsyncIOQueueRef& operator=(AsyncIOQueueRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept =
+    default;
 
   /// Converts to AsyncIOQueueRaw
   constexpr operator AsyncIOQueueRaw() const noexcept { return get(); }
@@ -24178,7 +24227,7 @@ class HidDevice
 public:
   /// Default ctor
   constexpr HidDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -24544,6 +24593,18 @@ struct HidDeviceRef : HidDevice
   {
   }
 
+  /**
+   * Constructs from HidDevice.
+   *
+   * @param resource a HidDevice.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr HidDeviceRef(HidDevice&& resource) noexcept
+    : HidDevice(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr HidDeviceRef(const HidDeviceRef& other) noexcept
     : HidDevice(other.get())
@@ -24552,7 +24613,7 @@ struct HidDeviceRef : HidDevice
 
   /// Move constructor.
   constexpr HidDeviceRef(HidDeviceRef&& other) noexcept
-    : HidDevice(other.release())
+    : HidDevice(other.get())
   {
   }
 
@@ -24560,11 +24621,8 @@ struct HidDeviceRef : HidDevice
   ~HidDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr HidDeviceRef& operator=(HidDeviceRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr HidDeviceRef& operator=(const HidDeviceRef& other) noexcept =
+    default;
 
   /// Converts to HidDeviceRaw
   constexpr operator HidDeviceRaw() const noexcept { return get(); }
@@ -25227,7 +25285,7 @@ class IOStream
 public:
   /// Default ctor
   constexpr IOStream(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -26775,6 +26833,18 @@ struct IOStreamRef : IOStream
   {
   }
 
+  /**
+   * Constructs from IOStream.
+   *
+   * @param resource a IOStream.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr IOStreamRef(IOStream&& resource) noexcept
+    : IOStream(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr IOStreamRef(const IOStreamRef& other) noexcept
     : IOStream(other.get())
@@ -26783,7 +26853,7 @@ struct IOStreamRef : IOStream
 
   /// Move constructor.
   constexpr IOStreamRef(IOStreamRef&& other) noexcept
-    : IOStream(other.release())
+    : IOStream(other.get())
   {
   }
 
@@ -26791,11 +26861,7 @@ struct IOStreamRef : IOStream
   ~IOStreamRef() { release(); }
 
   /// Assignment operator.
-  IOStreamRef& operator=(IOStreamRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr IOStreamRef& operator=(const IOStreamRef& other) noexcept = default;
 
   /// Converts to IOStreamRaw
   constexpr operator IOStreamRaw() const noexcept { return get(); }
@@ -28347,7 +28413,7 @@ class SharedObject
 public:
   /// Default ctor
   constexpr SharedObject(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -28504,6 +28570,18 @@ struct SharedObjectRef : SharedObject
   {
   }
 
+  /**
+   * Constructs from SharedObject.
+   *
+   * @param resource a SharedObject.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SharedObjectRef(SharedObject&& resource) noexcept
+    : SharedObject(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr SharedObjectRef(const SharedObjectRef& other) noexcept
     : SharedObject(other.get())
@@ -28512,7 +28590,7 @@ struct SharedObjectRef : SharedObject
 
   /// Move constructor.
   constexpr SharedObjectRef(SharedObjectRef&& other) noexcept
-    : SharedObject(other.release())
+    : SharedObject(other.get())
   {
   }
 
@@ -28520,11 +28598,8 @@ struct SharedObjectRef : SharedObject
   ~SharedObjectRef() { release(); }
 
   /// Assignment operator.
-  constexpr SharedObjectRef& operator=(SharedObjectRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr SharedObjectRef& operator=(const SharedObjectRef& other) noexcept =
+    default;
 
   /// Converts to SharedObjectRaw
   constexpr operator SharedObjectRaw() const noexcept { return get(); }
@@ -32330,7 +32405,7 @@ class Sensor
 public:
   /// Default ctor
   constexpr Sensor(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -32506,6 +32581,18 @@ struct SensorRef : Sensor
   {
   }
 
+  /**
+   * Constructs from Sensor.
+   *
+   * @param resource a Sensor.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SensorRef(Sensor&& resource) noexcept
+    : Sensor(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr SensorRef(const SensorRef& other) noexcept
     : Sensor(other.get())
@@ -32514,7 +32601,7 @@ struct SensorRef : Sensor
 
   /// Move constructor.
   constexpr SensorRef(SensorRef&& other) noexcept
-    : Sensor(other.release())
+    : Sensor(other.get())
   {
   }
 
@@ -32522,11 +32609,7 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  SensorRef& operator=(SensorRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr SensorRef& operator=(const SensorRef& other) noexcept = default;
 
   /// Converts to SensorRaw
   constexpr operator SensorRaw() const noexcept { return get(); }
@@ -35175,6 +35258,18 @@ struct AudioDeviceRef : AudioDevice
   {
   }
 
+  /**
+   * Constructs from AudioDevice.
+   *
+   * @param resource a AudioDevice.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AudioDeviceRef(AudioDevice&& resource) noexcept
+    : AudioDevice(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept
     : AudioDevice(other.get())
@@ -35183,7 +35278,7 @@ struct AudioDeviceRef : AudioDevice
 
   /// Move constructor.
   constexpr AudioDeviceRef(AudioDeviceRef&& other) noexcept
-    : AudioDevice(other.release())
+    : AudioDevice(other.get())
   {
   }
 
@@ -35191,11 +35286,8 @@ struct AudioDeviceRef : AudioDevice
   ~AudioDeviceRef() { release(); }
 
   /// Assignment operator.
-  AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept =
+    default;
 
   /// Converts to AudioDeviceID
   constexpr operator AudioDeviceID() const noexcept { return get(); }
@@ -35339,7 +35431,7 @@ class AudioStream
 public:
   /// Default ctor
   constexpr AudioStream(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -36631,6 +36723,18 @@ struct AudioStreamRef : AudioStream
   {
   }
 
+  /**
+   * Constructs from AudioStream.
+   *
+   * @param resource a AudioStream.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AudioStreamRef(AudioStream&& resource) noexcept
+    : AudioStream(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AudioStreamRef(const AudioStreamRef& other) noexcept
     : AudioStream(other.get())
@@ -36639,7 +36743,7 @@ struct AudioStreamRef : AudioStream
 
   /// Move constructor.
   constexpr AudioStreamRef(AudioStreamRef&& other) noexcept
-    : AudioStream(other.release())
+    : AudioStream(other.get())
   {
   }
 
@@ -36647,11 +36751,8 @@ struct AudioStreamRef : AudioStream
   ~AudioStreamRef() { release(); }
 
   /// Assignment operator.
-  AudioStreamRef& operator=(AudioStreamRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AudioStreamRef& operator=(const AudioStreamRef& other) noexcept =
+    default;
 
   /// Converts to AudioStreamRaw
   constexpr operator AudioStreamRaw() const noexcept { return get(); }
@@ -36761,7 +36862,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  AudioStreamRef get() { return m_lock; }
+  AudioStreamRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -40316,7 +40417,7 @@ class Process
 public:
   /// Default ctor
   constexpr Process(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -40734,6 +40835,18 @@ struct ProcessRef : Process
   {
   }
 
+  /**
+   * Constructs from Process.
+   *
+   * @param resource a Process.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr ProcessRef(Process&& resource) noexcept
+    : Process(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr ProcessRef(const ProcessRef& other) noexcept
     : Process(other.get())
@@ -40742,7 +40855,7 @@ struct ProcessRef : Process
 
   /// Move constructor.
   constexpr ProcessRef(ProcessRef&& other) noexcept
-    : Process(other.release())
+    : Process(other.get())
   {
   }
 
@@ -40750,11 +40863,7 @@ struct ProcessRef : Process
   ~ProcessRef() { release(); }
 
   /// Assignment operator.
-  ProcessRef& operator=(ProcessRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr ProcessRef& operator=(const ProcessRef& other) noexcept = default;
 
   /// Converts to ProcessRaw
   constexpr operator ProcessRaw() const noexcept { return get(); }
@@ -41432,7 +41541,7 @@ class Storage
 public:
   /// Default ctor
   constexpr Storage(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -41941,6 +42050,18 @@ struct StorageRef : Storage
   {
   }
 
+  /**
+   * Constructs from Storage.
+   *
+   * @param resource a Storage.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr StorageRef(Storage&& resource) noexcept
+    : Storage(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr StorageRef(const StorageRef& other) noexcept
     : Storage(other.get())
@@ -41949,7 +42070,7 @@ struct StorageRef : Storage
 
   /// Move constructor.
   constexpr StorageRef(StorageRef&& other) noexcept
-    : Storage(other.release())
+    : Storage(other.get())
   {
   }
 
@@ -41957,11 +42078,7 @@ struct StorageRef : Storage
   ~StorageRef() { release(); }
 
   /// Assignment operator.
-  constexpr StorageRef& operator=(StorageRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr StorageRef& operator=(const StorageRef& other) noexcept = default;
 
   /// Converts to StorageRaw
   constexpr operator StorageRaw() const noexcept { return get(); }
@@ -42782,7 +42899,7 @@ class Surface
 public:
   /// Default ctor
   constexpr Surface(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -42810,10 +42927,6 @@ public:
     : Surface(other.release())
   {
   }
-
-  constexpr Surface(const SurfaceRef& other) = delete;
-
-  constexpr Surface(SurfaceRef&& other) = delete;
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -44575,6 +44688,18 @@ struct SurfaceRef : Surface
   {
   }
 
+  /**
+   * Constructs from Surface.
+   *
+   * @param resource a Surface.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SurfaceRef(Surface&& resource) noexcept
+    : Surface(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr SurfaceRef(const SurfaceRef& other) noexcept
     : Surface(other.get())
@@ -44583,7 +44708,7 @@ struct SurfaceRef : Surface
 
   /// Move constructor.
   constexpr SurfaceRef(SurfaceRef&& other) noexcept
-    : Surface(other.release())
+    : Surface(other.get())
   {
   }
 
@@ -44591,11 +44716,7 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  SurfaceRef& operator=(SurfaceRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept = default;
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }
@@ -44620,7 +44741,7 @@ struct SurfaceRef : Surface
  */
 class SurfaceLock
 {
-  SurfaceRef m_lock;
+  Surface m_lock;
 
 public:
   /**
@@ -44654,8 +44775,8 @@ public:
   SurfaceLock(const SurfaceLock& other) = delete;
 
   /// Move constructor
-  SurfaceLock(SurfaceLock&& other) noexcept
-    : m_lock(other.m_lock)
+  constexpr SurfaceLock(SurfaceLock&& other) noexcept
+    : m_lock(std::move(other.m_lock))
   {
     other.m_lock = {};
   }
@@ -44862,7 +44983,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  SurfaceRef get() { return m_lock; }
+  SurfaceRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -45327,7 +45448,7 @@ inline void LockSurface(SurfaceRef surface)
 inline SurfaceLock Surface::Lock() { return {SurfaceRef(*this)}; }
 
 inline SurfaceLock::SurfaceLock(SurfaceRef resource)
-  : m_lock(std::move(resource))
+  : m_lock(resource)
 {
   LockSurface(m_lock);
 }
@@ -45360,8 +45481,8 @@ inline void SurfaceLock::reset()
   m_lock = {};
 }
 
-#ifndef SDL3PP_ENABLE_IMAGE
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC) &&                   \
+  SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a BMP or PNG image from a seekable SDL data stream.
@@ -45408,8 +45529,8 @@ inline Surface LoadSurface(StringParam file)
 {
   return Surface{SDL_LoadSurface(file)};
 }
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-#endif // SDL3PP_ENABLE_IMAGE
+
+#endif // !defined(SDL3PP_ENABLE_IMAGE) && SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -47741,7 +47862,7 @@ class Thread
 public:
   /// Default ctor
   constexpr Thread(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -48072,6 +48193,18 @@ struct ThreadRef : Thread
   {
   }
 
+  /**
+   * Constructs from Thread.
+   *
+   * @param resource a Thread.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr ThreadRef(Thread&& resource) noexcept
+    : Thread(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr ThreadRef(const ThreadRef& other) noexcept
     : Thread(other.get())
@@ -48080,7 +48213,7 @@ struct ThreadRef : Thread
 
   /// Move constructor.
   constexpr ThreadRef(ThreadRef&& other) noexcept
-    : Thread(other.release())
+    : Thread(other.get())
   {
   }
 
@@ -48088,11 +48221,7 @@ struct ThreadRef : Thread
   ~ThreadRef() { release(); }
 
   /// Assignment operator.
-  ThreadRef& operator=(ThreadRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr ThreadRef& operator=(const ThreadRef& other) noexcept = default;
 
   /// Converts to ThreadRaw
   constexpr operator ThreadRaw() const noexcept { return get(); }
@@ -48647,7 +48776,7 @@ class Camera
 public:
   /// Default ctor
   constexpr Camera(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -48954,6 +49083,18 @@ struct CameraRef : Camera
   {
   }
 
+  /**
+   * Constructs from Camera.
+   *
+   * @param resource a Camera.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr CameraRef(Camera&& resource) noexcept
+    : Camera(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr CameraRef(const CameraRef& other) noexcept
     : Camera(other.get())
@@ -48962,7 +49103,7 @@ struct CameraRef : Camera
 
   /// Move constructor.
   constexpr CameraRef(CameraRef&& other) noexcept
-    : Camera(other.release())
+    : Camera(other.get())
   {
   }
 
@@ -48970,11 +49111,7 @@ struct CameraRef : Camera
   ~CameraRef() { release(); }
 
   /// Assignment operator.
-  CameraRef& operator=(CameraRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr CameraRef& operator=(const CameraRef& other) noexcept = default;
 
   /// Converts to CameraRaw
   constexpr operator CameraRaw() const noexcept { return get(); }
@@ -49106,7 +49243,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  CameraRef get() { return m_lock; }
+  CameraRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release()
@@ -49656,7 +49793,7 @@ class Mutex
 public:
   /// Default ctor
   constexpr Mutex(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -49860,6 +49997,18 @@ struct MutexRef : Mutex
   {
   }
 
+  /**
+   * Constructs from Mutex.
+   *
+   * @param resource a Mutex.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr MutexRef(Mutex&& resource) noexcept
+    : Mutex(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr MutexRef(const MutexRef& other) noexcept
     : Mutex(other.get())
@@ -49868,7 +50017,7 @@ struct MutexRef : Mutex
 
   /// Move constructor.
   constexpr MutexRef(MutexRef&& other) noexcept
-    : Mutex(other.release())
+    : Mutex(other.get())
   {
   }
 
@@ -49876,11 +50025,7 @@ struct MutexRef : Mutex
   ~MutexRef() { release(); }
 
   /// Assignment operator.
-  constexpr MutexRef& operator=(MutexRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr MutexRef& operator=(const MutexRef& other) noexcept = default;
 
   /// Converts to MutexRaw
   constexpr operator MutexRaw() const noexcept { return get(); }
@@ -50040,7 +50185,7 @@ class RWLock
 public:
   /// Default ctor
   constexpr RWLock(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -50349,6 +50494,18 @@ struct RWLockRef : RWLock
   {
   }
 
+  /**
+   * Constructs from RWLock.
+   *
+   * @param resource a RWLock.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr RWLockRef(RWLock&& resource) noexcept
+    : RWLock(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr RWLockRef(const RWLockRef& other) noexcept
     : RWLock(other.get())
@@ -50357,7 +50514,7 @@ struct RWLockRef : RWLock
 
   /// Move constructor.
   constexpr RWLockRef(RWLockRef&& other) noexcept
-    : RWLock(other.release())
+    : RWLock(other.get())
   {
   }
 
@@ -50365,11 +50522,7 @@ struct RWLockRef : RWLock
   ~RWLockRef() { release(); }
 
   /// Assignment operator.
-  constexpr RWLockRef& operator=(RWLockRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr RWLockRef& operator=(const RWLockRef& other) noexcept = default;
 
   /// Converts to RWLockRaw
   constexpr operator RWLockRaw() const noexcept { return get(); }
@@ -50655,7 +50808,7 @@ class Semaphore
 public:
   /// Default ctor
   constexpr Semaphore(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -50877,6 +51030,18 @@ struct SemaphoreRef : Semaphore
   {
   }
 
+  /**
+   * Constructs from Semaphore.
+   *
+   * @param resource a Semaphore.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SemaphoreRef(Semaphore&& resource) noexcept
+    : Semaphore(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr SemaphoreRef(const SemaphoreRef& other) noexcept
     : Semaphore(other.get())
@@ -50885,7 +51050,7 @@ struct SemaphoreRef : Semaphore
 
   /// Move constructor.
   constexpr SemaphoreRef(SemaphoreRef&& other) noexcept
-    : Semaphore(other.release())
+    : Semaphore(other.get())
   {
   }
 
@@ -50893,11 +51058,8 @@ struct SemaphoreRef : Semaphore
   ~SemaphoreRef() { release(); }
 
   /// Assignment operator.
-  constexpr SemaphoreRef& operator=(SemaphoreRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr SemaphoreRef& operator=(const SemaphoreRef& other) noexcept =
+    default;
 
   /// Converts to SemaphoreRaw
   constexpr operator SemaphoreRaw() const noexcept { return get(); }
@@ -51095,7 +51257,7 @@ class Condition
 public:
   /// Default ctor
   constexpr Condition(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -51303,6 +51465,18 @@ struct ConditionRef : Condition
   {
   }
 
+  /**
+   * Constructs from Condition.
+   *
+   * @param resource a Condition.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr ConditionRef(Condition&& resource) noexcept
+    : Condition(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr ConditionRef(const ConditionRef& other) noexcept
     : Condition(other.get())
@@ -51311,7 +51485,7 @@ struct ConditionRef : Condition
 
   /// Move constructor.
   constexpr ConditionRef(ConditionRef&& other) noexcept
-    : Condition(other.release())
+    : Condition(other.get())
   {
   }
 
@@ -51319,11 +51493,8 @@ struct ConditionRef : Condition
   ~ConditionRef() { release(); }
 
   /// Assignment operator.
-  constexpr ConditionRef& operator=(ConditionRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr ConditionRef& operator=(const ConditionRef& other) noexcept =
+    default;
 
   /// Converts to ConditionRaw
   constexpr operator ConditionRaw() const noexcept { return get(); }
@@ -51811,7 +51982,7 @@ class Tray
 public:
   /// Default ctor
   constexpr Tray(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -52021,6 +52192,18 @@ struct TrayRef : Tray
   {
   }
 
+  /**
+   * Constructs from Tray.
+   *
+   * @param resource a Tray.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr TrayRef(Tray&& resource) noexcept
+    : Tray(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr TrayRef(const TrayRef& other) noexcept
     : Tray(other.get())
@@ -52029,7 +52212,7 @@ struct TrayRef : Tray
 
   /// Move constructor.
   constexpr TrayRef(TrayRef&& other) noexcept
-    : Tray(other.release())
+    : Tray(other.get())
   {
   }
 
@@ -52037,11 +52220,7 @@ struct TrayRef : Tray
   ~TrayRef() { release(); }
 
   /// Assignment operator.
-  TrayRef& operator=(TrayRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr TrayRef& operator=(const TrayRef& other) noexcept = default;
 
   /// Converts to TrayRaw
   constexpr operator TrayRaw() const noexcept { return get(); }
@@ -52197,7 +52376,7 @@ class TrayEntry
 public:
   /// Default ctor
   constexpr TrayEntry(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -53835,7 +54014,7 @@ class Window
 public:
   /// Default ctor
   constexpr Window(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -56224,6 +56403,18 @@ struct WindowRef : Window
   {
   }
 
+  /**
+   * Constructs from Window.
+   *
+   * @param resource a Window.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr WindowRef(Window&& resource) noexcept
+    : Window(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr WindowRef(const WindowRef& other) noexcept
     : Window(other.get())
@@ -56232,7 +56423,7 @@ struct WindowRef : Window
 
   /// Move constructor.
   constexpr WindowRef(WindowRef&& other) noexcept
-    : Window(other.release())
+    : Window(other.get())
   {
   }
 
@@ -56240,11 +56431,7 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 
   /// Assignment operator.
-  WindowRef& operator=(WindowRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr WindowRef& operator=(const WindowRef& other) noexcept = default;
 
   /// Converts to WindowRaw
   constexpr operator WindowRaw() const noexcept { return get(); }
@@ -56377,7 +56564,7 @@ class GLContext
 public:
   /// Default ctor
   constexpr GLContext(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -66219,7 +66406,7 @@ class GPUDevice
 public:
   /// Default ctor
   constexpr GPUDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -67313,6 +67500,18 @@ struct GPUDeviceRef : GPUDevice
   {
   }
 
+  /**
+   * Constructs from GPUDevice.
+   *
+   * @param resource a GPUDevice.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr GPUDeviceRef(GPUDevice&& resource) noexcept
+    : GPUDevice(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr GPUDeviceRef(const GPUDeviceRef& other) noexcept
     : GPUDevice(other.get())
@@ -67321,7 +67520,7 @@ struct GPUDeviceRef : GPUDevice
 
   /// Move constructor.
   constexpr GPUDeviceRef(GPUDeviceRef&& other) noexcept
-    : GPUDevice(other.release())
+    : GPUDevice(other.get())
   {
   }
 
@@ -67329,11 +67528,8 @@ struct GPUDeviceRef : GPUDevice
   ~GPUDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPUDeviceRef& operator=(GPUDeviceRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept =
+    default;
 
   /// Converts to GPUDeviceRaw
   constexpr operator GPUDeviceRaw() const noexcept { return get(); }
@@ -71802,7 +71998,7 @@ class Joystick
 public:
   /// Default ctor
   constexpr Joystick(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -72597,6 +72793,18 @@ struct JoystickRef : Joystick
   {
   }
 
+  /**
+   * Constructs from Joystick.
+   *
+   * @param resource a Joystick.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr JoystickRef(Joystick&& resource) noexcept
+    : Joystick(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr JoystickRef(const JoystickRef& other) noexcept
     : Joystick(other.get())
@@ -72605,7 +72813,7 @@ struct JoystickRef : Joystick
 
   /// Move constructor.
   constexpr JoystickRef(JoystickRef&& other) noexcept
-    : Joystick(other.release())
+    : Joystick(other.get())
   {
   }
 
@@ -72613,11 +72821,7 @@ struct JoystickRef : Joystick
   ~JoystickRef() { release(); }
 
   /// Assignment operator.
-  JoystickRef& operator=(JoystickRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr JoystickRef& operator=(const JoystickRef& other) noexcept = default;
 
   /// Converts to JoystickRaw
   constexpr operator JoystickRaw() const noexcept { return get(); }
@@ -75273,6 +75477,18 @@ struct MetalViewRef : MetalView
   {
   }
 
+  /**
+   * Constructs from MetalView.
+   *
+   * @param resource a MetalView.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr MetalViewRef(MetalView&& resource) noexcept
+    : MetalView(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr MetalViewRef(const MetalViewRef& other) noexcept
     : MetalView(other.get())
@@ -75281,7 +75497,7 @@ struct MetalViewRef : MetalView
 
   /// Move constructor.
   constexpr MetalViewRef(MetalViewRef&& other) noexcept
-    : MetalView(other.release())
+    : MetalView(other.get())
   {
   }
 
@@ -75289,11 +75505,8 @@ struct MetalViewRef : MetalView
   ~MetalViewRef() { release(); }
 
   /// Assignment operator.
-  constexpr MetalViewRef& operator=(MetalViewRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr MetalViewRef& operator=(const MetalViewRef& other) noexcept =
+    default;
 
   /// Converts to MetalViewRaw
   constexpr operator MetalViewRaw() const noexcept { return get(); }
@@ -75520,7 +75733,7 @@ class Cursor
 public:
   /// Default ctor
   constexpr Cursor(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -75747,6 +75960,18 @@ struct CursorRef : Cursor
   {
   }
 
+  /**
+   * Constructs from Cursor.
+   *
+   * @param resource a Cursor.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr CursorRef(Cursor&& resource) noexcept
+    : Cursor(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr CursorRef(const CursorRef& other) noexcept
     : Cursor(other.get())
@@ -75755,7 +75980,7 @@ struct CursorRef : Cursor
 
   /// Move constructor.
   constexpr CursorRef(CursorRef&& other) noexcept
-    : Cursor(other.release())
+    : Cursor(other.get())
   {
   }
 
@@ -75763,11 +75988,7 @@ struct CursorRef : Cursor
   ~CursorRef() { release(); }
 
   /// Assignment operator.
-  constexpr CursorRef& operator=(CursorRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr CursorRef& operator=(const CursorRef& other) noexcept = default;
 
   /// Converts to CursorRaw
   constexpr operator CursorRaw() const noexcept { return get(); }
@@ -76918,7 +77139,7 @@ class Gamepad
 public:
   /// Default ctor
   constexpr Gamepad(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -77687,6 +77908,18 @@ struct GamepadRef : Gamepad
   {
   }
 
+  /**
+   * Constructs from Gamepad.
+   *
+   * @param resource a Gamepad.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr GamepadRef(Gamepad&& resource) noexcept
+    : Gamepad(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr GamepadRef(const GamepadRef& other) noexcept
     : Gamepad(other.get())
@@ -77695,7 +77928,7 @@ struct GamepadRef : Gamepad
 
   /// Move constructor.
   constexpr GamepadRef(GamepadRef&& other) noexcept
-    : Gamepad(other.release())
+    : Gamepad(other.get())
   {
   }
 
@@ -77703,11 +77936,7 @@ struct GamepadRef : Gamepad
   ~GamepadRef() { release(); }
 
   /// Assignment operator.
-  constexpr GamepadRef& operator=(GamepadRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr GamepadRef& operator=(const GamepadRef& other) noexcept = default;
 
   /// Converts to GamepadRaw
   constexpr operator GamepadRaw() const noexcept { return get(); }
@@ -80239,7 +80468,7 @@ class Haptic
 public:
   /// Default ctor
   constexpr Haptic(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -80727,6 +80956,18 @@ struct HapticRef : Haptic
   {
   }
 
+  /**
+   * Constructs from Haptic.
+   *
+   * @param resource a Haptic.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr HapticRef(Haptic&& resource) noexcept
+    : Haptic(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr HapticRef(const HapticRef& other) noexcept
     : Haptic(other.get())
@@ -80735,7 +80976,7 @@ struct HapticRef : Haptic
 
   /// Move constructor.
   constexpr HapticRef(HapticRef&& other) noexcept
-    : Haptic(other.release())
+    : Haptic(other.get())
   {
   }
 
@@ -80743,11 +80984,7 @@ struct HapticRef : Haptic
   ~HapticRef() { release(); }
 
   /// Assignment operator.
-  constexpr HapticRef& operator=(HapticRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr HapticRef& operator=(const HapticRef& other) noexcept = default;
 
   /// Converts to HapticRaw
   constexpr operator HapticRaw() const noexcept { return get(); }
@@ -82444,7 +82681,7 @@ class Renderer
 public:
   /// Default ctor
   constexpr Renderer(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -84552,6 +84789,18 @@ struct RendererRef : Renderer
   {
   }
 
+  /**
+   * Constructs from Renderer.
+   *
+   * @param resource a Renderer.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr RendererRef(Renderer&& resource) noexcept
+    : Renderer(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr RendererRef(const RendererRef& other) noexcept
     : Renderer(other.get())
@@ -84560,7 +84809,7 @@ struct RendererRef : Renderer
 
   /// Move constructor.
   constexpr RendererRef(RendererRef&& other) noexcept
-    : Renderer(other.release())
+    : Renderer(other.get())
   {
   }
 
@@ -84568,11 +84817,7 @@ struct RendererRef : Renderer
   ~RendererRef() { release(); }
 
   /// Assignment operator.
-  RendererRef& operator=(RendererRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr RendererRef& operator=(const RendererRef& other) noexcept = default;
 
   /// Converts to RendererRaw
   constexpr operator RendererRaw() const noexcept { return get(); }
@@ -84597,7 +84842,7 @@ class Texture
 public:
   /// Default ctor
   constexpr Texture(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -84625,10 +84870,6 @@ public:
     : Texture(other.release())
   {
   }
-
-  constexpr Texture(const TextureRef& other) = delete;
-
-  constexpr Texture(TextureRef&& other) = delete;
 
   /**
    * Create a texture for a rendering context.
@@ -85701,6 +85942,18 @@ struct TextureRef : Texture
   {
   }
 
+  /**
+   * Constructs from Texture.
+   *
+   * @param resource a Texture.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr TextureRef(Texture&& resource) noexcept
+    : Texture(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr TextureRef(const TextureRef& other) noexcept
     : Texture(other.get())
@@ -85709,7 +85962,7 @@ struct TextureRef : Texture
 
   /// Move constructor.
   constexpr TextureRef(TextureRef&& other) noexcept
-    : Texture(other.release())
+    : Texture(other.get())
   {
   }
 
@@ -85717,11 +85970,7 @@ struct TextureRef : Texture
   ~TextureRef() { release(); }
 
   /// Assignment operator.
-  TextureRef& operator=(TextureRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr TextureRef& operator=(const TextureRef& other) noexcept = default;
 
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
@@ -85856,7 +86105,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() { return m_lock; }
+  TextureRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -85987,7 +86236,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() { return m_lock; }
+  TextureRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release()
@@ -90445,7 +90694,10 @@ class GPURenderState
 
 public:
   /// Default ctor
-  constexpr GPURenderState() = default;
+  constexpr GPURenderState(std::nullptr_t = nullptr) noexcept
+    : m_resource(nullptr)
+  {
+  }
 
   /**
    * Constructs from GPURenderStateRef.
@@ -90465,7 +90717,7 @@ protected:
 
 public:
   /// Move constructor
-  constexpr GPURenderState(GPURenderState&& other)
+  constexpr GPURenderState(GPURenderState&& other) noexcept
     : GPURenderState(other.release())
   {
   }
@@ -90498,17 +90750,23 @@ public:
   ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
 
   /// Assignment operator.
-  GPURenderState& operator=(GPURenderState other)
+  constexpr GPURenderState& operator=(GPURenderState&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr GPURenderState& operator=(const GPURenderState& other) noexcept =
+    default;
+
+public:
   /// Retrieves underlying GPURenderStateRaw.
-  constexpr GPURenderStateRaw get() const { return m_resource; }
+  constexpr GPURenderStateRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GPURenderStateRaw and clear this.
-  constexpr GPURenderStateRaw release()
+  constexpr GPURenderStateRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -90587,6 +90845,18 @@ struct GPURenderStateRef : GPURenderState
   {
   }
 
+  /**
+   * Constructs from GPURenderState.
+   *
+   * @param resource a GPURenderState.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr GPURenderStateRef(GPURenderState&& resource) noexcept
+    : GPURenderState(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept
     : GPURenderState(other.get())
@@ -90595,7 +90865,7 @@ struct GPURenderStateRef : GPURenderState
 
   /// Move constructor.
   constexpr GPURenderStateRef(GPURenderStateRef&& other) noexcept
-    : GPURenderState(other.release())
+    : GPURenderState(other.get())
   {
   }
 
@@ -90603,11 +90873,8 @@ struct GPURenderStateRef : GPURenderState
   ~GPURenderStateRef() { release(); }
 
   /// Assignment operator.
-  GPURenderStateRef& operator=(GPURenderStateRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr GPURenderStateRef& operator=(
+    const GPURenderStateRef& other) noexcept = default;
 
   /// Converts to GPURenderStateRaw
   constexpr operator GPURenderStateRaw() const noexcept { return get(); }
@@ -92399,7 +92666,7 @@ class Mixer
 public:
   /// Default ctor
   constexpr Mixer(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -93522,6 +93789,18 @@ struct MixerRef : Mixer
   {
   }
 
+  /**
+   * Constructs from Mixer.
+   *
+   * @param resource a Mixer.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr MixerRef(Mixer&& resource) noexcept
+    : Mixer(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr MixerRef(const MixerRef& other) noexcept
     : Mixer(other.get())
@@ -93530,7 +93809,7 @@ struct MixerRef : Mixer
 
   /// Move constructor.
   constexpr MixerRef(MixerRef&& other) noexcept
-    : Mixer(other.release())
+    : Mixer(other.get())
   {
   }
 
@@ -93538,11 +93817,7 @@ struct MixerRef : Mixer
   ~MixerRef() { release(); }
 
   /// Assignment operator.
-  constexpr MixerRef& operator=(MixerRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr MixerRef& operator=(const MixerRef& other) noexcept = default;
 
   /// Converts to MixerRaw
   constexpr operator MixerRaw() const noexcept { return get(); }
@@ -93706,7 +93981,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  MixerRef get() { return m_lock; }
+  MixerRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -93735,7 +94010,7 @@ class Audio
 public:
   /// Default ctor
   constexpr Audio(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -94203,6 +94478,18 @@ struct AudioRef : Audio
   {
   }
 
+  /**
+   * Constructs from Audio.
+   *
+   * @param resource a Audio.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AudioRef(Audio&& resource) noexcept
+    : Audio(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AudioRef(const AudioRef& other) noexcept
     : Audio(other.get())
@@ -94211,7 +94498,7 @@ struct AudioRef : Audio
 
   /// Move constructor.
   constexpr AudioRef(AudioRef&& other) noexcept
-    : Audio(other.release())
+    : Audio(other.get())
   {
   }
 
@@ -94219,11 +94506,7 @@ struct AudioRef : Audio
   ~AudioRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioRef& operator=(AudioRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AudioRef& operator=(const AudioRef& other) noexcept = default;
 
   /// Converts to AudioRaw
   constexpr operator AudioRaw() const noexcept { return get(); }
@@ -94408,7 +94691,7 @@ class Track
 public:
   /// Default ctor
   constexpr Track(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -95755,6 +96038,18 @@ struct TrackRef : Track
   {
   }
 
+  /**
+   * Constructs from Track.
+   *
+   * @param resource a Track.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr TrackRef(Track&& resource) noexcept
+    : Track(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr TrackRef(const TrackRef& other) noexcept
     : Track(other.get())
@@ -95763,7 +96058,7 @@ struct TrackRef : Track
 
   /// Move constructor.
   constexpr TrackRef(TrackRef&& other) noexcept
-    : Track(other.release())
+    : Track(other.get())
   {
   }
 
@@ -95771,11 +96066,7 @@ struct TrackRef : Track
   ~TrackRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrackRef& operator=(TrackRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr TrackRef& operator=(const TrackRef& other) noexcept = default;
 
   /// Converts to TrackRaw
   constexpr operator TrackRaw() const noexcept { return get(); }
@@ -95879,7 +96170,7 @@ class Group
 public:
   /// Default ctor
   constexpr Group(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -96081,6 +96372,18 @@ struct GroupRef : Group
   {
   }
 
+  /**
+   * Constructs from Group.
+   *
+   * @param resource a Group.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr GroupRef(Group&& resource) noexcept
+    : Group(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr GroupRef(const GroupRef& other) noexcept
     : Group(other.get())
@@ -96089,7 +96392,7 @@ struct GroupRef : Group
 
   /// Move constructor.
   constexpr GroupRef(GroupRef&& other) noexcept
-    : Group(other.release())
+    : Group(other.get())
   {
   }
 
@@ -96097,11 +96400,7 @@ struct GroupRef : Group
   ~GroupRef() { release(); }
 
   /// Assignment operator.
-  constexpr GroupRef& operator=(GroupRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr GroupRef& operator=(const GroupRef& other) noexcept = default;
 
   /// Converts to GroupRaw
   constexpr operator GroupRaw() const noexcept { return get(); }
@@ -99726,7 +100025,7 @@ class AudioDecoder
 public:
   /// Default ctor
   constexpr AudioDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -99973,6 +100272,18 @@ struct AudioDecoderRef : AudioDecoder
   {
   }
 
+  /**
+   * Constructs from AudioDecoder.
+   *
+   * @param resource a AudioDecoder.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AudioDecoderRef(AudioDecoder&& resource) noexcept
+    : AudioDecoder(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AudioDecoderRef(const AudioDecoderRef& other) noexcept
     : AudioDecoder(other.get())
@@ -99981,7 +100292,7 @@ struct AudioDecoderRef : AudioDecoder
 
   /// Move constructor.
   constexpr AudioDecoderRef(AudioDecoderRef&& other) noexcept
-    : AudioDecoder(other.release())
+    : AudioDecoder(other.get())
   {
   }
 
@@ -99989,11 +100300,8 @@ struct AudioDecoderRef : AudioDecoder
   ~AudioDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDecoderRef& operator=(AudioDecoderRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept =
+    default;
 
   /// Converts to AudioDecoderRaw
   constexpr operator AudioDecoderRaw() const noexcept { return get(); }
@@ -101630,26 +101938,26 @@ inline bool isXV(IOStreamRef src) { return IMG_isXV(src); }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadAVIF(IOStreamRef src)
+inline Surface LoadAVIF_IO(IOStreamRef src)
 {
   return Surface(IMG_LoadAVIF_IO(src));
 }
@@ -101667,26 +101975,29 @@ inline Surface LoadAVIF(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadBMP(IOStreamRef src) { return Surface{IMG_LoadBMP_IO(src)}; }
+inline Surface LoadBMP_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadBMP_IO(src)};
+}
 
 /**
  * Load a CUR image directly.
@@ -101701,26 +102012,29 @@ inline Surface LoadBMP(IOStreamRef src) { return Surface{IMG_LoadBMP_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadCUR(IOStreamRef src) { return Surface{IMG_LoadCUR_IO(src)}; }
+inline Surface LoadCUR_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadCUR_IO(src)};
+}
 
 /**
  * Load a GIF image directly.
@@ -101735,26 +102049,29 @@ inline Surface LoadCUR(IOStreamRef src) { return Surface{IMG_LoadCUR_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadGIF(IOStreamRef src) { return Surface{IMG_LoadGIF_IO(src)}; }
+inline Surface LoadGIF_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadGIF_IO(src)};
+}
 
 /**
  * Load a ICO image directly.
@@ -101769,26 +102086,29 @@ inline Surface LoadGIF(IOStreamRef src) { return Surface{IMG_LoadGIF_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadICO(IOStreamRef src) { return Surface{IMG_LoadICO_IO(src)}; }
+inline Surface LoadICO_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadICO_IO(src)};
+}
 
 /**
  * Load a JPG image directly.
@@ -101803,26 +102123,29 @@ inline Surface LoadICO(IOStreamRef src) { return Surface{IMG_LoadICO_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadJPG(IOStreamRef src) { return Surface{IMG_LoadJPG_IO(src)}; }
+inline Surface LoadJPG_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadJPG_IO(src)};
+}
 
 /**
  * Load a JXL image directly.
@@ -101837,26 +102160,29 @@ inline Surface LoadJPG(IOStreamRef src) { return Surface{IMG_LoadJPG_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadJXL(IOStreamRef src) { return Surface{IMG_LoadJXL_IO(src)}; }
+inline Surface LoadJXL_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadJXL_IO(src)};
+}
 
 /**
  * Load a LBM image directly.
@@ -101871,26 +102197,29 @@ inline Surface LoadJXL(IOStreamRef src) { return Surface{IMG_LoadJXL_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadLBM(IOStreamRef src) { return Surface{IMG_LoadLBM_IO(src)}; }
+inline Surface LoadLBM_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadLBM_IO(src)};
+}
 
 /**
  * Load a PCX image directly.
@@ -101905,26 +102234,29 @@ inline Surface LoadLBM(IOStreamRef src) { return Surface{IMG_LoadLBM_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadPCX(IOStreamRef src) { return Surface{IMG_LoadPCX_IO(src)}; }
+inline Surface LoadPCX_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadPCX_IO(src)};
+}
 
 /**
  * Load a PNG image directly.
@@ -101939,26 +102271,29 @@ inline Surface LoadPCX(IOStreamRef src) { return Surface{IMG_LoadPCX_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadPNG(IOStreamRef src) { return Surface{IMG_LoadPNG_IO(src)}; }
+inline Surface LoadPNG_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadPNG_IO(src)};
+}
 
 /**
  * Load a PNM image directly.
@@ -101973,26 +102308,29 @@ inline Surface LoadPNG(IOStreamRef src) { return Surface{IMG_LoadPNG_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadPNM(IOStreamRef src) { return Surface{IMG_LoadPNM_IO(src)}; }
+inline Surface LoadPNM_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadPNM_IO(src)};
+}
 
 /**
  * Load a SVG image directly.
@@ -102007,27 +102345,30 @@ inline Surface LoadPNM(IOStreamRef src) { return Surface{IMG_LoadPNM_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSizedSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSizedSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadSVG(IOStreamRef src) { return Surface{IMG_LoadSVG_IO(src)}; }
+inline Surface LoadSVG_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadSVG_IO(src)};
+}
 
 /**
  * Load an SVG image, scaled to a specific size.
@@ -102047,9 +102388,9 @@ inline Surface LoadSVG(IOStreamRef src) { return Surface{IMG_LoadSVG_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadSVG
+ * @sa LoadSVG_IO
  */
-inline Surface LoadSizedSVG(IOStreamRef src, const PointRaw& size)
+inline Surface LoadSizedSVG_IO(IOStreamRef src, const PointRaw& size)
 {
   return Surface{IMG_LoadSizedSVG_IO(src, size.x, size.y)};
 }
@@ -102067,26 +102408,29 @@ inline Surface LoadSizedSVG(IOStreamRef src, const PointRaw& size)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadQOI(IOStreamRef src) { return Surface{IMG_LoadQOI_IO(src)}; }
+inline Surface LoadQOI_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadQOI_IO(src)};
+}
 
 /**
  * Load a TGA image directly.
@@ -102101,26 +102445,29 @@ inline Surface LoadQOI(IOStreamRef src) { return Surface{IMG_LoadQOI_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadTGA(IOStreamRef src) { return Surface{IMG_LoadTGA_IO(src)}; }
+inline Surface LoadTGA_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadTGA_IO(src)};
+}
 
 /**
  * Load a TIFF image directly.
@@ -102135,26 +102482,29 @@ inline Surface LoadTGA(IOStreamRef src) { return Surface{IMG_LoadTGA_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadTIF(IOStreamRef src) { return Surface{IMG_LoadTIF_IO(src)}; }
+inline Surface LoadTIF_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadTIF_IO(src)};
+}
 
 /**
  * Load a WEBP image directly.
@@ -102169,26 +102519,26 @@ inline Surface LoadTIF(IOStreamRef src) { return Surface{IMG_LoadTIF_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadWEBP(IOStreamRef src)
+inline Surface LoadWEBP_IO(IOStreamRef src)
 {
   return Surface{IMG_LoadWEBP_IO(src)};
 }
@@ -102206,26 +102556,29 @@ inline Surface LoadWEBP(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadXCF(IOStreamRef src) { return Surface{IMG_LoadXCF_IO(src)}; }
+inline Surface LoadXCF_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadXCF_IO(src)};
+}
 
 /**
  * Load a XPM image directly.
@@ -102240,26 +102593,29 @@ inline Surface LoadXCF(IOStreamRef src) { return Surface{IMG_LoadXCF_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadXPM(IOStreamRef src) { return Surface{IMG_LoadXPM_IO(src)}; }
+inline Surface LoadXPM_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadXPM_IO(src)};
+}
 
 /**
  * Load a XV image directly.
@@ -102274,26 +102630,29 @@ inline Surface LoadXPM(IOStreamRef src) { return Surface{IMG_LoadXPM_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
  */
-inline Surface LoadXV(IOStreamRef src) { return Surface{IMG_LoadXV_IO(src)}; }
+inline Surface LoadXV_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadXV_IO(src)};
+}
 
 /**
  * Load an XPM image from a memory array.
@@ -102347,7 +102706,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveTyped
+ * @sa SaveTyped_IO
  * @sa SaveAVIF
  * @sa SaveBMP
  * @sa SaveCUR
@@ -102384,20 +102743,20 @@ inline void Save(SurfaceRef surface, StringParam file)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Save
- * @sa SaveAVIF
- * @sa SaveBMP
- * @sa SaveCUR
- * @sa SaveGIF
- * @sa SaveICO
- * @sa SaveJPG
- * @sa SavePNG
- * @sa SaveTGA
- * @sa SaveWEBP
+ * @sa SaveAVIF_IO
+ * @sa SaveBMP_IO
+ * @sa SaveCUR_IO
+ * @sa SaveGIF_IO
+ * @sa SaveICO_IO
+ * @sa SaveJPG_IO
+ * @sa SavePNG_IO
+ * @sa SaveTGA_IO
+ * @sa SaveWEBP_IO
  */
-inline void SaveTyped(SurfaceRef surface,
-                      IOStreamRef dst,
-                      StringParam type,
-                      bool closeio = false)
+inline void SaveTyped_IO(SurfaceRef surface,
+                         IOStreamRef dst,
+                         StringParam type,
+                         bool closeio = false)
 {
   CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
 }
@@ -102417,7 +102776,7 @@ inline void SaveTyped(SurfaceRef surface,
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa SaveAVIF
+ * @sa SaveAVIF_IO
  */
 inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
 {
@@ -102444,10 +102803,10 @@ inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
  *
  * @sa SaveAVIF
  */
-inline void SaveAVIF(SurfaceRef surface,
-                     IOStreamRef dst,
-                     int quality,
-                     bool closeio = false)
+inline void SaveAVIF_IO(SurfaceRef surface,
+                        IOStreamRef dst,
+                        int quality,
+                        bool closeio = false)
 {
   CheckError(IMG_SaveAVIF_IO(surface, dst, closeio, quality));
 }
@@ -102465,7 +102824,7 @@ inline void SaveAVIF(SurfaceRef surface,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveBMP
+ * @sa SaveBMP_IO
  */
 inline void SaveBMP(SurfaceRef surface, StringParam file)
 {
@@ -102490,7 +102849,9 @@ inline void SaveBMP(SurfaceRef surface, StringParam file)
  *
  * @sa SaveBMP
  */
-inline void SaveBMP(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveBMP_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveBMP_IO(surface, dst, closeio));
 }
@@ -102506,7 +102867,7 @@ inline void SaveBMP(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveCUR
+ * @sa SaveCUR_IO
  */
 inline void SaveCUR(SurfaceRef surface, StringParam file)
 {
@@ -102531,7 +102892,9 @@ inline void SaveCUR(SurfaceRef surface, StringParam file)
  *
  * @sa SaveCUR
  */
-inline void SaveCUR(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveCUR_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveCUR_IO(surface, dst, closeio));
 }
@@ -102547,7 +102910,7 @@ inline void SaveCUR(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveGIF
+ * @sa SaveGIF_IO
  */
 inline void SaveGIF(SurfaceRef surface, StringParam file)
 {
@@ -102572,7 +102935,9 @@ inline void SaveGIF(SurfaceRef surface, StringParam file)
  *
  * @sa SaveGIF
  */
-inline void SaveGIF(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveGIF_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveGIF_IO(surface, dst, closeio));
 }
@@ -102588,7 +102953,7 @@ inline void SaveGIF(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveICO
+ * @sa SaveICO_IO
  */
 inline void SaveICO(SurfaceRef surface, StringParam file)
 {
@@ -102613,7 +102978,9 @@ inline void SaveICO(SurfaceRef surface, StringParam file)
  *
  * @sa SaveICO
  */
-inline void SaveICO(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveICO_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveICO_IO(surface, dst, closeio));
 }
@@ -102633,7 +103000,7 @@ inline void SaveICO(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa SaveJPG
+ * @sa SaveJPG_IO
  */
 inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
 {
@@ -102660,10 +103027,10 @@ inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
  *
  * @sa SaveJPG
  */
-inline void SaveJPG(SurfaceRef surface,
-                    IOStreamRef dst,
-                    int quality,
-                    bool closeio = false)
+inline void SaveJPG_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       int quality,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
 }
@@ -102679,7 +103046,7 @@ inline void SaveJPG(SurfaceRef surface,
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa SavePNG
+ * @sa SavePNG_IO
  */
 inline void SavePNG(SurfaceRef surface, StringParam file)
 {
@@ -102704,7 +103071,9 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
  *
  * @sa SavePNG
  */
-inline void SavePNG(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SavePNG_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
 }
@@ -102722,7 +103091,7 @@ inline void SavePNG(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveTGA
+ * @sa SaveTGA_IO
  */
 inline void SaveTGA(SurfaceRef surface, StringParam file)
 {
@@ -102747,7 +103116,9 @@ inline void SaveTGA(SurfaceRef surface, StringParam file)
  *
  * @sa SaveTGA
  */
-inline void SaveTGA(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveTGA_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveTGA_IO(surface, dst, closeio));
 }
@@ -102767,7 +103138,7 @@ inline void SaveTGA(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveWEBP
+ * @sa SaveWEBP_IO
  */
 inline void SaveWEBP(SurfaceRef surface, StringParam file, float quality)
 {
@@ -102796,10 +103167,10 @@ inline void SaveWEBP(SurfaceRef surface, StringParam file, float quality)
  *
  * @sa SaveWEBP
  */
-inline void SaveWEBP(SurfaceRef surface,
-                     IOStreamRef dst,
-                     float quality,
-                     bool closeio = false)
+inline void SaveWEBP_IO(SurfaceRef surface,
+                        IOStreamRef dst,
+                        float quality,
+                        bool closeio = false)
 {
   CheckError(IMG_SaveWEBP_IO(surface, dst, closeio, quality));
 }
@@ -102818,7 +103189,7 @@ class Animation
 public:
   /// Default ctor
   constexpr Animation(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -102863,11 +103234,11 @@ public:
    * @sa Animation.CreateCursor
    * @sa Animation.Animation
    * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation
-   * @sa LoadAPNGAnimation
-   * @sa LoadAVIFAnimation
-   * @sa LoadGIFAnimation
-   * @sa LoadWEBPAnimation
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
    * @sa Animation.Free
    */
   Animation(StringParam file);
@@ -102892,11 +103263,11 @@ public:
    * @sa Animation.CreateCursor
    * @sa Animation.Animation
    * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation
-   * @sa LoadAPNGAnimation
-   * @sa LoadAVIFAnimation
-   * @sa LoadGIFAnimation
-   * @sa LoadWEBPAnimation
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
    * @sa Animation.Free
    */
   Animation(IOStreamRef src, bool closeio = false);
@@ -102955,11 +103326,11 @@ public:
    * @sa Animation.Animation
    * @sa Animation.Animation
    * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation
-   * @sa LoadAPNGAnimation
-   * @sa LoadAVIFAnimation
-   * @sa LoadGIFAnimation
-   * @sa LoadWEBPAnimation
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
    */
   void Free();
 
@@ -103001,12 +103372,12 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
   void Save(StringParam file);
 
@@ -103030,13 +103401,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveTyped(IOStreamRef dst, StringParam type, bool closeio = false);
+  void SaveTyped_IO(IOStreamRef dst, StringParam type, bool closeio = false);
 
   /**
    * Save an animation in ANI format to an IOStream.
@@ -103052,13 +103423,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveANI(IOStreamRef dst, bool closeio = false);
+  void SaveANI_IO(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in APNG format to an IOStream.
@@ -103074,13 +103445,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveAPNG(IOStreamRef dst, bool closeio = false);
+  void SaveAPNG_IO(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in AVIF format to an IOStream.
@@ -103098,13 +103469,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveAVIF(IOStreamRef dst, int quality, bool closeio = false);
+  void SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio = false);
 
   /**
    * Save an animation in GIF format to an IOStream.
@@ -103120,13 +103491,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveGIF(IOStreamRef dst, bool closeio = false);
+  void SaveGIF_IO(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in WEBP format to an IOStream.
@@ -103146,13 +103517,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
    */
-  void SaveWEBP(IOStreamRef dst, int quality, bool closeio = false);
+  void SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio = false);
 
   /**
    * Create an animated cursor from an animation.
@@ -103205,6 +103576,18 @@ struct AnimationRef : Animation
   {
   }
 
+  /**
+   * Constructs from Animation.
+   *
+   * @param resource a Animation.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AnimationRef(Animation&& resource) noexcept
+    : Animation(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AnimationRef(const AnimationRef& other) noexcept
     : Animation(other.get())
@@ -103213,7 +103596,7 @@ struct AnimationRef : Animation
 
   /// Move constructor.
   constexpr AnimationRef(AnimationRef&& other) noexcept
-    : Animation(other.release())
+    : Animation(other.get())
   {
   }
 
@@ -103221,11 +103604,8 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 
   /// Assignment operator.
-  AnimationRef& operator=(AnimationRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AnimationRef& operator=(const AnimationRef& other) noexcept =
+    default;
 
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
@@ -103312,11 +103692,11 @@ inline int Animation::GetDelay(int index) const
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
 inline Animation LoadAnimation(StringParam file)
@@ -103354,11 +103734,11 @@ inline Animation::Animation(IOStreamRef src, bool closeio)
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
 inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
@@ -103393,11 +103773,11 @@ inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa Animation.Animation
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
 inline Animation LoadAnimationTyped_IO(IOStreamRef src,
@@ -103429,13 +103809,13 @@ inline Animation LoadAnimationTyped_IO(IOStreamRef src,
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadANIAnimation(IOStreamRef src)
+inline Animation LoadANIAnimation_IO(IOStreamRef src)
 {
   return Animation(IMG_LoadANIAnimation_IO(src));
 }
@@ -103460,13 +103840,13 @@ inline Animation LoadANIAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadAPNGAnimation(IOStreamRef src)
+inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
 {
   return Animation(IMG_LoadAPNGAnimation_IO(src));
 }
@@ -103491,13 +103871,13 @@ inline Animation LoadAPNGAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadAVIFAnimation(IOStreamRef src)
+inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
 {
   return Animation(IMG_LoadAVIFAnimation_IO(src));
 }
@@ -103521,13 +103901,13 @@ inline Animation LoadAVIFAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadGIFAnimation(IOStreamRef src)
+inline Animation LoadGIFAnimation_IO(IOStreamRef src)
 {
   return Animation(IMG_LoadGIFAnimation_IO(src));
 }
@@ -103549,13 +103929,13 @@ inline Animation LoadGIFAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadWEBPAnimation(IOStreamRef src)
+inline Animation LoadWEBPAnimation_IO(IOStreamRef src)
 {
   return Animation{IMG_LoadWEBPAnimation_IO(src)};
 }
@@ -103573,12 +103953,12 @@ inline Animation LoadWEBPAnimation(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
 inline void SaveAnimation(AnimationRef anim, StringParam file)
 {
@@ -103610,25 +103990,25 @@ inline void Animation::Save(StringParam file)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveAnimationTyped(AnimationRef anim,
-                               IOStreamRef dst,
-                               StringParam type,
-                               bool closeio = false)
+inline void SaveAnimationTyped_IO(AnimationRef anim,
+                                  IOStreamRef dst,
+                                  StringParam type,
+                                  bool closeio = false)
 {
   CheckError(IMG_SaveAnimationTyped_IO(anim, dst, closeio, type));
 }
 
-inline void Animation::SaveTyped(IOStreamRef dst,
-                                 StringParam type,
-                                 bool closeio)
+inline void Animation::SaveTyped_IO(IOStreamRef dst,
+                                    StringParam type,
+                                    bool closeio)
 {
-  SDL::SaveAnimationTyped(m_resource, dst, std::move(type), closeio);
+  SDL::SaveAnimationTyped_IO(m_resource, dst, std::move(type), closeio);
 }
 
 /**
@@ -103646,22 +104026,22 @@ inline void Animation::SaveTyped(IOStreamRef dst,
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveANIAnimation(AnimationRef anim,
-                             IOStreamRef dst,
-                             bool closeio = false)
+inline void SaveANIAnimation_IO(AnimationRef anim,
+                                IOStreamRef dst,
+                                bool closeio = false)
 {
   CheckError(IMG_SaveANIAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveANI(IOStreamRef dst, bool closeio)
+inline void Animation::SaveANI_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveANIAnimation(m_resource, dst, closeio);
+  SDL::SaveANIAnimation_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -103679,22 +104059,22 @@ inline void Animation::SaveANI(IOStreamRef dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveAPNGAnimation(AnimationRef anim,
-                              IOStreamRef dst,
-                              bool closeio = false)
+inline void SaveAPNGAnimation_IO(AnimationRef anim,
+                                 IOStreamRef dst,
+                                 bool closeio = false)
 {
   CheckError(IMG_SaveAPNGAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveAPNG(IOStreamRef dst, bool closeio)
+inline void Animation::SaveAPNG_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveAPNGAnimation(m_resource, dst, closeio);
+  SDL::SaveAPNGAnimation_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -103714,23 +104094,23 @@ inline void Animation::SaveAPNG(IOStreamRef dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveAVIFAnimation(AnimationRef anim,
-                              IOStreamRef dst,
-                              int quality,
-                              bool closeio = false)
+inline void SaveAVIFAnimation_IO(AnimationRef anim,
+                                 IOStreamRef dst,
+                                 int quality,
+                                 bool closeio = false)
 {
   CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, quality, closeio));
 }
 
-inline void Animation::SaveAVIF(IOStreamRef dst, int quality, bool closeio)
+inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
 {
-  SDL::SaveAVIFAnimation(m_resource, dst, quality, closeio);
+  SDL::SaveAVIFAnimation_IO(m_resource, dst, quality, closeio);
 }
 
 /**
@@ -103748,22 +104128,22 @@ inline void Animation::SaveAVIF(IOStreamRef dst, int quality, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveGIFAnimation(AnimationRef anim,
-                             IOStreamRef dst,
-                             bool closeio = false)
+inline void SaveGIFAnimation_IO(AnimationRef anim,
+                                IOStreamRef dst,
+                                bool closeio = false)
 {
   CheckError(IMG_SaveGIFAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveGIF(IOStreamRef dst, bool closeio)
+inline void Animation::SaveGIF_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveGIFAnimation(m_resource, dst, closeio);
+  SDL::SaveGIFAnimation_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -103785,23 +104165,23 @@ inline void Animation::SaveGIF(IOStreamRef dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
  */
-inline void SaveWEBPAnimation(AnimationRef anim,
-                              IOStreamRef dst,
-                              int quality,
-                              bool closeio = false)
+inline void SaveWEBPAnimation_IO(AnimationRef anim,
+                                 IOStreamRef dst,
+                                 int quality,
+                                 bool closeio = false)
 {
   CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, quality, closeio));
 }
 
-inline void Animation::SaveWEBP(IOStreamRef dst, int quality, bool closeio)
+inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
 {
-  SDL::SaveWEBPAnimation(m_resource, dst, quality, closeio);
+  SDL::SaveWEBPAnimation_IO(m_resource, dst, quality, closeio);
 }
 
 /**
@@ -103843,11 +104223,11 @@ inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  */
 inline void FreeAnimation(AnimationRaw anim) { IMG_FreeAnimation(anim); }
 
@@ -103867,7 +104247,7 @@ class AnimationEncoder
 public:
   /// Default ctor
   constexpr AnimationEncoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -104109,6 +104489,18 @@ struct AnimationEncoderRef : AnimationEncoder
   {
   }
 
+  /**
+   * Constructs from AnimationEncoder.
+   *
+   * @param resource a AnimationEncoder.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AnimationEncoderRef(AnimationEncoder&& resource) noexcept
+    : AnimationEncoder(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept
     : AnimationEncoder(other.get())
@@ -104117,7 +104509,7 @@ struct AnimationEncoderRef : AnimationEncoder
 
   /// Move constructor.
   constexpr AnimationEncoderRef(AnimationEncoderRef&& other) noexcept
-    : AnimationEncoder(other.release())
+    : AnimationEncoder(other.get())
   {
   }
 
@@ -104125,11 +104517,8 @@ struct AnimationEncoderRef : AnimationEncoder
   ~AnimationEncoderRef() { release(); }
 
   /// Assignment operator.
-  AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AnimationEncoderRef& operator=(
+    const AnimationEncoderRef& other) noexcept = default;
 
   /// Converts to AnimationEncoderRaw
   constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
@@ -104386,7 +104775,7 @@ class AnimationDecoder
 public:
   /// Default ctor
   constexpr AnimationDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -104676,6 +105065,18 @@ struct AnimationDecoderRef : AnimationDecoder
   {
   }
 
+  /**
+   * Constructs from AnimationDecoder.
+   *
+   * @param resource a AnimationDecoder.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AnimationDecoderRef(AnimationDecoder&& resource) noexcept
+    : AnimationDecoder(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept
     : AnimationDecoder(other.get())
@@ -104684,7 +105085,7 @@ struct AnimationDecoderRef : AnimationDecoder
 
   /// Move constructor.
   constexpr AnimationDecoderRef(AnimationDecoderRef&& other) noexcept
-    : AnimationDecoder(other.release())
+    : AnimationDecoder(other.get())
   {
   }
 
@@ -104692,11 +105093,8 @@ struct AnimationDecoderRef : AnimationDecoder
   ~AnimationDecoderRef() { release(); }
 
   /// Assignment operator.
-  AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AnimationDecoderRef& operator=(
+    const AnimationDecoderRef& other) noexcept = default;
 
   /// Converts to AnimationDecoderRaw
   constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
@@ -105024,17 +105422,17 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamParam src, bool closeio)
-  : Surface(LoadBMP(std::move(src), closeio))
+inline Surface::Surface(IOStreamRef src, bool closeio)
+  : Surface(LoadBMP_IO(std::move(src), closeio))
 {
 }
 
-inline Texture::Texture(RendererParam renderer, StringParam file)
+inline Texture::Texture(RendererRef renderer, StringParam file)
   : Texture(std::move(renderer), Surface(std::move(file)))
 {
 }
 
-inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
+inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
   : Texture(std::move(renderer), Surface(std::move(src), closeio))
 {
 }
@@ -105428,7 +105826,7 @@ class Font
 public:
   /// Default ctor
   constexpr Font(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -106928,6 +107326,18 @@ struct FontRef : Font
   {
   }
 
+  /**
+   * Constructs from Font.
+   *
+   * @param resource a Font.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr FontRef(Font&& resource) noexcept
+    : Font(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr FontRef(const FontRef& other) noexcept
     : Font(other.get())
@@ -106936,7 +107346,7 @@ struct FontRef : Font
 
   /// Move constructor.
   constexpr FontRef(FontRef&& other) noexcept
-    : Font(other.release())
+    : Font(other.get())
   {
   }
 
@@ -106944,11 +107354,7 @@ struct FontRef : Font
   ~FontRef() { release(); }
 
   /// Assignment operator.
-  FontRef& operator=(FontRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr FontRef& operator=(const FontRef& other) noexcept = default;
 
   /// Converts to FontRaw
   constexpr operator FontRaw() const noexcept { return get(); }
@@ -108996,7 +109402,7 @@ class TextEngine
 public:
   /// Default ctor
   constexpr TextEngine(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -109324,7 +109730,7 @@ class Text
 public:
   /// Default ctor
   constexpr Text(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -110239,6 +110645,18 @@ struct TextRef : Text
   {
   }
 
+  /**
+   * Constructs from Text.
+   *
+   * @param resource a Text.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr TextRef(Text&& resource) noexcept
+    : Text(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr TextRef(const TextRef& other) noexcept
     : Text(other.get())
@@ -110247,7 +110665,7 @@ struct TextRef : Text
 
   /// Move constructor.
   constexpr TextRef(TextRef&& other) noexcept
-    : Text(other.release())
+    : Text(other.get())
   {
   }
 
@@ -110255,11 +110673,7 @@ struct TextRef : Text
   ~TextRef() { release(); }
 
   /// Assignment operator.
-  TextRef& operator=(TextRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr TextRef& operator=(const TextRef& other) noexcept = default;
 
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }

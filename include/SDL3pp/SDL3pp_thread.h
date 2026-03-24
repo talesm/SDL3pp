@@ -152,7 +152,7 @@ class Thread
 public:
   /// Default ctor
   constexpr Thread(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -483,6 +483,18 @@ struct ThreadRef : Thread
   {
   }
 
+  /**
+   * Constructs from Thread.
+   *
+   * @param resource a Thread.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr ThreadRef(Thread&& resource) noexcept
+    : Thread(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr ThreadRef(const ThreadRef& other) noexcept
     : Thread(other.get())
@@ -491,7 +503,7 @@ struct ThreadRef : Thread
 
   /// Move constructor.
   constexpr ThreadRef(ThreadRef&& other) noexcept
-    : Thread(other.release())
+    : Thread(other.get())
   {
   }
 
@@ -499,11 +511,7 @@ struct ThreadRef : Thread
   ~ThreadRef() { release(); }
 
   /// Assignment operator.
-  ThreadRef& operator=(ThreadRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr ThreadRef& operator=(const ThreadRef& other) noexcept = default;
 
   /// Converts to ThreadRaw
   constexpr operator ThreadRaw() const noexcept { return get(); }

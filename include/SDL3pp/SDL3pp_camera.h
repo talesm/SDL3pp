@@ -160,7 +160,7 @@ class Camera
 public:
   /// Default ctor
   constexpr Camera(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -467,6 +467,18 @@ struct CameraRef : Camera
   {
   }
 
+  /**
+   * Constructs from Camera.
+   *
+   * @param resource a Camera.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr CameraRef(Camera&& resource) noexcept
+    : Camera(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr CameraRef(const CameraRef& other) noexcept
     : Camera(other.get())
@@ -475,7 +487,7 @@ struct CameraRef : Camera
 
   /// Move constructor.
   constexpr CameraRef(CameraRef&& other) noexcept
-    : Camera(other.release())
+    : Camera(other.get())
   {
   }
 
@@ -483,11 +495,7 @@ struct CameraRef : Camera
   ~CameraRef() { release(); }
 
   /// Assignment operator.
-  CameraRef& operator=(CameraRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr CameraRef& operator=(const CameraRef& other) noexcept = default;
 
   /// Converts to CameraRaw
   constexpr operator CameraRaw() const noexcept { return get(); }
@@ -619,7 +627,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  CameraRef get() { return m_lock; }
+  CameraRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release()

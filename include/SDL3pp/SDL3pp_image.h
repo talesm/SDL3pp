@@ -1430,26 +1430,26 @@ inline bool isXV(IOStreamRef src) { return IMG_isXV(src); }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadAVIF(IOStreamRef src)
+inline Surface LoadAVIF_IO(IOStreamRef src)
 {
   return Surface(IMG_LoadAVIF_IO(src));
 }
@@ -1467,26 +1467,29 @@ inline Surface LoadAVIF(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadBMP(IOStreamRef src) { return Surface{IMG_LoadBMP_IO(src)}; }
+inline Surface LoadBMP_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadBMP_IO(src)};
+}
 
 /**
  * Load a CUR image directly.
@@ -1501,26 +1504,29 @@ inline Surface LoadBMP(IOStreamRef src) { return Surface{IMG_LoadBMP_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadCUR(IOStreamRef src) { return Surface{IMG_LoadCUR_IO(src)}; }
+inline Surface LoadCUR_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadCUR_IO(src)};
+}
 
 /**
  * Load a GIF image directly.
@@ -1535,26 +1541,29 @@ inline Surface LoadCUR(IOStreamRef src) { return Surface{IMG_LoadCUR_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadGIF(IOStreamRef src) { return Surface{IMG_LoadGIF_IO(src)}; }
+inline Surface LoadGIF_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadGIF_IO(src)};
+}
 
 /**
  * Load a ICO image directly.
@@ -1569,26 +1578,29 @@ inline Surface LoadGIF(IOStreamRef src) { return Surface{IMG_LoadGIF_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadICO(IOStreamRef src) { return Surface{IMG_LoadICO_IO(src)}; }
+inline Surface LoadICO_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadICO_IO(src)};
+}
 
 /**
  * Load a JPG image directly.
@@ -1603,26 +1615,29 @@ inline Surface LoadICO(IOStreamRef src) { return Surface{IMG_LoadICO_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadJPG(IOStreamRef src) { return Surface{IMG_LoadJPG_IO(src)}; }
+inline Surface LoadJPG_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadJPG_IO(src)};
+}
 
 /**
  * Load a JXL image directly.
@@ -1637,26 +1652,29 @@ inline Surface LoadJPG(IOStreamRef src) { return Surface{IMG_LoadJPG_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadJXL(IOStreamRef src) { return Surface{IMG_LoadJXL_IO(src)}; }
+inline Surface LoadJXL_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadJXL_IO(src)};
+}
 
 /**
  * Load a LBM image directly.
@@ -1671,26 +1689,29 @@ inline Surface LoadJXL(IOStreamRef src) { return Surface{IMG_LoadJXL_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadLBM(IOStreamRef src) { return Surface{IMG_LoadLBM_IO(src)}; }
+inline Surface LoadLBM_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadLBM_IO(src)};
+}
 
 /**
  * Load a PCX image directly.
@@ -1705,26 +1726,29 @@ inline Surface LoadLBM(IOStreamRef src) { return Surface{IMG_LoadLBM_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadPCX(IOStreamRef src) { return Surface{IMG_LoadPCX_IO(src)}; }
+inline Surface LoadPCX_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadPCX_IO(src)};
+}
 
 /**
  * Load a PNG image directly.
@@ -1739,26 +1763,29 @@ inline Surface LoadPCX(IOStreamRef src) { return Surface{IMG_LoadPCX_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadPNG(IOStreamRef src) { return Surface{IMG_LoadPNG_IO(src)}; }
+inline Surface LoadPNG_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadPNG_IO(src)};
+}
 
 /**
  * Load a PNM image directly.
@@ -1773,26 +1800,29 @@ inline Surface LoadPNG(IOStreamRef src) { return Surface{IMG_LoadPNG_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadPNM(IOStreamRef src) { return Surface{IMG_LoadPNM_IO(src)}; }
+inline Surface LoadPNM_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadPNM_IO(src)};
+}
 
 /**
  * Load a SVG image directly.
@@ -1807,27 +1837,30 @@ inline Surface LoadPNM(IOStreamRef src) { return Surface{IMG_LoadPNM_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSizedSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSizedSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadSVG(IOStreamRef src) { return Surface{IMG_LoadSVG_IO(src)}; }
+inline Surface LoadSVG_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadSVG_IO(src)};
+}
 
 /**
  * Load an SVG image, scaled to a specific size.
@@ -1847,9 +1880,9 @@ inline Surface LoadSVG(IOStreamRef src) { return Surface{IMG_LoadSVG_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadSVG
+ * @sa LoadSVG_IO
  */
-inline Surface LoadSizedSVG(IOStreamRef src, const PointRaw& size)
+inline Surface LoadSizedSVG_IO(IOStreamRef src, const PointRaw& size)
 {
   return Surface{IMG_LoadSizedSVG_IO(src, size.x, size.y)};
 }
@@ -1867,26 +1900,29 @@ inline Surface LoadSizedSVG(IOStreamRef src, const PointRaw& size)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadQOI(IOStreamRef src) { return Surface{IMG_LoadQOI_IO(src)}; }
+inline Surface LoadQOI_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadQOI_IO(src)};
+}
 
 /**
  * Load a TGA image directly.
@@ -1901,26 +1937,29 @@ inline Surface LoadQOI(IOStreamRef src) { return Surface{IMG_LoadQOI_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadTGA(IOStreamRef src) { return Surface{IMG_LoadTGA_IO(src)}; }
+inline Surface LoadTGA_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadTGA_IO(src)};
+}
 
 /**
  * Load a TIFF image directly.
@@ -1935,26 +1974,29 @@ inline Surface LoadTGA(IOStreamRef src) { return Surface{IMG_LoadTGA_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadTIF(IOStreamRef src) { return Surface{IMG_LoadTIF_IO(src)}; }
+inline Surface LoadTIF_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadTIF_IO(src)};
+}
 
 /**
  * Load a WEBP image directly.
@@ -1969,26 +2011,26 @@ inline Surface LoadTIF(IOStreamRef src) { return Surface{IMG_LoadTIF_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadXCF
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadWEBP(IOStreamRef src)
+inline Surface LoadWEBP_IO(IOStreamRef src)
 {
   return Surface{IMG_LoadWEBP_IO(src)};
 }
@@ -2006,26 +2048,29 @@ inline Surface LoadWEBP(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXPM
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadXCF(IOStreamRef src) { return Surface{IMG_LoadXCF_IO(src)}; }
+inline Surface LoadXCF_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadXCF_IO(src)};
+}
 
 /**
  * Load a XPM image directly.
@@ -2040,26 +2085,29 @@ inline Surface LoadXCF(IOStreamRef src) { return Surface{IMG_LoadXCF_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXV
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXV_IO
  */
-inline Surface LoadXPM(IOStreamRef src) { return Surface{IMG_LoadXPM_IO(src)}; }
+inline Surface LoadXPM_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadXPM_IO(src)};
+}
 
 /**
  * Load a XV image directly.
@@ -2074,26 +2122,29 @@ inline Surface LoadXPM(IOStreamRef src) { return Surface{IMG_LoadXPM_IO(src)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAVIF
- * @sa LoadBMP
- * @sa LoadCUR
- * @sa LoadGIF
- * @sa LoadICO
- * @sa LoadJPG
- * @sa LoadJXL
- * @sa LoadLBM
- * @sa LoadPCX
- * @sa LoadPNG
- * @sa LoadPNM
- * @sa LoadQOI
- * @sa LoadSVG
- * @sa LoadTGA
- * @sa LoadTIF
- * @sa LoadWEBP
- * @sa LoadXCF
- * @sa LoadXPM
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNG_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
  */
-inline Surface LoadXV(IOStreamRef src) { return Surface{IMG_LoadXV_IO(src)}; }
+inline Surface LoadXV_IO(IOStreamRef src)
+{
+  return Surface{IMG_LoadXV_IO(src)};
+}
 
 /**
  * Load an XPM image from a memory array.
@@ -2147,7 +2198,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveTyped
+ * @sa SaveTyped_IO
  * @sa SaveAVIF
  * @sa SaveBMP
  * @sa SaveCUR
@@ -2184,20 +2235,20 @@ inline void Save(SurfaceRef surface, StringParam file)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Save
- * @sa SaveAVIF
- * @sa SaveBMP
- * @sa SaveCUR
- * @sa SaveGIF
- * @sa SaveICO
- * @sa SaveJPG
- * @sa SavePNG
- * @sa SaveTGA
- * @sa SaveWEBP
+ * @sa SaveAVIF_IO
+ * @sa SaveBMP_IO
+ * @sa SaveCUR_IO
+ * @sa SaveGIF_IO
+ * @sa SaveICO_IO
+ * @sa SaveJPG_IO
+ * @sa SavePNG_IO
+ * @sa SaveTGA_IO
+ * @sa SaveWEBP_IO
  */
-inline void SaveTyped(SurfaceRef surface,
-                      IOStreamRef dst,
-                      StringParam type,
-                      bool closeio = false)
+inline void SaveTyped_IO(SurfaceRef surface,
+                         IOStreamRef dst,
+                         StringParam type,
+                         bool closeio = false)
 {
   CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
 }
@@ -2217,7 +2268,7 @@ inline void SaveTyped(SurfaceRef surface,
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa SaveAVIF
+ * @sa SaveAVIF_IO
  */
 inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
 {
@@ -2244,10 +2295,10 @@ inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
  *
  * @sa SaveAVIF
  */
-inline void SaveAVIF(SurfaceRef surface,
-                     IOStreamRef dst,
-                     int quality,
-                     bool closeio = false)
+inline void SaveAVIF_IO(SurfaceRef surface,
+                        IOStreamRef dst,
+                        int quality,
+                        bool closeio = false)
 {
   CheckError(IMG_SaveAVIF_IO(surface, dst, closeio, quality));
 }
@@ -2265,7 +2316,7 @@ inline void SaveAVIF(SurfaceRef surface,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveBMP
+ * @sa SaveBMP_IO
  */
 inline void SaveBMP(SurfaceRef surface, StringParam file)
 {
@@ -2290,7 +2341,9 @@ inline void SaveBMP(SurfaceRef surface, StringParam file)
  *
  * @sa SaveBMP
  */
-inline void SaveBMP(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveBMP_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveBMP_IO(surface, dst, closeio));
 }
@@ -2306,7 +2359,7 @@ inline void SaveBMP(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveCUR
+ * @sa SaveCUR_IO
  */
 inline void SaveCUR(SurfaceRef surface, StringParam file)
 {
@@ -2331,7 +2384,9 @@ inline void SaveCUR(SurfaceRef surface, StringParam file)
  *
  * @sa SaveCUR
  */
-inline void SaveCUR(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveCUR_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveCUR_IO(surface, dst, closeio));
 }
@@ -2347,7 +2402,7 @@ inline void SaveCUR(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveGIF
+ * @sa SaveGIF_IO
  */
 inline void SaveGIF(SurfaceRef surface, StringParam file)
 {
@@ -2372,7 +2427,9 @@ inline void SaveGIF(SurfaceRef surface, StringParam file)
  *
  * @sa SaveGIF
  */
-inline void SaveGIF(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveGIF_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveGIF_IO(surface, dst, closeio));
 }
@@ -2388,7 +2445,7 @@ inline void SaveGIF(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveICO
+ * @sa SaveICO_IO
  */
 inline void SaveICO(SurfaceRef surface, StringParam file)
 {
@@ -2413,7 +2470,9 @@ inline void SaveICO(SurfaceRef surface, StringParam file)
  *
  * @sa SaveICO
  */
-inline void SaveICO(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveICO_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveICO_IO(surface, dst, closeio));
 }
@@ -2433,7 +2492,7 @@ inline void SaveICO(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa SaveJPG
+ * @sa SaveJPG_IO
  */
 inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
 {
@@ -2460,10 +2519,10 @@ inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
  *
  * @sa SaveJPG
  */
-inline void SaveJPG(SurfaceRef surface,
-                    IOStreamRef dst,
-                    int quality,
-                    bool closeio = false)
+inline void SaveJPG_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       int quality,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
 }
@@ -2479,7 +2538,7 @@ inline void SaveJPG(SurfaceRef surface,
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa SavePNG
+ * @sa SavePNG_IO
  */
 inline void SavePNG(SurfaceRef surface, StringParam file)
 {
@@ -2504,7 +2563,9 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
  *
  * @sa SavePNG
  */
-inline void SavePNG(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SavePNG_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
 }
@@ -2522,7 +2583,7 @@ inline void SavePNG(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveTGA
+ * @sa SaveTGA_IO
  */
 inline void SaveTGA(SurfaceRef surface, StringParam file)
 {
@@ -2547,7 +2608,9 @@ inline void SaveTGA(SurfaceRef surface, StringParam file)
  *
  * @sa SaveTGA
  */
-inline void SaveTGA(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
+inline void SaveTGA_IO(SurfaceRef surface,
+                       IOStreamRef dst,
+                       bool closeio = false)
 {
   CheckError(IMG_SaveTGA_IO(surface, dst, closeio));
 }
@@ -2567,7 +2630,7 @@ inline void SaveTGA(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveWEBP
+ * @sa SaveWEBP_IO
  */
 inline void SaveWEBP(SurfaceRef surface, StringParam file, float quality)
 {
@@ -2596,10 +2659,10 @@ inline void SaveWEBP(SurfaceRef surface, StringParam file, float quality)
  *
  * @sa SaveWEBP
  */
-inline void SaveWEBP(SurfaceRef surface,
-                     IOStreamRef dst,
-                     float quality,
-                     bool closeio = false)
+inline void SaveWEBP_IO(SurfaceRef surface,
+                        IOStreamRef dst,
+                        float quality,
+                        bool closeio = false)
 {
   CheckError(IMG_SaveWEBP_IO(surface, dst, closeio, quality));
 }
@@ -2618,7 +2681,7 @@ class Animation
 public:
   /// Default ctor
   constexpr Animation(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -2663,11 +2726,11 @@ public:
    * @sa Animation.CreateCursor
    * @sa Animation.Animation
    * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation
-   * @sa LoadAPNGAnimation
-   * @sa LoadAVIFAnimation
-   * @sa LoadGIFAnimation
-   * @sa LoadWEBPAnimation
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
    * @sa Animation.Free
    */
   Animation(StringParam file);
@@ -2692,11 +2755,11 @@ public:
    * @sa Animation.CreateCursor
    * @sa Animation.Animation
    * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation
-   * @sa LoadAPNGAnimation
-   * @sa LoadAVIFAnimation
-   * @sa LoadGIFAnimation
-   * @sa LoadWEBPAnimation
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
    * @sa Animation.Free
    */
   Animation(IOStreamRef src, bool closeio = false);
@@ -2755,11 +2818,11 @@ public:
    * @sa Animation.Animation
    * @sa Animation.Animation
    * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation
-   * @sa LoadAPNGAnimation
-   * @sa LoadAVIFAnimation
-   * @sa LoadGIFAnimation
-   * @sa LoadWEBPAnimation
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
    */
   void Free();
 
@@ -2801,12 +2864,12 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
   void Save(StringParam file);
 
@@ -2830,13 +2893,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveTyped(IOStreamRef dst, StringParam type, bool closeio = false);
+  void SaveTyped_IO(IOStreamRef dst, StringParam type, bool closeio = false);
 
   /**
    * Save an animation in ANI format to an IOStream.
@@ -2852,13 +2915,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveANI(IOStreamRef dst, bool closeio = false);
+  void SaveANI_IO(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in APNG format to an IOStream.
@@ -2874,13 +2937,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveAPNG(IOStreamRef dst, bool closeio = false);
+  void SaveAPNG_IO(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in AVIF format to an IOStream.
@@ -2898,13 +2961,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveGIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveAVIF(IOStreamRef dst, int quality, bool closeio = false);
+  void SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio = false);
 
   /**
    * Save an animation in GIF format to an IOStream.
@@ -2920,13 +2983,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveWEBP
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveWEBP_IO
    */
-  void SaveGIF(IOStreamRef dst, bool closeio = false);
+  void SaveGIF_IO(IOStreamRef dst, bool closeio = false);
 
   /**
    * Save an animation in WEBP format to an IOStream.
@@ -2946,13 +3009,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped
-   * @sa Animation.SaveANI
-   * @sa Animation.SaveAPNG
-   * @sa Animation.SaveAVIF
-   * @sa Animation.SaveGIF
+   * @sa Animation.SaveTyped_IO
+   * @sa Animation.SaveANI_IO
+   * @sa Animation.SaveAPNG_IO
+   * @sa Animation.SaveAVIF_IO
+   * @sa Animation.SaveGIF_IO
    */
-  void SaveWEBP(IOStreamRef dst, int quality, bool closeio = false);
+  void SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio = false);
 
   /**
    * Create an animated cursor from an animation.
@@ -3005,6 +3068,18 @@ struct AnimationRef : Animation
   {
   }
 
+  /**
+   * Constructs from Animation.
+   *
+   * @param resource a Animation.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AnimationRef(Animation&& resource) noexcept
+    : Animation(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AnimationRef(const AnimationRef& other) noexcept
     : Animation(other.get())
@@ -3013,7 +3088,7 @@ struct AnimationRef : Animation
 
   /// Move constructor.
   constexpr AnimationRef(AnimationRef&& other) noexcept
-    : Animation(other.release())
+    : Animation(other.get())
   {
   }
 
@@ -3021,11 +3096,8 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 
   /// Assignment operator.
-  AnimationRef& operator=(AnimationRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AnimationRef& operator=(const AnimationRef& other) noexcept =
+    default;
 
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
@@ -3112,11 +3184,11 @@ inline int Animation::GetDelay(int index) const
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
 inline Animation LoadAnimation(StringParam file)
@@ -3154,11 +3226,11 @@ inline Animation::Animation(IOStreamRef src, bool closeio)
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
 inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
@@ -3193,11 +3265,11 @@ inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
  * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa Animation.Animation
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
 inline Animation LoadAnimationTyped_IO(IOStreamRef src,
@@ -3229,13 +3301,13 @@ inline Animation LoadAnimationTyped_IO(IOStreamRef src,
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadANIAnimation(IOStreamRef src)
+inline Animation LoadANIAnimation_IO(IOStreamRef src)
 {
   return Animation(IMG_LoadANIAnimation_IO(src));
 }
@@ -3260,13 +3332,13 @@ inline Animation LoadANIAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadAPNGAnimation(IOStreamRef src)
+inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
 {
   return Animation(IMG_LoadAPNGAnimation_IO(src));
 }
@@ -3291,13 +3363,13 @@ inline Animation LoadAPNGAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadAVIFAnimation(IOStreamRef src)
+inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
 {
   return Animation(IMG_LoadAVIFAnimation_IO(src));
 }
@@ -3321,13 +3393,13 @@ inline Animation LoadAVIFAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadGIFAnimation(IOStreamRef src)
+inline Animation LoadGIFAnimation_IO(IOStreamRef src)
 {
   return Animation(IMG_LoadGIFAnimation_IO(src));
 }
@@ -3349,13 +3421,13 @@ inline Animation LoadGIFAnimation(IOStreamRef src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
  * @sa Animation.Free
  */
-inline Animation LoadWEBPAnimation(IOStreamRef src)
+inline Animation LoadWEBPAnimation_IO(IOStreamRef src)
 {
   return Animation{IMG_LoadWEBPAnimation_IO(src)};
 }
@@ -3373,12 +3445,12 @@ inline Animation LoadWEBPAnimation(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
 inline void SaveAnimation(AnimationRef anim, StringParam file)
 {
@@ -3410,25 +3482,25 @@ inline void Animation::Save(StringParam file)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveAnimationTyped(AnimationRef anim,
-                               IOStreamRef dst,
-                               StringParam type,
-                               bool closeio = false)
+inline void SaveAnimationTyped_IO(AnimationRef anim,
+                                  IOStreamRef dst,
+                                  StringParam type,
+                                  bool closeio = false)
 {
   CheckError(IMG_SaveAnimationTyped_IO(anim, dst, closeio, type));
 }
 
-inline void Animation::SaveTyped(IOStreamRef dst,
-                                 StringParam type,
-                                 bool closeio)
+inline void Animation::SaveTyped_IO(IOStreamRef dst,
+                                    StringParam type,
+                                    bool closeio)
 {
-  SDL::SaveAnimationTyped(m_resource, dst, std::move(type), closeio);
+  SDL::SaveAnimationTyped_IO(m_resource, dst, std::move(type), closeio);
 }
 
 /**
@@ -3446,22 +3518,22 @@ inline void Animation::SaveTyped(IOStreamRef dst,
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveANIAnimation(AnimationRef anim,
-                             IOStreamRef dst,
-                             bool closeio = false)
+inline void SaveANIAnimation_IO(AnimationRef anim,
+                                IOStreamRef dst,
+                                bool closeio = false)
 {
   CheckError(IMG_SaveANIAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveANI(IOStreamRef dst, bool closeio)
+inline void Animation::SaveANI_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveANIAnimation(m_resource, dst, closeio);
+  SDL::SaveANIAnimation_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -3479,22 +3551,22 @@ inline void Animation::SaveANI(IOStreamRef dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveAPNGAnimation(AnimationRef anim,
-                              IOStreamRef dst,
-                              bool closeio = false)
+inline void SaveAPNGAnimation_IO(AnimationRef anim,
+                                 IOStreamRef dst,
+                                 bool closeio = false)
 {
   CheckError(IMG_SaveAPNGAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveAPNG(IOStreamRef dst, bool closeio)
+inline void Animation::SaveAPNG_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveAPNGAnimation(m_resource, dst, closeio);
+  SDL::SaveAPNGAnimation_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -3514,23 +3586,23 @@ inline void Animation::SaveAPNG(IOStreamRef dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveGIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveAVIFAnimation(AnimationRef anim,
-                              IOStreamRef dst,
-                              int quality,
-                              bool closeio = false)
+inline void SaveAVIFAnimation_IO(AnimationRef anim,
+                                 IOStreamRef dst,
+                                 int quality,
+                                 bool closeio = false)
 {
   CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, quality, closeio));
 }
 
-inline void Animation::SaveAVIF(IOStreamRef dst, int quality, bool closeio)
+inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
 {
-  SDL::SaveAVIFAnimation(m_resource, dst, quality, closeio);
+  SDL::SaveAVIFAnimation_IO(m_resource, dst, quality, closeio);
 }
 
 /**
@@ -3548,22 +3620,22 @@ inline void Animation::SaveAVIF(IOStreamRef dst, int quality, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveWEBP
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveWEBP_IO
  */
-inline void SaveGIFAnimation(AnimationRef anim,
-                             IOStreamRef dst,
-                             bool closeio = false)
+inline void SaveGIFAnimation_IO(AnimationRef anim,
+                                IOStreamRef dst,
+                                bool closeio = false)
 {
   CheckError(IMG_SaveGIFAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveGIF(IOStreamRef dst, bool closeio)
+inline void Animation::SaveGIF_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveGIFAnimation(m_resource, dst, closeio);
+  SDL::SaveGIFAnimation_IO(m_resource, dst, closeio);
 }
 
 /**
@@ -3585,23 +3657,23 @@ inline void Animation::SaveGIF(IOStreamRef dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped
- * @sa Animation.SaveANI
- * @sa Animation.SaveAPNG
- * @sa Animation.SaveAVIF
- * @sa Animation.SaveGIF
+ * @sa Animation.SaveTyped_IO
+ * @sa Animation.SaveANI_IO
+ * @sa Animation.SaveAPNG_IO
+ * @sa Animation.SaveAVIF_IO
+ * @sa Animation.SaveGIF_IO
  */
-inline void SaveWEBPAnimation(AnimationRef anim,
-                              IOStreamRef dst,
-                              int quality,
-                              bool closeio = false)
+inline void SaveWEBPAnimation_IO(AnimationRef anim,
+                                 IOStreamRef dst,
+                                 int quality,
+                                 bool closeio = false)
 {
   CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, quality, closeio));
 }
 
-inline void Animation::SaveWEBP(IOStreamRef dst, int quality, bool closeio)
+inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
 {
-  SDL::SaveWEBPAnimation(m_resource, dst, quality, closeio);
+  SDL::SaveWEBPAnimation_IO(m_resource, dst, quality, closeio);
 }
 
 /**
@@ -3643,11 +3715,11 @@ inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped_IO
- * @sa LoadANIAnimation
- * @sa LoadAPNGAnimation
- * @sa LoadAVIFAnimation
- * @sa LoadGIFAnimation
- * @sa LoadWEBPAnimation
+ * @sa LoadANIAnimation_IO
+ * @sa LoadAPNGAnimation_IO
+ * @sa LoadAVIFAnimation_IO
+ * @sa LoadGIFAnimation_IO
+ * @sa LoadWEBPAnimation_IO
  */
 inline void FreeAnimation(AnimationRaw anim) { IMG_FreeAnimation(anim); }
 
@@ -3667,7 +3739,7 @@ class AnimationEncoder
 public:
   /// Default ctor
   constexpr AnimationEncoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -3909,6 +3981,18 @@ struct AnimationEncoderRef : AnimationEncoder
   {
   }
 
+  /**
+   * Constructs from AnimationEncoder.
+   *
+   * @param resource a AnimationEncoder.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AnimationEncoderRef(AnimationEncoder&& resource) noexcept
+    : AnimationEncoder(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept
     : AnimationEncoder(other.get())
@@ -3917,7 +4001,7 @@ struct AnimationEncoderRef : AnimationEncoder
 
   /// Move constructor.
   constexpr AnimationEncoderRef(AnimationEncoderRef&& other) noexcept
-    : AnimationEncoder(other.release())
+    : AnimationEncoder(other.get())
   {
   }
 
@@ -3925,11 +4009,8 @@ struct AnimationEncoderRef : AnimationEncoder
   ~AnimationEncoderRef() { release(); }
 
   /// Assignment operator.
-  AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AnimationEncoderRef& operator=(
+    const AnimationEncoderRef& other) noexcept = default;
 
   /// Converts to AnimationEncoderRaw
   constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
@@ -4186,7 +4267,7 @@ class AnimationDecoder
 public:
   /// Default ctor
   constexpr AnimationDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -4476,6 +4557,18 @@ struct AnimationDecoderRef : AnimationDecoder
   {
   }
 
+  /**
+   * Constructs from AnimationDecoder.
+   *
+   * @param resource a AnimationDecoder.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AnimationDecoderRef(AnimationDecoder&& resource) noexcept
+    : AnimationDecoder(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept
     : AnimationDecoder(other.get())
@@ -4484,7 +4577,7 @@ struct AnimationDecoderRef : AnimationDecoder
 
   /// Move constructor.
   constexpr AnimationDecoderRef(AnimationDecoderRef&& other) noexcept
-    : AnimationDecoder(other.release())
+    : AnimationDecoder(other.get())
   {
   }
 
@@ -4492,11 +4585,8 @@ struct AnimationDecoderRef : AnimationDecoder
   ~AnimationDecoderRef() { release(); }
 
   /// Assignment operator.
-  AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AnimationDecoderRef& operator=(
+    const AnimationDecoderRef& other) noexcept = default;
 
   /// Converts to AnimationDecoderRaw
   constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
@@ -4824,17 +4914,17 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamParam src, bool closeio)
-  : Surface(LoadBMP(std::move(src), closeio))
+inline Surface::Surface(IOStreamRef src, bool closeio)
+  : Surface(LoadBMP_IO(std::move(src), closeio))
 {
 }
 
-inline Texture::Texture(RendererParam renderer, StringParam file)
+inline Texture::Texture(RendererRef renderer, StringParam file)
   : Texture(std::move(renderer), Surface(std::move(file)))
 {
 }
 
-inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
+inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
   : Texture(std::move(renderer), Surface(std::move(src), closeio))
 {
 }

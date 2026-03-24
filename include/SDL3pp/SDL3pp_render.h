@@ -242,7 +242,7 @@ class Renderer
 public:
   /// Default ctor
   constexpr Renderer(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -2350,6 +2350,18 @@ struct RendererRef : Renderer
   {
   }
 
+  /**
+   * Constructs from Renderer.
+   *
+   * @param resource a Renderer.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr RendererRef(Renderer&& resource) noexcept
+    : Renderer(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr RendererRef(const RendererRef& other) noexcept
     : Renderer(other.get())
@@ -2358,7 +2370,7 @@ struct RendererRef : Renderer
 
   /// Move constructor.
   constexpr RendererRef(RendererRef&& other) noexcept
-    : Renderer(other.release())
+    : Renderer(other.get())
   {
   }
 
@@ -2366,11 +2378,7 @@ struct RendererRef : Renderer
   ~RendererRef() { release(); }
 
   /// Assignment operator.
-  RendererRef& operator=(RendererRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr RendererRef& operator=(const RendererRef& other) noexcept = default;
 
   /// Converts to RendererRaw
   constexpr operator RendererRaw() const noexcept { return get(); }
@@ -2395,7 +2403,7 @@ class Texture
 public:
   /// Default ctor
   constexpr Texture(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -2423,10 +2431,6 @@ public:
     : Texture(other.release())
   {
   }
-
-  constexpr Texture(const TextureRef& other) = delete;
-
-  constexpr Texture(TextureRef&& other) = delete;
 
   /**
    * Create a texture for a rendering context.
@@ -3499,6 +3503,18 @@ struct TextureRef : Texture
   {
   }
 
+  /**
+   * Constructs from Texture.
+   *
+   * @param resource a Texture.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr TextureRef(Texture&& resource) noexcept
+    : Texture(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr TextureRef(const TextureRef& other) noexcept
     : Texture(other.get())
@@ -3507,7 +3523,7 @@ struct TextureRef : Texture
 
   /// Move constructor.
   constexpr TextureRef(TextureRef&& other) noexcept
-    : Texture(other.release())
+    : Texture(other.get())
   {
   }
 
@@ -3515,11 +3531,7 @@ struct TextureRef : Texture
   ~TextureRef() { release(); }
 
   /// Assignment operator.
-  TextureRef& operator=(TextureRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr TextureRef& operator=(const TextureRef& other) noexcept = default;
 
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
@@ -3654,7 +3666,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() { return m_lock; }
+  TextureRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -3785,7 +3797,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() { return m_lock; }
+  TextureRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release()
@@ -8243,7 +8255,10 @@ class GPURenderState
 
 public:
   /// Default ctor
-  constexpr GPURenderState() = default;
+  constexpr GPURenderState(std::nullptr_t = nullptr) noexcept
+    : m_resource(nullptr)
+  {
+  }
 
   /**
    * Constructs from GPURenderStateRef.
@@ -8263,7 +8278,7 @@ protected:
 
 public:
   /// Move constructor
-  constexpr GPURenderState(GPURenderState&& other)
+  constexpr GPURenderState(GPURenderState&& other) noexcept
     : GPURenderState(other.release())
   {
   }
@@ -8296,17 +8311,23 @@ public:
   ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
 
   /// Assignment operator.
-  GPURenderState& operator=(GPURenderState other)
+  constexpr GPURenderState& operator=(GPURenderState&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr GPURenderState& operator=(const GPURenderState& other) noexcept =
+    default;
+
+public:
   /// Retrieves underlying GPURenderStateRaw.
-  constexpr GPURenderStateRaw get() const { return m_resource; }
+  constexpr GPURenderStateRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GPURenderStateRaw and clear this.
-  constexpr GPURenderStateRaw release()
+  constexpr GPURenderStateRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -8385,6 +8406,18 @@ struct GPURenderStateRef : GPURenderState
   {
   }
 
+  /**
+   * Constructs from GPURenderState.
+   *
+   * @param resource a GPURenderState.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr GPURenderStateRef(GPURenderState&& resource) noexcept
+    : GPURenderState(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept
     : GPURenderState(other.get())
@@ -8393,7 +8426,7 @@ struct GPURenderStateRef : GPURenderState
 
   /// Move constructor.
   constexpr GPURenderStateRef(GPURenderStateRef&& other) noexcept
-    : GPURenderState(other.release())
+    : GPURenderState(other.get())
   {
   }
 
@@ -8401,11 +8434,8 @@ struct GPURenderStateRef : GPURenderState
   ~GPURenderStateRef() { release(); }
 
   /// Assignment operator.
-  GPURenderStateRef& operator=(GPURenderStateRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr GPURenderStateRef& operator=(
+    const GPURenderStateRef& other) noexcept = default;
 
   /// Converts to GPURenderStateRaw
   constexpr operator GPURenderStateRaw() const noexcept { return get(); }

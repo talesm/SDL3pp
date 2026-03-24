@@ -113,7 +113,7 @@ class Tray
 public:
   /// Default ctor
   constexpr Tray(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -323,6 +323,18 @@ struct TrayRef : Tray
   {
   }
 
+  /**
+   * Constructs from Tray.
+   *
+   * @param resource a Tray.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr TrayRef(Tray&& resource) noexcept
+    : Tray(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr TrayRef(const TrayRef& other) noexcept
     : Tray(other.get())
@@ -331,7 +343,7 @@ struct TrayRef : Tray
 
   /// Move constructor.
   constexpr TrayRef(TrayRef&& other) noexcept
-    : Tray(other.release())
+    : Tray(other.get())
   {
   }
 
@@ -339,11 +351,7 @@ struct TrayRef : Tray
   ~TrayRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrayRef& operator=(TrayRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr TrayRef& operator=(const TrayRef& other) noexcept = default;
 
   /// Converts to TrayRaw
   constexpr operator TrayRaw() const noexcept { return get(); }
@@ -477,7 +485,7 @@ class TrayEntry
 public:
   /// Default ctor
   constexpr TrayEntry(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

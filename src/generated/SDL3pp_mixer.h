@@ -249,7 +249,7 @@ class Mixer
 public:
   /// Default ctor
   constexpr Mixer(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -1384,6 +1384,18 @@ struct MixerRef : Mixer
   {
   }
 
+  /**
+   * Constructs from Mixer.
+   *
+   * @param resource a Mixer.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr MixerRef(Mixer&& resource) noexcept
+    : Mixer(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr MixerRef(const MixerRef& other) noexcept
     : Mixer(other.get())
@@ -1392,7 +1404,7 @@ struct MixerRef : Mixer
 
   /// Move constructor.
   constexpr MixerRef(MixerRef&& other) noexcept
-    : Mixer(other.release())
+    : Mixer(other.get())
   {
   }
 
@@ -1400,11 +1412,7 @@ struct MixerRef : Mixer
   ~MixerRef() { release(); }
 
   /// Assignment operator.
-  constexpr MixerRef& operator=(MixerRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr MixerRef& operator=(const MixerRef& other) noexcept = default;
 
   /// Converts to MixerRaw
   constexpr operator MixerRaw() const noexcept { return get(); }
@@ -1574,7 +1582,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  MixerRef get() { return m_lock; }
+  MixerRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -1603,7 +1611,7 @@ class Audio
 public:
   /// Default ctor
   constexpr Audio(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -2072,6 +2080,18 @@ struct AudioRef : Audio
   {
   }
 
+  /**
+   * Constructs from Audio.
+   *
+   * @param resource a Audio.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AudioRef(Audio&& resource) noexcept
+    : Audio(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AudioRef(const AudioRef& other) noexcept
     : Audio(other.get())
@@ -2080,7 +2100,7 @@ struct AudioRef : Audio
 
   /// Move constructor.
   constexpr AudioRef(AudioRef&& other) noexcept
-    : Audio(other.release())
+    : Audio(other.get())
   {
   }
 
@@ -2088,11 +2108,7 @@ struct AudioRef : Audio
   ~AudioRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioRef& operator=(AudioRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AudioRef& operator=(const AudioRef& other) noexcept = default;
 
   /// Converts to AudioRaw
   constexpr operator AudioRaw() const noexcept { return get(); }
@@ -2277,7 +2293,7 @@ class Track
 public:
   /// Default ctor
   constexpr Track(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -3633,6 +3649,18 @@ struct TrackRef : Track
   {
   }
 
+  /**
+   * Constructs from Track.
+   *
+   * @param resource a Track.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr TrackRef(Track&& resource) noexcept
+    : Track(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr TrackRef(const TrackRef& other) noexcept
     : Track(other.get())
@@ -3641,7 +3669,7 @@ struct TrackRef : Track
 
   /// Move constructor.
   constexpr TrackRef(TrackRef&& other) noexcept
-    : Track(other.release())
+    : Track(other.get())
   {
   }
 
@@ -3649,11 +3677,7 @@ struct TrackRef : Track
   ~TrackRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrackRef& operator=(TrackRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr TrackRef& operator=(const TrackRef& other) noexcept = default;
 
   /// Converts to TrackRaw
   constexpr operator TrackRaw() const noexcept { return get(); }
@@ -3757,7 +3781,7 @@ class Group
 public:
   /// Default ctor
   constexpr Group(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -3959,6 +3983,18 @@ struct GroupRef : Group
   {
   }
 
+  /**
+   * Constructs from Group.
+   *
+   * @param resource a Group.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr GroupRef(Group&& resource) noexcept
+    : Group(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr GroupRef(const GroupRef& other) noexcept
     : Group(other.get())
@@ -3967,7 +4003,7 @@ struct GroupRef : Group
 
   /// Move constructor.
   constexpr GroupRef(GroupRef&& other) noexcept
-    : Group(other.release())
+    : Group(other.get())
   {
   }
 
@@ -3975,11 +4011,7 @@ struct GroupRef : Group
   ~GroupRef() { release(); }
 
   /// Assignment operator.
-  constexpr GroupRef& operator=(GroupRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr GroupRef& operator=(const GroupRef& other) noexcept = default;
 
   /// Converts to GroupRaw
   constexpr operator GroupRaw() const noexcept { return get(); }
@@ -7615,7 +7647,7 @@ class AudioDecoder
 public:
   /// Default ctor
   constexpr AudioDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -7863,6 +7895,18 @@ struct AudioDecoderRef : AudioDecoder
   {
   }
 
+  /**
+   * Constructs from AudioDecoder.
+   *
+   * @param resource a AudioDecoder.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AudioDecoderRef(AudioDecoder&& resource) noexcept
+    : AudioDecoder(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AudioDecoderRef(const AudioDecoderRef& other) noexcept
     : AudioDecoder(other.get())
@@ -7871,7 +7915,7 @@ struct AudioDecoderRef : AudioDecoder
 
   /// Move constructor.
   constexpr AudioDecoderRef(AudioDecoderRef&& other) noexcept
-    : AudioDecoder(other.release())
+    : AudioDecoder(other.get())
   {
   }
 
@@ -7879,11 +7923,8 @@ struct AudioDecoderRef : AudioDecoder
   ~AudioDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDecoderRef& operator=(AudioDecoderRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept =
+    default;
 
   /// Converts to AudioDecoderRaw
   constexpr operator AudioDecoderRaw() const noexcept { return get(); }

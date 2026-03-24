@@ -741,7 +741,7 @@ class Window
 public:
   /// Default ctor
   constexpr Window(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -3130,6 +3130,18 @@ struct WindowRef : Window
   {
   }
 
+  /**
+   * Constructs from Window.
+   *
+   * @param resource a Window.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr WindowRef(Window&& resource) noexcept
+    : Window(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr WindowRef(const WindowRef& other) noexcept
     : Window(other.get())
@@ -3138,7 +3150,7 @@ struct WindowRef : Window
 
   /// Move constructor.
   constexpr WindowRef(WindowRef&& other) noexcept
-    : Window(other.release())
+    : Window(other.get())
   {
   }
 
@@ -3146,11 +3158,7 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 
   /// Assignment operator.
-  WindowRef& operator=(WindowRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr WindowRef& operator=(const WindowRef& other) noexcept = default;
 
   /// Converts to WindowRaw
   constexpr operator WindowRaw() const noexcept { return get(); }
@@ -3283,7 +3291,7 @@ class GLContext
 public:
   /// Default ctor
   constexpr GLContext(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 

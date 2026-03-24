@@ -2290,7 +2290,7 @@ class Palette
 public:
   /// Default ctor
   constexpr Palette(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -2318,10 +2318,6 @@ public:
     : Palette(other.release())
   {
   }
-
-  constexpr Palette(const PaletteRef& other) = delete;
-
-  constexpr Palette(PaletteRef&& other) = delete;
 
   /**
    * Create a palette structure with the specified number of color entries.
@@ -2475,6 +2471,18 @@ struct PaletteRef : Palette
   {
   }
 
+  /**
+   * Constructs from Palette.
+   *
+   * @param resource a Palette.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr PaletteRef(Palette&& resource) noexcept
+    : Palette(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr PaletteRef(const PaletteRef& other) noexcept
     : Palette(other.get())
@@ -2483,7 +2491,7 @@ struct PaletteRef : Palette
 
   /// Move constructor.
   constexpr PaletteRef(PaletteRef&& other) noexcept
-    : Palette(other.release())
+    : Palette(other.get())
   {
   }
 
@@ -2491,11 +2499,7 @@ struct PaletteRef : Palette
   ~PaletteRef() { release(); }
 
   /// Assignment operator.
-  constexpr PaletteRef& operator=(PaletteRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr PaletteRef& operator=(const PaletteRef& other) noexcept = default;
 
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }

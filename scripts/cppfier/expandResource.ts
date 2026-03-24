@@ -142,14 +142,15 @@ export function expandResource(
     constRawName,
     refName,
     rawName,
+    isStruct,
   );
   if (hasShared) {
     addBorrowFunction(ctors, targetName, resourceEntry, refName, rawName);
   } else if (!hasScoped) {
     ctors[`${targetName}#3`].hints.changeAccess = "protected";
     ctors[`${targetName}#4`].hints.changeAccess = "public";
+    if (hasRef) deleteCtorsFromRef(ctors, refName, targetName);
   }
-  if (hasRef) deleteCtorsFromRef(ctors, refName, targetName);
   const subEntries = targetEntry.entries || {};
 
   wrapCustomCtors(subEntries, targetName, ctors);
@@ -459,6 +460,7 @@ function createBaselineCtors(
   constRawName: string,
   paramType: string,
   rawName: string,
+  isStruct: boolean,
 ) {
   const ownershipDisclaimer = hasScoped
     ? []
@@ -471,7 +473,7 @@ function createBaselineCtors(
       constexpr: true,
       parameters: [{ name: "", type: "std::nullptr_t", default: "nullptr" }],
       hints: {
-        init: ["m_resource(0)"],
+        init: [isStruct ? "m_resource(nullptr)" : "m_resource(0)"],
         noexcept: true,
         changeAccess: "public",
       },
@@ -907,6 +909,29 @@ function createRefEntry(
       constexpr: true,
       parameters: [
         {
+          type: `${targetName} &&`,
+          name: "resource",
+        },
+      ],
+      hints: {
+        init: [`${targetName}(std::move(resource).release())`],
+        noexcept: true,
+      },
+      doc: [
+        `Constructs from ${targetName}.`,
+        {
+          tag: "@param resource",
+          content: `a ${targetName}.`,
+        },
+        "This will release the ownership from resource!",
+      ],
+    },
+    [`${refName}#4`]: {
+      kind: "function",
+      type: "",
+      constexpr: true,
+      parameters: [
+        {
           type: `const ${refName} &`,
           name: "other",
         },
@@ -914,7 +939,7 @@ function createRefEntry(
       hints: { init: [`${targetName}(other.get())`], noexcept: true },
       doc: ["Copy constructor."],
     },
-    [`${refName}#4`]: {
+    [`${refName}#5`]: {
       kind: "function",
       type: "",
       constexpr: true,
@@ -924,7 +949,7 @@ function createRefEntry(
           name: "other",
         },
       ],
-      hints: { init: [`${targetName}(other.release())`], noexcept: true },
+      hints: { init: [`${targetName}(other.get())`], noexcept: true },
       doc: ["Move constructor."],
     },
     [`~${refName}`]: {
@@ -938,9 +963,9 @@ function createRefEntry(
       kind: "function",
       type: `${refName} &`,
       constexpr: true,
-      parameters: [{ type: refName, name: "other" }],
+      parameters: [{ type: `const ${refName} &`, name: "other" }],
       hints: {
-        body: `std::swap(*this, other);\nreturn *this;`,
+        default: true,
         noexcept: true,
       },
       doc: [`Assignment operator.`],

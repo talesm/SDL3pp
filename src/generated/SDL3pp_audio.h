@@ -1506,6 +1506,18 @@ struct AudioDeviceRef : AudioDevice
   {
   }
 
+  /**
+   * Constructs from AudioDevice.
+   *
+   * @param resource a AudioDevice.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AudioDeviceRef(AudioDevice&& resource) noexcept
+    : AudioDevice(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept
     : AudioDevice(other.get())
@@ -1514,7 +1526,7 @@ struct AudioDeviceRef : AudioDevice
 
   /// Move constructor.
   constexpr AudioDeviceRef(AudioDeviceRef&& other) noexcept
-    : AudioDevice(other.release())
+    : AudioDevice(other.get())
   {
   }
 
@@ -1522,11 +1534,8 @@ struct AudioDeviceRef : AudioDevice
   ~AudioDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept =
+    default;
 
   /// Converts to AudioDeviceID
   constexpr operator AudioDeviceID() const noexcept { return get(); }
@@ -1670,7 +1679,7 @@ class AudioStream
 public:
   /// Default ctor
   constexpr AudioStream(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -2857,6 +2866,18 @@ struct AudioStreamRef : AudioStream
   {
   }
 
+  /**
+   * Constructs from AudioStream.
+   *
+   * @param resource a AudioStream.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AudioStreamRef(AudioStream&& resource) noexcept
+    : AudioStream(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr AudioStreamRef(const AudioStreamRef& other) noexcept
     : AudioStream(other.get())
@@ -2865,7 +2886,7 @@ struct AudioStreamRef : AudioStream
 
   /// Move constructor.
   constexpr AudioStreamRef(AudioStreamRef&& other) noexcept
-    : AudioStream(other.release())
+    : AudioStream(other.get())
   {
   }
 
@@ -2873,11 +2894,8 @@ struct AudioStreamRef : AudioStream
   ~AudioStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioStreamRef& operator=(AudioStreamRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr AudioStreamRef& operator=(const AudioStreamRef& other) noexcept =
+    default;
 
   /// Converts to AudioStreamRaw
   constexpr operator AudioStreamRaw() const noexcept { return get(); }
@@ -3001,7 +3019,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  AudioStreamRef get() { return m_lock; }
+  AudioStreamRef get() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }

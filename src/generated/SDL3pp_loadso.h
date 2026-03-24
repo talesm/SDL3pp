@@ -67,7 +67,7 @@ class SharedObject
 public:
   /// Default ctor
   constexpr SharedObject(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -224,6 +224,18 @@ struct SharedObjectRef : SharedObject
   {
   }
 
+  /**
+   * Constructs from SharedObject.
+   *
+   * @param resource a SharedObject.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SharedObjectRef(SharedObject&& resource) noexcept
+    : SharedObject(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
   constexpr SharedObjectRef(const SharedObjectRef& other) noexcept
     : SharedObject(other.get())
@@ -232,7 +244,7 @@ struct SharedObjectRef : SharedObject
 
   /// Move constructor.
   constexpr SharedObjectRef(SharedObjectRef&& other) noexcept
-    : SharedObject(other.release())
+    : SharedObject(other.get())
   {
   }
 
@@ -240,11 +252,8 @@ struct SharedObjectRef : SharedObject
   ~SharedObjectRef() { release(); }
 
   /// Assignment operator.
-  constexpr SharedObjectRef& operator=(SharedObjectRef other) noexcept
-  {
-    std::swap(*this, other);
-    return *this;
-  }
+  constexpr SharedObjectRef& operator=(const SharedObjectRef& other) noexcept =
+    default;
 
   /// Converts to SharedObjectRaw
   constexpr operator SharedObjectRaw() const noexcept { return get(); }

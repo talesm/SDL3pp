@@ -26,12 +26,3 @@
   * @returns a value that can be reported through Thread.Wait().
   *
   * @since This datatype is available since SDL 3.2.0.
-@@ -500,7 +499,7 @@
-   ~ThreadRef() { release(); }
- 
-   /// Assignment operator.
--  constexpr ThreadRef& operator=(ThreadRef other) noexcept
-+  ThreadRef& operator=(ThreadRef other) noexcept
-   {
-     std::swap(*this, other);
-     return *this;
