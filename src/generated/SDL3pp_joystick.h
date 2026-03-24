@@ -424,7 +424,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Joystick(const Joystick& other) noexcept = default;
+  constexpr Joystick(const Joystick& other) noexcept
+    : Joystick(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -467,7 +470,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Joystick& operator=(const Joystick& other) noexcept = default;
+  Joystick& operator=(const Joystick& other) = default;
 
 public:
   /// Retrieves underlying JoystickRaw.
@@ -1187,7 +1190,7 @@ struct JoystickRef : Joystick
    *
    * This does not takes ownership!
    */
-  JoystickRef(JoystickRaw resource) noexcept
+  constexpr JoystickRef(JoystickRaw resource) noexcept
     : Joystick(resource)
   {
   }
@@ -1232,7 +1235,12 @@ struct JoystickRef : Joystick
   ~JoystickRef() { release(); }
 
   /// Assignment operator.
-  constexpr JoystickRef& operator=(const JoystickRef& other) noexcept = default;
+  JoystickRef& operator=(const JoystickRef& other) noexcept
+  {
+    release();
+    Joystick::operator=(Joystick(other.get()));
+    return *this;
+  }
 
   /// Converts to JoystickRaw
   constexpr operator JoystickRaw() const noexcept { return get(); }

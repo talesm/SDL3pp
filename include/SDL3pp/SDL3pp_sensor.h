@@ -157,7 +157,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Sensor(const Sensor& other) noexcept = default;
+  constexpr Sensor(const Sensor& other) noexcept
+    : Sensor(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -193,7 +196,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Sensor& operator=(const Sensor& other) noexcept = default;
+  Sensor& operator=(const Sensor& other) = default;
 
 public:
   /// Retrieves underlying SensorRaw.
@@ -298,7 +301,7 @@ struct SensorRef : Sensor
    *
    * This does not takes ownership!
    */
-  SensorRef(SensorRaw resource) noexcept
+  constexpr SensorRef(SensorRaw resource) noexcept
     : Sensor(resource)
   {
   }
@@ -343,7 +346,12 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  constexpr SensorRef& operator=(const SensorRef& other) noexcept = default;
+  SensorRef& operator=(const SensorRef& other) noexcept
+  {
+    release();
+    Sensor::operator=(Sensor(other.get()));
+    return *this;
+  }
 
   /// Converts to SensorRaw
   constexpr operator SensorRaw() const noexcept { return get(); }

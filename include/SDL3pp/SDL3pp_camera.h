@@ -178,7 +178,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Camera(const Camera& other) noexcept = default;
+  constexpr Camera(const Camera& other) noexcept
+    : Camera(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -249,7 +252,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Camera& operator=(const Camera& other) noexcept = default;
+  Camera& operator=(const Camera& other) = default;
 
 public:
   /// Retrieves underlying CameraRaw.
@@ -450,7 +453,7 @@ struct CameraRef : Camera
    *
    * This does not takes ownership!
    */
-  CameraRef(CameraRaw resource) noexcept
+  constexpr CameraRef(CameraRaw resource) noexcept
     : Camera(resource)
   {
   }
@@ -495,7 +498,12 @@ struct CameraRef : Camera
   ~CameraRef() { release(); }
 
   /// Assignment operator.
-  constexpr CameraRef& operator=(const CameraRef& other) noexcept = default;
+  CameraRef& operator=(const CameraRef& other) noexcept
+  {
+    release();
+    Camera::operator=(Camera(other.get()));
+    return *this;
+  }
 
   /// Converts to CameraRaw
   constexpr operator CameraRaw() const noexcept { return get(); }
@@ -554,7 +562,7 @@ public:
   CameraFrame(const CameraFrame& other) = delete;
 
   /// Move constructor
-  constexpr CameraFrame(CameraFrame&& other) noexcept
+  CameraFrame(CameraFrame&& other) noexcept
     : Surface(std::move(other))
     , m_lock(other.m_lock)
   {

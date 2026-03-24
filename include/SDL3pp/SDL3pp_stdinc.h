@@ -498,6 +498,8 @@ constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 /// Min allowed time representation
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
+#ifndef FLT_EPSILON
+
 /**
  * Epsilon constant, used for comparing floating-point numbers.
  *
@@ -506,7 +508,9 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *
  * @since This constant is available since SDL 3.2.0.
  */
-constexpr float FLT_EPSILON = SDL_FLT_EPSILON;
+constexpr float FLT_EPSILON = 1.1920928955078125e-07F;
+
+#endif // FLT_EPSILON
 
 /**
  * Concept of interface
@@ -933,7 +937,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept = default;
+  constexpr Environment(const Environment& other) noexcept
+    : Environment(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -980,7 +987,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Environment& operator=(const Environment& other) noexcept = default;
+  Environment& operator=(const Environment& other) = default;
 
 public:
   /// Retrieves underlying EnvironmentRaw.
@@ -1124,7 +1131,7 @@ struct EnvironmentRef : Environment
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentRaw resource) noexcept
+  constexpr EnvironmentRef(EnvironmentRaw resource) noexcept
     : Environment(resource)
   {
   }
@@ -1169,8 +1176,12 @@ struct EnvironmentRef : Environment
   ~EnvironmentRef() { release(); }
 
   /// Assignment operator.
-  constexpr EnvironmentRef& operator=(const EnvironmentRef& other) noexcept =
-    default;
+  EnvironmentRef& operator=(const EnvironmentRef& other) noexcept
+  {
+    release();
+    Environment::operator=(Environment(other.get()));
+    return *this;
+  }
 
   /// Converts to EnvironmentRaw
   constexpr operator EnvironmentRaw() const noexcept { return get(); }
@@ -5925,8 +5936,8 @@ class IConv
 
 public:
   /// Default ctor
-  constexpr IConv(std::nullptr_t = nullptr) noexcept
-    : m_resource(reinterpret_cast<IConvRaw>(SDL_ICONV_ERROR))
+  IConv(std::nullptr_t = nullptr) noexcept
+    : m_resource(IConvRaw(SDL_ICONV_ERROR))
   {
   }
 
@@ -5944,7 +5955,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept = default;
+  constexpr IConv(const IConv& other) noexcept
+    : IConv(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -5987,7 +6001,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IConv& operator=(const IConv& other) noexcept = default;
+  IConv& operator=(const IConv& other) = default;
 
 public:
   /// Retrieves underlying IConvRaw.
@@ -6064,7 +6078,7 @@ public:
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
-               size_t* outbytesleft);
+               size_t* outbytesleft) const;
 };
 
 /**
@@ -6083,7 +6097,7 @@ struct IConvRef : IConv
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvRaw resource) noexcept
+  constexpr IConvRef(IConvRaw resource) noexcept
     : IConv(resource)
   {
   }
@@ -6128,7 +6142,12 @@ struct IConvRef : IConv
   ~IConvRef() { release(); }
 
   /// Assignment operator.
-  constexpr IConvRef& operator=(const IConvRef& other) noexcept = default;
+  IConvRef& operator=(const IConvRef& other) noexcept
+  {
+    release();
+    IConv::operator=(IConv(other.get()));
+    return *this;
+  }
 
   /// Converts to IConvRaw
   constexpr operator IConvRaw() const noexcept { return get(); }
@@ -6227,7 +6246,7 @@ inline size_t iconv(IConvRaw cd,
 inline size_t IConv::iconv(const char** inbuf,
                            size_t* inbytesleft,
                            char** outbuf,
-                           size_t* outbytesleft)
+                           size_t* outbytesleft) const
 {
   return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
 }
@@ -6370,7 +6389,7 @@ inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
+inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_mul_check_overflow(a, b, ret);
 }
@@ -6392,7 +6411,7 @@ constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
+inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_add_check_overflow(a, b, ret);
 }

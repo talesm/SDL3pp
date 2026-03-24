@@ -3074,7 +3074,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) noexcept = default;
+  constexpr GPUDevice(const GPUDevice& other) noexcept
+    : GPUDevice(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -3240,7 +3243,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept = default;
+  GPUDevice& operator=(const GPUDevice& other) = default;
 
 public:
   /// Retrieves underlying GPUDeviceRaw.
@@ -4133,7 +4136,7 @@ struct GPUDeviceRef : GPUDevice
    *
    * This does not takes ownership!
    */
-  GPUDeviceRef(GPUDeviceRaw resource) noexcept
+  constexpr GPUDeviceRef(GPUDeviceRaw resource) noexcept
     : GPUDevice(resource)
   {
   }
@@ -4178,8 +4181,12 @@ struct GPUDeviceRef : GPUDevice
   ~GPUDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept =
-    default;
+  GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
+  {
+    release();
+    GPUDevice::operator=(GPUDevice(other.get()));
+    return *this;
+  }
 
   /// Converts to GPUDeviceRaw
   constexpr operator GPUDeviceRaw() const noexcept { return get(); }

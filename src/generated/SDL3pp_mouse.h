@@ -176,7 +176,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) noexcept = default;
+  constexpr Cursor(const Cursor& other) noexcept
+    : Cursor(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -300,7 +303,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Cursor& operator=(const Cursor& other) noexcept = default;
+  Cursor& operator=(const Cursor& other) = default;
 
 public:
   /// Retrieves underlying CursorRaw.
@@ -372,7 +375,7 @@ struct CursorRef : Cursor
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorRaw resource) noexcept
+  constexpr CursorRef(CursorRaw resource) noexcept
     : Cursor(resource)
   {
   }
@@ -417,7 +420,12 @@ struct CursorRef : Cursor
   ~CursorRef() { release(); }
 
   /// Assignment operator.
-  constexpr CursorRef& operator=(const CursorRef& other) noexcept = default;
+  CursorRef& operator=(const CursorRef& other) noexcept
+  {
+    release();
+    Cursor::operator=(Cursor(other.get()));
+    return *this;
+  }
 
   /// Converts to CursorRaw
   constexpr operator CursorRaw() const noexcept { return get(); }

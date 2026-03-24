@@ -126,7 +126,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) noexcept = default;
+  constexpr HidDevice(const HidDevice& other) noexcept
+    : HidDevice(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -183,7 +186,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr HidDevice& operator=(const HidDevice& other) noexcept = default;
+  HidDevice& operator=(const HidDevice& other) = default;
 
 public:
   /// Retrieves underlying HidDeviceRaw.
@@ -457,7 +460,7 @@ struct HidDeviceRef : HidDevice
    *
    * This does not takes ownership!
    */
-  HidDeviceRef(HidDeviceRaw resource) noexcept
+  constexpr HidDeviceRef(HidDeviceRaw resource) noexcept
     : HidDevice(resource)
   {
   }
@@ -502,8 +505,12 @@ struct HidDeviceRef : HidDevice
   ~HidDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr HidDeviceRef& operator=(const HidDeviceRef& other) noexcept =
-    default;
+  HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
+  {
+    release();
+    HidDevice::operator=(HidDevice(other.get()));
+    return *this;
+  }
 
   /// Converts to HidDeviceRaw
   constexpr operator HidDeviceRaw() const noexcept { return get(); }

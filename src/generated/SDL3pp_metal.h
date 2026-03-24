@@ -59,7 +59,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr MetalView(const MetalView& other) noexcept = default;
+  constexpr MetalView(const MetalView& other) noexcept
+    : MetalView(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -106,7 +109,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr MetalView& operator=(const MetalView& other) noexcept = default;
+  MetalView& operator=(const MetalView& other) = default;
 
 public:
   /// Retrieves underlying MetalViewRaw.
@@ -168,7 +171,7 @@ struct MetalViewRef : MetalView
    *
    * This does not takes ownership!
    */
-  MetalViewRef(MetalViewRaw resource) noexcept
+  constexpr MetalViewRef(MetalViewRaw resource) noexcept
     : MetalView(resource)
   {
   }
@@ -213,8 +216,12 @@ struct MetalViewRef : MetalView
   ~MetalViewRef() { release(); }
 
   /// Assignment operator.
-  constexpr MetalViewRef& operator=(const MetalViewRef& other) noexcept =
-    default;
+  MetalViewRef& operator=(const MetalViewRef& other) noexcept
+  {
+    release();
+    MetalView::operator=(MetalView(other.get()));
+    return *this;
+  }
 
   /// Converts to MetalViewRaw
   constexpr operator MetalViewRaw() const noexcept { return get(); }

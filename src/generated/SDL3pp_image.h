@@ -2650,7 +2650,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Animation(const Animation& other) noexcept = default;
+  constexpr Animation(const Animation& other) noexcept
+    : Animation(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -2739,7 +2742,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Animation& operator=(const Animation& other) noexcept = default;
+  Animation& operator=(const Animation& other) = default;
 
 public:
   /// Retrieves underlying AnimationRaw.
@@ -2989,7 +2992,7 @@ struct AnimationRef : Animation
    *
    * This does not takes ownership!
    */
-  AnimationRef(AnimationRaw resource) noexcept
+  constexpr AnimationRef(AnimationRaw resource) noexcept
     : Animation(resource)
   {
   }
@@ -3034,8 +3037,12 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationRef& operator=(const AnimationRef& other) noexcept =
-    default;
+  AnimationRef& operator=(const AnimationRef& other) noexcept
+  {
+    release();
+    Animation::operator=(Animation(other.get()));
+    return *this;
+  }
 
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
@@ -3687,7 +3694,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept = default;
+  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept
+    : AnimationEncoder(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -3823,8 +3833,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AnimationEncoder& operator=(
-    const AnimationEncoder& other) noexcept = default;
+  AnimationEncoder& operator=(const AnimationEncoder& other) = default;
 
 public:
   /// Retrieves underlying AnimationEncoderRaw.
@@ -3902,7 +3911,7 @@ struct AnimationEncoderRef : AnimationEncoder
    *
    * This does not takes ownership!
    */
-  AnimationEncoderRef(AnimationEncoderRaw resource) noexcept
+  constexpr AnimationEncoderRef(AnimationEncoderRaw resource) noexcept
     : AnimationEncoder(resource)
   {
   }
@@ -3947,8 +3956,12 @@ struct AnimationEncoderRef : AnimationEncoder
   ~AnimationEncoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationEncoderRef& operator=(
-    const AnimationEncoderRef& other) noexcept = default;
+  AnimationEncoderRef& operator=(const AnimationEncoderRef& other) noexcept
+  {
+    release();
+    AnimationEncoder::operator=(AnimationEncoder(other.get()));
+    return *this;
+  }
 
   /// Converts to AnimationEncoderRaw
   constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
@@ -4235,7 +4248,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept = default;
+  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept
+    : AnimationDecoder(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -4364,8 +4380,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AnimationDecoder& operator=(
-    const AnimationDecoder& other) noexcept = default;
+  AnimationDecoder& operator=(const AnimationDecoder& other) = default;
 
 public:
   /// Retrieves underlying AnimationDecoderRaw.
@@ -4505,7 +4520,7 @@ struct AnimationDecoderRef : AnimationDecoder
    *
    * This does not takes ownership!
    */
-  AnimationDecoderRef(AnimationDecoderRaw resource) noexcept
+  constexpr AnimationDecoderRef(AnimationDecoderRaw resource) noexcept
     : AnimationDecoder(resource)
   {
   }
@@ -4550,8 +4565,12 @@ struct AnimationDecoderRef : AnimationDecoder
   ~AnimationDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationDecoderRef& operator=(
-    const AnimationDecoderRef& other) noexcept = default;
+  AnimationDecoderRef& operator=(const AnimationDecoderRef& other) noexcept
+  {
+    release();
+    AnimationDecoder::operator=(AnimationDecoder(other.get()));
+    return *this;
+  }
 
   /// Converts to AnimationDecoderRaw
   constexpr operator AnimationDecoderRaw() const noexcept { return get(); }

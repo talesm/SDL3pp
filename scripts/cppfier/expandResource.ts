@@ -500,7 +500,10 @@ function createBaselineCtors(
       type: "",
       constexpr: true,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
-      hints: { default: true, noexcept: true },
+      hints: {
+        init: [`${targetName}(other.m_resource)`],
+        noexcept: true,
+      },
       doc: ["Copy constructor"],
     },
     [`${targetName}#4`]: {
@@ -533,7 +536,6 @@ function addBorrowFunction(
     ctors["Borrow"] = {
       kind: "function",
       static: true,
-      constexpr: true,
       type: targetName,
       parameters: [{ name: "resource", type: rawName }],
       hints: {
@@ -796,11 +798,9 @@ function populateTargetEntry(
       kind: "function",
       type: `${targetName} &`,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
-      constexpr: true,
       hints: {
         default: true,
         changeAccess: isCopyable ? undefined : "protected",
-        noexcept: true,
       },
       doc: ["Assignment operator."],
     },
@@ -867,6 +867,7 @@ function createRefEntry(
     [refName]: {
       kind: "function",
       type: "",
+      constexpr: true,
       parameters: [
         {
           type: rawName,
@@ -962,10 +963,9 @@ function createRefEntry(
     [`operator=`]: {
       kind: "function",
       type: `${refName} &`,
-      constexpr: true,
       parameters: [{ type: `const ${refName} &`, name: "other" }],
       hints: {
-        default: true,
+        body: `release();${targetName}::operator=(${targetName}(other.get()));\nreturn *this;`,
         noexcept: true,
       },
       doc: [`Assignment operator.`],

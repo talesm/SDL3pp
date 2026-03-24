@@ -55,13 +55,13 @@ constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs) noexcept
 }
 
 /// Comparison operator for Rect.
-constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs) noexcept
+inline bool operator==(const RectRaw& lhs, const RectRaw& rhs) noexcept
 {
   return SDL_RectsEqual(&lhs, &rhs);
 }
 
 /// Comparison operator for FRect.
-constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
+inline bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
 {
   return SDL_RectsEqualFloat(&lhs, &rhs);
 }
@@ -180,7 +180,7 @@ struct Point : PointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool InRect(const RectRaw& r) const;
+  inline bool InRect(const RectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -599,7 +599,7 @@ struct FPoint : FPointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool InRect(const FRectRaw& r) const;
+  inline bool InRect(const FRectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -878,16 +878,16 @@ struct Rect : RectRaw
   }
 
   /// Compares with the underlying type
-  constexpr bool operator==(const RectRaw& other) const { return Equal(other); }
+  bool operator==(const RectRaw& other) const { return Equal(other); }
 
   /// Compares with the underlying type
-  constexpr bool operator==(const Rect& other) const
+  bool operator==(const Rect& other) const
   {
     return *this == (const RectRaw&)(other);
   }
 
   /// @sa Empty()
-  constexpr explicit operator bool() const { return !Empty(); }
+  explicit operator bool() const { return !Empty(); }
 
   /**
    * Get left x coordinate.
@@ -1151,7 +1151,7 @@ struct Rect : RectRaw
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
+  inline bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
   {
     return GetLineIntersection(p1 ? &p1->x : nullptr,
                                p1 ? &p1->y : nullptr,
@@ -1178,7 +1178,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
+  inline bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
 
   /**
    * Convert an SDL_Rect to SDL_FRect
@@ -1190,7 +1190,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr operator SDL_FRect() const;
+  inline operator SDL_FRect() const;
 
   /// @sa operator ToFRect()
   constexpr operator FRect() const;
@@ -1212,7 +1212,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Empty() const;
+  inline bool Empty() const;
 
   /**
    * Determine whether two rectangles are equal.
@@ -1232,7 +1232,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Equal(const RectRaw& other) const;
+  inline bool Equal(const RectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -1242,7 +1242,7 @@ struct Rect : RectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const PointRaw& p) const
+  inline bool Contains(const PointRaw& p) const
   {
     return SDL_PointInRect(&p, this);
   }
@@ -1255,7 +1255,7 @@ struct Rect : RectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const RectRaw& other) const
+  inline bool Contains(const RectRaw& other) const
   {
     return GetUnion(other) == *this;
   }
@@ -1272,7 +1272,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.GetIntersection
    */
-  constexpr bool HasIntersection(const RectRaw& other) const;
+  inline bool HasIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles.
@@ -1289,7 +1289,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.HasIntersection
    */
-  constexpr Rect GetIntersection(const RectRaw& other) const;
+  inline Rect GetIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles.
@@ -1479,7 +1479,7 @@ struct FRect : FRectRaw
   }
 
   /// @sa Empty()
-  constexpr operator bool() const { return !Empty(); }
+  operator bool() const { return !Empty(); }
 
   /**
    * Get left x coordinate.
@@ -1576,7 +1576,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static constexpr FRect GetEnclosingPoints(
+  inline static FRect GetEnclosingPoints(
     SpanRef<const FPointRaw> points,
     OptionalRef<const FRectRaw> clip = std::nullopt);
 
@@ -1748,7 +1748,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
+  inline bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
 
   /**
    * Determine whether a floating point rectangle takes no space.
@@ -1766,7 +1766,7 @@ struct FRect : FRectRaw
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  bool GetLineIntersection(FPoint* p1, FPoint* p2) const
+  inline bool GetLineIntersection(FPoint* p1, FPoint* p2) const
   {
     return GetLineIntersection(p1 ? &p1->x : nullptr,
                                p1 ? &p1->y : nullptr,
@@ -1791,7 +1791,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Empty() const;
+  inline bool Empty() const;
 
   /**
    * Determine whether two floating point rectangles are equal, within some
@@ -1817,7 +1817,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.Equal
    */
-  constexpr bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
+  inline bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
 
   /**
    * Determine whether two floating point rectangles are equal, within a default
@@ -1843,7 +1843,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.EqualEpsilon
    */
-  constexpr bool Equal(const FRectRaw& other) const;
+  inline bool Equal(const FRectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -1853,7 +1853,7 @@ struct FRect : FRectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const FPointRaw& p) const
+  bool Contains(const FPointRaw& p) const
   {
     return SDL_PointInRectFloat(&p, this);
   }
@@ -1866,7 +1866,7 @@ struct FRect : FRectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const FRectRaw& other) const
+  bool Contains(const FRectRaw& other) const
   {
     return GetUnion(other) == *this;
   }
@@ -1883,7 +1883,7 @@ struct FRect : FRectRaw
    *
    * @sa Rect.GetIntersection
    */
-  constexpr bool HasIntersection(const FRectRaw& other) const;
+  inline bool HasIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles with float precision.
@@ -1900,7 +1900,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.HasIntersection
    */
-  constexpr FRect GetIntersection(const FRectRaw& other) const;
+  inline FRect GetIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles with float precision.
@@ -2045,14 +2045,14 @@ struct FRect : FRectRaw
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr FRect RectToFRect(const RectRaw& rect)
+inline FRect RectToFRect(const RectRaw& rect)
 {
   FRect frect;
   SDL_RectToFRect(&rect, &frect);
   return frect;
 }
 
-constexpr Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
+Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
 
 /**
  * Determine whether a point resides inside a rectangle.
@@ -2075,12 +2075,12 @@ constexpr Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool PointInRect(const PointRaw& p, const RectRaw& r)
+inline bool PointInRect(const PointRaw& p, const RectRaw& r)
 {
   return SDL_PointInRect(&p, &r);
 }
 
-constexpr bool Point::InRect(const RectRaw& r) const
+bool Point::InRect(const RectRaw& r) const
 {
   return SDL::PointInRect(*this, r);
 }
@@ -2103,9 +2103,9 @@ constexpr bool Point::InRect(const RectRaw& r) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
+inline bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
 
-constexpr bool Rect::Empty() const { return SDL::RectEmpty(*this); }
+bool Rect::Empty() const { return SDL::RectEmpty(*this); }
 
 /**
  * Determine whether two rectangles are equal.
@@ -2126,12 +2126,12 @@ constexpr bool Rect::Empty() const { return SDL::RectEmpty(*this); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool RectsEqual(const RectRaw& a, const RectRaw& b)
+inline bool RectsEqual(const RectRaw& a, const RectRaw& b)
 {
   return SDL_RectsEqual(&a, &b);
 }
 
-constexpr bool Rect::Equal(const RectRaw& other) const
+bool Rect::Equal(const RectRaw& other) const
 {
   return SDL::RectsEqual(*this, other);
 }
@@ -2151,12 +2151,12 @@ constexpr bool Rect::Equal(const RectRaw& other) const
  *
  * @sa Rect.GetIntersection
  */
-constexpr bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
+inline bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
 {
   return SDL_HasRectIntersection(&A, &B);
 }
 
-constexpr bool Rect::HasIntersection(const RectRaw& other) const
+bool Rect::HasIntersection(const RectRaw& other) const
 {
   return SDL::HasRectIntersection(*this, other);
 }
@@ -2177,13 +2177,13 @@ constexpr bool Rect::HasIntersection(const RectRaw& other) const
  *
  * @sa Rect.HasIntersection
  */
-constexpr Rect GetRectIntersection(const RectRaw& A, const RectRaw& B)
+inline Rect GetRectIntersection(const RectRaw& A, const RectRaw& B)
 {
   if (Rect result; SDL_GetRectIntersection(&A, &B, &result)) return result;
   return {};
 }
 
-constexpr Rect Rect::GetIntersection(const RectRaw& other) const
+Rect Rect::GetIntersection(const RectRaw& other) const
 {
   return SDL::GetRectIntersection(*this, other);
 }
@@ -2300,12 +2300,12 @@ inline bool Rect::GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
+inline bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
 {
   return SDL_PointInRectFloat(&p, &r);
 }
 
-constexpr bool FPoint::InRect(const FRectRaw& r) const
+bool FPoint::InRect(const FRectRaw& r) const
 {
   return SDL::PointInRectFloat(*this, r);
 }
@@ -2328,12 +2328,12 @@ constexpr bool FPoint::InRect(const FRectRaw& r) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool RectEmptyFloat(const FRectRaw& r)
+inline bool RectEmptyFloat(const FRectRaw& r)
 {
   return SDL_RectEmptyFloat(&r);
 }
 
-constexpr bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
+bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
 
 /**
  * Determine whether two floating point rectangles are equal, within some given
@@ -2360,14 +2360,14 @@ constexpr bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
  *
  * @sa FRect.Equal
  */
-constexpr bool RectsEqualEpsilon(const FRectRaw& a,
+inline bool RectsEqualEpsilon(const FRectRaw& a,
                                  const FRectRaw& b,
                                  const float epsilon)
 {
   return SDL_RectsEqualEpsilon(&a, &b, epsilon);
 }
 
-constexpr bool FRect::EqualEpsilon(const FRectRaw& other,
+bool FRect::EqualEpsilon(const FRectRaw& other,
                                    const float epsilon) const
 {
   return SDL::RectsEqualEpsilon(*this, other, epsilon);
@@ -2398,12 +2398,12 @@ constexpr bool FRect::EqualEpsilon(const FRectRaw& other,
  *
  * @sa FRect.EqualEpsilon
  */
-constexpr bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
+inline bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
 {
   return SDL_RectsEqualFloat(&a, &b);
 }
 
-constexpr bool FRect::Equal(const FRectRaw& other) const
+bool FRect::Equal(const FRectRaw& other) const
 {
   return SDL::RectsEqualFloat(*this, other);
 }
@@ -2423,12 +2423,12 @@ constexpr bool FRect::Equal(const FRectRaw& other) const
  *
  * @sa Rect.GetIntersection
  */
-constexpr bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
+inline bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
   return SDL_HasRectIntersectionFloat(&A, &B);
 }
 
-constexpr bool FRect::HasIntersection(const FRectRaw& other) const
+bool FRect::HasIntersection(const FRectRaw& other) const
 {
   return SDL::HasRectIntersectionFloat(*this, other);
 }
@@ -2449,13 +2449,13 @@ constexpr bool FRect::HasIntersection(const FRectRaw& other) const
  *
  * @sa FRect.HasIntersection
  */
-constexpr FRect GetRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
+inline FRect GetRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
   if (FRect r; SDL_GetRectIntersectionFloat(&A, &B, &r)) return r;
   return {};
 }
 
-constexpr FRect FRect::GetIntersection(const FRectRaw& other) const
+FRect FRect::GetIntersection(const FRectRaw& other) const
 {
   return SDL::GetRectIntersectionFloat(*this, other);
 }
@@ -2501,7 +2501,7 @@ constexpr FRect FRect::GetUnion(const FRectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr FRect GetRectEnclosingPointsFloat(
+inline FRect GetRectEnclosingPointsFloat(
   SpanRef<const FPointRaw> points,
   OptionalRef<const FRectRaw> clip = std::nullopt)
 {
@@ -2512,7 +2512,7 @@ constexpr FRect GetRectEnclosingPointsFloat(
   return {};
 }
 
-constexpr FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
+inline FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
                                           OptionalRef<const FRectRaw> clip)
 {
   return SDL::GetRectEnclosingPointsFloat(points, clip);

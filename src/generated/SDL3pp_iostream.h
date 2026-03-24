@@ -125,7 +125,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr IOStream(const IOStream& other) noexcept = default;
+  constexpr IOStream(const IOStream& other) noexcept
+    : IOStream(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -391,7 +394,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IOStream& operator=(const IOStream& other) noexcept = default;
+  IOStream& operator=(const IOStream& other) = default;
 
 public:
   /// Retrieves underlying IOStreamRaw.
@@ -1325,7 +1328,7 @@ struct IOStreamRef : IOStream
    *
    * This does not takes ownership!
    */
-  IOStreamRef(IOStreamRaw resource) noexcept
+  constexpr IOStreamRef(IOStreamRaw resource) noexcept
     : IOStream(resource)
   {
   }
@@ -1370,7 +1373,12 @@ struct IOStreamRef : IOStream
   ~IOStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr IOStreamRef& operator=(const IOStreamRef& other) noexcept = default;
+  IOStreamRef& operator=(const IOStreamRef& other) noexcept
+  {
+    release();
+    IOStream::operator=(IOStream(other.get()));
+    return *this;
+  }
 
   /// Converts to IOStreamRaw
   constexpr operator IOStreamRaw() const noexcept { return get(); }

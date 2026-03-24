@@ -200,7 +200,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Properties(const Properties& other) noexcept = default;
+  constexpr Properties(const Properties& other) noexcept
+    : Properties(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -242,7 +245,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Properties& operator=(const Properties& other) noexcept = default;
+  Properties& operator=(const Properties& other) = default;
 
 public:
   /// Retrieves underlying PropertiesID.
@@ -698,7 +701,7 @@ struct PropertiesRef : Properties
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesID resource) noexcept
+  constexpr PropertiesRef(PropertiesID resource) noexcept
     : Properties(resource)
   {
   }
@@ -743,8 +746,12 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 
   /// Assignment operator.
-  constexpr PropertiesRef& operator=(const PropertiesRef& other) noexcept =
-    default;
+  PropertiesRef& operator=(const PropertiesRef& other) noexcept
+  {
+    release();
+    Properties::operator=(Properties(other.get()));
+    return *this;
+  }
 
   /// Converts to PropertiesID
   constexpr operator PropertiesID() const noexcept { return get(); }
@@ -805,7 +812,7 @@ public:
   PropertiesLock(const PropertiesLock& other) = delete;
 
   /// Move constructor
-  constexpr PropertiesLock(PropertiesLock&& other) noexcept
+  PropertiesLock(PropertiesLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};

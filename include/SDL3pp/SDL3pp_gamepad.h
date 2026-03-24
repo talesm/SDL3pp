@@ -412,7 +412,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) noexcept = default;
+  constexpr Gamepad(const Gamepad& other) noexcept
+    : Gamepad(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -453,7 +456,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Gamepad& operator=(const Gamepad& other) noexcept = default;
+  Gamepad& operator=(const Gamepad& other) = default;
 
 public:
   /// Retrieves underlying GamepadRaw.
@@ -1146,7 +1149,7 @@ struct GamepadRef : Gamepad
    *
    * This does not takes ownership!
    */
-  GamepadRef(GamepadRaw resource) noexcept
+  constexpr GamepadRef(GamepadRaw resource) noexcept
     : Gamepad(resource)
   {
   }
@@ -1191,7 +1194,12 @@ struct GamepadRef : Gamepad
   ~GamepadRef() { release(); }
 
   /// Assignment operator.
-  constexpr GamepadRef& operator=(const GamepadRef& other) noexcept = default;
+  GamepadRef& operator=(const GamepadRef& other) noexcept
+  {
+    release();
+    Gamepad::operator=(Gamepad(other.get()));
+    return *this;
+  }
 
   /// Converts to GamepadRaw
   constexpr operator GamepadRaw() const noexcept { return get(); }

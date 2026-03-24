@@ -131,7 +131,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Process(const Process& other) noexcept = default;
+  constexpr Process(const Process& other) noexcept
+    : Process(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -269,7 +272,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Process& operator=(const Process& other) noexcept = default;
+  Process& operator=(const Process& other) = default;
 
 public:
   /// Retrieves underlying ProcessRaw.
@@ -489,7 +492,7 @@ struct ProcessRef : Process
    *
    * This does not takes ownership!
    */
-  ProcessRef(ProcessRaw resource) noexcept
+  constexpr ProcessRef(ProcessRaw resource) noexcept
     : Process(resource)
   {
   }
@@ -534,7 +537,12 @@ struct ProcessRef : Process
   ~ProcessRef() { release(); }
 
   /// Assignment operator.
-  constexpr ProcessRef& operator=(const ProcessRef& other) noexcept = default;
+  ProcessRef& operator=(const ProcessRef& other) noexcept
+  {
+    release();
+    Process::operator=(Process(other.get()));
+    return *this;
+  }
 
   /// Converts to ProcessRaw
   constexpr operator ProcessRaw() const noexcept { return get(); }

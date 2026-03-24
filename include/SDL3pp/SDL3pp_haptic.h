@@ -788,7 +788,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Haptic(const Haptic& other) noexcept = default;
+  constexpr Haptic(const Haptic& other) noexcept
+    : Haptic(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -873,7 +876,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Haptic& operator=(const Haptic& other) noexcept = default;
+  Haptic& operator=(const Haptic& other) = default;
 
 public:
   /// Retrieves underlying HapticRaw.
@@ -1241,7 +1244,7 @@ struct HapticRef : Haptic
    *
    * This does not takes ownership!
    */
-  HapticRef(HapticRaw resource) noexcept
+  constexpr HapticRef(HapticRaw resource) noexcept
     : Haptic(resource)
   {
   }
@@ -1286,7 +1289,12 @@ struct HapticRef : Haptic
   ~HapticRef() { release(); }
 
   /// Assignment operator.
-  constexpr HapticRef& operator=(const HapticRef& other) noexcept = default;
+  HapticRef& operator=(const HapticRef& other) noexcept
+  {
+    release();
+    Haptic::operator=(Haptic(other.get()));
+    return *this;
+  }
 
   /// Converts to HapticRaw
   constexpr operator HapticRaw() const noexcept { return get(); }

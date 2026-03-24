@@ -924,7 +924,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept = default;
+  constexpr Environment(const Environment& other) noexcept
+    : Environment(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -971,7 +974,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Environment& operator=(const Environment& other) noexcept = default;
+  Environment& operator=(const Environment& other) = default;
 
 public:
   /// Retrieves underlying EnvironmentRaw.
@@ -1102,7 +1105,7 @@ struct EnvironmentRef : Environment
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentRaw resource) noexcept
+  constexpr EnvironmentRef(EnvironmentRaw resource) noexcept
     : Environment(resource)
   {
   }
@@ -1147,8 +1150,12 @@ struct EnvironmentRef : Environment
   ~EnvironmentRef() { release(); }
 
   /// Assignment operator.
-  constexpr EnvironmentRef& operator=(const EnvironmentRef& other) noexcept =
-    default;
+  EnvironmentRef& operator=(const EnvironmentRef& other) noexcept
+  {
+    release();
+    Environment::operator=(Environment(other.get()));
+    return *this;
+  }
 
   /// Converts to EnvironmentRaw
   constexpr operator EnvironmentRaw() const noexcept { return get(); }
@@ -5765,7 +5772,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept = default;
+  constexpr IConv(const IConv& other) noexcept
+    : IConv(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -5809,7 +5819,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IConv& operator=(const IConv& other) noexcept = default;
+  IConv& operator=(const IConv& other) = default;
 
 public:
   /// Retrieves underlying IConvRaw.
@@ -5902,7 +5912,7 @@ struct IConvRef : IConv
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvRaw resource) noexcept
+  constexpr IConvRef(IConvRaw resource) noexcept
     : IConv(resource)
   {
   }
@@ -5947,7 +5957,12 @@ struct IConvRef : IConv
   ~IConvRef() { release(); }
 
   /// Assignment operator.
-  constexpr IConvRef& operator=(const IConvRef& other) noexcept = default;
+  IConvRef& operator=(const IConvRef& other) noexcept
+  {
+    release();
+    IConv::operator=(IConv(other.get()));
+    return *this;
+  }
 
   /// Converts to IConvRaw
   constexpr operator IConvRaw() const noexcept { return get(); }

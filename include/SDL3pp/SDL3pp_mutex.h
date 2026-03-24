@@ -108,7 +108,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Mutex(const Mutex& other) noexcept = default;
+  constexpr Mutex(const Mutex& other) noexcept
+    : Mutex(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -157,7 +160,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Mutex& operator=(const Mutex& other) noexcept = default;
+  Mutex& operator=(const Mutex& other) = default;
 
 public:
   /// Retrieves underlying MutexRaw.
@@ -277,7 +280,7 @@ struct MutexRef : Mutex
    *
    * This does not takes ownership!
    */
-  MutexRef(MutexRaw resource) noexcept
+  constexpr MutexRef(MutexRaw resource) noexcept
     : Mutex(resource)
   {
   }
@@ -322,7 +325,12 @@ struct MutexRef : Mutex
   ~MutexRef() { release(); }
 
   /// Assignment operator.
-  constexpr MutexRef& operator=(const MutexRef& other) noexcept = default;
+  MutexRef& operator=(const MutexRef& other) noexcept
+  {
+    release();
+    Mutex::operator=(Mutex(other.get()));
+    return *this;
+  }
 
   /// Converts to MutexRaw
   constexpr operator MutexRaw() const noexcept { return get(); }
@@ -500,7 +508,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr RWLock(const RWLock& other) noexcept = default;
+  constexpr RWLock(const RWLock& other) noexcept
+    : RWLock(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -569,7 +580,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr RWLock& operator=(const RWLock& other) noexcept = default;
+  RWLock& operator=(const RWLock& other) = default;
 
 public:
   /// Retrieves underlying RWLockRaw.
@@ -774,7 +785,7 @@ struct RWLockRef : RWLock
    *
    * This does not takes ownership!
    */
-  RWLockRef(RWLockRaw resource) noexcept
+  constexpr RWLockRef(RWLockRaw resource) noexcept
     : RWLock(resource)
   {
   }
@@ -819,7 +830,12 @@ struct RWLockRef : RWLock
   ~RWLockRef() { release(); }
 
   /// Assignment operator.
-  constexpr RWLockRef& operator=(const RWLockRef& other) noexcept = default;
+  RWLockRef& operator=(const RWLockRef& other) noexcept
+  {
+    release();
+    RWLock::operator=(RWLock(other.get()));
+    return *this;
+  }
 
   /// Converts to RWLockRaw
   constexpr operator RWLockRaw() const noexcept { return get(); }
@@ -1123,7 +1139,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) noexcept = default;
+  constexpr Semaphore(const Semaphore& other) noexcept
+    : Semaphore(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -1174,7 +1193,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Semaphore& operator=(const Semaphore& other) noexcept = default;
+  Semaphore& operator=(const Semaphore& other) = default;
 
 public:
   /// Retrieves underlying SemaphoreRaw.
@@ -1310,7 +1329,7 @@ struct SemaphoreRef : Semaphore
    *
    * This does not takes ownership!
    */
-  SemaphoreRef(SemaphoreRaw resource) noexcept
+  constexpr SemaphoreRef(SemaphoreRaw resource) noexcept
     : Semaphore(resource)
   {
   }
@@ -1355,8 +1374,12 @@ struct SemaphoreRef : Semaphore
   ~SemaphoreRef() { release(); }
 
   /// Assignment operator.
-  constexpr SemaphoreRef& operator=(const SemaphoreRef& other) noexcept =
-    default;
+  SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
+  {
+    release();
+    Semaphore::operator=(Semaphore(other.get()));
+    return *this;
+  }
 
   /// Converts to SemaphoreRaw
   constexpr operator SemaphoreRaw() const noexcept { return get(); }
@@ -1572,7 +1595,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Condition(const Condition& other) noexcept = default;
+  constexpr Condition(const Condition& other) noexcept
+    : Condition(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -1615,7 +1641,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Condition& operator=(const Condition& other) noexcept = default;
+  Condition& operator=(const Condition& other) = default;
 
 public:
   /// Retrieves underlying ConditionRaw.
@@ -1745,7 +1771,7 @@ struct ConditionRef : Condition
    *
    * This does not takes ownership!
    */
-  ConditionRef(ConditionRaw resource) noexcept
+  constexpr ConditionRef(ConditionRaw resource) noexcept
     : Condition(resource)
   {
   }
@@ -1790,8 +1816,12 @@ struct ConditionRef : Condition
   ~ConditionRef() { release(); }
 
   /// Assignment operator.
-  constexpr ConditionRef& operator=(const ConditionRef& other) noexcept =
-    default;
+  ConditionRef& operator=(const ConditionRef& other) noexcept
+  {
+    release();
+    Condition::operator=(Condition(other.get()));
+    return *this;
+  }
 
   /// Converts to ConditionRaw
   constexpr operator ConditionRaw() const noexcept { return get(); }

@@ -36,7 +36,7 @@
   */
  class Properties
  {
-@@ -381,7 +382,6 @@
+@@ -384,7 +385,6 @@
     *              property.
     * @param cleanup the function to call when this property is deleted, or
     *                nullptr if no cleanup is necessary.
@@ -44,7 +44,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -664,7 +664,6 @@
+@@ -667,7 +667,6 @@
     * properties. The properties are locked during enumeration.
     *
     * @param callback the function to call for each property.
@@ -52,7 +52,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -673,6 +672,13 @@
+@@ -676,6 +675,13 @@
     */
    void Enumerate(EnumeratePropertiesCB callback);
  
@@ -66,7 +66,7 @@
    Uint64 GetCount();
  };
  
-@@ -783,7 +789,7 @@
+@@ -790,7 +796,7 @@
     * or want to guarantee that properties being queried aren't freed in another
     * thread.
     *
@@ -75,7 +75,16 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -808,8 +814,6 @@
+@@ -806,7 +812,7 @@
+   PropertiesLock(const PropertiesLock& other) = delete;
+ 
+   /// Move constructor
+-  constexpr PropertiesLock(PropertiesLock&& other) noexcept
++  PropertiesLock(PropertiesLock&& other) noexcept
+     : m_lock(other.m_lock)
+   {
+     other.m_lock = {};
+@@ -815,8 +821,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -84,7 +93,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -833,8 +837,6 @@
+@@ -840,8 +844,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -93,7 +102,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -891,7 +893,7 @@
+@@ -898,7 +900,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -102,7 +111,7 @@
  }
  
  /**
-@@ -1064,7 +1066,6 @@
+@@ -1071,7 +1073,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -110,7 +119,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1080,7 +1081,12 @@
+@@ -1087,7 +1088,12 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -124,7 +133,7 @@
  }
  
  inline void Properties::SetPointerPropertyWithCleanup(
-@@ -1514,7 +1520,6 @@
+@@ -1521,7 +1527,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -132,7 +141,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1524,7 +1529,13 @@
+@@ -1531,7 +1536,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -147,7 +156,7 @@
  }
  
  inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1538,9 +1549,19 @@
+@@ -1545,9 +1556,19 @@
    SDL::EnumerateProperties(m_resource, callback);
  }
  

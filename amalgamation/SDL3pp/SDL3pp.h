@@ -46,7 +46,7 @@ namespace SDL {
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr int MostSignificantBitIndex32(Uint32 x)
+inline int MostSignificantBitIndex32(Uint32 x)
 {
   return SDL_MostSignificantBitIndex32(x);
 }
@@ -69,7 +69,7 @@ constexpr int MostSignificantBitIndex32(Uint32 x)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool HasExactlyOneBitSet32(Uint32 x)
+inline bool HasExactlyOneBitSet32(Uint32 x)
 {
   return SDL_HasExactlyOneBitSet32(x);
 }
@@ -1612,7 +1612,7 @@ public:
    * @param str the string to store. This parameter must outlive this object.
    */
   constexpr StringParam(const char* str)
-    : data(str ?: "")
+    : data(str ? str: "")
   {
   }
 
@@ -11480,7 +11480,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Palette Borrow(PaletteRaw resource)
+  static Palette Borrow(PaletteRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -11509,7 +11509,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Palette& operator=(const Palette& other) noexcept = default;
+  Palette& operator=(const Palette& other) = default;
 
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const noexcept { return m_resource; }
@@ -11591,7 +11591,7 @@ struct PaletteRef : Palette
    *
    * This does not takes ownership!
    */
-  PaletteRef(PaletteRaw resource) noexcept
+  constexpr PaletteRef(PaletteRaw resource) noexcept
     : Palette(resource)
   {
   }
@@ -11636,7 +11636,12 @@ struct PaletteRef : Palette
   ~PaletteRef() { release(); }
 
   /// Assignment operator.
-  constexpr PaletteRef& operator=(const PaletteRef& other) noexcept = default;
+  PaletteRef& operator=(const PaletteRef& other) noexcept
+  {
+    release();
+    Palette::operator=(Palette(other.get()));
+    return *this;
+  }
 
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }
@@ -12297,7 +12302,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Properties(const Properties& other) noexcept = default;
+  constexpr Properties(const Properties& other) noexcept
+    : Properties(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -12339,7 +12347,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Properties& operator=(const Properties& other) noexcept = default;
+  Properties& operator=(const Properties& other) = default;
 
 public:
   /// Retrieves underlying PropertiesID.
@@ -12795,7 +12803,7 @@ struct PropertiesRef : Properties
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesID resource) noexcept
+  constexpr PropertiesRef(PropertiesID resource) noexcept
     : Properties(resource)
   {
   }
@@ -12840,8 +12848,12 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 
   /// Assignment operator.
-  constexpr PropertiesRef& operator=(const PropertiesRef& other) noexcept =
-    default;
+  PropertiesRef& operator=(const PropertiesRef& other) noexcept
+  {
+    release();
+    Properties::operator=(Properties(other.get()));
+    return *this;
+  }
 
   /// Converts to PropertiesID
   constexpr operator PropertiesID() const noexcept { return get(); }
@@ -12902,7 +12914,7 @@ public:
   PropertiesLock(const PropertiesLock& other) = delete;
 
   /// Move constructor
-  constexpr PropertiesLock(PropertiesLock&& other) noexcept
+  PropertiesLock(PropertiesLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};
@@ -14177,6 +14189,8 @@ constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 /// Min allowed time representation
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
+#ifndef FLT_EPSILON
+
 /**
  * Epsilon constant, used for comparing floating-point numbers.
  *
@@ -14185,7 +14199,9 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *
  * @since This constant is available since SDL 3.2.0.
  */
-constexpr float FLT_EPSILON = SDL_FLT_EPSILON;
+constexpr float FLT_EPSILON = 1.1920928955078125e-07F;
+
+#endif // FLT_EPSILON
 
 /**
  * Concept of interface
@@ -14612,7 +14628,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept = default;
+  constexpr Environment(const Environment& other) noexcept
+    : Environment(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -14659,7 +14678,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Environment& operator=(const Environment& other) noexcept = default;
+  Environment& operator=(const Environment& other) = default;
 
 public:
   /// Retrieves underlying EnvironmentRaw.
@@ -14803,7 +14822,7 @@ struct EnvironmentRef : Environment
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentRaw resource) noexcept
+  constexpr EnvironmentRef(EnvironmentRaw resource) noexcept
     : Environment(resource)
   {
   }
@@ -14848,8 +14867,12 @@ struct EnvironmentRef : Environment
   ~EnvironmentRef() { release(); }
 
   /// Assignment operator.
-  constexpr EnvironmentRef& operator=(const EnvironmentRef& other) noexcept =
-    default;
+  EnvironmentRef& operator=(const EnvironmentRef& other) noexcept
+  {
+    release();
+    Environment::operator=(Environment(other.get()));
+    return *this;
+  }
 
   /// Converts to EnvironmentRaw
   constexpr operator EnvironmentRaw() const noexcept { return get(); }
@@ -19604,8 +19627,8 @@ class IConv
 
 public:
   /// Default ctor
-  constexpr IConv(std::nullptr_t = nullptr) noexcept
-    : m_resource(reinterpret_cast<IConvRaw>(SDL_ICONV_ERROR))
+  IConv(std::nullptr_t = nullptr) noexcept
+    : m_resource(IConvRaw(SDL_ICONV_ERROR))
   {
   }
 
@@ -19623,7 +19646,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept = default;
+  constexpr IConv(const IConv& other) noexcept
+    : IConv(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -19666,7 +19692,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IConv& operator=(const IConv& other) noexcept = default;
+  IConv& operator=(const IConv& other) = default;
 
 public:
   /// Retrieves underlying IConvRaw.
@@ -19743,7 +19769,7 @@ public:
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
-               size_t* outbytesleft);
+               size_t* outbytesleft) const;
 };
 
 /**
@@ -19762,7 +19788,7 @@ struct IConvRef : IConv
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvRaw resource) noexcept
+  constexpr IConvRef(IConvRaw resource) noexcept
     : IConv(resource)
   {
   }
@@ -19807,7 +19833,12 @@ struct IConvRef : IConv
   ~IConvRef() { release(); }
 
   /// Assignment operator.
-  constexpr IConvRef& operator=(const IConvRef& other) noexcept = default;
+  IConvRef& operator=(const IConvRef& other) noexcept
+  {
+    release();
+    IConv::operator=(IConv(other.get()));
+    return *this;
+  }
 
   /// Converts to IConvRaw
   constexpr operator IConvRaw() const noexcept { return get(); }
@@ -19906,7 +19937,7 @@ inline size_t iconv(IConvRaw cd,
 inline size_t IConv::iconv(const char** inbuf,
                            size_t* inbytesleft,
                            char** outbuf,
-                           size_t* outbytesleft)
+                           size_t* outbytesleft) const
 {
   return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
 }
@@ -20049,7 +20080,7 @@ inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
+inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_mul_check_overflow(a, b, ret);
 }
@@ -20071,7 +20102,7 @@ constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
+inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_add_check_overflow(a, b, ret);
 }
@@ -20231,7 +20262,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) noexcept = default;
+  constexpr AsyncIO(const AsyncIO& other) noexcept
+    : AsyncIO(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -20303,7 +20337,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIO& operator=(const AsyncIO& other) noexcept = default;
+  AsyncIO& operator=(const AsyncIO& other) = default;
 
 public:
   /// Retrieves underlying AsyncIORaw.
@@ -20482,7 +20516,7 @@ struct AsyncIORef : AsyncIO
    *
    * This does not takes ownership!
    */
-  AsyncIORef(AsyncIORaw resource) noexcept
+  constexpr AsyncIORef(AsyncIORaw resource) noexcept
     : AsyncIO(resource)
   {
   }
@@ -20527,7 +20561,12 @@ struct AsyncIORef : AsyncIO
   ~AsyncIORef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIORef& operator=(const AsyncIORef& other) noexcept = default;
+  AsyncIORef& operator=(const AsyncIORef& other) noexcept
+  {
+    release();
+    AsyncIO::operator=(AsyncIO(other.get()));
+    return *this;
+  }
 
   /// Converts to AsyncIORaw
   constexpr operator AsyncIORaw() const noexcept { return get(); }
@@ -20615,7 +20654,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept = default;
+  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept
+    : AsyncIOQueue(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -20659,8 +20701,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other) noexcept =
-    default;
+  AsyncIOQueue& operator=(const AsyncIOQueue& other) = default;
 
 public:
   /// Retrieves underlying AsyncIOQueueRaw.
@@ -20852,7 +20893,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
    *
    * This does not takes ownership!
    */
-  AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
+  constexpr AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
     : AsyncIOQueue(resource)
   {
   }
@@ -20897,8 +20938,12 @@ struct AsyncIOQueueRef : AsyncIOQueue
   ~AsyncIOQueueRef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept =
-    default;
+  AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
+  {
+    release();
+    AsyncIOQueue::operator=(AsyncIOQueue(other.get()));
+    return *this;
+  }
 
   /// Converts to AsyncIOQueueRaw
   constexpr operator AsyncIOQueueRaw() const noexcept { return get(); }
@@ -23072,7 +23117,7 @@ inline int GetSystemPageSize() { return SDL_GetSystemPageSize(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
+inline Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
 
 /**
  * Byte-swap an unsigned 32-bit number.
@@ -23093,7 +23138,7 @@ constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
+inline Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
 
 /**
  * Byte-swap an unsigned 64-bit number.
@@ -23114,7 +23159,7 @@ constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
+inline Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
 
 /**
  * Byte-swap a floating point number.
@@ -23135,7 +23180,7 @@ constexpr Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
+inline float SwapFloat(float x) { return SDL_SwapFloat(x); }
 
 /**
  * Swap a 16-bit value from littleendian to native byte order.
@@ -23215,7 +23260,7 @@ constexpr float SwapFloatLE(float x) { return SDL_SwapFloatLE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
+inline Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
 
 /**
  * Swap a 32-bit value from bigendian to native byte order.
@@ -23231,7 +23276,7 @@ constexpr Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
+inline Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
 
 /**
  * Swap a 64-bit value from bigendian to native byte order.
@@ -23247,7 +23292,7 @@ constexpr Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
+inline Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
 
 /**
  * Swap a floating point value from bigendian to native byte order.
@@ -23263,7 +23308,7 @@ constexpr Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
+inline float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
 
 /// @}
 
@@ -24241,7 +24286,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) noexcept = default;
+  constexpr HidDevice(const HidDevice& other) noexcept
+    : HidDevice(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -24298,7 +24346,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr HidDevice& operator=(const HidDevice& other) noexcept = default;
+  HidDevice& operator=(const HidDevice& other) = default;
 
 public:
   /// Retrieves underlying HidDeviceRaw.
@@ -24572,7 +24620,7 @@ struct HidDeviceRef : HidDevice
    *
    * This does not takes ownership!
    */
-  HidDeviceRef(HidDeviceRaw resource) noexcept
+  constexpr HidDeviceRef(HidDeviceRaw resource) noexcept
     : HidDevice(resource)
   {
   }
@@ -24617,8 +24665,12 @@ struct HidDeviceRef : HidDevice
   ~HidDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr HidDeviceRef& operator=(const HidDeviceRef& other) noexcept =
-    default;
+  HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
+  {
+    release();
+    HidDevice::operator=(HidDevice(other.get()));
+    return *this;
+  }
 
   /// Converts to HidDeviceRaw
   constexpr operator HidDeviceRaw() const noexcept { return get(); }
@@ -25299,7 +25351,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr IOStream(const IOStream& other) noexcept = default;
+  constexpr IOStream(const IOStream& other) noexcept
+    : IOStream(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -25563,7 +25618,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IOStream& operator=(const IOStream& other) noexcept = default;
+  IOStream& operator=(const IOStream& other) = default;
 
 public:
   /// Retrieves underlying IOStreamRaw.
@@ -26259,7 +26314,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint8> TryReadU8()
+  std::optional<Uint8> TryReadU8() const
   {
     if (Uint8 value; SDL_ReadU8(get(), &value)) return value;
     return {};
@@ -26279,7 +26334,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint8> TryReadS8()
+  std::optional<Sint8> TryReadS8() const
   {
     if (Sint8 value; SDL_ReadS8(get(), &value)) return value;
     return {};
@@ -26303,7 +26358,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint16> TryReadU16LE()
+  std::optional<Uint16> TryReadU16LE() const
   {
     if (Uint16 value; SDL_ReadU16LE(get(), &value)) return value;
     return {};
@@ -26327,7 +26382,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint16> TryReadS16LE()
+  std::optional<Sint16> TryReadS16LE() const
   {
     if (Sint16 value; SDL_ReadS16LE(get(), &value)) return value;
     return {};
@@ -26351,7 +26406,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint16> TryReadU16BE()
+  std::optional<Uint16> TryReadU16BE() const
   {
     if (Uint16 value; SDL_ReadU16BE(get(), &value)) return value;
     return {};
@@ -26375,7 +26430,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint16> TryReadS16BE()
+  std::optional<Sint16> TryReadS16BE() const
   {
     if (Sint16 value; SDL_ReadS16BE(get(), &value)) return value;
     return {};
@@ -26399,7 +26454,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint32> TryReadU32LE()
+  std::optional<Uint32> TryReadU32LE() const
   {
     if (Uint32 value; SDL_ReadU32LE(get(), &value)) return value;
     return {};
@@ -26423,7 +26478,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint32> TryReadS32LE()
+  std::optional<Sint32> TryReadS32LE() const
   {
     if (Sint32 value; SDL_ReadS32LE(get(), &value)) return value;
     return {};
@@ -26447,7 +26502,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint32> TryReadU32BE()
+  std::optional<Uint32> TryReadU32BE() const
   {
     if (Uint32 value; SDL_ReadU32BE(get(), &value)) return value;
     return {};
@@ -26471,7 +26526,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint32> TryReadS32BE()
+  std::optional<Sint32> TryReadS32BE() const
   {
     if (Sint32 value; SDL_ReadS32BE(get(), &value)) return value;
     return {};
@@ -26495,7 +26550,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint64> TryReadU64LE()
+  std::optional<Uint64> TryReadU64LE() const
   {
     if (Uint64 value; SDL_ReadU64LE(get(), &value)) return value;
     return {};
@@ -26519,7 +26574,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint64> TryReadS64LE()
+  std::optional<Sint64> TryReadS64LE() const
   {
     if (Sint64 value; SDL_ReadS64LE(get(), &value)) return value;
     return {};
@@ -26543,7 +26598,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Uint64> TryReadU64BE()
+  std::optional<Uint64> TryReadU64BE() const
   {
     if (Uint64 value; SDL_ReadU64BE(get(), &value)) return value;
     return {};
@@ -26567,7 +26622,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  std::optional<Sint64> TryReadS64BE()
+  std::optional<Sint64> TryReadS64BE() const
   {
     if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
     return {};
@@ -26812,7 +26867,7 @@ struct IOStreamRef : IOStream
    *
    * This does not takes ownership!
    */
-  IOStreamRef(IOStreamRaw resource) noexcept
+  constexpr IOStreamRef(IOStreamRaw resource) noexcept
     : IOStream(resource)
   {
   }
@@ -26857,7 +26912,12 @@ struct IOStreamRef : IOStream
   ~IOStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr IOStreamRef& operator=(const IOStreamRef& other) noexcept = default;
+  IOStreamRef& operator=(const IOStreamRef& other) noexcept
+  {
+    release();
+    IOStream::operator=(IOStream(other.get()));
+    return *this;
+  }
 
   /// Converts to IOStreamRaw
   constexpr operator IOStreamRaw() const noexcept { return get(); }
@@ -28427,7 +28487,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) noexcept = default;
+  constexpr SharedObject(const SharedObject& other) noexcept
+    : SharedObject(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -28468,8 +28531,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr SharedObject& operator=(const SharedObject& other) noexcept =
-    default;
+  SharedObject& operator=(const SharedObject& other) = default;
 
 public:
   /// Retrieves underlying SharedObjectRaw.
@@ -28549,7 +28611,7 @@ struct SharedObjectRef : SharedObject
    *
    * This does not takes ownership!
    */
-  SharedObjectRef(SharedObjectRaw resource) noexcept
+  constexpr SharedObjectRef(SharedObjectRaw resource) noexcept
     : SharedObject(resource)
   {
   }
@@ -28594,8 +28656,12 @@ struct SharedObjectRef : SharedObject
   ~SharedObjectRef() { release(); }
 
   /// Assignment operator.
-  constexpr SharedObjectRef& operator=(const SharedObjectRef& other) noexcept =
-    default;
+  SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
+  {
+    release();
+    SharedObject::operator=(SharedObject(other.get()));
+    return *this;
+  }
 
   /// Converts to SharedObjectRaw
   constexpr operator SharedObjectRaw() const noexcept { return get(); }
@@ -28938,13 +29004,13 @@ constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs) noexcept
 }
 
 /// Comparison operator for Rect.
-constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs) noexcept
+inline bool operator==(const RectRaw& lhs, const RectRaw& rhs) noexcept
 {
   return SDL_RectsEqual(&lhs, &rhs);
 }
 
 /// Comparison operator for FRect.
-constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
+inline bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
 {
   return SDL_RectsEqualFloat(&lhs, &rhs);
 }
@@ -29063,7 +29129,7 @@ struct Point : PointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool InRect(const RectRaw& r) const;
+  inline bool InRect(const RectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -29482,7 +29548,7 @@ struct FPoint : FPointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool InRect(const FRectRaw& r) const;
+  inline bool InRect(const FRectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -29761,16 +29827,16 @@ struct Rect : RectRaw
   }
 
   /// Compares with the underlying type
-  constexpr bool operator==(const RectRaw& other) const { return Equal(other); }
+  bool operator==(const RectRaw& other) const { return Equal(other); }
 
   /// Compares with the underlying type
-  constexpr bool operator==(const Rect& other) const
+  bool operator==(const Rect& other) const
   {
     return *this == (const RectRaw&)(other);
   }
 
   /// @sa Empty()
-  constexpr explicit operator bool() const { return !Empty(); }
+  explicit operator bool() const { return !Empty(); }
 
   /**
    * Get left x coordinate.
@@ -30034,7 +30100,7 @@ struct Rect : RectRaw
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
+  inline bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
   {
     return GetLineIntersection(p1 ? &p1->x : nullptr,
                                p1 ? &p1->y : nullptr,
@@ -30061,7 +30127,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
+  inline bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
 
   /**
    * Convert an SDL_Rect to SDL_FRect
@@ -30073,7 +30139,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr operator SDL_FRect() const;
+  inline operator SDL_FRect() const;
 
   /// @sa operator ToFRect()
   constexpr operator FRect() const;
@@ -30095,7 +30161,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Empty() const;
+  inline bool Empty() const;
 
   /**
    * Determine whether two rectangles are equal.
@@ -30115,7 +30181,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Equal(const RectRaw& other) const;
+  inline bool Equal(const RectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -30125,7 +30191,7 @@ struct Rect : RectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const PointRaw& p) const
+  inline bool Contains(const PointRaw& p) const
   {
     return SDL_PointInRect(&p, this);
   }
@@ -30138,7 +30204,7 @@ struct Rect : RectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const RectRaw& other) const
+  inline bool Contains(const RectRaw& other) const
   {
     return GetUnion(other) == *this;
   }
@@ -30155,7 +30221,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.GetIntersection
    */
-  constexpr bool HasIntersection(const RectRaw& other) const;
+  inline bool HasIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles.
@@ -30172,7 +30238,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.HasIntersection
    */
-  constexpr Rect GetIntersection(const RectRaw& other) const;
+  inline Rect GetIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles.
@@ -30362,7 +30428,7 @@ struct FRect : FRectRaw
   }
 
   /// @sa Empty()
-  constexpr operator bool() const { return !Empty(); }
+  operator bool() const { return !Empty(); }
 
   /**
    * Get left x coordinate.
@@ -30459,7 +30525,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static constexpr FRect GetEnclosingPoints(
+  inline static FRect GetEnclosingPoints(
     SpanRef<const FPointRaw> points,
     OptionalRef<const FRectRaw> clip = std::nullopt);
 
@@ -30631,7 +30697,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
+  inline bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
 
   /**
    * Determine whether a floating point rectangle takes no space.
@@ -30649,7 +30715,7 @@ struct FRect : FRectRaw
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  bool GetLineIntersection(FPoint* p1, FPoint* p2) const
+  inline bool GetLineIntersection(FPoint* p1, FPoint* p2) const
   {
     return GetLineIntersection(p1 ? &p1->x : nullptr,
                                p1 ? &p1->y : nullptr,
@@ -30674,7 +30740,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool Empty() const;
+  inline bool Empty() const;
 
   /**
    * Determine whether two floating point rectangles are equal, within some
@@ -30700,7 +30766,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.Equal
    */
-  constexpr bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
+  inline bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
 
   /**
    * Determine whether two floating point rectangles are equal, within a default
@@ -30726,7 +30792,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.EqualEpsilon
    */
-  constexpr bool Equal(const FRectRaw& other) const;
+  inline bool Equal(const FRectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -30736,7 +30802,7 @@ struct FRect : FRectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const FPointRaw& p) const
+  bool Contains(const FPointRaw& p) const
   {
     return SDL_PointInRectFloat(&p, this);
   }
@@ -30749,7 +30815,7 @@ struct FRect : FRectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const FRectRaw& other) const
+  bool Contains(const FRectRaw& other) const
   {
     return GetUnion(other) == *this;
   }
@@ -30766,7 +30832,7 @@ struct FRect : FRectRaw
    *
    * @sa Rect.GetIntersection
    */
-  constexpr bool HasIntersection(const FRectRaw& other) const;
+  inline bool HasIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles with float precision.
@@ -30783,7 +30849,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.HasIntersection
    */
-  constexpr FRect GetIntersection(const FRectRaw& other) const;
+  inline FRect GetIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles with float precision.
@@ -30928,14 +30994,14 @@ struct FRect : FRectRaw
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr FRect RectToFRect(const RectRaw& rect)
+inline FRect RectToFRect(const RectRaw& rect)
 {
   FRect frect;
   SDL_RectToFRect(&rect, &frect);
   return frect;
 }
 
-constexpr Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
+Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
 
 /**
  * Determine whether a point resides inside a rectangle.
@@ -30958,12 +31024,12 @@ constexpr Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool PointInRect(const PointRaw& p, const RectRaw& r)
+inline bool PointInRect(const PointRaw& p, const RectRaw& r)
 {
   return SDL_PointInRect(&p, &r);
 }
 
-constexpr bool Point::InRect(const RectRaw& r) const
+bool Point::InRect(const RectRaw& r) const
 {
   return SDL::PointInRect(*this, r);
 }
@@ -30986,9 +31052,9 @@ constexpr bool Point::InRect(const RectRaw& r) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
+inline bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
 
-constexpr bool Rect::Empty() const { return SDL::RectEmpty(*this); }
+bool Rect::Empty() const { return SDL::RectEmpty(*this); }
 
 /**
  * Determine whether two rectangles are equal.
@@ -31009,12 +31075,12 @@ constexpr bool Rect::Empty() const { return SDL::RectEmpty(*this); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool RectsEqual(const RectRaw& a, const RectRaw& b)
+inline bool RectsEqual(const RectRaw& a, const RectRaw& b)
 {
   return SDL_RectsEqual(&a, &b);
 }
 
-constexpr bool Rect::Equal(const RectRaw& other) const
+bool Rect::Equal(const RectRaw& other) const
 {
   return SDL::RectsEqual(*this, other);
 }
@@ -31034,12 +31100,12 @@ constexpr bool Rect::Equal(const RectRaw& other) const
  *
  * @sa Rect.GetIntersection
  */
-constexpr bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
+inline bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
 {
   return SDL_HasRectIntersection(&A, &B);
 }
 
-constexpr bool Rect::HasIntersection(const RectRaw& other) const
+bool Rect::HasIntersection(const RectRaw& other) const
 {
   return SDL::HasRectIntersection(*this, other);
 }
@@ -31060,13 +31126,13 @@ constexpr bool Rect::HasIntersection(const RectRaw& other) const
  *
  * @sa Rect.HasIntersection
  */
-constexpr Rect GetRectIntersection(const RectRaw& A, const RectRaw& B)
+inline Rect GetRectIntersection(const RectRaw& A, const RectRaw& B)
 {
   if (Rect result; SDL_GetRectIntersection(&A, &B, &result)) return result;
   return {};
 }
 
-constexpr Rect Rect::GetIntersection(const RectRaw& other) const
+Rect Rect::GetIntersection(const RectRaw& other) const
 {
   return SDL::GetRectIntersection(*this, other);
 }
@@ -31183,12 +31249,12 @@ inline bool Rect::GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
+inline bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
 {
   return SDL_PointInRectFloat(&p, &r);
 }
 
-constexpr bool FPoint::InRect(const FRectRaw& r) const
+bool FPoint::InRect(const FRectRaw& r) const
 {
   return SDL::PointInRectFloat(*this, r);
 }
@@ -31211,12 +31277,12 @@ constexpr bool FPoint::InRect(const FRectRaw& r) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool RectEmptyFloat(const FRectRaw& r)
+inline bool RectEmptyFloat(const FRectRaw& r)
 {
   return SDL_RectEmptyFloat(&r);
 }
 
-constexpr bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
+bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
 
 /**
  * Determine whether two floating point rectangles are equal, within some given
@@ -31243,14 +31309,14 @@ constexpr bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
  *
  * @sa FRect.Equal
  */
-constexpr bool RectsEqualEpsilon(const FRectRaw& a,
+inline bool RectsEqualEpsilon(const FRectRaw& a,
                                  const FRectRaw& b,
                                  const float epsilon)
 {
   return SDL_RectsEqualEpsilon(&a, &b, epsilon);
 }
 
-constexpr bool FRect::EqualEpsilon(const FRectRaw& other,
+bool FRect::EqualEpsilon(const FRectRaw& other,
                                    const float epsilon) const
 {
   return SDL::RectsEqualEpsilon(*this, other, epsilon);
@@ -31281,12 +31347,12 @@ constexpr bool FRect::EqualEpsilon(const FRectRaw& other,
  *
  * @sa FRect.EqualEpsilon
  */
-constexpr bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
+inline bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
 {
   return SDL_RectsEqualFloat(&a, &b);
 }
 
-constexpr bool FRect::Equal(const FRectRaw& other) const
+bool FRect::Equal(const FRectRaw& other) const
 {
   return SDL::RectsEqualFloat(*this, other);
 }
@@ -31306,12 +31372,12 @@ constexpr bool FRect::Equal(const FRectRaw& other) const
  *
  * @sa Rect.GetIntersection
  */
-constexpr bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
+inline bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
   return SDL_HasRectIntersectionFloat(&A, &B);
 }
 
-constexpr bool FRect::HasIntersection(const FRectRaw& other) const
+bool FRect::HasIntersection(const FRectRaw& other) const
 {
   return SDL::HasRectIntersectionFloat(*this, other);
 }
@@ -31332,13 +31398,13 @@ constexpr bool FRect::HasIntersection(const FRectRaw& other) const
  *
  * @sa FRect.HasIntersection
  */
-constexpr FRect GetRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
+inline FRect GetRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
   if (FRect r; SDL_GetRectIntersectionFloat(&A, &B, &r)) return r;
   return {};
 }
 
-constexpr FRect FRect::GetIntersection(const FRectRaw& other) const
+FRect FRect::GetIntersection(const FRectRaw& other) const
 {
   return SDL::GetRectIntersectionFloat(*this, other);
 }
@@ -31384,7 +31450,7 @@ constexpr FRect FRect::GetUnion(const FRectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr FRect GetRectEnclosingPointsFloat(
+inline FRect GetRectEnclosingPointsFloat(
   SpanRef<const FPointRaw> points,
   OptionalRef<const FRectRaw> clip = std::nullopt)
 {
@@ -31395,7 +31461,7 @@ constexpr FRect GetRectEnclosingPointsFloat(
   return {};
 }
 
-constexpr FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
+inline FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
                                           OptionalRef<const FRectRaw> clip)
 {
   return SDL::GetRectEnclosingPointsFloat(points, clip);
@@ -32419,7 +32485,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Sensor(const Sensor& other) noexcept = default;
+  constexpr Sensor(const Sensor& other) noexcept
+    : Sensor(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -32455,7 +32524,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Sensor& operator=(const Sensor& other) noexcept = default;
+  Sensor& operator=(const Sensor& other) = default;
 
 public:
   /// Retrieves underlying SensorRaw.
@@ -32560,7 +32629,7 @@ struct SensorRef : Sensor
    *
    * This does not takes ownership!
    */
-  SensorRef(SensorRaw resource) noexcept
+  constexpr SensorRef(SensorRaw resource) noexcept
     : Sensor(resource)
   {
   }
@@ -32605,7 +32674,12 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  constexpr SensorRef& operator=(const SensorRef& other) noexcept = default;
+  SensorRef& operator=(const SensorRef& other) noexcept
+  {
+    release();
+    Sensor::operator=(Sensor(other.get()));
+    return *this;
+  }
 
   /// Converts to SensorRaw
   constexpr operator SensorRaw() const noexcept { return get(); }
@@ -34568,7 +34642,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AudioDevice(const AudioDevice& other) noexcept = default;
+  constexpr AudioDevice(const AudioDevice& other) noexcept
+    : AudioDevice(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -34666,7 +34743,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioDevice& operator=(const AudioDevice& other) noexcept = default;
+  AudioDevice& operator=(const AudioDevice& other) = default;
 
 public:
   /// Retrieves underlying AudioDeviceID.
@@ -35237,7 +35314,7 @@ struct AudioDeviceRef : AudioDevice
    *
    * This does not takes ownership!
    */
-  AudioDeviceRef(AudioDeviceID resource) noexcept
+  constexpr AudioDeviceRef(AudioDeviceID resource) noexcept
     : AudioDevice(resource)
   {
   }
@@ -35282,8 +35359,12 @@ struct AudioDeviceRef : AudioDevice
   ~AudioDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept =
-    default;
+  AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept
+  {
+    release();
+    AudioDevice::operator=(AudioDevice(other.get()));
+    return *this;
+  }
 
   /// Converts to AudioDeviceID
   constexpr operator AudioDeviceID() const noexcept { return get(); }
@@ -35445,7 +35526,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AudioStream(const AudioStream& other) noexcept = default;
+  constexpr AudioStream(const AudioStream& other) noexcept
+    : AudioStream(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -35612,7 +35696,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioStream& operator=(const AudioStream& other) noexcept = default;
+  AudioStream& operator=(const AudioStream& other) = default;
 
 public:
   /// Retrieves underlying AudioStreamRaw.
@@ -36702,7 +36786,7 @@ struct AudioStreamRef : AudioStream
    *
    * This does not takes ownership!
    */
-  AudioStreamRef(AudioStreamRaw resource) noexcept
+  constexpr AudioStreamRef(AudioStreamRaw resource) noexcept
     : AudioStream(resource)
   {
   }
@@ -36747,8 +36831,12 @@ struct AudioStreamRef : AudioStream
   ~AudioStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioStreamRef& operator=(const AudioStreamRef& other) noexcept =
-    default;
+  AudioStreamRef& operator=(const AudioStreamRef& other) noexcept
+  {
+    release();
+    AudioStream::operator=(AudioStream(other.get()));
+    return *this;
+  }
 
   /// Converts to AudioStreamRaw
   constexpr operator AudioStreamRaw() const noexcept { return get(); }
@@ -36809,7 +36897,7 @@ public:
   AudioStreamLock(const AudioStreamLock& other) = delete;
 
   /// Move constructor
-  constexpr AudioStreamLock(AudioStreamLock&& other) noexcept
+  AudioStreamLock(AudioStreamLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};
@@ -40431,7 +40519,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Process(const Process& other) noexcept = default;
+  constexpr Process(const Process& other) noexcept
+    : Process(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -40569,7 +40660,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Process& operator=(const Process& other) noexcept = default;
+  Process& operator=(const Process& other) = default;
 
 public:
   /// Retrieves underlying ProcessRaw.
@@ -40814,7 +40905,7 @@ struct ProcessRef : Process
    *
    * This does not takes ownership!
    */
-  ProcessRef(ProcessRaw resource) noexcept
+  constexpr ProcessRef(ProcessRaw resource) noexcept
     : Process(resource)
   {
   }
@@ -40859,7 +40950,12 @@ struct ProcessRef : Process
   ~ProcessRef() { release(); }
 
   /// Assignment operator.
-  constexpr ProcessRef& operator=(const ProcessRef& other) noexcept = default;
+  ProcessRef& operator=(const ProcessRef& other) noexcept
+  {
+    release();
+    Process::operator=(Process(other.get()));
+    return *this;
+  }
 
   /// Converts to ProcessRaw
   constexpr operator ProcessRaw() const noexcept { return get(); }
@@ -41555,7 +41651,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Storage(const Storage& other) noexcept = default;
+  constexpr Storage(const Storage& other) noexcept
+    : Storage(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -41680,7 +41779,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Storage& operator=(const Storage& other) noexcept = default;
+  Storage& operator=(const Storage& other) = default;
 
 public:
   /// Retrieves underlying StorageRaw.
@@ -42029,7 +42128,7 @@ struct StorageRef : Storage
    *
    * This does not takes ownership!
    */
-  StorageRef(StorageRaw resource) noexcept
+  constexpr StorageRef(StorageRaw resource) noexcept
     : Storage(resource)
   {
   }
@@ -42074,7 +42173,12 @@ struct StorageRef : Storage
   ~StorageRef() { release(); }
 
   /// Assignment operator.
-  constexpr StorageRef& operator=(const StorageRef& other) noexcept = default;
+  StorageRef& operator=(const StorageRef& other) noexcept
+  {
+    release();
+    Storage::operator=(Storage(other.get()));
+    return *this;
+  }
 
   /// Converts to StorageRaw
   constexpr operator StorageRaw() const noexcept { return get(); }
@@ -43064,7 +43168,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Surface Borrow(SurfaceRaw resource)
+  static Surface Borrow(SurfaceRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -43186,7 +43290,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Surface& operator=(const Surface& other) noexcept = default;
+  Surface& operator=(const Surface& other) = default;
 
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const noexcept { return m_resource; }
@@ -44667,7 +44771,7 @@ struct SurfaceRef : Surface
    *
    * This does not takes ownership!
    */
-  SurfaceRef(SurfaceRaw resource) noexcept
+  constexpr SurfaceRef(SurfaceRaw resource) noexcept
     : Surface(resource)
   {
   }
@@ -44712,7 +44816,12 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept = default;
+  SurfaceRef& operator=(const SurfaceRef& other) noexcept
+  {
+    release();
+    Surface::operator=(Surface(other.get()));
+    return *this;
+  }
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }
@@ -47876,7 +47985,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Thread(const Thread& other) noexcept = default;
+  constexpr Thread(const Thread& other) noexcept
+    : Thread(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -48004,7 +48116,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Thread& operator=(const Thread& other) noexcept = default;
+  Thread& operator=(const Thread& other) = default;
 
 public:
   /// Retrieves underlying ThreadRaw.
@@ -48172,7 +48284,7 @@ struct ThreadRef : Thread
    *
    * This does not takes ownership!
    */
-  ThreadRef(ThreadRaw resource) noexcept
+  constexpr ThreadRef(ThreadRaw resource) noexcept
     : Thread(resource)
   {
   }
@@ -48217,7 +48329,12 @@ struct ThreadRef : Thread
   ~ThreadRef() { release(); }
 
   /// Assignment operator.
-  constexpr ThreadRef& operator=(const ThreadRef& other) noexcept = default;
+  ThreadRef& operator=(const ThreadRef& other) noexcept
+  {
+    release();
+    Thread::operator=(Thread(other.get()));
+    return *this;
+  }
 
   /// Converts to ThreadRaw
   constexpr operator ThreadRaw() const noexcept { return get(); }
@@ -48790,7 +48907,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Camera(const Camera& other) noexcept = default;
+  constexpr Camera(const Camera& other) noexcept
+    : Camera(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -48861,7 +48981,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Camera& operator=(const Camera& other) noexcept = default;
+  Camera& operator=(const Camera& other) = default;
 
 public:
   /// Retrieves underlying CameraRaw.
@@ -49062,7 +49182,7 @@ struct CameraRef : Camera
    *
    * This does not takes ownership!
    */
-  CameraRef(CameraRaw resource) noexcept
+  constexpr CameraRef(CameraRaw resource) noexcept
     : Camera(resource)
   {
   }
@@ -49107,7 +49227,12 @@ struct CameraRef : Camera
   ~CameraRef() { release(); }
 
   /// Assignment operator.
-  constexpr CameraRef& operator=(const CameraRef& other) noexcept = default;
+  CameraRef& operator=(const CameraRef& other) noexcept
+  {
+    release();
+    Camera::operator=(Camera(other.get()));
+    return *this;
+  }
 
   /// Converts to CameraRaw
   constexpr operator CameraRaw() const noexcept { return get(); }
@@ -49166,7 +49291,7 @@ public:
   CameraFrame(const CameraFrame& other) = delete;
 
   /// Move constructor
-  constexpr CameraFrame(CameraFrame&& other) noexcept
+  CameraFrame(CameraFrame&& other) noexcept
     : Surface(std::move(other))
     , m_lock(other.m_lock)
   {
@@ -49807,7 +49932,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Mutex(const Mutex& other) noexcept = default;
+  constexpr Mutex(const Mutex& other) noexcept
+    : Mutex(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -49856,7 +49984,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Mutex& operator=(const Mutex& other) noexcept = default;
+  Mutex& operator=(const Mutex& other) = default;
 
 public:
   /// Retrieves underlying MutexRaw.
@@ -49976,7 +50104,7 @@ struct MutexRef : Mutex
    *
    * This does not takes ownership!
    */
-  MutexRef(MutexRaw resource) noexcept
+  constexpr MutexRef(MutexRaw resource) noexcept
     : Mutex(resource)
   {
   }
@@ -50021,7 +50149,12 @@ struct MutexRef : Mutex
   ~MutexRef() { release(); }
 
   /// Assignment operator.
-  constexpr MutexRef& operator=(const MutexRef& other) noexcept = default;
+  MutexRef& operator=(const MutexRef& other) noexcept
+  {
+    release();
+    Mutex::operator=(Mutex(other.get()));
+    return *this;
+  }
 
   /// Converts to MutexRaw
   constexpr operator MutexRaw() const noexcept { return get(); }
@@ -50199,7 +50332,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr RWLock(const RWLock& other) noexcept = default;
+  constexpr RWLock(const RWLock& other) noexcept
+    : RWLock(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -50268,7 +50404,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr RWLock& operator=(const RWLock& other) noexcept = default;
+  RWLock& operator=(const RWLock& other) = default;
 
 public:
   /// Retrieves underlying RWLockRaw.
@@ -50473,7 +50609,7 @@ struct RWLockRef : RWLock
    *
    * This does not takes ownership!
    */
-  RWLockRef(RWLockRaw resource) noexcept
+  constexpr RWLockRef(RWLockRaw resource) noexcept
     : RWLock(resource)
   {
   }
@@ -50518,7 +50654,12 @@ struct RWLockRef : RWLock
   ~RWLockRef() { release(); }
 
   /// Assignment operator.
-  constexpr RWLockRef& operator=(const RWLockRef& other) noexcept = default;
+  RWLockRef& operator=(const RWLockRef& other) noexcept
+  {
+    release();
+    RWLock::operator=(RWLock(other.get()));
+    return *this;
+  }
 
   /// Converts to RWLockRaw
   constexpr operator RWLockRaw() const noexcept { return get(); }
@@ -50822,7 +50963,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) noexcept = default;
+  constexpr Semaphore(const Semaphore& other) noexcept
+    : Semaphore(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -50873,7 +51017,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Semaphore& operator=(const Semaphore& other) noexcept = default;
+  Semaphore& operator=(const Semaphore& other) = default;
 
 public:
   /// Retrieves underlying SemaphoreRaw.
@@ -51009,7 +51153,7 @@ struct SemaphoreRef : Semaphore
    *
    * This does not takes ownership!
    */
-  SemaphoreRef(SemaphoreRaw resource) noexcept
+  constexpr SemaphoreRef(SemaphoreRaw resource) noexcept
     : Semaphore(resource)
   {
   }
@@ -51054,8 +51198,12 @@ struct SemaphoreRef : Semaphore
   ~SemaphoreRef() { release(); }
 
   /// Assignment operator.
-  constexpr SemaphoreRef& operator=(const SemaphoreRef& other) noexcept =
-    default;
+  SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
+  {
+    release();
+    Semaphore::operator=(Semaphore(other.get()));
+    return *this;
+  }
 
   /// Converts to SemaphoreRaw
   constexpr operator SemaphoreRaw() const noexcept { return get(); }
@@ -51271,7 +51419,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Condition(const Condition& other) noexcept = default;
+  constexpr Condition(const Condition& other) noexcept
+    : Condition(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -51314,7 +51465,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Condition& operator=(const Condition& other) noexcept = default;
+  Condition& operator=(const Condition& other) = default;
 
 public:
   /// Retrieves underlying ConditionRaw.
@@ -51444,7 +51595,7 @@ struct ConditionRef : Condition
    *
    * This does not takes ownership!
    */
-  ConditionRef(ConditionRaw resource) noexcept
+  constexpr ConditionRef(ConditionRaw resource) noexcept
     : Condition(resource)
   {
   }
@@ -51489,8 +51640,12 @@ struct ConditionRef : Condition
   ~ConditionRef() { release(); }
 
   /// Assignment operator.
-  constexpr ConditionRef& operator=(const ConditionRef& other) noexcept =
-    default;
+  ConditionRef& operator=(const ConditionRef& other) noexcept
+  {
+    release();
+    Condition::operator=(Condition(other.get()));
+    return *this;
+  }
 
   /// Converts to ConditionRaw
   constexpr operator ConditionRaw() const noexcept { return get(); }
@@ -51996,7 +52151,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Tray(const Tray& other) noexcept = default;
+  constexpr Tray(const Tray& other) noexcept
+    : Tray(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -52046,7 +52204,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Tray& operator=(const Tray& other) noexcept = default;
+  Tray& operator=(const Tray& other) = default;
 
 public:
   /// Retrieves underlying TrayRaw.
@@ -52171,7 +52329,7 @@ struct TrayRef : Tray
    *
    * This does not takes ownership!
    */
-  TrayRef(TrayRaw resource) noexcept
+  constexpr TrayRef(TrayRaw resource) noexcept
     : Tray(resource)
   {
   }
@@ -52216,7 +52374,12 @@ struct TrayRef : Tray
   ~TrayRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrayRef& operator=(const TrayRef& other) noexcept = default;
+  TrayRef& operator=(const TrayRef& other) noexcept
+  {
+    release();
+    Tray::operator=(Tray(other.get()));
+    return *this;
+  }
 
   /// Converts to TrayRaw
   constexpr operator TrayRaw() const noexcept { return get(); }
@@ -52387,7 +52550,10 @@ public:
   }
 
   /// Copy constructor
-  constexpr TrayEntry(const TrayEntry& other) noexcept = default;
+  constexpr TrayEntry(const TrayEntry& other) noexcept
+    : TrayEntry(other.m_resource)
+  {
+  }
 
   /// Move constructor
   constexpr TrayEntry(TrayEntry&& other) noexcept
@@ -52409,7 +52575,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept = default;
+  TrayEntry& operator=(const TrayEntry& other) = default;
 
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const noexcept { return m_resource; }
@@ -54028,7 +54194,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Window(const Window& other) noexcept = default;
+  constexpr Window(const Window& other) noexcept
+    : Window(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -54385,7 +54554,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Window& operator=(const Window& other) noexcept = default;
+  Window& operator=(const Window& other) = default;
 
 public:
   /// Retrieves underlying WindowRaw.
@@ -56382,7 +56551,7 @@ struct WindowRef : Window
    *
    * This does not takes ownership!
    */
-  WindowRef(WindowRaw resource) noexcept
+  constexpr WindowRef(WindowRaw resource) noexcept
     : Window(resource)
   {
   }
@@ -56427,7 +56596,12 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 
   /// Assignment operator.
-  constexpr WindowRef& operator=(const WindowRef& other) noexcept = default;
+  WindowRef& operator=(const WindowRef& other) noexcept
+  {
+    release();
+    Window::operator=(Window(other.get()));
+    return *this;
+  }
 
   /// Converts to WindowRaw
   constexpr operator WindowRaw() const noexcept { return get(); }
@@ -56575,7 +56749,10 @@ public:
   }
 
   /// Copy constructor
-  constexpr GLContext(const GLContext& other) noexcept = default;
+  constexpr GLContext(const GLContext& other) noexcept
+    : GLContext(other.m_resource)
+  {
+  }
 
   /// Move constructor
   constexpr GLContext(GLContext&& other) noexcept
@@ -56627,7 +56804,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr GLContext& operator=(const GLContext& other) noexcept = default;
+  GLContext& operator=(const GLContext& other) = default;
 
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const noexcept { return m_resource; }
@@ -66420,7 +66597,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) noexcept = default;
+  constexpr GPUDevice(const GPUDevice& other) noexcept
+    : GPUDevice(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -66586,7 +66766,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept = default;
+  GPUDevice& operator=(const GPUDevice& other) = default;
 
 public:
   /// Retrieves underlying GPUDeviceRaw.
@@ -67479,7 +67659,7 @@ struct GPUDeviceRef : GPUDevice
    *
    * This does not takes ownership!
    */
-  GPUDeviceRef(GPUDeviceRaw resource) noexcept
+  constexpr GPUDeviceRef(GPUDeviceRaw resource) noexcept
     : GPUDevice(resource)
   {
   }
@@ -67524,8 +67704,12 @@ struct GPUDeviceRef : GPUDevice
   ~GPUDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept =
-    default;
+  GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
+  {
+    release();
+    GPUDevice::operator=(GPUDevice(other.get()));
+    return *this;
+  }
 
   /// Converts to GPUDeviceRaw
   constexpr operator GPUDeviceRaw() const noexcept { return get(); }
@@ -72012,7 +72196,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Joystick(const Joystick& other) noexcept = default;
+  constexpr Joystick(const Joystick& other) noexcept
+    : Joystick(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -72054,7 +72241,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Joystick& operator=(const Joystick& other) noexcept = default;
+  Joystick& operator=(const Joystick& other) = default;
 
 public:
   /// Retrieves underlying JoystickRaw.
@@ -72772,7 +72959,7 @@ struct JoystickRef : Joystick
    *
    * This does not takes ownership!
    */
-  JoystickRef(JoystickRaw resource) noexcept
+  constexpr JoystickRef(JoystickRaw resource) noexcept
     : Joystick(resource)
   {
   }
@@ -72817,7 +73004,12 @@ struct JoystickRef : Joystick
   ~JoystickRef() { release(); }
 
   /// Assignment operator.
-  constexpr JoystickRef& operator=(const JoystickRef& other) noexcept = default;
+  JoystickRef& operator=(const JoystickRef& other) noexcept
+  {
+    release();
+    Joystick::operator=(Joystick(other.get()));
+    return *this;
+  }
 
   /// Converts to JoystickRaw
   constexpr operator JoystickRaw() const noexcept { return get(); }
@@ -74999,13 +75191,12 @@ struct MessageBox : MessageBoxRaw
    * @param buttons the value for buttons.
    * @param colorScheme the value for colorScheme.
    */
-  constexpr MessageBox(
-    MessageBoxFlags flags,
-    WindowRef window,
-    const char* title,
-    const char* message,
-    std::span<const MessageBoxButtonData> buttons,
-    OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
+  MessageBox(MessageBoxFlags flags,
+             WindowRef window,
+             const char* title,
+             const char* message,
+             std::span<const MessageBoxButtonData> buttons,
+             OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
     : MessageBoxRaw{flags,
                     window,
                     title,
@@ -75040,7 +75231,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current window value.
    */
-  constexpr WindowRef GetWindow() const noexcept { return window; }
+  WindowRef GetWindow() const noexcept { return window; }
 
   /**
    * Set the window.
@@ -75048,7 +75239,7 @@ struct MessageBox : MessageBoxRaw
    * @param newWindow the new window value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetWindow(WindowRef newWindow) noexcept
+  MessageBox& SetWindow(WindowRef newWindow) noexcept
   {
     window = newWindow;
     return *this;
@@ -75347,7 +75538,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr MetalView(const MetalView& other) noexcept = default;
+  constexpr MetalView(const MetalView& other) noexcept
+    : MetalView(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -75394,7 +75588,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr MetalView& operator=(const MetalView& other) noexcept = default;
+  MetalView& operator=(const MetalView& other) = default;
 
 public:
   /// Retrieves underlying MetalViewRaw.
@@ -75456,7 +75650,7 @@ struct MetalViewRef : MetalView
    *
    * This does not takes ownership!
    */
-  MetalViewRef(MetalViewRaw resource) noexcept
+  constexpr MetalViewRef(MetalViewRaw resource) noexcept
     : MetalView(resource)
   {
   }
@@ -75501,8 +75695,12 @@ struct MetalViewRef : MetalView
   ~MetalViewRef() { release(); }
 
   /// Assignment operator.
-  constexpr MetalViewRef& operator=(const MetalViewRef& other) noexcept =
-    default;
+  MetalViewRef& operator=(const MetalViewRef& other) noexcept
+  {
+    release();
+    MetalView::operator=(MetalView(other.get()));
+    return *this;
+  }
 
   /// Converts to MetalViewRaw
   constexpr operator MetalViewRaw() const noexcept { return get(); }
@@ -75747,7 +75945,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) noexcept = default;
+  constexpr Cursor(const Cursor& other) noexcept
+    : Cursor(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -75867,7 +76068,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Cursor& operator=(const Cursor& other) noexcept = default;
+  Cursor& operator=(const Cursor& other) = default;
 
 public:
   /// Retrieves underlying CursorRaw.
@@ -75939,7 +76140,7 @@ struct CursorRef : Cursor
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorRaw resource) noexcept
+  constexpr CursorRef(CursorRaw resource) noexcept
     : Cursor(resource)
   {
   }
@@ -75984,7 +76185,12 @@ struct CursorRef : Cursor
   ~CursorRef() { release(); }
 
   /// Assignment operator.
-  constexpr CursorRef& operator=(const CursorRef& other) noexcept = default;
+  CursorRef& operator=(const CursorRef& other) noexcept
+  {
+    release();
+    Cursor::operator=(Cursor(other.get()));
+    return *this;
+  }
 
   /// Converts to CursorRaw
   constexpr operator CursorRaw() const noexcept { return get(); }
@@ -77153,7 +77359,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) noexcept = default;
+  constexpr Gamepad(const Gamepad& other) noexcept
+    : Gamepad(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -77194,7 +77403,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Gamepad& operator=(const Gamepad& other) noexcept = default;
+  Gamepad& operator=(const Gamepad& other) = default;
 
 public:
   /// Retrieves underlying GamepadRaw.
@@ -77887,7 +78096,7 @@ struct GamepadRef : Gamepad
    *
    * This does not takes ownership!
    */
-  GamepadRef(GamepadRaw resource) noexcept
+  constexpr GamepadRef(GamepadRaw resource) noexcept
     : Gamepad(resource)
   {
   }
@@ -77932,7 +78141,12 @@ struct GamepadRef : Gamepad
   ~GamepadRef() { release(); }
 
   /// Assignment operator.
-  constexpr GamepadRef& operator=(const GamepadRef& other) noexcept = default;
+  GamepadRef& operator=(const GamepadRef& other) noexcept
+  {
+    release();
+    Gamepad::operator=(Gamepad(other.get()));
+    return *this;
+  }
 
   /// Converts to GamepadRaw
   constexpr operator GamepadRaw() const noexcept { return get(); }
@@ -80482,7 +80696,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Haptic(const Haptic& other) noexcept = default;
+  constexpr Haptic(const Haptic& other) noexcept
+    : Haptic(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -80567,7 +80784,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Haptic& operator=(const Haptic& other) noexcept = default;
+  Haptic& operator=(const Haptic& other) = default;
 
 public:
   /// Retrieves underlying HapticRaw.
@@ -80935,7 +81152,7 @@ struct HapticRef : Haptic
    *
    * This does not takes ownership!
    */
-  HapticRef(HapticRaw resource) noexcept
+  constexpr HapticRef(HapticRaw resource) noexcept
     : Haptic(resource)
   {
   }
@@ -80980,7 +81197,12 @@ struct HapticRef : Haptic
   ~HapticRef() { release(); }
 
   /// Assignment operator.
-  constexpr HapticRef& operator=(const HapticRef& other) noexcept = default;
+  HapticRef& operator=(const HapticRef& other) noexcept
+  {
+    release();
+    Haptic::operator=(Haptic(other.get()));
+    return *this;
+  }
 
   /// Converts to HapticRaw
   constexpr operator HapticRaw() const noexcept { return get(); }
@@ -82695,7 +82917,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Renderer(const Renderer& other) noexcept = default;
+  constexpr Renderer(const Renderer& other) noexcept
+    : Renderer(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -82873,7 +83098,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Renderer& operator=(const Renderer& other) noexcept = default;
+  Renderer& operator=(const Renderer& other) = default;
 
 public:
   /// Retrieves underlying RendererRaw.
@@ -84768,7 +84993,7 @@ struct RendererRef : Renderer
    *
    * This does not takes ownership!
    */
-  RendererRef(RendererRaw resource) noexcept
+  constexpr RendererRef(RendererRaw resource) noexcept
     : Renderer(resource)
   {
   }
@@ -84813,7 +85038,12 @@ struct RendererRef : Renderer
   ~RendererRef() { release(); }
 
   /// Assignment operator.
-  constexpr RendererRef& operator=(const RendererRef& other) noexcept = default;
+  RendererRef& operator=(const RendererRef& other) noexcept
+  {
+    release();
+    Renderer::operator=(Renderer(other.get()));
+    return *this;
+  }
 
   /// Converts to RendererRaw
   constexpr operator RendererRaw() const noexcept { return get(); }
@@ -85124,7 +85354,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Texture Borrow(TextureRaw resource)
+  static Texture Borrow(TextureRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -85153,7 +85383,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Texture& operator=(const Texture& other) noexcept = default;
+  Texture& operator=(const Texture& other) = default;
 
   /// Retrieves underlying TextureRaw.
   constexpr TextureRaw get() const noexcept { return m_resource; }
@@ -85921,7 +86151,7 @@ struct TextureRef : Texture
    *
    * This does not takes ownership!
    */
-  TextureRef(TextureRaw resource) noexcept
+  constexpr TextureRef(TextureRaw resource) noexcept
     : Texture(resource)
   {
   }
@@ -85966,7 +86196,12 @@ struct TextureRef : Texture
   ~TextureRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextureRef& operator=(const TextureRef& other) noexcept = default;
+  TextureRef& operator=(const TextureRef& other) noexcept
+  {
+    release();
+    Texture::operator=(Texture(other.get()));
+    return *this;
+  }
 
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
@@ -86044,7 +86279,7 @@ public:
   TextureLock(const TextureLock& other) = delete;
 
   /// Move constructor
-  constexpr TextureLock(TextureLock&& other) noexcept
+  TextureLock(TextureLock&& other) noexcept
     : m_lock(other.m_lock)
   {
     other.m_lock = {};
@@ -86173,7 +86408,7 @@ public:
   TextureSurfaceLock(const TextureSurfaceLock& other) = delete;
 
   /// Move constructor
-  constexpr TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
+  TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
     : Surface(std::move(other))
     , m_lock(other.m_lock)
   {
@@ -90709,7 +90944,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) noexcept = default;
+  constexpr GPURenderState(const GPURenderState& other) noexcept
+    : GPURenderState(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -90754,8 +90992,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPURenderState& operator=(const GPURenderState& other) noexcept =
-    default;
+  GPURenderState& operator=(const GPURenderState& other) = default;
 
 public:
   /// Retrieves underlying GPURenderStateRaw.
@@ -90824,7 +91061,7 @@ struct GPURenderStateRef : GPURenderState
    *
    * This does not takes ownership!
    */
-  GPURenderStateRef(GPURenderStateRaw resource) noexcept
+  constexpr GPURenderStateRef(GPURenderStateRaw resource) noexcept
     : GPURenderState(resource)
   {
   }
@@ -90869,8 +91106,12 @@ struct GPURenderStateRef : GPURenderState
   ~GPURenderStateRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPURenderStateRef& operator=(
-    const GPURenderStateRef& other) noexcept = default;
+  GPURenderStateRef& operator=(const GPURenderStateRef& other) noexcept
+  {
+    release();
+    GPURenderState::operator=(GPURenderState(other.get()));
+    return *this;
+  }
 
   /// Converts to GPURenderStateRaw
   constexpr operator GPURenderStateRaw() const noexcept { return get(); }
@@ -92680,7 +92921,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Mixer(const Mixer& other) noexcept = default;
+  constexpr Mixer(const Mixer& other) noexcept
+    : Mixer(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -92781,7 +93025,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Mixer& operator=(const Mixer& other) noexcept = default;
+  Mixer& operator=(const Mixer& other) = default;
 
 public:
   /// Retrieves underlying MixerRaw.
@@ -93768,7 +94012,7 @@ struct MixerRef : Mixer
    *
    * This does not takes ownership!
    */
-  MixerRef(MixerRaw resource) noexcept
+  constexpr MixerRef(MixerRaw resource) noexcept
     : Mixer(resource)
   {
   }
@@ -93813,7 +94057,12 @@ struct MixerRef : Mixer
   ~MixerRef() { release(); }
 
   /// Assignment operator.
-  constexpr MixerRef& operator=(const MixerRef& other) noexcept = default;
+  MixerRef& operator=(const MixerRef& other) noexcept
+  {
+    release();
+    Mixer::operator=(Mixer(other.get()));
+    return *this;
+  }
 
   /// Converts to MixerRaw
   constexpr operator MixerRaw() const noexcept { return get(); }
@@ -94024,7 +94273,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Audio(const Audio& other) noexcept = default;
+  constexpr Audio(const Audio& other) noexcept
+    : Audio(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -94262,7 +94514,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Audio& operator=(const Audio& other) noexcept = default;
+  Audio& operator=(const Audio& other) = default;
 
 public:
   /// Retrieves underlying AudioRaw.
@@ -94457,7 +94709,7 @@ struct AudioRef : Audio
    *
    * This does not takes ownership!
    */
-  AudioRef(AudioRaw resource) noexcept
+  constexpr AudioRef(AudioRaw resource) noexcept
     : Audio(resource)
   {
   }
@@ -94502,7 +94754,12 @@ struct AudioRef : Audio
   ~AudioRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioRef& operator=(const AudioRef& other) noexcept = default;
+  AudioRef& operator=(const AudioRef& other) noexcept
+  {
+    release();
+    Audio::operator=(Audio(other.get()));
+    return *this;
+  }
 
   /// Converts to AudioRaw
   constexpr operator AudioRaw() const noexcept { return get(); }
@@ -94705,7 +94962,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Track(const Track& other) noexcept = default;
+  constexpr Track(const Track& other) noexcept
+    : Track(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -94756,7 +95016,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Track& operator=(const Track& other) noexcept = default;
+  Track& operator=(const Track& other) = default;
 
 public:
   /// Retrieves underlying TrackRaw.
@@ -96017,7 +96277,7 @@ struct TrackRef : Track
    *
    * This does not takes ownership!
    */
-  TrackRef(TrackRaw resource) noexcept
+  constexpr TrackRef(TrackRaw resource) noexcept
     : Track(resource)
   {
   }
@@ -96062,7 +96322,12 @@ struct TrackRef : Track
   ~TrackRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrackRef& operator=(const TrackRef& other) noexcept = default;
+  TrackRef& operator=(const TrackRef& other) noexcept
+  {
+    release();
+    Track::operator=(Track(other.get()));
+    return *this;
+  }
 
   /// Converts to TrackRaw
   constexpr operator TrackRaw() const noexcept { return get(); }
@@ -96184,7 +96449,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Group(const Group& other) noexcept = default;
+  constexpr Group(const Group& other) noexcept
+    : Group(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -96241,7 +96509,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Group& operator=(const Group& other) noexcept = default;
+  Group& operator=(const Group& other) = default;
 
 public:
   /// Retrieves underlying GroupRaw.
@@ -96351,7 +96619,7 @@ struct GroupRef : Group
    *
    * This does not takes ownership!
    */
-  GroupRef(GroupRaw resource) noexcept
+  constexpr GroupRef(GroupRaw resource) noexcept
     : Group(resource)
   {
   }
@@ -96396,7 +96664,12 @@ struct GroupRef : Group
   ~GroupRef() { release(); }
 
   /// Assignment operator.
-  constexpr GroupRef& operator=(const GroupRef& other) noexcept = default;
+  GroupRef& operator=(const GroupRef& other) noexcept
+  {
+    release();
+    Group::operator=(Group(other.get()));
+    return *this;
+  }
 
   /// Converts to GroupRaw
   constexpr operator GroupRaw() const noexcept { return get(); }
@@ -100039,7 +100312,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) noexcept = default;
+  constexpr AudioDecoder(const AudioDecoder& other) noexcept
+    : AudioDecoder(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -100138,8 +100414,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioDecoder& operator=(const AudioDecoder& other) noexcept =
-    default;
+  AudioDecoder& operator=(const AudioDecoder& other) = default;
 
 public:
   /// Retrieves underlying AudioDecoderRaw.
@@ -100251,7 +100526,7 @@ struct AudioDecoderRef : AudioDecoder
    *
    * This does not takes ownership!
    */
-  AudioDecoderRef(AudioDecoderRaw resource) noexcept
+  constexpr AudioDecoderRef(AudioDecoderRaw resource) noexcept
     : AudioDecoder(resource)
   {
   }
@@ -100296,8 +100571,12 @@ struct AudioDecoderRef : AudioDecoder
   ~AudioDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept =
-    default;
+  AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept
+  {
+    release();
+    AudioDecoder::operator=(AudioDecoder(other.get()));
+    return *this;
+  }
 
   /// Converts to AudioDecoderRaw
   constexpr operator AudioDecoderRaw() const noexcept { return get(); }
@@ -103203,7 +103482,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Animation(const Animation& other) noexcept = default;
+  constexpr Animation(const Animation& other) noexcept
+    : Animation(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -103292,7 +103574,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Animation& operator=(const Animation& other) noexcept = default;
+  Animation& operator=(const Animation& other) = default;
 
 public:
   /// Retrieves underlying AnimationRaw.
@@ -103555,7 +103837,7 @@ struct AnimationRef : Animation
    *
    * This does not takes ownership!
    */
-  AnimationRef(AnimationRaw resource) noexcept
+  constexpr AnimationRef(AnimationRaw resource) noexcept
     : Animation(resource)
   {
   }
@@ -103600,8 +103882,12 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationRef& operator=(const AnimationRef& other) noexcept =
-    default;
+  AnimationRef& operator=(const AnimationRef& other) noexcept
+  {
+    release();
+    Animation::operator=(Animation(other.get()));
+    return *this;
+  }
 
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
@@ -104262,7 +104548,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept = default;
+  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept
+    : AnimationEncoder(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -104394,8 +104683,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AnimationEncoder& operator=(
-    const AnimationEncoder& other) noexcept = default;
+  AnimationEncoder& operator=(const AnimationEncoder& other) = default;
 
 public:
   /// Retrieves underlying AnimationEncoderRaw.
@@ -104468,7 +104756,7 @@ struct AnimationEncoderRef : AnimationEncoder
    *
    * This does not takes ownership!
    */
-  AnimationEncoderRef(AnimationEncoderRaw resource) noexcept
+  constexpr AnimationEncoderRef(AnimationEncoderRaw resource) noexcept
     : AnimationEncoder(resource)
   {
   }
@@ -104513,8 +104801,12 @@ struct AnimationEncoderRef : AnimationEncoder
   ~AnimationEncoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationEncoderRef& operator=(
-    const AnimationEncoderRef& other) noexcept = default;
+  AnimationEncoderRef& operator=(const AnimationEncoderRef& other) noexcept
+  {
+    release();
+    AnimationEncoder::operator=(AnimationEncoder(other.get()));
+    return *this;
+  }
 
   /// Converts to AnimationEncoderRaw
   constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
@@ -104790,7 +105082,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept = default;
+  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept
+    : AnimationDecoder(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -104915,8 +105210,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AnimationDecoder& operator=(
-    const AnimationDecoder& other) noexcept = default;
+  AnimationDecoder& operator=(const AnimationDecoder& other) = default;
 
 public:
   /// Retrieves underlying AnimationDecoderRaw.
@@ -105044,7 +105338,7 @@ struct AnimationDecoderRef : AnimationDecoder
    *
    * This does not takes ownership!
    */
-  AnimationDecoderRef(AnimationDecoderRaw resource) noexcept
+  constexpr AnimationDecoderRef(AnimationDecoderRaw resource) noexcept
     : AnimationDecoder(resource)
   {
   }
@@ -105089,8 +105383,12 @@ struct AnimationDecoderRef : AnimationDecoder
   ~AnimationDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationDecoderRef& operator=(
-    const AnimationDecoderRef& other) noexcept = default;
+  AnimationDecoderRef& operator=(const AnimationDecoderRef& other) noexcept
+  {
+    release();
+    AnimationDecoder::operator=(AnimationDecoder(other.get()));
+    return *this;
+  }
 
   /// Converts to AnimationDecoderRaw
   constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
@@ -105840,7 +106138,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Font(const Font& other) noexcept = default;
+  constexpr Font(const Font& other) noexcept
+    : Font(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -105955,7 +106256,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Font& operator=(const Font& other) noexcept = default;
+  Font& operator=(const Font& other) = default;
 
 public:
   /// Retrieves underlying FontRaw.
@@ -107305,7 +107606,7 @@ struct FontRef : Font
    *
    * This does not takes ownership!
    */
-  FontRef(FontRaw resource) noexcept
+  constexpr FontRef(FontRaw resource) noexcept
     : Font(resource)
   {
   }
@@ -107350,7 +107651,12 @@ struct FontRef : Font
   ~FontRef() { release(); }
 
   /// Assignment operator.
-  constexpr FontRef& operator=(const FontRef& other) noexcept = default;
+  FontRef& operator=(const FontRef& other) noexcept
+  {
+    release();
+    Font::operator=(Font(other.get()));
+    return *this;
+  }
 
   /// Converts to FontRaw
   constexpr operator FontRaw() const noexcept { return get(); }
@@ -109416,7 +109722,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) noexcept = default;
+  constexpr TextEngine(const TextEngine& other) noexcept
+    : TextEngine(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -109437,7 +109746,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr TextEngine& operator=(const TextEngine& other) noexcept = default;
+  TextEngine& operator=(const TextEngine& other) = default;
 
 public:
   /// Retrieves underlying TextEngineRaw.
@@ -109744,7 +110053,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Text(const Text& other) noexcept = default;
+  constexpr Text(const Text& other) noexcept
+    : Text(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -109797,7 +110109,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Text& operator=(const Text& other) noexcept = default;
+  Text& operator=(const Text& other) = default;
 
 public:
   /// Retrieves underlying TextRaw.
@@ -110624,7 +110936,7 @@ struct TextRef : Text
    *
    * This does not takes ownership!
    */
-  TextRef(TextRaw resource) noexcept
+  constexpr TextRef(TextRaw resource) noexcept
     : Text(resource)
   {
   }
@@ -110669,7 +110981,12 @@ struct TextRef : Text
   ~TextRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextRef& operator=(const TextRef& other) noexcept = default;
+  TextRef& operator=(const TextRef& other) noexcept
+  {
+    release();
+    Text::operator=(Text(other.get()));
+    return *this;
+  }
 
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }
@@ -110685,7 +111002,7 @@ class SubStringIterator
 
   SubString m_subString;
 
-  constexpr SubStringIterator(TextRef text)
+  SubStringIterator(TextRef text)
     : m_text(text)
     , m_subString(0)
   {
@@ -110693,7 +111010,7 @@ class SubStringIterator
 
 public:
   /// Default constructor.
-  constexpr SubStringIterator()
+  SubStringIterator()
     : SubStringIterator(TextRef{})
   {
   }
@@ -110714,14 +111031,14 @@ public:
   }
 
   /// Increment operator.
-  constexpr SubStringIterator& operator++()
+  SubStringIterator& operator++()
   {
     m_text.GetNextSubString(m_subString, &m_subString);
     return *this;
   }
 
   /// Increment operator.
-  constexpr SubStringIterator operator++(int)
+  SubStringIterator operator++(int)
   {
     auto curr = *this;
     m_text.GetNextSubString(m_subString, &m_subString);
@@ -110729,14 +111046,14 @@ public:
   }
 
   /// Decrement operator.
-  constexpr SubStringIterator& operator--()
+  SubStringIterator& operator--()
   {
     m_text.GetPreviousSubString(m_subString, &m_subString);
     return *this;
   }
 
   /// Decrement operator.
-  constexpr SubStringIterator operator--(int)
+  SubStringIterator operator--(int)
   {
     auto curr = *this;
     m_text.GetPreviousSubString(m_subString, &m_subString);

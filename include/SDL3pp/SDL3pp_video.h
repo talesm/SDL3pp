@@ -759,7 +759,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Window(const Window& other) noexcept = default;
+  constexpr Window(const Window& other) noexcept
+    : Window(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -1116,7 +1119,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Window& operator=(const Window& other) noexcept = default;
+  Window& operator=(const Window& other) = default;
 
 public:
   /// Retrieves underlying WindowRaw.
@@ -3113,7 +3116,7 @@ struct WindowRef : Window
    *
    * This does not takes ownership!
    */
-  WindowRef(WindowRaw resource) noexcept
+  constexpr WindowRef(WindowRaw resource) noexcept
     : Window(resource)
   {
   }
@@ -3158,7 +3161,12 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 
   /// Assignment operator.
-  constexpr WindowRef& operator=(const WindowRef& other) noexcept = default;
+  WindowRef& operator=(const WindowRef& other) noexcept
+  {
+    release();
+    Window::operator=(Window(other.get()));
+    return *this;
+  }
 
   /// Converts to WindowRaw
   constexpr operator WindowRaw() const noexcept { return get(); }
@@ -3306,7 +3314,10 @@ public:
   }
 
   /// Copy constructor
-  constexpr GLContext(const GLContext& other) noexcept = default;
+  constexpr GLContext(const GLContext& other) noexcept
+    : GLContext(other.m_resource)
+  {
+  }
 
   /// Move constructor
   constexpr GLContext(GLContext&& other) noexcept
@@ -3358,7 +3369,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr GLContext& operator=(const GLContext& other) noexcept = default;
+  GLContext& operator=(const GLContext& other) = default;
 
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const noexcept { return m_resource; }

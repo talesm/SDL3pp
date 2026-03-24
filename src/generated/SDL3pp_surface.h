@@ -374,7 +374,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Surface Borrow(SurfaceRaw resource)
+  static Surface Borrow(SurfaceRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -499,7 +499,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Surface& operator=(const Surface& other) noexcept = default;
+  Surface& operator=(const Surface& other) = default;
 
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const noexcept { return m_resource; }
@@ -1917,7 +1917,7 @@ struct SurfaceRef : Surface
    *
    * This does not takes ownership!
    */
-  SurfaceRef(SurfaceRaw resource) noexcept
+  constexpr SurfaceRef(SurfaceRaw resource) noexcept
     : Surface(resource)
   {
   }
@@ -1962,7 +1962,12 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept = default;
+  SurfaceRef& operator=(const SurfaceRef& other) noexcept
+  {
+    release();
+    Surface::operator=(Surface(other.get()));
+    return *this;
+  }
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }

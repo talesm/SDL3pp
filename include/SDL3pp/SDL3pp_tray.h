@@ -134,7 +134,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Tray(const Tray& other) noexcept = default;
+  constexpr Tray(const Tray& other) noexcept
+    : Tray(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -184,7 +187,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Tray& operator=(const Tray& other) noexcept = default;
+  Tray& operator=(const Tray& other) = default;
 
 public:
   /// Retrieves underlying TrayRaw.
@@ -309,7 +312,7 @@ struct TrayRef : Tray
    *
    * This does not takes ownership!
    */
-  TrayRef(TrayRaw resource) noexcept
+  constexpr TrayRef(TrayRaw resource) noexcept
     : Tray(resource)
   {
   }
@@ -354,7 +357,12 @@ struct TrayRef : Tray
   ~TrayRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrayRef& operator=(const TrayRef& other) noexcept = default;
+  TrayRef& operator=(const TrayRef& other) noexcept
+  {
+    release();
+    Tray::operator=(Tray(other.get()));
+    return *this;
+  }
 
   /// Converts to TrayRaw
   constexpr operator TrayRaw() const noexcept { return get(); }
@@ -525,7 +533,10 @@ public:
   }
 
   /// Copy constructor
-  constexpr TrayEntry(const TrayEntry& other) noexcept = default;
+  constexpr TrayEntry(const TrayEntry& other) noexcept
+    : TrayEntry(other.m_resource)
+  {
+  }
 
   /// Move constructor
   constexpr TrayEntry(TrayEntry&& other) noexcept
@@ -547,7 +558,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept = default;
+  TrayEntry& operator=(const TrayEntry& other) = default;
 
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const noexcept { return m_resource; }

@@ -2345,7 +2345,7 @@ public:
    *
    * This does not takes ownership!
    */
-  static constexpr Palette Borrow(PaletteRaw resource)
+  static Palette Borrow(PaletteRaw resource)
   {
     if (resource) {
       ++resource->refcount;
@@ -2374,7 +2374,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Palette& operator=(const Palette& other) noexcept = default;
+  Palette& operator=(const Palette& other) = default;
 
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const noexcept { return m_resource; }
@@ -2454,7 +2454,7 @@ struct PaletteRef : Palette
    *
    * This does not takes ownership!
    */
-  PaletteRef(PaletteRaw resource) noexcept
+  constexpr PaletteRef(PaletteRaw resource) noexcept
     : Palette(resource)
   {
   }
@@ -2499,7 +2499,12 @@ struct PaletteRef : Palette
   ~PaletteRef() { release(); }
 
   /// Assignment operator.
-  constexpr PaletteRef& operator=(const PaletteRef& other) noexcept = default;
+  PaletteRef& operator=(const PaletteRef& other) noexcept
+  {
+    release();
+    Palette::operator=(Palette(other.get()));
+    return *this;
+  }
 
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }

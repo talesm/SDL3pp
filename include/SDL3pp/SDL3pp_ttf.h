@@ -410,7 +410,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Font(const Font& other) noexcept = default;
+  constexpr Font(const Font& other) noexcept
+    : Font(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -525,7 +528,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Font& operator=(const Font& other) noexcept = default;
+  Font& operator=(const Font& other) = default;
 
 public:
   /// Retrieves underlying FontRaw.
@@ -1875,7 +1878,7 @@ struct FontRef : Font
    *
    * This does not takes ownership!
    */
-  FontRef(FontRaw resource) noexcept
+  constexpr FontRef(FontRaw resource) noexcept
     : Font(resource)
   {
   }
@@ -1920,7 +1923,12 @@ struct FontRef : Font
   ~FontRef() { release(); }
 
   /// Assignment operator.
-  constexpr FontRef& operator=(const FontRef& other) noexcept = default;
+  FontRef& operator=(const FontRef& other) noexcept
+  {
+    release();
+    Font::operator=(Font(other.get()));
+    return *this;
+  }
 
   /// Converts to FontRaw
   constexpr operator FontRaw() const noexcept { return get(); }
@@ -3986,7 +3994,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) noexcept = default;
+  constexpr TextEngine(const TextEngine& other) noexcept
+    : TextEngine(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -4007,7 +4018,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr TextEngine& operator=(const TextEngine& other) noexcept = default;
+  TextEngine& operator=(const TextEngine& other) = default;
 
 public:
   /// Retrieves underlying TextEngineRaw.
@@ -4314,7 +4325,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Text(const Text& other) noexcept = default;
+  constexpr Text(const Text& other) noexcept
+    : Text(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -4367,7 +4381,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Text& operator=(const Text& other) noexcept = default;
+  Text& operator=(const Text& other) = default;
 
 public:
   /// Retrieves underlying TextRaw.
@@ -5194,7 +5208,7 @@ struct TextRef : Text
    *
    * This does not takes ownership!
    */
-  TextRef(TextRaw resource) noexcept
+  constexpr TextRef(TextRaw resource) noexcept
     : Text(resource)
   {
   }
@@ -5239,7 +5253,12 @@ struct TextRef : Text
   ~TextRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextRef& operator=(const TextRef& other) noexcept = default;
+  TextRef& operator=(const TextRef& other) noexcept
+  {
+    release();
+    Text::operator=(Text(other.get()));
+    return *this;
+  }
 
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }
@@ -5255,7 +5274,7 @@ class SubStringIterator
 
   SubString m_subString;
 
-  constexpr SubStringIterator(TextRef text)
+  SubStringIterator(TextRef text)
     : m_text(text)
     , m_subString(0)
   {
@@ -5263,7 +5282,7 @@ class SubStringIterator
 
 public:
   /// Default constructor.
-  constexpr SubStringIterator()
+  SubStringIterator()
     : SubStringIterator(TextRef{})
   {
   }
@@ -5284,14 +5303,14 @@ public:
   }
 
   /// Increment operator.
-  constexpr SubStringIterator& operator++()
+  SubStringIterator& operator++()
   {
     m_text.GetNextSubString(m_subString, &m_subString);
     return *this;
   }
 
   /// Increment operator.
-  constexpr SubStringIterator operator++(int)
+  SubStringIterator operator++(int)
   {
     auto curr = *this;
     m_text.GetNextSubString(m_subString, &m_subString);
@@ -5299,14 +5318,14 @@ public:
   }
 
   /// Decrement operator.
-  constexpr SubStringIterator& operator--()
+  SubStringIterator& operator--()
   {
     m_text.GetPreviousSubString(m_subString, &m_subString);
     return *this;
   }
 
   /// Decrement operator.
-  constexpr SubStringIterator operator--(int)
+  SubStringIterator operator--(int)
   {
     auto curr = *this;
     m_text.GetPreviousSubString(m_subString, &m_subString);

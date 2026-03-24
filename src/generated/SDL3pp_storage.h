@@ -292,7 +292,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Storage(const Storage& other) noexcept = default;
+  constexpr Storage(const Storage& other) noexcept
+    : Storage(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -417,7 +420,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Storage& operator=(const Storage& other) noexcept = default;
+  Storage& operator=(const Storage& other) = default;
 
 public:
   /// Retrieves underlying StorageRaw.
@@ -762,7 +765,7 @@ struct StorageRef : Storage
    *
    * This does not takes ownership!
    */
-  StorageRef(StorageRaw resource) noexcept
+  constexpr StorageRef(StorageRaw resource) noexcept
     : Storage(resource)
   {
   }
@@ -807,7 +810,12 @@ struct StorageRef : Storage
   ~StorageRef() { release(); }
 
   /// Assignment operator.
-  constexpr StorageRef& operator=(const StorageRef& other) noexcept = default;
+  StorageRef& operator=(const StorageRef& other) noexcept
+  {
+    release();
+    Storage::operator=(Storage(other.get()));
+    return *this;
+  }
 
   /// Converts to StorageRaw
   constexpr operator StorageRaw() const noexcept { return get(); }

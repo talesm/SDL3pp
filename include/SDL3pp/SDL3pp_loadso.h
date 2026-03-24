@@ -85,7 +85,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) noexcept = default;
+  constexpr SharedObject(const SharedObject& other) noexcept
+    : SharedObject(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -126,8 +129,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr SharedObject& operator=(const SharedObject& other) noexcept =
-    default;
+  SharedObject& operator=(const SharedObject& other) = default;
 
 public:
   /// Retrieves underlying SharedObjectRaw.
@@ -207,7 +209,7 @@ struct SharedObjectRef : SharedObject
    *
    * This does not takes ownership!
    */
-  SharedObjectRef(SharedObjectRaw resource) noexcept
+  constexpr SharedObjectRef(SharedObjectRaw resource) noexcept
     : SharedObject(resource)
   {
   }
@@ -252,8 +254,12 @@ struct SharedObjectRef : SharedObject
   ~SharedObjectRef() { release(); }
 
   /// Assignment operator.
-  constexpr SharedObjectRef& operator=(const SharedObjectRef& other) noexcept =
-    default;
+  SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
+  {
+    release();
+    SharedObject::operator=(SharedObject(other.get()));
+    return *this;
+  }
 
   /// Converts to SharedObjectRaw
   constexpr operator SharedObjectRaw() const noexcept { return get(); }
