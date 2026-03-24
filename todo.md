@@ -19,9 +19,10 @@ New Version checklist:
 Next version
 ------------
 
-- [x] Fix bug on copying Surface to SurfaceRef;
-- [x] Fix bug on copying SurfaceRef to Surface;
-- [x] SurfaceLock use Surface instead of SurfaceRef.
+- [ ] Make StringParam differentiate `nullptr` from "";
+- [ ] Fix bug preventing compilation on VisualStudion
+  - [ ] Use of gnu extension `?:`;
+  - [ ] Use of invalid constexpr;
 
 Backlog
 -------
