@@ -64,7 +64,7 @@
  
  /**
   * A set of colors to use for message box dialogs
-@@ -137,38 +157,27 @@
+@@ -137,38 +157,26 @@
     * @param window the value for window.
     * @param title the value for title.
     * @param message the value for message.
@@ -79,13 +79,12 @@
 -                       int numbuttons,
 -                       const MessageBoxButtonData& buttons,
 -                       const MessageBoxColorScheme& colorScheme) noexcept
-+  constexpr MessageBox(
-+    MessageBoxFlags flags,
-+    WindowRef window,
-+    const char* title,
-+    const char* message,
-+    std::span<const MessageBoxButtonData> buttons,
-+    OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
++  MessageBox(MessageBoxFlags flags,
++             WindowRef window,
++             const char* title,
++             const char* message,
++             std::span<const MessageBoxButtonData> buttons,
++             OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
      : MessageBoxRaw{flags,
                      window,
                      title,
@@ -112,7 +111,7 @@
     * Get the flags.
     *
     * @returns current flags value.
-@@ -192,7 +201,7 @@
+@@ -192,7 +200,7 @@
     *
     * @returns current window value.
     */
@@ -121,7 +120,7 @@
  
    /**
     * Set the window.
-@@ -200,7 +209,7 @@
+@@ -200,7 +208,7 @@
     * @param newWindow the new window value.
     * @returns Reference to self.
     */
@@ -130,7 +129,7 @@
    {
      window = newWindow;
      return *this;
-@@ -219,7 +228,7 @@
+@@ -219,7 +227,7 @@
     * @param newTitle the new title value.
     * @returns Reference to self.
     */
@@ -139,7 +138,7 @@
    {
      title = newTitle;
      return *this;
-@@ -238,7 +247,7 @@
+@@ -238,7 +246,7 @@
     * @param newMessage the new message value.
     * @returns Reference to self.
     */
@@ -148,7 +147,7 @@
    {
      message = newMessage;
      return *this;
-@@ -266,11 +275,12 @@
+@@ -266,11 +274,12 @@
    /**
     * Get the buttons.
     *
@@ -164,7 +163,7 @@
    }
  
    /**
-@@ -280,9 +290,15 @@
+@@ -280,9 +289,15 @@
     * @returns Reference to self.
     */
    constexpr MessageBox& SetButtons(
@@ -182,7 +181,7 @@
      return *this;
    }
  
-@@ -291,7 +307,7 @@
+@@ -291,7 +306,7 @@
     *
     * @returns current colorScheme value.
     */
@@ -191,7 +190,7 @@
    {
      return colorScheme;
    }
-@@ -303,7 +319,7 @@
+@@ -303,7 +318,7 @@
     * @returns Reference to self.
     */
    constexpr MessageBox& SetColorScheme(
@@ -200,7 +199,7 @@
    {
      colorScheme = newColorScheme;
      return *this;
-@@ -380,12 +396,12 @@
+@@ -380,12 +395,12 @@
   */
  inline void ShowMessageBox(const MessageBoxRaw& messageboxdata, int* buttonid)
  {

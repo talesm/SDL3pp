@@ -160,13 +160,12 @@ struct MessageBox : MessageBoxRaw
    * @param buttons the value for buttons.
    * @param colorScheme the value for colorScheme.
    */
-  constexpr MessageBox(
-    MessageBoxFlags flags,
-    WindowRef window,
-    const char* title,
-    const char* message,
-    std::span<const MessageBoxButtonData> buttons,
-    OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
+  MessageBox(MessageBoxFlags flags,
+             WindowRef window,
+             const char* title,
+             const char* message,
+             std::span<const MessageBoxButtonData> buttons,
+             OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
     : MessageBoxRaw{flags,
                     window,
                     title,
