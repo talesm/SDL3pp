@@ -119,7 +119,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) noexcept = default;
+  constexpr HidDevice(const HidDevice& other) noexcept
+    : HidDevice(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

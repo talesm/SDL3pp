@@ -176,7 +176,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) noexcept = default;
+  constexpr Cursor(const Cursor& other) noexcept
+    : Cursor(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

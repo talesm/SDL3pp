@@ -85,7 +85,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) noexcept = default;
+  constexpr SharedObject(const SharedObject& other) noexcept
+    : SharedObject(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

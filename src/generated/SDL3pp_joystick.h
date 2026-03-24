@@ -424,7 +424,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Joystick(const Joystick& other) noexcept = default;
+  constexpr Joystick(const Joystick& other) noexcept
+    : Joystick(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

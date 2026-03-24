@@ -500,7 +500,10 @@ function createBaselineCtors(
       type: "",
       constexpr: true,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
-      hints: { default: true, noexcept: true },
+      hints: {
+        init: [`${targetName}(other.m_resource)`],
+        noexcept: true,
+      },
       doc: ["Copy constructor"],
     },
     [`${targetName}#4`]: {

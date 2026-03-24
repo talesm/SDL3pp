@@ -108,7 +108,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Mutex(const Mutex& other) noexcept = default;
+  constexpr Mutex(const Mutex& other) noexcept
+    : Mutex(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -505,7 +508,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr RWLock(const RWLock& other) noexcept = default;
+  constexpr RWLock(const RWLock& other) noexcept
+    : RWLock(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -1133,7 +1139,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) noexcept = default;
+  constexpr Semaphore(const Semaphore& other) noexcept
+    : Semaphore(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -1586,7 +1595,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Condition(const Condition& other) noexcept = default;
+  constexpr Condition(const Condition& other) noexcept
+    : Condition(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

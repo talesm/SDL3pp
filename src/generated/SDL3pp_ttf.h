@@ -393,7 +393,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Font(const Font& other) noexcept = default;
+  constexpr Font(const Font& other) noexcept
+    : Font(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -3986,7 +3989,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) noexcept = default;
+  constexpr TextEngine(const TextEngine& other) noexcept
+    : TextEngine(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -4325,7 +4331,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Text(const Text& other) noexcept = default;
+  constexpr Text(const Text& other) noexcept
+    : Text(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

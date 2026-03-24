@@ -256,7 +256,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Renderer(const Renderer& other) noexcept = default;
+  constexpr Renderer(const Renderer& other) noexcept
+    : Renderer(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -8065,7 +8068,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) noexcept = default;
+  constexpr GPURenderState(const GPURenderState& other) noexcept
+    : GPURenderState(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

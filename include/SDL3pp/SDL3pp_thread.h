@@ -170,7 +170,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Thread(const Thread& other) noexcept = default;
+  constexpr Thread(const Thread& other) noexcept
+    : Thread(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

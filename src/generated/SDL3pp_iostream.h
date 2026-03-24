@@ -125,7 +125,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr IOStream(const IOStream& other) noexcept = default;
+  constexpr IOStream(const IOStream& other) noexcept
+    : IOStream(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

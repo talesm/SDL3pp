@@ -178,7 +178,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Camera(const Camera& other) noexcept = default;
+  constexpr Camera(const Camera& other) noexcept
+    : Camera(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

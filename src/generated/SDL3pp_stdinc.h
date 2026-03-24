@@ -924,7 +924,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept = default;
+  constexpr Environment(const Environment& other) noexcept
+    : Environment(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -5769,7 +5772,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept = default;
+  constexpr IConv(const IConv& other) noexcept
+    : IConv(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

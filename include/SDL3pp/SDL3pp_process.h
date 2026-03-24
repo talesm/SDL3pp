@@ -131,7 +131,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Process(const Process& other) noexcept = default;
+  constexpr Process(const Process& other) noexcept
+    : Process(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

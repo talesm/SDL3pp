@@ -3074,7 +3074,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) noexcept = default;
+  constexpr GPUDevice(const GPUDevice& other) noexcept
+    : GPUDevice(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

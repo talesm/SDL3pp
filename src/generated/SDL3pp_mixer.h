@@ -267,7 +267,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Mixer(const Mixer& other) noexcept = default;
+  constexpr Mixer(const Mixer& other) noexcept
+    : Mixer(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -1634,7 +1637,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Audio(const Audio& other) noexcept = default;
+  constexpr Audio(const Audio& other) noexcept
+    : Audio(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -2321,7 +2327,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Track(const Track& other) noexcept = default;
+  constexpr Track(const Track& other) noexcept
+    : Track(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -3814,7 +3823,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Group(const Group& other) noexcept = default;
+  constexpr Group(const Group& other) noexcept
+    : Group(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -7685,7 +7697,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) noexcept = default;
+  constexpr AudioDecoder(const AudioDecoder& other) noexcept
+    : AudioDecoder(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

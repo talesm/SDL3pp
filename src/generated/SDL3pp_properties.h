@@ -199,7 +199,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Properties(const Properties& other) noexcept = default;
+  constexpr Properties(const Properties& other) noexcept
+    : Properties(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

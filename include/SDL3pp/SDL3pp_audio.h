@@ -818,7 +818,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AudioDevice(const AudioDevice& other) noexcept = default;
+  constexpr AudioDevice(const AudioDevice& other) noexcept
+    : AudioDevice(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -1699,7 +1702,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AudioStream(const AudioStream& other) noexcept = default;
+  constexpr AudioStream(const AudioStream& other) noexcept
+    : AudioStream(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

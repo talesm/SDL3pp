@@ -774,7 +774,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Haptic(const Haptic& other) noexcept = default;
+  constexpr Haptic(const Haptic& other) noexcept
+    : Haptic(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

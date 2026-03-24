@@ -412,7 +412,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) noexcept = default;
+  constexpr Gamepad(const Gamepad& other) noexcept
+    : Gamepad(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

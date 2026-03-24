@@ -286,7 +286,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Storage(const Storage& other) noexcept = default;
+  constexpr Storage(const Storage& other) noexcept
+    : Storage(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

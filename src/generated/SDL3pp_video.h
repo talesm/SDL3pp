@@ -763,7 +763,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Window(const Window& other) noexcept = default;
+  constexpr Window(const Window& other) noexcept
+    : Window(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -3310,7 +3313,10 @@ public:
   }
 
   /// Copy constructor
-  constexpr GLContext(const GLContext& other) noexcept = default;
+  constexpr GLContext(const GLContext& other) noexcept
+    : GLContext(other.m_resource)
+  {
+  }
 
   /// Move constructor
   constexpr GLContext(GLContext&& other) noexcept

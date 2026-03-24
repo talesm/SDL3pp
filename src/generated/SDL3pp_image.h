@@ -2650,7 +2650,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Animation(const Animation& other) noexcept = default;
+  constexpr Animation(const Animation& other) noexcept
+    : Animation(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -3691,7 +3694,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept = default;
+  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept
+    : AnimationEncoder(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -4244,7 +4250,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept = default;
+  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept
+    : AnimationDecoder(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

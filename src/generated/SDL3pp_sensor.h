@@ -157,7 +157,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Sensor(const Sensor& other) noexcept = default;
+  constexpr Sensor(const Sensor& other) noexcept
+    : Sensor(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor

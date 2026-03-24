@@ -131,7 +131,10 @@ public:
 
 protected:
   /// Copy constructor
-  constexpr Tray(const Tray& other) noexcept = default;
+  constexpr Tray(const Tray& other) noexcept
+    : Tray(other.m_resource)
+  {
+  }
 
 public:
   /// Move constructor
@@ -505,7 +508,10 @@ public:
   }
 
   /// Copy constructor
-  constexpr TrayEntry(const TrayEntry& other) noexcept = default;
+  constexpr TrayEntry(const TrayEntry& other) noexcept
+    : TrayEntry(other.m_resource)
+  {
+  }
 
   /// Move constructor
   constexpr TrayEntry(TrayEntry&& other) noexcept
