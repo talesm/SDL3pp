@@ -414,7 +414,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Storage& operator=(const Storage& other) noexcept = default;
+  Storage& operator=(const Storage& other) = default;
 
 public:
   /// Retrieves underlying StorageRaw.
@@ -808,7 +808,7 @@ struct StorageRef : Storage
   ~StorageRef() { release(); }
 
   /// Assignment operator.
-  constexpr StorageRef& operator=(const StorageRef& other) noexcept
+  StorageRef& operator=(const StorageRef& other) noexcept
   {
     release();
     Storage::operator=(Storage(other.get()));

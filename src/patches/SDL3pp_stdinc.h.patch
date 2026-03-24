@@ -927,11 +927,13 @@
   */
  class IConv
  {
-@@ -5754,7 +5937,7 @@
+@@ -5753,8 +5936,8 @@
+ 
  public:
    /// Default ctor
-   constexpr IConv(std::nullptr_t = nullptr) noexcept
+-  constexpr IConv(std::nullptr_t = nullptr) noexcept
 -    : m_resource(nullptr)
++  IConv(std::nullptr_t = nullptr) noexcept
 +    : m_resource(IConvRaw(SDL_ICONV_ERROR))
    {
    }

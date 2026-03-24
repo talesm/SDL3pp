@@ -11509,7 +11509,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Palette& operator=(const Palette& other) noexcept = default;
+  Palette& operator=(const Palette& other) = default;
 
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const noexcept { return m_resource; }
@@ -11636,7 +11636,7 @@ struct PaletteRef : Palette
   ~PaletteRef() { release(); }
 
   /// Assignment operator.
-  constexpr PaletteRef& operator=(const PaletteRef& other) noexcept
+  PaletteRef& operator=(const PaletteRef& other) noexcept
   {
     release();
     Palette::operator=(Palette(other.get()));
@@ -12347,7 +12347,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Properties& operator=(const Properties& other) noexcept = default;
+  Properties& operator=(const Properties& other) = default;
 
 public:
   /// Retrieves underlying PropertiesID.
@@ -12848,7 +12848,7 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 
   /// Assignment operator.
-  constexpr PropertiesRef& operator=(const PropertiesRef& other) noexcept
+  PropertiesRef& operator=(const PropertiesRef& other) noexcept
   {
     release();
     Properties::operator=(Properties(other.get()));
@@ -14678,7 +14678,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Environment& operator=(const Environment& other) noexcept = default;
+  Environment& operator=(const Environment& other) = default;
 
 public:
   /// Retrieves underlying EnvironmentRaw.
@@ -14867,7 +14867,7 @@ struct EnvironmentRef : Environment
   ~EnvironmentRef() { release(); }
 
   /// Assignment operator.
-  constexpr EnvironmentRef& operator=(const EnvironmentRef& other) noexcept
+  EnvironmentRef& operator=(const EnvironmentRef& other) noexcept
   {
     release();
     Environment::operator=(Environment(other.get()));
@@ -19627,7 +19627,7 @@ class IConv
 
 public:
   /// Default ctor
-  constexpr IConv(std::nullptr_t = nullptr) noexcept
+  IConv(std::nullptr_t = nullptr) noexcept
     : m_resource(IConvRaw(SDL_ICONV_ERROR))
   {
   }
@@ -19692,7 +19692,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IConv& operator=(const IConv& other) noexcept = default;
+  IConv& operator=(const IConv& other) = default;
 
 public:
   /// Retrieves underlying IConvRaw.
@@ -19833,7 +19833,7 @@ struct IConvRef : IConv
   ~IConvRef() { release(); }
 
   /// Assignment operator.
-  constexpr IConvRef& operator=(const IConvRef& other) noexcept
+  IConvRef& operator=(const IConvRef& other) noexcept
   {
     release();
     IConv::operator=(IConv(other.get()));
@@ -20337,7 +20337,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIO& operator=(const AsyncIO& other) noexcept = default;
+  AsyncIO& operator=(const AsyncIO& other) = default;
 
 public:
   /// Retrieves underlying AsyncIORaw.
@@ -20561,7 +20561,7 @@ struct AsyncIORef : AsyncIO
   ~AsyncIORef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIORef& operator=(const AsyncIORef& other) noexcept
+  AsyncIORef& operator=(const AsyncIORef& other) noexcept
   {
     release();
     AsyncIO::operator=(AsyncIO(other.get()));
@@ -20701,8 +20701,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other) noexcept =
-    default;
+  AsyncIOQueue& operator=(const AsyncIOQueue& other) = default;
 
 public:
   /// Retrieves underlying AsyncIOQueueRaw.
@@ -20939,7 +20938,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
   ~AsyncIOQueueRef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
+  AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
   {
     release();
     AsyncIOQueue::operator=(AsyncIOQueue(other.get()));
@@ -24347,7 +24346,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr HidDevice& operator=(const HidDevice& other) noexcept = default;
+  HidDevice& operator=(const HidDevice& other) = default;
 
 public:
   /// Retrieves underlying HidDeviceRaw.
@@ -24666,7 +24665,7 @@ struct HidDeviceRef : HidDevice
   ~HidDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
+  HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
   {
     release();
     HidDevice::operator=(HidDevice(other.get()));
@@ -25619,7 +25618,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IOStream& operator=(const IOStream& other) noexcept = default;
+  IOStream& operator=(const IOStream& other) = default;
 
 public:
   /// Retrieves underlying IOStreamRaw.
@@ -26913,7 +26912,7 @@ struct IOStreamRef : IOStream
   ~IOStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr IOStreamRef& operator=(const IOStreamRef& other) noexcept
+  IOStreamRef& operator=(const IOStreamRef& other) noexcept
   {
     release();
     IOStream::operator=(IOStream(other.get()));
@@ -28532,8 +28531,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr SharedObject& operator=(const SharedObject& other) noexcept =
-    default;
+  SharedObject& operator=(const SharedObject& other) = default;
 
 public:
   /// Retrieves underlying SharedObjectRaw.
@@ -28658,7 +28656,7 @@ struct SharedObjectRef : SharedObject
   ~SharedObjectRef() { release(); }
 
   /// Assignment operator.
-  constexpr SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
+  SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
   {
     release();
     SharedObject::operator=(SharedObject(other.get()));
@@ -32526,7 +32524,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Sensor& operator=(const Sensor& other) noexcept = default;
+  Sensor& operator=(const Sensor& other) = default;
 
 public:
   /// Retrieves underlying SensorRaw.
@@ -32676,7 +32674,7 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  constexpr SensorRef& operator=(const SensorRef& other) noexcept
+  SensorRef& operator=(const SensorRef& other) noexcept
   {
     release();
     Sensor::operator=(Sensor(other.get()));
@@ -34745,7 +34743,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioDevice& operator=(const AudioDevice& other) noexcept = default;
+  AudioDevice& operator=(const AudioDevice& other) = default;
 
 public:
   /// Retrieves underlying AudioDeviceID.
@@ -35361,7 +35359,7 @@ struct AudioDeviceRef : AudioDevice
   ~AudioDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept
+  AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept
   {
     release();
     AudioDevice::operator=(AudioDevice(other.get()));
@@ -35698,7 +35696,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioStream& operator=(const AudioStream& other) noexcept = default;
+  AudioStream& operator=(const AudioStream& other) = default;
 
 public:
   /// Retrieves underlying AudioStreamRaw.
@@ -36833,7 +36831,7 @@ struct AudioStreamRef : AudioStream
   ~AudioStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioStreamRef& operator=(const AudioStreamRef& other) noexcept
+  AudioStreamRef& operator=(const AudioStreamRef& other) noexcept
   {
     release();
     AudioStream::operator=(AudioStream(other.get()));
@@ -40662,7 +40660,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Process& operator=(const Process& other) noexcept = default;
+  Process& operator=(const Process& other) = default;
 
 public:
   /// Retrieves underlying ProcessRaw.
@@ -40952,7 +40950,7 @@ struct ProcessRef : Process
   ~ProcessRef() { release(); }
 
   /// Assignment operator.
-  constexpr ProcessRef& operator=(const ProcessRef& other) noexcept
+  ProcessRef& operator=(const ProcessRef& other) noexcept
   {
     release();
     Process::operator=(Process(other.get()));
@@ -41781,7 +41779,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Storage& operator=(const Storage& other) noexcept = default;
+  Storage& operator=(const Storage& other) = default;
 
 public:
   /// Retrieves underlying StorageRaw.
@@ -42175,7 +42173,7 @@ struct StorageRef : Storage
   ~StorageRef() { release(); }
 
   /// Assignment operator.
-  constexpr StorageRef& operator=(const StorageRef& other) noexcept
+  StorageRef& operator=(const StorageRef& other) noexcept
   {
     release();
     Storage::operator=(Storage(other.get()));
@@ -43292,7 +43290,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Surface& operator=(const Surface& other) noexcept = default;
+  Surface& operator=(const Surface& other) = default;
 
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const noexcept { return m_resource; }
@@ -44818,7 +44816,7 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept
+  SurfaceRef& operator=(const SurfaceRef& other) noexcept
   {
     release();
     Surface::operator=(Surface(other.get()));
@@ -48118,7 +48116,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Thread& operator=(const Thread& other) noexcept = default;
+  Thread& operator=(const Thread& other) = default;
 
 public:
   /// Retrieves underlying ThreadRaw.
@@ -48331,7 +48329,7 @@ struct ThreadRef : Thread
   ~ThreadRef() { release(); }
 
   /// Assignment operator.
-  constexpr ThreadRef& operator=(const ThreadRef& other) noexcept
+  ThreadRef& operator=(const ThreadRef& other) noexcept
   {
     release();
     Thread::operator=(Thread(other.get()));
@@ -48983,7 +48981,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Camera& operator=(const Camera& other) noexcept = default;
+  Camera& operator=(const Camera& other) = default;
 
 public:
   /// Retrieves underlying CameraRaw.
@@ -49229,7 +49227,7 @@ struct CameraRef : Camera
   ~CameraRef() { release(); }
 
   /// Assignment operator.
-  constexpr CameraRef& operator=(const CameraRef& other) noexcept
+  CameraRef& operator=(const CameraRef& other) noexcept
   {
     release();
     Camera::operator=(Camera(other.get()));
@@ -49986,7 +49984,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Mutex& operator=(const Mutex& other) noexcept = default;
+  Mutex& operator=(const Mutex& other) = default;
 
 public:
   /// Retrieves underlying MutexRaw.
@@ -50151,7 +50149,7 @@ struct MutexRef : Mutex
   ~MutexRef() { release(); }
 
   /// Assignment operator.
-  constexpr MutexRef& operator=(const MutexRef& other) noexcept
+  MutexRef& operator=(const MutexRef& other) noexcept
   {
     release();
     Mutex::operator=(Mutex(other.get()));
@@ -50406,7 +50404,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr RWLock& operator=(const RWLock& other) noexcept = default;
+  RWLock& operator=(const RWLock& other) = default;
 
 public:
   /// Retrieves underlying RWLockRaw.
@@ -50656,7 +50654,7 @@ struct RWLockRef : RWLock
   ~RWLockRef() { release(); }
 
   /// Assignment operator.
-  constexpr RWLockRef& operator=(const RWLockRef& other) noexcept
+  RWLockRef& operator=(const RWLockRef& other) noexcept
   {
     release();
     RWLock::operator=(RWLock(other.get()));
@@ -51019,7 +51017,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Semaphore& operator=(const Semaphore& other) noexcept = default;
+  Semaphore& operator=(const Semaphore& other) = default;
 
 public:
   /// Retrieves underlying SemaphoreRaw.
@@ -51200,7 +51198,7 @@ struct SemaphoreRef : Semaphore
   ~SemaphoreRef() { release(); }
 
   /// Assignment operator.
-  constexpr SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
+  SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
   {
     release();
     Semaphore::operator=(Semaphore(other.get()));
@@ -51467,7 +51465,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Condition& operator=(const Condition& other) noexcept = default;
+  Condition& operator=(const Condition& other) = default;
 
 public:
   /// Retrieves underlying ConditionRaw.
@@ -51642,7 +51640,7 @@ struct ConditionRef : Condition
   ~ConditionRef() { release(); }
 
   /// Assignment operator.
-  constexpr ConditionRef& operator=(const ConditionRef& other) noexcept
+  ConditionRef& operator=(const ConditionRef& other) noexcept
   {
     release();
     Condition::operator=(Condition(other.get()));
@@ -52206,7 +52204,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Tray& operator=(const Tray& other) noexcept = default;
+  Tray& operator=(const Tray& other) = default;
 
 public:
   /// Retrieves underlying TrayRaw.
@@ -52376,7 +52374,7 @@ struct TrayRef : Tray
   ~TrayRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrayRef& operator=(const TrayRef& other) noexcept
+  TrayRef& operator=(const TrayRef& other) noexcept
   {
     release();
     Tray::operator=(Tray(other.get()));
@@ -52577,7 +52575,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept = default;
+  TrayEntry& operator=(const TrayEntry& other) = default;
 
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const noexcept { return m_resource; }
@@ -54556,7 +54554,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Window& operator=(const Window& other) noexcept = default;
+  Window& operator=(const Window& other) = default;
 
 public:
   /// Retrieves underlying WindowRaw.
@@ -56598,7 +56596,7 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 
   /// Assignment operator.
-  constexpr WindowRef& operator=(const WindowRef& other) noexcept
+  WindowRef& operator=(const WindowRef& other) noexcept
   {
     release();
     Window::operator=(Window(other.get()));
@@ -56806,7 +56804,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr GLContext& operator=(const GLContext& other) noexcept = default;
+  GLContext& operator=(const GLContext& other) = default;
 
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const noexcept { return m_resource; }
@@ -66768,7 +66766,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept = default;
+  GPUDevice& operator=(const GPUDevice& other) = default;
 
 public:
   /// Retrieves underlying GPUDeviceRaw.
@@ -67706,7 +67704,7 @@ struct GPUDeviceRef : GPUDevice
   ~GPUDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
+  GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
   {
     release();
     GPUDevice::operator=(GPUDevice(other.get()));
@@ -72243,7 +72241,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Joystick& operator=(const Joystick& other) noexcept = default;
+  Joystick& operator=(const Joystick& other) = default;
 
 public:
   /// Retrieves underlying JoystickRaw.
@@ -73006,7 +73004,7 @@ struct JoystickRef : Joystick
   ~JoystickRef() { release(); }
 
   /// Assignment operator.
-  constexpr JoystickRef& operator=(const JoystickRef& other) noexcept
+  JoystickRef& operator=(const JoystickRef& other) noexcept
   {
     release();
     Joystick::operator=(Joystick(other.get()));
@@ -75591,7 +75589,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr MetalView& operator=(const MetalView& other) noexcept = default;
+  MetalView& operator=(const MetalView& other) = default;
 
 public:
   /// Retrieves underlying MetalViewRaw.
@@ -75698,7 +75696,7 @@ struct MetalViewRef : MetalView
   ~MetalViewRef() { release(); }
 
   /// Assignment operator.
-  constexpr MetalViewRef& operator=(const MetalViewRef& other) noexcept
+  MetalViewRef& operator=(const MetalViewRef& other) noexcept
   {
     release();
     MetalView::operator=(MetalView(other.get()));
@@ -76071,7 +76069,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Cursor& operator=(const Cursor& other) noexcept = default;
+  Cursor& operator=(const Cursor& other) = default;
 
 public:
   /// Retrieves underlying CursorRaw.
@@ -76188,7 +76186,7 @@ struct CursorRef : Cursor
   ~CursorRef() { release(); }
 
   /// Assignment operator.
-  constexpr CursorRef& operator=(const CursorRef& other) noexcept
+  CursorRef& operator=(const CursorRef& other) noexcept
   {
     release();
     Cursor::operator=(Cursor(other.get()));
@@ -77406,7 +77404,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Gamepad& operator=(const Gamepad& other) noexcept = default;
+  Gamepad& operator=(const Gamepad& other) = default;
 
 public:
   /// Retrieves underlying GamepadRaw.
@@ -78144,7 +78142,7 @@ struct GamepadRef : Gamepad
   ~GamepadRef() { release(); }
 
   /// Assignment operator.
-  constexpr GamepadRef& operator=(const GamepadRef& other) noexcept
+  GamepadRef& operator=(const GamepadRef& other) noexcept
   {
     release();
     Gamepad::operator=(Gamepad(other.get()));
@@ -80787,7 +80785,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Haptic& operator=(const Haptic& other) noexcept = default;
+  Haptic& operator=(const Haptic& other) = default;
 
 public:
   /// Retrieves underlying HapticRaw.
@@ -81200,7 +81198,7 @@ struct HapticRef : Haptic
   ~HapticRef() { release(); }
 
   /// Assignment operator.
-  constexpr HapticRef& operator=(const HapticRef& other) noexcept
+  HapticRef& operator=(const HapticRef& other) noexcept
   {
     release();
     Haptic::operator=(Haptic(other.get()));
@@ -83101,7 +83099,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Renderer& operator=(const Renderer& other) noexcept = default;
+  Renderer& operator=(const Renderer& other) = default;
 
 public:
   /// Retrieves underlying RendererRaw.
@@ -85041,7 +85039,7 @@ struct RendererRef : Renderer
   ~RendererRef() { release(); }
 
   /// Assignment operator.
-  constexpr RendererRef& operator=(const RendererRef& other) noexcept
+  RendererRef& operator=(const RendererRef& other) noexcept
   {
     release();
     Renderer::operator=(Renderer(other.get()));
@@ -85386,7 +85384,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Texture& operator=(const Texture& other) noexcept = default;
+  Texture& operator=(const Texture& other) = default;
 
   /// Retrieves underlying TextureRaw.
   constexpr TextureRaw get() const noexcept { return m_resource; }
@@ -86199,7 +86197,7 @@ struct TextureRef : Texture
   ~TextureRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextureRef& operator=(const TextureRef& other) noexcept
+  TextureRef& operator=(const TextureRef& other) noexcept
   {
     release();
     Texture::operator=(Texture(other.get()));
@@ -90995,8 +90993,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPURenderState& operator=(const GPURenderState& other) noexcept =
-    default;
+  GPURenderState& operator=(const GPURenderState& other) = default;
 
 public:
   /// Retrieves underlying GPURenderStateRaw.
@@ -91110,8 +91107,7 @@ struct GPURenderStateRef : GPURenderState
   ~GPURenderStateRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPURenderStateRef& operator=(
-    const GPURenderStateRef& other) noexcept
+  GPURenderStateRef& operator=(const GPURenderStateRef& other) noexcept
   {
     release();
     GPURenderState::operator=(GPURenderState(other.get()));
@@ -93030,7 +93026,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Mixer& operator=(const Mixer& other) noexcept = default;
+  Mixer& operator=(const Mixer& other) = default;
 
 public:
   /// Retrieves underlying MixerRaw.
@@ -94062,7 +94058,7 @@ struct MixerRef : Mixer
   ~MixerRef() { release(); }
 
   /// Assignment operator.
-  constexpr MixerRef& operator=(const MixerRef& other) noexcept
+  MixerRef& operator=(const MixerRef& other) noexcept
   {
     release();
     Mixer::operator=(Mixer(other.get()));
@@ -94519,7 +94515,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Audio& operator=(const Audio& other) noexcept = default;
+  Audio& operator=(const Audio& other) = default;
 
 public:
   /// Retrieves underlying AudioRaw.
@@ -94759,7 +94755,7 @@ struct AudioRef : Audio
   ~AudioRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioRef& operator=(const AudioRef& other) noexcept
+  AudioRef& operator=(const AudioRef& other) noexcept
   {
     release();
     Audio::operator=(Audio(other.get()));
@@ -95021,7 +95017,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Track& operator=(const Track& other) noexcept = default;
+  Track& operator=(const Track& other) = default;
 
 public:
   /// Retrieves underlying TrackRaw.
@@ -96327,7 +96323,7 @@ struct TrackRef : Track
   ~TrackRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrackRef& operator=(const TrackRef& other) noexcept
+  TrackRef& operator=(const TrackRef& other) noexcept
   {
     release();
     Track::operator=(Track(other.get()));
@@ -96514,7 +96510,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Group& operator=(const Group& other) noexcept = default;
+  Group& operator=(const Group& other) = default;
 
 public:
   /// Retrieves underlying GroupRaw.
@@ -96669,7 +96665,7 @@ struct GroupRef : Group
   ~GroupRef() { release(); }
 
   /// Assignment operator.
-  constexpr GroupRef& operator=(const GroupRef& other) noexcept
+  GroupRef& operator=(const GroupRef& other) noexcept
   {
     release();
     Group::operator=(Group(other.get()));
@@ -100419,8 +100415,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioDecoder& operator=(const AudioDecoder& other) noexcept =
-    default;
+  AudioDecoder& operator=(const AudioDecoder& other) = default;
 
 public:
   /// Retrieves underlying AudioDecoderRaw.
@@ -100577,7 +100572,7 @@ struct AudioDecoderRef : AudioDecoder
   ~AudioDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept
+  AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept
   {
     release();
     AudioDecoder::operator=(AudioDecoder(other.get()));
@@ -103580,7 +103575,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Animation& operator=(const Animation& other) noexcept = default;
+  Animation& operator=(const Animation& other) = default;
 
 public:
   /// Retrieves underlying AnimationRaw.
@@ -103888,7 +103883,7 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationRef& operator=(const AnimationRef& other) noexcept
+  AnimationRef& operator=(const AnimationRef& other) noexcept
   {
     release();
     Animation::operator=(Animation(other.get()));
@@ -104689,8 +104684,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AnimationEncoder& operator=(
-    const AnimationEncoder& other) noexcept = default;
+  AnimationEncoder& operator=(const AnimationEncoder& other) = default;
 
 public:
   /// Retrieves underlying AnimationEncoderRaw.
@@ -104808,8 +104802,7 @@ struct AnimationEncoderRef : AnimationEncoder
   ~AnimationEncoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationEncoderRef& operator=(
-    const AnimationEncoderRef& other) noexcept
+  AnimationEncoderRef& operator=(const AnimationEncoderRef& other) noexcept
   {
     release();
     AnimationEncoder::operator=(AnimationEncoder(other.get()));
@@ -105218,8 +105211,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AnimationDecoder& operator=(
-    const AnimationDecoder& other) noexcept = default;
+  AnimationDecoder& operator=(const AnimationDecoder& other) = default;
 
 public:
   /// Retrieves underlying AnimationDecoderRaw.
@@ -105392,8 +105384,7 @@ struct AnimationDecoderRef : AnimationDecoder
   ~AnimationDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationDecoderRef& operator=(
-    const AnimationDecoderRef& other) noexcept
+  AnimationDecoderRef& operator=(const AnimationDecoderRef& other) noexcept
   {
     release();
     AnimationDecoder::operator=(AnimationDecoder(other.get()));
@@ -106266,7 +106257,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Font& operator=(const Font& other) noexcept = default;
+  Font& operator=(const Font& other) = default;
 
 public:
   /// Retrieves underlying FontRaw.
@@ -107661,7 +107652,7 @@ struct FontRef : Font
   ~FontRef() { release(); }
 
   /// Assignment operator.
-  constexpr FontRef& operator=(const FontRef& other) noexcept
+  FontRef& operator=(const FontRef& other) noexcept
   {
     release();
     Font::operator=(Font(other.get()));
@@ -109756,7 +109747,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr TextEngine& operator=(const TextEngine& other) noexcept = default;
+  TextEngine& operator=(const TextEngine& other) = default;
 
 public:
   /// Retrieves underlying TextEngineRaw.
@@ -110119,7 +110110,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Text& operator=(const Text& other) noexcept = default;
+  Text& operator=(const Text& other) = default;
 
 public:
   /// Retrieves underlying TextRaw.
@@ -110991,7 +110982,7 @@ struct TextRef : Text
   ~TextRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextRef& operator=(const TextRef& other) noexcept
+  TextRef& operator=(const TextRef& other) noexcept
   {
     release();
     Text::operator=(Text(other.get()));

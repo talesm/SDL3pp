@@ -272,7 +272,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Process& operator=(const Process& other) noexcept = default;
+  Process& operator=(const Process& other) = default;
 
 public:
   /// Retrieves underlying ProcessRaw.
@@ -537,7 +537,7 @@ struct ProcessRef : Process
   ~ProcessRef() { release(); }
 
   /// Assignment operator.
-  constexpr ProcessRef& operator=(const ProcessRef& other) noexcept
+  ProcessRef& operator=(const ProcessRef& other) noexcept
   {
     release();
     Process::operator=(Process(other.get()));

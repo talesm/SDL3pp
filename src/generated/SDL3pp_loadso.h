@@ -129,8 +129,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr SharedObject& operator=(const SharedObject& other) noexcept =
-    default;
+  SharedObject& operator=(const SharedObject& other) = default;
 
 public:
   /// Retrieves underlying SharedObjectRaw.
@@ -255,7 +254,7 @@ struct SharedObjectRef : SharedObject
   ~SharedObjectRef() { release(); }
 
   /// Assignment operator.
-  constexpr SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
+  SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
   {
     release();
     SharedObject::operator=(SharedObject(other.get()));

@@ -210,7 +210,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIO& operator=(const AsyncIO& other) noexcept = default;
+  AsyncIO& operator=(const AsyncIO& other) = default;
 
 public:
   /// Retrieves underlying AsyncIORaw.
@@ -434,7 +434,7 @@ struct AsyncIORef : AsyncIO
   ~AsyncIORef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIORef& operator=(const AsyncIORef& other) noexcept
+  AsyncIORef& operator=(const AsyncIORef& other) noexcept
   {
     release();
     AsyncIO::operator=(AsyncIO(other.get()));
@@ -574,8 +574,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other) noexcept =
-    default;
+  AsyncIOQueue& operator=(const AsyncIOQueue& other) = default;
 
 public:
   /// Retrieves underlying AsyncIOQueueRaw.
@@ -818,7 +817,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
   ~AsyncIOQueueRef() { release(); }
 
   /// Assignment operator.
-  constexpr AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
+  AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
   {
     release();
     AsyncIOQueue::operator=(AsyncIOQueue(other.get()));

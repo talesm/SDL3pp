@@ -1129,7 +1129,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Window& operator=(const Window& other) noexcept = default;
+  Window& operator=(const Window& other) = default;
 
 public:
   /// Retrieves underlying WindowRaw.
@@ -3160,7 +3160,7 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 
   /// Assignment operator.
-  constexpr WindowRef& operator=(const WindowRef& other) noexcept
+  WindowRef& operator=(const WindowRef& other) noexcept
   {
     release();
     Window::operator=(Window(other.get()));
@@ -3368,7 +3368,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr GLContext& operator=(const GLContext& other) noexcept = default;
+  GLContext& operator=(const GLContext& other) = default;
 
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const noexcept { return m_resource; }

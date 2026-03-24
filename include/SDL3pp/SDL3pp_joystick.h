@@ -473,7 +473,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Joystick& operator=(const Joystick& other) noexcept = default;
+  Joystick& operator=(const Joystick& other) = default;
 
 public:
   /// Retrieves underlying JoystickRaw.
@@ -1236,7 +1236,7 @@ struct JoystickRef : Joystick
   ~JoystickRef() { release(); }
 
   /// Assignment operator.
-  constexpr JoystickRef& operator=(const JoystickRef& other) noexcept
+  JoystickRef& operator=(const JoystickRef& other) noexcept
   {
     release();
     Joystick::operator=(Joystick(other.get()));

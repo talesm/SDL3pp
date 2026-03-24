@@ -252,7 +252,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Camera& operator=(const Camera& other) noexcept = default;
+  Camera& operator=(const Camera& other) = default;
 
 public:
   /// Retrieves underlying CameraRaw.
@@ -498,7 +498,7 @@ struct CameraRef : Camera
   ~CameraRef() { release(); }
 
   /// Assignment operator.
-  constexpr CameraRef& operator=(const CameraRef& other) noexcept
+  CameraRef& operator=(const CameraRef& other) noexcept
   {
     release();
     Camera::operator=(Camera(other.get()));

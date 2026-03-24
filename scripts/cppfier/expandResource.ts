@@ -798,11 +798,9 @@ function populateTargetEntry(
       kind: "function",
       type: `${targetName} &`,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
-      constexpr: true,
       hints: {
         default: true,
         changeAccess: isCopyable ? undefined : "protected",
-        noexcept: true,
       },
       doc: ["Assignment operator."],
     },
@@ -965,7 +963,6 @@ function createRefEntry(
     [`operator=`]: {
       kind: "function",
       type: `${refName} &`,
-      constexpr: true,
       parameters: [{ type: `const ${refName} &`, name: "other" }],
       hints: {
         body: `release();${targetName}::operator=(${targetName}(other.get()));\nreturn *this;`,

@@ -109,7 +109,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr MetalView& operator=(const MetalView& other) noexcept = default;
+  MetalView& operator=(const MetalView& other) = default;
 
 public:
   /// Retrieves underlying MetalViewRaw.
@@ -216,7 +216,7 @@ struct MetalViewRef : MetalView
   ~MetalViewRef() { release(); }
 
   /// Assignment operator.
-  constexpr MetalViewRef& operator=(const MetalViewRef& other) noexcept
+  MetalViewRef& operator=(const MetalViewRef& other) noexcept
   {
     release();
     MetalView::operator=(MetalView(other.get()));

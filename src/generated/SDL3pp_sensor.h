@@ -196,7 +196,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Sensor& operator=(const Sensor& other) noexcept = default;
+  Sensor& operator=(const Sensor& other) = default;
 
 public:
   /// Retrieves underlying SensorRaw.
@@ -346,7 +346,7 @@ struct SensorRef : Sensor
   ~SensorRef() { release(); }
 
   /// Assignment operator.
-  constexpr SensorRef& operator=(const SensorRef& other) noexcept
+  SensorRef& operator=(const SensorRef& other) noexcept
   {
     release();
     Sensor::operator=(Sensor(other.get()));

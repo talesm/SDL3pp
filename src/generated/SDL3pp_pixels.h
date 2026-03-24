@@ -2374,7 +2374,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Palette& operator=(const Palette& other) noexcept = default;
+  Palette& operator=(const Palette& other) = default;
 
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const noexcept { return m_resource; }
@@ -2499,7 +2499,7 @@ struct PaletteRef : Palette
   ~PaletteRef() { release(); }
 
   /// Assignment operator.
-  constexpr PaletteRef& operator=(const PaletteRef& other) noexcept
+  PaletteRef& operator=(const PaletteRef& other) noexcept
   {
     release();
     Palette::operator=(Palette(other.get()));

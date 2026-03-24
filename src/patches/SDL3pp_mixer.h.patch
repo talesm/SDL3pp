@@ -875,7 +875,7 @@
     * @post an audio decoder, ready to decode.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -7885,10 +7848,9 @@
+@@ -7884,10 +7847,9 @@
     * happened.
     *
     * @param buffer the memory buffer to store decoded audio.
@@ -888,7 +888,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -7978,7 +7940,7 @@
+@@ -7977,7 +7939,7 @@
   *
   * This function allows properties to be specified. This is intended to supply
   * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -897,7 +897,7 @@
   * properties.
   *
   * Properties are discussed in [SDL's
-@@ -7991,7 +7953,7 @@
+@@ -7990,7 +7952,7 @@
   * call to MIX.Init(), but does not need an actual Mixer to have been created.
   *
   * @param path the path on the filesystem from which to load data.
@@ -906,7 +906,7 @@
   * @returns an audio decoder, ready to decode.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -8029,7 +7991,7 @@
+@@ -8028,7 +7990,7 @@
   *
   * This function allows properties to be specified. This is intended to supply
   * file-specific settings, such as where to find SoundFonts for a MIDI file,
@@ -915,7 +915,7 @@
   * properties.
   *
   * If `closeio` is true, then `io` will be closed when this decoder is done with
-@@ -8044,7 +8006,7 @@
+@@ -8043,7 +8005,7 @@
   *
   * @param io the i/o stream from which to load data.
   * @param closeio if true, close the i/o stream when done with it.
@@ -924,7 +924,7 @@
   * @returns an audio decoder, ready to decode.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -8151,10 +8113,9 @@
+@@ -8150,10 +8112,9 @@
   *
   * @param audiodecoder the decoder from which to retrieve more data.
   * @param buffer the memory buffer to store decoded audio.
@@ -937,7 +937,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -8164,8 +8125,9 @@
+@@ -8163,8 +8124,9 @@
                         TargetBytes buffer,
                         const AudioSpec& spec)
  {
@@ -949,7 +949,7 @@
  }
  
  inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
-@@ -8177,4 +8139,6 @@
+@@ -8176,4 +8138,6 @@
  
  } // namespace SDL
  

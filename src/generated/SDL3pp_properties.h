@@ -244,7 +244,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Properties& operator=(const Properties& other) noexcept = default;
+  Properties& operator=(const Properties& other) = default;
 
 public:
   /// Retrieves underlying PropertiesID.
@@ -740,7 +740,7 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 
   /// Assignment operator.
-  constexpr PropertiesRef& operator=(const PropertiesRef& other) noexcept
+  PropertiesRef& operator=(const PropertiesRef& other) noexcept
   {
     release();
     Properties::operator=(Properties(other.get()));

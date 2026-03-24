@@ -184,7 +184,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Tray& operator=(const Tray& other) noexcept = default;
+  Tray& operator=(const Tray& other) = default;
 
 public:
   /// Retrieves underlying TrayRaw.
@@ -354,7 +354,7 @@ struct TrayRef : Tray
   ~TrayRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrayRef& operator=(const TrayRef& other) noexcept
+  TrayRef& operator=(const TrayRef& other) noexcept
   {
     release();
     Tray::operator=(Tray(other.get()));
@@ -533,7 +533,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept = default;
+  TrayEntry& operator=(const TrayEntry& other) = default;
 
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const noexcept { return m_resource; }

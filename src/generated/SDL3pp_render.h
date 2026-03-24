@@ -407,7 +407,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Renderer& operator=(const Renderer& other) noexcept = default;
+  Renderer& operator=(const Renderer& other) = default;
 
 public:
   /// Retrieves underlying RendererRaw.
@@ -2351,7 +2351,7 @@ struct RendererRef : Renderer
   ~RendererRef() { release(); }
 
   /// Assignment operator.
-  constexpr RendererRef& operator=(const RendererRef& other) noexcept
+  RendererRef& operator=(const RendererRef& other) noexcept
   {
     release();
     Renderer::operator=(Renderer(other.get()));
@@ -2707,7 +2707,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Texture& operator=(const Texture& other) noexcept = default;
+  Texture& operator=(const Texture& other) = default;
 
   /// Retrieves underlying TextureRaw.
   constexpr TextureRaw get() const noexcept { return m_resource; }
@@ -3461,7 +3461,7 @@ struct TextureRef : Texture
   ~TextureRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextureRef& operator=(const TextureRef& other) noexcept
+  TextureRef& operator=(const TextureRef& other) noexcept
   {
     release();
     Texture::operator=(Texture(other.get()));
@@ -8116,8 +8116,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPURenderState& operator=(const GPURenderState& other) noexcept =
-    default;
+  GPURenderState& operator=(const GPURenderState& other) = default;
 
 public:
   /// Retrieves underlying GPURenderStateRaw.
@@ -8232,8 +8231,7 @@ struct GPURenderStateRef : GPURenderState
   ~GPURenderStateRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPURenderStateRef& operator=(
-    const GPURenderStateRef& other) noexcept
+  GPURenderStateRef& operator=(const GPURenderStateRef& other) noexcept
   {
     release();
     GPURenderState::operator=(GPURenderState(other.get()));

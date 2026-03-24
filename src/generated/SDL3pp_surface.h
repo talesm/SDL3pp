@@ -499,7 +499,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Surface& operator=(const Surface& other) noexcept = default;
+  Surface& operator=(const Surface& other) = default;
 
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const noexcept { return m_resource; }
@@ -1962,7 +1962,7 @@ struct SurfaceRef : Surface
   ~SurfaceRef() { release(); }
 
   /// Assignment operator.
-  constexpr SurfaceRef& operator=(const SurfaceRef& other) noexcept
+  SurfaceRef& operator=(const SurfaceRef& other) noexcept
   {
     release();
     Surface::operator=(Surface(other.get()));

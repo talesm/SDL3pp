@@ -373,7 +373,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Mixer& operator=(const Mixer& other) noexcept = default;
+  Mixer& operator=(const Mixer& other) = default;
 
 public:
   /// Retrieves underlying MixerRaw.
@@ -1405,7 +1405,7 @@ struct MixerRef : Mixer
   ~MixerRef() { release(); }
 
   /// Assignment operator.
-  constexpr MixerRef& operator=(const MixerRef& other) noexcept
+  MixerRef& operator=(const MixerRef& other) noexcept
   {
     release();
     Mixer::operator=(Mixer(other.get()));
@@ -1862,7 +1862,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Audio& operator=(const Audio& other) noexcept = default;
+  Audio& operator=(const Audio& other) = default;
 
 public:
   /// Retrieves underlying AudioRaw.
@@ -2102,7 +2102,7 @@ struct AudioRef : Audio
   ~AudioRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioRef& operator=(const AudioRef& other) noexcept
+  AudioRef& operator=(const AudioRef& other) noexcept
   {
     release();
     Audio::operator=(Audio(other.get()));
@@ -2364,7 +2364,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Track& operator=(const Track& other) noexcept = default;
+  Track& operator=(const Track& other) = default;
 
 public:
   /// Retrieves underlying TrackRaw.
@@ -3670,7 +3670,7 @@ struct TrackRef : Track
   ~TrackRef() { release(); }
 
   /// Assignment operator.
-  constexpr TrackRef& operator=(const TrackRef& other) noexcept
+  TrackRef& operator=(const TrackRef& other) noexcept
   {
     release();
     Track::operator=(Track(other.get()));
@@ -3857,7 +3857,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Group& operator=(const Group& other) noexcept = default;
+  Group& operator=(const Group& other) = default;
 
 public:
   /// Retrieves underlying GroupRaw.
@@ -4012,7 +4012,7 @@ struct GroupRef : Group
   ~GroupRef() { release(); }
 
   /// Assignment operator.
-  constexpr GroupRef& operator=(const GroupRef& other) noexcept
+  GroupRef& operator=(const GroupRef& other) noexcept
   {
     release();
     Group::operator=(Group(other.get()));
@@ -7762,8 +7762,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioDecoder& operator=(const AudioDecoder& other) noexcept =
-    default;
+  AudioDecoder& operator=(const AudioDecoder& other) = default;
 
 public:
   /// Retrieves underlying AudioDecoderRaw.
@@ -7920,7 +7919,7 @@ struct AudioDecoderRef : AudioDecoder
   ~AudioDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept
+  AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept
   {
     release();
     AudioDecoder::operator=(AudioDecoder(other.get()));

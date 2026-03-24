@@ -303,7 +303,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Cursor& operator=(const Cursor& other) noexcept = default;
+  Cursor& operator=(const Cursor& other) = default;
 
 public:
   /// Retrieves underlying CursorRaw.
@@ -420,7 +420,7 @@ struct CursorRef : Cursor
   ~CursorRef() { release(); }
 
   /// Assignment operator.
-  constexpr CursorRef& operator=(const CursorRef& other) noexcept
+  CursorRef& operator=(const CursorRef& other) noexcept
   {
     release();
     Cursor::operator=(Cursor(other.get()));

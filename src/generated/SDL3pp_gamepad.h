@@ -456,7 +456,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Gamepad& operator=(const Gamepad& other) noexcept = default;
+  Gamepad& operator=(const Gamepad& other) = default;
 
 public:
   /// Retrieves underlying GamepadRaw.
@@ -1197,7 +1197,7 @@ struct GamepadRef : Gamepad
   ~GamepadRef() { release(); }
 
   /// Assignment operator.
-  constexpr GamepadRef& operator=(const GamepadRef& other) noexcept
+  GamepadRef& operator=(const GamepadRef& other) noexcept
   {
     release();
     Gamepad::operator=(Gamepad(other.get()));

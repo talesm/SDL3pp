@@ -2742,7 +2742,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Animation& operator=(const Animation& other) noexcept = default;
+  Animation& operator=(const Animation& other) = default;
 
 public:
   /// Retrieves underlying AnimationRaw.
@@ -3037,7 +3037,7 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationRef& operator=(const AnimationRef& other) noexcept
+  AnimationRef& operator=(const AnimationRef& other) noexcept
   {
     release();
     Animation::operator=(Animation(other.get()));
@@ -3833,8 +3833,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AnimationEncoder& operator=(
-    const AnimationEncoder& other) noexcept = default;
+  AnimationEncoder& operator=(const AnimationEncoder& other) = default;
 
 public:
   /// Retrieves underlying AnimationEncoderRaw.
@@ -3957,8 +3956,7 @@ struct AnimationEncoderRef : AnimationEncoder
   ~AnimationEncoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationEncoderRef& operator=(
-    const AnimationEncoderRef& other) noexcept
+  AnimationEncoderRef& operator=(const AnimationEncoderRef& other) noexcept
   {
     release();
     AnimationEncoder::operator=(AnimationEncoder(other.get()));
@@ -4382,8 +4380,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AnimationDecoder& operator=(
-    const AnimationDecoder& other) noexcept = default;
+  AnimationDecoder& operator=(const AnimationDecoder& other) = default;
 
 public:
   /// Retrieves underlying AnimationDecoderRaw.
@@ -4568,8 +4565,7 @@ struct AnimationDecoderRef : AnimationDecoder
   ~AnimationDecoderRef() { release(); }
 
   /// Assignment operator.
-  constexpr AnimationDecoderRef& operator=(
-    const AnimationDecoderRef& other) noexcept
+  AnimationDecoderRef& operator=(const AnimationDecoderRef& other) noexcept
   {
     release();
     AnimationDecoder::operator=(AnimationDecoder(other.get()));

@@ -919,7 +919,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioDevice& operator=(const AudioDevice& other) noexcept = default;
+  AudioDevice& operator=(const AudioDevice& other) = default;
 
 public:
   /// Retrieves underlying AudioDeviceID.
@@ -1535,7 +1535,7 @@ struct AudioDeviceRef : AudioDevice
   ~AudioDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept
+  AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept
   {
     release();
     AudioDevice::operator=(AudioDevice(other.get()));
@@ -1872,7 +1872,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioStream& operator=(const AudioStream& other) noexcept = default;
+  AudioStream& operator=(const AudioStream& other) = default;
 
 public:
   /// Retrieves underlying AudioStreamRaw.
@@ -3007,7 +3007,7 @@ struct AudioStreamRef : AudioStream
   ~AudioStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr AudioStreamRef& operator=(const AudioStreamRef& other) noexcept
+  AudioStreamRef& operator=(const AudioStreamRef& other) noexcept
   {
     release();
     AudioStream::operator=(AudioStream(other.get()));

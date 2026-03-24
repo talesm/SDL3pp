@@ -392,7 +392,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IOStream& operator=(const IOStream& other) noexcept = default;
+  IOStream& operator=(const IOStream& other) = default;
 
 public:
   /// Retrieves underlying IOStreamRaw.
@@ -1686,7 +1686,7 @@ struct IOStreamRef : IOStream
   ~IOStreamRef() { release(); }
 
   /// Assignment operator.
-  constexpr IOStreamRef& operator=(const IOStreamRef& other) noexcept
+  IOStreamRef& operator=(const IOStreamRef& other) noexcept
   {
     release();
     IOStream::operator=(IOStream(other.get()));

@@ -181,7 +181,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr HidDevice& operator=(const HidDevice& other) noexcept = default;
+  HidDevice& operator=(const HidDevice& other) = default;
 
 public:
   /// Retrieves underlying HidDeviceRaw.
@@ -519,7 +519,7 @@ struct HidDeviceRef : HidDevice
   ~HidDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
+  HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
   {
     release();
     HidDevice::operator=(HidDevice(other.get()));

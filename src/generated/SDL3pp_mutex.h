@@ -160,7 +160,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Mutex& operator=(const Mutex& other) noexcept = default;
+  Mutex& operator=(const Mutex& other) = default;
 
 public:
   /// Retrieves underlying MutexRaw.
@@ -325,7 +325,7 @@ struct MutexRef : Mutex
   ~MutexRef() { release(); }
 
   /// Assignment operator.
-  constexpr MutexRef& operator=(const MutexRef& other) noexcept
+  MutexRef& operator=(const MutexRef& other) noexcept
   {
     release();
     Mutex::operator=(Mutex(other.get()));
@@ -580,7 +580,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr RWLock& operator=(const RWLock& other) noexcept = default;
+  RWLock& operator=(const RWLock& other) = default;
 
 public:
   /// Retrieves underlying RWLockRaw.
@@ -830,7 +830,7 @@ struct RWLockRef : RWLock
   ~RWLockRef() { release(); }
 
   /// Assignment operator.
-  constexpr RWLockRef& operator=(const RWLockRef& other) noexcept
+  RWLockRef& operator=(const RWLockRef& other) noexcept
   {
     release();
     RWLock::operator=(RWLock(other.get()));
@@ -1193,7 +1193,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Semaphore& operator=(const Semaphore& other) noexcept = default;
+  Semaphore& operator=(const Semaphore& other) = default;
 
 public:
   /// Retrieves underlying SemaphoreRaw.
@@ -1374,7 +1374,7 @@ struct SemaphoreRef : Semaphore
   ~SemaphoreRef() { release(); }
 
   /// Assignment operator.
-  constexpr SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
+  SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
   {
     release();
     Semaphore::operator=(Semaphore(other.get()));
@@ -1641,7 +1641,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Condition& operator=(const Condition& other) noexcept = default;
+  Condition& operator=(const Condition& other) = default;
 
 public:
   /// Retrieves underlying ConditionRaw.
@@ -1816,7 +1816,7 @@ struct ConditionRef : Condition
   ~ConditionRef() { release(); }
 
   /// Assignment operator.
-  constexpr ConditionRef& operator=(const ConditionRef& other) noexcept
+  ConditionRef& operator=(const ConditionRef& other) noexcept
   {
     release();
     Condition::operator=(Condition(other.get()));

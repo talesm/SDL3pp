@@ -301,7 +301,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Thread& operator=(const Thread& other) noexcept = default;
+  Thread& operator=(const Thread& other) = default;
 
 public:
   /// Retrieves underlying ThreadRaw.
@@ -514,7 +514,7 @@ struct ThreadRef : Thread
   ~ThreadRef() { release(); }
 
   /// Assignment operator.
-  constexpr ThreadRef& operator=(const ThreadRef& other) noexcept
+  ThreadRef& operator=(const ThreadRef& other) noexcept
   {
     release();
     Thread::operator=(Thread(other.get()));

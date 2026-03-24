@@ -2259,7 +2259,7 @@
      : m_resource(resource)
    {
    }
-@@ -8132,15 +8351,18 @@
+@@ -8131,15 +8350,18 @@
    }
  
    /// Comparison
@@ -2281,7 +2281,7 @@
     * @threadsafety This function should be called on the thread that created the
     *               renderer.
     *
-@@ -8169,8 +8391,6 @@
+@@ -8168,8 +8390,6 @@
    void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
  };
  
@@ -2290,7 +2290,7 @@
  /**
   * Reference for GPURenderState.
   *
-@@ -8178,8 +8398,6 @@
+@@ -8177,8 +8397,6 @@
   */
  struct GPURenderStateRef : GPURenderState
  {
@@ -2299,7 +2299,7 @@
    /**
     * Constructs from raw GPURenderState.
     *
-@@ -8244,8 +8462,6 @@
+@@ -8242,8 +8460,6 @@
    constexpr operator GPURenderStateRaw() const noexcept { return get(); }
  };
  
@@ -2308,7 +2308,7 @@
  /**
   * Create custom GPU render state.
   *
-@@ -8270,7 +8486,7 @@
+@@ -8268,7 +8484,7 @@
    return GPURenderState(renderer, createinfo);
  }
  

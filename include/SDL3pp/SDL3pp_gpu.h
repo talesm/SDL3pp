@@ -3243,7 +3243,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept = default;
+  GPUDevice& operator=(const GPUDevice& other) = default;
 
 public:
   /// Retrieves underlying GPUDeviceRaw.
@@ -4181,7 +4181,7 @@ struct GPUDeviceRef : GPUDevice
   ~GPUDeviceRef() { release(); }
 
   /// Assignment operator.
-  constexpr GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
+  GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
   {
     release();
     GPUDevice::operator=(GPUDevice(other.get()));

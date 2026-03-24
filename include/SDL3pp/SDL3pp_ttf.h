@@ -528,7 +528,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Font& operator=(const Font& other) noexcept = default;
+  Font& operator=(const Font& other) = default;
 
 public:
   /// Retrieves underlying FontRaw.
@@ -1923,7 +1923,7 @@ struct FontRef : Font
   ~FontRef() { release(); }
 
   /// Assignment operator.
-  constexpr FontRef& operator=(const FontRef& other) noexcept
+  FontRef& operator=(const FontRef& other) noexcept
   {
     release();
     Font::operator=(Font(other.get()));
@@ -4018,7 +4018,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr TextEngine& operator=(const TextEngine& other) noexcept = default;
+  TextEngine& operator=(const TextEngine& other) = default;
 
 public:
   /// Retrieves underlying TextEngineRaw.
@@ -4381,7 +4381,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Text& operator=(const Text& other) noexcept = default;
+  Text& operator=(const Text& other) = default;
 
 public:
   /// Retrieves underlying TextRaw.
@@ -5253,7 +5253,7 @@ struct TextRef : Text
   ~TextRef() { release(); }
 
   /// Assignment operator.
-  constexpr TextRef& operator=(const TextRef& other) noexcept
+  TextRef& operator=(const TextRef& other) noexcept
   {
     release();
     Text::operator=(Text(other.get()));

@@ -862,7 +862,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Haptic& operator=(const Haptic& other) noexcept = default;
+  Haptic& operator=(const Haptic& other) = default;
 
 public:
   /// Retrieves underlying HapticRaw.
@@ -1275,7 +1275,7 @@ struct HapticRef : Haptic
   ~HapticRef() { release(); }
 
   /// Assignment operator.
-  constexpr HapticRef& operator=(const HapticRef& other) noexcept
+  HapticRef& operator=(const HapticRef& other) noexcept
   {
     release();
     Haptic::operator=(Haptic(other.get()));
