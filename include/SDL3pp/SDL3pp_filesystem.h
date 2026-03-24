@@ -365,7 +365,7 @@ struct PathInfo : PathInfoRaw
    *
    * @returns True if invalid state, false otherwise.
    */
-  constexpr bool operator==(std::nullptr_t _) const noexcept
+  constexpr bool operator==(std::nullptr_t) const noexcept
   {
     return !bool(*this);
   }

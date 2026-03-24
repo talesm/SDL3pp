@@ -1029,7 +1029,7 @@ inline Surface AcquireCameraFrame(CameraRef camera,
 
 inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
 {
-  return {CameraRef(*this)};
+  return {CameraRef(*this), timestampNS};
 }
 
 inline CameraFrame::CameraFrame(CameraRef resource, Uint64* timestampNS)

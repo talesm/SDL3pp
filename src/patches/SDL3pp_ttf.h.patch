@@ -1295,7 +1295,7 @@
 -  constexpr const SubString& operator*() const
 +  SubStringIterator(TextRef text)
 +    : m_text(text)
-+    , m_subString(0)
++    , m_subString()
    {
 -    static_assert(false, "Not implemented");
    }

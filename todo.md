@@ -28,7 +28,7 @@ Next version
 - [ ] Fix thread ctor for wrapped functions;
 - [ ] operator-> const for resources;
 - [ ] Fix Camera::AcquireCameraFrame;
-- [ ] Fix several minor warnings;
+- [x] Fix several minor warnings;
 - [ ] Properly encapsulate Param and ConstParam legacy;
 
 Backlog

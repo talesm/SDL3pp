@@ -116,6 +116,15 @@
   *
   * Note that on macOS/iOS, the Videos folder is called "Movies".
   *
+@@ -339,7 +365,7 @@
+    *
+    * @returns True if invalid state, false otherwise.
+    */
+-  constexpr bool operator==(std::nullptr_t _) const noexcept
++  constexpr bool operator==(std::nullptr_t) const noexcept
+   {
+     return !bool(*this);
+   }
 @@ -351,7 +377,7 @@
     */
    constexpr explicit operator bool() const noexcept

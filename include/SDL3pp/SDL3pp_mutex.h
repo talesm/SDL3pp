@@ -2058,7 +2058,7 @@ constexpr InitStatus INIT_STATUS_UNINITIALIZING =
 struct InitState : InitStateRaw
 {
   constexpr InitState()
-    : SDL_InitState{0}
+    : SDL_InitState{}
   {
   }
 

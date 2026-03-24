@@ -1393,7 +1393,7 @@
                            const PointRaw& dstpos)
  {
 -  static_assert(false, "Not implemented");
-+  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
++  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y, 0, 0});
  }
  
  /**

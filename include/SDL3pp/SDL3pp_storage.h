@@ -1260,10 +1260,11 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                    StringParam path)
 {
   std::vector<Path> r;
-  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
-    r.emplace_back(fname);
-    return ENUM_CONTINUE;
-  });
+  EnumerateStorageDirectory(
+    storage, std::move(path), [&](const char*, const char* fname) {
+      r.emplace_back(fname);
+      return ENUM_CONTINUE;
+    });
   return r;
 }
 

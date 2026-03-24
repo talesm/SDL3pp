@@ -5276,7 +5276,7 @@ class SubStringIterator
 
   SubStringIterator(TextRef text)
     : m_text(text)
-    , m_subString(0)
+    , m_subString()
   {
   }
 

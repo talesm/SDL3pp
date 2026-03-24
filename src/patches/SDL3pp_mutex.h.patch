@@ -109,3 +109,12 @@
   *
   *    bool InitSystem(void)
   *    {
+@@ -2058,7 +2058,7 @@
+ struct InitState : InitStateRaw
+ {
+   constexpr InitState()
+-    : SDL_InitState{0}
++    : SDL_InitState{}
+   {
+   }
+ 

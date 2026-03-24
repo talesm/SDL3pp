@@ -614,7 +614,7 @@ using AppArgs = std::span<char const* const>;
  * @return the app status
  */
 template<class T>
-inline AppResult DefaultCreateClass(T** state, AppArgs args)
+inline AppResult DefaultCreateClass(T** state, AppArgs)
 {
   static_assert(std::is_default_constructible_v<T>);
   *state = new T{};
@@ -717,7 +717,7 @@ concept HasEventFunction =
  * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
  */
 template<class T>
-inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
+inline AppResult DefaultEventClass(T*, const SDL_Event& event)
 {
   if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
   return APP_CONTINUE;
@@ -790,7 +790,7 @@ concept HasQuitFunction =
  * @param result the app result.
  */
 template<class T>
-inline void QuitClass(T* state, AppResult result)
+inline void QuitClass(T* state, AppResult)
 {
   DefaultClassDestroy(state);
 }

@@ -238,7 +238,7 @@
  }
  
  inline std::optional<CameraSpec> Camera::GetFormat()
-@@ -1009,7 +1024,7 @@
+@@ -1009,18 +1024,19 @@
  inline Surface AcquireCameraFrame(CameraRef camera,
                                    Uint64* timestampNS = nullptr)
  {
@@ -247,8 +247,9 @@
  }
  
  inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
-@@ -1017,10 +1032,11 @@
-   return {CameraRef(*this)};
+ {
+-  return {CameraRef(*this)};
++  return {CameraRef(*this), timestampNS};
  }
  
 -inline CameraFrame::CameraFrame(CameraRef resource)

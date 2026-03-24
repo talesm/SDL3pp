@@ -1066,12 +1066,7 @@ public:
    *
    * This might be slow.
    */
-  Uint64 GetVariableCount()
-  {
-    Uint64 count = 0;
-    for (auto& var : GetVariables()) count += 1;
-    return count;
-  }
+  Uint64 GetVariableCount() { return GetVariables().size(); }
 
   /**
    * Set the value of a variable in the environment.

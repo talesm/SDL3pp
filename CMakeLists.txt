@@ -131,6 +131,10 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test AND SDL3PP_BUILD_TESTING)
     add_executable(SDL3pp_unitTests ${unitTestSources})
     target_link_libraries(SDL3pp_unitTests PRIVATE test_main)
     add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
+
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(SDL3pp_unitTests PRIVATE -Wall -Wextra -Wpedantic)    
+    endif(CMAKE_COMPILER_IS_GNUCXX)
 endif ()
 
 # The documentation

@@ -402,21 +402,22 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -1239,7 +1259,12 @@
+@@ -1239,7 +1259,13 @@
  inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                     StringParam path)
  {
 -  static_assert(false, "Not implemented");
 +  std::vector<Path> r;
-+  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
-+    r.emplace_back(fname);
-+    return ENUM_CONTINUE;
-+  });
++  EnumerateStorageDirectory(
++    storage, std::move(path), [&](const char*, const char* fname) {
++      r.emplace_back(fname);
++      return ENUM_CONTINUE;
++    });
 +  return r;
  }
  
  inline void Storage::EnumerateDirectory(StringParam path,
-@@ -1335,9 +1360,8 @@
+@@ -1335,9 +1361,8 @@
   *
   * @param storage a storage container.
   * @param path the path to query.
@@ -428,7 +429,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1345,7 +1369,10 @@
+@@ -1345,7 +1370,10 @@
   */
  inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
  {
@@ -440,7 +441,7 @@
  }
  
  inline PathInfo Storage::GetPathInfo(StringParam path)
-@@ -1399,8 +1426,6 @@
+@@ -1399,8 +1427,6 @@
   * @param pattern the pattern that files in the directory must match. Can be
   *                nullptr.
   * @param flags `SDL_GLOB_*` bitflags that affect this search.
@@ -449,7 +450,7 @@
   * @returns an array of strings on success.
   * @throws Error on failure.
   *
-@@ -1414,7 +1439,10 @@
+@@ -1414,7 +1440,10 @@
                                              StringParam pattern,
                                              GlobFlags flags)
  {

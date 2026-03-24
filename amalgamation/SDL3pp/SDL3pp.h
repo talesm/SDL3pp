@@ -14750,12 +14750,7 @@ public:
    *
    * This might be slow.
    */
-  Uint64 GetVariableCount()
-  {
-    Uint64 count = 0;
-    for (auto& var : GetVariables()) count += 1;
-    return count;
-  }
+  Uint64 GetVariableCount() { return GetVariables().size(); }
 
   /**
    * Set the value of a variable in the environment.
@@ -23664,7 +23659,7 @@ struct PathInfo : PathInfoRaw
    *
    * @returns True if invalid state, false otherwise.
    */
-  constexpr bool operator==(std::nullptr_t _) const noexcept
+  constexpr bool operator==(std::nullptr_t) const noexcept
   {
     return !bool(*this);
   }
@@ -42617,10 +42612,11 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                    StringParam path)
 {
   std::vector<Path> r;
-  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
-    r.emplace_back(fname);
-    return ENUM_CONTINUE;
-  });
+  EnumerateStorageDirectory(
+    storage, std::move(path), [&](const char*, const char* fname) {
+      r.emplace_back(fname);
+      return ENUM_CONTINUE;
+    });
   return r;
 }
 
@@ -46952,7 +46948,7 @@ inline void BlitSurfaceAt(SurfaceRef src,
                           SurfaceRef dst,
                           const PointRaw& dstpos)
 {
-  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
+  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y, 0, 0});
 }
 
 /**
@@ -49749,7 +49745,7 @@ inline Surface AcquireCameraFrame(CameraRef camera,
 
 inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
 {
-  return {CameraRef(*this)};
+  return {CameraRef(*this), timestampNS};
 }
 
 inline CameraFrame::CameraFrame(CameraRef resource, Uint64* timestampNS)
@@ -51872,7 +51868,7 @@ constexpr InitStatus INIT_STATUS_UNINITIALIZING =
 struct InitState : InitStateRaw
 {
   constexpr InitState()
-    : SDL_InitState{0}
+    : SDL_InitState{}
   {
   }
 
@@ -82466,7 +82462,7 @@ using AppArgs = std::span<char const* const>;
  * @return the app status
  */
 template<class T>
-inline AppResult DefaultCreateClass(T** state, AppArgs args)
+inline AppResult DefaultCreateClass(T** state, AppArgs)
 {
   static_assert(std::is_default_constructible_v<T>);
   *state = new T{};
@@ -82569,7 +82565,7 @@ concept HasEventFunction =
  * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
  */
 template<class T>
-inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
+inline AppResult DefaultEventClass(T*, const SDL_Event& event)
 {
   if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
   return APP_CONTINUE;
@@ -82642,7 +82638,7 @@ concept HasQuitFunction =
  * @param result the app result.
  */
 template<class T>
-inline void QuitClass(T* state, AppResult result)
+inline void QuitClass(T* state, AppResult)
 {
   DefaultClassDestroy(state);
 }
@@ -110990,7 +110986,7 @@ class SubStringIterator
 
   SubStringIterator(TextRef text)
     : m_text(text)
-    , m_subString(0)
+    , m_subString()
   {
   }
 

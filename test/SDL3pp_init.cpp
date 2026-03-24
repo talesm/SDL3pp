@@ -19,7 +19,7 @@ TEST_CASE("InitClass()")
       {
       }
 
-      constexpr Dummy(int _)
+      constexpr Dummy(int)
         : cookie(13)
       {
       }
@@ -51,7 +51,7 @@ TEST_CASE("InitClass()")
       {
       }
 
-      constexpr Dummy(SDL::AppArgs _)
+      constexpr Dummy(SDL::AppArgs)
         : cookie(13)
       {
       }
@@ -66,7 +66,7 @@ TEST_CASE("InitClass()")
   {
     struct Dummy
     {
-      static SDL::AppResult Init(Dummy** state, SDL::AppArgs _)
+      static SDL::AppResult Init(Dummy**, SDL::AppArgs)
       {
         return SDL::APP_SUCCESS;
       }
@@ -79,7 +79,7 @@ TEST_CASE("InitClass()")
   {
     struct Dummy
     {
-      static SDL::AppResult Init(Dummy** state, SDL::AppArgs _)
+      static SDL::AppResult Init(Dummy**, SDL::AppArgs)
       {
         return SDL::APP_CONTINUE;
       }
@@ -92,7 +92,7 @@ TEST_CASE("InitClass()")
   {
     struct Dummy
     {
-      static SDL::AppResult Init(Dummy** state, SDL::AppArgs _)
+      static SDL::AppResult Init(Dummy**, SDL::AppArgs)
       {
         return SDL::APP_FAILURE;
       }
@@ -105,7 +105,7 @@ TEST_CASE("InitClass()")
   {
     struct Dummy
     {
-      static SDL::AppResult Init(Dummy** state, SDL::AppArgs _)
+      static SDL::AppResult Init(Dummy**, SDL::AppArgs)
       {
         throw std::runtime_error{"Error"};
       }
@@ -119,7 +119,7 @@ TEST_CASE("InitClass()")
     struct Dummy
     {
       int cookie;
-      static SDL::AppResult Init(Dummy** state, SDL::AppArgs _)
+      static SDL::AppResult Init(Dummy** state, SDL::AppArgs)
       {
         *state = new Dummy{42};
         return SDL::APP_SUCCESS;
@@ -136,7 +136,7 @@ TEST_CASE("InitClass()")
     struct Dummy
     {
       int cookie;
-      static SDL::AppResult Init(Dummy** state, SDL::AppArgs _)
+      static SDL::AppResult Init(Dummy** state, SDL::AppArgs)
       {
         *state = new Dummy{42};
         return SDL::APP_CONTINUE;
@@ -153,7 +153,7 @@ TEST_CASE("InitClass()")
     struct Dummy
     {
       int cookie;
-      static SDL::AppResult Init(Dummy** state, SDL::AppArgs _)
+      static SDL::AppResult Init(Dummy** state, SDL::AppArgs)
       {
         *state = new Dummy{42};
         return SDL::APP_FAILURE;
@@ -170,7 +170,7 @@ TEST_CASE("InitClass()")
     struct Dummy
     {
       int cookie;
-      static SDL::AppResult Init(Dummy** state, SDL::AppArgs _)
+      static SDL::AppResult Init(Dummy** state, SDL::AppArgs)
       {
         *state = new Dummy{42};
         throw std::runtime_error{"Error"};

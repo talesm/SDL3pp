@@ -4155,7 +4155,7 @@ inline void BlitSurfaceAt(SurfaceRef src,
                           SurfaceRef dst,
                           const PointRaw& dstpos)
 {
-  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
+  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y, 0, 0});
 }
 
 /**
