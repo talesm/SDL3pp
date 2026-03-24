@@ -1001,15 +1001,6 @@
    PaletteIndex& operator=(ColorRaw color);
  };
  
-@@ -2345,7 +2541,7 @@
-    *
-    * This does not takes ownership!
-    */
--  static constexpr Palette Borrow(PaletteRaw resource)
-+  static Palette Borrow(PaletteRaw resource)
-   {
-     if (resource) {
-       ++resource->refcount;
 @@ -2405,18 +2601,19 @@
     */
    void Destroy();

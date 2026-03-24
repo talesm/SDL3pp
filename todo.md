@@ -20,9 +20,9 @@ Next version
 ------------
 
 - [ ] Make StringParam differentiate `nullptr` from "";
-- [ ] Fix bug preventing compilation on VisualStudion
-  - [ ] Use of gnu extension `?:`;
-  - [ ] Use of invalid constexpr;
+- [x] Fix bug preventing compilation on VisualStudion
+  - [x] Use of gnu extension `?:`;
+  - [x] Use of invalid constexpr;
 
 Backlog
 -------

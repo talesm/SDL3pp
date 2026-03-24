@@ -533,7 +533,6 @@ function addBorrowFunction(
     ctors["Borrow"] = {
       kind: "function",
       static: true,
-      constexpr: true,
       type: targetName,
       parameters: [{ name: "resource", type: rawName }],
       hints: {

@@ -87,15 +87,6 @@
     * @param src an IOStream that data will be read from.
     * @param closeio true to close/free the IOStream before returning, false to
     *                leave it open.
-@@ -374,7 +363,7 @@
-    *
-    * This does not takes ownership!
-    */
--  static constexpr Surface Borrow(SurfaceRaw resource)
-+  static Surface Borrow(SurfaceRaw resource)
-   {
-     if (resource) {
-       ++resource->refcount;
 @@ -434,9 +423,6 @@
     * sources. If you want to load arbitrary images you should use libpng or
     * another image loading library designed with security in mind.

@@ -655,15 +655,6 @@
     * @param renderer the Renderer to use to create the texture.
     * @param src an IOStream that data will be read from.
     * @param closeio true to close/free the IOStream before returning, false to
-@@ -2670,7 +2689,7 @@
-    *
-    * This does not takes ownership!
-    */
--  static constexpr Texture Borrow(TextureRaw resource)
-+  static Texture Borrow(TextureRaw resource)
-   {
-     if (resource) {
-       ++resource->refcount;
 @@ -2858,27 +2877,19 @@
     */
    void GetSize(float* w, float* h) const;
