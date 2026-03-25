@@ -12909,9 +12909,8 @@ public:
 
   /// Move constructor
   PropertiesLock(PropertiesLock&& other) noexcept
-    : m_lock(other.m_lock)
+    : m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**
@@ -36892,9 +36891,8 @@ public:
 
   /// Move constructor
   AudioStreamLock(AudioStreamLock&& other) noexcept
-    : m_lock(other.m_lock)
+    : m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**
@@ -44874,10 +44872,9 @@ public:
   SurfaceLock(const SurfaceLock& other) = delete;
 
   /// Move constructor
-  constexpr SurfaceLock(SurfaceLock&& other) noexcept
+  SurfaceLock(SurfaceLock&& other) noexcept
     : m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**
@@ -49287,9 +49284,8 @@ public:
   /// Move constructor
   CameraFrame(CameraFrame&& other) noexcept
     : Surface(std::move(other))
-    , m_lock(other.m_lock)
+    , m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**
@@ -73062,10 +73058,9 @@ public:
   JoystickApiLock(const JoystickApiLock& other) = delete;
 
   /// Move constructor
-  constexpr JoystickApiLock(JoystickApiLock&& other) noexcept
+  JoystickApiLock(JoystickApiLock&& other) noexcept
     : m_lock(other.m_lock)
   {
-    other.m_lock = {};
   }
 
   /**
@@ -86274,9 +86269,8 @@ public:
 
   /// Move constructor
   TextureLock(TextureLock&& other) noexcept
-    : m_lock(other.m_lock)
+    : m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**
@@ -86404,9 +86398,8 @@ public:
   /// Move constructor
   TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
     : Surface(std::move(other))
-    , m_lock(other.m_lock)
+    , m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**
@@ -94157,10 +94150,9 @@ public:
   MixerLock(const MixerLock& other) = delete;
 
   /// Move constructor
-  constexpr MixerLock(MixerLock&& other) noexcept
-    : m_lock(other.m_lock)
+  MixerLock(MixerLock&& other) noexcept
+    : m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**

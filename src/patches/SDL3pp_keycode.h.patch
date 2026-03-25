@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_keycode.h
+--- build/generated/SDL3pp_keycode.h
 +++ include/SDL3pp/SDL3pp_keycode.h
 @@ -8,7 +8,7 @@
  namespace SDL {

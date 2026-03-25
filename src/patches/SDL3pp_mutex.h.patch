@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_mutex.h
+--- build/generated/SDL3pp_mutex.h
 +++ include/SDL3pp/SDL3pp_mutex.h
 @@ -8,7 +8,7 @@
  namespace SDL {

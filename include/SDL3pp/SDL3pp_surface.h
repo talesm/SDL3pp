@@ -2075,10 +2075,9 @@ public:
   SurfaceLock(const SurfaceLock& other) = delete;
 
   /// Move constructor
-  constexpr SurfaceLock(SurfaceLock&& other) noexcept
+  SurfaceLock(SurfaceLock&& other) noexcept
     : m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**

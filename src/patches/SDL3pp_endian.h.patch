@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_endian.h
+--- build/generated/SDL3pp_endian.h
 +++ include/SDL3pp/SDL3pp_endian.h
 @@ -7,7 +7,7 @@
  namespace SDL {

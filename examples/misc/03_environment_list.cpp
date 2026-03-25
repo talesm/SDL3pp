@@ -2,7 +2,7 @@
 #include <SDL3pp/SDL3pp.h>
 #include <SDL3pp/SDL3pp_main.h>
 
-int main()
+int main(int argc, char** argv)
 {
   SDL::EnvironmentRaw appEnv = SDL::GetEnvironment();
   if (!appEnv) {

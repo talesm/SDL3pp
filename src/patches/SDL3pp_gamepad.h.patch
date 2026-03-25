@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_gamepad.h
+--- build/generated/SDL3pp_gamepad.h
 +++ include/SDL3pp/SDL3pp_gamepad.h
 @@ -14,7 +14,7 @@
  namespace SDL {

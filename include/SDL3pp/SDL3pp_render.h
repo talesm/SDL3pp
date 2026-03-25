@@ -3623,9 +3623,8 @@ public:
 
   /// Move constructor
   TextureLock(TextureLock&& other) noexcept
-    : m_lock(other.m_lock)
+    : m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**
@@ -3753,9 +3752,8 @@ public:
   /// Move constructor
   TextureSurfaceLock(TextureSurfaceLock&& other) noexcept
     : Surface(std::move(other))
-    , m_lock(other.m_lock)
+    , m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**

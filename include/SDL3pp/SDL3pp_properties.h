@@ -813,9 +813,8 @@ public:
 
   /// Move constructor
   PropertiesLock(PropertiesLock&& other) noexcept
-    : m_lock(other.m_lock)
+    : m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**

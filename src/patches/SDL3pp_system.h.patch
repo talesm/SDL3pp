@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_system.h
+--- build/generated/SDL3pp_system.h
 +++ include/SDL3pp/SDL3pp_system.h
 @@ -2,12 +2,14 @@
  #define SDL3PP_SYSTEM_H_

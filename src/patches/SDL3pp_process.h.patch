@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_process.h
+--- build/generated/SDL3pp_process.h
 +++ include/SDL3pp/SDL3pp_process.h
 @@ -2,14 +2,14 @@
  #define SDL3PP_PROCESS_H_

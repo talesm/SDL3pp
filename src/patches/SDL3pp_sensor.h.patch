@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_sensor.h
+--- build/generated/SDL3pp_sensor.h
 +++ include/SDL3pp/SDL3pp_sensor.h
 @@ -10,7 +10,7 @@
  namespace SDL {
