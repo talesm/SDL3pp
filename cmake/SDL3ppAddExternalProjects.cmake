@@ -24,6 +24,7 @@ FetchContent_Declare(SDL3External
 )
 FetchContent_MakeAvailable(SDL3External)
 if (NOT TARGET SDL3::SDL3)
+  FetchContent_GetProperties(SDL3External SOURCE_DIR SDL3External_SOURCE_DIR)
   include(SDL3External_SOURCE_DIR/cmake/SDL3Config.cmake)
 endif()
 
