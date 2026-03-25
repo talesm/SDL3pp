@@ -759,7 +759,7 @@ inline int hid_read_timeout(HidDeviceRef dev,
                             Milliseconds timeout)
 {
   return SDL_hid_read_timeout(
-    dev, data.data_as<Uint8>(), data.size_bytes(), timeout.count());
+    dev, data.data_as<Uint8>(), data.size_bytes(), narrowS32(timeout.count()));
 }
 
 inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)

@@ -7094,7 +7094,8 @@ inline void Renderer::RenderPoint(const FPointRaw& p)
  */
 inline void RenderPoints(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
-  CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
+  CheckError(
+    SDL_RenderPoints(renderer, points.data(), narrowS32(points.size())));
 }
 
 inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
@@ -7144,7 +7145,8 @@ inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
  */
 inline void RenderLines(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
-  CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
+  CheckError(
+    SDL_RenderLines(renderer, points.data(), narrowS32(points.size())));
 }
 
 inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
@@ -7192,7 +7194,7 @@ inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
  */
 inline void RenderRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
-  CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
+  CheckError(SDL_RenderRects(renderer, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
@@ -7242,7 +7244,8 @@ inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
  */
 inline void RenderFillRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
-  CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
+  CheckError(
+    SDL_RenderFillRects(renderer, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
@@ -7604,9 +7607,9 @@ inline void RenderGeometry(RendererRef renderer,
   CheckError(SDL_RenderGeometry(renderer,
                                 texture,
                                 vertices.data(),
-                                vertices.size(),
+                                narrowS32(vertices.size()),
                                 indices.data(),
-                                indices.size()));
+                                narrowS32(indices.size())));
 }
 
 inline void Renderer::RenderGeometry(TextureRef texture,

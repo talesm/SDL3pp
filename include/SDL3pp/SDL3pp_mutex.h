@@ -1510,7 +1510,7 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
 inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                  std::chrono::milliseconds timeout)
 {
-  return SDL_WaitSemaphoreTimeout(sem, timeout.count());
+  return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
 }
 
 inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
@@ -1970,7 +1970,7 @@ inline bool WaitConditionTimeout(ConditionRef cond,
                                  MutexRef mutex,
                                  std::chrono::milliseconds timeout)
 {
-  return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
+  return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
 }
 
 inline bool Condition::WaitTimeout(MutexRef mutex,

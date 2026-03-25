@@ -6433,6 +6433,27 @@ using FunctionPointer = void(SDLCALL*)();
 
 inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
 
+/// Narrows to Sint32.
+template<std::integral T>
+Sint32 narrowS32(T value)
+{
+  if constexpr (std::is_signed_v<T>) {
+    SDL_assert_paranoid(value >= std::numeric_limits<Sint32>::min() &&
+                        value <= std::numeric_limits<Sint32>::max());
+  } else {
+    SDL_assert_paranoid(value <= std::numeric_limits<Sint32>::max());
+  }
+  return static_cast<Sint32>(value);
+}
+
+/// Narrows to Uint32.
+template<std::integral T>
+Uint32 narrowU32(T value)
+{
+  SDL_assert_paranoid(value <= std::numeric_limits<Uint32>::max());
+  return static_cast<Uint32>(value);
+}
+
 } // namespace SDL
 
 #endif /* SDL3PP_STDINC_H_ */

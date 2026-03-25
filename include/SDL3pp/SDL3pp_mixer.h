@@ -6923,7 +6923,8 @@ inline float Track::GetFrequencyRatio()
  */
 inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
 {
-  CheckError(MIX_SetTrackOutputChannelMap(track, chmap.data(), chmap.size()));
+  CheckError(
+    MIX_SetTrackOutputChannelMap(track, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void Track::SetOutputChannelMap(std::span<const int> chmap)
@@ -7610,8 +7611,8 @@ inline void Mixer::SetPostMixCallback(PostMixCB cb)
  */
 inline int Generate(MixerRef mixer, TargetBytes buffer)
 {
-  return CheckError(MIX_Generate(mixer, buffer.data(), buffer.size_bytes()),
-                    -1);
+  return CheckError(
+    MIX_Generate(mixer, buffer.data(), narrowS32(buffer.size_bytes())), -1);
 }
 
 inline int Mixer::Generate(TargetBytes buffer)
@@ -8124,7 +8125,8 @@ inline int DecodeAudio(AudioDecoderRef audiodecoder,
                        const AudioSpec& spec)
 {
   return CheckError(
-    MIX_DecodeAudio(audiodecoder, buffer.data(), buffer.size_bytes(), &spec),
+    MIX_DecodeAudio(
+      audiodecoder, buffer.data(), narrowS32(buffer.size_bytes()), &spec),
     -1);
 }
 

@@ -966,16 +966,17 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6419,7 +6450,7 @@
+@@ -6419,7 +6450,8 @@
  inline void UpdateWindowSurfaceRects(WindowRef window,
                                       SpanRef<const RectRaw> rects)
  {
 -  CheckError(SDL_UpdateWindowSurfaceRects(window, rects));
-+  CheckError(SDL_UpdateWindowSurfaceRects(window, rects.data(), rects.size()));
++  CheckError(SDL_UpdateWindowSurfaceRects(
++    window, rects.data(), narrowS32(rects.size())));
  }
  
  inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
-@@ -6572,7 +6603,7 @@
+@@ -6572,7 +6604,7 @@
   * @sa Window.SetMouseGrab
   * @sa Window.SetKeyboardGrab
   */
@@ -984,7 +985,7 @@
  
  inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
  
-@@ -6597,7 +6628,7 @@
+@@ -6597,7 +6629,7 @@
   */
  inline void SetWindowMouseRect(WindowRef window, const RectRaw& rect)
  {
@@ -993,7 +994,7 @@
  }
  
  inline void Window::SetMouseRect(const RectRaw& rect)
-@@ -6785,9 +6816,7 @@
+@@ -6785,9 +6817,7 @@
   * nothing.
   *
   * @param window the window for which the menu will be displayed.
@@ -1004,7 +1005,7 @@
   *          the client area.
   * @throws Error on failure.
   *
-@@ -6797,7 +6826,7 @@
+@@ -6797,7 +6827,7 @@
   */
  inline void ShowWindowSystemMenu(WindowRef window, const PointRaw& p)
  {
@@ -1013,7 +1014,7 @@
  }
  
  inline void Window::ShowSystemMenu(const PointRaw& p)
-@@ -6887,7 +6916,6 @@
+@@ -6887,7 +6917,6 @@
   *
   * @param window the window to set hit-testing on.
   * @param callback the function to call when doing a hit-test.
@@ -1021,7 +1022,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6896,7 +6924,7 @@
+@@ -6896,7 +6925,7 @@
   */
  inline void SetWindowHitTest(WindowRef window, HitTestCB callback)
  {
@@ -1030,7 +1031,7 @@
  }
  
  inline void Window::SetHitTest(HitTest callback, void* callback_data)
-@@ -6970,8 +6998,8 @@
+@@ -6970,8 +6999,8 @@
   * Sets the state of the progress bar for the given window’s taskbar icon.
   *
   * @param window the window whose progress state is to be modified.
@@ -1041,7 +1042,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -7384,7 +7412,7 @@
+@@ -7384,7 +7413,7 @@
   */
  inline void GL_MakeCurrent(WindowRef window, GLContext context)
  {
@@ -1050,7 +1051,7 @@
  }
  
  inline void Window::MakeCurrent(GLContext context)
-@@ -7394,7 +7422,7 @@
+@@ -7394,7 +7423,7 @@
  
  inline void GLContext::MakeCurrent(WindowRef window)
  {
@@ -1059,7 +1060,7 @@
  }
  
  /**
-@@ -7410,7 +7438,7 @@
+@@ -7410,7 +7439,7 @@
   */
  inline WindowRef GL_GetCurrentWindow()
  {

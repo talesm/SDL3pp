@@ -36,7 +36,7 @@
 +                         userdata,
 +                         window,
 +                         filters.data(),
-+                         filters.size(),
++                         narrowS32(filters.size()),
 +                         default_location,
 +                         allow_many);
  }
@@ -105,7 +105,7 @@
 +                         userdata,
 +                         window,
 +                         filters.data(),
-+                         filters.size(),
++                         narrowS32(filters.size()),
 +                         default_location);
  }
  

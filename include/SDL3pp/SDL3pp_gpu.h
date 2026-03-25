@@ -6323,7 +6323,7 @@ inline void PushGPUVertexUniformData(GPUCommandBuffer command_buffer,
                                      SourceBytes data)
 {
   SDL_PushGPUVertexUniformData(
-    command_buffer, slot_index, data.data(), data.size_bytes());
+    command_buffer, slot_index, data.data(), narrowU32(data.size_bytes()));
 }
 
 inline void GPUCommandBuffer::PushVertexUniformData(Uint32 slot_index,
@@ -6353,7 +6353,7 @@ inline void PushGPUFragmentUniformData(GPUCommandBuffer command_buffer,
                                        SourceBytes data)
 {
   SDL_PushGPUFragmentUniformData(
-    command_buffer, slot_index, data.data(), data.size_bytes());
+    command_buffer, slot_index, data.data(), narrowU32(data.size_bytes()));
 }
 
 inline void GPUCommandBuffer::PushFragmentUniformData(Uint32 slot_index,
@@ -6383,7 +6383,7 @@ inline void PushGPUComputeUniformData(GPUCommandBuffer command_buffer,
                                       SourceBytes data)
 {
   SDL_PushGPUComputeUniformData(
-    command_buffer, slot_index, data.data(), data.size_bytes());
+    command_buffer, slot_index, data.data(), narrowU32(data.size_bytes()));
 }
 
 inline void GPUCommandBuffer::PushComputeUniformData(Uint32 slot_index,
@@ -6431,7 +6431,7 @@ inline GPURenderPass BeginGPURenderPass(
 {
   return SDL_BeginGPURenderPass(command_buffer,
                                 color_target_infos.data(),
-                                color_target_infos.size(),
+                                narrowU32(color_target_infos.size()),
                                 depth_stencil_target_info);
 }
 
@@ -6556,7 +6556,7 @@ inline void BindGPUVertexBuffers(GPURenderPass render_pass,
                                  std::span<const GPUBufferBinding> bindings)
 {
   SDL_BindGPUVertexBuffers(
-    render_pass, first_slot, bindings.data(), bindings.size());
+    render_pass, first_slot, bindings.data(), narrowU32(bindings.size()));
 }
 
 inline void GPURenderPass::BindVertexBuffers(
@@ -6614,7 +6614,7 @@ inline void BindGPUVertexSamplers(
   SDL_BindGPUVertexSamplers(render_pass,
                             first_slot,
                             texture_sampler_bindings.data(),
-                            texture_sampler_bindings.size());
+                            narrowU32(texture_sampler_bindings.size()));
 }
 
 inline void GPURenderPass::BindVertexSamplers(
@@ -6647,8 +6647,10 @@ inline void BindGPUVertexStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUVertexStorageTextures(
-    render_pass, first_slot, storage_textures.data(), storage_textures.size());
+  SDL_BindGPUVertexStorageTextures(render_pass,
+                                   first_slot,
+                                   storage_textures.data(),
+                                   narrowU32(storage_textures.size()));
 }
 
 inline void GPURenderPass::BindVertexStorageTextures(
@@ -6681,8 +6683,10 @@ inline void BindGPUVertexStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUVertexStorageBuffers(
-    render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
+  SDL_BindGPUVertexStorageBuffers(render_pass,
+                                  first_slot,
+                                  storage_buffers.data(),
+                                  narrowU32(storage_buffers.size()));
 }
 
 inline void GPURenderPass::BindVertexStorageBuffers(
@@ -6717,7 +6721,7 @@ inline void BindGPUFragmentSamplers(
   SDL_BindGPUFragmentSamplers(render_pass,
                               first_slot,
                               texture_sampler_bindings.data(),
-                              texture_sampler_bindings.size());
+                              narrowU32(texture_sampler_bindings.size()));
 }
 
 inline void GPURenderPass::BindFragmentSamplers(
@@ -6750,8 +6754,10 @@ inline void BindGPUFragmentStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUFragmentStorageTextures(
-    render_pass, first_slot, storage_textures.data(), storage_textures.size());
+  SDL_BindGPUFragmentStorageTextures(render_pass,
+                                     first_slot,
+                                     storage_textures.data(),
+                                     narrowU32(storage_textures.size()));
 }
 
 inline void GPURenderPass::BindFragmentStorageTextures(
@@ -6784,8 +6790,10 @@ inline void BindGPUFragmentStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUFragmentStorageBuffers(
-    render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
+  SDL_BindGPUFragmentStorageBuffers(render_pass,
+                                    first_slot,
+                                    storage_buffers.data(),
+                                    narrowU32(storage_buffers.size()));
 }
 
 inline void GPURenderPass::BindFragmentStorageBuffers(
@@ -7007,9 +7015,9 @@ inline GPUComputePass BeginGPUComputePass(
 {
   return SDL_BeginGPUComputePass(command_buffer,
                                  storage_texture_bindings.data(),
-                                 storage_texture_bindings.size(),
+                                 narrowU32(storage_texture_bindings.size()),
                                  storage_buffer_bindings.data(),
-                                 storage_buffer_bindings.size());
+                                 narrowU32(storage_buffer_bindings.size()));
 }
 
 inline GPUComputePass GPUCommandBuffer::BeginComputePass(
@@ -7063,7 +7071,7 @@ inline void BindGPUComputeSamplers(
   SDL_BindGPUComputeSamplers(compute_pass,
                              first_slot,
                              texture_sampler_bindings.data(),
-                             texture_sampler_bindings.size());
+                             narrowU32(texture_sampler_bindings.size()));
 }
 
 inline void GPUComputePass::BindSamplers(
@@ -7096,8 +7104,10 @@ inline void BindGPUComputeStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUComputeStorageTextures(
-    compute_pass, first_slot, storage_textures.data(), storage_textures.size());
+  SDL_BindGPUComputeStorageTextures(compute_pass,
+                                    first_slot,
+                                    storage_textures.data(),
+                                    narrowU32(storage_textures.size()));
 }
 
 inline void GPUComputePass::BindStorageTextures(
@@ -7130,8 +7140,10 @@ inline void BindGPUComputeStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUComputeStorageBuffers(
-    compute_pass, first_slot, storage_buffers.data(), storage_buffers.size());
+  SDL_BindGPUComputeStorageBuffers(compute_pass,
+                                   first_slot,
+                                   storage_buffers.data(),
+                                   narrowU32(storage_buffers.size()));
 }
 
 inline void GPUComputePass::BindStorageBuffers(
@@ -8049,8 +8061,8 @@ inline void WaitForGPUFences(GPUDeviceRef device,
                              bool wait_all,
                              std::span<GPUFence* const> fences)
 {
-  CheckError(
-    SDL_WaitForGPUFences(device, wait_all, fences.data(), fences.size()));
+  CheckError(SDL_WaitForGPUFences(
+    device, wait_all, fences.data(), narrowU32(fences.size())));
 }
 
 inline void GPUDevice::WaitForFences(bool wait_all,

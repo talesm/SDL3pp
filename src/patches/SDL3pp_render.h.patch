@@ -2028,16 +2028,17 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6886,7 +7094,7 @@
+@@ -6886,7 +7094,8 @@
   */
  inline void RenderPoints(RendererRef renderer, SpanRef<const FPointRaw> points)
  {
 -  CheckError(SDL_RenderPoints(renderer, points));
-+  CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
++  CheckError(
++    SDL_RenderPoints(renderer, points.data(), narrowS32(points.size())));
  }
  
  inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
-@@ -6898,10 +7106,8 @@
+@@ -6898,10 +7107,8 @@
   * Draw a line on the current rendering target at subpixel precision.
   *
   * @param renderer the renderer which should draw a line.
@@ -2050,7 +2051,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6914,7 +7120,7 @@
+@@ -6914,7 +7121,7 @@
                         const FPointRaw& p1,
                         const FPointRaw& p2)
  {
@@ -2059,7 +2060,7 @@
  }
  
  inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
-@@ -6928,7 +7134,6 @@
+@@ -6928,7 +7135,6 @@
   *
   * @param renderer the renderer which should draw multiple lines.
   * @param points the points along the lines.
@@ -2067,16 +2068,17 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6939,7 +7144,7 @@
+@@ -6939,7 +7145,8 @@
   */
  inline void RenderLines(RendererRef renderer, SpanRef<const FPointRaw> points)
  {
 -  CheckError(SDL_RenderLines(renderer, points));
-+  CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
++  CheckError(
++    SDL_RenderLines(renderer, points.data(), narrowS32(points.size())));
  }
  
  inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
-@@ -6977,7 +7182,6 @@
+@@ -6977,7 +7184,6 @@
   *
   * @param renderer the renderer which should draw multiple rectangles.
   * @param rects a pointer to an array of destination rectangles.
@@ -2084,16 +2086,16 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6988,7 +7192,7 @@
+@@ -6988,7 +7194,7 @@
   */
  inline void RenderRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
  {
 -  CheckError(SDL_RenderRects(renderer, rects));
-+  CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
++  CheckError(SDL_RenderRects(renderer, rects.data(), narrowS32(rects.size())));
  }
  
  inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
-@@ -7028,7 +7232,6 @@
+@@ -7028,7 +7234,6 @@
   *
   * @param renderer the renderer which should fill multiple rectangles.
   * @param rects a pointer to an array of destination rectangles.
@@ -2101,16 +2103,17 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -7039,7 +7242,7 @@
+@@ -7039,7 +7244,8 @@
   */
  inline void RenderFillRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
  {
 -  CheckError(SDL_RenderFillRects(renderer, rects));
-+  CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
++  CheckError(
++    SDL_RenderFillRects(renderer, rects.data(), narrowS32(rects.size())));
  }
  
  inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
-@@ -7112,7 +7315,7 @@
+@@ -7112,7 +7318,7 @@
                                   OptionalRef<const FRectRaw> dstrect,
                                   double angle,
                                   OptionalRef<const FPointRaw> center,
@@ -2119,7 +2122,7 @@
  {
    CheckError(SDL_RenderTextureRotated(
      renderer, texture, srcrect, dstrect, angle, center, flip));
-@@ -7339,13 +7542,13 @@
+@@ -7339,13 +7545,13 @@
  {
    CheckError(SDL_RenderTexture9GridTiled(renderer,
                                           texture,
@@ -2135,7 +2138,7 @@
                                           tileScale));
  }
  
-@@ -7381,11 +7584,9 @@
+@@ -7381,11 +7587,9 @@
   * @param renderer the rendering context.
   * @param texture (optional) The SDL texture to use.
   * @param vertices vertices.
@@ -2147,7 +2150,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -7398,9 +7599,14 @@
+@@ -7398,9 +7602,14 @@
  inline void RenderGeometry(RendererRef renderer,
                             TextureRef texture,
                             std::span<const Vertex> vertices,
@@ -2158,13 +2161,13 @@
 +  CheckError(SDL_RenderGeometry(renderer,
 +                                texture,
 +                                vertices.data(),
-+                                vertices.size(),
++                                narrowS32(vertices.size()),
 +                                indices.data(),
-+                                indices.size()));
++                                narrowS32(indices.size())));
  }
  
  inline void Renderer::RenderGeometry(TextureRef texture,
-@@ -7584,7 +7790,7 @@
+@@ -7584,7 +7793,7 @@
  inline Surface RenderReadPixels(RendererRef renderer,
                                  OptionalRef<const RectRaw> rect = {})
  {
@@ -2173,7 +2176,7 @@
  }
  
  inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
-@@ -7852,16 +8058,18 @@
+@@ -7852,16 +8061,18 @@
    SDL::SetRenderVSync(m_resource, vsync);
  }
  
@@ -2194,7 +2197,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -7872,7 +8080,9 @@
+@@ -7872,7 +8083,9 @@
   */
  inline int GetRenderVSync(RendererRef renderer)
  {
@@ -2205,7 +2208,7 @@
  }
  
  inline int Renderer::GetVSync() const
-@@ -7918,8 +8128,7 @@
+@@ -7918,8 +8131,7 @@
   * The text is drawn in the color specified by Renderer.SetDrawColor().
   *
   * @param renderer the renderer which should draw a line of text.
@@ -2215,7 +2218,7 @@
   * @param str the string to render.
   * @throws Error on failure.
   *
-@@ -7934,7 +8143,7 @@
+@@ -7934,7 +8146,7 @@
                              const FPointRaw& p,
                              StringParam str)
  {
@@ -2224,7 +2227,7 @@
  }
  
  inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
-@@ -7953,10 +8162,9 @@
+@@ -7953,10 +8165,9 @@
   * Renderer.RenderDebugText.
   *
   * @param renderer the renderer which should draw the text.
@@ -2237,7 +2240,7 @@
   *            any.
   * @throws Error on failure.
   *
-@@ -7973,7 +8181,8 @@
+@@ -7973,7 +8184,8 @@
                                    std::string_view fmt,
                                    ARGS... args)
  {
@@ -2247,7 +2250,7 @@
  }
  
  template<class... ARGS>
-@@ -7981,7 +8190,7 @@
+@@ -7981,7 +8193,7 @@
                                              std::string_view fmt,
                                              ARGS... args)
  {
@@ -2256,7 +2259,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -8138,15 +8347,18 @@
+@@ -8138,15 +8350,18 @@
    }
  
    /// Comparison
@@ -2278,7 +2281,7 @@
     * @threadsafety This function should be called on the thread that created the
     *               renderer.
     *
-@@ -8175,8 +8387,6 @@
+@@ -8175,8 +8390,6 @@
    void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
  };
  
@@ -2287,7 +2290,7 @@
  /**
   * Reference for GPURenderState.
   *
-@@ -8184,8 +8394,6 @@
+@@ -8184,8 +8397,6 @@
   */
  struct GPURenderStateRef : GPURenderState
  {
@@ -2296,7 +2299,7 @@
    /**
     * Constructs from raw GPURenderState.
     *
-@@ -8249,8 +8457,6 @@
+@@ -8249,8 +8460,6 @@
    constexpr operator GPURenderStateRaw() const noexcept { return get(); }
  };
  
@@ -2305,7 +2308,7 @@
  /**
   * Create custom GPU render state.
   *
-@@ -8275,7 +8481,7 @@
+@@ -8275,7 +8484,7 @@
    return GPURenderState(renderer, createinfo);
  }
  

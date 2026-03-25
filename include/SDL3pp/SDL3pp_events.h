@@ -1809,7 +1809,8 @@ inline WindowRef GetWindowFromEvent(const Event& event)
 inline int GetEventDescription(const Event& event, TargetBytes buf)
 {
   if (buf.size_bytes() == 0) return SDL_GetEventDescription(&event, nullptr, 0);
-  return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
+  return SDL_GetEventDescription(
+    &event, buf.data(), narrowS32(buf.size_bytes()));
 }
 
 /**

@@ -6450,7 +6450,8 @@ inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
 inline void UpdateWindowSurfaceRects(WindowRef window,
                                      SpanRef<const RectRaw> rects)
 {
-  CheckError(SDL_UpdateWindowSurfaceRects(window, rects.data(), rects.size()));
+  CheckError(SDL_UpdateWindowSurfaceRects(
+    window, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)

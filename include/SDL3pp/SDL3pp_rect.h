@@ -2226,8 +2226,8 @@ inline Rect GetRectEnclosingPoints(
   SpanRef<const PointRaw> points,
   OptionalRef<const RectRaw> clip = std::nullopt)
 {
-  if (Rect result;
-      SDL_GetRectEnclosingPoints(points.data(), points.size(), clip, &result)) {
+  if (Rect result; SDL_GetRectEnclosingPoints(
+        points.data(), narrowS32(points.size()), clip, &result)) {
     return result;
   }
   return {};
@@ -2497,7 +2497,7 @@ inline FRect GetRectEnclosingPointsFloat(
   OptionalRef<const FRectRaw> clip = std::nullopt)
 {
   if (FRect result; SDL_GetRectEnclosingPointsFloat(
-        points.data(), points.size(), clip, &result)) {
+        points.data(), narrowS32(points.size()), clip, &result)) {
     return result;
   }
   return {};

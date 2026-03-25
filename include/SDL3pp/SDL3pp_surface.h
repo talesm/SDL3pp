@@ -3992,7 +3992,8 @@ inline void FillSurfaceRects(SurfaceRef dst,
                              SpanRef<const RectRaw> rects,
                              Uint32 color)
 {
-  CheckError(SDL_FillSurfaceRects(dst, rects.data(), rects.size(), color));
+  CheckError(
+    SDL_FillSurfaceRects(dst, rects.data(), narrowS32(rects.size()), color));
 }
 
 inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)

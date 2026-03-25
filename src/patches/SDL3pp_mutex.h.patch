@@ -54,7 +54,7 @@
                                   std::chrono::milliseconds timeout)
  {
 -  return SDL_WaitSemaphoreTimeout(sem, timeout);
-+  return SDL_WaitSemaphoreTimeout(sem, timeout.count());
++  return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
  }
  
  inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
@@ -94,7 +94,7 @@
                                   std::chrono::milliseconds timeout)
  {
 -  return SDL_WaitConditionTimeout(cond, mutex, timeout);
-+  return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
++  return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
  }
  
  inline bool Condition::WaitTimeout(MutexRef mutex,

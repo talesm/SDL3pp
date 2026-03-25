@@ -372,11 +372,11 @@
 -constexpr Time MAX_TIME = SDL_MAX_TIME;
 +/// Max allowed time representation
 +constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
- 
--constexpr Time MIN_TIME = SDL_MIN_TIME;
++
 +/// Min allowed time representation
 +constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
-+
+ 
+-constexpr Time MIN_TIME = SDL_MIN_TIME;
 +#ifndef FLT_EPSILON
  
  /**
@@ -1120,11 +1120,32 @@
  {
    return SDL_size_add_check_overflow(a, b, ret);
  }
-@@ -6249,6 +6431,8 @@
+@@ -6249,6 +6431,29 @@
  
  /// @}
  
 +inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
++
++/// Narrows to Sint32.
++template<std::integral T>
++Sint32 narrowS32(T value)
++{
++  if constexpr (std::is_signed_v<T>) {
++    SDL_assert_paranoid(value >= std::numeric_limits<Sint32>::min() &&
++                        value <= std::numeric_limits<Sint32>::max());
++  } else {
++    SDL_assert_paranoid(value <= std::numeric_limits<Sint32>::max());
++  }
++  return static_cast<Sint32>(value);
++}
++
++/// Narrows to Uint32.
++template<std::integral T>
++Uint32 narrowU32(T value)
++{
++  SDL_assert_paranoid(value <= std::numeric_limits<Uint32>::max());
++  return static_cast<Uint32>(value);
++}
 +
  } // namespace SDL
  

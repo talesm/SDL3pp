@@ -3090,7 +3090,11 @@ public:
    *
    * @sa AudioStream.Lock
    */
-  ~AudioStreamLock() { reset(); }
+  ~AudioStreamLock()
+  {
+    if (!m_lock) return;
+    SDL_UnlockAudioStream(m_lock);
+  }
 
   AudioStreamLock& operator=(const AudioStreamLock& other) = delete;
 
@@ -3741,7 +3745,7 @@ inline void BindAudioStreams(AudioDeviceRef devid,
   CheckError(SDL_BindAudioStreams(
     devid,
     reinterpret_cast<SDL_AudioStream* const*>(streams.data()),
-    streams.size()));
+    narrowS32(streams.size())));
 }
 
 inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
@@ -3798,7 +3802,8 @@ inline void AudioDevice::BindAudioStream(AudioStreamRef stream)
 inline void UnbindAudioStreams(std::span<AudioStreamRef> streams)
 {
   SDL_UnbindAudioStreams(
-    reinterpret_cast<SDL_AudioStream* const*>(streams.data()), streams.size());
+    reinterpret_cast<SDL_AudioStream* const*>(streams.data()),
+    narrowS32(streams.size()));
 }
 
 /**
@@ -4266,8 +4271,8 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
 inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
                                           std::span<int> chmap)
 {
-  CheckError(
-    SDL_SetAudioStreamInputChannelMap(stream, chmap.data(), chmap.size()));
+  CheckError(SDL_SetAudioStreamInputChannelMap(
+    stream, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
@@ -4332,8 +4337,8 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
 inline void SetAudioStreamOutputChannelMap(AudioStreamRef stream,
                                            std::span<int> chmap)
 {
-  CheckError(
-    SDL_SetAudioStreamOutputChannelMap(stream, chmap.data(), chmap.size()));
+  CheckError(SDL_SetAudioStreamOutputChannelMap(
+    stream, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
@@ -4369,7 +4374,8 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  */
 inline void PutAudioStreamData(AudioStreamRef stream, SourceBytes buf)
 {
-  CheckError(SDL_PutAudioStreamData(stream, buf.data(), buf.size_bytes()));
+  CheckError(
+    SDL_PutAudioStreamData(stream, buf.data(), narrowS32(buf.size_bytes())));
 }
 
 inline void AudioStream::PutData(SourceBytes buf)
@@ -4428,7 +4434,7 @@ inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                                      void* userdata)
 {
   CheckError(SDL_PutAudioStreamDataNoCopy(
-    stream, buf.data(), buf.size_bytes(), callback, userdata));
+    stream, buf.data(), narrowS32(buf.size_bytes()), callback, userdata));
 }
 
 /**
@@ -4493,7 +4499,8 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
 inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCB callback)
 {
-  SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback);
+  SDL::PutAudioStreamDataNoCopy(
+    m_resource, std::move(buf), std::move(callback));
 }
 
 /**
@@ -4592,7 +4599,8 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
  */
 inline int GetAudioStreamData(AudioStreamRef stream, TargetBytes buf)
 {
-  return SDL_GetAudioStreamData(stream, buf.data(), buf.size_bytes());
+  return SDL_GetAudioStreamData(
+    stream, buf.data(), narrowS32(buf.size_bytes()));
 }
 
 inline int AudioStream::GetData(TargetBytes buf)
@@ -5535,8 +5543,8 @@ inline void MixAudio(Uint8* dst,
                      AudioFormat format,
                      float volume)
 {
-  CheckError(
-    SDL_MixAudio(dst, src.data_as<Uint8>(), format, src.size_bytes(), volume));
+  CheckError(SDL_MixAudio(
+    dst, src.data_as<Uint8>(), format, narrowS32(src.size_bytes()), volume));
 }
 
 /**
@@ -5614,7 +5622,7 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
   int len;
   CheckError(SDL_ConvertAudioSamples(&src_spec,
                                      src_data.data_as<Uint8>(),
-                                     src_data.size_bytes(),
+                                     narrowS32(src_data.size_bytes()),
                                      &dst_spec,
                                      &buf,
                                      &len));

@@ -2107,8 +2107,8 @@
    OptionalRef<const RectRaw> clip = std::nullopt)
  {
 -  return SDL_GetRectEnclosingPoints(points, clip);
-+  if (Rect result;
-+      SDL_GetRectEnclosingPoints(points.data(), points.size(), clip, &result)) {
++  if (Rect result; SDL_GetRectEnclosingPoints(
++        points.data(), narrowS32(points.size()), clip, &result)) {
 +    return result;
 +  }
 +  return {};
@@ -2320,7 +2320,7 @@
  {
 -  return SDL_GetRectEnclosingPointsFloat(points, clip);
 +  if (FRect result; SDL_GetRectEnclosingPointsFloat(
-+        points.data(), points.size(), clip, &result)) {
++        points.data(), narrowS32(points.size()), clip, &result)) {
 +    return result;
 +  }
 +  return {};

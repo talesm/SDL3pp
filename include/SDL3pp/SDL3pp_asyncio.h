@@ -1200,7 +1200,7 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue,
                                                        Milliseconds timeout)
 {
   if (AsyncIOOutcome outcome;
-      SDL_WaitAsyncIOResult(queue, &outcome, timeout.count())) {
+      SDL_WaitAsyncIOResult(queue, &outcome, narrowS32(timeout.count()))) {
     return outcome;
   }
   return std::nullopt;

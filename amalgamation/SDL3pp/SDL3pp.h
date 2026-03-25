@@ -11821,8 +11821,8 @@ inline void SetPaletteColors(PaletteRef palette,
                              SpanRef<const ColorRaw> colors,
                              int firstcolor = 0)
 {
-  CheckError(
-    SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
+  CheckError(SDL_SetPaletteColors(
+    palette, colors.data(), firstcolor, narrowS32(colors.size())));
 }
 
 inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
@@ -20130,6 +20130,27 @@ using FunctionPointer = void(SDLCALL*)();
 
 inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
 
+/// Narrows to Sint32.
+template<std::integral T>
+Sint32 narrowS32(T value)
+{
+  if constexpr (std::is_signed_v<T>) {
+    SDL_assert_paranoid(value >= std::numeric_limits<Sint32>::min() &&
+                        value <= std::numeric_limits<Sint32>::max());
+  } else {
+    SDL_assert_paranoid(value <= std::numeric_limits<Sint32>::max());
+  }
+  return static_cast<Sint32>(value);
+}
+
+/// Narrows to Uint32.
+template<std::integral T>
+Uint32 narrowU32(T value)
+{
+  SDL_assert_paranoid(value <= std::numeric_limits<Uint32>::max());
+  return static_cast<Uint32>(value);
+}
+
 /**
  * @defgroup CategoryAsyncIO Async I/O
  *
@@ -21323,7 +21344,7 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue,
                                                        Milliseconds timeout)
 {
   if (AsyncIOOutcome outcome;
-      SDL_WaitAsyncIOResult(queue, &outcome, timeout.count())) {
+      SDL_WaitAsyncIOResult(queue, &outcome, narrowS32(timeout.count()))) {
     return outcome;
   }
   return std::nullopt;
@@ -24921,7 +24942,7 @@ inline int hid_read_timeout(HidDeviceRef dev,
                             Milliseconds timeout)
 {
   return SDL_hid_read_timeout(
-    dev, data.data_as<Uint8>(), data.size_bytes(), timeout.count());
+    dev, data.data_as<Uint8>(), data.size_bytes(), narrowS32(timeout.count()));
 }
 
 inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
@@ -31177,8 +31198,8 @@ inline Rect GetRectEnclosingPoints(
   SpanRef<const PointRaw> points,
   OptionalRef<const RectRaw> clip = std::nullopt)
 {
-  if (Rect result;
-      SDL_GetRectEnclosingPoints(points.data(), points.size(), clip, &result)) {
+  if (Rect result; SDL_GetRectEnclosingPoints(
+        points.data(), narrowS32(points.size()), clip, &result)) {
     return result;
   }
   return {};
@@ -31448,7 +31469,7 @@ inline FRect GetRectEnclosingPointsFloat(
   OptionalRef<const FRectRaw> clip = std::nullopt)
 {
   if (FRect result; SDL_GetRectEnclosingPointsFloat(
-        points.data(), points.size(), clip, &result)) {
+        points.data(), narrowS32(points.size()), clip, &result)) {
     return result;
   }
   return {};
@@ -36907,7 +36928,11 @@ public:
    *
    * @sa AudioStream.Lock
    */
-  ~AudioStreamLock() { reset(); }
+  ~AudioStreamLock()
+  {
+    if (!m_lock) return;
+    SDL_UnlockAudioStream(m_lock);
+  }
 
   AudioStreamLock& operator=(const AudioStreamLock& other) = delete;
 
@@ -37558,7 +37583,7 @@ inline void BindAudioStreams(AudioDeviceRef devid,
   CheckError(SDL_BindAudioStreams(
     devid,
     reinterpret_cast<SDL_AudioStream* const*>(streams.data()),
-    streams.size()));
+    narrowS32(streams.size())));
 }
 
 inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
@@ -37615,7 +37640,8 @@ inline void AudioDevice::BindAudioStream(AudioStreamRef stream)
 inline void UnbindAudioStreams(std::span<AudioStreamRef> streams)
 {
   SDL_UnbindAudioStreams(
-    reinterpret_cast<SDL_AudioStream* const*>(streams.data()), streams.size());
+    reinterpret_cast<SDL_AudioStream* const*>(streams.data()),
+    narrowS32(streams.size()));
 }
 
 /**
@@ -38083,8 +38109,8 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
 inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
                                           std::span<int> chmap)
 {
-  CheckError(
-    SDL_SetAudioStreamInputChannelMap(stream, chmap.data(), chmap.size()));
+  CheckError(SDL_SetAudioStreamInputChannelMap(
+    stream, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
@@ -38149,8 +38175,8 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
 inline void SetAudioStreamOutputChannelMap(AudioStreamRef stream,
                                            std::span<int> chmap)
 {
-  CheckError(
-    SDL_SetAudioStreamOutputChannelMap(stream, chmap.data(), chmap.size()));
+  CheckError(SDL_SetAudioStreamOutputChannelMap(
+    stream, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
@@ -38186,7 +38212,8 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  */
 inline void PutAudioStreamData(AudioStreamRef stream, SourceBytes buf)
 {
-  CheckError(SDL_PutAudioStreamData(stream, buf.data(), buf.size_bytes()));
+  CheckError(
+    SDL_PutAudioStreamData(stream, buf.data(), narrowS32(buf.size_bytes())));
 }
 
 inline void AudioStream::PutData(SourceBytes buf)
@@ -38245,7 +38272,7 @@ inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                                      void* userdata)
 {
   CheckError(SDL_PutAudioStreamDataNoCopy(
-    stream, buf.data(), buf.size_bytes(), callback, userdata));
+    stream, buf.data(), narrowS32(buf.size_bytes()), callback, userdata));
 }
 
 /**
@@ -38310,7 +38337,8 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
 inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCB callback)
 {
-  SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback);
+  SDL::PutAudioStreamDataNoCopy(
+    m_resource, std::move(buf), std::move(callback));
 }
 
 /**
@@ -38409,7 +38437,8 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
  */
 inline int GetAudioStreamData(AudioStreamRef stream, TargetBytes buf)
 {
-  return SDL_GetAudioStreamData(stream, buf.data(), buf.size_bytes());
+  return SDL_GetAudioStreamData(
+    stream, buf.data(), narrowS32(buf.size_bytes()));
 }
 
 inline int AudioStream::GetData(TargetBytes buf)
@@ -39352,8 +39381,8 @@ inline void MixAudio(Uint8* dst,
                      AudioFormat format,
                      float volume)
 {
-  CheckError(
-    SDL_MixAudio(dst, src.data_as<Uint8>(), format, src.size_bytes(), volume));
+  CheckError(SDL_MixAudio(
+    dst, src.data_as<Uint8>(), format, narrowS32(src.size_bytes()), volume));
 }
 
 /**
@@ -39431,7 +39460,7 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
   int len;
   CheckError(SDL_ConvertAudioSamples(&src_spec,
                                      src_data.data_as<Uint8>(),
-                                     src_data.size_bytes(),
+                                     narrowS32(src_data.size_bytes()),
                                      &dst_spec,
                                      &buf,
                                      &len));
@@ -46790,7 +46819,8 @@ inline void FillSurfaceRects(SurfaceRef dst,
                              SpanRef<const RectRaw> rects,
                              Uint32 color)
 {
-  CheckError(SDL_FillSurfaceRects(dst, rects.data(), rects.size(), color));
+  CheckError(
+    SDL_FillSurfaceRects(dst, rects.data(), narrowS32(rects.size()), color));
 }
 
 inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
@@ -51394,7 +51424,7 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
 inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                  std::chrono::milliseconds timeout)
 {
-  return SDL_WaitSemaphoreTimeout(sem, timeout.count());
+  return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
 }
 
 inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
@@ -51854,7 +51884,7 @@ inline bool WaitConditionTimeout(ConditionRef cond,
                                  MutexRef mutex,
                                  std::chrono::milliseconds timeout)
 {
-  return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
+  return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
 }
 
 inline bool Condition::WaitTimeout(MutexRef mutex,
@@ -59942,7 +59972,8 @@ inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
 inline void UpdateWindowSurfaceRects(WindowRef window,
                                      SpanRef<const RectRaw> rects)
 {
-  CheckError(SDL_UpdateWindowSurfaceRects(window, rects.data(), rects.size()));
+  CheckError(SDL_UpdateWindowSurfaceRects(
+    window, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
@@ -61306,7 +61337,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
                          userdata,
                          window,
                          filters.data(),
-                         filters.size(),
+                         narrowS32(filters.size()),
                          default_location,
                          allow_many);
 }
@@ -61430,7 +61461,7 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
                          userdata,
                          window,
                          filters.data(),
-                         filters.size(),
+                         narrowS32(filters.size()),
                          default_location);
 }
 
@@ -63548,7 +63579,8 @@ inline WindowRef GetWindowFromEvent(const Event& event)
 inline int GetEventDescription(const Event& event, TargetBytes buf)
 {
   if (buf.size_bytes() == 0) return SDL_GetEventDescription(&event, nullptr, 0);
-  return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
+  return SDL_GetEventDescription(
+    &event, buf.data(), narrowS32(buf.size_bytes()));
 }
 
 /**
@@ -69903,7 +69935,7 @@ inline void PushGPUVertexUniformData(GPUCommandBuffer command_buffer,
                                      SourceBytes data)
 {
   SDL_PushGPUVertexUniformData(
-    command_buffer, slot_index, data.data(), data.size_bytes());
+    command_buffer, slot_index, data.data(), narrowU32(data.size_bytes()));
 }
 
 inline void GPUCommandBuffer::PushVertexUniformData(Uint32 slot_index,
@@ -69933,7 +69965,7 @@ inline void PushGPUFragmentUniformData(GPUCommandBuffer command_buffer,
                                        SourceBytes data)
 {
   SDL_PushGPUFragmentUniformData(
-    command_buffer, slot_index, data.data(), data.size_bytes());
+    command_buffer, slot_index, data.data(), narrowU32(data.size_bytes()));
 }
 
 inline void GPUCommandBuffer::PushFragmentUniformData(Uint32 slot_index,
@@ -69963,7 +69995,7 @@ inline void PushGPUComputeUniformData(GPUCommandBuffer command_buffer,
                                       SourceBytes data)
 {
   SDL_PushGPUComputeUniformData(
-    command_buffer, slot_index, data.data(), data.size_bytes());
+    command_buffer, slot_index, data.data(), narrowU32(data.size_bytes()));
 }
 
 inline void GPUCommandBuffer::PushComputeUniformData(Uint32 slot_index,
@@ -70011,7 +70043,7 @@ inline GPURenderPass BeginGPURenderPass(
 {
   return SDL_BeginGPURenderPass(command_buffer,
                                 color_target_infos.data(),
-                                color_target_infos.size(),
+                                narrowU32(color_target_infos.size()),
                                 depth_stencil_target_info);
 }
 
@@ -70136,7 +70168,7 @@ inline void BindGPUVertexBuffers(GPURenderPass render_pass,
                                  std::span<const GPUBufferBinding> bindings)
 {
   SDL_BindGPUVertexBuffers(
-    render_pass, first_slot, bindings.data(), bindings.size());
+    render_pass, first_slot, bindings.data(), narrowU32(bindings.size()));
 }
 
 inline void GPURenderPass::BindVertexBuffers(
@@ -70194,7 +70226,7 @@ inline void BindGPUVertexSamplers(
   SDL_BindGPUVertexSamplers(render_pass,
                             first_slot,
                             texture_sampler_bindings.data(),
-                            texture_sampler_bindings.size());
+                            narrowU32(texture_sampler_bindings.size()));
 }
 
 inline void GPURenderPass::BindVertexSamplers(
@@ -70227,8 +70259,10 @@ inline void BindGPUVertexStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUVertexStorageTextures(
-    render_pass, first_slot, storage_textures.data(), storage_textures.size());
+  SDL_BindGPUVertexStorageTextures(render_pass,
+                                   first_slot,
+                                   storage_textures.data(),
+                                   narrowU32(storage_textures.size()));
 }
 
 inline void GPURenderPass::BindVertexStorageTextures(
@@ -70261,8 +70295,10 @@ inline void BindGPUVertexStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUVertexStorageBuffers(
-    render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
+  SDL_BindGPUVertexStorageBuffers(render_pass,
+                                  first_slot,
+                                  storage_buffers.data(),
+                                  narrowU32(storage_buffers.size()));
 }
 
 inline void GPURenderPass::BindVertexStorageBuffers(
@@ -70297,7 +70333,7 @@ inline void BindGPUFragmentSamplers(
   SDL_BindGPUFragmentSamplers(render_pass,
                               first_slot,
                               texture_sampler_bindings.data(),
-                              texture_sampler_bindings.size());
+                              narrowU32(texture_sampler_bindings.size()));
 }
 
 inline void GPURenderPass::BindFragmentSamplers(
@@ -70330,8 +70366,10 @@ inline void BindGPUFragmentStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUFragmentStorageTextures(
-    render_pass, first_slot, storage_textures.data(), storage_textures.size());
+  SDL_BindGPUFragmentStorageTextures(render_pass,
+                                     first_slot,
+                                     storage_textures.data(),
+                                     narrowU32(storage_textures.size()));
 }
 
 inline void GPURenderPass::BindFragmentStorageTextures(
@@ -70364,8 +70402,10 @@ inline void BindGPUFragmentStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUFragmentStorageBuffers(
-    render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
+  SDL_BindGPUFragmentStorageBuffers(render_pass,
+                                    first_slot,
+                                    storage_buffers.data(),
+                                    narrowU32(storage_buffers.size()));
 }
 
 inline void GPURenderPass::BindFragmentStorageBuffers(
@@ -70587,9 +70627,9 @@ inline GPUComputePass BeginGPUComputePass(
 {
   return SDL_BeginGPUComputePass(command_buffer,
                                  storage_texture_bindings.data(),
-                                 storage_texture_bindings.size(),
+                                 narrowU32(storage_texture_bindings.size()),
                                  storage_buffer_bindings.data(),
-                                 storage_buffer_bindings.size());
+                                 narrowU32(storage_buffer_bindings.size()));
 }
 
 inline GPUComputePass GPUCommandBuffer::BeginComputePass(
@@ -70643,7 +70683,7 @@ inline void BindGPUComputeSamplers(
   SDL_BindGPUComputeSamplers(compute_pass,
                              first_slot,
                              texture_sampler_bindings.data(),
-                             texture_sampler_bindings.size());
+                             narrowU32(texture_sampler_bindings.size()));
 }
 
 inline void GPUComputePass::BindSamplers(
@@ -70676,8 +70716,10 @@ inline void BindGPUComputeStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUComputeStorageTextures(
-    compute_pass, first_slot, storage_textures.data(), storage_textures.size());
+  SDL_BindGPUComputeStorageTextures(compute_pass,
+                                    first_slot,
+                                    storage_textures.data(),
+                                    narrowU32(storage_textures.size()));
 }
 
 inline void GPUComputePass::BindStorageTextures(
@@ -70710,8 +70752,10 @@ inline void BindGPUComputeStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUComputeStorageBuffers(
-    compute_pass, first_slot, storage_buffers.data(), storage_buffers.size());
+  SDL_BindGPUComputeStorageBuffers(compute_pass,
+                                   first_slot,
+                                   storage_buffers.data(),
+                                   narrowU32(storage_buffers.size()));
 }
 
 inline void GPUComputePass::BindStorageBuffers(
@@ -71629,8 +71673,8 @@ inline void WaitForGPUFences(GPUDeviceRef device,
                              bool wait_all,
                              std::span<GPUFence* const> fences)
 {
-  CheckError(
-    SDL_WaitForGPUFences(device, wait_all, fences.data(), fences.size()));
+  CheckError(SDL_WaitForGPUFences(
+    device, wait_all, fences.data(), narrowU32(fences.size())));
 }
 
 inline void GPUDevice::WaitForFences(bool wait_all,
@@ -89807,7 +89851,8 @@ inline void Renderer::RenderPoint(const FPointRaw& p)
  */
 inline void RenderPoints(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
-  CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
+  CheckError(
+    SDL_RenderPoints(renderer, points.data(), narrowS32(points.size())));
 }
 
 inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
@@ -89857,7 +89902,8 @@ inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
  */
 inline void RenderLines(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
-  CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
+  CheckError(
+    SDL_RenderLines(renderer, points.data(), narrowS32(points.size())));
 }
 
 inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
@@ -89905,7 +89951,7 @@ inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
  */
 inline void RenderRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
-  CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
+  CheckError(SDL_RenderRects(renderer, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
@@ -89955,7 +90001,8 @@ inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
  */
 inline void RenderFillRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
-  CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
+  CheckError(
+    SDL_RenderFillRects(renderer, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
@@ -90317,9 +90364,9 @@ inline void RenderGeometry(RendererRef renderer,
   CheckError(SDL_RenderGeometry(renderer,
                                 texture,
                                 vertices.data(),
-                                vertices.size(),
+                                narrowS32(vertices.size()),
                                 indices.data(),
-                                indices.size()));
+                                narrowS32(indices.size())));
 }
 
 inline void Renderer::RenderGeometry(TextureRef texture,
@@ -99628,7 +99675,8 @@ inline float Track::GetFrequencyRatio()
  */
 inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
 {
-  CheckError(MIX_SetTrackOutputChannelMap(track, chmap.data(), chmap.size()));
+  CheckError(
+    MIX_SetTrackOutputChannelMap(track, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void Track::SetOutputChannelMap(std::span<const int> chmap)
@@ -100315,8 +100363,8 @@ inline void Mixer::SetPostMixCallback(PostMixCB cb)
  */
 inline int Generate(MixerRef mixer, TargetBytes buffer)
 {
-  return CheckError(MIX_Generate(mixer, buffer.data(), buffer.size_bytes()),
-                    -1);
+  return CheckError(
+    MIX_Generate(mixer, buffer.data(), narrowS32(buffer.size_bytes())), -1);
 }
 
 inline int Mixer::Generate(TargetBytes buffer)
@@ -100829,7 +100877,8 @@ inline int DecodeAudio(AudioDecoderRef audiodecoder,
                        const AudioSpec& spec)
 {
   return CheckError(
-    MIX_DecodeAudio(audiodecoder, buffer.data(), buffer.size_bytes(), &spec),
+    MIX_DecodeAudio(
+      audiodecoder, buffer.data(), narrowS32(buffer.size_bytes()), &spec),
     -1);
 }
 
