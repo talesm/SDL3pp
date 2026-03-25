@@ -64,6 +64,8 @@ namespace SDL {
  *
  * @param version the version number.
  *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
  * @since This macro is available since SDL 3.2.0.
  */
 #define SDL_VERSIONNUM_MAJOR(version) ((version) / 1000000)
@@ -74,6 +76,8 @@ namespace SDL {
  * 1002003 becomes 2.
  *
  * @param version the version number.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
  *
  * @since This macro is available since SDL 3.2.0.
  */
@@ -86,12 +90,16 @@ namespace SDL {
  *
  * @param version the version number.
  *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
  * @since This macro is available since SDL 3.2.0.
  */
 #define SDL_VERSIONNUM_MICRO(version) ((version) % 1000)
 
 /**
  * This is the version number macro for the current SDL version.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
  *
  * @since This macro is available since SDL 3.2.0.
  *
@@ -102,6 +110,8 @@ namespace SDL {
 
 /**
  * This macro will evaluate to true if compiled with SDL at least X.Y.Z.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
  *
  * @since This macro is available since SDL 3.2.0.
  */
@@ -121,6 +131,8 @@ namespace SDL {
  *
  * @returns the version of the linked library.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetRevision
@@ -128,13 +140,13 @@ namespace SDL {
 inline int GetVersion() { return SDL_GetVersion(); }
 
 /**
- * Get the code revision of SDL that is linked against your program.
+ * Get the code revision of the SDL library that is linked against your program.
  *
- * This value is the revision of the code you are linked with and may be
+ * This value is the revision of the code you are linking against and may be
  * different from the code you are compiling with, which is found in the
- * constant SDL_REVISION.
+ * constant SDL_REVISION if you explicitly include SDL_revision.h
  *
- * The revision is arbitrary string (a hash value) uniquely identifying the
+ * The revision is an arbitrary string (a hash value) uniquely identifying the
  * exact revision of the SDL library in use, and is only useful in comparing
  * against other revisions. It is NOT an incrementing number.
  *
@@ -147,6 +159,8 @@ inline int GetVersion() { return SDL_GetVersion(); }
  * @returns an arbitrary string, uniquely identifying the exact revision of the
  *          SDL library in use.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetVersion
@@ -157,10 +171,10 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #define SDL3PP_MAJOR_VERSION 0
 
 /// The current minor version of SDL3pp wrapper.
-#define SDL3PP_MINOR_VERSION 5
+#define SDL3PP_MINOR_VERSION 8
 
 /// The current patch version of SDL3pp wrapper.
-#define SDL3PP_PATCH_VERSION 3
+#define SDL3PP_PATCH_VERSION 1
 
 /// This is the version number macro for the current SDL3pp wrapper version.
 #define SDL3PP_VERSION                                                         \
@@ -168,6 +182,24 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
     SDL3PP_MAJOR_VERSION, SDL3PP_MINOR_VERSION, SDL3PP_MICRO_VERSION)
 
 /// @}
+
+// Check if SDL_image is available
+#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
+  __has_include(<SDL3_image/SDL_image.h>)
+#define SDL3PP_ENABLE_IMAGE
+#endif
+
+// Check if SDL_mixer is available
+#if !defined(SDL3PP_DISABLE_MIXER) && !defined(SDL3PP_ENABLE_MIXER) &&         \
+  __has_include(<SDL3_mixer/SDL_mixer.h>)
+#define SDL3PP_ENABLE_MIXER
+#endif
+
+// Check if SDL_ttf is available
+#if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
+  __has_include(<SDL3_ttf/SDL_ttf.h>)
+#define SDL3PP_ENABLE_TTF
+#endif
 
 } // namespace SDL
 

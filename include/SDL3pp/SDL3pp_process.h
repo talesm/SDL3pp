@@ -39,33 +39,6 @@ using ProcessRaw = SDL_Process*;
 // Forward decl
 struct ProcessRef;
 
-/// Safely wrap Process for non owning parameters
-struct ProcessParam
-{
-  ProcessRaw value; ///< parameter's ProcessRaw
-
-  /// Constructs from ProcessRaw
-  constexpr ProcessParam(ProcessRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ProcessParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ProcessParam& other) const = default;
-
-  /// Converts to underlying ProcessRaw
-  constexpr operator ProcessRaw() const { return value; }
-};
-
 /**
  * Description of where standard I/O should be directed when creating a process.
  *
@@ -140,12 +113,12 @@ class Process
 public:
   /// Default ctor
   constexpr Process(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from ProcessParam.
+   * Constructs from ProcessRef.
    *
    * @param resource a ProcessRaw to be wrapped.
    *
@@ -156,9 +129,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Process(const Process& other) = delete;
+  constexpr Process(const Process& other) noexcept
+    : Process(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr Process(Process&& other) noexcept
     : Process(other.release())
@@ -208,10 +186,7 @@ public:
    * @sa Process.Wait
    * @sa Process.Destroy
    */
-  Process(const char* const* args, bool pipe_stdio)
-    : m_resource(SDL_CreateProcess(args, pipe_stdio))
-  {
-  }
+  Process(const char* const* args, bool pipe_stdio);
 
   /**
    * Create a new process with the specified properties.
@@ -225,6 +200,9 @@ public:
    * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If
    *   this property is set, it will be the entire environment for the process,
    *   otherwise the current environment is used.
+   * - `prop::process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+   *   representing the working directory for the process, defaults to the
+   *   current working directory.
    * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
    *   standard input for the process comes from, defaults to
    *   `SDL_PROCESS_STDIO_nullptr`.
@@ -251,6 +229,12 @@ public:
    *   in the background. In this case the default input and output is
    *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
    *   available, and will always be 0.
+   * - `prop::process.CREATE_CMDLINE_STRING`: a string containing the program to
+   *   run and any parameters. This string is passed directly to `CreateProcess`
+   *   on Windows, and does nothing on other platforms. This property is only
+   *   important if you want to start programs that does non-standard
+   *   command-line processing, and in most cases using
+   *   `prop::process.CREATE_ARGS_POINTER` is sufficient.
    *
    * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
    * SIGCHLD should not be ignored or handled because those would prevent SDL
@@ -274,10 +258,7 @@ public:
    * @sa Process.Wait
    * @sa Process.Destroy
    */
-  Process(PropertiesParam props)
-    : m_resource(SDL_CreateProcessWithProperties(props))
-  {
-  }
+  Process(PropertiesRef props);
 
   /// Destructor
   ~Process() { SDL_DestroyProcess(m_resource); }
@@ -291,7 +272,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Process& operator=(const Process& other) noexcept = default;
+  Process& operator=(const Process& other) = default;
 
 public:
   /// Retrieves underlying ProcessRaw.
@@ -310,9 +291,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to ProcessParam
-  constexpr operator ProcessParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously created process object.
@@ -523,43 +501,76 @@ public:
   bool Wait(bool block, int* exitcode);
 };
 
-/// Semi-safe reference for Process.
+/**
+ * Reference for Process.
+ *
+ * This does not take ownership!
+ */
 struct ProcessRef : Process
 {
   using Process::Process;
 
   /**
-   * Constructs from ProcessParam.
+   * Constructs from raw Process.
    *
-   * @param resource a ProcessRaw or Process.
-   *
-   * This does not takes ownership!
-   */
-  ProcessRef(ProcessParam resource) noexcept
-    : Process(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from ProcessParam.
-   *
-   * @param resource a ProcessRaw or Process.
+   * @param resource a ProcessRaw.
    *
    * This does not takes ownership!
    */
-  ProcessRef(ProcessRaw resource) noexcept
+  constexpr ProcessRef(ProcessRaw resource) noexcept
     : Process(resource)
   {
   }
 
+  /**
+   * Constructs from Process.
+   *
+   * @param resource a Process.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ProcessRef(const Process& resource) noexcept
+    : Process(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from Process.
+   *
+   * @param resource a Process.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr ProcessRef(Process&& resource) noexcept
+    : Process(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  ProcessRef(const ProcessRef& other) noexcept
+  constexpr ProcessRef(const ProcessRef& other) noexcept
+    : Process(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ProcessRef(ProcessRef&& other) noexcept
     : Process(other.get())
   {
   }
 
   /// Destructor
   ~ProcessRef() { release(); }
+
+  /// Assignment operator.
+  ProcessRef& operator=(const ProcessRef& other) noexcept
+  {
+    release();
+    Process::operator=(Process(other.get()));
+    return *this;
+  }
+
+  /// Converts to ProcessRaw
+  constexpr operator ProcessRaw() const noexcept { return get(); }
 };
 
 /**
@@ -606,6 +617,16 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
   return Process(args, pipe_stdio);
 }
 
+inline Process::Process(const char* const* args, bool pipe_stdio)
+  : m_resource(SDL_CreateProcess(args, pipe_stdio))
+{
+}
+
+inline Process::Process(PropertiesRef props)
+  : m_resource(SDL_CreateProcessWithProperties(props))
+{
+}
+
 /**
  * Create a new process with the specified properties.
  *
@@ -618,6 +639,9 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
  * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If this
  *   property is set, it will be the entire environment for the process,
  *   otherwise the current environment is used.
+ * - `prop::process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+ *   representing the working directory for the process, defaults to the current
+ *   working directory.
  * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
  *   standard input for the process comes from, defaults to
  *   `SDL_PROCESS_STDIO_nullptr`.
@@ -644,6 +668,12 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
  *   in the background. In this case the default input and output is
  *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
  *   available, and will always be 0.
+ * - `prop::process.CREATE_CMDLINE_STRING`: a string containing the program to
+ *   run and any parameters. This string is passed directly to `CreateProcess`
+ *   on Windows, and does nothing on other platforms. This property is only
+ *   important if you want to start programs that does non-standard command-line
+ *   processing, and in most cases using `prop::process.CREATE_ARGS_POINTER` is
+ *   sufficient.
  *
  * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
  * SIGCHLD should not be ignored or handled because those would prevent SDL from
@@ -667,7 +697,7 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
  * @sa Process.Wait
  * @sa Process.Destroy
  */
-inline Process CreateProcessWithProperties(PropertiesParam props)
+inline Process CreateProcessWithProperties(PropertiesRef props)
 {
   return Process(props);
 }
@@ -678,6 +708,13 @@ constexpr auto CREATE_ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
 
 constexpr auto CREATE_ENVIRONMENT_POINTER =
   SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER;
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto CREATE_WORKING_DIRECTORY_STRING =
+  SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_STDIN_NUMBER = SDL_PROP_PROCESS_CREATE_STDIN_NUMBER;
 
@@ -696,6 +733,12 @@ constexpr auto CREATE_STDERR_TO_STDOUT_BOOLEAN =
 
 constexpr auto CREATE_BACKGROUND_BOOLEAN =
   SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN;
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto CREATE_CMDLINE_STRING = SDL_PROP_PROCESS_CREATE_CMDLINE_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER;
 
@@ -738,7 +781,7 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  * @sa Process.Process
  * @sa Process.Process
  */
-inline PropertiesRef GetProcessProperties(ProcessParam process)
+inline PropertiesRef GetProcessProperties(ProcessRef process)
 {
   return {CheckError(SDL_GetProcessProperties(process))};
 }
@@ -775,7 +818,7 @@ inline PropertiesRef Process::GetProperties() const
  * @sa Process.Process
  * @sa Process.Destroy
  */
-inline StringResult ReadProcess(ProcessParam process, int* exitcode = nullptr)
+inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
 {
   size_t size = 0;
   auto data = static_cast<char*>(SDL_ReadProcess(process, &size, exitcode));
@@ -811,7 +854,7 @@ inline StringResult Process::Read(int* exitcode)
  * @sa Process.Process
  * @sa Process.GetOutput
  */
-inline IOStreamRef GetProcessInput(ProcessParam process)
+inline IOStreamRef GetProcessInput(ProcessRef process)
 {
   return {SDL_GetProcessInput(process)};
 }
@@ -843,7 +886,7 @@ inline IOStreamRef Process::GetInput()
  * @sa Process.Process
  * @sa Process.GetInput
  */
-inline IOStreamRef GetProcessOutput(ProcessParam process)
+inline IOStreamRef GetProcessOutput(ProcessRef process)
 {
   return {SDL_GetProcessOutput(process)};
 }
@@ -872,7 +915,7 @@ inline IOStreamRef Process::GetOutput()
  * @sa Process.Wait
  * @sa Process.Destroy
  */
-inline void KillProcess(ProcessParam process, bool force)
+inline void KillProcess(ProcessRef process, bool force)
 {
   CheckError(SDL_KillProcess(process, force));
 }
@@ -910,7 +953,7 @@ inline void Process::Kill(bool force) { SDL::KillProcess(m_resource, force); }
  * @sa Process.Kill
  * @sa Process.Destroy
  */
-inline bool WaitProcess(ProcessParam process, bool block, int* exitcode)
+inline bool WaitProcess(ProcessRef process, bool block, int* exitcode)
 {
   return SDL_WaitProcess(process, block, exitcode);
 }

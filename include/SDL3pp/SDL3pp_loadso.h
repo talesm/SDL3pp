@@ -49,33 +49,6 @@ using SharedObjectRaw = SDL_SharedObject*;
 // Forward decl
 struct SharedObjectRef;
 
-/// Safely wrap SharedObject for non owning parameters
-struct SharedObjectParam
-{
-  SharedObjectRaw value; ///< parameter's SharedObjectRaw
-
-  /// Constructs from SharedObjectRaw
-  constexpr SharedObjectParam(SharedObjectRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SharedObjectParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SharedObjectParam& other) const = default;
-
-  /// Converts to underlying SharedObjectRaw
-  constexpr operator SharedObjectRaw() const { return value; }
-};
-
 /**
  * An opaque datatype that represents a loaded shared object.
  *
@@ -94,12 +67,12 @@ class SharedObject
 public:
   /// Default ctor
   constexpr SharedObject(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from SharedObjectParam.
+   * Constructs from SharedObjectRef.
    *
    * @param resource a SharedObjectRaw to be wrapped.
    *
@@ -110,9 +83,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) = delete;
+  constexpr SharedObject(const SharedObject& other) noexcept
+    : SharedObject(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr SharedObject(SharedObject&& other) noexcept
     : SharedObject(other.release())
@@ -137,10 +115,7 @@ public:
    * @sa SharedObject.LoadFunction
    * @sa SharedObject.Unload
    */
-  SharedObject(StringParam sofile)
-    : m_resource(SDL_LoadObject(sofile))
-  {
-  }
+  SharedObject(StringParam sofile);
 
   /// Destructor
   ~SharedObject() { SDL_UnloadObject(m_resource); }
@@ -154,8 +129,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr SharedObject& operator=(const SharedObject& other) noexcept =
-    default;
+  SharedObject& operator=(const SharedObject& other) = default;
 
 public:
   /// Retrieves underlying SharedObjectRaw.
@@ -175,9 +149,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to SharedObjectParam
-  constexpr operator SharedObjectParam() const noexcept { return {m_resource}; }
 
   /**
    * Unload a shared object from memory.
@@ -222,43 +193,76 @@ public:
   FunctionPointer LoadFunction(StringParam name);
 };
 
-/// Semi-safe reference for SharedObject.
+/**
+ * Reference for SharedObject.
+ *
+ * This does not take ownership!
+ */
 struct SharedObjectRef : SharedObject
 {
   using SharedObject::SharedObject;
 
   /**
-   * Constructs from SharedObjectParam.
+   * Constructs from raw SharedObject.
    *
-   * @param resource a SharedObjectRaw or SharedObject.
-   *
-   * This does not takes ownership!
-   */
-  SharedObjectRef(SharedObjectParam resource) noexcept
-    : SharedObject(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from SharedObjectParam.
-   *
-   * @param resource a SharedObjectRaw or SharedObject.
+   * @param resource a SharedObjectRaw.
    *
    * This does not takes ownership!
    */
-  SharedObjectRef(SharedObjectRaw resource) noexcept
+  constexpr SharedObjectRef(SharedObjectRaw resource) noexcept
     : SharedObject(resource)
   {
   }
 
+  /**
+   * Constructs from SharedObject.
+   *
+   * @param resource a SharedObject.
+   *
+   * This does not takes ownership!
+   */
+  constexpr SharedObjectRef(const SharedObject& resource) noexcept
+    : SharedObject(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from SharedObject.
+   *
+   * @param resource a SharedObject.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SharedObjectRef(SharedObject&& resource) noexcept
+    : SharedObject(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  SharedObjectRef(const SharedObjectRef& other) noexcept
+  constexpr SharedObjectRef(const SharedObjectRef& other) noexcept
+    : SharedObject(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr SharedObjectRef(SharedObjectRef&& other) noexcept
     : SharedObject(other.get())
   {
   }
 
   /// Destructor
   ~SharedObjectRef() { release(); }
+
+  /// Assignment operator.
+  SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
+  {
+    release();
+    SharedObject::operator=(SharedObject(other.get()));
+    return *this;
+  }
+
+  /// Converts to SharedObjectRaw
+  constexpr operator SharedObjectRaw() const noexcept { return get(); }
 };
 
 /**
@@ -278,6 +282,11 @@ struct SharedObjectRef : SharedObject
 inline SharedObject LoadObject(StringParam sofile)
 {
   return SharedObject(std::move(sofile));
+}
+
+inline SharedObject::SharedObject(StringParam sofile)
+  : m_resource(SDL_LoadObject(sofile))
+{
 }
 
 /**
@@ -307,7 +316,7 @@ inline SharedObject LoadObject(StringParam sofile)
  *
  * @sa SharedObject.SharedObject
  */
-inline FunctionPointer LoadFunction(SharedObjectParam handle, StringParam name)
+inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
 {
   return SDL_LoadFunction(handle, name);
 }

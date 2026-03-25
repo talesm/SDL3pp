@@ -4,100 +4,68 @@ set(SDL3PP_BUNDLE_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external)
 option(SDL3PP_BUNDLE_SHALLOW "Use shallow download" OFF)
 option(SDL3PP_BUNDLE_DISCONNECTED "Use disconnected download" OFF)
 
-set(SDL3PP_USE_SDL3_TAG OFF CACHE STRING "Bundle SDL3 with this named tag/branch")
-set(SDL3PP_USE_SDL3IMAGE_TAG OFF CACHE STRING "Bundle SDL3_image with this named tag/branch")
-set(SDL3PP_USE_SDL3TTF_TAG OFF CACHE STRING "Bundle SDL3_ttf with this named tag/branch")
-
-set(SDL3PP_SDL3_DEFAULT_VERSION 3.2.28)
-set(SDL3PP_SDL3IMAGE_DEFAULT_VERSION 3.2.4)
-set(SDL3PP_SDL3TTF_DEFAULT_VERSION 3.2.2)
-
-if(SDL3PP_USE_SDL3_TAG)
-  set(SDL3_TAG ${SDL3PP_USE_SDL3_TAG})
+set(SDL3PP_USE_SDL3_URL OFF CACHE STRING "Bundle SDL3 with this named tag/branch")
+if(SDL3PP_USE_SDL3_URL)
+  set(SDL3_URL ${SDL3PP_USE_SDL3_URL})
 else ()
-  set(SDL3_TAG "release-${SDL3PP_SDL3_DEFAULT_VERSION}")
-endif ()
-if(SDL3PP_USE_SDL3IMAGE_TAG)
-  set(SDL3IMAGE_TAG ${SDL3PP_USE_SDL3IMAGE_TAG})
-else ()
-  set(SDL3IMAGE_TAG "release-${SDL3PP_SDL3IMAGE_DEFAULT_VERSION}")
-endif ()
-if(SDL3PP_USE_SDL3TTF_TAG)
-  set(SDL3TTF_TAG ${SDL3PP_USE_SDL3TTF_TAG})
-else ()
-  set(SDL3TTF_TAG "release-${SDL3PP_SDL3TTF_DEFAULT_VERSION}")
+  set(SDL3_URL https://github.com/libsdl-org/SDL/releases/download/release-3.4.2/SDL3-3.4.2.tar.gz)
 endif ()
 
-if (WIN32)
-  set(SDL3PP_USE_WINDOWS_PREBUILT_DEFAULT ON)
-else ()
-  set(SDL3PP_USE_WINDOWS_PREBUILT_DEFAULT OFF)
-endif ()
-option(SDL3PP_USE_WINDOWS_PREBUILT "Download prebuilt instead of sources (Windows only)" ${SDL3PP_USE_WINDOWS_PREBUILT_DEFAULT})
+set(SDL_INSTALL ON) # passed to SDL3External
+set(SDL_TESTS OFF)  # passed to SDL3External
+set(SDL_TEST_LIBRARY OFF) # passed to SDL3External
+set(SDL_X11_XTEST OFF)  # passed to SDL3External
 
-if (SDL3PP_USE_WINDOWS_PREBUILT)
-  message("Configuring using windows pre-built")
-  FetchContent_Declare(SDL3PreBuilt
-    URL "https://github.com/libsdl-org/SDL/releases/download/release-${SDL3PP_SDL3_DEFAULT_VERSION}/SDL3-devel-${SDL3PP_SDL3_DEFAULT_VERSION}-VC.zip"
-    UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
-  )
-  FetchContent_MakeAvailable(SDL3PreBuilt)
-  include("${PROJECT_BINARY_DIR}/_deps/sdl3prebuilt-src/cmake/SDL3Config.cmake")
+FetchContent_Declare(SDL3External
+  URL ${SDL3_URL}
+  OVERRIDE_FIND_PACKAGE
+)
+FetchContent_MakeAvailable(SDL3External)
 
-  if (SDL3PP_ENABLE_IMAGE)
-    FetchContent_Declare(SDL3ImagePrebuilt
-      URL "https://github.com/libsdl-org/SDL_image/releases/download/release-${SDL3PP_SDL3IMAGE_DEFAULT_VERSION}/SDL3_image-devel-${SDL3PP_SDL3IMAGE_DEFAULT_VERSION}-mingw.tar.gz"
-      UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
-    )
-    FetchContent_MakeAvailable(SDL3ImagePrebuilt)
-    include("${PROJECT_BINARY_DIR}/_deps/sdl3imageprebuilt-src/cmake/SDL3_imageConfig.cmake")
-  endif (SDL3PP_ENABLE_IMAGE)
-
-  if (SDL3PP_ENABLE_TTF)
-    FetchContent_Declare(SDL3TTFPrebuilt
-      URL "https://github.com/libsdl-org/SDL_ttf/releases/download/release-${SDL3PP_SDL3TTF_DEFAULT_VERSION}/SDL3_ttf-devel-${SDL3PP_SDL3TTF_DEFAULT_VERSION}-mingw.tar.gz"
-      UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
-    )
-    FetchContent_MakeAvailable(SDL3TTFPrebuilt)
-    include("${PROJECT_BINARY_DIR}/_deps/sdl3ttfprebuilt-src/cmake/SDL3_ttfConfig.cmake")
-  endif (SDL3PP_ENABLE_TTF)
-
-else()
-  set(SDL_INSTALL ON) # passed to external/SDL
-  FetchContent_Declare(SDL3External
-    GIT_REPOSITORY git@github.com:libsdl-org/SDL.git
-    GIT_TAG ${SDL3_TAG}
-    GIT_SUBMODULES_RECURSE ON
-    GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
-    GIT_PROGRESS ON
-    UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
+if (SDL3PP_ENABLE_IMAGE)
+  set(SDLIMAGE_INSTALL ON) # passed to external/SDL
+  set(SDL3PP_USE_SDL3IMAGE_URL OFF CACHE STRING "Bundle SDL3_image with this named tag/branch")
+  set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+  if(SDL3PP_USE_SDL3IMAGE_URL)
+    set(SDL3IMAGE_URL ${SDL3PP_USE_SDL3IMAGE_URL})
+  else ()
+    set(SDL3IMAGE_URL https://github.com/libsdl-org/SDL_image/releases/download/release-3.4.0/SDL3_image-3.4.0.tar.gz)
+  endif ()
+  FetchContent_Declare(SDL3ImageExternal
+    URL ${SDL3IMAGE_URL}
     OVERRIDE_FIND_PACKAGE
   )
-  FetchContent_MakeAvailable(SDL3External)
+  FetchContent_MakeAvailable(SDL3ImageExternal)
+endif (SDL3PP_ENABLE_IMAGE)
 
-  if (SDL3PP_ENABLE_IMAGE)
-    set(SDLIMAGE_INSTALL ON) # passed to external/SDL
-    FetchContent_Declare(SDL3ImageExternal
-      GIT_REPOSITORY git@github.com:libsdl-org/SDL_image.git
-      GIT_TAG ${SDL3IMAGE_TAG}
-      GIT_SUBMODULES_RECURSE ON
-      GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
-      GIT_PROGRESS ON
-      UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
-    )
-    FetchContent_MakeAvailable(SDL3ImageExternal)
-  endif (SDL3PP_ENABLE_IMAGE)
+if (SDL3PP_ENABLE_MIXER)
+  set(SDLMIXER_INSTALL ON) # passed to external/SDL
+  set(SDL3PP_USE_SDL3MIXER_URL OFF CACHE STRING "Bundle SDL3_mixer with this named tag/branch")
+  set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_mixer::SDL3_mixer)
+  if(SDL3PP_USE_SDL3MIXER_URL)
+    set(SDL3MIXER_URL ${SDL3PP_USE_SDL3MIXER_URL})
+  else ()
+    set(SDL3MIXER_URL https://github.com/libsdl-org/SDL_mixer/releases/download/release-3.2.0/SDL3_mixer-3.2.0.tar.gz)
+  endif ()
+  FetchContent_Declare(SDL3MixerExternal
+    URL ${SDL3MIXER_URL}
+    OVERRIDE_FIND_PACKAGE
+  )
+  FetchContent_MakeAvailable(SDL3MixerExternal)
+endif (SDL3PP_ENABLE_MIXER)
 
-  if (SDL3PP_ENABLE_TTF)
-    set(SDLTTF_INSTALL ON) # passed to external/SDL
-    FetchContent_Declare(SDL3TTFExternal
-      GIT_REPOSITORY git@github.com:libsdl-org/SDL_ttf.git
-      GIT_TAG ${SDL3TTF_TAG}
-      GIT_SUBMODULES_RECURSE ON
-      GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
-      GIT_PROGRESS ON
-      UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
-    )
-    FetchContent_MakeAvailable(SDL3TTFExternal)
-  endif (SDL3PP_ENABLE_TTF)
-endif()
+if (SDL3PP_ENABLE_TTF)
+  set(SDLTTF_INSTALL ON) # passed to external/SDL
+  set(SDL3PP_USE_SDL3TTF_URL OFF CACHE STRING "Bundle SDL3_ttf with this named tag/branch")
+  set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+  if(SDL3PP_USE_SDL3TTF_URL)
+    set(SDL3TTF_URL ${SDL3PP_USE_SDL3TTF_URL})
+  else ()
+    set(SDL3TTF_URL https://github.com/libsdl-org/SDL_ttf/releases/download/release-3.2.2/SDL3_ttf-3.2.2.tar.gz)
+  endif ()
+  FetchContent_Declare(SDL3TTFExternal
+    URL ${SDL3TTF_URL}
+    OVERRIDE_FIND_PACKAGE
+  )
+  FetchContent_MakeAvailable(SDL3TTFExternal)
+endif (SDL3PP_ENABLE_TTF)

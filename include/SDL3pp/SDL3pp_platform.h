@@ -31,6 +31,8 @@ namespace SDL {
  * @returns the name of the platform. If the correct platform name is not
  *          available, returns a string beginning with the text "Unknown".
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline const char* GetPlatform() { return SDL_GetPlatform(); }

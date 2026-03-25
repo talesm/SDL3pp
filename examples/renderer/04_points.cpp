@@ -18,18 +18,19 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   // Init library
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  static SDL::Window InitAndCreateWindow()
   {
     SDL::SetAppMetadata(
       "Example Renderer Points", "1.0", "com.example.renderer-points");
     SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
+    return SDL::CreateWindowAndRenderer(
+      "examples/renderer/points", windowSz, 0, nullptr);
   }
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window{"examples/renderer/points", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window{InitAndCreateWindow()};
+  SDL::RendererRef renderer{window.GetRenderer()};
+
   std::chrono::nanoseconds last_time;
 
   static constexpr int NUM_POINTS = 500;

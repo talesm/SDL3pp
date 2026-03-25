@@ -8,16 +8,16 @@ struct Main
 {
   static constexpr SDL::Point windowSz = {640, 480};
 
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  static SDL::Window InitAndCreateWindow()
   {
     SDL::SetAppMetadata("Example Template", "1.0", "com.example.template");
     SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
+    return SDL::CreateWindowAndRenderer(
+      "examples/demo/template", windowSz, 0, nullptr);
   }
 
-  SDL::Window window{"examples/demo/template", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window{InitAndCreateWindow()};
+  SDL::RendererRef renderer{window.GetRenderer()};
 
   SDL::AppResult Iterate()
   {

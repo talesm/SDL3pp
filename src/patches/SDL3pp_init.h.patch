@@ -61,7 +61,7 @@
  /**
   * Initialize the SDL library.
   *
-@@ -314,6 +338,11 @@
+@@ -324,6 +348,11 @@
  inline bool IsMainThread() { return SDL_IsMainThread(); }
  
  /**
@@ -73,7 +73,7 @@
   * Callback run on the main thread.
   *
   * @param userdata an app-controlled pointer that is passed to the callback.
-@@ -332,9 +361,14 @@
+@@ -342,9 +371,14 @@
   * @sa RunOnMainThread
   *
   * @sa MainThreadCallback
@@ -88,7 +88,7 @@
  /**
   * Call a function on the main thread during event processing.
   *
-@@ -377,7 +411,6 @@
+@@ -387,7 +421,6 @@
   * called with `wait_complete` true.
   *
   * @param callback the callback to call on the main thread.
@@ -96,7 +96,7 @@
   * @param wait_complete true to wait for the callback to complete, false to
   *                      return immediately.
   * @throws Error on failure.
-@@ -387,10 +420,15 @@
+@@ -397,10 +430,15 @@
   * @since This function is available since SDL 3.2.0.
   *
   * @sa IsMainThread
@@ -113,7 +113,7 @@
  }
  
  /**
-@@ -541,6 +579,219 @@
+@@ -551,6 +589,219 @@
    return SDL_GetAppMetadataProperty(name);
  }
  

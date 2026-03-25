@@ -47,33 +47,6 @@ using HidDeviceRaw = SDL_hid_device*;
 // Forward decl
 struct HidDeviceRef;
 
-/// Safely wrap HidDevice for non owning parameters
-struct HidDeviceParam
-{
-  HidDeviceRaw value; ///< parameter's HidDeviceRaw
-
-  /// Constructs from HidDeviceRaw
-  constexpr HidDeviceParam(HidDeviceRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr HidDeviceParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const HidDeviceParam& other) const = default;
-
-  /// Converts to underlying HidDeviceRaw
-  constexpr operator HidDeviceRaw() const { return value; }
-};
-
 /**
  * HID underlying bus types.
  *
@@ -135,12 +108,12 @@ class HidDevice
 public:
   /// Default ctor
   constexpr HidDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from HidDeviceParam.
+   * Constructs from HidDeviceRef.
    *
    * @param resource a HidDeviceRaw to be wrapped.
    *
@@ -151,9 +124,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) = delete;
+  constexpr HidDevice(const HidDevice& other) noexcept
+    : HidDevice(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr HidDevice(HidDevice&& other) noexcept
     : HidDevice(other.release())
@@ -181,10 +159,7 @@ public:
    */
   HidDevice(unsigned short vendor_id,
             unsigned short product_id,
-            const wchar_t* serial_number)
-    : m_resource(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
-  {
-  }
+            const wchar_t* serial_number);
 
   /**
    * Open a HID device by its path name.
@@ -197,10 +172,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  HidDevice(StringParam path)
-    : m_resource(CheckError(SDL_hid_open_path(path)))
-  {
-  }
+  HidDevice(StringParam path);
 
   /// Destructor
   ~HidDevice() { SDL_hid_close(m_resource); }
@@ -214,7 +186,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr HidDevice& operator=(const HidDevice& other) noexcept = default;
+  HidDevice& operator=(const HidDevice& other) = default;
 
 public:
   /// Retrieves underlying HidDeviceRaw.
@@ -234,9 +206,6 @@ public:
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
-  /// Converts to HidDeviceParam
-  constexpr operator HidDeviceParam() const noexcept { return {m_resource}; }
-
   /**
    * Close a HID device.
    *
@@ -245,6 +214,25 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   void close();
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Get the properties associated with an HidDevice.
+   *
+   * The following read-only properties are provided by SDL:
+   *
+   * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+   *   associated with the device, if it was opened using libusb.
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  PropertiesRef hid_get_properties();
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Write an Output report to a HID device.
@@ -456,43 +444,76 @@ public:
   int get_report_descriptor(TargetBytes buf);
 };
 
-/// Semi-safe reference for HidDevice.
+/**
+ * Reference for HidDevice.
+ *
+ * This does not take ownership!
+ */
 struct HidDeviceRef : HidDevice
 {
   using HidDevice::HidDevice;
 
   /**
-   * Constructs from HidDeviceParam.
+   * Constructs from raw HidDevice.
    *
-   * @param resource a HidDeviceRaw or HidDevice.
-   *
-   * This does not takes ownership!
-   */
-  HidDeviceRef(HidDeviceParam resource) noexcept
-    : HidDevice(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from HidDeviceParam.
-   *
-   * @param resource a HidDeviceRaw or HidDevice.
+   * @param resource a HidDeviceRaw.
    *
    * This does not takes ownership!
    */
-  HidDeviceRef(HidDeviceRaw resource) noexcept
+  constexpr HidDeviceRef(HidDeviceRaw resource) noexcept
     : HidDevice(resource)
   {
   }
 
+  /**
+   * Constructs from HidDevice.
+   *
+   * @param resource a HidDevice.
+   *
+   * This does not takes ownership!
+   */
+  constexpr HidDeviceRef(const HidDevice& resource) noexcept
+    : HidDevice(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from HidDevice.
+   *
+   * @param resource a HidDevice.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr HidDeviceRef(HidDevice&& resource) noexcept
+    : HidDevice(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  HidDeviceRef(const HidDeviceRef& other) noexcept
+  constexpr HidDeviceRef(const HidDeviceRef& other) noexcept
+    : HidDevice(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr HidDeviceRef(HidDeviceRef&& other) noexcept
     : HidDevice(other.get())
   {
   }
 
   /// Destructor
   ~HidDeviceRef() { release(); }
+
+  /// Assignment operator.
+  HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
+  {
+    release();
+    HidDevice::operator=(HidDevice(other.get()));
+    return *this;
+  }
+
+  /// Converts to HidDeviceRaw
+  constexpr operator HidDeviceRaw() const noexcept { return get(); }
 };
 
 /**
@@ -621,6 +642,18 @@ inline HidDevice hid_open(unsigned short vendor_id,
   return HidDevice(vendor_id, product_id, serial_number);
 }
 
+inline HidDevice::HidDevice(unsigned short vendor_id,
+                            unsigned short product_id,
+                            const wchar_t* serial_number)
+  : m_resource(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
+{
+}
+
+inline HidDevice::HidDevice(StringParam path)
+  : m_resource(CheckError(SDL_hid_open_path(path)))
+{
+}
+
 /**
  * Open a HID device by its path name.
  *
@@ -637,6 +670,41 @@ inline HidDevice hid_open_path(StringParam path)
 {
   return HidDevice(std::move(path));
 }
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Get the properties associated with an HidDevice.
+ *
+ * The following read-only properties are provided by SDL:
+ *
+ * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+ *   associated with the device, if it was opened using libusb.
+ *
+ * @param dev a device handle returned from HidDevice.HidDevice().
+ * @returns a valid property ID on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline PropertiesRef hid_get_properties(HidDeviceRef dev)
+{
+  return CheckError(SDL_hid_get_properties(dev));
+}
+
+inline PropertiesRef HidDevice::hid_get_properties()
+{
+  return SDL::hid_get_properties(m_resource);
+}
+
+namespace prop::Hidapi {
+
+constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
+  SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER;
+
+} // namespace prop::Hidapi
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Write an Output report to a HID device.
@@ -660,7 +728,7 @@ inline HidDevice hid_open_path(StringParam path)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_write(HidDeviceParam dev, SourceBytes data)
+inline int hid_write(HidDeviceRef dev, SourceBytes data)
 {
   return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
 }
@@ -686,7 +754,7 @@ inline int HidDevice::write(SourceBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_read_timeout(HidDeviceParam dev,
+inline int hid_read_timeout(HidDeviceRef dev,
                             TargetBytes data,
                             Milliseconds timeout)
 {
@@ -714,7 +782,7 @@ inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_read(HidDeviceParam dev, TargetBytes data)
+inline int hid_read(HidDeviceRef dev, TargetBytes data)
 {
   return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
 }
@@ -740,7 +808,7 @@ inline int HidDevice::read(TargetBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_set_nonblocking(HidDeviceParam dev, bool nonblock)
+inline void hid_set_nonblocking(HidDeviceRef dev, bool nonblock)
 {
   CheckErrorIfNot(SDL_hid_set_nonblocking(dev, nonblock), 0);
 }
@@ -770,7 +838,7 @@ inline void HidDevice::set_nonblocking(bool nonblock)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_send_feature_report(HidDeviceParam dev, SourceBytes data)
+inline int hid_send_feature_report(HidDeviceRef dev, SourceBytes data)
 {
   return SDL_hid_send_feature_report(
     dev, data.data_as<Uint8>(), data.size_bytes());
@@ -800,7 +868,7 @@ inline int HidDevice::send_feature_report(SourceBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_get_feature_report(HidDeviceParam dev, TargetBytes data)
+inline int hid_get_feature_report(HidDeviceRef dev, TargetBytes data)
 {
   return SDL_hid_get_feature_report(
     dev, data.data_as<Uint8>(), data.size_bytes());
@@ -830,7 +898,7 @@ inline int HidDevice::get_feature_report(TargetBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_get_input_report(HidDeviceParam dev, TargetBytes data)
+inline int hid_get_input_report(HidDeviceRef dev, TargetBytes data)
 {
   return SDL_hid_get_input_report(
     dev, data.data_as<Uint8>(), data.size_bytes());
@@ -866,7 +934,7 @@ inline void HidDevice::close() { hid_close(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_manufacturer_string(HidDeviceParam dev,
+inline void hid_get_manufacturer_string(HidDeviceRef dev,
                                         wchar_t* string,
                                         size_t maxlen)
 {
@@ -888,7 +956,7 @@ inline void HidDevice::get_manufacturer_string(wchar_t* string, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_product_string(HidDeviceParam dev,
+inline void hid_get_product_string(HidDeviceRef dev,
                                    wchar_t* string,
                                    size_t maxlen)
 {
@@ -910,7 +978,7 @@ inline void HidDevice::get_product_string(wchar_t* string, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_serial_number_string(HidDeviceParam dev,
+inline void hid_get_serial_number_string(HidDeviceRef dev,
                                          wchar_t* string,
                                          size_t maxlen)
 {
@@ -933,7 +1001,7 @@ inline void HidDevice::get_serial_number_string(wchar_t* string, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void hid_get_indexed_string(HidDeviceParam dev,
+inline void hid_get_indexed_string(HidDeviceRef dev,
                                    int string_index,
                                    wchar_t* string,
                                    size_t maxlen)
@@ -960,7 +1028,7 @@ inline void HidDevice::get_indexed_string(int string_index,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline hid_device_info* hid_get_device_info(HidDeviceParam dev)
+inline hid_device_info* hid_get_device_info(HidDeviceRef dev)
 {
   return CheckError(SDL_hid_get_device_info(dev));
 }
@@ -983,7 +1051,7 @@ inline hid_device_info* HidDevice::get_device_info()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int hid_get_report_descriptor(HidDeviceParam dev, TargetBytes buf)
+inline int hid_get_report_descriptor(HidDeviceRef dev, TargetBytes buf)
 {
   return SDL_hid_get_report_descriptor(
     dev, buf.data_as<Uint8>(), buf.size_bytes());

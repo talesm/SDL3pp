@@ -23,7 +23,8 @@ namespace SDL {
  * report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
- * good understanding of [CategoryMutex](CategoryMutex) as well.
+ * good understanding of thread safety measures: locking and synchronization
+ * mechanisms are handled by the functions in SDL3pp_mutex.h.
  *
  * @{
  */
@@ -36,33 +37,6 @@ using ThreadRaw = SDL_Thread*;
 
 // Forward decl
 struct ThreadRef;
-
-/// Safely wrap Thread for non owning parameters
-struct ThreadParam
-{
-  ThreadRaw value; ///< parameter's ThreadRaw
-
-  /// Constructs from ThreadRaw
-  constexpr ThreadParam(ThreadRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ThreadParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ThreadParam& other) const = default;
-
-  /// Converts to underlying ThreadRaw
-  constexpr operator ThreadRaw() const { return value; }
-};
 
 /**
  * The SDL thread priority.
@@ -178,12 +152,12 @@ class Thread
 public:
   /// Default ctor
   constexpr Thread(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from ThreadParam.
+   * Constructs from ThreadRef.
    *
    * @param resource a ThreadRaw to be wrapped.
    *
@@ -194,9 +168,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Thread(const Thread& other) = delete;
+  constexpr Thread(const Thread& other) noexcept
+    : Thread(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())
@@ -235,15 +214,14 @@ public:
    * @post an opaque pointer to the new thread object on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
    * @sa Thread.Wait
    */
-  Thread(ThreadFunction fn, StringParam name, void* data)
-    : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
-  {
-  }
+  Thread(ThreadFunction fn, StringParam name, void* data);
 
   /**
    * Create a new thread with with the specified properties.
@@ -302,15 +280,14 @@ public:
    * @post an opaque pointer to the new thread object on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
    * @sa Thread.Wait
    */
-  Thread(PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
-  {
-  }
+  Thread(PropertiesRef props);
 
   /// Destructor
   ~Thread() { SDL_DetachThread(m_resource); }
@@ -324,7 +301,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Thread& operator=(const Thread& other) noexcept = default;
+  Thread& operator=(const Thread& other) = default;
 
 public:
   /// Retrieves underlying ThreadRaw.
@@ -343,9 +320,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to ThreadParam
-  constexpr operator ThreadParam() const noexcept { return {m_resource}; }
 
   /**
    * Let a thread clean up on exit without intervention.
@@ -373,6 +347,8 @@ public:
    *
    * It is safe to pass nullptr to this function; it is a no-op.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
@@ -385,6 +361,8 @@ public:
    *
    * @returns a pointer to a UTF-8 string that names the specified thread, or
    *          nullptr if it doesn't have a name.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -399,6 +377,8 @@ public:
    *
    * @returns the ID of the specified thread, or the ID of the current thread if
    *          `thread` is nullptr.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -415,6 +395,8 @@ public:
    *
    * @param priority the ThreadPriority to set.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -446,6 +428,9 @@ public:
    *               function by its 'return', or -1 if the thread has been
    *               detached or isn't valid, may be nullptr.
    *
+   * @threadsafety It is safe to call this function from any thread, but only a
+   *               single thread can wait any specific thread to finish.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
@@ -459,6 +444,8 @@ public:
    * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
    *          isn't valid.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa ThreadState
@@ -466,43 +453,76 @@ public:
   ThreadState GetState() const;
 };
 
-/// Semi-safe reference for Thread.
+/**
+ * Reference for Thread.
+ *
+ * This does not take ownership!
+ */
 struct ThreadRef : Thread
 {
   using Thread::Thread;
 
   /**
-   * Constructs from ThreadParam.
+   * Constructs from raw Thread.
    *
-   * @param resource a ThreadRaw or Thread.
-   *
-   * This does not takes ownership!
-   */
-  ThreadRef(ThreadParam resource) noexcept
-    : Thread(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from ThreadParam.
-   *
-   * @param resource a ThreadRaw or Thread.
+   * @param resource a ThreadRaw.
    *
    * This does not takes ownership!
    */
-  ThreadRef(ThreadRaw resource) noexcept
+  constexpr ThreadRef(ThreadRaw resource) noexcept
     : Thread(resource)
   {
   }
 
+  /**
+   * Constructs from Thread.
+   *
+   * @param resource a Thread.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ThreadRef(const Thread& resource) noexcept
+    : Thread(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from Thread.
+   *
+   * @param resource a Thread.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr ThreadRef(Thread&& resource) noexcept
+    : Thread(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  ThreadRef(const ThreadRef& other) noexcept
+  constexpr ThreadRef(const ThreadRef& other) noexcept
+    : Thread(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ThreadRef(ThreadRef&& other) noexcept
     : Thread(other.get())
   {
   }
 
   /// Destructor
   ~ThreadRef() { release(); }
+
+  /// Assignment operator.
+  ThreadRef& operator=(const ThreadRef& other) noexcept
+  {
+    release();
+    Thread::operator=(Thread(other.get()));
+    return *this;
+  }
+
+  /// Converts to ThreadRaw
+  constexpr operator ThreadRaw() const noexcept { return get(); }
 };
 
 /**
@@ -543,6 +563,8 @@ using TLSID = AtomicInt;
  * @returns an opaque pointer to the new thread object on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.Thread
@@ -551,6 +573,16 @@ using TLSID = AtomicInt;
 inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
 {
   return Thread(fn, std::move(name), data);
+}
+
+inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
+  : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
+{
+}
+
+inline Thread::Thread(PropertiesRef props)
+  : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
+{
 }
 
 /**
@@ -610,12 +642,14 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  * @returns an opaque pointer to the new thread object on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.Thread
  * @sa Thread.Wait
  */
-inline Thread CreateThreadWithProperties(PropertiesParam props)
+inline Thread CreateThreadWithProperties(PropertiesRef props)
 {
   return Thread(props);
 }
@@ -642,9 +676,11 @@ constexpr auto CREATE_STACKSIZE_NUMBER =
  * @returns a pointer to a UTF-8 string that names the specified thread, or
  *          nullptr if it doesn't have a name.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetThreadName(ThreadParam thread)
+inline const char* GetThreadName(ThreadRef thread)
 {
   return SDL_GetThreadName(thread);
 }
@@ -666,6 +702,8 @@ inline const char* Thread::GetName() const
  *
  * @returns the ID of the current thread.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.GetID
@@ -683,11 +721,13 @@ inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
  * @returns the ID of the specified thread, or the ID of the current thread if
  *          `thread` is nullptr.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetCurrentThreadID
  */
-inline ThreadID GetThreadID(ThreadParam thread)
+inline ThreadID GetThreadID(ThreadRef thread)
 {
   return SDL_GetThreadID(thread);
 }
@@ -703,6 +743,8 @@ inline ThreadID Thread::GetID() const { return SDL::GetThreadID(m_resource); }
  *
  * @param priority the ThreadPriority to set.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -743,12 +785,15 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  *               function by its 'return', or -1 if the thread has been detached
  *               or isn't valid, may be nullptr.
  *
+ * @threadsafety It is safe to call this function from any thread, but only a
+ *               single thread can wait any specific thread to finish.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.Thread
  * @sa Thread.Detach
  */
-inline void WaitThread(ThreadParam thread, int* status)
+inline void WaitThread(ThreadRef thread, int* status)
 {
   SDL_WaitThread(thread, status);
 }
@@ -762,11 +807,13 @@ inline void Thread::Wait(int* status) { SDL::WaitThread(m_resource, status); }
  * @returns the current state of a thread, or THREAD_UNKNOWN if the thread isn't
  *          valid.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa ThreadState
  */
-inline ThreadState GetThreadState(ThreadParam thread)
+inline ThreadState GetThreadState(ThreadRef thread)
 {
   return SDL_GetThreadState(thread);
 }
@@ -800,6 +847,8 @@ inline ThreadState Thread::GetState() const
  * that function or this one, but not both, or behavior is undefined.
  *
  * It is safe to pass nullptr to this function; it is a no-op.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @param thread the Thread pointer that was returned from the Thread.Thread()
  *               call that started this thread.

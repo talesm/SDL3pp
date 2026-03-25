@@ -42,7 +42,7 @@ namespace SDL {
  *
  * For more information, see:
  *
- * https://wiki.libsdl.org/SDL3/README/main-functions
+ * https://wiki.libsdl.org/SDL3/README-main-functions
  *
  * @{
  */
@@ -57,7 +57,7 @@ namespace SDL {
  * proper entry point for the platform, and all the other magic details needed,
  * like manually calling SetMainReady.
  *
- * Please see [README/main-functions](README/main-functions), (or
+ * Please see [README-main-functions](README-main-functions), (or
  * docs/README-main-functions.md in the source tree) for a more detailed
  * explanation.
  *
@@ -74,7 +74,7 @@ namespace SDL {
  * SDL_AppQuit. The app should not provide a `main` function in this case, and
  * doing so will likely cause the build to fail.
  *
- * Please see [README/main-functions](README/main-functions), (or
+ * Please see [README-main-functions](README-main-functions), (or
  * docs/README-main-functions.md in the source tree) for a more detailed
  * explanation.
  *
@@ -109,6 +109,8 @@ using main_func = int(SDLCALL*)(int argc, char* argv[]);
  * not be changed it is necessary to define SDL3PP_MAIN_HANDLED before including
  * SDL.h.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Init
@@ -124,6 +126,9 @@ inline void SetMainReady() { SDL_SetMainReady(); }
  * You can use this if you want to use your own main() implementation without
  * using SDL_main (like when using SDL3PP_MAIN_HANDLED). When using this, you do
  * *not* need SetMainReady().
+ *
+ * If `argv` is nullptr, SDL will provide command line arguments, either by
+ * querying the OS for them if possible, or supplying a filler array if not.
  *
  * @param argc the argc parameter from the application's main() function, or 0
  *             if the platform's main-equivalent has no argc.
@@ -210,6 +215,8 @@ inline int EnterAppMainCallbacks(int argc,
  * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline bool RegisterApp(StringParam name, Uint32 style, void* hInst)
@@ -230,6 +237,8 @@ inline bool RegisterApp(StringParam name, Uint32 style, void* hInst)
  * deregistered when the registration counter in RegisterApp decrements to zero
  * through calls to this function.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void UnregisterApp() { SDL_UnregisterApp(); }
@@ -241,6 +250,8 @@ inline void UnregisterApp() { SDL_UnregisterApp(); }
  *
  * This function is only needed for Xbox GDK support; all other platforms will
  * do nothing and set an "unsupported" error message.
+ *
+ * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  */

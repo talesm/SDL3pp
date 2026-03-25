@@ -160,15 +160,14 @@ struct MessageBox : MessageBoxRaw
    * @param buttons the value for buttons.
    * @param colorScheme the value for colorScheme.
    */
-  constexpr MessageBox(
-    MessageBoxFlags flags,
-    WindowRef window,
-    const char* title,
-    const char* message,
-    std::span<const MessageBoxButtonData> buttons,
-    OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
+  MessageBox(MessageBoxFlags flags,
+             WindowRef window,
+             const char* title,
+             const char* message,
+             std::span<const MessageBoxButtonData> buttons,
+             OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
     : MessageBoxRaw{flags,
-                    window.get(),
+                    window,
                     title,
                     message,
                     int(buttons.size()),
@@ -182,7 +181,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current flags value.
    */
-  constexpr SDL_MessageBoxFlags GetFlags() const noexcept { return flags; }
+  constexpr MessageBoxFlags GetFlags() const noexcept { return flags; }
 
   /**
    * Set the flags.
@@ -190,7 +189,7 @@ struct MessageBox : MessageBoxRaw
    * @param newFlags the new flags value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetFlags(SDL_MessageBoxFlags newFlags) noexcept
+  constexpr MessageBox& SetFlags(MessageBoxFlags newFlags) noexcept
   {
     flags = newFlags;
     return *this;
@@ -201,7 +200,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current window value.
    */
-  constexpr SDL_Window* GetWindow() const noexcept { return window; }
+  WindowRef GetWindow() const noexcept { return window; }
 
   /**
    * Set the window.
@@ -209,7 +208,7 @@ struct MessageBox : MessageBoxRaw
    * @param newWindow the new window value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetWindow(SDL_Window* newWindow) noexcept
+  MessageBox& SetWindow(WindowRef newWindow) noexcept
   {
     window = newWindow;
     return *this;
@@ -352,6 +351,8 @@ struct MessageBox : MessageBoxRaw
    *                 copied.
    * @throws Error on failure.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa ShowSimpleMessageBox
@@ -385,6 +386,8 @@ struct MessageBox : MessageBoxRaw
  *                       options.
  * @param buttonid the pointer to which user id of hit button should be copied.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -435,6 +438,8 @@ inline void MessageBox::Show(int* buttonid) const
  * @param window the parent window, or nullptr for no parent.
  * @throws Error on failure.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa MessageBox.Show
@@ -442,7 +447,7 @@ inline void MessageBox::Show(int* buttonid) const
 inline void ShowSimpleMessageBox(MessageBoxFlags flags,
                                  StringParam title,
                                  StringParam message,
-                                 WindowParam window)
+                                 WindowRef window)
 {
   CheckError(SDL_ShowSimpleMessageBox(flags, title, message, window));
 }

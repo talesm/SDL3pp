@@ -58,12 +58,14 @@
     "SDL_video.h",
     "SDL_vulkan.h",
     "SDL_image.h",
-    "SDL_ttf.h"
+    "SDL_ttf.h",
+    "SDL_mixer.h"
   ],
   "baseDir": [
-    "build/_deps/sdl3external-src/include/SDL3/",
-    "build/_deps/sdl3imageexternal-src/include/SDL3_image/",
-    "build/_deps/sdl3ttfexternal-src/include/SDL3_ttf/"
+    "build/base/src/SDL3Base/include/SDL3/",
+    "build/base/src/SDL3ImageBase/include/SDL3_image/",
+    "build/base/src/SDL3TTFBase/include/SDL3_ttf/",
+    "build/base/src/SDL3MixerBase/include/SDL3_mixer/"
   ],
   "outputFile": "scripts/source.json"
 }

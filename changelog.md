@@ -1,5 +1,187 @@
 # Changelog
 
+## Version 0.8.1
+
+Small bugs related shared resource copying and locking.
+
+- Fix bug on copying Surface to SurfaceRef;
+- Fix bug on copying SurfaceRef to Surface;
+- SurfaceLock use Surface instead of SurfaceRef.
+
+## Version 0.8.0
+
+This versions simplifies the handling of resource classes, reducing the number
+of auxiliary classes needed. It also wraps the SDL_mixer API.
+
+- Merge \*Ref with \*Param resource classes into a single class:
+  - Make \*Ref always non-owning
+  - Replace \*Param with \*Ref;
+  - Remove \*Param;
+  - Rename \*ConstRef to \*ConstParam
+- Wrap SDL_mixer;
+- Remove overloading of `*_IO` variants:
+  - SDL::LoadWAV_IO();
+  - SDL::LoadFile_IO();
+  - SDL::SaveFile_IO();
+  - SDL::LoadAVIF_IO
+  - SDL::LoadBMP_IO
+  - SDL::LoadICO_IO
+  - SDL::LoadCUR_IO
+  - SDL::LoadGIF_IO
+  - SDL::LoadJPG_IO
+  - SDL::LoadJXL_IO
+  - SDL::LoadLBM_IO
+  - SDL::LoadPCX_IO
+  - SDL::LoadPNG_IO
+  - SDL::LoadPNM_IO
+  - SDL::LoadSVG_IO
+  - SDL::LoadQOI_IO
+  - SDL::LoadTGA_IO
+  - SDL::LoadTIF_IO
+  - SDL::LoadXCF_IO
+  - SDL::LoadXPM_IO
+  - SDL::LoadXV_IO
+  - SDL::LoadWEBP_IO
+  - SDL::LoadSizedSVG_IO
+- Error handling fixes:
+  - SDL::GetClipboardMimeTypes();
+  - SDL::GetGamepadMappings();
+  - SDL::GetGamepadJoystick();
+  - SDL::AcquireGPUCommandBuffer();
+  - SDL::MapGPUTransferBuffer();
+  - SDL::SubmitGPUCommandBufferAndAcquireFence();
+  - SDL::GetHapticFeatures();
+  - SDL::AttachVirtualJoystick();
+  - SDL::GetMouseNameForID();
+  - SDL::GetPenDeviceType();
+  - SDL::GetRendererName();
+  - SDL::GetRendererFromTexture();
+  - SDL::GetSensorID();
+  - SDL::GetAndroidJNIEnv();
+  - SDL::GetAndroidActivity();
+  - SDL::GetTouchDeviceName();
+  - SDL::CreateAnimationEncoder();
+  - SDL::CreateAnimationEncoder_IO();
+  - SDL::CreateAnimationEncoderWithProperties();
+  - SDL::CreateAnimationDecoder();
+  - SDL::CreateAnimationDecoder_IO();
+  - SDL::CreateAnimationDecoderWithProperties();
+  - SDL::GetGlyphImage();
+  - SDL::GetGlyphImageForIndex();
+- No longer throws:
+  - SDL::GetEventFilter();
+  - SDL::GetWindowFromEvent();
+  - SDL::TryLockMutex();
+  - SDL::TryLockRWLockForReading();
+  - SDL::TryLockRWLockForReading();
+  - SDL::GetRenderMetalLayer();
+  - SDL::GetRenderMetalCommandEncoder();
+  - SDL::GetWindowParent();
+  - SDL::SyncWindow();
+  - SDL::EGL_GetWindowSurface();
+- Fix warnings for default ctors initializing resources as nullptr;
+- Make lock's get() const:
+  - AudioStreamLock.get();
+  - CameraFrame.get();
+  - MixerLock.get();
+  - PropertiesLock.get();
+  - TextureLock.get();
+  - SurfaceLock.get();
+
+## Version 0.7.4
+
+- Add operator[] to SDL::Palette;
+- Bump SDL3 compatibility to 3.4.2;
+
+## Version 0.7.3
+
+Fix segfault when copying empty Surface.
+
+## Version 0.7.2
+
+- Fix retrocompatibility error on SDL3pp_image.h's SDL::IsANI();
+- Make bundled libs downloaded from URL instead of checking out the entire
+  repository;
+
+## Version 0.7.1
+
+Small update to add support to SDL_image 3.4.0 new features.
+
+## Version 0.7.0
+
+The main theme is Lock types being a RAII construct:
+
+- Fix a few build failures on clang (not all yet, unfortunately);
+- Clean up generated resource code;
+- Fix MemoryBarrierRelease and MemoryBarrierAcquire to use macros;
+- Replace all SDL_\* parameters with \*Raw equivalents;
+- Fix GetGamepadBindings() return type to use OwnArray;
+- Design a RAII workflow to deal with Lock/Unlock patterns present on several
+  APIS:
+  - AudioStreamLock for SDL_LockAudioStream;
+  - CameraFrameLock for SDL_AcquireCameraFrame;
+  - JoystickApiLock for SDL_LockJoysticks;
+  - PropertiesLock for SDL_LockProperties;
+  - SurfaceLock for SDL_LockSurface;
+  - TextureLock for SDL_LockTexture;
+
+## Version 0.6.1
+
+Support SDL 3.4.0
+
+## Version 0.6.0
+
+Undo some "smarty" changes.
+
+- Simplify CreateWindowAndRenderer:
+  - Add overload CreateWindowAndRenderer that take pointers instead of returning
+    pair;
+  - Add overload CreateWindowAndRenderer that returns Window;
+  - Add overload to Window::Window that creates renderer
+- Make free standing version of Random;
+- Simplify timer functions:
+  - GetTicksMS and GetTicksNS that return integers;
+  - Delay overload takes integers type;
+  - DelayPrecise overload takes integer type;
+  - AddTimer accepting SDL_AddTimer callback;
+  - Add MSTimerCallback for millisecond precision callbacks;
+  - Rename TimerCallback to NSTimerCallback, to make clear we are using
+    Nanoseconds here;
+- Merge preview 3.3.x, you should be able to use this with prerelease 3.3.6;
+
+## Version 0.5.8
+
+Quick fix Surface, Texture and Palette copy constructors
+
+## Version 0.5.7
+
+Quick fix build of SDL_ttf against version 3.2.2 and 3.2.0.
+
+- Fix SDL_ttf build;
+- Make source from transformation independent from the linked one;
+
+## Version 0.5.6
+
+Fix error ".../docs/Doxyfile not found" when trying to include CMakeLists from
+SDL3pp-0.5.5.tar.gz.
+
+## Version 0.5.5
+
+Small fixes.
+
+- Fix error on Texture and Surface constructors when SDL_image not detected;
+- Move content back to the root README.md
+- Make the doxygen one simpler, removing the the build instructions and
+  referring to project's.
+- Download "bundled" projects only if "SDL3PP_FORCE_BUNDLED" is ON
+
+## Version 0.5.4
+
+Quick-fix for easier integration with projects
+
+- Replace submodules by ExternalProject;
+- Create more lightweight distribution;
+
 ## Version 0.5.3
 
 Quick-fix for copy constructor being protected on SDL::Surface.

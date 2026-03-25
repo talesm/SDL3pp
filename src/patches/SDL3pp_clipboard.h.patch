@@ -152,27 +152,22 @@
  }
  
  /**
-@@ -382,11 +415,8 @@
+@@ -382,8 +415,6 @@
  /**
   * Retrieve the list of mime types available in the clipboard.
   *
 - * @param num_mime_types a pointer filled with the number of mime types, may be
 - *                       nullptr.
-- * @returns a null-terminated array of strings with mime types, or nullptr on
-- *          failure; call GetError() for more information. This should be freed
-- *          with free() when it is no longer needed.
-+ * @returns a null terminated array of strings with mime types, or empty on
-+ *          failure; call GetError() for more information.
+  * @returns a null-terminated array of strings with mime types on success.
+  * @throws Error on failure.
   *
-  * @threadsafety This function should only be called on the main thread.
-  *
-@@ -396,7 +426,10 @@
+@@ -395,7 +426,10 @@
   */
  inline OwnArray<char*> GetClipboardMimeTypes()
  {
--  return SDL_GetClipboardMimeTypes();
+-  return CheckError(SDL_GetClipboardMimeTypes());
 +  size_t count = 0;
-+  auto data = SDL_GetClipboardMimeTypes(&count);
++  auto data = CheckError(SDL_GetClipboardMimeTypes(&count));
 +  if (!data) return {};
 +  return OwnArray<char*>{data, count};
  }

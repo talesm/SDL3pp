@@ -27,33 +27,6 @@ using MetalViewRaw = SDL_MetalView;
 // Forward decl
 struct MetalViewRef;
 
-/// Safely wrap MetalView for non owning parameters
-struct MetalViewParam
-{
-  MetalViewRaw value; ///< parameter's MetalViewRaw
-
-  /// Constructs from MetalViewRaw
-  constexpr MetalViewParam(MetalViewRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr MetalViewParam(std::nullptr_t _ = nullptr)
-    : value(0)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const MetalViewParam& other) const = default;
-
-  /// Converts to underlying MetalViewRaw
-  constexpr operator MetalViewRaw() const { return value; }
-};
-
 /**
  * A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
  *
@@ -73,7 +46,7 @@ public:
   }
 
   /**
-   * Constructs from MetalViewParam.
+   * Constructs from MetalViewRef.
    *
    * @param resource a MetalViewRaw to be wrapped.
    *
@@ -84,9 +57,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr MetalView(const MetalView& other) = delete;
+  constexpr MetalView(const MetalView& other) noexcept
+    : MetalView(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())
@@ -110,15 +88,14 @@ public:
    * @param window the window.
    * @post handle NSView or UIView.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa MetalView.Destroy
    * @sa MetalView.GetLayer
    */
-  MetalView(WindowParam window)
-    : m_resource(SDL_Metal_CreateView(window))
-  {
-  }
+  MetalView(WindowRef window);
 
   /// Destructor
   ~MetalView() { SDL_Metal_DestroyView(m_resource); }
@@ -132,7 +109,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr MetalView& operator=(const MetalView& other) noexcept = default;
+  MetalView& operator=(const MetalView& other) = default;
 
 public:
   /// Retrieves underlying MetalViewRaw.
@@ -152,14 +129,13 @@ public:
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
-  /// Converts to MetalViewParam
-  constexpr operator MetalViewParam() const noexcept { return {m_resource}; }
-
   /**
    * Destroy an existing MetalView object.
    *
    * This should be called before Window.Destroy, if MetalView.MetalView was
    * called after Window.Window.
+   *
+   * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -172,48 +148,83 @@ public:
    *
    * @returns a pointer.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   void* GetLayer();
 };
 
-/// Semi-safe reference for MetalView.
+/**
+ * Reference for MetalView.
+ *
+ * This does not take ownership!
+ */
 struct MetalViewRef : MetalView
 {
   using MetalView::MetalView;
 
   /**
-   * Constructs from MetalViewParam.
+   * Constructs from raw MetalView.
    *
-   * @param resource a MetalViewRaw or MetalView.
-   *
-   * This does not takes ownership!
-   */
-  MetalViewRef(MetalViewParam resource) noexcept
-    : MetalView(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from MetalViewParam.
-   *
-   * @param resource a MetalViewRaw or MetalView.
+   * @param resource a MetalViewRaw.
    *
    * This does not takes ownership!
    */
-  MetalViewRef(MetalViewRaw resource) noexcept
+  constexpr MetalViewRef(MetalViewRaw resource) noexcept
     : MetalView(resource)
   {
   }
 
+  /**
+   * Constructs from MetalView.
+   *
+   * @param resource a MetalView.
+   *
+   * This does not takes ownership!
+   */
+  constexpr MetalViewRef(const MetalView& resource) noexcept
+    : MetalView(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from MetalView.
+   *
+   * @param resource a MetalView.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr MetalViewRef(MetalView&& resource) noexcept
+    : MetalView(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  MetalViewRef(const MetalViewRef& other) noexcept
+  constexpr MetalViewRef(const MetalViewRef& other) noexcept
+    : MetalView(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr MetalViewRef(MetalViewRef&& other) noexcept
     : MetalView(other.get())
   {
   }
 
   /// Destructor
   ~MetalViewRef() { release(); }
+
+  /// Assignment operator.
+  MetalViewRef& operator=(const MetalViewRef& other) noexcept
+  {
+    release();
+    MetalView::operator=(MetalView(other.get()));
+    return *this;
+  }
+
+  /// Converts to MetalViewRaw
+  constexpr operator MetalViewRaw() const noexcept { return get(); }
 };
 
 /**
@@ -229,14 +240,21 @@ struct MetalViewRef : MetalView
  * @param window the window.
  * @returns handle NSView or UIView.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa MetalView.Destroy
  * @sa MetalView.GetLayer
  */
-inline MetalView Metal_CreateView(WindowParam window)
+inline MetalView Metal_CreateView(WindowRef window)
 {
   return MetalView(window);
+}
+
+inline MetalView::MetalView(WindowRef window)
+  : m_resource(SDL_Metal_CreateView(window))
+{
 }
 
 /**
@@ -246,6 +264,8 @@ inline MetalView Metal_CreateView(WindowParam window)
  * called after Window.Window.
  *
  * @param view the MetalView object.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -264,9 +284,11 @@ inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }
  * @param view the MetalView object.
  * @returns a pointer.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
-inline void* Metal_GetLayer(MetalViewParam view)
+inline void* Metal_GetLayer(MetalViewRef view)
 {
   return SDL_Metal_GetLayer(view);
 }

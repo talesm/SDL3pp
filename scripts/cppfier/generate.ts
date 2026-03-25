@@ -1,3 +1,4 @@
+import { isVersionAfter } from "./transform";
 import {
   Api,
   ApiEntries,
@@ -8,6 +9,7 @@ import {
   Dict,
   ParsedDoc,
   ParsedDocContent,
+  VersionTag,
 } from "./types";
 import { system, writeLinesSync } from "./utils";
 import { existsSync, mkdirSync } from "node:fs";
@@ -52,6 +54,8 @@ export function generateApi(config) {
 }
 
 export interface GenerateApiFileConfig {
+  parentVersion?: VersionTag;
+  previousVersionStr?: string;
   paramReplacements?: Dict<string>;
   delegatedReplacements?: Dict<string>;
 }
@@ -90,6 +94,10 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
 
     const result: string[] = [];
     for (const entry of Object.values(entries)) doGenerateEntries(entry);
+    if (config.previousVersionStr) {
+      result.push(`#endif // ${config.previousVersionStr}`);
+      config.previousVersionStr = undefined;
+    }
     return result.join("\n\n") + "\n";
 
     function doGenerateEntries(entry: ApiEntry) {
@@ -133,7 +141,7 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
       const content = generateDocStringItem(
         item.content,
         internalPrefix + " ".repeat(tagLen),
-        maxLength - tagLen
+        maxLength - tagLen,
       );
       return `${item.tag} ${content}`;
     }
@@ -141,7 +149,7 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
   function generateDocStringItem(
     docStr: string,
     prefix: string,
-    maxLength: number
+    maxLength: number,
   ) {
     if (docStr.length <= maxLength) return docStr;
     const result: string[] = [];
@@ -166,11 +174,19 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     const accessMod = entry.hints?.changeAccess
       ? `${prefix.slice(2)}${entry.hints?.changeAccess}:\n`
       : "";
-    if (!version) return accessMod + doGenerate(entry);
+    const previousVersionStr = config.previousVersionStr
+      ? `#endif // ${config.previousVersionStr}\n\n`
+      : "";
+    if (!version || isVersionCovered(version, config.parentVersion)) {
+      config.previousVersionStr = undefined;
+      return `${previousVersionStr}${accessMod}${doGenerate(entry)}`;
+    }
     const versionStr = `${version.tag}_VERSION_ATLEAST(${version.major}, ${version.minor}, ${version.patch})`;
-    return `${accessMod}#if ${versionStr}\n\n${doGenerate(
-      entry
-    )}\n\n#endif // ${versionStr}`;
+    if (versionStr === config.previousVersionStr) {
+      return `${accessMod}${doGenerate(entry)}`;
+    }
+    config.previousVersionStr = versionStr;
+    return `${previousVersionStr}${accessMod}#if ${versionStr}\n\n${doGenerate(entry)}`;
 
     function doGenerate(entry: ApiEntry) {
       switch (entry.kind) {
@@ -237,17 +253,19 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     if (hint?.delete) return " = delete;";
     if (hint?.default) return " = default;";
     if (!entry.proto) {
+      let body = "";
       if (hint?.body) {
-        return `\n${prefix}{\n${prefix}  ${hint.body.replaceAll(
+        body = `\n${prefix}{\n${prefix}  ${hint.body.replaceAll(
           "\n",
-          `\n${prefix}  `
+          `\n${prefix}  `,
         )}\n${prefix}}`;
       }
+      let init = "";
       if (hint?.init?.length) {
-        return `\n${prefix}  : ${hint.init.join(
-          `\n${prefix}  , `
-        )}\n${prefix}{}`;
+        init = `\n${prefix}  : ${hint.init.join(`\n${prefix}  , `)}`;
+        if (!body) body = `\n${prefix}{}`;
       }
+      if (init || body) return init + body;
     }
     const maybeDelegatedTo = hint?.delegate ?? entry.sourceName;
     const delegatedTo =
@@ -303,7 +321,7 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     const body = generateBody(entry, prefix);
     return `${generateDeclPrefix(
       entry,
-      prefix
+      prefix,
     )}(${parameters})${specifier}${body}`;
   }
 
@@ -318,7 +336,13 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
 
   function generateNS(entry: ApiEntry) {
     const name = entry.name;
+    const parentVersion = config.parentVersion;
+    const previousVersionStr = config.previousVersionStr;
+    config.previousVersionStr = undefined;
+    config.parentVersion = entry.since ?? parentVersion;
     const subEntries = generateEntries(entry.entries ?? {}, "");
+    config.parentVersion = parentVersion;
+    config.previousVersionStr = previousVersionStr;
     return `namespace ${name} {\n\n${subEntries}\n\n} // namespace ${name}\n`;
   }
 
@@ -327,7 +351,13 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     const parent = entry.type ? ` : ${entry.type}` : "";
     const subEntries = entry.entries ?? {};
     combineHints(entry);
+    const previousVersionStr = config.previousVersionStr;
+    config.previousVersionStr = undefined;
+    const parentVersion = config.parentVersion;
+    config.parentVersion = entry.since ?? parentVersion;
     const subEntriesStr = generateEntries(subEntries, prefix + "  ");
+    config.parentVersion = parentVersion;
+    config.previousVersionStr = previousVersionStr;
     return `${signature}${parent}\n${prefix}{${subEntriesStr}\n${prefix}};`;
   }
 }
@@ -344,7 +374,7 @@ function generateTemplateSignature(template: ApiParameters, prefix: string) {
 
 export function generateCallParameters(
   parameters: ApiParameters,
-  replacements: Dict<string>
+  replacements: Dict<string>,
 ) {
   return parameters?.map((p) => unwrap(p))?.join(", ") ?? "";
 
@@ -378,4 +408,13 @@ function generateParameter(parameter: ApiParameter) {
   if (!parameter.type) return parameter.name ?? "";
   if (!parameter.default) return `${parameter.type} ${parameter.name ?? ""}`;
   return `${parameter.type} ${parameter.name ?? ""} = ${parameter.default}`;
+}
+function isVersionCovered(
+  version: VersionTag,
+  checkVersion: VersionTag,
+): boolean {
+  if (!version) return true;
+  if (!checkVersion) return false;
+  if (version.tag !== checkVersion.tag) return false;
+  return !isVersionAfter(version, checkVersion);
 }

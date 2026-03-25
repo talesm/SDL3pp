@@ -95,33 +95,6 @@ using AsyncIORaw = SDL_AsyncIO*;
 // Forward decl
 struct AsyncIORef;
 
-/// Safely wrap AsyncIO for non owning parameters
-struct AsyncIOParam
-{
-  AsyncIORaw value; ///< parameter's AsyncIORaw
-
-  /// Constructs from AsyncIORaw
-  constexpr AsyncIOParam(AsyncIORaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AsyncIOParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AsyncIOParam& other) const = default;
-
-  /// Converts to underlying AsyncIORaw
-  constexpr operator AsyncIORaw() const { return value; }
-};
-
 // Forward decl
 struct AsyncIOQueue;
 
@@ -130,33 +103,6 @@ using AsyncIOQueueRaw = SDL_AsyncIOQueue*;
 
 // Forward decl
 struct AsyncIOQueueRef;
-
-/// Safely wrap AsyncIOQueue for non owning parameters
-struct AsyncIOQueueParam
-{
-  AsyncIOQueueRaw value; ///< parameter's AsyncIOQueueRaw
-
-  /// Constructs from AsyncIOQueueRaw
-  constexpr AsyncIOQueueParam(AsyncIOQueueRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AsyncIOQueueParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AsyncIOQueueParam& other) const = default;
-
-  /// Converts to underlying AsyncIOQueueRaw
-  constexpr operator AsyncIOQueueRaw() const { return value; }
-};
 
 /**
  * The asynchronous I/O operation structure.
@@ -177,12 +123,12 @@ class AsyncIO
 public:
   /// Default ctor
   constexpr AsyncIO(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from AsyncIOParam.
+   * Constructs from AsyncIORef.
    *
    * @param resource a AsyncIORaw to be wrapped.
    *
@@ -193,9 +139,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) = delete;
+  constexpr AsyncIO(const AsyncIO& other) noexcept
+    : AsyncIO(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
     : AsyncIO(other.release())
@@ -237,16 +188,15 @@ public:
    * @post a pointer to the AsyncIO structure that is created or nullptr on
    *       failure; call GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa AsyncIO.Close
    * @sa AsyncIO.Read
    * @sa AsyncIO.Write
    */
-  AsyncIO(StringParam file, StringParam mode)
-    : m_resource(SDL_AsyncIOFromFile(file, mode))
-  {
-  }
+  AsyncIO(StringParam file, StringParam mode);
 
   /// Destructor
   ~AsyncIO()
@@ -266,7 +216,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIO& operator=(const AsyncIO& other) noexcept = default;
+  AsyncIO& operator=(const AsyncIO& other) = default;
 
 public:
   /// Retrieves underlying AsyncIORaw.
@@ -285,9 +235,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AsyncIOParam
-  constexpr operator AsyncIOParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free any allocated resources for an async I/O object.
@@ -335,7 +282,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Close(bool flush, AsyncIOQueueParam queue, void* userdata);
+  bool Close(bool flush, AsyncIOQueueRef queue, void* userdata);
 
   /**
    * Use this function to get the size of the data stream in an AsyncIO.
@@ -389,7 +336,7 @@ public:
   void Read(void* ptr,
             Uint64 offset,
             Uint64 size,
-            AsyncIOQueueParam queue,
+            AsyncIOQueueRef queue,
             void* userdata);
 
   /**
@@ -428,47 +375,80 @@ public:
   void Write(void* ptr,
              Uint64 offset,
              Uint64 size,
-             AsyncIOQueueParam queue,
+             AsyncIOQueueRef queue,
              void* userdata);
 };
 
-/// Semi-safe reference for AsyncIO.
+/**
+ * Reference for AsyncIO.
+ *
+ * This does not take ownership!
+ */
 struct AsyncIORef : AsyncIO
 {
   using AsyncIO::AsyncIO;
 
   /**
-   * Constructs from AsyncIOParam.
+   * Constructs from raw AsyncIO.
    *
-   * @param resource a AsyncIORaw or AsyncIO.
-   *
-   * This does not takes ownership!
-   */
-  AsyncIORef(AsyncIOParam resource) noexcept
-    : AsyncIO(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from AsyncIOParam.
-   *
-   * @param resource a AsyncIORaw or AsyncIO.
+   * @param resource a AsyncIORaw.
    *
    * This does not takes ownership!
    */
-  AsyncIORef(AsyncIORaw resource) noexcept
+  constexpr AsyncIORef(AsyncIORaw resource) noexcept
     : AsyncIO(resource)
   {
   }
 
+  /**
+   * Constructs from AsyncIO.
+   *
+   * @param resource a AsyncIO.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AsyncIORef(const AsyncIO& resource) noexcept
+    : AsyncIO(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from AsyncIO.
+   *
+   * @param resource a AsyncIO.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AsyncIORef(AsyncIO&& resource) noexcept
+    : AsyncIO(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  AsyncIORef(const AsyncIORef& other) noexcept
+  constexpr AsyncIORef(const AsyncIORef& other) noexcept
+    : AsyncIO(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AsyncIORef(AsyncIORef&& other) noexcept
     : AsyncIO(other.get())
   {
   }
 
   /// Destructor
   ~AsyncIORef() { release(); }
+
+  /// Assignment operator.
+  AsyncIORef& operator=(const AsyncIORef& other) noexcept
+  {
+    release();
+    AsyncIO::operator=(AsyncIO(other.get()));
+    return *this;
+  }
+
+  /// Converts to AsyncIORaw
+  constexpr operator AsyncIORaw() const noexcept { return get(); }
 };
 
 /**
@@ -535,12 +515,12 @@ class AsyncIOQueue
 public:
   /// Default ctor
   constexpr AsyncIOQueue(std::nullptr_t) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from AsyncIOQueueParam.
+   * Constructs from AsyncIOQueueRef.
    *
    * @param resource a AsyncIOQueueRaw to be wrapped.
    *
@@ -551,9 +531,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
+  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept
+    : AsyncIOQueue(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
     : AsyncIOQueue(other.release())
@@ -581,10 +566,7 @@ public:
    * @sa AsyncIOQueue.GetResult
    * @sa AsyncIOQueue.WaitResult
    */
-  AsyncIOQueue()
-    : m_resource(SDL_CreateAsyncIOQueue())
-  {
-  }
+  AsyncIOQueue();
 
   /// Destructor
   ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(m_resource); }
@@ -598,8 +580,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other) noexcept =
-    default;
+  AsyncIOQueue& operator=(const AsyncIOQueue& other) = default;
 
 public:
   /// Retrieves underlying AsyncIOQueueRaw.
@@ -619,9 +600,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AsyncIOQueueParam
-  constexpr operator AsyncIOQueueParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously-created async I/O task queue.
@@ -778,43 +756,76 @@ public:
   void Signal();
 };
 
-/// Semi-safe reference for AsyncIOQueue.
+/**
+ * Reference for AsyncIOQueue.
+ *
+ * This does not take ownership!
+ */
 struct AsyncIOQueueRef : AsyncIOQueue
 {
   using AsyncIOQueue::AsyncIOQueue;
 
   /**
-   * Constructs from AsyncIOQueueParam.
+   * Constructs from raw AsyncIOQueue.
    *
-   * @param resource a AsyncIOQueueRaw or AsyncIOQueue.
-   *
-   * This does not takes ownership!
-   */
-  AsyncIOQueueRef(AsyncIOQueueParam resource) noexcept
-    : AsyncIOQueue(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from AsyncIOQueueParam.
-   *
-   * @param resource a AsyncIOQueueRaw or AsyncIOQueue.
+   * @param resource a AsyncIOQueueRaw.
    *
    * This does not takes ownership!
    */
-  AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
+  constexpr AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
     : AsyncIOQueue(resource)
   {
   }
 
+  /**
+   * Constructs from AsyncIOQueue.
+   *
+   * @param resource a AsyncIOQueue.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AsyncIOQueueRef(const AsyncIOQueue& resource) noexcept
+    : AsyncIOQueue(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from AsyncIOQueue.
+   *
+   * @param resource a AsyncIOQueue.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr AsyncIOQueueRef(AsyncIOQueue&& resource) noexcept
+    : AsyncIOQueue(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
+  constexpr AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
+    : AsyncIOQueue(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AsyncIOQueueRef(AsyncIOQueueRef&& other) noexcept
     : AsyncIOQueue(other.get())
   {
   }
 
   /// Destructor
   ~AsyncIOQueueRef() { release(); }
+
+  /// Assignment operator.
+  AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
+  {
+    release();
+    AsyncIOQueue::operator=(AsyncIOQueue(other.get()));
+    return *this;
+  }
+
+  /// Converts to AsyncIOQueueRaw
+  constexpr operator AsyncIOQueueRaw() const noexcept { return get(); }
 };
 
 /**
@@ -847,6 +858,8 @@ struct AsyncIOQueueRef : AsyncIOQueue
  * @returns a pointer to the AsyncIO structure that is created or nullptr on
  *          failure; call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa AsyncIO.Close
@@ -856,6 +869,11 @@ struct AsyncIOQueueRef : AsyncIOQueue
 inline AsyncIO AsyncIOFromFile(StringParam file, StringParam mode)
 {
   return AsyncIO(std::move(file), std::move(mode));
+}
+
+inline AsyncIO::AsyncIO(StringParam file, StringParam mode)
+  : m_resource(SDL_AsyncIOFromFile(file, mode))
+{
 }
 
 /**
@@ -872,7 +890,7 @@ inline AsyncIO AsyncIOFromFile(StringParam file, StringParam mode)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 GetAsyncIOSize(AsyncIOParam asyncio)
+inline Sint64 GetAsyncIOSize(AsyncIORef asyncio)
 {
   return CheckError(SDL_GetAsyncIOSize(asyncio));
 }
@@ -914,11 +932,11 @@ inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(m_resource); }
  * @sa AsyncIO.Write
  * @sa AsyncIOQueue.AsyncIOQueue
  */
-inline void ReadAsyncIO(AsyncIOParam asyncio,
+inline void ReadAsyncIO(AsyncIORef asyncio,
                         void* ptr,
                         Uint64 offset,
                         Uint64 size,
-                        AsyncIOQueueParam queue,
+                        AsyncIOQueueRef queue,
                         void* userdata)
 {
   CheckError(SDL_ReadAsyncIO(asyncio, ptr, offset, size, queue, userdata));
@@ -927,7 +945,7 @@ inline void ReadAsyncIO(AsyncIOParam asyncio,
 inline void AsyncIO::Read(void* ptr,
                           Uint64 offset,
                           Uint64 size,
-                          AsyncIOQueueParam queue,
+                          AsyncIOQueueRef queue,
                           void* userdata)
 {
   SDL::ReadAsyncIO(m_resource, ptr, offset, size, queue, userdata);
@@ -967,11 +985,11 @@ inline void AsyncIO::Read(void* ptr,
  * @sa AsyncIO.Read
  * @sa AsyncIOQueue.AsyncIOQueue
  */
-inline void WriteAsyncIO(AsyncIOParam asyncio,
+inline void WriteAsyncIO(AsyncIORef asyncio,
                          void* ptr,
                          Uint64 offset,
                          Uint64 size,
-                         AsyncIOQueueParam queue,
+                         AsyncIOQueueRef queue,
                          void* userdata)
 {
   CheckError(SDL_WriteAsyncIO(asyncio, ptr, offset, size, queue, userdata));
@@ -980,7 +998,7 @@ inline void WriteAsyncIO(AsyncIOParam asyncio,
 inline void AsyncIO::Write(void* ptr,
                            Uint64 offset,
                            Uint64 size,
-                           AsyncIOQueueParam queue,
+                           AsyncIOQueueRef queue,
                            void* userdata)
 {
   SDL::WriteAsyncIO(m_resource, ptr, offset, size, queue, userdata);
@@ -1034,13 +1052,13 @@ inline void AsyncIO::Write(void* ptr,
  */
 inline bool CloseAsyncIO(AsyncIORaw asyncio,
                          bool flush,
-                         AsyncIOQueueParam queue,
+                         AsyncIOQueueRef queue,
                          void* userdata)
 {
   return SDL_CloseAsyncIO(asyncio, flush, queue, userdata);
 }
 
-inline bool AsyncIO::Close(bool flush, AsyncIOQueueParam queue, void* userdata)
+inline bool AsyncIO::Close(bool flush, AsyncIOQueueRef queue, void* userdata)
 {
   return CloseAsyncIO(release(), flush, queue, userdata);
 }
@@ -1063,6 +1081,11 @@ inline bool AsyncIO::Close(bool flush, AsyncIOQueueParam queue, void* userdata)
  * @sa AsyncIOQueue.WaitResult
  */
 inline AsyncIOQueue CreateAsyncIOQueue() { return AsyncIOQueue(); }
+
+inline AsyncIOQueue::AsyncIOQueue()
+  : m_resource(SDL_CreateAsyncIOQueue())
+{
+}
 
 /**
  * Destroy a previously-created async I/O task queue.
@@ -1121,7 +1144,7 @@ inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
  *
  * @sa AsyncIOQueue.WaitResult
  */
-inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueParam queue)
+inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueRef queue)
 {
   if (AsyncIOOutcome outcome; SDL_GetAsyncIOResult(queue, &outcome)) {
     return outcome;
@@ -1173,7 +1196,7 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
  *
  * @sa AsyncIOQueue.Signal
  */
-inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
+inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue,
                                                        Milliseconds timeout)
 {
   if (AsyncIOOutcome outcome;
@@ -1221,7 +1244,7 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
  *
  * @sa AsyncIOQueue.Signal
  */
-inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue)
+inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue)
 {
   if (AsyncIOOutcome outcome; SDL_WaitAsyncIOResult(queue, &outcome, -1)) {
     return outcome;
@@ -1262,7 +1285,7 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
  *
  * @sa AsyncIOQueue.WaitResult
  */
-inline void SignalAsyncIOQueue(AsyncIOQueueParam queue)
+inline void SignalAsyncIOQueue(AsyncIOQueueRef queue)
 {
   SDL_SignalAsyncIOQueue(queue);
 }
@@ -1294,12 +1317,14 @@ inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(m_resource); }
  *                 results.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IOStream.LoadFile
  */
 inline void LoadFileAsync(StringParam file,
-                          AsyncIOQueueParam queue,
+                          AsyncIOQueueRef queue,
                           void* userdata)
 {
   CheckError(SDL_LoadFileAsync(file, queue, userdata));

@@ -68,6 +68,7 @@ export interface EntryHint {
   delegate?: string;
   methodName?: string;
   noexcept?: boolean;
+  copyDoc?: string;
 }
 
 export interface VersionTag {
@@ -115,6 +116,7 @@ export interface ApiTransform {
   paramTypeMap?: StringMap;
   returnTypeMap?: StringMap;
   minVersions?: Dict<VersionTag>;
+  baseVersions?: Dict<VersionTag>;
   signatureRules?: SignatureTransform[];
 
   /// The default namespace
@@ -147,6 +149,7 @@ export interface ApiEntryTransform extends ApiEntryBase {
   enum?: boolean | string | EnumerationDefinition;
   wrapper?: boolean | WrapperDefinition;
   resource?: boolean | string | ResourceDefinition;
+  lock?: boolean | LockDefinition;
   before?: string;
   after?: string;
 }
@@ -220,8 +223,18 @@ export interface ResourceDefinition {
   ref?: boolean;
 }
 
-export interface ApiLock extends ApiEntryTransform {
-  kind?: "struct";
+export interface LockDefinition {
+  lockFunc?: string;
+  unlockFunc?: string;
+
+  /**
+   * If false, does not generate control variable
+   */
+  controlVar?: boolean;
+
+  controlType?: string;
+
+  paramType?: string;
 }
 
 export interface WrapperDefinition {

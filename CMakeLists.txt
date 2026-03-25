@@ -1,57 +1,56 @@
 cmake_minimum_required(VERSION 3.27)
 project(SDL3pp 
-    VERSION 0.5.3
+    VERSION 0.8.1
     DESCRIPTION "A slim C++ wrapper for SDL3" 
     HOMEPAGE_URL "https://github.com/talesm/SDL3pp"
 )
 
 include(GNUInstallDirs)
 
-option(SDL3PP_FORCE_BUNDLED "Force use of bundled SDL libraries" OFF)
-if (SDL3PP_FORCE_BUNDLED)
-    set(SDL3PP_USE_BUNDLED ON)
-else ()
-    find_package(SDL3 QUIET)
-    if (NOT TARGET SDL3::SDL3)
-        set(SDL3PP_USE_BUNDLED ON)
-    endif()
-endif ()
-
 #############################
 ### Enable/Disable options ##
 #############################
-set(SDL3PP_DEPENDENCIES SDL3::SDL3)
-
+option(SDL3PP_FORCE_BUNDLED "Force use of bundled SDL libraries" OFF)
 option(SDL3PP_ENABLE_IMAGE "Enable compilation of SDL_Image" ON)
 option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
+option(SDL3PP_ENABLE_MIXER "Enable compilation of SDL_MIXER" ON)
 
-# include bundled, if necessary
-if (SDL3PP_USE_BUNDLED)
+if (SDL3PP_FORCE_BUNDLED)
+    set(SDL3PP_DEPENDENCIES SDL3::SDL3)
     include(cmake/SDL3ppAddExternalProjects.cmake)
-    find_package(SDL3 REQUIRED)
-endif ()
 
-# SDL_image
-if (SDL3PP_ENABLE_IMAGE)
-    find_package(SDL3_image QUIET)
-    set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
-    if (TARGET SDL3_image::SDL3_image)
-        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
-    else ()
-        set(SDL3PP_ENABLE_IMAGE OFF)
+else ()
+    find_package(SDL3 CONFIG REQUIRED)
+    set(SDL3PP_DEPENDENCIES SDL3::SDL3)
+
+    # SDL_image
+    if (SDL3PP_ENABLE_IMAGE)
+        find_package(SDL3_image QUIET)
+        set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
+        if (TARGET SDL3_image::SDL3_image)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+        endif ()
+    endif ()
+    
+    # SDL_mixer
+    if (SDL3PP_ENABLE_MIXER)
+        find_package(SDL3_mixer QUIET)
+        set(SDL3_MIXER_DEPENDENCY "find_dependency(SDL3_mixer QUIET)") # placeholder in cmake.in
+        if (TARGET SDL3_mixer::SDL3_mixer)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_mixer::SDL3_mixer)
+        endif ()
+    endif ()
+    
+    # SDL_ttf
+    if (SDL3PP_ENABLE_TTF)
+        find_package(SDL3_ttf QUIET)
+        set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
+        if (TARGET SDL3_ttf::SDL3_ttf)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+        endif ()
     endif ()
 endif ()
 
-# SDL_ttf
-if (SDL3PP_ENABLE_TTF)
-    find_package(SDL3_ttf QUIET)
-    set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
-    if (TARGET SDL3_ttf::SDL3_ttf)
-        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
-    else ()
-        set(SDL3PP_ENABLE_TTF OFF)
-    endif ()
-endif ()
 
 ###############
 # The library #
@@ -59,7 +58,7 @@ endif ()
 
 file(GLOB_RECURSE SDL3pp_lib_HEADERS "${PROJECT_SOURCE_DIR}/include/*.h")
 
-if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
+if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets AND NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/assets)
     file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
 endif ()
 
@@ -135,85 +134,29 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test AND SDL3PP_BUILD_TESTING)
 endif ()
 
 # The documentation
-# check if Doxygen is installed
-find_package(Doxygen COMPONENTS dot)
-if (DOXYGEN_FOUND)
-    # Main doc
-    doxygen_add_docs(SDL3pp_doxygen
-        COMMENT "Generate API docs for SDL3pp"
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-        CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
-    )
-endif (DOXYGEN_FOUND)
+option(SDL3PP_GEN_DOCS "Generated docs" OFF)
+
+if (SDL3PP_GEN_DOCS AND EXISTS ${PROJECT_SOURCE_DIR}/docs/Doxyfile)
+    # check if Doxygen is installed
+    find_package(Doxygen COMPONENTS dot)
+    if (DOXYGEN_FOUND)
+        # Main doc
+        doxygen_add_docs(SDL3pp_doxygen
+            COMMENT "Generate API docs for SDL3pp"
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
+        )
+    endif ()
+endif ()
 
 #########################
 ## Refresh the headers ##
 #########################
-file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/*.ts)
+option(SDL3PP_GEN_HEADERS "Generate headers" OFF)
 
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/node_modules 
-    COMMAND npm install
-)
-
-set(CPPFIER_GRAMMAR_SOURCES 
-    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderLexer.ts
-    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderListener.ts
-    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderParser.ts
-    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentLexer.ts
-    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentListener.ts
-    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentParser.ts
-)
-
-add_custom_command(OUTPUT ${CPPFIER_GRAMMAR_SOURCES}
-    COMMAND npm run antlr
-    DEPENDS ${PROJECT_SOURCE_DIR}/node_modules 
-            ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeader.g4
-            ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyComment.g4
-)
-
-# Source SDL and libs state
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
-    COMMAND npm run check
-    COMMAND ${PROJECT_SOURCE_DIR}/scripts/parse.sh
-    DEPENDS ${SDL3PP_DEPENDENCIES} 
-            ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
-            ${CPPFIER_SOURCES}
-            ${CPPFIER_GRAMMAR_SOURCES}
-            ${PROJECT_SOURCE_DIR}/node_modules 
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
-
-# Target SDL3pp state
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
-    COMMAND ${PROJECT_SOURCE_DIR}/scripts/transform.sh
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
-            ${PROJECT_SOURCE_DIR}/scripts/config-target.json
-            ${PROJECT_SOURCE_DIR}/scripts/gen-transform.js
-            ${CPPFIER_SOURCES}
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
-
-# Generate sources
-add_custom_target(SDL3pp_generate
-    COMMAND ${PROJECT_SOURCE_DIR}/scripts/generate.sh
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/config-target.json 
-            ${PROJECT_SOURCE_DIR}/scripts/target.json
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
-
-# Apply patches
-add_custom_target(SDL3pp_refresh
-    COMMAND scripts/applyPatches.sh
-    DEPENDS SDL3pp_generate
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
-
-# Apply patches
-add_custom_target(SDL3pp_check_all
-    COMMAND echo "Everything ran!"
-    DEPENDS SDL3pp_refresh SDL3pp_amalgamated SDL3pp_doxygen SDL3pp
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
+if (SDL3PP_GEN_HEADERS)
+    include(cmake/SDL3ppGenHeaders.cmake)
+endif (SDL3PP_GEN_HEADERS)
 
 #########################
 ##      Install        ##
@@ -258,4 +201,13 @@ add_custom_target(SDL3pp_zip_amalgamation
     COMMAND zip -ju ${SDL3PP_AMALGAMATION_FILEBASE}.zip ../LICENSE.txt ../README.md ../changelog.md
     DEPENDS SDL3pp_amalgamated
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
+)
+
+set(SDL3PP_HEADERS_ONLY_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp-${PROJECT_VERSION}")
+add_custom_target(SDL3pp_zip_headers
+    COMMAND rm -f ${SDL3PP_HEADERS_ONLY_FILEBASE}.zip ${SDL3PP_HEADERS_ONLY_FILEBASE}.tar.gz
+    COMMAND tar -czvf ${SDL3PP_HEADERS_ONLY_FILEBASE}.tar.gz include/ cmake/ LICENSE.txt README.md changelog.md CMakeLists.txt
+    COMMAND zip -r ${SDL3PP_HEADERS_ONLY_FILEBASE}.zip include/ cmake/ LICENSE.txt README.md changelog.md CMakeLists.txt
+    DEPENDS ${SDL3PP_WRAPPED_HEADERS}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/
 )

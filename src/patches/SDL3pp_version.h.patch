@@ -18,7 +18,7 @@
  /**
   * The current major version of SDL headers.
   *
-@@ -105,6 +107,8 @@
+@@ -115,6 +117,8 @@
   */
  #define SDL_VERSION_ATLEAST(X, Y, Z) (SDL_VERSION >= SDL_VERSIONNUM(X, Y, Z))
  
@@ -27,3 +27,28 @@
  /**
   * Get the version of SDL that is linked against your program.
   *
+@@ -179,6 +183,24 @@
+ 
+ /// @}
+ 
++// Check if SDL_image is available
++#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
++  __has_include(<SDL3_image/SDL_image.h>)
++#define SDL3PP_ENABLE_IMAGE
++#endif
++
++// Check if SDL_mixer is available
++#if !defined(SDL3PP_DISABLE_MIXER) && !defined(SDL3PP_ENABLE_MIXER) &&         \
++  __has_include(<SDL3_mixer/SDL_mixer.h>)
++#define SDL3PP_ENABLE_MIXER
++#endif
++
++// Check if SDL_ttf is available
++#if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
++  __has_include(<SDL3_ttf/SDL_ttf.h>)
++#define SDL3PP_ENABLE_TTF
++#endif
++
+ } // namespace SDL
+ 
+ #endif /* SDL3PP_VERSION_H_ */

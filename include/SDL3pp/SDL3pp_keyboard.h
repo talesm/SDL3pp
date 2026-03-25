@@ -157,8 +157,7 @@ inline void ResetKeyboard() { SDL_ResetKeyboard(); }
 /**
  * Get the current key modifier state for the keyboard.
  *
- * @returns an OR'd combination of the modifier keys for the keyboard. See
- *          Keymod for details.
+ * @returns an OR'd combination of the modifier keys for the keyboard.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -229,7 +228,7 @@ inline void Window::StartTextInput()
   CheckError(SDL_StartTextInput(m_resource));
 }
 
-inline void Window::StartTextInput(PropertiesParam props)
+inline void Window::StartTextInput(PropertiesRef props)
 {
   CheckError(SDL_StartTextInputWithProperties(m_resource, props));
 }

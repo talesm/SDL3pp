@@ -18,18 +18,18 @@ struct Main
   static constexpr SDL::Point windowSz = {640, 480};
 
   // Init library
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  static SDL::Window InitAndCreateWindow()
   {
     SDL::SetAppMetadata(
       "Example Renderer Textures", "1.0", "com.example.renderer-textures");
     SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
+    return SDL::CreateWindowAndRenderer(
+      "examples/renderer/textures", windowSz, 0, nullptr);
   }
 
   // We will use this renderer to draw into this window every frame.
-  SDL::Window window{"examples/renderer/textures", windowSz};
-  SDL::Renderer renderer{window};
+  SDL::Window window{InitAndCreateWindow()};
+  SDL::RendererRef renderer{window.GetRenderer()};
 
   /* Textures are pixel data that we upload to the video hardware for fast
      drawing. Lots of 2D engines refer to these as "sprites." We'll do a static

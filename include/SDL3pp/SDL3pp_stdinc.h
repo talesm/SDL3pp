@@ -52,33 +52,6 @@ using EnvironmentRaw = SDL_Environment*;
 // Forward decl
 struct EnvironmentRef;
 
-/// Safely wrap Environment for non owning parameters
-struct EnvironmentParam
-{
-  EnvironmentRaw value; ///< parameter's EnvironmentRaw
-
-  /// Constructs from EnvironmentRaw
-  constexpr EnvironmentParam(EnvironmentRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr EnvironmentParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const EnvironmentParam& other) const = default;
-
-  /// Converts to underlying EnvironmentRaw
-  constexpr operator EnvironmentRaw() const { return value; }
-};
-
 // Forward decl
 struct IConv;
 
@@ -87,33 +60,6 @@ using IConvRaw = SDL_iconv_t;
 
 // Forward decl
 struct IConvRef;
-
-/// Safely wrap IConv for non owning parameters
-struct IConvParam
-{
-  IConvRaw value; ///< parameter's IConvRaw
-
-  /// Constructs from IConvRaw
-  constexpr IConvParam(IConvRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr IConvParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const IConvParam& other) const = default;
-
-  /// Converts to underlying IConvRaw
-  constexpr operator IConvRaw() const { return value; }
-};
 
 #ifdef SDL3PP_DOC
 
@@ -204,13 +150,6 @@ constexpr std::size_t arraysize(const T (&array)[N])
 
 /**
  * Macro useful for building other macros with strings in them.
- *
- * For example:
- *
- * ```c
- * #define LOG_ERROR(X) OutputDebugString(SDL_STRINGIFY_ARG(__FUNCTION__) ": " X
- * "@n")`
- * ```
  *
  * @param arg the text to turn into a string literal.
  *
@@ -405,7 +344,7 @@ constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
  * Time.FromPosix(), and between Windows FILETIME values with Time.ToWindows()
  * and Time.FromWindows().
  *
- * @since This type is available since SDL 3.2.0.
+ * @since This datatype is available since SDL 3.2.0.
  *
  * @sa MAX_SINT64
  * @sa MIN_SINT64
@@ -451,6 +390,8 @@ public:
    * Jan 1, 1970 in Universal Coordinated Time (UTC).
    *
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -503,6 +444,8 @@ public:
    * @param dwHighDateTime the high portion of the Windows FILETIME value.
    * @returns the converted SDL time.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   static Time FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
@@ -517,6 +460,8 @@ public:
    *                      Windows FILETIME value.
    * @param dwHighDateTime a pointer filled in with the high portion of the
    *                       Windows FILETIME value.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -553,6 +498,8 @@ constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 /// Min allowed time representation
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
+#ifndef FLT_EPSILON
+
 /**
  * Epsilon constant, used for comparing floating-point numbers.
  *
@@ -561,7 +508,9 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *
  * @since This constant is available since SDL 3.2.0.
  */
-constexpr float FLT_EPSILON = SDL_FLT_EPSILON;
+constexpr float FLT_EPSILON = 1.1920928955078125e-07F;
+
+#endif // FLT_EPSILON
 
 /**
  * Concept of interface
@@ -970,12 +919,12 @@ class Environment
 public:
   /// Default ctor
   constexpr Environment(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from EnvironmentParam.
+   * Constructs from EnvironmentRef.
    *
    * @param resource a EnvironmentRaw to be wrapped.
    *
@@ -986,9 +935,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Environment(const Environment& other) = delete;
+  constexpr Environment(const Environment& other) noexcept
+    : Environment(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
@@ -1019,10 +973,7 @@ public:
    * @sa Environment.UnsetVariable
    * @sa Environment.Destroy
    */
-  Environment(bool populated)
-    : m_resource(SDL_CreateEnvironment(populated))
-  {
-  }
+  Environment(bool populated);
 
   /// Destructor
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
@@ -1036,7 +987,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Environment& operator=(const Environment& other) noexcept = default;
+  Environment& operator=(const Environment& other) = default;
 
 public:
   /// Retrieves underlying EnvironmentRaw.
@@ -1055,9 +1006,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to EnvironmentParam
-  constexpr operator EnvironmentParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a set of environment variables.
@@ -1167,43 +1115,76 @@ public:
   void UnsetVariable(StringParam name);
 };
 
-/// Semi-safe reference for Environment.
+/**
+ * Reference for Environment.
+ *
+ * This does not take ownership!
+ */
 struct EnvironmentRef : Environment
 {
   using Environment::Environment;
 
   /**
-   * Constructs from EnvironmentParam.
+   * Constructs from raw Environment.
    *
-   * @param resource a EnvironmentRaw or Environment.
-   *
-   * This does not takes ownership!
-   */
-  EnvironmentRef(EnvironmentParam resource) noexcept
-    : Environment(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from EnvironmentParam.
-   *
-   * @param resource a EnvironmentRaw or Environment.
+   * @param resource a EnvironmentRaw.
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentRaw resource) noexcept
+  constexpr EnvironmentRef(EnvironmentRaw resource) noexcept
     : Environment(resource)
   {
   }
 
+  /**
+   * Constructs from Environment.
+   *
+   * @param resource a Environment.
+   *
+   * This does not takes ownership!
+   */
+  constexpr EnvironmentRef(const Environment& resource) noexcept
+    : Environment(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from Environment.
+   *
+   * @param resource a Environment.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr EnvironmentRef(Environment&& resource) noexcept
+    : Environment(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  EnvironmentRef(const EnvironmentRef& other) noexcept
+  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept
+    : Environment(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr EnvironmentRef(EnvironmentRef&& other) noexcept
     : Environment(other.get())
   {
   }
 
   /// Destructor
   ~EnvironmentRef() { release(); }
+
+  /// Assignment operator.
+  EnvironmentRef& operator=(const EnvironmentRef& other) noexcept
+  {
+    release();
+    Environment::operator=(Environment(other.get()));
+    return *this;
+  }
+
+  /// Converts to EnvironmentRaw
+  constexpr operator EnvironmentRaw() const noexcept { return get(); }
 };
 
 /**
@@ -1254,6 +1235,11 @@ inline Environment CreateEnvironment(bool populated)
   return Environment(populated);
 }
 
+inline Environment::Environment(bool populated)
+  : m_resource(SDL_CreateEnvironment(populated))
+{
+}
+
 /**
  * Get the value of a variable in the environment.
  *
@@ -1272,8 +1258,7 @@ inline Environment CreateEnvironment(bool populated)
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline const char* GetEnvironmentVariable(EnvironmentParam env,
-                                          StringParam name)
+inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
   return SDL_GetEnvironmentVariable(env, name);
 }
@@ -1302,7 +1287,7 @@ inline const char* Environment::GetVariable(StringParam name)
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
+inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
 {
   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
 }
@@ -1332,7 +1317,7 @@ inline OwnArray<char*> Environment::GetVariables()
  * @sa Environment.GetVariables
  * @sa Environment.UnsetVariable
  */
-inline void SetEnvironmentVariable(EnvironmentParam env,
+inline void SetEnvironmentVariable(EnvironmentRef env,
                                    StringParam name,
                                    StringParam value,
                                    bool overwrite)
@@ -1366,7 +1351,7 @@ inline void Environment::SetVariable(StringParam name,
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
+inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
   CheckError(SDL_UnsetEnvironmentVariable(env, name));
 }
@@ -1985,7 +1970,7 @@ constexpr T min(T x, U y)
  *
  * @param x the first value to compare.
  * @param y the second value to compare.
- * @returns the lesser of `x` and `y`.
+ * @returns the greater of `x` and `y`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2533,7 +2518,7 @@ inline void zerop(T* x)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa zero
- * @sa zeroa
+ * @sa zerop
  */
 template<class T, std::size_t N>
 inline void zeroa(T (&x)[N])
@@ -4317,6 +4302,117 @@ inline int vasprintf(char** strp,
 inline void srand(Uint64 seed) { SDL_srand(seed); }
 
 /**
+ * A independent pseudo random state
+ *
+ * This can be instantiated in any thread and as long as it is not shared with
+ * another thread all members are safe to call.
+ *
+ * @cat wrap-state
+ *
+ * @sa wrap-state
+ */
+class Random
+{
+  Uint64 m_state;
+
+public:
+  /// Default constructor initializes state to zero
+  constexpr Random()
+    : m_state(0)
+  {
+  }
+
+  /// Init state with the given value
+  constexpr explicit Random(Uint64 state)
+    : m_state(state)
+  {
+  }
+
+  /// Convert to the underlying type
+  constexpr operator Uint64() const { return m_state; }
+
+  /**
+   * Generate a pseudo-random number less than n for positive n
+   *
+   * The method used is faster and of better quality than `rand() % n`. Odds are
+   * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+   * much worse as n gets bigger.
+   *
+   * Example: to simulate a d6 use `rand(state, 6) + 1` The +1 converts 0..5 to
+   * 1..6
+   *
+   * If you want to generate a pseudo-random number in the full range of Sint32,
+   * you should use: (Sint32)rand_bits(state)
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @param n the number of possible outcomes. n must be positive.
+   * @returns a random value in the range of [0 .. n-1].
+   *
+   * @threadsafety This function is thread-safe, as long as the state pointer
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa rand
+   * @sa rand_bits
+   * @sa randf
+   */
+  Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
+
+  /**
+   * Generate a uniform pseudo-random floating point number less than 1.0
+   *
+   * If you want reproducible output, be sure to initialize with srand() first.
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @returns a random value in the range of [0.0, 1.0).
+   *
+   * @threadsafety This function is thread-safe, as long as the state pointer
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa rand_bits
+   * @sa rand
+   * @sa randf
+   */
+  float randf() { return SDL_randf_r(&m_state); }
+
+  /**
+   * Generate 32 pseudo-random bits.
+   *
+   * You likely want to use rand() to get a pseudo-random number instead.
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @returns a random value in the range of [0-MAX_UINT32].
+   *
+   * @threadsafety This function is thread-safe, as long as the state pointer
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa rand
+   * @sa randf
+   */
+  Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
+};
+
+/**
  * Generate a pseudo-random number less than n for positive n
  *
  * The method used is faster and of better quality than `rand() % n`. Odds are
@@ -4349,6 +4445,76 @@ inline void srand(Uint64 seed) { SDL_srand(seed); }
 inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
 
 /**
+ * Generate a pseudo-random number less than n for positive n
+ *
+ * The method used is faster and of better quality than `rand() % n`. Odds are
+ * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+ * much worse as n gets bigger.
+ *
+ * Example: to simulate a d6 use `rand(state, 6) + 1` The +1 converts 0..5 to
+ * 1..6
+ *
+ * If you want to generate a pseudo-random number in the full range of Sint32,
+ * you should use: (Sint32)rand_bits(state)
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @param n the number of possible outcomes. n must be positive.
+ * @returns a random value in the range of [0 .. n-1].
+ *
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa rand
+ * @sa rand_bits
+ * @sa randf
+ */
+inline Sint32 rand(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
+
+/**
+ * Generate a pseudo-random number less than n for positive n
+ *
+ * The method used is faster and of better quality than `rand() % n`. Odds are
+ * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+ * much worse as n gets bigger.
+ *
+ * Example: to simulate a d6 use `rand(state, 6) + 1` The +1 converts 0..5 to
+ * 1..6
+ *
+ * If you want to generate a pseudo-random number in the full range of Sint32,
+ * you should use: (Sint32)rand_bits(state)
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @param n the number of possible outcomes. n must be positive.
+ * @returns a random value in the range of [0 .. n-1].
+ *
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa rand
+ * @sa rand_bits
+ * @sa randf
+ */
+inline Sint32 rand(Random& state, Sint32 n) { return state.rand(n); }
+
+/**
  * Generate a uniform pseudo-random floating point number less than 1.0
  *
  * If you want reproducible output, be sure to initialize with srand() first.
@@ -4369,6 +4535,58 @@ inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
  * @sa rand
  */
 inline float randf() { return SDL_randf(); }
+
+/**
+ * Generate a uniform pseudo-random floating point number less than 1.0
+ *
+ * If you want reproducible output, be sure to initialize with srand() first.
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @returns a random value in the range of [0.0, 1.0).
+ *
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa rand_bits
+ * @sa rand
+ * @sa randf
+ */
+inline float randf(Uint64* state) { return SDL_randf_r(state); }
+
+/**
+ * Generate a uniform pseudo-random floating point number less than 1.0
+ *
+ * If you want reproducible output, be sure to initialize with srand() first.
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @returns a random value in the range of [0.0, 1.0).
+ *
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa rand_bits
+ * @sa rand
+ * @sa randf
+ */
+inline float randf(Random& state) { return state.randf(); }
 
 /**
  * Generate 32 pseudo-random bits.
@@ -4394,182 +4612,9 @@ inline float randf() { return SDL_randf(); }
 inline Uint32 rand_bits() { return SDL_rand_bits(); }
 
 /**
- * A independent pseudo random state
- *
- * This can be instantiated in any thread and as long as it is not shared with
- * another thread all members are safe to call.
- *
- * @cat wrap-state
- *
- * @sa wrap-state
- */
-class Random
-{
-  Uint64 m_state;
-
-public:
-  constexpr Random()
-    : m_state(0)
-  {
-  }
-
-  /**
-   * Init state with the given value
-   */
-  constexpr explicit Random(Uint64 state)
-    : m_state(state)
-  {
-  }
-
-  /// Convert to the underlying type
-  constexpr operator Uint64() { return m_state; }
-
-  /**
-   * Generate a pseudo-random number less than n for positive n
-   *
-   * The method used is faster and of better quality than `rand() % n`. Odds are
-   * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
-   * much worse as n gets bigger.
-   *
-   * Example: to simulate a d6 use `state.rand(6) + 1` The +1 converts
-   * 0..5 to 1..6
-   *
-   * If you want to generate a pseudo-random number in the full range of Sint32,
-   * you should use: (Sint32)state.rand_bits()
-   *
-   * There are no guarantees as to the quality of the random sequence produced,
-   * and this should not be used for security (cryptography, passwords) or where
-   * money is on the line (loot-boxes, casinos). There are many random number
-   * libraries available with different characteristics and you should pick one
-   * of those to meet any serious needs.
-   *
-   * @param n the number of possible outcomes. n must be positive.
-   * @returns a random value in the range of [0 .. n-1].
-   *
-   * @threadsafety This function is thread-safe, as long as this object
-   *               isn't shared between threads.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa rand
-   * @sa Random.rand_bits
-   * @sa Random.randf
-   */
-  Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
-
-  /**
-   * Generate a uniform pseudo-random floating point number less than 1.0
-   *
-   * If you want reproducible output, be sure to initialize with srand() first.
-   *
-   * There are no guarantees as to the quality of the random sequence produced,
-   * and this should not be used for security (cryptography, passwords) or where
-   * money is on the line (loot-boxes, casinos). There are many random number
-   * libraries available with different characteristics and you should pick one
-   * of those to meet any serious needs.
-   *
-   * @returns a random value in the range of [0.0, 1.0).
-   *
-   * @threadsafety This function is thread-safe, as long as this object
-   *               isn't shared between threads.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Random.rand_bits
-   * @sa Random.rand
-   * @sa randf
-   */
-  float randf() { return SDL_randf_r(&m_state); }
-
-  /**
-   * Generate 32 pseudo-random bits.
-   *
-   * You likely want to use Random.rand() to get a pseudo-random number instead.
-   *
-   * There are no guarantees as to the quality of the random sequence produced,
-   * and this should not be used for security (cryptography, passwords) or where
-   * money is on the line (loot-boxes, casinos). There are many random number
-   * libraries available with different characteristics and you should pick one
-   * of those to meet any serious needs.
-   *
-   * @returns a random value in the range of [0-MAX_UINT32].
-   *
-   * @threadsafety This function is thread-safe, as long as this object
-   *               isn't shared between threads.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Random.rand
-   * @sa Random.randf
-   */
-  Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
-};
-
-/**
- * Generate a pseudo-random number less than n for positive n
- *
- * The method used is faster and of better quality than `rand() % n`. Odds are
- * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
- * much worse as n gets bigger.
- *
- * Example: to simulate a d6 use `Random.rand(state, 6) + 1` The +1 converts
- * 0..5 to 1..6
- *
- * If you want to generate a pseudo-random number in the full range of Sint32,
- * you should use: (Sint32)Random.rand_bits(state)
- *
- * There are no guarantees as to the quality of the random sequence produced,
- * and this should not be used for security (cryptography, passwords) or where
- * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one of
- * those to meet any serious needs.
- *
- * @param state a pointer to the current random number state, this may not be
- *              nullptr.
- * @param n the number of possible outcomes. n must be positive.
- * @returns a random value in the range of [0 .. n-1].
- *
- * @threadsafety This function is thread-safe, as long as the state pointer
- *               isn't shared between threads.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa rand
- * @sa Random.rand_bits
- * @sa Random.randf
- */
-inline Sint32 rand_r(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
-
-/**
- * Generate a uniform pseudo-random floating point number less than 1.0
- *
- * If you want reproducible output, be sure to initialize with srand() first.
- *
- * There are no guarantees as to the quality of the random sequence produced,
- * and this should not be used for security (cryptography, passwords) or where
- * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one of
- * those to meet any serious needs.
- *
- * @param state a pointer to the current random number state, this may not be
- *              nullptr.
- * @returns a random value in the range of [0.0, 1.0).
- *
- * @threadsafety This function is thread-safe, as long as the state pointer
- *               isn't shared between threads.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Random.rand_bits
- * @sa Random.rand
- * @sa randf
- */
-inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
-
-/**
  * Generate 32 pseudo-random bits.
  *
- * You likely want to use Random.rand() to get a psuedo-random number instead.
+ * You likely want to use rand() to get a pseudo-random number instead.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -4586,10 +4631,35 @@ inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Random.rand
- * @sa Random.randf
+ * @sa rand
+ * @sa randf
  */
-inline Uint32 rand_bits_r(Uint64* state) { return SDL_rand_bits_r(state); }
+inline Uint32 rand_bits(Uint64* state) { return SDL_rand_bits_r(state); }
+
+/**
+ * Generate 32 pseudo-random bits.
+ *
+ * You likely want to use rand() to get a pseudo-random number instead.
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @returns a random value in the range of [0-MAX_UINT32].
+ *
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa rand
+ * @sa randf
+ */
+inline Uint32 rand_bits(Random& state) { return state.rand_bits(); }
 
 /**
  * The value of Pi, as a double-precision floating point literal.
@@ -4859,7 +4929,7 @@ inline float atan2(float y, float x) { return SDL_atan2f(y, x); }
 /**
  * Compute the ceiling of `x`.
  *
- * The ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`
+ * The ceiling of `x` is the smallest integer `y` such that `y >= x`, i.e `x`
  * rounded up to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -4887,7 +4957,7 @@ inline double ceil(double x) { return SDL_ceil(x); }
 /**
  * Compute the ceiling of `x`.
  *
- * The ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`
+ * The ceiling of `x` is the smallest integer `y` such that `y >= x`, i.e `x`
  * rounded up to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -5081,7 +5151,7 @@ inline float exp(float x) { return SDL_expf(x); }
 /**
  * Compute the floor of `x`.
  *
- * The floor of `x` is the largest integer `y` such that `y > x`, i.e `x`
+ * The floor of `x` is the largest integer `y` such that `y <= x`, i.e `x`
  * rounded down to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -5109,7 +5179,7 @@ inline double floor(double x) { return SDL_floor(x); }
 /**
  * Compute the floor of `x`.
  *
- * The floor of `x` is the largest integer `y` such that `y > x`, i.e `x`
+ * The floor of `x` is the largest integer `y` such that `y <= x`, i.e `x`
  * rounded down to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -5866,13 +5936,13 @@ class IConv
 
 public:
   /// Default ctor
-  constexpr IConv(std::nullptr_t = nullptr) noexcept
+  IConv(std::nullptr_t = nullptr) noexcept
     : m_resource(IConvRaw(SDL_ICONV_ERROR))
   {
   }
 
   /**
-   * Constructs from IConvParam.
+   * Constructs from IConvRef.
    *
    * @param resource a IConvRaw to be wrapped.
    *
@@ -5883,9 +5953,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr IConv(const IConv& other) = delete;
+  constexpr IConv(const IConv& other) noexcept
+    : IConv(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())
@@ -5904,16 +5979,15 @@ public:
    * @param fromcode The source character encoding, must not be nullptr.
    * @post a valid handle or falsy on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConv.iconv
    * @sa IConv.close
    * @sa iconv_string
    */
-  IConv(StringParam tocode, StringParam fromcode)
-    : m_resource(SDL_iconv_open(tocode, fromcode))
-  {
-  }
+  IConv(StringParam tocode, StringParam fromcode);
 
   /// Destructor
   ~IConv() { SDL_iconv_close(m_resource); }
@@ -5927,7 +6001,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IConv& operator=(const IConv& other) noexcept = default;
+  IConv& operator=(const IConv& other) = default;
 
 public:
   /// Retrieves underlying IConvRaw.
@@ -5945,18 +6019,17 @@ public:
   constexpr auto operator<=>(const IConv& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const noexcept
+  explicit operator bool() const noexcept
   {
-    return m_resource != IConvRaw(SDL_ICONV_ERROR);
+    return reinterpret_cast<size_t>(m_resource) != SDL_ICONV_ERROR;
   }
-
-  /// Converts to IConvParam
-  constexpr operator IConvParam() const noexcept { return {m_resource}; }
 
   /**
    * This function frees a context used for character set conversion.
    *
    * @returns 0 on success, or -1 on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -5994,6 +6067,8 @@ public:
    * @returns the number of conversions on success.
    * @throws Error on failure.
    *
+   * @threadsafety Do not use the same IConv from two threads at once.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConv.IConv
@@ -6003,46 +6078,79 @@ public:
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
                char** outbuf,
-               size_t* outbytesleft);
+               size_t* outbytesleft) const;
 };
 
-/// Semi-safe reference for IConv.
+/**
+ * Reference for IConv.
+ *
+ * This does not take ownership!
+ */
 struct IConvRef : IConv
 {
   using IConv::IConv;
 
   /**
-   * Constructs from IConvParam.
+   * Constructs from raw IConv.
    *
-   * @param resource a IConvRaw or IConv.
-   *
-   * This does not takes ownership!
-   */
-  IConvRef(IConvParam resource) noexcept
-    : IConv(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from IConvParam.
-   *
-   * @param resource a IConvRaw or IConv.
+   * @param resource a IConvRaw.
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvRaw resource) noexcept
+  constexpr IConvRef(IConvRaw resource) noexcept
     : IConv(resource)
   {
   }
 
+  /**
+   * Constructs from IConv.
+   *
+   * @param resource a IConv.
+   *
+   * This does not takes ownership!
+   */
+  constexpr IConvRef(const IConv& resource) noexcept
+    : IConv(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from IConv.
+   *
+   * @param resource a IConv.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr IConvRef(IConv&& resource) noexcept
+    : IConv(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  IConvRef(const IConvRef& other) noexcept
+  constexpr IConvRef(const IConvRef& other) noexcept
+    : IConv(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr IConvRef(IConvRef&& other) noexcept
     : IConv(other.get())
   {
   }
 
   /// Destructor
   ~IConvRef() { release(); }
+
+  /// Assignment operator.
+  IConvRef& operator=(const IConvRef& other) noexcept
+  {
+    release();
+    IConv::operator=(IConv(other.get()));
+    return *this;
+  }
+
+  /// Converts to IConvRaw
+  constexpr operator IConvRaw() const noexcept { return get(); }
 };
 
 /**
@@ -6052,6 +6160,8 @@ struct IConvRef : IConv
  * @param fromcode The source character encoding, must not be nullptr.
  * @returns a handle that must be freed with IConv.close, or ICONV_ERROR on
  *          failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -6064,12 +6174,19 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
   return IConv(std::move(tocode), std::move(fromcode));
 }
 
+inline IConv::IConv(StringParam tocode, StringParam fromcode)
+  : m_resource(SDL_iconv_open(tocode, fromcode))
+{
+}
+
 /**
  * This function frees a context used for character set conversion.
  *
  * @param cd The character set conversion handle.
  * @returns 0 on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -6109,6 +6226,8 @@ inline int IConv::close() { return iconv_close(release()); }
  * @returns the number of conversions on success.
  * @throws Error on failure.
  *
+ * @threadsafety Do not use the same IConv from two threads at once.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IConv.IConv
@@ -6127,7 +6246,7 @@ inline size_t iconv(IConvRaw cd,
 inline size_t IConv::iconv(const char** inbuf,
                            size_t* inbytesleft,
                            char** outbuf,
-                           size_t* outbytesleft)
+                           size_t* outbytesleft) const
 {
   return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
 }
@@ -6159,6 +6278,8 @@ constexpr size_t ICONV_EINVAL =
  * @param inbuf the string to convert to a different encoding.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IConv.IConv
@@ -6183,6 +6304,8 @@ inline OwnArray<char> iconv_string(StringParam tocode,
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline OwnArray<char> iconv_utf8_locale(std::string_view S)
@@ -6199,6 +6322,8 @@ inline OwnArray<char> iconv_utf8_locale(std::string_view S)
  *
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -6218,6 +6343,8 @@ inline OwnArray<Uint16> iconv_utf8_ucs2(std::string_view S)
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
@@ -6235,6 +6362,8 @@ inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
  *
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -6260,7 +6389,7 @@ inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
+inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_mul_check_overflow(a, b, ret);
 }
@@ -6282,7 +6411,7 @@ constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
+inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_add_check_overflow(a, b, ret);
 }
@@ -6302,7 +6431,7 @@ constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using FunctionPointer = SDL_FunctionPointer;
+using FunctionPointer = void(SDLCALL*)();
 
 /// @}
 

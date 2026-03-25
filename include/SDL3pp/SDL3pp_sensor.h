@@ -32,33 +32,6 @@ using SensorRaw = SDL_Sensor*;
 // Forward decl
 struct SensorRef;
 
-/// Safely wrap Sensor for non owning parameters
-struct SensorParam
-{
-  SensorRaw value; ///< parameter's SensorRaw
-
-  /// Constructs from SensorRaw
-  constexpr SensorParam(SensorRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SensorParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SensorParam& other) const = default;
-
-  /// Converts to underlying SensorRaw
-  constexpr operator SensorRaw() const { return value; }
-};
-
 /**
  * This is a unique ID for a sensor for the time it is connected to the system,
  * and is never reused for the lifetime of the application.
@@ -166,12 +139,12 @@ class Sensor
 public:
   /// Default ctor
   constexpr Sensor(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from SensorParam.
+   * Constructs from SensorRef.
    *
    * @param resource a SensorRaw to be wrapped.
    *
@@ -182,9 +155,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Sensor(const Sensor& other) = delete;
+  constexpr Sensor(const Sensor& other) noexcept
+    : Sensor(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr Sensor(Sensor&& other) noexcept
     : Sensor(other.release())
@@ -204,10 +182,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sensor(SensorID instance_id)
-    : m_resource(SDL_OpenSensor(instance_id))
-  {
-  }
+  Sensor(SensorID instance_id);
 
   /// Destructor
   ~Sensor() { SDL_CloseSensor(m_resource); }
@@ -221,7 +196,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Sensor& operator=(const Sensor& other) noexcept = default;
+  Sensor& operator=(const Sensor& other) = default;
 
 public:
   /// Retrieves underlying SensorRaw.
@@ -240,9 +215,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to SensorParam
-  constexpr operator SensorParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a sensor previously opened with Sensor.Sensor().
@@ -292,8 +264,8 @@ public:
   /**
    * Get the instance ID of a sensor.
    *
-   * @returns the sensor instance ID, or 0 on failure; call GetError() for more
-   *          information.
+   * @returns the sensor instance ID on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -313,43 +285,76 @@ public:
   void GetData(float* data, int num_values);
 };
 
-/// Semi-safe reference for Sensor.
+/**
+ * Reference for Sensor.
+ *
+ * This does not take ownership!
+ */
 struct SensorRef : Sensor
 {
   using Sensor::Sensor;
 
   /**
-   * Constructs from SensorParam.
+   * Constructs from raw Sensor.
    *
-   * @param resource a SensorRaw or Sensor.
-   *
-   * This does not takes ownership!
-   */
-  SensorRef(SensorParam resource) noexcept
-    : Sensor(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from SensorParam.
-   *
-   * @param resource a SensorRaw or Sensor.
+   * @param resource a SensorRaw.
    *
    * This does not takes ownership!
    */
-  SensorRef(SensorRaw resource) noexcept
+  constexpr SensorRef(SensorRaw resource) noexcept
     : Sensor(resource)
   {
   }
 
+  /**
+   * Constructs from Sensor.
+   *
+   * @param resource a Sensor.
+   *
+   * This does not takes ownership!
+   */
+  constexpr SensorRef(const Sensor& resource) noexcept
+    : Sensor(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from Sensor.
+   *
+   * @param resource a Sensor.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr SensorRef(Sensor&& resource) noexcept
+    : Sensor(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  SensorRef(const SensorRef& other) noexcept
+  constexpr SensorRef(const SensorRef& other) noexcept
+    : Sensor(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr SensorRef(SensorRef&& other) noexcept
     : Sensor(other.get())
   {
   }
 
   /// Destructor
   ~SensorRef() { release(); }
+
+  /// Assignment operator.
+  SensorRef& operator=(const SensorRef& other) noexcept
+  {
+    release();
+    Sensor::operator=(Sensor(other.get()));
+    return *this;
+  }
+
+  /// Converts to SensorRaw
+  constexpr operator SensorRaw() const noexcept { return get(); }
 };
 
 /**
@@ -436,6 +441,11 @@ inline int GetSensorNonPortableTypeForID(SensorID instance_id)
  */
 inline Sensor OpenSensor(SensorID instance_id) { return Sensor(instance_id); }
 
+inline Sensor::Sensor(SensorID instance_id)
+  : m_resource(SDL_OpenSensor(instance_id))
+{
+}
+
 /**
  * Return the Sensor associated with an instance ID.
  *
@@ -459,7 +469,7 @@ inline SensorRef GetSensorFromID(SensorID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetSensorProperties(SensorParam sensor)
+inline PropertiesRef GetSensorProperties(SensorRef sensor)
 {
   return {CheckError(SDL_GetSensorProperties(sensor))};
 }
@@ -478,7 +488,7 @@ inline PropertiesRef Sensor::GetProperties()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetSensorName(SensorParam sensor)
+inline const char* GetSensorName(SensorRef sensor)
 {
   return SDL_GetSensorName(sensor);
 }
@@ -493,7 +503,7 @@ inline const char* Sensor::GetName() { return SDL::GetSensorName(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline SensorType GetSensorType(SensorParam sensor)
+inline SensorType GetSensorType(SensorRef sensor)
 {
   return SDL_GetSensorType(sensor);
 }
@@ -508,7 +518,7 @@ inline SensorType Sensor::GetType() { return SDL::GetSensorType(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int GetSensorNonPortableType(SensorParam sensor)
+inline int GetSensorNonPortableType(SensorRef sensor)
 {
   return SDL_GetSensorNonPortableType(sensor);
 }
@@ -522,14 +532,14 @@ inline int Sensor::GetNonPortableType()
  * Get the instance ID of a sensor.
  *
  * @param sensor the Sensor object to inspect.
- * @returns the sensor instance ID, or 0 on failure; call GetError() for more
- *          information.
+ * @returns the sensor instance ID on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline SensorID GetSensorID(SensorParam sensor)
+inline SensorID GetSensorID(SensorRef sensor)
 {
-  return SDL_GetSensorID(sensor);
+  return CheckError(SDL_GetSensorID(sensor));
 }
 
 inline SensorID Sensor::GetID() { return SDL::GetSensorID(m_resource); }
@@ -546,7 +556,7 @@ inline SensorID Sensor::GetID() { return SDL::GetSensorID(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetSensorData(SensorParam sensor, float* data, int num_values)
+inline void GetSensorData(SensorRef sensor, float* data, int num_values)
 {
   CheckError(SDL_GetSensorData(sensor, data, num_values));
 }

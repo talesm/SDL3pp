@@ -2,6 +2,7 @@
 #define SDL3PP_PIXELS_H_
 
 #include <SDL3/SDL_pixels.h>
+#include "SDL3pp_assert.h"
 #include "SDL3pp_error.h"
 #include "SDL3pp_spanRef.h"
 #include "SDL3pp_version.h"
@@ -97,55 +98,22 @@ struct Palette;
 /// Alias to raw representation for Palette.
 using PaletteRaw = SDL_Palette*;
 
-/// Safely wrap Palette for non owning parameters
-struct PaletteParam
-{
-  PaletteRaw value; ///< parameter's PaletteRaw
-
-  /// Constructs from PaletteRaw
-  constexpr PaletteParam(PaletteRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr PaletteParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const PaletteParam& other) const = default;
-
-  /// Converts to underlying PaletteRaw
-  constexpr operator PaletteRaw() const { return value; }
-
-  /// member access to underlying PaletteRaw.
-  constexpr auto operator->() { return value; }
-};
+// Forward decl
+struct PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
-struct PaletteConstParam
+struct PaletteConstRef
 {
   const PaletteRaw value; ///< parameter's const PaletteRaw
 
   /// Constructs from const PaletteRaw
-  constexpr PaletteConstParam(const PaletteRaw value)
+  constexpr PaletteConstRef(const PaletteRaw value)
     : value(value)
   {
   }
 
-  /// Constructs from PaletteParam
-  constexpr PaletteConstParam(PaletteParam value)
-    : value(value.value)
-  {
-  }
-
   /// Constructs null/invalid
-  constexpr PaletteConstParam(std::nullptr_t _ = nullptr)
+  constexpr PaletteConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -154,7 +122,7 @@ struct PaletteConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const PaletteConstParam& other) const = default;
+  constexpr auto operator<=>(const PaletteConstRef& other) const = default;
 
   /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
@@ -449,11 +417,7 @@ public:
                         int order,
                         PackedLayout layout,
                         int bits,
-                        int bytes)
-    : m_format(PixelFormatRaw(
-        SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
-  {
-  }
+                        int bytes);
 
   /**
    * Unwraps to the underlying PixelFormat.
@@ -622,7 +586,7 @@ public:
   /**
    * Determine if this is a floating point format.
    *
-   * @returns true if the format is 10-bit, false otherwise.
+   * @returns true if the format is a floating point, false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -739,7 +703,7 @@ public:
    * @sa MapRGBA()
    * @sa Surface.MapColor()
    */
-  Uint32 Map(ColorRaw c, PaletteConstParam palette = {}) const;
+  Uint32 Map(ColorRaw c, PaletteConstRef palette = {}) const;
 
   /**
    * Get RGBA values from a pixel in the specified format.
@@ -765,7 +729,7 @@ public:
    * @sa GetRGBA()
    * @sa Map()
    */
-  Color Get(Uint32 pixel, PaletteConstParam palette = {}) const;
+  Color Get(Uint32 pixel, PaletteConstRef palette = {}) const;
 };
 
 constexpr PixelFormat PIXELFORMAT_UNKNOWN =
@@ -1028,6 +992,16 @@ constexpr PixelFormat DefinePixelFormat(PixelType type,
   return PixelFormat(type, order, layout, bits, bytes);
 }
 
+constexpr PixelFormat::PixelFormat(PixelType type,
+                                   int order,
+                                   PackedLayout layout,
+                                   int bits,
+                                   int bytes)
+  : m_format(
+      PixelFormatRaw(SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
+{
+}
+
 /**
  * Retrieve the flags of an PixelFormat.
  *
@@ -1274,7 +1248,7 @@ constexpr bool PixelFormat::Is10Bit() const
  * expressions with side-effects here.
  *
  * @param format an PixelFormat to check.
- * @returns true if the format is 10-bit, false otherwise.
+ * @returns true if the format is a floating point, false otherwise.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1700,15 +1674,7 @@ public:
                        ColorPrimaries primaries,
                        TransferCharacteristics transfer,
                        MatrixCoefficients matrix,
-                       ChromaLocation chroma)
-    : m_cspace(ColorspaceRaw(SDL_DEFINE_COLORSPACE(type,
-                                                   range,
-                                                   primaries,
-                                                   transfer,
-                                                   matrix,
-                                                   chroma)))
-  {
-  }
+                       ChromaLocation chroma);
 
   /**
    * Unwraps to the underlying Colorspace.
@@ -1917,6 +1883,17 @@ constexpr Colorspace DefineColorspace(ColorType type,
                                       ChromaLocation chroma)
 {
   return Colorspace(type, range, primaries, transfer, matrix, chroma);
+}
+
+constexpr Colorspace::Colorspace(ColorType type,
+                                 ColorRange range,
+                                 ColorPrimaries primaries,
+                                 TransferCharacteristics transfer,
+                                 MatrixCoefficients matrix,
+                                 ChromaLocation chroma)
+  : m_cspace(ColorspaceRaw(
+      SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma)))
+{
 }
 
 /**
@@ -2315,7 +2292,7 @@ struct Color : ColorRaw
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified.
    */
-  Uint32 Map(const PixelFormatDetails& format, PaletteConstParam palette) const;
+  Uint32 Map(const PixelFormatDetails& format, PaletteConstRef palette) const;
 
   /**
    * Get RGBA values from a pixel in the specified format.
@@ -2345,7 +2322,7 @@ struct Color : ColorRaw
    */
   static Color Get(Uint32 pixel,
                    const PixelFormatDetails& format,
-                   PaletteConstParam palette);
+                   PaletteConstRef palette = {});
 };
 
 /**
@@ -2463,6 +2440,36 @@ struct FColor : FColorRaw
   }
 };
 
+class PaletteIndex
+{
+  PaletteRaw m_palette;
+
+  int m_index;
+
+public:
+  /// Constructs a PaletteIndex for a specific palette and index.
+  constexpr PaletteIndex(PaletteRaw palette, int index)
+    : m_palette{palette}
+    , m_index{index}
+  {
+  }
+
+  /// Converts to bool, true if this is a valid palette index.
+  constexpr explicit operator bool() const
+  {
+    return m_palette && m_index >= 0 && m_index < m_palette->ncolors;
+  }
+
+  /// Converts to ColorRaw.
+  constexpr operator ColorRaw() const
+  {
+    return *this ? m_palette->colors[m_index] : ColorRaw{};
+  }
+
+  /// Assignment operator.
+  PaletteIndex& operator=(ColorRaw color);
+};
+
 /**
  * A set of indexed colors representing a palette.
  *
@@ -2479,12 +2486,12 @@ class Palette
 public:
   /// Default ctor
   constexpr Palette(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from PaletteParam.
+   * Constructs from PaletteRef.
    *
    * @param resource a PaletteRaw to be wrapped.
    *
@@ -2496,7 +2503,11 @@ public:
   }
 
   /// Copy constructor
-  constexpr Palette(const Palette& other) { ++m_resource->refcount; }
+  constexpr Palette(const Palette& other)
+    : m_resource(other.m_resource)
+  {
+    if (m_resource) ++m_resource->refcount;
+  }
 
   /// Move constructor
   constexpr Palette(Palette&& other) noexcept
@@ -2521,23 +2532,20 @@ public:
    * @sa Palette.SetColors
    * @sa Surface.SetPalette
    */
-  Palette(int ncolors)
-    : m_resource(CheckError(SDL_CreatePalette(ncolors)))
-  {
-  }
+  Palette(int ncolors);
 
   /**
-   * Safely borrows the from PaletteParam.
+   * Safely borrows the from PaletteRaw.
    *
-   * @param resource a PaletteRaw or Palette.
+   * @param resource a PaletteRaw.
    *
    * This does not takes ownership!
    */
-  static constexpr Palette Borrow(PaletteParam resource)
+  static Palette Borrow(PaletteRaw resource)
   {
     if (resource) {
-      ++resource.value->refcount;
-      return Palette(resource.value);
+      ++resource->refcount;
+      return Palette(resource);
     }
     return {};
   }
@@ -2547,6 +2555,9 @@ public:
 
   /// member access to underlying PaletteRaw.
   constexpr PaletteRaw operator->() noexcept { return m_resource; }
+
+  /// Converts to PaletteConstRef
+  constexpr operator PaletteConstRef() const noexcept { return m_resource; }
 
   /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }
@@ -2559,7 +2570,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr Palette& operator=(const Palette& other) noexcept = default;
+  Palette& operator=(const Palette& other) = default;
 
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const noexcept { return m_resource; }
@@ -2577,9 +2588,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to PaletteParam
-  constexpr operator PaletteParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a palette created with Palette.Palette().
@@ -2605,6 +2613,12 @@ public:
     return m_resource->colors[index];
   }
 
+  /// Change specific pallete index
+  constexpr PaletteIndex operator[](int index)
+  {
+    return PaletteIndex{m_resource, index};
+  }
+
   /**
    * Set a range of colors in a palette.
    *
@@ -2620,6 +2634,78 @@ public:
    * @sa Palette.Palette
    */
   void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
+};
+
+/**
+ * Reference for Palette.
+ *
+ * This does not take ownership!
+ */
+struct PaletteRef : Palette
+{
+  using Palette::Palette;
+
+  /**
+   * Constructs from raw Palette.
+   *
+   * @param resource a PaletteRaw.
+   *
+   * This does not takes ownership!
+   */
+  constexpr PaletteRef(PaletteRaw resource) noexcept
+    : Palette(resource)
+  {
+  }
+
+  /**
+   * Constructs from Palette.
+   *
+   * @param resource a Palette.
+   *
+   * This does not takes ownership!
+   */
+  constexpr PaletteRef(const Palette& resource) noexcept
+    : Palette(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from Palette.
+   *
+   * @param resource a Palette.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr PaletteRef(Palette&& resource) noexcept
+    : Palette(std::move(resource).release())
+  {
+  }
+
+  /// Copy constructor.
+  constexpr PaletteRef(const PaletteRef& other) noexcept
+    : Palette(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr PaletteRef(PaletteRef&& other) noexcept
+    : Palette(other.get())
+  {
+  }
+
+  /// Destructor
+  ~PaletteRef() { release(); }
+
+  /// Assignment operator.
+  PaletteRef& operator=(const PaletteRef& other) noexcept
+  {
+    release();
+    Palette::operator=(Palette(other.get()));
+    return *this;
+  }
+
+  /// Converts to PaletteRaw
+  constexpr operator PaletteRaw() const noexcept { return get(); }
 };
 
 /**
@@ -2766,6 +2852,11 @@ inline PixelFormat::operator const PixelFormatDetails&() const
  */
 inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
 
+inline Palette::Palette(int ncolors)
+  : m_resource(CheckError(SDL_CreatePalette(ncolors)))
+{
+}
+
 /**
  * Set a range of colors in a palette.
  *
@@ -2779,7 +2870,7 @@ inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetPaletteColors(PaletteParam palette,
+inline void SetPaletteColors(PaletteRef palette,
                              SpanRef<const ColorRaw> colors,
                              int firstcolor = 0)
 {
@@ -2790,6 +2881,12 @@ inline void SetPaletteColors(PaletteParam palette,
 inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
 {
   SDL::SetPaletteColors(m_resource, colors, firstcolor);
+}
+
+inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
+{
+  m_palette->colors[m_index] = color;
+  return *this;
 }
 
 /**
@@ -2844,7 +2941,7 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  * @sa Surface.MapRGB
  */
 inline Uint32 MapRGB(const PixelFormatDetails& format,
-                     PaletteConstParam palette,
+                     PaletteConstRef palette,
                      Uint8 r,
                      Uint8 g,
                      Uint8 b)
@@ -2894,7 +2991,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
                       Uint8 g,
                       Uint8 b,
                       Uint8 a,
-                      PaletteConstParam palette = {})
+                      PaletteConstRef palette = {})
 {
   return SDL_MapRGBA(&format, palette, r, g, b, a);
 }
@@ -2934,18 +3031,18 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  */
 inline Uint32 MapColor(const PixelFormatDetails& format,
                        ColorRaw c,
-                       PaletteConstParam palette = {})
+                       PaletteConstRef palette = {})
 {
   return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
 }
 
 inline Uint32 Color::Map(const PixelFormatDetails& format,
-                         PaletteConstParam palette) const
+                         PaletteConstRef palette) const
 {
   return MapColor(format, *this, palette);
 }
 
-inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
+inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstRef palette) const
 {
   return MapColor(GetDetails(), c, palette);
 }
@@ -2958,7 +3055,7 @@ inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
  * a completely white pixel in 16-bit RGB565 format would return [0xff, 0xff,
  * 0xff] not [0xf8, 0xfc, 0xf8]).
  *
- * @param pixel a pixel value.
+ * @param pixelvalue a pixel value.
  * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r a pointer filled in with the red component, may be nullptr.
@@ -2975,14 +3072,14 @@ inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
  * @sa MapRGB
  * @sa MapColor
  */
-inline void GetRGB(Uint32 pixel,
+inline void GetRGB(Uint32 pixelvalue,
                    const PixelFormatDetails& format,
-                   PaletteConstParam palette,
+                   PaletteConstRef palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
 {
-  SDL_GetRGB(pixel, &format, palette, r, g, b);
+  SDL_GetRGB(pixelvalue, &format, palette, r, g, b);
 }
 
 /**
@@ -2996,7 +3093,7 @@ inline void GetRGB(Uint32 pixel,
  * If the surface has no alpha component, the alpha will be returned as 0xff
  * (100% opaque).
  *
- * @param pixel a pixel value.
+ * @param pixelvalue a pixel value.
  * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r a pointer filled in with the red component, may be nullptr.
@@ -3014,15 +3111,15 @@ inline void GetRGB(Uint32 pixel,
  * @sa MapRGB
  * @sa MapColor
  */
-inline void GetRGBA(Uint32 pixel,
+inline void GetRGBA(Uint32 pixelvalue,
                     const PixelFormatDetails& format,
-                    PaletteConstParam palette,
+                    PaletteConstRef palette,
                     Uint8* r,
                     Uint8* g,
                     Uint8* b,
                     Uint8* a)
 {
-  SDL_GetRGBA(pixel, &format, palette, r, g, b, a);
+  SDL_GetRGBA(pixelvalue, &format, palette, r, g, b, a);
 }
 
 /**
@@ -3054,7 +3151,7 @@ inline void GetRGBA(Uint32 pixel,
  */
 inline Color GetColor(Uint32 pixel,
                       const PixelFormatDetails& format,
-                      PaletteConstParam palette = {})
+                      PaletteConstRef palette = {})
 {
   Color c;
   GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
@@ -3063,12 +3160,12 @@ inline Color GetColor(Uint32 pixel,
 
 inline Color Color::Get(Uint32 pixel,
                         const PixelFormatDetails& format,
-                        PaletteConstParam palette)
+                        PaletteConstRef palette)
 {
   return GetColor(pixel, format, palette);
 }
 
-inline Color PixelFormat::Get(Uint32 pixel, PaletteConstParam palette) const
+inline Color PixelFormat::Get(Uint32 pixel, PaletteConstRef palette) const
 {
   return GetColor(pixel, GetDetails(), palette);
 }

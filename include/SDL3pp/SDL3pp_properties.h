@@ -5,6 +5,7 @@
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
 #include "SDL3pp_strings.h"
+#include "SDL3pp_version.h"
 
 namespace SDL {
 
@@ -47,32 +48,8 @@ using PropertiesID = SDL_PropertiesID;
 // Forward decl
 struct PropertiesRef;
 
-/// Safely wrap Properties for non owning parameters
-struct PropertiesParam
-{
-  PropertiesID value; ///< parameter's PropertiesID
-
-  /// Constructs from PropertiesID
-  constexpr PropertiesParam(PropertiesID value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr PropertiesParam(std::nullptr_t _ = nullptr)
-    : value(0)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const PropertiesParam& other) const = default;
-
-  /// Converts to underlying PropertiesID
-  constexpr operator PropertiesID() const { return value; }
-};
+// Forward decl
+struct PropertiesLock;
 
 /**
  * SDL property type
@@ -190,7 +167,7 @@ using CleanupPropertyCallback = void(SDLCALL*)(void* userdata, void* value);
 using CleanupPropertyCB = std::function<void(void* value)>;
 
 /**
- * SDL properties ID
+ * An ID that represents a properties set.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -210,7 +187,7 @@ public:
   }
 
   /**
-   * Constructs from PropertiesParam.
+   * Constructs from PropertiesRef.
    *
    * @param resource a PropertiesID to be wrapped.
    *
@@ -221,9 +198,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Properties(const Properties& other) = delete;
+  constexpr Properties(const Properties& other) noexcept
+    : Properties(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())
@@ -239,7 +221,8 @@ public:
    *
    * All properties are automatically destroyed when Quit() is called.
    *
-   * @returns a valid ID for a new group of properties on success;
+   * @returns an ID for a new group of properties on success.
+   *
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -262,7 +245,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Properties& operator=(const Properties& other) noexcept = default;
+  Properties& operator=(const Properties& other) = default;
 
 public:
   /// Retrieves underlying PropertiesID.
@@ -281,9 +264,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to PropertiesParam
-  constexpr operator PropertiesParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a group of properties.
@@ -312,11 +292,13 @@ public:
    * @param dst the destination properties.
    * @throws Error on failure.
    *
-   * @threadsafety It is safe to call this function from any thread.
+   * @threadsafety It is safe to call this function from any thread. This
+   *               function acquires simultaneous mutex locks on both the source
+   *               and destination property sets.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Copy(PropertiesParam dst);
+  void Copy(PropertiesRef dst);
 
   /**
    * Lock a group of properties.
@@ -338,7 +320,7 @@ public:
    *
    * @sa Properties.Unlock
    */
-  void Lock();
+  PropertiesLock Lock();
 
   /**
    * Unlock a group of properties.
@@ -349,7 +331,7 @@ public:
    *
    * @sa Properties.Lock
    */
-  void Unlock();
+  void Unlock(PropertiesLock&& lock);
 
   /**
    * Set a pointer property in a group of properties with a cleanup function
@@ -703,44 +685,207 @@ public:
   Uint64 GetCount();
 };
 
-/// Semi-safe reference for Properties.
+/**
+ * Reference for Properties.
+ *
+ * This does not take ownership!
+ */
 struct PropertiesRef : Properties
 {
   using Properties::Properties;
 
   /**
-   * Constructs from PropertiesParam.
+   * Constructs from raw Properties.
    *
-   * @param resource a PropertiesID or Properties.
-   *
-   * This does not takes ownership!
-   */
-  PropertiesRef(PropertiesParam resource) noexcept
-    : Properties(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from PropertiesParam.
-   *
-   * @param resource a PropertiesID or Properties.
+   * @param resource a PropertiesID.
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesID resource) noexcept
+  constexpr PropertiesRef(PropertiesID resource) noexcept
     : Properties(resource)
   {
   }
 
+  /**
+   * Constructs from Properties.
+   *
+   * @param resource a Properties.
+   *
+   * This does not takes ownership!
+   */
+  constexpr PropertiesRef(const Properties& resource) noexcept
+    : Properties(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from Properties.
+   *
+   * @param resource a Properties.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr PropertiesRef(Properties&& resource) noexcept
+    : Properties(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  PropertiesRef(const PropertiesRef& other) noexcept
+  constexpr PropertiesRef(const PropertiesRef& other) noexcept
+    : Properties(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr PropertiesRef(PropertiesRef&& other) noexcept
     : Properties(other.get())
   {
   }
 
   /// Destructor
   ~PropertiesRef() { release(); }
+
+  /// Assignment operator.
+  PropertiesRef& operator=(const PropertiesRef& other) noexcept
+  {
+    release();
+    Properties::operator=(Properties(other.get()));
+    return *this;
+  }
+
+  /// Converts to PropertiesID
+  constexpr operator PropertiesID() const noexcept { return get(); }
 };
+
+/**
+ * Lock a group of properties.
+ *
+ * Obtain a multi-threaded lock for these properties. Other threads will wait
+ * while trying to lock these properties until they are unlocked. Properties
+ * must be unlocked before they are destroyed.
+ *
+ * The lock is automatically taken when setting individual properties, this
+ * function is only needed when you want to set several properties atomically or
+ * want to guarantee that properties being queried aren't freed in another
+ * thread.
+ *
+ * @param props the properties to lock.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Properties.Unlock
+ */
+class PropertiesLock
+{
+  PropertiesRef m_lock;
+
+public:
+  /**
+   * Lock a group of properties.
+   *
+   * Obtain a multi-threaded lock for these properties. Other threads will wait
+   * while trying to lock these properties until they are unlocked. Properties
+   * must be unlocked before they are destroyed.
+   *
+   * The lock is automatically taken when setting individual properties, this
+   * function is only needed when you want to set several properties atomically
+   * or want to guarantee that properties being queried aren't freed in another
+   * thread.
+   *
+   * @param resource the properties to lock.
+   * @post true on success or false on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Unlock
+   */
+  PropertiesLock(PropertiesRef resource);
+
+  /// Copy constructor
+  PropertiesLock(const PropertiesLock& other) = delete;
+
+  /// Move constructor
+  PropertiesLock(PropertiesLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Unlock a group of properties.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Lock
+   */
+  ~PropertiesLock() { reset(); }
+
+  PropertiesLock& operator=(const PropertiesLock& other) = delete;
+
+  /// Assignment operator
+  PropertiesLock& operator=(PropertiesLock&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Unlock a group of properties.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Lock
+   */
+  void reset();
+
+  /// Get the reference to locked resource.
+  PropertiesRef get() const { return m_lock; }
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock.release(); }
+};
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A generic property for naming things.
+ *
+ * This property is intended to be added to any Properties that needs a generic
+ * name associated with the property set. It is not guaranteed that any property
+ * set will include this key, but it is convenient to have a standard key that
+ * any piece of code could reasonably agree to use.
+ *
+ * For example, the properties associated with an Texture might have a name
+ * string of "player sprites", or an AudioStream might have "background music",
+ * etc. This might also be useful for an IOStream to list the path to its asset.
+ *
+ * There is no format for the value set with this key; it is expected to be
+ * human-readable and informational in nature, possibly for logging or debugging
+ * purposes.
+ *
+ * SDL does not currently set this property on any objects it creates, but this
+ * may change in later versions; it is currently expected that apps and external
+ * libraries will take advantage of it, when appropriate.
+ *
+ * @since This constant is available since SDL 3.4.0.
+ */
+inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the global SDL properties.
@@ -748,6 +893,8 @@ struct PropertiesRef : Properties
  * @returns a valid property ID on success.
  *
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -761,7 +908,8 @@ inline PropertiesRef GetGlobalProperties()
  *
  * All properties are automatically destroyed when Quit() is called.
  *
- * @returns a valid ID for a new group of properties on success;
+ * @returns an ID for a new group of properties on success.
+ *
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -789,16 +937,18 @@ inline Properties Properties::Create() { return SDL::CreateProperties(); }
  * @param dst the destination properties.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety It is safe to call this function from any thread. This function
+ *               acquires simultaneous mutex locks on both the source and
+ *               destination property sets.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void CopyProperties(PropertiesParam src, PropertiesParam dst)
+inline void CopyProperties(PropertiesRef src, PropertiesRef dst)
 {
   CheckError(SDL_CopyProperties(src, dst));
 }
 
-inline void Properties::Copy(PropertiesParam dst)
+inline void Properties::Copy(PropertiesRef dst)
 {
   SDL::CopyProperties(m_resource, dst);
 }
@@ -824,12 +974,18 @@ inline void Properties::Copy(PropertiesParam dst)
  *
  * @sa Properties.Unlock
  */
-inline void LockProperties(PropertiesParam props)
+inline void LockProperties(PropertiesRef props)
 {
   CheckError(SDL_LockProperties(props));
 }
 
-inline void Properties::Lock() { SDL::LockProperties(m_resource); }
+inline PropertiesLock Properties::Lock() { return {PropertiesRef(*this)}; }
+
+inline PropertiesLock::PropertiesLock(PropertiesRef resource)
+  : m_lock(std::move(resource))
+{
+  LockProperties(m_lock);
+}
 
 /**
  * Unlock a group of properties.
@@ -842,12 +998,23 @@ inline void Properties::Lock() { SDL::LockProperties(m_resource); }
  *
  * @sa Properties.Lock
  */
-inline void UnlockProperties(PropertiesParam props)
+inline void UnlockProperties(PropertiesRef props)
 {
   SDL_UnlockProperties(props);
 }
 
-inline void Properties::Unlock() { SDL::UnlockProperties(m_resource); }
+inline void Properties::Unlock(PropertiesLock&& lock)
+{
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
+
+inline void PropertiesLock::reset()
+{
+  if (!m_lock) return;
+  UnlockProperties(m_lock);
+  m_lock = {};
+}
 
 /**
  * Set a pointer property in a group of properties with a cleanup function that
@@ -878,7 +1045,7 @@ inline void Properties::Unlock() { SDL::UnlockProperties(m_resource); }
  * @sa Properties.SetPointerProperty
  * @sa CleanupPropertyCallback
  */
-inline void SetPointerPropertyWithCleanup(PropertiesParam props,
+inline void SetPointerPropertyWithCleanup(PropertiesRef props,
                                           StringParam name,
                                           void* value,
                                           CleanupPropertyCallback cleanup,
@@ -916,7 +1083,7 @@ inline void SetPointerPropertyWithCleanup(PropertiesParam props,
  * @sa Properties.SetPointerProperty
  * @sa CleanupPropertyCallback
  */
-inline void SetPointerPropertyWithCleanup(PropertiesParam props,
+inline void SetPointerPropertyWithCleanup(PropertiesRef props,
                                           StringParam name,
                                           void* value,
                                           CleanupPropertyCB cleanup)
@@ -968,7 +1135,7 @@ inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
  * @sa Properties.SetPointerPropertyWithCleanup
  * @sa Properties.SetStringProperty
  */
-inline void SetPointerProperty(PropertiesParam props,
+inline void SetPointerProperty(PropertiesRef props,
                                StringParam name,
                                void* value)
 {
@@ -998,7 +1165,7 @@ inline void Properties::SetPointerProperty(StringParam name, void* value)
  *
  * @sa Properties.GetStringProperty
  */
-inline void SetStringProperty(PropertiesParam props,
+inline void SetStringProperty(PropertiesRef props,
                               StringParam name,
                               StringParam value)
 {
@@ -1024,7 +1191,7 @@ inline void Properties::SetStringProperty(StringParam name, StringParam value)
  *
  * @sa Properties.GetNumberProperty
  */
-inline void SetNumberProperty(PropertiesParam props,
+inline void SetNumberProperty(PropertiesRef props,
                               StringParam name,
                               Sint64 value)
 {
@@ -1050,9 +1217,7 @@ inline void Properties::SetNumberProperty(StringParam name, Sint64 value)
  *
  * @sa Properties.GetFloatProperty
  */
-inline void SetFloatProperty(PropertiesParam props,
-                             StringParam name,
-                             float value)
+inline void SetFloatProperty(PropertiesRef props, StringParam name, float value)
 {
   CheckError(SDL_SetFloatProperty(props, name, value));
 }
@@ -1076,7 +1241,7 @@ inline void Properties::SetFloatProperty(StringParam name, float value)
  *
  * @sa Properties.GetBooleanProperty
  */
-inline void SetBooleanProperty(PropertiesParam props,
+inline void SetBooleanProperty(PropertiesRef props,
                                StringParam name,
                                bool value)
 {
@@ -1101,7 +1266,7 @@ inline void Properties::SetBooleanProperty(StringParam name, bool value)
  *
  * @sa Properties.GetPropertyType
  */
-inline bool HasProperty(PropertiesParam props, StringParam name)
+inline bool HasProperty(PropertiesRef props, StringParam name)
 {
   return SDL_HasProperty(props, name);
 }
@@ -1124,7 +1289,7 @@ inline bool Properties::HasProperty(StringParam name)
  *
  * @sa Properties.HasProperty
  */
-inline PropertyType GetPropertyType(PropertiesParam props, StringParam name)
+inline PropertyType GetPropertyType(PropertiesRef props, StringParam name)
 {
   return SDL_GetPropertyType(props, name);
 }
@@ -1165,7 +1330,7 @@ inline PropertyType Properties::GetPropertyType(StringParam name)
  * @sa Properties.HasProperty
  * @sa Properties.SetPointerProperty
  */
-inline void* GetPointerProperty(PropertiesParam props,
+inline void* GetPointerProperty(PropertiesRef props,
                                 StringParam name,
                                 void* default_value)
 {
@@ -1200,7 +1365,7 @@ inline void* Properties::GetPointerProperty(StringParam name,
  * @sa Properties.HasProperty
  * @sa Properties.SetStringProperty
  */
-inline const char* GetStringProperty(PropertiesParam props,
+inline const char* GetStringProperty(PropertiesRef props,
                                      StringParam name,
                                      StringParam default_value)
 {
@@ -1234,7 +1399,7 @@ inline const char* Properties::GetStringProperty(StringParam name,
  * @sa Properties.HasProperty
  * @sa Properties.SetNumberProperty
  */
-inline Sint64 GetNumberProperty(PropertiesParam props,
+inline Sint64 GetNumberProperty(PropertiesRef props,
                                 StringParam name,
                                 Sint64 default_value)
 {
@@ -1267,7 +1432,7 @@ inline Sint64 Properties::GetNumberProperty(StringParam name,
  * @sa Properties.HasProperty
  * @sa Properties.SetFloatProperty
  */
-inline float GetFloatProperty(PropertiesParam props,
+inline float GetFloatProperty(PropertiesRef props,
                               StringParam name,
                               float default_value)
 {
@@ -1299,7 +1464,7 @@ inline float Properties::GetFloatProperty(StringParam name, float default_value)
  * @sa Properties.HasProperty
  * @sa Properties.SetBooleanProperty
  */
-inline bool GetBooleanProperty(PropertiesParam props,
+inline bool GetBooleanProperty(PropertiesRef props,
                                StringParam name,
                                bool default_value)
 {
@@ -1322,7 +1487,7 @@ inline bool Properties::GetBooleanProperty(StringParam name, bool default_value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ClearProperty(PropertiesParam props, StringParam name)
+inline void ClearProperty(PropertiesRef props, StringParam name)
 {
   CheckError(SDL_ClearProperty(props, name));
 }
@@ -1347,7 +1512,7 @@ inline void Properties::ClearProperty(StringParam name)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void EnumerateProperties(PropertiesParam props,
+inline void EnumerateProperties(PropertiesRef props,
                                 EnumeratePropertiesCallback callback,
                                 void* userdata)
 {
@@ -1368,7 +1533,7 @@ inline void EnumerateProperties(PropertiesParam props,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void EnumerateProperties(PropertiesParam props,
+inline void EnumerateProperties(PropertiesRef props,
                                 EnumeratePropertiesCB callback)
 {
   return EnumerateProperties(
@@ -1399,7 +1564,7 @@ inline void Properties::Enumerate(EnumeratePropertiesCB callback)
  * @param props
  * @return Uint64
  */
-inline Uint64 CountProperties(PropertiesParam props)
+inline Uint64 CountProperties(PropertiesRef props)
 {
   Uint64 count = 0;
   EnumerateProperties(props, [&](auto, const char*) { count++; });

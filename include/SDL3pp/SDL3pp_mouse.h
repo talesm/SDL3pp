@@ -53,33 +53,6 @@ using CursorRaw = SDL_Cursor*;
 // Forward decl
 struct CursorRef;
 
-/// Safely wrap Cursor for non owning parameters
-struct CursorParam
-{
-  CursorRaw value; ///< parameter's CursorRaw
-
-  /// Constructs from CursorRaw
-  constexpr CursorParam(CursorRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr CursorParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const CursorParam& other) const = default;
-
-  /// Converts to underlying CursorRaw
-  constexpr operator CursorRaw() const { return value; }
-};
-
 /**
  * Cursor types for Cursor.Cursor().
  *
@@ -185,12 +158,12 @@ class Cursor
 public:
   /// Default ctor
   constexpr Cursor(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from CursorParam.
+   * Constructs from CursorRef.
    *
    * @param resource a CursorRaw to be wrapped.
    *
@@ -201,9 +174,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) = delete;
+  constexpr Cursor(const Cursor& other) noexcept
+    : Cursor(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
@@ -250,6 +228,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa CreateAnimatedCursor
    * @sa Cursor.Cursor
    * @sa Cursor.Cursor
    * @sa Cursor.Destroy
@@ -258,24 +237,22 @@ public:
   Cursor(const Uint8* data,
          const Uint8* mask,
          const PointRaw& size,
-         const PointRaw& hot)
-    : m_resource(
-        CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
-  {
-  }
+         const PointRaw& hot);
 
   /**
    * Create a color cursor.
    *
-   * If this function is passed a surface with alternate representations, the
-   * surface will be interpreted as the content to be used for 100% display
-   * scale, and the alternate representations will be used for high DPI
-   * situations. For example, if the original surface is 32x32, then on a 2x
-   * macOS display or 200% display scale on Windows, a 64x64 version of the
-   * image will be used, if available. If a matching version of the image isn't
-   * available, the closest larger size image will be downscaled to the
-   * appropriate size and be used instead, if available. Otherwise, the closest
-   * smaller image will be upscaled and be used instead.
+   * If this function is passed a surface with alternate representations added
+   * with Surface.AddAlternateImage(), the surface will be interpreted as the
+   * content to be used for 100% display scale, and the alternate
+   * representations will be used for high DPI situations if
+   * SDL_HINT_MOUSE_DPI_SCALE_CURSORS is enabled. For example, if the original
+   * surface is 32x32, then on a 2x macOS display or 200% display scale on
+   * Windows, a 64x64 version of the image will be used, if available. If a
+   * matching version of the image isn't available, the closest larger size
+   * image will be downscaled to the appropriate size and be used instead, if
+   * available. Otherwise, the closest smaller image will be upscaled and be
+   * used instead.
    *
    * @param surface an Surface structure representing the cursor image.
    * @param hot the x, y position of the cursor hot spot.
@@ -286,15 +263,14 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa Surface.AddAlternateImage
+   * @sa CreateAnimatedCursor
    * @sa Cursor.Cursor
    * @sa Cursor.Cursor
    * @sa Cursor.Destroy
    * @sa Cursor.Set
    */
-  Cursor(SurfaceParam surface, const PointRaw& hot)
-    : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
-  {
-  }
+  Cursor(SurfaceRef surface, const PointRaw& hot);
 
   /**
    * Create a system cursor.
@@ -309,10 +285,7 @@ public:
    *
    * @sa Cursor.Destroy
    */
-  Cursor(SystemCursor id)
-    : m_resource(CheckError(SDL_CreateSystemCursor(id)))
-  {
-  }
+  Cursor(SystemCursor id);
 
   /// Destructor
   ~Cursor() { SDL_DestroyCursor(m_resource); }
@@ -326,7 +299,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Cursor& operator=(const Cursor& other) noexcept = default;
+  Cursor& operator=(const Cursor& other) = default;
 
 public:
   /// Retrieves underlying CursorRaw.
@@ -346,9 +319,6 @@ public:
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
-  /// Converts to CursorParam
-  constexpr operator CursorParam() const noexcept { return {m_resource}; }
-
   /**
    * Free a previously-created cursor.
    *
@@ -359,6 +329,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa CreateAnimatedCursor
    * @sa Cursor.Cursor
    * @sa Cursor.Cursor
    * @sa Cursor.Cursor
@@ -384,43 +355,76 @@ public:
   void Set();
 };
 
-/// Semi-safe reference for Cursor.
+/**
+ * Reference for Cursor.
+ *
+ * This does not take ownership!
+ */
 struct CursorRef : Cursor
 {
   using Cursor::Cursor;
 
   /**
-   * Constructs from CursorParam.
+   * Constructs from raw Cursor.
    *
-   * @param resource a CursorRaw or Cursor.
-   *
-   * This does not takes ownership!
-   */
-  CursorRef(CursorParam resource) noexcept
-    : Cursor(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from CursorParam.
-   *
-   * @param resource a CursorRaw or Cursor.
+   * @param resource a CursorRaw.
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorRaw resource) noexcept
+  constexpr CursorRef(CursorRaw resource) noexcept
     : Cursor(resource)
   {
   }
 
+  /**
+   * Constructs from Cursor.
+   *
+   * @param resource a Cursor.
+   *
+   * This does not takes ownership!
+   */
+  constexpr CursorRef(const Cursor& resource) noexcept
+    : Cursor(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from Cursor.
+   *
+   * @param resource a Cursor.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr CursorRef(Cursor&& resource) noexcept
+    : Cursor(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  CursorRef(const CursorRef& other) noexcept
+  constexpr CursorRef(const CursorRef& other) noexcept
+    : Cursor(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr CursorRef(CursorRef&& other) noexcept
     : Cursor(other.get())
   {
   }
 
   /// Destructor
   ~CursorRef() { release(); }
+
+  /// Assignment operator.
+  CursorRef& operator=(const CursorRef& other) noexcept
+  {
+    release();
+    Cursor::operator=(Cursor(other.get()));
+    return *this;
+  }
+
+  /// Converts to CursorRaw
+  constexpr operator CursorRaw() const noexcept { return get(); }
 };
 
 /**
@@ -435,6 +439,17 @@ constexpr MouseWheelDirection MOUSEWHEEL_NORMAL =
 
 constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
   SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Animated cursor frame info.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ */
+using CursorFrameInfo = SDL_CursorFrameInfo;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Represents a button index.
@@ -485,6 +500,84 @@ constexpr MouseButtonFlags ButtonMask(MouseButton button)
   return SDL_BUTTON_MASK(button);
 }
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A callback used to transform mouse motion delta from raw values.
+ *
+ * This is called during SDL's handling of platform mouse events to scale the
+ * values of the resulting motion delta.
+ *
+ * @param userdata what was passed as `userdata` to SetRelativeMouseTransform().
+ * @param timestamp the associated time at which this mouse motion event was
+ *                  received.
+ * @param window the associated window to which this mouse motion event was
+ *               addressed.
+ * @param mouseID the associated mouse from which this mouse motion event was
+ *                emitted.
+ * @param x pointer to a variable that will be treated as the resulting x-axis
+ *          motion.
+ * @param y pointer to a variable that will be treated as the resulting y-axis
+ *          motion.
+ *
+ * @threadsafety This callback is called by SDL's internal mouse input
+ *               processing procedure, which may be a thread separate from the
+ *               main event loop that is run at realtime priority. Stalling this
+ *               thread with too much work in the callback can therefore
+ *               potentially freeze the entire system. Care should be taken with
+ *               proper synchronization practices when adding other side effects
+ *               beyond mutation of the x and y values.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa SetRelativeMouseTransform
+ */
+using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
+                                                    Uint64 timestamp,
+                                                    WindowRaw window,
+                                                    MouseID mouseID,
+                                                    float* x,
+                                                    float* y);
+
+/**
+ * A callback used to transform mouse motion delta from raw values.
+ *
+ * This is called during SDL's handling of platform mouse events to scale the
+ * values of the resulting motion delta.
+ *
+ * @param timestamp the associated time at which this mouse motion event was
+ *                  received.
+ * @param window the associated window to which this mouse motion event was
+ *               addressed.
+ * @param mouseID the associated mouse from which this mouse motion event was
+ *                emitted.
+ * @param x pointer to a variable that will be treated as the resulting x-axis
+ *          motion.
+ * @param y pointer to a variable that will be treated as the resulting y-axis
+ *          motion.
+ *
+ * @threadsafety This callback is called by SDL's internal mouse input
+ *               processing procedure, which may be a thread separate from the
+ *               main event loop that is run at realtime priority. Stalling this
+ *               thread with too much work in the callback can therefore
+ *               potentially freeze the entire system. Care should be taken with
+ *               proper synchronization practices when adding other side effects
+ *               beyond mutation of the x and y values.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa SetRelativeMouseTransform
+ *
+ * @sa MouseMotionTransformCallback
+ */
+using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
+                                                      WindowRaw window,
+                                                      MouseID mouseID,
+                                                      float* x,
+                                                      float* y)>;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * Return whether a mouse is currently connected.
  *
@@ -528,8 +621,8 @@ inline OwnArray<MouseID> GetMice()
  * This function returns "" if the mouse doesn't have a name.
  *
  * @param instance_id the mouse instance ID.
- * @returns the name of the selected mouse, or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the name of the selected mouse on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -539,7 +632,7 @@ inline OwnArray<MouseID> GetMice()
  */
 inline const char* GetMouseNameForID(MouseID instance_id)
 {
-  return SDL_GetMouseNameForID(instance_id);
+  return CheckError(SDL_GetMouseNameForID(instance_id));
 }
 
 /**
@@ -697,46 +790,55 @@ inline void WarpMouse(const FPointRaw& p)
   CheckError(SDL_WarpMouseGlobal(p.x, p.y));
 }
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
- * Set relative mouse mode for a window.
+ * Set a user-defined function by which to transform relative mouse inputs.
  *
- * While the window has focus and relative mouse mode is enabled, the cursor
- * is hidden, the mouse position is constrained to the window, and SDL will
- * report continuous relative mouse motion even if the mouse is at the edge of
- * the window.
+ * This overrides the relative system scale and relative speed scale hints.
+ * Should be called prior to enabling relative mouse mode, fails otherwise.
  *
- * If you'd like to keep the mouse position fixed while in relative mode you
- * can use Window.SetMouseRect(). If you'd like the cursor to be at a
- * specific location when relative mode ends, you should use
- * Window.WarpMouse() before disabling relative mode.
- *
- * This function will flush any pending mouse motion for this window.
- *
- * @param enabled true to enable relative mode, false to disable.
+ * @param callback a callback used to transform relative mouse motion, or
+ *                 nullptr for default behavior.
+ * @param userdata a pointer that will be passed to `callback`.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.GetRelativeMouseMode
+ * @since This function is available since SDL 3.4.0.
  */
+inline void SetRelativeMouseTransform(MouseMotionTransformCallback callback,
+                                      void* userdata)
+{
+  CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
+}
+
+/**
+ * Set a user-defined function by which to transform relative mouse inputs.
+ *
+ * This overrides the relative system scale and relative speed scale hints.
+ * Should be called prior to enabling relative mouse mode, fails otherwise.
+ *
+ * @param callback a callback used to transform relative mouse motion, or
+ *                 nullptr for default behavior.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
+{
+  SetRelativeMouseTransform(callback.wrapper, callback.data);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 inline void Window::SetRelativeMouseMode(bool enabled)
 {
   CheckError(SDL_SetWindowRelativeMouseMode(m_resource, enabled));
 }
 
-/**
- * Query whether relative mouse mode is enabled for a window.
- *
- * @returns true if relative mode is enabled for a window or false otherwise.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.SetRelativeMouseMode
- */
 inline bool Window::GetRelativeMouseMode() const
 {
   return SDL_GetWindowRelativeMouseMode(m_resource);
@@ -827,6 +929,7 @@ inline void CaptureMouse(bool enabled)
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa CreateAnimatedCursor
  * @sa Cursor.Cursor
  * @sa Cursor.Cursor
  * @sa Cursor.Destroy
@@ -840,18 +943,38 @@ inline Cursor CreateCursor(const Uint8* data,
   return Cursor(data, mask, size, hot);
 }
 
+inline Cursor::Cursor(const Uint8* data,
+                      const Uint8* mask,
+                      const PointRaw& size,
+                      const PointRaw& hot)
+  : m_resource(
+      CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
+{
+}
+
+inline Cursor::Cursor(SurfaceRef surface, const PointRaw& hot)
+  : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
+{
+}
+
+inline Cursor::Cursor(SystemCursor id)
+  : m_resource(CheckError(SDL_CreateSystemCursor(id)))
+{
+}
+
 /**
  * Create a color cursor.
  *
- * If this function is passed a surface with alternate representations, the
- * surface will be interpreted as the content to be used for 100% display scale,
- * and the alternate representations will be used for high DPI situations. For
- * example, if the original surface is 32x32, then on a 2x macOS display or 200%
- * display scale on Windows, a 64x64 version of the image will be used, if
- * available. If a matching version of the image isn't available, the closest
- * larger size image will be downscaled to the appropriate size and be used
- * instead, if available. Otherwise, the closest smaller image will be upscaled
- * and be used instead.
+ * If this function is passed a surface with alternate representations added
+ * with Surface.AddAlternateImage(), the surface will be interpreted as the
+ * content to be used for 100% display scale, and the alternate representations
+ * will be used for high DPI situations if SDL_HINT_MOUSE_DPI_SCALE_CURSORS is
+ * enabled. For example, if the original surface is 32x32, then on a 2x macOS
+ * display or 200% display scale on Windows, a 64x64 version of the image will
+ * be used, if available. If a matching version of the image isn't available,
+ * the closest larger size image will be downscaled to the appropriate size and
+ * be used instead, if available. Otherwise, the closest smaller image will be
+ * upscaled and be used instead.
  *
  * @param surface an Surface structure representing the cursor image.
  * @param hot the position of the cursor hot spot.
@@ -862,15 +985,74 @@ inline Cursor CreateCursor(const Uint8* data,
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa Surface.AddAlternateImage
+ * @sa CreateAnimatedCursor
  * @sa Cursor.Cursor
  * @sa Cursor.Cursor
  * @sa Cursor.Destroy
  * @sa Cursor.Set
  */
-inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
+inline Cursor CreateColorCursor(SurfaceRef surface, const PointRaw& hot)
 {
   return Cursor(surface, hot);
 }
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Create an animated color cursor.
+ *
+ * Animated cursors are composed of a sequential array of frames, specified as
+ * surfaces and durations in an array of CursorFrameInfo structs. The hot spot
+ * coordinates are universal to all frames, and all frames must have the same
+ * dimensions.
+ *
+ * Frame durations are specified in milliseconds. A duration of 0 implies an
+ * infinite frame time, and the animation will stop on that frame. To create a
+ * one-shot animation, set the duration of the last frame in the sequence to 0.
+ *
+ * If this function is passed surfaces with alternate representations added with
+ * Surface.AddAlternateImage(), the surfaces will be interpreted as the content
+ * to be used for 100% display scale, and the alternate representations will be
+ * used for high DPI situations. For example, if the original surfaces are
+ * 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64
+ * version of the image will be used, if available. If a matching version of the
+ * image isn't available, the closest larger size image will be downscaled to
+ * the appropriate size and be used instead, if available. Otherwise, the
+ * closest smaller image will be upscaled and be used instead.
+ *
+ * If the underlying platform does not support animated cursors, this function
+ * will fall back to creating a static color cursor using the first frame in the
+ * sequence.
+ *
+ * @param frames an array of cursor images composing the animation.
+ * @param frame_count the number of frames in the sequence.
+ * @param hot_x the x position of the cursor hot spot.
+ * @param hot_y the y position of the cursor hot spot.
+ * @returns the new cursor on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.AddAlternateImage
+ * @sa Cursor.Cursor
+ * @sa Cursor.Cursor
+ * @sa Cursor.Cursor
+ * @sa Cursor.Destroy
+ * @sa Cursor.Set
+ */
+inline CursorRef CreateAnimatedCursor(CursorFrameInfo* frames,
+                                      int frame_count,
+                                      int hot_x,
+                                      int hot_y)
+{
+  return CheckError(
+    SDL_CreateAnimatedCursor(frames, frame_count, hot_x, hot_y));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Create a system cursor.
@@ -904,7 +1086,7 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  *
  * @sa GetCursor
  */
-inline void SetCursor(CursorParam cursor) { CheckError(SDL_SetCursor(cursor)); }
+inline void SetCursor(CursorRef cursor) { CheckError(SDL_SetCursor(cursor)); }
 
 inline void Cursor::Set() { SDL::SetCursor(m_resource); }
 
@@ -955,6 +1137,7 @@ inline CursorRef GetDefaultCursor()
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa CreateAnimatedCursor
  * @sa Cursor.Cursor
  * @sa Cursor.Cursor
  * @sa Cursor.Cursor

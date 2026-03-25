@@ -50,7 +50,7 @@ struct Main
   SDL::AppResult Iterate()
   {
     Uint64 timestampNS = 0;
-    if (SDL::Surface frame = camera.AcquireFrame(&timestampNS)) {
+    if (auto frame = camera.AcquireFrame(&timestampNS)) {
       /* Some platforms (like Emscripten) don't know _what_ the camera offers
          until the user gives permission, so we build the texture and resize
          the window when we get a first frame from the camera. */
@@ -64,7 +64,6 @@ struct Main
       if (texture) {
         texture.Update(std::nullopt, frame.GetPixels(), frame.GetPitch());
       }
-      camera.ReleaseFrame(frame);
     }
 
     renderer.SetDrawColor({0x99, 0x99, 0x99});

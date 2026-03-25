@@ -89,12 +89,11 @@ struct DateTime : DateTimeRaw
    *                  (UTC).
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
-  DateTime(Time ticks, bool localTime = true)
-  {
-    CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
-  }
+  DateTime(Time ticks, bool localTime = true);
 
   /**
    * Check if valid.
@@ -287,6 +286,8 @@ struct DateTime : DateTimeRaw
    * @returns time on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   operator Time() const;
@@ -337,6 +338,8 @@ constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR; ///< 12 hour time
  *                   format, may be nullptr.
  * @throws Error on failure.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
@@ -363,11 +366,18 @@ inline Time Time::Current()
  * @returns the resulting DateTime.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
 {
   return DateTime(ticks, localTime);
+}
+
+inline DateTime::DateTime(Time ticks, bool localTime)
+{
+  CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
 }
 
 /**
@@ -379,6 +389,8 @@ inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
  * @param dt the source DateTime.
  * @returns the resulting Time.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -409,6 +421,8 @@ inline Time Time::FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime)
  * @returns the number of days in the requested month.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetDaysInMonth(int year, int month)
@@ -425,6 +439,8 @@ inline int GetDaysInMonth(int year, int month)
  * @returns the day of year [0-365] if the date is valid.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetDayOfYear(int year, int month, int day)
@@ -440,6 +456,8 @@ inline int GetDayOfYear(int year, int month, int day)
  * @param day the day component of the date.
  * @returns a value between 0 and 6 (0 being Sunday) if the date is valid.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */

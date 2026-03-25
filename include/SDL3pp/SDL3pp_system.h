@@ -62,6 +62,8 @@ using WindowsMessageHook = bool(SDLCALL*)(void* userdata, MSG* msg);
  * @param callback the WindowsMessageHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa WindowsMessageHook
@@ -151,6 +153,8 @@ using X11EventHook = bool(SDLCALL*)(void* userdata, XEvent* xevent);
  * @param callback the X11EventHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetX11EventHook(X11EventHook callback, void* userdata)
@@ -170,6 +174,8 @@ inline void SetX11EventHook(X11EventHook callback, void* userdata)
  * @param priority the new, Unix-specific, priority value.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetLinuxThreadPriority(Sint64 threadID, int priority)
@@ -187,6 +193,8 @@ inline void SetLinuxThreadPriority(Sint64 threadID, int priority)
  * @param schedPolicy the new scheduling policy (SCHED_FIFO, SCHED_RR,
  *                    SCHED_OTHER, etc...).
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -238,14 +246,14 @@ using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
  *
  * For more information see:
  *
- * https://wiki.libsdl.org/SDL3/README/ios
+ * https://wiki.libsdl.org/SDL3/README-ios
  *
  * Note that if you use the "main callbacks" instead of a standard C `main`
  * function, you don't have to use this API, as SDL will manage this for you.
  *
  * Details on main callbacks are here:
  *
- * https://wiki.libsdl.org/SDL3/README/main-functions
+ * https://wiki.libsdl.org/SDL3/README-main-functions
  *
  * @param window the window for which the animation callback should be set.
  * @param interval the number of frames after which **callback** will be called.
@@ -253,11 +261,13 @@ using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
  * @param callbackParam a pointer that is passed to `callback`.
  * @throws Error on failure.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetiOSEventPump
  */
-inline void SetiOSAnimationCallback(WindowParam window,
+inline void SetiOSAnimationCallback(WindowRef window,
                                     int interval,
                                     iOSAnimationCallback callback,
                                     void* callbackParam)
@@ -272,6 +282,8 @@ inline void SetiOSAnimationCallback(WindowParam window,
  * This function is only available on Apple iOS.
  *
  * @param enabled true to enable the event pump, false to disable it.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -297,8 +309,9 @@ inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
  * being that the SDL headers can avoid including jni.h.
  *
  * @returns a pointer to Java native interface object (JNIEnv) to which the
- *          current thread is attached, or nullptr on failure; call GetError()
- *          for more information.
+ *          current thread is attached on success.
+ *
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -306,7 +319,7 @@ inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
  *
  * @sa GetAndroidActivity
  */
-inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
+inline void* GetAndroidJNIEnv() { return CheckError(SDL_GetAndroidJNIEnv()); }
 
 /**
  * Retrieve the Java instance of the Android activity class.
@@ -322,8 +335,9 @@ inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
  * https://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/functions.html
  *
  * @returns the jobject representing the instance of the Activity class of the
- *          Android application, or nullptr on failure; call GetError() for more
- *          information.
+ *          Android application on success.
+ *
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -331,7 +345,10 @@ inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
  *
  * @sa GetAndroidJNIEnv
  */
-inline void* GetAndroidActivity() { return SDL_GetAndroidActivity(); }
+inline void* GetAndroidActivity()
+{
+  return CheckError(SDL_GetAndroidActivity());
+}
 
 /**
  * Query Android API level of the current device.
@@ -365,6 +382,8 @@ inline void* GetAndroidActivity() { return SDL_GetAndroidActivity(); }
  *
  * @returns the Android API level.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetAndroidSDKVersion() { return SDL_GetAndroidSDKVersion(); }
@@ -374,6 +393,8 @@ inline int GetAndroidSDKVersion() { return SDL_GetAndroidSDKVersion(); }
  *
  * @returns true if this is a Chromebook, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline bool IsChromebook() { return SDL_IsChromebook(); }
@@ -382,6 +403,8 @@ inline bool IsChromebook() { return SDL_IsChromebook(); }
  * Query if the application is running on a Samsung DeX docking station.
  *
  * @returns true if this is a DeX docking station, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -690,6 +713,8 @@ inline void SendAndroidMessage(Uint32 command, int param)
  *
  * @returns true if the device is a tablet, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline bool IsTablet() { return SDL_IsTablet(); }
@@ -700,6 +725,8 @@ inline bool IsTablet() { return SDL_IsTablet(); }
  * If SDL can't determine this, it will return false.
  *
  * @returns true if the device is a TV, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */

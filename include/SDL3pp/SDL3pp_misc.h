@@ -41,6 +41,8 @@ namespace SDL {
  *            files, if supported.
  * @throws Error on failure.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void OpenURL(StringParam url) { CheckError(SDL_OpenURL(url)); }

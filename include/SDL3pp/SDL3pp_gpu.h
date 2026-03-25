@@ -196,14 +196,19 @@ namespace SDL {
  * underlying graphics API. While it's possible that we have done something
  * inefficiently, it's very unlikely especially if you are relatively
  * inexperienced with GPU rendering. Please see the performance tips above and
- * make sure you are following them. Additionally, tools like RenderDoc can be
- * very helpful for diagnosing incorrect behavior and performance issues.
+ * make sure you are following them. Additionally, tools like
+ * [RenderDoc](https://renderdoc.org/) can be very helpful for diagnosing
+ * incorrect behavior and performance issues.
  *
  * ## System Requirements
  *
- * **Vulkan:** Supported on Windows, Linux, Nintendo Switch, and certain Android
- * devices. Requires Vulkan 1.0 with the following extensions and device
- * features:
+ * ### Vulkan
+ *
+ * SDL driver name: "vulkan" (for use in GPUDevice.GPUDevice() and
+ * prop::GpuDevice.CREATE_NAME_STRING)
+ *
+ * Supported on Windows, Linux, Nintendo Switch, and certain Android devices.
+ * Requires Vulkan 1.0 with the following extensions and device features:
  *
  * - `VK_KHR_swapchain`
  * - `VK_KHR_maintenance1`
@@ -212,19 +217,62 @@ namespace SDL {
  * - `depthClamp`
  * - `shaderClipDistance`
  * - `drawIndirectFirstInstance`
+ * - `sampleRateShading`
  *
- * **D3D12:** Supported on Windows 10 or newer, Xbox One (GDK), and Xbox Series
- * X|S (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
- * Resource Binding Tier 2 or above.
+ * You can remove some of these requirements to increase compatibility with
+ * Android devices by using these properties when creating the GPU device with
+ * GPUDevice.GPUDevice():
  *
- * **Metal:** Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware
- * requirements vary by operating system:
+ * - prop::GpuDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
+ * - prop::GpuDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
+ * - prop::GpuDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
+ * - prop::GpuDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN
+ *
+ * ### D3D12
+ *
+ * SDL driver name: "direct3d12"
+ *
+ * Supported on Windows 10 or newer, Xbox One (GDK), and Xbox Series X|S (GDK).
+ * Requires a GPU that supports DirectX 12 Feature Level 11_0 and Resource
+ * Binding Tier 2 or above.
+ *
+ * You can remove the Tier 2 resource binding requirement to support Intel
+ * Haswell and Broadwell GPUs by using this property when creating the GPU
+ * device with GPUDevice.GPUDevice():
+ *
+ * - prop::GpuDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
+ *
+ * ### Metal
+ *
+ * SDL driver name: "metal"
+ *
+ * Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware requirements vary by
+ * operating system:
  *
  * - macOS requires an Apple Silicon or [Intel Mac2
  *   family](https://developer.apple.com/documentation/metal/mtlfeatureset/mtlfeatureset_macos_gpufamily2_v1?language=objc)
  *   GPU
  * - iOS/tvOS requires an A9 GPU or newer
  * - iOS Simulator and tvOS Simulator are unsupported
+ *
+ * ## Coordinate System
+ *
+ * The GPU API uses a left-handed coordinate system, following the convention of
+ * D3D12 and Metal. Specifically:
+ *
+ * - **Normalized Device Coordinates:** The lower-left corner has an x,y
+ *   coordinate of `(-1.0, -1.0)`. The upper-right corner is `(1.0, 1.0)`. Z
+ *   values range from `[0.0, 1.0]` where 0 is the near plane.
+ * - **Viewport Coordinates:** The top-left corner has an x,y coordinate of `(0,
+ *   0)` and extends to the bottom-right corner at `(viewportWidth,
+ *   viewportHeight)`. +Y is down.
+ * - **Texture Coordinates:** The top-left corner has an x,y coordinate of `(0,
+ *   0)` and extends to the bottom-right corner at `(1.0, 1.0)`. +Y is down.
+ *
+ * If the backend driver differs from this convention (e.g. Vulkan, which has an
+ * NDC that assumes +Y is down), SDL will automatically convert the coordinate
+ * system behind the scenes, so you don't need to perform any coordinate
+ * flipping logic in your shaders.
  *
  * ## Uniform Data
  *
@@ -291,6 +339,37 @@ namespace SDL {
  * section of data that has already been referenced will produce unexpected
  * results.
  *
+ * ## Debugging
+ *
+ * At some point of your GPU journey, you will probably encounter issues that
+ * are not traceable with regular debugger - for example, your code compiles but
+ * you get an empty screen, or your shader fails in runtime.
+ *
+ * For debugging such cases, there are tools that allow visually inspecting the
+ * whole GPU frame, every drawcall, every bound resource, memory buffers, etc.
+ * They are the following, per platform:
+ *
+ * * For Windows/Linux, use [RenderDoc](https://renderdoc.org/) * For MacOS
+ * (Metal), use Xcode built-in debugger (Open XCode, go to Debug > Debug
+ * Executable..., select your application, set "GPU Frame Capture" to "Metal" in
+ * scheme "Options" window, run your app, and click the small Metal icon on the
+ * bottom to capture a frame)
+ *
+ * Aside from that, you may want to enable additional debug layers to receive
+ * more detailed error messages, based on your GPU backend:
+ *
+ * * For D3D12, the debug layer is an optional feature that can be installed via
+ * "Windows Settings -> System -> Optional features" and adding the "Graphics
+ * Tools" optional feature. * For Vulkan, you will need to install Vulkan SDK on
+ * Windows, and on Linux, you usually have some sort of
+ * `vulkan-validation-layers` system package that should be installed. * For
+ * Metal, it should be enough just to run the application from XCode to receive
+ * detailed errors or warnings in the output.
+ *
+ * Don't hesitate to use tools as RenderDoc when encountering runtime issues or
+ * unexpected output on screen, quick GPU frame inspection can usually help you
+ * fix the majority of such problems.
+ *
  * @{
  */
 
@@ -302,33 +381,6 @@ using GPUDeviceRaw = SDL_GPUDevice*;
 
 // Forward decl
 struct GPUDeviceRef;
-
-/// Safely wrap GPUDevice for non owning parameters
-struct GPUDeviceParam
-{
-  GPUDeviceRaw value; ///< parameter's GPUDeviceRaw
-
-  /// Constructs from GPUDeviceRaw
-  constexpr GPUDeviceParam(GPUDeviceRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr GPUDeviceParam(std::nullptr_t _ = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const GPUDeviceParam& other) const = default;
-
-  /// Converts to underlying GPUDeviceRaw
-  constexpr operator GPUDeviceRaw() const { return value; }
-};
 
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
@@ -488,10 +540,7 @@ public:
    * @sa GPUComputePass.DispatchIndirect
    * @sa GPUDevice.ReleaseBuffer
    */
-  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo& createinfo)
-    : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, &createinfo)))
-  {
-  }
+  GPUBuffer(GPUDeviceRef device, const GPUBufferCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUBuffer.
@@ -569,12 +618,8 @@ public:
    * @sa GPUCopyPass.DownloadFromTexture
    * @sa GPUDevice.ReleaseTransferBuffer
    */
-  GPUTransferBuffer(GPUDeviceParam device,
-                    const GPUTransferBufferCreateInfo& createinfo)
-    : m_gPUTransferBuffer(
-        CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
-  {
-  }
+  GPUTransferBuffer(GPUDeviceRef device,
+                    const GPUTransferBufferCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUTransferBuffer.
@@ -641,7 +686,8 @@ public:
    * Creates a texture object to be used in graphics or compute workflows.
    *
    * The contents of this texture are undefined until data is written to the
-   * texture.
+   * texture, either via GPUCopyPass.UploadToTexture or by performing a render
+   * or compute pass with this texture as a target.
    *
    * Note that certain combinations of usage flags are invalid. For example, a
    * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
@@ -683,6 +729,8 @@ public:
    *
    * @sa GPUCopyPass.UploadToTexture
    * @sa GPUCopyPass.DownloadFromTexture
+   * @sa GPUCommandBuffer.BeginRenderPass
+   * @sa GPUCommandBuffer.BeginComputePass
    * @sa GPURenderPass.BindVertexSamplers
    * @sa GPURenderPass.BindVertexStorageTextures
    * @sa GPURenderPass.BindFragmentSamplers
@@ -692,10 +740,7 @@ public:
    * @sa GPUDevice.ReleaseTexture
    * @sa GPUDevice.TextureSupportsFormat
    */
-  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo& createinfo)
-    : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, &createinfo)))
-  {
-  }
+  GPUTexture(GPUDeviceRef device, const GPUTextureCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUTexture.
@@ -767,10 +812,7 @@ public:
    * @sa GPURenderPass.BindFragmentSamplers
    * @sa GPUDevice.ReleaseSampler
    */
-  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo)
-    : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
-  {
-  }
+  GPUSampler(GPUDeviceRef device, const GPUSamplerCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUSampler.
@@ -786,6 +828,8 @@ public:
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUShader.GPUShader
+ * @sa GPUShaderFormat
+ * @sa GPUShaderStage
  */
 using GPUShaderCreateInfo = SDL_GPUShaderCreateInfo;
 
@@ -886,10 +930,7 @@ public:
    * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
    * @sa GPUDevice.ReleaseShader
    */
-  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo& createinfo)
-    : m_gPUShader(CheckError(SDL_CreateGPUShader(device, &createinfo)))
-  {
-  }
+  GPUShader(GPUDeviceRef device, const GPUShaderCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUShader.
@@ -981,12 +1022,8 @@ public:
    * @sa GPUComputePass.BindPipeline
    * @sa GPUDevice.ReleaseComputePipeline
    */
-  GPUComputePipeline(GPUDeviceParam device,
-                     const GPUComputePipelineCreateInfo& createinfo)
-    : m_gPUComputePipeline(
-        CheckError(SDL_CreateGPUComputePipeline(device, &createinfo)))
-  {
-  }
+  GPUComputePipeline(GPUDeviceRef device,
+                     const GPUComputePipelineCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUComputePipeline.
@@ -1063,12 +1100,8 @@ public:
    * @sa GPURenderPass.BindPipeline
    * @sa GPUDevice.ReleaseGraphicsPipeline
    */
-  GPUGraphicsPipeline(GPUDeviceParam device,
-                      const GPUGraphicsPipelineCreateInfo& createinfo)
-    : m_gPUGraphicsPipeline(
-        CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo)))
-  {
-  }
+  GPUGraphicsPipeline(GPUDeviceRef device,
+                      const GPUGraphicsPipelineCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUGraphicsPipeline.
@@ -1122,6 +1155,8 @@ constexpr GPUIndexElementSize GPU_INDEXELEMENTSIZE_32BIT =
  *
  * @sa GPURenderPass.BindVertexSamplers
  * @sa GPURenderPass.BindFragmentSamplers
+ * @sa GPUTexture
+ * @sa GPUSampler
  */
 using GPUTextureSamplerBinding = SDL_GPUTextureSamplerBinding;
 
@@ -1506,7 +1541,7 @@ public:
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
@@ -1514,7 +1549,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindSamplers(
     Uint32 first_slot,
@@ -1527,14 +1562,14 @@ public:
    * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindStorageTextures(Uint32 first_slot,
                            SpanRef<const GPUTextureRaw> storage_textures);
@@ -1546,14 +1581,14 @@ public:
    * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute storage buffer slot to begin binding from.
    * @param storage_buffers an array of storage buffer binding structs.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindStorageBuffers(Uint32 first_slot,
                           SpanRef<const GPUBufferRaw> storage_buffers);
@@ -1659,6 +1694,18 @@ using GPUTextureRegion = SDL_GPUTextureRegion;
  * A structure specifying parameters related to transferring data to or from a
  * texture.
  *
+ * If either of `pixels_per_row` or `rows_per_layer` is zero, then width and
+ * height of passed GPUTextureRegion to GPUCopyPass.UploadToTexture or
+ * GPUCopyPass.DownloadFromTexture are used as default values respectively and
+ * data is considered to be tightly packed.
+ *
+ * **WARNING**: On some older/integrated hardware, Direct3D 12 requires texture
+ * data row pitch to be 256 byte aligned, and offsets to be aligned to 512
+ * bytes. If they are not, SDL will make a temporary copy of the data that is
+ * properly aligned, but this adds overhead to the transfer process. Apps can
+ * avoid this by aligning their data appropriately, or using a different GPU
+ * backend than Direct3D 12.
+ *
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUCopyPass.UploadToTexture
@@ -1753,6 +1800,10 @@ public:
    *
    * This copy occurs on the GPU timeline. You may assume the copy has finished
    * in subsequent commands.
+   *
+   * This function does not support copying between depth and color textures.
+   * For those, copy the texture to a buffer and then to the destination
+   * texture.
    *
    * @param source a source texture region.
    * @param destination a destination texture region.
@@ -1861,6 +1912,7 @@ public:
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUCommandBuffer.BeginRenderPass
+ * @sa FColor
  */
 using GPUColorTargetInfo = SDL_GPUColorTargetInfo;
 
@@ -1903,6 +1955,9 @@ using GPUColorTargetInfo = SDL_GPUColorTargetInfo;
  *   be reused again.
  *
  * Note that depth/stencil targets do not support multisample resolves.
+ *
+ * Due to ABI limitations, depth textures with more than 255 layers are not
+ * supported.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -2004,6 +2059,12 @@ public:
    *
    * Useful for debugging.
    *
+   * On Direct3D 12, using GPUCommandBuffer.InsertDebugLabel requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
+   *
    * @param text a UTF-8 string constant to insert as the label.
    *
    * @since This function is available since SDL 3.2.0.
@@ -2018,6 +2079,12 @@ public:
    *
    * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
    * to GPUCommandBuffer.PopDebugGroup.
+   *
+   * On Direct3D 12, using GPUCommandBuffer.PushDebugGroup requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
    *
    * On some backends (e.g. Metal), pushing a debug group during a
    * render/blit/compute pass will create a group that is scoped to the native
@@ -2035,6 +2102,12 @@ public:
   /**
    * Ends the most-recently pushed debug group.
    *
+   * On Direct3D 12, using GPUCommandBuffer.PopDebugGroup requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUCommandBuffer.PushDebugGroup
@@ -2044,11 +2117,14 @@ public:
   /**
    * Pushes data to a vertex uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
    * aligned.
+   *
+   * For detailed information about accessing uniform data from a shader, please
+   * refer to GPUShader.GPUShader.
    *
    * @param slot_index the vertex uniform slot to push data to.
    * @param data client data to write.
@@ -2060,7 +2136,7 @@ public:
   /**
    * Pushes data to a fragment uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -2076,7 +2152,7 @@ public:
   /**
    * Pushes data to a uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -2099,6 +2175,14 @@ public:
    * pass. A default viewport and scissor state are automatically set when this
    * is called. You cannot begin another render pass, or begin a compute pass or
    * copy pass until you have ended the render pass.
+   *
+   * Using GPU_LOADOP_LOAD before any contents have been written to the texture
+   * subresource will result in undefined behavior. GPU_LOADOP_CLEAR will set
+   * the contents of the texture subresource to a single value before any
+   * rendering is performed. It's fine to do an empty render pass using
+   * GPU_STOREOP_STORE to clear a texture, but in general it's better to think
+   * of clearing not as an independent operation but as something that's done as
+   * the beginning of a render pass.
    *
    * @param color_target_infos an array of texture subresources with
    *                           corresponding clear values and load/store ops.
@@ -2161,6 +2245,8 @@ public:
    * @returns a copy pass handle.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUCopyPass.End
    */
   GPUCopyPass BeginCopyPass();
 
@@ -2195,7 +2281,9 @@ public:
    * buffer used to acquire it.
    *
    * This function will fill the swapchain texture handle with nullptr if too
-   * many frames are in flight. This is not an error.
+   * many frames are in flight. This is not an error. This nullptr pointer
+   * should not be passed back into SDL. Instead, it should be considered as an
+   * indication to wait until the swapchain is available.
    *
    * If you use this function, it is possible to create a situation where many
    * command buffers are allocated while the rendering context waits for the GPU
@@ -2230,7 +2318,7 @@ public:
    * @sa GPUDevice.SetAllowedFramesInFlight
    */
   GPUTexture AcquireSwapchainTexture(
-    WindowParam window,
+    WindowRef window,
     Uint32* swapchain_texture_width = nullptr,
     Uint32* swapchain_texture_height = nullptr);
 
@@ -2274,7 +2362,7 @@ public:
    * @sa GPUCommandBuffer.AcquireSwapchainTexture
    */
   GPUTexture WaitAndAcquireSwapchainTexture(
-    WindowParam window,
+    WindowRef window,
     Uint32* swapchain_texture_width = nullptr,
     Uint32* swapchain_texture_height = nullptr);
 
@@ -2311,8 +2399,8 @@ public:
    * All commands in the submission are guaranteed to begin executing before any
    * command in a subsequent submission begins executing.
    *
-   * @returns a fence associated with the command buffer, or nullptr on failure;
-   *          call GetError() for more information.
+   * @returns a fence associated with the command buffer on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -2968,12 +3056,12 @@ class GPUDevice
 public:
   /// Default ctor
   constexpr GPUDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
   /**
-   * Constructs from GPUDeviceParam.
+   * Constructs from GPUDeviceRef.
    *
    * @param resource a GPUDeviceRaw to be wrapped.
    *
@@ -2984,9 +3072,14 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) = delete;
+  constexpr GPUDevice(const GPUDevice& other) noexcept
+    : GPUDevice(other.m_resource)
+  {
+  }
 
+public:
   /// Move constructor
   constexpr GPUDevice(GPUDevice&& other) noexcept
     : GPUDevice(other.release())
@@ -3000,6 +3093,13 @@ public:
   /**
    * Creates a GPU context.
    *
+   * The GPU driver name can be one of the following:
+   *
+   * - "vulkan": [Vulkan](CategoryGPU#vulkan)
+   * - "direct3d12": [D3D12](CategoryGPU#d3d12)
+   * - "metal": [Metal](CategoryGPU#metal)
+   * - nullptr: let SDL pick the optimal driver
+   *
    * @param format_flags a bitflag indicating which shader formats the app is
    *                     able to provide.
    * @param debug_mode enable debug mode properties and validations.
@@ -3010,16 +3110,13 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa GPUDevice.GPUDevice
    * @sa GPUDevice.GetShaderFormats
    * @sa GPUDevice.GetDriver
    * @sa GPUDevice.Destroy
    * @sa GPUSupportsShaderFormats
    */
-  GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name)
-    : m_resource(
-        CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
-  {
-  }
+  GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name);
 
   /**
    * Creates a GPU context.
@@ -3030,8 +3127,31 @@ public:
    *   and validations, defaults to true.
    * - `prop::GpuDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
    *   efficiency over maximum GPU performance, defaults to false.
+   * - `prop::GpuDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
+   *   useful debug information on device creation, defaults to true.
    * - `prop::GpuDevice.CREATE_NAME_STRING`: the name of the GPU driver to use,
    *   if a specific one is desired.
+   * - `prop::GpuDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
+   *   device feature shaderClipDistance. If disabled, clip distances are not
+   *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
+   *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
+   *   Metal. Disabling optional features allows the application to run on some
+   *   older Android devices. Defaults to true.
+   * - `prop::GpuDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+   *   device feature depthClamp. If disabled, there is no depth clamp support
+   *   and enable_depth_clip in GPURasterizerState must always be set to true.
+   *   Disabling optional features allows the application to run on some older
+   *   Android devices. Defaults to true.
+   * - `prop::GpuDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+   *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
+   *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
+   *   Disabling optional features allows the application to run on some older
+   *   Android devices. Defaults to true.
+   * - `prop::GpuDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+   *   feature samplerAnisotropy. If disabled, enable_anisotropy of
+   *   GPUSamplerCreateInfo must be set to false. Disabling optional features
+   *   allows the application to run on some older Android devices. Defaults to
+   *   true.
    *
    * These are the current shader format properties:
    *
@@ -3048,10 +3168,55 @@ public:
    * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
    *   provide Metal shader libraries if applicable.
    *
-   * With the D3D12 renderer:
+   * With the D3D12 backend:
    *
    * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use
    *   for all vertex semantics, default is "TEXCOORD".
+   * - `prop::GpuDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+   *   default, Resourcing Binding Tier 2 is required for D3D12 support.
+   *   However, an application can set this property to true to enable Tier 1
+   *   support, if (and only if) the application uses 8 or fewer storage
+   *   resources across all shader stages. As of writing, this property is
+   *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
+   *   either supports Tier 2 Resource Binding or does not support D3D12 in any
+   *   capacity. Defaults to false.
+   * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain
+   *   feature checks are only possible on Windows 11 by default. By setting
+   *   this alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+   *   feature checks possible on older platforms. The version you provide must
+   *   match the one given in the DLL.
+   * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+   *   checks are only possible on Windows 11 by default. By setting this
+   *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+   *   feature checks possible on older platforms. The path you provide must be
+   *   relative to the executable path of your app. Be sure not to put the DLL
+   *   in the same directory as the exe; Microsoft strongly advises against
+   *   this!
+   *
+   * With the Vulkan backend:
+   *
+   * - `prop::GpuDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+   *   default, Vulkan device enumeration includes drivers of all types,
+   *   including software renderers (for example, the Lavapipe Mesa driver).
+   *   This can be useful if your application _requires_ SDL_GPU, but if you can
+   *   provide your own fallback renderer (for example, an OpenGL renderer) this
+   *   property can be set to true. Defaults to false.
+   * - `prop::GpuDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+   *   GPUVulkanOptions structure to be processed during device creation. This
+   *   allows configuring a variety of Vulkan-specific options such as
+   *   increasing the API version and opting into extensions aside from the
+   *   minimal set SDL requires.
+   *
+   * With the Metal backend: -
+   * `prop::GpuDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+   * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
+   * However, an application can set this property to true to enable support for
+   * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not
+   * write to sRGB textures. (For history's sake: MacFamily1 also does not
+   * support indirect command buffers, MSAA depth resolve, and stencil
+   * resolve/feedback, but these are not exposed features in SDL_GPU.)
    *
    * @param props the properties to use.
    * @post a GPU context on success.
@@ -3064,10 +3229,7 @@ public:
    * @sa GPUDevice.Destroy
    * @sa GPUSupportsProperties
    */
-  GPUDevice(PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
-  {
-  }
+  GPUDevice(PropertiesRef props);
 
   /// Destructor
   ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
@@ -3081,7 +3243,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept = default;
+  GPUDevice& operator=(const GPUDevice& other) = default;
 
 public:
   /// Retrieves underlying GPUDeviceRaw.
@@ -3100,9 +3262,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to GPUDeviceParam
-  constexpr operator GPUDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -3131,6 +3290,113 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   GPUShaderFormat GetShaderFormats();
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Get the properties associated with a GPU device.
+   *
+   * All properties are optional and may differ between GPU backends and SDL
+   * versions.
+   *
+   * The following properties are provided by SDL:
+   *
+   * `prop::GpuDevice.NAME_STRING`: Contains the name of the underlying device
+   * as reported by the system driver. This string has no standardized format,
+   * is highly inconsistent between hardware devices and drivers, and is able to
+   * change at any time. Do not attempt to parse this string as it is bound to
+   * fail at some point in the future when system drivers are updated, new
+   * hardware devices are introduced, or when SDL adds new GPU backends or
+   * modifies existing ones.
+   *
+   * Strings that have been found in the wild include:
+   *
+   * - GTX 970
+   * - GeForce GTX 970
+   * - NVIDIA GeForce GTX 970
+   * - Microsoft Direct3D12 (NVIDIA GeForce GTX 970)
+   * - NVIDIA Graphics Device
+   * - GeForce GPU
+   * - P106-100
+   * - AMD 15D8:C9
+   * - AMD Custom GPU 0405
+   * - AMD Radeon (TM) Graphics
+   * - ASUS Radeon RX 470 Series
+   * - Intel(R) Arc(tm) A380 Graphics (DG2)
+   * - Virtio-GPU Venus (NVIDIA TITAN V)
+   * - SwiftShader Device (LLVM 16.0.0)
+   * - llvmpipe (LLVM 15.0.4, 256 bits)
+   * - Microsoft Basic Render Driver
+   * - unknown device
+   *
+   * The above list shows that the same device can have different formats, the
+   * vendor name may or may not appear in the string, the included vendor name
+   * may not be the vendor of the chipset on the device, some manufacturers
+   * include pseudo-legal marks while others don't, some devices may not use a
+   * marketing name in the string, the device string may be wrapped by the name
+   * of a translation interface, the device may be emulated in software, or the
+   * string may contain generic text that does not identify the device at all.
+   *
+   * `prop::GpuDevice.DRIVER_NAME_STRING`: Contains the self-reported name of
+   * the underlying system driver.
+   *
+   * Strings that have been found in the wild include:
+   *
+   * - Intel Corporation
+   * - Intel open-source Mesa driver
+   * - Qualcomm Technologies Inc. Adreno Vulkan Driver
+   * - MoltenVK
+   * - Mali-G715
+   * - venus
+   *
+   * `prop::GpuDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
+   * of the underlying system driver. This is a relatively short version string
+   * in an unspecified format. If prop::GpuDevice.DRIVER_INFO_STRING is
+   * available then that property should be preferred over this one as it may
+   * contain additional information that is useful for identifying the exact
+   * driver version used.
+   *
+   * Strings that have been found in the wild include:
+   *
+   * - 53.0.0
+   * - 0.405.2463
+   * - 32.0.15.6614
+   *
+   * `prop::GpuDevice.DRIVER_INFO_STRING`: Contains the detailed version
+   * information of the underlying system driver as reported by the driver. This
+   * is an arbitrary string with no standardized format and it may contain
+   * newlines. This property should be preferred over
+   * prop::GpuDevice.DRIVER_VERSION_STRING if it is available as it usually
+   * contains the same information but in a format that is easier to read.
+   *
+   * Strings that have been found in the wild include:
+   *
+   * - 101.6559
+   * - 1.2.11
+   * - Mesa 21.2.2 (LLVM 12.0.1)
+   * - Mesa 22.2.0-devel (git-f226222 2022-04-14 impish-oibaf-ppa)
+   * - v1.r53p0-00eac0.824c4f31403fb1fbf8ee1042422c2129
+   *
+   * This string has also been observed to be a multiline string (which has a
+   * trailing newline):
+   *
+   * ```
+   * Driver Build: 85da404, I46ff5fc46f, 1606794520
+   * Date: 11/30/20
+   * Compiler Version: EV031.31.04.01
+   * Driver Branch: promo490_3_Google
+   * ```
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  PropertiesRef GetProperties();
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Creates a pipeline object to be used in a compute workflow.
@@ -3302,7 +3568,8 @@ public:
    * Creates a texture object to be used in graphics or compute workflows.
    *
    * The contents of this texture are undefined until data is written to the
-   * texture.
+   * texture, either via GPUCopyPass.UploadToTexture or by performing a render
+   * or compute pass with this texture as a target.
    *
    * Note that certain combinations of usage flags are invalid. For example, a
    * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
@@ -3343,6 +3610,8 @@ public:
    *
    * @sa GPUCopyPass.UploadToTexture
    * @sa GPUCopyPass.DownloadFromTexture
+   * @sa GPUCommandBuffer.BeginRenderPass
+   * @sa GPUCommandBuffer.BeginComputePass
    * @sa GPURenderPass.BindVertexSamplers
    * @sa GPURenderPass.BindVertexStorageTextures
    * @sa GPURenderPass.BindFragmentSamplers
@@ -3556,8 +3825,8 @@ public:
    * mipmaps. Interleaving commands between the two command buffers reduces the
    * total amount of passes overall which improves rendering performance.
    *
-   * @returns a command buffer, or nullptr on failure; call GetError() for more
-   *          information.
+   * @returns a command buffer on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -3575,8 +3844,8 @@ public:
    *
    * @param transfer_buffer a transfer buffer.
    * @param cycle if true, cycles the transfer buffer if it is already bound.
-   * @returns the address of the mapped transfer buffer memory, or nullptr on
-   *          failure; call GetError() for more information.
+   * @returns the address of the mapped transfer buffer memory on success.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -3605,7 +3874,7 @@ public:
    * @sa GPUDevice.ClaimWindow
    */
   bool WindowSupportsSwapchainComposition(
-    WindowParam window,
+    WindowRef window,
     GPUSwapchainComposition swapchain_composition);
 
   /**
@@ -3621,8 +3890,7 @@ public:
    *
    * @sa GPUDevice.ClaimWindow
    */
-  bool WindowSupportsPresentMode(WindowParam window,
-                                 GPUPresentMode present_mode);
+  bool WindowSupportsPresentMode(WindowRef window, GPUPresentMode present_mode);
 
   /**
    * Claims a window, creating a swapchain structure for it.
@@ -3648,7 +3916,7 @@ public:
    * @sa GPUDevice.WindowSupportsPresentMode
    * @sa GPUDevice.WindowSupportsSwapchainComposition
    */
-  void ClaimWindow(WindowParam window);
+  void ClaimWindow(WindowRef window);
 
   /**
    * Unclaims a window, destroying its swapchain structure.
@@ -3659,7 +3927,7 @@ public:
    *
    * @sa GPUDevice.ClaimWindow
    */
-  void ReleaseWindow(WindowParam window);
+  void ReleaseWindow(WindowRef window);
 
   /**
    * Changes the swapchain parameters for the given claimed window.
@@ -3670,7 +3938,7 @@ public:
    * GPUDevice.WindowSupportsSwapchainComposition prior to calling this
    * function.
    *
-   * GPU_PRESENTMODE_VSYNC with GPU_SWAPCHAINCOMPOSITION_SDR are always
+   * GPU_PRESENTMODE_VSYNC with GPU_SWAPCHAINCOMPOSITION_SDR is always
    * supported.
    *
    * @param window an Window that has been claimed.
@@ -3684,7 +3952,7 @@ public:
    * @sa GPUDevice.WindowSupportsPresentMode
    * @sa GPUDevice.WindowSupportsSwapchainComposition
    */
-  bool SetSwapchainParameters(WindowParam window,
+  bool SetSwapchainParameters(WindowRef window,
                               GPUSwapchainComposition swapchain_composition,
                               GPUPresentMode present_mode);
 
@@ -3724,7 +3992,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  GPUTextureFormat GetSwapchainTextureFormat(WindowParam window);
+  GPUTextureFormat GetSwapchainTextureFormat(WindowRef window);
 
   /**
    * Blocks the thread until a swapchain texture is available to be acquired.
@@ -3741,7 +4009,7 @@ public:
    * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
    * @sa GPUDevice.SetAllowedFramesInFlight
    */
-  void WaitForSwapchain(WindowParam window);
+  void WaitForSwapchain(WindowRef window);
 
   /**
    * Blocks the thread until the GPU is completely idle.
@@ -3820,6 +4088,7 @@ public:
    */
   bool TextureSupportsSampleCount(GPUTextureFormat format,
                                   GPUSampleCount sample_count);
+
 #ifdef SDL_PLATFORM_GDK
 
   /**
@@ -3851,43 +4120,76 @@ public:
 #endif /* SDL_PLATFORM_GDK */
 };
 
-/// Semi-safe reference for GPUDevice.
+/**
+ * Reference for GPUDevice.
+ *
+ * This does not take ownership!
+ */
 struct GPUDeviceRef : GPUDevice
 {
   using GPUDevice::GPUDevice;
 
   /**
-   * Constructs from GPUDeviceParam.
+   * Constructs from raw GPUDevice.
    *
-   * @param resource a GPUDeviceRaw or GPUDevice.
-   *
-   * This does not takes ownership!
-   */
-  GPUDeviceRef(GPUDeviceParam resource) noexcept
-    : GPUDevice(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from GPUDeviceParam.
-   *
-   * @param resource a GPUDeviceRaw or GPUDevice.
+   * @param resource a GPUDeviceRaw.
    *
    * This does not takes ownership!
    */
-  GPUDeviceRef(GPUDeviceRaw resource) noexcept
+  constexpr GPUDeviceRef(GPUDeviceRaw resource) noexcept
     : GPUDevice(resource)
   {
   }
 
+  /**
+   * Constructs from GPUDevice.
+   *
+   * @param resource a GPUDevice.
+   *
+   * This does not takes ownership!
+   */
+  constexpr GPUDeviceRef(const GPUDevice& resource) noexcept
+    : GPUDevice(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from GPUDevice.
+   *
+   * @param resource a GPUDevice.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr GPUDeviceRef(GPUDevice&& resource) noexcept
+    : GPUDevice(std::move(resource).release())
+  {
+  }
+
   /// Copy constructor.
-  GPUDeviceRef(const GPUDeviceRef& other) noexcept
+  constexpr GPUDeviceRef(const GPUDeviceRef& other) noexcept
+    : GPUDevice(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr GPUDeviceRef(GPUDeviceRef&& other) noexcept
     : GPUDevice(other.get())
   {
   }
 
   /// Destructor
   ~GPUDeviceRef() { release(); }
+
+  /// Assignment operator.
+  GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
+  {
+    release();
+    GPUDevice::operator=(GPUDevice(other.get()));
+    return *this;
+  }
+
+  /// Converts to GPUDeviceRaw
+  constexpr operator GPUDeviceRaw() const noexcept { return get(); }
 };
 
 /**
@@ -4604,6 +4906,9 @@ using GPUStencilOpState = SDL_GPUStencilOpState;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUColorTargetDescription
+ * @sa GPUBlendFactor
+ * @sa GPUBlendOp
+ * @sa GPUColorComponentFlags
  */
 using GPUColorTargetBlendState = SDL_GPUColorTargetBlendState;
 
@@ -4696,13 +5001,20 @@ inline bool GPUSupportsShaderFormats(GPUShaderFormat format_flags,
  *
  * @sa GPUDevice.GPUDevice
  */
-inline bool GPUSupportsProperties(PropertiesParam props)
+inline bool GPUSupportsProperties(PropertiesRef props)
 {
   return SDL_GPUSupportsProperties(props);
 }
 
 /**
  * Creates a GPU context.
+ *
+ * The GPU driver name can be one of the following:
+ *
+ * - "vulkan": [Vulkan](CategoryGPU#vulkan)
+ * - "direct3d12": [D3D12](CategoryGPU#d3d12)
+ * - "metal": [Metal](CategoryGPU#metal)
+ * - nullptr: let SDL pick the optimal driver
  *
  * @param format_flags a bitflag indicating which shader formats the app is able
  *                     to provide.
@@ -4714,6 +5026,7 @@ inline bool GPUSupportsProperties(PropertiesParam props)
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa GPUDevice.GPUDevice
  * @sa GPUDevice.GetShaderFormats
  * @sa GPUDevice.GetDriver
  * @sa GPUDevice.Destroy
@@ -4726,6 +5039,18 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
   return GPUDevice(format_flags, debug_mode, std::move(name));
 }
 
+inline GPUDevice::GPUDevice(GPUShaderFormat format_flags,
+                            bool debug_mode,
+                            StringParam name)
+  : m_resource(CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
+{
+}
+
+inline GPUDevice::GPUDevice(PropertiesRef props)
+  : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
+{
+}
+
 /**
  * Creates a GPU context.
  *
@@ -4735,8 +5060,31 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  *   and validations, defaults to true.
  * - `prop::GpuDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
  *   efficiency over maximum GPU performance, defaults to false.
+ * - `prop::GpuDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
+ *   useful debug information on device creation, defaults to true.
  * - `prop::GpuDevice.CREATE_NAME_STRING`: the name of the GPU driver to use, if
  *   a specific one is desired.
+ * - `prop::GpuDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
+ *   device feature shaderClipDistance. If disabled, clip distances are not
+ *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
+ *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
+ *   Metal. Disabling optional features allows the application to run on some
+ *   older Android devices. Defaults to true.
+ * - `prop::GpuDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+ *   device feature depthClamp. If disabled, there is no depth clamp support and
+ *   enable_depth_clip in GPURasterizerState must always be set to true.
+ *   Disabling optional features allows the application to run on some older
+ *   Android devices. Defaults to true.
+ * - `prop::GpuDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+ *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
+ *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
+ *   Disabling optional features allows the application to run on some older
+ *   Android devices. Defaults to true.
+ * - `prop::GpuDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+ *   feature samplerAnisotropy. If disabled, enable_anisotropy of
+ *   GPUSamplerCreateInfo must be set to false. Disabling optional features
+ *   allows the application to run on some older Android devices. Defaults to
+ *   true.
  *
  * These are the current shader format properties:
  *
@@ -4753,10 +5101,53 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
  *   provide Metal shader libraries if applicable.
  *
- * With the D3D12 renderer:
+ * With the D3D12 backend:
  *
  * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
  *   all vertex semantics, default is "TEXCOORD".
+ * - `prop::GpuDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+ *   default, Resourcing Binding Tier 2 is required for D3D12 support. However,
+ *   an application can set this property to true to enable Tier 1 support, if
+ *   (and only if) the application uses 8 or fewer storage resources across all
+ *   shader stages. As of writing, this property is useful for targeting Intel
+ *   Haswell and Broadwell GPUs; other hardware either supports Tier 2 Resource
+ *   Binding or does not support D3D12 in any capacity. Defaults to false.
+ * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
+ *   checks are only possible on Windows 11 by default. By setting this
+ *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+ *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+ *   feature checks possible on older platforms. The version you provide must
+ *   match the one given in the DLL.
+ * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+ *   checks are only possible on Windows 11 by default. By setting this
+ *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+ *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+ *   feature checks possible on older platforms. The path you provide must be
+ *   relative to the executable path of your app. Be sure not to put the DLL in
+ *   the same directory as the exe; Microsoft strongly advises against this!
+ *
+ * With the Vulkan backend:
+ *
+ * - `prop::GpuDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+ *   default, Vulkan device enumeration includes drivers of all types, including
+ *   software renderers (for example, the Lavapipe Mesa driver). This can be
+ *   useful if your application _requires_ SDL_GPU, but if you can provide your
+ *   own fallback renderer (for example, an OpenGL renderer) this property can
+ *   be set to true. Defaults to false.
+ * - `prop::GpuDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+ *   GPUVulkanOptions structure to be processed during device creation. This
+ *   allows configuring a variety of Vulkan-specific options such as increasing
+ *   the API version and opting into extensions aside from the minimal set SDL
+ *   requires.
+ *
+ * With the Metal backend: -
+ * `prop::GpuDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+ * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
+ * However, an application can set this property to true to enable support for
+ * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not write
+ * to sRGB textures. (For history's sake: MacFamily1 also does not support
+ * indirect command buffers, MSAA depth resolve, and stencil resolve/feedback,
+ * but these are not exposed features in SDL_GPU.)
  *
  * @param props the properties to use.
  * @returns a GPU context on success.
@@ -4769,7 +5160,7 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  * @sa GPUDevice.Destroy
  * @sa GPUSupportsProperties
  */
-inline GPUDevice CreateGPUDeviceWithProperties(PropertiesParam props)
+inline GPUDevice CreateGPUDeviceWithProperties(PropertiesRef props)
 {
   return GPUDevice(props);
 }
@@ -4782,7 +5173,30 @@ constexpr auto CREATE_DEBUGMODE_BOOLEAN =
 constexpr auto CREATE_PREFERLOWPOWER_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN;
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto CREATE_VERBOSE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING;
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN;
+
+constexpr auto CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN;
+
+constexpr auto CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN;
+
+constexpr auto CREATE_FEATURE_ANISOTROPY_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_SHADERS_PRIVATE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN;
@@ -4802,10 +5216,79 @@ constexpr auto CREATE_SHADERS_MSL_BOOLEAN =
 constexpr auto CREATE_SHADERS_METALLIB_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN;
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 constexpr auto CREATE_D3D12_SEMANTIC_NAME_STRING =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
 
+#if SDL_VERSION_ATLEAST(3, 4, 2)
+
+constexpr auto CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER =
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER;
+
+constexpr auto CREATE_D3D12_AGILITY_SDK_PATH_STRING =
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 2)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN;
+
+constexpr auto CREATE_VULKAN_OPTIONS_POINTER =
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 2)
+
+constexpr auto CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 2)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
+
+constexpr auto DRIVER_NAME_STRING = SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING;
+
+constexpr auto DRIVER_VERSION_STRING =
+  SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING;
+
+constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 } // namespace prop::GpuDevice
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A structure specifying additional options when using Vulkan.
+ *
+ * When no such structure is provided, SDL will use Vulkan API version 1.0 and a
+ * minimal set of features. The requested API version influences how the
+ * feature_list is processed by SDL. When requesting API version 1.0, the
+ * feature_list is ignored. Only the vulkan_10_physical_device_features and the
+ * extension lists are used. When requesting API version 1.1, the feature_list
+ * is scanned for feature structures introduced in Vulkan 1.1. When requesting
+ * Vulkan 1.2 or higher, the feature_list is additionally scanned for compound
+ * feature structs such as VkPhysicalDeviceVulkan11Features. The device and
+ * instance extension lists, as well as vulkan_10_physical_device_features, are
+ * always processed.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ */
+using GPUVulkanOptions = SDL_GPUVulkanOptions;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -4861,7 +5344,7 @@ inline const char* GetGPUDriver(int index) { return SDL_GetGPUDriver(index); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetGPUDeviceDriver(GPUDeviceParam device)
+inline const char* GetGPUDeviceDriver(GPUDeviceRef device)
 {
   return SDL_GetGPUDeviceDriver(device);
 }
@@ -4880,7 +5363,7 @@ inline const char* GPUDevice::GetDriver()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceParam device)
+inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceRef device)
 {
   return SDL_GetGPUShaderFormats(device);
 }
@@ -4889,6 +5372,122 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
 {
   return SDL::GetGPUShaderFormats(m_resource);
 }
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Get the properties associated with a GPU device.
+ *
+ * All properties are optional and may differ between GPU backends and SDL
+ * versions.
+ *
+ * The following properties are provided by SDL:
+ *
+ * `prop::GpuDevice.NAME_STRING`: Contains the name of the underlying device as
+ * reported by the system driver. This string has no standardized format, is
+ * highly inconsistent between hardware devices and drivers, and is able to
+ * change at any time. Do not attempt to parse this string as it is bound to
+ * fail at some point in the future when system drivers are updated, new
+ * hardware devices are introduced, or when SDL adds new GPU backends or
+ * modifies existing ones.
+ *
+ * Strings that have been found in the wild include:
+ *
+ * - GTX 970
+ * - GeForce GTX 970
+ * - NVIDIA GeForce GTX 970
+ * - Microsoft Direct3D12 (NVIDIA GeForce GTX 970)
+ * - NVIDIA Graphics Device
+ * - GeForce GPU
+ * - P106-100
+ * - AMD 15D8:C9
+ * - AMD Custom GPU 0405
+ * - AMD Radeon (TM) Graphics
+ * - ASUS Radeon RX 470 Series
+ * - Intel(R) Arc(tm) A380 Graphics (DG2)
+ * - Virtio-GPU Venus (NVIDIA TITAN V)
+ * - SwiftShader Device (LLVM 16.0.0)
+ * - llvmpipe (LLVM 15.0.4, 256 bits)
+ * - Microsoft Basic Render Driver
+ * - unknown device
+ *
+ * The above list shows that the same device can have different formats, the
+ * vendor name may or may not appear in the string, the included vendor name may
+ * not be the vendor of the chipset on the device, some manufacturers include
+ * pseudo-legal marks while others don't, some devices may not use a marketing
+ * name in the string, the device string may be wrapped by the name of a
+ * translation interface, the device may be emulated in software, or the string
+ * may contain generic text that does not identify the device at all.
+ *
+ * `prop::GpuDevice.DRIVER_NAME_STRING`: Contains the self-reported name of the
+ * underlying system driver.
+ *
+ * Strings that have been found in the wild include:
+ *
+ * - Intel Corporation
+ * - Intel open-source Mesa driver
+ * - Qualcomm Technologies Inc. Adreno Vulkan Driver
+ * - MoltenVK
+ * - Mali-G715
+ * - venus
+ *
+ * `prop::GpuDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
+ * of the underlying system driver. This is a relatively short version string in
+ * an unspecified format. If prop::GpuDevice.DRIVER_INFO_STRING is available
+ * then that property should be preferred over this one as it may contain
+ * additional information that is useful for identifying the exact driver
+ * version used.
+ *
+ * Strings that have been found in the wild include:
+ *
+ * - 53.0.0
+ * - 0.405.2463
+ * - 32.0.15.6614
+ *
+ * `prop::GpuDevice.DRIVER_INFO_STRING`: Contains the detailed version
+ * information of the underlying system driver as reported by the driver. This
+ * is an arbitrary string with no standardized format and it may contain
+ * newlines. This property should be preferred over
+ * prop::GpuDevice.DRIVER_VERSION_STRING if it is available as it usually
+ * contains the same information but in a format that is easier to read.
+ *
+ * Strings that have been found in the wild include:
+ *
+ * - 101.6559
+ * - 1.2.11
+ * - Mesa 21.2.2 (LLVM 12.0.1)
+ * - Mesa 22.2.0-devel (git-f226222 2022-04-14 impish-oibaf-ppa)
+ * - v1.r53p0-00eac0.824c4f31403fb1fbf8ee1042422c2129
+ *
+ * This string has also been observed to be a multiline string (which has a
+ * trailing newline):
+ *
+ * ```
+ * Driver Build: 85da404, I46ff5fc46f, 1606794520
+ * Date: 11/30/20
+ * Compiler Version: EV031.31.04.01
+ * Driver Branch: promo490_3_Google
+ * ```
+ *
+ * @param device a GPU context to query.
+ * @returns a valid property ID on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline PropertiesRef GetGPUDeviceProperties(GPUDeviceRef device)
+{
+  return CheckError(SDL_GetGPUDeviceProperties(device));
+}
+
+inline PropertiesRef GPUDevice::GetProperties()
+{
+  return SDL::GetGPUDeviceProperties(m_resource);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Creates a pipeline object to be used in a compute workflow.
@@ -4936,7 +5535,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  * @sa GPUDevice.ReleaseComputePipeline
  */
 inline GPUComputePipeline CreateGPUComputePipeline(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUComputePipelineCreateInfo& createinfo)
 {
   return GPUComputePipeline(device, createinfo);
@@ -4946,6 +5545,14 @@ inline GPUComputePipeline GPUDevice::CreateComputePipeline(
   const GPUComputePipelineCreateInfo& createinfo)
 {
   return GPUComputePipeline(m_resource, createinfo);
+}
+
+inline GPUComputePipeline::GPUComputePipeline(
+  GPUDeviceRef device,
+  const GPUComputePipelineCreateInfo& createinfo)
+  : m_gPUComputePipeline(
+      CheckError(SDL_CreateGPUComputePipeline(device, &createinfo)))
+{
 }
 
 namespace prop::GPUComputePipeline {
@@ -4977,7 +5584,7 @@ constexpr auto CREATE_NAME_STRING =
  * @sa GPUDevice.ReleaseGraphicsPipeline
  */
 inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUGraphicsPipelineCreateInfo& createinfo)
 {
   return GPUGraphicsPipeline(device, createinfo);
@@ -4987,6 +5594,14 @@ inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
   const GPUGraphicsPipelineCreateInfo& createinfo)
 {
   return GPUGraphicsPipeline(m_resource, createinfo);
+}
+
+inline GPUGraphicsPipeline::GPUGraphicsPipeline(
+  GPUDeviceRef device,
+  const GPUGraphicsPipelineCreateInfo& createinfo)
+  : m_gPUGraphicsPipeline(
+      CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo)))
+{
 }
 
 namespace prop::GPUGraphicsPipeline {
@@ -5017,7 +5632,7 @@ constexpr auto CREATE_NAME_STRING =
  * @sa GPURenderPass.BindFragmentSamplers
  * @sa GPUDevice.ReleaseSampler
  */
-inline GPUSampler CreateGPUSampler(GPUDeviceParam device,
+inline GPUSampler CreateGPUSampler(GPUDeviceRef device,
                                    const GPUSamplerCreateInfo& createinfo)
 {
   return GPUSampler(device, createinfo);
@@ -5027,6 +5642,12 @@ inline GPUSampler GPUDevice::CreateSampler(
   const GPUSamplerCreateInfo& createinfo)
 {
   return GPUSampler(m_resource, createinfo);
+}
+
+inline GPUSampler::GPUSampler(GPUDeviceRef device,
+                              const GPUSamplerCreateInfo& createinfo)
+  : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
+{
 }
 
 namespace prop::GPUSampler {
@@ -5105,7 +5726,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
  * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
  * @sa GPUDevice.ReleaseShader
  */
-inline GPUShader CreateGPUShader(GPUDeviceParam device,
+inline GPUShader CreateGPUShader(GPUDeviceRef device,
                                  const GPUShaderCreateInfo& createinfo)
 {
   return GPUShader(device, createinfo);
@@ -5114,6 +5735,12 @@ inline GPUShader CreateGPUShader(GPUDeviceParam device,
 inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
 {
   return GPUShader(m_resource, createinfo);
+}
+
+inline GPUShader::GPUShader(GPUDeviceRef device,
+                            const GPUShaderCreateInfo& createinfo)
+  : m_gPUShader(CheckError(SDL_CreateGPUShader(device, &createinfo)))
+{
 }
 
 namespace prop::GPUShader {
@@ -5126,7 +5753,8 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
  * Creates a texture object to be used in graphics or compute workflows.
  *
  * The contents of this texture are undefined until data is written to the
- * texture.
+ * texture, either via GPUCopyPass.UploadToTexture or by performing a render or
+ * compute pass with this texture as a target.
  *
  * Note that certain combinations of usage flags are invalid. For example, a
  * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
@@ -5168,6 +5796,8 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
  *
  * @sa GPUCopyPass.UploadToTexture
  * @sa GPUCopyPass.DownloadFromTexture
+ * @sa GPUCommandBuffer.BeginRenderPass
+ * @sa GPUCommandBuffer.BeginComputePass
  * @sa GPURenderPass.BindVertexSamplers
  * @sa GPURenderPass.BindVertexStorageTextures
  * @sa GPURenderPass.BindFragmentSamplers
@@ -5177,7 +5807,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
  * @sa GPUDevice.ReleaseTexture
  * @sa GPUDevice.TextureSupportsFormat
  */
-inline GPUTexture CreateGPUTexture(GPUDeviceParam device,
+inline GPUTexture CreateGPUTexture(GPUDeviceRef device,
                                    const GPUTextureCreateInfo& createinfo)
 {
   return GPUTexture(device, createinfo);
@@ -5187,6 +5817,12 @@ inline GPUTexture GPUDevice::CreateTexture(
   const GPUTextureCreateInfo& createinfo)
 {
   return GPUTexture(m_resource, createinfo);
+}
+
+inline GPUTexture::GPUTexture(GPUDeviceRef device,
+                              const GPUTextureCreateInfo& createinfo)
+  : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, &createinfo)))
+{
 }
 
 namespace prop::GPUTexture {
@@ -5260,7 +5896,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
  * @sa GPUComputePass.DispatchIndirect
  * @sa GPUDevice.ReleaseBuffer
  */
-inline GPUBuffer CreateGPUBuffer(GPUDeviceParam device,
+inline GPUBuffer CreateGPUBuffer(GPUDeviceRef device,
                                  const GPUBufferCreateInfo& createinfo)
 {
   return GPUBuffer(device, createinfo);
@@ -5269,6 +5905,12 @@ inline GPUBuffer CreateGPUBuffer(GPUDeviceParam device,
 inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
 {
   return GPUBuffer(m_resource, createinfo);
+}
+
+inline GPUBuffer::GPUBuffer(GPUDeviceRef device,
+                            const GPUBufferCreateInfo& createinfo)
+  : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, &createinfo)))
+{
 }
 
 namespace prop::GPUBuffer {
@@ -5305,7 +5947,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
  * @sa GPUDevice.ReleaseTransferBuffer
  */
 inline GPUTransferBuffer CreateGPUTransferBuffer(
-  GPUDeviceParam device,
+  GPUDeviceRef device,
   const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(device, createinfo);
@@ -5315,6 +5957,14 @@ inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
   const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(m_resource, createinfo);
+}
+
+inline GPUTransferBuffer::GPUTransferBuffer(
+  GPUDeviceRef device,
+  const GPUTransferBufferCreateInfo& createinfo)
+  : m_gPUTransferBuffer(
+      CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
+{
 }
 
 namespace prop::GPUTransferBuffer {
@@ -5341,7 +5991,7 @@ constexpr auto CREATE_NAME_STRING =
  *
  * @sa GPUBuffer.GPUBuffer
  */
-inline void SetGPUBufferName(GPUDeviceParam device,
+inline void SetGPUBufferName(GPUDeviceRef device,
                              GPUBuffer buffer,
                              StringParam text)
 {
@@ -5370,7 +6020,7 @@ inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
  *
  * @sa GPUTexture.GPUTexture
  */
-inline void SetGPUTextureName(GPUDeviceParam device,
+inline void SetGPUTextureName(GPUDeviceRef device,
                               GPUTexture texture,
                               StringParam text)
 {
@@ -5386,6 +6036,12 @@ inline void GPUDevice::SetTextureName(GPUTexture texture, StringParam text)
  * Inserts an arbitrary string label into the command buffer callstream.
  *
  * Useful for debugging.
+ *
+ * On Direct3D 12, using GPUCommandBuffer.InsertDebugLabel requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
  *
  * @param command_buffer a command buffer.
  * @param text a UTF-8 string constant to insert as the label.
@@ -5412,6 +6068,12 @@ inline void GPUCommandBuffer::InsertDebugLabel(StringParam text)
  * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
  * to GPUCommandBuffer.PopDebugGroup.
  *
+ * On Direct3D 12, using GPUCommandBuffer.PushDebugGroup requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
+ *
  * On some backends (e.g. Metal), pushing a debug group during a
  * render/blit/compute pass will create a group that is scoped to the native
  * pass rather than the command buffer. For best results, if you push a debug
@@ -5436,6 +6098,12 @@ inline void GPUCommandBuffer::PushDebugGroup(StringParam name)
 
 /**
  * Ends the most-recently pushed debug group.
+ *
+ * On Direct3D 12, using GPUCommandBuffer.PopDebugGroup requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
  *
  * @param command_buffer a command buffer.
  *
@@ -5463,7 +6131,7 @@ inline void GPUCommandBuffer::PopDebugGroup()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUTexture(GPUDeviceParam device, GPUTexture texture)
+inline void ReleaseGPUTexture(GPUDeviceRef device, GPUTexture texture)
 {
   SDL_ReleaseGPUTexture(device, texture);
 }
@@ -5483,7 +6151,7 @@ inline void GPUDevice::ReleaseTexture(GPUTexture texture)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUSampler(GPUDeviceParam device, GPUSampler sampler)
+inline void ReleaseGPUSampler(GPUDeviceRef device, GPUSampler sampler)
 {
   SDL_ReleaseGPUSampler(device, sampler);
 }
@@ -5503,7 +6171,7 @@ inline void GPUDevice::ReleaseSampler(GPUSampler sampler)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUBuffer(GPUDeviceParam device, GPUBuffer buffer)
+inline void ReleaseGPUBuffer(GPUDeviceRef device, GPUBuffer buffer)
 {
   SDL_ReleaseGPUBuffer(device, buffer);
 }
@@ -5523,7 +6191,7 @@ inline void GPUDevice::ReleaseBuffer(GPUBuffer buffer)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUTransferBuffer(GPUDeviceParam device,
+inline void ReleaseGPUTransferBuffer(GPUDeviceRef device,
                                      GPUTransferBuffer transfer_buffer)
 {
   SDL_ReleaseGPUTransferBuffer(device, transfer_buffer);
@@ -5544,7 +6212,7 @@ inline void GPUDevice::ReleaseTransferBuffer(GPUTransferBuffer transfer_buffer)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUComputePipeline(GPUDeviceParam device,
+inline void ReleaseGPUComputePipeline(GPUDeviceRef device,
                                       GPUComputePipeline compute_pipeline)
 {
   SDL_ReleaseGPUComputePipeline(device, compute_pipeline);
@@ -5566,7 +6234,7 @@ inline void GPUDevice::ReleaseComputePipeline(
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUShader(GPUDeviceParam device, GPUShader shader)
+inline void ReleaseGPUShader(GPUDeviceRef device, GPUShader shader)
 {
   SDL_ReleaseGPUShader(device, shader);
 }
@@ -5586,7 +6254,7 @@ inline void GPUDevice::ReleaseShader(GPUShader shader)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReleaseGPUGraphicsPipeline(GPUDeviceParam device,
+inline void ReleaseGPUGraphicsPipeline(GPUDeviceRef device,
                                        GPUGraphicsPipeline graphics_pipeline)
 {
   SDL_ReleaseGPUGraphicsPipeline(device, graphics_pipeline);
@@ -5614,17 +6282,17 @@ inline void GPUDevice::ReleaseGraphicsPipeline(
  * total amount of passes overall which improves rendering performance.
  *
  * @param device a GPU context.
- * @returns a command buffer, or nullptr on failure; call GetError() for more
- *          information.
+ * @returns a command buffer on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUCommandBuffer.Submit
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
-inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceParam device)
+inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceRef device)
 {
-  return SDL_AcquireGPUCommandBuffer(device);
+  return CheckError(SDL_AcquireGPUCommandBuffer(device));
 }
 
 inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
@@ -5635,11 +6303,14 @@ inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
 /**
  * Pushes data to a vertex uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
  * aligned.
+ *
+ * For detailed information about accessing uniform data from a shader, please
+ * refer to GPUShader.GPUShader.
  *
  * @param command_buffer a command buffer.
  * @param slot_index the vertex uniform slot to push data to.
@@ -5665,7 +6336,7 @@ inline void GPUCommandBuffer::PushVertexUniformData(Uint32 slot_index,
 /**
  * Pushes data to a fragment uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -5695,7 +6366,7 @@ inline void GPUCommandBuffer::PushFragmentUniformData(Uint32 slot_index,
 /**
  * Pushes data to a uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -5732,6 +6403,14 @@ inline void GPUCommandBuffer::PushComputeUniformData(Uint32 slot_index,
  * default viewport and scissor state are automatically set when this is called.
  * You cannot begin another render pass, or begin a compute pass or copy pass
  * until you have ended the render pass.
+ *
+ * Using GPU_LOADOP_LOAD before any contents have been written to the texture
+ * subresource will result in undefined behavior. GPU_LOADOP_CLEAR will set the
+ * contents of the texture subresource to a single value before any rendering is
+ * performed. It's fine to do an empty render pass using GPU_STOREOP_STORE to
+ * clear a texture, but in general it's better to think of clearing not as an
+ * independent operation but as something that's done as the beginning of a
+ * render pass.
  *
  * @param command_buffer a command buffer.
  * @param color_target_infos an array of texture subresources with corresponding
@@ -6366,7 +7045,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute sampler slot to begin binding from.
@@ -6374,7 +7053,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeSamplers(
   GPUComputePass compute_pass,
@@ -6402,7 +7081,7 @@ inline void GPUComputePass::BindSamplers(
  * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage texture slot to begin binding from.
@@ -6410,7 +7089,7 @@ inline void GPUComputePass::BindSamplers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeStorageTextures(
   GPUComputePass compute_pass,
@@ -6436,7 +7115,7 @@ inline void GPUComputePass::BindStorageTextures(
  * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage buffer slot to begin binding from.
@@ -6444,7 +7123,7 @@ inline void GPUComputePass::BindStorageTextures(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeStorageBuffers(
   GPUComputePass compute_pass,
@@ -6556,16 +7235,16 @@ inline void GPUComputePass::End() { SDL::EndGPUComputePass(m_gPUComputePass); }
  * @param device a GPU context.
  * @param transfer_buffer a transfer buffer.
  * @param cycle if true, cycles the transfer buffer if it is already bound.
- * @returns the address of the mapped transfer buffer memory, or nullptr on
- *          failure; call GetError() for more information.
+ * @returns the address of the mapped transfer buffer memory on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void* MapGPUTransferBuffer(GPUDeviceParam device,
+inline void* MapGPUTransferBuffer(GPUDeviceRef device,
                                   GPUTransferBuffer transfer_buffer,
                                   bool cycle)
 {
-  return SDL_MapGPUTransferBuffer(device, transfer_buffer, cycle);
+  return CheckError(SDL_MapGPUTransferBuffer(device, transfer_buffer, cycle));
 }
 
 inline void* GPUDevice::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
@@ -6582,7 +7261,7 @@ inline void* GPUDevice::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void UnmapGPUTransferBuffer(GPUDeviceParam device,
+inline void UnmapGPUTransferBuffer(GPUDeviceRef device,
                                    GPUTransferBuffer transfer_buffer)
 {
   SDL_UnmapGPUTransferBuffer(device, transfer_buffer);
@@ -6604,6 +7283,8 @@ inline void GPUDevice::UnmapTransferBuffer(GPUTransferBuffer transfer_buffer)
  * @returns a copy pass handle.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GPUCopyPass.End
  */
 inline GPUCopyPass BeginGPUCopyPass(GPUCommandBuffer command_buffer)
 {
@@ -6681,6 +7362,9 @@ inline void GPUCopyPass::UploadToBuffer(const GPUTransferBufferLocation& source,
  *
  * This copy occurs on the GPU timeline. You may assume the copy has finished in
  * subsequent commands.
+ *
+ * This function does not support copying between depth and color textures. For
+ * those, copy the texture to a buffer and then to the destination texture.
  *
  * @param copy_pass a copy pass handle.
  * @param source a source texture region.
@@ -6873,8 +7557,8 @@ inline void GPUCommandBuffer::BlitTexture(const GPUBlitInfo& info)
  * @sa GPUDevice.ClaimWindow
  */
 inline bool WindowSupportsGPUSwapchainComposition(
-  GPUDeviceParam device,
-  WindowParam window,
+  GPUDeviceRef device,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition)
 {
   return SDL_WindowSupportsGPUSwapchainComposition(
@@ -6882,7 +7566,7 @@ inline bool WindowSupportsGPUSwapchainComposition(
 }
 
 inline bool GPUDevice::WindowSupportsSwapchainComposition(
-  WindowParam window,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition)
 {
   return SDL::WindowSupportsGPUSwapchainComposition(
@@ -6903,14 +7587,14 @@ inline bool GPUDevice::WindowSupportsSwapchainComposition(
  *
  * @sa GPUDevice.ClaimWindow
  */
-inline bool WindowSupportsGPUPresentMode(GPUDeviceParam device,
-                                         WindowParam window,
+inline bool WindowSupportsGPUPresentMode(GPUDeviceRef device,
+                                         WindowRef window,
                                          GPUPresentMode present_mode)
 {
   return SDL_WindowSupportsGPUPresentMode(device, window, present_mode);
 }
 
-inline bool GPUDevice::WindowSupportsPresentMode(WindowParam window,
+inline bool GPUDevice::WindowSupportsPresentMode(WindowRef window,
                                                  GPUPresentMode present_mode)
 {
   return SDL::WindowSupportsGPUPresentMode(m_resource, window, present_mode);
@@ -6941,12 +7625,12 @@ inline bool GPUDevice::WindowSupportsPresentMode(WindowParam window,
  * @sa GPUDevice.WindowSupportsPresentMode
  * @sa GPUDevice.WindowSupportsSwapchainComposition
  */
-inline void ClaimWindowForGPUDevice(GPUDeviceParam device, WindowParam window)
+inline void ClaimWindowForGPUDevice(GPUDeviceRef device, WindowRef window)
 {
   CheckError(SDL_ClaimWindowForGPUDevice(device, window));
 }
 
-inline void GPUDevice::ClaimWindow(WindowParam window)
+inline void GPUDevice::ClaimWindow(WindowRef window)
 {
   SDL::ClaimWindowForGPUDevice(m_resource, window);
 }
@@ -6961,13 +7645,12 @@ inline void GPUDevice::ClaimWindow(WindowParam window)
  *
  * @sa GPUDevice.ClaimWindow
  */
-inline void ReleaseWindowFromGPUDevice(GPUDeviceParam device,
-                                       WindowParam window)
+inline void ReleaseWindowFromGPUDevice(GPUDeviceRef device, WindowRef window)
 {
   SDL_ReleaseWindowFromGPUDevice(device, window);
 }
 
-inline void GPUDevice::ReleaseWindow(WindowParam window)
+inline void GPUDevice::ReleaseWindow(WindowRef window)
 {
   SDL::ReleaseWindowFromGPUDevice(m_resource, window);
 }
@@ -6995,8 +7678,8 @@ inline void GPUDevice::ReleaseWindow(WindowParam window)
  * @sa GPUDevice.WindowSupportsSwapchainComposition
  */
 inline bool SetGPUSwapchainParameters(
-  GPUDeviceParam device,
-  WindowParam window,
+  GPUDeviceRef device,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition,
   GPUPresentMode present_mode)
 {
@@ -7005,7 +7688,7 @@ inline bool SetGPUSwapchainParameters(
 }
 
 inline bool GPUDevice::SetSwapchainParameters(
-  WindowParam window,
+  WindowRef window,
   GPUSwapchainComposition swapchain_composition,
   GPUPresentMode present_mode)
 {
@@ -7038,7 +7721,7 @@ inline bool GPUDevice::SetSwapchainParameters(
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool SetGPUAllowedFramesInFlight(GPUDeviceParam device,
+inline bool SetGPUAllowedFramesInFlight(GPUDeviceRef device,
                                         Uint32 allowed_frames_in_flight)
 {
   return SDL_SetGPUAllowedFramesInFlight(device, allowed_frames_in_flight);
@@ -7060,13 +7743,13 @@ inline bool GPUDevice::SetAllowedFramesInFlight(Uint32 allowed_frames_in_flight)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline GPUTextureFormat GetGPUSwapchainTextureFormat(GPUDeviceParam device,
-                                                     WindowParam window)
+inline GPUTextureFormat GetGPUSwapchainTextureFormat(GPUDeviceRef device,
+                                                     WindowRef window)
 {
   return SDL_GetGPUSwapchainTextureFormat(device, window);
 }
 
-inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
+inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowRef window)
 {
   return SDL::GetGPUSwapchainTextureFormat(m_resource, window);
 }
@@ -7080,7 +7763,9 @@ inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
  * buffer used to acquire it.
  *
  * This function will fill the swapchain texture handle with nullptr if too many
- * frames are in flight. This is not an error.
+ * frames are in flight. This is not an error. This nullptr pointer should not
+ * be passed back into SDL. Instead, it should be considered as an indication to
+ * wait until the swapchain is available.
  *
  * If you use this function, it is possible to create a situation where many
  * command buffers are allocated while the rendering context waits for the GPU
@@ -7117,7 +7802,7 @@ inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
  */
 inline GPUTexture AcquireGPUSwapchainTexture(
   GPUCommandBuffer command_buffer,
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width = nullptr,
   Uint32* swapchain_texture_height = nullptr)
 {
@@ -7131,7 +7816,7 @@ inline GPUTexture AcquireGPUSwapchainTexture(
 }
 
 inline GPUTexture GPUCommandBuffer::AcquireSwapchainTexture(
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width,
   Uint32* swapchain_texture_height)
 {
@@ -7157,12 +7842,12 @@ inline GPUTexture GPUCommandBuffer::AcquireSwapchainTexture(
  * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
  * @sa GPUDevice.SetAllowedFramesInFlight
  */
-inline void WaitForGPUSwapchain(GPUDeviceParam device, WindowParam window)
+inline void WaitForGPUSwapchain(GPUDeviceRef device, WindowRef window)
 {
   CheckError(SDL_WaitForGPUSwapchain(device, window));
 }
 
-inline void GPUDevice::WaitForSwapchain(WindowParam window)
+inline void GPUDevice::WaitForSwapchain(WindowRef window)
 {
   SDL::WaitForGPUSwapchain(m_resource, window);
 }
@@ -7209,7 +7894,7 @@ inline void GPUDevice::WaitForSwapchain(WindowParam window)
  */
 inline GPUTexture WaitAndAcquireGPUSwapchainTexture(
   GPUCommandBuffer command_buffer,
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width = nullptr,
   Uint32* swapchain_texture_height = nullptr)
 {
@@ -7223,7 +7908,7 @@ inline GPUTexture WaitAndAcquireGPUSwapchainTexture(
 }
 
 inline GPUTexture GPUCommandBuffer::WaitAndAcquireSwapchainTexture(
-  WindowParam window,
+  WindowRef window,
   Uint32* swapchain_texture_width,
   Uint32* swapchain_texture_height)
 {
@@ -7276,8 +7961,8 @@ inline void GPUCommandBuffer::Submit()
  * command in a subsequent submission begins executing.
  *
  * @param command_buffer a command buffer.
- * @returns a fence associated with the command buffer, or nullptr on failure;
- *          call GetError() for more information.
+ * @returns a fence associated with the command buffer on success.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -7290,7 +7975,7 @@ inline void GPUCommandBuffer::Submit()
 inline GPUFence* SubmitGPUCommandBufferAndAcquireFence(
   GPUCommandBuffer command_buffer)
 {
-  return SDL_SubmitGPUCommandBufferAndAcquireFence(command_buffer);
+  return CheckError(SDL_SubmitGPUCommandBufferAndAcquireFence(command_buffer));
 }
 
 inline GPUFence* GPUCommandBuffer::SubmitAndAcquireFence()
@@ -7339,7 +8024,7 @@ inline void GPUCommandBuffer::Cancel()
  *
  * @sa GPUDevice.WaitForFences
  */
-inline void WaitForGPUIdle(GPUDeviceParam device)
+inline void WaitForGPUIdle(GPUDeviceRef device)
 {
   CheckError(SDL_WaitForGPUIdle(device));
 }
@@ -7360,7 +8045,7 @@ inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(m_resource); }
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  * @sa GPUDevice.WaitForIdle
  */
-inline void WaitForGPUFences(GPUDeviceParam device,
+inline void WaitForGPUFences(GPUDeviceRef device,
                              bool wait_all,
                              std::span<GPUFence* const> fences)
 {
@@ -7385,7 +8070,7 @@ inline void GPUDevice::WaitForFences(bool wait_all,
  *
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
-inline bool QueryGPUFence(GPUDeviceParam device, GPUFence* fence)
+inline bool QueryGPUFence(GPUDeviceRef device, GPUFence* fence)
 {
   return SDL_QueryGPUFence(device, fence);
 }
@@ -7407,7 +8092,7 @@ inline bool GPUDevice::QueryFence(GPUFence* fence)
  *
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
-inline void ReleaseGPUFence(GPUDeviceParam device, GPUFence* fence)
+inline void ReleaseGPUFence(GPUDeviceRef device, GPUFence* fence)
 {
   SDL_ReleaseGPUFence(device, fence);
 }
@@ -7443,7 +8128,7 @@ inline Uint32 GPUTextureFormatTexelBlockSize(GPUTextureFormat format)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GPUTextureSupportsFormat(GPUDeviceParam device,
+inline bool GPUTextureSupportsFormat(GPUDeviceRef device,
                                      GPUTextureFormat format,
                                      GPUTextureType type,
                                      GPUTextureUsageFlags usage)
@@ -7468,7 +8153,7 @@ inline bool GPUDevice::TextureSupportsFormat(GPUTextureFormat format,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool GPUTextureSupportsSampleCount(GPUDeviceParam device,
+inline bool GPUTextureSupportsSampleCount(GPUDeviceRef device,
                                           GPUTextureFormat format,
                                           GPUSampleCount sample_count)
 {
@@ -7501,6 +8186,38 @@ inline Uint32 CalculateGPUTextureFormatSize(GPUTextureFormat format,
     format, width, height, depth_or_layer_count);
 }
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Get the SDL pixel format corresponding to a GPU texture format.
+ *
+ * @param format a texture format.
+ * @returns the corresponding pixel format, or PIXELFORMAT_UNKNOWN if there is
+ *          no corresponding pixel format.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline PixelFormat GetPixelFormatFromGPUTextureFormat(GPUTextureFormat format)
+{
+  return SDL_GetPixelFormatFromGPUTextureFormat(format);
+}
+
+/**
+ * Get the GPU texture format corresponding to an SDL pixel format.
+ *
+ * @param format a pixel format.
+ * @returns the corresponding GPU texture format, or GPU_TEXTUREFORMAT_INVALID
+ *          if there is no corresponding GPU texture format.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
+{
+  return SDL_GetGPUTextureFormatFromPixelFormat(format);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 #ifdef SDL_PLATFORM_GDK
 
 /**
@@ -7516,7 +8233,7 @@ inline Uint32 CalculateGPUTextureFormatSize(GPUTextureFormat format,
  *
  * @sa AddEventWatch
  */
-inline void GDKSuspendGPU(GPUDeviceParam device) { SDL_GDKSuspendGPU(device); }
+inline void GDKSuspendGPU(GPUDeviceRef device) { SDL_GDKSuspendGPU(device); }
 
 inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
 
@@ -7533,7 +8250,7 @@ inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
  *
  * @sa AddEventWatch
  */
-inline void GDKResumeGPU(GPUDeviceParam device) { SDL_GDKResumeGPU(device); }
+inline void GDKResumeGPU(GPUDeviceRef device) { SDL_GDKResumeGPU(device); }
 
 inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(m_resource); }
 

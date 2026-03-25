@@ -1,4 +1,6 @@
 import { generateCallParameters } from "./generate";
+import { getLockDefinition } from "./expandLock";
+import { expandResource } from "./expandResource";
 import {
   Api,
   ApiEntries,
@@ -18,6 +20,7 @@ import {
   EntryHint,
   FunctorSupport,
   ListContent,
+  LockDefinition,
   ParsedDoc,
   ParsedDocContent,
   QuickTransform,
@@ -55,16 +58,19 @@ export function transformApi(config: TransformConfig) {
   const fileTransformMap = transform.files ?? {};
 
   // Ensure fileTransformMap is full
-  for (const sourceName of Object.keys(source.files)) {
+  for (const [sourceName, sourceFile] of Object.entries(source.files)) {
     const fileConfig = fileTransformMap[sourceName];
-    if (fileTransformMap[sourceName]) {
+    if (fileConfig) {
       fileConfig.ignoreEntries?.forEach((s) => context.blacklist.add(s));
       if (!fileConfig.transform) fileConfig.transform = {};
       if (!fileConfig.definitionPrefix)
         fileConfig.definitionPrefix = context.definitionPrefix;
       if (!fileConfig.sourceIncludePrefix)
         fileConfig.sourceIncludePrefix = sourceIncludePrefix;
+      sourceFile.name =
+        fileConfig.name || transformIncludeName(sourceName, context);
     } else {
+      sourceFile.name = transformIncludeName(sourceName, context);
       fileTransformMap[sourceName] = {
         transform: {},
         definitionPrefix: context.definitionPrefix,
@@ -74,19 +80,14 @@ export function transformApi(config: TransformConfig) {
   }
 
   // Step 1: Expand types
-  for (const [sourceName, sourceFile] of Object.entries(source.files)) {
-    context.setFile(sourceName);
-    const fileConfig = fileTransformMap[sourceName];
-    expandTypes(sourceFile.entries, fileConfig, context);
-  }
+  stepExpandTypes(source, context, fileTransformMap);
 
   // Step 2: Transform Files
   for (const [sourceName, sourceFile] of Object.entries(source.files)) {
     context.setFile(sourceName);
     const fileConfig = fileTransformMap[sourceName];
     context.enableException = fileConfig.enableException !== false;
-    const targetName =
-      fileConfig.name || transformIncludeName(sourceName, context);
+    const targetName = sourceFile.name;
     system.log(`Transforming api ${sourceName} => ${targetName}`);
 
     const includes = fileConfig.includes ?? [];
@@ -125,7 +126,43 @@ export function transformApi(config: TransformConfig) {
   return api;
 }
 
-class ApiContext {
+function stepExpandTypes(
+  source: Api,
+  context: ApiContext,
+  fileTransformMap: Dict<ApiFileTransform>,
+) {
+  const unorderedEntries = Object.entries(source.files);
+  const targetNames = new Set(
+    unorderedEntries.map(([sourceName, sourceFile]) => sourceFile.name),
+  );
+  const processed = new Set<string>();
+  while (unorderedEntries.length) {
+    const [sourceName, sourceFile] = unorderedEntries.shift();
+    if (
+      fileTransformMap[sourceName].localIncludes?.some(
+        (dep) => targetNames.has(dep) && !processed.has(dep),
+      )
+    ) {
+      unorderedEntries.push([sourceName, sourceFile]);
+      continue;
+    }
+    processed.add(sourceFile.name);
+    context.setFile(sourceName);
+    const fileConfig = fileTransformMap[sourceName];
+    expandTypes(sourceFile.entries, fileConfig, context);
+  }
+}
+
+export function isVersionAfter(version: VersionTag, tag: VersionTag) {
+  if (version.major > tag.major) return true;
+  if (version.major < tag.major) return false;
+  if (version.minor > tag.minor) return true;
+  if (version.minor < tag.minor) return false;
+  if (version.patch > tag.patch) return true;
+  return false;
+}
+
+export class ApiContext {
   namespace: string;
   source: Dict<ApiEntry>;
   blacklist: Set<string>;
@@ -134,6 +171,7 @@ class ApiContext {
   paramReplacements: any;
   delegatedReplacements: any;
   minVersions: Dict<VersionTag>;
+  baseVersions: Dict<VersionTag>;
   includeBeforeMap: Dict<Dict<ApiEntryTransform[]>>;
   includeAfterMap: Dict<Dict<ApiEntryTransform[]>>;
   file: string;
@@ -156,13 +194,14 @@ class ApiContext {
 
     this.source = Object.fromEntries(
       Object.values(source.files).flatMap((f) =>
-        Object.entries(/** @type {Dict<ApiEntry>} */ f.entries ?? {})
-      )
+        Object.entries(/** @type {Dict<ApiEntry>} */ f.entries ?? {}),
+      ),
     );
 
     this.blacklist = new Set();
 
     this.minVersions = transform.minVersions ?? {};
+    this.baseVersions = transform.baseVersions ?? {};
 
     this.includeBeforeMap = {};
     this.includeAfterMap = {};
@@ -197,12 +236,12 @@ class ApiContext {
 
     this.renameRules = transform.renameRules ?? [];
     this.renameRules.forEach(
-      (rule) => (rule.pattern = new RegExp(rule.pattern))
+      (rule) => (rule.pattern = new RegExp(rule.pattern)),
     );
 
     this.docRules = transform.docRules ?? [];
     this.docRules.forEach(
-      (rule) => (rule.pattern = new RegExp(rule.pattern, "g"))
+      (rule) => (rule.pattern = new RegExp(rule.pattern, "g")),
     );
 
     this.definitionPrefix = transform.definitionPrefix ?? "";
@@ -270,12 +309,19 @@ class ApiContext {
   isAfterMinVersion(version: VersionTag) {
     const tag = this.minVersions[version.tag];
     if (!tag) return false;
-    if (version.major > tag.major) return true;
-    if (version.major < tag.major) return false;
-    if (version.minor > tag.minor) return true;
-    if (version.minor < tag.minor) return false;
-    if (version.patch > tag.patch) return true;
-    return false;
+    return isVersionAfter(version, tag);
+  }
+
+  previewFutureVersion(version: VersionTag) {
+    const tag = this.baseVersions[version.tag];
+    if (
+      !tag ||
+      (tag.minor % 2 == 0 && tag.patch % 2 == 0) ||
+      !isVersionAfter(version, tag)
+    ) {
+      return version;
+    }
+    return tag;
   }
 
   setFile(file: string) {
@@ -316,14 +362,14 @@ class ApiContext {
    */
   includeBefore(
     entryOrName: string | ApiEntryTransform | ApiEntryTransform[],
-    includeBeforeKey: string
+    includeBeforeKey: string,
   ) {
     const includeTarget = this.getOrCreateIncludeBefore(includeBeforeKey);
     if (Array.isArray(entryOrName)) {
       includeTarget.push(...entryOrName);
     } else {
       includeTarget.push(
-        typeof entryOrName === "string" ? { name: entryOrName } : entryOrName
+        typeof entryOrName === "string" ? { name: entryOrName } : entryOrName,
       );
     }
   }
@@ -333,14 +379,14 @@ class ApiContext {
    */
   prependIncludeBefore(
     entryOrName: string | ApiEntryTransform | ApiEntryTransform[],
-    includeBeforeKey: string
+    includeBeforeKey: string,
   ) {
     const includeTarget = this.getOrCreateIncludeBefore(includeBeforeKey);
     if (Array.isArray(entryOrName)) {
       includeTarget.unshift(...entryOrName);
     } else {
       includeTarget.unshift(
-        typeof entryOrName === "string" ? { name: entryOrName } : entryOrName
+        typeof entryOrName === "string" ? { name: entryOrName } : entryOrName,
       );
     }
   }
@@ -350,11 +396,11 @@ class ApiContext {
    */
   includeAfter(
     entryOrName: string | ApiEntryTransform,
-    includeAfterKey: string
+    includeAfterKey: string,
   ) {
     const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
     includeTarget.push(
-      typeof entryOrName === "string" ? { name: entryOrName } : entryOrName
+      typeof entryOrName === "string" ? { name: entryOrName } : entryOrName,
     );
   }
 
@@ -363,16 +409,16 @@ class ApiContext {
    */
   prependIncludeAfter(
     entryOrName: string | ApiEntryTransform,
-    includeAfterKey: string
+    includeAfterKey: string,
   ) {
     const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
     includeTarget.unshift(
-      typeof entryOrName === "string" ? { name: entryOrName } : entryOrName
+      typeof entryOrName === "string" ? { name: entryOrName } : entryOrName,
     );
   }
 }
 
-function isType(kind: ApiEntryKind) {
+export function isType(kind: ApiEntryKind) {
   switch (kind) {
     case "alias":
     case "callback":
@@ -386,10 +432,10 @@ function isType(kind: ApiEntryKind) {
   }
 }
 
-function insertOrLink(
+export function insertOrLink(
   entries: Dict<ApiEntryTransform>,
   entry: ApiEntryTransform,
-  key: string
+  key: string,
 ) {
   let currLink = entries[key];
   if (!currLink) {
@@ -400,8 +446,8 @@ function insertOrLink(
   currLink.link = entry;
 }
 
-function getCallbackDef(
-  callback: FunctorSupport | boolean | CallbackDefinition
+export function getCallbackDef(
+  callback: FunctorSupport | boolean | CallbackDefinition,
 ): CallbackDefinition {
   switch (typeof callback) {
     case "boolean":
@@ -413,10 +459,202 @@ function getCallbackDef(
   }
 }
 
+export function wrapLockFunctions(
+  entries: ApiEntryTransformMap,
+  lockName: string,
+  lockDef: LockDefinition,
+) {
+  const currLockTransform = entries[lockDef.lockFunc];
+  const currLockDelta =
+    typeof currLockTransform === "object"
+      ? currLockTransform
+      : (entries[lockDef.lockFunc] = {});
+  if (currLockDelta) {
+    currLockDelta.type = lockName;
+    const paramName = lockDef.paramType ?? lockDef.controlType;
+    addHints(currLockDelta, { body: `return {${paramName}(*this)};` });
+  }
+  const currUnlockTransform = entries[lockDef.unlockFunc];
+  const currUnlockDelta =
+    typeof currUnlockTransform === "object"
+      ? currUnlockTransform
+      : (entries[lockDef.unlockFunc] = {});
+  if (currUnlockDelta) {
+    currUnlockDelta.type = "void";
+    currUnlockDelta.parameters = [{}, { type: `${lockName} &&`, name: "lock" }];
+    addHints(currUnlockDelta, {
+      body: `SDL_assert_paranoid(lock.get()==*this);lock.reset();`,
+    });
+  }
+}
+export function createBlockedNames(entries?: ApiEntryTransformMap) {
+  const result = new Set<string>();
+
+  if (!entries) entries = {};
+  for (const [k, v] of Object.entries(entries)) {
+    if (v === "plc") continue;
+    result.add(k);
+  }
+  return result;
+}
+
+export function detectMethods(
+  sourceEntries: Dict<ApiEntry>,
+  file: ApiFileTransform,
+  context: ApiContext,
+  sourceType: string,
+  targetType: string,
+  paramType: string,
+  constParamType: string,
+  blockedNames: Set<string>,
+) {
+  const transformMap = file.transform;
+  const foundEntries: Dict<ApiEntryTransform | QuickTransform> = {};
+  const prefix = `${targetType}::`;
+  let lastKey = "__begin";
+  const placeAfter = new Map<string, string[]>();
+  for (let [sourceName, entryDelta] of Object.entries(transformMap)) {
+    const hasPrefix = sourceName.startsWith(prefix);
+    if (hasPrefix) sourceName = sourceName.slice(prefix.length);
+    if (blockedNames.has(sourceName)) continue;
+    const sourceEntry = sourceEntries[sourceName];
+    if (sourceEntry) lastKey = sourceName;
+    if (
+      entryDelta.kind !== "function" &&
+      (entryDelta.kind || sourceEntry?.kind !== "function")
+    )
+      continue;
+    const parameters = entryDelta.parameters;
+    let param0 = parameters?.[0];
+    if (!param0?.type) {
+      if (!hasPrefix) continue;
+      param0 = {
+        type: entryDelta.immutable ? constParamType : paramType,
+        name: param0?.name,
+      };
+    }
+    const m = paramMatchesVariants(
+      param0,
+      [paramType, `${paramType} *`],
+      [constParamType, `${constParamType} &`],
+    );
+    if (!m && !hasPrefix) {
+      blockedNames.add(sourceName);
+      continue;
+    }
+    if (sourceEntry) {
+      if (hasPrefix) {
+        delete transformMap[prefix + sourceName];
+        blockedNames.add(sourceName);
+      }
+      foundEntries[sourceName] = {
+        ...deepClone(entryDelta),
+        immutable: m === "immutable" || entryDelta.immutable,
+        name: entryDelta.hints?.methodName ?? undefined,
+      };
+      delete entryDelta.immutable;
+    } else if (hasPrefix) {
+      if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(sourceName);
+      else placeAfter.set(lastKey, [sourceName]);
+      blockedNames.add(sourceName);
+    } else if (!sourceName.includes("::")) {
+      const methodName = transformMemberName(
+        entryDelta.hints?.methodName ?? entryDelta.name ?? sourceName,
+        targetType,
+        context,
+      );
+      if (blockedNames.has(methodName)) continue;
+      if (entryDelta.after) lastKey = entryDelta.after;
+      if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(methodName);
+      else placeAfter.set(lastKey, [methodName]);
+      const name = `${targetType}::${methodName}`;
+      insertOrLink(
+        transformMap,
+        {
+          ...deepClone(entryDelta),
+          after: sourceName,
+          name,
+          static: false,
+          parameters: parameters.slice(1),
+          hints: {
+            delegate: `${context.namespace}::${transformName(
+              sourceName,
+              context,
+            )}`,
+          },
+        },
+        name,
+      );
+      delete entryDelta.immutable;
+    }
+  }
+  for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
+    if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
+    if (sourceEntry.kind !== "function") continue;
+    const parameters = sourceEntry.parameters;
+    if (!parameters?.length) continue;
+    const param0 = parameters[0];
+    if (typeof param0 === "string") continue;
+    const m = paramMatchesVariants(
+      param0,
+      [sourceType, `${sourceType} *`],
+      [`const ${sourceType}`, `const ${sourceType} *`],
+    );
+    if (!m) continue;
+    const entryDelta = transformMap[sourceName];
+    if (
+      entryDelta?.name ||
+      entryDelta?.parameters ||
+      entryDelta?.type ||
+      entryDelta?.hints?.methodName
+    ) {
+      const e: ApiEntryTransform = {
+        ...deepClone(entryDelta),
+        immutable: m === "immutable" || entryDelta.immutable,
+      };
+      e.name = entryDelta.hints?.methodName ?? undefined;
+      foundEntries[sourceName] = e;
+      if (
+        entryDelta.immutable &&
+        !entryDelta.parameters &&
+        (!constParamType.startsWith("const ") || constParamType.endsWith("*"))
+      ) {
+        entryDelta.parameters = sourceEntry.parameters.map((_) => ({}));
+        entryDelta.parameters[0].type = constParamType;
+      }
+      delete entryDelta.immutable;
+    } else if (entryDelta?.immutable) {
+      foundEntries[sourceName] = "immutable";
+      if (
+        entryDelta.immutable &&
+        !entryDelta.parameters &&
+        (!constParamType.startsWith("const ") || constParamType.endsWith("*"))
+      ) {
+        entryDelta.parameters = sourceEntry.parameters.map((_) => ({}));
+        entryDelta.parameters[0].type = constParamType;
+      }
+      delete entryDelta.immutable;
+    } else {
+      foundEntries[sourceName] = m;
+    }
+    if (!entryDelta) transformMap[sourceName] = {};
+  }
+  const orderedEntries: Dict<ApiEntryTransform | QuickTransform> = {};
+  placeAfter.get("__begin")?.forEach((sKey) => (orderedEntries[sKey] = "plc"));
+  Object.keys(sourceEntries).forEach((key) => {
+    const value = foundEntries[key];
+    if (value) orderedEntries[key] = value;
+    placeAfter.get(key)?.forEach((sKey) => {
+      if (!orderedEntries[sKey]) orderedEntries[sKey] = "plc";
+    });
+  });
+  return orderedEntries;
+}
+
 function expandTypes(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
-  context: ApiContext
+  context: ApiContext,
 ) {
   expandNamespaces(sourceEntries, file, context);
 
@@ -431,7 +669,15 @@ function expandTypes(
     if (targetDelta.callback)
       expandCallback(sourceName, sourceEntry, targetName, targetDelta);
     if (targetDelta.resource)
-      expandResource(sourceName, sourceEntry, targetName, targetDelta);
+      expandResource(
+        sourceEntries,
+        file,
+        context,
+        sourceName,
+        sourceEntry,
+        targetName,
+        targetDelta,
+      );
     if (targetDelta.wrapper)
       expandWrapper(sourceName, sourceEntry, targetName, targetDelta);
     if (targetDelta.enum)
@@ -467,13 +713,14 @@ function expandTypes(
         targetName,
         { kind: "alias", name: targetName },
         targetName,
-        targetDelta
+        targetDelta,
       );
+    if (targetDelta.lock) expandLock(targetName, targetDelta);
   }
 
   function tryDetectType(
     sourceEntry: ApiEntry,
-    targetDelta: ApiEntryTransform
+    targetDelta: ApiEntryTransform,
   ) {
     if (targetDelta.callback === undefined && sourceEntry.kind === "callback") {
       targetDelta.callback = true;
@@ -537,7 +784,7 @@ function expandTypes(
     sourceName: string,
     sourceEntry: ApiEntry,
     name: string,
-    targetDelta: ApiEntryTransform
+    targetDelta: ApiEntryTransform,
   ) {
     const parameters = transformCbParameters(sourceEntry.parameters, context);
     const callback = getCallbackDef(targetDelta.callback);
@@ -551,7 +798,7 @@ function expandTypes(
     const userdataIndex =
       callback.userdataIndex ??
       parameters.findIndex(
-        (p) => p.type.endsWith("void *") && p.name === "userdata"
+        (p) => p.type.endsWith("void *") && p.name === "userdata",
       );
     if (userdataIndex < 0) return;
     const callbackName =
@@ -560,9 +807,9 @@ function expandTypes(
       addToTagGroup(
         transformDoc(sourceEntry.doc ?? undefined, context),
         "@sa",
-        name
+        name,
       ),
-      "@param userdata"
+      "@param userdata",
     );
     if (
       callback.functorSupport === "std" ||
@@ -573,7 +820,7 @@ function expandTypes(
         makeCallbackAlias(
           "std::function",
           callback.type ?? resultType,
-          callback.parameters ?? typeParams
+          callback.parameters ?? typeParams,
         );
       } else if (
         callback.type === undefined &&
@@ -582,7 +829,7 @@ function expandTypes(
         makeCallbackAlias(
           userdataIndex === 0 ? "MakeFrontCallback" : "MakeTrailingCallback",
           resultType,
-          typeParams
+          typeParams,
         );
       } else {
         const templateType =
@@ -644,7 +891,7 @@ function expandTypes(
     function makeCallbackAlias(
       wrapper: string,
       resultType: string,
-      typeParams: ApiParameters
+      typeParams: ApiParameters,
     ) {
       const parameters = typeParams
         .map((p) => `${p.type} ${p.name}`)
@@ -666,7 +913,7 @@ function expandTypes(
     sourceType: string,
     sourceEntry: ApiEntry,
     targetType: string,
-    transform: ApiEntryTransform
+    transform: ApiEntryTransform,
   ) {
     const wrapper = transform.wrapper === true ? {} : transform.wrapper;
     if (!wrapper) return;
@@ -696,7 +943,7 @@ function expandTypes(
             : sourceType,
         doc: [`Alias to raw representation for ${targetType}.`],
       },
-      "__begin"
+      "__begin",
     );
 
     context.includeBefore(
@@ -704,7 +951,7 @@ function expandTypes(
         name: targetType,
         kind: "forward",
       },
-      "__begin"
+      "__begin",
     );
 
     const fields: string[] = [];
@@ -775,7 +1022,7 @@ function expandTypes(
           doc: [`Comparison operator for ${targetType}.`],
           hints: { body, noexcept: true },
         },
-        sourceType
+        sourceType,
       );
       if (wrapper.ordered) {
         const lastField = fields.length - 1;
@@ -800,7 +1047,7 @@ function expandTypes(
             doc: [`Spaceship operator for ${targetType}.`],
             hints: { body, noexcept: true },
           },
-          sourceType
+          sourceType,
         );
       }
     }
@@ -864,12 +1111,14 @@ function expandTypes(
           if (attrib.kind !== "var") continue;
           const name = attrib.name;
           const type = attrib.type;
-          parameters.push({ type, name });
+          const paramType = transformType(type, context.paramTypeMap);
+          const returnType = transformType(type, context.returnTypeMap);
+          parameters.push({ type: paramType, name });
           const capName = name[0].toUpperCase() + name.slice(1);
           insertTransform(entries, {
             kind: "function",
             name: `Get${capName}`,
-            type,
+            type: returnType,
             constexpr,
             immutable: true,
             parameters: [],
@@ -886,7 +1135,7 @@ function expandTypes(
             constexpr,
             parameters: [
               {
-                type,
+                type: paramType,
                 name: `new${capName}`,
               },
             ],
@@ -939,7 +1188,7 @@ function expandTypes(
       insertTransform(
         entries,
         typeof currentCtor === "string" ? {} : currentCtor,
-        targetType
+        targetType,
       );
       delete transform.entries[targetType];
     }
@@ -948,11 +1197,14 @@ function expandTypes(
     if (transform.entries)
       createBlockedNames(transform.entries).forEach((k) => blockedNames.add(k));
     const detectedMethods = detectMethods(
+      sourceEntries,
+      file,
+      context,
       sourceType,
       targetType,
       rawType,
       `const ${rawType}`,
-      blockedNames
+      blockedNames,
     );
     mirrorMethods(
       sourceEntries,
@@ -960,7 +1212,7 @@ function expandTypes(
       transform.entries ?? {},
       paramType,
       constParamType,
-      targetType
+      targetType,
     );
     mirrorMethods(
       sourceEntries,
@@ -968,7 +1220,7 @@ function expandTypes(
       detectedMethods,
       paramType,
       constParamType,
-      targetType
+      targetType,
     );
     transform.entries = {
       ...entries,
@@ -983,889 +1235,11 @@ function expandTypes(
     delete transform.wrapper;
   }
 
-  function createBlockedNames(entries?: ApiEntryTransformMap) {
-    const result = new Set<string>();
-
-    if (!entries) entries = {};
-    for (const [k, v] of Object.entries(entries)) {
-      if (v === "plc") continue;
-      result.add(k);
-    }
-    return result;
-  }
-
-  function expandResource(
-    sourceName: string,
-    sourceEntry: ApiEntry,
-    targetName: string,
-    targetEntry: ApiEntryTransform
-  ) {
-    const resourceEntry = getResourceDefinition(targetEntry) ?? {};
-
-    const rawName = resourceEntry.rawName || `${targetName}Raw`;
-    const constRawName = `const ${rawName}`;
-    const paramType = `${targetName}Param`;
-    const enableMemberAccess =
-      resourceEntry.enableMemberAccess ?? sourceEntry.kind === "struct";
-    const enableConstParam =
-      resourceEntry.enableConstParam ?? enableMemberAccess;
-    const constParamType = enableConstParam
-      ? `${targetName}ConstParam`
-      : paramType;
-    if (!targetEntry.kind) targetEntry.kind = "struct";
-    const hasShared = !!resourceEntry.shared;
-    const hasScoped = resourceEntry.owning === false;
-    const hasRef = resourceEntry.ref ?? !(hasShared || hasScoped);
-    const refName = `${targetName}Ref`;
-    const scopedName = `${targetName}Scoped`;
-
-    const type = targetEntry.type ?? sourceName;
-    const isStruct =
-      sourceEntry.kind === "struct" ||
-      (sourceEntry.kind === "alias" && sourceEntry.type.startsWith("struct "));
-    const pointerType = isStruct ? `${type} *` : type;
-    const constPointerType = `const ${pointerType}`;
-    const nullValue = isStruct ? "nullptr" : "0";
-    const title = targetName[0].toLowerCase() + targetName.slice(1);
-    if (sourceEntry.type && !targetEntry.type) targetEntry.type = "";
-    context.addName(sourceName, targetName);
-    context.addCallbackType(isStruct ? `${sourceName} *` : sourceName, rawName);
-
-    const referenceAliases: ApiEntryTransform[] = [];
-    referenceAliases.push({ name: targetName, kind: "forward" });
-    referenceAliases.push({
-      name: rawName,
-      kind: "alias",
-      type: pointerType,
-      doc: [`Alias to raw representation for ${targetName}.`],
-    });
-    if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
-    if (hasScoped) referenceAliases.push({ name: scopedName, kind: "forward" });
-
-    const memberAccess: ApiEntryTransformMap = {};
-    if (enableMemberAccess) {
-      memberAccess["operator->"] = {
-        doc: [`member access to underlying ${rawName}.`],
-        kind: "function",
-        constexpr: true,
-        type: "auto",
-        parameters: [],
-        hints: { body: "return value;" },
-      };
-    }
-
-    referenceAliases.push({
-      name: paramType,
-      kind: "struct",
-      doc: [`Safely wrap ${targetName} for non owning parameters`],
-      entries: {
-        value: {
-          kind: "var",
-          name: "value",
-          doc: [`parameter's ${rawName}`],
-          type: rawName,
-        },
-        [paramType]: {
-          kind: "function",
-          name: paramType,
-          doc: [`Constructs from ${rawName}`],
-          constexpr: true,
-          type: "",
-          parameters: [{ type: rawName, name: "value" }],
-          hints: { init: ["value(value)"] },
-        },
-        [`${paramType}#2`]: {
-          kind: "function",
-          name: paramType,
-          doc: [`Constructs null/invalid`],
-          constexpr: true,
-          type: "",
-          parameters: [
-            { type: "std::nullptr_t", name: "_", default: "nullptr" },
-          ],
-          hints: { init: [`value(${nullValue})`] },
-        },
-        "operator bool": {
-          kind: "function",
-          type: "",
-          immutable: true,
-          constexpr: true,
-          explicit: true,
-          parameters: [],
-          hints: { body: "return !!value;" },
-          doc: [`Converts to bool`],
-        },
-        "operator <=>": {
-          kind: "function",
-          type: "auto",
-          immutable: true,
-          constexpr: true,
-          parameters: [{ type: `const ${paramType} &`, name: "other" }],
-          hints: { default: true },
-          doc: [`Comparison`],
-        },
-        [`operator ${rawName}`]: {
-          kind: "function",
-          name: `operator ${rawName}`,
-          doc: [`Converts to underlying ${rawName}`],
-          constexpr: true,
-          immutable: true,
-          type: "",
-          parameters: [],
-          hints: { body: "return value;" },
-        },
-        ...memberAccess,
-      },
-    });
-    if (enableConstParam) {
-      referenceAliases.push({
-        name: constParamType,
-        kind: "struct",
-        doc: [`Safely wrap ${targetName} for non owning const parameters`],
-        entries: {
-          value: {
-            kind: "var",
-            name: "value",
-            doc: [`parameter's ${constRawName}`],
-            type: constRawName,
-          },
-          [constParamType]: {
-            kind: "function",
-            name: constParamType,
-            doc: [`Constructs from ${constRawName}`],
-            constexpr: true,
-            type: "",
-            parameters: [{ type: constRawName, name: "value" }],
-            hints: { init: ["value(value)"] },
-          },
-          [`${constParamType}#2`]: {
-            kind: "function",
-            name: constParamType,
-            doc: [`Constructs from ${paramType}`],
-            constexpr: true,
-            type: "",
-            parameters: [{ type: paramType, name: "value" }],
-            hints: { init: ["value(value.value)"] },
-          },
-          [`${constParamType}#3`]: {
-            kind: "function",
-            name: constParamType,
-            doc: [`Constructs null/invalid`],
-            constexpr: true,
-            type: "",
-            parameters: [
-              { type: "std::nullptr_t", name: "_", default: "nullptr" },
-            ],
-            hints: { init: [`value(${nullValue})`] },
-          },
-          "operator bool": {
-            kind: "function",
-            type: "",
-            immutable: true,
-            constexpr: true,
-            explicit: true,
-            parameters: [],
-            hints: { body: "return !!value;" },
-            doc: [`Converts to bool`],
-          },
-          "operator <=>": {
-            kind: "function",
-            type: "auto",
-            immutable: true,
-            constexpr: true,
-            parameters: [{ type: `const ${constParamType} &`, name: "other" }],
-            hints: { default: true },
-            doc: [`Comparison`],
-          },
-          [`operator ${constRawName}`]: {
-            kind: "function",
-            name: `operator ${constRawName}`,
-            doc: [`Converts to underlying ${constRawName}`],
-            constexpr: true,
-            immutable: true,
-            type: "",
-            parameters: [],
-            hints: { body: "return value;" },
-          },
-          ...memberAccess,
-        },
-      });
-    }
-    if (hasScoped) {
-      context.addParamType(pointerType, targetName);
-      context.addParamType(constPointerType, `const ${targetName} &`);
-    } else {
-      context.addParamType(pointerType, paramType);
-      context.addParamType(
-        constPointerType,
-        enableConstParam ? constParamType : paramType
-      );
-    }
-
-    if (hasRef) {
-      context.addReturnType(pointerType, refName);
-    } else if (hasShared || hasScoped) {
-      context.addReturnType(pointerType, targetName);
-    } else {
-      context.addReturnType(pointerType, rawName);
-    }
-    context.addReturnType(constPointerType, constRawName);
-
-    const ownershipDisclaimer = hasScoped
-      ? []
-      : [
-          "This assumes the ownership, call release() if you need to take back.",
-        ];
-
-    const ctors: Dict<ApiEntryTransform> = {
-      [targetName]: {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [{ name: "", type: "std::nullptr_t", default: "nullptr" }],
-        hints: {
-          init: ["m_resource(0)"],
-          noexcept: true,
-          changeAccess: "public",
-        },
-        doc: ["Default ctor"],
-      },
-      [`${targetName}#2`]: {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        explicit: !hasScoped,
-        parameters: [{ name: "resource", type: constRawName }],
-        hints: {
-          init: ["m_resource(resource)"],
-          noexcept: true,
-        },
-        doc: [
-          `Constructs from ${paramType}.`,
-          { tag: "@param resource", content: `a ${rawName} to be wrapped.` },
-          ...ownershipDisclaimer,
-        ],
-      },
-      [`${targetName}#3`]: {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [{ name: "other", type: `const ${targetName} &` }],
-        hints: { delete: true },
-        doc: ["Copy constructor"],
-      },
-      [`${targetName}#4`]: {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [{ name: "other", type: `${targetName} &&` }],
-        hints: {
-          init: [`${targetName}(other.release())`],
-          noexcept: true,
-        },
-        doc: ["Move constructor"],
-      },
-    };
-    if (hasShared) {
-      const copyCtorHints: EntryHint = {};
-      ctors[`${targetName}#3`].hints = copyCtorHints;
-      if (resourceEntry.shared !== true) {
-        copyCtorHints.init = ["m_resource(other.m_resource)"];
-        copyCtorHints.body = `++m_resource->${resourceEntry.shared};`;
-        ctors["Borrow"] = {
-          kind: "function",
-          static: true,
-          constexpr: true,
-          type: targetName,
-          parameters: [{ name: "resource", type: paramType }],
-          hints: {
-            body: `if (resource) {\n  ++resource.value->${resourceEntry.shared};\n  return ${targetName}(resource.value);}\nreturn {};`,
-          },
-          doc: [
-            `Safely borrows the from ${paramType}.`,
-            {
-              tag: "@param resource",
-              content: `a ${rawName} or ${targetName}.`,
-            },
-            "This does not takes ownership!",
-          ],
-        };
-      }
-    } else if (hasScoped) {
-      ctors[`${targetName}#3`].hints = { default: true };
-    }
-    if (hasRef) {
-      insertTransform(
-        ctors,
-        {
-          kind: "function",
-          doc: [],
-          type: "",
-          constexpr: true,
-          parameters: [{ name: "other", type: `const ${refName} &` }],
-          hints: { delete: true },
-        },
-        targetName
-      );
-      insertTransform(
-        ctors,
-        {
-          kind: "function",
-          doc: [],
-          type: "",
-          constexpr: true,
-          parameters: [{ name: "other", type: `${refName} &&` }],
-          hints: { delete: true },
-        },
-        targetName
-      );
-    }
-    const subEntries = targetEntry.entries || {};
-
-    Object.keys(subEntries)
-      .filter((k) => k === targetName || k.startsWith(targetName + "#"))
-      .map((k) => {
-        const e = subEntries[k];
-        delete subEntries[k];
-        return e;
-      })
-      .filter((e) => typeof e === "object")
-      .forEach((e) => insertTransform(ctors, e, targetName));
-    for (const sourceName of resourceEntry.ctors ?? []) {
-      const entry = subEntries[sourceName] ?? {};
-      delete subEntries[sourceName];
-      const ctorTransform = file.transform[sourceName];
-      if (typeof entry === "string") {
-        system.warn(
-          `${sourceName} can not be a custom ctor, only objects containing name property can be accepted.`
-        );
-        continue;
-      }
-      entry.static = true;
-      entry.type = targetName;
-      if (!entry.name)
-        entry.name = transformMemberName(sourceName, targetName, context);
-      if (!entry.sourceName && sourceEntries[sourceName])
-        entry.sourceName = sourceName;
-      addHints(entry, { wrapSelf: true });
-      ctors[sourceName] = entry;
-      if (!ctorTransform) {
-        file.transform[sourceName] = {
-          type: targetName,
-          hints: { wrapSelf: true },
-        };
-      } else if (!ctorTransform.type) {
-        file.transform[sourceName].type = targetName;
-        addHints(ctorTransform, { wrapSelf: true });
-      }
-    }
-
-    for (const [sourceName, entry] of Object.entries(subEntries)) {
-      const ctorTransform = file.transform[sourceName];
-      let isCtor = false;
-      if (typeof entry === "string") {
-        if (entry === "ctor") {
-          const parameters = file.transform[sourceName]?.parameters;
-          const ctor: ApiEntryTransform = {
-            kind: "function",
-            type: "",
-            name: targetName,
-            sourceName,
-          };
-          if (parameters) ctor.parameters = parameters;
-          ctors[sourceName] = ctor;
-          isCtor = true;
-        }
-      } else if (entry.name === "ctor") {
-        entry.kind = "function";
-        entry.type = "";
-        entry.name = targetName;
-        if (!entry.sourceName && sourceEntries[sourceName])
-          entry.sourceName = sourceName;
-        ctors[sourceName] = entry;
-        isCtor = true;
-      }
-      if (isCtor) {
-        delete subEntries[sourceName];
-        if (!ctorTransform) {
-          file.transform[sourceName] = {
-            type: targetName,
-            hints: { wrapSelf: true },
-          };
-        } else if (!ctorTransform.type) {
-          ctorTransform.type = targetName;
-          addHints(ctorTransform, { wrapSelf: true });
-        }
-      }
-    }
-
-    let freeFunction: ApiEntry =
-      sourceEntries[resourceEntry.free ?? "reset"] ??
-      scanFreeFunction(sourceEntries, targetName, pointerType);
-    if (freeFunction) {
-      const sourceName = freeFunction.name;
-      freeFunction = transformEntry(freeFunction, context);
-      const freeTransformEntry =
-        (subEntries[sourceName] as ApiEntryTransform) ?? {};
-      combineObject(freeFunction, freeTransformEntry);
-      freeFunction.name =
-        freeTransformEntry.name ??
-        makeNaturalName(transformName(sourceName, context), targetName);
-      freeFunction.doc = transformDoc(freeFunction.doc, context) ?? [
-        `frees up ${title}.`,
-      ];
-      const fileLevelEntry: ApiEntryTransform = file.transform[sourceName] ?? {
-        parameters: [{ type: rawName }, ...freeFunction.parameters.slice(1)],
-      };
-      file.transform[sourceName] = fileLevelEntry;
-      const fileLevelName =
-        fileLevelEntry.name ?? transformName(sourceName, context);
-      if (!freeFunction.hints?.body) {
-        let body = `${fileLevelName}(release());`;
-        if (freeFunction.hints?.mayFail && freeFunction.type === "bool") {
-          freeFunction.type = "void";
-        }
-        if (freeFunction.type !== "void") body = `return ${body}`;
-        combineHints(freeFunction, { body });
-      }
-      subEntries[sourceName] = freeFunction;
-    } else {
-      subEntries["Destroy"] = freeFunction = {
-        kind: "function",
-        name: "Destroy",
-        doc: [`frees up ${title}.`],
-        type: "void",
-        parameters: [],
-      };
-    }
-    if (resourceEntry.enableAutoMethods !== false) {
-      const blockedNames = createBlockedNames(subEntries);
-      blockedNames.add(targetName);
-      Object.keys(ctors).forEach((k) => blockedNames.add(k));
-      const detectedMethods = detectMethods(
-        sourceName,
-        targetName,
-        paramType,
-        constParamType,
-        blockedNames
-      );
-      mirrorMethods(
-        sourceEntries,
-        file.transform,
-        subEntries,
-        paramType,
-        constParamType,
-        targetName
-      );
-      combineObject(subEntries, detectedMethods);
-    } else {
-      mirrorMethods(
-        sourceEntries,
-        file.transform,
-        subEntries,
-        paramType,
-        constParamType,
-        targetName
-      );
-    }
-
-    if (enableMemberAccess) {
-      ctors["operator->"] = {
-        doc: [`member access to underlying ${rawName}.`],
-        kind: "function",
-        constexpr: true,
-        immutable: true,
-        type: constRawName,
-        parameters: [],
-        hints: { body: "return m_resource;", noexcept: true },
-      };
-      ctors["operator->#2"] = {
-        kind: "function",
-        constexpr: true,
-        type: rawName,
-        parameters: [],
-        hints: { body: "return m_resource;", noexcept: true },
-      };
-    }
-
-    if (sourceEntry.doc) {
-      targetEntry.doc = [
-        ...transformDoc(sourceEntry.doc, context),
-        "@cat resource",
-      ];
-    } else {
-      targetEntry.doc = [`Wraps ${title} resource.`, "@cat resource"];
-    }
-    const isCopyable = hasScoped || hasShared;
-    targetEntry.entries = {
-      m_resource: {
-        kind: "var",
-        type: rawName,
-        hints: { body: nullValue },
-      },
-      ...ctors,
-      [`~${targetName}`]: {
-        kind: "function",
-        doc: ["Destructor"],
-        type: "",
-        parameters: [],
-        hints: {
-          body:
-            freeFunction && !hasScoped
-              ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);`
-              : "",
-        },
-      },
-      "operator=": {
-        kind: "function",
-        type: `${targetName} &`,
-        parameters: [{ name: "other", type: `${targetName} &&` }],
-        constexpr: true,
-        hints: {
-          body: "std::swap(m_resource, other.m_resource);\nreturn *this;",
-          noexcept: true,
-        },
-        doc: ["Assignment operator."],
-      },
-      "operator=#2": {
-        kind: "function",
-        type: `${targetName} &`,
-        parameters: [{ name: "other", type: `const ${targetName} &` }],
-        constexpr: true,
-        hints: {
-          default: true,
-          changeAccess: isCopyable ? undefined : "protected",
-          noexcept: true,
-        },
-        doc: ["Assignment operator."],
-      },
-      get: {
-        kind: "function",
-        type: rawName,
-        immutable: true,
-        constexpr: true,
-        parameters: [],
-        hints: {
-          body: "return m_resource;",
-          changeAccess: isCopyable ? undefined : "public",
-          noexcept: true,
-        },
-        doc: [`Retrieves underlying ${rawName}.`],
-      },
-      release: {
-        kind: "function",
-        type: rawName,
-        constexpr: true,
-        parameters: [],
-        hints: {
-          body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;`,
-          noexcept: true,
-        },
-        doc: [`Retrieves underlying ${rawName} and clear this.`],
-      },
-      "operator <=>": {
-        kind: "function",
-        type: "auto",
-        immutable: true,
-        constexpr: true,
-        parameters: [{ type: `const ${targetName} &`, name: "other" }],
-        hints: { default: true, noexcept: true },
-        doc: [`Comparison`],
-      },
-      "operator bool": {
-        kind: "function",
-        type: "",
-        immutable: true,
-        constexpr: true,
-        explicit: true,
-        parameters: [],
-        hints: { body: "return !!m_resource;", noexcept: true },
-        doc: [`Converts to bool`],
-      },
-      [`operator ${paramType}`]: {
-        kind: "function",
-        type: "",
-        immutable: true,
-        constexpr: true,
-        parameters: [],
-        hints: { body: "return {m_resource};", noexcept: true },
-        doc: [`Converts to ${paramType}`],
-      },
-      [freeFunction.name]: "plc",
-      ...subEntries,
-    };
-    addHints(targetEntry, {
-      self: "m_resource",
-      super: "m_resource",
-      private: true,
-    });
-
-    const derivedEntries: ApiEntryTransform[] = [];
-
-    if (hasRef)
-      derivedEntries.push({
-        kind: "struct",
-        name: refName,
-        type: targetName,
-        doc: [`Semi-safe reference for ${targetName}.`],
-        entries: {
-          [`${targetName}::${targetName}`]: "alias",
-          [refName]: {
-            kind: "function",
-            type: "",
-            parameters: [
-              {
-                type: paramType,
-                name: "resource",
-              },
-            ],
-            hints: { init: [`${targetName}(resource.value)`], noexcept: true },
-            doc: [
-              `Constructs from ${paramType}.`,
-              {
-                tag: "@param resource",
-                content: `a ${rawName} or ${targetName}.`,
-              },
-              "This does not takes ownership!",
-            ],
-          },
-          [`${refName}#2`]: {
-            kind: "function",
-            type: "",
-            parameters: [
-              {
-                type: rawName,
-                name: "resource",
-              },
-            ],
-            hints: { init: [`${targetName}(resource)`], noexcept: true },
-            doc: [
-              `Constructs from ${paramType}.`,
-              {
-                tag: "@param resource",
-                content: `a ${rawName} or ${targetName}.`,
-              },
-              "This does not takes ownership!",
-            ],
-          },
-          [`${refName}#3`]: {
-            kind: "function",
-            type: "",
-            parameters: [
-              {
-                type: `const ${refName} &`,
-                name: "other",
-              },
-            ],
-            hints: { init: [`${targetName}(other.get())`], noexcept: true },
-            doc: ["Copy constructor."],
-          },
-          [`~${refName}`]: {
-            kind: "function",
-            doc: ["Destructor"],
-            type: "",
-            parameters: [],
-            hints: { body: "release();" },
-          },
-        },
-      });
-    if (hasScoped)
-      derivedEntries.push({
-        kind: "struct",
-        name: scopedName,
-        type: targetName,
-        doc: [`RAII owning version ${targetName}.`],
-        entries: {
-          [`${targetName}::${targetName}`]: "alias",
-          [scopedName]: {
-            kind: "function",
-            type: "",
-            constexpr: true,
-            parameters: [{ name: "other", type: `const ${targetName} &` }],
-            hints: { delete: true },
-          },
-          [`${scopedName}#2`]: {
-            kind: "function",
-            doc: ["Move constructor"],
-            type: "",
-            constexpr: true,
-            parameters: [{ name: "other", type: `${targetName} &&` }],
-            hints: {
-              init: [`${targetName}(other.release())`],
-              noexcept: true,
-            },
-          },
-          [`~${scopedName}`]: {
-            kind: "function",
-            doc: ["Destructor"],
-            type: "",
-            parameters: [],
-            hints: { body: `${freeFunction?.name ?? "Destroy"}();` },
-          },
-        },
-      });
-
-    context.includeBefore(referenceAliases, "__begin");
-    derivedEntries.forEach((e) => context.includeAfter(e, targetName));
-    delete targetEntry.resource;
-  }
-
-  function detectMethods(
-    sourceType: string,
-    targetType: string,
-    paramType: string,
-    constParamType: string,
-    blockedNames: Set<string>
-  ) {
-    const foundEntries: Dict<ApiEntryTransform | QuickTransform> = {};
-    const prefix = `${targetType}::`;
-    let lastKey = "__begin";
-    const placeAfter = new Map<string, string[]>();
-    for (let [sourceName, entryDelta] of Object.entries(transformMap)) {
-      const hasPrefix = sourceName.startsWith(prefix);
-      if (hasPrefix) sourceName = sourceName.slice(prefix.length);
-      if (blockedNames.has(sourceName)) continue;
-      const sourceEntry = sourceEntries[sourceName];
-      if (sourceEntry) lastKey = sourceName;
-      if (
-        entryDelta.kind !== "function" &&
-        (entryDelta.kind || sourceEntry?.kind !== "function")
-      )
-        continue;
-      const parameters = entryDelta.parameters;
-      let param0 = parameters?.[0];
-      if (!param0?.type) {
-        if (!hasPrefix) continue;
-        param0 = {
-          type: entryDelta.immutable ? constParamType : paramType,
-          name: param0?.name,
-        };
-      }
-      const m = paramMatchesVariants(
-        param0,
-        [paramType, `${paramType} *`],
-        [constParamType, `${constParamType} &`]
-      );
-      if (!m && !hasPrefix) {
-        blockedNames.add(sourceName);
-        continue;
-      }
-      if (sourceEntry) {
-        if (hasPrefix) {
-          delete transformMap[prefix + sourceName];
-          blockedNames.add(sourceName);
-        }
-        foundEntries[sourceName] = {
-          ...deepClone(entryDelta),
-          immutable: m === "immutable" || entryDelta.immutable,
-          name: entryDelta.hints?.methodName ?? undefined,
-        };
-        delete entryDelta.immutable;
-      } else if (hasPrefix) {
-        if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(sourceName);
-        else placeAfter.set(lastKey, [sourceName]);
-        blockedNames.add(sourceName);
-      } else if (!sourceName.includes("::")) {
-        const methodName = transformMemberName(
-          entryDelta.hints?.methodName ?? entryDelta.name ?? sourceName,
-          targetType,
-          context
-        );
-        if (blockedNames.has(methodName)) continue;
-        if (entryDelta.after) lastKey = entryDelta.after;
-        if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(methodName);
-        else placeAfter.set(lastKey, [methodName]);
-        const name = `${targetType}::${methodName}`;
-        insertOrLink(
-          transformMap,
-          {
-            ...deepClone(entryDelta),
-            after: sourceName,
-            name,
-            static: false,
-            parameters: parameters.slice(1),
-            hints: {
-              delegate: `${context.namespace}::${transformName(
-                sourceName,
-                context
-              )}`,
-            },
-          },
-          name
-        );
-        delete entryDelta.immutable;
-      }
-    }
-    for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
-      if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
-      if (sourceEntry.kind !== "function") continue;
-      const parameters = sourceEntry.parameters;
-      if (!parameters?.length) continue;
-      const param0 = parameters[0];
-      if (typeof param0 === "string") continue;
-      const m = paramMatchesVariants(
-        param0,
-        [sourceType, `${sourceType} *`],
-        [`const ${sourceType}`, `const ${sourceType} *`]
-      );
-      if (!m) continue;
-      const entryDelta = transformMap[sourceName];
-      if (
-        entryDelta?.name ||
-        entryDelta?.parameters ||
-        entryDelta?.type ||
-        entryDelta?.hints?.methodName
-      ) {
-        const e: ApiEntryTransform = {
-          ...deepClone(entryDelta),
-          immutable: m === "immutable" || entryDelta.immutable,
-        };
-        e.name = entryDelta.hints?.methodName ?? undefined;
-        foundEntries[sourceName] = e;
-        if (
-          entryDelta.immutable &&
-          !entryDelta.parameters &&
-          (!constParamType.startsWith("const ") || constParamType.endsWith("*"))
-        ) {
-          entryDelta.parameters = sourceEntry.parameters.map((_) => ({}));
-          entryDelta.parameters[0].type = constParamType;
-        }
-        delete entryDelta.immutable;
-      } else if (entryDelta?.immutable) {
-        foundEntries[sourceName] = "immutable";
-        if (
-          entryDelta.immutable &&
-          !entryDelta.parameters &&
-          (!constParamType.startsWith("const ") || constParamType.endsWith("*"))
-        ) {
-          entryDelta.parameters = sourceEntry.parameters.map((_) => ({}));
-          entryDelta.parameters[0].type = constParamType;
-        }
-        delete entryDelta.immutable;
-      } else {
-        foundEntries[sourceName] = m;
-      }
-      if (!entryDelta) transformMap[sourceName] = {};
-    }
-    const orderedEntries: Dict<ApiEntryTransform | QuickTransform> = {};
-    placeAfter
-      .get("__begin")
-      ?.forEach((sKey) => (orderedEntries[sKey] = "plc"));
-    Object.keys(sourceEntries).forEach((key) => {
-      const value = foundEntries[key];
-      if (value) orderedEntries[key] = value;
-      placeAfter.get(key)?.forEach((sKey) => {
-        if (!orderedEntries[sKey]) orderedEntries[sKey] = "plc";
-      });
-    });
-    return orderedEntries;
-  }
-
   function expandEnumeration(
     sourceName: string,
     sourceEntry: ApiEntry,
     targetName: string,
-    transform: ApiEntryTransform
+    transform: ApiEntryTransform,
   ) {
     const definition = getEnumDefinition(transform) ?? {};
     const valueType = definition.valueType ?? targetName;
@@ -1888,14 +1262,14 @@ function expandTypes(
             e.kind === "def" &&
             !e.parameters &&
             e.name.startsWith(prefix) &&
-            !transformMap[e.name]?.type
+            !transformMap[e.name]?.type,
         )
         .map((e) => e.name);
       const newPrefix = definition.newPrefix;
       if (newPrefix) {
         const oldPrefixLen = prefix.length;
         values.forEach(
-          (n) => (newNames[n] = newPrefix + n.slice(oldPrefixLen))
+          (n) => (newNames[n] = newPrefix + n.slice(oldPrefixLen)),
         );
       }
     }
@@ -1931,12 +1305,197 @@ function expandTypes(
     }
     delete transform.enum;
   }
+
+  function expandLock(targetName: string, targetEntry: ApiEntryTransform) {
+    const lockDef = getLockDefinition(targetEntry, targetName);
+    delete targetEntry.lock;
+    context.includeAfter(
+      {
+        kind: "forward",
+        name: targetName,
+      },
+      "__begin",
+    );
+    if (!transformMap[targetName]) transformMap[targetName] = targetEntry;
+
+    addHints(targetEntry, { private: true });
+    if (!targetEntry.doc) addHints(targetEntry, { copyDoc: lockDef.lockFunc });
+    if (!targetEntry.kind) targetEntry.kind = "struct";
+    const controlType = lockDef.controlType;
+    const paramType = lockDef.paramType ?? controlType;
+
+    const ctors: Dict<ApiEntryTransform> = {};
+    if (lockDef.controlVar !== false) {
+      ctors["m_lock"] = {
+        kind: "var",
+        type: controlType ?? "bool",
+      };
+    }
+    ctors[targetName] = { kind: "plc" };
+    ctors[`~${targetName}`] = { kind: "plc" };
+    ctors["operator="] = { kind: "plc" };
+    ctors["operator bool"] = { kind: "plc" };
+    const lockTargetName =
+      file.transform[lockDef.lockFunc]?.name ??
+      transformName(lockDef.lockFunc, context);
+    const unlockTargetName =
+      file.transform[lockDef.unlockFunc]?.name ??
+      transformName(lockDef.unlockFunc, context);
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}::${targetName}`,
+        type: "",
+        parameters: paramType ? [{ type: paramType, name: "resource" }] : [],
+        hints: {
+          copyDoc: lockDef.lockFunc,
+          changeAccess: "public",
+          init: [`m_lock(${controlType ? "std::move(resource)" : "true"})`],
+          body: `${lockTargetName}(${controlType ? "m_lock" : ""});`,
+        },
+      },
+      lockDef.lockFunc,
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.${targetName}`,
+        type: "",
+        parameters: [{ type: `const ${targetName} &`, name: "other" }],
+        doc: ["Copy constructor"],
+        hints: {
+          delete: true,
+        },
+      },
+      lockDef.lockFunc,
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.${targetName}`,
+        type: "",
+        doc: ["Move constructor"],
+        parameters: [{ type: `${targetName} &&`, name: "other" }],
+        constexpr: true,
+        hints: {
+          init: ["m_lock(other.m_lock)"],
+          body: `other.m_lock = {};`,
+          noexcept: true,
+        },
+      },
+      lockDef.lockFunc,
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.~${targetName}`,
+        type: "",
+        parameters: [],
+        hints: {
+          copyDoc: lockDef.unlockFunc,
+          body: `reset();`,
+        },
+      },
+      lockDef.lockFunc,
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.operator=`,
+        type: `${targetName} &`,
+        parameters: [{ type: `const ${targetName} &`, name: "other" }],
+        static: false,
+        hints: {
+          delete: true,
+        },
+      },
+      lockDef.lockFunc,
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.operator=`,
+        type: `${targetName} &`,
+        parameters: [{ type: `${targetName} &&`, name: "other" }],
+        static: false,
+        doc: ["Assignment operator"],
+        hints: {
+          noexcept: true,
+          body: `std::swap(m_lock, other.m_lock);return *this;`,
+        },
+      },
+      lockDef.lockFunc,
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.operator bool`,
+        type: "",
+        constexpr: true,
+        immutable: true,
+        parameters: [],
+        doc: ["True if not locked."],
+        hints: {
+          body: `return bool(m_lock);`,
+        },
+      },
+      lockDef.lockFunc,
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}::reset`,
+        type: "void",
+        parameters: [],
+        hints: {
+          copyDoc: lockDef.unlockFunc,
+          body: controlType
+            ? `if (!m_lock) return;\n${unlockTargetName}(m_lock);\nm_lock = {};`
+            : `if (!m_lock) return;\n${unlockTargetName}();\nm_lock = false;`,
+        },
+      },
+      lockDef.unlockFunc,
+    );
+
+    if (controlType) {
+      context.includeAfter(
+        {
+          kind: "function",
+          name: `${targetName}.get`,
+          type: controlType,
+          immutable: true,
+          parameters: [],
+          doc: [`Get the reference to locked resource.`],
+          hints: {
+            body: "return m_lock;",
+          },
+        },
+        lockDef.unlockFunc,
+      );
+    }
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.release`,
+        type: "void",
+        parameters: [],
+        doc: [`Releases the lock without unlocking.`],
+        hints: {
+          body: controlType ? "m_lock.release();" : `m_lock = false;`,
+        },
+      },
+      lockDef.unlockFunc,
+    );
+
+    const subEntries = targetEntry.entries || {};
+    targetEntry.entries = { ...ctors, ...subEntries };
+  }
 }
 
 function transformEntries(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
-  context: ApiContext
+  context: ApiContext,
 ) {
   const targetEntries: ApiEntries = {};
   const transformMap = file.transform;
@@ -1952,13 +1511,18 @@ function transformEntries(
       delete targetEntry.link;
       if (targetEntry.parameters) {
         targetEntry.parameters = targetEntry.parameters.filter(
-          (p) => p.type || p.name
+          (p) => p.type || p.name,
         );
       }
     }
+    if (targetEntry.hints?.copyDoc) {
+      const copyDoc = targetEntry.hints.copyDoc;
+      delete targetEntry.hints.copyDoc;
+      targetEntry.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
+    }
     if (sourceName)
       context.addName(sourceName, targetEntry.name?.replaceAll("::", "."));
-    insertEntryAndCheck(targetEntries, targetEntry, context, file);
+    insertEntryAndCheck(targetEntries, targetEntry, context, sourceEntries);
   }
 
   return targetEntries;
@@ -1975,10 +1539,10 @@ function transformEntries(
       delete linkedEntry.link;
       if (linkedEntry.parameters) {
         linkedEntry.parameters = linkedEntry.parameters.filter(
-          (p) => typeof p === "string" || (p.type && p.name)
+          (p) => typeof p === "string" || (p.type && p.name),
         );
       }
-      insertEntryAndCheck(targetEntries, linkedEntry, context, file);
+      insertEntryAndCheck(targetEntries, linkedEntry, context, sourceEntries);
     }
   }
 }
@@ -1986,7 +1550,7 @@ function transformEntries(
 function makeSortedEntryArray(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
-  context: ApiContext
+  context: ApiContext,
 ) {
   const transformEntries = file.transform ?? {};
 
@@ -2148,7 +1712,7 @@ function makeSortedEntryArray(
 
     function transformSubEntry(
       key: string,
-      entry: ApiEntryTransform | QuickTransform
+      entry: ApiEntryTransform | QuickTransform,
     ) {
       const sourceEntry = context.source[key];
       const nameCandidate = transformName(key, context);
@@ -2166,7 +1730,7 @@ function makeSortedEntryArray(
         } else if (entry.hints?.delegate) {
           context.includeAfter(
             { ...entry, name: `${type}::${nameCandidate}` },
-            entry.hints.delegate
+            entry.hints.delegate,
           );
           if (!entries[nameCandidate]) {
             insertEntry(entries, { name: nameCandidate, kind: "plc" });
@@ -2188,13 +1752,15 @@ function makeSortedEntryArray(
         (typeof entry !== "string" &&
           !entry.name?.startsWith("operator") &&
           entry.type === "");
-      if (isCtor || (typeof entry !== "string" && entry.proto === false)) {
+      if (typeof entry !== "string" && entry.proto === false) {
         nameChange.name = `${type}.${nameChange.name}`;
       } else {
         nameChange.name = `${type}::${nameChange.name}`;
-        addHints(nameChange, {
-          delegate: `${context.namespace}::${currLinkName}`,
-        });
+        if (!isCtor) {
+          addHints(nameChange, {
+            delegate: `${context.namespace}::${currLinkName}`,
+          });
+        }
       }
       if (typeof entry !== "string") delete nameChange.proto;
       file.transform[key] = nameChange;
@@ -2213,10 +1779,10 @@ function makeSortedEntryArray(
   }
 }
 
-function insertTransform(
+export function insertTransform(
   entries: Dict<ApiEntryTransform>,
   entryDelta: ApiEntryTransform,
-  defaultName: string = undefined
+  defaultName: string = undefined,
 ) {
   if (defaultName) entryDelta.name = entryDelta.name ?? defaultName;
   const currEntry = entries[entryDelta.name];
@@ -2243,16 +1809,16 @@ function makeSignatureSuffix(parameters: ApiParameter[]) {
   return parameters.map((p) => p.type ?? "_").join(",");
 }
 
-function expandNamespaces(
+export function expandNamespaces(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
-  context: ApiContext
+  context: ApiContext,
 ) {
   const namespacesMap = file.namespacesMap ?? {};
   for (const [prefix, nsName] of Object.entries(namespacesMap)) {
     const nsEntries: Dict<ApiEntryTransform> = {};
     const sourceEntriesListed = Object.entries(sourceEntries).filter(([key]) =>
-      key.startsWith(prefix)
+      key.startsWith(prefix),
     );
     for (const [key, entry] of sourceEntriesListed) {
       const entryDelta = file.transform[key] || {};
@@ -2270,13 +1836,13 @@ function expandNamespaces(
     if (sourceEntriesListed.length) {
       context.includeBefore(
         { kind: "ns", name: nsName, entries: nsEntries },
-        sourceEntriesListed[0][0]
+        sourceEntriesListed[0][0],
       );
     }
   }
 }
 
-function addHints(entry: ApiEntryBase, hints: EntryHint) {
+export function addHints(entry: ApiEntryBase, hints: EntryHint) {
   if (entry.hints) {
     combineObject(entry.hints, hints);
   } else {
@@ -2289,7 +1855,7 @@ function addHints(entry: ApiEntryBase, hints: EntryHint) {
  * @param {ApiEntryBase}  entry
  * @param {EntryHint}     hints
  */
-function combineHints(entry: ApiEntryBase, hints: EntryHint) {
+export function combineHints(entry: ApiEntryBase, hints: EntryHint) {
   if (entry.hints) {
     entry.hints = { ...hints, ...entry.hints };
   } else {
@@ -2297,13 +1863,13 @@ function combineHints(entry: ApiEntryBase, hints: EntryHint) {
   }
 }
 
-function mirrorMethods(
+export function mirrorMethods(
   sourceEntries: Dict<ApiEntry>,
   transformEntries: Dict<ApiEntryTransform>,
   transformSubEntries: ApiEntryTransformMap,
   paramType: string,
   constParamType: string,
-  resultType: string
+  resultType: string,
 ) {
   for (const [sourceName, subEntry] of Object.entries(transformSubEntries)) {
     const sourceEntry = sourceEntries[sourceName];
@@ -2338,7 +1904,7 @@ function mirrorMethods(
 
   function mirrorParameters(
     sourceEntry: ApiEntry,
-    targetEntry: ApiEntryTransform
+    targetEntry: ApiEntryTransform,
   ) {
     if (targetEntry.static) return;
 
@@ -2404,10 +1970,10 @@ function mirrorMethods(
   }
 }
 
-function paramMatchesVariants(
+export function paramMatchesVariants(
   param0: ApiParameter,
   variants: string[],
-  constVariants: string[]
+  constVariants: string[],
 ) {
   for (const variant of variants) {
     if (param0.type === variant) return "function";
@@ -2418,21 +1984,7 @@ function paramMatchesVariants(
   return false;
 }
 
-function getResourceDefinition(entry: ApiEntryTransform) {
-  const resourceDef = entry.resource;
-  switch (typeof resourceDef) {
-    case "string":
-      return { shared: resourceDef };
-    case "boolean":
-      return resourceDef ? {} : null;
-    case "object":
-      return resourceDef;
-    default:
-      return undefined;
-  }
-}
-
-function getEnumDefinition(entry: ApiEntryTransform) {
+export function getEnumDefinition(entry: ApiEntryTransform) {
   const enumDef = entry.enum;
   switch (typeof enumDef) {
     case "string":
@@ -2446,10 +1998,10 @@ function getEnumDefinition(entry: ApiEntryTransform) {
   }
 }
 
-function scanFreeFunction(
+export function scanFreeFunction(
   entries: Dict<ApiEntry>,
   uniqueType: string,
-  pointerType: string
+  pointerType: string,
 ) {
   const candidates: ApiEntry[] = [];
   for (const sourceName of Object.keys(entries)) {
@@ -2475,7 +2027,7 @@ function scanFreeFunction(
 function insertEntry(
   entries: ApiEntries,
   entry: ApiEntry | ApiEntry[],
-  defaultName: string = ""
+  defaultName: string = "",
 ) {
   if (Array.isArray(entry)) entry.forEach(doInsertEntry);
   else doInsertEntry(entry);
@@ -2540,8 +2092,8 @@ function insertEntryAndCheck(
   entries: ApiEntries,
   entry: ApiEntry,
   context: ApiContext,
-  file: ApiFileTransform,
-  defaultName?: string
+  sourceEntries: ApiEntries,
+  defaultName?: string,
 ) {
   insertEntry(entries, entry, defaultName);
   if (entry.kind === "ns" || entry.kind === "struct") {
@@ -2552,6 +2104,28 @@ function insertEntryAndCheck(
     } else {
       context.types[entry.name] = entry as ApiType;
     }
+  }
+
+  checkCopyDoc(entry, sourceEntries, context);
+}
+
+function checkCopyDoc(
+  entry: ApiEntry,
+  sourceEntries: ApiEntries,
+  context: ApiContext,
+) {
+  if (!entry.doc && entry.hints?.copyDoc) {
+    const copyDoc = entry.hints.copyDoc;
+    delete entry.hints.copyDoc;
+    entry.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
+  }
+  if (entry.entries) {
+    Object.values(entry.entries).forEach((subEntry) =>
+      checkCopyDoc(subEntry, sourceEntries, context),
+    );
+  }
+  if (entry.overload) {
+    checkCopyDoc(entry.overload, sourceEntries, context);
   }
 }
 
@@ -2583,6 +2157,7 @@ function transformHierarchy(targetEntries: ApiEntries, context: ApiContext) {
         const nextEntry = entry.overload;
         prepareForTypeInsert(entry, targetName, typeName);
         insertCopyEntry(entry);
+        delete entry.hints?.changeAccess;
         entry = nextEntry;
       }
     }
@@ -2647,7 +2222,7 @@ function validateEntries(targetEntries: ApiEntries) {
 function makeRenameEntry(
   entry: ApiEntryTransform | string,
   name: string,
-  typeName: string
+  typeName: string,
 ): ApiEntryTransform {
   let newEntry: ApiEntryTransform = {};
   if (entry === "placeholder") {
@@ -2675,15 +2250,15 @@ function makeRenameEntry(
   };
 }
 
-function transformMemberName(
+export function transformMemberName(
   name: string,
   typeName: string,
-  context: ApiContext
+  context: ApiContext,
 ) {
   return makeNaturalName(transformName(name, context), typeName);
 }
 
-function makeNaturalName(name: string, typeName: string) {
+export function makeNaturalName(name: string, typeName: string) {
   typeName = normalizeTypeName(typeName);
   if (!typeName.startsWith("F")) return name.replace(new RegExp(typeName), "");
   const replaceRegexp = new RegExp("F?" + typeName.slice(1));
@@ -2733,7 +2308,7 @@ function normalizeTypeName(typeName: string) {
  * @param {ApiEntry}    sourceEntry
  * @param {ApiContext}  context
  */
-function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
+export function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
   const targetEntry: ApiEntry = { ...sourceEntry };
   if (sourceEntry.doc) {
     targetEntry.doc = transformDoc(targetEntry.doc, context);
@@ -2744,15 +2319,15 @@ function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
     case "function":
       targetEntry.parameters = transformParameters(
         sourceEntry.parameters,
-        context
+        context,
       );
       targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
       checkSignatureRules(targetEntry, context);
       if (context.enableException) {
         const r = getTagInGroup(targetEntry.doc, "@returns");
-        if (r) {
+        if (r && r.content.includes("SDL_GetError")) {
           const m = r.content.match(
-            /(.*) on success|(an? valid [^,]+), or (?:\w+) on failure/
+            /(.*) on success|((an? valid )?[^,]+), or (?:\w+) on (?:failure|error)/,
           );
           if (m) {
             targetEntry.hints = { mayFail: true };
@@ -2782,7 +2357,7 @@ function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
 
 function transformParameters(
   parameters: ApiParameters,
-  context: ApiContext
+  context: ApiContext,
 ): ApiParameters {
   return parameters.map((parameter) => {
     let { name, type, default: defaultValue } = parameter;
@@ -2791,9 +2366,9 @@ function transformParameters(
   });
 }
 
-function transformCbParameters(
+export function transformCbParameters(
   parameters: ApiParameters,
-  context: ApiContext
+  context: ApiContext,
 ): ApiParameters {
   return parameters.map((parameter) => {
     let { name, type, default: defaultValue } = parameter;
@@ -2803,10 +2378,10 @@ function transformCbParameters(
     return { name, type, default: defaultValue };
   });
 }
-function transformCbType(type: string, context: ApiContext): string {
+export function transformCbType(type: string, context: ApiContext): string {
   return type.replace(
     /^(const\s+)?(\w+(\s+\*)?)/,
-    (_, ct: string, type: string) => (ct ?? "") + context.getCallbackType(type)
+    (_, ct: string, type: string) => (ct ?? "") + context.getCallbackType(type),
   );
 }
 
@@ -2840,7 +2415,7 @@ function checkSignatureRules(targetEntry: ApiEntry, context: ApiContext) {
   }
 }
 
-function transformType(type: string, typeMap: StringMap) {
+export function transformType(type: string, typeMap: StringMap) {
   return typeMap[type] ?? type;
 }
 
@@ -2854,7 +2429,7 @@ function transformFileDoc(doc: ParsedDoc, context: ApiContext) {
   return transformDoc(doc, context);
 }
 
-function transformDoc(doc: ParsedDoc, context: ApiContext): ParsedDoc {
+export function transformDoc(doc: ParsedDoc, context: ApiContext): ParsedDoc {
   return doc?.map(transformDocItem);
 
   function transformDocItem(docStr: ParsedDocContent): ParsedDocContent {
@@ -2887,7 +2462,7 @@ function transformString(str: string, rules: ReplacementRule[]) {
   return str;
 }
 
-function transformName(name: string, context: ApiContext) {
+export function transformName(name: string, context: ApiContext) {
   name = name.replace(/#.*$/, "");
   return context?.prefixToRemove
     ? name.replace(context.prefixToRemove, "")
@@ -2909,7 +2484,7 @@ function transformEntriesDocRefs(entries: ApiEntries, context: ApiContext) {
   }
 }
 
-function resolveVersionDoc(doc: ParsedDoc, context: ApiContext) {
+export function resolveVersionDoc(doc: ParsedDoc, context: ApiContext) {
   const sinceTag = getTagInGroup(doc, "@since");
   if (!sinceTag) return;
   const m = /\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(sinceTag.content);
@@ -2920,7 +2495,8 @@ function resolveVersionDoc(doc: ParsedDoc, context: ApiContext) {
     minor: +m[3],
     patch: +m[4],
   };
-  if (context.isAfterMinVersion(version)) return version;
+  if (context.isAfterMinVersion(version))
+    return context.previewFutureVersion(version);
 }
 
 function resolveDocRefs(doc: ParsedDoc, context: ApiContext): ParsedDoc {
@@ -2935,12 +2511,12 @@ function resolveDocRefs(doc: ParsedDoc, context: ApiContext): ParsedDoc {
 
   function resolveDocRefStr(docStr: string) {
     return docStr.replaceAll(context.referenceCandidate, (ref) =>
-      context.getName(ref)
+      context.getName(ref),
     );
   }
 }
 
-function addToTagGroup(doc: ParsedDoc, tag: string, content: string) {
+export function addToTagGroup(doc: ParsedDoc, tag: string, content: string) {
   if (!doc) return;
   for (let i = doc.length - 1; i >= 0; i--) {
     const item = doc[i];
@@ -2962,7 +2538,11 @@ function addToTagGroup(doc: ParsedDoc, tag: string, content: string) {
   return doc;
 }
 
-function removeTagFromGroup(doc: ParsedDoc, tag: string, count: number = 0) {
+export function removeTagFromGroup(
+  doc: ParsedDoc,
+  tag: string,
+  count: number = 0,
+) {
   if (!doc) return;
   return removeItemFromGroup(doc, findTagInGroup(doc, tag, count));
 }
@@ -2981,7 +2561,7 @@ function removeItemFromGroup(doc: ParsedDoc, r: number | [number, number]) {
 function findTagInGroup(
   doc: ParsedDoc,
   tagOrFunction: string | ((tag: string) => boolean),
-  count: number = 0
+  count: number = 0,
 ): number | [number, number] {
   if (!doc) return -1;
   const test =
@@ -3003,7 +2583,7 @@ function findTagInGroup(
 
 function getItemInGroup(
   doc: ParsedDoc,
-  index: number | [number, number]
+  index: number | [number, number],
 ): ParsedDocContent {
   if (Array.isArray(index)) {
     return doc?.[index[0]]?.[index[1]];
@@ -3015,7 +2595,7 @@ function getItemInGroup(
 function getTagInGroup(
   doc: ParsedDoc,
   tagOrFunction: string | ((tag: string) => boolean),
-  count: number = 0
+  count: number = 0,
 ) {
   const r = findTagInGroup(doc, tagOrFunction, count);
   return getItemInGroup(doc, r) as TaggedContent;
