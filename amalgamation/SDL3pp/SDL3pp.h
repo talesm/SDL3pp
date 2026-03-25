@@ -12962,7 +12962,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  PropertiesRef get() const { return m_lock; }
+  PropertiesRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -13114,8 +13114,8 @@ inline void UnlockProperties(PropertiesRef props)
 
 inline void Properties::Unlock(PropertiesLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void PropertiesLock::reset()
@@ -36938,7 +36938,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  AudioStreamRef get() const { return m_lock; }
+  AudioStreamRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -38692,8 +38692,8 @@ inline void UnlockAudioStream(AudioStreamRef stream)
 
 inline void AudioStream::Unlock(AudioStreamLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void AudioStreamLock::reset()
@@ -45089,7 +45089,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  SurfaceRef get() const { return m_lock; }
+  SurfaceRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -45576,8 +45576,8 @@ inline void UnlockSurface(SurfaceRef surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock(SurfaceLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void SurfaceLock::reset()
@@ -49405,12 +49405,6 @@ public:
     return *this;
   }
 
-  /// True if not locked.
-  constexpr operator bool() const
-  {
-    return bool(m_lock) && Surface::operator bool();
-  }
-
   /**
    * Release a frame of video acquired from a camera.
    *
@@ -49437,14 +49431,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  CameraRef get() const { return m_lock; }
-
-  /// Releases the lock without unlocking.
-  void release()
-  {
-    Surface::release();
-    m_lock.release();
-  }
+  CameraRef resource() const { return m_lock; }
 };
 
 /**
@@ -49875,8 +49862,8 @@ inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
 
 inline void Camera::ReleaseFrame(CameraFrame&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void CameraFrame::reset()
@@ -86413,7 +86400,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() const { return m_lock; }
+  TextureRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -86520,9 +86507,6 @@ public:
     return *this;
   }
 
-  /// True if not locked.
-  constexpr operator bool() const { return bool(m_lock); }
-
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
@@ -86543,14 +86527,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() const { return m_lock; }
-
-  /// Releases the lock without unlocking.
-  void release()
-  {
-    Surface::release();
-    m_lock.release();
-  }
+  TextureRef resource() const { return m_lock; }
 };
 
 /**
@@ -88754,14 +88731,14 @@ inline void UnlockTexture(TextureRef texture) { SDL_UnlockTexture(texture); }
 
 inline void Texture::Unlock(TextureLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void Texture::Unlock(TextureSurfaceLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void TextureSurfaceLock::reset()
@@ -94301,7 +94278,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  MixerRef get() const { return m_lock; }
+  MixerRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -97203,8 +97180,8 @@ inline void UnlockMixer(MixerRef mixer) { MIX_UnlockMixer(mixer); }
 
 inline void Mixer::Unlock(MixerLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void MixerLock::reset()

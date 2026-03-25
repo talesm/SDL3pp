@@ -602,12 +602,6 @@ public:
     return *this;
   }
 
-  /// True if not locked.
-  constexpr operator bool() const
-  {
-    return bool(m_lock) && Surface::operator bool();
-  }
-
   /**
    * Release a frame of video acquired from a camera.
    *
@@ -634,14 +628,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  CameraRef get() const { return m_lock; }
-
-  /// Releases the lock without unlocking.
-  void release()
-  {
-    Surface::release();
-    m_lock.release();
-  }
+  CameraRef resource() const { return m_lock; }
 };
 
 /**
@@ -1072,8 +1059,8 @@ inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
 
 inline void Camera::ReleaseFrame(CameraFrame&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void CameraFrame::reset()

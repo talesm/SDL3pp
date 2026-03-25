@@ -1573,7 +1573,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  MixerRef get() const { return m_lock; }
+  MixerRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -4475,8 +4475,8 @@ inline void UnlockMixer(MixerRef mixer) { MIX_UnlockMixer(mixer); }
 
 inline void Mixer::Unlock(MixerLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void MixerLock::reset()

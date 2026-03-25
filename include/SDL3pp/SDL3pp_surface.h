@@ -2291,7 +2291,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  SurfaceRef get() const { return m_lock; }
+  SurfaceRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -2778,8 +2778,8 @@ inline void UnlockSurface(SurfaceRef surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock(SurfaceLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void SurfaceLock::reset()

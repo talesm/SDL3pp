@@ -852,7 +852,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  PropertiesRef get() const { return m_lock; }
+  PropertiesRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -1004,8 +1004,8 @@ inline void UnlockProperties(PropertiesRef props)
 
 inline void Properties::Unlock(PropertiesLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void PropertiesLock::reset()

@@ -3687,7 +3687,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() const { return m_lock; }
+  TextureRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -3794,9 +3794,6 @@ public:
     return *this;
   }
 
-  /// True if not locked.
-  constexpr operator bool() const { return bool(m_lock); }
-
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
@@ -3817,14 +3814,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() const { return m_lock; }
-
-  /// Releases the lock without unlocking.
-  void release()
-  {
-    Surface::release();
-    m_lock.release();
-  }
+  TextureRef resource() const { return m_lock; }
 };
 
 /**
@@ -6028,14 +6018,14 @@ inline void UnlockTexture(TextureRef texture) { SDL_UnlockTexture(texture); }
 
 inline void Texture::Unlock(TextureLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void Texture::Unlock(TextureSurfaceLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void TextureSurfaceLock::reset()

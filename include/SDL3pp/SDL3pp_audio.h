@@ -3121,7 +3121,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  AudioStreamRef get() const { return m_lock; }
+  AudioStreamRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -4875,8 +4875,8 @@ inline void UnlockAudioStream(AudioStreamRef stream)
 
 inline void AudioStream::Unlock(AudioStreamLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void AudioStreamLock::reset()

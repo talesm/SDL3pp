@@ -483,7 +483,7 @@ export function wrapLockFunctions(
     currUnlockDelta.type = "void";
     currUnlockDelta.parameters = [{}, { type: `${lockName} &&`, name: "lock" }];
     addHints(currUnlockDelta, {
-      body: `SDL_assert_paranoid(lock.get()==*this);lock.reset();`,
+      body: `SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();`,
     });
   }
 }
@@ -1459,7 +1459,7 @@ function expandTypes(
       context.includeAfter(
         {
           kind: "function",
-          name: `${targetName}.get`,
+          name: `${targetName}.resource`,
           type: controlType,
           immutable: true,
           parameters: [],
