@@ -60,17 +60,17 @@ struct Path : StringResult
   }
 
   /// Append
-  Path operator+(std::string_view other) const
+  friend Path operator+(const Path& path, std::string_view other)
   {
-    Path result(*this);
+    Path result(path);
     result += other;
     return result;
   }
 
   /// Append
-  Path operator+(char ch) const
+  friend Path operator+(const Path& path, char ch)
   {
-    Path result(*this);
+    Path result(path);
     result += ch;
     return result;
   }
@@ -83,9 +83,9 @@ struct Path : StringResult
   }
 
   /// Append path component.
-  Path operator/(std::string_view other) const
+  friend Path operator/(const Path& path, std::string_view other)
   {
-    Path result(*this);
+    Path result(path);
     result /= other;
     return result;
   }
@@ -538,7 +538,7 @@ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
   return EnumerateDirectory(
     std::move(path),
     [](void* userdata, const char* dirname, const char* fname) {
-      auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
+      auto& cb = *static_cast<const EnumerateDirectoryCB*>(userdata);
       return cb(dirname, fname);
     },
     &callback);
@@ -557,7 +557,7 @@ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
 inline std::vector<Path> EnumerateDirectory(StringParam path)
 {
   std::vector<Path> r;
-  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
+  EnumerateDirectory(std::move(path), [&r](const char*, const char* fname) {
     r.emplace_back(fname);
     return ENUM_CONTINUE;
   });

@@ -314,8 +314,8 @@ inline void SetClipboardData(ClipboardDataCB callback,
   static ClipboardDataCB s_callback;
   static ClipboardCleanupCB s_cleanup;
   CheckError(SDL_ClearClipboardData());
-  s_callback = callback;
-  s_cleanup = cleanup;
+  s_callback = std::move(callback);
+  s_cleanup = std::move(cleanup);
   SetClipboardData(
     [](void*, const char* mime_type, size_t* size) -> const void* {
       auto source = s_callback(mime_type);

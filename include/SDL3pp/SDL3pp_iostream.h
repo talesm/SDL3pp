@@ -556,8 +556,7 @@ public:
   std::string Read(size_t size = -1)
   {
     Sint64 pos = Tell();
-    auto curSize = SDL_GetIOSize(get());
-    if ((curSize < 0 || pos < 0)) {
+    if (auto curSize = SDL_GetIOSize(get()); curSize < 0 || pos < 0) {
       if (size == size_t(-1)) return {};
     } else if (curSize - pos <= 0) {
       return {};
@@ -565,8 +564,9 @@ public:
       size = curSize - pos;
     }
     std::string result(size, 0);
-    auto actualSize = Read(result);
-    if (actualSize < size) result.resize(actualSize);
+    if (auto actualSize = Read(result); actualSize < size) {
+      result.resize(actualSize);
+    }
     return result;
   }
 

@@ -2,6 +2,7 @@
 #define SDL3PP_STDINC_H_
 
 #include <chrono>
+#include <span>
 #include <SDL3/SDL_stdinc.h>
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
@@ -143,7 +144,7 @@ struct IConvRef;
 template<class T, std::size_t N>
 constexpr std::size_t arraysize(const T (&array)[N])
 {
-  return SDL_arraysize(array);
+  return std::size(array);
 }
 
 #ifdef SDL3PP_DOC
@@ -1732,7 +1733,7 @@ inline void qsort_r(void* base, size_t nmemb, size_t size, CompareCB compare)
     nmemb,
     size,
     [](void* userdata, const void* a, const void* b) {
-      auto& cb = *static_cast<CompareCB*>(userdata);
+      auto& cb = *static_cast<const CompareCB*>(userdata);
       return cb(a, b);
     },
     &compare);
@@ -1873,7 +1874,7 @@ inline void* bsearch_r(const void* key,
     nmemb,
     size,
     [](void* userdata, const void* a, const void* b) {
-      auto& cb = *static_cast<CompareCB*>(userdata);
+      auto& cb = *static_cast<const CompareCB*>(userdata);
       return cb(a, b);
     },
     &compare);

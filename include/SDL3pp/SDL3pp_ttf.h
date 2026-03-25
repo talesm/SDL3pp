@@ -4083,7 +4083,11 @@ struct SurfaceTextEngine : TextEngine
    */
   SurfaceTextEngine();
 
-  ~SurfaceTextEngine() { Destroy(); }
+  SurfaceTextEngine(const SurfaceTextEngine&) = delete;
+
+  SurfaceTextEngine& operator=(const SurfaceTextEngine&) = delete;
+
+  ~SurfaceTextEngine() final { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on SDL surfaces.
@@ -4148,7 +4152,11 @@ struct RendererTextEngine : TextEngine
    */
   RendererTextEngine(PropertiesRef props);
 
-  ~RendererTextEngine() { Destroy(); }
+  RendererTextEngine(const RendererTextEngine&) = delete;
+
+  RendererTextEngine& operator=(const RendererTextEngine&) = delete;
+
+  ~RendererTextEngine() final { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on an SDL renderer.
@@ -4213,7 +4221,11 @@ struct GPUTextEngine : TextEngine
    */
   GPUTextEngine(PropertiesRef props);
 
-  ~GPUTextEngine() { Destroy(); }
+  GPUTextEngine(const GPUTextEngine&) = delete;
+
+  GPUTextEngine& operator=(const GPUTextEngine&) = delete;
+
+  ~GPUTextEngine() final { Destroy(); }
 
   /**
    * Sets the winding order of the vertices returned by Text.GetGPUDrawData for

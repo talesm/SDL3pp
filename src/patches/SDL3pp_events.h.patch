@@ -317,7 +317,7 @@
  {
 -  static_assert(false, "Not implemented");
 +  static EventFilterCB staticFilter;
-+  staticFilter = filter;
++  staticFilter = std::move(filter);
 +  SetEventFilter([](void*, Event* event) { return staticFilter(event); },
 +                 nullptr);
  }

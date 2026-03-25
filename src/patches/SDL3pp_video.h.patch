@@ -393,6 +393,15 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
+@@ -3433,7 +3430,7 @@
+   }
+ 
+   /// Destructor
+-  ~GLContextScoped() { Destroy(); }
++  ~GLContextScoped() { SDL_GL_DestroyContext(release()); }
+ };
+ 
+ /**
 @@ -3808,17 +3805,19 @@
  /**
   * Get a list of currently connected displays.
@@ -412,7 +421,7 @@
 +inline OwnArray<DisplayID> GetDisplays()
 +{
 +  int count = 0;
-+  auto data = reinterpret_cast<DisplayID*>(SDL_GetDisplays(&count));
++  auto data = SDL_GetDisplays(&count);
 +  return OwnArray<DisplayID>{data, size_t(count)};
 +}
  

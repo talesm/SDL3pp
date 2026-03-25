@@ -28,9 +28,6 @@ using TrayRaw = SDL_Tray*;
 struct TrayRef;
 
 /// Alias to raw representation for TrayMenu.
-struct TrayMenu;
-
-/// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
 
 // Forward decl

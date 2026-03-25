@@ -1537,7 +1537,7 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
 inline void SetEventFilter(EventFilterCB filter)
 {
   static EventFilterCB staticFilter;
-  staticFilter = filter;
+  staticFilter = std::move(filter);
   SetEventFilter([](void*, Event* event) { return staticFilter(event); },
                  nullptr);
 }

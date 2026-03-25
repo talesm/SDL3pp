@@ -1719,6 +1719,9 @@ struct StringResult : OwnArray<char>
   {
   }
 
+  /// Dtor
+  ~StringResult() { reset(); };
+
   /// Convert to StringParam
   operator StringParam() const { return std::string_view{*this}; }
 
@@ -2655,8 +2658,7 @@ inline bool SetErrorUnformatted(StringParam message)
 template<class... ARGS>
 inline bool SetError(std::string_view fmt, ARGS... args)
 {
-  return SetError(
-    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+  return SetError(std::vformat(fmt, std::make_format_args(args...)));
 }
 
 /**
@@ -2730,7 +2732,10 @@ public:
   }
 
   /// Returns the explanatory string.
-  constexpr const char* what() const noexcept { return m_message.c_str(); }
+  constexpr const char* what() const noexcept final
+  {
+    return m_message.c_str();
+  }
 
   /**
    * Returns the explanatory string.
@@ -12987,7 +12992,7 @@ public:
  *
  * @since This constant is available since SDL 3.4.0.
  */
-inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
+constexpr const char* PROP_NAME_STRING = SDL_PROP_NAME_STRING;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -13215,7 +13220,7 @@ inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
                                                       CleanupPropertyCB cleanup)
 {
   SDL::SetPointerPropertyWithCleanup(
-    m_resource, std::move(name), value, cleanup);
+    m_resource, std::move(name), value, std::move(cleanup));
 }
 
 /**
@@ -13643,7 +13648,7 @@ inline void EnumerateProperties(PropertiesRef props,
   return EnumerateProperties(
     props,
     [](void* userdata, PropertiesID props, const char* name) {
-      auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
+      auto& f = *static_cast<const EnumeratePropertiesCB*>(userdata);
       f(props, name);
     },
     &callback);
@@ -13657,7 +13662,7 @@ inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
 
 inline void Properties::Enumerate(EnumeratePropertiesCB callback)
 {
-  SDL::EnumerateProperties(m_resource, callback);
+  SDL::EnumerateProperties(m_resource, std::move(callback));
 }
 
 /**
@@ -13671,7 +13676,7 @@ inline void Properties::Enumerate(EnumeratePropertiesCB callback)
 inline Uint64 CountProperties(PropertiesRef props)
 {
   Uint64 count = 0;
-  EnumerateProperties(props, [&](auto, const char*) { count++; });
+  EnumerateProperties(props, [&count](auto, const char*) { count++; });
   return count;
 }
 
@@ -13836,7 +13841,7 @@ struct IConvRef;
 template<class T, std::size_t N>
 constexpr std::size_t arraysize(const T (&array)[N])
 {
-  return SDL_arraysize(array);
+  return std::size(array);
 }
 
 #ifdef SDL3PP_DOC
@@ -15425,7 +15430,7 @@ inline void qsort_r(void* base, size_t nmemb, size_t size, CompareCB compare)
     nmemb,
     size,
     [](void* userdata, const void* a, const void* b) {
-      auto& cb = *static_cast<CompareCB*>(userdata);
+      auto& cb = *static_cast<const CompareCB*>(userdata);
       return cb(a, b);
     },
     &compare);
@@ -15566,7 +15571,7 @@ inline void* bsearch_r(const void* key,
     nmemb,
     size,
     [](void* userdata, const void* a, const void* b) {
-      auto& cb = *static_cast<CompareCB*>(userdata);
+      auto& cb = *static_cast<const CompareCB*>(userdata);
       return cb(a, b);
     },
     &compare);
@@ -22536,8 +22541,8 @@ inline void SetClipboardData(ClipboardDataCB callback,
   static ClipboardDataCB s_callback;
   static ClipboardCleanupCB s_cleanup;
   CheckError(SDL_ClearClipboardData());
-  s_callback = callback;
-  s_cleanup = cleanup;
+  s_callback = std::move(callback);
+  s_cleanup = std::move(cleanup);
   SetClipboardData(
     [](void*, const char* mime_type, size_t* size) -> const void* {
       auto source = s_callback(mime_type);
@@ -23363,17 +23368,17 @@ struct Path : StringResult
   }
 
   /// Append
-  Path operator+(std::string_view other) const
+  friend Path operator+(const Path& path, std::string_view other)
   {
-    Path result(*this);
+    Path result(path);
     result += other;
     return result;
   }
 
   /// Append
-  Path operator+(char ch) const
+  friend Path operator+(const Path& path, char ch)
   {
-    Path result(*this);
+    Path result(path);
     result += ch;
     return result;
   }
@@ -23386,9 +23391,9 @@ struct Path : StringResult
   }
 
   /// Append path component.
-  Path operator/(std::string_view other) const
+  friend Path operator/(const Path& path, std::string_view other)
   {
-    Path result(*this);
+    Path result(path);
     result /= other;
     return result;
   }
@@ -23841,7 +23846,7 @@ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
   return EnumerateDirectory(
     std::move(path),
     [](void* userdata, const char* dirname, const char* fname) {
-      auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
+      auto& cb = *static_cast<const EnumerateDirectoryCB*>(userdata);
       return cb(dirname, fname);
     },
     &callback);
@@ -23860,7 +23865,7 @@ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
 inline std::vector<Path> EnumerateDirectory(StringParam path)
 {
   std::vector<Path> r;
-  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
+  EnumerateDirectory(std::move(path), [&r](const char*, const char* fname) {
     r.emplace_back(fname);
     return ENUM_CONTINUE;
   });
@@ -25779,8 +25784,7 @@ public:
   std::string Read(size_t size = -1)
   {
     Sint64 pos = Tell();
-    auto curSize = SDL_GetIOSize(get());
-    if ((curSize < 0 || pos < 0)) {
+    if (auto curSize = SDL_GetIOSize(get()); curSize < 0 || pos < 0) {
       if (size == size_t(-1)) return {};
     } else if (curSize - pos <= 0) {
       return {};
@@ -25788,8 +25792,9 @@ public:
       size = curSize - pos;
     }
     std::string result(size, 0);
-    auto actualSize = Read(result);
-    if (actualSize < size) result.resize(actualSize);
+    if (auto actualSize = Read(result); actualSize < size) {
+      result.resize(actualSize);
+    }
     return result;
   }
 
@@ -29126,7 +29131,7 @@ struct Point : PointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool InRect(const RectRaw& r) const;
+  bool InRect(const RectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -29545,7 +29550,7 @@ struct FPoint : FPointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool InRect(const FRectRaw& r) const;
+  bool InRect(const FRectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -30097,7 +30102,7 @@ struct Rect : RectRaw
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  inline bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
+  bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
   {
     return GetLineIntersection(p1 ? &p1->x : nullptr,
                                p1 ? &p1->y : nullptr,
@@ -30124,7 +30129,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
+  bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
 
   /**
    * Convert an SDL_Rect to SDL_FRect
@@ -30136,7 +30141,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline operator SDL_FRect() const;
+  operator SDL_FRect() const;
 
   /// @sa operator ToFRect()
   constexpr operator FRect() const;
@@ -30158,7 +30163,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool Empty() const;
+  bool Empty() const;
 
   /**
    * Determine whether two rectangles are equal.
@@ -30178,7 +30183,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool Equal(const RectRaw& other) const;
+  bool Equal(const RectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -30188,10 +30193,7 @@ struct Rect : RectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  inline bool Contains(const PointRaw& p) const
-  {
-    return SDL_PointInRect(&p, this);
-  }
+  bool Contains(const PointRaw& p) const { return SDL_PointInRect(&p, this); }
 
   /**
    * Check whether the rect contains given point
@@ -30201,10 +30203,7 @@ struct Rect : RectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  inline bool Contains(const RectRaw& other) const
-  {
-    return GetUnion(other) == *this;
-  }
+  bool Contains(const RectRaw& other) const { return GetUnion(other) == *this; }
 
   /**
    * Determine whether two rectangles intersect.
@@ -30218,7 +30217,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.GetIntersection
    */
-  inline bool HasIntersection(const RectRaw& other) const;
+  bool HasIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles.
@@ -30235,7 +30234,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.HasIntersection
    */
-  inline Rect GetIntersection(const RectRaw& other) const;
+  Rect GetIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles.
@@ -30522,7 +30521,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline static FRect GetEnclosingPoints(
+  static FRect GetEnclosingPoints(
     SpanRef<const FPointRaw> points,
     OptionalRef<const FRectRaw> clip = std::nullopt);
 
@@ -30694,7 +30693,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
+  bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
 
   /**
    * Determine whether a floating point rectangle takes no space.
@@ -30712,7 +30711,7 @@ struct FRect : FRectRaw
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  inline bool GetLineIntersection(FPoint* p1, FPoint* p2) const
+  bool GetLineIntersection(FPoint* p1, FPoint* p2) const
   {
     return GetLineIntersection(p1 ? &p1->x : nullptr,
                                p1 ? &p1->y : nullptr,
@@ -30737,7 +30736,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool Empty() const;
+  bool Empty() const;
 
   /**
    * Determine whether two floating point rectangles are equal, within some
@@ -30763,7 +30762,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.Equal
    */
-  inline bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
+  bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
 
   /**
    * Determine whether two floating point rectangles are equal, within a default
@@ -30789,7 +30788,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.EqualEpsilon
    */
-  inline bool Equal(const FRectRaw& other) const;
+  bool Equal(const FRectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -30829,7 +30828,7 @@ struct FRect : FRectRaw
    *
    * @sa Rect.GetIntersection
    */
-  inline bool HasIntersection(const FRectRaw& other) const;
+  bool HasIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles with float precision.
@@ -30846,7 +30845,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.HasIntersection
    */
-  inline FRect GetIntersection(const FRectRaw& other) const;
+  FRect GetIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles with float precision.
@@ -30872,7 +30871,7 @@ struct FRect : FRectRaw
   constexpr FRect GetExtension(unsigned int amount) const
   {
     FRect r = *this;
-    r.Extend(amount);
+    r.Extend(float(amount));
     return r;
   }
 
@@ -30998,7 +30997,7 @@ inline FRect RectToFRect(const RectRaw& rect)
   return frect;
 }
 
-Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
+inline Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
 
 /**
  * Determine whether a point resides inside a rectangle.
@@ -31026,7 +31025,7 @@ inline bool PointInRect(const PointRaw& p, const RectRaw& r)
   return SDL_PointInRect(&p, &r);
 }
 
-bool Point::InRect(const RectRaw& r) const
+inline bool Point::InRect(const RectRaw& r) const
 {
   return SDL::PointInRect(*this, r);
 }
@@ -31051,7 +31050,7 @@ bool Point::InRect(const RectRaw& r) const
  */
 inline bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
 
-bool Rect::Empty() const { return SDL::RectEmpty(*this); }
+inline bool Rect::Empty() const { return SDL::RectEmpty(*this); }
 
 /**
  * Determine whether two rectangles are equal.
@@ -31077,7 +31076,7 @@ inline bool RectsEqual(const RectRaw& a, const RectRaw& b)
   return SDL_RectsEqual(&a, &b);
 }
 
-bool Rect::Equal(const RectRaw& other) const
+inline bool Rect::Equal(const RectRaw& other) const
 {
   return SDL::RectsEqual(*this, other);
 }
@@ -31102,7 +31101,7 @@ inline bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
   return SDL_HasRectIntersection(&A, &B);
 }
 
-bool Rect::HasIntersection(const RectRaw& other) const
+inline bool Rect::HasIntersection(const RectRaw& other) const
 {
   return SDL::HasRectIntersection(*this, other);
 }
@@ -31129,7 +31128,7 @@ inline Rect GetRectIntersection(const RectRaw& A, const RectRaw& B)
   return {};
 }
 
-Rect Rect::GetIntersection(const RectRaw& other) const
+inline Rect Rect::GetIntersection(const RectRaw& other) const
 {
   return SDL::GetRectIntersection(*this, other);
 }
@@ -31251,7 +31250,7 @@ inline bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
   return SDL_PointInRectFloat(&p, &r);
 }
 
-bool FPoint::InRect(const FRectRaw& r) const
+inline bool FPoint::InRect(const FRectRaw& r) const
 {
   return SDL::PointInRectFloat(*this, r);
 }
@@ -31274,12 +31273,9 @@ bool FPoint::InRect(const FRectRaw& r) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RectEmptyFloat(const FRectRaw& r)
-{
-  return SDL_RectEmptyFloat(&r);
-}
+inline bool RectEmptyFloat(const FRectRaw& r) { return SDL_RectEmptyFloat(&r); }
 
-bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
+inline bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
 
 /**
  * Determine whether two floating point rectangles are equal, within some given
@@ -31307,14 +31303,14 @@ bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
  * @sa FRect.Equal
  */
 inline bool RectsEqualEpsilon(const FRectRaw& a,
-                                 const FRectRaw& b,
-                                 const float epsilon)
+                              const FRectRaw& b,
+                              const float epsilon)
 {
   return SDL_RectsEqualEpsilon(&a, &b, epsilon);
 }
 
-bool FRect::EqualEpsilon(const FRectRaw& other,
-                                   const float epsilon) const
+inline bool FRect::EqualEpsilon(const FRectRaw& other,
+                                const float epsilon) const
 {
   return SDL::RectsEqualEpsilon(*this, other, epsilon);
 }
@@ -31349,7 +31345,7 @@ inline bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
   return SDL_RectsEqualFloat(&a, &b);
 }
 
-bool FRect::Equal(const FRectRaw& other) const
+inline bool FRect::Equal(const FRectRaw& other) const
 {
   return SDL::RectsEqualFloat(*this, other);
 }
@@ -31374,7 +31370,7 @@ inline bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
   return SDL_HasRectIntersectionFloat(&A, &B);
 }
 
-bool FRect::HasIntersection(const FRectRaw& other) const
+inline bool FRect::HasIntersection(const FRectRaw& other) const
 {
   return SDL::HasRectIntersectionFloat(*this, other);
 }
@@ -31401,7 +31397,7 @@ inline FRect GetRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
   return {};
 }
 
-FRect FRect::GetIntersection(const FRectRaw& other) const
+inline FRect FRect::GetIntersection(const FRectRaw& other) const
 {
   return SDL::GetRectIntersectionFloat(*this, other);
 }
@@ -31459,7 +31455,7 @@ inline FRect GetRectEnclosingPointsFloat(
 }
 
 inline FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
-                                          OptionalRef<const FRectRaw> clip)
+                                       OptionalRef<const FRectRaw> clip)
 {
   return SDL::GetRectEnclosingPointsFloat(points, clip);
 }
@@ -31579,14 +31575,14 @@ constexpr FPoint FPoint::GetWrapped(const FRect& rect) const
 constexpr FPoint& FPoint::Wrap(const FRect& rect)
 {
   if (x < rect.x)
-    x = rect.x + rect.w - 1 - SDL_fmod(rect.x - x + rect.w - 1, rect.w);
+    x = rect.x + rect.w - 1 - SDL::fmod(rect.x - x + rect.w - 1, rect.w);
   else if (x >= rect.x + rect.w)
-    x = rect.x + SDL_fmod(x - rect.x - rect.w, rect.w);
+    x = rect.x + SDL::fmod(x - rect.x - rect.w, rect.w);
 
   if (y < rect.y)
-    y = rect.y + rect.h - 1 - SDL_fmod(rect.y - y + rect.h - 1, rect.h);
+    y = rect.y + rect.h - 1 - SDL::fmod(rect.y - y + rect.h - 1, rect.h);
   else if (y >= rect.y + rect.h)
-    y = rect.y + SDL_fmod(y - rect.y - rect.h, rect.h);
+    y = rect.y + SDL::fmod(y - rect.y - rect.h, rect.h);
 
   return *this;
 }
@@ -52122,9 +52118,6 @@ using TrayRaw = SDL_Tray*;
 struct TrayRef;
 
 /// Alias to raw representation for TrayMenu.
-struct TrayMenu;
-
-/// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
 
 // Forward decl
@@ -56942,7 +56935,7 @@ struct GLContextScoped : GLContext
   }
 
   /// Destructor
-  ~GLContextScoped() { Destroy(); }
+  ~GLContextScoped() { SDL_GL_DestroyContext(release()); }
 };
 
 /**
@@ -57327,7 +57320,7 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 inline OwnArray<DisplayID> GetDisplays()
 {
   int count = 0;
-  auto data = reinterpret_cast<DisplayID*>(SDL_GetDisplays(&count));
+  auto data = SDL_GetDisplays(&count);
   return OwnArray<DisplayID>{data, size_t(count)};
 }
 
@@ -63296,7 +63289,7 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
 inline void SetEventFilter(EventFilterCB filter)
 {
   static EventFilterCB staticFilter;
-  staticFilter = filter;
+  staticFilter = std::move(filter);
   SetEventFilter([](void*, Event* event) { return staticFilter(event); },
                  nullptr);
 }
@@ -109897,7 +109890,11 @@ struct SurfaceTextEngine : TextEngine
    */
   SurfaceTextEngine();
 
-  ~SurfaceTextEngine() { Destroy(); }
+  SurfaceTextEngine(const SurfaceTextEngine&) = delete;
+
+  SurfaceTextEngine& operator=(const SurfaceTextEngine&) = delete;
+
+  ~SurfaceTextEngine() final { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on SDL surfaces.
@@ -109962,7 +109959,11 @@ struct RendererTextEngine : TextEngine
    */
   RendererTextEngine(PropertiesRef props);
 
-  ~RendererTextEngine() { Destroy(); }
+  RendererTextEngine(const RendererTextEngine&) = delete;
+
+  RendererTextEngine& operator=(const RendererTextEngine&) = delete;
+
+  ~RendererTextEngine() final { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on an SDL renderer.
@@ -110027,7 +110028,11 @@ struct GPUTextEngine : TextEngine
    */
   GPUTextEngine(PropertiesRef props);
 
-  ~GPUTextEngine() { Destroy(); }
+  GPUTextEngine(const GPUTextEngine&) = delete;
+
+  GPUTextEngine& operator=(const GPUTextEngine&) = delete;
+
+  ~GPUTextEngine() final { Destroy(); }
 
   /**
    * Sets the winding order of the vertices returned by Text.GetGPUDrawData for

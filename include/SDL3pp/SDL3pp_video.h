@@ -3430,7 +3430,7 @@ struct GLContextScoped : GLContext
   }
 
   /// Destructor
-  ~GLContextScoped() { Destroy(); }
+  ~GLContextScoped() { SDL_GL_DestroyContext(release()); }
 };
 
 /**
@@ -3815,7 +3815,7 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 inline OwnArray<DisplayID> GetDisplays()
 {
   int count = 0;
-  auto data = reinterpret_cast<DisplayID*>(SDL_GetDisplays(&count));
+  auto data = SDL_GetDisplays(&count);
   return OwnArray<DisplayID>{data, size_t(count)};
 }
 

@@ -882,7 +882,7 @@ public:
  *
  * @since This constant is available since SDL 3.4.0.
  */
-inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
+constexpr const char* PROP_NAME_STRING = SDL_PROP_NAME_STRING;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -1110,7 +1110,7 @@ inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
                                                       CleanupPropertyCB cleanup)
 {
   SDL::SetPointerPropertyWithCleanup(
-    m_resource, std::move(name), value, cleanup);
+    m_resource, std::move(name), value, std::move(cleanup));
 }
 
 /**
@@ -1538,7 +1538,7 @@ inline void EnumerateProperties(PropertiesRef props,
   return EnumerateProperties(
     props,
     [](void* userdata, PropertiesID props, const char* name) {
-      auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
+      auto& f = *static_cast<const EnumeratePropertiesCB*>(userdata);
       f(props, name);
     },
     &callback);
@@ -1552,7 +1552,7 @@ inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
 
 inline void Properties::Enumerate(EnumeratePropertiesCB callback)
 {
-  SDL::EnumerateProperties(m_resource, callback);
+  SDL::EnumerateProperties(m_resource, std::move(callback));
 }
 
 /**
@@ -1566,7 +1566,7 @@ inline void Properties::Enumerate(EnumeratePropertiesCB callback)
 inline Uint64 CountProperties(PropertiesRef props)
 {
   Uint64 count = 0;
-  EnumerateProperties(props, [&](auto, const char*) { count++; });
+  EnumerateProperties(props, [&count](auto, const char*) { count++; });
   return count;
 }
 

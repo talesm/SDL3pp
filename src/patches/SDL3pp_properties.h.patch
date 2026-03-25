@@ -93,6 +93,15 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
+@@ -880,7 +882,7 @@
+  *
+  * @since This constant is available since SDL 3.4.0.
+  */
+-inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
++constexpr const char* PROP_NAME_STRING = SDL_PROP_NAME_STRING;
+ 
+ #endif // SDL_VERSION_ATLEAST(3, 4, 0)
+ 
 @@ -897,7 +899,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
@@ -124,6 +133,15 @@
  }
  
  inline void Properties::SetPointerPropertyWithCleanup(
+@@ -1104,7 +1110,7 @@
+                                                       CleanupPropertyCB cleanup)
+ {
+   SDL::SetPointerPropertyWithCleanup(
+-    m_resource, std::move(name), value, cleanup);
++    m_resource, std::move(name), value, std::move(cleanup));
+ }
+ 
+ /**
 @@ -1520,7 +1526,6 @@
   *
   * @param props the properties to query.
@@ -140,15 +158,19 @@
 +  return EnumerateProperties(
 +    props,
 +    [](void* userdata, PropertiesID props, const char* name) {
-+      auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
++      auto& f = *static_cast<const EnumeratePropertiesCB*>(userdata);
 +      f(props, name);
 +    },
 +    &callback);
  }
  
  inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1544,9 +1555,19 @@
-   SDL::EnumerateProperties(m_resource, callback);
+@@ -1541,12 +1552,22 @@
+ 
+ inline void Properties::Enumerate(EnumeratePropertiesCB callback)
+ {
+-  SDL::EnumerateProperties(m_resource, callback);
++  SDL::EnumerateProperties(m_resource, std::move(callback));
  }
  
 +/**
@@ -163,7 +185,7 @@
  {
 -  static_assert(false, "Not implemented");
 +  Uint64 count = 0;
-+  EnumerateProperties(props, [&](auto, const char*) { count++; });
++  EnumerateProperties(props, [&count](auto, const char*) { count++; });
 +  return count;
  }
  
