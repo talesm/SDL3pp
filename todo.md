@@ -25,9 +25,9 @@ Next version
   - [x] Use of gnu extension `?:`;
   - [x] Use of invalid constexpr;
 - [x] Remove src/generated/ from version control;
-- [ ] Fix thread ctor for wrapped functions;
+- [x] Fix thread ctor for wrapped functions;
 - [x] operator-> const for resources;
-- [ ] Fix Camera::AcquireCameraFrame;
+- [x] Fix Camera::AcquireCameraFrame;
 - [ ] Add SDL_assert on all narrowing due to different between std and SDL size
   types width;
 - [x] Fix several minor warnings;

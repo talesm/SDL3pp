@@ -48006,9 +48006,6 @@ public:
 
   constexpr Thread(ThreadRef&& other) = delete;
 
-  /// Default ctor
-  Thread(ThreadCB fn, StringParam name) {}
-
   /**
    * Create a new thread with a default stack size.
    *
@@ -48042,6 +48039,39 @@ public:
    * @sa Thread.Wait
    */
   Thread(ThreadFunction fn, StringParam name, void* data);
+
+  /**
+   * Create a new thread with a default stack size.
+   *
+   * This is a convenience function, equivalent to calling Thread.Thread with
+   * the following properties set:
+   *
+   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+   * - `prop::thread.CREATE_NAME_STRING`: `name`
+   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+   *
+   * Note that this "function" is actually a macro that calls an internal
+   * function with two extra parameters not listed here; they are hidden through
+   * preprocessor macros and are needed to support various C runtimes at the
+   * point of the function call. Language bindings that aren't using the C
+   * headers will need to deal with this.
+   *
+   * Usually, apps should just call this function the same way on every platform
+   * and let the macros hide the details.
+   *
+   * @param fn the ThreadFunction function to call in the new thread.
+   * @param name the name of the thread.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Thread.Thread
+   * @sa Thread.Wait
+   */
+  Thread(ThreadCB fn, StringParam name);
 
   /**
    * Create a new thread with with the specified properties.
@@ -48395,8 +48425,51 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
   return Thread(fn, std::move(name), data);
 }
 
+/**
+ * Create a new thread with a default stack size.
+ *
+ * This is a convenience function, equivalent to calling Thread.Thread with the
+ * following properties set:
+ *
+ * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+ * - `prop::thread.CREATE_NAME_STRING`: `name`
+ * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+ *
+ * Note that this "function" is actually a macro that calls an internal function
+ * with two extra parameters not listed here; they are hidden through
+ * preprocessor macros and are needed to support various C runtimes at the point
+ * of the function call. Language bindings that aren't using the C headers will
+ * need to deal with this.
+ *
+ * Usually, apps should just call this function the same way on every platform
+ * and let the macros hide the details.
+ *
+ * @param fn the ThreadFunction function to call in the new thread.
+ * @param name the name of the thread.
+ * @returns an opaque pointer to the new thread object on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Thread.Thread
+ * @sa Thread.Wait
+ */
+inline Thread CreateThread(ThreadCB fn, StringParam name)
+{
+  return Thread(std::move(fn), std::move(name));
+}
+
 inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
   : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
+{
+}
+
+inline Thread::Thread(ThreadCB fn, StringParam name)
+  : Thread(&CallbackWrapper<ThreadCB>::CallOnce,
+           std::move(name),
+           CallbackWrapper<ThreadCB>::Wrap(std::move(fn)))
 {
 }
 
