@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_loadso.h
+--- build/generated/SDL3pp_loadso.h
 +++ include/SDL3pp/SDL3pp_loadso.h
 @@ -7,7 +7,7 @@
  namespace SDL {

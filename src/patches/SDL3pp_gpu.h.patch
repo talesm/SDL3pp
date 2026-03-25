@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_gpu.h
+--- build/generated/SDL3pp_gpu.h
 +++ include/SDL3pp/SDL3pp_gpu.h
 @@ -12,7 +12,7 @@
  namespace SDL {

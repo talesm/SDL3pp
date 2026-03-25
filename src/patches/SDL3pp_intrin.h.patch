@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_intrin.h
+--- build/generated/SDL3pp_intrin.h
 +++ include/SDL3pp/SDL3pp_intrin.h
 @@ -6,7 +6,7 @@
  namespace SDL {

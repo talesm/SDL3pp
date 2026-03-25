@@ -1300,10 +1300,9 @@ public:
   JoystickApiLock(const JoystickApiLock& other) = delete;
 
   /// Move constructor
-  constexpr JoystickApiLock(JoystickApiLock&& other) noexcept
+  JoystickApiLock(JoystickApiLock&& other) noexcept
     : m_lock(other.m_lock)
   {
-    other.m_lock = {};
   }
 
   /**

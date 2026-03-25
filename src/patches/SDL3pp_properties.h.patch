@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_properties.h
+--- build/generated/SDL3pp_properties.h
 +++ include/SDL3pp/SDL3pp_properties.h
 @@ -10,14 +10,15 @@
  namespace SDL {
@@ -75,16 +75,7 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -806,7 +812,7 @@
-   PropertiesLock(const PropertiesLock& other) = delete;
- 
-   /// Move constructor
--  constexpr PropertiesLock(PropertiesLock&& other) noexcept
-+  PropertiesLock(PropertiesLock&& other) noexcept
-     : m_lock(other.m_lock)
-   {
-     other.m_lock = {};
-@@ -815,8 +821,6 @@
+@@ -814,8 +820,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -93,7 +84,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -840,8 +844,6 @@
+@@ -839,8 +843,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -102,7 +93,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -898,7 +900,7 @@
+@@ -897,7 +899,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -111,7 +102,7 @@
  }
  
  /**
-@@ -1071,7 +1073,6 @@
+@@ -1070,7 +1072,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -119,7 +110,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1087,7 +1088,12 @@
+@@ -1086,7 +1087,12 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -133,7 +124,7 @@
  }
  
  inline void Properties::SetPointerPropertyWithCleanup(
-@@ -1521,7 +1527,6 @@
+@@ -1520,7 +1526,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -141,7 +132,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1531,7 +1536,13 @@
+@@ -1530,7 +1535,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -156,7 +147,7 @@
  }
  
  inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1545,9 +1556,19 @@
+@@ -1544,9 +1555,19 @@
    SDL::EnumerateProperties(m_resource, callback);
  }
  

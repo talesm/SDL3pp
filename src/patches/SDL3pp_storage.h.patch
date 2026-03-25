@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_storage.h
+--- build/generated/SDL3pp_storage.h
 +++ include/SDL3pp/SDL3pp_storage.h
 @@ -9,7 +9,7 @@
  namespace SDL {

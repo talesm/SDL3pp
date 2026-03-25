@@ -1511,10 +1511,9 @@ public:
   MixerLock(const MixerLock& other) = delete;
 
   /// Move constructor
-  constexpr MixerLock(MixerLock&& other) noexcept
-    : m_lock(other.m_lock)
+  MixerLock(MixerLock&& other) noexcept
+    : m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**

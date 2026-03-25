@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_power.h
+--- build/generated/SDL3pp_power.h
 +++ include/SDL3pp/SDL3pp_power.h
 @@ -2,11 +2,12 @@
  #define SDL3PP_POWER_H_

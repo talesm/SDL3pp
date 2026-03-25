@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_main.h
+--- build/generated/SDL3pp_main.h
 +++ include/SDL3pp/SDL3pp_main.h
 @@ -1,22 +1,30 @@
  #ifndef SDL3PP_MAIN_H_
