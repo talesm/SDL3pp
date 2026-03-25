@@ -82462,6 +82462,14 @@ using AppArgs = std::span<char const* const>;
  * @return the app status
  */
 template<class T>
+  requires std::convertible_to<AppArgs, T>
+inline AppResult DefaultCreateClass(T** state, AppArgs args)
+{
+  *state = new T{args};
+  return APP_CONTINUE;
+}
+
+template<class T>
 inline AppResult DefaultCreateClass(T** state, AppArgs)
 {
   static_assert(std::is_default_constructible_v<T>);
@@ -82469,13 +82477,6 @@ inline AppResult DefaultCreateClass(T** state, AppArgs)
   return APP_CONTINUE;
 }
 
-template<class T>
-  requires std::convertible_to<AppArgs, T>
-inline AppResult DefaultCreateClass(T** state, AppArgs args)
-{
-  *state = new T{args};
-  return APP_CONTINUE;
-}
 /// @}
 
 /// @private
@@ -82560,7 +82561,6 @@ concept HasEventFunction =
  * Default handle by finishing if QUIT is requested
  *
  * @tparam T the state class
- * @param state the state
  * @param event the event
  * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
  */
