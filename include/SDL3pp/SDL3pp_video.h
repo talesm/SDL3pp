@@ -752,7 +752,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Window(const WindowRaw resource) noexcept
+  constexpr explicit Window(WindowRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -3308,7 +3308,7 @@ public:
    *
    * @param resource a GLContextRaw to be wrapped.
    */
-  constexpr GLContext(const GLContextRaw resource) noexcept
+  constexpr GLContext(GLContextRaw resource) noexcept
     : m_resource(resource)
   {
   }

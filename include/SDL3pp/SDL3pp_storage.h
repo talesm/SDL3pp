@@ -279,7 +279,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Storage(const StorageRaw resource) noexcept
+  constexpr explicit Storage(StorageRaw resource) noexcept
     : m_resource(resource)
   {
   }

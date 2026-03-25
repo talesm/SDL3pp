@@ -31,16 +31,19 @@ struct Animation;
 /// Alias to raw representation for Animation.
 using AnimationRaw = IMG_Animation*;
 
+/// Alias to const raw representation for Animation.
+using AnimationRawConst = const IMG_Animation*;
+
 // Forward decl
 struct AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
 struct AnimationConstRef
 {
-  const AnimationRaw value; ///< parameter's const AnimationRaw
+  AnimationRawConst value; ///< parameter's Animation
 
-  /// Constructs from const AnimationRaw
-  constexpr AnimationConstRef(const AnimationRaw value)
+  /// Constructs from AnimationRawConst
+  constexpr AnimationConstRef(AnimationRawConst value)
     : value(value)
   {
   }
@@ -57,11 +60,17 @@ struct AnimationConstRef
   /// Comparison
   constexpr auto operator<=>(const AnimationConstRef& other) const = default;
 
-  /// Converts to underlying const AnimationRaw
-  constexpr operator const AnimationRaw() const { return value; }
+  /// Converts to underlying Animation
+  constexpr operator AnimationRawConst() const { return value; }
+
+  /// Converts to underlying Animation
+  constexpr operator AnimationRaw() const
+  {
+    return const_cast<AnimationRaw>(value);
+  }
 
   /// member access to underlying AnimationRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2692,7 +2701,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Animation(const AnimationRaw resource) noexcept
+  constexpr explicit Animation(AnimationRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2768,10 +2777,7 @@ public:
   Animation(IOStreamRef src, bool closeio = false);
 
   /// member access to underlying AnimationRaw.
-  constexpr const AnimationRaw operator->() const noexcept
-  {
-    return m_resource;
-  }
+  constexpr AnimationRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying AnimationRaw.
   constexpr AnimationRaw operator->() noexcept { return m_resource; }
@@ -3757,8 +3763,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AnimationEncoder(
-    const AnimationEncoderRaw resource) noexcept
+  constexpr explicit AnimationEncoder(AnimationEncoderRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -4291,8 +4296,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AnimationDecoder(
-    const AnimationDecoderRaw resource) noexcept
+  constexpr explicit AnimationDecoder(AnimationDecoderRaw resource) noexcept
     : m_resource(resource)
   {
   }

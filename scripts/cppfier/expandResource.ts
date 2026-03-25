@@ -39,7 +39,7 @@ export function expandResource(
   const resourceEntry = getResourceDefinition(targetEntry) ?? {};
 
   const rawName = resourceEntry.rawName || `${targetName}Raw`;
-  const constRawName = `const ${rawName}`;
+  const constRawName = `${rawName}Const`;
   const refName = `${targetName}Ref`;
   const enableMemberAccess =
     resourceEntry.enableMemberAccess ?? sourceEntry.kind === "struct";
@@ -73,6 +73,14 @@ export function expandResource(
       doc: [`Alias to raw representation for ${targetName}.`],
     },
   );
+  if (enableConstParam || enableMemberAccess) {
+    referenceAliases.push({
+      name: constRawName,
+      kind: "alias",
+      type: constPointerType,
+      doc: [`Alias to const raw representation for ${targetName}.`],
+    });
+  }
   if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
   if (hasScoped) referenceAliases.push({ name: scopedName, kind: "forward" });
   const hasLock = getLockDefinition(targetEntry, targetName);
@@ -90,6 +98,7 @@ export function expandResource(
       doc: [`member access to underlying ${rawName}.`],
       kind: "function",
       constexpr: true,
+      immutable: true,
       type: "auto",
       parameters: [],
       hints: { body: "return value;" },
@@ -114,6 +123,7 @@ export function expandResource(
       createConstParam(
         constParamType,
         targetName,
+        rawName,
         constRawName,
         nullValue,
         memberAccess,
@@ -351,6 +361,7 @@ function createParam(
 function createConstParam(
   constParamType: string,
   targetName: string,
+  rawName: string,
   constRawName: string,
   nullValue: string,
   memberAccess: ApiEntryTransformMap,
@@ -363,7 +374,7 @@ function createConstParam(
       value: {
         kind: "var",
         name: "value",
-        doc: [`parameter's ${constRawName}`],
+        doc: [`parameter's ${targetName}`],
         type: constRawName,
       },
       [constParamType]: {
@@ -405,13 +416,21 @@ function createConstParam(
       },
       [`operator ${constRawName}`]: {
         kind: "function",
-        name: `operator ${constRawName}`,
-        doc: [`Converts to underlying ${constRawName}`],
+        doc: [`Converts to underlying ${targetName}`],
         constexpr: true,
         immutable: true,
         type: "",
         parameters: [],
         hints: { body: "return value;" },
+      },
+      [`operator ${rawName}`]: {
+        kind: "function",
+        doc: [`Converts to underlying ${targetName}`],
+        constexpr: true,
+        immutable: true,
+        type: "",
+        parameters: [],
+        hints: { body: `return const_cast<${rawName}>(value);` },
       },
       ...memberAccess,
     },
@@ -484,7 +503,7 @@ function createBaselineCtors(
       type: "",
       constexpr: true,
       explicit: !hasScoped,
-      parameters: [{ name: "resource", type: constRawName }],
+      parameters: [{ name: "resource", type: rawName }],
       hints: {
         init: ["m_resource(resource)"],
         noexcept: true,

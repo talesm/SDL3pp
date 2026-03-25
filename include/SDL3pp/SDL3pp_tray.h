@@ -127,7 +127,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Tray(const TrayRaw resource) noexcept
+  constexpr explicit Tray(TrayRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -527,7 +527,7 @@ public:
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */
-  constexpr TrayEntry(const TrayEntryRaw resource) noexcept
+  constexpr TrayEntry(TrayEntryRaw resource) noexcept
     : m_resource(resource)
   {
   }

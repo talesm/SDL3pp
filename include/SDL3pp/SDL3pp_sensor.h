@@ -150,7 +150,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Sensor(const SensorRaw resource) noexcept
+  constexpr explicit Sensor(SensorRaw resource) noexcept
     : m_resource(resource)
   {
   }

@@ -101,7 +101,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Mutex(const MutexRaw resource) noexcept
+  constexpr explicit Mutex(MutexRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -501,7 +501,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit RWLock(const RWLockRaw resource) noexcept
+  constexpr explicit RWLock(RWLockRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -1132,7 +1132,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Semaphore(const SemaphoreRaw resource) noexcept
+  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -1588,7 +1588,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Condition(const ConditionRaw resource) noexcept
+  constexpr explicit Condition(ConditionRaw resource) noexcept
     : m_resource(resource)
   {
   }

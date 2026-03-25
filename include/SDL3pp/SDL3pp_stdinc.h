@@ -930,7 +930,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Environment(const EnvironmentRaw resource) noexcept
+  constexpr explicit Environment(EnvironmentRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -5943,7 +5943,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IConv(const IConvRaw resource) noexcept
+  constexpr explicit IConv(IConvRaw resource) noexcept
     : m_resource(resource)
   {
   }

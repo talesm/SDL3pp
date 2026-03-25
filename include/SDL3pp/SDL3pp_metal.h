@@ -52,7 +52,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit MetalView(const MetalViewRaw resource) noexcept
+  constexpr explicit MetalView(MetalViewRaw resource) noexcept
     : m_resource(resource)
   {
   }

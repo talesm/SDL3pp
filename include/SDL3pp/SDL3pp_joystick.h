@@ -421,7 +421,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Joystick(const JoystickRaw resource) noexcept
+  constexpr explicit Joystick(JoystickRaw resource) noexcept
     : m_resource(resource)
   {
   }

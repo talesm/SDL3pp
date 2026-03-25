@@ -3067,7 +3067,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit GPUDevice(const GPUDeviceRaw resource) noexcept
+  constexpr explicit GPUDevice(GPUDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }

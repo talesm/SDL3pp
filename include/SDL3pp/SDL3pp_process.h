@@ -124,7 +124,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Process(const ProcessRaw resource) noexcept
+  constexpr explicit Process(ProcessRaw resource) noexcept
     : m_resource(resource)
   {
   }

@@ -118,7 +118,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IOStream(const IOStreamRaw resource) noexcept
+  constexpr explicit IOStream(IOStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }

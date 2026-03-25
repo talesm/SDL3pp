@@ -26,7 +26,7 @@ Next version
   - [x] Use of invalid constexpr;
 - [x] Remove src/generated/ from version control;
 - [ ] Fix thread ctor for wrapped functions;
-- [ ] operator-> const for resources;
+- [x] operator-> const for resources;
 - [ ] Fix Camera::AcquireCameraFrame;
 - [x] Fix several minor warnings;
 - [ ] Properly encapsulate Param and ConstParam legacy;

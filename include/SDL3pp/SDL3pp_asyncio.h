@@ -134,7 +134,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIO(const AsyncIORaw resource) noexcept
+  constexpr explicit AsyncIO(AsyncIORaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -526,7 +526,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIOQueue(const AsyncIOQueueRaw resource) noexcept
+  constexpr explicit AsyncIOQueue(AsyncIOQueueRaw resource) noexcept
     : m_resource(resource)
   {
   }

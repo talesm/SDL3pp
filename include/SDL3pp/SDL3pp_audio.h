@@ -811,7 +811,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDevice(const AudioDeviceID resource) noexcept
+  constexpr explicit AudioDevice(AudioDeviceID resource) noexcept
     : m_resource(resource)
   {
   }
@@ -1695,7 +1695,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioStream(const AudioStreamRaw resource) noexcept
+  constexpr explicit AudioStream(AudioStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }

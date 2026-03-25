@@ -171,7 +171,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Camera(const CameraRaw resource) noexcept
+  constexpr explicit Camera(CameraRaw resource) noexcept
     : m_resource(resource)
   {
   }

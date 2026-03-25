@@ -55,16 +55,19 @@ struct Texture;
 /// Alias to raw representation for Texture.
 using TextureRaw = SDL_Texture*;
 
+/// Alias to const raw representation for Texture.
+using TextureRawConst = const SDL_Texture*;
+
 // Forward decl
 struct TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
 struct TextureConstRef
 {
-  const TextureRaw value; ///< parameter's const TextureRaw
+  TextureRawConst value; ///< parameter's Texture
 
-  /// Constructs from const TextureRaw
-  constexpr TextureConstRef(const TextureRaw value)
+  /// Constructs from TextureRawConst
+  constexpr TextureConstRef(TextureRawConst value)
     : value(value)
   {
   }
@@ -81,11 +84,17 @@ struct TextureConstRef
   /// Comparison
   constexpr auto operator<=>(const TextureConstRef& other) const = default;
 
-  /// Converts to underlying const TextureRaw
-  constexpr operator const TextureRaw() const { return value; }
+  /// Converts to underlying Texture
+  constexpr operator TextureRawConst() const { return value; }
+
+  /// Converts to underlying Texture
+  constexpr operator TextureRaw() const
+  {
+    return const_cast<TextureRaw>(value);
+  }
 
   /// member access to underlying TextureRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #if SDL_VERSION_ATLEAST(3, 3, 6)
@@ -253,7 +262,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Renderer(const RendererRaw resource) noexcept
+  constexpr explicit Renderer(RendererRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2422,7 +2431,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Texture(const TextureRaw resource) noexcept
+  constexpr explicit Texture(TextureRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2707,7 +2716,7 @@ public:
   }
 
   /// member access to underlying TextureRaw.
-  constexpr const TextureRaw operator->() const noexcept { return m_resource; }
+  constexpr TextureRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextureRaw.
   constexpr TextureRaw operator->() noexcept { return m_resource; }
@@ -8278,7 +8287,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit GPURenderState(const GPURenderStateRaw resource)
+  constexpr explicit GPURenderState(GPURenderStateRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -8351,7 +8360,7 @@ public:
   constexpr auto operator<=>(const GPURenderState& other) const = default;
 
   /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr bool operator==(std::nullptr_t) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

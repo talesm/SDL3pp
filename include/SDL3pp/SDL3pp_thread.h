@@ -163,7 +163,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Thread(const ThreadRaw resource) noexcept
+  constexpr explicit Thread(ThreadRaw resource) noexcept
     : m_resource(resource)
   {
   }

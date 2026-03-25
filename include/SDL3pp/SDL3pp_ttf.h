@@ -72,16 +72,19 @@ struct Text;
 /// Alias to raw representation for Text.
 using TextRaw = TTF_Text*;
 
+/// Alias to const raw representation for Text.
+using TextRawConst = const TTF_Text*;
+
 // Forward decl
 struct TextRef;
 
 /// Safely wrap Text for non owning const parameters
 struct TextConstRef
 {
-  const TextRaw value; ///< parameter's const TextRaw
+  TextRawConst value; ///< parameter's Text
 
-  /// Constructs from const TextRaw
-  constexpr TextConstRef(const TextRaw value)
+  /// Constructs from TextRawConst
+  constexpr TextConstRef(TextRawConst value)
     : value(value)
   {
   }
@@ -98,11 +101,14 @@ struct TextConstRef
   /// Comparison
   constexpr auto operator<=>(const TextConstRef& other) const = default;
 
-  /// Converts to underlying const TextRaw
-  constexpr operator const TextRaw() const { return value; }
+  /// Converts to underlying Text
+  constexpr operator TextRawConst() const { return value; }
+
+  /// Converts to underlying Text
+  constexpr operator TextRaw() const { return const_cast<TextRaw>(value); }
 
   /// member access to underlying TextRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #ifdef SDL3PP_DOC
@@ -403,7 +409,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Font(const FontRaw resource) noexcept
+  constexpr explicit Font(FontRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -3987,7 +3993,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit TextEngine(const TextEngineRaw resource) noexcept
+  constexpr explicit TextEngine(TextEngineRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -4318,7 +4324,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Text(const TextRaw resource) noexcept
+  constexpr explicit Text(TextRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -4361,7 +4367,7 @@ public:
   Text(TextEngineRef engine, FontRef font, std::string_view text);
 
   /// member access to underlying TextRaw.
-  constexpr const TextRaw operator->() const noexcept { return m_resource; }
+  constexpr TextRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextRaw.
   constexpr TextRaw operator->() noexcept { return m_resource; }

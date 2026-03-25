@@ -98,16 +98,19 @@ struct Palette;
 /// Alias to raw representation for Palette.
 using PaletteRaw = SDL_Palette*;
 
+/// Alias to const raw representation for Palette.
+using PaletteRawConst = const SDL_Palette*;
+
 // Forward decl
 struct PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
 struct PaletteConstRef
 {
-  const PaletteRaw value; ///< parameter's const PaletteRaw
+  PaletteRawConst value; ///< parameter's Palette
 
-  /// Constructs from const PaletteRaw
-  constexpr PaletteConstRef(const PaletteRaw value)
+  /// Constructs from PaletteRawConst
+  constexpr PaletteConstRef(PaletteRawConst value)
     : value(value)
   {
   }
@@ -124,11 +127,17 @@ struct PaletteConstRef
   /// Comparison
   constexpr auto operator<=>(const PaletteConstRef& other) const = default;
 
-  /// Converts to underlying const PaletteRaw
-  constexpr operator const PaletteRaw() const { return value; }
+  /// Converts to underlying Palette
+  constexpr operator PaletteRawConst() const { return value; }
+
+  /// Converts to underlying Palette
+  constexpr operator PaletteRaw() const
+  {
+    return const_cast<PaletteRaw>(value);
+  }
 
   /// member access to underlying PaletteRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 /**
@@ -2497,7 +2506,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Palette(const PaletteRaw resource) noexcept
+  constexpr explicit Palette(PaletteRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2551,7 +2560,7 @@ public:
   }
 
   /// member access to underlying PaletteRaw.
-  constexpr const PaletteRaw operator->() const noexcept { return m_resource; }
+  constexpr PaletteRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying PaletteRaw.
   constexpr PaletteRaw operator->() noexcept { return m_resource; }

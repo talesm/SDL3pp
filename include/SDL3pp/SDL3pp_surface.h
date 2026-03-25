@@ -45,16 +45,19 @@ struct Surface;
 /// Alias to raw representation for Surface.
 using SurfaceRaw = SDL_Surface*;
 
+/// Alias to const raw representation for Surface.
+using SurfaceRawConst = const SDL_Surface*;
+
 // Forward decl
 struct SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
 struct SurfaceConstRef
 {
-  const SurfaceRaw value; ///< parameter's const SurfaceRaw
+  SurfaceRawConst value; ///< parameter's Surface
 
-  /// Constructs from const SurfaceRaw
-  constexpr SurfaceConstRef(const SurfaceRaw value)
+  /// Constructs from SurfaceRawConst
+  constexpr SurfaceConstRef(SurfaceRawConst value)
     : value(value)
   {
   }
@@ -71,11 +74,17 @@ struct SurfaceConstRef
   /// Comparison
   constexpr auto operator<=>(const SurfaceConstRef& other) const = default;
 
-  /// Converts to underlying const SurfaceRaw
-  constexpr operator const SurfaceRaw() const { return value; }
+  /// Converts to underlying Surface
+  constexpr operator SurfaceRawConst() const { return value; }
+
+  /// Converts to underlying Surface
+  constexpr operator SurfaceRaw() const
+  {
+    return const_cast<SurfaceRaw>(value);
+  }
 
   /// member access to underlying SurfaceRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 // Forward decl
@@ -205,7 +214,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Surface(const SurfaceRaw resource) noexcept
+  constexpr explicit Surface(SurfaceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -466,7 +475,7 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /// member access to underlying SurfaceRaw.
-  constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
+  constexpr SurfaceRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying SurfaceRaw.
   constexpr SurfaceRaw operator->() noexcept { return m_resource; }

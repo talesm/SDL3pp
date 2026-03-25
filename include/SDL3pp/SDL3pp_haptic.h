@@ -781,7 +781,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Haptic(const HapticRaw resource) noexcept
+  constexpr explicit Haptic(HapticRaw resource) noexcept
     : m_resource(resource)
   {
   }

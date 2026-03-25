@@ -262,7 +262,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Mixer(const MixerRaw resource) noexcept
+  constexpr explicit Mixer(MixerRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -1613,7 +1613,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Audio(const AudioRaw resource) noexcept
+  constexpr explicit Audio(AudioRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2302,7 +2302,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Track(const TrackRaw resource) noexcept
+  constexpr explicit Track(TrackRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -3789,7 +3789,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Group(const GroupRaw resource) noexcept
+  constexpr explicit Group(GroupRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -7652,7 +7652,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDecoder(const AudioDecoderRaw resource) noexcept
+  constexpr explicit AudioDecoder(AudioDecoderRaw resource) noexcept
     : m_resource(resource)
   {
   }

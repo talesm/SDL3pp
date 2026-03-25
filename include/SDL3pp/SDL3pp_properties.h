@@ -193,7 +193,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Properties(const PropertiesID resource) noexcept
+  constexpr explicit Properties(PropertiesID resource) noexcept
     : m_resource(resource)
   {
   }

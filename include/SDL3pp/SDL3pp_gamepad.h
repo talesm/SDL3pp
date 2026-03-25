@@ -405,7 +405,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Gamepad(const GamepadRaw resource) noexcept
+  constexpr explicit Gamepad(GamepadRaw resource) noexcept
     : m_resource(resource)
   {
   }

@@ -119,7 +119,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit HidDevice(const HidDeviceRaw resource) noexcept
+  constexpr explicit HidDevice(HidDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }

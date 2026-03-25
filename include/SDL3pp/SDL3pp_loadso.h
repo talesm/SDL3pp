@@ -78,7 +78,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit SharedObject(const SharedObjectRaw resource) noexcept
+  constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
     : m_resource(resource)
   {
   }

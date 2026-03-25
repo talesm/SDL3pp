@@ -169,7 +169,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Cursor(const CursorRaw resource) noexcept
+  constexpr explicit Cursor(CursorRaw resource) noexcept
     : m_resource(resource)
   {
   }

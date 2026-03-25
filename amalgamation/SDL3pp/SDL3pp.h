@@ -9031,16 +9031,19 @@ struct Palette;
 /// Alias to raw representation for Palette.
 using PaletteRaw = SDL_Palette*;
 
+/// Alias to const raw representation for Palette.
+using PaletteRawConst = const SDL_Palette*;
+
 // Forward decl
 struct PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
 struct PaletteConstRef
 {
-  const PaletteRaw value; ///< parameter's const PaletteRaw
+  PaletteRawConst value; ///< parameter's Palette
 
-  /// Constructs from const PaletteRaw
-  constexpr PaletteConstRef(const PaletteRaw value)
+  /// Constructs from PaletteRawConst
+  constexpr PaletteConstRef(PaletteRawConst value)
     : value(value)
   {
   }
@@ -9057,11 +9060,17 @@ struct PaletteConstRef
   /// Comparison
   constexpr auto operator<=>(const PaletteConstRef& other) const = default;
 
-  /// Converts to underlying const PaletteRaw
-  constexpr operator const PaletteRaw() const { return value; }
+  /// Converts to underlying Palette
+  constexpr operator PaletteRawConst() const { return value; }
+
+  /// Converts to underlying Palette
+  constexpr operator PaletteRaw() const
+  {
+    return const_cast<PaletteRaw>(value);
+  }
 
   /// member access to underlying PaletteRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 /**
@@ -11430,7 +11439,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Palette(const PaletteRaw resource) noexcept
+  constexpr explicit Palette(PaletteRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -11484,7 +11493,7 @@ public:
   }
 
   /// member access to underlying PaletteRaw.
-  constexpr const PaletteRaw operator->() const noexcept { return m_resource; }
+  constexpr PaletteRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying PaletteRaw.
   constexpr PaletteRaw operator->() noexcept { return m_resource; }
@@ -12289,7 +12298,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Properties(const PropertiesID resource) noexcept
+  constexpr explicit Properties(PropertiesID resource) noexcept
     : m_resource(resource)
   {
   }
@@ -14614,7 +14623,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Environment(const EnvironmentRaw resource) noexcept
+  constexpr explicit Environment(EnvironmentRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -19627,7 +19636,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IConv(const IConvRaw resource) noexcept
+  constexpr explicit IConv(IConvRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -20243,7 +20252,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIO(const AsyncIORaw resource) noexcept
+  constexpr explicit AsyncIO(AsyncIORaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -20635,7 +20644,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIOQueue(const AsyncIOQueueRaw resource) noexcept
+  constexpr explicit AsyncIOQueue(AsyncIOQueueRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -24267,7 +24276,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit HidDevice(const HidDeviceRaw resource) noexcept
+  constexpr explicit HidDevice(HidDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -25332,7 +25341,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IOStream(const IOStreamRaw resource) noexcept
+  constexpr explicit IOStream(IOStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -28468,7 +28477,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit SharedObject(const SharedObjectRaw resource) noexcept
+  constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -32466,7 +32475,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Sensor(const SensorRaw resource) noexcept
+  constexpr explicit Sensor(SensorRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -34623,7 +34632,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDevice(const AudioDeviceID resource) noexcept
+  constexpr explicit AudioDevice(AudioDeviceID resource) noexcept
     : m_resource(resource)
   {
   }
@@ -35507,7 +35516,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioStream(const AudioStreamRaw resource) noexcept
+  constexpr explicit AudioStream(AudioStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -40499,7 +40508,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Process(const ProcessRaw resource) noexcept
+  constexpr explicit Process(ProcessRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -41631,7 +41640,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Storage(const StorageRaw resource) noexcept
+  constexpr explicit Storage(StorageRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -42838,16 +42847,19 @@ struct Surface;
 /// Alias to raw representation for Surface.
 using SurfaceRaw = SDL_Surface*;
 
+/// Alias to const raw representation for Surface.
+using SurfaceRawConst = const SDL_Surface*;
+
 // Forward decl
 struct SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
 struct SurfaceConstRef
 {
-  const SurfaceRaw value; ///< parameter's const SurfaceRaw
+  SurfaceRawConst value; ///< parameter's Surface
 
-  /// Constructs from const SurfaceRaw
-  constexpr SurfaceConstRef(const SurfaceRaw value)
+  /// Constructs from SurfaceRawConst
+  constexpr SurfaceConstRef(SurfaceRawConst value)
     : value(value)
   {
   }
@@ -42864,11 +42876,17 @@ struct SurfaceConstRef
   /// Comparison
   constexpr auto operator<=>(const SurfaceConstRef& other) const = default;
 
-  /// Converts to underlying const SurfaceRaw
-  constexpr operator const SurfaceRaw() const { return value; }
+  /// Converts to underlying Surface
+  constexpr operator SurfaceRawConst() const { return value; }
+
+  /// Converts to underlying Surface
+  constexpr operator SurfaceRaw() const
+  {
+    return const_cast<SurfaceRaw>(value);
+  }
 
   /// member access to underlying SurfaceRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 // Forward decl
@@ -42998,7 +43016,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Surface(const SurfaceRaw resource) noexcept
+  constexpr explicit Surface(SurfaceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -43259,7 +43277,7 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /// member access to underlying SurfaceRaw.
-  constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
+  constexpr SurfaceRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying SurfaceRaw.
   constexpr SurfaceRaw operator->() noexcept { return m_resource; }
@@ -47965,7 +47983,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Thread(const ThreadRaw resource) noexcept
+  constexpr explicit Thread(ThreadRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -48887,7 +48905,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Camera(const CameraRaw resource) noexcept
+  constexpr explicit Camera(CameraRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -49911,7 +49929,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Mutex(const MutexRaw resource) noexcept
+  constexpr explicit Mutex(MutexRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -50311,7 +50329,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit RWLock(const RWLockRaw resource) noexcept
+  constexpr explicit RWLock(RWLockRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -50942,7 +50960,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Semaphore(const SemaphoreRaw resource) noexcept
+  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -51398,7 +51416,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Condition(const ConditionRaw resource) noexcept
+  constexpr explicit Condition(ConditionRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -52130,7 +52148,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Tray(const TrayRaw resource) noexcept
+  constexpr explicit Tray(TrayRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -52530,7 +52548,7 @@ public:
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */
-  constexpr TrayEntry(const TrayEntryRaw resource) noexcept
+  constexpr TrayEntry(TrayEntryRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -54173,7 +54191,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Window(const WindowRaw resource) noexcept
+  constexpr explicit Window(WindowRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -56729,7 +56747,7 @@ public:
    *
    * @param resource a GLContextRaw to be wrapped.
    */
-  constexpr GLContext(const GLContextRaw resource) noexcept
+  constexpr GLContext(GLContextRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -66576,7 +66594,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit GPUDevice(const GPUDeviceRaw resource) noexcept
+  constexpr explicit GPUDevice(GPUDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -72175,7 +72193,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Joystick(const JoystickRaw resource) noexcept
+  constexpr explicit Joystick(JoystickRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -75516,7 +75534,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit MetalView(const MetalViewRaw resource) noexcept
+  constexpr explicit MetalView(MetalViewRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -75923,7 +75941,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Cursor(const CursorRaw resource) noexcept
+  constexpr explicit Cursor(CursorRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -77337,7 +77355,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Gamepad(const GamepadRaw resource) noexcept
+  constexpr explicit Gamepad(GamepadRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -80674,7 +80692,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Haptic(const HapticRaw resource) noexcept
+  constexpr explicit Haptic(HapticRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -82697,16 +82715,19 @@ struct Texture;
 /// Alias to raw representation for Texture.
 using TextureRaw = SDL_Texture*;
 
+/// Alias to const raw representation for Texture.
+using TextureRawConst = const SDL_Texture*;
+
 // Forward decl
 struct TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
 struct TextureConstRef
 {
-  const TextureRaw value; ///< parameter's const TextureRaw
+  TextureRawConst value; ///< parameter's Texture
 
-  /// Constructs from const TextureRaw
-  constexpr TextureConstRef(const TextureRaw value)
+  /// Constructs from TextureRawConst
+  constexpr TextureConstRef(TextureRawConst value)
     : value(value)
   {
   }
@@ -82723,11 +82744,17 @@ struct TextureConstRef
   /// Comparison
   constexpr auto operator<=>(const TextureConstRef& other) const = default;
 
-  /// Converts to underlying const TextureRaw
-  constexpr operator const TextureRaw() const { return value; }
+  /// Converts to underlying Texture
+  constexpr operator TextureRawConst() const { return value; }
+
+  /// Converts to underlying Texture
+  constexpr operator TextureRaw() const
+  {
+    return const_cast<TextureRaw>(value);
+  }
 
   /// member access to underlying TextureRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #if SDL_VERSION_ATLEAST(3, 3, 6)
@@ -82895,7 +82922,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Renderer(const RendererRaw resource) noexcept
+  constexpr explicit Renderer(RendererRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -85064,7 +85091,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Texture(const TextureRaw resource) noexcept
+  constexpr explicit Texture(TextureRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -85349,7 +85376,7 @@ public:
   }
 
   /// member access to underlying TextureRaw.
-  constexpr const TextureRaw operator->() const noexcept { return m_resource; }
+  constexpr TextureRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextureRaw.
   constexpr TextureRaw operator->() noexcept { return m_resource; }
@@ -90920,7 +90947,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit GPURenderState(const GPURenderStateRaw resource)
+  constexpr explicit GPURenderState(GPURenderStateRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -90993,7 +91020,7 @@ public:
   constexpr auto operator<=>(const GPURenderState& other) const = default;
 
   /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr bool operator==(std::nullptr_t) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -92897,7 +92924,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Mixer(const MixerRaw resource) noexcept
+  constexpr explicit Mixer(MixerRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -94248,7 +94275,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Audio(const AudioRaw resource) noexcept
+  constexpr explicit Audio(AudioRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -94937,7 +94964,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Track(const TrackRaw resource) noexcept
+  constexpr explicit Track(TrackRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -96424,7 +96451,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Group(const GroupRaw resource) noexcept
+  constexpr explicit Group(GroupRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -100287,7 +100314,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDecoder(const AudioDecoderRaw resource) noexcept
+  constexpr explicit AudioDecoder(AudioDecoderRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -100796,16 +100823,19 @@ struct Animation;
 /// Alias to raw representation for Animation.
 using AnimationRaw = IMG_Animation*;
 
+/// Alias to const raw representation for Animation.
+using AnimationRawConst = const IMG_Animation*;
+
 // Forward decl
 struct AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
 struct AnimationConstRef
 {
-  const AnimationRaw value; ///< parameter's const AnimationRaw
+  AnimationRawConst value; ///< parameter's Animation
 
-  /// Constructs from const AnimationRaw
-  constexpr AnimationConstRef(const AnimationRaw value)
+  /// Constructs from AnimationRawConst
+  constexpr AnimationConstRef(AnimationRawConst value)
     : value(value)
   {
   }
@@ -100822,11 +100852,17 @@ struct AnimationConstRef
   /// Comparison
   constexpr auto operator<=>(const AnimationConstRef& other) const = default;
 
-  /// Converts to underlying const AnimationRaw
-  constexpr operator const AnimationRaw() const { return value; }
+  /// Converts to underlying Animation
+  constexpr operator AnimationRawConst() const { return value; }
+
+  /// Converts to underlying Animation
+  constexpr operator AnimationRaw() const
+  {
+    return const_cast<AnimationRaw>(value);
+  }
 
   /// member access to underlying AnimationRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -103457,7 +103493,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Animation(const AnimationRaw resource) noexcept
+  constexpr explicit Animation(AnimationRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -103533,10 +103569,7 @@ public:
   Animation(IOStreamRef src, bool closeio = false);
 
   /// member access to underlying AnimationRaw.
-  constexpr const AnimationRaw operator->() const noexcept
-  {
-    return m_resource;
-  }
+  constexpr AnimationRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying AnimationRaw.
   constexpr AnimationRaw operator->() noexcept { return m_resource; }
@@ -104522,8 +104555,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AnimationEncoder(
-    const AnimationEncoderRaw resource) noexcept
+  constexpr explicit AnimationEncoder(AnimationEncoderRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -105056,8 +105088,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AnimationDecoder(
-    const AnimationDecoderRaw resource) noexcept
+  constexpr explicit AnimationDecoder(AnimationDecoderRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -105782,16 +105813,19 @@ struct Text;
 /// Alias to raw representation for Text.
 using TextRaw = TTF_Text*;
 
+/// Alias to const raw representation for Text.
+using TextRawConst = const TTF_Text*;
+
 // Forward decl
 struct TextRef;
 
 /// Safely wrap Text for non owning const parameters
 struct TextConstRef
 {
-  const TextRaw value; ///< parameter's const TextRaw
+  TextRawConst value; ///< parameter's Text
 
-  /// Constructs from const TextRaw
-  constexpr TextConstRef(const TextRaw value)
+  /// Constructs from TextRawConst
+  constexpr TextConstRef(TextRawConst value)
     : value(value)
   {
   }
@@ -105808,11 +105842,14 @@ struct TextConstRef
   /// Comparison
   constexpr auto operator<=>(const TextConstRef& other) const = default;
 
-  /// Converts to underlying const TextRaw
-  constexpr operator const TextRaw() const { return value; }
+  /// Converts to underlying Text
+  constexpr operator TextRawConst() const { return value; }
+
+  /// Converts to underlying Text
+  constexpr operator TextRaw() const { return const_cast<TextRaw>(value); }
 
   /// member access to underlying TextRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #ifdef SDL3PP_DOC
@@ -106113,7 +106150,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Font(const FontRaw resource) noexcept
+  constexpr explicit Font(FontRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -109697,7 +109734,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit TextEngine(const TextEngineRaw resource) noexcept
+  constexpr explicit TextEngine(TextEngineRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -110028,7 +110065,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Text(const TextRaw resource) noexcept
+  constexpr explicit Text(TextRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -110071,7 +110108,7 @@ public:
   Text(TextEngineRef engine, FontRef font, std::string_view text);
 
   /// member access to underlying TextRaw.
-  constexpr const TextRaw operator->() const noexcept { return m_resource; }
+  constexpr TextRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextRaw.
   constexpr TextRaw operator->() noexcept { return m_resource; }
