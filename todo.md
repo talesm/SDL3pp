@@ -20,7 +20,8 @@ Next version
 ------------
 
 - [ ] Make StringParam differentiate `nullptr` from "";
-- [x] Fix bug preventing compilation on VisualStudion
+- [ ] On Windows, downloads pre-compiled versions, if possible.
+- [x] Fix bug preventing compilation on VisualStudio
   - [x] Use of gnu extension `?:`;
   - [x] Use of invalid constexpr;
 - [x] Remove src/generated/ from version control;

@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_image.h
+--- build/generated/SDL3pp_image.h
 +++ include/SDL3pp/SDL3pp_image.h
 @@ -1,7 +1,6 @@
  #ifndef SDL3PP_IMAGE_H_

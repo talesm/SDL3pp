@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_touch.h
+--- build/generated/SDL3pp_touch.h
 +++ include/SDL3pp/SDL3pp_touch.h
 @@ -9,7 +9,7 @@
  namespace SDL {

@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_metal.h
+--- build/generated/SDL3pp_metal.h
 +++ include/SDL3pp/SDL3pp_metal.h
 @@ -7,7 +7,7 @@
  namespace SDL {

@@ -564,9 +564,8 @@ public:
   /// Move constructor
   CameraFrame(CameraFrame&& other) noexcept
     : Surface(std::move(other))
-    , m_lock(other.m_lock)
+    , m_lock(std::move(other.m_lock))
   {
-    other.m_lock = {};
   }
 
   /**

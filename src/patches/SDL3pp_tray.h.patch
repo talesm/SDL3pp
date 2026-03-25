@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_tray.h
+--- build/generated/SDL3pp_tray.h
 +++ include/SDL3pp/SDL3pp_tray.h
 @@ -8,7 +8,7 @@
  namespace SDL {

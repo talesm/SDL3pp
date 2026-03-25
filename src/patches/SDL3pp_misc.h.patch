@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_misc.h
+--- build/generated/SDL3pp_misc.h
 +++ include/SDL3pp/SDL3pp_misc.h
 @@ -2,11 +2,13 @@
  #define SDL3PP_MISC_H_

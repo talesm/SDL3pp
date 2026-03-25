@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_dialog.h
+--- build/generated/SDL3pp_dialog.h
 +++ include/SDL3pp/SDL3pp_dialog.h
 @@ -9,9 +9,7 @@
  namespace SDL {

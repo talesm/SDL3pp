@@ -1,4 +1,4 @@
---- src/generated/SDL3pp_haptic.h
+--- build/generated/SDL3pp_haptic.h
 +++ include/SDL3pp/SDL3pp_haptic.h
 @@ -9,7 +9,7 @@
  namespace SDL {

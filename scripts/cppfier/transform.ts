@@ -1376,10 +1376,8 @@ function expandTypes(
         type: "",
         doc: ["Move constructor"],
         parameters: [{ type: `${targetName} &&`, name: "other" }],
-        constexpr: true,
         hints: {
-          init: ["m_lock(other.m_lock)"],
-          body: `other.m_lock = {};`,
+          init: ["m_lock(std::move(other.m_lock))"],
           noexcept: true,
         },
       },
