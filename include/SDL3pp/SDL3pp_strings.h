@@ -44,12 +44,6 @@ class StringParam
   std::variant<const char*, std::string> data;
 
 public:
-  /// Default ctor
-  constexpr StringParam(std::nullptr_t = nullptr)
-    : data("")
-  {
-  }
-
   /**
    * Constructs from a C string.
    *
@@ -59,8 +53,8 @@ public:
    *
    * @param str the string to store. This parameter must outlive this object.
    */
-  constexpr StringParam(const char* str)
-    : data(str ? str: "")
+  StringParam(const char* str = "")
+    : data(str)
   {
   }
 
@@ -74,7 +68,7 @@ public:
    * @param str the reference to a string. This parameter must outlive this
    *            object.
    */
-  constexpr StringParam(const std::string& str)
+  StringParam(const std::string& str)
     : StringParam(str.c_str())
   {
   }
@@ -87,7 +81,7 @@ public:
    *
    * @param str the string to store
    */
-  constexpr StringParam(std::string&& str)
+  StringParam(std::string&& str)
     : data(std::move(str))
   {
   }
@@ -121,7 +115,7 @@ public:
    * @return the C string representation. We guarantee it to be null terminated
    * unless the objects it was constructed from are corrupted.
    */
-  constexpr const char* c_str() const
+  const char* c_str() const
   {
     struct Visitor
     {
@@ -137,7 +131,7 @@ public:
    * @return the C string representation. We guarantee it to be null terminated
    * unless the objects it was constructed from are corrupted.
    */
-  constexpr operator const char*() const { return c_str(); }
+  operator const char*() const { return c_str(); }
 };
 
 #else // SDL3PP_ENABLE_STRING_PARAM

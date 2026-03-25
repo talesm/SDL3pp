@@ -19,8 +19,8 @@ New Version checklist:
 Next version
 ------------
 
-- [ ] Make StringParam differentiate `nullptr` from "";
-- [ ] On Windows, downloads pre-compiled versions, if possible.
+- [x] Make StringParam differentiate `nullptr` from "";
+- [x] On Windows, downloads pre-compiled versions, if possible.
 - [x] Fix bug preventing compilation on VisualStudio
   - [x] Use of gnu extension `?:`;
   - [x] Use of invalid constexpr;
