@@ -1,6 +1,6 @@
 {
   "api": "scripts/target.json",
-  "baseDir": "src/generated/",
+  "baseDir": "build/generated/",
   "templateDir": "src/templates/",
   "sourceApi": "scripts/source.json",
   "transform": "scripts/transform.json"

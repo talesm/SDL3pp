@@ -1,4 +1,4 @@
 #!/bin/bash
-mkdir -p src/generated/
+mkdir -p build/generated/
 npm run generate
 scripts/applyFormat.sh
