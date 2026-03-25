@@ -44,12 +44,6 @@ class StringParam
   std::variant<const char*, std::string> data;
 
 public:
-  /// Default ctor
-  constexpr StringParam(std::nullptr_t = nullptr)
-    : data("")
-  {
-  }
-
   /**
    * Constructs from a C string.
    *
@@ -59,8 +53,8 @@ public:
    *
    * @param str the string to store. This parameter must outlive this object.
    */
-  constexpr StringParam(const char* str)
-    : data(str ? str : "")
+  constexpr StringParam(const char* str = "")
+    : data(str)
   {
   }
 

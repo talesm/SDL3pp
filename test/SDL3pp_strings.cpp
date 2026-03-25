@@ -6,6 +6,17 @@ namespace SDL {
 
 #ifdef SDL3PP_ENABLE_STRING_PARAM
 
+TEST_CASE("StringParam to bool")
+{
+  auto test = [&](StringParam str) { return static_cast<bool>(str); };
+  CHECK(test("c array") == true);
+  CHECK(test({}) == true);
+  CHECK_FALSE(test(nullptr));
+  CHECK(test("") == true);
+  CHECK(test(std::string_view("string view")) == true);
+  CHECK(test(std::string("string")) == true);
+}
+
 TEST_CASE("StringParam to string")
 {
   std::string result;
@@ -25,6 +36,8 @@ TEST_CASE("StringParam const string & optimization")
   REQUIRE(StringParam(test) == test.c_str());
   REQUIRE(StringParam(std::string(test)) != test.c_str());
 }
+
+#endif // SDL3PP_ENABLE_STRING_PARAM
 
 TEST_CASE("SourceBytes")
 {
@@ -155,7 +168,5 @@ TEST_CASE("TargetBytes")
     CHECK(sb.size_bytes() == 16);
   }
 }
-
-#endif // SDL3PP_ENABLE_STRING_PARAM
 
 } // namespace SDL
