@@ -561,7 +561,7 @@ public:
       if (size == size_t(-1)) return {};
     } else if (curSize - pos <= 0) {
       return {};
-    } else if (curSize - pos < size) {
+    } else if (size_t(curSize - pos) < size) {
       size = curSize - pos;
     }
     std::string result(size, 0);
