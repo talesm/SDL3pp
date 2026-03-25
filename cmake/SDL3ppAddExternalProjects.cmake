@@ -23,6 +23,9 @@ FetchContent_Declare(SDL3External
   OVERRIDE_FIND_PACKAGE
 )
 FetchContent_MakeAvailable(SDL3External)
+if (NOT TARGET SDL3::SDL3)
+  include(SDL3External_SOURCE_DIR/cmake/SDL3Config.cmake)
+endif()
 
 if (SDL3PP_ENABLE_IMAGE)
   set(SDLIMAGE_INSTALL ON) # passed to external/SDL
