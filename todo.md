@@ -28,6 +28,8 @@ Next version
 - [ ] Fix thread ctor for wrapped functions;
 - [x] operator-> const for resources;
 - [ ] Fix Camera::AcquireCameraFrame;
+- [ ] Add SDL_assert on all narrowing due to different between std and SDL size
+  types width;
 - [x] Fix several minor warnings;
 - [ ] Properly encapsulate Param and ConstParam legacy;
 
