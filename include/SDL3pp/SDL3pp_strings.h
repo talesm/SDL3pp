@@ -60,7 +60,7 @@ public:
    * @param str the string to store. This parameter must outlive this object.
    */
   constexpr StringParam(const char* str)
-    : data(str ? str: "")
+    : data(str ? str : "")
   {
   }
 

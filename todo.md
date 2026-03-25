@@ -19,7 +19,7 @@ New Version checklist:
 Next version
 ------------
 
-- [ ] Make StringParam differentiate `nullptr` from "";
+- [x] Make StringParam differentiate `nullptr` from "";
 - [x] Fix bug preventing compilation on VisualStudion
   - [x] Use of gnu extension `?:`;
   - [x] Use of invalid constexpr;
