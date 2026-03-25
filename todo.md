@@ -23,6 +23,12 @@ Next version
 - [x] Fix bug preventing compilation on VisualStudion
   - [x] Use of gnu extension `?:`;
   - [x] Use of invalid constexpr;
+- [x] Remove src/generated/ from version control;
+- [ ] Fix thread ctor for wrapped functions;
+- [ ] operator-> const for resources;
+- [ ] Fix Camera::AcquireCameraFrame;
+- [ ] Fix several minor warnings;
+- [ ] Properly encapsulate Param and ConstParam legacy;
 
 Backlog
 -------
