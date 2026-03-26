@@ -415,7 +415,7 @@ public:
   }
 
   /**
-   * Constructs from JoystickRef.
+   * Constructs from raw Joystick.
    *
    * @param resource a JoystickRaw to be wrapped.
    *

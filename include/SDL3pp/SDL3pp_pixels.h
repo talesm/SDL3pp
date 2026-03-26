@@ -2500,7 +2500,7 @@ public:
   }
 
   /**
-   * Constructs from PaletteRef.
+   * Constructs from raw Palette.
    *
    * @param resource a PaletteRaw to be wrapped.
    *

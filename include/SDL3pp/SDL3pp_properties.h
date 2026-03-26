@@ -187,7 +187,7 @@ public:
   }
 
   /**
-   * Constructs from PropertiesRef.
+   * Constructs from raw Properties.
    *
    * @param resource a PropertiesID to be wrapped.
    *

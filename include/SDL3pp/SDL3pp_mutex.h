@@ -95,7 +95,7 @@ public:
   }
 
   /**
-   * Constructs from MutexRef.
+   * Constructs from raw Mutex.
    *
    * @param resource a MutexRaw to be wrapped.
    *
@@ -488,7 +488,7 @@ public:
   }
 
   /**
-   * Constructs from RWLockRef.
+   * Constructs from raw RWLock.
    *
    * @param resource a RWLockRaw to be wrapped.
    *
@@ -1112,7 +1112,7 @@ public:
   }
 
   /**
-   * Constructs from SemaphoreRef.
+   * Constructs from raw Semaphore.
    *
    * @param resource a SemaphoreRaw to be wrapped.
    *
@@ -1561,7 +1561,7 @@ public:
   }
 
   /**
-   * Constructs from ConditionRef.
+   * Constructs from raw Condition.
    *
    * @param resource a ConditionRaw to be wrapped.
    *

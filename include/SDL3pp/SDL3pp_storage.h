@@ -273,7 +273,7 @@ public:
   }
 
   /**
-   * Constructs from StorageRef.
+   * Constructs from raw Storage.
    *
    * @param resource a StorageRaw to be wrapped.
    *

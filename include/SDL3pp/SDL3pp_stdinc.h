@@ -925,7 +925,7 @@ public:
   }
 
   /**
-   * Constructs from EnvironmentRef.
+   * Constructs from raw Environment.
    *
    * @param resource a EnvironmentRaw to be wrapped.
    *
@@ -5931,7 +5931,7 @@ public:
   }
 
   /**
-   * Constructs from IConvRef.
+   * Constructs from raw IConv.
    *
    * @param resource a IConvRaw to be wrapped.
    *

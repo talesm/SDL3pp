@@ -128,7 +128,7 @@ public:
   }
 
   /**
-   * Constructs from AsyncIORef.
+   * Constructs from raw AsyncIO.
    *
    * @param resource a AsyncIORaw to be wrapped.
    *
@@ -513,7 +513,7 @@ public:
   }
 
   /**
-   * Constructs from AsyncIOQueueRef.
+   * Constructs from raw AsyncIOQueue.
    *
    * @param resource a AsyncIOQueueRaw to be wrapped.
    *

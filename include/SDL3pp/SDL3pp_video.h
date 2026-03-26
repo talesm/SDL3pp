@@ -746,7 +746,7 @@ public:
   }
 
   /**
-   * Constructs from WindowRef.
+   * Constructs from raw Window.
    *
    * @param resource a WindowRaw to be wrapped.
    *
@@ -3297,7 +3297,7 @@ public:
   }
 
   /**
-   * Constructs from GLContextRef.
+   * Constructs from raw GLContext.
    *
    * @param resource a GLContextRaw to be wrapped.
    */

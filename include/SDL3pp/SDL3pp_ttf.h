@@ -403,7 +403,7 @@ public:
   }
 
   /**
-   * Constructs from FontRef.
+   * Constructs from raw Font.
    *
    * @param resource a FontRaw to be wrapped.
    *
@@ -3980,7 +3980,7 @@ public:
   }
 
   /**
-   * Constructs from TextEngineRef.
+   * Constructs from raw TextEngine.
    *
    * @param resource a TextEngineRaw to be wrapped.
    *
@@ -4316,7 +4316,7 @@ public:
   }
 
   /**
-   * Constructs from TextRef.
+   * Constructs from raw Text.
    *
    * @param resource a TextRaw to be wrapped.
    *

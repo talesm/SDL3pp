@@ -118,7 +118,7 @@ public:
   }
 
   /**
-   * Constructs from ProcessRef.
+   * Constructs from raw Process.
    *
    * @param resource a ProcessRaw to be wrapped.
    *

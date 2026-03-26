@@ -163,7 +163,7 @@ public:
   }
 
   /**
-   * Constructs from CursorRef.
+   * Constructs from raw Cursor.
    *
    * @param resource a CursorRaw to be wrapped.
    *

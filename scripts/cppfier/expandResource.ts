@@ -46,7 +46,8 @@ export function expandResource(
   const enableConstParam = resourceEntry.enableConstParam ?? enableMemberAccess;
   const constParamType = enableConstParam ? `${targetName}ConstRef` : refName;
   if (!targetEntry.kind) targetEntry.kind = "struct";
-  const hasShared = !!resourceEntry.shared;
+  const shared = resourceEntry.shared;
+  const hasShared = !!shared;
   const hasScoped = resourceEntry.owning === false;
   const hasRef = resourceEntry.ref ?? !hasScoped;
   const scopedName = `${targetName}Scoped`;
@@ -149,17 +150,11 @@ export function expandResource(
   const ctors = createBaselineCtors(
     hasScoped,
     targetName,
-    constRawName,
-    refName,
+    shared,
+    hasRef ? refName : undefined,
     rawName,
     isStruct,
   );
-  if (hasShared) {
-    addBorrowFunction(ctors, targetName, resourceEntry, refName, rawName);
-  } else if (!hasScoped) {
-    ctors[`${targetName}#3`].hints.delete = true;
-    if (hasRef) deleteCtorsFromRef(ctors, refName, targetName);
-  }
   const subEntries = targetEntry.entries || {};
 
   wrapCustomCtors(subEntries, targetName, ctors);
@@ -475,8 +470,8 @@ function setupTypeTranslations(
 function createBaselineCtors(
   hasScoped: boolean,
   targetName: string,
-  constRawName: string,
-  paramType: string,
+  shared: boolean | string,
+  refName: string | undefined,
   rawName: string,
   isStruct: boolean,
 ) {
@@ -508,7 +503,7 @@ function createBaselineCtors(
         noexcept: true,
       },
       doc: [
-        `Constructs from ${paramType}.`,
+        `Constructs from raw ${targetName}.`,
         { tag: "@param resource", content: `a ${rawName} to be wrapped.` },
         ...ownershipDisclaimer,
       ],
@@ -536,28 +531,33 @@ function createBaselineCtors(
       doc: ["Move constructor"],
     },
   };
+  if (shared) {
+    addBorrowFunction(ctors, targetName, shared, rawName);
+  } else if (!hasScoped) {
+    ctors[`${targetName}#3`].hints.delete = true;
+    if (refName) deleteCtorsFromRef(ctors, refName, targetName);
+  }
   return ctors;
 }
 
 function addBorrowFunction(
   ctors: Dict<ApiEntryTransform>,
   targetName: string,
-  resourceEntry: ResourceDefinition,
-  paramType: string,
+  shared: true | string,
   rawName: string,
 ) {
   const copyCtorHints: EntryHint = {};
   ctors[`${targetName}#3`].hints = copyCtorHints;
-  if (resourceEntry.shared !== true) {
+  if (shared !== true) {
     copyCtorHints.init = ["m_resource(other.m_resource)"];
-    copyCtorHints.body = `if (m_resource) ++m_resource->${resourceEntry.shared};`;
+    copyCtorHints.body = `if (m_resource) ++m_resource->${shared};`;
     ctors["Borrow"] = {
       kind: "function",
       static: true,
       type: targetName,
       parameters: [{ name: "resource", type: rawName }],
       hints: {
-        body: `if (resource) {\n  ++resource->${resourceEntry.shared};\n  return ${targetName}(resource);}\nreturn {};`,
+        body: `if (resource) {\n  ++resource->${shared};\n  return ${targetName}(resource);}\nreturn {};`,
       },
       doc: [
         `Safely borrows the from ${rawName}.`,

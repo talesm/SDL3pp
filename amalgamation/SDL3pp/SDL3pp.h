@@ -9125,7 +9125,7 @@ public:
   }
 
   /**
-   * Constructs from PropertiesRef.
+   * Constructs from raw Properties.
    *
    * @param resource a PropertiesID to be wrapped.
    *
@@ -11443,7 +11443,7 @@ public:
   }
 
   /**
-   * Constructs from EnvironmentRef.
+   * Constructs from raw Environment.
    *
    * @param resource a EnvironmentRaw to be wrapped.
    *
@@ -16449,7 +16449,7 @@ public:
   }
 
   /**
-   * Constructs from IConvRef.
+   * Constructs from raw IConv.
    *
    * @param resource a IConvRaw to be wrapped.
    *
@@ -17079,7 +17079,7 @@ public:
   }
 
   /**
-   * Constructs from AsyncIORef.
+   * Constructs from raw AsyncIO.
    *
    * @param resource a AsyncIORaw to be wrapped.
    *
@@ -17464,7 +17464,7 @@ public:
   }
 
   /**
-   * Constructs from AsyncIOQueueRef.
+   * Constructs from raw AsyncIOQueue.
    *
    * @param resource a AsyncIOQueueRaw to be wrapped.
    *
@@ -21089,7 +21089,7 @@ public:
   }
 
   /**
-   * Constructs from HidDeviceRef.
+   * Constructs from raw HidDevice.
    *
    * @param resource a HidDeviceRaw to be wrapped.
    *
@@ -22147,7 +22147,7 @@ public:
   }
 
   /**
-   * Constructs from IOStreamRef.
+   * Constructs from raw IOStream.
    *
    * @param resource a IOStreamRaw to be wrapped.
    *
@@ -25276,7 +25276,7 @@ public:
   }
 
   /**
-   * Constructs from SharedObjectRef.
+   * Constructs from raw SharedObject.
    *
    * @param resource a SharedObjectRaw to be wrapped.
    *
@@ -28153,7 +28153,7 @@ public:
   }
 
   /**
-   * Constructs from PaletteRef.
+   * Constructs from raw Palette.
    *
    * @param resource a PaletteRaw to be wrapped.
    *
@@ -32438,7 +32438,7 @@ public:
   }
 
   /**
-   * Constructs from SensorRef.
+   * Constructs from raw Sensor.
    *
    * @param resource a SensorRaw to be wrapped.
    *
@@ -34588,7 +34588,7 @@ public:
   }
 
   /**
-   * Constructs from AudioDeviceRef.
+   * Constructs from raw AudioDevice.
    *
    * @param resource a AudioDeviceID to be wrapped.
    *
@@ -35465,7 +35465,7 @@ public:
   }
 
   /**
-   * Constructs from AudioStreamRef.
+   * Constructs from raw AudioStream.
    *
    * @param resource a AudioStreamRaw to be wrapped.
    *
@@ -40458,7 +40458,7 @@ public:
   }
 
   /**
-   * Constructs from ProcessRef.
+   * Constructs from raw Process.
    *
    * @param resource a ProcessRaw to be wrapped.
    *
@@ -41583,7 +41583,7 @@ public:
   }
 
   /**
-   * Constructs from StorageRef.
+   * Constructs from raw Storage.
    *
    * @param resource a StorageRaw to be wrapped.
    *
@@ -42952,7 +42952,7 @@ public:
   }
 
   /**
-   * Constructs from SurfaceRef.
+   * Constructs from raw Surface.
    *
    * @param resource a SurfaceRaw to be wrapped.
    *
@@ -47927,7 +47927,7 @@ public:
   }
 
   /**
-   * Constructs from ThreadRef.
+   * Constructs from raw Thread.
    *
    * @param resource a ThreadRaw to be wrapped.
    *
@@ -48915,7 +48915,7 @@ public:
   }
 
   /**
-   * Constructs from CameraRef.
+   * Constructs from raw Camera.
    *
    * @param resource a CameraRaw to be wrapped.
    *
@@ -49919,7 +49919,7 @@ public:
   }
 
   /**
-   * Constructs from MutexRef.
+   * Constructs from raw Mutex.
    *
    * @param resource a MutexRaw to be wrapped.
    *
@@ -50312,7 +50312,7 @@ public:
   }
 
   /**
-   * Constructs from RWLockRef.
+   * Constructs from raw RWLock.
    *
    * @param resource a RWLockRaw to be wrapped.
    *
@@ -50936,7 +50936,7 @@ public:
   }
 
   /**
-   * Constructs from SemaphoreRef.
+   * Constructs from raw Semaphore.
    *
    * @param resource a SemaphoreRaw to be wrapped.
    *
@@ -51385,7 +51385,7 @@ public:
   }
 
   /**
-   * Constructs from ConditionRef.
+   * Constructs from raw Condition.
    *
    * @param resource a ConditionRaw to be wrapped.
    *
@@ -52107,7 +52107,7 @@ public:
   }
 
   /**
-   * Constructs from TrayRef.
+   * Constructs from raw Tray.
    *
    * @param resource a TrayRaw to be wrapped.
    *
@@ -52502,7 +52502,7 @@ public:
   }
 
   /**
-   * Constructs from TrayEntryRef.
+   * Constructs from raw TrayEntry.
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */
@@ -54143,7 +54143,7 @@ public:
   }
 
   /**
-   * Constructs from WindowRef.
+   * Constructs from raw Window.
    *
    * @param resource a WindowRaw to be wrapped.
    *
@@ -56694,7 +56694,7 @@ public:
   }
 
   /**
-   * Constructs from GLContextRef.
+   * Constructs from raw GLContext.
    *
    * @param resource a GLContextRaw to be wrapped.
    */
@@ -66541,7 +66541,7 @@ public:
   }
 
   /**
-   * Constructs from GPUDeviceRef.
+   * Constructs from raw GPUDevice.
    *
    * @param resource a GPUDeviceRaw to be wrapped.
    *
@@ -72145,7 +72145,7 @@ public:
   }
 
   /**
-   * Constructs from JoystickRef.
+   * Constructs from raw Joystick.
    *
    * @param resource a JoystickRaw to be wrapped.
    *
@@ -75479,7 +75479,7 @@ public:
   }
 
   /**
-   * Constructs from MetalViewRef.
+   * Constructs from raw MetalView.
    *
    * @param resource a MetalViewRaw to be wrapped.
    *
@@ -75879,7 +75879,7 @@ public:
   }
 
   /**
-   * Constructs from CursorRef.
+   * Constructs from raw Cursor.
    *
    * @param resource a CursorRaw to be wrapped.
    *
@@ -77286,7 +77286,7 @@ public:
   }
 
   /**
-   * Constructs from GamepadRef.
+   * Constructs from raw Gamepad.
    *
    * @param resource a GamepadRaw to be wrapped.
    *
@@ -80616,7 +80616,7 @@ public:
   }
 
   /**
-   * Constructs from HapticRef.
+   * Constructs from raw Haptic.
    *
    * @param resource a HapticRaw to be wrapped.
    *
@@ -82839,7 +82839,7 @@ public:
   }
 
   /**
-   * Constructs from RendererRef.
+   * Constructs from raw Renderer.
    *
    * @param resource a RendererRaw to be wrapped.
    *
@@ -85001,7 +85001,7 @@ public:
   }
 
   /**
-   * Constructs from TextureRef.
+   * Constructs from raw Texture.
    *
    * @param resource a TextureRaw to be wrapped.
    *
@@ -90857,7 +90857,7 @@ public:
   }
 
   /**
-   * Constructs from GPURenderStateRef.
+   * Constructs from raw GPURenderState.
    *
    * @param resource a GPURenderStateRaw to be wrapped.
    *
@@ -92827,7 +92827,7 @@ public:
   }
 
   /**
-   * Constructs from MixerRef.
+   * Constructs from raw Mixer.
    *
    * @param resource a MixerRaw to be wrapped.
    *
@@ -94171,7 +94171,7 @@ public:
   }
 
   /**
-   * Constructs from AudioRef.
+   * Constructs from raw Audio.
    *
    * @param resource a AudioRaw to be wrapped.
    *
@@ -94853,7 +94853,7 @@ public:
   }
 
   /**
-   * Constructs from TrackRef.
+   * Constructs from raw Track.
    *
    * @param resource a TrackRaw to be wrapped.
    *
@@ -96333,7 +96333,7 @@ public:
   }
 
   /**
-   * Constructs from GroupRef.
+   * Constructs from raw Group.
    *
    * @param resource a GroupRaw to be wrapped.
    *
@@ -100190,7 +100190,7 @@ public:
   }
 
   /**
-   * Constructs from AudioDecoderRef.
+   * Constructs from raw AudioDecoder.
    *
    * @param resource a AudioDecoderRaw to be wrapped.
    *
@@ -103363,7 +103363,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationRef.
+   * Constructs from raw Animation.
    *
    * @param resource a AnimationRaw to be wrapped.
    *
@@ -104418,7 +104418,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationEncoderRef.
+   * Constructs from raw AnimationEncoder.
    *
    * @param resource a AnimationEncoderRaw to be wrapped.
    *
@@ -104944,7 +104944,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationDecoderRef.
+   * Constructs from raw AnimationDecoder.
    *
    * @param resource a AnimationDecoderRaw to be wrapped.
    *
@@ -105999,7 +105999,7 @@ public:
   }
 
   /**
-   * Constructs from FontRef.
+   * Constructs from raw Font.
    *
    * @param resource a FontRaw to be wrapped.
    *
@@ -109576,7 +109576,7 @@ public:
   }
 
   /**
-   * Constructs from TextEngineRef.
+   * Constructs from raw TextEngine.
    *
    * @param resource a TextEngineRaw to be wrapped.
    *
@@ -109912,7 +109912,7 @@ public:
   }
 
   /**
-   * Constructs from TextRef.
+   * Constructs from raw Text.
    *
    * @param resource a TextRaw to be wrapped.
    *

@@ -256,7 +256,7 @@ public:
   }
 
   /**
-   * Constructs from RendererRef.
+   * Constructs from raw Renderer.
    *
    * @param resource a RendererRaw to be wrapped.
    *
@@ -2418,7 +2418,7 @@ public:
   }
 
   /**
-   * Constructs from TextureRef.
+   * Constructs from raw Texture.
    *
    * @param resource a TextureRaw to be wrapped.
    *
@@ -8274,7 +8274,7 @@ public:
   }
 
   /**
-   * Constructs from GPURenderStateRef.
+   * Constructs from raw GPURenderState.
    *
    * @param resource a GPURenderStateRaw to be wrapped.
    *

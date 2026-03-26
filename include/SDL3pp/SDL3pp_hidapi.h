@@ -113,7 +113,7 @@ public:
   }
 
   /**
-   * Constructs from HidDeviceRef.
+   * Constructs from raw HidDevice.
    *
    * @param resource a HidDeviceRaw to be wrapped.
    *

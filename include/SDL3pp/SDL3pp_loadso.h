@@ -72,7 +72,7 @@ public:
   }
 
   /**
-   * Constructs from SharedObjectRef.
+   * Constructs from raw SharedObject.
    *
    * @param resource a SharedObjectRaw to be wrapped.
    *

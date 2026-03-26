@@ -775,7 +775,7 @@ public:
   }
 
   /**
-   * Constructs from HapticRef.
+   * Constructs from raw Haptic.
    *
    * @param resource a HapticRaw to be wrapped.
    *

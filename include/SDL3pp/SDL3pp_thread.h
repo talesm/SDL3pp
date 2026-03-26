@@ -157,7 +157,7 @@ public:
   }
 
   /**
-   * Constructs from ThreadRef.
+   * Constructs from raw Thread.
    *
    * @param resource a ThreadRaw to be wrapped.
    *

@@ -165,7 +165,7 @@ public:
   }
 
   /**
-   * Constructs from CameraRef.
+   * Constructs from raw Camera.
    *
    * @param resource a CameraRaw to be wrapped.
    *

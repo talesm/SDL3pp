@@ -3061,7 +3061,7 @@ public:
   }
 
   /**
-   * Constructs from GPUDeviceRef.
+   * Constructs from raw GPUDevice.
    *
    * @param resource a GPUDeviceRaw to be wrapped.
    *

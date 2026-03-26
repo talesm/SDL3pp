@@ -805,7 +805,7 @@ public:
   }
 
   /**
-   * Constructs from AudioDeviceRef.
+   * Constructs from raw AudioDevice.
    *
    * @param resource a AudioDeviceID to be wrapped.
    *
@@ -1682,7 +1682,7 @@ public:
   }
 
   /**
-   * Constructs from AudioStreamRef.
+   * Constructs from raw AudioStream.
    *
    * @param resource a AudioStreamRaw to be wrapped.
    *

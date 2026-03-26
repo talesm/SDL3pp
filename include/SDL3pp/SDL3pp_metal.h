@@ -46,7 +46,7 @@ public:
   }
 
   /**
-   * Constructs from MetalViewRef.
+   * Constructs from raw MetalView.
    *
    * @param resource a MetalViewRaw to be wrapped.
    *

@@ -2695,7 +2695,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationRef.
+   * Constructs from raw Animation.
    *
    * @param resource a AnimationRaw to be wrapped.
    *
@@ -3750,7 +3750,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationEncoderRef.
+   * Constructs from raw AnimationEncoder.
    *
    * @param resource a AnimationEncoderRaw to be wrapped.
    *
@@ -4276,7 +4276,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationDecoderRef.
+   * Constructs from raw AnimationDecoder.
    *
    * @param resource a AnimationDecoderRaw to be wrapped.
    *

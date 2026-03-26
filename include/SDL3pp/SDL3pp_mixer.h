@@ -256,7 +256,7 @@ public:
   }
 
   /**
-   * Constructs from MixerRef.
+   * Constructs from raw Mixer.
    *
    * @param resource a MixerRaw to be wrapped.
    *
@@ -1600,7 +1600,7 @@ public:
   }
 
   /**
-   * Constructs from AudioRef.
+   * Constructs from raw Audio.
    *
    * @param resource a AudioRaw to be wrapped.
    *
@@ -2282,7 +2282,7 @@ public:
   }
 
   /**
-   * Constructs from TrackRef.
+   * Constructs from raw Track.
    *
    * @param resource a TrackRaw to be wrapped.
    *
@@ -3762,7 +3762,7 @@ public:
   }
 
   /**
-   * Constructs from GroupRef.
+   * Constructs from raw Group.
    *
    * @param resource a GroupRaw to be wrapped.
    *
@@ -7619,7 +7619,7 @@ public:
   }
 
   /**
-   * Constructs from AudioDecoderRef.
+   * Constructs from raw AudioDecoder.
    *
    * @param resource a AudioDecoderRaw to be wrapped.
    *

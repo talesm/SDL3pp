@@ -118,7 +118,7 @@ public:
   }
 
   /**
-   * Constructs from TrayRef.
+   * Constructs from raw Tray.
    *
    * @param resource a TrayRaw to be wrapped.
    *
@@ -513,7 +513,7 @@ public:
   }
 
   /**
-   * Constructs from TrayEntryRef.
+   * Constructs from raw TrayEntry.
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */

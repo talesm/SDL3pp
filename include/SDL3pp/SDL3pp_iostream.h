@@ -112,7 +112,7 @@ public:
   }
 
   /**
-   * Constructs from IOStreamRef.
+   * Constructs from raw IOStream.
    *
    * @param resource a IOStreamRaw to be wrapped.
    *

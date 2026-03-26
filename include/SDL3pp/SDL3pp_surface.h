@@ -208,7 +208,7 @@ public:
   }
 
   /**
-   * Constructs from SurfaceRef.
+   * Constructs from raw Surface.
    *
    * @param resource a SurfaceRaw to be wrapped.
    *

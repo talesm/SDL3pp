@@ -144,7 +144,7 @@ public:
   }
 
   /**
-   * Constructs from SensorRef.
+   * Constructs from raw Sensor.
    *
    * @param resource a SensorRaw to be wrapped.
    *

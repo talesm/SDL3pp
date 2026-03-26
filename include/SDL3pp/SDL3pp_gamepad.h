@@ -399,7 +399,7 @@ public:
   }
 
   /**
-   * Constructs from GamepadRef.
+   * Constructs from raw Gamepad.
    *
    * @param resource a GamepadRaw to be wrapped.
    *
