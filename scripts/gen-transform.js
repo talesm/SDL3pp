@@ -6574,18 +6574,11 @@ const transform = {
         "SDL_Surface": {
           resource: {
             shared: 'refcount',
-            ctors: ["SDL_LoadBMP_IO", "SDL_LoadBMP", "SDL_LoadPNG_IO", "SDL_LoadPNG"],
           },
           lock: true,
           entries: {
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
-            "SDL_LoadBMP_IO": {
-              parameters: [{}, { default: "false" }]
-            },
-            "SDL_LoadPNG_IO": {
-              parameters: [{}, { default: "false" }]
-            },
             "SDL_MUSTLOCK": {
               kind: "function",
               name: "MustLock",
@@ -6747,12 +6740,8 @@ const transform = {
           type: "OwnArray<SurfaceRaw>",
           parameters: [{ type: "SurfaceConstRef" }]
         },
-        "SDL_LoadSurface_IO": {
-          parameters: [{}, { default: "false" }]
-        },
-        "SDL_LoadBMP_IO": {
-          parameters: [{}, { default: "false" }]
-        },
+        "SDL_LoadSurface_IO": { parameters: [{}, { default: "false" }] },
+        "SDL_LoadBMP_IO": { parameters: [{}, { default: "false" }] },
         "SDL_SaveBMP_IO": { parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }] },
         "SDL_SaveBMP": { parameters: [{ type: "SurfaceConstRef" }, {}] },
         "SDL_LoadPNG_IO": { parameters: [{}, { default: "false" }] },
