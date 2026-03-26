@@ -21,7 +21,14 @@ Next version
 
 - [x] Make StringParam differentiate `nullptr` from "";
 - [x] On Windows, downloads pre-compiled versions, if possible.
-- [ ] Remove Surface::Load\* functions;
+- [ ] Disambiguate between SDL_image and SDL's load/save surface functions;
+  - [x] Remove wrappers for IMG_LoadBMP_IO, IMG_SaveBMP and IMG_SaveBMP_IO, as
+    they just call SDL's version of these;
+- [ ] Remove Surface::Load\* functions:
+  - [ ] Remove Surface::LoadBMP_IO(), use freestanding LoadBMP_IO() instead;
+  - [ ] Remove Surface::LoadBMP(), use freestanding LoadBMP() instead;
+  - [ ] Remove Surface::LoadPNG_IO(), use freestanding LoadPNG_IO() instead;
+  - [ ] Remove Surface::LoadPNG(), use freestanding LoadPNG() instead;
 - [x] Fix bug preventing compilation on VisualStudio
   - [x] Use of gnu extension `?:`;
   - [x] Use of invalid constexpr;
