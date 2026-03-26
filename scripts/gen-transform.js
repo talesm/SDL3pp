@@ -6744,7 +6744,11 @@ const transform = {
         "SDL_LoadBMP_IO": { parameters: [{}, { default: "false" }] },
         "SDL_SaveBMP_IO": { parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }] },
         "SDL_SaveBMP": { parameters: [{ type: "SurfaceConstRef" }, {}] },
-        "SDL_LoadPNG_IO": { parameters: [{}, { default: "false" }] },
+        "SDL_LoadPNG_IO": {
+          name: "LoadTrustedPNG_IO",
+          parameters: [{}, { default: "false" }]
+        },
+        "SDL_LoadPNG": { name: "LoadTrustedPNG" },
         "SDL_SavePNG_IO": { parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }] },
         "SDL_SavePNG": { parameters: [{ type: "SurfaceConstRef" }, {}] },
         "SDL_SurfaceHasRLE": { parameters: [{ type: "SurfaceConstRef" }] },

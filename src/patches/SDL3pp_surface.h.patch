@@ -944,21 +944,48 @@
  
  /**
   * Save a surface to a seekable SDL data stream in BMP format.
-@@ -2890,7 +2885,7 @@
+@@ -2871,13 +2866,10 @@
+  * sources. If you want to load arbitrary images you should use libpng or
+  * another image loading library designed with security in mind.
+  *
+- * The new surface should be freed with Surface.Destroy(). Not doing so will
+- * result in a memory leak.
+- *
+  * @param src the data stream for the surface.
+  * @param closeio if true, calls IOStream.Close() on `src` before returning,
+  *                even in the case of an error.
+- * @returns a pointer to a new Surface structure or nullptr on failure; call
++ * @returns a new Surface structure on success or nullptr on failure; call
+  *          GetError() for more information.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -2890,7 +2882,7 @@
   */
- inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
+ inline Surface LoadTrustedPNG_IO(IOStreamRef src, bool closeio = false)
  {
 -  return SDL_LoadPNG_IO(src, closeio);
 +  return Surface(SDL_LoadPNG_IO(src, closeio));
  }
  
  /**
-@@ -2915,7 +2910,7 @@
-  * @sa LoadPNG_IO
+@@ -2904,7 +2896,7 @@
+  * result in a memory leak.
+  *
+  * @param file the PNG file to load.
+- * @returns a pointer to a new Surface structure or nullptr on failure; call
++ * @returns a new Surface structure on success or nullptr on failure; call
+  *          GetError() for more information.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -2915,7 +2907,10 @@
+  * @sa LoadTrustedPNG_IO
   * @sa Surface.SavePNG
   */
--inline Surface LoadPNG(StringParam file) { return SDL_LoadPNG(file); }
-+inline Surface LoadPNG(StringParam file) { return Surface(SDL_LoadPNG(file)); }
+-inline Surface LoadTrustedPNG(StringParam file) { return SDL_LoadPNG(file); }
++inline Surface LoadTrustedPNG(StringParam file)
++{
++  return Surface(SDL_LoadPNG(file));
++}
  
  /**
   * Save a surface to a seekable SDL data stream in PNG format.

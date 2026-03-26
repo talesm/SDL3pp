@@ -24,6 +24,8 @@ Next version
 - [ ] Disambiguate between SDL_image and SDL's load/save surface functions;
   - [x] Remove wrappers for IMG_LoadBMP_IO, IMG_SaveBMP and IMG_SaveBMP_IO, as
     they just call SDL's version of these;
+  - [x] Rename wrapper for SDL_LoadPNG_IO to LoadTrustedPNG_IO;
+  - [x] Rename wrapper for SDL_LoadPNG to LoadTrustedPNG;
 - [x] Remove Surface::Load\* functions:
   - [x] Remove Surface::LoadBMP_IO(), use freestanding LoadBMP_IO() instead;
   - [x] Remove Surface::LoadBMP(), use freestanding LoadBMP() instead;
