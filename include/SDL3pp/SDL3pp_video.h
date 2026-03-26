@@ -3306,18 +3306,6 @@ public:
   {
   }
 
-  /// Copy constructor
-  constexpr GLContext(const GLContext& other) noexcept
-    : GLContext(other.m_resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr GLContext(GLContext&& other) noexcept
-    : GLContext(other.release())
-  {
-  }
-
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
    *
@@ -3350,19 +3338,6 @@ public:
 
   /// Converts to underlying GLContextRaw.
   constexpr operator GLContextRaw() const noexcept { return m_resource; }
-
-  /// Destructor
-  ~GLContext() {}
-
-  /// Assignment operator.
-  constexpr GLContext& operator=(GLContext&& other) noexcept
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  GLContext& operator=(const GLContext& other) = default;
 
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const noexcept { return m_resource; }
@@ -3414,11 +3389,17 @@ struct GLContextScoped : GLContext
 {
   using GLContext::GLContext;
 
-  constexpr GLContextScoped(const GLContext& other) = delete;
+  constexpr GLContextScoped(const GLContextScoped& other) = delete;
+
+  /// Move constructor
+  constexpr GLContextScoped(GLContextScoped&& other) noexcept
+    : GLContext(other.release())
+  {
+  }
 
   /// Move constructor
   constexpr GLContextScoped(GLContext&& other) noexcept
-    : GLContext(other.release())
+    : GLContext(std::move(other).release())
   {
   }
 

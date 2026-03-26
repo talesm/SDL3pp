@@ -52511,33 +52511,8 @@ public:
   {
   }
 
-  /// Copy constructor
-  constexpr TrayEntry(const TrayEntry& other) noexcept
-    : TrayEntry(other.m_resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr TrayEntry(TrayEntry&& other) noexcept
-    : TrayEntry(other.release())
-  {
-  }
-
   /// Converts to underlying TrayEntryRaw.
   constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
-
-  /// Destructor
-  ~TrayEntry() {}
-
-  /// Assignment operator.
-  constexpr TrayEntry& operator=(TrayEntry&& other) noexcept
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  TrayEntry& operator=(const TrayEntry& other) = default;
 
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const noexcept { return m_resource; }
@@ -52784,11 +52759,17 @@ struct TrayEntryScoped : TrayEntry
 {
   using TrayEntry::TrayEntry;
 
-  constexpr TrayEntryScoped(const TrayEntry& other) = delete;
+  constexpr TrayEntryScoped(const TrayEntryScoped& other) = delete;
+
+  /// Move constructor
+  constexpr TrayEntryScoped(TrayEntryScoped&& other) noexcept
+    : TrayEntry(other.release())
+  {
+  }
 
   /// Move constructor
   constexpr TrayEntryScoped(TrayEntry&& other) noexcept
-    : TrayEntry(other.release())
+    : TrayEntry(std::move(other).release())
   {
   }
 
@@ -56703,18 +56684,6 @@ public:
   {
   }
 
-  /// Copy constructor
-  constexpr GLContext(const GLContext& other) noexcept
-    : GLContext(other.m_resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr GLContext(GLContext&& other) noexcept
-    : GLContext(other.release())
-  {
-  }
-
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
    *
@@ -56747,19 +56716,6 @@ public:
 
   /// Converts to underlying GLContextRaw.
   constexpr operator GLContextRaw() const noexcept { return m_resource; }
-
-  /// Destructor
-  ~GLContext() {}
-
-  /// Assignment operator.
-  constexpr GLContext& operator=(GLContext&& other) noexcept
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  GLContext& operator=(const GLContext& other) = default;
 
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const noexcept { return m_resource; }
@@ -56811,11 +56767,17 @@ struct GLContextScoped : GLContext
 {
   using GLContext::GLContext;
 
-  constexpr GLContextScoped(const GLContext& other) = delete;
+  constexpr GLContextScoped(const GLContextScoped& other) = delete;
+
+  /// Move constructor
+  constexpr GLContextScoped(GLContextScoped&& other) noexcept
+    : GLContext(other.release())
+  {
+  }
 
   /// Move constructor
   constexpr GLContextScoped(GLContext&& other) noexcept
-    : GLContext(other.release())
+    : GLContext(std::move(other).release())
   {
   }
 

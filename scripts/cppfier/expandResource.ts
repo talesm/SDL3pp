@@ -496,7 +496,7 @@ function createBaselineCtors(
       kind: "function",
       type: "",
       constexpr: true,
-      explicit: !hasScoped,
+      explicit: true,
       parameters: [{ name: "resource", type: rawName }],
       hints: {
         init: ["m_resource(resource)"],
@@ -533,7 +533,11 @@ function createBaselineCtors(
   };
   if (shared) {
     addBorrowFunction(ctors, targetName, shared, rawName);
-  } else if (!hasScoped) {
+  } else if (hasScoped) {
+    delete ctors[`${targetName}#2`].explicit;
+    delete ctors[`${targetName}#3`];
+    delete ctors[`${targetName}#4`];
+  } else {
     ctors[`${targetName}#3`].hints.delete = true;
     if (refName) deleteCtorsFromRef(ctors, refName, targetName);
   }
@@ -769,8 +773,6 @@ function populateTargetEntry(
   subEntries: ApiEntryTransformMap,
   constParamType: string,
 ) {
-  const isCopyable = hasScoped || hasShared;
-
   if (constParamType) {
     ctors[`operator ${constParamType}`] = {
       kind: "function",
@@ -782,7 +784,7 @@ function populateTargetEntry(
       doc: [`Converts to ${constParamType}`],
     };
   }
-  targetEntry.entries = {
+  const entries: ApiEntryTransformMap = {
     m_resource: {
       kind: "var",
       type: rawName,
@@ -795,10 +797,9 @@ function populateTargetEntry(
       type: "",
       parameters: [],
       hints: {
-        body:
-          freeFunction && !hasScoped
-            ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);`
-            : "",
+        body: freeFunction
+          ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);`
+          : "",
       },
     },
     "operator=": {
@@ -817,8 +818,7 @@ function populateTargetEntry(
       type: `${targetName} &`,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
-        default: isCopyable && !hasShared,
-        delete: !isCopyable && !hasShared,
+        delete: !hasShared,
         body: `if (m_resource != other.m_resource) {\n  ${targetName} tmp(other);\n  std::swap(m_resource, tmp.m_resource);\n}\nreturn *this;`,
       },
       doc: ["Assignment operator."],
@@ -868,6 +868,12 @@ function populateTargetEntry(
     [freeFunction.name]: "plc",
     ...subEntries,
   };
+  if (hasScoped) {
+    delete entries[`~${targetName}`];
+    delete entries["operator="];
+    delete entries["operator=#2"];
+  }
+  targetEntry.entries = entries;
   addHints(targetEntry, {
     self: "m_resource",
     super: "m_resource",
@@ -1023,7 +1029,7 @@ function createScopedEntry(
         kind: "function",
         type: "",
         constexpr: true,
-        parameters: [{ name: "other", type: `const ${targetName} &` }],
+        parameters: [{ name: "other", type: `const ${scopedName} &` }],
         hints: { delete: true },
       },
       [`${scopedName}#2`]: {
@@ -1031,9 +1037,20 @@ function createScopedEntry(
         doc: ["Move constructor"],
         type: "",
         constexpr: true,
-        parameters: [{ name: "other", type: `${targetName} &&` }],
+        parameters: [{ name: "other", type: `${scopedName} &&` }],
         hints: {
           init: [`${targetName}(other.release())`],
+          noexcept: true,
+        },
+      },
+      [`${scopedName}#3`]: {
+        kind: "function",
+        doc: ["Move constructor"],
+        type: "",
+        constexpr: true,
+        parameters: [{ name: "other", type: `${targetName} &&` }],
+        hints: {
+          init: [`${targetName}(std::move(other).release())`],
           noexcept: true,
         },
       },

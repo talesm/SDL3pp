@@ -522,33 +522,8 @@ public:
   {
   }
 
-  /// Copy constructor
-  constexpr TrayEntry(const TrayEntry& other) noexcept
-    : TrayEntry(other.m_resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr TrayEntry(TrayEntry&& other) noexcept
-    : TrayEntry(other.release())
-  {
-  }
-
   /// Converts to underlying TrayEntryRaw.
   constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
-
-  /// Destructor
-  ~TrayEntry() {}
-
-  /// Assignment operator.
-  constexpr TrayEntry& operator=(TrayEntry&& other) noexcept
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  TrayEntry& operator=(const TrayEntry& other) = default;
 
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const noexcept { return m_resource; }
@@ -795,11 +770,17 @@ struct TrayEntryScoped : TrayEntry
 {
   using TrayEntry::TrayEntry;
 
-  constexpr TrayEntryScoped(const TrayEntry& other) = delete;
+  constexpr TrayEntryScoped(const TrayEntryScoped& other) = delete;
+
+  /// Move constructor
+  constexpr TrayEntryScoped(TrayEntryScoped&& other) noexcept
+    : TrayEntry(other.release())
+  {
+  }
 
   /// Move constructor
   constexpr TrayEntryScoped(TrayEntry&& other) noexcept
-    : TrayEntry(other.release())
+    : TrayEntry(std::move(other).release())
   {
   }
 
