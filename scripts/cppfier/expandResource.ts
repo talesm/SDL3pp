@@ -818,7 +818,8 @@ function populateTargetEntry(
       type: `${targetName} &`,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
-        default: true,
+        default: !hasShared,
+        body: `if (m_resource != other.m_resource) {\n  ${targetName} tmp(other);\n  std::swap(m_resource, tmp.m_resource);\n}\nreturn *this;`,
         changeAccess: isCopyable ? undefined : "protected",
       },
       doc: ["Assignment operator."],

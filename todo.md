@@ -28,14 +28,18 @@ Next version
 - [x] Fix thread ctor for wrapped functions;
 - [x] operator-> const for resources;
 - [x] Fix Camera::AcquireCameraFrame;
-- [ ] Add SDL_assert on all narrowing due to different between std and SDL size
+- [x] Add SDL_assert on all narrowing due to different between std and SDL size
   types width;
+- [x] Be explicit with shared resources' copy assignment operators;
 - [x] Fix several minor warnings;
 - [ ] Properly encapsulate Param and ConstParam legacy;
+- [ ] Remove Surface::Load\* functions;
 
 Backlog
 -------
 
+- [ ] Documentation to refer to free functions instead of ctors whenever
+  possible;
 - [ ] Add windows-prebuilt option mode, downloading the version automatically.
 - [ ] Create GetPixel/SetPixel on surface
 - [ ] All SDL_*ID representing devices must have uniform interface:

@@ -2578,7 +2578,14 @@ public:
   }
 
   /// Assignment operator.
-  Palette& operator=(const Palette& other) = default;
+  Palette& operator=(const Palette& other)
+  {
+    if (m_resource != other.m_resource) {
+      Palette tmp(other);
+      std::swap(m_resource, tmp.m_resource);
+    }
+    return *this;
+  }
 
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const noexcept { return m_resource; }

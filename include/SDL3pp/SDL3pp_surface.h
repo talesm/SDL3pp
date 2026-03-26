@@ -494,7 +494,14 @@ public:
   }
 
   /// Assignment operator.
-  Surface& operator=(const Surface& other) = default;
+  Surface& operator=(const Surface& other)
+  {
+    if (m_resource != other.m_resource) {
+      Surface tmp(other);
+      std::swap(m_resource, tmp.m_resource);
+    }
+    return *this;
+  }
 
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const noexcept { return m_resource; }

@@ -2735,7 +2735,14 @@ public:
   }
 
   /// Assignment operator.
-  Texture& operator=(const Texture& other) = default;
+  Texture& operator=(const Texture& other)
+  {
+    if (m_resource != other.m_resource) {
+      Texture tmp(other);
+      std::swap(m_resource, tmp.m_resource);
+    }
+    return *this;
+  }
 
   /// Retrieves underlying TextureRaw.
   constexpr TextureRaw get() const noexcept { return m_resource; }
