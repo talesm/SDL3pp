@@ -936,14 +936,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept
-    : Environment(other.m_resource)
-  {
-  }
+  constexpr Environment(const Environment& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
@@ -5947,14 +5942,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept
-    : IConv(other.m_resource)
-  {
-  }
+  constexpr IConv(const IConv& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())

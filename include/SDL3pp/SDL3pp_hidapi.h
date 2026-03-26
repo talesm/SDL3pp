@@ -124,14 +124,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) noexcept
-    : HidDevice(other.m_resource)
-  {
-  }
+  constexpr HidDevice(const HidDevice& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr HidDevice(HidDevice&& other) noexcept
     : HidDevice(other.release())

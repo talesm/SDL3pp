@@ -284,14 +284,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Storage(const Storage& other) noexcept
-    : Storage(other.m_resource)
-  {
-  }
+  constexpr Storage(const Storage& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Storage(Storage&& other) noexcept
     : Storage(other.release())

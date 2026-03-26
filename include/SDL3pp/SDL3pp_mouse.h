@@ -174,14 +174,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) noexcept
-    : Cursor(other.m_resource)
-  {
-  }
+  constexpr Cursor(const Cursor& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())

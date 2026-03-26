@@ -129,14 +129,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Tray(const Tray& other) noexcept
-    : Tray(other.m_resource)
-  {
-  }
+  constexpr Tray(const Tray& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Tray(Tray&& other) noexcept
     : Tray(other.release())

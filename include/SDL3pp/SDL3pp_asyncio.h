@@ -139,14 +139,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) noexcept
-    : AsyncIO(other.m_resource)
-  {
-  }
+  constexpr AsyncIO(const AsyncIO& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
     : AsyncIO(other.release())
@@ -529,14 +524,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept
-    : AsyncIOQueue(other.m_resource)
-  {
-  }
+  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
     : AsyncIOQueue(other.release())

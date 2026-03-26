@@ -146,7 +146,7 @@ export function expandResource(
     constRawName,
   );
 
-  const ctors: Dict<ApiEntryTransform> = createBaselineCtors(
+  const ctors = createBaselineCtors(
     hasScoped,
     targetName,
     constRawName,
@@ -157,8 +157,7 @@ export function expandResource(
   if (hasShared) {
     addBorrowFunction(ctors, targetName, resourceEntry, refName, rawName);
   } else if (!hasScoped) {
-    ctors[`${targetName}#3`].hints.changeAccess = "protected";
-    ctors[`${targetName}#4`].hints.changeAccess = "public";
+    ctors[`${targetName}#3`].hints.delete = true;
     if (hasRef) deleteCtorsFromRef(ctors, refName, targetName);
   }
   const subEntries = targetEntry.entries || {};

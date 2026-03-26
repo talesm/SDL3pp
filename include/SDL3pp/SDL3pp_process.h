@@ -129,14 +129,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Process(const Process& other) noexcept
-    : Process(other.m_resource)
-  {
-  }
+  constexpr Process(const Process& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Process(Process&& other) noexcept
     : Process(other.release())

@@ -198,14 +198,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Properties(const Properties& other) noexcept
-    : Properties(other.m_resource)
-  {
-  }
+  constexpr Properties(const Properties& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())

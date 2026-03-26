@@ -123,14 +123,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr IOStream(const IOStream& other) noexcept
-    : IOStream(other.m_resource)
-  {
-  }
+  constexpr IOStream(const IOStream& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr IOStream(IOStream&& other) noexcept
     : IOStream(other.release())

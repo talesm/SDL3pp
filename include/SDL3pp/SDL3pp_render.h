@@ -267,14 +267,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Renderer(const Renderer& other) noexcept
-    : Renderer(other.m_resource)
-  {
-  }
+  constexpr Renderer(const Renderer& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Renderer(Renderer&& other) noexcept
     : Renderer(other.release())
@@ -8290,14 +8285,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) noexcept
-    : GPURenderState(other.m_resource)
-  {
-  }
+  constexpr GPURenderState(const GPURenderState& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr GPURenderState(GPURenderState&& other) noexcept
     : GPURenderState(other.release())

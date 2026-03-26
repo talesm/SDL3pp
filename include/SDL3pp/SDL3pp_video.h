@@ -757,14 +757,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Window(const Window& other) noexcept
-    : Window(other.m_resource)
-  {
-  }
+  constexpr Window(const Window& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Window(Window&& other) noexcept
     : Window(other.release())

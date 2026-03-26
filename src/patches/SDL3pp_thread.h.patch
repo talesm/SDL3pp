@@ -26,7 +26,7 @@
   * @returns a value that can be reported through Thread.Wait().
   *
   * @since This datatype is available since SDL 3.2.0.
-@@ -242,7 +241,6 @@
+@@ -237,7 +236,6 @@
     *
     * @param fn the ThreadFunction function to call in the new thread.
     * @param name the name of the thread.
@@ -34,7 +34,7 @@
     * @post an opaque pointer to the new thread object on success.
     * @throws Error on failure.
     *
-@@ -626,7 +624,6 @@
+@@ -621,7 +619,6 @@
   *
   * @param fn the ThreadFunction function to call in the new thread.
   * @param name the name of the thread.
@@ -42,7 +42,7 @@
   * @returns an opaque pointer to the new thread object on success.
   * @throws Error on failure.
   *
-@@ -639,7 +636,7 @@
+@@ -634,7 +631,7 @@
   */
  inline Thread CreateThread(ThreadCB fn, StringParam name)
  {
@@ -51,7 +51,7 @@
  }
  
  inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
-@@ -647,7 +644,12 @@
+@@ -642,7 +639,12 @@
  {
  }
  

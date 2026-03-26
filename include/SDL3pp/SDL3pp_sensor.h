@@ -155,14 +155,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Sensor(const Sensor& other) noexcept
-    : Sensor(other.m_resource)
-  {
-  }
+  constexpr Sensor(const Sensor& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Sensor(Sensor&& other) noexcept
     : Sensor(other.release())

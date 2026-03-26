@@ -2706,14 +2706,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Animation(const Animation& other) noexcept
-    : Animation(other.m_resource)
-  {
-  }
+  constexpr Animation(const Animation& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Animation(Animation&& other) noexcept
     : Animation(other.release())
@@ -3766,14 +3761,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept
-    : AnimationEncoder(other.m_resource)
-  {
-  }
+  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AnimationEncoder(AnimationEncoder&& other) noexcept
     : AnimationEncoder(other.release())
@@ -4297,14 +4287,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept
-    : AnimationDecoder(other.m_resource)
-  {
-  }
+  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AnimationDecoder(AnimationDecoder&& other) noexcept
     : AnimationDecoder(other.release())

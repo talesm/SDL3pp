@@ -30,7 +30,7 @@ Next version
 - [x] Fix Camera::AcquireCameraFrame;
 - [x] Add SDL_assert on all narrowing due to different between std and SDL size
   types width;
-- [x] Be explicit with shared resources' copy assignment operators;
+- [x] Don't default shared resources' copy assignment operators;
 - [x] Remove copy assignment operators on non-copyable resources;
 - [x] Remove copy constructors on non-copyable resources;
 - [x] Fix several minor warnings;

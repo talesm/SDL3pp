@@ -168,14 +168,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Thread(const Thread& other) noexcept
-    : Thread(other.m_resource)
-  {
-  }
+  constexpr Thread(const Thread& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())

@@ -414,14 +414,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Font(const Font& other) noexcept
-    : Font(other.m_resource)
-  {
-  }
+  constexpr Font(const Font& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Font(Font&& other) noexcept
     : Font(other.release())
@@ -3996,14 +3991,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) noexcept
-    : TextEngine(other.m_resource)
-  {
-  }
+  constexpr TextEngine(const TextEngine& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr TextEngine(TextEngine&& other) noexcept
     : TextEngine(other.release())
@@ -4337,14 +4327,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Text(const Text& other) noexcept
-    : Text(other.m_resource)
-  {
-  }
+  constexpr Text(const Text& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Text(Text&& other) noexcept
     : Text(other.release())

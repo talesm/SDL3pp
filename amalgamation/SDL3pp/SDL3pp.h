@@ -9136,14 +9136,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Properties(const Properties& other) noexcept
-    : Properties(other.m_resource)
-  {
-  }
+  constexpr Properties(const Properties& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())
@@ -11459,14 +11454,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept
-    : Environment(other.m_resource)
-  {
-  }
+  constexpr Environment(const Environment& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
@@ -16470,14 +16460,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept
-    : IConv(other.m_resource)
-  {
-  }
+  constexpr IConv(const IConv& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())
@@ -17105,14 +17090,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) noexcept
-    : AsyncIO(other.m_resource)
-  {
-  }
+  constexpr AsyncIO(const AsyncIO& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
     : AsyncIO(other.release())
@@ -17495,14 +17475,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept
-    : AsyncIOQueue(other.m_resource)
-  {
-  }
+  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
     : AsyncIOQueue(other.release())
@@ -21125,14 +21100,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) noexcept
-    : HidDevice(other.m_resource)
-  {
-  }
+  constexpr HidDevice(const HidDevice& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr HidDevice(HidDevice&& other) noexcept
     : HidDevice(other.release())
@@ -22188,14 +22158,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr IOStream(const IOStream& other) noexcept
-    : IOStream(other.m_resource)
-  {
-  }
+  constexpr IOStream(const IOStream& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr IOStream(IOStream&& other) noexcept
     : IOStream(other.release())
@@ -25322,14 +25287,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) noexcept
-    : SharedObject(other.m_resource)
-  {
-  }
+  constexpr SharedObject(const SharedObject& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr SharedObject(SharedObject&& other) noexcept
     : SharedObject(other.release())
@@ -32489,14 +32449,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Sensor(const Sensor& other) noexcept
-    : Sensor(other.m_resource)
-  {
-  }
+  constexpr Sensor(const Sensor& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Sensor(Sensor&& other) noexcept
     : Sensor(other.release())
@@ -34644,14 +34599,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AudioDevice(const AudioDevice& other) noexcept
-    : AudioDevice(other.m_resource)
-  {
-  }
+  constexpr AudioDevice(const AudioDevice& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AudioDevice(AudioDevice&& other) noexcept
     : AudioDevice(other.release())
@@ -35526,14 +35476,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AudioStream(const AudioStream& other) noexcept
-    : AudioStream(other.m_resource)
-  {
-  }
+  constexpr AudioStream(const AudioStream& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AudioStream(AudioStream&& other) noexcept
     : AudioStream(other.release())
@@ -40524,14 +40469,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Process(const Process& other) noexcept
-    : Process(other.m_resource)
-  {
-  }
+  constexpr Process(const Process& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Process(Process&& other) noexcept
     : Process(other.release())
@@ -41654,14 +41594,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Storage(const Storage& other) noexcept
-    : Storage(other.m_resource)
-  {
-  }
+  constexpr Storage(const Storage& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Storage(Storage&& other) noexcept
     : Storage(other.release())
@@ -48003,14 +47938,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Thread(const Thread& other) noexcept
-    : Thread(other.m_resource)
-  {
-  }
+  constexpr Thread(const Thread& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())
@@ -48996,14 +48926,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Camera(const Camera& other) noexcept
-    : Camera(other.m_resource)
-  {
-  }
+  constexpr Camera(const Camera& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Camera(Camera&& other) noexcept
     : Camera(other.release())
@@ -50005,14 +49930,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Mutex(const Mutex& other) noexcept
-    : Mutex(other.m_resource)
-  {
-  }
+  constexpr Mutex(const Mutex& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Mutex(Mutex&& other) noexcept
     : Mutex(other.release())
@@ -50403,14 +50323,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr RWLock(const RWLock& other) noexcept
-    : RWLock(other.m_resource)
-  {
-  }
+  constexpr RWLock(const RWLock& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr RWLock(RWLock&& other) noexcept
     : RWLock(other.release())
@@ -51032,14 +50947,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) noexcept
-    : Semaphore(other.m_resource)
-  {
-  }
+  constexpr Semaphore(const Semaphore& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Semaphore(Semaphore&& other) noexcept
     : Semaphore(other.release())
@@ -51486,14 +51396,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Condition(const Condition& other) noexcept
-    : Condition(other.m_resource)
-  {
-  }
+  constexpr Condition(const Condition& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Condition(Condition&& other) noexcept
     : Condition(other.release())
@@ -52213,14 +52118,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Tray(const Tray& other) noexcept
-    : Tray(other.m_resource)
-  {
-  }
+  constexpr Tray(const Tray& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Tray(Tray&& other) noexcept
     : Tray(other.release())
@@ -54254,14 +54154,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Window(const Window& other) noexcept
-    : Window(other.m_resource)
-  {
-  }
+  constexpr Window(const Window& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Window(Window&& other) noexcept
     : Window(other.release())
@@ -66657,14 +66552,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) noexcept
-    : GPUDevice(other.m_resource)
-  {
-  }
+  constexpr GPUDevice(const GPUDevice& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr GPUDevice(GPUDevice&& other) noexcept
     : GPUDevice(other.release())
@@ -72266,14 +72156,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Joystick(const Joystick& other) noexcept
-    : Joystick(other.m_resource)
-  {
-  }
+  constexpr Joystick(const Joystick& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Joystick(Joystick&& other) noexcept
     : Joystick(other.release())
@@ -75605,14 +75490,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr MetalView(const MetalView& other) noexcept
-    : MetalView(other.m_resource)
-  {
-  }
+  constexpr MetalView(const MetalView& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())
@@ -76010,14 +75890,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) noexcept
-    : Cursor(other.m_resource)
-  {
-  }
+  constexpr Cursor(const Cursor& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
@@ -77422,14 +77297,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) noexcept
-    : Gamepad(other.m_resource)
-  {
-  }
+  constexpr Gamepad(const Gamepad& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Gamepad(Gamepad&& other) noexcept
     : Gamepad(other.release())
@@ -80757,14 +80627,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Haptic(const Haptic& other) noexcept
-    : Haptic(other.m_resource)
-  {
-  }
+  constexpr Haptic(const Haptic& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Haptic(Haptic&& other) noexcept
     : Haptic(other.release())
@@ -82985,14 +82850,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Renderer(const Renderer& other) noexcept
-    : Renderer(other.m_resource)
-  {
-  }
+  constexpr Renderer(const Renderer& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Renderer(Renderer&& other) noexcept
     : Renderer(other.release())
@@ -91008,14 +90868,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) noexcept
-    : GPURenderState(other.m_resource)
-  {
-  }
+  constexpr GPURenderState(const GPURenderState& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr GPURenderState(GPURenderState&& other) noexcept
     : GPURenderState(other.release())
@@ -92983,14 +92838,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Mixer(const Mixer& other) noexcept
-    : Mixer(other.m_resource)
-  {
-  }
+  constexpr Mixer(const Mixer& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Mixer(Mixer&& other) noexcept
     : Mixer(other.release())
@@ -94332,14 +94182,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Audio(const Audio& other) noexcept
-    : Audio(other.m_resource)
-  {
-  }
+  constexpr Audio(const Audio& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Audio(Audio&& other) noexcept
     : Audio(other.release())
@@ -95019,14 +94864,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Track(const Track& other) noexcept
-    : Track(other.m_resource)
-  {
-  }
+  constexpr Track(const Track& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Track(Track&& other) noexcept
     : Track(other.release())
@@ -96504,14 +96344,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Group(const Group& other) noexcept
-    : Group(other.m_resource)
-  {
-  }
+  constexpr Group(const Group& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Group(Group&& other) noexcept
     : Group(other.release())
@@ -100366,14 +100201,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) noexcept
-    : AudioDecoder(other.m_resource)
-  {
-  }
+  constexpr AudioDecoder(const AudioDecoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AudioDecoder(AudioDecoder&& other) noexcept
     : AudioDecoder(other.release())
@@ -103544,14 +103374,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Animation(const Animation& other) noexcept
-    : Animation(other.m_resource)
-  {
-  }
+  constexpr Animation(const Animation& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Animation(Animation&& other) noexcept
     : Animation(other.release())
@@ -104604,14 +104429,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept
-    : AnimationEncoder(other.m_resource)
-  {
-  }
+  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AnimationEncoder(AnimationEncoder&& other) noexcept
     : AnimationEncoder(other.release())
@@ -105135,14 +104955,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept
-    : AnimationDecoder(other.m_resource)
-  {
-  }
+  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AnimationDecoder(AnimationDecoder&& other) noexcept
     : AnimationDecoder(other.release())
@@ -106195,14 +106010,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Font(const Font& other) noexcept
-    : Font(other.m_resource)
-  {
-  }
+  constexpr Font(const Font& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Font(Font&& other) noexcept
     : Font(other.release())
@@ -109777,14 +109587,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) noexcept
-    : TextEngine(other.m_resource)
-  {
-  }
+  constexpr TextEngine(const TextEngine& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr TextEngine(TextEngine&& other) noexcept
     : TextEngine(other.release())
@@ -110118,14 +109923,9 @@ public:
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Text(const Text& other) noexcept
-    : Text(other.m_resource)
-  {
-  }
+  constexpr Text(const Text& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Text(Text&& other) noexcept
     : Text(other.release())
