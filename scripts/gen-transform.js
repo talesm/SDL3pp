@@ -3442,7 +3442,7 @@ const transform = {
       }
     },
     "SDL_pixels.h": {
-      localIncludes: ["SDL3pp_assert.h", "SDL3pp_spanRef.h", "SDL3pp_error.h", "SDL3pp_version.h"],
+      localIncludes: ["SDL3pp_assert.h", "SDL3pp_stdinc.h", "SDL3pp_version.h"],
       transform: {
         "SDL_PixelFormatDetails": {
           kind: "alias",
