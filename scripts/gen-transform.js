@@ -6749,6 +6749,7 @@ const transform = {
           parameters: [{}, { default: "false" }]
         },
         "SDL_LoadPNG": { name: "LoadTrustedPNG" },
+
         "SDL_SavePNG_IO": {
           name: "SaveTrustedPNG_IO",
           parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }]
@@ -8467,8 +8468,24 @@ const transform = {
             type: "StringParam"
           }],
         },
+        "IMG_Save": {
+          parameters: [{ type: "SurfaceConstRef" }, {}],
+        },
+        "Surface::Save": {
+          kind: "function",
+          type: "void",
+          immutable: true,
+          parameters: [{ name: "filename", type: "StringParam" }],
+          hints: {
+            delegate: "Save",
+            copyDoc: "IMG_Save",
+          },
+          since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 }
+        },
         "IMG_SaveTyped_IO": {
-          parameters: [{}, {}, {
+          parameters: [{
+            type: "SurfaceConstRef",
+          }, {}, {
             name: "type",
             type: "StringParam"
           }, {
@@ -8476,6 +8493,27 @@ const transform = {
             type: "bool",
             default: "false"
           }],
+        },
+        "Surface::SaveTyped_IO": {
+          kind: "function",
+          type: "void",
+          immutable: true,
+          parameters: [{
+            name: "dst",
+            type: "IOStreamRef"
+          }, {
+            name: "type",
+            type: "StringParam"
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false"
+          }],
+          hints: {
+            delegate: "SaveTyped_IO",
+            copyDoc: "IMG_SaveTyped_IO",
+          },
+          since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 }
         },
         "IMG_SaveAVIF_IO": {
           parameters: [

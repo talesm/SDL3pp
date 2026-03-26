@@ -2259,9 +2259,14 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  * @sa SaveTGA
  * @sa SaveWEBP
  */
-inline void Save(SurfaceRef surface, StringParam file)
+inline void Save(SurfaceConstRef surface, StringParam file)
 {
   CheckError(IMG_Save(surface, file));
+}
+
+inline void Surface::Save(StringParam filename) const
+{
+  SDL::Save(*this, std::move(filename));
 }
 
 /**
@@ -2295,12 +2300,19 @@ inline void Save(SurfaceRef surface, StringParam file)
  * @sa SaveTGA_IO
  * @sa SaveWEBP_IO
  */
-inline void SaveTyped_IO(SurfaceRef surface,
+inline void SaveTyped_IO(SurfaceConstRef surface,
                          IOStreamRef dst,
                          StringParam type,
                          bool closeio = false)
 {
   CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
+}
+
+inline void Surface::SaveTyped_IO(IOStreamRef dst,
+                                  StringParam type,
+                                  bool closeio) const
+{
+  SDL::SaveTyped_IO(*this, dst, std::move(type), closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)

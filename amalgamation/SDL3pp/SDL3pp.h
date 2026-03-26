@@ -44619,6 +44619,47 @@ public:
 
   /// Get the pixels.
   constexpr void* GetPixels() const;
+
+  /**
+   * Save an Surface into an image file.
+   *
+   * If the file already exists, it will be overwritten.
+   *
+   * For formats that accept a quality, a default quality of 90 will be used.
+   *
+   * @param file path on the filesystem to write new file to.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa SDL::SaveTyped_IO
+   */
+  void Save(StringParam filename) const;
+
+  /**
+   * Save an Surface into formatted image data, via an IOStream.
+   *
+   * If you just want to save to a filename, you can use Save() instead.
+   *
+   * If `closeio` is true, `dst` will be closed before returning, whether this
+   * function succeeds or not.
+   *
+   * For formats that accept a quality, a default quality of 90 will be used.
+   *
+   * @param dst the IOStream to save the image data to.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
+   * @param type a filename extension that represent this data ("BMP", "GIF",
+   *             "PNG", etc).
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa SDL::Save
+   */
+  void SaveTyped_IO(IOStreamRef dst,
+                    StringParam type,
+                    bool closeio = false) const;
 };
 
 /**
@@ -102794,9 +102835,14 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  * @sa SaveTGA
  * @sa SaveWEBP
  */
-inline void Save(SurfaceRef surface, StringParam file)
+inline void Save(SurfaceConstRef surface, StringParam file)
 {
   CheckError(IMG_Save(surface, file));
+}
+
+inline void Surface::Save(StringParam filename) const
+{
+  SDL::Save(*this, std::move(filename));
 }
 
 /**
@@ -102830,12 +102876,19 @@ inline void Save(SurfaceRef surface, StringParam file)
  * @sa SaveTGA_IO
  * @sa SaveWEBP_IO
  */
-inline void SaveTyped_IO(SurfaceRef surface,
+inline void SaveTyped_IO(SurfaceConstRef surface,
                          IOStreamRef dst,
                          StringParam type,
                          bool closeio = false)
 {
   CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
+}
+
+inline void Surface::SaveTyped_IO(IOStreamRef dst,
+                                  StringParam type,
+                                  bool closeio) const
+{
+  SDL::SaveTyped_IO(*this, dst, std::move(type), closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)

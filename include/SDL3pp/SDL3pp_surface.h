@@ -1875,6 +1875,47 @@ public:
 
   /// Get the pixels.
   constexpr void* GetPixels() const;
+
+  /**
+   * Save an Surface into an image file.
+   *
+   * If the file already exists, it will be overwritten.
+   *
+   * For formats that accept a quality, a default quality of 90 will be used.
+   *
+   * @param file path on the filesystem to write new file to.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa SDL::SaveTyped_IO
+   */
+  void Save(StringParam filename) const;
+
+  /**
+   * Save an Surface into formatted image data, via an IOStream.
+   *
+   * If you just want to save to a filename, you can use Save() instead.
+   *
+   * If `closeio` is true, `dst` will be closed before returning, whether this
+   * function succeeds or not.
+   *
+   * For formats that accept a quality, a default quality of 90 will be used.
+   *
+   * @param dst the IOStream to save the image data to.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
+   * @param type a filename extension that represent this data ("BMP", "GIF",
+   *             "PNG", etc).
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa SDL::Save
+   */
+  void SaveTyped_IO(IOStreamRef dst,
+                    StringParam type,
+                    bool closeio = false) const;
 };
 
 /**
