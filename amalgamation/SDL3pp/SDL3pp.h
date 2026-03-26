@@ -43497,6 +43497,8 @@ public:
   /**
    * Save a surface to a seekable SDL data stream in PNG format.
    *
+   * If the file already exists, it will be overwritten.
+   *
    * @param dst a data stream to save to.
    * @param closeio if true, calls IOStream.Close() on `dst` before returning,
    *                even in the case of an error.
@@ -43507,6 +43509,7 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    *
+   * @sa LoadPNG_IO
    * @sa LoadTrustedPNG_IO
    * @sa Surface.SavePNG
    */
@@ -43514,6 +43517,8 @@ public:
 
   /**
    * Save a surface to a file in PNG format.
+   *
+   * If the file already exists, it will be overwritten.
    *
    * @param file a file to save to.
    * @throws Error on failure.
@@ -43523,6 +43528,7 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    *
+   * @sa LoadPNG
    * @sa LoadTrustedPNG
    * @sa Surface.SavePNG_IO
    */
@@ -45689,17 +45695,19 @@ inline Surface LoadPNG(StringParam file)
  * @sa LoadTrustedPNG_IO
  * @sa Surface.SavePNG
  */
-inline void SavePNG_IO(SurfaceConstRef surface,
-                       IOStreamRef dst,
-                       bool closeio = false)
+inline void SaveTrustedPNG_IO(SurfaceConstRef surface,
+                              IOStreamRef dst,
+                              bool closeio = false)
 {
   CheckError(SDL_SavePNG_IO(surface, dst, closeio));
 }
 
+#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
 {
-  SDL::SavePNG_IO(m_resource, dst, closeio);
+  SDL::SaveTrustedPNG_IO(m_resource, dst, closeio);
 }
+#endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
 /**
  * Save a surface to a file in PNG format.
@@ -45716,15 +45724,17 @@ inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
  * @sa LoadTrustedPNG
  * @sa Surface.SavePNG_IO
  */
-inline void SavePNG(SurfaceConstRef surface, StringParam file)
+inline void SaveTrustedPNG(SurfaceConstRef surface, StringParam file)
 {
   CheckError(SDL_SavePNG(surface, file));
 }
 
+#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 inline void Surface::SavePNG(StringParam file) const
 {
-  SDL::SavePNG(m_resource, std::move(file));
+  SDL::SaveTrustedPNG(m_resource, std::move(file));
 }
+#endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -103059,6 +103069,11 @@ inline void SaveJPG_IO(SurfaceRef surface,
   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
 }
 
+inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
+{
+  SDL::SaveTrustedPNG_IO(m_resource, dst, closeio);
+}
+
 /**
  * Save an Surface into a PNG image file.
  *
@@ -103075,6 +103090,11 @@ inline void SaveJPG_IO(SurfaceRef surface,
 inline void SavePNG(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SavePNG(surface, file));
+}
+
+inline void Surface::SavePNG(StringParam file) const
+{
+  SDL::SaveTrustedPNG(m_resource, std::move(file));
 }
 
 /**

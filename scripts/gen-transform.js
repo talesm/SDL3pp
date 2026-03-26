@@ -6749,8 +6749,14 @@ const transform = {
           parameters: [{}, { default: "false" }]
         },
         "SDL_LoadPNG": { name: "LoadTrustedPNG" },
-        "SDL_SavePNG_IO": { parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }] },
-        "SDL_SavePNG": { parameters: [{ type: "SurfaceConstRef" }, {}] },
+        "SDL_SavePNG_IO": {
+          name: "SaveTrustedPNG_IO",
+          parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }]
+        },
+        "SDL_SavePNG": {
+          name: "SaveTrustedPNG",
+          parameters: [{ type: "SurfaceConstRef" }, {}]
+        },
         "SDL_SurfaceHasRLE": { parameters: [{ type: "SurfaceConstRef" }] },
         "SDL_SetSurfaceColorKey": {
           parameters: [
