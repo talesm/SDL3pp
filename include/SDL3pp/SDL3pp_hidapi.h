@@ -113,25 +113,20 @@ public:
   }
 
   /**
-   * Constructs from HidDeviceRef.
+   * Constructs from raw HidDevice.
    *
    * @param resource a HidDeviceRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit HidDevice(const HidDeviceRaw resource) noexcept
+  constexpr explicit HidDevice(HidDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) noexcept
-    : HidDevice(other.m_resource)
-  {
-  }
+  constexpr HidDevice(const HidDevice& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr HidDevice(HidDevice&& other) noexcept
     : HidDevice(other.release())
@@ -184,11 +179,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  HidDevice& operator=(const HidDevice& other) = default;
+  HidDevice& operator=(const HidDevice& other) = delete;
 
-public:
   /// Retrieves underlying HidDeviceRaw.
   constexpr HidDeviceRaw get() const noexcept { return m_resource; }
 
@@ -759,7 +752,7 @@ inline int hid_read_timeout(HidDeviceRef dev,
                             Milliseconds timeout)
 {
   return SDL_hid_read_timeout(
-    dev, data.data_as<Uint8>(), data.size_bytes(), timeout.count());
+    dev, data.data_as<Uint8>(), data.size_bytes(), narrowS32(timeout.count()));
 }
 
 inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)

@@ -26,3 +26,42 @@
   * @returns a value that can be reported through Thread.Wait().
   *
   * @since This datatype is available since SDL 3.2.0.
+@@ -237,7 +236,6 @@
+    *
+    * @param fn the ThreadFunction function to call in the new thread.
+    * @param name the name of the thread.
+-   * @param data a pointer that is passed to `fn`.
+    * @post an opaque pointer to the new thread object on success.
+    * @throws Error on failure.
+    *
+@@ -621,7 +619,6 @@
+  *
+  * @param fn the ThreadFunction function to call in the new thread.
+  * @param name the name of the thread.
+- * @param data a pointer that is passed to `fn`.
+  * @returns an opaque pointer to the new thread object on success.
+  * @throws Error on failure.
+  *
+@@ -634,7 +631,7 @@
+  */
+ inline Thread CreateThread(ThreadCB fn, StringParam name)
+ {
+-  static_assert(false, "Not implemented");
++  return Thread(std::move(fn), std::move(name));
+ }
+ 
+ inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
+@@ -642,7 +639,12 @@
+ {
+ }
+ 
+-inline Thread::Thread(ThreadCB fn, StringParam name) {}
++inline Thread::Thread(ThreadCB fn, StringParam name)
++  : Thread(&CallbackWrapper<ThreadCB>::CallOnce,
++           std::move(name),
++           CallbackWrapper<ThreadCB>::Wrap(std::move(fn)))
++{
++}
+ 
+ inline Thread::Thread(PropertiesRef props)
+   : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))

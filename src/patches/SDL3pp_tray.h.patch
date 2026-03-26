@@ -9,17 +9,7 @@
   *
   * SDL offers a way to add items to the "system tray" (more correctly called the
   * "notification area" on Windows). On platforms that offer this concept, an SDL
-@@ -28,6 +28,9 @@
- struct TrayRef;
- 
- /// Alias to raw representation for TrayMenu.
-+struct TrayMenu;
-+
-+/// Alias to raw representation for TrayMenu.
- using TrayMenuRaw = SDL_TrayMenu*;
- 
- // Forward decl
-@@ -395,8 +398,6 @@
+@@ -388,8 +388,6 @@
    /**
     * Returns a list of entries in the menu, in order.
     *
@@ -28,7 +18,7 @@
     * @returns a nullptr-terminated list of entries within the given menu. The
     *          pointer becomes invalid when any function that inserts or deletes
     *          entries in the menu is called.
-@@ -438,6 +439,30 @@
+@@ -431,6 +429,30 @@
     */
    TrayEntry InsertEntry(int pos, StringParam label, TrayEntryFlags flags);
  
@@ -59,7 +49,7 @@
    TrayEntry AppendEntry(StringParam label, TrayEntryFlags flags);
  
    /**
-@@ -718,6 +743,19 @@
+@@ -711,6 +733,19 @@
     */
    bool GetEnabled() const;
  
@@ -79,7 +69,7 @@
    void SetCallback(TrayCB callback);
  
    /**
-@@ -981,7 +1019,6 @@
+@@ -974,7 +1009,6 @@
   * Returns a list of entries in the menu, in order.
   *
   * @param menu The menu to get entries from.
@@ -87,7 +77,7 @@
   * @returns a nullptr-terminated list of entries within the given menu. The
   *          pointer becomes invalid when any function that inserts or deletes
   *          entries in the menu is called.
-@@ -996,7 +1033,10 @@
+@@ -989,7 +1023,10 @@
   */
  inline std::span<TrayEntry> GetTrayEntries(TrayMenu menu)
  {
@@ -99,7 +89,7 @@
  }
  
  inline std::span<TrayEntry> TrayMenu::GetEntries()
-@@ -1376,6 +1416,16 @@
+@@ -1369,6 +1406,16 @@
  
  /// @}
  

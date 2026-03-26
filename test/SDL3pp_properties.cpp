@@ -16,6 +16,6 @@ TEST_CASE("Properties")
 
   std::string element;
   SDL::EnumerateProperties(props,
-                           [&](auto props, const char* key) { element = key; });
+                           [&](auto, const char* key) { element = key; });
   CHECK(element == "potato");
 }

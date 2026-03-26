@@ -144,25 +144,20 @@ public:
   }
 
   /**
-   * Constructs from SensorRef.
+   * Constructs from raw Sensor.
    *
    * @param resource a SensorRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Sensor(const SensorRaw resource) noexcept
+  constexpr explicit Sensor(SensorRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Sensor(const Sensor& other) noexcept
-    : Sensor(other.m_resource)
-  {
-  }
+  constexpr Sensor(const Sensor& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Sensor(Sensor&& other) noexcept
     : Sensor(other.release())
@@ -194,11 +189,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Sensor& operator=(const Sensor& other) = default;
+  Sensor& operator=(const Sensor& other) = delete;
 
-public:
   /// Retrieves underlying SensorRaw.
   constexpr SensorRaw get() const noexcept { return m_resource; }
 

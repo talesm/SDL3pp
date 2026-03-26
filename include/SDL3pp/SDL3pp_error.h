@@ -103,8 +103,7 @@ inline bool SetErrorUnformatted(StringParam message)
 template<class... ARGS>
 inline bool SetError(std::string_view fmt, ARGS... args)
 {
-  return SetError(
-    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+  return SetError(std::vformat(fmt, std::make_format_args(args...)));
 }
 
 /**
@@ -178,7 +177,10 @@ public:
   }
 
   /// Returns the explanatory string.
-  constexpr const char* what() const noexcept { return m_message.c_str(); }
+  constexpr const char* what() const noexcept final
+  {
+    return m_message.c_str();
+  }
 
   /**
    * Returns the explanatory string.

@@ -746,25 +746,20 @@ public:
   }
 
   /**
-   * Constructs from WindowRef.
+   * Constructs from raw Window.
    *
    * @param resource a WindowRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Window(const WindowRaw resource) noexcept
+  constexpr explicit Window(WindowRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Window(const Window& other) noexcept
-    : Window(other.m_resource)
-  {
-  }
+  constexpr Window(const Window& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Window(Window&& other) noexcept
     : Window(other.release())
@@ -1117,11 +1112,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Window& operator=(const Window& other) = default;
+  Window& operator=(const Window& other) = delete;
 
-public:
   /// Retrieves underlying WindowRaw.
   constexpr WindowRaw get() const noexcept { return m_resource; }
 
@@ -3304,24 +3297,12 @@ public:
   }
 
   /**
-   * Constructs from GLContextRef.
+   * Constructs from raw GLContext.
    *
    * @param resource a GLContextRaw to be wrapped.
    */
-  constexpr GLContext(const GLContextRaw resource) noexcept
+  constexpr GLContext(GLContextRaw resource) noexcept
     : m_resource(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr GLContext(const GLContext& other) noexcept
-    : GLContext(other.m_resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr GLContext(GLContext&& other) noexcept
-    : GLContext(other.release())
   {
   }
 
@@ -3357,19 +3338,6 @@ public:
 
   /// Converts to underlying GLContextRaw.
   constexpr operator GLContextRaw() const noexcept { return m_resource; }
-
-  /// Destructor
-  ~GLContext() {}
-
-  /// Assignment operator.
-  constexpr GLContext& operator=(GLContext&& other) noexcept
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  GLContext& operator=(const GLContext& other) = default;
 
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const noexcept { return m_resource; }
@@ -3421,16 +3389,22 @@ struct GLContextScoped : GLContext
 {
   using GLContext::GLContext;
 
-  constexpr GLContextScoped(const GLContext& other) = delete;
+  constexpr GLContextScoped(const GLContextScoped& other) = delete;
 
   /// Move constructor
-  constexpr GLContextScoped(GLContext&& other) noexcept
+  constexpr GLContextScoped(GLContextScoped&& other) noexcept
     : GLContext(other.release())
   {
   }
 
+  /// Move constructor
+  constexpr GLContextScoped(GLContext&& other) noexcept
+    : GLContext(std::move(other).release())
+  {
+  }
+
   /// Destructor
-  ~GLContextScoped() { Destroy(); }
+  ~GLContextScoped() { SDL_GL_DestroyContext(release()); }
 };
 
 /**
@@ -3815,7 +3789,7 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 inline OwnArray<DisplayID> GetDisplays()
 {
   int count = 0;
-  auto data = reinterpret_cast<DisplayID*>(SDL_GetDisplays(&count));
+  auto data = SDL_GetDisplays(&count);
   return OwnArray<DisplayID>{data, size_t(count)};
 }
 
@@ -6450,7 +6424,8 @@ inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
 inline void UpdateWindowSurfaceRects(WindowRef window,
                                      SpanRef<const RectRaw> rects)
 {
-  CheckError(SDL_UpdateWindowSurfaceRects(window, rects.data(), rects.size()));
+  CheckError(SDL_UpdateWindowSurfaceRects(
+    window, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)

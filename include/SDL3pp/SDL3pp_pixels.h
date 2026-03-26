@@ -3,8 +3,7 @@
 
 #include <SDL3/SDL_pixels.h>
 #include "SDL3pp_assert.h"
-#include "SDL3pp_error.h"
-#include "SDL3pp_spanRef.h"
+#include "SDL3pp_stdinc.h"
 #include "SDL3pp_version.h"
 
 namespace SDL {
@@ -98,16 +97,19 @@ struct Palette;
 /// Alias to raw representation for Palette.
 using PaletteRaw = SDL_Palette*;
 
+/// Alias to const raw representation for Palette.
+using PaletteRawConst = const SDL_Palette*;
+
 // Forward decl
 struct PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
 struct PaletteConstRef
 {
-  const PaletteRaw value; ///< parameter's const PaletteRaw
+  PaletteRawConst value; ///< parameter's Palette
 
-  /// Constructs from const PaletteRaw
-  constexpr PaletteConstRef(const PaletteRaw value)
+  /// Constructs from PaletteRawConst
+  constexpr PaletteConstRef(PaletteRawConst value)
     : value(value)
   {
   }
@@ -124,11 +126,17 @@ struct PaletteConstRef
   /// Comparison
   constexpr auto operator<=>(const PaletteConstRef& other) const = default;
 
-  /// Converts to underlying const PaletteRaw
-  constexpr operator const PaletteRaw() const { return value; }
+  /// Converts to underlying Palette
+  constexpr operator PaletteRawConst() const { return value; }
+
+  /// Converts to underlying Palette
+  constexpr operator PaletteRaw() const
+  {
+    return const_cast<PaletteRaw>(value);
+  }
 
   /// member access to underlying PaletteRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 /**
@@ -2440,6 +2448,7 @@ struct FColor : FColorRaw
   }
 };
 
+/// Auxiliary class for Palette to provide access to specific palette index.
 class PaletteIndex
 {
   PaletteRaw m_palette;
@@ -2491,13 +2500,13 @@ public:
   }
 
   /**
-   * Constructs from PaletteRef.
+   * Constructs from raw Palette.
    *
    * @param resource a PaletteRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Palette(const PaletteRaw resource) noexcept
+  constexpr explicit Palette(PaletteRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2551,7 +2560,7 @@ public:
   }
 
   /// member access to underlying PaletteRaw.
-  constexpr const PaletteRaw operator->() const noexcept { return m_resource; }
+  constexpr PaletteRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying PaletteRaw.
   constexpr PaletteRaw operator->() noexcept { return m_resource; }
@@ -2570,7 +2579,14 @@ public:
   }
 
   /// Assignment operator.
-  Palette& operator=(const Palette& other) = default;
+  Palette& operator=(const Palette& other)
+  {
+    if (m_resource != other.m_resource) {
+      Palette tmp(other);
+      std::swap(m_resource, tmp.m_resource);
+    }
+    return *this;
+  }
 
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const noexcept { return m_resource; }
@@ -2874,8 +2890,8 @@ inline void SetPaletteColors(PaletteRef palette,
                              SpanRef<const ColorRaw> colors,
                              int firstcolor = 0)
 {
-  CheckError(
-    SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
+  CheckError(SDL_SetPaletteColors(
+    palette, colors.data(), firstcolor, narrowS32(colors.size())));
 }
 
 inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)

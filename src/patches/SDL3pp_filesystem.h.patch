@@ -38,20 +38,21 @@
 +    return *this;
 +  }
  
+-  Path operator+(std::string_view other) const
 +  /// Append
-   Path operator+(std::string_view other) const
++  friend Path operator+(const Path& path, std::string_view other)
    {
 -    static_assert(false, "Not implemented");
-+    Path result(*this);
++    Path result(path);
 +    result += other;
 +    return result;
    }
  
 -  Path operator+(char ch) const { static_assert(false, "Not implemented"); }
 +  /// Append
-+  Path operator+(char ch) const
++  friend Path operator+(const Path& path, char ch)
 +  {
-+    Path result(*this);
++    Path result(path);
 +    result += ch;
 +    return result;
 +  }
@@ -64,11 +65,12 @@
 +    return this->operator+=(other);
    }
  
+-  Path operator/(std::string_view other) const
 +  /// Append path component.
-   Path operator/(std::string_view other) const
++  friend Path operator/(const Path& path, std::string_view other)
    {
 -    static_assert(false, "Not implemented");
-+    Path result(*this);
++    Path result(path);
 +    result /= other;
 +    return result;
    }
@@ -116,6 +118,15 @@
   *
   * Note that on macOS/iOS, the Videos folder is called "Movies".
   *
+@@ -339,7 +365,7 @@
+    *
+    * @returns True if invalid state, false otherwise.
+    */
+-  constexpr bool operator==(std::nullptr_t _) const noexcept
++  constexpr bool operator==(std::nullptr_t) const noexcept
+   {
+     return !bool(*this);
+   }
 @@ -351,7 +377,7 @@
     */
    constexpr explicit operator bool() const noexcept
@@ -141,7 +152,7 @@
 +  return EnumerateDirectory(
 +    std::move(path),
 +    [](void* userdata, const char* dirname, const char* fname) {
-+      auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
++      auto& cb = *static_cast<const EnumerateDirectoryCB*>(userdata);
 +      return cb(dirname, fname);
 +    },
 +    &callback);
@@ -173,7 +184,7 @@
  {
 -  static_assert(false, "Not implemented");
 +  std::vector<Path> r;
-+  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
++  EnumerateDirectory(std::move(path), [&r](const char*, const char* fname) {
 +    r.emplace_back(fname);
 +    return ENUM_CONTINUE;
 +  });

@@ -1537,7 +1537,7 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
 inline void SetEventFilter(EventFilterCB filter)
 {
   static EventFilterCB staticFilter;
-  staticFilter = filter;
+  staticFilter = std::move(filter);
   SetEventFilter([](void*, Event* event) { return staticFilter(event); },
                  nullptr);
 }
@@ -1809,7 +1809,8 @@ inline WindowRef GetWindowFromEvent(const Event& event)
 inline int GetEventDescription(const Event& event, TargetBytes buf)
 {
   if (buf.size_bytes() == 0) return SDL_GetEventDescription(&event, nullptr, 0);
-  return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
+  return SDL_GetEventDescription(
+    &event, buf.data(), narrowS32(buf.size_bytes()));
 }
 
 /**

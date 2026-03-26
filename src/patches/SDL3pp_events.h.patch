@@ -317,7 +317,7 @@
  {
 -  static_assert(false, "Not implemented");
 +  static EventFilterCB staticFilter;
-+  staticFilter = filter;
++  staticFilter = std::move(filter);
 +  SetEventFilter([](void*, Event* event) { return staticFilter(event); },
 +                 nullptr);
  }
@@ -412,15 +412,18 @@
   * @returns number of bytes needed for the full string, not counting the
   *          null-terminator byte.
   *
-@@ -1762,6 +1808,7 @@
+@@ -1762,7 +1808,9 @@
   */
  inline int GetEventDescription(const Event& event, TargetBytes buf)
  {
+-  return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
 +  if (buf.size_bytes() == 0) return SDL_GetEventDescription(&event, nullptr, 0);
-   return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
++  return SDL_GetEventDescription(
++    &event, buf.data(), narrowS32(buf.size_bytes()));
  }
  
-@@ -1785,11 +1832,8 @@
+ /**
+@@ -1785,11 +1833,8 @@
   * complete string, not counting the nullptr-terminator, whether the string was
   * truncated or not. Unlike snprintf(), though, this function never returns -1.
   *
@@ -434,7 +437,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1797,7 +1841,11 @@
+@@ -1797,7 +1842,11 @@
   */
  inline std::string GetEventDescription(const Event& event)
  {

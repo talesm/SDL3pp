@@ -415,25 +415,20 @@ public:
   }
 
   /**
-   * Constructs from JoystickRef.
+   * Constructs from raw Joystick.
    *
    * @param resource a JoystickRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Joystick(const JoystickRaw resource) noexcept
+  constexpr explicit Joystick(JoystickRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Joystick(const Joystick& other) noexcept
-    : Joystick(other.m_resource)
-  {
-  }
+  constexpr Joystick(const Joystick& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Joystick(Joystick&& other) noexcept
     : Joystick(other.release())
@@ -471,11 +466,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Joystick& operator=(const Joystick& other) = default;
+  Joystick& operator=(const Joystick& other) = delete;
 
-public:
   /// Retrieves underlying JoystickRaw.
   constexpr JoystickRaw get() const noexcept { return m_resource; }
 

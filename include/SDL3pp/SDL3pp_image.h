@@ -31,16 +31,19 @@ struct Animation;
 /// Alias to raw representation for Animation.
 using AnimationRaw = IMG_Animation*;
 
+/// Alias to const raw representation for Animation.
+using AnimationRawConst = const IMG_Animation*;
+
 // Forward decl
 struct AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
 struct AnimationConstRef
 {
-  const AnimationRaw value; ///< parameter's const AnimationRaw
+  AnimationRawConst value; ///< parameter's Animation
 
-  /// Constructs from const AnimationRaw
-  constexpr AnimationConstRef(const AnimationRaw value)
+  /// Constructs from AnimationRawConst
+  constexpr AnimationConstRef(AnimationRawConst value)
     : value(value)
   {
   }
@@ -57,11 +60,17 @@ struct AnimationConstRef
   /// Comparison
   constexpr auto operator<=>(const AnimationConstRef& other) const = default;
 
-  /// Converts to underlying const AnimationRaw
-  constexpr operator const AnimationRaw() const { return value; }
+  /// Converts to underlying Animation
+  constexpr operator AnimationRawConst() const { return value; }
+
+  /// Converts to underlying Animation
+  constexpr operator AnimationRaw() const
+  {
+    return const_cast<AnimationRaw>(value);
+  }
 
   /// member access to underlying AnimationRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2686,25 +2695,20 @@ public:
   }
 
   /**
-   * Constructs from AnimationRef.
+   * Constructs from raw Animation.
    *
    * @param resource a AnimationRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Animation(const AnimationRaw resource) noexcept
+  constexpr explicit Animation(AnimationRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Animation(const Animation& other) noexcept
-    : Animation(other.m_resource)
-  {
-  }
+  constexpr Animation(const Animation& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Animation(Animation&& other) noexcept
     : Animation(other.release())
@@ -2768,10 +2772,7 @@ public:
   Animation(IOStreamRef src, bool closeio = false);
 
   /// member access to underlying AnimationRaw.
-  constexpr const AnimationRaw operator->() const noexcept
-  {
-    return m_resource;
-  }
+  constexpr AnimationRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying AnimationRaw.
   constexpr AnimationRaw operator->() noexcept { return m_resource; }
@@ -2789,11 +2790,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Animation& operator=(const Animation& other) = default;
+  Animation& operator=(const Animation& other) = delete;
 
-public:
   /// Retrieves underlying AnimationRaw.
   constexpr AnimationRaw get() const noexcept { return m_resource; }
 
@@ -3751,26 +3750,20 @@ public:
   }
 
   /**
-   * Constructs from AnimationEncoderRef.
+   * Constructs from raw AnimationEncoder.
    *
    * @param resource a AnimationEncoderRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AnimationEncoder(
-    const AnimationEncoderRaw resource) noexcept
+  constexpr explicit AnimationEncoder(AnimationEncoderRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept
-    : AnimationEncoder(other.m_resource)
-  {
-  }
+  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AnimationEncoder(AnimationEncoder&& other) noexcept
     : AnimationEncoder(other.release())
@@ -3898,11 +3891,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AnimationEncoder& operator=(const AnimationEncoder& other) = default;
+  AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
 
-public:
   /// Retrieves underlying AnimationEncoderRaw.
   constexpr AnimationEncoderRaw get() const noexcept { return m_resource; }
 
@@ -4285,26 +4276,20 @@ public:
   }
 
   /**
-   * Constructs from AnimationDecoderRef.
+   * Constructs from raw AnimationDecoder.
    *
    * @param resource a AnimationDecoderRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AnimationDecoder(
-    const AnimationDecoderRaw resource) noexcept
+  constexpr explicit AnimationDecoder(AnimationDecoderRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept
-    : AnimationDecoder(other.m_resource)
-  {
-  }
+  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AnimationDecoder(AnimationDecoder&& other) noexcept
     : AnimationDecoder(other.release())
@@ -4425,11 +4410,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AnimationDecoder& operator=(const AnimationDecoder& other) = default;
+  AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
 
-public:
   /// Retrieves underlying AnimationDecoderRaw.
   constexpr AnimationDecoderRaw get() const noexcept { return m_resource; }
 

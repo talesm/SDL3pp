@@ -3442,7 +3442,7 @@ const transform = {
       }
     },
     "SDL_pixels.h": {
-      localIncludes: ["SDL3pp_assert.h", "SDL3pp_spanRef.h", "SDL3pp_error.h", "SDL3pp_version.h"],
+      localIncludes: ["SDL3pp_assert.h", "SDL3pp_stdinc.h", "SDL3pp_version.h"],
       transform: {
         "SDL_PixelFormatDetails": {
           kind: "alias",
@@ -7550,14 +7550,6 @@ const transform = {
         "SDL_Thread": {
           resource: { free: "SDL_DetachThread" },
           entries: {
-            "Thread": {
-              kind: "function",
-              type: "",
-              parameters: [
-                { type: "ThreadCB", name: "fn" },
-                { type: "StringParam", name: "name" },
-              ]
-            },
             "SDL_CreateThread": "ctor",
             "SDL_CreateThreadWithProperties": "ctor",
             "SDL_GetThreadName": "immutable",
@@ -7568,6 +7560,24 @@ const transform = {
             "SDL_WaitThread": "function",
             "SDL_GetThreadState": "immutable",
           }
+        },
+        "CreateThread": {
+          after: "SDL_CreateThread",
+          kind: "function",
+          type: "Thread",
+          parameters: [
+            { type: "ThreadCB", name: "fn" },
+            { type: "StringParam", name: "name" },
+          ]
+        },
+        "Thread::Thread": {
+          kind: "function",
+          type: "",
+          static: false,
+          parameters: [
+            { type: "ThreadCB", name: "fn" },
+            { type: "StringParam", name: "name" },
+          ]
         },
         "SDL_TLSID": {
           type: "AtomicInt",

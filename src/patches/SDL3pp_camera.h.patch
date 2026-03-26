@@ -26,7 +26,7 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
-@@ -217,9 +227,9 @@
+@@ -212,9 +222,9 @@
     *
     * @param instance_id the camera device instance ID.
     * @param spec the desired format for data the device will provide. Can be
@@ -39,7 +39,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -347,8 +357,7 @@
+@@ -340,8 +350,7 @@
     * (or EVENT_CAMERA_DEVICE_DENIED) event, or poll Camera.GetPermissionState()
     * occasionally until it returns non-zero.
     *
@@ -49,7 +49,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -417,7 +426,7 @@
+@@ -410,7 +419,7 @@
     * The app should not use the surface again after calling this function;
     * assume the surface is freed and the pointer is invalid.
     *
@@ -58,7 +58,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -500,8 +509,12 @@
+@@ -493,8 +502,12 @@
    constexpr operator CameraRaw() const noexcept { return get(); }
  };
  
@@ -72,7 +72,7 @@
    /**
     * Acquire a frame.
     *
-@@ -531,7 +544,7 @@
+@@ -524,7 +537,7 @@
     * EVENT_CAMERA_DEVICE_DENIED) event, or poll Camera.GetPermissionState()
     * occasionally until it returns non-zero.
     *
@@ -81,7 +81,7 @@
     * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
     *                    error. Can be nullptr.
     * @post a new frame of video on success, nullptr if none is currently
-@@ -543,14 +556,15 @@
+@@ -536,14 +549,15 @@
     *
     * @sa Camera.ReleaseFrame
     */
@@ -99,7 +99,7 @@
    {
    }
  
-@@ -571,9 +585,6 @@
+@@ -564,9 +578,6 @@
     * The app should not use the surface again after calling this function;
     * assume the surface is freed and the pointer is invalid.
     *
@@ -109,19 +109,17 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -592,7 +603,10 @@
+@@ -584,9 +595,6 @@
+     return *this;
    }
  
-   /// True if not locked.
+-  /// True if not locked.
 -  constexpr operator bool() const { return bool(m_lock); }
-+  constexpr operator bool() const
-+  {
-+    return bool(m_lock) && Surface::operator bool();
-+  }
- 
+-
    /**
     * Release a frame of video acquired from a camera.
-@@ -611,9 +625,6 @@
+    *
+@@ -604,9 +612,6 @@
     * The app should not use the surface again after calling this function;
     * assume the surface is freed and the pointer is invalid.
     *
@@ -131,20 +129,17 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -626,7 +637,11 @@
-   CameraRef get() const { return m_lock; }
+@@ -617,9 +622,6 @@
  
-   /// Releases the lock without unlocking.
+   /// Get the reference to locked resource.
+   CameraRef resource() const { return m_lock; }
+-
+-  /// Releases the lock without unlocking.
 -  void release() { m_lock.release(); }
-+  void release()
-+  {
-+    Surface::release();
-+    m_lock.release();
-+  }
  };
  
  /**
-@@ -701,11 +716,8 @@
+@@ -694,11 +696,8 @@
  /**
   * Get a list of currently connected camera devices.
   *
@@ -157,7 +152,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -713,7 +725,12 @@
+@@ -706,7 +705,12 @@
   *
   * @sa Camera.Camera
   */
@@ -171,7 +166,7 @@
  
  /**
   * Get the list of native formats/sizes a camera supports.
-@@ -737,12 +754,8 @@
+@@ -730,12 +734,8 @@
   * warning popup.
   *
   * @param instance_id the camera device instance ID.
@@ -185,7 +180,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -753,7 +766,9 @@
+@@ -746,7 +746,9 @@
   */
  inline OwnArray<CameraSpec*> GetCameraSupportedFormats(CameraID instance_id)
  {
@@ -196,7 +191,7 @@
  }
  
  /**
-@@ -829,9 +844,9 @@
+@@ -822,9 +824,9 @@
   *
   * @param instance_id the camera device instance ID.
   * @param spec the desired format for data the device will provide. Can be
@@ -209,7 +204,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -926,7 +941,7 @@
+@@ -919,7 +921,7 @@
   */
  inline PropertiesRef GetCameraProperties(CameraRef camera)
  {
@@ -218,7 +213,7 @@
  }
  
  inline PropertiesRef Camera::GetProperties()
-@@ -947,8 +962,7 @@
+@@ -940,8 +942,7 @@
   * occasionally until it returns non-zero.
   *
   * @param camera opened camera device.
@@ -228,7 +223,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -958,7 +972,8 @@
+@@ -951,7 +952,8 @@
   */
  inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
  {
@@ -238,7 +233,7 @@
  }
  
  inline std::optional<CameraSpec> Camera::GetFormat()
-@@ -1009,7 +1024,7 @@
+@@ -1002,18 +1004,19 @@
  inline Surface AcquireCameraFrame(CameraRef camera,
                                    Uint64* timestampNS = nullptr)
  {
@@ -247,8 +242,9 @@
  }
  
  inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
-@@ -1017,10 +1032,11 @@
-   return {CameraRef(*this)};
+ {
+-  return {CameraRef(*this)};
++  return {CameraRef(*this), timestampNS};
  }
  
 -inline CameraFrame::CameraFrame(CameraRef resource)
@@ -262,7 +258,7 @@
  }
  
  /**
-@@ -1063,7 +1079,7 @@
+@@ -1056,7 +1059,7 @@
  inline void CameraFrame::reset()
  {
    if (!m_lock) return;

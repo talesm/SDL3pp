@@ -112,25 +112,20 @@ public:
   }
 
   /**
-   * Constructs from IOStreamRef.
+   * Constructs from raw IOStream.
    *
    * @param resource a IOStreamRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IOStream(const IOStreamRaw resource) noexcept
+  constexpr explicit IOStream(IOStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr IOStream(const IOStream& other) noexcept
-    : IOStream(other.m_resource)
-  {
-  }
+  constexpr IOStream(const IOStream& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr IOStream(IOStream&& other) noexcept
     : IOStream(other.release())
@@ -390,11 +385,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  IOStream& operator=(const IOStream& other) = default;
+  IOStream& operator=(const IOStream& other) = delete;
 
-public:
   /// Retrieves underlying IOStreamRaw.
   constexpr IOStreamRaw get() const noexcept { return m_resource; }
 
@@ -556,17 +549,17 @@ public:
   std::string Read(size_t size = -1)
   {
     Sint64 pos = Tell();
-    auto curSize = SDL_GetIOSize(get());
-    if ((curSize < 0 || pos < 0)) {
+    if (auto curSize = SDL_GetIOSize(get()); curSize < 0 || pos < 0) {
       if (size == size_t(-1)) return {};
     } else if (curSize - pos <= 0) {
       return {};
-    } else if (curSize - pos < size) {
+    } else if (size_t(curSize - pos) < size) {
       size = curSize - pos;
     }
     std::string result(size, 0);
-    auto actualSize = Read(result);
-    if (actualSize < size) result.resize(actualSize);
+    if (auto actualSize = Read(result); actualSize < size) {
+      result.resize(actualSize);
+    }
     return result;
   }
 

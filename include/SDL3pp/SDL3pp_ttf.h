@@ -72,16 +72,19 @@ struct Text;
 /// Alias to raw representation for Text.
 using TextRaw = TTF_Text*;
 
+/// Alias to const raw representation for Text.
+using TextRawConst = const TTF_Text*;
+
 // Forward decl
 struct TextRef;
 
 /// Safely wrap Text for non owning const parameters
 struct TextConstRef
 {
-  const TextRaw value; ///< parameter's const TextRaw
+  TextRawConst value; ///< parameter's Text
 
-  /// Constructs from const TextRaw
-  constexpr TextConstRef(const TextRaw value)
+  /// Constructs from TextRawConst
+  constexpr TextConstRef(TextRawConst value)
     : value(value)
   {
   }
@@ -98,11 +101,14 @@ struct TextConstRef
   /// Comparison
   constexpr auto operator<=>(const TextConstRef& other) const = default;
 
-  /// Converts to underlying const TextRaw
-  constexpr operator const TextRaw() const { return value; }
+  /// Converts to underlying Text
+  constexpr operator TextRawConst() const { return value; }
+
+  /// Converts to underlying Text
+  constexpr operator TextRaw() const { return const_cast<TextRaw>(value); }
 
   /// member access to underlying TextRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #ifdef SDL3PP_DOC
@@ -397,25 +403,20 @@ public:
   }
 
   /**
-   * Constructs from FontRef.
+   * Constructs from raw Font.
    *
    * @param resource a FontRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Font(const FontRaw resource) noexcept
+  constexpr explicit Font(FontRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Font(const Font& other) noexcept
-    : Font(other.m_resource)
-  {
-  }
+  constexpr Font(const Font& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Font(Font&& other) noexcept
     : Font(other.release())
@@ -526,11 +527,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Font& operator=(const Font& other) = default;
+  Font& operator=(const Font& other) = delete;
 
-public:
   /// Retrieves underlying FontRaw.
   constexpr FontRaw get() const noexcept { return m_resource; }
 
@@ -3981,25 +3980,20 @@ public:
   }
 
   /**
-   * Constructs from TextEngineRef.
+   * Constructs from raw TextEngine.
    *
    * @param resource a TextEngineRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit TextEngine(const TextEngineRaw resource) noexcept
+  constexpr explicit TextEngine(TextEngineRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) noexcept
-    : TextEngine(other.m_resource)
-  {
-  }
+  constexpr TextEngine(const TextEngine& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr TextEngine(TextEngine&& other) noexcept
     : TextEngine(other.release())
@@ -4016,11 +4010,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  TextEngine& operator=(const TextEngine& other) = default;
+  TextEngine& operator=(const TextEngine& other) = delete;
 
-public:
   /// Retrieves underlying TextEngineRaw.
   constexpr TextEngineRaw get() const noexcept { return m_resource; }
 
@@ -4077,7 +4069,11 @@ struct SurfaceTextEngine : TextEngine
    */
   SurfaceTextEngine();
 
-  ~SurfaceTextEngine() { Destroy(); }
+  SurfaceTextEngine(const SurfaceTextEngine&) = delete;
+
+  SurfaceTextEngine& operator=(const SurfaceTextEngine&) = delete;
+
+  ~SurfaceTextEngine() final { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on SDL surfaces.
@@ -4142,7 +4138,11 @@ struct RendererTextEngine : TextEngine
    */
   RendererTextEngine(PropertiesRef props);
 
-  ~RendererTextEngine() { Destroy(); }
+  RendererTextEngine(const RendererTextEngine&) = delete;
+
+  RendererTextEngine& operator=(const RendererTextEngine&) = delete;
+
+  ~RendererTextEngine() final { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on an SDL renderer.
@@ -4207,7 +4207,11 @@ struct GPUTextEngine : TextEngine
    */
   GPUTextEngine(PropertiesRef props);
 
-  ~GPUTextEngine() { Destroy(); }
+  GPUTextEngine(const GPUTextEngine&) = delete;
+
+  GPUTextEngine& operator=(const GPUTextEngine&) = delete;
+
+  ~GPUTextEngine() final { Destroy(); }
 
   /**
    * Sets the winding order of the vertices returned by Text.GetGPUDrawData for
@@ -4312,25 +4316,20 @@ public:
   }
 
   /**
-   * Constructs from TextRef.
+   * Constructs from raw Text.
    *
    * @param resource a TextRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Text(const TextRaw resource) noexcept
+  constexpr explicit Text(TextRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Text(const Text& other) noexcept
-    : Text(other.m_resource)
-  {
-  }
+  constexpr Text(const Text& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Text(Text&& other) noexcept
     : Text(other.release())
@@ -4361,7 +4360,7 @@ public:
   Text(TextEngineRef engine, FontRef font, std::string_view text);
 
   /// member access to underlying TextRaw.
-  constexpr const TextRaw operator->() const noexcept { return m_resource; }
+  constexpr TextRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextRaw.
   constexpr TextRaw operator->() noexcept { return m_resource; }
@@ -4379,11 +4378,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Text& operator=(const Text& other) = default;
+  Text& operator=(const Text& other) = delete;
 
-public:
   /// Retrieves underlying TextRaw.
   constexpr TextRaw get() const noexcept { return m_resource; }
 
@@ -5276,7 +5273,7 @@ class SubStringIterator
 
   SubStringIterator(TextRef text)
     : m_text(text)
-    , m_subString(0)
+    , m_subString()
   {
   }
 

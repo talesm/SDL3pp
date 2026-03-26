@@ -163,25 +163,20 @@ public:
   }
 
   /**
-   * Constructs from CursorRef.
+   * Constructs from raw Cursor.
    *
    * @param resource a CursorRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Cursor(const CursorRaw resource) noexcept
+  constexpr explicit Cursor(CursorRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) noexcept
-    : Cursor(other.m_resource)
-  {
-  }
+  constexpr Cursor(const Cursor& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
@@ -297,11 +292,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Cursor& operator=(const Cursor& other) = default;
+  Cursor& operator=(const Cursor& other) = delete;
 
-public:
   /// Retrieves underlying CursorRaw.
   constexpr CursorRaw get() const noexcept { return m_resource; }
 

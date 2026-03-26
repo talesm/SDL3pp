@@ -805,25 +805,20 @@ public:
   }
 
   /**
-   * Constructs from AudioDeviceRef.
+   * Constructs from raw AudioDevice.
    *
    * @param resource a AudioDeviceID to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDevice(const AudioDeviceID resource) noexcept
+  constexpr explicit AudioDevice(AudioDeviceID resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AudioDevice(const AudioDevice& other) noexcept
-    : AudioDevice(other.m_resource)
-  {
-  }
+  constexpr AudioDevice(const AudioDevice& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AudioDevice(AudioDevice&& other) noexcept
     : AudioDevice(other.release())
@@ -917,11 +912,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioDevice& operator=(const AudioDevice& other) = default;
+  AudioDevice& operator=(const AudioDevice& other) = delete;
 
-public:
   /// Retrieves underlying AudioDeviceID.
   constexpr AudioDeviceID get() const noexcept { return m_resource; }
 
@@ -1689,25 +1682,20 @@ public:
   }
 
   /**
-   * Constructs from AudioStreamRef.
+   * Constructs from raw AudioStream.
    *
    * @param resource a AudioStreamRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioStream(const AudioStreamRaw resource) noexcept
+  constexpr explicit AudioStream(AudioStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AudioStream(const AudioStream& other) noexcept
-    : AudioStream(other.m_resource)
-  {
-  }
+  constexpr AudioStream(const AudioStream& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AudioStream(AudioStream&& other) noexcept
     : AudioStream(other.release())
@@ -1870,11 +1858,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioStream& operator=(const AudioStream& other) = default;
+  AudioStream& operator=(const AudioStream& other) = delete;
 
-public:
   /// Retrieves underlying AudioStreamRaw.
   constexpr AudioStreamRaw get() const noexcept { return m_resource; }
 
@@ -3090,7 +3076,11 @@ public:
    *
    * @sa AudioStream.Lock
    */
-  ~AudioStreamLock() { reset(); }
+  ~AudioStreamLock()
+  {
+    if (!m_lock) return;
+    SDL_UnlockAudioStream(m_lock);
+  }
 
   AudioStreamLock& operator=(const AudioStreamLock& other) = delete;
 
@@ -3121,7 +3111,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  AudioStreamRef get() const { return m_lock; }
+  AudioStreamRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -3741,7 +3731,7 @@ inline void BindAudioStreams(AudioDeviceRef devid,
   CheckError(SDL_BindAudioStreams(
     devid,
     reinterpret_cast<SDL_AudioStream* const*>(streams.data()),
-    streams.size()));
+    narrowS32(streams.size())));
 }
 
 inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
@@ -3798,7 +3788,8 @@ inline void AudioDevice::BindAudioStream(AudioStreamRef stream)
 inline void UnbindAudioStreams(std::span<AudioStreamRef> streams)
 {
   SDL_UnbindAudioStreams(
-    reinterpret_cast<SDL_AudioStream* const*>(streams.data()), streams.size());
+    reinterpret_cast<SDL_AudioStream* const*>(streams.data()),
+    narrowS32(streams.size()));
 }
 
 /**
@@ -4266,8 +4257,8 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
 inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
                                           std::span<int> chmap)
 {
-  CheckError(
-    SDL_SetAudioStreamInputChannelMap(stream, chmap.data(), chmap.size()));
+  CheckError(SDL_SetAudioStreamInputChannelMap(
+    stream, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
@@ -4332,8 +4323,8 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
 inline void SetAudioStreamOutputChannelMap(AudioStreamRef stream,
                                            std::span<int> chmap)
 {
-  CheckError(
-    SDL_SetAudioStreamOutputChannelMap(stream, chmap.data(), chmap.size()));
+  CheckError(SDL_SetAudioStreamOutputChannelMap(
+    stream, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
@@ -4369,7 +4360,8 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  */
 inline void PutAudioStreamData(AudioStreamRef stream, SourceBytes buf)
 {
-  CheckError(SDL_PutAudioStreamData(stream, buf.data(), buf.size_bytes()));
+  CheckError(
+    SDL_PutAudioStreamData(stream, buf.data(), narrowS32(buf.size_bytes())));
 }
 
 inline void AudioStream::PutData(SourceBytes buf)
@@ -4428,7 +4420,7 @@ inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                                      void* userdata)
 {
   CheckError(SDL_PutAudioStreamDataNoCopy(
-    stream, buf.data(), buf.size_bytes(), callback, userdata));
+    stream, buf.data(), narrowS32(buf.size_bytes()), callback, userdata));
 }
 
 /**
@@ -4493,7 +4485,8 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
 inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCB callback)
 {
-  SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback);
+  SDL::PutAudioStreamDataNoCopy(
+    m_resource, std::move(buf), std::move(callback));
 }
 
 /**
@@ -4592,7 +4585,8 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
  */
 inline int GetAudioStreamData(AudioStreamRef stream, TargetBytes buf)
 {
-  return SDL_GetAudioStreamData(stream, buf.data(), buf.size_bytes());
+  return SDL_GetAudioStreamData(
+    stream, buf.data(), narrowS32(buf.size_bytes()));
 }
 
 inline int AudioStream::GetData(TargetBytes buf)
@@ -4875,8 +4869,8 @@ inline void UnlockAudioStream(AudioStreamRef stream)
 
 inline void AudioStream::Unlock(AudioStreamLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void AudioStreamLock::reset()
@@ -5535,8 +5529,8 @@ inline void MixAudio(Uint8* dst,
                      AudioFormat format,
                      float volume)
 {
-  CheckError(
-    SDL_MixAudio(dst, src.data_as<Uint8>(), format, src.size_bytes(), volume));
+  CheckError(SDL_MixAudio(
+    dst, src.data_as<Uint8>(), format, narrowS32(src.size_bytes()), volume));
 }
 
 /**
@@ -5614,7 +5608,7 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
   int len;
   CheckError(SDL_ConvertAudioSamples(&src_spec,
                                      src_data.data_as<Uint8>(),
-                                     src_data.size_bytes(),
+                                     narrowS32(src_data.size_bytes()),
                                      &dst_spec,
                                      &buf,
                                      &len));

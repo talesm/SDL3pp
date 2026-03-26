@@ -45,16 +45,19 @@ struct Surface;
 /// Alias to raw representation for Surface.
 using SurfaceRaw = SDL_Surface*;
 
+/// Alias to const raw representation for Surface.
+using SurfaceRawConst = const SDL_Surface*;
+
 // Forward decl
 struct SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
 struct SurfaceConstRef
 {
-  const SurfaceRaw value; ///< parameter's const SurfaceRaw
+  SurfaceRawConst value; ///< parameter's Surface
 
-  /// Constructs from const SurfaceRaw
-  constexpr SurfaceConstRef(const SurfaceRaw value)
+  /// Constructs from SurfaceRawConst
+  constexpr SurfaceConstRef(SurfaceRawConst value)
     : value(value)
   {
   }
@@ -71,11 +74,17 @@ struct SurfaceConstRef
   /// Comparison
   constexpr auto operator<=>(const SurfaceConstRef& other) const = default;
 
-  /// Converts to underlying const SurfaceRaw
-  constexpr operator const SurfaceRaw() const { return value; }
+  /// Converts to underlying Surface
+  constexpr operator SurfaceRawConst() const { return value; }
+
+  /// Converts to underlying Surface
+  constexpr operator SurfaceRaw() const
+  {
+    return const_cast<SurfaceRaw>(value);
+  }
 
   /// member access to underlying SurfaceRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 // Forward decl
@@ -199,13 +208,13 @@ public:
   }
 
   /**
-   * Constructs from SurfaceRef.
+   * Constructs from raw Surface.
    *
    * @param resource a SurfaceRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Surface(const SurfaceRaw resource) noexcept
+  constexpr explicit Surface(SurfaceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -466,7 +475,7 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /// member access to underlying SurfaceRaw.
-  constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
+  constexpr SurfaceRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying SurfaceRaw.
   constexpr SurfaceRaw operator->() noexcept { return m_resource; }
@@ -485,7 +494,14 @@ public:
   }
 
   /// Assignment operator.
-  Surface& operator=(const Surface& other) = default;
+  Surface& operator=(const Surface& other)
+  {
+    if (m_resource != other.m_resource) {
+      Surface tmp(other);
+      std::swap(m_resource, tmp.m_resource);
+    }
+    return *this;
+  }
 
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const noexcept { return m_resource; }
@@ -2282,7 +2298,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  SurfaceRef get() const { return m_lock; }
+  SurfaceRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -2769,8 +2785,8 @@ inline void UnlockSurface(SurfaceRef surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock(SurfaceLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void SurfaceLock::reset()
@@ -3983,7 +3999,8 @@ inline void FillSurfaceRects(SurfaceRef dst,
                              SpanRef<const RectRaw> rects,
                              Uint32 color)
 {
-  CheckError(SDL_FillSurfaceRects(dst, rects.data(), rects.size(), color));
+  CheckError(
+    SDL_FillSurfaceRects(dst, rects.data(), narrowS32(rects.size()), color));
 }
 
 inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
@@ -4155,7 +4172,7 @@ inline void BlitSurfaceAt(SurfaceRef src,
                           SurfaceRef dst,
                           const PointRaw& dstpos)
 {
-  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
+  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y, 0, 0});
 }
 
 /**

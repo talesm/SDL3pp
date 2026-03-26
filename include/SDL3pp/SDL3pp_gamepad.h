@@ -399,25 +399,20 @@ public:
   }
 
   /**
-   * Constructs from GamepadRef.
+   * Constructs from raw Gamepad.
    *
    * @param resource a GamepadRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Gamepad(const GamepadRaw resource) noexcept
+  constexpr explicit Gamepad(GamepadRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) noexcept
-    : Gamepad(other.m_resource)
-  {
-  }
+  constexpr Gamepad(const Gamepad& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Gamepad(Gamepad&& other) noexcept
     : Gamepad(other.release())
@@ -454,11 +449,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Gamepad& operator=(const Gamepad& other) = default;
+  Gamepad& operator=(const Gamepad& other) = delete;
 
-public:
   /// Retrieves underlying GamepadRaw.
   constexpr GamepadRaw get() const noexcept { return m_resource; }
 

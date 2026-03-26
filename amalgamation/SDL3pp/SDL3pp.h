@@ -1719,6 +1719,9 @@ struct StringResult : OwnArray<char>
   {
   }
 
+  /// Dtor
+  ~StringResult() { reset(); };
+
   /// Convert to StringParam
   operator StringParam() const { return std::string_view{*this}; }
 
@@ -2655,8 +2658,7 @@ inline bool SetErrorUnformatted(StringParam message)
 template<class... ARGS>
 inline bool SetError(std::string_view fmt, ARGS... args)
 {
-  return SetError(
-    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+  return SetError(std::vformat(fmt, std::make_format_args(args...)));
 }
 
 /**
@@ -2730,7 +2732,10 @@ public:
   }
 
   /// Returns the explanatory string.
-  constexpr const char* what() const noexcept { return m_message.c_str(); }
+  constexpr const char* what() const noexcept final
+  {
+    return m_message.c_str();
+  }
 
   /**
    * Returns the explanatory string.
@@ -8943,3169 +8948,6 @@ inline void ResetLogOutputFunction()
 /// @}
 
 /**
- * @defgroup CategoryPixels Pixel Formats and Conversion Routines
- *
- * SDL offers facilities for pixel management.
- *
- * Largely these facilities deal with pixel _format_: what does this set of bits
- * represent?
- *
- * If you mostly want to think of a pixel as some combination of red, green,
- * blue, and maybe alpha intensities, this is all pretty straightforward, and in
- * many cases, is enough information to build a perfectly fine game.
- *
- * However, the actual definition of a pixel is more complex than that:
- *
- * Pixels are a representation of a color in a particular color space.
- *
- * The first characteristic of a color space is the color type. SDL understands
- * two different color types, RGB and YCbCr, or in SDL also referred to as YUV.
- *
- * RGB colors consist of red, green, and blue channels of color that are added
- * together to represent the colors we see on the screen.
- *
- * https://en.wikipedia.org/wiki/RGB_color_model
- *
- * YCbCr colors represent colors as a Y luma brightness component and red and
- * blue chroma color offsets. This color representation takes advantage of the
- * fact that the human eye is more sensitive to brightness than the color in an
- * image. The Cb and Cr components are often compressed and have lower
- * resolution than the luma component.
- *
- * https://en.wikipedia.org/wiki/YCbCr
- *
- * When the color information in YCbCr is compressed, the Y pixels are left at
- * full resolution and each Cr and Cb pixel represents an average of the color
- * information in a block of Y pixels. The chroma location determines where in
- * that block of pixels the color information is coming from.
- *
- * The color range defines how much of the pixel to use when converting a pixel
- * into a color on the display. When the full color range is used, the entire
- * numeric range of the pixel bits is significant. When narrow color range is
- * used, for historical reasons, the pixel uses only a portion of the numeric
- * range to represent colors.
- *
- * The color primaries and white point are a definition of the colors in the
- * color space relative to the standard XYZ color space.
- *
- * https://en.wikipedia.org/wiki/CIE_1931_color_space
- *
- * The transfer characteristic, or opto-electrical transfer function (OETF), is
- * the way a color is converted from mathematically linear space into a
- * non-linear output signals.
- *
- * https://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics
- *
- * The matrix coefficients are used to convert between YCbCr and RGB colors.
- *
- * @{
- */
-
-/// Alias to raw representation for PixelFormat.
-using PixelFormatRaw = SDL_PixelFormat;
-
-// Forward decl
-struct PixelFormat;
-
-/// Alias to raw representation for Colorspace.
-using ColorspaceRaw = SDL_Colorspace;
-
-// Forward decl
-struct Colorspace;
-
-/// Alias to raw representation for Color.
-using ColorRaw = SDL_Color;
-
-// Forward decl
-struct Color;
-
-/// Alias to raw representation for FColor.
-using FColorRaw = SDL_FColor;
-
-// Forward decl
-struct FColor;
-
-// Forward decl
-struct Palette;
-
-/// Alias to raw representation for Palette.
-using PaletteRaw = SDL_Palette*;
-
-// Forward decl
-struct PaletteRef;
-
-/// Safely wrap Palette for non owning const parameters
-struct PaletteConstRef
-{
-  const PaletteRaw value; ///< parameter's const PaletteRaw
-
-  /// Constructs from const PaletteRaw
-  constexpr PaletteConstRef(const PaletteRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr PaletteConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const PaletteConstRef& other) const = default;
-
-  /// Converts to underlying const PaletteRaw
-  constexpr operator const PaletteRaw() const { return value; }
-
-  /// member access to underlying PaletteRaw.
-  constexpr auto operator->() { return value; }
-};
-
-/**
- * Details about the format of a pixel.
- *
- * @since This struct is available since SDL 3.2.0.
- */
-using PixelFormatDetails = SDL_PixelFormatDetails;
-
-/**
- * A fully opaque 8-bit alpha value.
- *
- * @since This constant is available since SDL 3.2.0.
- *
- * @sa ALPHA_TRANSPARENT
- */
-constexpr Uint8 ALPHA_OPAQUE = SDL_ALPHA_OPAQUE;
-
-/**
- * A fully opaque floating point alpha value.
- *
- * @since This constant is available since SDL 3.2.0.
- *
- * @sa ALPHA_TRANSPARENT_FLOAT
- */
-constexpr float ALPHA_OPAQUE_FLOAT = SDL_ALPHA_OPAQUE_FLOAT;
-
-/**
- * A fully transparent 8-bit alpha value.
- *
- * @since This constant is available since SDL 3.2.0.
- *
- * @sa ALPHA_OPAQUE
- */
-constexpr Uint8 ALPHA_TRANSPARENT = SDL_ALPHA_TRANSPARENT;
-
-/**
- * A fully transparent floating point alpha value.
- *
- * @since This constant is available since SDL 3.2.0.
- *
- * @sa ALPHA_OPAQUE_FLOAT
- */
-constexpr float ALPHA_TRANSPARENT_FLOAT = SDL_ALPHA_TRANSPARENT_FLOAT;
-
-/**
- * Pixel type.
- *
- * @name PixelTypes
- * @{
- */
-
-/**
- * Pixel type.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using PixelType = SDL_PixelType;
-
-constexpr PixelType PIXELTYPE_UNKNOWN = SDL_PIXELTYPE_UNKNOWN; ///< UNKNOWN
-
-constexpr PixelType PIXELTYPE_INDEX1 = SDL_PIXELTYPE_INDEX1; ///< INDEX1
-
-constexpr PixelType PIXELTYPE_INDEX4 = SDL_PIXELTYPE_INDEX4; ///< INDEX4
-
-constexpr PixelType PIXELTYPE_INDEX8 = SDL_PIXELTYPE_INDEX8; ///< INDEX8
-
-constexpr PixelType PIXELTYPE_PACKED8 = SDL_PIXELTYPE_PACKED8; ///< PACKED8
-
-constexpr PixelType PIXELTYPE_PACKED16 = SDL_PIXELTYPE_PACKED16; ///< PACKED16
-
-constexpr PixelType PIXELTYPE_PACKED32 = SDL_PIXELTYPE_PACKED32; ///< PACKED32
-
-constexpr PixelType PIXELTYPE_ARRAYU8 = SDL_PIXELTYPE_ARRAYU8; ///< ARRAYU8
-
-constexpr PixelType PIXELTYPE_ARRAYU16 = SDL_PIXELTYPE_ARRAYU16; ///< ARRAYU16
-
-constexpr PixelType PIXELTYPE_ARRAYU32 = SDL_PIXELTYPE_ARRAYU32; ///< ARRAYU32
-
-constexpr PixelType PIXELTYPE_ARRAYF16 = SDL_PIXELTYPE_ARRAYF16; ///< ARRAYF16
-
-constexpr PixelType PIXELTYPE_ARRAYF32 = SDL_PIXELTYPE_ARRAYF32; ///< ARRAYF32
-
-constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2; ///< INDEX2
-
-/// @}
-
-/**
- * @name BitmapOrders
- * @{
- */
-
-/**
- * Bitmap pixel order, high bit -> low bit.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using BitmapOrder = SDL_BitmapOrder;
-
-constexpr BitmapOrder BITMAPORDER_NONE = SDL_BITMAPORDER_NONE; ///< NONE
-
-constexpr BitmapOrder BITMAPORDER_4321 = SDL_BITMAPORDER_4321; ///< 4321
-
-constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234; ///< 1234
-
-/// @}
-
-/**
- * @name PackedOrders
- * @{
- */
-
-/**
- * Packed component order, high bit -> low bit.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using PackedOrder = SDL_PackedOrder;
-
-constexpr PackedOrder PACKEDORDER_NONE = SDL_PACKEDORDER_NONE; ///< NONE
-
-constexpr PackedOrder PACKEDORDER_XRGB = SDL_PACKEDORDER_XRGB; ///< XRGB
-
-constexpr PackedOrder PACKEDORDER_RGBX = SDL_PACKEDORDER_RGBX; ///< RGBX
-
-constexpr PackedOrder PACKEDORDER_ARGB = SDL_PACKEDORDER_ARGB; ///< ARGB
-
-constexpr PackedOrder PACKEDORDER_RGBA = SDL_PACKEDORDER_RGBA; ///< RGBA
-
-constexpr PackedOrder PACKEDORDER_XBGR = SDL_PACKEDORDER_XBGR; ///< XBGR
-
-constexpr PackedOrder PACKEDORDER_BGRX = SDL_PACKEDORDER_BGRX; ///< BGRX
-
-constexpr PackedOrder PACKEDORDER_ABGR = SDL_PACKEDORDER_ABGR; ///< ABGR
-
-constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA; ///< BGRA
-
-/// @}
-
-/**
- * @name ArrayOrders
- * @{
- */
-
-/**
- * Array component order, low byte -> high byte.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ArrayOrder = SDL_ArrayOrder;
-
-constexpr ArrayOrder ARRAYORDER_NONE = SDL_ARRAYORDER_NONE; ///< NONE
-
-constexpr ArrayOrder ARRAYORDER_RGB = SDL_ARRAYORDER_RGB; ///< RGB
-
-constexpr ArrayOrder ARRAYORDER_RGBA = SDL_ARRAYORDER_RGBA; ///< RGBA
-
-constexpr ArrayOrder ARRAYORDER_ARGB = SDL_ARRAYORDER_ARGB; ///< ARGB
-
-constexpr ArrayOrder ARRAYORDER_BGR = SDL_ARRAYORDER_BGR; ///< BGR
-
-constexpr ArrayOrder ARRAYORDER_BGRA = SDL_ARRAYORDER_BGRA; ///< BGRA
-
-constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR; ///< ABGR
-
-/// @}
-
-/**
- * @name PackedLayouts
- * @{
- */
-
-/**
- * Packed component layout.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using PackedLayout = SDL_PackedLayout;
-
-constexpr PackedLayout PACKEDLAYOUT_NONE = SDL_PACKEDLAYOUT_NONE; ///< NONE
-
-constexpr PackedLayout PACKEDLAYOUT_332 = SDL_PACKEDLAYOUT_332; ///< 332
-
-constexpr PackedLayout PACKEDLAYOUT_4444 = SDL_PACKEDLAYOUT_4444; ///< 4444
-
-constexpr PackedLayout PACKEDLAYOUT_1555 = SDL_PACKEDLAYOUT_1555; ///< 1555
-
-constexpr PackedLayout PACKEDLAYOUT_5551 = SDL_PACKEDLAYOUT_5551; ///< 5551
-
-constexpr PackedLayout PACKEDLAYOUT_565 = SDL_PACKEDLAYOUT_565; ///< 565
-
-constexpr PackedLayout PACKEDLAYOUT_8888 = SDL_PACKEDLAYOUT_8888; ///< 8888
-
-constexpr PackedLayout PACKEDLAYOUT_2101010 =
-  SDL_PACKEDLAYOUT_2101010; ///< 2101010
-
-constexpr PackedLayout PACKEDLAYOUT_1010102 =
-  SDL_PACKEDLAYOUT_1010102; ///< 1010102
-
-/// @}
-
-/**
- * @name PixelFormats
- * @{
- */
-
-/**
- * Pixel format.
- *
- * SDL's pixel formats have the following naming convention:
- *
- * - Names with a list of components and a single bit count, such as RGB24 and
- *   ABGR32, define a platform-independent encoding into bytes in the order
- *   specified. For example, in RGB24 data, each pixel is encoded in 3 bytes
- *   (red, green, blue) in that order, and in ABGR32 data, each pixel is encoded
- *   in 4 bytes (alpha, blue, green, red) in that order. Use these names if the
- *   property of a format that is important to you is the order of the bytes in
- *   memory or on disk.
- * - Names with a bit count per component, such as ARGB8888 and XRGB1555, are
- *   "packed" into an appropriately-sized integer in the platform's native
- *   endianness. For example, ARGB8888 is a sequence of 32-bit integers; in each
- *   integer, the most significant bits are alpha, and the least significant
- *   bits are blue. On a little-endian CPU such as x86, the least significant
- *   bits of each integer are arranged first in memory, but on a big-endian CPU
- *   such as s390x, the most significant bits are arranged first. Use these
- *   names if the property of a format that is important to you is the meaning
- *   of each bit position within a native-endianness integer.
- * - In indexed formats such as INDEX4LSB, each pixel is represented by encoding
- *   an index into the palette into the indicated number of bits, with multiple
- *   pixels packed into each byte if appropriate. In LSB formats, the first
- *   (leftmost) pixel is stored in the least-significant bits of the byte; in
- *   MSB formats, it's stored in the most-significant bits. INDEX8 does not need
- *   LSB/MSB variants, because each pixel exactly fills one byte.
- *
- * The 32-bit byte-array encodings such as RGBA32 are aliases for the
- * appropriate 8888 encoding for the current platform. For example, RGBA32 is an
- * alias for ABGR8888 on little-endian CPUs like x86, or an alias for RGBA8888
- * on big-endian CPUs.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @cat wrap-state
- *
- * @sa wrap-state
- * @sa PixelFormats
- */
-class PixelFormat
-{
-  PixelFormatRaw m_format;
-
-public:
-  /**
-   * Wraps PixelFormat.
-   *
-   * @param format the value to be wrapped
-   */
-  constexpr PixelFormat(PixelFormatRaw format = {}) noexcept
-    : m_format(format)
-  {
-  }
-
-  /**
-   * Defining custom non-FourCC pixel formats.
-   *
-   * For example, defining PIXELFORMAT_RGBA8888 looks like this:
-   *
-   * ```cpp
-   * PixelFormat format(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
-   * PACKEDLAYOUT_8888, 32, 4)
-   * ```
-   *
-   * @param type the type of the new format, probably a PixelType value.
-   * @param order the order of the new format, probably a BitmapOrder,
-   *              PackedOrder, or ArrayOrder value.
-   * @param layout the layout of the new format, probably an PackedLayout value
-   *               or zero.
-   * @param bits the number of bits per pixel of the new format.
-   * @param bytes the number of bytes per pixel of the new format.
-   * @post a format value in the style of PixelFormat.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr PixelFormat(PixelType type,
-                        int order,
-                        PackedLayout layout,
-                        int bits,
-                        int bytes);
-
-  /**
-   * Unwraps to the underlying PixelFormat.
-   *
-   * @returns the underlying PixelFormatRaw.
-   */
-  constexpr operator PixelFormatRaw() const noexcept { return m_format; }
-
-  /**
-   * Convert a bpp value and RGBA masks to an enumerated pixel format.
-   *
-   * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't possible.
-   *
-   * @param bpp a bits per pixel value; usually 15, 16, or 32.
-   * @param Rmask the red mask for the format.
-   * @param Gmask the green mask for the format.
-   * @param Bmask the blue mask for the format.
-   * @param Amask the alpha mask for the format.
-   * @returns the PixelFormat value corresponding to the format masks, or
-   *          PIXELFORMAT_UNKNOWN if there isn't a match.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PixelFormat.GetMasks
-   */
-  static PixelFormat ForMasks(int bpp,
-                              Uint32 Rmask,
-                              Uint32 Gmask,
-                              Uint32 Bmask,
-                              Uint32 Amask);
-
-  /**
-   * Retrieve the flags of an PixelFormat.
-   *
-   * This function is generally not needed directly by an app, which should use
-   * specific tests, like PixelFormat.IsFourCC, instead.
-   *
-   * @returns the flags of `format`.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr Uint8 GetFlags() const;
-
-  /**
-   * Retrieve the type.
-   *
-   * @returns the type as PixelType.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr PixelType GetType() const;
-
-  /**
-   * Retrieve the order.
-   *
-   * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
-   * enumerations, depending on the format type.
-   *
-   * @returns the order.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr int GetOrder() const;
-
-  /**
-   * Retrieve the layout.
-   *
-   * This is usually a value from the PackedLayout enumeration, or zero if a
-   * layout doesn't make sense for the format type.
-   *
-   * @returns the layout
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr PackedLayout GetLayout() const;
-
-  /**
-   * Determine this's bits per pixel.
-   *
-   * FourCC formats will report zero here, as it rarely makes sense to measure
-   * them per-pixel.
-   *
-   * @returns the bits-per-pixel.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetBytesPerPixel
-   */
-  constexpr int GetBitsPerPixel() const;
-
-  /**
-   * Determine this's bytes per pixel.
-   *
-   * Note that this macro double-evaluates its parameter, so do not use
-   * expressions with side-effects here.
-   *
-   * FourCC formats do their best here, but many of them don't have a meaningful
-   * measurement of bytes per pixel.
-   *
-   * @return the bytes-per-pixel.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetBitsPerPixel
-   */
-  constexpr int GetBytesPerPixel() const;
-
-  /**
-   * Determine if this is an indexed format.
-   *
-   * @returns true if the format is indexed, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsIndexed() const;
-
-  /**
-   * Determine if this is a packed format.
-   *
-   * @returns true if the format is packed, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsPacked() const;
-
-  /**
-   * Determine if this is an array format.
-   *
-   * @returns true if the format is an array, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsArray() const;
-
-  /**
-   * Determine if this is a 10-bit format.
-   *
-   * @returns true if the format is 10-bit, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool Is10Bit() const;
-
-  /**
-   * Determine if this is a floating point format.
-   *
-   * @returns true if the format is a floating point, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsFloat() const;
-
-  /**
-   * Determine if this has an alpha channel.
-   *
-   * @returns true if the format has alpha, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsAlpha() const;
-
-  /**
-   * Determine if this is a "FourCC" format.
-   *
-   * This covers custom and other unusual formats.
-   *
-   * @returns true if the format has alpha, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsFourCC() const;
-
-  /**
-   * Get the human readable name of a pixel format.
-   *
-   * @returns the human readable name of the specified pixel format or
-   *          "PIXELFORMAT_UNKNOWN" if the format isn't recognized.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  const char* GetName() const;
-
-  /**
-   * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
-   *
-   * @param bpp a bits per pixel value; usually 15, 16, or 32.
-   * @param Rmask a pointer filled in with the red mask for the format.
-   * @param Gmask a pointer filled in with the green mask for the format.
-   * @param Bmask a pointer filled in with the blue mask for the format.
-   * @param Amask a pointer filled in with the alpha mask for the format.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PixelFormat.ForMasks
-   */
-  void GetMasks(int* bpp,
-                Uint32* Rmask,
-                Uint32* Gmask,
-                Uint32* Bmask,
-                Uint32* Amask) const;
-
-  /**
-   * Create an PixelFormatDetails structure corresponding to a pixel format.
-   *
-   * Returned structure may come from a shared global cache (i.e. not newly
-   * allocated), and hence should not be modified, especially the palette. Weird
-   * errors such as `Blit combination not supported` may occur.
-   *
-   * @returns a PixelFormatDetails structure on success
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  const PixelFormatDetails& GetDetails() const;
-
-  /// Same as GetDetails()
-  operator const PixelFormatDetails&() const;
-
-  /**
-   * Map an RGBA quadruple to a pixel value for a given pixel format.
-   *
-   * This function maps the RGBA color value to the specified pixel format and
-   * returns the pixel value best approximating the given RGBA color value for
-   * the given pixel format.
-   *
-   * If the specified pixel format has no alpha component the alpha value will
-   * be ignored (as it will be in formats with a palette).
-   *
-   * If the format has a palette (8-bit) the index of the closest matching color
-   * in the palette will be returned.
-   *
-   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
-   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
-   * format the return value can be assigned to a Uint16, and similarly a Uint8
-   * for an 8-bpp format).
-   *
-   * @param c the color components of the pixel in the range 0-255.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a pixel value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetPixelFormatDetails()
-   * @sa Get()
-   * @sa MapRGBA()
-   * @sa Surface.MapColor()
-   */
-  Uint32 Map(ColorRaw c, PaletteConstRef palette = {}) const;
-
-  /**
-   * Get RGBA values from a pixel in the specified format.
-   *
-   * This function uses the entire 8-bit [0..255] range when converting color
-   * components from pixel formats with less than 8-bits per RGB component
-   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
-   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
-   *
-   * If the surface has no alpha component, the alpha will be returned as 0xff
-   * (100% opaque).
-   *
-   * @param pixel a pixel value.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a color value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetPixelFormatDetails()
-   * @sa GetRGBA()
-   * @sa Map()
-   */
-  Color Get(Uint32 pixel, PaletteConstRef palette = {}) const;
-};
-
-constexpr PixelFormat PIXELFORMAT_UNKNOWN =
-  SDL_PIXELFORMAT_UNKNOWN; ///< UNKNOWN
-
-constexpr PixelFormat PIXELFORMAT_INDEX1LSB =
-  SDL_PIXELFORMAT_INDEX1LSB; ///< INDEX1LSB
-
-constexpr PixelFormat PIXELFORMAT_INDEX1MSB =
-  SDL_PIXELFORMAT_INDEX1MSB; ///< INDEX1MSB
-
-constexpr PixelFormat PIXELFORMAT_INDEX2LSB =
-  SDL_PIXELFORMAT_INDEX2LSB; ///< INDEX2LSB
-
-constexpr PixelFormat PIXELFORMAT_INDEX2MSB =
-  SDL_PIXELFORMAT_INDEX2MSB; ///< INDEX2MSB
-
-constexpr PixelFormat PIXELFORMAT_INDEX4LSB =
-  SDL_PIXELFORMAT_INDEX4LSB; ///< INDEX4LSB
-
-constexpr PixelFormat PIXELFORMAT_INDEX4MSB =
-  SDL_PIXELFORMAT_INDEX4MSB; ///< INDEX4MSB
-
-constexpr PixelFormat PIXELFORMAT_INDEX8 = SDL_PIXELFORMAT_INDEX8; ///< INDEX8
-
-constexpr PixelFormat PIXELFORMAT_RGB332 = SDL_PIXELFORMAT_RGB332; ///< RGB332
-
-constexpr PixelFormat PIXELFORMAT_XRGB4444 =
-  SDL_PIXELFORMAT_XRGB4444; ///< XRGB4444
-
-constexpr PixelFormat PIXELFORMAT_XBGR4444 =
-  SDL_PIXELFORMAT_XBGR4444; ///< XBGR4444
-
-constexpr PixelFormat PIXELFORMAT_XRGB1555 =
-  SDL_PIXELFORMAT_XRGB1555; ///< XRGB1555
-
-constexpr PixelFormat PIXELFORMAT_XBGR1555 =
-  SDL_PIXELFORMAT_XBGR1555; ///< XBGR1555
-
-constexpr PixelFormat PIXELFORMAT_ARGB4444 =
-  SDL_PIXELFORMAT_ARGB4444; ///< ARGB4444
-
-constexpr PixelFormat PIXELFORMAT_RGBA4444 =
-  SDL_PIXELFORMAT_RGBA4444; ///< RGBA4444
-
-constexpr PixelFormat PIXELFORMAT_ABGR4444 =
-  SDL_PIXELFORMAT_ABGR4444; ///< ABGR4444
-
-constexpr PixelFormat PIXELFORMAT_BGRA4444 =
-  SDL_PIXELFORMAT_BGRA4444; ///< BGRA4444
-
-constexpr PixelFormat PIXELFORMAT_ARGB1555 =
-  SDL_PIXELFORMAT_ARGB1555; ///< ARGB1555
-
-constexpr PixelFormat PIXELFORMAT_RGBA5551 =
-  SDL_PIXELFORMAT_RGBA5551; ///< RGBA5551
-
-constexpr PixelFormat PIXELFORMAT_ABGR1555 =
-  SDL_PIXELFORMAT_ABGR1555; ///< ABGR1555
-
-constexpr PixelFormat PIXELFORMAT_BGRA5551 =
-  SDL_PIXELFORMAT_BGRA5551; ///< BGRA5551
-
-constexpr PixelFormat PIXELFORMAT_RGB565 = SDL_PIXELFORMAT_RGB565; ///< RGB565
-
-constexpr PixelFormat PIXELFORMAT_BGR565 = SDL_PIXELFORMAT_BGR565; ///< BGR565
-
-constexpr PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24; ///< RGB24
-
-constexpr PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24; ///< BGR24
-
-constexpr PixelFormat PIXELFORMAT_XRGB8888 =
-  SDL_PIXELFORMAT_XRGB8888; ///< XRGB8888
-
-constexpr PixelFormat PIXELFORMAT_RGBX8888 =
-  SDL_PIXELFORMAT_RGBX8888; ///< RGBX8888
-
-constexpr PixelFormat PIXELFORMAT_XBGR8888 =
-  SDL_PIXELFORMAT_XBGR8888; ///< XBGR8888
-
-constexpr PixelFormat PIXELFORMAT_BGRX8888 =
-  SDL_PIXELFORMAT_BGRX8888; ///< BGRX8888
-
-constexpr PixelFormat PIXELFORMAT_ARGB8888 =
-  SDL_PIXELFORMAT_ARGB8888; ///< ARGB8888
-
-constexpr PixelFormat PIXELFORMAT_RGBA8888 =
-  SDL_PIXELFORMAT_RGBA8888; ///< RGBA8888
-
-constexpr PixelFormat PIXELFORMAT_ABGR8888 =
-  SDL_PIXELFORMAT_ABGR8888; ///< ABGR8888
-
-constexpr PixelFormat PIXELFORMAT_BGRA8888 =
-  SDL_PIXELFORMAT_BGRA8888; ///< BGRA8888
-
-constexpr PixelFormat PIXELFORMAT_XRGB2101010 =
-  SDL_PIXELFORMAT_XRGB2101010; ///< XRGB2101010
-
-constexpr PixelFormat PIXELFORMAT_XBGR2101010 =
-  SDL_PIXELFORMAT_XBGR2101010; ///< XBGR2101010
-
-constexpr PixelFormat PIXELFORMAT_ARGB2101010 =
-  SDL_PIXELFORMAT_ARGB2101010; ///< ARGB2101010
-
-constexpr PixelFormat PIXELFORMAT_ABGR2101010 =
-  SDL_PIXELFORMAT_ABGR2101010; ///< ABGR2101010
-
-constexpr PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48; ///< RGB48
-
-constexpr PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48; ///< BGR48
-
-constexpr PixelFormat PIXELFORMAT_RGBA64 = SDL_PIXELFORMAT_RGBA64; ///< RGBA64
-
-constexpr PixelFormat PIXELFORMAT_ARGB64 = SDL_PIXELFORMAT_ARGB64; ///< ARGB64
-
-constexpr PixelFormat PIXELFORMAT_BGRA64 = SDL_PIXELFORMAT_BGRA64; ///< BGRA64
-
-constexpr PixelFormat PIXELFORMAT_ABGR64 = SDL_PIXELFORMAT_ABGR64; ///< ABGR64
-
-constexpr PixelFormat PIXELFORMAT_RGB48_FLOAT =
-  SDL_PIXELFORMAT_RGB48_FLOAT; ///< RGB48_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_BGR48_FLOAT =
-  SDL_PIXELFORMAT_BGR48_FLOAT; ///< BGR48_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_RGBA64_FLOAT =
-  SDL_PIXELFORMAT_RGBA64_FLOAT; ///< RGBA64_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_ARGB64_FLOAT =
-  SDL_PIXELFORMAT_ARGB64_FLOAT; ///< ARGB64_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_BGRA64_FLOAT =
-  SDL_PIXELFORMAT_BGRA64_FLOAT; ///< BGRA64_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_ABGR64_FLOAT =
-  SDL_PIXELFORMAT_ABGR64_FLOAT; ///< ABGR64_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_RGB96_FLOAT =
-  SDL_PIXELFORMAT_RGB96_FLOAT; ///< RGB96_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_BGR96_FLOAT =
-  SDL_PIXELFORMAT_BGR96_FLOAT; ///< BGR96_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_RGBA128_FLOAT =
-  SDL_PIXELFORMAT_RGBA128_FLOAT; ///< RGBA128_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_ARGB128_FLOAT =
-  SDL_PIXELFORMAT_ARGB128_FLOAT; ///< ARGB128_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_BGRA128_FLOAT =
-  SDL_PIXELFORMAT_BGRA128_FLOAT; ///< BGRA128_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT =
-  SDL_PIXELFORMAT_ABGR128_FLOAT; ///< ABGR128_FLOAT
-
-constexpr PixelFormat PIXELFORMAT_YV12 =
-  SDL_PIXELFORMAT_YV12; ///< Planar mode: Y + V + U (3 planes)
-
-constexpr PixelFormat PIXELFORMAT_IYUV =
-  SDL_PIXELFORMAT_IYUV; ///< Planar mode: Y + U + V (3 planes)
-
-constexpr PixelFormat PIXELFORMAT_YUY2 =
-  SDL_PIXELFORMAT_YUY2; ///< Packed mode: Y0+U0+Y1+V0 (1 plane)
-
-constexpr PixelFormat PIXELFORMAT_UYVY =
-  SDL_PIXELFORMAT_UYVY; ///< Packed mode: U0+Y0+V0+Y1 (1 plane)
-
-constexpr PixelFormat PIXELFORMAT_YVYU =
-  SDL_PIXELFORMAT_YVYU; ///< Packed mode: Y0+V0+Y1+U0 (1 plane)
-
-constexpr PixelFormat PIXELFORMAT_NV12 =
-  SDL_PIXELFORMAT_NV12; ///< Planar mode: Y + U/V interleaved (2 planes)
-
-constexpr PixelFormat PIXELFORMAT_NV21 =
-  SDL_PIXELFORMAT_NV21; ///< Planar mode: Y + V/U interleaved (2 planes)
-
-constexpr PixelFormat PIXELFORMAT_P010 =
-  SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved (2 planes)
-
-constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES =
-  SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format
-
-#if SDL_VERSION_ATLEAST(3, 2, 10)
-
-constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG; ///< Motion JPEG
-
-#endif // SDL_VERSION_ATLEAST(3, 2, 10)
-
-constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32; ///< RGBA32
-
-constexpr PixelFormat PIXELFORMAT_ARGB32 = SDL_PIXELFORMAT_ARGB32; ///< ARGB32
-
-constexpr PixelFormat PIXELFORMAT_BGRA32 = SDL_PIXELFORMAT_BGRA32; ///< BGRA32
-
-constexpr PixelFormat PIXELFORMAT_ABGR32 = SDL_PIXELFORMAT_ABGR32; ///< ABGR32
-
-constexpr PixelFormat PIXELFORMAT_RGBX32 = SDL_PIXELFORMAT_RGBX32; ///< RGBX32
-
-constexpr PixelFormat PIXELFORMAT_XRGB32 = SDL_PIXELFORMAT_XRGB32; ///< XRGB32
-
-constexpr PixelFormat PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_BGRX32; ///< BGRX32
-
-constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32; ///< XBGR32
-
-/// @}
-
-/**
- * A function for defining custom FourCC pixel formats.
- *
- * For example, defining PIXELFORMAT_YV12 looks like this:
- *
- * ```cpp
- * DefinePixelFourCC('Y', 'V', '1', '2')
- * ```
- *
- * @param A the first character of the FourCC code.
- * @param B the second character of the FourCC code.
- * @param C the third character of the FourCC code.
- * @param D the fourth character of the FourCC code.
- * @returns a format value in the style of PixelFormat.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr Uint32 DefinePixelFourCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D)
-{
-  return SDL_DEFINE_PIXELFOURCC(A, B, C, D);
-}
-
-/**
- * A macro for defining custom non-FourCC pixel formats.
- *
- * For example, defining PIXELFORMAT_RGBA8888 looks like this:
- *
- * ```c
- * PixelFormat.PixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
- * PACKEDLAYOUT_8888, 32, 4)
- * ```
- *
- * @param type the type of the new format, probably a PixelType value.
- * @param order the order of the new format, probably a BitmapOrder,
- *              PackedOrder, or ArrayOrder value.
- * @param layout the layout of the new format, probably an PackedLayout value or
- *               zero.
- * @param bits the number of bits per pixel of the new format.
- * @param bytes the number of bytes per pixel of the new format.
- * @returns a format value in the style of PixelFormat.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr PixelFormat DefinePixelFormat(PixelType type,
-                                        int order,
-                                        PackedLayout layout,
-                                        int bits,
-                                        int bytes)
-{
-  return PixelFormat(type, order, layout, bits, bytes);
-}
-
-constexpr PixelFormat::PixelFormat(PixelType type,
-                                   int order,
-                                   PackedLayout layout,
-                                   int bits,
-                                   int bytes)
-  : m_format(
-      PixelFormatRaw(SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
-{
-}
-
-/**
- * Retrieve the flags of an PixelFormat.
- *
- * This function is generally not needed directly by an app, which should use
- * specific tests, like PixelFormat.IsFourCC, instead.
- *
- * @param format an PixelFormat to check.
- * @returns the flags of `format`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr Uint8 PixelFormatFlags(PixelFormatRaw format)
-{
-  return SDL_PIXELFLAG(format);
-}
-
-constexpr Uint8 PixelFormat::GetFlags() const
-{
-  return SDL::PixelFormatFlags(m_format);
-}
-
-/**
- * A macro to retrieve the type of an PixelFormat.
- *
- * This is usually a value from the PixelType enumeration.
- *
- * @param format an PixelFormat to check.
- * @returns the type of `format`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr PixelType PixelFormatType(PixelFormatRaw format)
-{
-  return PixelType(SDL_PIXELTYPE(format));
-}
-
-constexpr PixelType PixelFormat::GetType() const
-{
-  return SDL::PixelFormatType(m_format);
-}
-
-/**
- * A macro to retrieve the order of an PixelFormat.
- *
- * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
- * enumerations, depending on the format type.
- *
- * @param format an PixelFormat to check.
- * @returns the order of `format`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr int PixelFormatOrder(PixelFormatRaw format)
-{
-  return SDL_PIXELORDER(format);
-}
-
-constexpr int PixelFormat::GetOrder() const
-{
-  return SDL::PixelFormatOrder(m_format);
-}
-
-/**
- * A macro to retrieve the layout of an PixelFormat.
- *
- * This is usually a value from the PackedLayout enumeration, or zero if a
- * layout doesn't make sense for the format type.
- *
- * @param format an PixelFormat to check.
- * @returns the layout of `format`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr PackedLayout PixelFormatLayout(PixelFormatRaw format)
-{
-  return PackedLayout(SDL_PIXELLAYOUT(format));
-}
-
-constexpr PackedLayout PixelFormat::GetLayout() const
-{
-  return SDL::PixelFormatLayout(m_format);
-}
-
-/**
- * A macro to determine an PixelFormat's bits per pixel.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * FourCC formats will report zero here, as it rarely makes sense to measure
- * them per-pixel.
- *
- * @param format an PixelFormat to check.
- * @returns the bits-per-pixel of `format`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetBytesPerPixel
- */
-constexpr int PixelFormatBitsPerPixel(PixelFormatRaw format)
-{
-  return SDL_BITSPERPIXEL(format);
-}
-
-constexpr int PixelFormat::GetBitsPerPixel() const
-{
-  return SDL::PixelFormatBitsPerPixel(m_format);
-}
-
-/**
- * A macro to determine an PixelFormat's bytes per pixel.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * FourCC formats do their best here, but many of them don't have a meaningful
- * measurement of bytes per pixel.
- *
- * @param format an PixelFormat to check.
- * @returns the bytes-per-pixel of `format`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetBitsPerPixel
- */
-constexpr int PixelFormatBytesPerPixel(PixelFormatRaw format)
-{
-  return SDL_BYTESPERPIXEL(format);
-}
-
-constexpr int PixelFormat::GetBytesPerPixel() const
-{
-  return SDL::PixelFormatBytesPerPixel(m_format);
-}
-
-/**
- * A macro to determine if an PixelFormat is an indexed format.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * @param format an PixelFormat to check.
- * @returns true if the format is indexed, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsPixelFormatIndexed(PixelFormatRaw format)
-{
-  return SDL_ISPIXELFORMAT_INDEXED(format);
-}
-
-constexpr bool PixelFormat::IsIndexed() const
-{
-  return SDL::IsPixelFormatIndexed(m_format);
-}
-
-/**
- * A macro to determine if an PixelFormat is a packed format.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * @param format an PixelFormat to check.
- * @returns true if the format is packed, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsPixelFormatPacked(PixelFormatRaw format)
-{
-  return SDL_ISPIXELFORMAT_PACKED(format);
-}
-
-constexpr bool PixelFormat::IsPacked() const
-{
-  return SDL::IsPixelFormatPacked(m_format);
-}
-
-/**
- * A macro to determine if an PixelFormat is an array format.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * @param format an PixelFormat to check.
- * @returns true if the format is an array, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsPixelFormatArray(PixelFormatRaw format)
-{
-  return SDL_ISPIXELFORMAT_ARRAY(format);
-}
-
-constexpr bool PixelFormat::IsArray() const
-{
-  return SDL::IsPixelFormatArray(m_format);
-}
-
-/**
- * A macro to determine if an PixelFormat is a 10-bit format.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * @param format an PixelFormat to check.
- * @returns true if the format is 10-bit, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsPixelFormat10Bit(PixelFormatRaw format)
-{
-  return SDL_ISPIXELFORMAT_10BIT(format);
-}
-
-constexpr bool PixelFormat::Is10Bit() const
-{
-  return SDL::IsPixelFormat10Bit(m_format);
-}
-
-/**
- * A macro to determine if an PixelFormat is a floating point format.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * @param format an PixelFormat to check.
- * @returns true if the format is a floating point, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsPixelFormatFloat(PixelFormatRaw format)
-{
-  return SDL_ISPIXELFORMAT_FLOAT(format);
-}
-
-constexpr bool PixelFormat::IsFloat() const
-{
-  return SDL::IsPixelFormatFloat(m_format);
-}
-
-/**
- * @name ColorTypes
- * @{
- */
-
-/**
- * A macro to determine if an PixelFormat has an alpha channel.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * @param format an PixelFormat to check.
- * @returns true if the format has alpha, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsPixelFormatAlpha(PixelFormatRaw format)
-{
-  return SDL_ISPIXELFORMAT_ALPHA(format);
-}
-
-constexpr bool PixelFormat::IsAlpha() const
-{
-  return SDL::IsPixelFormatAlpha(m_format);
-}
-
-/**
- * A macro to determine if an PixelFormat is a "FourCC" format.
- *
- * This covers custom and other unusual formats.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * @param format an PixelFormat to check.
- * @returns true if the format has alpha, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsPixelFormatFourCC(PixelFormatRaw format)
-{
-  return SDL_ISPIXELFORMAT_FOURCC(format);
-}
-
-constexpr bool PixelFormat::IsFourCC() const
-{
-  return SDL::IsPixelFormatFourCC(m_format);
-}
-
-/**
- * Colorspace color type.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ColorType = SDL_ColorType;
-
-constexpr ColorType COLOR_TYPE_UNKNOWN =
-  SDL_COLOR_TYPE_UNKNOWN; ///< COLOR_TYPE_UNKNOWN
-
-constexpr ColorType COLOR_TYPE_RGB = SDL_COLOR_TYPE_RGB; ///< COLOR_TYPE_RGB
-
-constexpr ColorType COLOR_TYPE_YCBCR =
-  SDL_COLOR_TYPE_YCBCR; ///< COLOR_TYPE_YCBCR
-
-/// @}
-
-/**
- * @name ColorRanges
- * @{
- */
-
-/**
- * Colorspace color range, as described by
- * https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ColorRange = SDL_ColorRange;
-
-constexpr ColorRange COLOR_RANGE_UNKNOWN =
-  SDL_COLOR_RANGE_UNKNOWN; ///< COLOR_RANGE_UNKNOWN
-
-/**
- * Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
- */
-constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
-
-/// Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
-constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
-
-/// @}
-
-/**
- * @name ColorPrimaries
- * @{
- */
-
-/**
- * Colorspace color primaries, as described by
- * https://www.itu.int/rec/T-REC-H.273-201612-S/en
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ColorPrimaries = SDL_ColorPrimaries;
-
-constexpr ColorPrimaries COLOR_PRIMARIES_UNKNOWN =
-  SDL_COLOR_PRIMARIES_UNKNOWN; ///< COLOR_PRIMARIES_UNKNOWN
-
-constexpr ColorPrimaries COLOR_PRIMARIES_BT709 =
-  SDL_COLOR_PRIMARIES_BT709; ///< ITU-R BT.709-6
-
-constexpr ColorPrimaries COLOR_PRIMARIES_UNSPECIFIED =
-  SDL_COLOR_PRIMARIES_UNSPECIFIED; ///< COLOR_PRIMARIES_UNSPECIFIED
-
-constexpr ColorPrimaries COLOR_PRIMARIES_BT470M =
-  SDL_COLOR_PRIMARIES_BT470M; ///< ITU-R BT.470-6 System M
-
-constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG =
-  SDL_COLOR_PRIMARIES_BT470BG; ///< ITU-R BT.470-6 System B, G / ITU-R BT.601-7
-                               ///< 625
-
-constexpr ColorPrimaries COLOR_PRIMARIES_BT601 =
-  SDL_COLOR_PRIMARIES_BT601; ///< ITU-R BT.601-7 525, SMPTE 170M
-
-/// SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601
-constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
-  SDL_COLOR_PRIMARIES_SMPTE240;
-
-constexpr ColorPrimaries COLOR_PRIMARIES_GENERIC_FILM =
-  SDL_COLOR_PRIMARIES_GENERIC_FILM; ///< Generic film (color filters using
-                                    ///< Illuminant C)
-
-constexpr ColorPrimaries COLOR_PRIMARIES_BT2020 =
-  SDL_COLOR_PRIMARIES_BT2020; ///< ITU-R BT.2020-2 / ITU-R BT.2100-0
-
-constexpr ColorPrimaries COLOR_PRIMARIES_XYZ =
-  SDL_COLOR_PRIMARIES_XYZ; ///< SMPTE ST 428-1
-
-constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE431 =
-  SDL_COLOR_PRIMARIES_SMPTE431; ///< SMPTE RP 431-2
-
-constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
-  SDL_COLOR_PRIMARIES_SMPTE432; ///< SMPTE EG 432-1 / DCI P3
-
-constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 =
-  SDL_COLOR_PRIMARIES_EBU3213; ///< EBU Tech. 3213-E
-
-constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM =
-  SDL_COLOR_PRIMARIES_CUSTOM; ///< COLOR_PRIMARIES_CUSTOM
-
-/// @}
-
-/**
- * @name TransferCharacteristics
- * @{
- */
-
-/**
- * Colorspace transfer characteristics.
- *
- * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using TransferCharacteristics = SDL_TransferCharacteristics;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNKNOWN =
-  SDL_TRANSFER_CHARACTERISTICS_UNKNOWN; ///< TRANSFER_CHARACTERISTICS_UNKNOWN
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
-  SDL_TRANSFER_CHARACTERISTICS_BT709; ///< Rec. ITU-R BT.709-6 / ITU-R BT1361
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
-  SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED; ///< TRANSFER_CHARACTERISTICS_UNSPECIFIED
-
-/// ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
-  SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA28 =
-  SDL_TRANSFER_CHARACTERISTICS_GAMMA28; ///< ITU-R BT.470-6 System B, G
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT601 =
-  SDL_TRANSFER_CHARACTERISTICS_BT601; ///< SMPTE ST 170M / ITU-R BT.601-7 525 or
-                                      ///< 625
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE240 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE240; ///< SMPTE ST 240M
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LINEAR =
-  SDL_TRANSFER_CHARACTERISTICS_LINEAR; ///< TRANSFER_CHARACTERISTICS_LINEAR
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100 =
-  SDL_TRANSFER_CHARACTERISTICS_LOG100; ///< TRANSFER_CHARACTERISTICS_LOG100
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100_SQRT10 =
-  SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10; ///< TRANSFER_CHARACTERISTICS_LOG100_SQRT10
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_IEC61966 =
-  SDL_TRANSFER_CHARACTERISTICS_IEC61966; ///< IEC 61966-2-4
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT1361 =
-  SDL_TRANSFER_CHARACTERISTICS_BT1361; ///< ITU-R BT1361 Extended Colour Gamut
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SRGB =
-  SDL_TRANSFER_CHARACTERISTICS_SRGB; ///< IEC 61966-2-1 (sRGB or sYCC)
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_10BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT; ///< ITU-R BT2020 for 10-bit system
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT; ///< ITU-R BT2020 for 12-bit system
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
-  SDL_TRANSFER_CHARACTERISTICS_PQ; ///< SMPTE ST 2084 for 10-, 12-, 14- and
-                                   ///< 16-bit systems
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE428 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE428; ///< SMPTE ST 428-1
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
-  SDL_TRANSFER_CHARACTERISTICS_HLG; ///< ARIB STD-B67, known as "hybrid
-                                    ///< log-gamma" (HLG)
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
-  SDL_TRANSFER_CHARACTERISTICS_CUSTOM; ///< TRANSFER_CHARACTERISTICS_CUSTOM
-
-/// @}
-
-/**
- * @name MatrixCoefficients
- * @{
- */
-
-/**
- * Colorspace matrix coefficients.
- *
- * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using MatrixCoefficients = SDL_MatrixCoefficients;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_IDENTITY =
-  SDL_MATRIX_COEFFICIENTS_IDENTITY; ///< MATRIX_COEFFICIENTS_IDENTITY
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT709 =
-  SDL_MATRIX_COEFFICIENTS_BT709; ///< ITU-R BT.709-6
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_UNSPECIFIED =
-  SDL_MATRIX_COEFFICIENTS_UNSPECIFIED; ///< MATRIX_COEFFICIENTS_UNSPECIFIED
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_FCC =
-  SDL_MATRIX_COEFFICIENTS_FCC; ///< US FCC Title 47
-
-/**
- * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as
- * MATRIX_COEFFICIENTS_BT601
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT470BG =
-  SDL_MATRIX_COEFFICIENTS_BT470BG;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT601 =
-  SDL_MATRIX_COEFFICIENTS_BT601; ///< ITU-R BT.601-7 525
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE240 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE240; ///< SMPTE 240M
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_YCGCO =
-  SDL_MATRIX_COEFFICIENTS_YCGCO; ///< MATRIX_COEFFICIENTS_YCGCO
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_NCL =
-  SDL_MATRIX_COEFFICIENTS_BT2020_NCL; ///< ITU-R BT.2020-2 non-constant
-                                      ///< luminance
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_CL =
-  SDL_MATRIX_COEFFICIENTS_BT2020_CL; ///< ITU-R BT.2020-2 constant luminance
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE2085 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE2085; ///< SMPTE ST 2085
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL =
-  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL; ///< MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL =
-  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL; ///< MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
-  SDL_MATRIX_COEFFICIENTS_ICTCP; ///< ITU-R BT.2100-0 ICTCP
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
-  SDL_MATRIX_COEFFICIENTS_CUSTOM; ///< MATRIX_COEFFICIENTS_CUSTOM
-
-/// @}
-
-/**
- * @name ChromaLocations
- * @{
- */
-
-/**
- * Colorspace chroma sample location.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ChromaLocation = SDL_ChromaLocation;
-
-constexpr ChromaLocation CHROMA_LOCATION_NONE =
-  SDL_CHROMA_LOCATION_NONE; ///< RGB, no chroma sampling
-
-/**
- * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
- * of the 2x2 square. In other words, they have the same horizontal location as
- * the top-left pixel, but is shifted one-half pixel down vertically.
- */
-constexpr ChromaLocation CHROMA_LOCATION_LEFT = SDL_CHROMA_LOCATION_LEFT;
-
-/**
- * In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2
- * square. In other words, they are offset one-half pixel to the right and
- * one-half pixel down compared to the top-left pixel.
- */
-constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
-
-/**
- * In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and
- * Cr are sampled at the same location as the group's top-left Y pixel
- * ("co-sited", "co-located").
- */
-constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
-
-/// @}
-
-/**
- * @name Colorspaces
- * @{
- */
-
-/**
- * Colorspace definitions.
- *
- * Since similar colorspaces may vary in their details (matrix, transfer
- * function, etc.), this is not an exhaustive list, but rather a representative
- * sample of the kinds of colorspaces supported in SDL.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @cat wrap-state
- *
- * @sa Colorspaces
- * @sa ColorPrimaries
- * @sa ColorRange
- * @sa ColorType
- * @sa MatrixCoefficients
- * @sa TransferCharacteristics
- */
-class Colorspace
-{
-  ColorspaceRaw m_cspace;
-
-public:
-  /**
-   * Wraps Colorspace.
-   *
-   * @param cspace the value to be wrapped
-   */
-  constexpr Colorspace(ColorspaceRaw cspace = {}) noexcept
-    : m_cspace(cspace)
-  {
-  }
-
-  /**
-   * Define custom Colorspace formats.
-   *
-   * For example, defining COLORSPACE_SRGB looks like this:
-   *
-   * ```cpp
-   * Colorspace colorspace(COLOR_TYPE_RGB,
-   *                       COLOR_RANGE_FULL,
-   *                       COLOR_PRIMARIES_BT709,
-   *                       TRANSFER_CHARACTERISTICS_SRGB,
-   *                       MATRIX_COEFFICIENTS_IDENTITY,
-   *                       CHROMA_LOCATION_NONE)
-   * ```
-   *
-   * @param type the type of the new format, probably an ColorType value.
-   * @param range the range of the new format, probably a ColorRange value.
-   * @param primaries the primaries of the new format, probably an
-   *                  ColorPrimaries value.
-   * @param transfer the transfer characteristics of the new format, probably an
-   *                 TransferCharacteristics value.
-   * @param matrix the matrix coefficients of the new format, probably an
-   *               MatrixCoefficients value.
-   * @param chroma the chroma sample location of the new format, probably an
-   *               ChromaLocation value.
-   * @post a format value in the style of Colorspace.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr Colorspace(ColorType type,
-                       ColorRange range,
-                       ColorPrimaries primaries,
-                       TransferCharacteristics transfer,
-                       MatrixCoefficients matrix,
-                       ChromaLocation chroma);
-
-  /**
-   * Unwraps to the underlying Colorspace.
-   *
-   * @returns the underlying ColorspaceRaw.
-   */
-  constexpr operator ColorspaceRaw() const noexcept { return m_cspace; }
-
-  /**
-   * Retrieve the type of a Colorspace.
-   *
-   * @returns the ColorType for `cspace`.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr ColorType GetType() const;
-
-  /**
-   * Retrieve the range of a Colorspace.
-   *
-   * @returns the ColorRange of `cspace`.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr ColorRange GetRange() const;
-
-  /**
-   * Retrieve the chroma sample location of an Colorspace.
-   *
-   * @returns the ChromaLocation of `cspace`.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr ChromaLocation GetChroma() const;
-
-  /**
-   * Retrieve the primaries of an Colorspace.
-   *
-   * @returns the ColorPrimaries of `cspace`.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr ColorPrimaries GetPrimaries() const;
-
-  /**
-   * Retrieve the transfer characteristics of an Colorspace.
-   *
-   * @returns the TransferCharacteristics of `cspace`.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr TransferCharacteristics GetTransfer() const;
-
-  /**
-   * Retrieve the matrix coefficients of an Colorspace.
-   *
-   * @returns the MatrixCoefficients of `cspace`.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr MatrixCoefficients GetMatrix() const;
-
-  /**
-   * Determine if a Colorspace uses BT601 (or BT470BG) matrix coefficients.
-   *
-   * @returns true if BT601 or BT470BG, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsMatrixBT601() const;
-
-  /**
-   * Determine if an Colorspace uses BT709 matrix coefficients.
-   *
-   * @returns true if BT709, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsMatrixBT709() const;
-
-  /**
-   * Determine if an Colorspace uses BT2020_NCL matrix coefficients.
-   *
-   * @returns true if BT2020_NCL, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsMatrixBT2020_NCL() const;
-
-  /**
-   * A function to determine if an Colorspace has a limited range.
-   *
-   * @returns true if limited range, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsLimitedRange() const;
-
-  /**
-   * A function to determine if an Colorspace has a full range.
-   *
-   * @returns true if full range, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsFullRange() const;
-};
-
-constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
-
-/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
-constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
-
-/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
-constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
-
-/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
-constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
-
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
-constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
-
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
-constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
-
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
-constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
-
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
-constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
-
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
-constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
-
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
-constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
-
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
-constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
-
-/// The default colorspace for RGB surfaces if no colorspace is specified
-constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
-
-/// The default colorspace for YUV surfaces if no colorspace is specified
-constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
-
-/// @}
-
-/**
- * A macro for defining custom Colorspace formats.
- *
- * For example, defining COLORSPACE_SRGB looks like this:
- *
- * ```c
- * Colorspace.Colorspace(COLOR_TYPE_RGB,
- *                       COLOR_RANGE_FULL,
- *                       COLOR_PRIMARIES_BT709,
- *                       TRANSFER_CHARACTERISTICS_SRGB,
- *                       MATRIX_COEFFICIENTS_IDENTITY,
- *                       CHROMA_LOCATION_NONE)
- * ```
- *
- * @param type the type of the new format, probably an ColorType value.
- * @param range the range of the new format, probably a ColorRange value.
- * @param primaries the primaries of the new format, probably an ColorPrimaries
- *                  value.
- * @param transfer the transfer characteristics of the new format, probably an
- *                 TransferCharacteristics value.
- * @param matrix the matrix coefficients of the new format, probably an
- *               MatrixCoefficients value.
- * @param chroma the chroma sample location of the new format, probably an
- *               ChromaLocation value.
- * @returns a format value in the style of Colorspace.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr Colorspace DefineColorspace(ColorType type,
-                                      ColorRange range,
-                                      ColorPrimaries primaries,
-                                      TransferCharacteristics transfer,
-                                      MatrixCoefficients matrix,
-                                      ChromaLocation chroma)
-{
-  return Colorspace(type, range, primaries, transfer, matrix, chroma);
-}
-
-constexpr Colorspace::Colorspace(ColorType type,
-                                 ColorRange range,
-                                 ColorPrimaries primaries,
-                                 TransferCharacteristics transfer,
-                                 MatrixCoefficients matrix,
-                                 ChromaLocation chroma)
-  : m_cspace(ColorspaceRaw(
-      SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma)))
-{
-}
-
-/**
- * A macro to retrieve the type of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the ColorType for `cspace`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr ColorType ColorspaceType(ColorspaceRaw cspace)
-{
-  return SDL_COLORSPACETYPE(cspace);
-}
-
-constexpr ColorType Colorspace::GetType() const
-{
-  return SDL::ColorspaceType(m_cspace);
-}
-
-/**
- * A macro to retrieve the range of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the ColorRange of `cspace`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr ColorRange ColorspaceRange(ColorspaceRaw cspace)
-{
-  return SDL_COLORSPACERANGE(cspace);
-}
-
-constexpr ColorRange Colorspace::GetRange() const
-{
-  return SDL::ColorspaceRange(m_cspace);
-}
-
-/**
- * A macro to retrieve the chroma sample location of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the ChromaLocation of `cspace`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr ChromaLocation ColorspaceChroma(ColorspaceRaw cspace)
-{
-  return SDL_COLORSPACECHROMA(cspace);
-}
-
-constexpr ChromaLocation Colorspace::GetChroma() const
-{
-  return SDL::ColorspaceChroma(m_cspace);
-}
-
-/**
- * A macro to retrieve the primaries of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the ColorPrimaries of `cspace`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr ColorPrimaries ColorspacePrimaries(ColorspaceRaw cspace)
-{
-  return SDL_COLORSPACEPRIMARIES(cspace);
-}
-
-constexpr ColorPrimaries Colorspace::GetPrimaries() const
-{
-  return SDL::ColorspacePrimaries(m_cspace);
-}
-
-/**
- * A macro to retrieve the transfer characteristics of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the TransferCharacteristics of `cspace`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr TransferCharacteristics ColorspaceTransfer(ColorspaceRaw cspace)
-{
-  return SDL_COLORSPACETRANSFER(cspace);
-}
-
-constexpr TransferCharacteristics Colorspace::GetTransfer() const
-{
-  return SDL::ColorspaceTransfer(m_cspace);
-}
-
-/**
- * A macro to retrieve the matrix coefficients of an Colorspace.
- *
- * @param cspace an Colorspace to check.
- * @returns the MatrixCoefficients of `cspace`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr MatrixCoefficients ColorspaceMatrix(ColorspaceRaw cspace)
-{
-  return SDL_COLORSPACEMATRIX(cspace);
-}
-
-constexpr MatrixCoefficients Colorspace::GetMatrix() const
-{
-  return SDL::ColorspaceMatrix(m_cspace);
-}
-
-/**
- * A macro to determine if an Colorspace uses BT601 (or BT470BG) matrix
- * coefficients.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
- *
- * @param cspace an Colorspace to check.
- * @returns true if BT601 or BT470BG, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsColorspaceMatrixBT601(ColorspaceRaw cspace)
-{
-  return SDL_ISCOLORSPACE_MATRIX_BT601(cspace);
-}
-
-constexpr bool Colorspace::IsMatrixBT601() const
-{
-  return SDL::IsColorspaceMatrixBT601(m_cspace);
-}
-
-/**
- * A macro to determine if an Colorspace uses BT709 matrix coefficients.
- *
- * @param cspace an Colorspace to check.
- * @returns true if BT709, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsColorspaceMatrixBT709(ColorspaceRaw cspace)
-{
-  return SDL_ISCOLORSPACE_MATRIX_BT709(cspace);
-}
-
-constexpr bool Colorspace::IsMatrixBT709() const
-{
-  return SDL::IsColorspaceMatrixBT709(m_cspace);
-}
-
-/**
- * Determine if an Colorspace uses BT2020_NCL matrix coefficients.
- *
- * @param cspace an Colorspace to check.
- * @returns true if BT2020_NCL, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsColorspaceMatrixBT2020_NCL(ColorspaceRaw cspace)
-{
-  return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace);
-}
-
-constexpr bool Colorspace::IsMatrixBT2020_NCL() const
-{
-  return SDL::IsColorspaceMatrixBT2020_NCL(m_cspace);
-}
-
-/**
- * A macro to determine if an Colorspace has a limited range.
- *
- * @param cspace an Colorspace to check.
- * @returns true if limited range, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsColorspaceLimitedRange(ColorspaceRaw cspace)
-{
-  return SDL_ISCOLORSPACE_LIMITED_RANGE(cspace);
-}
-
-constexpr bool Colorspace::IsLimitedRange() const
-{
-  return SDL::IsColorspaceLimitedRange(m_cspace);
-}
-
-/**
- * A macro to determine if an Colorspace has a full range.
- *
- * @param cspace an Colorspace to check.
- * @returns true if full range, false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr bool IsColorspaceFullRange(ColorspaceRaw cspace)
-{
-  return SDL_ISCOLORSPACE_FULL_RANGE(cspace);
-}
-
-constexpr bool Colorspace::IsFullRange() const
-{
-  return SDL::IsColorspaceFullRange(m_cspace);
-}
-
-/// Comparison operator for Color.
-constexpr bool operator==(ColorRaw lhs, ColorRaw rhs) noexcept
-{
-  return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
-}
-
-/// Comparison operator for FColor.
-constexpr bool operator==(const FColorRaw& lhs, const FColorRaw& rhs) noexcept
-{
-  return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
-}
-
-/// Spaceship operator for Color.
-constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs) noexcept
-{
-  if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
-  if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
-  if (lhs.b != rhs.b) return lhs.b <=> rhs.b;
-  return lhs.a <=> rhs.a;
-}
-
-/// Spaceship operator for FColor.
-constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs) noexcept
-{
-  if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
-  if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
-  if (lhs.b != rhs.b) return lhs.b <=> rhs.b;
-  return lhs.a <=> rhs.a;
-}
-
-/**
- * A structure that represents a color as RGBA components.
- *
- * The bits of this structure can be directly reinterpreted as an integer-packed
- * color which uses the PIXELFORMAT_RGBA32 format (PIXELFORMAT_ABGR8888 on
- * little-endian systems and PIXELFORMAT_RGBA8888 on big-endian systems).
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat wrap-extending-struct
- * @sa FColor
- */
-struct Color : ColorRaw
-{
-  /**
-   * Wraps Color.
-   *
-   * @param color the value to be wrapped
-   */
-  constexpr Color(ColorRaw color = {}) noexcept
-    : ColorRaw(color)
-  {
-  }
-
-  /**
-   * Constructs from its fields.
-   *
-   * @param r the value for channel r.
-   * @param g the value for channel g.
-   * @param b the value for channel b.
-   * @param a the value for channel a.
-   */
-  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255) noexcept
-    : ColorRaw{r, g, b, a}
-  {
-  }
-
-  /**
-   * Get the red component from the color.
-   *
-   * @returns The red component from the color.
-   */
-  constexpr Uint8 GetR() const noexcept { return r; }
-
-  /**
-   * Set the red component from the color.
-   *
-   * @param newR New red component value.
-   * @returns Reference to self.
-   */
-  constexpr Color& SetR(Uint8 newR) noexcept
-  {
-    r = newR;
-    return *this;
-  }
-
-  /**
-   * Get the green component from the color.
-   *
-   * @returns The green component from the color.
-   *
-   */
-  constexpr Uint8 GetG() const noexcept { return g; }
-
-  /**
-   * Set the green component from the color.
-   *
-   * @param newG New green component value.
-   * @returns Reference to self.
-   */
-  constexpr Color& SetG(Uint8 newG) noexcept
-  {
-    g = newG;
-    return *this;
-  }
-
-  /**
-   * Get the blue component from the color.
-   *
-   * @returns The blue component from the color.
-   *
-   */
-  constexpr Uint8 GetB() const noexcept { return b; }
-
-  /**
-   * Set the blue component from the color.
-   *
-   * @param newB New blue component value.
-   * @returns Reference to self.
-   */
-  constexpr Color& SetB(Uint8 newB) noexcept
-  {
-    b = newB;
-    return *this;
-  }
-
-  /**
-   * Get the alpha component from the color.
-   *
-   * @returns The alpha component from the color.
-   *
-   */
-  constexpr Uint8 GetA() const noexcept { return a; }
-
-  /**
-   * Set the alpha component from the color.
-   *
-   * @param newA New alpha component value.
-   * @returns Reference to self.
-   */
-  constexpr Color& SetA(Uint8 newA) noexcept
-  {
-    a = newA;
-    return *this;
-  }
-
-  /**
-   * Map an RGBA quadruple to a pixel value for a given pixel format.
-   *
-   * This function maps the RGBA color value to the specified pixel format and
-   * returns the pixel value best approximating the given RGBA color value for
-   * the given pixel format.
-   *
-   * If the specified pixel format has no alpha component the alpha value will
-   * be ignored (as it will be in formats with a palette).
-   *
-   * If the format has a palette (8-bit) the index of the closest matching color
-   * in the palette will be returned.
-   *
-   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
-   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
-   * format the return value can be assigned to a Uint16, and similarly a Uint8
-   * for an 8-bpp format).
-   *
-   * @param format a pointer to PixelFormatDetails describing the pixel
-   *               format.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a pixel value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   */
-  Uint32 Map(const PixelFormatDetails& format, PaletteConstRef palette) const;
-
-  /**
-   * Get RGBA values from a pixel in the specified format.
-   *
-   * This function uses the entire 8-bit [0..255] range when converting color
-   * components from pixel formats with less than 8-bits per RGB component
-   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
-   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
-   *
-   * If the surface has no alpha component, the alpha will be returned as 0xff
-   * (100% opaque).
-   *
-   * @param pixel a pixel value.
-   * @param format a pointer to PixelFormatDetails describing the pixel
-   *               format.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a color value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PixelFormat.GetDetails()
-   * @sa GetRGBA()
-   * @sa Map()
-   */
-  static Color Get(Uint32 pixel,
-                   const PixelFormatDetails& format,
-                   PaletteConstRef palette = {});
-};
-
-/**
- * The bits of this structure can be directly reinterpreted as a float-packed
- * color which uses the PIXELFORMAT_RGBA128_FLOAT format
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat wrap-extending-struct
- *
- * @sa Color
- */
-struct FColor : FColorRaw
-{
-  /**
-   * Wraps FColor.
-   *
-   * @param color the value to be wrapped
-   */
-  constexpr FColor(const FColorRaw& color = {}) noexcept
-    : FColorRaw(color)
-  {
-  }
-
-  /**
-   * Constructs from its fields.
-   *
-   * @param r the value for r.
-   * @param g the value for g.
-   * @param b the value for b.
-   * @param a the value for a.
-   */
-  constexpr FColor(float r, float g, float b, float a = 1) noexcept
-    : FColorRaw{r, g, b, a}
-  {
-  }
-
-  /**
-   * Get the red component from the color.
-   *
-   * @returns The red component from the color.
-   */
-  constexpr float GetR() const noexcept { return r; }
-
-  /**
-   * Set the red component from the color.
-   *
-   * @param newR New red component value.
-   * @returns Reference to self.
-   */
-  constexpr FColor& SetR(float newR) noexcept
-  {
-    r = newR;
-    return *this;
-  }
-
-  /**
-   * Get the green component from the color.
-   *
-   * @returns The green component from the color.
-   *
-   */
-  constexpr float GetG() const noexcept { return g; }
-
-  /**
-   * Set the green component from the color.
-   *
-   * @param newG New green component value.
-   * @returns Reference to self.
-   */
-  constexpr FColor& SetG(float newG) noexcept
-  {
-    g = newG;
-    return *this;
-  }
-
-  /**
-   * Get the blue component from the color.
-   *
-   * @returns The blue component from the color.
-   *
-   */
-  constexpr float GetB() const noexcept { return b; }
-
-  /**
-   * Set the blue component from the color.
-   *
-   * @param newB New blue component value.
-   * @returns Reference to self.
-   */
-  constexpr FColor& SetB(float newB) noexcept
-  {
-    b = newB;
-    return *this;
-  }
-
-  /**
-   * Get the alpha component from the color.
-   *
-   * @returns The alpha component from the color.
-   *
-   */
-  constexpr float GetA() const noexcept { return a; }
-
-  /**
-   * Set the alpha component from the color.
-   *
-   * @param newA New alpha component value.
-   * @returns Reference to self.
-   */
-  constexpr FColor& SetA(float newA) noexcept
-  {
-    a = newA;
-    return *this;
-  }
-};
-
-class PaletteIndex
-{
-  PaletteRaw m_palette;
-
-  int m_index;
-
-public:
-  /// Constructs a PaletteIndex for a specific palette and index.
-  constexpr PaletteIndex(PaletteRaw palette, int index)
-    : m_palette{palette}
-    , m_index{index}
-  {
-  }
-
-  /// Converts to bool, true if this is a valid palette index.
-  constexpr explicit operator bool() const
-  {
-    return m_palette && m_index >= 0 && m_index < m_palette->ncolors;
-  }
-
-  /// Converts to ColorRaw.
-  constexpr operator ColorRaw() const
-  {
-    return *this ? m_palette->colors[m_index] : ColorRaw{};
-  }
-
-  /// Assignment operator.
-  PaletteIndex& operator=(ColorRaw color);
-};
-
-/**
- * A set of indexed colors representing a palette.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa Palette.SetColors
- *
- * @cat resource
- */
-class Palette
-{
-  PaletteRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Palette(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from PaletteRef.
-   *
-   * @param resource a PaletteRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Palette(const PaletteRaw resource) noexcept
-    : m_resource(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Palette(const Palette& other)
-    : m_resource(other.m_resource)
-  {
-    if (m_resource) ++m_resource->refcount;
-  }
-
-  /// Move constructor
-  constexpr Palette(Palette&& other) noexcept
-    : Palette(other.release())
-  {
-  }
-
-  /**
-   * Create a palette structure with the specified number of color entries.
-   *
-   * The palette entries are initialized to white.
-   *
-   * @param ncolors represents the number of color entries in the color palette.
-   * @post a new Palette structure on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Palette.Destroy
-   * @sa Palette.SetColors
-   * @sa Surface.SetPalette
-   */
-  Palette(int ncolors);
-
-  /**
-   * Safely borrows the from PaletteRaw.
-   *
-   * @param resource a PaletteRaw.
-   *
-   * This does not takes ownership!
-   */
-  static Palette Borrow(PaletteRaw resource)
-  {
-    if (resource) {
-      ++resource->refcount;
-      return Palette(resource);
-    }
-    return {};
-  }
-
-  /// member access to underlying PaletteRaw.
-  constexpr const PaletteRaw operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying PaletteRaw.
-  constexpr PaletteRaw operator->() noexcept { return m_resource; }
-
-  /// Converts to PaletteConstRef
-  constexpr operator PaletteConstRef() const noexcept { return m_resource; }
-
-  /// Destructor
-  ~Palette() { SDL_DestroyPalette(m_resource); }
-
-  /// Assignment operator.
-  constexpr Palette& operator=(Palette&& other) noexcept
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Palette& operator=(const Palette& other) = default;
-
-  /// Retrieves underlying PaletteRaw.
-  constexpr PaletteRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying PaletteRaw and clear this.
-  constexpr PaletteRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Palette& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /**
-   * Free a palette created with Palette.Palette().
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Palette.Palette
-   */
-  void Destroy();
-
-  /// Access specific pallete colors
-  constexpr const ColorRaw* data() const { return m_resource->colors; }
-
-  /// Returns number of colors in the palette.
-  constexpr int size() const { return m_resource->ncolors; }
-
-  /// Access specific pallete index
-  constexpr ColorRaw operator[](int index) const
-  {
-    return m_resource->colors[index];
-  }
-
-  /// Change specific pallete index
-  constexpr PaletteIndex operator[](int index)
-  {
-    return PaletteIndex{m_resource, index};
-  }
-
-  /**
-   * Set a range of colors in a palette.
-   *
-   * @param colors an array of Color structures to copy into the palette.
-   * @param firstcolor the index of the first palette entry to modify.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Palette.Palette
-   */
-  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
-};
-
-/**
- * Reference for Palette.
- *
- * This does not take ownership!
- */
-struct PaletteRef : Palette
-{
-  using Palette::Palette;
-
-  /**
-   * Constructs from raw Palette.
-   *
-   * @param resource a PaletteRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PaletteRef(PaletteRaw resource) noexcept
-    : Palette(resource)
-  {
-  }
-
-  /**
-   * Constructs from Palette.
-   *
-   * @param resource a Palette.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PaletteRef(const Palette& resource) noexcept
-    : Palette(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Palette.
-   *
-   * @param resource a Palette.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr PaletteRef(Palette&& resource) noexcept
-    : Palette(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr PaletteRef(const PaletteRef& other) noexcept
-    : Palette(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr PaletteRef(PaletteRef&& other) noexcept
-    : Palette(other.get())
-  {
-  }
-
-  /// Destructor
-  ~PaletteRef() { release(); }
-
-  /// Assignment operator.
-  PaletteRef& operator=(const PaletteRef& other) noexcept
-  {
-    release();
-    Palette::operator=(Palette(other.get()));
-    return *this;
-  }
-
-  /// Converts to PaletteRaw
-  constexpr operator PaletteRaw() const noexcept { return get(); }
-};
-
-/**
- * Get the human readable name of a pixel format.
- *
- * @param format the pixel format to query.
- * @returns the human readable name of the specified pixel format or
- *          "PIXELFORMAT_UNKNOWN" if the format isn't recognized.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline const char* GetPixelFormatName(PixelFormatRaw format)
-{
-  return SDL_GetPixelFormatName(format);
-}
-
-inline const char* PixelFormat::GetName() const
-{
-  return SDL::GetPixelFormatName(m_format);
-}
-
-/**
- * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
- *
- * @param format one of the PixelFormat values.
- * @param bpp a bits per pixel value; usually 15, 16, or 32.
- * @param Rmask a pointer filled in with the red mask for the format.
- * @param Gmask a pointer filled in with the green mask for the format.
- * @param Bmask a pointer filled in with the blue mask for the format.
- * @param Amask a pointer filled in with the alpha mask for the format.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.ForMasks
- */
-inline void GetMasksForPixelFormat(PixelFormatRaw format,
-                                   int* bpp,
-                                   Uint32* Rmask,
-                                   Uint32* Gmask,
-                                   Uint32* Bmask,
-                                   Uint32* Amask)
-{
-  CheckError(
-    SDL_GetMasksForPixelFormat(format, bpp, Rmask, Gmask, Bmask, Amask));
-}
-
-inline void PixelFormat::GetMasks(int* bpp,
-                                  Uint32* Rmask,
-                                  Uint32* Gmask,
-                                  Uint32* Bmask,
-                                  Uint32* Amask) const
-{
-  SDL::GetMasksForPixelFormat(m_format, bpp, Rmask, Gmask, Bmask, Amask);
-}
-
-/**
- * Convert a bpp value and RGBA masks to an enumerated pixel format.
- *
- * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't possible.
- *
- * @param bpp a bits per pixel value; usually 15, 16, or 32.
- * @param Rmask the red mask for the format.
- * @param Gmask the green mask for the format.
- * @param Bmask the blue mask for the format.
- * @param Amask the alpha mask for the format.
- * @returns the PixelFormat value corresponding to the format masks, or
- *          PIXELFORMAT_UNKNOWN if there isn't a match.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetMasks
- */
-inline PixelFormat GetPixelFormatForMasks(int bpp,
-                                          Uint32 Rmask,
-                                          Uint32 Gmask,
-                                          Uint32 Bmask,
-                                          Uint32 Amask)
-{
-  return SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
-}
-
-inline PixelFormat PixelFormat::ForMasks(int bpp,
-                                         Uint32 Rmask,
-                                         Uint32 Gmask,
-                                         Uint32 Bmask,
-                                         Uint32 Amask)
-{
-  return SDL::GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
-}
-
-/**
- * Create an PixelFormatDetails structure corresponding to a pixel format.
- *
- * Returned structure may come from a shared global cache (i.e. not newly
- * allocated), and hence should not be modified, especially the palette. Weird
- * errors such as `Blit combination not supported` may occur.
- *
- * @param format one of the PixelFormat values.
- * @returns a PixelFormatDetails structure on success
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
-{
-  return *CheckError(SDL_GetPixelFormatDetails(format));
-}
-
-inline const PixelFormatDetails& PixelFormat::GetDetails() const
-{
-  return SDL::GetPixelFormatDetails(m_format);
-}
-
-inline PixelFormat::operator const PixelFormatDetails&() const
-{
-  return GetDetails();
-}
-
-/**
- * Create a palette structure with the specified number of color entries.
- *
- * The palette entries are initialized to white.
- *
- * @param ncolors represents the number of color entries in the color palette.
- * @returns a new Palette structure on success.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Palette.Destroy
- * @sa Palette.SetColors
- * @sa Surface.SetPalette
- */
-inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
-
-inline Palette::Palette(int ncolors)
-  : m_resource(CheckError(SDL_CreatePalette(ncolors)))
-{
-}
-
-/**
- * Set a range of colors in a palette.
- *
- * @param palette the Palette structure to modify.
- * @param colors an array of Color structures to copy into the palette.
- * @param firstcolor the index of the first palette entry to modify.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified or destroyed in another thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline void SetPaletteColors(PaletteRef palette,
-                             SpanRef<const ColorRaw> colors,
-                             int firstcolor = 0)
-{
-  CheckError(
-    SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
-}
-
-inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
-{
-  SDL::SetPaletteColors(m_resource, colors, firstcolor);
-}
-
-inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
-{
-  m_palette->colors[m_index] = color;
-  return *this;
-}
-
-/**
- * Free a palette created with Palette.Palette().
- *
- * @param palette the Palette structure to be freed.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified or destroyed in another thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Palette.Palette
- */
-inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
-
-inline void Palette::Destroy() { DestroyPalette(release()); }
-
-/**
- * Map an RGB triple to an opaque pixel value for a given pixel format.
- *
- * This function maps the RGB color value to the specified pixel format and
- * returns the pixel value best approximating the given RGB color value for the
- * given pixel format.
- *
- * If the format has a palette (8-bit) the index of the closest matching color
- * in the palette will be returned.
- *
- * If the specified pixel format has an alpha component it will be returned as
- * all 1 bits (fully opaque).
- *
- * If the pixel format bpp (color depth) is less than 32-bpp then the unused
- * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
- * format the return value can be assigned to a Uint16, and similarly a Uint8
- * for an 8-bpp format).
- *
- * @param format a pointer to PixelFormatDetails describing the pixel format.
- * @param palette an optional palette for indexed formats, may be nullptr.
- * @param r the red component of the pixel in the range 0-255.
- * @param g the green component of the pixel in the range 0-255.
- * @param b the blue component of the pixel in the range 0-255.
- * @returns a pixel value.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetDetails
- * @sa GetRGB
- * @sa MapColor
- * @sa Surface.MapRGB
- */
-inline Uint32 MapRGB(const PixelFormatDetails& format,
-                     PaletteConstRef palette,
-                     Uint8 r,
-                     Uint8 g,
-                     Uint8 b)
-{
-  return SDL_MapRGB(&format, palette, r, g, b);
-}
-
-/**
- * Map an RGBA quadruple to a pixel value for a given pixel format.
- *
- * This function maps the RGBA color value to the specified pixel format and
- * returns the pixel value best approximating the given RGBA color value for
- * the given pixel format.
- *
- * If the specified pixel format has no alpha component the alpha value will
- * be ignored (as it will be in formats with a palette).
- *
- * If the format has a palette (8-bit) the index of the closest matching color
- * in the palette will be returned.
- *
- * If the pixel format bpp (color depth) is less than 32-bpp then the unused
- * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
- * format the return value can be assigned to a Uint16, and similarly a Uint8
- * for an 8-bpp format).
- *
- * @param format a pointer to PixelFormatDetails describing the pixel
- *               format.
- * @param r the red component of the pixel in the range 0-255.
- * @param g the green component of the pixel in the range 0-255.
- * @param b the blue component of the pixel in the range 0-255.
- * @param a the alpha component of the pixel in the range 0-255.
- * @param palette an optional palette for indexed formats, may be nullptr.
- * @returns a pixel value.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetDetails
- * @sa GetRGBA
- * @sa MapRGB
- * @sa Surface.MapRGBA
- */
-inline Uint32 MapRGBA(const PixelFormatDetails& format,
-                      Uint8 r,
-                      Uint8 g,
-                      Uint8 b,
-                      Uint8 a,
-                      PaletteConstRef palette = {})
-{
-  return SDL_MapRGBA(&format, palette, r, g, b, a);
-}
-
-/**
- * Map an RGBA quadruple to a pixel value for a given pixel format.
- *
- * This function maps the RGBA color value to the specified pixel format and
- * returns the pixel value best approximating the given RGBA color value for the
- * given pixel format.
- *
- * If the specified pixel format has no alpha component the alpha value will be
- * ignored (as it will be in formats with a palette).
- *
- * If the format has a palette (8-bit) the index of the closest matching color
- * in the palette will be returned.
- *
- * If the pixel format bpp (color depth) is less than 32-bpp then the unused
- * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
- * format the return value can be assigned to a Uint16, and similarly a Uint8
- * for an 8-bpp format).
- *
- * @param format a pointer to PixelFormatDetails describing the pixel format.
- * @param c the color components of the pixel in the range 0-255.
- * @param palette an optional palette for indexed formats, may be nullptr.
- * @returns a pixel value.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetDetails
- * @sa GetRGBA
- * @sa MapRGB
- * @sa Surface.MapRGBA
- */
-inline Uint32 MapColor(const PixelFormatDetails& format,
-                       ColorRaw c,
-                       PaletteConstRef palette = {})
-{
-  return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
-}
-
-inline Uint32 Color::Map(const PixelFormatDetails& format,
-                         PaletteConstRef palette) const
-{
-  return MapColor(format, *this, palette);
-}
-
-inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstRef palette) const
-{
-  return MapColor(GetDetails(), c, palette);
-}
-
-/**
- * Get RGB values from a pixel in the specified format.
- *
- * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component (e.g.,
- * a completely white pixel in 16-bit RGB565 format would return [0xff, 0xff,
- * 0xff] not [0xf8, 0xfc, 0xf8]).
- *
- * @param pixelvalue a pixel value.
- * @param format a pointer to PixelFormatDetails describing the pixel format.
- * @param palette an optional palette for indexed formats, may be nullptr.
- * @param r a pointer filled in with the red component, may be nullptr.
- * @param g a pointer filled in with the green component, may be nullptr.
- * @param b a pointer filled in with the blue component, may be nullptr.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetDetails
- * @sa GetRGBA
- * @sa MapRGB
- * @sa MapColor
- */
-inline void GetRGB(Uint32 pixelvalue,
-                   const PixelFormatDetails& format,
-                   PaletteConstRef palette,
-                   Uint8* r,
-                   Uint8* g,
-                   Uint8* b)
-{
-  SDL_GetRGB(pixelvalue, &format, palette, r, g, b);
-}
-
-/**
- * Get RGBA values from a pixel in the specified format.
- *
- * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component (e.g.,
- * a completely white pixel in 16-bit RGB565 format would return [0xff, 0xff,
- * 0xff] not [0xf8, 0xfc, 0xf8]).
- *
- * If the surface has no alpha component, the alpha will be returned as 0xff
- * (100% opaque).
- *
- * @param pixelvalue a pixel value.
- * @param format a pointer to PixelFormatDetails describing the pixel format.
- * @param palette an optional palette for indexed formats, may be nullptr.
- * @param r a pointer filled in with the red component, may be nullptr.
- * @param g a pointer filled in with the green component, may be nullptr.
- * @param b a pointer filled in with the blue component, may be nullptr.
- * @param a a pointer filled in with the alpha component, may be nullptr.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetDetails
- * @sa GetRGB
- * @sa MapRGB
- * @sa MapColor
- */
-inline void GetRGBA(Uint32 pixelvalue,
-                    const PixelFormatDetails& format,
-                    PaletteConstRef palette,
-                    Uint8* r,
-                    Uint8* g,
-                    Uint8* b,
-                    Uint8* a)
-{
-  SDL_GetRGBA(pixelvalue, &format, palette, r, g, b, a);
-}
-
-/**
- * Get RGBA values from a pixel in the specified format.
- *
- * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component
- * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
- * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
- *
- * If the surface has no alpha component, the alpha will be returned as 0xff
- * (100% opaque).
- *
- * @param pixel a pixel value.
- * @param format a pointer to PixelFormatDetails describing the pixel
- *               format.
- * @param palette an optional palette for indexed formats, may be nullptr.
- * @returns a color value.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetDetails
- * @sa GetRGB
- * @sa MapRGB
- * @sa MapRGBA
- */
-inline Color GetColor(Uint32 pixel,
-                      const PixelFormatDetails& format,
-                      PaletteConstRef palette = {})
-{
-  Color c;
-  GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
-  return c;
-}
-
-inline Color Color::Get(Uint32 pixel,
-                        const PixelFormatDetails& format,
-                        PaletteConstRef palette)
-{
-  return GetColor(pixel, format, palette);
-}
-
-inline Color PixelFormat::Get(Uint32 pixel, PaletteConstRef palette) const
-{
-  return GetColor(pixel, GetDetails(), palette);
-}
-
-/// @}
-
-/**
  * @defgroup CategoryProperties Object Properties
  *
  * A property is a variable that can be created and retrieved by name at
@@ -12283,25 +9125,20 @@ public:
   }
 
   /**
-   * Constructs from PropertiesRef.
+   * Constructs from raw Properties.
    *
    * @param resource a PropertiesID to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Properties(const PropertiesID resource) noexcept
+  constexpr explicit Properties(PropertiesID resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Properties(const Properties& other) noexcept
-    : Properties(other.m_resource)
-  {
-  }
+  constexpr Properties(const Properties& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())
@@ -12339,11 +9176,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Properties& operator=(const Properties& other) = default;
+  Properties& operator=(const Properties& other) = delete;
 
-public:
   /// Retrieves underlying PropertiesID.
   constexpr PropertiesID get() const noexcept { return m_resource; }
 
@@ -12948,7 +9783,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  PropertiesRef get() const { return m_lock; }
+  PropertiesRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -12978,7 +9813,7 @@ public:
  *
  * @since This constant is available since SDL 3.4.0.
  */
-inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
+constexpr const char* PROP_NAME_STRING = SDL_PROP_NAME_STRING;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -13100,8 +9935,8 @@ inline void UnlockProperties(PropertiesRef props)
 
 inline void Properties::Unlock(PropertiesLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void PropertiesLock::reset()
@@ -13206,7 +10041,7 @@ inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
                                                       CleanupPropertyCB cleanup)
 {
   SDL::SetPointerPropertyWithCleanup(
-    m_resource, std::move(name), value, cleanup);
+    m_resource, std::move(name), value, std::move(cleanup));
 }
 
 /**
@@ -13634,7 +10469,7 @@ inline void EnumerateProperties(PropertiesRef props,
   return EnumerateProperties(
     props,
     [](void* userdata, PropertiesID props, const char* name) {
-      auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
+      auto& f = *static_cast<const EnumeratePropertiesCB*>(userdata);
       f(props, name);
     },
     &callback);
@@ -13648,7 +10483,7 @@ inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
 
 inline void Properties::Enumerate(EnumeratePropertiesCB callback)
 {
-  SDL::EnumerateProperties(m_resource, callback);
+  SDL::EnumerateProperties(m_resource, std::move(callback));
 }
 
 /**
@@ -13662,7 +10497,7 @@ inline void Properties::Enumerate(EnumeratePropertiesCB callback)
 inline Uint64 CountProperties(PropertiesRef props)
 {
   Uint64 count = 0;
-  EnumerateProperties(props, [&](auto, const char*) { count++; });
+  EnumerateProperties(props, [&count](auto, const char*) { count++; });
   return count;
 }
 
@@ -13827,7 +10662,7 @@ struct IConvRef;
 template<class T, std::size_t N>
 constexpr std::size_t arraysize(const T (&array)[N])
 {
-  return SDL_arraysize(array);
+  return std::size(array);
 }
 
 #ifdef SDL3PP_DOC
@@ -14608,25 +11443,20 @@ public:
   }
 
   /**
-   * Constructs from EnvironmentRef.
+   * Constructs from raw Environment.
    *
    * @param resource a EnvironmentRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Environment(const EnvironmentRaw resource) noexcept
+  constexpr explicit Environment(EnvironmentRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept
-    : Environment(other.m_resource)
-  {
-  }
+  constexpr Environment(const Environment& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
@@ -14669,11 +11499,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Environment& operator=(const Environment& other) = default;
+  Environment& operator=(const Environment& other) = delete;
 
-public:
   /// Retrieves underlying EnvironmentRaw.
   constexpr EnvironmentRaw get() const noexcept { return m_resource; }
 
@@ -14750,12 +11578,7 @@ public:
    *
    * This might be slow.
    */
-  Uint64 GetVariableCount()
-  {
-    Uint64 count = 0;
-    for (auto& var : GetVariables()) count += 1;
-    return count;
-  }
+  Uint64 GetVariableCount() { return GetVariables().size(); }
 
   /**
    * Set the value of a variable in the environment.
@@ -15421,7 +12244,7 @@ inline void qsort_r(void* base, size_t nmemb, size_t size, CompareCB compare)
     nmemb,
     size,
     [](void* userdata, const void* a, const void* b) {
-      auto& cb = *static_cast<CompareCB*>(userdata);
+      auto& cb = *static_cast<const CompareCB*>(userdata);
       return cb(a, b);
     },
     &compare);
@@ -15562,7 +12385,7 @@ inline void* bsearch_r(const void* key,
     nmemb,
     size,
     [](void* userdata, const void* a, const void* b) {
-      auto& cb = *static_cast<CompareCB*>(userdata);
+      auto& cb = *static_cast<const CompareCB*>(userdata);
       return cb(a, b);
     },
     &compare);
@@ -19626,25 +16449,20 @@ public:
   }
 
   /**
-   * Constructs from IConvRef.
+   * Constructs from raw IConv.
    *
    * @param resource a IConvRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IConv(const IConvRaw resource) noexcept
+  constexpr explicit IConv(IConvRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept
-    : IConv(other.m_resource)
-  {
-  }
+  constexpr IConv(const IConv& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())
@@ -19683,11 +16501,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  IConv& operator=(const IConv& other) = default;
+  IConv& operator=(const IConv& other) = delete;
 
-public:
   /// Retrieves underlying IConvRaw.
   constexpr IConvRaw get() const noexcept { return m_resource; }
 
@@ -20121,6 +16937,27 @@ using FunctionPointer = void(SDLCALL*)();
 
 inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
 
+/// Narrows to Sint32.
+template<std::integral T>
+Sint32 narrowS32(T value)
+{
+  if constexpr (std::is_signed_v<T>) {
+    SDL_assert_paranoid(value >= std::numeric_limits<Sint32>::min() &&
+                        value <= std::numeric_limits<Sint32>::max());
+  } else {
+    SDL_assert_paranoid(value <= std::numeric_limits<Sint32>::max());
+  }
+  return static_cast<Sint32>(value);
+}
+
+/// Narrows to Uint32.
+template<std::integral T>
+Uint32 narrowU32(T value)
+{
+  SDL_assert_paranoid(value <= std::numeric_limits<Uint32>::max());
+  return static_cast<Uint32>(value);
+}
+
 /**
  * @defgroup CategoryAsyncIO Async I/O
  *
@@ -20242,25 +17079,20 @@ public:
   }
 
   /**
-   * Constructs from AsyncIORef.
+   * Constructs from raw AsyncIO.
    *
    * @param resource a AsyncIORaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIO(const AsyncIORaw resource) noexcept
+  constexpr explicit AsyncIO(AsyncIORaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) noexcept
-    : AsyncIO(other.m_resource)
-  {
-  }
+  constexpr AsyncIO(const AsyncIO& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
     : AsyncIO(other.release())
@@ -20328,11 +17160,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AsyncIO& operator=(const AsyncIO& other) = default;
+  AsyncIO& operator=(const AsyncIO& other) = delete;
 
-public:
   /// Retrieves underlying AsyncIORaw.
   constexpr AsyncIORaw get() const noexcept { return m_resource; }
 
@@ -20634,25 +17464,20 @@ public:
   }
 
   /**
-   * Constructs from AsyncIOQueueRef.
+   * Constructs from raw AsyncIOQueue.
    *
    * @param resource a AsyncIOQueueRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIOQueue(const AsyncIOQueueRaw resource) noexcept
+  constexpr explicit AsyncIOQueue(AsyncIOQueueRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept
-    : AsyncIOQueue(other.m_resource)
-  {
-  }
+  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
     : AsyncIOQueue(other.release())
@@ -20692,11 +17517,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AsyncIOQueue& operator=(const AsyncIOQueue& other) = default;
+  AsyncIOQueue& operator=(const AsyncIOQueue& other) = delete;
 
-public:
   /// Retrieves underlying AsyncIOQueueRaw.
   constexpr AsyncIOQueueRaw get() const noexcept { return m_resource; }
 
@@ -21314,7 +18137,7 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue,
                                                        Milliseconds timeout)
 {
   if (AsyncIOOutcome outcome;
-      SDL_WaitAsyncIOResult(queue, &outcome, timeout.count())) {
+      SDL_WaitAsyncIOResult(queue, &outcome, narrowS32(timeout.count()))) {
     return outcome;
   }
   return std::nullopt;
@@ -22532,8 +19355,8 @@ inline void SetClipboardData(ClipboardDataCB callback,
   static ClipboardDataCB s_callback;
   static ClipboardCleanupCB s_cleanup;
   CheckError(SDL_ClearClipboardData());
-  s_callback = callback;
-  s_cleanup = cleanup;
+  s_callback = std::move(callback);
+  s_cleanup = std::move(cleanup);
   SetClipboardData(
     [](void*, const char* mime_type, size_t* size) -> const void* {
       auto source = s_callback(mime_type);
@@ -23359,17 +20182,17 @@ struct Path : StringResult
   }
 
   /// Append
-  Path operator+(std::string_view other) const
+  friend Path operator+(const Path& path, std::string_view other)
   {
-    Path result(*this);
+    Path result(path);
     result += other;
     return result;
   }
 
   /// Append
-  Path operator+(char ch) const
+  friend Path operator+(const Path& path, char ch)
   {
-    Path result(*this);
+    Path result(path);
     result += ch;
     return result;
   }
@@ -23382,9 +20205,9 @@ struct Path : StringResult
   }
 
   /// Append path component.
-  Path operator/(std::string_view other) const
+  friend Path operator/(const Path& path, std::string_view other)
   {
-    Path result(*this);
+    Path result(path);
     result /= other;
     return result;
   }
@@ -23664,7 +20487,7 @@ struct PathInfo : PathInfoRaw
    *
    * @returns True if invalid state, false otherwise.
    */
-  constexpr bool operator==(std::nullptr_t _) const noexcept
+  constexpr bool operator==(std::nullptr_t) const noexcept
   {
     return !bool(*this);
   }
@@ -23837,7 +20660,7 @@ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
   return EnumerateDirectory(
     std::move(path),
     [](void* userdata, const char* dirname, const char* fname) {
-      auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
+      auto& cb = *static_cast<const EnumerateDirectoryCB*>(userdata);
       return cb(dirname, fname);
     },
     &callback);
@@ -23856,7 +20679,7 @@ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
 inline std::vector<Path> EnumerateDirectory(StringParam path)
 {
   std::vector<Path> r;
-  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
+  EnumerateDirectory(std::move(path), [&r](const char*, const char* fname) {
     r.emplace_back(fname);
     return ENUM_CONTINUE;
   });
@@ -24266,25 +21089,20 @@ public:
   }
 
   /**
-   * Constructs from HidDeviceRef.
+   * Constructs from raw HidDevice.
    *
    * @param resource a HidDeviceRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit HidDevice(const HidDeviceRaw resource) noexcept
+  constexpr explicit HidDevice(HidDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) noexcept
-    : HidDevice(other.m_resource)
-  {
-  }
+  constexpr HidDevice(const HidDevice& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr HidDevice(HidDevice&& other) noexcept
     : HidDevice(other.release())
@@ -24337,11 +21155,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  HidDevice& operator=(const HidDevice& other) = default;
+  HidDevice& operator=(const HidDevice& other) = delete;
 
-public:
   /// Retrieves underlying HidDeviceRaw.
   constexpr HidDeviceRaw get() const noexcept { return m_resource; }
 
@@ -24912,7 +21728,7 @@ inline int hid_read_timeout(HidDeviceRef dev,
                             Milliseconds timeout)
 {
   return SDL_hid_read_timeout(
-    dev, data.data_as<Uint8>(), data.size_bytes(), timeout.count());
+    dev, data.data_as<Uint8>(), data.size_bytes(), narrowS32(timeout.count()));
 }
 
 inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
@@ -25331,25 +22147,20 @@ public:
   }
 
   /**
-   * Constructs from IOStreamRef.
+   * Constructs from raw IOStream.
    *
    * @param resource a IOStreamRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IOStream(const IOStreamRaw resource) noexcept
+  constexpr explicit IOStream(IOStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr IOStream(const IOStream& other) noexcept
-    : IOStream(other.m_resource)
-  {
-  }
+  constexpr IOStream(const IOStream& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr IOStream(IOStream&& other) noexcept
     : IOStream(other.release())
@@ -25609,11 +22420,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  IOStream& operator=(const IOStream& other) = default;
+  IOStream& operator=(const IOStream& other) = delete;
 
-public:
   /// Retrieves underlying IOStreamRaw.
   constexpr IOStreamRaw get() const noexcept { return m_resource; }
 
@@ -25775,17 +22584,17 @@ public:
   std::string Read(size_t size = -1)
   {
     Sint64 pos = Tell();
-    auto curSize = SDL_GetIOSize(get());
-    if ((curSize < 0 || pos < 0)) {
+    if (auto curSize = SDL_GetIOSize(get()); curSize < 0 || pos < 0) {
       if (size == size_t(-1)) return {};
     } else if (curSize - pos <= 0) {
       return {};
-    } else if (curSize - pos < size) {
+    } else if (size_t(curSize - pos) < size) {
       size = curSize - pos;
     }
     std::string result(size, 0);
-    auto actualSize = Read(result);
-    if (actualSize < size) result.resize(actualSize);
+    if (auto actualSize = Read(result); actualSize < size) {
+      result.resize(actualSize);
+    }
     return result;
   }
 
@@ -28467,25 +25276,20 @@ public:
   }
 
   /**
-   * Constructs from SharedObjectRef.
+   * Constructs from raw SharedObject.
    *
    * @param resource a SharedObjectRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit SharedObject(const SharedObjectRaw resource) noexcept
+  constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) noexcept
-    : SharedObject(other.m_resource)
-  {
-  }
+  constexpr SharedObject(const SharedObject& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr SharedObject(SharedObject&& other) noexcept
     : SharedObject(other.release())
@@ -28522,11 +25326,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  SharedObject& operator=(const SharedObject& other) = default;
+  SharedObject& operator=(const SharedObject& other) = delete;
 
-public:
   /// Retrieves underlying SharedObjectRaw.
   constexpr SharedObjectRaw get() const noexcept { return m_resource; }
 
@@ -28860,6 +25662,3186 @@ inline void OpenURL(StringParam url) { CheckError(SDL_OpenURL(url)); }
 /// @}
 
 /**
+ * @defgroup CategoryPixels Pixel Formats and Conversion Routines
+ *
+ * SDL offers facilities for pixel management.
+ *
+ * Largely these facilities deal with pixel _format_: what does this set of bits
+ * represent?
+ *
+ * If you mostly want to think of a pixel as some combination of red, green,
+ * blue, and maybe alpha intensities, this is all pretty straightforward, and in
+ * many cases, is enough information to build a perfectly fine game.
+ *
+ * However, the actual definition of a pixel is more complex than that:
+ *
+ * Pixels are a representation of a color in a particular color space.
+ *
+ * The first characteristic of a color space is the color type. SDL understands
+ * two different color types, RGB and YCbCr, or in SDL also referred to as YUV.
+ *
+ * RGB colors consist of red, green, and blue channels of color that are added
+ * together to represent the colors we see on the screen.
+ *
+ * https://en.wikipedia.org/wiki/RGB_color_model
+ *
+ * YCbCr colors represent colors as a Y luma brightness component and red and
+ * blue chroma color offsets. This color representation takes advantage of the
+ * fact that the human eye is more sensitive to brightness than the color in an
+ * image. The Cb and Cr components are often compressed and have lower
+ * resolution than the luma component.
+ *
+ * https://en.wikipedia.org/wiki/YCbCr
+ *
+ * When the color information in YCbCr is compressed, the Y pixels are left at
+ * full resolution and each Cr and Cb pixel represents an average of the color
+ * information in a block of Y pixels. The chroma location determines where in
+ * that block of pixels the color information is coming from.
+ *
+ * The color range defines how much of the pixel to use when converting a pixel
+ * into a color on the display. When the full color range is used, the entire
+ * numeric range of the pixel bits is significant. When narrow color range is
+ * used, for historical reasons, the pixel uses only a portion of the numeric
+ * range to represent colors.
+ *
+ * The color primaries and white point are a definition of the colors in the
+ * color space relative to the standard XYZ color space.
+ *
+ * https://en.wikipedia.org/wiki/CIE_1931_color_space
+ *
+ * The transfer characteristic, or opto-electrical transfer function (OETF), is
+ * the way a color is converted from mathematically linear space into a
+ * non-linear output signals.
+ *
+ * https://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics
+ *
+ * The matrix coefficients are used to convert between YCbCr and RGB colors.
+ *
+ * @{
+ */
+
+/// Alias to raw representation for PixelFormat.
+using PixelFormatRaw = SDL_PixelFormat;
+
+// Forward decl
+struct PixelFormat;
+
+/// Alias to raw representation for Colorspace.
+using ColorspaceRaw = SDL_Colorspace;
+
+// Forward decl
+struct Colorspace;
+
+/// Alias to raw representation for Color.
+using ColorRaw = SDL_Color;
+
+// Forward decl
+struct Color;
+
+/// Alias to raw representation for FColor.
+using FColorRaw = SDL_FColor;
+
+// Forward decl
+struct FColor;
+
+// Forward decl
+struct Palette;
+
+/// Alias to raw representation for Palette.
+using PaletteRaw = SDL_Palette*;
+
+/// Alias to const raw representation for Palette.
+using PaletteRawConst = const SDL_Palette*;
+
+// Forward decl
+struct PaletteRef;
+
+/// Safely wrap Palette for non owning const parameters
+struct PaletteConstRef
+{
+  PaletteRawConst value; ///< parameter's Palette
+
+  /// Constructs from PaletteRawConst
+  constexpr PaletteConstRef(PaletteRawConst value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr PaletteConstRef(std::nullptr_t = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const PaletteConstRef& other) const = default;
+
+  /// Converts to underlying Palette
+  constexpr operator PaletteRawConst() const { return value; }
+
+  /// Converts to underlying Palette
+  constexpr operator PaletteRaw() const
+  {
+    return const_cast<PaletteRaw>(value);
+  }
+
+  /// member access to underlying PaletteRaw.
+  constexpr auto operator->() const { return value; }
+};
+
+/**
+ * Details about the format of a pixel.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using PixelFormatDetails = SDL_PixelFormatDetails;
+
+/**
+ * A fully opaque 8-bit alpha value.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa ALPHA_TRANSPARENT
+ */
+constexpr Uint8 ALPHA_OPAQUE = SDL_ALPHA_OPAQUE;
+
+/**
+ * A fully opaque floating point alpha value.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa ALPHA_TRANSPARENT_FLOAT
+ */
+constexpr float ALPHA_OPAQUE_FLOAT = SDL_ALPHA_OPAQUE_FLOAT;
+
+/**
+ * A fully transparent 8-bit alpha value.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa ALPHA_OPAQUE
+ */
+constexpr Uint8 ALPHA_TRANSPARENT = SDL_ALPHA_TRANSPARENT;
+
+/**
+ * A fully transparent floating point alpha value.
+ *
+ * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa ALPHA_OPAQUE_FLOAT
+ */
+constexpr float ALPHA_TRANSPARENT_FLOAT = SDL_ALPHA_TRANSPARENT_FLOAT;
+
+/**
+ * Pixel type.
+ *
+ * @name PixelTypes
+ * @{
+ */
+
+/**
+ * Pixel type.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PixelType = SDL_PixelType;
+
+constexpr PixelType PIXELTYPE_UNKNOWN = SDL_PIXELTYPE_UNKNOWN; ///< UNKNOWN
+
+constexpr PixelType PIXELTYPE_INDEX1 = SDL_PIXELTYPE_INDEX1; ///< INDEX1
+
+constexpr PixelType PIXELTYPE_INDEX4 = SDL_PIXELTYPE_INDEX4; ///< INDEX4
+
+constexpr PixelType PIXELTYPE_INDEX8 = SDL_PIXELTYPE_INDEX8; ///< INDEX8
+
+constexpr PixelType PIXELTYPE_PACKED8 = SDL_PIXELTYPE_PACKED8; ///< PACKED8
+
+constexpr PixelType PIXELTYPE_PACKED16 = SDL_PIXELTYPE_PACKED16; ///< PACKED16
+
+constexpr PixelType PIXELTYPE_PACKED32 = SDL_PIXELTYPE_PACKED32; ///< PACKED32
+
+constexpr PixelType PIXELTYPE_ARRAYU8 = SDL_PIXELTYPE_ARRAYU8; ///< ARRAYU8
+
+constexpr PixelType PIXELTYPE_ARRAYU16 = SDL_PIXELTYPE_ARRAYU16; ///< ARRAYU16
+
+constexpr PixelType PIXELTYPE_ARRAYU32 = SDL_PIXELTYPE_ARRAYU32; ///< ARRAYU32
+
+constexpr PixelType PIXELTYPE_ARRAYF16 = SDL_PIXELTYPE_ARRAYF16; ///< ARRAYF16
+
+constexpr PixelType PIXELTYPE_ARRAYF32 = SDL_PIXELTYPE_ARRAYF32; ///< ARRAYF32
+
+constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2; ///< INDEX2
+
+/// @}
+
+/**
+ * @name BitmapOrders
+ * @{
+ */
+
+/**
+ * Bitmap pixel order, high bit -> low bit.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using BitmapOrder = SDL_BitmapOrder;
+
+constexpr BitmapOrder BITMAPORDER_NONE = SDL_BITMAPORDER_NONE; ///< NONE
+
+constexpr BitmapOrder BITMAPORDER_4321 = SDL_BITMAPORDER_4321; ///< 4321
+
+constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234; ///< 1234
+
+/// @}
+
+/**
+ * @name PackedOrders
+ * @{
+ */
+
+/**
+ * Packed component order, high bit -> low bit.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PackedOrder = SDL_PackedOrder;
+
+constexpr PackedOrder PACKEDORDER_NONE = SDL_PACKEDORDER_NONE; ///< NONE
+
+constexpr PackedOrder PACKEDORDER_XRGB = SDL_PACKEDORDER_XRGB; ///< XRGB
+
+constexpr PackedOrder PACKEDORDER_RGBX = SDL_PACKEDORDER_RGBX; ///< RGBX
+
+constexpr PackedOrder PACKEDORDER_ARGB = SDL_PACKEDORDER_ARGB; ///< ARGB
+
+constexpr PackedOrder PACKEDORDER_RGBA = SDL_PACKEDORDER_RGBA; ///< RGBA
+
+constexpr PackedOrder PACKEDORDER_XBGR = SDL_PACKEDORDER_XBGR; ///< XBGR
+
+constexpr PackedOrder PACKEDORDER_BGRX = SDL_PACKEDORDER_BGRX; ///< BGRX
+
+constexpr PackedOrder PACKEDORDER_ABGR = SDL_PACKEDORDER_ABGR; ///< ABGR
+
+constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA; ///< BGRA
+
+/// @}
+
+/**
+ * @name ArrayOrders
+ * @{
+ */
+
+/**
+ * Array component order, low byte -> high byte.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ArrayOrder = SDL_ArrayOrder;
+
+constexpr ArrayOrder ARRAYORDER_NONE = SDL_ARRAYORDER_NONE; ///< NONE
+
+constexpr ArrayOrder ARRAYORDER_RGB = SDL_ARRAYORDER_RGB; ///< RGB
+
+constexpr ArrayOrder ARRAYORDER_RGBA = SDL_ARRAYORDER_RGBA; ///< RGBA
+
+constexpr ArrayOrder ARRAYORDER_ARGB = SDL_ARRAYORDER_ARGB; ///< ARGB
+
+constexpr ArrayOrder ARRAYORDER_BGR = SDL_ARRAYORDER_BGR; ///< BGR
+
+constexpr ArrayOrder ARRAYORDER_BGRA = SDL_ARRAYORDER_BGRA; ///< BGRA
+
+constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR; ///< ABGR
+
+/// @}
+
+/**
+ * @name PackedLayouts
+ * @{
+ */
+
+/**
+ * Packed component layout.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PackedLayout = SDL_PackedLayout;
+
+constexpr PackedLayout PACKEDLAYOUT_NONE = SDL_PACKEDLAYOUT_NONE; ///< NONE
+
+constexpr PackedLayout PACKEDLAYOUT_332 = SDL_PACKEDLAYOUT_332; ///< 332
+
+constexpr PackedLayout PACKEDLAYOUT_4444 = SDL_PACKEDLAYOUT_4444; ///< 4444
+
+constexpr PackedLayout PACKEDLAYOUT_1555 = SDL_PACKEDLAYOUT_1555; ///< 1555
+
+constexpr PackedLayout PACKEDLAYOUT_5551 = SDL_PACKEDLAYOUT_5551; ///< 5551
+
+constexpr PackedLayout PACKEDLAYOUT_565 = SDL_PACKEDLAYOUT_565; ///< 565
+
+constexpr PackedLayout PACKEDLAYOUT_8888 = SDL_PACKEDLAYOUT_8888; ///< 8888
+
+constexpr PackedLayout PACKEDLAYOUT_2101010 =
+  SDL_PACKEDLAYOUT_2101010; ///< 2101010
+
+constexpr PackedLayout PACKEDLAYOUT_1010102 =
+  SDL_PACKEDLAYOUT_1010102; ///< 1010102
+
+/// @}
+
+/**
+ * @name PixelFormats
+ * @{
+ */
+
+/**
+ * Pixel format.
+ *
+ * SDL's pixel formats have the following naming convention:
+ *
+ * - Names with a list of components and a single bit count, such as RGB24 and
+ *   ABGR32, define a platform-independent encoding into bytes in the order
+ *   specified. For example, in RGB24 data, each pixel is encoded in 3 bytes
+ *   (red, green, blue) in that order, and in ABGR32 data, each pixel is encoded
+ *   in 4 bytes (alpha, blue, green, red) in that order. Use these names if the
+ *   property of a format that is important to you is the order of the bytes in
+ *   memory or on disk.
+ * - Names with a bit count per component, such as ARGB8888 and XRGB1555, are
+ *   "packed" into an appropriately-sized integer in the platform's native
+ *   endianness. For example, ARGB8888 is a sequence of 32-bit integers; in each
+ *   integer, the most significant bits are alpha, and the least significant
+ *   bits are blue. On a little-endian CPU such as x86, the least significant
+ *   bits of each integer are arranged first in memory, but on a big-endian CPU
+ *   such as s390x, the most significant bits are arranged first. Use these
+ *   names if the property of a format that is important to you is the meaning
+ *   of each bit position within a native-endianness integer.
+ * - In indexed formats such as INDEX4LSB, each pixel is represented by encoding
+ *   an index into the palette into the indicated number of bits, with multiple
+ *   pixels packed into each byte if appropriate. In LSB formats, the first
+ *   (leftmost) pixel is stored in the least-significant bits of the byte; in
+ *   MSB formats, it's stored in the most-significant bits. INDEX8 does not need
+ *   LSB/MSB variants, because each pixel exactly fills one byte.
+ *
+ * The 32-bit byte-array encodings such as RGBA32 are aliases for the
+ * appropriate 8888 encoding for the current platform. For example, RGBA32 is an
+ * alias for ABGR8888 on little-endian CPUs like x86, or an alias for RGBA8888
+ * on big-endian CPUs.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @cat wrap-state
+ *
+ * @sa wrap-state
+ * @sa PixelFormats
+ */
+class PixelFormat
+{
+  PixelFormatRaw m_format;
+
+public:
+  /**
+   * Wraps PixelFormat.
+   *
+   * @param format the value to be wrapped
+   */
+  constexpr PixelFormat(PixelFormatRaw format = {}) noexcept
+    : m_format(format)
+  {
+  }
+
+  /**
+   * Defining custom non-FourCC pixel formats.
+   *
+   * For example, defining PIXELFORMAT_RGBA8888 looks like this:
+   *
+   * ```cpp
+   * PixelFormat format(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
+   * PACKEDLAYOUT_8888, 32, 4)
+   * ```
+   *
+   * @param type the type of the new format, probably a PixelType value.
+   * @param order the order of the new format, probably a BitmapOrder,
+   *              PackedOrder, or ArrayOrder value.
+   * @param layout the layout of the new format, probably an PackedLayout value
+   *               or zero.
+   * @param bits the number of bits per pixel of the new format.
+   * @param bytes the number of bytes per pixel of the new format.
+   * @post a format value in the style of PixelFormat.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr PixelFormat(PixelType type,
+                        int order,
+                        PackedLayout layout,
+                        int bits,
+                        int bytes);
+
+  /**
+   * Unwraps to the underlying PixelFormat.
+   *
+   * @returns the underlying PixelFormatRaw.
+   */
+  constexpr operator PixelFormatRaw() const noexcept { return m_format; }
+
+  /**
+   * Convert a bpp value and RGBA masks to an enumerated pixel format.
+   *
+   * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't possible.
+   *
+   * @param bpp a bits per pixel value; usually 15, 16, or 32.
+   * @param Rmask the red mask for the format.
+   * @param Gmask the green mask for the format.
+   * @param Bmask the blue mask for the format.
+   * @param Amask the alpha mask for the format.
+   * @returns the PixelFormat value corresponding to the format masks, or
+   *          PIXELFORMAT_UNKNOWN if there isn't a match.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PixelFormat.GetMasks
+   */
+  static PixelFormat ForMasks(int bpp,
+                              Uint32 Rmask,
+                              Uint32 Gmask,
+                              Uint32 Bmask,
+                              Uint32 Amask);
+
+  /**
+   * Retrieve the flags of an PixelFormat.
+   *
+   * This function is generally not needed directly by an app, which should use
+   * specific tests, like PixelFormat.IsFourCC, instead.
+   *
+   * @returns the flags of `format`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr Uint8 GetFlags() const;
+
+  /**
+   * Retrieve the type.
+   *
+   * @returns the type as PixelType.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr PixelType GetType() const;
+
+  /**
+   * Retrieve the order.
+   *
+   * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
+   * enumerations, depending on the format type.
+   *
+   * @returns the order.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr int GetOrder() const;
+
+  /**
+   * Retrieve the layout.
+   *
+   * This is usually a value from the PackedLayout enumeration, or zero if a
+   * layout doesn't make sense for the format type.
+   *
+   * @returns the layout
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr PackedLayout GetLayout() const;
+
+  /**
+   * Determine this's bits per pixel.
+   *
+   * FourCC formats will report zero here, as it rarely makes sense to measure
+   * them per-pixel.
+   *
+   * @returns the bits-per-pixel.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetBytesPerPixel
+   */
+  constexpr int GetBitsPerPixel() const;
+
+  /**
+   * Determine this's bytes per pixel.
+   *
+   * Note that this macro double-evaluates its parameter, so do not use
+   * expressions with side-effects here.
+   *
+   * FourCC formats do their best here, but many of them don't have a meaningful
+   * measurement of bytes per pixel.
+   *
+   * @return the bytes-per-pixel.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetBitsPerPixel
+   */
+  constexpr int GetBytesPerPixel() const;
+
+  /**
+   * Determine if this is an indexed format.
+   *
+   * @returns true if the format is indexed, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsIndexed() const;
+
+  /**
+   * Determine if this is a packed format.
+   *
+   * @returns true if the format is packed, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsPacked() const;
+
+  /**
+   * Determine if this is an array format.
+   *
+   * @returns true if the format is an array, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsArray() const;
+
+  /**
+   * Determine if this is a 10-bit format.
+   *
+   * @returns true if the format is 10-bit, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Is10Bit() const;
+
+  /**
+   * Determine if this is a floating point format.
+   *
+   * @returns true if the format is a floating point, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsFloat() const;
+
+  /**
+   * Determine if this has an alpha channel.
+   *
+   * @returns true if the format has alpha, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsAlpha() const;
+
+  /**
+   * Determine if this is a "FourCC" format.
+   *
+   * This covers custom and other unusual formats.
+   *
+   * @returns true if the format has alpha, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsFourCC() const;
+
+  /**
+   * Get the human readable name of a pixel format.
+   *
+   * @returns the human readable name of the specified pixel format or
+   *          "PIXELFORMAT_UNKNOWN" if the format isn't recognized.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  const char* GetName() const;
+
+  /**
+   * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
+   *
+   * @param bpp a bits per pixel value; usually 15, 16, or 32.
+   * @param Rmask a pointer filled in with the red mask for the format.
+   * @param Gmask a pointer filled in with the green mask for the format.
+   * @param Bmask a pointer filled in with the blue mask for the format.
+   * @param Amask a pointer filled in with the alpha mask for the format.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PixelFormat.ForMasks
+   */
+  void GetMasks(int* bpp,
+                Uint32* Rmask,
+                Uint32* Gmask,
+                Uint32* Bmask,
+                Uint32* Amask) const;
+
+  /**
+   * Create an PixelFormatDetails structure corresponding to a pixel format.
+   *
+   * Returned structure may come from a shared global cache (i.e. not newly
+   * allocated), and hence should not be modified, especially the palette. Weird
+   * errors such as `Blit combination not supported` may occur.
+   *
+   * @returns a PixelFormatDetails structure on success
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  const PixelFormatDetails& GetDetails() const;
+
+  /// Same as GetDetails()
+  operator const PixelFormatDetails&() const;
+
+  /**
+   * Map an RGBA quadruple to a pixel value for a given pixel format.
+   *
+   * This function maps the RGBA color value to the specified pixel format and
+   * returns the pixel value best approximating the given RGBA color value for
+   * the given pixel format.
+   *
+   * If the specified pixel format has no alpha component the alpha value will
+   * be ignored (as it will be in formats with a palette).
+   *
+   * If the format has a palette (8-bit) the index of the closest matching color
+   * in the palette will be returned.
+   *
+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+   * format the return value can be assigned to a Uint16, and similarly a Uint8
+   * for an 8-bpp format).
+   *
+   * @param c the color components of the pixel in the range 0-255.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetPixelFormatDetails()
+   * @sa Get()
+   * @sa MapRGBA()
+   * @sa Surface.MapColor()
+   */
+  Uint32 Map(ColorRaw c, PaletteConstRef palette = {}) const;
+
+  /**
+   * Get RGBA values from a pixel in the specified format.
+   *
+   * This function uses the entire 8-bit [0..255] range when converting color
+   * components from pixel formats with less than 8-bits per RGB component
+   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+   *
+   * If the surface has no alpha component, the alpha will be returned as 0xff
+   * (100% opaque).
+   *
+   * @param pixel a pixel value.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a color value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetPixelFormatDetails()
+   * @sa GetRGBA()
+   * @sa Map()
+   */
+  Color Get(Uint32 pixel, PaletteConstRef palette = {}) const;
+};
+
+constexpr PixelFormat PIXELFORMAT_UNKNOWN =
+  SDL_PIXELFORMAT_UNKNOWN; ///< UNKNOWN
+
+constexpr PixelFormat PIXELFORMAT_INDEX1LSB =
+  SDL_PIXELFORMAT_INDEX1LSB; ///< INDEX1LSB
+
+constexpr PixelFormat PIXELFORMAT_INDEX1MSB =
+  SDL_PIXELFORMAT_INDEX1MSB; ///< INDEX1MSB
+
+constexpr PixelFormat PIXELFORMAT_INDEX2LSB =
+  SDL_PIXELFORMAT_INDEX2LSB; ///< INDEX2LSB
+
+constexpr PixelFormat PIXELFORMAT_INDEX2MSB =
+  SDL_PIXELFORMAT_INDEX2MSB; ///< INDEX2MSB
+
+constexpr PixelFormat PIXELFORMAT_INDEX4LSB =
+  SDL_PIXELFORMAT_INDEX4LSB; ///< INDEX4LSB
+
+constexpr PixelFormat PIXELFORMAT_INDEX4MSB =
+  SDL_PIXELFORMAT_INDEX4MSB; ///< INDEX4MSB
+
+constexpr PixelFormat PIXELFORMAT_INDEX8 = SDL_PIXELFORMAT_INDEX8; ///< INDEX8
+
+constexpr PixelFormat PIXELFORMAT_RGB332 = SDL_PIXELFORMAT_RGB332; ///< RGB332
+
+constexpr PixelFormat PIXELFORMAT_XRGB4444 =
+  SDL_PIXELFORMAT_XRGB4444; ///< XRGB4444
+
+constexpr PixelFormat PIXELFORMAT_XBGR4444 =
+  SDL_PIXELFORMAT_XBGR4444; ///< XBGR4444
+
+constexpr PixelFormat PIXELFORMAT_XRGB1555 =
+  SDL_PIXELFORMAT_XRGB1555; ///< XRGB1555
+
+constexpr PixelFormat PIXELFORMAT_XBGR1555 =
+  SDL_PIXELFORMAT_XBGR1555; ///< XBGR1555
+
+constexpr PixelFormat PIXELFORMAT_ARGB4444 =
+  SDL_PIXELFORMAT_ARGB4444; ///< ARGB4444
+
+constexpr PixelFormat PIXELFORMAT_RGBA4444 =
+  SDL_PIXELFORMAT_RGBA4444; ///< RGBA4444
+
+constexpr PixelFormat PIXELFORMAT_ABGR4444 =
+  SDL_PIXELFORMAT_ABGR4444; ///< ABGR4444
+
+constexpr PixelFormat PIXELFORMAT_BGRA4444 =
+  SDL_PIXELFORMAT_BGRA4444; ///< BGRA4444
+
+constexpr PixelFormat PIXELFORMAT_ARGB1555 =
+  SDL_PIXELFORMAT_ARGB1555; ///< ARGB1555
+
+constexpr PixelFormat PIXELFORMAT_RGBA5551 =
+  SDL_PIXELFORMAT_RGBA5551; ///< RGBA5551
+
+constexpr PixelFormat PIXELFORMAT_ABGR1555 =
+  SDL_PIXELFORMAT_ABGR1555; ///< ABGR1555
+
+constexpr PixelFormat PIXELFORMAT_BGRA5551 =
+  SDL_PIXELFORMAT_BGRA5551; ///< BGRA5551
+
+constexpr PixelFormat PIXELFORMAT_RGB565 = SDL_PIXELFORMAT_RGB565; ///< RGB565
+
+constexpr PixelFormat PIXELFORMAT_BGR565 = SDL_PIXELFORMAT_BGR565; ///< BGR565
+
+constexpr PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24; ///< RGB24
+
+constexpr PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24; ///< BGR24
+
+constexpr PixelFormat PIXELFORMAT_XRGB8888 =
+  SDL_PIXELFORMAT_XRGB8888; ///< XRGB8888
+
+constexpr PixelFormat PIXELFORMAT_RGBX8888 =
+  SDL_PIXELFORMAT_RGBX8888; ///< RGBX8888
+
+constexpr PixelFormat PIXELFORMAT_XBGR8888 =
+  SDL_PIXELFORMAT_XBGR8888; ///< XBGR8888
+
+constexpr PixelFormat PIXELFORMAT_BGRX8888 =
+  SDL_PIXELFORMAT_BGRX8888; ///< BGRX8888
+
+constexpr PixelFormat PIXELFORMAT_ARGB8888 =
+  SDL_PIXELFORMAT_ARGB8888; ///< ARGB8888
+
+constexpr PixelFormat PIXELFORMAT_RGBA8888 =
+  SDL_PIXELFORMAT_RGBA8888; ///< RGBA8888
+
+constexpr PixelFormat PIXELFORMAT_ABGR8888 =
+  SDL_PIXELFORMAT_ABGR8888; ///< ABGR8888
+
+constexpr PixelFormat PIXELFORMAT_BGRA8888 =
+  SDL_PIXELFORMAT_BGRA8888; ///< BGRA8888
+
+constexpr PixelFormat PIXELFORMAT_XRGB2101010 =
+  SDL_PIXELFORMAT_XRGB2101010; ///< XRGB2101010
+
+constexpr PixelFormat PIXELFORMAT_XBGR2101010 =
+  SDL_PIXELFORMAT_XBGR2101010; ///< XBGR2101010
+
+constexpr PixelFormat PIXELFORMAT_ARGB2101010 =
+  SDL_PIXELFORMAT_ARGB2101010; ///< ARGB2101010
+
+constexpr PixelFormat PIXELFORMAT_ABGR2101010 =
+  SDL_PIXELFORMAT_ABGR2101010; ///< ABGR2101010
+
+constexpr PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48; ///< RGB48
+
+constexpr PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48; ///< BGR48
+
+constexpr PixelFormat PIXELFORMAT_RGBA64 = SDL_PIXELFORMAT_RGBA64; ///< RGBA64
+
+constexpr PixelFormat PIXELFORMAT_ARGB64 = SDL_PIXELFORMAT_ARGB64; ///< ARGB64
+
+constexpr PixelFormat PIXELFORMAT_BGRA64 = SDL_PIXELFORMAT_BGRA64; ///< BGRA64
+
+constexpr PixelFormat PIXELFORMAT_ABGR64 = SDL_PIXELFORMAT_ABGR64; ///< ABGR64
+
+constexpr PixelFormat PIXELFORMAT_RGB48_FLOAT =
+  SDL_PIXELFORMAT_RGB48_FLOAT; ///< RGB48_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_BGR48_FLOAT =
+  SDL_PIXELFORMAT_BGR48_FLOAT; ///< BGR48_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_RGBA64_FLOAT =
+  SDL_PIXELFORMAT_RGBA64_FLOAT; ///< RGBA64_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_ARGB64_FLOAT =
+  SDL_PIXELFORMAT_ARGB64_FLOAT; ///< ARGB64_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_BGRA64_FLOAT =
+  SDL_PIXELFORMAT_BGRA64_FLOAT; ///< BGRA64_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_ABGR64_FLOAT =
+  SDL_PIXELFORMAT_ABGR64_FLOAT; ///< ABGR64_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_RGB96_FLOAT =
+  SDL_PIXELFORMAT_RGB96_FLOAT; ///< RGB96_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_BGR96_FLOAT =
+  SDL_PIXELFORMAT_BGR96_FLOAT; ///< BGR96_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_RGBA128_FLOAT =
+  SDL_PIXELFORMAT_RGBA128_FLOAT; ///< RGBA128_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_ARGB128_FLOAT =
+  SDL_PIXELFORMAT_ARGB128_FLOAT; ///< ARGB128_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_BGRA128_FLOAT =
+  SDL_PIXELFORMAT_BGRA128_FLOAT; ///< BGRA128_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT =
+  SDL_PIXELFORMAT_ABGR128_FLOAT; ///< ABGR128_FLOAT
+
+constexpr PixelFormat PIXELFORMAT_YV12 =
+  SDL_PIXELFORMAT_YV12; ///< Planar mode: Y + V + U (3 planes)
+
+constexpr PixelFormat PIXELFORMAT_IYUV =
+  SDL_PIXELFORMAT_IYUV; ///< Planar mode: Y + U + V (3 planes)
+
+constexpr PixelFormat PIXELFORMAT_YUY2 =
+  SDL_PIXELFORMAT_YUY2; ///< Packed mode: Y0+U0+Y1+V0 (1 plane)
+
+constexpr PixelFormat PIXELFORMAT_UYVY =
+  SDL_PIXELFORMAT_UYVY; ///< Packed mode: U0+Y0+V0+Y1 (1 plane)
+
+constexpr PixelFormat PIXELFORMAT_YVYU =
+  SDL_PIXELFORMAT_YVYU; ///< Packed mode: Y0+V0+Y1+U0 (1 plane)
+
+constexpr PixelFormat PIXELFORMAT_NV12 =
+  SDL_PIXELFORMAT_NV12; ///< Planar mode: Y + U/V interleaved (2 planes)
+
+constexpr PixelFormat PIXELFORMAT_NV21 =
+  SDL_PIXELFORMAT_NV21; ///< Planar mode: Y + V/U interleaved (2 planes)
+
+constexpr PixelFormat PIXELFORMAT_P010 =
+  SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved (2 planes)
+
+constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES =
+  SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format
+
+#if SDL_VERSION_ATLEAST(3, 2, 10)
+
+constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG; ///< Motion JPEG
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 10)
+
+constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32; ///< RGBA32
+
+constexpr PixelFormat PIXELFORMAT_ARGB32 = SDL_PIXELFORMAT_ARGB32; ///< ARGB32
+
+constexpr PixelFormat PIXELFORMAT_BGRA32 = SDL_PIXELFORMAT_BGRA32; ///< BGRA32
+
+constexpr PixelFormat PIXELFORMAT_ABGR32 = SDL_PIXELFORMAT_ABGR32; ///< ABGR32
+
+constexpr PixelFormat PIXELFORMAT_RGBX32 = SDL_PIXELFORMAT_RGBX32; ///< RGBX32
+
+constexpr PixelFormat PIXELFORMAT_XRGB32 = SDL_PIXELFORMAT_XRGB32; ///< XRGB32
+
+constexpr PixelFormat PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_BGRX32; ///< BGRX32
+
+constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32; ///< XBGR32
+
+/// @}
+
+/**
+ * A function for defining custom FourCC pixel formats.
+ *
+ * For example, defining PIXELFORMAT_YV12 looks like this:
+ *
+ * ```cpp
+ * DefinePixelFourCC('Y', 'V', '1', '2')
+ * ```
+ *
+ * @param A the first character of the FourCC code.
+ * @param B the second character of the FourCC code.
+ * @param C the third character of the FourCC code.
+ * @param D the fourth character of the FourCC code.
+ * @returns a format value in the style of PixelFormat.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint32 DefinePixelFourCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D)
+{
+  return SDL_DEFINE_PIXELFOURCC(A, B, C, D);
+}
+
+/**
+ * A macro for defining custom non-FourCC pixel formats.
+ *
+ * For example, defining PIXELFORMAT_RGBA8888 looks like this:
+ *
+ * ```c
+ * PixelFormat.PixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
+ * PACKEDLAYOUT_8888, 32, 4)
+ * ```
+ *
+ * @param type the type of the new format, probably a PixelType value.
+ * @param order the order of the new format, probably a BitmapOrder,
+ *              PackedOrder, or ArrayOrder value.
+ * @param layout the layout of the new format, probably an PackedLayout value or
+ *               zero.
+ * @param bits the number of bits per pixel of the new format.
+ * @param bytes the number of bytes per pixel of the new format.
+ * @returns a format value in the style of PixelFormat.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr PixelFormat DefinePixelFormat(PixelType type,
+                                        int order,
+                                        PackedLayout layout,
+                                        int bits,
+                                        int bytes)
+{
+  return PixelFormat(type, order, layout, bits, bytes);
+}
+
+constexpr PixelFormat::PixelFormat(PixelType type,
+                                   int order,
+                                   PackedLayout layout,
+                                   int bits,
+                                   int bytes)
+  : m_format(
+      PixelFormatRaw(SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
+{
+}
+
+/**
+ * Retrieve the flags of an PixelFormat.
+ *
+ * This function is generally not needed directly by an app, which should use
+ * specific tests, like PixelFormat.IsFourCC, instead.
+ *
+ * @param format an PixelFormat to check.
+ * @returns the flags of `format`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint8 PixelFormatFlags(PixelFormatRaw format)
+{
+  return SDL_PIXELFLAG(format);
+}
+
+constexpr Uint8 PixelFormat::GetFlags() const
+{
+  return SDL::PixelFormatFlags(m_format);
+}
+
+/**
+ * A macro to retrieve the type of an PixelFormat.
+ *
+ * This is usually a value from the PixelType enumeration.
+ *
+ * @param format an PixelFormat to check.
+ * @returns the type of `format`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr PixelType PixelFormatType(PixelFormatRaw format)
+{
+  return PixelType(SDL_PIXELTYPE(format));
+}
+
+constexpr PixelType PixelFormat::GetType() const
+{
+  return SDL::PixelFormatType(m_format);
+}
+
+/**
+ * A macro to retrieve the order of an PixelFormat.
+ *
+ * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
+ * enumerations, depending on the format type.
+ *
+ * @param format an PixelFormat to check.
+ * @returns the order of `format`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr int PixelFormatOrder(PixelFormatRaw format)
+{
+  return SDL_PIXELORDER(format);
+}
+
+constexpr int PixelFormat::GetOrder() const
+{
+  return SDL::PixelFormatOrder(m_format);
+}
+
+/**
+ * A macro to retrieve the layout of an PixelFormat.
+ *
+ * This is usually a value from the PackedLayout enumeration, or zero if a
+ * layout doesn't make sense for the format type.
+ *
+ * @param format an PixelFormat to check.
+ * @returns the layout of `format`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr PackedLayout PixelFormatLayout(PixelFormatRaw format)
+{
+  return PackedLayout(SDL_PIXELLAYOUT(format));
+}
+
+constexpr PackedLayout PixelFormat::GetLayout() const
+{
+  return SDL::PixelFormatLayout(m_format);
+}
+
+/**
+ * A macro to determine an PixelFormat's bits per pixel.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * FourCC formats will report zero here, as it rarely makes sense to measure
+ * them per-pixel.
+ *
+ * @param format an PixelFormat to check.
+ * @returns the bits-per-pixel of `format`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetBytesPerPixel
+ */
+constexpr int PixelFormatBitsPerPixel(PixelFormatRaw format)
+{
+  return SDL_BITSPERPIXEL(format);
+}
+
+constexpr int PixelFormat::GetBitsPerPixel() const
+{
+  return SDL::PixelFormatBitsPerPixel(m_format);
+}
+
+/**
+ * A macro to determine an PixelFormat's bytes per pixel.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * FourCC formats do their best here, but many of them don't have a meaningful
+ * measurement of bytes per pixel.
+ *
+ * @param format an PixelFormat to check.
+ * @returns the bytes-per-pixel of `format`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetBitsPerPixel
+ */
+constexpr int PixelFormatBytesPerPixel(PixelFormatRaw format)
+{
+  return SDL_BYTESPERPIXEL(format);
+}
+
+constexpr int PixelFormat::GetBytesPerPixel() const
+{
+  return SDL::PixelFormatBytesPerPixel(m_format);
+}
+
+/**
+ * A macro to determine if an PixelFormat is an indexed format.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * @param format an PixelFormat to check.
+ * @returns true if the format is indexed, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsPixelFormatIndexed(PixelFormatRaw format)
+{
+  return SDL_ISPIXELFORMAT_INDEXED(format);
+}
+
+constexpr bool PixelFormat::IsIndexed() const
+{
+  return SDL::IsPixelFormatIndexed(m_format);
+}
+
+/**
+ * A macro to determine if an PixelFormat is a packed format.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * @param format an PixelFormat to check.
+ * @returns true if the format is packed, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsPixelFormatPacked(PixelFormatRaw format)
+{
+  return SDL_ISPIXELFORMAT_PACKED(format);
+}
+
+constexpr bool PixelFormat::IsPacked() const
+{
+  return SDL::IsPixelFormatPacked(m_format);
+}
+
+/**
+ * A macro to determine if an PixelFormat is an array format.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * @param format an PixelFormat to check.
+ * @returns true if the format is an array, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsPixelFormatArray(PixelFormatRaw format)
+{
+  return SDL_ISPIXELFORMAT_ARRAY(format);
+}
+
+constexpr bool PixelFormat::IsArray() const
+{
+  return SDL::IsPixelFormatArray(m_format);
+}
+
+/**
+ * A macro to determine if an PixelFormat is a 10-bit format.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * @param format an PixelFormat to check.
+ * @returns true if the format is 10-bit, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsPixelFormat10Bit(PixelFormatRaw format)
+{
+  return SDL_ISPIXELFORMAT_10BIT(format);
+}
+
+constexpr bool PixelFormat::Is10Bit() const
+{
+  return SDL::IsPixelFormat10Bit(m_format);
+}
+
+/**
+ * A macro to determine if an PixelFormat is a floating point format.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * @param format an PixelFormat to check.
+ * @returns true if the format is a floating point, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsPixelFormatFloat(PixelFormatRaw format)
+{
+  return SDL_ISPIXELFORMAT_FLOAT(format);
+}
+
+constexpr bool PixelFormat::IsFloat() const
+{
+  return SDL::IsPixelFormatFloat(m_format);
+}
+
+/**
+ * @name ColorTypes
+ * @{
+ */
+
+/**
+ * A macro to determine if an PixelFormat has an alpha channel.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * @param format an PixelFormat to check.
+ * @returns true if the format has alpha, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsPixelFormatAlpha(PixelFormatRaw format)
+{
+  return SDL_ISPIXELFORMAT_ALPHA(format);
+}
+
+constexpr bool PixelFormat::IsAlpha() const
+{
+  return SDL::IsPixelFormatAlpha(m_format);
+}
+
+/**
+ * A macro to determine if an PixelFormat is a "FourCC" format.
+ *
+ * This covers custom and other unusual formats.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * @param format an PixelFormat to check.
+ * @returns true if the format has alpha, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsPixelFormatFourCC(PixelFormatRaw format)
+{
+  return SDL_ISPIXELFORMAT_FOURCC(format);
+}
+
+constexpr bool PixelFormat::IsFourCC() const
+{
+  return SDL::IsPixelFormatFourCC(m_format);
+}
+
+/**
+ * Colorspace color type.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ColorType = SDL_ColorType;
+
+constexpr ColorType COLOR_TYPE_UNKNOWN =
+  SDL_COLOR_TYPE_UNKNOWN; ///< COLOR_TYPE_UNKNOWN
+
+constexpr ColorType COLOR_TYPE_RGB = SDL_COLOR_TYPE_RGB; ///< COLOR_TYPE_RGB
+
+constexpr ColorType COLOR_TYPE_YCBCR =
+  SDL_COLOR_TYPE_YCBCR; ///< COLOR_TYPE_YCBCR
+
+/// @}
+
+/**
+ * @name ColorRanges
+ * @{
+ */
+
+/**
+ * Colorspace color range, as described by
+ * https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ColorRange = SDL_ColorRange;
+
+constexpr ColorRange COLOR_RANGE_UNKNOWN =
+  SDL_COLOR_RANGE_UNKNOWN; ///< COLOR_RANGE_UNKNOWN
+
+/**
+ * Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
+ */
+constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
+
+/// Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
+constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
+
+/// @}
+
+/**
+ * @name ColorPrimaries
+ * @{
+ */
+
+/**
+ * Colorspace color primaries, as described by
+ * https://www.itu.int/rec/T-REC-H.273-201612-S/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ColorPrimaries = SDL_ColorPrimaries;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_UNKNOWN =
+  SDL_COLOR_PRIMARIES_UNKNOWN; ///< COLOR_PRIMARIES_UNKNOWN
+
+constexpr ColorPrimaries COLOR_PRIMARIES_BT709 =
+  SDL_COLOR_PRIMARIES_BT709; ///< ITU-R BT.709-6
+
+constexpr ColorPrimaries COLOR_PRIMARIES_UNSPECIFIED =
+  SDL_COLOR_PRIMARIES_UNSPECIFIED; ///< COLOR_PRIMARIES_UNSPECIFIED
+
+constexpr ColorPrimaries COLOR_PRIMARIES_BT470M =
+  SDL_COLOR_PRIMARIES_BT470M; ///< ITU-R BT.470-6 System M
+
+constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG =
+  SDL_COLOR_PRIMARIES_BT470BG; ///< ITU-R BT.470-6 System B, G / ITU-R BT.601-7
+                               ///< 625
+
+constexpr ColorPrimaries COLOR_PRIMARIES_BT601 =
+  SDL_COLOR_PRIMARIES_BT601; ///< ITU-R BT.601-7 525, SMPTE 170M
+
+/// SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
+  SDL_COLOR_PRIMARIES_SMPTE240;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_GENERIC_FILM =
+  SDL_COLOR_PRIMARIES_GENERIC_FILM; ///< Generic film (color filters using
+                                    ///< Illuminant C)
+
+constexpr ColorPrimaries COLOR_PRIMARIES_BT2020 =
+  SDL_COLOR_PRIMARIES_BT2020; ///< ITU-R BT.2020-2 / ITU-R BT.2100-0
+
+constexpr ColorPrimaries COLOR_PRIMARIES_XYZ =
+  SDL_COLOR_PRIMARIES_XYZ; ///< SMPTE ST 428-1
+
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE431 =
+  SDL_COLOR_PRIMARIES_SMPTE431; ///< SMPTE RP 431-2
+
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
+  SDL_COLOR_PRIMARIES_SMPTE432; ///< SMPTE EG 432-1 / DCI P3
+
+constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 =
+  SDL_COLOR_PRIMARIES_EBU3213; ///< EBU Tech. 3213-E
+
+constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM =
+  SDL_COLOR_PRIMARIES_CUSTOM; ///< COLOR_PRIMARIES_CUSTOM
+
+/// @}
+
+/**
+ * @name TransferCharacteristics
+ * @{
+ */
+
+/**
+ * Colorspace transfer characteristics.
+ *
+ * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using TransferCharacteristics = SDL_TransferCharacteristics;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNKNOWN =
+  SDL_TRANSFER_CHARACTERISTICS_UNKNOWN; ///< TRANSFER_CHARACTERISTICS_UNKNOWN
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
+  SDL_TRANSFER_CHARACTERISTICS_BT709; ///< Rec. ITU-R BT.709-6 / ITU-R BT1361
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
+  SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED; ///< TRANSFER_CHARACTERISTICS_UNSPECIFIED
+
+/// ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA28 =
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA28; ///< ITU-R BT.470-6 System B, G
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT601 =
+  SDL_TRANSFER_CHARACTERISTICS_BT601; ///< SMPTE ST 170M / ITU-R BT.601-7 525 or
+                                      ///< 625
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE240 =
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE240; ///< SMPTE ST 240M
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LINEAR =
+  SDL_TRANSFER_CHARACTERISTICS_LINEAR; ///< TRANSFER_CHARACTERISTICS_LINEAR
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100 =
+  SDL_TRANSFER_CHARACTERISTICS_LOG100; ///< TRANSFER_CHARACTERISTICS_LOG100
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100_SQRT10 =
+  SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10; ///< TRANSFER_CHARACTERISTICS_LOG100_SQRT10
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_IEC61966 =
+  SDL_TRANSFER_CHARACTERISTICS_IEC61966; ///< IEC 61966-2-4
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT1361 =
+  SDL_TRANSFER_CHARACTERISTICS_BT1361; ///< ITU-R BT1361 Extended Colour Gamut
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SRGB =
+  SDL_TRANSFER_CHARACTERISTICS_SRGB; ///< IEC 61966-2-1 (sRGB or sYCC)
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_10BIT =
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT; ///< ITU-R BT2020 for 10-bit system
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT; ///< ITU-R BT2020 for 12-bit system
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
+  SDL_TRANSFER_CHARACTERISTICS_PQ; ///< SMPTE ST 2084 for 10-, 12-, 14- and
+                                   ///< 16-bit systems
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE428 =
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE428; ///< SMPTE ST 428-1
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
+  SDL_TRANSFER_CHARACTERISTICS_HLG; ///< ARIB STD-B67, known as "hybrid
+                                    ///< log-gamma" (HLG)
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
+  SDL_TRANSFER_CHARACTERISTICS_CUSTOM; ///< TRANSFER_CHARACTERISTICS_CUSTOM
+
+/// @}
+
+/**
+ * @name MatrixCoefficients
+ * @{
+ */
+
+/**
+ * Colorspace matrix coefficients.
+ *
+ * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using MatrixCoefficients = SDL_MatrixCoefficients;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_IDENTITY =
+  SDL_MATRIX_COEFFICIENTS_IDENTITY; ///< MATRIX_COEFFICIENTS_IDENTITY
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT709 =
+  SDL_MATRIX_COEFFICIENTS_BT709; ///< ITU-R BT.709-6
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_UNSPECIFIED =
+  SDL_MATRIX_COEFFICIENTS_UNSPECIFIED; ///< MATRIX_COEFFICIENTS_UNSPECIFIED
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_FCC =
+  SDL_MATRIX_COEFFICIENTS_FCC; ///< US FCC Title 47
+
+/**
+ * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as
+ * MATRIX_COEFFICIENTS_BT601
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT470BG =
+  SDL_MATRIX_COEFFICIENTS_BT470BG;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT601 =
+  SDL_MATRIX_COEFFICIENTS_BT601; ///< ITU-R BT.601-7 525
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE240 =
+  SDL_MATRIX_COEFFICIENTS_SMPTE240; ///< SMPTE 240M
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_YCGCO =
+  SDL_MATRIX_COEFFICIENTS_YCGCO; ///< MATRIX_COEFFICIENTS_YCGCO
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_NCL =
+  SDL_MATRIX_COEFFICIENTS_BT2020_NCL; ///< ITU-R BT.2020-2 non-constant
+                                      ///< luminance
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_CL =
+  SDL_MATRIX_COEFFICIENTS_BT2020_CL; ///< ITU-R BT.2020-2 constant luminance
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE2085 =
+  SDL_MATRIX_COEFFICIENTS_SMPTE2085; ///< SMPTE ST 2085
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL =
+  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL; ///< MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL =
+  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL; ///< MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
+  SDL_MATRIX_COEFFICIENTS_ICTCP; ///< ITU-R BT.2100-0 ICTCP
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
+  SDL_MATRIX_COEFFICIENTS_CUSTOM; ///< MATRIX_COEFFICIENTS_CUSTOM
+
+/// @}
+
+/**
+ * @name ChromaLocations
+ * @{
+ */
+
+/**
+ * Colorspace chroma sample location.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ChromaLocation = SDL_ChromaLocation;
+
+constexpr ChromaLocation CHROMA_LOCATION_NONE =
+  SDL_CHROMA_LOCATION_NONE; ///< RGB, no chroma sampling
+
+/**
+ * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
+ * of the 2x2 square. In other words, they have the same horizontal location as
+ * the top-left pixel, but is shifted one-half pixel down vertically.
+ */
+constexpr ChromaLocation CHROMA_LOCATION_LEFT = SDL_CHROMA_LOCATION_LEFT;
+
+/**
+ * In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2
+ * square. In other words, they are offset one-half pixel to the right and
+ * one-half pixel down compared to the top-left pixel.
+ */
+constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
+
+/**
+ * In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and
+ * Cr are sampled at the same location as the group's top-left Y pixel
+ * ("co-sited", "co-located").
+ */
+constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
+
+/// @}
+
+/**
+ * @name Colorspaces
+ * @{
+ */
+
+/**
+ * Colorspace definitions.
+ *
+ * Since similar colorspaces may vary in their details (matrix, transfer
+ * function, etc.), this is not an exhaustive list, but rather a representative
+ * sample of the kinds of colorspaces supported in SDL.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @cat wrap-state
+ *
+ * @sa Colorspaces
+ * @sa ColorPrimaries
+ * @sa ColorRange
+ * @sa ColorType
+ * @sa MatrixCoefficients
+ * @sa TransferCharacteristics
+ */
+class Colorspace
+{
+  ColorspaceRaw m_cspace;
+
+public:
+  /**
+   * Wraps Colorspace.
+   *
+   * @param cspace the value to be wrapped
+   */
+  constexpr Colorspace(ColorspaceRaw cspace = {}) noexcept
+    : m_cspace(cspace)
+  {
+  }
+
+  /**
+   * Define custom Colorspace formats.
+   *
+   * For example, defining COLORSPACE_SRGB looks like this:
+   *
+   * ```cpp
+   * Colorspace colorspace(COLOR_TYPE_RGB,
+   *                       COLOR_RANGE_FULL,
+   *                       COLOR_PRIMARIES_BT709,
+   *                       TRANSFER_CHARACTERISTICS_SRGB,
+   *                       MATRIX_COEFFICIENTS_IDENTITY,
+   *                       CHROMA_LOCATION_NONE)
+   * ```
+   *
+   * @param type the type of the new format, probably an ColorType value.
+   * @param range the range of the new format, probably a ColorRange value.
+   * @param primaries the primaries of the new format, probably an
+   *                  ColorPrimaries value.
+   * @param transfer the transfer characteristics of the new format, probably an
+   *                 TransferCharacteristics value.
+   * @param matrix the matrix coefficients of the new format, probably an
+   *               MatrixCoefficients value.
+   * @param chroma the chroma sample location of the new format, probably an
+   *               ChromaLocation value.
+   * @post a format value in the style of Colorspace.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr Colorspace(ColorType type,
+                       ColorRange range,
+                       ColorPrimaries primaries,
+                       TransferCharacteristics transfer,
+                       MatrixCoefficients matrix,
+                       ChromaLocation chroma);
+
+  /**
+   * Unwraps to the underlying Colorspace.
+   *
+   * @returns the underlying ColorspaceRaw.
+   */
+  constexpr operator ColorspaceRaw() const noexcept { return m_cspace; }
+
+  /**
+   * Retrieve the type of a Colorspace.
+   *
+   * @returns the ColorType for `cspace`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr ColorType GetType() const;
+
+  /**
+   * Retrieve the range of a Colorspace.
+   *
+   * @returns the ColorRange of `cspace`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr ColorRange GetRange() const;
+
+  /**
+   * Retrieve the chroma sample location of an Colorspace.
+   *
+   * @returns the ChromaLocation of `cspace`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr ChromaLocation GetChroma() const;
+
+  /**
+   * Retrieve the primaries of an Colorspace.
+   *
+   * @returns the ColorPrimaries of `cspace`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr ColorPrimaries GetPrimaries() const;
+
+  /**
+   * Retrieve the transfer characteristics of an Colorspace.
+   *
+   * @returns the TransferCharacteristics of `cspace`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr TransferCharacteristics GetTransfer() const;
+
+  /**
+   * Retrieve the matrix coefficients of an Colorspace.
+   *
+   * @returns the MatrixCoefficients of `cspace`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr MatrixCoefficients GetMatrix() const;
+
+  /**
+   * Determine if a Colorspace uses BT601 (or BT470BG) matrix coefficients.
+   *
+   * @returns true if BT601 or BT470BG, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT601() const;
+
+  /**
+   * Determine if an Colorspace uses BT709 matrix coefficients.
+   *
+   * @returns true if BT709, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT709() const;
+
+  /**
+   * Determine if an Colorspace uses BT2020_NCL matrix coefficients.
+   *
+   * @returns true if BT2020_NCL, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT2020_NCL() const;
+
+  /**
+   * A function to determine if an Colorspace has a limited range.
+   *
+   * @returns true if limited range, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsLimitedRange() const;
+
+  /**
+   * A function to determine if an Colorspace has a full range.
+   *
+   * @returns true if full range, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsFullRange() const;
+};
+
+constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
+
+/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
+constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
+
+/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
+constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
+
+/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
+constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
+
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
+constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
+
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
+constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
+
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
+constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
+
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
+constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
+
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
+constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
+
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
+constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
+
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
+constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
+
+/// The default colorspace for RGB surfaces if no colorspace is specified
+constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
+
+/// The default colorspace for YUV surfaces if no colorspace is specified
+constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
+
+/// @}
+
+/**
+ * A macro for defining custom Colorspace formats.
+ *
+ * For example, defining COLORSPACE_SRGB looks like this:
+ *
+ * ```c
+ * Colorspace.Colorspace(COLOR_TYPE_RGB,
+ *                       COLOR_RANGE_FULL,
+ *                       COLOR_PRIMARIES_BT709,
+ *                       TRANSFER_CHARACTERISTICS_SRGB,
+ *                       MATRIX_COEFFICIENTS_IDENTITY,
+ *                       CHROMA_LOCATION_NONE)
+ * ```
+ *
+ * @param type the type of the new format, probably an ColorType value.
+ * @param range the range of the new format, probably a ColorRange value.
+ * @param primaries the primaries of the new format, probably an ColorPrimaries
+ *                  value.
+ * @param transfer the transfer characteristics of the new format, probably an
+ *                 TransferCharacteristics value.
+ * @param matrix the matrix coefficients of the new format, probably an
+ *               MatrixCoefficients value.
+ * @param chroma the chroma sample location of the new format, probably an
+ *               ChromaLocation value.
+ * @returns a format value in the style of Colorspace.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Colorspace DefineColorspace(ColorType type,
+                                      ColorRange range,
+                                      ColorPrimaries primaries,
+                                      TransferCharacteristics transfer,
+                                      MatrixCoefficients matrix,
+                                      ChromaLocation chroma)
+{
+  return Colorspace(type, range, primaries, transfer, matrix, chroma);
+}
+
+constexpr Colorspace::Colorspace(ColorType type,
+                                 ColorRange range,
+                                 ColorPrimaries primaries,
+                                 TransferCharacteristics transfer,
+                                 MatrixCoefficients matrix,
+                                 ChromaLocation chroma)
+  : m_cspace(ColorspaceRaw(
+      SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma)))
+{
+}
+
+/**
+ * A macro to retrieve the type of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the ColorType for `cspace`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr ColorType ColorspaceType(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACETYPE(cspace);
+}
+
+constexpr ColorType Colorspace::GetType() const
+{
+  return SDL::ColorspaceType(m_cspace);
+}
+
+/**
+ * A macro to retrieve the range of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the ColorRange of `cspace`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr ColorRange ColorspaceRange(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACERANGE(cspace);
+}
+
+constexpr ColorRange Colorspace::GetRange() const
+{
+  return SDL::ColorspaceRange(m_cspace);
+}
+
+/**
+ * A macro to retrieve the chroma sample location of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the ChromaLocation of `cspace`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr ChromaLocation ColorspaceChroma(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACECHROMA(cspace);
+}
+
+constexpr ChromaLocation Colorspace::GetChroma() const
+{
+  return SDL::ColorspaceChroma(m_cspace);
+}
+
+/**
+ * A macro to retrieve the primaries of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the ColorPrimaries of `cspace`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr ColorPrimaries ColorspacePrimaries(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACEPRIMARIES(cspace);
+}
+
+constexpr ColorPrimaries Colorspace::GetPrimaries() const
+{
+  return SDL::ColorspacePrimaries(m_cspace);
+}
+
+/**
+ * A macro to retrieve the transfer characteristics of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the TransferCharacteristics of `cspace`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr TransferCharacteristics ColorspaceTransfer(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACETRANSFER(cspace);
+}
+
+constexpr TransferCharacteristics Colorspace::GetTransfer() const
+{
+  return SDL::ColorspaceTransfer(m_cspace);
+}
+
+/**
+ * A macro to retrieve the matrix coefficients of an Colorspace.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns the MatrixCoefficients of `cspace`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr MatrixCoefficients ColorspaceMatrix(ColorspaceRaw cspace)
+{
+  return SDL_COLORSPACEMATRIX(cspace);
+}
+
+constexpr MatrixCoefficients Colorspace::GetMatrix() const
+{
+  return SDL::ColorspaceMatrix(m_cspace);
+}
+
+/**
+ * A macro to determine if an Colorspace uses BT601 (or BT470BG) matrix
+ * coefficients.
+ *
+ * Note that this macro double-evaluates its parameter, so do not use
+ * expressions with side-effects here.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns true if BT601 or BT470BG, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsColorspaceMatrixBT601(ColorspaceRaw cspace)
+{
+  return SDL_ISCOLORSPACE_MATRIX_BT601(cspace);
+}
+
+constexpr bool Colorspace::IsMatrixBT601() const
+{
+  return SDL::IsColorspaceMatrixBT601(m_cspace);
+}
+
+/**
+ * A macro to determine if an Colorspace uses BT709 matrix coefficients.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns true if BT709, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsColorspaceMatrixBT709(ColorspaceRaw cspace)
+{
+  return SDL_ISCOLORSPACE_MATRIX_BT709(cspace);
+}
+
+constexpr bool Colorspace::IsMatrixBT709() const
+{
+  return SDL::IsColorspaceMatrixBT709(m_cspace);
+}
+
+/**
+ * Determine if an Colorspace uses BT2020_NCL matrix coefficients.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns true if BT2020_NCL, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsColorspaceMatrixBT2020_NCL(ColorspaceRaw cspace)
+{
+  return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace);
+}
+
+constexpr bool Colorspace::IsMatrixBT2020_NCL() const
+{
+  return SDL::IsColorspaceMatrixBT2020_NCL(m_cspace);
+}
+
+/**
+ * A macro to determine if an Colorspace has a limited range.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns true if limited range, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsColorspaceLimitedRange(ColorspaceRaw cspace)
+{
+  return SDL_ISCOLORSPACE_LIMITED_RANGE(cspace);
+}
+
+constexpr bool Colorspace::IsLimitedRange() const
+{
+  return SDL::IsColorspaceLimitedRange(m_cspace);
+}
+
+/**
+ * A macro to determine if an Colorspace has a full range.
+ *
+ * @param cspace an Colorspace to check.
+ * @returns true if full range, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr bool IsColorspaceFullRange(ColorspaceRaw cspace)
+{
+  return SDL_ISCOLORSPACE_FULL_RANGE(cspace);
+}
+
+constexpr bool Colorspace::IsFullRange() const
+{
+  return SDL::IsColorspaceFullRange(m_cspace);
+}
+
+/// Comparison operator for Color.
+constexpr bool operator==(ColorRaw lhs, ColorRaw rhs) noexcept
+{
+  return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
+}
+
+/// Comparison operator for FColor.
+constexpr bool operator==(const FColorRaw& lhs, const FColorRaw& rhs) noexcept
+{
+  return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
+}
+
+/// Spaceship operator for Color.
+constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs) noexcept
+{
+  if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
+  if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
+  if (lhs.b != rhs.b) return lhs.b <=> rhs.b;
+  return lhs.a <=> rhs.a;
+}
+
+/// Spaceship operator for FColor.
+constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs) noexcept
+{
+  if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
+  if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
+  if (lhs.b != rhs.b) return lhs.b <=> rhs.b;
+  return lhs.a <=> rhs.a;
+}
+
+/**
+ * A structure that represents a color as RGBA components.
+ *
+ * The bits of this structure can be directly reinterpreted as an integer-packed
+ * color which uses the PIXELFORMAT_RGBA32 format (PIXELFORMAT_ABGR8888 on
+ * little-endian systems and PIXELFORMAT_RGBA8888 on big-endian systems).
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat wrap-extending-struct
+ * @sa FColor
+ */
+struct Color : ColorRaw
+{
+  /**
+   * Wraps Color.
+   *
+   * @param color the value to be wrapped
+   */
+  constexpr Color(ColorRaw color = {}) noexcept
+    : ColorRaw(color)
+  {
+  }
+
+  /**
+   * Constructs from its fields.
+   *
+   * @param r the value for channel r.
+   * @param g the value for channel g.
+   * @param b the value for channel b.
+   * @param a the value for channel a.
+   */
+  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255) noexcept
+    : ColorRaw{r, g, b, a}
+  {
+  }
+
+  /**
+   * Get the red component from the color.
+   *
+   * @returns The red component from the color.
+   */
+  constexpr Uint8 GetR() const noexcept { return r; }
+
+  /**
+   * Set the red component from the color.
+   *
+   * @param newR New red component value.
+   * @returns Reference to self.
+   */
+  constexpr Color& SetR(Uint8 newR) noexcept
+  {
+    r = newR;
+    return *this;
+  }
+
+  /**
+   * Get the green component from the color.
+   *
+   * @returns The green component from the color.
+   *
+   */
+  constexpr Uint8 GetG() const noexcept { return g; }
+
+  /**
+   * Set the green component from the color.
+   *
+   * @param newG New green component value.
+   * @returns Reference to self.
+   */
+  constexpr Color& SetG(Uint8 newG) noexcept
+  {
+    g = newG;
+    return *this;
+  }
+
+  /**
+   * Get the blue component from the color.
+   *
+   * @returns The blue component from the color.
+   *
+   */
+  constexpr Uint8 GetB() const noexcept { return b; }
+
+  /**
+   * Set the blue component from the color.
+   *
+   * @param newB New blue component value.
+   * @returns Reference to self.
+   */
+  constexpr Color& SetB(Uint8 newB) noexcept
+  {
+    b = newB;
+    return *this;
+  }
+
+  /**
+   * Get the alpha component from the color.
+   *
+   * @returns The alpha component from the color.
+   *
+   */
+  constexpr Uint8 GetA() const noexcept { return a; }
+
+  /**
+   * Set the alpha component from the color.
+   *
+   * @param newA New alpha component value.
+   * @returns Reference to self.
+   */
+  constexpr Color& SetA(Uint8 newA) noexcept
+  {
+    a = newA;
+    return *this;
+  }
+
+  /**
+   * Map an RGBA quadruple to a pixel value for a given pixel format.
+   *
+   * This function maps the RGBA color value to the specified pixel format and
+   * returns the pixel value best approximating the given RGBA color value for
+   * the given pixel format.
+   *
+   * If the specified pixel format has no alpha component the alpha value will
+   * be ignored (as it will be in formats with a palette).
+   *
+   * If the format has a palette (8-bit) the index of the closest matching color
+   * in the palette will be returned.
+   *
+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+   * format the return value can be assigned to a Uint16, and similarly a Uint8
+   * for an 8-bpp format).
+   *
+   * @param format a pointer to PixelFormatDetails describing the pixel
+   *               format.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   */
+  Uint32 Map(const PixelFormatDetails& format, PaletteConstRef palette) const;
+
+  /**
+   * Get RGBA values from a pixel in the specified format.
+   *
+   * This function uses the entire 8-bit [0..255] range when converting color
+   * components from pixel formats with less than 8-bits per RGB component
+   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+   *
+   * If the surface has no alpha component, the alpha will be returned as 0xff
+   * (100% opaque).
+   *
+   * @param pixel a pixel value.
+   * @param format a pointer to PixelFormatDetails describing the pixel
+   *               format.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a color value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PixelFormat.GetDetails()
+   * @sa GetRGBA()
+   * @sa Map()
+   */
+  static Color Get(Uint32 pixel,
+                   const PixelFormatDetails& format,
+                   PaletteConstRef palette = {});
+};
+
+/**
+ * The bits of this structure can be directly reinterpreted as a float-packed
+ * color which uses the PIXELFORMAT_RGBA128_FLOAT format
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa Color
+ */
+struct FColor : FColorRaw
+{
+  /**
+   * Wraps FColor.
+   *
+   * @param color the value to be wrapped
+   */
+  constexpr FColor(const FColorRaw& color = {}) noexcept
+    : FColorRaw(color)
+  {
+  }
+
+  /**
+   * Constructs from its fields.
+   *
+   * @param r the value for r.
+   * @param g the value for g.
+   * @param b the value for b.
+   * @param a the value for a.
+   */
+  constexpr FColor(float r, float g, float b, float a = 1) noexcept
+    : FColorRaw{r, g, b, a}
+  {
+  }
+
+  /**
+   * Get the red component from the color.
+   *
+   * @returns The red component from the color.
+   */
+  constexpr float GetR() const noexcept { return r; }
+
+  /**
+   * Set the red component from the color.
+   *
+   * @param newR New red component value.
+   * @returns Reference to self.
+   */
+  constexpr FColor& SetR(float newR) noexcept
+  {
+    r = newR;
+    return *this;
+  }
+
+  /**
+   * Get the green component from the color.
+   *
+   * @returns The green component from the color.
+   *
+   */
+  constexpr float GetG() const noexcept { return g; }
+
+  /**
+   * Set the green component from the color.
+   *
+   * @param newG New green component value.
+   * @returns Reference to self.
+   */
+  constexpr FColor& SetG(float newG) noexcept
+  {
+    g = newG;
+    return *this;
+  }
+
+  /**
+   * Get the blue component from the color.
+   *
+   * @returns The blue component from the color.
+   *
+   */
+  constexpr float GetB() const noexcept { return b; }
+
+  /**
+   * Set the blue component from the color.
+   *
+   * @param newB New blue component value.
+   * @returns Reference to self.
+   */
+  constexpr FColor& SetB(float newB) noexcept
+  {
+    b = newB;
+    return *this;
+  }
+
+  /**
+   * Get the alpha component from the color.
+   *
+   * @returns The alpha component from the color.
+   *
+   */
+  constexpr float GetA() const noexcept { return a; }
+
+  /**
+   * Set the alpha component from the color.
+   *
+   * @param newA New alpha component value.
+   * @returns Reference to self.
+   */
+  constexpr FColor& SetA(float newA) noexcept
+  {
+    a = newA;
+    return *this;
+  }
+};
+
+/// Auxiliary class for Palette to provide access to specific palette index.
+class PaletteIndex
+{
+  PaletteRaw m_palette;
+
+  int m_index;
+
+public:
+  /// Constructs a PaletteIndex for a specific palette and index.
+  constexpr PaletteIndex(PaletteRaw palette, int index)
+    : m_palette{palette}
+    , m_index{index}
+  {
+  }
+
+  /// Converts to bool, true if this is a valid palette index.
+  constexpr explicit operator bool() const
+  {
+    return m_palette && m_index >= 0 && m_index < m_palette->ncolors;
+  }
+
+  /// Converts to ColorRaw.
+  constexpr operator ColorRaw() const
+  {
+    return *this ? m_palette->colors[m_index] : ColorRaw{};
+  }
+
+  /// Assignment operator.
+  PaletteIndex& operator=(ColorRaw color);
+};
+
+/**
+ * A set of indexed colors representing a palette.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa Palette.SetColors
+ *
+ * @cat resource
+ */
+class Palette
+{
+  PaletteRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr Palette(std::nullptr_t = nullptr) noexcept
+    : m_resource(nullptr)
+  {
+  }
+
+  /**
+   * Constructs from raw Palette.
+   *
+   * @param resource a PaletteRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Palette(PaletteRaw resource) noexcept
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Palette(const Palette& other)
+    : m_resource(other.m_resource)
+  {
+    if (m_resource) ++m_resource->refcount;
+  }
+
+  /// Move constructor
+  constexpr Palette(Palette&& other) noexcept
+    : Palette(other.release())
+  {
+  }
+
+  /**
+   * Create a palette structure with the specified number of color entries.
+   *
+   * The palette entries are initialized to white.
+   *
+   * @param ncolors represents the number of color entries in the color palette.
+   * @post a new Palette structure on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Palette.Destroy
+   * @sa Palette.SetColors
+   * @sa Surface.SetPalette
+   */
+  Palette(int ncolors);
+
+  /**
+   * Safely borrows the from PaletteRaw.
+   *
+   * @param resource a PaletteRaw.
+   *
+   * This does not takes ownership!
+   */
+  static Palette Borrow(PaletteRaw resource)
+  {
+    if (resource) {
+      ++resource->refcount;
+      return Palette(resource);
+    }
+    return {};
+  }
+
+  /// member access to underlying PaletteRaw.
+  constexpr PaletteRawConst operator->() const noexcept { return m_resource; }
+
+  /// member access to underlying PaletteRaw.
+  constexpr PaletteRaw operator->() noexcept { return m_resource; }
+
+  /// Converts to PaletteConstRef
+  constexpr operator PaletteConstRef() const noexcept { return m_resource; }
+
+  /// Destructor
+  ~Palette() { SDL_DestroyPalette(m_resource); }
+
+  /// Assignment operator.
+  constexpr Palette& operator=(Palette&& other) noexcept
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Palette& operator=(const Palette& other)
+  {
+    if (m_resource != other.m_resource) {
+      Palette tmp(other);
+      std::swap(m_resource, tmp.m_resource);
+    }
+    return *this;
+  }
+
+  /// Retrieves underlying PaletteRaw.
+  constexpr PaletteRaw get() const noexcept { return m_resource; }
+
+  /// Retrieves underlying PaletteRaw and clear this.
+  constexpr PaletteRaw release() noexcept
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const Palette& other) const noexcept = default;
+
+  /// Converts to bool
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
+
+  /**
+   * Free a palette created with Palette.Palette().
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Palette.Palette
+   */
+  void Destroy();
+
+  /// Access specific pallete colors
+  constexpr const ColorRaw* data() const { return m_resource->colors; }
+
+  /// Returns number of colors in the palette.
+  constexpr int size() const { return m_resource->ncolors; }
+
+  /// Access specific pallete index
+  constexpr ColorRaw operator[](int index) const
+  {
+    return m_resource->colors[index];
+  }
+
+  /// Change specific pallete index
+  constexpr PaletteIndex operator[](int index)
+  {
+    return PaletteIndex{m_resource, index};
+  }
+
+  /**
+   * Set a range of colors in a palette.
+   *
+   * @param colors an array of Color structures to copy into the palette.
+   * @param firstcolor the index of the first palette entry to modify.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Palette.Palette
+   */
+  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
+};
+
+/**
+ * Reference for Palette.
+ *
+ * This does not take ownership!
+ */
+struct PaletteRef : Palette
+{
+  using Palette::Palette;
+
+  /**
+   * Constructs from raw Palette.
+   *
+   * @param resource a PaletteRaw.
+   *
+   * This does not takes ownership!
+   */
+  constexpr PaletteRef(PaletteRaw resource) noexcept
+    : Palette(resource)
+  {
+  }
+
+  /**
+   * Constructs from Palette.
+   *
+   * @param resource a Palette.
+   *
+   * This does not takes ownership!
+   */
+  constexpr PaletteRef(const Palette& resource) noexcept
+    : Palette(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from Palette.
+   *
+   * @param resource a Palette.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr PaletteRef(Palette&& resource) noexcept
+    : Palette(std::move(resource).release())
+  {
+  }
+
+  /// Copy constructor.
+  constexpr PaletteRef(const PaletteRef& other) noexcept
+    : Palette(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr PaletteRef(PaletteRef&& other) noexcept
+    : Palette(other.get())
+  {
+  }
+
+  /// Destructor
+  ~PaletteRef() { release(); }
+
+  /// Assignment operator.
+  PaletteRef& operator=(const PaletteRef& other) noexcept
+  {
+    release();
+    Palette::operator=(Palette(other.get()));
+    return *this;
+  }
+
+  /// Converts to PaletteRaw
+  constexpr operator PaletteRaw() const noexcept { return get(); }
+};
+
+/**
+ * Get the human readable name of a pixel format.
+ *
+ * @param format the pixel format to query.
+ * @returns the human readable name of the specified pixel format or
+ *          "PIXELFORMAT_UNKNOWN" if the format isn't recognized.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline const char* GetPixelFormatName(PixelFormatRaw format)
+{
+  return SDL_GetPixelFormatName(format);
+}
+
+inline const char* PixelFormat::GetName() const
+{
+  return SDL::GetPixelFormatName(m_format);
+}
+
+/**
+ * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
+ *
+ * @param format one of the PixelFormat values.
+ * @param bpp a bits per pixel value; usually 15, 16, or 32.
+ * @param Rmask a pointer filled in with the red mask for the format.
+ * @param Gmask a pointer filled in with the green mask for the format.
+ * @param Bmask a pointer filled in with the blue mask for the format.
+ * @param Amask a pointer filled in with the alpha mask for the format.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.ForMasks
+ */
+inline void GetMasksForPixelFormat(PixelFormatRaw format,
+                                   int* bpp,
+                                   Uint32* Rmask,
+                                   Uint32* Gmask,
+                                   Uint32* Bmask,
+                                   Uint32* Amask)
+{
+  CheckError(
+    SDL_GetMasksForPixelFormat(format, bpp, Rmask, Gmask, Bmask, Amask));
+}
+
+inline void PixelFormat::GetMasks(int* bpp,
+                                  Uint32* Rmask,
+                                  Uint32* Gmask,
+                                  Uint32* Bmask,
+                                  Uint32* Amask) const
+{
+  SDL::GetMasksForPixelFormat(m_format, bpp, Rmask, Gmask, Bmask, Amask);
+}
+
+/**
+ * Convert a bpp value and RGBA masks to an enumerated pixel format.
+ *
+ * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't possible.
+ *
+ * @param bpp a bits per pixel value; usually 15, 16, or 32.
+ * @param Rmask the red mask for the format.
+ * @param Gmask the green mask for the format.
+ * @param Bmask the blue mask for the format.
+ * @param Amask the alpha mask for the format.
+ * @returns the PixelFormat value corresponding to the format masks, or
+ *          PIXELFORMAT_UNKNOWN if there isn't a match.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetMasks
+ */
+inline PixelFormat GetPixelFormatForMasks(int bpp,
+                                          Uint32 Rmask,
+                                          Uint32 Gmask,
+                                          Uint32 Bmask,
+                                          Uint32 Amask)
+{
+  return SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
+}
+
+inline PixelFormat PixelFormat::ForMasks(int bpp,
+                                         Uint32 Rmask,
+                                         Uint32 Gmask,
+                                         Uint32 Bmask,
+                                         Uint32 Amask)
+{
+  return SDL::GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
+}
+
+/**
+ * Create an PixelFormatDetails structure corresponding to a pixel format.
+ *
+ * Returned structure may come from a shared global cache (i.e. not newly
+ * allocated), and hence should not be modified, especially the palette. Weird
+ * errors such as `Blit combination not supported` may occur.
+ *
+ * @param format one of the PixelFormat values.
+ * @returns a PixelFormatDetails structure on success
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
+{
+  return *CheckError(SDL_GetPixelFormatDetails(format));
+}
+
+inline const PixelFormatDetails& PixelFormat::GetDetails() const
+{
+  return SDL::GetPixelFormatDetails(m_format);
+}
+
+inline PixelFormat::operator const PixelFormatDetails&() const
+{
+  return GetDetails();
+}
+
+/**
+ * Create a palette structure with the specified number of color entries.
+ *
+ * The palette entries are initialized to white.
+ *
+ * @param ncolors represents the number of color entries in the color palette.
+ * @returns a new Palette structure on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Palette.Destroy
+ * @sa Palette.SetColors
+ * @sa Surface.SetPalette
+ */
+inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
+
+inline Palette::Palette(int ncolors)
+  : m_resource(CheckError(SDL_CreatePalette(ncolors)))
+{
+}
+
+/**
+ * Set a range of colors in a palette.
+ *
+ * @param palette the Palette structure to modify.
+ * @param colors an array of Color structures to copy into the palette.
+ * @param firstcolor the index of the first palette entry to modify.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified or destroyed in another thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetPaletteColors(PaletteRef palette,
+                             SpanRef<const ColorRaw> colors,
+                             int firstcolor = 0)
+{
+  CheckError(SDL_SetPaletteColors(
+    palette, colors.data(), firstcolor, narrowS32(colors.size())));
+}
+
+inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
+{
+  SDL::SetPaletteColors(m_resource, colors, firstcolor);
+}
+
+inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
+{
+  m_palette->colors[m_index] = color;
+  return *this;
+}
+
+/**
+ * Free a palette created with Palette.Palette().
+ *
+ * @param palette the Palette structure to be freed.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified or destroyed in another thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Palette.Palette
+ */
+inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
+
+inline void Palette::Destroy() { DestroyPalette(release()); }
+
+/**
+ * Map an RGB triple to an opaque pixel value for a given pixel format.
+ *
+ * This function maps the RGB color value to the specified pixel format and
+ * returns the pixel value best approximating the given RGB color value for the
+ * given pixel format.
+ *
+ * If the format has a palette (8-bit) the index of the closest matching color
+ * in the palette will be returned.
+ *
+ * If the specified pixel format has an alpha component it will be returned as
+ * all 1 bits (fully opaque).
+ *
+ * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+ * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+ * format the return value can be assigned to a Uint16, and similarly a Uint8
+ * for an 8-bpp format).
+ *
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @param r the red component of the pixel in the range 0-255.
+ * @param g the green component of the pixel in the range 0-255.
+ * @param b the blue component of the pixel in the range 0-255.
+ * @returns a pixel value.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGB
+ * @sa MapColor
+ * @sa Surface.MapRGB
+ */
+inline Uint32 MapRGB(const PixelFormatDetails& format,
+                     PaletteConstRef palette,
+                     Uint8 r,
+                     Uint8 g,
+                     Uint8 b)
+{
+  return SDL_MapRGB(&format, palette, r, g, b);
+}
+
+/**
+ * Map an RGBA quadruple to a pixel value for a given pixel format.
+ *
+ * This function maps the RGBA color value to the specified pixel format and
+ * returns the pixel value best approximating the given RGBA color value for
+ * the given pixel format.
+ *
+ * If the specified pixel format has no alpha component the alpha value will
+ * be ignored (as it will be in formats with a palette).
+ *
+ * If the format has a palette (8-bit) the index of the closest matching color
+ * in the palette will be returned.
+ *
+ * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+ * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+ * format the return value can be assigned to a Uint16, and similarly a Uint8
+ * for an 8-bpp format).
+ *
+ * @param format a pointer to PixelFormatDetails describing the pixel
+ *               format.
+ * @param r the red component of the pixel in the range 0-255.
+ * @param g the green component of the pixel in the range 0-255.
+ * @param b the blue component of the pixel in the range 0-255.
+ * @param a the alpha component of the pixel in the range 0-255.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @returns a pixel value.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGBA
+ * @sa MapRGB
+ * @sa Surface.MapRGBA
+ */
+inline Uint32 MapRGBA(const PixelFormatDetails& format,
+                      Uint8 r,
+                      Uint8 g,
+                      Uint8 b,
+                      Uint8 a,
+                      PaletteConstRef palette = {})
+{
+  return SDL_MapRGBA(&format, palette, r, g, b, a);
+}
+
+/**
+ * Map an RGBA quadruple to a pixel value for a given pixel format.
+ *
+ * This function maps the RGBA color value to the specified pixel format and
+ * returns the pixel value best approximating the given RGBA color value for the
+ * given pixel format.
+ *
+ * If the specified pixel format has no alpha component the alpha value will be
+ * ignored (as it will be in formats with a palette).
+ *
+ * If the format has a palette (8-bit) the index of the closest matching color
+ * in the palette will be returned.
+ *
+ * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+ * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+ * format the return value can be assigned to a Uint16, and similarly a Uint8
+ * for an 8-bpp format).
+ *
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
+ * @param c the color components of the pixel in the range 0-255.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @returns a pixel value.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGBA
+ * @sa MapRGB
+ * @sa Surface.MapRGBA
+ */
+inline Uint32 MapColor(const PixelFormatDetails& format,
+                       ColorRaw c,
+                       PaletteConstRef palette = {})
+{
+  return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
+}
+
+inline Uint32 Color::Map(const PixelFormatDetails& format,
+                         PaletteConstRef palette) const
+{
+  return MapColor(format, *this, palette);
+}
+
+inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstRef palette) const
+{
+  return MapColor(GetDetails(), c, palette);
+}
+
+/**
+ * Get RGB values from a pixel in the specified format.
+ *
+ * This function uses the entire 8-bit [0..255] range when converting color
+ * components from pixel formats with less than 8-bits per RGB component (e.g.,
+ * a completely white pixel in 16-bit RGB565 format would return [0xff, 0xff,
+ * 0xff] not [0xf8, 0xfc, 0xf8]).
+ *
+ * @param pixelvalue a pixel value.
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @param r a pointer filled in with the red component, may be nullptr.
+ * @param g a pointer filled in with the green component, may be nullptr.
+ * @param b a pointer filled in with the blue component, may be nullptr.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGBA
+ * @sa MapRGB
+ * @sa MapColor
+ */
+inline void GetRGB(Uint32 pixelvalue,
+                   const PixelFormatDetails& format,
+                   PaletteConstRef palette,
+                   Uint8* r,
+                   Uint8* g,
+                   Uint8* b)
+{
+  SDL_GetRGB(pixelvalue, &format, palette, r, g, b);
+}
+
+/**
+ * Get RGBA values from a pixel in the specified format.
+ *
+ * This function uses the entire 8-bit [0..255] range when converting color
+ * components from pixel formats with less than 8-bits per RGB component (e.g.,
+ * a completely white pixel in 16-bit RGB565 format would return [0xff, 0xff,
+ * 0xff] not [0xf8, 0xfc, 0xf8]).
+ *
+ * If the surface has no alpha component, the alpha will be returned as 0xff
+ * (100% opaque).
+ *
+ * @param pixelvalue a pixel value.
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @param r a pointer filled in with the red component, may be nullptr.
+ * @param g a pointer filled in with the green component, may be nullptr.
+ * @param b a pointer filled in with the blue component, may be nullptr.
+ * @param a a pointer filled in with the alpha component, may be nullptr.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGB
+ * @sa MapRGB
+ * @sa MapColor
+ */
+inline void GetRGBA(Uint32 pixelvalue,
+                    const PixelFormatDetails& format,
+                    PaletteConstRef palette,
+                    Uint8* r,
+                    Uint8* g,
+                    Uint8* b,
+                    Uint8* a)
+{
+  SDL_GetRGBA(pixelvalue, &format, palette, r, g, b, a);
+}
+
+/**
+ * Get RGBA values from a pixel in the specified format.
+ *
+ * This function uses the entire 8-bit [0..255] range when converting color
+ * components from pixel formats with less than 8-bits per RGB component
+ * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+ * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ *
+ * If the surface has no alpha component, the alpha will be returned as 0xff
+ * (100% opaque).
+ *
+ * @param pixel a pixel value.
+ * @param format a pointer to PixelFormatDetails describing the pixel
+ *               format.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @returns a color value.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGB
+ * @sa MapRGB
+ * @sa MapRGBA
+ */
+inline Color GetColor(Uint32 pixel,
+                      const PixelFormatDetails& format,
+                      PaletteConstRef palette = {})
+{
+  Color c;
+  GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
+  return c;
+}
+
+inline Color Color::Get(Uint32 pixel,
+                        const PixelFormatDetails& format,
+                        PaletteConstRef palette)
+{
+  return GetColor(pixel, format, palette);
+}
+
+inline Color PixelFormat::Get(Uint32 pixel, PaletteConstRef palette) const
+{
+  return GetColor(pixel, GetDetails(), palette);
+}
+
+/// @}
+
+/**
  * @defgroup CategoryPower Power Management Status
  *
  * SDL power management routines.
@@ -29122,7 +29104,7 @@ struct Point : PointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool InRect(const RectRaw& r) const;
+  bool InRect(const RectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -29541,7 +29523,7 @@ struct FPoint : FPointRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool InRect(const FRectRaw& r) const;
+  bool InRect(const FRectRaw& r) const;
 
   /**
    * Get point's memberwise negation
@@ -30093,7 +30075,7 @@ struct Rect : RectRaw
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  inline bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
+  bool GetLineIntersection(PointRaw* p1, PointRaw* p2) const
   {
     return GetLineIntersection(p1 ? &p1->x : nullptr,
                                p1 ? &p1->y : nullptr,
@@ -30120,7 +30102,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
+  bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
 
   /**
    * Convert an SDL_Rect to SDL_FRect
@@ -30132,7 +30114,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline operator SDL_FRect() const;
+  operator SDL_FRect() const;
 
   /// @sa operator ToFRect()
   constexpr operator FRect() const;
@@ -30154,7 +30136,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool Empty() const;
+  bool Empty() const;
 
   /**
    * Determine whether two rectangles are equal.
@@ -30174,7 +30156,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool Equal(const RectRaw& other) const;
+  bool Equal(const RectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -30184,10 +30166,7 @@ struct Rect : RectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  inline bool Contains(const PointRaw& p) const
-  {
-    return SDL_PointInRect(&p, this);
-  }
+  bool Contains(const PointRaw& p) const { return SDL_PointInRect(&p, this); }
 
   /**
    * Check whether the rect contains given point
@@ -30197,10 +30176,7 @@ struct Rect : RectRaw
    * @returns True if the point is contained in the rect
    *
    */
-  inline bool Contains(const RectRaw& other) const
-  {
-    return GetUnion(other) == *this;
-  }
+  bool Contains(const RectRaw& other) const { return GetUnion(other) == *this; }
 
   /**
    * Determine whether two rectangles intersect.
@@ -30214,7 +30190,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.GetIntersection
    */
-  inline bool HasIntersection(const RectRaw& other) const;
+  bool HasIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles.
@@ -30231,7 +30207,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.HasIntersection
    */
-  inline Rect GetIntersection(const RectRaw& other) const;
+  Rect GetIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles.
@@ -30518,7 +30494,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline static FRect GetEnclosingPoints(
+  static FRect GetEnclosingPoints(
     SpanRef<const FPointRaw> points,
     OptionalRef<const FRectRaw> clip = std::nullopt);
 
@@ -30690,7 +30666,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
+  bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
 
   /**
    * Determine whether a floating point rectangle takes no space.
@@ -30708,7 +30684,7 @@ struct FRect : FRectRaw
    * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  inline bool GetLineIntersection(FPoint* p1, FPoint* p2) const
+  bool GetLineIntersection(FPoint* p1, FPoint* p2) const
   {
     return GetLineIntersection(p1 ? &p1->x : nullptr,
                                p1 ? &p1->y : nullptr,
@@ -30733,7 +30709,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool Empty() const;
+  bool Empty() const;
 
   /**
    * Determine whether two floating point rectangles are equal, within some
@@ -30759,7 +30735,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.Equal
    */
-  inline bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
+  bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
 
   /**
    * Determine whether two floating point rectangles are equal, within a default
@@ -30785,7 +30761,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.EqualEpsilon
    */
-  inline bool Equal(const FRectRaw& other) const;
+  bool Equal(const FRectRaw& other) const;
 
   /**
    * Check whether the rect contains given point
@@ -30825,7 +30801,7 @@ struct FRect : FRectRaw
    *
    * @sa Rect.GetIntersection
    */
-  inline bool HasIntersection(const FRectRaw& other) const;
+  bool HasIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the intersection of two rectangles with float precision.
@@ -30842,7 +30818,7 @@ struct FRect : FRectRaw
    *
    * @sa FRect.HasIntersection
    */
-  inline FRect GetIntersection(const FRectRaw& other) const;
+  FRect GetIntersection(const FRectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles with float precision.
@@ -30868,7 +30844,7 @@ struct FRect : FRectRaw
   constexpr FRect GetExtension(unsigned int amount) const
   {
     FRect r = *this;
-    r.Extend(amount);
+    r.Extend(float(amount));
     return r;
   }
 
@@ -30994,7 +30970,7 @@ inline FRect RectToFRect(const RectRaw& rect)
   return frect;
 }
 
-Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
+inline Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
 
 /**
  * Determine whether a point resides inside a rectangle.
@@ -31022,7 +30998,7 @@ inline bool PointInRect(const PointRaw& p, const RectRaw& r)
   return SDL_PointInRect(&p, &r);
 }
 
-bool Point::InRect(const RectRaw& r) const
+inline bool Point::InRect(const RectRaw& r) const
 {
   return SDL::PointInRect(*this, r);
 }
@@ -31047,7 +31023,7 @@ bool Point::InRect(const RectRaw& r) const
  */
 inline bool RectEmpty(const RectRaw& r) { return SDL_RectEmpty(&r); }
 
-bool Rect::Empty() const { return SDL::RectEmpty(*this); }
+inline bool Rect::Empty() const { return SDL::RectEmpty(*this); }
 
 /**
  * Determine whether two rectangles are equal.
@@ -31073,7 +31049,7 @@ inline bool RectsEqual(const RectRaw& a, const RectRaw& b)
   return SDL_RectsEqual(&a, &b);
 }
 
-bool Rect::Equal(const RectRaw& other) const
+inline bool Rect::Equal(const RectRaw& other) const
 {
   return SDL::RectsEqual(*this, other);
 }
@@ -31098,7 +31074,7 @@ inline bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
   return SDL_HasRectIntersection(&A, &B);
 }
 
-bool Rect::HasIntersection(const RectRaw& other) const
+inline bool Rect::HasIntersection(const RectRaw& other) const
 {
   return SDL::HasRectIntersection(*this, other);
 }
@@ -31125,7 +31101,7 @@ inline Rect GetRectIntersection(const RectRaw& A, const RectRaw& B)
   return {};
 }
 
-Rect Rect::GetIntersection(const RectRaw& other) const
+inline Rect Rect::GetIntersection(const RectRaw& other) const
 {
   return SDL::GetRectIntersection(*this, other);
 }
@@ -31174,8 +31150,8 @@ inline Rect GetRectEnclosingPoints(
   SpanRef<const PointRaw> points,
   OptionalRef<const RectRaw> clip = std::nullopt)
 {
-  if (Rect result;
-      SDL_GetRectEnclosingPoints(points.data(), points.size(), clip, &result)) {
+  if (Rect result; SDL_GetRectEnclosingPoints(
+        points.data(), narrowS32(points.size()), clip, &result)) {
     return result;
   }
   return {};
@@ -31247,7 +31223,7 @@ inline bool PointInRectFloat(const FPointRaw& p, const FRectRaw& r)
   return SDL_PointInRectFloat(&p, &r);
 }
 
-bool FPoint::InRect(const FRectRaw& r) const
+inline bool FPoint::InRect(const FRectRaw& r) const
 {
   return SDL::PointInRectFloat(*this, r);
 }
@@ -31270,12 +31246,9 @@ bool FPoint::InRect(const FRectRaw& r) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool RectEmptyFloat(const FRectRaw& r)
-{
-  return SDL_RectEmptyFloat(&r);
-}
+inline bool RectEmptyFloat(const FRectRaw& r) { return SDL_RectEmptyFloat(&r); }
 
-bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
+inline bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
 
 /**
  * Determine whether two floating point rectangles are equal, within some given
@@ -31303,14 +31276,14 @@ bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
  * @sa FRect.Equal
  */
 inline bool RectsEqualEpsilon(const FRectRaw& a,
-                                 const FRectRaw& b,
-                                 const float epsilon)
+                              const FRectRaw& b,
+                              const float epsilon)
 {
   return SDL_RectsEqualEpsilon(&a, &b, epsilon);
 }
 
-bool FRect::EqualEpsilon(const FRectRaw& other,
-                                   const float epsilon) const
+inline bool FRect::EqualEpsilon(const FRectRaw& other,
+                                const float epsilon) const
 {
   return SDL::RectsEqualEpsilon(*this, other, epsilon);
 }
@@ -31345,7 +31318,7 @@ inline bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
   return SDL_RectsEqualFloat(&a, &b);
 }
 
-bool FRect::Equal(const FRectRaw& other) const
+inline bool FRect::Equal(const FRectRaw& other) const
 {
   return SDL::RectsEqualFloat(*this, other);
 }
@@ -31370,7 +31343,7 @@ inline bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
   return SDL_HasRectIntersectionFloat(&A, &B);
 }
 
-bool FRect::HasIntersection(const FRectRaw& other) const
+inline bool FRect::HasIntersection(const FRectRaw& other) const
 {
   return SDL::HasRectIntersectionFloat(*this, other);
 }
@@ -31397,7 +31370,7 @@ inline FRect GetRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
   return {};
 }
 
-FRect FRect::GetIntersection(const FRectRaw& other) const
+inline FRect FRect::GetIntersection(const FRectRaw& other) const
 {
   return SDL::GetRectIntersectionFloat(*this, other);
 }
@@ -31448,14 +31421,14 @@ inline FRect GetRectEnclosingPointsFloat(
   OptionalRef<const FRectRaw> clip = std::nullopt)
 {
   if (FRect result; SDL_GetRectEnclosingPointsFloat(
-        points.data(), points.size(), clip, &result)) {
+        points.data(), narrowS32(points.size()), clip, &result)) {
     return result;
   }
   return {};
 }
 
 inline FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
-                                          OptionalRef<const FRectRaw> clip)
+                                       OptionalRef<const FRectRaw> clip)
 {
   return SDL::GetRectEnclosingPointsFloat(points, clip);
 }
@@ -31575,14 +31548,14 @@ constexpr FPoint FPoint::GetWrapped(const FRect& rect) const
 constexpr FPoint& FPoint::Wrap(const FRect& rect)
 {
   if (x < rect.x)
-    x = rect.x + rect.w - 1 - SDL_fmod(rect.x - x + rect.w - 1, rect.w);
+    x = rect.x + rect.w - 1 - SDL::fmod(rect.x - x + rect.w - 1, rect.w);
   else if (x >= rect.x + rect.w)
-    x = rect.x + SDL_fmod(x - rect.x - rect.w, rect.w);
+    x = rect.x + SDL::fmod(x - rect.x - rect.w, rect.w);
 
   if (y < rect.y)
-    y = rect.y + rect.h - 1 - SDL_fmod(rect.y - y + rect.h - 1, rect.h);
+    y = rect.y + rect.h - 1 - SDL::fmod(rect.y - y + rect.h - 1, rect.h);
   else if (y >= rect.y + rect.h)
-    y = rect.y + SDL_fmod(y - rect.y - rect.h, rect.h);
+    y = rect.y + SDL::fmod(y - rect.y - rect.h, rect.h);
 
   return *this;
 }
@@ -32465,25 +32438,20 @@ public:
   }
 
   /**
-   * Constructs from SensorRef.
+   * Constructs from raw Sensor.
    *
    * @param resource a SensorRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Sensor(const SensorRaw resource) noexcept
+  constexpr explicit Sensor(SensorRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Sensor(const Sensor& other) noexcept
-    : Sensor(other.m_resource)
-  {
-  }
+  constexpr Sensor(const Sensor& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Sensor(Sensor&& other) noexcept
     : Sensor(other.release())
@@ -32515,11 +32483,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Sensor& operator=(const Sensor& other) = default;
+  Sensor& operator=(const Sensor& other) = delete;
 
-public:
   /// Retrieves underlying SensorRaw.
   constexpr SensorRaw get() const noexcept { return m_resource; }
 
@@ -34622,25 +34588,20 @@ public:
   }
 
   /**
-   * Constructs from AudioDeviceRef.
+   * Constructs from raw AudioDevice.
    *
    * @param resource a AudioDeviceID to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDevice(const AudioDeviceID resource) noexcept
+  constexpr explicit AudioDevice(AudioDeviceID resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AudioDevice(const AudioDevice& other) noexcept
-    : AudioDevice(other.m_resource)
-  {
-  }
+  constexpr AudioDevice(const AudioDevice& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AudioDevice(AudioDevice&& other) noexcept
     : AudioDevice(other.release())
@@ -34734,11 +34695,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioDevice& operator=(const AudioDevice& other) = default;
+  AudioDevice& operator=(const AudioDevice& other) = delete;
 
-public:
   /// Retrieves underlying AudioDeviceID.
   constexpr AudioDeviceID get() const noexcept { return m_resource; }
 
@@ -35506,25 +35465,20 @@ public:
   }
 
   /**
-   * Constructs from AudioStreamRef.
+   * Constructs from raw AudioStream.
    *
    * @param resource a AudioStreamRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioStream(const AudioStreamRaw resource) noexcept
+  constexpr explicit AudioStream(AudioStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AudioStream(const AudioStream& other) noexcept
-    : AudioStream(other.m_resource)
-  {
-  }
+  constexpr AudioStream(const AudioStream& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AudioStream(AudioStream&& other) noexcept
     : AudioStream(other.release())
@@ -35687,11 +35641,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioStream& operator=(const AudioStream& other) = default;
+  AudioStream& operator=(const AudioStream& other) = delete;
 
-public:
   /// Retrieves underlying AudioStreamRaw.
   constexpr AudioStreamRaw get() const noexcept { return m_resource; }
 
@@ -36907,7 +36859,11 @@ public:
    *
    * @sa AudioStream.Lock
    */
-  ~AudioStreamLock() { reset(); }
+  ~AudioStreamLock()
+  {
+    if (!m_lock) return;
+    SDL_UnlockAudioStream(m_lock);
+  }
 
   AudioStreamLock& operator=(const AudioStreamLock& other) = delete;
 
@@ -36938,7 +36894,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  AudioStreamRef get() const { return m_lock; }
+  AudioStreamRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -37558,7 +37514,7 @@ inline void BindAudioStreams(AudioDeviceRef devid,
   CheckError(SDL_BindAudioStreams(
     devid,
     reinterpret_cast<SDL_AudioStream* const*>(streams.data()),
-    streams.size()));
+    narrowS32(streams.size())));
 }
 
 inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
@@ -37615,7 +37571,8 @@ inline void AudioDevice::BindAudioStream(AudioStreamRef stream)
 inline void UnbindAudioStreams(std::span<AudioStreamRef> streams)
 {
   SDL_UnbindAudioStreams(
-    reinterpret_cast<SDL_AudioStream* const*>(streams.data()), streams.size());
+    reinterpret_cast<SDL_AudioStream* const*>(streams.data()),
+    narrowS32(streams.size()));
 }
 
 /**
@@ -38083,8 +38040,8 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
 inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
                                           std::span<int> chmap)
 {
-  CheckError(
-    SDL_SetAudioStreamInputChannelMap(stream, chmap.data(), chmap.size()));
+  CheckError(SDL_SetAudioStreamInputChannelMap(
+    stream, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
@@ -38149,8 +38106,8 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
 inline void SetAudioStreamOutputChannelMap(AudioStreamRef stream,
                                            std::span<int> chmap)
 {
-  CheckError(
-    SDL_SetAudioStreamOutputChannelMap(stream, chmap.data(), chmap.size()));
+  CheckError(SDL_SetAudioStreamOutputChannelMap(
+    stream, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
@@ -38186,7 +38143,8 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  */
 inline void PutAudioStreamData(AudioStreamRef stream, SourceBytes buf)
 {
-  CheckError(SDL_PutAudioStreamData(stream, buf.data(), buf.size_bytes()));
+  CheckError(
+    SDL_PutAudioStreamData(stream, buf.data(), narrowS32(buf.size_bytes())));
 }
 
 inline void AudioStream::PutData(SourceBytes buf)
@@ -38245,7 +38203,7 @@ inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                                      void* userdata)
 {
   CheckError(SDL_PutAudioStreamDataNoCopy(
-    stream, buf.data(), buf.size_bytes(), callback, userdata));
+    stream, buf.data(), narrowS32(buf.size_bytes()), callback, userdata));
 }
 
 /**
@@ -38310,7 +38268,8 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
 inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCB callback)
 {
-  SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback);
+  SDL::PutAudioStreamDataNoCopy(
+    m_resource, std::move(buf), std::move(callback));
 }
 
 /**
@@ -38409,7 +38368,8 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
  */
 inline int GetAudioStreamData(AudioStreamRef stream, TargetBytes buf)
 {
-  return SDL_GetAudioStreamData(stream, buf.data(), buf.size_bytes());
+  return SDL_GetAudioStreamData(
+    stream, buf.data(), narrowS32(buf.size_bytes()));
 }
 
 inline int AudioStream::GetData(TargetBytes buf)
@@ -38692,8 +38652,8 @@ inline void UnlockAudioStream(AudioStreamRef stream)
 
 inline void AudioStream::Unlock(AudioStreamLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void AudioStreamLock::reset()
@@ -39352,8 +39312,8 @@ inline void MixAudio(Uint8* dst,
                      AudioFormat format,
                      float volume)
 {
-  CheckError(
-    SDL_MixAudio(dst, src.data_as<Uint8>(), format, src.size_bytes(), volume));
+  CheckError(SDL_MixAudio(
+    dst, src.data_as<Uint8>(), format, narrowS32(src.size_bytes()), volume));
 }
 
 /**
@@ -39431,7 +39391,7 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
   int len;
   CheckError(SDL_ConvertAudioSamples(&src_spec,
                                      src_data.data_as<Uint8>(),
-                                     src_data.size_bytes(),
+                                     narrowS32(src_data.size_bytes()),
                                      &dst_spec,
                                      &buf,
                                      &len));
@@ -40498,25 +40458,20 @@ public:
   }
 
   /**
-   * Constructs from ProcessRef.
+   * Constructs from raw Process.
    *
    * @param resource a ProcessRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Process(const ProcessRaw resource) noexcept
+  constexpr explicit Process(ProcessRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Process(const Process& other) noexcept
-    : Process(other.m_resource)
-  {
-  }
+  constexpr Process(const Process& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Process(Process&& other) noexcept
     : Process(other.release())
@@ -40650,11 +40605,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Process& operator=(const Process& other) = default;
+  Process& operator=(const Process& other) = delete;
 
-public:
   /// Retrieves underlying ProcessRaw.
   constexpr ProcessRaw get() const noexcept { return m_resource; }
 
@@ -41630,25 +41583,20 @@ public:
   }
 
   /**
-   * Constructs from StorageRef.
+   * Constructs from raw Storage.
    *
    * @param resource a StorageRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Storage(const StorageRaw resource) noexcept
+  constexpr explicit Storage(StorageRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Storage(const Storage& other) noexcept
-    : Storage(other.m_resource)
-  {
-  }
+  constexpr Storage(const Storage& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Storage(Storage&& other) noexcept
     : Storage(other.release())
@@ -41769,11 +41717,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Storage& operator=(const Storage& other) = default;
+  Storage& operator=(const Storage& other) = delete;
 
-public:
   /// Retrieves underlying StorageRaw.
   constexpr StorageRaw get() const noexcept { return m_resource; }
 
@@ -42617,10 +42563,11 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                    StringParam path)
 {
   std::vector<Path> r;
-  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
-    r.emplace_back(fname);
-    return ENUM_CONTINUE;
-  });
+  EnumerateStorageDirectory(
+    storage, std::move(path), [&](const char*, const char* fname) {
+      r.emplace_back(fname);
+      return ENUM_CONTINUE;
+    });
   return r;
 }
 
@@ -42842,16 +42789,19 @@ struct Surface;
 /// Alias to raw representation for Surface.
 using SurfaceRaw = SDL_Surface*;
 
+/// Alias to const raw representation for Surface.
+using SurfaceRawConst = const SDL_Surface*;
+
 // Forward decl
 struct SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
 struct SurfaceConstRef
 {
-  const SurfaceRaw value; ///< parameter's const SurfaceRaw
+  SurfaceRawConst value; ///< parameter's Surface
 
-  /// Constructs from const SurfaceRaw
-  constexpr SurfaceConstRef(const SurfaceRaw value)
+  /// Constructs from SurfaceRawConst
+  constexpr SurfaceConstRef(SurfaceRawConst value)
     : value(value)
   {
   }
@@ -42868,11 +42818,17 @@ struct SurfaceConstRef
   /// Comparison
   constexpr auto operator<=>(const SurfaceConstRef& other) const = default;
 
-  /// Converts to underlying const SurfaceRaw
-  constexpr operator const SurfaceRaw() const { return value; }
+  /// Converts to underlying Surface
+  constexpr operator SurfaceRawConst() const { return value; }
+
+  /// Converts to underlying Surface
+  constexpr operator SurfaceRaw() const
+  {
+    return const_cast<SurfaceRaw>(value);
+  }
 
   /// member access to underlying SurfaceRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 // Forward decl
@@ -42996,13 +42952,13 @@ public:
   }
 
   /**
-   * Constructs from SurfaceRef.
+   * Constructs from raw Surface.
    *
    * @param resource a SurfaceRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Surface(const SurfaceRaw resource) noexcept
+  constexpr explicit Surface(SurfaceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -43263,7 +43219,7 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /// member access to underlying SurfaceRaw.
-  constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
+  constexpr SurfaceRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying SurfaceRaw.
   constexpr SurfaceRaw operator->() noexcept { return m_resource; }
@@ -43282,7 +43238,14 @@ public:
   }
 
   /// Assignment operator.
-  Surface& operator=(const Surface& other) = default;
+  Surface& operator=(const Surface& other)
+  {
+    if (m_resource != other.m_resource) {
+      Surface tmp(other);
+      std::swap(m_resource, tmp.m_resource);
+    }
+    return *this;
+  }
 
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const noexcept { return m_resource; }
@@ -45079,7 +45042,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  SurfaceRef get() const { return m_lock; }
+  SurfaceRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -45566,8 +45529,8 @@ inline void UnlockSurface(SurfaceRef surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock(SurfaceLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void SurfaceLock::reset()
@@ -46780,7 +46743,8 @@ inline void FillSurfaceRects(SurfaceRef dst,
                              SpanRef<const RectRaw> rects,
                              Uint32 color)
 {
-  CheckError(SDL_FillSurfaceRects(dst, rects.data(), rects.size(), color));
+  CheckError(
+    SDL_FillSurfaceRects(dst, rects.data(), narrowS32(rects.size()), color));
 }
 
 inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
@@ -46952,7 +46916,7 @@ inline void BlitSurfaceAt(SurfaceRef src,
                           SurfaceRef dst,
                           const PointRaw& dstpos)
 {
-  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
+  BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y, 0, 0});
 }
 
 /**
@@ -47963,25 +47927,20 @@ public:
   }
 
   /**
-   * Constructs from ThreadRef.
+   * Constructs from raw Thread.
    *
    * @param resource a ThreadRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Thread(const ThreadRaw resource) noexcept
+  constexpr explicit Thread(ThreadRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Thread(const Thread& other) noexcept
-    : Thread(other.m_resource)
-  {
-  }
+  constexpr Thread(const Thread& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())
@@ -47991,9 +47950,6 @@ public:
   constexpr Thread(const ThreadRef& other) = delete;
 
   constexpr Thread(ThreadRef&& other) = delete;
-
-  /// Default ctor
-  Thread(ThreadCB fn, StringParam name) {}
 
   /**
    * Create a new thread with a default stack size.
@@ -48028,6 +47984,39 @@ public:
    * @sa Thread.Wait
    */
   Thread(ThreadFunction fn, StringParam name, void* data);
+
+  /**
+   * Create a new thread with a default stack size.
+   *
+   * This is a convenience function, equivalent to calling Thread.Thread with
+   * the following properties set:
+   *
+   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+   * - `prop::thread.CREATE_NAME_STRING`: `name`
+   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+   *
+   * Note that this "function" is actually a macro that calls an internal
+   * function with two extra parameters not listed here; they are hidden through
+   * preprocessor macros and are needed to support various C runtimes at the
+   * point of the function call. Language bindings that aren't using the C
+   * headers will need to deal with this.
+   *
+   * Usually, apps should just call this function the same way on every platform
+   * and let the macros hide the details.
+   *
+   * @param fn the ThreadFunction function to call in the new thread.
+   * @param name the name of the thread.
+   * @post an opaque pointer to the new thread object on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Thread.Thread
+   * @sa Thread.Wait
+   */
+  Thread(ThreadCB fn, StringParam name);
 
   /**
    * Create a new thread with with the specified properties.
@@ -48105,11 +48094,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Thread& operator=(const Thread& other) = default;
+  Thread& operator=(const Thread& other) = delete;
 
-public:
   /// Retrieves underlying ThreadRaw.
   constexpr ThreadRaw get() const noexcept { return m_resource; }
 
@@ -48381,8 +48368,51 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
   return Thread(fn, std::move(name), data);
 }
 
+/**
+ * Create a new thread with a default stack size.
+ *
+ * This is a convenience function, equivalent to calling Thread.Thread with the
+ * following properties set:
+ *
+ * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+ * - `prop::thread.CREATE_NAME_STRING`: `name`
+ * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+ *
+ * Note that this "function" is actually a macro that calls an internal function
+ * with two extra parameters not listed here; they are hidden through
+ * preprocessor macros and are needed to support various C runtimes at the point
+ * of the function call. Language bindings that aren't using the C headers will
+ * need to deal with this.
+ *
+ * Usually, apps should just call this function the same way on every platform
+ * and let the macros hide the details.
+ *
+ * @param fn the ThreadFunction function to call in the new thread.
+ * @param name the name of the thread.
+ * @returns an opaque pointer to the new thread object on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Thread.Thread
+ * @sa Thread.Wait
+ */
+inline Thread CreateThread(ThreadCB fn, StringParam name)
+{
+  return Thread(std::move(fn), std::move(name));
+}
+
 inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
   : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
+{
+}
+
+inline Thread::Thread(ThreadCB fn, StringParam name)
+  : Thread(&CallbackWrapper<ThreadCB>::CallOnce,
+           std::move(name),
+           CallbackWrapper<ThreadCB>::Wrap(std::move(fn)))
 {
 }
 
@@ -48885,25 +48915,20 @@ public:
   }
 
   /**
-   * Constructs from CameraRef.
+   * Constructs from raw Camera.
    *
    * @param resource a CameraRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Camera(const CameraRaw resource) noexcept
+  constexpr explicit Camera(CameraRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Camera(const Camera& other) noexcept
-    : Camera(other.m_resource)
-  {
-  }
+  constexpr Camera(const Camera& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Camera(Camera&& other) noexcept
     : Camera(other.release())
@@ -48970,11 +48995,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Camera& operator=(const Camera& other) = default;
+  Camera& operator=(const Camera& other) = delete;
 
-public:
   /// Retrieves underlying CameraRaw.
   constexpr CameraRaw get() const noexcept { return m_resource; }
 
@@ -49322,12 +49345,6 @@ public:
     return *this;
   }
 
-  /// True if not locked.
-  constexpr operator bool() const
-  {
-    return bool(m_lock) && Surface::operator bool();
-  }
-
   /**
    * Release a frame of video acquired from a camera.
    *
@@ -49354,14 +49371,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  CameraRef get() const { return m_lock; }
-
-  /// Releases the lock without unlocking.
-  void release()
-  {
-    Surface::release();
-    m_lock.release();
-  }
+  CameraRef resource() const { return m_lock; }
 };
 
 /**
@@ -49749,7 +49759,7 @@ inline Surface AcquireCameraFrame(CameraRef camera,
 
 inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
 {
-  return {CameraRef(*this)};
+  return {CameraRef(*this), timestampNS};
 }
 
 inline CameraFrame::CameraFrame(CameraRef resource, Uint64* timestampNS)
@@ -49792,8 +49802,8 @@ inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
 
 inline void Camera::ReleaseFrame(CameraFrame&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void CameraFrame::reset()
@@ -49909,25 +49919,20 @@ public:
   }
 
   /**
-   * Constructs from MutexRef.
+   * Constructs from raw Mutex.
    *
    * @param resource a MutexRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Mutex(const MutexRaw resource) noexcept
+  constexpr explicit Mutex(MutexRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Mutex(const Mutex& other) noexcept
-    : Mutex(other.m_resource)
-  {
-  }
+  constexpr Mutex(const Mutex& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Mutex(Mutex&& other) noexcept
     : Mutex(other.release())
@@ -49972,11 +49977,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Mutex& operator=(const Mutex& other) = default;
+  Mutex& operator=(const Mutex& other) = delete;
 
-public:
   /// Retrieves underlying MutexRaw.
   constexpr MutexRaw get() const noexcept { return m_resource; }
 
@@ -50309,25 +50312,20 @@ public:
   }
 
   /**
-   * Constructs from RWLockRef.
+   * Constructs from raw RWLock.
    *
    * @param resource a RWLockRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit RWLock(const RWLockRaw resource) noexcept
+  constexpr explicit RWLock(RWLockRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr RWLock(const RWLock& other) noexcept
-    : RWLock(other.m_resource)
-  {
-  }
+  constexpr RWLock(const RWLock& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr RWLock(RWLock&& other) noexcept
     : RWLock(other.release())
@@ -50392,11 +50390,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  RWLock& operator=(const RWLock& other) = default;
+  RWLock& operator=(const RWLock& other) = delete;
 
-public:
   /// Retrieves underlying RWLockRaw.
   constexpr RWLockRaw get() const noexcept { return m_resource; }
 
@@ -50940,25 +50936,20 @@ public:
   }
 
   /**
-   * Constructs from SemaphoreRef.
+   * Constructs from raw Semaphore.
    *
    * @param resource a SemaphoreRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Semaphore(const SemaphoreRaw resource) noexcept
+  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) noexcept
-    : Semaphore(other.m_resource)
-  {
-  }
+  constexpr Semaphore(const Semaphore& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Semaphore(Semaphore&& other) noexcept
     : Semaphore(other.release())
@@ -51005,11 +50996,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Semaphore& operator=(const Semaphore& other) = default;
+  Semaphore& operator=(const Semaphore& other) = delete;
 
-public:
   /// Retrieves underlying SemaphoreRaw.
   constexpr SemaphoreRaw get() const noexcept { return m_resource; }
 
@@ -51324,7 +51313,7 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
 inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                  std::chrono::milliseconds timeout)
 {
-  return SDL_WaitSemaphoreTimeout(sem, timeout.count());
+  return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
 }
 
 inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
@@ -51396,25 +51385,20 @@ public:
   }
 
   /**
-   * Constructs from ConditionRef.
+   * Constructs from raw Condition.
    *
    * @param resource a ConditionRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Condition(const ConditionRaw resource) noexcept
+  constexpr explicit Condition(ConditionRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Condition(const Condition& other) noexcept
-    : Condition(other.m_resource)
-  {
-  }
+  constexpr Condition(const Condition& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Condition(Condition&& other) noexcept
     : Condition(other.release())
@@ -51453,11 +51437,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Condition& operator=(const Condition& other) = default;
+  Condition& operator=(const Condition& other) = delete;
 
-public:
   /// Retrieves underlying ConditionRaw.
   constexpr ConditionRaw get() const noexcept { return m_resource; }
 
@@ -51784,7 +51766,7 @@ inline bool WaitConditionTimeout(ConditionRef cond,
                                  MutexRef mutex,
                                  std::chrono::milliseconds timeout)
 {
-  return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
+  return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
 }
 
 inline bool Condition::WaitTimeout(MutexRef mutex,
@@ -51872,7 +51854,7 @@ constexpr InitStatus INIT_STATUS_UNINITIALIZING =
 struct InitState : InitStateRaw
 {
   constexpr InitState()
-    : SDL_InitState{0}
+    : SDL_InitState{}
   {
   }
 
@@ -52035,9 +52017,6 @@ using TrayRaw = SDL_Tray*;
 struct TrayRef;
 
 /// Alias to raw representation for TrayMenu.
-struct TrayMenu;
-
-/// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
 
 // Forward decl
@@ -52128,25 +52107,20 @@ public:
   }
 
   /**
-   * Constructs from TrayRef.
+   * Constructs from raw Tray.
    *
    * @param resource a TrayRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Tray(const TrayRaw resource) noexcept
+  constexpr explicit Tray(TrayRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Tray(const Tray& other) noexcept
-    : Tray(other.m_resource)
-  {
-  }
+  constexpr Tray(const Tray& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Tray(Tray&& other) noexcept
     : Tray(other.release())
@@ -52192,11 +52166,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Tray& operator=(const Tray& other) = default;
+  Tray& operator=(const Tray& other) = delete;
 
-public:
   /// Retrieves underlying TrayRaw.
   constexpr TrayRaw get() const noexcept { return m_resource; }
 
@@ -52530,42 +52502,17 @@ public:
   }
 
   /**
-   * Constructs from TrayEntryRef.
+   * Constructs from raw TrayEntry.
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */
-  constexpr TrayEntry(const TrayEntryRaw resource) noexcept
+  constexpr TrayEntry(TrayEntryRaw resource) noexcept
     : m_resource(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr TrayEntry(const TrayEntry& other) noexcept
-    : TrayEntry(other.m_resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr TrayEntry(TrayEntry&& other) noexcept
-    : TrayEntry(other.release())
   {
   }
 
   /// Converts to underlying TrayEntryRaw.
   constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
-
-  /// Destructor
-  ~TrayEntry() {}
-
-  /// Assignment operator.
-  constexpr TrayEntry& operator=(TrayEntry&& other) noexcept
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  TrayEntry& operator=(const TrayEntry& other) = default;
 
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const noexcept { return m_resource; }
@@ -52812,11 +52759,17 @@ struct TrayEntryScoped : TrayEntry
 {
   using TrayEntry::TrayEntry;
 
-  constexpr TrayEntryScoped(const TrayEntry& other) = delete;
+  constexpr TrayEntryScoped(const TrayEntryScoped& other) = delete;
+
+  /// Move constructor
+  constexpr TrayEntryScoped(TrayEntryScoped&& other) noexcept
+    : TrayEntry(other.release())
+  {
+  }
 
   /// Move constructor
   constexpr TrayEntryScoped(TrayEntry&& other) noexcept
-    : TrayEntry(other.release())
+    : TrayEntry(std::move(other).release())
   {
   }
 
@@ -54171,25 +54124,20 @@ public:
   }
 
   /**
-   * Constructs from WindowRef.
+   * Constructs from raw Window.
    *
    * @param resource a WindowRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Window(const WindowRaw resource) noexcept
+  constexpr explicit Window(WindowRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Window(const Window& other) noexcept
-    : Window(other.m_resource)
-  {
-  }
+  constexpr Window(const Window& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Window(Window&& other) noexcept
     : Window(other.release())
@@ -54542,11 +54490,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Window& operator=(const Window& other) = default;
+  Window& operator=(const Window& other) = delete;
 
-public:
   /// Retrieves underlying WindowRaw.
   constexpr WindowRaw get() const noexcept { return m_resource; }
 
@@ -56729,24 +56675,12 @@ public:
   }
 
   /**
-   * Constructs from GLContextRef.
+   * Constructs from raw GLContext.
    *
    * @param resource a GLContextRaw to be wrapped.
    */
-  constexpr GLContext(const GLContextRaw resource) noexcept
+  constexpr GLContext(GLContextRaw resource) noexcept
     : m_resource(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr GLContext(const GLContext& other) noexcept
-    : GLContext(other.m_resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr GLContext(GLContext&& other) noexcept
-    : GLContext(other.release())
   {
   }
 
@@ -56782,19 +56716,6 @@ public:
 
   /// Converts to underlying GLContextRaw.
   constexpr operator GLContextRaw() const noexcept { return m_resource; }
-
-  /// Destructor
-  ~GLContext() {}
-
-  /// Assignment operator.
-  constexpr GLContext& operator=(GLContext&& other) noexcept
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  GLContext& operator=(const GLContext& other) = default;
 
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const noexcept { return m_resource; }
@@ -56846,16 +56767,22 @@ struct GLContextScoped : GLContext
 {
   using GLContext::GLContext;
 
-  constexpr GLContextScoped(const GLContext& other) = delete;
+  constexpr GLContextScoped(const GLContextScoped& other) = delete;
 
   /// Move constructor
-  constexpr GLContextScoped(GLContext&& other) noexcept
+  constexpr GLContextScoped(GLContextScoped&& other) noexcept
     : GLContext(other.release())
   {
   }
 
+  /// Move constructor
+  constexpr GLContextScoped(GLContext&& other) noexcept
+    : GLContext(std::move(other).release())
+  {
+  }
+
   /// Destructor
-  ~GLContextScoped() { Destroy(); }
+  ~GLContextScoped() { SDL_GL_DestroyContext(release()); }
 };
 
 /**
@@ -57240,7 +57167,7 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 inline OwnArray<DisplayID> GetDisplays()
 {
   int count = 0;
-  auto data = reinterpret_cast<DisplayID*>(SDL_GetDisplays(&count));
+  auto data = SDL_GetDisplays(&count);
   return OwnArray<DisplayID>{data, size_t(count)};
 }
 
@@ -59875,7 +59802,8 @@ inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
 inline void UpdateWindowSurfaceRects(WindowRef window,
                                      SpanRef<const RectRaw> rects)
 {
-  CheckError(SDL_UpdateWindowSurfaceRects(window, rects.data(), rects.size()));
+  CheckError(SDL_UpdateWindowSurfaceRects(
+    window, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
@@ -61239,7 +61167,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
                          userdata,
                          window,
                          filters.data(),
-                         filters.size(),
+                         narrowS32(filters.size()),
                          default_location,
                          allow_many);
 }
@@ -61363,7 +61291,7 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
                          userdata,
                          window,
                          filters.data(),
-                         filters.size(),
+                         narrowS32(filters.size()),
                          default_location);
 }
 
@@ -63209,7 +63137,7 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
 inline void SetEventFilter(EventFilterCB filter)
 {
   static EventFilterCB staticFilter;
-  staticFilter = filter;
+  staticFilter = std::move(filter);
   SetEventFilter([](void*, Event* event) { return staticFilter(event); },
                  nullptr);
 }
@@ -63481,7 +63409,8 @@ inline WindowRef GetWindowFromEvent(const Event& event)
 inline int GetEventDescription(const Event& event, TargetBytes buf)
 {
   if (buf.size_bytes() == 0) return SDL_GetEventDescription(&event, nullptr, 0);
-  return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
+  return SDL_GetEventDescription(
+    &event, buf.data(), narrowS32(buf.size_bytes()));
 }
 
 /**
@@ -66574,25 +66503,20 @@ public:
   }
 
   /**
-   * Constructs from GPUDeviceRef.
+   * Constructs from raw GPUDevice.
    *
    * @param resource a GPUDeviceRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit GPUDevice(const GPUDeviceRaw resource) noexcept
+  constexpr explicit GPUDevice(GPUDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) noexcept
-    : GPUDevice(other.m_resource)
-  {
-  }
+  constexpr GPUDevice(const GPUDevice& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr GPUDevice(GPUDevice&& other) noexcept
     : GPUDevice(other.release())
@@ -66754,11 +66678,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  GPUDevice& operator=(const GPUDevice& other) = default;
+  GPUDevice& operator=(const GPUDevice& other) = delete;
 
-public:
   /// Retrieves underlying GPUDeviceRaw.
   constexpr GPUDeviceRaw get() const noexcept { return m_resource; }
 
@@ -69836,7 +69758,7 @@ inline void PushGPUVertexUniformData(GPUCommandBuffer command_buffer,
                                      SourceBytes data)
 {
   SDL_PushGPUVertexUniformData(
-    command_buffer, slot_index, data.data(), data.size_bytes());
+    command_buffer, slot_index, data.data(), narrowU32(data.size_bytes()));
 }
 
 inline void GPUCommandBuffer::PushVertexUniformData(Uint32 slot_index,
@@ -69866,7 +69788,7 @@ inline void PushGPUFragmentUniformData(GPUCommandBuffer command_buffer,
                                        SourceBytes data)
 {
   SDL_PushGPUFragmentUniformData(
-    command_buffer, slot_index, data.data(), data.size_bytes());
+    command_buffer, slot_index, data.data(), narrowU32(data.size_bytes()));
 }
 
 inline void GPUCommandBuffer::PushFragmentUniformData(Uint32 slot_index,
@@ -69896,7 +69818,7 @@ inline void PushGPUComputeUniformData(GPUCommandBuffer command_buffer,
                                       SourceBytes data)
 {
   SDL_PushGPUComputeUniformData(
-    command_buffer, slot_index, data.data(), data.size_bytes());
+    command_buffer, slot_index, data.data(), narrowU32(data.size_bytes()));
 }
 
 inline void GPUCommandBuffer::PushComputeUniformData(Uint32 slot_index,
@@ -69944,7 +69866,7 @@ inline GPURenderPass BeginGPURenderPass(
 {
   return SDL_BeginGPURenderPass(command_buffer,
                                 color_target_infos.data(),
-                                color_target_infos.size(),
+                                narrowU32(color_target_infos.size()),
                                 depth_stencil_target_info);
 }
 
@@ -70069,7 +69991,7 @@ inline void BindGPUVertexBuffers(GPURenderPass render_pass,
                                  std::span<const GPUBufferBinding> bindings)
 {
   SDL_BindGPUVertexBuffers(
-    render_pass, first_slot, bindings.data(), bindings.size());
+    render_pass, first_slot, bindings.data(), narrowU32(bindings.size()));
 }
 
 inline void GPURenderPass::BindVertexBuffers(
@@ -70127,7 +70049,7 @@ inline void BindGPUVertexSamplers(
   SDL_BindGPUVertexSamplers(render_pass,
                             first_slot,
                             texture_sampler_bindings.data(),
-                            texture_sampler_bindings.size());
+                            narrowU32(texture_sampler_bindings.size()));
 }
 
 inline void GPURenderPass::BindVertexSamplers(
@@ -70160,8 +70082,10 @@ inline void BindGPUVertexStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUVertexStorageTextures(
-    render_pass, first_slot, storage_textures.data(), storage_textures.size());
+  SDL_BindGPUVertexStorageTextures(render_pass,
+                                   first_slot,
+                                   storage_textures.data(),
+                                   narrowU32(storage_textures.size()));
 }
 
 inline void GPURenderPass::BindVertexStorageTextures(
@@ -70194,8 +70118,10 @@ inline void BindGPUVertexStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUVertexStorageBuffers(
-    render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
+  SDL_BindGPUVertexStorageBuffers(render_pass,
+                                  first_slot,
+                                  storage_buffers.data(),
+                                  narrowU32(storage_buffers.size()));
 }
 
 inline void GPURenderPass::BindVertexStorageBuffers(
@@ -70230,7 +70156,7 @@ inline void BindGPUFragmentSamplers(
   SDL_BindGPUFragmentSamplers(render_pass,
                               first_slot,
                               texture_sampler_bindings.data(),
-                              texture_sampler_bindings.size());
+                              narrowU32(texture_sampler_bindings.size()));
 }
 
 inline void GPURenderPass::BindFragmentSamplers(
@@ -70263,8 +70189,10 @@ inline void BindGPUFragmentStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUFragmentStorageTextures(
-    render_pass, first_slot, storage_textures.data(), storage_textures.size());
+  SDL_BindGPUFragmentStorageTextures(render_pass,
+                                     first_slot,
+                                     storage_textures.data(),
+                                     narrowU32(storage_textures.size()));
 }
 
 inline void GPURenderPass::BindFragmentStorageTextures(
@@ -70297,8 +70225,10 @@ inline void BindGPUFragmentStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUFragmentStorageBuffers(
-    render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
+  SDL_BindGPUFragmentStorageBuffers(render_pass,
+                                    first_slot,
+                                    storage_buffers.data(),
+                                    narrowU32(storage_buffers.size()));
 }
 
 inline void GPURenderPass::BindFragmentStorageBuffers(
@@ -70520,9 +70450,9 @@ inline GPUComputePass BeginGPUComputePass(
 {
   return SDL_BeginGPUComputePass(command_buffer,
                                  storage_texture_bindings.data(),
-                                 storage_texture_bindings.size(),
+                                 narrowU32(storage_texture_bindings.size()),
                                  storage_buffer_bindings.data(),
-                                 storage_buffer_bindings.size());
+                                 narrowU32(storage_buffer_bindings.size()));
 }
 
 inline GPUComputePass GPUCommandBuffer::BeginComputePass(
@@ -70576,7 +70506,7 @@ inline void BindGPUComputeSamplers(
   SDL_BindGPUComputeSamplers(compute_pass,
                              first_slot,
                              texture_sampler_bindings.data(),
-                             texture_sampler_bindings.size());
+                             narrowU32(texture_sampler_bindings.size()));
 }
 
 inline void GPUComputePass::BindSamplers(
@@ -70609,8 +70539,10 @@ inline void BindGPUComputeStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
-  SDL_BindGPUComputeStorageTextures(
-    compute_pass, first_slot, storage_textures.data(), storage_textures.size());
+  SDL_BindGPUComputeStorageTextures(compute_pass,
+                                    first_slot,
+                                    storage_textures.data(),
+                                    narrowU32(storage_textures.size()));
 }
 
 inline void GPUComputePass::BindStorageTextures(
@@ -70643,8 +70575,10 @@ inline void BindGPUComputeStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
-  SDL_BindGPUComputeStorageBuffers(
-    compute_pass, first_slot, storage_buffers.data(), storage_buffers.size());
+  SDL_BindGPUComputeStorageBuffers(compute_pass,
+                                   first_slot,
+                                   storage_buffers.data(),
+                                   narrowU32(storage_buffers.size()));
 }
 
 inline void GPUComputePass::BindStorageBuffers(
@@ -71562,8 +71496,8 @@ inline void WaitForGPUFences(GPUDeviceRef device,
                              bool wait_all,
                              std::span<GPUFence* const> fences)
 {
-  CheckError(
-    SDL_WaitForGPUFences(device, wait_all, fences.data(), fences.size()));
+  CheckError(SDL_WaitForGPUFences(
+    device, wait_all, fences.data(), narrowU32(fences.size())));
 }
 
 inline void GPUDevice::WaitForFences(bool wait_all,
@@ -72173,25 +72107,20 @@ public:
   }
 
   /**
-   * Constructs from JoystickRef.
+   * Constructs from raw Joystick.
    *
    * @param resource a JoystickRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Joystick(const JoystickRaw resource) noexcept
+  constexpr explicit Joystick(JoystickRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Joystick(const Joystick& other) noexcept
-    : Joystick(other.m_resource)
-  {
-  }
+  constexpr Joystick(const Joystick& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Joystick(Joystick&& other) noexcept
     : Joystick(other.release())
@@ -72229,11 +72158,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Joystick& operator=(const Joystick& other) = default;
+  Joystick& operator=(const Joystick& other) = delete;
 
-public:
   /// Retrieves underlying JoystickRaw.
   constexpr JoystickRaw get() const noexcept { return m_resource; }
 
@@ -75514,25 +75441,20 @@ public:
   }
 
   /**
-   * Constructs from MetalViewRef.
+   * Constructs from raw MetalView.
    *
    * @param resource a MetalViewRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit MetalView(const MetalViewRaw resource) noexcept
+  constexpr explicit MetalView(MetalViewRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr MetalView(const MetalView& other) noexcept
-    : MetalView(other.m_resource)
-  {
-  }
+  constexpr MetalView(const MetalView& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())
@@ -75575,11 +75497,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  MetalView& operator=(const MetalView& other) = default;
+  MetalView& operator=(const MetalView& other) = delete;
 
-public:
   /// Retrieves underlying MetalViewRaw.
   constexpr MetalViewRaw get() const noexcept { return m_resource; }
 
@@ -75921,25 +75841,20 @@ public:
   }
 
   /**
-   * Constructs from CursorRef.
+   * Constructs from raw Cursor.
    *
    * @param resource a CursorRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Cursor(const CursorRaw resource) noexcept
+  constexpr explicit Cursor(CursorRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) noexcept
-    : Cursor(other.m_resource)
-  {
-  }
+  constexpr Cursor(const Cursor& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
@@ -76055,11 +75970,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Cursor& operator=(const Cursor& other) = default;
+  Cursor& operator=(const Cursor& other) = delete;
 
-public:
   /// Retrieves underlying CursorRaw.
   constexpr CursorRaw get() const noexcept { return m_resource; }
 
@@ -77335,25 +77248,20 @@ public:
   }
 
   /**
-   * Constructs from GamepadRef.
+   * Constructs from raw Gamepad.
    *
    * @param resource a GamepadRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Gamepad(const GamepadRaw resource) noexcept
+  constexpr explicit Gamepad(GamepadRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) noexcept
-    : Gamepad(other.m_resource)
-  {
-  }
+  constexpr Gamepad(const Gamepad& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Gamepad(Gamepad&& other) noexcept
     : Gamepad(other.release())
@@ -77390,11 +77298,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Gamepad& operator=(const Gamepad& other) = default;
+  Gamepad& operator=(const Gamepad& other) = delete;
 
-public:
   /// Retrieves underlying GamepadRaw.
   constexpr GamepadRaw get() const noexcept { return m_resource; }
 
@@ -80672,25 +80578,20 @@ public:
   }
 
   /**
-   * Constructs from HapticRef.
+   * Constructs from raw Haptic.
    *
    * @param resource a HapticRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Haptic(const HapticRaw resource) noexcept
+  constexpr explicit Haptic(HapticRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Haptic(const Haptic& other) noexcept
-    : Haptic(other.m_resource)
-  {
-  }
+  constexpr Haptic(const Haptic& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Haptic(Haptic&& other) noexcept
     : Haptic(other.release())
@@ -80771,11 +80672,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Haptic& operator=(const Haptic& other) = default;
+  Haptic& operator=(const Haptic& other) = delete;
 
-public:
   /// Retrieves underlying HapticRaw.
   constexpr HapticRaw get() const noexcept { return m_resource; }
 
@@ -82466,20 +82365,21 @@ using AppArgs = std::span<char const* const>;
  * @return the app status
  */
 template<class T>
-inline AppResult DefaultCreateClass(T** state, AppArgs args)
-{
-  static_assert(std::is_default_constructible_v<T>);
-  *state = new T{};
-  return APP_CONTINUE;
-}
-
-template<class T>
   requires std::convertible_to<AppArgs, T>
 inline AppResult DefaultCreateClass(T** state, AppArgs args)
 {
   *state = new T{args};
   return APP_CONTINUE;
 }
+
+template<class T>
+inline AppResult DefaultCreateClass(T** state, AppArgs)
+{
+  static_assert(std::is_default_constructible_v<T>);
+  *state = new T{};
+  return APP_CONTINUE;
+}
+
 /// @}
 
 /// @private
@@ -82564,12 +82464,11 @@ concept HasEventFunction =
  * Default handle by finishing if QUIT is requested
  *
  * @tparam T the state class
- * @param state the state
  * @param event the event
  * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
  */
 template<class T>
-inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
+inline AppResult DefaultEventClass(T*, const SDL_Event& event)
 {
   if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
   return APP_CONTINUE;
@@ -82642,7 +82541,7 @@ concept HasQuitFunction =
  * @param result the app result.
  */
 template<class T>
-inline void QuitClass(T* state, AppResult result)
+inline void QuitClass(T* state, AppResult)
 {
   DefaultClassDestroy(state);
 }
@@ -82701,16 +82600,19 @@ struct Texture;
 /// Alias to raw representation for Texture.
 using TextureRaw = SDL_Texture*;
 
+/// Alias to const raw representation for Texture.
+using TextureRawConst = const SDL_Texture*;
+
 // Forward decl
 struct TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
 struct TextureConstRef
 {
-  const TextureRaw value; ///< parameter's const TextureRaw
+  TextureRawConst value; ///< parameter's Texture
 
-  /// Constructs from const TextureRaw
-  constexpr TextureConstRef(const TextureRaw value)
+  /// Constructs from TextureRawConst
+  constexpr TextureConstRef(TextureRawConst value)
     : value(value)
   {
   }
@@ -82727,11 +82629,17 @@ struct TextureConstRef
   /// Comparison
   constexpr auto operator<=>(const TextureConstRef& other) const = default;
 
-  /// Converts to underlying const TextureRaw
-  constexpr operator const TextureRaw() const { return value; }
+  /// Converts to underlying Texture
+  constexpr operator TextureRawConst() const { return value; }
+
+  /// Converts to underlying Texture
+  constexpr operator TextureRaw() const
+  {
+    return const_cast<TextureRaw>(value);
+  }
 
   /// member access to underlying TextureRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #if SDL_VERSION_ATLEAST(3, 3, 6)
@@ -82893,25 +82801,20 @@ public:
   }
 
   /**
-   * Constructs from RendererRef.
+   * Constructs from raw Renderer.
    *
    * @param resource a RendererRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Renderer(const RendererRaw resource) noexcept
+  constexpr explicit Renderer(RendererRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Renderer(const Renderer& other) noexcept
-    : Renderer(other.m_resource)
-  {
-  }
+  constexpr Renderer(const Renderer& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Renderer(Renderer&& other) noexcept
     : Renderer(other.release())
@@ -83085,11 +82988,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Renderer& operator=(const Renderer& other) = default;
+  Renderer& operator=(const Renderer& other) = delete;
 
-public:
   /// Retrieves underlying RendererRaw.
   constexpr RendererRaw get() const noexcept { return m_resource; }
 
@@ -85062,13 +84963,13 @@ public:
   }
 
   /**
-   * Constructs from TextureRef.
+   * Constructs from raw Texture.
    *
    * @param resource a TextureRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Texture(const TextureRaw resource) noexcept
+  constexpr explicit Texture(TextureRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -85353,7 +85254,7 @@ public:
   }
 
   /// member access to underlying TextureRaw.
-  constexpr const TextureRaw operator->() const noexcept { return m_resource; }
+  constexpr TextureRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextureRaw.
   constexpr TextureRaw operator->() noexcept { return m_resource; }
@@ -85372,7 +85273,14 @@ public:
   }
 
   /// Assignment operator.
-  Texture& operator=(const Texture& other) = default;
+  Texture& operator=(const Texture& other)
+  {
+    if (m_resource != other.m_resource) {
+      Texture tmp(other);
+      std::swap(m_resource, tmp.m_resource);
+    }
+    return *this;
+  }
 
   /// Retrieves underlying TextureRaw.
   constexpr TextureRaw get() const noexcept { return m_resource; }
@@ -86324,7 +86232,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() const { return m_lock; }
+  TextureRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -86431,9 +86339,6 @@ public:
     return *this;
   }
 
-  /// True if not locked.
-  constexpr operator bool() const { return bool(m_lock); }
-
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
@@ -86454,14 +86359,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() const { return m_lock; }
-
-  /// Releases the lock without unlocking.
-  void release()
-  {
-    Surface::release();
-    m_lock.release();
-  }
+  TextureRef resource() const { return m_lock; }
 };
 
 /**
@@ -88665,14 +88563,14 @@ inline void UnlockTexture(TextureRef texture) { SDL_UnlockTexture(texture); }
 
 inline void Texture::Unlock(TextureLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void Texture::Unlock(TextureSurfaceLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void TextureSurfaceLock::reset()
@@ -89741,7 +89639,8 @@ inline void Renderer::RenderPoint(const FPointRaw& p)
  */
 inline void RenderPoints(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
-  CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
+  CheckError(
+    SDL_RenderPoints(renderer, points.data(), narrowS32(points.size())));
 }
 
 inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
@@ -89791,7 +89690,8 @@ inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
  */
 inline void RenderLines(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
-  CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
+  CheckError(
+    SDL_RenderLines(renderer, points.data(), narrowS32(points.size())));
 }
 
 inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
@@ -89839,7 +89739,7 @@ inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
  */
 inline void RenderRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
-  CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
+  CheckError(SDL_RenderRects(renderer, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
@@ -89889,7 +89789,8 @@ inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
  */
 inline void RenderFillRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
-  CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
+  CheckError(
+    SDL_RenderFillRects(renderer, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
@@ -90251,9 +90152,9 @@ inline void RenderGeometry(RendererRef renderer,
   CheckError(SDL_RenderGeometry(renderer,
                                 texture,
                                 vertices.data(),
-                                vertices.size(),
+                                narrowS32(vertices.size()),
                                 indices.data(),
-                                indices.size()));
+                                narrowS32(indices.size())));
 }
 
 inline void Renderer::RenderGeometry(TextureRef texture,
@@ -90918,25 +90819,20 @@ public:
   }
 
   /**
-   * Constructs from GPURenderStateRef.
+   * Constructs from raw GPURenderState.
    *
    * @param resource a GPURenderStateRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit GPURenderState(const GPURenderStateRaw resource)
+  constexpr explicit GPURenderState(GPURenderStateRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) noexcept
-    : GPURenderState(other.m_resource)
-  {
-  }
+  constexpr GPURenderState(const GPURenderState& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr GPURenderState(GPURenderState&& other) noexcept
     : GPURenderState(other.release())
@@ -90977,11 +90873,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  GPURenderState& operator=(const GPURenderState& other) = default;
+  GPURenderState& operator=(const GPURenderState& other) = delete;
 
-public:
   /// Retrieves underlying GPURenderStateRaw.
   constexpr GPURenderStateRaw get() const noexcept { return m_resource; }
 
@@ -90997,7 +90891,7 @@ public:
   constexpr auto operator<=>(const GPURenderState& other) const = default;
 
   /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr bool operator==(std::nullptr_t) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -92895,25 +92789,20 @@ public:
   }
 
   /**
-   * Constructs from MixerRef.
+   * Constructs from raw Mixer.
    *
    * @param resource a MixerRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Mixer(const MixerRaw resource) noexcept
+  constexpr explicit Mixer(MixerRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Mixer(const Mixer& other) noexcept
-    : Mixer(other.m_resource)
-  {
-  }
+  constexpr Mixer(const Mixer& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Mixer(Mixer&& other) noexcept
     : Mixer(other.release())
@@ -93010,11 +92899,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Mixer& operator=(const Mixer& other) = default;
+  Mixer& operator=(const Mixer& other) = delete;
 
-public:
   /// Retrieves underlying MixerRaw.
   constexpr MixerRaw get() const noexcept { return m_resource; }
 
@@ -94212,7 +94099,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  MixerRef get() const { return m_lock; }
+  MixerRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -94246,25 +94133,20 @@ public:
   }
 
   /**
-   * Constructs from AudioRef.
+   * Constructs from raw Audio.
    *
    * @param resource a AudioRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Audio(const AudioRaw resource) noexcept
+  constexpr explicit Audio(AudioRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Audio(const Audio& other) noexcept
-    : Audio(other.m_resource)
-  {
-  }
+  constexpr Audio(const Audio& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Audio(Audio&& other) noexcept
     : Audio(other.release())
@@ -94498,11 +94380,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Audio& operator=(const Audio& other) = default;
+  Audio& operator=(const Audio& other) = delete;
 
-public:
   /// Retrieves underlying AudioRaw.
   constexpr AudioRaw get() const noexcept { return m_resource; }
 
@@ -94935,25 +94815,20 @@ public:
   }
 
   /**
-   * Constructs from TrackRef.
+   * Constructs from raw Track.
    *
    * @param resource a TrackRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Track(const TrackRaw resource) noexcept
+  constexpr explicit Track(TrackRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Track(const Track& other) noexcept
-    : Track(other.m_resource)
-  {
-  }
+  constexpr Track(const Track& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Track(Track&& other) noexcept
     : Track(other.release())
@@ -95000,11 +94875,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Track& operator=(const Track& other) = default;
+  Track& operator=(const Track& other) = delete;
 
-public:
   /// Retrieves underlying TrackRaw.
   constexpr TrackRaw get() const noexcept { return m_resource; }
 
@@ -96422,25 +96295,20 @@ public:
   }
 
   /**
-   * Constructs from GroupRef.
+   * Constructs from raw Group.
    *
    * @param resource a GroupRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Group(const GroupRaw resource) noexcept
+  constexpr explicit Group(GroupRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Group(const Group& other) noexcept
-    : Group(other.m_resource)
-  {
-  }
+  constexpr Group(const Group& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Group(Group&& other) noexcept
     : Group(other.release())
@@ -96493,11 +96361,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Group& operator=(const Group& other) = default;
+  Group& operator=(const Group& other) = delete;
 
-public:
   /// Retrieves underlying GroupRaw.
   constexpr GroupRaw get() const noexcept { return m_resource; }
 
@@ -97114,8 +96980,8 @@ inline void UnlockMixer(MixerRef mixer) { MIX_UnlockMixer(mixer); }
 
 inline void Mixer::Unlock(MixerLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void MixerLock::reset()
@@ -99562,7 +99428,8 @@ inline float Track::GetFrequencyRatio()
  */
 inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
 {
-  CheckError(MIX_SetTrackOutputChannelMap(track, chmap.data(), chmap.size()));
+  CheckError(
+    MIX_SetTrackOutputChannelMap(track, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void Track::SetOutputChannelMap(std::span<const int> chmap)
@@ -100249,8 +100116,8 @@ inline void Mixer::SetPostMixCallback(PostMixCB cb)
  */
 inline int Generate(MixerRef mixer, TargetBytes buffer)
 {
-  return CheckError(MIX_Generate(mixer, buffer.data(), buffer.size_bytes()),
-                    -1);
+  return CheckError(
+    MIX_Generate(mixer, buffer.data(), narrowS32(buffer.size_bytes())), -1);
 }
 
 inline int Mixer::Generate(TargetBytes buffer)
@@ -100285,25 +100152,20 @@ public:
   }
 
   /**
-   * Constructs from AudioDecoderRef.
+   * Constructs from raw AudioDecoder.
    *
    * @param resource a AudioDecoderRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDecoder(const AudioDecoderRaw resource) noexcept
+  constexpr explicit AudioDecoder(AudioDecoderRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) noexcept
-    : AudioDecoder(other.m_resource)
-  {
-  }
+  constexpr AudioDecoder(const AudioDecoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AudioDecoder(AudioDecoder&& other) noexcept
     : AudioDecoder(other.release())
@@ -100398,11 +100260,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioDecoder& operator=(const AudioDecoder& other) = default;
+  AudioDecoder& operator=(const AudioDecoder& other) = delete;
 
-public:
   /// Retrieves underlying AudioDecoderRaw.
   constexpr AudioDecoderRaw get() const noexcept { return m_resource; }
 
@@ -100763,7 +100623,8 @@ inline int DecodeAudio(AudioDecoderRef audiodecoder,
                        const AudioSpec& spec)
 {
   return CheckError(
-    MIX_DecodeAudio(audiodecoder, buffer.data(), buffer.size_bytes(), &spec),
+    MIX_DecodeAudio(
+      audiodecoder, buffer.data(), narrowS32(buffer.size_bytes()), &spec),
     -1);
 }
 
@@ -100800,16 +100661,19 @@ struct Animation;
 /// Alias to raw representation for Animation.
 using AnimationRaw = IMG_Animation*;
 
+/// Alias to const raw representation for Animation.
+using AnimationRawConst = const IMG_Animation*;
+
 // Forward decl
 struct AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
 struct AnimationConstRef
 {
-  const AnimationRaw value; ///< parameter's const AnimationRaw
+  AnimationRawConst value; ///< parameter's Animation
 
-  /// Constructs from const AnimationRaw
-  constexpr AnimationConstRef(const AnimationRaw value)
+  /// Constructs from AnimationRawConst
+  constexpr AnimationConstRef(AnimationRawConst value)
     : value(value)
   {
   }
@@ -100826,11 +100690,17 @@ struct AnimationConstRef
   /// Comparison
   constexpr auto operator<=>(const AnimationConstRef& other) const = default;
 
-  /// Converts to underlying const AnimationRaw
-  constexpr operator const AnimationRaw() const { return value; }
+  /// Converts to underlying Animation
+  constexpr operator AnimationRawConst() const { return value; }
+
+  /// Converts to underlying Animation
+  constexpr operator AnimationRaw() const
+  {
+    return const_cast<AnimationRaw>(value);
+  }
 
   /// member access to underlying AnimationRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -103455,25 +103325,20 @@ public:
   }
 
   /**
-   * Constructs from AnimationRef.
+   * Constructs from raw Animation.
    *
    * @param resource a AnimationRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Animation(const AnimationRaw resource) noexcept
+  constexpr explicit Animation(AnimationRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Animation(const Animation& other) noexcept
-    : Animation(other.m_resource)
-  {
-  }
+  constexpr Animation(const Animation& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Animation(Animation&& other) noexcept
     : Animation(other.release())
@@ -103537,10 +103402,7 @@ public:
   Animation(IOStreamRef src, bool closeio = false);
 
   /// member access to underlying AnimationRaw.
-  constexpr const AnimationRaw operator->() const noexcept
-  {
-    return m_resource;
-  }
+  constexpr AnimationRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying AnimationRaw.
   constexpr AnimationRaw operator->() noexcept { return m_resource; }
@@ -103558,11 +103420,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Animation& operator=(const Animation& other) = default;
+  Animation& operator=(const Animation& other) = delete;
 
-public:
   /// Retrieves underlying AnimationRaw.
   constexpr AnimationRaw get() const noexcept { return m_resource; }
 
@@ -104520,26 +104380,20 @@ public:
   }
 
   /**
-   * Constructs from AnimationEncoderRef.
+   * Constructs from raw AnimationEncoder.
    *
    * @param resource a AnimationEncoderRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AnimationEncoder(
-    const AnimationEncoderRaw resource) noexcept
+  constexpr explicit AnimationEncoder(AnimationEncoderRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept
-    : AnimationEncoder(other.m_resource)
-  {
-  }
+  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AnimationEncoder(AnimationEncoder&& other) noexcept
     : AnimationEncoder(other.release())
@@ -104667,11 +104521,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AnimationEncoder& operator=(const AnimationEncoder& other) = default;
+  AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
 
-public:
   /// Retrieves underlying AnimationEncoderRaw.
   constexpr AnimationEncoderRaw get() const noexcept { return m_resource; }
 
@@ -105054,26 +104906,20 @@ public:
   }
 
   /**
-   * Constructs from AnimationDecoderRef.
+   * Constructs from raw AnimationDecoder.
    *
    * @param resource a AnimationDecoderRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AnimationDecoder(
-    const AnimationDecoderRaw resource) noexcept
+  constexpr explicit AnimationDecoder(AnimationDecoderRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept
-    : AnimationDecoder(other.m_resource)
-  {
-  }
+  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AnimationDecoder(AnimationDecoder&& other) noexcept
     : AnimationDecoder(other.release())
@@ -105194,11 +105040,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AnimationDecoder& operator=(const AnimationDecoder& other) = default;
+  AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
 
-public:
   /// Retrieves underlying AnimationDecoderRaw.
   constexpr AnimationDecoderRaw get() const noexcept { return m_resource; }
 
@@ -105786,16 +105630,19 @@ struct Text;
 /// Alias to raw representation for Text.
 using TextRaw = TTF_Text*;
 
+/// Alias to const raw representation for Text.
+using TextRawConst = const TTF_Text*;
+
 // Forward decl
 struct TextRef;
 
 /// Safely wrap Text for non owning const parameters
 struct TextConstRef
 {
-  const TextRaw value; ///< parameter's const TextRaw
+  TextRawConst value; ///< parameter's Text
 
-  /// Constructs from const TextRaw
-  constexpr TextConstRef(const TextRaw value)
+  /// Constructs from TextRawConst
+  constexpr TextConstRef(TextRawConst value)
     : value(value)
   {
   }
@@ -105812,11 +105659,14 @@ struct TextConstRef
   /// Comparison
   constexpr auto operator<=>(const TextConstRef& other) const = default;
 
-  /// Converts to underlying const TextRaw
-  constexpr operator const TextRaw() const { return value; }
+  /// Converts to underlying Text
+  constexpr operator TextRawConst() const { return value; }
+
+  /// Converts to underlying Text
+  constexpr operator TextRaw() const { return const_cast<TextRaw>(value); }
 
   /// member access to underlying TextRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #ifdef SDL3PP_DOC
@@ -106111,25 +105961,20 @@ public:
   }
 
   /**
-   * Constructs from FontRef.
+   * Constructs from raw Font.
    *
    * @param resource a FontRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Font(const FontRaw resource) noexcept
+  constexpr explicit Font(FontRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Font(const Font& other) noexcept
-    : Font(other.m_resource)
-  {
-  }
+  constexpr Font(const Font& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Font(Font&& other) noexcept
     : Font(other.release())
@@ -106240,11 +106085,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Font& operator=(const Font& other) = default;
+  Font& operator=(const Font& other) = delete;
 
-public:
   /// Retrieves underlying FontRaw.
   constexpr FontRaw get() const noexcept { return m_resource; }
 
@@ -109695,25 +109538,20 @@ public:
   }
 
   /**
-   * Constructs from TextEngineRef.
+   * Constructs from raw TextEngine.
    *
    * @param resource a TextEngineRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit TextEngine(const TextEngineRaw resource) noexcept
+  constexpr explicit TextEngine(TextEngineRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) noexcept
-    : TextEngine(other.m_resource)
-  {
-  }
+  constexpr TextEngine(const TextEngine& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr TextEngine(TextEngine&& other) noexcept
     : TextEngine(other.release())
@@ -109730,11 +109568,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  TextEngine& operator=(const TextEngine& other) = default;
+  TextEngine& operator=(const TextEngine& other) = delete;
 
-public:
   /// Retrieves underlying TextEngineRaw.
   constexpr TextEngineRaw get() const noexcept { return m_resource; }
 
@@ -109791,7 +109627,11 @@ struct SurfaceTextEngine : TextEngine
    */
   SurfaceTextEngine();
 
-  ~SurfaceTextEngine() { Destroy(); }
+  SurfaceTextEngine(const SurfaceTextEngine&) = delete;
+
+  SurfaceTextEngine& operator=(const SurfaceTextEngine&) = delete;
+
+  ~SurfaceTextEngine() final { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on SDL surfaces.
@@ -109856,7 +109696,11 @@ struct RendererTextEngine : TextEngine
    */
   RendererTextEngine(PropertiesRef props);
 
-  ~RendererTextEngine() { Destroy(); }
+  RendererTextEngine(const RendererTextEngine&) = delete;
+
+  RendererTextEngine& operator=(const RendererTextEngine&) = delete;
+
+  ~RendererTextEngine() final { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on an SDL renderer.
@@ -109921,7 +109765,11 @@ struct GPUTextEngine : TextEngine
    */
   GPUTextEngine(PropertiesRef props);
 
-  ~GPUTextEngine() { Destroy(); }
+  GPUTextEngine(const GPUTextEngine&) = delete;
+
+  GPUTextEngine& operator=(const GPUTextEngine&) = delete;
+
+  ~GPUTextEngine() final { Destroy(); }
 
   /**
    * Sets the winding order of the vertices returned by Text.GetGPUDrawData for
@@ -110026,25 +109874,20 @@ public:
   }
 
   /**
-   * Constructs from TextRef.
+   * Constructs from raw Text.
    *
    * @param resource a TextRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Text(const TextRaw resource) noexcept
+  constexpr explicit Text(TextRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Text(const Text& other) noexcept
-    : Text(other.m_resource)
-  {
-  }
+  constexpr Text(const Text& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Text(Text&& other) noexcept
     : Text(other.release())
@@ -110075,7 +109918,7 @@ public:
   Text(TextEngineRef engine, FontRef font, std::string_view text);
 
   /// member access to underlying TextRaw.
-  constexpr const TextRaw operator->() const noexcept { return m_resource; }
+  constexpr TextRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextRaw.
   constexpr TextRaw operator->() noexcept { return m_resource; }
@@ -110093,11 +109936,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Text& operator=(const Text& other) = default;
+  Text& operator=(const Text& other) = delete;
 
-public:
   /// Retrieves underlying TextRaw.
   constexpr TextRaw get() const noexcept { return m_resource; }
 
@@ -110990,7 +110831,7 @@ class SubStringIterator
 
   SubStringIterator(TextRef text)
     : m_text(text)
-    , m_subString(0)
+    , m_subString()
   {
   }
 

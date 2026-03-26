@@ -112,7 +112,7 @@
   */
  class Window
  {
-@@ -783,21 +779,19 @@
+@@ -778,21 +774,19 @@
     * Create a window and default renderer.
     *
     * @param title the title of the window, in UTF-8 encoding.
@@ -140,7 +140,7 @@
     */
    Window(StringParam title,
           const PointRaw& size,
-@@ -875,8 +869,7 @@
+@@ -870,8 +864,7 @@
     * in a future version of SDL.
     *
     * @param title the title of the window, in UTF-8 encoding.
@@ -150,7 +150,7 @@
     * @param flags 0, or one or more WindowFlags OR'd together.
     * @post the window that was created or nullptr on failure; call GetError()
     *       for more information.
-@@ -946,12 +939,9 @@
+@@ -941,12 +934,9 @@
     * hidden will be restored when the parent is shown.
     *
     * @param parent the parent of the window, must not be nullptr.
@@ -166,7 +166,7 @@
     * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
     *              additional WindowFlags OR'd together.
     * @post the window that was created or nullptr on failure; call GetError()
-@@ -1309,7 +1299,6 @@
+@@ -1302,7 +1292,6 @@
    /**
     * Get the raw ICC profile data for the screen the window is currently on.
     *
@@ -174,7 +174,7 @@
     * @returns the raw ICC profile data on success.
     * @throws Error on failure.
     *
-@@ -1588,9 +1577,7 @@
+@@ -1581,9 +1570,7 @@
     * Additionally, as this is just a request, it can be denied by the windowing
     * system.
     *
@@ -185,7 +185,7 @@
     *          `WINDOWPOS_UNDEFINED`.
     * @throws Error on failure.
     *
-@@ -1635,10 +1622,7 @@
+@@ -1628,10 +1615,7 @@
     * If you do not need the value for one of the positions a nullptr may be
     * passed in the `x` or `y` parameter.
     *
@@ -197,7 +197,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -1646,6 +1630,7 @@
+@@ -1639,6 +1623,7 @@
     * @since This function is available since SDL 3.2.0.
     *
     * @sa Window.SetPosition
@@ -205,7 +205,7 @@
     */
    Point GetPosition() const;
  
-@@ -1670,8 +1655,7 @@
+@@ -1663,8 +1648,7 @@
     * to remain within the usable desktop bounds). Additionally, as this is just
     * a request, it can be denied by the windowing system.
     *
@@ -215,7 +215,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -1713,8 +1697,7 @@
+@@ -1706,8 +1690,7 @@
     * window is on a high pixel density display. Use Window.GetSizeInPixels() or
     * Renderer.GetOutputSize() to get the real client area size in pixels.
     *
@@ -225,7 +225,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -1725,11 +1708,36 @@
+@@ -1718,11 +1701,36 @@
     * @sa Window.GetSizeInPixels
     * @sa Window.SetSize
     * @sa EVENT_WINDOW_RESIZED
@@ -262,7 +262,7 @@
    Rect GetRect() const;
  
    /**
-@@ -1742,8 +1750,6 @@
+@@ -1735,8 +1743,6 @@
     * into the rest of the window, but it should not contain visually important
     * or interactable content.
     *
@@ -271,7 +271,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -1856,16 +1862,15 @@
+@@ -1849,16 +1855,15 @@
     *
     * @sa Window.Window
     * @sa Window.GetSize
@@ -291,7 +291,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -1874,14 +1879,14 @@
+@@ -1867,14 +1872,14 @@
     *
     * @sa Window.Window
     * @sa Window.GetSize
@@ -308,7 +308,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -1914,8 +1919,7 @@
+@@ -1907,8 +1912,7 @@
    /**
     * Set the maximum size of a window's client area.
     *
@@ -318,7 +318,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -2296,8 +2300,8 @@
+@@ -2289,8 +2293,8 @@
    /**
     * Get VSync for the window surface.
     *
@@ -329,7 +329,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -2342,7 +2346,6 @@
+@@ -2335,7 +2339,6 @@
     *
     * @param rects an array of Rect structures representing areas of the surface
     *              to copy, in pixels.
@@ -337,7 +337,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -2591,10 +2594,8 @@
+@@ -2584,10 +2587,8 @@
     * On platforms or desktops where this is unsupported, this function does
     * nothing.
     *
@@ -350,7 +350,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -2678,12 +2679,13 @@
+@@ -2671,12 +2672,13 @@
     * devoid of allocations, etc.
     *
     * @param callback the function to call when doing a hit-test.
@@ -365,7 +365,7 @@
     */
    void SetHitTest(HitTestCB callback);
  
-@@ -3036,8 +3038,7 @@
+@@ -3029,8 +3031,7 @@
     * Note that this function will appear to succeed, but not actually move the
     * mouse when used over Microsoft Remote Desktop.
     *
@@ -375,7 +375,7 @@
     *
     * @threadsafety This function should only be called on the main thread.
     *
-@@ -3390,9 +3391,6 @@
+@@ -3383,9 +3384,6 @@
    /**
     * Delete an OpenGL context.
     *
@@ -385,7 +385,7 @@
     * @threadsafety This function should only be called on the main thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -3407,7 +3405,6 @@
+@@ -3400,7 +3398,6 @@
     * The context must have been created with a compatible window.
     *
     * @param window the window to associate with the context.
@@ -393,7 +393,16 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3808,17 +3805,19 @@
+@@ -3426,7 +3423,7 @@
+   }
+ 
+   /// Destructor
+-  ~GLContextScoped() { Destroy(); }
++  ~GLContextScoped() { SDL_GL_DestroyContext(release()); }
+ };
+ 
+ /**
+@@ -3801,17 +3798,19 @@
  /**
   * Get a list of currently connected displays.
   *
@@ -412,13 +421,13 @@
 +inline OwnArray<DisplayID> GetDisplays()
 +{
 +  int count = 0;
-+  auto data = reinterpret_cast<DisplayID*>(SDL_GetDisplays(&count));
++  auto data = SDL_GetDisplays(&count);
 +  return OwnArray<DisplayID>{data, size_t(count)};
 +}
  
  /**
   * Return the primary display.
-@@ -3878,7 +3877,7 @@
+@@ -3871,7 +3870,7 @@
   */
  inline PropertiesRef GetDisplayProperties(DisplayID displayID)
  {
@@ -427,7 +436,7 @@
  }
  
  inline PropertiesRef Display::GetProperties() const
-@@ -3935,7 +3934,7 @@
+@@ -3928,7 +3927,7 @@
   * different location depending on monitor layout.
   *
   * @param displayID the instance ID of the display to query.
@@ -436,7 +445,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -3947,7 +3946,9 @@
+@@ -3940,7 +3939,9 @@
   */
  inline Rect GetDisplayBounds(Display displayID)
  {
@@ -447,7 +456,7 @@
  }
  
  inline Rect Display::GetBounds() const
-@@ -3967,7 +3968,7 @@
+@@ -3960,7 +3961,7 @@
   * window.
   *
   * @param displayID the instance ID of the display to query.
@@ -456,7 +465,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -3979,7 +3980,9 @@
+@@ -3972,7 +3973,9 @@
   */
  inline Rect GetDisplayUsableBounds(Display displayID)
  {
@@ -467,7 +476,7 @@
  }
  
  inline Rect Display::GetUsableBounds() const
-@@ -4081,12 +4084,8 @@
+@@ -4074,12 +4077,8 @@
   * - pixel density -> lowest to highest
   *
   * @param displayID the instance ID of the display to query.
@@ -481,7 +490,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -4096,7 +4095,9 @@
+@@ -4089,7 +4088,9 @@
   */
  inline OwnArray<DisplayMode*> GetFullscreenDisplayModes(Display displayID)
  {
@@ -492,7 +501,7 @@
  }
  
  inline OwnArray<DisplayMode*> Display::GetFullscreenModes() const
-@@ -4115,14 +4116,12 @@
+@@ -4108,14 +4109,12 @@
   * then false is returned.
   *
   * @param displayID the instance ID of the display to query.
@@ -509,7 +518,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -4138,8 +4137,14 @@
+@@ -4131,8 +4130,14 @@
    float refresh_rate,
    bool include_high_density_modes)
  {
@@ -526,7 +535,7 @@
  }
  
  inline DisplayMode Display::GetClosestFullscreenMode(
-@@ -4172,7 +4177,7 @@
+@@ -4165,7 +4170,7 @@
   */
  inline const DisplayMode& GetDesktopDisplayMode(DisplayID displayID)
  {
@@ -535,7 +544,7 @@
  }
  
  inline const DisplayMode& Display::GetDesktopMode() const
-@@ -4201,7 +4206,7 @@
+@@ -4194,7 +4199,7 @@
   */
  inline const DisplayMode& GetCurrentDisplayMode(DisplayID displayID)
  {
@@ -544,7 +553,7 @@
  }
  
  inline const DisplayMode& Display::GetCurrentMode() const
-@@ -4225,7 +4230,7 @@
+@@ -4218,7 +4223,7 @@
   */
  inline Display GetDisplayForPoint(const PointRaw& point)
  {
@@ -553,7 +562,7 @@
  }
  
  inline Display Display::GetForPoint(const PointRaw& point)
-@@ -4250,7 +4255,7 @@
+@@ -4243,7 +4248,7 @@
   */
  inline Display GetDisplayForRect(const RectRaw& rect)
  {
@@ -562,7 +571,7 @@
  }
  
  inline Display Display::GetForRect(const RectRaw& rect)
-@@ -4399,7 +4404,7 @@
+@@ -4392,7 +4397,7 @@
   */
  inline const DisplayMode& GetWindowFullscreenMode(WindowRef window)
  {
@@ -571,7 +580,7 @@
  }
  
  inline const DisplayMode& Window::GetFullscreenMode() const
-@@ -4411,7 +4416,6 @@
+@@ -4404,7 +4409,6 @@
   * Get the raw ICC profile data for the screen the window is currently on.
   *
   * @param window the window to query.
@@ -579,7 +588,7 @@
   * @returns the raw ICC profile data on success.
   * @throws Error on failure.
   *
-@@ -4421,7 +4425,8 @@
+@@ -4414,7 +4418,8 @@
   */
  inline OwnPtr<void> GetWindowICCProfile(WindowRef window)
  {
@@ -589,7 +598,7 @@
  }
  
  inline OwnPtr<void> Window::GetICCProfile() const
-@@ -4453,17 +4458,19 @@
+@@ -4446,17 +4451,19 @@
  /**
   * Get a list of valid windows.
   *
@@ -614,7 +623,7 @@
  
  /**
   * Create a window with the specified dimensions and flags.
-@@ -4503,8 +4510,8 @@
+@@ -4496,8 +4503,8 @@
   * - `WINDOW_TRANSPARENT`: window with transparent buffer
   * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
   *
@@ -625,7 +634,7 @@
   *
   * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
   * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
-@@ -4535,8 +4542,7 @@
+@@ -4528,8 +4535,7 @@
   * in a future version of SDL.
   *
   * @param title the title of the window, in UTF-8 encoding.
@@ -635,7 +644,7 @@
   * @param flags 0, or one or more WindowFlags OR'd together.
   * @returns the window that was created or nullptr on failure; call GetError()
   *          for more information.
-@@ -4560,7 +4566,7 @@
+@@ -4553,7 +4559,7 @@
  inline Window::Window(StringParam title,
                        const PointRaw& size,
                        WindowFlags flags)
@@ -644,7 +653,7 @@
  {
  }
  
-@@ -4568,7 +4574,8 @@
+@@ -4561,7 +4567,8 @@
                        const PointRaw& offset,
                        const PointRaw& size,
                        WindowFlags flags)
@@ -654,7 +663,7 @@
  {
  }
  
-@@ -4631,12 +4638,9 @@
+@@ -4624,12 +4631,9 @@
   * hidden will be restored when the parent is shown.
   *
   * @param parent the parent of the window, must not be nullptr.
@@ -670,7 +679,7 @@
   * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more additional
   *              WindowFlags OR'd together.
   * @returns the window that was created or nullptr on failure; call GetError()
-@@ -4966,6 +4970,10 @@
+@@ -4959,6 +4963,10 @@
  constexpr auto OPENVR_OVERLAY_ID_NUMBER =
    SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER;
  
@@ -681,7 +690,7 @@
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
  constexpr auto VIVANTE_DISPLAY_POINTER =
-@@ -5068,7 +5076,7 @@
+@@ -5061,7 +5069,7 @@
   */
  inline WindowRef GetWindowFromID(WindowID id)
  {
@@ -690,7 +699,7 @@
  }
  
  inline WindowRef Window::FromID(WindowID id)
-@@ -5225,7 +5233,7 @@
+@@ -5218,7 +5226,7 @@
   */
  inline PropertiesRef GetWindowProperties(WindowRef window)
  {
@@ -699,7 +708,7 @@
  }
  
  inline PropertiesRef Window::GetProperties() const
-@@ -5366,9 +5374,7 @@
+@@ -5359,9 +5367,7 @@
   * this is just a request, it can be denied by the windowing system.
   *
   * @param window the window to reposition.
@@ -710,7 +719,7 @@
   *          `WINDOWPOS_UNDEFINED`.
   * @throws Error on failure.
   *
-@@ -5381,7 +5387,7 @@
+@@ -5374,7 +5380,7 @@
   */
  inline void SetWindowPosition(WindowRef window, const PointRaw& p)
  {
@@ -719,7 +728,7 @@
  }
  
  inline void Window::SetPosition(const PointRaw& p)
-@@ -5426,10 +5432,7 @@
+@@ -5419,10 +5425,7 @@
   * in the `x` or `y` parameter.
   *
   * @param window the window to query.
@@ -731,7 +740,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5440,7 +5443,9 @@
+@@ -5433,7 +5436,9 @@
   */
  inline Point GetWindowPosition(WindowRef window)
  {
@@ -742,7 +751,7 @@
  }
  
  inline void Window::GetPosition(int* x, int* y) const
-@@ -5475,8 +5480,7 @@
+@@ -5468,8 +5473,7 @@
   * request, it can be denied by the windowing system.
   *
   * @param window the window to change.
@@ -752,7 +761,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5489,7 +5493,7 @@
+@@ -5482,7 +5486,7 @@
   */
  inline void SetWindowSize(WindowRef window, const PointRaw& size)
  {
@@ -761,7 +770,7 @@
  }
  
  inline void Window::SetSize(const PointRaw& size)
-@@ -5531,8 +5535,7 @@
+@@ -5524,8 +5528,7 @@
   * Renderer.GetOutputSize() to get the real client area size in pixels.
   *
   * @param window the window to query the width and height from.
@@ -771,7 +780,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5546,7 +5549,9 @@
+@@ -5539,7 +5542,9 @@
   */
  inline Point GetWindowSize(WindowRef window)
  {
@@ -782,7 +791,7 @@
  }
  
  inline void Window::GetSize(int* w, int* h) const
-@@ -5556,16 +5561,43 @@
+@@ -5549,16 +5554,43 @@
  
  inline Point Window::GetSize() const { return SDL::GetWindowSize(m_resource); }
  
@@ -828,7 +837,7 @@
  }
  
  inline Rect Window::GetRect() const { return SDL::GetWindowRect(m_resource); }
-@@ -5581,8 +5613,6 @@
+@@ -5574,8 +5606,6 @@
   * interactable content.
   *
   * @param window the window to query.
@@ -837,7 +846,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5591,7 +5621,9 @@
+@@ -5584,7 +5614,9 @@
   */
  inline Rect GetWindowSafeArea(WindowRef window)
  {
@@ -848,7 +857,7 @@
  }
  
  inline Rect Window::GetSafeArea() const
-@@ -5752,10 +5784,8 @@
+@@ -5745,10 +5777,8 @@
   * Get the size of a window's client area, in pixels.
   *
   * @param window the window from which the drawable size should be queried.
@@ -861,7 +870,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5767,7 +5797,9 @@
+@@ -5760,7 +5790,9 @@
   */
  inline Point GetWindowSizeInPixels(WindowRef window)
  {
@@ -872,7 +881,7 @@
  }
  
  inline void Window::GetSizeInPixels(int* w, int* h) const
-@@ -5784,8 +5816,7 @@
+@@ -5777,8 +5809,7 @@
   * Set the minimum size of a window's client area.
   *
   * @param window the window to change.
@@ -882,7 +891,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5797,7 +5828,7 @@
+@@ -5790,7 +5821,7 @@
   */
  inline void SetWindowMinimumSize(WindowRef window, const PointRaw& p)
  {
@@ -891,7 +900,7 @@
  }
  
  inline void Window::SetMinimumSize(const PointRaw& p)
-@@ -5836,8 +5867,7 @@
+@@ -5829,8 +5860,7 @@
   * Set the maximum size of a window's client area.
   *
   * @param window the window to change.
@@ -901,7 +910,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5849,7 +5879,7 @@
+@@ -5842,7 +5872,7 @@
   */
  inline void SetWindowMaximumSize(WindowRef window, const PointRaw& p)
  {
@@ -910,7 +919,7 @@
  }
  
  inline void Window::SetMaximumSize(const PointRaw& p)
-@@ -6296,7 +6326,7 @@
+@@ -6289,7 +6319,7 @@
   */
  inline Surface GetWindowSurface(WindowRef window)
  {
@@ -919,7 +928,7 @@
  }
  
  inline Surface Window::GetSurface()
-@@ -6337,16 +6367,16 @@
+@@ -6330,16 +6360,16 @@
    SDL::SetWindowSurfaceVSync(m_resource, vsync);
  }
  
@@ -938,7 +947,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6357,7 +6387,9 @@
+@@ -6350,7 +6380,9 @@
   */
  inline int GetWindowSurfaceVSync(WindowRef window)
  {
@@ -949,7 +958,7 @@
  }
  
  inline int Window::GetSurfaceVSync() const
-@@ -6406,7 +6438,6 @@
+@@ -6399,7 +6431,6 @@
   * @param window the window to update.
   * @param rects an array of Rect structures representing areas of the surface to
   *              copy, in pixels.
@@ -957,16 +966,17 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6419,7 +6450,7 @@
+@@ -6412,7 +6443,8 @@
  inline void UpdateWindowSurfaceRects(WindowRef window,
                                       SpanRef<const RectRaw> rects)
  {
 -  CheckError(SDL_UpdateWindowSurfaceRects(window, rects));
-+  CheckError(SDL_UpdateWindowSurfaceRects(window, rects.data(), rects.size()));
++  CheckError(SDL_UpdateWindowSurfaceRects(
++    window, rects.data(), narrowS32(rects.size())));
  }
  
  inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
-@@ -6572,7 +6603,7 @@
+@@ -6565,7 +6597,7 @@
   * @sa Window.SetMouseGrab
   * @sa Window.SetKeyboardGrab
   */
@@ -975,7 +985,7 @@
  
  inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
  
-@@ -6597,7 +6628,7 @@
+@@ -6590,7 +6622,7 @@
   */
  inline void SetWindowMouseRect(WindowRef window, const RectRaw& rect)
  {
@@ -984,7 +994,7 @@
  }
  
  inline void Window::SetMouseRect(const RectRaw& rect)
-@@ -6785,9 +6816,7 @@
+@@ -6778,9 +6810,7 @@
   * nothing.
   *
   * @param window the window for which the menu will be displayed.
@@ -995,7 +1005,7 @@
   *          the client area.
   * @throws Error on failure.
   *
-@@ -6797,7 +6826,7 @@
+@@ -6790,7 +6820,7 @@
   */
  inline void ShowWindowSystemMenu(WindowRef window, const PointRaw& p)
  {
@@ -1004,7 +1014,7 @@
  }
  
  inline void Window::ShowSystemMenu(const PointRaw& p)
-@@ -6887,7 +6916,6 @@
+@@ -6880,7 +6910,6 @@
   *
   * @param window the window to set hit-testing on.
   * @param callback the function to call when doing a hit-test.
@@ -1012,7 +1022,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6896,7 +6924,7 @@
+@@ -6889,7 +6918,7 @@
   */
  inline void SetWindowHitTest(WindowRef window, HitTestCB callback)
  {
@@ -1021,7 +1031,7 @@
  }
  
  inline void Window::SetHitTest(HitTest callback, void* callback_data)
-@@ -6970,8 +6998,8 @@
+@@ -6963,8 +6992,8 @@
   * Sets the state of the progress bar for the given window’s taskbar icon.
   *
   * @param window the window whose progress state is to be modified.
@@ -1032,7 +1042,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -7384,7 +7412,7 @@
+@@ -7377,7 +7406,7 @@
   */
  inline void GL_MakeCurrent(WindowRef window, GLContext context)
  {
@@ -1041,7 +1051,7 @@
  }
  
  inline void Window::MakeCurrent(GLContext context)
-@@ -7394,7 +7422,7 @@
+@@ -7387,7 +7416,7 @@
  
  inline void GLContext::MakeCurrent(WindowRef window)
  {
@@ -1050,7 +1060,7 @@
  }
  
  /**
-@@ -7410,7 +7438,7 @@
+@@ -7403,7 +7432,7 @@
   */
  inline WindowRef GL_GetCurrentWindow()
  {

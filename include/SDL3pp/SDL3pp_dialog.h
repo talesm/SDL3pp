@@ -186,7 +186,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
                          userdata,
                          window,
                          filters.data(),
-                         filters.size(),
+                         narrowS32(filters.size()),
                          default_location,
                          allow_many);
 }
@@ -310,7 +310,7 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
                          userdata,
                          window,
                          filters.data(),
-                         filters.size(),
+                         narrowS32(filters.size()),
                          default_location);
 }
 

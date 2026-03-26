@@ -165,25 +165,20 @@ public:
   }
 
   /**
-   * Constructs from CameraRef.
+   * Constructs from raw Camera.
    *
    * @param resource a CameraRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Camera(const CameraRaw resource) noexcept
+  constexpr explicit Camera(CameraRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Camera(const Camera& other) noexcept
-    : Camera(other.m_resource)
-  {
-  }
+  constexpr Camera(const Camera& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Camera(Camera&& other) noexcept
     : Camera(other.release())
@@ -250,11 +245,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Camera& operator=(const Camera& other) = default;
+  Camera& operator=(const Camera& other) = delete;
 
-public:
   /// Retrieves underlying CameraRaw.
   constexpr CameraRaw get() const noexcept { return m_resource; }
 
@@ -602,12 +595,6 @@ public:
     return *this;
   }
 
-  /// True if not locked.
-  constexpr operator bool() const
-  {
-    return bool(m_lock) && Surface::operator bool();
-  }
-
   /**
    * Release a frame of video acquired from a camera.
    *
@@ -634,14 +621,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  CameraRef get() const { return m_lock; }
-
-  /// Releases the lock without unlocking.
-  void release()
-  {
-    Surface::release();
-    m_lock.release();
-  }
+  CameraRef resource() const { return m_lock; }
 };
 
 /**
@@ -1029,7 +1009,7 @@ inline Surface AcquireCameraFrame(CameraRef camera,
 
 inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
 {
-  return {CameraRef(*this)};
+  return {CameraRef(*this), timestampNS};
 }
 
 inline CameraFrame::CameraFrame(CameraRef resource, Uint64* timestampNS)
@@ -1072,8 +1052,8 @@ inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
 
 inline void Camera::ReleaseFrame(CameraFrame&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void CameraFrame::reset()

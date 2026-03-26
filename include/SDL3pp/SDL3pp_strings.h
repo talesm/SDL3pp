@@ -167,6 +167,9 @@ struct StringResult : OwnArray<char>
   {
   }
 
+  /// Dtor
+  ~StringResult() { reset(); };
+
   /// Convert to StringParam
   operator StringParam() const { return std::string_view{*this}; }
 

@@ -55,16 +55,19 @@ struct Texture;
 /// Alias to raw representation for Texture.
 using TextureRaw = SDL_Texture*;
 
+/// Alias to const raw representation for Texture.
+using TextureRawConst = const SDL_Texture*;
+
 // Forward decl
 struct TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
 struct TextureConstRef
 {
-  const TextureRaw value; ///< parameter's const TextureRaw
+  TextureRawConst value; ///< parameter's Texture
 
-  /// Constructs from const TextureRaw
-  constexpr TextureConstRef(const TextureRaw value)
+  /// Constructs from TextureRawConst
+  constexpr TextureConstRef(TextureRawConst value)
     : value(value)
   {
   }
@@ -81,11 +84,17 @@ struct TextureConstRef
   /// Comparison
   constexpr auto operator<=>(const TextureConstRef& other) const = default;
 
-  /// Converts to underlying const TextureRaw
-  constexpr operator const TextureRaw() const { return value; }
+  /// Converts to underlying Texture
+  constexpr operator TextureRawConst() const { return value; }
+
+  /// Converts to underlying Texture
+  constexpr operator TextureRaw() const
+  {
+    return const_cast<TextureRaw>(value);
+  }
 
   /// member access to underlying TextureRaw.
-  constexpr auto operator->() { return value; }
+  constexpr auto operator->() const { return value; }
 };
 
 #if SDL_VERSION_ATLEAST(3, 3, 6)
@@ -247,25 +256,20 @@ public:
   }
 
   /**
-   * Constructs from RendererRef.
+   * Constructs from raw Renderer.
    *
    * @param resource a RendererRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Renderer(const RendererRaw resource) noexcept
+  constexpr explicit Renderer(RendererRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Renderer(const Renderer& other) noexcept
-    : Renderer(other.m_resource)
-  {
-  }
+  constexpr Renderer(const Renderer& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Renderer(Renderer&& other) noexcept
     : Renderer(other.release())
@@ -439,11 +443,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Renderer& operator=(const Renderer& other) = default;
+  Renderer& operator=(const Renderer& other) = delete;
 
-public:
   /// Retrieves underlying RendererRaw.
   constexpr RendererRaw get() const noexcept { return m_resource; }
 
@@ -2416,13 +2418,13 @@ public:
   }
 
   /**
-   * Constructs from TextureRef.
+   * Constructs from raw Texture.
    *
    * @param resource a TextureRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Texture(const TextureRaw resource) noexcept
+  constexpr explicit Texture(TextureRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2707,7 +2709,7 @@ public:
   }
 
   /// member access to underlying TextureRaw.
-  constexpr const TextureRaw operator->() const noexcept { return m_resource; }
+  constexpr TextureRawConst operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextureRaw.
   constexpr TextureRaw operator->() noexcept { return m_resource; }
@@ -2726,7 +2728,14 @@ public:
   }
 
   /// Assignment operator.
-  Texture& operator=(const Texture& other) = default;
+  Texture& operator=(const Texture& other)
+  {
+    if (m_resource != other.m_resource) {
+      Texture tmp(other);
+      std::swap(m_resource, tmp.m_resource);
+    }
+    return *this;
+  }
 
   /// Retrieves underlying TextureRaw.
   constexpr TextureRaw get() const noexcept { return m_resource; }
@@ -3678,7 +3687,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() const { return m_lock; }
+  TextureRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -3785,9 +3794,6 @@ public:
     return *this;
   }
 
-  /// True if not locked.
-  constexpr operator bool() const { return bool(m_lock); }
-
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
@@ -3808,14 +3814,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  TextureRef get() const { return m_lock; }
-
-  /// Releases the lock without unlocking.
-  void release()
-  {
-    Surface::release();
-    m_lock.release();
-  }
+  TextureRef resource() const { return m_lock; }
 };
 
 /**
@@ -6019,14 +6018,14 @@ inline void UnlockTexture(TextureRef texture) { SDL_UnlockTexture(texture); }
 
 inline void Texture::Unlock(TextureLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void Texture::Unlock(TextureSurfaceLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void TextureSurfaceLock::reset()
@@ -7095,7 +7094,8 @@ inline void Renderer::RenderPoint(const FPointRaw& p)
  */
 inline void RenderPoints(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
-  CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
+  CheckError(
+    SDL_RenderPoints(renderer, points.data(), narrowS32(points.size())));
 }
 
 inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
@@ -7145,7 +7145,8 @@ inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
  */
 inline void RenderLines(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
-  CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
+  CheckError(
+    SDL_RenderLines(renderer, points.data(), narrowS32(points.size())));
 }
 
 inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
@@ -7193,7 +7194,7 @@ inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
  */
 inline void RenderRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
-  CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
+  CheckError(SDL_RenderRects(renderer, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
@@ -7243,7 +7244,8 @@ inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
  */
 inline void RenderFillRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
-  CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
+  CheckError(
+    SDL_RenderFillRects(renderer, rects.data(), narrowS32(rects.size())));
 }
 
 inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
@@ -7605,9 +7607,9 @@ inline void RenderGeometry(RendererRef renderer,
   CheckError(SDL_RenderGeometry(renderer,
                                 texture,
                                 vertices.data(),
-                                vertices.size(),
+                                narrowS32(vertices.size()),
                                 indices.data(),
-                                indices.size()));
+                                narrowS32(indices.size())));
 }
 
 inline void Renderer::RenderGeometry(TextureRef texture,
@@ -8272,25 +8274,20 @@ public:
   }
 
   /**
-   * Constructs from GPURenderStateRef.
+   * Constructs from raw GPURenderState.
    *
    * @param resource a GPURenderStateRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit GPURenderState(const GPURenderStateRaw resource)
+  constexpr explicit GPURenderState(GPURenderStateRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) noexcept
-    : GPURenderState(other.m_resource)
-  {
-  }
+  constexpr GPURenderState(const GPURenderState& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr GPURenderState(GPURenderState&& other) noexcept
     : GPURenderState(other.release())
@@ -8331,11 +8328,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  GPURenderState& operator=(const GPURenderState& other) = default;
+  GPURenderState& operator=(const GPURenderState& other) = delete;
 
-public:
   /// Retrieves underlying GPURenderStateRaw.
   constexpr GPURenderStateRaw get() const noexcept { return m_resource; }
 
@@ -8351,7 +8346,7 @@ public:
   constexpr auto operator<=>(const GPURenderState& other) const = default;
 
   /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr bool operator==(std::nullptr_t) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }

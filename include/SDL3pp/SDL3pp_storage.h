@@ -273,25 +273,20 @@ public:
   }
 
   /**
-   * Constructs from StorageRef.
+   * Constructs from raw Storage.
    *
    * @param resource a StorageRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Storage(const StorageRaw resource) noexcept
+  constexpr explicit Storage(StorageRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Storage(const Storage& other) noexcept
-    : Storage(other.m_resource)
-  {
-  }
+  constexpr Storage(const Storage& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Storage(Storage&& other) noexcept
     : Storage(other.release())
@@ -412,11 +407,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Storage& operator=(const Storage& other) = default;
+  Storage& operator=(const Storage& other) = delete;
 
-public:
   /// Retrieves underlying StorageRaw.
   constexpr StorageRaw get() const noexcept { return m_resource; }
 
@@ -1260,10 +1253,11 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                    StringParam path)
 {
   std::vector<Path> r;
-  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
-    r.emplace_back(fname);
-    return ENUM_CONTINUE;
-  });
+  EnumerateStorageDirectory(
+    storage, std::move(path), [&](const char*, const char* fname) {
+      r.emplace_back(fname);
+      return ENUM_CONTINUE;
+    });
   return r;
 }
 

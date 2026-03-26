@@ -2,6 +2,7 @@
 #define SDL3PP_STDINC_H_
 
 #include <chrono>
+#include <span>
 #include <SDL3/SDL_stdinc.h>
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
@@ -143,7 +144,7 @@ struct IConvRef;
 template<class T, std::size_t N>
 constexpr std::size_t arraysize(const T (&array)[N])
 {
-  return SDL_arraysize(array);
+  return std::size(array);
 }
 
 #ifdef SDL3PP_DOC
@@ -924,25 +925,20 @@ public:
   }
 
   /**
-   * Constructs from EnvironmentRef.
+   * Constructs from raw Environment.
    *
    * @param resource a EnvironmentRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Environment(const EnvironmentRaw resource) noexcept
+  constexpr explicit Environment(EnvironmentRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept
-    : Environment(other.m_resource)
-  {
-  }
+  constexpr Environment(const Environment& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
@@ -985,11 +981,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Environment& operator=(const Environment& other) = default;
+  Environment& operator=(const Environment& other) = delete;
 
-public:
   /// Retrieves underlying EnvironmentRaw.
   constexpr EnvironmentRaw get() const noexcept { return m_resource; }
 
@@ -1066,12 +1060,7 @@ public:
    *
    * This might be slow.
    */
-  Uint64 GetVariableCount()
-  {
-    Uint64 count = 0;
-    for (auto& var : GetVariables()) count += 1;
-    return count;
-  }
+  Uint64 GetVariableCount() { return GetVariables().size(); }
 
   /**
    * Set the value of a variable in the environment.
@@ -1737,7 +1726,7 @@ inline void qsort_r(void* base, size_t nmemb, size_t size, CompareCB compare)
     nmemb,
     size,
     [](void* userdata, const void* a, const void* b) {
-      auto& cb = *static_cast<CompareCB*>(userdata);
+      auto& cb = *static_cast<const CompareCB*>(userdata);
       return cb(a, b);
     },
     &compare);
@@ -1878,7 +1867,7 @@ inline void* bsearch_r(const void* key,
     nmemb,
     size,
     [](void* userdata, const void* a, const void* b) {
-      auto& cb = *static_cast<CompareCB*>(userdata);
+      auto& cb = *static_cast<const CompareCB*>(userdata);
       return cb(a, b);
     },
     &compare);
@@ -5942,25 +5931,20 @@ public:
   }
 
   /**
-   * Constructs from IConvRef.
+   * Constructs from raw IConv.
    *
    * @param resource a IConvRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IConv(const IConvRaw resource) noexcept
+  constexpr explicit IConv(IConvRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept
-    : IConv(other.m_resource)
-  {
-  }
+  constexpr IConv(const IConv& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())
@@ -5999,11 +5983,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  IConv& operator=(const IConv& other) = default;
+  IConv& operator=(const IConv& other) = delete;
 
-public:
   /// Retrieves underlying IConvRaw.
   constexpr IConvRaw get() const noexcept { return m_resource; }
 
@@ -6436,6 +6418,27 @@ using FunctionPointer = void(SDLCALL*)();
 /// @}
 
 inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
+
+/// Narrows to Sint32.
+template<std::integral T>
+Sint32 narrowS32(T value)
+{
+  if constexpr (std::is_signed_v<T>) {
+    SDL_assert_paranoid(value >= std::numeric_limits<Sint32>::min() &&
+                        value <= std::numeric_limits<Sint32>::max());
+  } else {
+    SDL_assert_paranoid(value <= std::numeric_limits<Sint32>::max());
+  }
+  return static_cast<Sint32>(value);
+}
+
+/// Narrows to Uint32.
+template<std::integral T>
+Uint32 narrowU32(T value)
+{
+  SDL_assert_paranoid(value <= std::numeric_limits<Uint32>::max());
+  return static_cast<Uint32>(value);
+}
 
 } // namespace SDL
 

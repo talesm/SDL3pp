@@ -95,25 +95,20 @@ public:
   }
 
   /**
-   * Constructs from MutexRef.
+   * Constructs from raw Mutex.
    *
    * @param resource a MutexRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Mutex(const MutexRaw resource) noexcept
+  constexpr explicit Mutex(MutexRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Mutex(const Mutex& other) noexcept
-    : Mutex(other.m_resource)
-  {
-  }
+  constexpr Mutex(const Mutex& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Mutex(Mutex&& other) noexcept
     : Mutex(other.release())
@@ -158,11 +153,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Mutex& operator=(const Mutex& other) = default;
+  Mutex& operator=(const Mutex& other) = delete;
 
-public:
   /// Retrieves underlying MutexRaw.
   constexpr MutexRaw get() const noexcept { return m_resource; }
 
@@ -495,25 +488,20 @@ public:
   }
 
   /**
-   * Constructs from RWLockRef.
+   * Constructs from raw RWLock.
    *
    * @param resource a RWLockRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit RWLock(const RWLockRaw resource) noexcept
+  constexpr explicit RWLock(RWLockRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr RWLock(const RWLock& other) noexcept
-    : RWLock(other.m_resource)
-  {
-  }
+  constexpr RWLock(const RWLock& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr RWLock(RWLock&& other) noexcept
     : RWLock(other.release())
@@ -578,11 +566,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  RWLock& operator=(const RWLock& other) = default;
+  RWLock& operator=(const RWLock& other) = delete;
 
-public:
   /// Retrieves underlying RWLockRaw.
   constexpr RWLockRaw get() const noexcept { return m_resource; }
 
@@ -1126,25 +1112,20 @@ public:
   }
 
   /**
-   * Constructs from SemaphoreRef.
+   * Constructs from raw Semaphore.
    *
    * @param resource a SemaphoreRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Semaphore(const SemaphoreRaw resource) noexcept
+  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) noexcept
-    : Semaphore(other.m_resource)
-  {
-  }
+  constexpr Semaphore(const Semaphore& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Semaphore(Semaphore&& other) noexcept
     : Semaphore(other.release())
@@ -1191,11 +1172,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Semaphore& operator=(const Semaphore& other) = default;
+  Semaphore& operator=(const Semaphore& other) = delete;
 
-public:
   /// Retrieves underlying SemaphoreRaw.
   constexpr SemaphoreRaw get() const noexcept { return m_resource; }
 
@@ -1510,7 +1489,7 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
 inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                  std::chrono::milliseconds timeout)
 {
-  return SDL_WaitSemaphoreTimeout(sem, timeout.count());
+  return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
 }
 
 inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
@@ -1582,25 +1561,20 @@ public:
   }
 
   /**
-   * Constructs from ConditionRef.
+   * Constructs from raw Condition.
    *
    * @param resource a ConditionRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Condition(const ConditionRaw resource) noexcept
+  constexpr explicit Condition(ConditionRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Condition(const Condition& other) noexcept
-    : Condition(other.m_resource)
-  {
-  }
+  constexpr Condition(const Condition& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Condition(Condition&& other) noexcept
     : Condition(other.release())
@@ -1639,11 +1613,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Condition& operator=(const Condition& other) = default;
+  Condition& operator=(const Condition& other) = delete;
 
-public:
   /// Retrieves underlying ConditionRaw.
   constexpr ConditionRaw get() const noexcept { return m_resource; }
 
@@ -1970,7 +1942,7 @@ inline bool WaitConditionTimeout(ConditionRef cond,
                                  MutexRef mutex,
                                  std::chrono::milliseconds timeout)
 {
-  return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
+  return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
 }
 
 inline bool Condition::WaitTimeout(MutexRef mutex,
@@ -2058,7 +2030,7 @@ constexpr InitStatus INIT_STATUS_UNINITIALIZING =
 struct InitState : InitStateRaw
 {
   constexpr InitState()
-    : SDL_InitState{0}
+    : SDL_InitState{}
   {
   }
 

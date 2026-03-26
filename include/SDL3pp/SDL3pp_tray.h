@@ -28,9 +28,6 @@ using TrayRaw = SDL_Tray*;
 struct TrayRef;
 
 /// Alias to raw representation for TrayMenu.
-struct TrayMenu;
-
-/// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
 
 // Forward decl
@@ -121,25 +118,20 @@ public:
   }
 
   /**
-   * Constructs from TrayRef.
+   * Constructs from raw Tray.
    *
    * @param resource a TrayRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Tray(const TrayRaw resource) noexcept
+  constexpr explicit Tray(TrayRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Tray(const Tray& other) noexcept
-    : Tray(other.m_resource)
-  {
-  }
+  constexpr Tray(const Tray& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Tray(Tray&& other) noexcept
     : Tray(other.release())
@@ -185,11 +177,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Tray& operator=(const Tray& other) = default;
+  Tray& operator=(const Tray& other) = delete;
 
-public:
   /// Retrieves underlying TrayRaw.
   constexpr TrayRaw get() const noexcept { return m_resource; }
 
@@ -523,42 +513,17 @@ public:
   }
 
   /**
-   * Constructs from TrayEntryRef.
+   * Constructs from raw TrayEntry.
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */
-  constexpr TrayEntry(const TrayEntryRaw resource) noexcept
+  constexpr TrayEntry(TrayEntryRaw resource) noexcept
     : m_resource(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr TrayEntry(const TrayEntry& other) noexcept
-    : TrayEntry(other.m_resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr TrayEntry(TrayEntry&& other) noexcept
-    : TrayEntry(other.release())
   {
   }
 
   /// Converts to underlying TrayEntryRaw.
   constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
-
-  /// Destructor
-  ~TrayEntry() {}
-
-  /// Assignment operator.
-  constexpr TrayEntry& operator=(TrayEntry&& other) noexcept
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  TrayEntry& operator=(const TrayEntry& other) = default;
 
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const noexcept { return m_resource; }
@@ -805,11 +770,17 @@ struct TrayEntryScoped : TrayEntry
 {
   using TrayEntry::TrayEntry;
 
-  constexpr TrayEntryScoped(const TrayEntry& other) = delete;
+  constexpr TrayEntryScoped(const TrayEntryScoped& other) = delete;
+
+  /// Move constructor
+  constexpr TrayEntryScoped(TrayEntryScoped&& other) noexcept
+    : TrayEntry(other.release())
+  {
+  }
 
   /// Move constructor
   constexpr TrayEntryScoped(TrayEntry&& other) noexcept
-    : TrayEntry(other.release())
+    : TrayEntry(std::move(other).release())
   {
   }
 

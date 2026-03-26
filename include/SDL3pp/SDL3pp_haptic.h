@@ -775,25 +775,20 @@ public:
   }
 
   /**
-   * Constructs from HapticRef.
+   * Constructs from raw Haptic.
    *
    * @param resource a HapticRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Haptic(const HapticRaw resource) noexcept
+  constexpr explicit Haptic(HapticRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Haptic(const Haptic& other) noexcept
-    : Haptic(other.m_resource)
-  {
-  }
+  constexpr Haptic(const Haptic& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Haptic(Haptic&& other) noexcept
     : Haptic(other.release())
@@ -874,11 +869,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Haptic& operator=(const Haptic& other) = default;
+  Haptic& operator=(const Haptic& other) = delete;
 
-public:
   /// Retrieves underlying HapticRaw.
   constexpr HapticRaw get() const noexcept { return m_resource; }
 

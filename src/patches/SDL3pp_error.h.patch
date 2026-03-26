@@ -50,7 +50,7 @@
   * @returns false.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -62,17 +59,52 @@
+@@ -62,17 +59,51 @@
   *
   * @sa ClearError
   * @sa GetError
@@ -101,12 +101,11 @@
  inline bool SetError(std::string_view fmt, ARGS... args)
  {
 -  static_assert(false, "Not implemented");
-+  return SetError(
-+    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
++  return SetError(std::vformat(fmt, std::make_format_args(args...)));
  }
  
  /**
-@@ -124,10 +156,15 @@
+@@ -124,10 +155,15 @@
   */
  inline const char* GetError() { return SDL_GetError(); }
  
@@ -123,17 +122,19 @@
    /// Default ctor.
    Error()
      : m_message(SDL_GetError())
-@@ -141,29 +178,72 @@
+@@ -141,29 +177,75 @@
    }
  
    /// Returns the explanatory string.
 -  const char* what() const { return GetError(); }
-+  constexpr const char* what() const noexcept { return m_message.c_str(); }
- 
+-
 -  constexpr const std::string& str() const
--  {
++  constexpr const char* what() const noexcept final
+   {
 -    static_assert(false, "Not implemented");
--  }
++    return m_message.c_str();
+   }
++
 +  /**
 +   * Returns the explanatory string.
 +   */
@@ -204,7 +205,7 @@
  }
  
  /**
-@@ -180,10 +260,12 @@
+@@ -180,10 +262,12 @@
   */
  inline bool ClearError() { return SDL_ClearError(); }
  
@@ -218,7 +219,7 @@
   * convenience, consistency, and clarity.
   *
   * @threadsafety It is safe to call this macro from any thread.
-@@ -195,7 +277,7 @@
+@@ -195,7 +279,7 @@
  /**
   * A macro to standardize error reporting on unsupported operations.
   *
@@ -227,7 +228,7 @@
   * convenience, consistency, and clarity.
   *
   * A common usage pattern inside SDL is this:
-@@ -217,6 +299,8 @@
+@@ -217,6 +301,8 @@
  #define SDL_InvalidParamError(param)                                           \
    SDL_SetError("Parameter '%s' is invalid", (param))
  

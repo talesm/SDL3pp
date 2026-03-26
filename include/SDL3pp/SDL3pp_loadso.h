@@ -72,25 +72,20 @@ public:
   }
 
   /**
-   * Constructs from SharedObjectRef.
+   * Constructs from raw SharedObject.
    *
    * @param resource a SharedObjectRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit SharedObject(const SharedObjectRaw resource) noexcept
+  constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) noexcept
-    : SharedObject(other.m_resource)
-  {
-  }
+  constexpr SharedObject(const SharedObject& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr SharedObject(SharedObject&& other) noexcept
     : SharedObject(other.release())
@@ -127,11 +122,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  SharedObject& operator=(const SharedObject& other) = default;
+  SharedObject& operator=(const SharedObject& other) = delete;
 
-public:
   /// Retrieves underlying SharedObjectRaw.
   constexpr SharedObjectRaw get() const noexcept { return m_resource; }
 

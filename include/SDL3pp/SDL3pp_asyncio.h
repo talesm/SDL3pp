@@ -128,25 +128,20 @@ public:
   }
 
   /**
-   * Constructs from AsyncIORef.
+   * Constructs from raw AsyncIO.
    *
    * @param resource a AsyncIORaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIO(const AsyncIORaw resource) noexcept
+  constexpr explicit AsyncIO(AsyncIORaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) noexcept
-    : AsyncIO(other.m_resource)
-  {
-  }
+  constexpr AsyncIO(const AsyncIO& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
     : AsyncIO(other.release())
@@ -214,11 +209,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AsyncIO& operator=(const AsyncIO& other) = default;
+  AsyncIO& operator=(const AsyncIO& other) = delete;
 
-public:
   /// Retrieves underlying AsyncIORaw.
   constexpr AsyncIORaw get() const noexcept { return m_resource; }
 
@@ -520,25 +513,20 @@ public:
   }
 
   /**
-   * Constructs from AsyncIOQueueRef.
+   * Constructs from raw AsyncIOQueue.
    *
    * @param resource a AsyncIOQueueRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIOQueue(const AsyncIOQueueRaw resource) noexcept
+  constexpr explicit AsyncIOQueue(AsyncIOQueueRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept
-    : AsyncIOQueue(other.m_resource)
-  {
-  }
+  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
     : AsyncIOQueue(other.release())
@@ -578,11 +566,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AsyncIOQueue& operator=(const AsyncIOQueue& other) = default;
+  AsyncIOQueue& operator=(const AsyncIOQueue& other) = delete;
 
-public:
   /// Retrieves underlying AsyncIOQueueRaw.
   constexpr AsyncIOQueueRaw get() const noexcept { return m_resource; }
 
@@ -1200,7 +1186,7 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue,
                                                        Milliseconds timeout)
 {
   if (AsyncIOOutcome outcome;
-      SDL_WaitAsyncIOResult(queue, &outcome, timeout.count())) {
+      SDL_WaitAsyncIOResult(queue, &outcome, narrowS32(timeout.count()))) {
     return outcome;
   }
   return std::nullopt;

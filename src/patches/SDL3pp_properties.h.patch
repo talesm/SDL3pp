@@ -36,7 +36,7 @@
   */
  class Properties
  {
-@@ -384,7 +385,6 @@
+@@ -377,7 +378,6 @@
     *              property.
     * @param cleanup the function to call when this property is deleted, or
     *                nullptr if no cleanup is necessary.
@@ -44,7 +44,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -667,7 +667,6 @@
+@@ -660,7 +660,6 @@
     * properties. The properties are locked during enumeration.
     *
     * @param callback the function to call for each property.
@@ -52,7 +52,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -676,6 +675,13 @@
+@@ -669,6 +668,13 @@
     */
    void Enumerate(EnumeratePropertiesCB callback);
  
@@ -66,7 +66,7 @@
    Uint64 GetCount();
  };
  
-@@ -790,7 +796,7 @@
+@@ -783,7 +789,7 @@
     * or want to guarantee that properties being queried aren't freed in another
     * thread.
     *
@@ -75,7 +75,7 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -814,8 +820,6 @@
+@@ -807,8 +813,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -84,7 +84,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -839,8 +843,6 @@
+@@ -832,8 +836,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -93,7 +93,16 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -897,7 +899,7 @@
+@@ -873,7 +875,7 @@
+  *
+  * @since This constant is available since SDL 3.4.0.
+  */
+-inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
++constexpr const char* PROP_NAME_STRING = SDL_PROP_NAME_STRING;
+ 
+ #endif // SDL_VERSION_ATLEAST(3, 4, 0)
+ 
+@@ -890,7 +892,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -102,7 +111,7 @@
  }
  
  /**
-@@ -1070,7 +1072,6 @@
+@@ -1063,7 +1065,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -110,7 +119,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1086,7 +1087,12 @@
+@@ -1079,7 +1080,12 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -124,7 +133,16 @@
  }
  
  inline void Properties::SetPointerPropertyWithCleanup(
-@@ -1520,7 +1526,6 @@
+@@ -1097,7 +1103,7 @@
+                                                       CleanupPropertyCB cleanup)
+ {
+   SDL::SetPointerPropertyWithCleanup(
+-    m_resource, std::move(name), value, cleanup);
++    m_resource, std::move(name), value, std::move(cleanup));
+ }
+ 
+ /**
+@@ -1513,7 +1519,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -132,7 +150,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1530,7 +1535,13 @@
+@@ -1523,7 +1528,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -140,15 +158,19 @@
 +  return EnumerateProperties(
 +    props,
 +    [](void* userdata, PropertiesID props, const char* name) {
-+      auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
++      auto& f = *static_cast<const EnumeratePropertiesCB*>(userdata);
 +      f(props, name);
 +    },
 +    &callback);
  }
  
  inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1544,9 +1555,19 @@
-   SDL::EnumerateProperties(m_resource, callback);
+@@ -1534,12 +1545,22 @@
+ 
+ inline void Properties::Enumerate(EnumeratePropertiesCB callback)
+ {
+-  SDL::EnumerateProperties(m_resource, callback);
++  SDL::EnumerateProperties(m_resource, std::move(callback));
  }
  
 +/**
@@ -163,7 +185,7 @@
  {
 -  static_assert(false, "Not implemented");
 +  Uint64 count = 0;
-+  EnumerateProperties(props, [&](auto, const char*) { count++; });
++  EnumerateProperties(props, [&count](auto, const char*) { count++; });
 +  return count;
  }
  

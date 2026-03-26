@@ -118,25 +118,20 @@ public:
   }
 
   /**
-   * Constructs from ProcessRef.
+   * Constructs from raw Process.
    *
    * @param resource a ProcessRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Process(const ProcessRaw resource) noexcept
+  constexpr explicit Process(ProcessRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Process(const Process& other) noexcept
-    : Process(other.m_resource)
-  {
-  }
+  constexpr Process(const Process& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Process(Process&& other) noexcept
     : Process(other.release())
@@ -270,11 +265,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Process& operator=(const Process& other) = default;
+  Process& operator=(const Process& other) = delete;
 
-public:
   /// Retrieves underlying ProcessRaw.
   constexpr ProcessRaw get() const noexcept { return m_resource; }
 

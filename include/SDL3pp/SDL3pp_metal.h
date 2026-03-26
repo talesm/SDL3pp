@@ -46,25 +46,20 @@ public:
   }
 
   /**
-   * Constructs from MetalViewRef.
+   * Constructs from raw MetalView.
    *
    * @param resource a MetalViewRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit MetalView(const MetalViewRaw resource) noexcept
+  constexpr explicit MetalView(MetalViewRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr MetalView(const MetalView& other) noexcept
-    : MetalView(other.m_resource)
-  {
-  }
+  constexpr MetalView(const MetalView& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())
@@ -107,11 +102,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  MetalView& operator=(const MetalView& other) = default;
+  MetalView& operator=(const MetalView& other) = delete;
 
-public:
   /// Retrieves underlying MetalViewRaw.
   constexpr MetalViewRaw get() const noexcept { return m_resource; }
 

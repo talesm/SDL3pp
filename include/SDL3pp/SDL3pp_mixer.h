@@ -256,25 +256,20 @@ public:
   }
 
   /**
-   * Constructs from MixerRef.
+   * Constructs from raw Mixer.
    *
    * @param resource a MixerRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Mixer(const MixerRaw resource) noexcept
+  constexpr explicit Mixer(MixerRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Mixer(const Mixer& other) noexcept
-    : Mixer(other.m_resource)
-  {
-  }
+  constexpr Mixer(const Mixer& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Mixer(Mixer&& other) noexcept
     : Mixer(other.release())
@@ -371,11 +366,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Mixer& operator=(const Mixer& other) = default;
+  Mixer& operator=(const Mixer& other) = delete;
 
-public:
   /// Retrieves underlying MixerRaw.
   constexpr MixerRaw get() const noexcept { return m_resource; }
 
@@ -1573,7 +1566,7 @@ public:
   void reset();
 
   /// Get the reference to locked resource.
-  MixerRef get() const { return m_lock; }
+  MixerRef resource() const { return m_lock; }
 
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
@@ -1607,25 +1600,20 @@ public:
   }
 
   /**
-   * Constructs from AudioRef.
+   * Constructs from raw Audio.
    *
    * @param resource a AudioRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Audio(const AudioRaw resource) noexcept
+  constexpr explicit Audio(AudioRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Audio(const Audio& other) noexcept
-    : Audio(other.m_resource)
-  {
-  }
+  constexpr Audio(const Audio& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Audio(Audio&& other) noexcept
     : Audio(other.release())
@@ -1859,11 +1847,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Audio& operator=(const Audio& other) = default;
+  Audio& operator=(const Audio& other) = delete;
 
-public:
   /// Retrieves underlying AudioRaw.
   constexpr AudioRaw get() const noexcept { return m_resource; }
 
@@ -2296,25 +2282,20 @@ public:
   }
 
   /**
-   * Constructs from TrackRef.
+   * Constructs from raw Track.
    *
    * @param resource a TrackRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Track(const TrackRaw resource) noexcept
+  constexpr explicit Track(TrackRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Track(const Track& other) noexcept
-    : Track(other.m_resource)
-  {
-  }
+  constexpr Track(const Track& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Track(Track&& other) noexcept
     : Track(other.release())
@@ -2361,11 +2342,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Track& operator=(const Track& other) = default;
+  Track& operator=(const Track& other) = delete;
 
-public:
   /// Retrieves underlying TrackRaw.
   constexpr TrackRaw get() const noexcept { return m_resource; }
 
@@ -3783,25 +3762,20 @@ public:
   }
 
   /**
-   * Constructs from GroupRef.
+   * Constructs from raw Group.
    *
    * @param resource a GroupRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Group(const GroupRaw resource) noexcept
+  constexpr explicit Group(GroupRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr Group(const Group& other) noexcept
-    : Group(other.m_resource)
-  {
-  }
+  constexpr Group(const Group& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr Group(Group&& other) noexcept
     : Group(other.release())
@@ -3854,11 +3828,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Group& operator=(const Group& other) = default;
+  Group& operator=(const Group& other) = delete;
 
-public:
   /// Retrieves underlying GroupRaw.
   constexpr GroupRaw get() const noexcept { return m_resource; }
 
@@ -4475,8 +4447,8 @@ inline void UnlockMixer(MixerRef mixer) { MIX_UnlockMixer(mixer); }
 
 inline void Mixer::Unlock(MixerLock&& lock)
 {
-  SDL_assert_paranoid(lock.get() == *this);
-  lock.reset();
+  SDL_assert_paranoid(lock.resource() == *this);
+  std::move(lock).reset();
 }
 
 inline void MixerLock::reset()
@@ -6923,7 +6895,8 @@ inline float Track::GetFrequencyRatio()
  */
 inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
 {
-  CheckError(MIX_SetTrackOutputChannelMap(track, chmap.data(), chmap.size()));
+  CheckError(
+    MIX_SetTrackOutputChannelMap(track, chmap.data(), narrowS32(chmap.size())));
 }
 
 inline void Track::SetOutputChannelMap(std::span<const int> chmap)
@@ -7610,8 +7583,8 @@ inline void Mixer::SetPostMixCallback(PostMixCB cb)
  */
 inline int Generate(MixerRef mixer, TargetBytes buffer)
 {
-  return CheckError(MIX_Generate(mixer, buffer.data(), buffer.size_bytes()),
-                    -1);
+  return CheckError(
+    MIX_Generate(mixer, buffer.data(), narrowS32(buffer.size_bytes())), -1);
 }
 
 inline int Mixer::Generate(TargetBytes buffer)
@@ -7646,25 +7619,20 @@ public:
   }
 
   /**
-   * Constructs from AudioDecoderRef.
+   * Constructs from raw AudioDecoder.
    *
    * @param resource a AudioDecoderRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDecoder(const AudioDecoderRaw resource) noexcept
+  constexpr explicit AudioDecoder(AudioDecoderRaw resource) noexcept
     : m_resource(resource)
   {
   }
 
-protected:
   /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) noexcept
-    : AudioDecoder(other.m_resource)
-  {
-  }
+  constexpr AudioDecoder(const AudioDecoder& other) noexcept = delete;
 
-public:
   /// Move constructor
   constexpr AudioDecoder(AudioDecoder&& other) noexcept
     : AudioDecoder(other.release())
@@ -7759,11 +7727,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioDecoder& operator=(const AudioDecoder& other) = default;
+  AudioDecoder& operator=(const AudioDecoder& other) = delete;
 
-public:
   /// Retrieves underlying AudioDecoderRaw.
   constexpr AudioDecoderRaw get() const noexcept { return m_resource; }
 
@@ -8124,7 +8090,8 @@ inline int DecodeAudio(AudioDecoderRef audiodecoder,
                        const AudioSpec& spec)
 {
   return CheckError(
-    MIX_DecodeAudio(audiodecoder, buffer.data(), buffer.size_bytes(), &spec),
+    MIX_DecodeAudio(
+      audiodecoder, buffer.data(), narrowS32(buffer.size_bytes()), &spec),
     -1);
 }
 

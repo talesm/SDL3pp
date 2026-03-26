@@ -21,19 +21,30 @@ Next version
 
 - [x] Make StringParam differentiate `nullptr` from "";
 - [x] On Windows, downloads pre-compiled versions, if possible.
+- [ ] Remove Surface::Load\* functions;
 - [x] Fix bug preventing compilation on VisualStudio
   - [x] Use of gnu extension `?:`;
   - [x] Use of invalid constexpr;
-- [x] Remove src/generated/ from version control;
-- [ ] Fix thread ctor for wrapped functions;
-- [ ] operator-> const for resources;
-- [ ] Fix Camera::AcquireCameraFrame;
-- [ ] Fix several minor warnings;
+- [x] Fix thread ctor for wrapped functions;
+- [x] Warnings fixes:
+  - [x] operator-> const for resources;
+  - [x] Fix Camera::AcquireCameraFrame;
+  - [x] Add SDL_assert on all narrowing due to different between std and SDL
+    size types width;
+  - [x] Don't default shared resources' copy assignment operators;
+  - [x] Remove copy assignment operators on non-copyable resources;
+  - [x] Remove copy constructors on non-copyable resources;
+  - [x] Simplify scoped resources constructors and assignment operators;
+  - [x] Fix several minor warnings;
 - [ ] Properly encapsulate Param and ConstParam legacy;
+- [x] Remove src/generated/ from version control;
+- [x] Added CI tests for linux/Clang and Windows/MSVC;
 
 Backlog
 -------
 
+- [ ] Documentation to refer to free functions instead of ctors whenever
+  possible;
 - [ ] Add windows-prebuilt option mode, downloading the version automatically.
 - [ ] Create GetPixel/SetPixel on surface
 - [ ] All SDL_*ID representing devices must have uniform interface:
