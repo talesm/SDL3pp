@@ -32,6 +32,7 @@ Next version
   types width;
 - [x] Be explicit with shared resources' copy assignment operators;
 - [x] Remove copy assignment operators on non-copyable resources;
+- [x] Remove copy constructors on non-copyable resources;
 - [x] Fix several minor warnings;
 - [ ] Properly encapsulate Param and ConstParam legacy;
 - [ ] Remove Surface::Load\* functions;

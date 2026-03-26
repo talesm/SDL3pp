@@ -28141,6 +28141,7 @@ struct FColor : FColorRaw
   }
 };
 
+/// Auxiliary class for Palette to provide access to specific palette index.
 class PaletteIndex
 {
   PaletteRaw m_palette;
