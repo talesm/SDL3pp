@@ -874,11 +874,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Haptic& operator=(const Haptic& other) = default;
+  Haptic& operator=(const Haptic& other) = delete;
 
-public:
   /// Retrieves underlying HapticRaw.
   constexpr HapticRaw get() const noexcept { return m_resource; }
 

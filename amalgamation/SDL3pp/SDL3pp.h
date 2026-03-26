@@ -9181,11 +9181,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Properties& operator=(const Properties& other) = default;
+  Properties& operator=(const Properties& other) = delete;
 
-public:
   /// Retrieves underlying PropertiesID.
   constexpr PropertiesID get() const noexcept { return m_resource; }
 
@@ -11511,11 +11509,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Environment& operator=(const Environment& other) = default;
+  Environment& operator=(const Environment& other) = delete;
 
-public:
   /// Retrieves underlying EnvironmentRaw.
   constexpr EnvironmentRaw get() const noexcept { return m_resource; }
 
@@ -16520,11 +16516,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  IConv& operator=(const IConv& other) = default;
+  IConv& operator=(const IConv& other) = delete;
 
-public:
   /// Retrieves underlying IConvRaw.
   constexpr IConvRaw get() const noexcept { return m_resource; }
 
@@ -17186,11 +17180,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AsyncIO& operator=(const AsyncIO& other) = default;
+  AsyncIO& operator=(const AsyncIO& other) = delete;
 
-public:
   /// Retrieves underlying AsyncIORaw.
   constexpr AsyncIORaw get() const noexcept { return m_resource; }
 
@@ -17550,11 +17542,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AsyncIOQueue& operator=(const AsyncIOQueue& other) = default;
+  AsyncIOQueue& operator=(const AsyncIOQueue& other) = delete;
 
-public:
   /// Retrieves underlying AsyncIOQueueRaw.
   constexpr AsyncIOQueueRaw get() const noexcept { return m_resource; }
 
@@ -21195,11 +21185,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  HidDevice& operator=(const HidDevice& other) = default;
+  HidDevice& operator=(const HidDevice& other) = delete;
 
-public:
   /// Retrieves underlying HidDeviceRaw.
   constexpr HidDeviceRaw get() const noexcept { return m_resource; }
 
@@ -22467,11 +22455,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  IOStream& operator=(const IOStream& other) = default;
+  IOStream& operator=(const IOStream& other) = delete;
 
-public:
   /// Retrieves underlying IOStreamRaw.
   constexpr IOStreamRaw get() const noexcept { return m_resource; }
 
@@ -25380,11 +25366,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  SharedObject& operator=(const SharedObject& other) = default;
+  SharedObject& operator=(const SharedObject& other) = delete;
 
-public:
   /// Retrieves underlying SharedObjectRaw.
   constexpr SharedObjectRaw get() const noexcept { return m_resource; }
 
@@ -32543,11 +32527,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Sensor& operator=(const Sensor& other) = default;
+  Sensor& operator=(const Sensor& other) = delete;
 
-public:
   /// Retrieves underlying SensorRaw.
   constexpr SensorRaw get() const noexcept { return m_resource; }
 
@@ -34762,11 +34744,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioDevice& operator=(const AudioDevice& other) = default;
+  AudioDevice& operator=(const AudioDevice& other) = delete;
 
-public:
   /// Retrieves underlying AudioDeviceID.
   constexpr AudioDeviceID get() const noexcept { return m_resource; }
 
@@ -35715,11 +35695,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioStream& operator=(const AudioStream& other) = default;
+  AudioStream& operator=(const AudioStream& other) = delete;
 
-public:
   /// Retrieves underlying AudioStreamRaw.
   constexpr AudioStreamRaw get() const noexcept { return m_resource; }
 
@@ -40686,11 +40664,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Process& operator=(const Process& other) = default;
+  Process& operator=(const Process& other) = delete;
 
-public:
   /// Retrieves underlying ProcessRaw.
   constexpr ProcessRaw get() const noexcept { return m_resource; }
 
@@ -41805,11 +41781,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Storage& operator=(const Storage& other) = default;
+  Storage& operator=(const Storage& other) = delete;
 
-public:
   /// Retrieves underlying StorageRaw.
   constexpr StorageRaw get() const noexcept { return m_resource; }
 
@@ -48189,11 +48163,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Thread& operator=(const Thread& other) = default;
+  Thread& operator=(const Thread& other) = delete;
 
-public:
   /// Retrieves underlying ThreadRaw.
   constexpr ThreadRaw get() const noexcept { return m_resource; }
 
@@ -49097,11 +49069,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Camera& operator=(const Camera& other) = default;
+  Camera& operator=(const Camera& other) = delete;
 
-public:
   /// Retrieves underlying CameraRaw.
   constexpr CameraRaw get() const noexcept { return m_resource; }
 
@@ -50086,11 +50056,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Mutex& operator=(const Mutex& other) = default;
+  Mutex& operator=(const Mutex& other) = delete;
 
-public:
   /// Retrieves underlying MutexRaw.
   constexpr MutexRaw get() const noexcept { return m_resource; }
 
@@ -50506,11 +50474,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  RWLock& operator=(const RWLock& other) = default;
+  RWLock& operator=(const RWLock& other) = delete;
 
-public:
   /// Retrieves underlying RWLockRaw.
   constexpr RWLockRaw get() const noexcept { return m_resource; }
 
@@ -51119,11 +51085,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Semaphore& operator=(const Semaphore& other) = default;
+  Semaphore& operator=(const Semaphore& other) = delete;
 
-public:
   /// Retrieves underlying SemaphoreRaw.
   constexpr SemaphoreRaw get() const noexcept { return m_resource; }
 
@@ -51567,11 +51531,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Condition& operator=(const Condition& other) = default;
+  Condition& operator=(const Condition& other) = delete;
 
-public:
   /// Retrieves underlying ConditionRaw.
   constexpr ConditionRaw get() const noexcept { return m_resource; }
 
@@ -52303,11 +52265,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Tray& operator=(const Tray& other) = default;
+  Tray& operator=(const Tray& other) = delete;
 
-public:
   /// Retrieves underlying TrayRaw.
   constexpr TrayRaw get() const noexcept { return m_resource; }
 
@@ -54653,11 +54613,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Window& operator=(const Window& other) = default;
+  Window& operator=(const Window& other) = delete;
 
-public:
   /// Retrieves underlying WindowRaw.
   constexpr WindowRaw get() const noexcept { return m_resource; }
 
@@ -66867,11 +66825,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  GPUDevice& operator=(const GPUDevice& other) = default;
+  GPUDevice& operator=(const GPUDevice& other) = delete;
 
-public:
   /// Retrieves underlying GPUDeviceRaw.
   constexpr GPUDeviceRaw get() const noexcept { return m_resource; }
 
@@ -72354,11 +72310,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Joystick& operator=(const Joystick& other) = default;
+  Joystick& operator=(const Joystick& other) = delete;
 
-public:
   /// Retrieves underlying JoystickRaw.
   constexpr JoystickRaw get() const noexcept { return m_resource; }
 
@@ -75700,11 +75654,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  MetalView& operator=(const MetalView& other) = default;
+  MetalView& operator=(const MetalView& other) = delete;
 
-public:
   /// Retrieves underlying MetalViewRaw.
   constexpr MetalViewRaw get() const noexcept { return m_resource; }
 
@@ -76180,11 +76132,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Cursor& operator=(const Cursor& other) = default;
+  Cursor& operator=(const Cursor& other) = delete;
 
-public:
   /// Retrieves underlying CursorRaw.
   constexpr CursorRaw get() const noexcept { return m_resource; }
 
@@ -77515,11 +77465,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Gamepad& operator=(const Gamepad& other) = default;
+  Gamepad& operator=(const Gamepad& other) = delete;
 
-public:
   /// Retrieves underlying GamepadRaw.
   constexpr GamepadRaw get() const noexcept { return m_resource; }
 
@@ -80896,11 +80844,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Haptic& operator=(const Haptic& other) = default;
+  Haptic& operator=(const Haptic& other) = delete;
 
-public:
   /// Retrieves underlying HapticRaw.
   constexpr HapticRaw get() const noexcept { return m_resource; }
 
@@ -83219,11 +83165,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Renderer& operator=(const Renderer& other) = default;
+  Renderer& operator=(const Renderer& other) = delete;
 
-public:
   /// Retrieves underlying RendererRaw.
   constexpr RendererRaw get() const noexcept { return m_resource; }
 
@@ -91111,11 +91055,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  GPURenderState& operator=(const GPURenderState& other) = default;
+  GPURenderState& operator=(const GPURenderState& other) = delete;
 
-public:
   /// Retrieves underlying GPURenderStateRaw.
   constexpr GPURenderStateRaw get() const noexcept { return m_resource; }
 
@@ -93144,11 +93086,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Mixer& operator=(const Mixer& other) = default;
+  Mixer& operator=(const Mixer& other) = delete;
 
-public:
   /// Retrieves underlying MixerRaw.
   constexpr MixerRaw get() const noexcept { return m_resource; }
 
@@ -94632,11 +94572,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Audio& operator=(const Audio& other) = default;
+  Audio& operator=(const Audio& other) = delete;
 
-public:
   /// Retrieves underlying AudioRaw.
   constexpr AudioRaw get() const noexcept { return m_resource; }
 
@@ -95134,11 +95072,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Track& operator=(const Track& other) = default;
+  Track& operator=(const Track& other) = delete;
 
-public:
   /// Retrieves underlying TrackRaw.
   constexpr TrackRaw get() const noexcept { return m_resource; }
 
@@ -96627,11 +96563,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Group& operator=(const Group& other) = default;
+  Group& operator=(const Group& other) = delete;
 
-public:
   /// Retrieves underlying GroupRaw.
   constexpr GroupRaw get() const noexcept { return m_resource; }
 
@@ -100533,11 +100467,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioDecoder& operator=(const AudioDecoder& other) = default;
+  AudioDecoder& operator=(const AudioDecoder& other) = delete;
 
-public:
   /// Retrieves underlying AudioDecoderRaw.
   constexpr AudioDecoderRaw get() const noexcept { return m_resource; }
 
@@ -103700,11 +103632,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Animation& operator=(const Animation& other) = default;
+  Animation& operator=(const Animation& other) = delete;
 
-public:
   /// Retrieves underlying AnimationRaw.
   constexpr AnimationRaw get() const noexcept { return m_resource; }
 
@@ -104808,11 +104738,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AnimationEncoder& operator=(const AnimationEncoder& other) = default;
+  AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
 
-public:
   /// Retrieves underlying AnimationEncoderRaw.
   constexpr AnimationEncoderRaw get() const noexcept { return m_resource; }
 
@@ -105334,11 +105262,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AnimationDecoder& operator=(const AnimationDecoder& other) = default;
+  AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
 
-public:
   /// Retrieves underlying AnimationDecoderRaw.
   constexpr AnimationDecoderRaw get() const noexcept { return m_resource; }
 
@@ -106386,11 +106312,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Font& operator=(const Font& other) = default;
+  Font& operator=(const Font& other) = delete;
 
-public:
   /// Retrieves underlying FontRaw.
   constexpr FontRaw get() const noexcept { return m_resource; }
 
@@ -109876,11 +109800,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  TextEngine& operator=(const TextEngine& other) = default;
+  TextEngine& operator=(const TextEngine& other) = delete;
 
-public:
   /// Retrieves underlying TextEngineRaw.
   constexpr TextEngineRaw get() const noexcept { return m_resource; }
 
@@ -110251,11 +110173,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Text& operator=(const Text& other) = default;
+  Text& operator=(const Text& other) = delete;
 
-public:
   /// Retrieves underlying TextRaw.
   constexpr TextRaw get() const noexcept { return m_resource; }
 

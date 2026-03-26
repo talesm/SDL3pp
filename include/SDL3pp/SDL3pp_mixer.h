@@ -371,11 +371,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Mixer& operator=(const Mixer& other) = default;
+  Mixer& operator=(const Mixer& other) = delete;
 
-public:
   /// Retrieves underlying MixerRaw.
   constexpr MixerRaw get() const noexcept { return m_resource; }
 
@@ -1859,11 +1857,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Audio& operator=(const Audio& other) = default;
+  Audio& operator=(const Audio& other) = delete;
 
-public:
   /// Retrieves underlying AudioRaw.
   constexpr AudioRaw get() const noexcept { return m_resource; }
 
@@ -2361,11 +2357,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Track& operator=(const Track& other) = default;
+  Track& operator=(const Track& other) = delete;
 
-public:
   /// Retrieves underlying TrackRaw.
   constexpr TrackRaw get() const noexcept { return m_resource; }
 
@@ -3854,11 +3848,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Group& operator=(const Group& other) = default;
+  Group& operator=(const Group& other) = delete;
 
-public:
   /// Retrieves underlying GroupRaw.
   constexpr GroupRaw get() const noexcept { return m_resource; }
 
@@ -7760,11 +7752,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioDecoder& operator=(const AudioDecoder& other) = default;
+  AudioDecoder& operator=(const AudioDecoder& other) = delete;
 
-public:
   /// Retrieves underlying AudioDecoderRaw.
   constexpr AudioDecoderRaw get() const noexcept { return m_resource; }
 

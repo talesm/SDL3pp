@@ -454,11 +454,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Gamepad& operator=(const Gamepad& other) = default;
+  Gamepad& operator=(const Gamepad& other) = delete;
 
-public:
   /// Retrieves underlying GamepadRaw.
   constexpr GamepadRaw get() const noexcept { return m_resource; }
 

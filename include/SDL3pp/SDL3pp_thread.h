@@ -329,11 +329,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Thread& operator=(const Thread& other) = default;
+  Thread& operator=(const Thread& other) = delete;
 
-public:
   /// Retrieves underlying ThreadRaw.
   constexpr ThreadRaw get() const noexcept { return m_resource; }
 

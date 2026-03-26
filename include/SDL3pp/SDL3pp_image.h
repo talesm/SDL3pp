@@ -2795,11 +2795,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Animation& operator=(const Animation& other) = default;
+  Animation& operator=(const Animation& other) = delete;
 
-public:
   /// Retrieves underlying AnimationRaw.
   constexpr AnimationRaw get() const noexcept { return m_resource; }
 
@@ -3903,11 +3901,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AnimationEncoder& operator=(const AnimationEncoder& other) = default;
+  AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
 
-public:
   /// Retrieves underlying AnimationEncoderRaw.
   constexpr AnimationEncoderRaw get() const noexcept { return m_resource; }
 
@@ -4429,11 +4425,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AnimationDecoder& operator=(const AnimationDecoder& other) = default;
+  AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
 
-public:
   /// Retrieves underlying AnimationDecoderRaw.
   constexpr AnimationDecoderRaw get() const noexcept { return m_resource; }
 

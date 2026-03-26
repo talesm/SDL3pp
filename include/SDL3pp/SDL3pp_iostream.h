@@ -390,11 +390,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  IOStream& operator=(const IOStream& other) = default;
+  IOStream& operator=(const IOStream& other) = delete;
 
-public:
   /// Retrieves underlying IOStreamRaw.
   constexpr IOStreamRaw get() const noexcept { return m_resource; }
 

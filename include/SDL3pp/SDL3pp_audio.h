@@ -917,11 +917,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioDevice& operator=(const AudioDevice& other) = default;
+  AudioDevice& operator=(const AudioDevice& other) = delete;
 
-public:
   /// Retrieves underlying AudioDeviceID.
   constexpr AudioDeviceID get() const noexcept { return m_resource; }
 
@@ -1870,11 +1868,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AudioStream& operator=(const AudioStream& other) = default;
+  AudioStream& operator=(const AudioStream& other) = delete;
 
-public:
   /// Retrieves underlying AudioStreamRaw.
   constexpr AudioStreamRaw get() const noexcept { return m_resource; }
 

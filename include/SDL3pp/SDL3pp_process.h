@@ -270,11 +270,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Process& operator=(const Process& other) = default;
+  Process& operator=(const Process& other) = delete;
 
-public:
   /// Retrieves underlying ProcessRaw.
   constexpr ProcessRaw get() const noexcept { return m_resource; }
 

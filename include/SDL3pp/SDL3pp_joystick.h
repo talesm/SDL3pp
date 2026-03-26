@@ -471,11 +471,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Joystick& operator=(const Joystick& other) = default;
+  Joystick& operator=(const Joystick& other) = delete;
 
-public:
   /// Retrieves underlying JoystickRaw.
   constexpr JoystickRaw get() const noexcept { return m_resource; }
 

@@ -448,11 +448,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Renderer& operator=(const Renderer& other) = default;
+  Renderer& operator=(const Renderer& other) = delete;
 
-public:
   /// Retrieves underlying RendererRaw.
   constexpr RendererRaw get() const noexcept { return m_resource; }
 
@@ -8340,11 +8338,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  GPURenderState& operator=(const GPURenderState& other) = default;
+  GPURenderState& operator=(const GPURenderState& other) = delete;
 
-public:
   /// Retrieves underlying GPURenderStateRaw.
   constexpr GPURenderStateRaw get() const noexcept { return m_resource; }
 

@@ -243,11 +243,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Properties& operator=(const Properties& other) = default;
+  Properties& operator=(const Properties& other) = delete;
 
-public:
   /// Retrieves underlying PropertiesID.
   constexpr PropertiesID get() const noexcept { return m_resource; }
 

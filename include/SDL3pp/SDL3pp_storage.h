@@ -412,11 +412,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Storage& operator=(const Storage& other) = default;
+  Storage& operator=(const Storage& other) = delete;
 
-public:
   /// Retrieves underlying StorageRaw.
   constexpr StorageRaw get() const noexcept { return m_resource; }
 

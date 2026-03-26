@@ -250,11 +250,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Camera& operator=(const Camera& other) = default;
+  Camera& operator=(const Camera& other) = delete;
 
-public:
   /// Retrieves underlying CameraRaw.
   constexpr CameraRaw get() const noexcept { return m_resource; }
 

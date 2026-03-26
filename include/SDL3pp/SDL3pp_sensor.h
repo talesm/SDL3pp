@@ -194,11 +194,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Sensor& operator=(const Sensor& other) = default;
+  Sensor& operator=(const Sensor& other) = delete;
 
-public:
   /// Retrieves underlying SensorRaw.
   constexpr SensorRaw get() const noexcept { return m_resource; }
 

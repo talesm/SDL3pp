@@ -127,11 +127,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  SharedObject& operator=(const SharedObject& other) = default;
+  SharedObject& operator=(const SharedObject& other) = delete;
 
-public:
   /// Retrieves underlying SharedObjectRaw.
   constexpr SharedObjectRaw get() const noexcept { return m_resource; }
 

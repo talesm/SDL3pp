@@ -34,7 +34,7 @@
     * @post an opaque pointer to the new thread object on success.
     * @throws Error on failure.
     *
-@@ -628,7 +626,6 @@
+@@ -626,7 +624,6 @@
   *
   * @param fn the ThreadFunction function to call in the new thread.
   * @param name the name of the thread.
@@ -42,7 +42,7 @@
   * @returns an opaque pointer to the new thread object on success.
   * @throws Error on failure.
   *
-@@ -641,7 +638,7 @@
+@@ -639,7 +636,7 @@
   */
  inline Thread CreateThread(ThreadCB fn, StringParam name)
  {
@@ -51,7 +51,7 @@
  }
  
  inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
-@@ -649,7 +646,12 @@
+@@ -647,7 +644,12 @@
  {
  }
  

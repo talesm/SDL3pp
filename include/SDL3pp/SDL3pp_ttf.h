@@ -532,11 +532,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Font& operator=(const Font& other) = default;
+  Font& operator=(const Font& other) = delete;
 
-public:
   /// Retrieves underlying FontRaw.
   constexpr FontRaw get() const noexcept { return m_resource; }
 
@@ -4022,11 +4020,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  TextEngine& operator=(const TextEngine& other) = default;
+  TextEngine& operator=(const TextEngine& other) = delete;
 
-public:
   /// Retrieves underlying TextEngineRaw.
   constexpr TextEngineRaw get() const noexcept { return m_resource; }
 
@@ -4397,11 +4393,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Text& operator=(const Text& other) = default;
+  Text& operator=(const Text& other) = delete;
 
-public:
   /// Retrieves underlying TextRaw.
   constexpr TextRaw get() const noexcept { return m_resource; }
 

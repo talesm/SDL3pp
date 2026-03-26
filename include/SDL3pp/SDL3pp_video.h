@@ -1117,11 +1117,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Window& operator=(const Window& other) = default;
+  Window& operator=(const Window& other) = delete;
 
-public:
   /// Retrieves underlying WindowRaw.
   constexpr WindowRaw get() const noexcept { return m_resource; }
 

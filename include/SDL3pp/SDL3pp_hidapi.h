@@ -184,11 +184,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  HidDevice& operator=(const HidDevice& other) = default;
+  HidDevice& operator=(const HidDevice& other) = delete;
 
-public:
   /// Retrieves underlying HidDeviceRaw.
   constexpr HidDeviceRaw get() const noexcept { return m_resource; }
 

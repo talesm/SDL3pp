@@ -182,11 +182,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Tray& operator=(const Tray& other) = default;
+  Tray& operator=(const Tray& other) = delete;
 
-public:
   /// Retrieves underlying TrayRaw.
   constexpr TrayRaw get() const noexcept { return m_resource; }
 

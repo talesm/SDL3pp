@@ -107,11 +107,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  MetalView& operator=(const MetalView& other) = default;
+  MetalView& operator=(const MetalView& other) = delete;
 
-public:
   /// Retrieves underlying MetalViewRaw.
   constexpr MetalViewRaw get() const noexcept { return m_resource; }
 

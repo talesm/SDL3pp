@@ -3241,11 +3241,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  GPUDevice& operator=(const GPUDevice& other) = default;
+  GPUDevice& operator=(const GPUDevice& other) = delete;
 
-public:
   /// Retrieves underlying GPUDeviceRaw.
   constexpr GPUDeviceRaw get() const noexcept { return m_resource; }
 

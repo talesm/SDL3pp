@@ -297,11 +297,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Cursor& operator=(const Cursor& other) = default;
+  Cursor& operator=(const Cursor& other) = delete;
 
-public:
   /// Retrieves underlying CursorRaw.
   constexpr CursorRaw get() const noexcept { return m_resource; }
 

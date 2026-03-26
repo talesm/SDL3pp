@@ -986,11 +986,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  Environment& operator=(const Environment& other) = default;
+  Environment& operator=(const Environment& other) = delete;
 
-public:
   /// Retrieves underlying EnvironmentRaw.
   constexpr EnvironmentRaw get() const noexcept { return m_resource; }
 
@@ -5995,11 +5993,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  IConv& operator=(const IConv& other) = default;
+  IConv& operator=(const IConv& other) = delete;
 
-public:
   /// Retrieves underlying IConvRaw.
   constexpr IConvRaw get() const noexcept { return m_resource; }
 

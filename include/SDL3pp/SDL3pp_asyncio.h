@@ -214,11 +214,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AsyncIO& operator=(const AsyncIO& other) = default;
+  AsyncIO& operator=(const AsyncIO& other) = delete;
 
-public:
   /// Retrieves underlying AsyncIORaw.
   constexpr AsyncIORaw get() const noexcept { return m_resource; }
 
@@ -578,11 +576,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  AsyncIOQueue& operator=(const AsyncIOQueue& other) = default;
+  AsyncIOQueue& operator=(const AsyncIOQueue& other) = delete;
 
-public:
   /// Retrieves underlying AsyncIOQueueRaw.
   constexpr AsyncIOQueueRaw get() const noexcept { return m_resource; }
 
