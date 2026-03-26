@@ -2912,6 +2912,22 @@ inline Surface LoadTrustedPNG(StringParam file)
   return Surface(SDL_LoadPNG(file));
 }
 
+#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
+
+/// @see LoadTrustedPNG_IO
+inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
+{
+  return LoadTrustedPNG_IO(src, closeio);
+}
+
+/// @see LoadTrustedPNG
+inline Surface LoadPNG(StringParam file)
+{
+  return LoadTrustedPNG(std::move(file));
+}
+
+#endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
+
 /**
  * Save a surface to a seekable SDL data stream in PNG format.
  *

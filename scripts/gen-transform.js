@@ -8441,6 +8441,26 @@ const transform = {
         "IMG_isANI": {
           since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
         },
+        "LoadPNG_IO": {
+          after: "IMG_LoadPNG_IO",
+          kind: "function",
+          type: "Surface",
+          parameters: [{
+            name: "src",
+            type: "IOStreamRef"
+          }, {
+            name: "closeio",
+            type: "bool"
+          }],
+        },
+        "LoadPNG": {
+          kind: "function",
+          type: "Surface",
+          parameters: [{
+            name: "file",
+            type: "StringParam"
+          }],
+        },
         "IMG_SaveTyped_IO": {
           parameters: [{}, {}, {
             name: "type",

@@ -45656,6 +45656,22 @@ inline Surface LoadTrustedPNG(StringParam file)
   return Surface(SDL_LoadPNG(file));
 }
 
+#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
+
+/// @see LoadTrustedPNG_IO
+inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
+{
+  return LoadTrustedPNG_IO(src, closeio);
+}
+
+/// @see LoadTrustedPNG
+inline Surface LoadPNG(StringParam file)
+{
+  return LoadTrustedPNG(std::move(file));
+}
+
+#endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
+
 /**
  * Save a surface to a seekable SDL data stream in PNG format.
  *
@@ -102266,6 +102282,84 @@ inline Surface LoadPCX_IO(IOStreamRef src)
 inline Surface LoadPNG_IO(IOStreamRef src)
 {
   return Surface{IMG_LoadPNG_IO(src)};
+}
+
+/**
+ * Load a PNG image directly.
+ *
+ * If you know you definitely have a PNG image, you can call this function,
+ * which will skip SDL_image's file format detection routines. Generally it's
+ * better to use the abstract interfaces; also, there is only an IOStream
+ * interface available here.
+ *
+ * @param src an IOStream to load image data from.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ *                even in the case of an error.
+ * @returns SDL surface, or nullptr on error.
+ *
+ * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
+ */
+inline Surface LoadPNG_IO(IOStreamRef src, bool closeio)
+{
+  if (!closeio) return Surface{LoadPNG_IO(src)};
+  Surface temp{LoadPNG_IO(src)};
+  src.Close();
+  return temp;
+}
+
+/**
+ * Load a PNG image from a file.
+ *
+ * If you know you definitely have a PNG image, you can call this function,
+ * which will skip SDL_image's file format detection routines. Generally it's
+ * better to use the abstract interfaces;
+ *
+ * @param file the PNG file to load.
+ * @returns SDL surface, or nullptr on error.
+ *
+ * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
+ */
+inline Surface LoadPNG(StringParam file)
+{
+  return LoadPNG_IO(IOFromFile(std::move(file), "rb"));
 }
 
 /**
