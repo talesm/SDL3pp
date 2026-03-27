@@ -1464,43 +1464,6 @@ inline Surface LoadAVIF_IO(IOStreamRef src)
 }
 
 /**
- * Load a BMP image directly.
- *
- * If you know you definitely have a BMP image, you can call this function,
- * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStream
- * interface available here.
- *
- * @param src an IOStream to load image data from.
- * @returns SDL surface, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa LoadAVIF_IO
- * @sa LoadCUR_IO
- * @sa LoadGIF_IO
- * @sa LoadICO_IO
- * @sa LoadJPG_IO
- * @sa LoadJXL_IO
- * @sa LoadLBM_IO
- * @sa LoadPCX_IO
- * @sa LoadPNG_IO
- * @sa LoadPNM_IO
- * @sa LoadQOI_IO
- * @sa LoadSVG_IO
- * @sa LoadTGA_IO
- * @sa LoadTIF_IO
- * @sa LoadWEBP_IO
- * @sa LoadXCF_IO
- * @sa LoadXPM_IO
- * @sa LoadXV_IO
- */
-inline Surface LoadBMP_IO(IOStreamRef src)
-{
-  return Surface{IMG_LoadBMP_IO(src)};
-}
-
-/**
  * Load a CUR image directly.
  *
  * If you know you definitely have a CUR image, you can call this function,
@@ -1794,6 +1757,84 @@ inline Surface LoadPCX_IO(IOStreamRef src)
 inline Surface LoadPNG_IO(IOStreamRef src)
 {
   return Surface{IMG_LoadPNG_IO(src)};
+}
+
+/**
+ * Load a PNG image directly.
+ *
+ * If you know you definitely have a PNG image, you can call this function,
+ * which will skip SDL_image's file format detection routines. Generally it's
+ * better to use the abstract interfaces; also, there is only an IOStream
+ * interface available here.
+ *
+ * @param src an IOStream to load image data from.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ *                even in the case of an error.
+ * @returns SDL surface, or nullptr on error.
+ *
+ * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
+ */
+inline Surface LoadPNG_IO(IOStreamRef src, bool closeio)
+{
+  if (!closeio) return Surface{LoadPNG_IO(src)};
+  Surface temp{LoadPNG_IO(src)};
+  src.Close();
+  return temp;
+}
+
+/**
+ * Load a PNG image from a file.
+ *
+ * If you know you definitely have a PNG image, you can call this function,
+ * which will skip SDL_image's file format detection routines. Generally it's
+ * better to use the abstract interfaces;
+ *
+ * @param file the PNG file to load.
+ * @returns SDL surface, or nullptr on error.
+ *
+ * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa LoadAVIF_IO
+ * @sa LoadBMP_IO
+ * @sa LoadCUR_IO
+ * @sa LoadGIF_IO
+ * @sa LoadICO_IO
+ * @sa LoadJPG_IO
+ * @sa LoadJXL_IO
+ * @sa LoadLBM_IO
+ * @sa LoadPCX_IO
+ * @sa LoadPNM_IO
+ * @sa LoadQOI_IO
+ * @sa LoadSVG_IO
+ * @sa LoadTGA_IO
+ * @sa LoadTIF_IO
+ * @sa LoadWEBP_IO
+ * @sa LoadXCF_IO
+ * @sa LoadXPM_IO
+ * @sa LoadXV_IO
+ */
+inline Surface LoadPNG(StringParam file)
+{
+  return LoadPNG_IO(IOFromFile(std::move(file), "rb"));
 }
 
 /**
@@ -2218,9 +2259,14 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  * @sa SaveTGA
  * @sa SaveWEBP
  */
-inline void Save(SurfaceRef surface, StringParam file)
+inline void Save(SurfaceConstRef surface, StringParam file)
 {
   CheckError(IMG_Save(surface, file));
+}
+
+inline void Surface::Save(StringParam filename) const
+{
+  SDL::Save(*this, std::move(filename));
 }
 
 /**
@@ -2254,12 +2300,19 @@ inline void Save(SurfaceRef surface, StringParam file)
  * @sa SaveTGA_IO
  * @sa SaveWEBP_IO
  */
-inline void SaveTyped_IO(SurfaceRef surface,
+inline void SaveTyped_IO(SurfaceConstRef surface,
                          IOStreamRef dst,
                          StringParam type,
                          bool closeio = false)
 {
   CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
+}
+
+inline void Surface::SaveTyped_IO(IOStreamRef dst,
+                                  StringParam type,
+                                  bool closeio) const
+{
+  SDL::SaveTyped_IO(*this, dst, std::move(type), closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2313,49 +2366,6 @@ inline void SaveAVIF_IO(SurfaceRef surface,
 }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-
-/**
- * Save an Surface into a BMP image file.
- *
- * If the file already exists, it will be overwritten.
- *
- * @param surface the SDL surface to save.
- * @param file path on the filesystem to write new file to.
- * @throws Error on failure.
- *
- * @since This function is available since SDL_image 3.4.0.
- *
- * @sa SaveBMP_IO
- */
-inline void SaveBMP(SurfaceRef surface, StringParam file)
-{
-  CheckError(IMG_SaveBMP(surface, file));
-}
-
-/**
- * Save an Surface into BMP image data, via an IOStream.
- *
- * If you just want to save to a filename, you can use SaveBMP() instead.
- *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
- * @param surface the SDL surface to save.
- * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false to
- *                leave it open.
- * @throws Error on failure.
- *
- * @since This function is available since SDL_image 3.4.0.
- *
- * @sa SaveBMP
- */
-inline void SaveBMP_IO(SurfaceRef surface,
-                       IOStreamRef dst,
-                       bool closeio = false)
-{
-  CheckError(IMG_SaveBMP_IO(surface, dst, closeio));
-}
 
 /**
  * Save an Surface into a CUR image file.
@@ -2536,6 +2546,11 @@ inline void SaveJPG_IO(SurfaceRef surface,
   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
 }
 
+inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
+{
+  SDL::SaveTrustedPNG_IO(m_resource, dst, closeio);
+}
+
 /**
  * Save an Surface into a PNG image file.
  *
@@ -2552,6 +2567,11 @@ inline void SaveJPG_IO(SurfaceRef surface,
 inline void SavePNG(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SavePNG(surface, file));
+}
+
+inline void Surface::SavePNG(StringParam file) const
+{
+  SDL::SaveTrustedPNG(m_resource, std::move(file));
 }
 
 /**

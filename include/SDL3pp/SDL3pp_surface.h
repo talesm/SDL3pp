@@ -25,12 +25,10 @@ namespace SDL {
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, Surface.LoadBMP(), and a simple .png
- * loader, Surface.LoadPNG(). SDL itself does not provide loaders for other file
- * formats, but there are several excellent external libraries that do,
- * including its own satellite library,
- * [SDL_image](https://wiki.libsdl.org/SDL3_image).
- *
+ * There is also a simple .bmp loader, LoadBMP(), and a simple .png loader,
+ * LoadTrustedPNG(). SDL itself does not provide loaders for other file formats,
+ * but there are several excellent external libraries that do, including its own
+ * satellite library, [SDL_image](https://wiki.libsdl.org/SDL3_image) .
  *
  * In general these functions are thread-safe in that they can be called on
  * different threads with different surfaces. You should not try to modify any
@@ -381,99 +379,6 @@ public:
     return {};
   }
 
-  /**
-   * Load a BMP image from a seekable SDL data stream.
-   *
-   * The new surface should be freed with Surface.Destroy(). Not doing so will
-   * result in a memory leak.
-   *
-   * @param src the data stream for the surface.
-   * @param closeio if true, calls IOStream.Close() on `src` before returning,
-   *                even in the case of an error.
-   * @returns a pointer to a new Surface structure or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Destroy
-   * @sa Surface.LoadBMP
-   * @sa Surface.SaveBMP_IO
-   */
-  static Surface LoadBMP_IO(IOStreamRef src, bool closeio = false);
-
-  /**
-   * Load a BMP image from a file.
-   *
-   * The new surface should be freed with Surface.Destroy(). Not doing so will
-   * result in a memory leak.
-   *
-   * @param file the BMP file to load.
-   * @returns a pointer to a new Surface structure or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Destroy
-   * @sa Surface.LoadBMP_IO
-   * @sa Surface.SaveBMP
-   */
-  static Surface LoadBMP(StringParam file);
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-  /**
-   * Load a PNG image from a seekable SDL data stream.
-   *
-   * This is intended as a convenience function for loading images from trusted
-   * sources. If you want to load arbitrary images you should use libpng or
-   * another image loading library designed with security in mind.
-   *
-   * @param src the data stream for the surface.
-   * @param closeio if true, calls IOStream.Close() on `src` before returning,
-   *                even in the case of an error.
-   * @returns a pointer to a new Surface structure or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.4.0.
-   *
-   * @sa Surface.Destroy
-   * @sa Surface.LoadPNG
-   * @sa Surface.SavePNG_IO
-   */
-  static Surface LoadPNG_IO(IOStreamRef src, bool closeio = false);
-
-  /**
-   * Load a PNG image from a file.
-   *
-   * This is intended as a convenience function for loading images from trusted
-   * sources. If you want to load arbitrary images you should use libpng or
-   * another image loading library designed with security in mind.
-   *
-   * The new surface should be freed with Surface.Destroy(). Not doing so will
-   * result in a memory leak.
-   *
-   * @param file the PNG file to load.
-   * @returns a pointer to a new Surface structure or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.4.0.
-   *
-   * @sa Surface.Destroy
-   * @sa Surface.LoadPNG_IO
-   * @sa Surface.SavePNG
-   */
-  static Surface LoadPNG(StringParam file);
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
   /// member access to underlying SurfaceRaw.
   constexpr SurfaceRawConst operator->() const noexcept { return m_resource; }
 
@@ -521,9 +426,9 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Free a surface.
+   * Free this surface.
    *
-   * It is safe to pass nullptr to this function.
+   * It is safe to call on a nullptr surface.
    *
    * @threadsafety No other thread should be using the surface when it is freed.
    *
@@ -816,7 +721,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.LoadBMP_IO
+   * @sa LoadBMP_IO
    * @sa Surface.SaveBMP
    */
   void SaveBMP_IO(IOStreamRef dst, bool closeio = false) const;
@@ -838,7 +743,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.LoadBMP
+   * @sa LoadBMP
    * @sa Surface.SaveBMP_IO
    */
   void SaveBMP(StringParam file) const;
@@ -847,6 +752,8 @@ public:
 
   /**
    * Save a surface to a seekable SDL data stream in PNG format.
+   *
+   * If the file already exists, it will be overwritten.
    *
    * @param dst a data stream to save to.
    * @param closeio if true, calls IOStream.Close() on `dst` before returning,
@@ -858,13 +765,16 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Surface.LoadPNG_IO
+   * @sa LoadPNG_IO
+   * @sa LoadTrustedPNG_IO
    * @sa Surface.SavePNG
    */
   void SavePNG_IO(IOStreamRef dst, bool closeio = false) const;
 
   /**
    * Save a surface to a file in PNG format.
+   *
+   * If the file already exists, it will be overwritten.
    *
    * @param file a file to save to.
    * @throws Error on failure.
@@ -874,7 +784,8 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Surface.LoadPNG
+   * @sa LoadPNG
+   * @sa LoadTrustedPNG
    * @sa Surface.SavePNG_IO
    */
   void SavePNG(StringParam file) const;
@@ -1964,6 +1875,47 @@ public:
 
   /// Get the pixels.
   constexpr void* GetPixels() const;
+
+  /**
+   * Save an Surface into an image file.
+   *
+   * If the file already exists, it will be overwritten.
+   *
+   * For formats that accept a quality, a default quality of 90 will be used.
+   *
+   * @param file path on the filesystem to write new file to.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa SDL::SaveTyped_IO
+   */
+  void Save(StringParam filename) const;
+
+  /**
+   * Save an Surface into formatted image data, via an IOStream.
+   *
+   * If you just want to save to a filename, you can use Save() instead.
+   *
+   * If `closeio` is true, `dst` will be closed before returning, whether this
+   * function succeeds or not.
+   *
+   * For formats that accept a quality, a default quality of 90 will be used.
+   *
+   * @param dst the IOStream to save the image data to.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
+   * @param type a filename extension that represent this data ("BMP", "GIF",
+   *             "PNG", etc).
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa SDL::Save
+   */
+  void SaveTyped_IO(IOStreamRef dst,
+                    StringParam type,
+                    bool closeio = false) const;
 };
 
 /**
@@ -2802,13 +2754,10 @@ inline void SurfaceLock::reset()
 /**
  * Load a BMP or PNG image from a seekable SDL data stream.
  *
- * The new surface should be freed with Surface.Destroy(). Not doing so will
- * result in a memory leak.
- *
  * @param src the data stream for the surface.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
  *                even in the case of an error.
- * @returns a pointer to a new Surface structure or nullptr on failure; call
+ * @returns a new Surface on success or nullptr on failure; call
  *          GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2826,11 +2775,8 @@ inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
 /**
  * Load a BMP or PNG image from a file.
  *
- * The new surface should be freed with Surface.Destroy(). Not doing so will
- * result in a memory leak.
- *
  * @param file the file to load.
- * @returns a pointer to a new Surface structure or nullptr on failure; call
+ * @returns a new Surface on success or nullptr on failure; call
  *          GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2864,17 +2810,12 @@ inline Surface LoadSurface(StringParam file)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Surface.Destroy
- * @sa Surface.LoadBMP
+ * @sa LoadBMP
  * @sa Surface.SaveBMP_IO
  */
 inline Surface LoadBMP_IO(IOStreamRef src, bool closeio = false)
 {
   return Surface(SDL_LoadBMP_IO(src, closeio));
-}
-
-inline Surface Surface::LoadBMP_IO(IOStreamRef src, bool closeio)
-{
-  return SDL::LoadBMP_IO(src, closeio);
 }
 
 /**
@@ -2892,15 +2833,10 @@ inline Surface Surface::LoadBMP_IO(IOStreamRef src, bool closeio)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Surface.Destroy
- * @sa Surface.LoadBMP_IO
+ * @sa LoadBMP_IO
  * @sa Surface.SaveBMP
  */
 inline Surface LoadBMP(StringParam file) { return Surface(SDL_LoadBMP(file)); }
-
-inline Surface Surface::LoadBMP(StringParam file)
-{
-  return SDL::LoadBMP(std::move(file));
-}
 
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
@@ -2922,7 +2858,7 @@ inline Surface Surface::LoadBMP(StringParam file)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.LoadBMP_IO
+ * @sa LoadBMP_IO
  * @sa Surface.SaveBMP
  */
 inline void SaveBMP_IO(SurfaceConstRef surface,
@@ -2955,7 +2891,7 @@ inline void Surface::SaveBMP_IO(IOStreamRef dst, bool closeio) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.LoadBMP
+ * @sa LoadBMP
  * @sa Surface.SaveBMP_IO
  */
 inline void SaveBMP(SurfaceConstRef surface, StringParam file)
@@ -2977,13 +2913,10 @@ inline void Surface::SaveBMP(StringParam file) const
  * sources. If you want to load arbitrary images you should use libpng or
  * another image loading library designed with security in mind.
  *
- * The new surface should be freed with Surface.Destroy(). Not doing so will
- * result in a memory leak.
- *
  * @param src the data stream for the surface.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
  *                even in the case of an error.
- * @returns a pointer to a new Surface structure or nullptr on failure; call
+ * @returns a new Surface structure on success or nullptr on failure; call
  *          GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2991,17 +2924,12 @@ inline void Surface::SaveBMP(StringParam file) const
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Surface.Destroy
- * @sa Surface.LoadPNG
+ * @sa LoadTrustedPNG
  * @sa Surface.SavePNG_IO
  */
-inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
+inline Surface LoadTrustedPNG_IO(IOStreamRef src, bool closeio = false)
 {
   return Surface(SDL_LoadPNG_IO(src, closeio));
-}
-
-inline Surface Surface::LoadPNG_IO(IOStreamRef src, bool closeio)
-{
-  return SDL::LoadPNG_IO(src, closeio);
 }
 
 /**
@@ -3015,7 +2943,7 @@ inline Surface Surface::LoadPNG_IO(IOStreamRef src, bool closeio)
  * result in a memory leak.
  *
  * @param file the PNG file to load.
- * @returns a pointer to a new Surface structure or nullptr on failure; call
+ * @returns a new Surface structure on success or nullptr on failure; call
  *          GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -3023,15 +2951,29 @@ inline Surface Surface::LoadPNG_IO(IOStreamRef src, bool closeio)
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Surface.Destroy
- * @sa Surface.LoadPNG_IO
+ * @sa LoadTrustedPNG_IO
  * @sa Surface.SavePNG
  */
-inline Surface LoadPNG(StringParam file) { return Surface(SDL_LoadPNG(file)); }
-
-inline Surface Surface::LoadPNG(StringParam file)
+inline Surface LoadTrustedPNG(StringParam file)
 {
-  return SDL::LoadPNG(std::move(file));
+  return Surface(SDL_LoadPNG(file));
 }
+
+#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
+
+/// @see LoadTrustedPNG_IO
+inline Surface LoadPNG_IO(IOStreamRef src, bool closeio = false)
+{
+  return LoadTrustedPNG_IO(src, closeio);
+}
+
+/// @see LoadTrustedPNG
+inline Surface LoadPNG(StringParam file)
+{
+  return LoadTrustedPNG(std::move(file));
+}
+
+#endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
 /**
  * Save a surface to a seekable SDL data stream in PNG format.
@@ -3047,20 +2989,22 @@ inline Surface Surface::LoadPNG(StringParam file)
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Surface.LoadPNG_IO
+ * @sa LoadTrustedPNG_IO
  * @sa Surface.SavePNG
  */
-inline void SavePNG_IO(SurfaceConstRef surface,
-                       IOStreamRef dst,
-                       bool closeio = false)
+inline void SaveTrustedPNG_IO(SurfaceConstRef surface,
+                              IOStreamRef dst,
+                              bool closeio = false)
 {
   CheckError(SDL_SavePNG_IO(surface, dst, closeio));
 }
 
+#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
 {
-  SDL::SavePNG_IO(m_resource, dst, closeio);
+  SDL::SaveTrustedPNG_IO(m_resource, dst, closeio);
 }
+#endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
 /**
  * Save a surface to a file in PNG format.
@@ -3074,18 +3018,20 @@ inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Surface.LoadPNG
+ * @sa LoadTrustedPNG
  * @sa Surface.SavePNG_IO
  */
-inline void SavePNG(SurfaceConstRef surface, StringParam file)
+inline void SaveTrustedPNG(SurfaceConstRef surface, StringParam file)
 {
   CheckError(SDL_SavePNG(surface, file));
 }
 
+#if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 inline void Surface::SavePNG(StringParam file) const
 {
-  SDL::SavePNG(m_resource, std::move(file));
+  SDL::SaveTrustedPNG(m_resource, std::move(file));
 }
+#endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 

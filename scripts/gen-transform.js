@@ -6574,18 +6574,11 @@ const transform = {
         "SDL_Surface": {
           resource: {
             shared: 'refcount',
-            ctors: ["SDL_LoadBMP_IO", "SDL_LoadBMP", "SDL_LoadPNG_IO", "SDL_LoadPNG"],
           },
           lock: true,
           entries: {
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
-            "SDL_LoadBMP_IO": {
-              parameters: [{}, { default: "false" }]
-            },
-            "SDL_LoadPNG_IO": {
-              parameters: [{}, { default: "false" }]
-            },
             "SDL_MUSTLOCK": {
               kind: "function",
               name: "MustLock",
@@ -6747,17 +6740,24 @@ const transform = {
           type: "OwnArray<SurfaceRaw>",
           parameters: [{ type: "SurfaceConstRef" }]
         },
-        "SDL_LoadSurface_IO": {
-          parameters: [{}, { default: "false" }]
-        },
-        "SDL_LoadBMP_IO": {
-          parameters: [{}, { default: "false" }]
-        },
+        "SDL_LoadSurface_IO": { parameters: [{}, { default: "false" }] },
+        "SDL_LoadBMP_IO": { parameters: [{}, { default: "false" }] },
         "SDL_SaveBMP_IO": { parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }] },
         "SDL_SaveBMP": { parameters: [{ type: "SurfaceConstRef" }, {}] },
-        "SDL_LoadPNG_IO": { parameters: [{}, { default: "false" }] },
-        "SDL_SavePNG_IO": { parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }] },
-        "SDL_SavePNG": { parameters: [{ type: "SurfaceConstRef" }, {}] },
+        "SDL_LoadPNG_IO": {
+          name: "LoadTrustedPNG_IO",
+          parameters: [{}, { default: "false" }]
+        },
+        "SDL_LoadPNG": { name: "LoadTrustedPNG" },
+
+        "SDL_SavePNG_IO": {
+          name: "SaveTrustedPNG_IO",
+          parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }]
+        },
+        "SDL_SavePNG": {
+          name: "SaveTrustedPNG",
+          parameters: [{ type: "SurfaceConstRef" }, {}]
+        },
         "SDL_SurfaceHasRLE": { parameters: [{ type: "SurfaceConstRef" }] },
         "SDL_SetSurfaceColorKey": {
           parameters: [
@@ -8448,8 +8448,44 @@ const transform = {
         "IMG_isANI": {
           since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
         },
+        "LoadPNG_IO": {
+          after: "IMG_LoadPNG_IO",
+          kind: "function",
+          type: "Surface",
+          parameters: [{
+            name: "src",
+            type: "IOStreamRef"
+          }, {
+            name: "closeio",
+            type: "bool"
+          }],
+        },
+        "LoadPNG": {
+          kind: "function",
+          type: "Surface",
+          parameters: [{
+            name: "file",
+            type: "StringParam"
+          }],
+        },
+        "IMG_Save": {
+          parameters: [{ type: "SurfaceConstRef" }, {}],
+        },
+        "Surface::Save": {
+          kind: "function",
+          type: "void",
+          immutable: true,
+          parameters: [{ name: "filename", type: "StringParam" }],
+          hints: {
+            delegate: "Save",
+            copyDoc: "IMG_Save",
+          },
+          since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 }
+        },
         "IMG_SaveTyped_IO": {
-          parameters: [{}, {}, {
+          parameters: [{
+            type: "SurfaceConstRef",
+          }, {}, {
             name: "type",
             type: "StringParam"
           }, {
@@ -8457,6 +8493,27 @@ const transform = {
             type: "bool",
             default: "false"
           }],
+        },
+        "Surface::SaveTyped_IO": {
+          kind: "function",
+          type: "void",
+          immutable: true,
+          parameters: [{
+            name: "dst",
+            type: "IOStreamRef"
+          }, {
+            name: "type",
+            type: "StringParam"
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false"
+          }],
+          hints: {
+            delegate: "SaveTyped_IO",
+            copyDoc: "IMG_SaveTyped_IO",
+          },
+          since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 }
         },
         "IMG_SaveAVIF_IO": {
           parameters: [
