@@ -744,7 +744,7 @@
  
    /// Destructor
 -  ~TextEngine() { Destroy(m_resource); }
-+  virtual ~TextEngine() = default;
++  virtual ~TextEngine() { SDL_assert_paranoid(!m_resource); }
  
    /// Assignment operator.
    constexpr TextEngine& operator=(TextEngine&& other) noexcept

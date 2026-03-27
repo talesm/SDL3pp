@@ -93,19 +93,6 @@ export function expandResource(
     hasLock,
   );
 
-  const memberAccess: ApiEntryTransformMap = {};
-  if (enableMemberAccess) {
-    memberAccess["operator->"] = {
-      doc: [`member access to underlying ${rawName}.`],
-      kind: "function",
-      constexpr: true,
-      immutable: true,
-      type: "auto",
-      parameters: [],
-      hints: { body: "return value;" },
-    };
-  }
-
   if (hasScoped) {
     referenceAliases.push({
       kind: "alias",
@@ -114,9 +101,7 @@ export function expandResource(
       doc: [`Alias to ${targetName} for non owning parameters.`],
     });
   } else if (!hasRef) {
-    referenceAliases.push(
-      createParam(refName, targetName, rawName, nullValue, memberAccess),
-    );
+    referenceAliases.push(createParam(refName, targetName, rawName));
   }
 
   if (enableConstParam) {
@@ -279,69 +264,12 @@ function createParam(
   paramType: string,
   targetName: string,
   rawName: string,
-  nullValue: string,
-  memberAccess: ApiEntryTransformMap,
 ): ApiEntryTransform {
   return {
     name: paramType,
-    kind: "struct",
+    kind: "alias",
     doc: [`Safely wrap ${targetName} for non owning parameters`],
-    entries: {
-      value: {
-        kind: "var",
-        name: "value",
-        doc: [`parameter's ${rawName}`],
-        type: rawName,
-      },
-      [paramType]: {
-        kind: "function",
-        name: paramType,
-        doc: [`Constructs from ${rawName}`],
-        constexpr: true,
-        type: "",
-        parameters: [{ type: rawName, name: "value" }],
-        hints: { init: ["value(value)"] },
-      },
-      [`${paramType}#2`]: {
-        kind: "function",
-        name: paramType,
-        doc: [`Constructs null/invalid`],
-        constexpr: true,
-        type: "",
-        parameters: [{ type: "std::nullptr_t", default: "nullptr" }],
-        hints: { init: [`value(${nullValue})`] },
-      },
-      "operator bool": {
-        kind: "function",
-        type: "",
-        immutable: true,
-        constexpr: true,
-        explicit: true,
-        parameters: [],
-        hints: { body: "return !!value;" },
-        doc: [`Converts to bool`],
-      },
-      "operator <=>": {
-        kind: "function",
-        type: "auto",
-        immutable: true,
-        constexpr: true,
-        parameters: [{ type: `const ${paramType} &`, name: "other" }],
-        hints: { default: true },
-        doc: [`Comparison`],
-      },
-      [`operator ${rawName}`]: {
-        kind: "function",
-        name: `operator ${rawName}`,
-        doc: [`Converts to underlying ${rawName}`],
-        constexpr: true,
-        immutable: true,
-        type: "",
-        parameters: [],
-        hints: { body: "return value;" },
-      },
-      ...memberAccess,
-    },
+    type: `ObjParam<${rawName}>`,
   };
 }
 

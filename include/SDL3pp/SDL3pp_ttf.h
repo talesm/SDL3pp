@@ -40,31 +40,7 @@ struct TextEngine;
 using TextEngineRaw = TTF_TextEngine*;
 
 /// Safely wrap TextEngine for non owning parameters
-struct TextEngineRef
-{
-  TextEngineRaw value; ///< parameter's TextEngineRaw
-
-  /// Constructs from TextEngineRaw
-  constexpr TextEngineRef(TextEngineRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TextEngineRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextEngineRef& other) const = default;
-
-  /// Converts to underlying TextEngineRaw
-  constexpr operator TextEngineRaw() const { return value; }
-};
+using TextEngineRef = ObjParam<TextEngineRaw>;
 
 // Forward decl
 struct Text;
@@ -3971,7 +3947,7 @@ public:
   }
 
   /// Destructor
-  virtual ~TextEngine() = default;
+  virtual ~TextEngine() { SDL_assert_paranoid(!m_resource); }
 
   /// Assignment operator.
   constexpr TextEngine& operator=(TextEngine&& other) noexcept
