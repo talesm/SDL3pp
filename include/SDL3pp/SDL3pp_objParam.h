@@ -7,35 +7,37 @@ namespace SDL {
 
 /// Reference wrapper for a given resource,
 template<typename RAW_POINTER>
-struct ObjParam
+class ObjParam
 {
 public:
   using RawPointer = RAW_POINTER;
-  RawPointer value; ///< parameter's RawPointer
 
   /// Constructs from RawPointer
-  constexpr ObjParam(RawPointer value)
-    : value(value)
+  constexpr ObjParam(RawPointer resource)
+    : m_resource(resource)
   {
   }
 
   /// Constructs null/invalid
   constexpr ObjParam(std::nullptr_t = nullptr)
-    : value(nullptr)
+    : m_resource(nullptr)
   {
   }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Comparison
   constexpr auto operator<=>(const ObjParam& other) const = default;
 
   /// Converts to underlying RawPointer
-  constexpr operator RawPointer() const { return value; }
+  constexpr operator RawPointer() const { return m_resource; }
 
   /// member access to underlying type.
-  constexpr auto operator->() const { return value; }
+  constexpr auto operator->() const { return m_resource; }
+
+private:
+  RawPointer m_resource; ///< parameter's RawPointer
 };
 
 /// Const reference wrapper for a given resource,

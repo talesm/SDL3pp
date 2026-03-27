@@ -37,9 +37,10 @@ Next version
 - [x] Fix bug preventing compilation on VisualStudio
   - [x] Use of gnu extension `?:`;
   - [x] Use of invalid constexpr;
-- [x] Fix thread ctor for wrapped functions;
-- [x] Remove src/generated/ from version control;
+- [x] Fix Thread ctor for wrapped functions;
+- [ ] Create ReadPixelRaw/WritePixelRaw on surface;
 - [x] Added CI tests for linux/Clang and Windows/MSVC;
+- [x] Remove src/generated/ from version control;
 - [x] Warnings fixes:
   - [x] operator-> const for resources;
   - [x] Fix Camera::AcquireCameraFrame;
@@ -50,16 +51,16 @@ Next version
   - [x] Remove copy constructors on non-copyable resources;
   - [x] Simplify scoped resources constructors and assignment operators;
   - [x] Fix several minor warnings;
-- [ ] Properly encapsulate Param and ConstParam legacy:
-  - [ ] Create template for ConstParam
+- [x] Properly encapsulate Param and ConstParam legacy:
+  - [x] Create template for ConstParam;
+  - [x] Create template for legacy Param;
+  - [x] Make value private and rename to m_resource.
 
 Backlog
 -------
 
 - [ ] Documentation to refer to free functions instead of ctors whenever
   possible;
-- [ ] Add windows-prebuilt option mode, downloading the version automatically.
-- [ ] Create GetPixel/SetPixel on surface
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;
   - [ ] CameraID;
@@ -77,7 +78,6 @@ Backlog
   - [ ] TouchID;
   - [ ] WindowID;
 - [ ] Satellites libraries:
-  - [ ] SDL_mixer;
   - [ ] SDL_net
   - [ ] SDL_gfx
 - [ ] Add examples for input;
