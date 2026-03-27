@@ -79,37 +79,7 @@ using TextRawConst = const TTF_Text*;
 struct TextRef;
 
 /// Safely wrap Text for non owning const parameters
-struct TextConstRef
-{
-  TextRawConst value; ///< parameter's Text
-
-  /// Constructs from TextRawConst
-  constexpr TextConstRef(TextRawConst value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TextConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextConstRef& other) const = default;
-
-  /// Converts to underlying Text
-  constexpr operator TextRawConst() const { return value; }
-
-  /// Converts to underlying Text
-  constexpr operator TextRaw() const { return const_cast<TextRaw>(value); }
-
-  /// member access to underlying TextRaw.
-  constexpr auto operator->() const { return value; }
-};
+using TextConstRef = ObjConstParam<TextRaw, TextRawConst>;
 
 #ifdef SDL3PP_DOC
 

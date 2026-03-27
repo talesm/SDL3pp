@@ -5,6 +5,7 @@
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_events.h"
 #include "SDL3pp_gpu.h"
+#include "SDL3pp_objParam.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_video.h"
 
@@ -62,40 +63,7 @@ using TextureRawConst = const SDL_Texture*;
 struct TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
-struct TextureConstRef
-{
-  TextureRawConst value; ///< parameter's Texture
-
-  /// Constructs from TextureRawConst
-  constexpr TextureConstRef(TextureRawConst value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TextureConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextureConstRef& other) const = default;
-
-  /// Converts to underlying Texture
-  constexpr operator TextureRawConst() const { return value; }
-
-  /// Converts to underlying Texture
-  constexpr operator TextureRaw() const
-  {
-    return const_cast<TextureRaw>(value);
-  }
-
-  /// member access to underlying TextureRaw.
-  constexpr auto operator->() const { return value; }
-};
+using TextureConstRef = ObjConstParam<TextureRaw, TextureRawConst>;
 
 #if SDL_VERSION_ATLEAST(3, 3, 6)
 

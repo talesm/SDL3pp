@@ -38,6 +38,8 @@ Next version
   - [x] Use of gnu extension `?:`;
   - [x] Use of invalid constexpr;
 - [x] Fix thread ctor for wrapped functions;
+- [x] Remove src/generated/ from version control;
+- [x] Added CI tests for linux/Clang and Windows/MSVC;
 - [x] Warnings fixes:
   - [x] operator-> const for resources;
   - [x] Fix Camera::AcquireCameraFrame;
@@ -48,9 +50,8 @@ Next version
   - [x] Remove copy constructors on non-copyable resources;
   - [x] Simplify scoped resources constructors and assignment operators;
   - [x] Fix several minor warnings;
-- [ ] Properly encapsulate Param and ConstParam legacy;
-- [x] Remove src/generated/ from version control;
-- [x] Added CI tests for linux/Clang and Windows/MSVC;
+- [ ] Properly encapsulate Param and ConstParam legacy:
+  - [ ] Create template for ConstParam
 
 Backlog
 -------

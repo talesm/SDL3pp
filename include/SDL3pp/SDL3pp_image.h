@@ -38,40 +38,7 @@ using AnimationRawConst = const IMG_Animation*;
 struct AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
-struct AnimationConstRef
-{
-  AnimationRawConst value; ///< parameter's Animation
-
-  /// Constructs from AnimationRawConst
-  constexpr AnimationConstRef(AnimationRawConst value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationConstRef& other) const = default;
-
-  /// Converts to underlying Animation
-  constexpr operator AnimationRawConst() const { return value; }
-
-  /// Converts to underlying Animation
-  constexpr operator AnimationRaw() const
-  {
-    return const_cast<AnimationRaw>(value);
-  }
-
-  /// member access to underlying AnimationRaw.
-  constexpr auto operator->() const { return value; }
-};
+using AnimationConstRef = ObjConstParam<AnimationRaw, AnimationRawConst>;
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 

@@ -121,14 +121,7 @@ export function expandResource(
 
   if (enableConstParam) {
     referenceAliases.push(
-      createConstParam(
-        constParamType,
-        targetName,
-        rawName,
-        constRawName,
-        nullValue,
-        memberAccess,
-      ),
+      createConstParam(constParamType, targetName, rawName, constRawName),
     );
   }
   setupTypeTranslations(
@@ -357,77 +350,12 @@ function createConstParam(
   targetName: string,
   rawName: string,
   constRawName: string,
-  nullValue: string,
-  memberAccess: ApiEntryTransformMap,
 ): ApiEntryTransform {
   return {
     name: constParamType,
-    kind: "struct",
+    kind: "alias",
     doc: [`Safely wrap ${targetName} for non owning const parameters`],
-    entries: {
-      value: {
-        kind: "var",
-        name: "value",
-        doc: [`parameter's ${targetName}`],
-        type: constRawName,
-      },
-      [constParamType]: {
-        kind: "function",
-        name: constParamType,
-        doc: [`Constructs from ${constRawName}`],
-        constexpr: true,
-        type: "",
-        parameters: [{ type: constRawName, name: "value" }],
-        hints: { init: ["value(value)"] },
-      },
-      [`${constParamType}#3`]: {
-        kind: "function",
-        name: constParamType,
-        doc: [`Constructs null/invalid`],
-        constexpr: true,
-        type: "",
-        parameters: [{ type: "std::nullptr_t", default: "nullptr" }],
-        hints: { init: [`value(${nullValue})`] },
-      },
-      "operator bool": {
-        kind: "function",
-        type: "",
-        immutable: true,
-        constexpr: true,
-        explicit: true,
-        parameters: [],
-        hints: { body: "return !!value;" },
-        doc: [`Converts to bool`],
-      },
-      "operator <=>": {
-        kind: "function",
-        type: "auto",
-        immutable: true,
-        constexpr: true,
-        parameters: [{ type: `const ${constParamType} &`, name: "other" }],
-        hints: { default: true },
-        doc: [`Comparison`],
-      },
-      [`operator ${constRawName}`]: {
-        kind: "function",
-        doc: [`Converts to underlying ${targetName}`],
-        constexpr: true,
-        immutable: true,
-        type: "",
-        parameters: [],
-        hints: { body: "return value;" },
-      },
-      [`operator ${rawName}`]: {
-        kind: "function",
-        doc: [`Converts to underlying ${targetName}`],
-        constexpr: true,
-        immutable: true,
-        type: "",
-        parameters: [],
-        hints: { body: `return const_cast<${rawName}>(value);` },
-      },
-      ...memberAccess,
-    },
+    type: `ObjConstParam<${rawName}, ${constRawName}>`,
   };
 }
 

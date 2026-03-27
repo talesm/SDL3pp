@@ -5,6 +5,7 @@
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_error.h"
 #include "SDL3pp_iostream.h"
+#include "SDL3pp_objParam.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_properties.h"
@@ -50,40 +51,7 @@ using SurfaceRawConst = const SDL_Surface*;
 struct SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
-struct SurfaceConstRef
-{
-  SurfaceRawConst value; ///< parameter's Surface
-
-  /// Constructs from SurfaceRawConst
-  constexpr SurfaceConstRef(SurfaceRawConst value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SurfaceConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SurfaceConstRef& other) const = default;
-
-  /// Converts to underlying Surface
-  constexpr operator SurfaceRawConst() const { return value; }
-
-  /// Converts to underlying Surface
-  constexpr operator SurfaceRaw() const
-  {
-    return const_cast<SurfaceRaw>(value);
-  }
-
-  /// member access to underlying SurfaceRaw.
-  constexpr auto operator->() const { return value; }
-};
+using SurfaceConstRef = ObjConstParam<SurfaceRaw, SurfaceRawConst>;
 
 // Forward decl
 struct SurfaceLock;
