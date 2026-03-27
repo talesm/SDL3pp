@@ -82,7 +82,10 @@ constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool MustLock(SurfaceConstRef S) { return SDL_MUSTLOCK((S.value)); }
+constexpr bool MustLock(SurfaceConstRef S)
+{
+  return SDL_MUSTLOCK((static_cast<SurfaceRawConst>(S)));
+}
 
 /**
  * The scaling mode.

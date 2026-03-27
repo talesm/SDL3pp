@@ -14,36 +14,37 @@ public:
   using RawConstPointer = RAW_CONST_POINTER;
 
   /// Constructs from const pointer.
-  constexpr ObjConstParam(RawConstPointer value)
-    : value(value)
+  constexpr ObjConstParam(RawConstPointer resource)
+    : m_resource(resource)
   {
   }
 
   /// Constructs null/invalid
   constexpr ObjConstParam(std::nullptr_t = nullptr)
-    : value(nullptr)
+    : m_resource(nullptr)
   {
   }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
+  constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Comparison.
   constexpr auto operator<=>(const ObjConstParam& other) const = default;
 
   /// Converts to underlying type.
-  constexpr operator RawConstPointer() const { return value; }
+  constexpr operator RawConstPointer() const { return m_resource; }
 
   /// Converts to underlying type.
   constexpr operator RawPointer() const
   {
-    return const_cast<RawPointer>(value);
+    return const_cast<RawPointer>(m_resource);
   }
 
   /// member access to underlying type.
-  constexpr auto operator->() const { return value; }
+  constexpr auto operator->() const { return m_resource; }
 
-  RawConstPointer value; ///< parameter's Surface
+private:
+  RawConstPointer m_resource; ///< parameter's Surface
 };
 
 } // namespace SDL
