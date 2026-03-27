@@ -57,7 +57,7 @@ namespace SDL {
  * ## Simplified audio
  *
  * As a simplified model for when a single source of audio is all that's needed,
- * an app can use AudioStream.AudioStream, which is a single function to open an
+ * an app can use AudioDevice.OpenStream, which is a single function to open an
  * audio device, create an audio stream, bind that stream to the newly-opened
  * device, and (optionally) provide a callback for obtaining audio data. When
  * using this function, the primary interface is the AudioStream and the device
@@ -227,8 +227,8 @@ public:
    *
    * For example, AUDIO_S32LE looks like this:
    *
-   * ```c
-   * AudioFormat.AudioFormat(1, 0, 0, 32)
+   * ```cpp
+   * AudioFormat format(1, 0, 0, 32)
    * ```
    *
    * @param sign 1 for signed data, 0 for unsigned data.
@@ -427,7 +427,7 @@ constexpr AudioFormat AUDIO_F32 = SDL_AUDIO_F32; ///< AUDIO_F32
  * For example, AUDIO_S32LE looks like this:
  *
  * ```c
- * AudioFormat.AudioFormat(1, 0, 0, 32)
+ * DefineAudioFormat(1, 0, 0, 32)
  * ```
  *
  * @param sign 1 for signed data, 0 for unsigned data.
@@ -841,7 +841,7 @@ public:
    * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
    * there is no audio callback; you only bind audio streams and make sure they
    * have data flowing into them (however, you can simulate SDL2's semantics
-   * fairly closely by using AudioStream.AudioStream instead of this function).
+   * fairly closely by using AudioDevice.OpenStream instead of this function).
    *
    * If you don't care about opening a specific device, pass a `devid` of either
    * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In
@@ -946,7 +946,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.AudioDevice
+   * @sa OpenAudioDevice
    */
   void Close();
 
@@ -1032,9 +1032,9 @@ public:
    *
    * An AudioDevice that represents physical hardware is a physical device;
    * there is one for each piece of hardware that SDL can see. Logical devices
-   * are created by calling AudioDevice.AudioDevice or AudioStream.AudioStream,
-   * and while each is associated with a physical device, there can be any
-   * number of logical devices on one physical device.
+   * are created by calling OpenAudioDevice or AudioDevice.OpenStream, and while
+   * each is associated with a physical device, there can be any number of
+   * logical devices on one physical device.
    *
    * For the most part, logical and physical IDs are interchangeable--if you try
    * to open a logical device, SDL understands to assign that effort to the
@@ -1080,7 +1080,7 @@ public:
    * loading, etc.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.AudioDevice() can be.
+   * created through OpenAudioDevice() can be.
    *
    * @throws Error on failure.
    *
@@ -1105,7 +1105,7 @@ public:
    * device is a legal no-op.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.AudioDevice() can be.
+   * created through OpenAudioDevice() can be.
    *
    * @throws Error on failure.
    *
@@ -1125,8 +1125,8 @@ public:
    * has to bind a stream before any audio will flow.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.AudioDevice() can be. Physical and invalid
-   * device IDs will report themselves as unpaused here.
+   * created through OpenAudioDevice() can be. Physical and invalid device IDs
+   * will report themselves as unpaused here.
    *
    * @returns true if device is valid and paused, false otherwise.
    *
@@ -1666,7 +1666,7 @@ using AudioStreamDataCompleteCB =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa AudioStream.AudioStream
+ * @sa CreateAudioStream
  *
  * @cat resource
  */
@@ -1885,7 +1885,7 @@ public:
    * queued. You do not need to manually clear the stream first.
    *
    * If this stream was bound to an audio device, it is unbound during this
-   * call. If this stream was created with AudioStream.AudioStream, the audio
+   * call. If this stream was created with AudioDevice.OpenStream, the audio
    * device that was opened alongside this stream's creation will be closed,
    * too.
    *
@@ -1893,7 +1893,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.AudioStream
+   * @sa CreateAudioStream
    */
   void Destroy();
 
@@ -1906,7 +1906,7 @@ public:
    * - `prop::AudioStream._AUTO_CLEANUP_BOOLEAN`: if true (the default), the
    *   stream be automatically cleaned up when the audio subsystem quits. If set
    *   to false, the streams will persist beyond that. This property is ignored
-   *   for streams created through AudioStream.AudioStream(), and will always be
+   *   for streams created through AudioDevice.OpenStream(), and will always be
    *   cleaned up. Streams that are not cleaned up will still be unbound from
    *   devices when the audio subsystem quits. This property was added in SDL
    *   3.4.0.
@@ -2590,7 +2590,7 @@ public:
    * previously been paused. Once unpaused, any bound audio streams will begin
    * to progress again, and audio can be generated.
    *
-   * AudioStream.AudioStream opens audio devices in a paused state, so this
+   * AudioDevice.OpenStream opens audio devices in a paused state, so this
    * function call is required for audio playback to begin on such devices.
    *
    * @throws Error on failure.
@@ -3195,7 +3195,7 @@ inline const char* GetCurrentAudioDriver()
  * GetAudioRecordingDevices() instead.
  *
  * This only returns a list of physical devices; it will not have any device IDs
- * returned by AudioDevice.AudioDevice().
+ * returned by OpenAudioDevice().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -3207,7 +3207,7 @@ inline const char* GetCurrentAudioDriver()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.AudioDevice
+ * @sa OpenAudioDevice
  * @sa GetAudioRecordingDevices
  */
 inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
@@ -3227,7 +3227,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  * GetAudioPlaybackDevices() instead.
  *
  * This only returns a list of physical devices; it will not have any device IDs
- * returned by AudioDevice.AudioDevice().
+ * returned by OpenAudioDevice().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -3239,7 +3239,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.AudioDevice
+ * @sa OpenAudioDevice
  * @sa GetAudioPlaybackDevices
  */
 inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
@@ -3369,7 +3369,7 @@ inline OwnArray<int> AudioDevice::GetChannelMap() const
  * playing, bind a stream and supply audio data to it. Unlike SDL2, there is no
  * audio callback; you only bind audio streams and make sure they have data
  * flowing into them (however, you can simulate SDL2's semantics fairly closely
- * by using AudioStream.AudioStream instead of this function).
+ * by using AudioDevice.OpenStream instead of this function).
  *
  * If you don't care about opening a specific device, pass a `devid` of either
  * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In this
@@ -3444,9 +3444,9 @@ inline AudioDevice::AudioDevice(AudioDeviceRef devid,
  *
  * An AudioDevice that represents physical hardware is a physical device; there
  * is one for each piece of hardware that SDL can see. Logical devices are
- * created by calling AudioDevice.AudioDevice or AudioStream.AudioStream, and
- * while each is associated with a physical device, there can be any number of
- * logical devices on one physical device.
+ * created by calling OpenAudioDevice or AudioDevice.OpenStream, and while each
+ * is associated with a physical device, there can be any number of logical
+ * devices on one physical device.
  *
  * For the most part, logical and physical IDs are interchangeable--if you try
  * to open a logical device, SDL understands to assign that effort to the
@@ -3510,9 +3510,9 @@ inline bool AudioDevice::IsPlayback() const
  * loading, etc.
  *
  * Physical devices can not be paused or unpaused, only logical devices created
- * through AudioDevice.AudioDevice() can be.
+ * through OpenAudioDevice() can be.
  *
- * @param devid a device opened by AudioDevice.AudioDevice().
+ * @param devid a device opened by OpenAudioDevice().
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -3541,9 +3541,9 @@ inline void AudioDevice::Pause() { SDL::PauseAudioDevice(m_resource); }
  * a legal no-op.
  *
  * Physical devices can not be paused or unpaused, only logical devices created
- * through AudioDevice.AudioDevice() can be.
+ * through OpenAudioDevice() can be.
  *
- * @param devid a device opened by AudioDevice.AudioDevice().
+ * @param devid a device opened by OpenAudioDevice().
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -3567,10 +3567,10 @@ inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(m_resource); }
  * to bind a stream before any audio will flow.
  *
  * Physical devices can not be paused or unpaused, only logical devices created
- * through AudioDevice.AudioDevice() can be. Physical and invalid device IDs
- * will report themselves as unpaused here.
+ * through OpenAudioDevice() can be. Physical and invalid device IDs will report
+ * themselves as unpaused here.
  *
- * @param devid a device opened by AudioDevice.AudioDevice().
+ * @param devid a device opened by OpenAudioDevice().
  * @returns true if device is valid and paused, false otherwise.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -3673,14 +3673,13 @@ inline void AudioDevice::SetGain(float gain)
  * hardware, so that applications don't drop the last buffer of data they
  * supplied if terminating immediately afterwards.
  *
- * @param devid an audio device id previously returned by
- *              AudioDevice.AudioDevice().
+ * @param devid an audio device id previously returned by OpenAudioDevice().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.AudioDevice
+ * @sa OpenAudioDevice
  */
 inline void CloseAudioDevice(AudioDeviceID devid)
 {
@@ -3903,7 +3902,7 @@ inline AudioStream::AudioStream(AudioDeviceRef devid,
  * - `prop::AudioStream._AUTO_CLEANUP_BOOLEAN`: if true (the default), the
  *   stream be automatically cleaned up when the audio subsystem quits. If set
  *   to false, the streams will persist beyond that. This property is ignored
- *   for streams created through AudioStream.AudioStream(), and will always be
+ *   for streams created through AudioDevice.OpenStream(), and will always be
  *   cleaned up. Streams that are not cleaned up will still be unbound from
  *   devices when the audio subsystem quits. This property was added in SDL
  *   3.4.0.
@@ -4760,7 +4759,7 @@ inline void AudioStream::PauseDevice()
  * previously been paused. Once unpaused, any bound audio streams will begin to
  * progress again, and audio can be generated.
  *
- * AudioStream.AudioStream opens audio devices in a paused state, so this
+ * AudioDevice.OpenStream opens audio devices in a paused state, so this
  * function call is required for audio playback to begin on such devices.
  *
  * @param stream the audio stream associated with the audio device to resume.
@@ -5103,8 +5102,8 @@ inline void AudioStream::SetPutCallback(AudioStreamCB callback)
  * queued. You do not need to manually clear the stream first.
  *
  * If this stream was bound to an audio device, it is unbound during this call.
- * If this stream was created with AudioStream.AudioStream, the audio device
- * that was opened alongside this stream's creation will be closed, too.
+ * If this stream was created with AudioDevice.OpenStream, the audio device that
+ * was opened alongside this stream's creation will be closed, too.
  *
  * @param stream the audio stream to destroy.
  *
@@ -5112,7 +5111,7 @@ inline void AudioStream::SetPutCallback(AudioStreamCB callback)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.AudioStream
+ * @sa CreateAudioStream
  */
 inline void DestroyAudioStream(AudioStreamRaw stream)
 {

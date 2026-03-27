@@ -105,7 +105,7 @@
   */
  class PixelFormat
  {
-@@ -320,12 +367,12 @@
+@@ -320,13 +367,13 @@
    }
  
    /**
@@ -115,12 +115,14 @@
     * For example, defining PIXELFORMAT_RGBA8888 looks like this:
     *
 -   * ```c
--   * PixelFormat.PixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
+-   * DefinePixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA, PACKEDLAYOUT_8888,
+-   * 32, 4)
 +   * ```cpp
 +   * PixelFormat format(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
-    * PACKEDLAYOUT_8888, 32, 4)
++   * PACKEDLAYOUT_8888, 32, 4)
     * ```
     *
+    * @param type the type of the new format, probably a PixelType value.
 @@ -381,9 +428,9 @@
                                Uint32 Amask);
  
@@ -138,10 +140,10 @@
  
    /**
 -   * A macro to retrieve the type of an PixelFormat.
--   *
--   * This is usually a value from the PixelType enumeration.
 +   * Retrieve the type.
     *
+-   * This is usually a value from the PixelType enumeration.
+-   *
 -   * @returns the type of `format`.
 +   * @returns the type as PixelType.
     *
@@ -401,6 +403,15 @@
   * DefinePixelFourCC('Y', 'V', '1', '2')
   * ```
   *
+@@ -862,7 +941,7 @@
+  *
+  * For example, defining PIXELFORMAT_RGBA8888 looks like this:
+  *
+- * ```c
++ * ```cpp
+  * DefinePixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA, PACKEDLAYOUT_8888,
+  * 32, 4)
+  * ```
 @@ -894,14 +973,15 @@
                                     PackedLayout layout,
                                     int bits,
@@ -554,7 +565,7 @@
     * For example, defining COLORSPACE_SRGB looks like this:
     *
 -   * ```c
--   * Colorspace.Colorspace(COLOR_TYPE_RGB,
+-   * DefineColorspace(COLOR_TYPE_RGB,
 +   * ```cpp
 +   * Colorspace colorspace(COLOR_TYPE_RGB,
     *                       COLOR_RANGE_FULL,
@@ -663,7 +674,7 @@
     *
     * @returns true if full range, false otherwise.
     *
-@@ -1693,6 +1819,8 @@
+@@ -1693,12 +1819,14 @@
  /// The default colorspace for YUV surfaces if no colorspace is specified
  constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  
@@ -672,6 +683,13 @@
  /**
   * A macro for defining custom Colorspace formats.
   *
+  * For example, defining COLORSPACE_SRGB looks like this:
+  *
+- * ```c
++ * ```cpp
+  * DefineColorspace(COLOR_TYPE_RGB,
+  *                       COLOR_RANGE_FULL,
+  *                       COLOR_PRIMARIES_BT709,
 @@ -1739,8 +1867,8 @@
                                   TransferCharacteristics transfer,
                                   MatrixCoefficients matrix,

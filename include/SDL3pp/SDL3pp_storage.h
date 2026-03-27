@@ -109,7 +109,7 @@ namespace SDL {
  *     extern char** fileNames;
  *     extern size_t numFiles;
  *
- *     Storage title(nullptr, 0);
+ *     Storage title = OpenTitleStorage(nullptr, 0);
  *     if (title == nullptr) {
  *         // Something bad happened!
  *     }
@@ -137,7 +137,7 @@ namespace SDL {
  *
  * void ReadSave(void)
  * {
- *     Storage user("libsdl", "Storage Example", 0);
+ *     Storage user = OpenUserStorage("libsdl", "Storage Example", 0);
  *     if (user == nullptr) {
  *         // Something bad happened!
  *     }
@@ -161,7 +161,7 @@ namespace SDL {
  *
  * void WriteSave(void)
  * {
- *     Storage user("libsdl", "Storage Example", 0);
+ *     Storage user = OpenUserStorage("libsdl", "Storage Example", 0);
  *     if (user == nullptr) {
  *         // Something bad happened!
  *     }
@@ -236,7 +236,7 @@ struct StorageRef;
  * Function interface for Storage.
  *
  * Apps that want to supply a custom implementation of Storage will fill in all
- * the functions in this struct, and then pass it to Storage.Storage to create a
+ * the functions in this struct, and then pass it to OpenStorage to create a
  * custom Storage object.
  *
  * It is not usually necessary to do this; SDL provides standard implementations
@@ -254,8 +254,8 @@ using StorageInterface = SDL_StorageInterface;
  * An abstract interface for filesystem access.
  *
  * This is an opaque datatype. One can create this object using standard SDL
- * functions like Storage.Storage, etc, or create an object with a custom
- * implementation using Storage.Storage.
+ * functions like OpenTitleStorage or OpenUserStorage, etc, or create an object
+ * with a custom implementation using OpenStorage.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -300,7 +300,7 @@ public:
   /**
    * Opens up a read-only container for the application's filesystem.
    *
-   * By default, Storage.Storage uses the generic storage implementation. When
+   * By default, OpenTitleStorage uses the generic storage implementation. When
    * the path override is not provided, the generic implementation will use the
    * output of GetBasePath as the base path.
    *
@@ -313,7 +313,7 @@ public:
    *
    * @sa Storage.Close
    * @sa Storage.GetFileSize
-   * @sa Storage.Storage
+   * @sa OpenUserStorage
    * @sa Storage.ReadFile
    */
   Storage(StringParam override, PropertiesRef props);
@@ -337,7 +337,7 @@ public:
    * @sa Storage.Close
    * @sa Storage.GetFileSize
    * @sa Storage.GetSpaceRemaining
-   * @sa Storage.Storage
+   * @sa OpenTitleStorage
    * @sa Storage.ReadFile
    * @sa Storage.Ready
    * @sa Storage.WriteFile
@@ -348,7 +348,7 @@ public:
    * Opens up a container for local filesystem storage.
    *
    * This is provided for development and tools. Portable applications should
-   * use Storage.Storage() for access to game data and Storage.Storage() for
+   * use OpenTitleStorage() for access to game data and OpenUserStorage() for
    * access to user data.
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
@@ -361,8 +361,8 @@ public:
    * @sa Storage.Close
    * @sa Storage.GetFileSize
    * @sa Storage.GetSpaceRemaining
-   * @sa Storage.Storage
-   * @sa Storage.Storage
+   * @sa OpenTitleStorage
+   * @sa OpenUserStorage
    * @sa Storage.ReadFile
    * @sa Storage.WriteFile
    */
@@ -373,8 +373,8 @@ public:
    *
    * Applications do not need to use this function unless they are providing
    * their own Storage implementation. If you just need an Storage, you should
-   * use the built-in implementations in SDL, like Storage.Storage() or
-   * Storage.Storage().
+   * use the built-in implementations in SDL, like OpenTitleStorage() or
+   * OpenUserStorage().
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -437,7 +437,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Storage
+   * @sa OpenFileStorage
+   * @sa OpenStorage
+   * @sa OpenTitleStorage
+   * @sa OpenUserStorage
    */
   bool Close();
 
@@ -815,9 +818,9 @@ struct StorageRef : Storage
 /**
  * Opens up a read-only container for the application's filesystem.
  *
- * By default, Storage.Storage uses the generic storage implementation. When the
- * path override is not provided, the generic implementation will use the output
- * of GetBasePath as the base path.
+ * By default, OpenTitleStorage uses the generic storage implementation. When
+ * the path override is not provided, the generic implementation will use the
+ * output of GetBasePath as the base path.
  *
  * @param override a path to override the backend's default title root.
  * @param props a property list that may contain backend-specific information.
@@ -828,7 +831,7 @@ struct StorageRef : Storage
  *
  * @sa Storage.Close
  * @sa Storage.GetFileSize
- * @sa Storage.Storage
+ * @sa OpenUserStorage
  * @sa Storage.ReadFile
  */
 inline Storage OpenTitleStorage(StringParam override, PropertiesRef props)
@@ -875,7 +878,7 @@ inline Storage::Storage(const StorageInterface& iface, void* userdata)
  * @sa Storage.Close
  * @sa Storage.GetFileSize
  * @sa Storage.GetSpaceRemaining
- * @sa Storage.Storage
+ * @sa OpenTitleStorage
  * @sa Storage.ReadFile
  * @sa Storage.Ready
  * @sa Storage.WriteFile
@@ -891,8 +894,8 @@ inline Storage OpenUserStorage(StringParam org,
  * Opens up a container for local filesystem storage.
  *
  * This is provided for development and tools. Portable applications should use
- * Storage.Storage() for access to game data and Storage.Storage() for access to
- * user data.
+ * OpenTitleStorage() for access to game data and OpenUserStorage() for access
+ * to user data.
  *
  * @param path the base path prepended to all storage paths, or nullptr for no
  *             base path.
@@ -904,8 +907,8 @@ inline Storage OpenUserStorage(StringParam org,
  * @sa Storage.Close
  * @sa Storage.GetFileSize
  * @sa Storage.GetSpaceRemaining
- * @sa Storage.Storage
- * @sa Storage.Storage
+ * @sa OpenTitleStorage
+ * @sa OpenUserStorage
  * @sa Storage.ReadFile
  * @sa Storage.WriteFile
  */
@@ -919,7 +922,8 @@ inline Storage OpenFileStorage(StringParam path)
  *
  * Applications do not need to use this function unless they are providing their
  * own Storage implementation. If you just need an Storage, you should use the
- * built-in implementations in SDL, like Storage.Storage() or Storage.Storage().
+ * built-in implementations in SDL, like OpenTitleStorage() or
+ * OpenUserStorage().
  *
  * This function makes a copy of `iface` and the caller does not need to keep it
  * around after this call.
@@ -956,10 +960,10 @@ inline Storage OpenStorage(const StorageInterface& iface, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Storage
- * @sa Storage.Storage
- * @sa Storage.Storage
- * @sa Storage.Storage
+ * @sa OpenFileStorage
+ * @sa OpenStorage
+ * @sa OpenTitleStorage
+ * @sa OpenUserStorage
  */
 inline bool CloseStorage(StorageRaw storage)
 {

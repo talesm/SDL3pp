@@ -941,9 +941,9 @@ constexpr Uint32 DefinePixelFourCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D)
  *
  * For example, defining PIXELFORMAT_RGBA8888 looks like this:
  *
- * ```c
- * PixelFormat.PixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
- * PACKEDLAYOUT_8888, 32, 4)
+ * ```cpp
+ * DefinePixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA, PACKEDLAYOUT_8888,
+ * 32, 4)
  * ```
  *
  * @param type the type of the new format, probably a PixelType value.
@@ -1826,8 +1826,8 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  *
  * For example, defining COLORSPACE_SRGB looks like this:
  *
- * ```c
- * Colorspace.Colorspace(COLOR_TYPE_RGB,
+ * ```cpp
+ * DefineColorspace(COLOR_TYPE_RGB,
  *                       COLOR_RANGE_FULL,
  *                       COLOR_PRIMARIES_BT709,
  *                       TRANSFER_CHARACTERISTICS_SRGB,
@@ -2574,14 +2574,14 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Free a palette created with Palette.Palette().
+   * Free a palette created with CreatePalette().
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified or destroyed in another thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.Palette
+   * @sa CreatePalette
    */
   void Destroy();
 
@@ -2874,7 +2874,7 @@ inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
 }
 
 /**
- * Free a palette created with Palette.Palette().
+ * Free a palette created with CreatePalette().
  *
  * @param palette the Palette structure to be freed.
  *
@@ -2883,7 +2883,7 @@ inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Palette.Palette
+ * @sa CreatePalette
  */
 inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
 

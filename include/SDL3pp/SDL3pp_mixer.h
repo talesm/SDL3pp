@@ -23,25 +23,26 @@ namespace SDL {
  * time!
  *
  * To use the library, first call MIX.Init(). Then create a mixer with
- * Mixer.Mixer() (or Mixer.Mixer() to render to memory).
+ * CreateMixerDevice() (or CreateMixer() to render to memory).
  *
- * Once you have a mixer, you can load sound data with Audio.Audio(). Data gets
- * loaded once and can be played over and over.
+ * Once you have a mixer, you can load sound data with Mixer.LoadAudio(),
+ * Mixer.LoadAudio_IO(), or LoadAudioWithProperties(). Data gets loaded once and
+ * can be played over and over.
  *
  * When loading audio, SDL_mixer can parse out several metadata tag formats,
  * such as ID3 and APE tags, and exposes this information through the
  * Audio.GetProperties() function.
  *
- * To play audio, you create a track with Track.Track(). You need one track for
- * each sound that will be played simultaneously; think of tracks as individual
- * sliders on a mixer board. You might have loaded hundreds of audio files, but
- * you probably only have a handful of tracks that you assign those loaded files
- * to when they are ready to play, and reuse those tracks with different audio
- * later. Tracks take their input from a Audio (static data to be played
- * multiple times) or an AudioStream (streaming PCM audio the app supplies,
- * possibly as needed). A third option is to supply an IOStream, to load and
- * decode on the fly, which might be more efficient for background music that is
- * only used once, etc.
+ * To play audio, you create a track with Mixer.CreateTrack(). You need one
+ * track for each sound that will be played simultaneously; think of tracks as
+ * individual sliders on a mixer board. You might have loaded hundreds of audio
+ * files, but you probably only have a handful of tracks that you assign those
+ * loaded files to when they are ready to play, and reuse those tracks with
+ * different audio later. Tracks take their input from a Audio (static data to
+ * be played multiple times) or an AudioStream (streaming PCM audio the app
+ * supplies, possibly as needed). A third option is to supply an IOStream, to
+ * load and decode on the fly, which might be more efficient for background
+ * music that is only used once, etc.
  *
  * Assign input to a Track with Track.SetAudio(), Track.SetAudioStream(), or
  * Track.SetIOStream().
@@ -156,10 +157,10 @@ struct MixerLock;
  * A callback that fires when all mixing has completed.
  *
  * This callback is fired when the mixer has completed all its work. If this
- * mixer was created with Mixer.Mixer(), the data provided by this callback is
- * what is being sent to the audio hardware, minus last conversions for format
- * requirements. If this mixer was created with Mixer.Mixer(), this is what is
- * being output from Mixer.Generate(), after final conversions.
+ * mixer was created with CreateMixerDevice(), the data provided by this
+ * callback is what is being sent to the audio hardware, minus last conversions
+ * for format requirements. If this mixer was created with CreateMixer(), this
+ * is what is being output from Mixer.Generate(), after final conversions.
  *
  * The audio data passed through here is _not_ const data; the app is permitted
  * to change it in any way it likes, and those changes will replace the final
@@ -195,10 +196,10 @@ using PostMixCallback = void(SDLCALL*)(void* userdata,
  * A callback that fires when all mixing has completed.
  *
  * This callback is fired when the mixer has completed all its work. If this
- * mixer was created with Mixer.Mixer(), the data provided by this callback is
- * what is being sent to the audio hardware, minus last conversions for format
- * requirements. If this mixer was created with Mixer.Mixer(), this is what is
- * being output from Mixer.Generate(), after final conversions.
+ * mixer was created with CreateMixerDevice(), the data provided by this
+ * callback is what is being sent to the audio hardware, minus last conversions
+ * for format requirements. If this mixer was created with CreateMixer(), this
+ * is what is being output from Mixer.Generate(), after final conversions.
  *
  * The audio data passed through here is _not_ const data; the app is permitted
  * to change it in any way it likes, and those changes will replace the final
@@ -236,9 +237,9 @@ using PostMixCB = MakeFrontCallback<
  * for generating a single output stream of mixed audio, usually to an audio
  * device for realtime playback.
  *
- * Mixers are either created to feed an audio device (through Mixer.Mixer()), or
- * to generate audio to a buffer in memory, where it can be used for anything
- * (through Mixer.Mixer()).
+ * Mixers are either created to feed an audio device (through
+ * CreateMixerDevice()), or to generate audio to a buffer in memory, where it
+ * can be used for anything (through CreateMixer()).
  *
  * @since This datatype is available since SDL_mixer 3.0.0.
  *
@@ -283,7 +284,7 @@ public:
   /**
    * Create a mixer that plays sound directly to an audio device.
    *
-   * This is usually the function you want, vs Mixer.Mixer().
+   * This is usually the function you want, vs CreateMixer().
    *
    * You can choose a specific device ID to open, following SDL's usual rules,
    * but often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK
@@ -307,8 +308,8 @@ public:
    * The actual device format chosen is available through Mixer.GetFormat().
    *
    * Once a mixer is created, next steps are usually to load audio (through
-   * Audio.Audio() and friends), create a track (Track.Track()), and play that
-   * audio through that track.
+   * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
+   * play that audio through that track.
    *
    * When done with the mixer, it can be destroyed with Mixer.Destroy().
    *
@@ -322,7 +323,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Mixer
+   * @sa CreateMixer
    * @sa Mixer.Destroy
    */
   Mixer(AudioDeviceRef devid, const AudioSpec& spec);
@@ -330,16 +331,16 @@ public:
   /**
    * Create a mixer that generates audio to a memory buffer.
    *
-   * Usually you want Mixer.Mixer() instead of this function. The mixer created
-   * here can be used with Mixer.Generate() to produce more data on demand, as
-   * fast as desired.
+   * Usually you want CreateMixerDevice() instead of this function. The mixer
+   * created here can be used with Mixer.Generate() to produce more data on
+   * demand, as fast as desired.
    *
    * An audio format must be specified. This is the format it will output in.
    * This cannot be nullptr.
    *
    * Once a mixer is created, next steps are usually to load audio (through
-   * Audio.Audio() and friends), create a track (Track.Track()), and play that
-   * audio through that track.
+   * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
+   * play that audio through that track.
    *
    * When done with the mixer, it can be destroyed with Mixer.Destroy().
    *
@@ -351,7 +352,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Mixer
+   * @sa CreateMixerDevice
    * @sa Mixer.Destroy
    */
   Mixer(const AudioSpec& spec);
@@ -389,23 +390,23 @@ public:
   /**
    * Free a mixer.
    *
-   * If this mixer was created with Mixer.Mixer(), this function will also close
-   * the audio device and call QuitSubSystem(INIT_AUDIO).
+   * If this mixer was created with CreateMixerDevice(), this function will also
+   * close the audio device and call QuitSubSystem(INIT_AUDIO).
    *
    * Any Group or Track created for this mixer will also be destroyed. Do not
    * access them again or attempt to destroy them after the device is destroyed.
    * Audio objects will not be destroyed, since they can be shared between
    * mixers (but those will all be destroyed during MIX.Quit()).
    *
-   * @threadsafety If this is used with a Mixer from Mixer.Mixer, then this
-   *               function should only be called on the main thread. If this is
-   *               used with a Mixer from Mixer.Mixer, then it is safe to call
-   *               this function from any thread.
+   * @threadsafety If this is used with a Mixer from CreateMixerDevice, then
+   *               this function should only be called on the main thread. If
+   *               this is used with a Mixer from CreateMixer, then it is safe
+   *               to call this function from any thread.
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Mixer
-   * @sa Mixer.Mixer
+   * @sa CreateMixerDevice
+   * @sa CreateMixer
    */
   void Destroy();
 
@@ -435,11 +436,11 @@ public:
    * be useful if trying to match your inputs to reduce conversion and
    * resampling costs.
    *
-   * For mixers created with Mixer.Mixer(), this is the format of the audio
-   * device (and may change later if the device itself changes; SDL_mixer will
-   * seamlessly handle this change internally, though).
+   * For mixers created with CreateMixerDevice(), this is the format of the
+   * audio device (and may change later if the device itself changes; SDL_mixer
+   * will seamlessly handle this change internally, though).
    *
-   * For mixers created with Mixer.Mixer(), this is the format that
+   * For mixers created with CreateMixer(), this is the format that
    * Mixer.Generate() will produce, as requested at create time, and does not
    * change.
    *
@@ -552,8 +553,8 @@ public:
    * When done with a Audio, it can be freed with Audio.Destroy().
    *
    * This function loads data from an IOStream. There is also a version that
-   * loads from a path on the filesystem (Audio.Audio()), and one that accepts
-   * properties for ultimate control (LoadAudioWithProperties()).
+   * loads from a path on the filesystem (Mixer.LoadAudio()), and one that
+   * accepts properties for ultimate control (LoadAudioWithProperties()).
    *
    * The IOStream provided must be able to seek, or loading will fail. If the
    * stream can't seek (data is coming from an HTTP connection, etc), consider
@@ -573,7 +574,8 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio
+   * @sa LoadAudioWithProperties
    */
   Audio LoadAudio_IO(IOStreamRef io, bool predecode, bool closeio = false);
 
@@ -583,12 +585,12 @@ public:
    * This is equivalent to calling:
    *
    * ```cpp
-   * Audio audio(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+   * mixer.LoadAudio_IO(mixer, IOStream.FromFile(path, "rb"), predecode, true);
    * ```
    *
    * This function loads data from a path on the filesystem. There is also a
-   * version that loads from an IOStream (Audio.Audio()), and one that accepts
-   * properties for ultimate control (LoadAudioWithProperties()).
+   * version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that
+   * accepts properties for ultimate control (LoadAudioWithProperties()).
    *
    * @param path the path on the filesystem to load data from.
    * @param predecode if true, data will be fully uncompressed before returning.
@@ -601,7 +603,8 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio_IO
+   * @sa LoadAudioWithProperties
    */
   Audio LoadAudio(StringParam path, bool predecode);
 
@@ -659,7 +662,7 @@ public:
    * @sa Audio.Destroy
    * @sa Track.SetAudio
    * @sa Mixer.LoadRawAudioNoCopy
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio_IO
    */
   Audio LoadAudioNoCopy(SourceBytes data, bool free_when_done);
 
@@ -692,7 +695,7 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudio
    * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
@@ -729,7 +732,7 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudio_IO
    * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
@@ -770,8 +773,8 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudio
+   * @sa Mixer.LoadRawAudio_IO
    * @sa Mixer.LoadAudio_IO
    */
   Audio LoadRawAudioNoCopy(SourceBytes data,
@@ -1287,7 +1290,7 @@ public:
    * Generate mixer output when not driving an audio device.
    *
    * SDL_mixer allows the creation of Mixer objects that are not connected to an
-   * audio device, by calling Mixer.Mixer() instead of Mixer.Mixer(). Such
+   * audio device, by calling CreateMixer() instead of CreateMixerDevice(). Such
    * mixers will not generate output until explicitly requested through this
    * function.
    *
@@ -1311,7 +1314,7 @@ public:
    * does the same thing SDL_mixer does internally when the audio device needs
    * more audio to play.
    *
-   * This function can not be used with mixers from Mixer.Mixer(); those
+   * This function can not be used with mixers from CreateMixerDevice(); those
    * generate audio as needed internally.
    *
    * This function returns the number of _bytes_ of real audio mixed, which
@@ -1332,7 +1335,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Mixer
+   * @sa CreateMixer
    */
   int Generate(TargetBytes buffer);
 };
@@ -1576,7 +1579,7 @@ public:
  * An opaque object that represents audio data.
  *
  * Generally you load audio data (in whatever file format) into SDL_mixer with
- * Audio.Audio() or one of its several variants, producing a Audio object.
+ * Mixer.LoadAudio() or one of its several variants, producing a Audio object.
  *
  * A Audio represents static audio data; it could be background music, or maybe
  * a laser gun sound effect. It is loaded into RAM and can be played multiple
@@ -1655,8 +1658,8 @@ public:
    * When done with a Audio, it can be freed with Audio.Destroy().
    *
    * This function loads data from an IOStream. There is also a version that
-   * loads from a path on the filesystem (Audio.Audio()), and one that accepts
-   * properties for ultimate control (Audio.Audio()).
+   * loads from a path on the filesystem (Mixer.LoadAudio()), and one that
+   * accepts properties for ultimate control (LoadAudioWithProperties()).
    *
    * The IOStream provided must be able to seek, or loading will fail. If the
    * stream can't seek (data is coming from an HTTP connection, etc), consider
@@ -1678,8 +1681,8 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio
+   * @sa LoadAudioWithProperties
    */
   Audio(MixerRef mixer, IOStreamRef io, bool predecode, bool closeio = false);
 
@@ -1689,12 +1692,12 @@ public:
    * This is equivalent to calling:
    *
    * ```c
-   * Audio.Audio(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+   * Mixer.LoadAudio_IO(mixer, IOStream.FromFile(path, "rb"), predecode, true);
    * ```
    *
    * This function loads data from a path on the filesystem. There is also a
-   * version that loads from an IOStream (Audio.Audio()), and one that accepts
-   * properties for ultimate control (Audio.Audio()).
+   * version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that
+   * accepts properties for ultimate control (LoadAudioWithProperties()).
    *
    * @param mixer a mixer this audio is intended to be used with. May be
    *              nullptr.
@@ -1709,17 +1712,17 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio_IO
+   * @sa LoadAudioWithProperties
    */
   Audio(MixerRef mixer, StringParam path, bool predecode);
 
   /**
    * Load audio for playback through a collection of properties.
    *
-   * Please see Audio.Audio() for a description of what the various LoadAudio
-   * functions do. This function uses properties to dictate how it operates, and
-   * exposes functionality the other functions don't provide.
+   * Please see Mixer.LoadAudio_IO() for a description of what the various
+   * LoadAudio functions do. This function uses properties to dictate how it
+   * operates, and exposes functionality the other functions don't provide.
    *
    * Properties are discussed in [SDL's
    * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .
@@ -1757,8 +1760,8 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio
+   * @sa Mixer.LoadAudio_IO
    */
   Audio(PropertiesRef props);
 
@@ -1792,7 +1795,7 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudio
    * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
@@ -1831,7 +1834,7 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudio_IO
    * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
@@ -1916,7 +1919,8 @@ public:
    *   out of sound to generate. This isn't necessarily always known to
    *   SDL_mixer, though.
    *
-   * Other properties, documented with Audio.Audio(), may also be present.
+   * Other properties, documented with LoadAudioWithProperties(), may also be
+   * present.
    *
    * Note that the metadata properties are whatever SDL_mixer finds in things
    * like ID3 tags, and they often have very little standardized formatting, may
@@ -2401,7 +2405,7 @@ public:
   /**
    * Get the Mixer that owns a Track.
    *
-   * This is the mixer pointer that was passed to Track.Track().
+   * This is the mixer pointer that was passed to Mixer.CreateTrack().
    *
    * @returns the mixer associated with the track on success.
    * @throws Error on failure.
@@ -3395,7 +3399,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Group.Group
+   * @sa Mixer.CreateGroup
    * @sa Group.SetPostMixCallback
    */
   void SetGroup(GroupRef group);
@@ -3858,7 +3862,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Group.Group
+   * @sa Mixer.CreateGroup
    */
   void Destroy();
 
@@ -3883,7 +3887,7 @@ public:
   /**
    * Get the Mixer that owns a Group.
    *
-   * This is the mixer pointer that was passed to Group.Group().
+   * This is the mixer pointer that was passed to Mixer.CreateGroup().
    *
    * @returns the mixer associated with the group on success.
    * @throws Error on failure.
@@ -4184,7 +4188,7 @@ inline const char* GetAudioDecoder(int index)
 /**
  * Create a mixer that plays sound directly to an audio device.
  *
- * This is usually the function you want, vs Mixer.Mixer().
+ * This is usually the function you want, vs CreateMixer().
  *
  * You can choose a specific device ID to open, following SDL's usual rules, but
  * often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK and let
@@ -4208,8 +4212,8 @@ inline const char* GetAudioDecoder(int index)
  * The actual device format chosen is available through Mixer.GetFormat().
  *
  * Once a mixer is created, next steps are usually to load audio (through
- * Audio.Audio() and friends), create a track (Track.Track()), and play that
- * audio through that track.
+ * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
+ * play that audio through that track.
  *
  * When done with the mixer, it can be destroyed with Mixer.Destroy().
  *
@@ -4223,7 +4227,7 @@ inline const char* GetAudioDecoder(int index)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Mixer
+ * @sa CreateMixer
  * @sa Mixer.Destroy
  */
 inline Mixer CreateMixerDevice(AudioDeviceRef devid, const AudioSpec& spec)
@@ -4244,16 +4248,16 @@ inline Mixer::Mixer(const AudioSpec& spec)
 /**
  * Create a mixer that generates audio to a memory buffer.
  *
- * Usually you want Mixer.Mixer() instead of this function. The mixer created
- * here can be used with Mixer.Generate() to produce more data on demand, as
- * fast as desired.
+ * Usually you want CreateMixerDevice() instead of this function. The mixer
+ * created here can be used with Mixer.Generate() to produce more data on
+ * demand, as fast as desired.
  *
  * An audio format must be specified. This is the format it will output in. This
  * cannot be nullptr.
  *
  * Once a mixer is created, next steps are usually to load audio (through
- * Audio.Audio() and friends), create a track (Track.Track()), and play that
- * audio through that track.
+ * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
+ * play that audio through that track.
  *
  * When done with the mixer, it can be destroyed with Mixer.Destroy().
  *
@@ -4265,7 +4269,7 @@ inline Mixer::Mixer(const AudioSpec& spec)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Mixer
+ * @sa CreateMixerDevice
  * @sa Mixer.Destroy
  */
 inline Mixer CreateMixer(const AudioSpec& spec) { return Mixer(spec); }
@@ -4273,8 +4277,8 @@ inline Mixer CreateMixer(const AudioSpec& spec) { return Mixer(spec); }
 /**
  * Free a mixer.
  *
- * If this mixer was created with Mixer.Mixer(), this function will also close
- * the audio device and call QuitSubSystem(INIT_AUDIO).
+ * If this mixer was created with CreateMixerDevice(), this function will also
+ * close the audio device and call QuitSubSystem(INIT_AUDIO).
  *
  * Any Group or Track created for this mixer will also be destroyed. Do not
  * access them again or attempt to destroy them after the device is destroyed.
@@ -4283,15 +4287,15 @@ inline Mixer CreateMixer(const AudioSpec& spec) { return Mixer(spec); }
  *
  * @param mixer the mixer to destroy.
  *
- * @threadsafety If this is used with a Mixer from Mixer.Mixer, then this
+ * @threadsafety If this is used with a Mixer from CreateMixerDevice, then this
  *               function should only be called on the main thread. If this is
- *               used with a Mixer from Mixer.Mixer, then it is safe to call
+ *               used with a Mixer from CreateMixer, then it is safe to call
  *               this function from any thread.
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Mixer
- * @sa Mixer.Mixer
+ * @sa CreateMixerDevice
+ * @sa CreateMixer
  */
 inline void DestroyMixer(MixerRaw mixer) { MIX_DestroyMixer(mixer); }
 
@@ -4338,11 +4342,11 @@ constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER;
  * useful if trying to match your inputs to reduce conversion and resampling
  * costs.
  *
- * For mixers created with Mixer.Mixer(), this is the format of the audio device
- * (and may change later if the device itself changes; SDL_mixer will seamlessly
- * handle this change internally, though).
+ * For mixers created with CreateMixerDevice(), this is the format of the audio
+ * device (and may change later if the device itself changes; SDL_mixer will
+ * seamlessly handle this change internally, though).
  *
- * For mixers created with Mixer.Mixer(), this is the format that
+ * For mixers created with CreateMixer(), this is the format that
  * Mixer.Generate() will produce, as requested at create time, and does not
  * change.
  *
@@ -4489,7 +4493,7 @@ inline void MixerLock::reset()
  * When done with a Audio, it can be freed with Audio.Destroy().
  *
  * This function loads data from an IOStream. There is also a version that loads
- * from a path on the filesystem (Audio.Audio()), and one that accepts
+ * from a path on the filesystem (Mixer.LoadAudio()), and one that accepts
  * properties for ultimate control (LoadAudioWithProperties()).
  *
  * The IOStream provided must be able to seek, or loading will fail. If the
@@ -4511,7 +4515,7 @@ inline void MixerLock::reset()
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
+ * @sa Mixer.LoadAudio
  * @sa LoadAudioWithProperties
  */
 inline Audio LoadAudio_IO(MixerRef mixer,
@@ -4565,12 +4569,12 @@ inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
  * This is equivalent to calling:
  *
  * ```cpp
- * Audio audio(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+ * mixer.LoadAudio_IO(mixer, IOStream.FromFile(path, "rb"), predecode, true);
  * ```
  *
  * This function loads data from a path on the filesystem. There is also a
- * version that loads from an IOStream (Audio.Audio()), and one that accepts
- * properties for ultimate control (LoadAudioWithProperties()).
+ * version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that
+ * accepts properties for ultimate control (LoadAudioWithProperties()).
  *
  * @param mixer a mixer this audio is intended to be used with. May be nullptr.
  * @param path the path on the filesystem to load data from.
@@ -4611,10 +4615,10 @@ inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
  * This function is meant to maximize efficiency: if the data is already in
  * memory and can remain there, don't copy it. This data can be in any supported
  * audio file format (WAV, MP3, etc); it will be decoded on the fly while
- * mixing. Unlike Audio.Audio(), there is no `predecode` option offered here, as
- * this is meant to optimize for data that's already in memory and intends to
- * exist there for significant time; since predecoding would only need the file
- * format data once, upfront, one could simply wrap it in
+ * mixing. Unlike Mixer.LoadAudio(), there is no `predecode` option offered
+ * here, as this is meant to optimize for data that's already in memory and
+ * intends to exist there for significant time; since predecoding would only
+ * need the file format data once, upfront, one could simply wrap it in
  * SDL_CreateIOFromConstMem() and pass that to Mixer.LoadAudio_IO().
  *
  * Audio objects can be shared between multiple mixers. The `mixer` parameter
@@ -4669,9 +4673,9 @@ inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
 /**
  * Load audio for playback through a collection of properties.
  *
- * Please see Audio.Audio() for a description of what the various LoadAudio
- * functions do. This function uses properties to dictate how it operates, and
- * exposes functionality the other functions don't provide.
+ * Please see Mixer.LoadAudio_IO() for a description of what the various
+ * LoadAudio functions do. This function uses properties to dictate how it
+ * operates, and exposes functionality the other functions don't provide.
  *
  * Properties are discussed in [SDL's
  * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .
@@ -4709,7 +4713,8 @@ inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
+ * @sa Mixer.LoadAudio
+ * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadAudioWithProperties(PropertiesRef props)
 {
@@ -4764,8 +4769,9 @@ constexpr auto DECODER_STRING = MIX_PROP_AUDIO_DECODER_STRING;
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
+ * @sa Mixer.LoadRawAudio
  * @sa Mixer.LoadRawAudioNoCopy
+ * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadRawAudio_IO(MixerRef mixer,
                              IOStreamRef io,
@@ -4812,8 +4818,9 @@ inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
+ * @sa Mixer.LoadRawAudio_IO
  * @sa Mixer.LoadRawAudioNoCopy
+ * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadRawAudio(MixerRef mixer,
                           SourceBytes data,
@@ -4863,8 +4870,9 @@ inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
- * @sa Audio.Audio
+ * @sa Mixer.LoadRawAudio
+ * @sa Mixer.LoadRawAudio_IO
+ * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadRawAudioNoCopy(MixerRef mixer,
                                 SourceBytes data,
@@ -4917,7 +4925,7 @@ inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
+ * @sa Mixer.LoadAudio_IO
  */
 inline Audio CreateSineWaveAudio(MixerRef mixer,
                                  int hz,
@@ -5187,7 +5195,7 @@ inline PropertiesRef Track::GetProperties()
 /**
  * Get the Mixer that owns a Track.
  *
- * This is the mixer pointer that was passed to Track.Track().
+ * This is the mixer pointer that was passed to Mixer.CreateTrack().
  *
  * @param track the track to query.
  * @returns the mixer associated with the track on success.
@@ -6214,7 +6222,7 @@ inline void Mixer::PlayTag(StringParam tag, PropertiesRef options)
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa Track.Play
- * @sa Audio.Audio
+ * @sa Mixer.LoadAudio
  */
 inline bool PlayAudio(MixerRef mixer, AudioRef audio)
 {
@@ -7074,7 +7082,7 @@ inline Group::Group(MixerRef mixer)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Group.Group
+ * @sa Mixer.CreateGroup
  */
 inline void DestroyGroup(GroupRaw group) { MIX_DestroyGroup(group); }
 
@@ -7110,7 +7118,7 @@ inline PropertiesRef Group::GetProperties()
 /**
  * Get the Mixer that owns a Group.
  *
- * This is the mixer pointer that was passed to Group.Group().
+ * This is the mixer pointer that was passed to Mixer.CreateGroup().
  *
  * @param group the group to query.
  * @returns the mixer associated with the group on success.
@@ -7147,7 +7155,7 @@ inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(m_resource); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Group.Group
+ * @sa Mixer.CreateGroup
  * @sa Group.SetPostMixCallback
  */
 inline void SetTrackGroup(TrackRef track, GroupRef group)
@@ -7535,8 +7543,9 @@ inline void Mixer::SetPostMixCallback(PostMixCB cb)
  * Generate mixer output when not driving an audio device.
  *
  * SDL_mixer allows the creation of Mixer objects that are not connected to an
- * audio device, by calling Mixer.Mixer() instead of Mixer.Mixer(). Such mixers
- * will not generate output until explicitly requested through this function.
+ * audio device, by calling CreateMixer() instead of CreateMixerDevice(). Such
+ * mixers will not generate output until explicitly requested through this
+ * function.
  *
  * The caller may request as much audio as desired, so long as `buflen` is a
  * multiple of the sample frame size specified when creating the mixer (for
@@ -7557,8 +7566,8 @@ inline void Mixer::SetPostMixCallback(PostMixCB cb)
  * does the same thing SDL_mixer does internally when the audio device needs
  * more audio to play.
  *
- * This function can not be used with mixers from Mixer.Mixer(); those generate
- * audio as needed internally.
+ * This function can not be used with mixers from CreateMixerDevice(); those
+ * generate audio as needed internally.
  *
  * This function returns the number of _bytes_ of real audio mixed, which might
  * be less than `buflen`. While all `buflen` bytes of `buffer` will be
@@ -7579,7 +7588,7 @@ inline void Mixer::SetPostMixCallback(PostMixCB cb)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Mixer
+ * @sa CreateMixer
  */
 inline int Generate(MixerRef mixer, TargetBytes buffer)
 {
@@ -7599,8 +7608,8 @@ inline int Mixer::Generate(TargetBytes buffer)
  * as needed. However, if one wants to decode an audio file into a memory buffer
  * without playing it, this interface offers that.
  *
- * These objects are created with AudioDecoder.AudioDecoder() or
- * AudioDecoder.AudioDecoder(), and then can use AudioDecoder.DecodeAudio() to
+ * These objects are created with CreateAudioDecoder() or
+ * CreateAudioDecoder_IO(), and then can use AudioDecoder.DecodeAudio() to
  * retrieve the raw PCM data.
  *
  * @since This struct is available since SDL_mixer 3.0.0.
@@ -7672,7 +7681,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa AudioDecoder.AudioDecoder
+   * @sa CreateAudioDecoder_IO
    * @sa AudioDecoder.DecodeAudio
    * @sa AudioDecoder.Destroy
    */
@@ -7709,7 +7718,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa AudioDecoder.AudioDecoder
+   * @sa CreateAudioDecoder_IO
    * @sa AudioDecoder.DecodeAudio
    * @sa AudioDecoder.Destroy
    */
@@ -7924,7 +7933,7 @@ struct AudioDecoderRef : AudioDecoder
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa AudioDecoder.AudioDecoder
+ * @sa CreateAudioDecoder_IO
  * @sa AudioDecoder.DecodeAudio
  * @sa AudioDecoder.Destroy
  */
@@ -7977,7 +7986,7 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa AudioDecoder.AudioDecoder
+ * @sa CreateAudioDecoder_IO
  * @sa AudioDecoder.DecodeAudio
  * @sa AudioDecoder.Destroy
  */

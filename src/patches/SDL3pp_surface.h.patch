@@ -23,7 +23,7 @@
   * The scaling mode.
 @@ -161,8 +164,6 @@
   *
-  * @sa Surface.Surface
+  * @sa CreateSurface
   * @sa Surface.Destroy
 - *
 - * @cat resource
@@ -62,7 +62,7 @@
     *
 @@ -278,9 +275,6 @@
     * load images directly into an Texture for use by the GPU without using a
-    * software surface: call Texture.Texture() instead.
+    * software surface: call LoadTexture() instead.
     *
 -   * When done with the returned surface, the app should dispose of it with a
 -   * call to [Surface.Destroy](https://wiki.libsdl.org/SDL3/Surface.Destroy) ().
@@ -72,7 +72,7 @@
     *
 @@ -328,9 +322,6 @@
     * load images directly into an Texture for use by the GPU without using a
-    * software surface: call Texture.Texture() instead.
+    * software surface: call LoadTexture_IO() instead.
     *
 -   * When done with the returned surface, the app should dispose of it with a
 -   * call to Surface.Destroy().

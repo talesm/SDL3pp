@@ -425,7 +425,7 @@
 + * @cat resource
 + *
   * @sa GetEnvironment
-  * @sa Environment.Environment
+  * @sa CreateEnvironment
   * @sa Environment.GetVariable
 @@ -896,8 +912,6 @@
   * @sa Environment.SetVariable
@@ -918,19 +918,19 @@
   * @sa atan
   * @sa tan
   */
-@@ -5736,9 +5915,9 @@
+@@ -5736,9 +5915,10 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
-- * @sa IConv.IConv
-- *
+- * @sa iconv_open
+  *
   * @cat resource
 + *
-+ * @sa IConv.IConv
++ * @sa iconv_open
   */
  class IConv
  {
-@@ -5746,8 +5925,8 @@
+@@ -5746,8 +5926,8 @@
  
  public:
    /// Default ctor
@@ -941,7 +941,7 @@
    {
    }
  
-@@ -5782,8 +5961,7 @@
+@@ -5782,8 +5962,7 @@
     *
     * @param tocode The target character encoding, must not be nullptr.
     * @param fromcode The source character encoding, must not be nullptr.
@@ -951,7 +951,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -5823,12 +6001,14 @@
+@@ -5823,12 +6002,14 @@
    constexpr auto operator<=>(const IConv& other) const noexcept = default;
  
    /// Converts to bool
@@ -968,7 +968,7 @@
     * @returns 0 on success, or -1 on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -5866,7 +6046,8 @@
+@@ -5866,7 +6047,8 @@
     * @param inbytesleft The number of bytes in the input buffer.
     * @param outbuf Address of variable that points to the output buffer.
     * @param outbytesleft The number of bytes in the output buffer.
@@ -978,7 +978,7 @@
     *
     * @threadsafety Do not use the same IConv from two threads at once.
     *
-@@ -5879,7 +6060,7 @@
+@@ -5879,7 +6061,7 @@
    size_t iconv(const char** inbuf,
                 size_t* inbytesleft,
                 char** outbuf,
@@ -987,7 +987,7 @@
  };
  
  /**
-@@ -5984,7 +6165,8 @@
+@@ -5984,7 +6166,8 @@
   * This function frees a context used for character set conversion.
   *
   * @param cd The character set conversion handle.
@@ -997,8 +997,8 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -5994,7 +6176,7 @@
-  * @sa IConv.IConv
+@@ -5994,7 +6177,7 @@
+  * @sa iconv_open
   * @sa iconv_string
   */
 -inline int iconv_close(IConvRaw cd) { return SDL_iconv_close(cd); }
@@ -1006,7 +1006,7 @@
  
  inline int IConv::close() { return iconv_close(release()); }
  
-@@ -6023,7 +6205,8 @@
+@@ -6023,7 +6206,8 @@
   * @param inbytesleft The number of bytes in the input buffer.
   * @param outbuf Address of variable that points to the output buffer.
   * @param outbytesleft The number of bytes in the output buffer.
@@ -1016,7 +1016,7 @@
   *
   * @threadsafety Do not use the same IConv from two threads at once.
   *
-@@ -6033,19 +6216,19 @@
+@@ -6033,19 +6217,19 @@
   * @sa IConv.close
   * @sa iconv_string
   */
@@ -1039,7 +1039,7 @@
  {
    return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
  }
-@@ -6071,14 +6254,10 @@
+@@ -6071,14 +6255,10 @@
   * the number of bytes specified in `inbytesleft` whether there is a nullptr
   * character anywhere in the buffer.
   *
@@ -1054,7 +1054,7 @@
   * @returns a new string, converted to the new encoding, or nullptr on error.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -6093,7 +6272,8 @@
+@@ -6093,7 +6273,8 @@
                                     StringParam fromcode,
                                     SourceBytes inbuf)
  {
@@ -1064,7 +1064,7 @@
  }
  
  /**
-@@ -6112,7 +6292,7 @@
+@@ -6112,7 +6293,7 @@
   */
  inline OwnArray<char> iconv_utf8_locale(std::string_view S)
  {
@@ -1073,7 +1073,7 @@
  }
  
  /**
-@@ -6131,7 +6311,8 @@
+@@ -6131,7 +6312,8 @@
   */
  inline OwnArray<Uint16> iconv_utf8_ucs2(std::string_view S)
  {
@@ -1083,7 +1083,7 @@
  }
  
  /**
-@@ -6150,7 +6331,8 @@
+@@ -6150,7 +6332,8 @@
   */
  inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
  {
@@ -1093,7 +1093,7 @@
  }
  
  /**
-@@ -6169,7 +6351,7 @@
+@@ -6169,7 +6352,7 @@
   */
  inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
  {
@@ -1102,7 +1102,7 @@
  }
  
  /**
-@@ -6189,7 +6371,7 @@
+@@ -6189,7 +6372,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -1111,7 +1111,7 @@
  {
    return SDL_size_mul_check_overflow(a, b, ret);
  }
-@@ -6211,7 +6393,7 @@
+@@ -6211,7 +6394,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -1120,7 +1120,7 @@
  {
    return SDL_size_add_check_overflow(a, b, ret);
  }
-@@ -6235,6 +6417,29 @@
+@@ -6235,6 +6418,29 @@
  
  /// @}
  

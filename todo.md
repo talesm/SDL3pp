@@ -55,12 +55,12 @@ Next version
   - [x] Create template for ConstParam;
   - [x] Create template for legacy Param;
   - [x] Make value private and rename to m_resource.
+- [x] Documentation to refer to free functions instead of ctors whenever
+  possible;
 
 Backlog
 -------
 
-- [ ] Documentation to refer to free functions instead of ctors whenever
-  possible;
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;
   - [ ] CameraID;

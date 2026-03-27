@@ -207,7 +207,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa CreateTray
    */
   void Destroy();
 
@@ -221,7 +221,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa CreateTray
    */
   void SetIcon(SurfaceRef icon);
 
@@ -235,7 +235,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa CreateTray
    */
   void SetTooltip(StringParam tooltip);
 
@@ -256,7 +256,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa CreateTray
    * @sa Tray.GetMenu
    * @sa TrayMenu.GetParentTray
    */
@@ -280,7 +280,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa CreateTray
    * @sa Tray.CreateMenu
    */
   TrayMenu GetMenu() const;
@@ -832,7 +832,7 @@ inline Tray::Tray(SurfaceRef icon, StringParam tooltip)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.Tray
+ * @sa CreateTray
  */
 inline void SetTrayIcon(TrayRef tray, SurfaceRef icon)
 {
@@ -855,7 +855,7 @@ inline void Tray::SetIcon(SurfaceRef icon)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.Tray
+ * @sa CreateTray
  */
 inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
 {
@@ -885,7 +885,7 @@ inline void Tray::SetTooltip(StringParam tooltip)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.Tray
+ * @sa CreateTray
  * @sa Tray.GetMenu
  * @sa TrayMenu.GetParentTray
  */
@@ -947,7 +947,7 @@ inline TrayMenu TrayEntry::CreateSubmenu()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.Tray
+ * @sa CreateTray
  * @sa Tray.CreateMenu
  */
 inline TrayMenu GetTrayMenu(TrayRef tray) { return SDL_GetTrayMenu(tray); }
@@ -1288,7 +1288,7 @@ inline void TrayEntry::Click() { SDL::ClickTrayEntry(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.Tray
+ * @sa CreateTray
  */
 inline void DestroyTray(TrayRaw tray) { SDL_DestroyTray(tray); }
 

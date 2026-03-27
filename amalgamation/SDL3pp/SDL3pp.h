@@ -6761,7 +6761,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * - "1": the metal layer drawable size will be updated on the
  *   EVENT_WINDOW_PIXEL_SIZE_CHANGED event. (default)
  *
- * This hint should be set before MetalView.MetalView called.
+ * This hint should be set before Metal_CreateView called.
  *
  * @since This hint is available since SDL 3.4.0.
  */
@@ -7611,7 +7611,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 /**
  * A variable specifying the type of an X11 window.
  *
- * During Window.Window, SDL uses the _NET_WM_WINDOW_TYPE X11 property to report
+ * During CreateWindow, SDL uses the _NET_WM_WINDOW_TYPE X11 property to report
  * to the window manager the type of window it wants to create. This might be
  * set to various things if WINDOW_TOOLTIP or WINDOW_POPUP_MENU, etc, were
  * specified. For "normal" windows that haven't set a specific type, this hint
@@ -11502,7 +11502,7 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  * @cat resource
  *
  * @sa GetEnvironment
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  * @sa Environment.GetVariable
  * @sa Environment.GetVariables
  * @sa Environment.SetVariable
@@ -11605,7 +11605,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Environment.Environment
+   * @sa CreateEnvironment
    */
   void Destroy();
 
@@ -11621,7 +11621,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa Environment.Environment
+   * @sa CreateEnvironment
    * @sa Environment.GetVariables
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
@@ -11642,7 +11642,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa Environment.Environment
+   * @sa CreateEnvironment
    * @sa Environment.GetVariables
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
@@ -11673,7 +11673,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa Environment.Environment
+   * @sa CreateEnvironment
    * @sa Environment.GetVariable
    * @sa Environment.GetVariables
    * @sa Environment.UnsetVariable
@@ -11691,7 +11691,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa Environment.Environment
+   * @sa CreateEnvironment
    * @sa Environment.GetVariable
    * @sa Environment.GetVariables
    * @sa Environment.SetVariable
@@ -11838,7 +11838,7 @@ inline Environment::Environment(bool populated)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetEnvironment
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  * @sa Environment.GetVariables
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
@@ -11867,7 +11867,7 @@ inline const char* Environment::GetVariable(StringParam name)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetEnvironment
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  * @sa Environment.GetVariables
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
@@ -11897,7 +11897,7 @@ inline OwnArray<char*> Environment::GetVariables()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetEnvironment
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  * @sa Environment.GetVariable
  * @sa Environment.GetVariables
  * @sa Environment.UnsetVariable
@@ -11930,7 +11930,7 @@ inline void Environment::SetVariable(StringParam name,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetEnvironment
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  * @sa Environment.GetVariable
  * @sa Environment.GetVariables
  * @sa Environment.SetVariable
@@ -11956,7 +11956,7 @@ inline void Environment::UnsetVariable(StringParam name)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  */
 inline void DestroyEnvironment(EnvironmentRaw env)
 {
@@ -16511,9 +16511,10 @@ inline float tan(float x) { return SDL_tanf(x); }
  *
  * @since This datatype is available since SDL 3.2.0.
  *
+ *
  * @cat resource
  *
- * @sa IConv.IConv
+ * @sa iconv_open
  */
 class IConv
 {
@@ -16612,7 +16613,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConv.iconv
-   * @sa IConv.IConv
+   * @sa iconv_open
    * @sa iconv_string
    */
   int close();
@@ -16649,7 +16650,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConv.IConv
+   * @sa iconv_open
    * @sa IConv.close
    * @sa iconv_string
    */
@@ -16769,7 +16770,7 @@ inline IConv::IConv(StringParam tocode, StringParam fromcode)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IConv.iconv
- * @sa IConv.IConv
+ * @sa iconv_open
  * @sa iconv_string
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
@@ -16795,7 +16796,7 @@ inline int IConv::close() { return iconv_close(release()); }
  * - outbuf will point to the location where to store the next output byte.
  * - outbytesleft will be set to the number of bytes left in the output buffer.
  *
- * @param cd The character set conversion context, created in IConv.IConv().
+ * @param cd The character set conversion context, created in iconv_open().
  * @param inbuf Address of variable that points to the first character of the
  *              input sequence.
  * @param inbytesleft The number of bytes in the input buffer.
@@ -16808,7 +16809,7 @@ inline int IConv::close() { return iconv_close(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConv.IConv
+ * @sa iconv_open
  * @sa IConv.close
  * @sa iconv_string
  */
@@ -16860,7 +16861,7 @@ constexpr size_t ICONV_EINVAL =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConv.IConv
+ * @sa iconv_open
  * @sa IConv.close
  * @sa IConv.iconv
  */
@@ -17053,7 +17054,7 @@ Uint32 narrowU32(T value)
  * The general usage pattern for async I/O is:
  *
  * - Create one or more AsyncIOQueue objects.
- * - Open files with AsyncIO.AsyncIO.
+ * - Open files with AsyncIOFromFile.
  * - Start I/O tasks to the files with AsyncIO.Read or AsyncIO.Write, putting
  *   those tasks into one of the queues.
  * - Later on, use AsyncIOQueue.GetResult on a queue to see if any task is
@@ -17141,7 +17142,7 @@ struct AsyncIOQueueRef;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa AsyncIO.AsyncIO
+ * @sa AsyncIOFromFile
  *
  * @cat resource
  */
@@ -17353,7 +17354,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa AsyncIO.Write
-   * @sa AsyncIOQueue.AsyncIOQueue
+   * @sa CreateAsyncIOQueue
    */
   void Read(void* ptr,
             Uint64 offset,
@@ -17392,7 +17393,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa AsyncIO.Read
-   * @sa AsyncIOQueue.AsyncIOQueue
+   * @sa CreateAsyncIOQueue
    */
   void Write(void* ptr,
              Uint64 offset,
@@ -17522,7 +17523,7 @@ using AsyncIOOutcome = SDL_AsyncIOOutcome;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa AsyncIOQueue.AsyncIOQueue
+ * @sa CreateAsyncIOQueue
  * @sa AsyncIO.Read
  * @sa AsyncIO.Write
  * @sa AsyncIOQueue.GetResult
@@ -17945,7 +17946,7 @@ inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(m_resource); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa AsyncIO.Write
- * @sa AsyncIOQueue.AsyncIOQueue
+ * @sa CreateAsyncIOQueue
  */
 inline void ReadAsyncIO(AsyncIORef asyncio,
                         void* ptr,
@@ -17998,7 +17999,7 @@ inline void AsyncIO::Read(void* ptr,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa AsyncIO.Read
- * @sa AsyncIOQueue.AsyncIOQueue
+ * @sa CreateAsyncIOQueue
  */
 inline void WriteAsyncIO(AsyncIORef asyncio,
                          void* ptr,
@@ -21008,7 +21009,7 @@ struct GUID : GUIDRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GUID.GUID
+   * @sa StringToGUID
    */
   std::string ToString() const;
 };
@@ -21023,7 +21024,7 @@ struct GUID : GUIDRaw
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GUID.GUID
+ * @sa StringToGUID
  */
 inline std::string GUIDToString(const GUIDRaw& guid)
 {
@@ -21728,7 +21729,7 @@ inline HidDevice hid_open_path(StringParam path)
  * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
  *   associated with the device, if it was opened using libusb.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
@@ -21768,7 +21769,7 @@ constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
  * exists. If it does not, it will send the data through the Control Endpoint
  * (Endpoint 0).
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data the data to send, including the report number as the first byte.
  * @returns the actual number of bytes written and -1 on on failure; call
  *          GetError() for more information.
@@ -21792,7 +21793,7 @@ inline int HidDevice::write(SourceBytes data)
  * first byte will contain the Report number if the device uses numbered
  * reports.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data a buffer to put the read data into.
  * @param timeout timeout in milliseconds
  * @returns the actual number of bytes read and -1 on on failure; call
@@ -21821,7 +21822,7 @@ inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
  * first byte will contain the Report number if the device uses numbered
  * reports.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data a buffer to put the read data into.
  * @returns the actual number of bytes read and -1 on failure; call GetError()
  *          for more information. If no packet was available to be read and the
@@ -21848,7 +21849,7 @@ inline int HidDevice::read(TargetBytes data)
  *
  * Nonblocking can be turned on and off at any time.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param nonblock enable or not the nonblocking reads - true to enable
  *                 nonblocking - false to disable nonblocking.
  * @throws Error on failure.
@@ -21878,7 +21879,7 @@ inline void HidDevice::set_nonblocking(bool nonblock)
  * devices which do not use numbered reports), followed by the report data (16
  * bytes). In this example, the length passed in would be 17.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data the data to send, including the report number as the first byte.
  * @returns the actual number of bytes written and -1 on failure; call
  *          GetError() for more information.
@@ -21904,7 +21905,7 @@ inline int HidDevice::send_feature_report(SourceBytes data)
  * byte will still contain the Report ID, and the report data will start in
  * data[1].
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data a buffer to put the read data into, including the Report ID. Set
  *             the first byte of `data` to the Report ID of the report to be
  *             read, or set it to zero if your device does not use numbered
@@ -21934,7 +21935,7 @@ inline int HidDevice::get_feature_report(TargetBytes data)
  * byte will still contain the Report ID, and the report data will start in
  * data[1].
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data a buffer to put the read data into, including the Report ID. Set
  *             the first byte of `data` to the Report ID of the report to be
  *             read, or set it to zero if your device does not use numbered
@@ -21959,7 +21960,7 @@ inline int HidDevice::get_input_report(TargetBytes data)
 /**
  * Close a HID device.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -21974,7 +21975,7 @@ inline void HidDevice::close() { hid_close(release()); }
 /**
  * Get The Manufacturer String from a HID device.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param string a wide string buffer to put the data into.
  * @param maxlen the length of the buffer in multiples of wchar_t.
  * @throws Error on failure.
@@ -21996,7 +21997,7 @@ inline void HidDevice::get_manufacturer_string(wchar_t* string, size_t maxlen)
 /**
  * Get The Product String from a HID device.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param string a wide string buffer to put the data into.
  * @param maxlen the length of the buffer in multiples of wchar_t.
  * @throws Error on failure.
@@ -22018,7 +22019,7 @@ inline void HidDevice::get_product_string(wchar_t* string, size_t maxlen)
 /**
  * Get The Serial Number String from a HID device.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param string a wide string buffer to put the data into.
  * @param maxlen the length of the buffer in multiples of wchar_t.
  * @throws Error on failure.
@@ -22040,7 +22041,7 @@ inline void HidDevice::get_serial_number_string(wchar_t* string, size_t maxlen)
 /**
  * Get a string from a HID device, based on its string index.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param string_index the index of the string to get.
  * @param string a wide string buffer to put the data into.
  * @param maxlen the length of the buffer in multiples of wchar_t.
@@ -22067,7 +22068,7 @@ inline void HidDevice::get_indexed_string(int string_index,
 /**
  * Get the device info from a HID device.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @returns a pointer to the hid_device_info for this hid_device on success.
  *          This struct is valid until the device is closed with
  *          HidDevice.close().
@@ -22091,7 +22092,7 @@ inline hid_device_info* HidDevice::get_device_info()
  * User has to provide a preallocated buffer where descriptor will be copied to.
  * The recommended size for a preallocated buffer is 4096 bytes.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param buf the buffer to copy descriptor into.
  * @returns the number of bytes actually copied or -1 on failure; call
  *          GetError() for more information.
@@ -25296,10 +25297,10 @@ inline void IOStream::WriteS64BE(Sint64 value)
  * Shared objects are code that is programmatically loadable at runtime. Windows
  * calls these "DLLs", Linux calls them "shared libraries", etc.
  *
- * To use them, build such a library, then call SharedObject.SharedObject() on
- * it. Once loaded, you can use SharedObject.LoadFunction() on that object to
- * find the address of its exported symbols. When done with the object, call
- * SharedObject.Unload() to dispose of it.
+ * To use them, build such a library, then call LoadObject() on it. Once loaded,
+ * you can use SharedObject.LoadFunction() on that object to find the address of
+ * its exported symbols. When done with the object, call SharedObject.Unload()
+ * to dispose of it.
  *
  * Some things to keep in mind:
  *
@@ -25336,7 +25337,7 @@ struct SharedObjectRef;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SharedObject.SharedObject
+ * @sa LoadObject
  * @sa SharedObject.LoadFunction
  * @sa SharedObject.Unload
  *
@@ -25435,7 +25436,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObject.SharedObject
+   * @sa LoadObject
    */
   void Unload();
 
@@ -25463,7 +25464,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObject.SharedObject
+   * @sa LoadObject
    */
   FunctionPointer LoadFunction(StringParam name);
 };
@@ -25579,8 +25580,7 @@ inline SharedObject::SharedObject(StringParam sofile)
  *
  * If the requested function doesn't exist, nullptr is returned.
  *
- * @param handle a valid shared object handle returned by
- *               SharedObject.SharedObject().
+ * @param handle a valid shared object handle returned by LoadObject().
  * @param name the name of the function to look up.
  * @returns a pointer to the function or nullptr on failure; call GetError() for
  *          more information.
@@ -25589,7 +25589,7 @@ inline SharedObject::SharedObject(StringParam sofile)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SharedObject.SharedObject
+ * @sa LoadObject
  */
 inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
 {
@@ -25607,14 +25607,13 @@ inline FunctionPointer SharedObject::LoadFunction(StringParam name)
  * Note that any pointers from this object looked up through
  * SharedObject.LoadFunction() will no longer be valid.
  *
- * @param handle a valid shared object handle returned by
- *               SharedObject.SharedObject().
+ * @param handle a valid shared object handle returned by LoadObject().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SharedObject.SharedObject
+ * @sa LoadObject
  */
 inline void UnloadObject(SharedObjectRaw handle) { SDL_UnloadObject(handle); }
 
@@ -26671,9 +26670,9 @@ constexpr Uint32 DefinePixelFourCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D)
  *
  * For example, defining PIXELFORMAT_RGBA8888 looks like this:
  *
- * ```c
- * PixelFormat.PixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA,
- * PACKEDLAYOUT_8888, 32, 4)
+ * ```cpp
+ * DefinePixelFormat(PIXELTYPE_PACKED32, PACKEDORDER_RGBA, PACKEDLAYOUT_8888,
+ * 32, 4)
  * ```
  *
  * @param type the type of the new format, probably a PixelType value.
@@ -27556,8 +27555,8 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  *
  * For example, defining COLORSPACE_SRGB looks like this:
  *
- * ```c
- * Colorspace.Colorspace(COLOR_TYPE_RGB,
+ * ```cpp
+ * DefineColorspace(COLOR_TYPE_RGB,
  *                       COLOR_RANGE_FULL,
  *                       COLOR_PRIMARIES_BT709,
  *                       TRANSFER_CHARACTERISTICS_SRGB,
@@ -28304,14 +28303,14 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Free a palette created with Palette.Palette().
+   * Free a palette created with CreatePalette().
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified or destroyed in another thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.Palette
+   * @sa CreatePalette
    */
   void Destroy();
 
@@ -28604,7 +28603,7 @@ inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
 }
 
 /**
- * Free a palette created with Palette.Palette().
+ * Free a palette created with CreatePalette().
  *
  * @param palette the Palette structure to be freed.
  *
@@ -28613,7 +28612,7 @@ inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Palette.Palette
+ * @sa CreatePalette
  */
 inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
 
@@ -32549,7 +32548,7 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Close a sensor previously opened with Sensor.Sensor().
+   * Close a sensor previously opened with OpenSensor().
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -32899,7 +32898,7 @@ inline void Sensor::GetData(float* data, int num_values)
 }
 
 /**
- * Close a sensor previously opened with Sensor.Sensor().
+ * Close a sensor previously opened with OpenSensor().
  *
  * @param sensor the Sensor object to close.
  *
@@ -33885,7 +33884,7 @@ inline void RemoveTimer(TimerID id) { CheckError(SDL_RemoveTimer(id)); }
  * ## Simplified audio
  *
  * As a simplified model for when a single source of audio is all that's needed,
- * an app can use AudioStream.AudioStream, which is a single function to open an
+ * an app can use AudioDevice.OpenStream, which is a single function to open an
  * audio device, create an audio stream, bind that stream to the newly-opened
  * device, and (optionally) provide a callback for obtaining audio data. When
  * using this function, the primary interface is the AudioStream and the device
@@ -34055,8 +34054,8 @@ public:
    *
    * For example, AUDIO_S32LE looks like this:
    *
-   * ```c
-   * AudioFormat.AudioFormat(1, 0, 0, 32)
+   * ```cpp
+   * AudioFormat format(1, 0, 0, 32)
    * ```
    *
    * @param sign 1 for signed data, 0 for unsigned data.
@@ -34255,7 +34254,7 @@ constexpr AudioFormat AUDIO_F32 = SDL_AUDIO_F32; ///< AUDIO_F32
  * For example, AUDIO_S32LE looks like this:
  *
  * ```c
- * AudioFormat.AudioFormat(1, 0, 0, 32)
+ * DefineAudioFormat(1, 0, 0, 32)
  * ```
  *
  * @param sign 1 for signed data, 0 for unsigned data.
@@ -34669,7 +34668,7 @@ public:
    * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
    * there is no audio callback; you only bind audio streams and make sure they
    * have data flowing into them (however, you can simulate SDL2's semantics
-   * fairly closely by using AudioStream.AudioStream instead of this function).
+   * fairly closely by using AudioDevice.OpenStream instead of this function).
    *
    * If you don't care about opening a specific device, pass a `devid` of either
    * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In
@@ -34774,7 +34773,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.AudioDevice
+   * @sa OpenAudioDevice
    */
   void Close();
 
@@ -34860,9 +34859,9 @@ public:
    *
    * An AudioDevice that represents physical hardware is a physical device;
    * there is one for each piece of hardware that SDL can see. Logical devices
-   * are created by calling AudioDevice.AudioDevice or AudioStream.AudioStream,
-   * and while each is associated with a physical device, there can be any
-   * number of logical devices on one physical device.
+   * are created by calling OpenAudioDevice or AudioDevice.OpenStream, and while
+   * each is associated with a physical device, there can be any number of
+   * logical devices on one physical device.
    *
    * For the most part, logical and physical IDs are interchangeable--if you try
    * to open a logical device, SDL understands to assign that effort to the
@@ -34908,7 +34907,7 @@ public:
    * loading, etc.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.AudioDevice() can be.
+   * created through OpenAudioDevice() can be.
    *
    * @throws Error on failure.
    *
@@ -34933,7 +34932,7 @@ public:
    * device is a legal no-op.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.AudioDevice() can be.
+   * created through OpenAudioDevice() can be.
    *
    * @throws Error on failure.
    *
@@ -34953,8 +34952,8 @@ public:
    * has to bind a stream before any audio will flow.
    *
    * Physical devices can not be paused or unpaused, only logical devices
-   * created through AudioDevice.AudioDevice() can be. Physical and invalid
-   * device IDs will report themselves as unpaused here.
+   * created through OpenAudioDevice() can be. Physical and invalid device IDs
+   * will report themselves as unpaused here.
    *
    * @returns true if device is valid and paused, false otherwise.
    *
@@ -35494,7 +35493,7 @@ using AudioStreamDataCompleteCB =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa AudioStream.AudioStream
+ * @sa CreateAudioStream
  *
  * @cat resource
  */
@@ -35713,7 +35712,7 @@ public:
    * queued. You do not need to manually clear the stream first.
    *
    * If this stream was bound to an audio device, it is unbound during this
-   * call. If this stream was created with AudioStream.AudioStream, the audio
+   * call. If this stream was created with AudioDevice.OpenStream, the audio
    * device that was opened alongside this stream's creation will be closed,
    * too.
    *
@@ -35721,7 +35720,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.AudioStream
+   * @sa CreateAudioStream
    */
   void Destroy();
 
@@ -35734,7 +35733,7 @@ public:
    * - `prop::AudioStream._AUTO_CLEANUP_BOOLEAN`: if true (the default), the
    *   stream be automatically cleaned up when the audio subsystem quits. If set
    *   to false, the streams will persist beyond that. This property is ignored
-   *   for streams created through AudioStream.AudioStream(), and will always be
+   *   for streams created through AudioDevice.OpenStream(), and will always be
    *   cleaned up. Streams that are not cleaned up will still be unbound from
    *   devices when the audio subsystem quits. This property was added in SDL
    *   3.4.0.
@@ -36418,7 +36417,7 @@ public:
    * previously been paused. Once unpaused, any bound audio streams will begin
    * to progress again, and audio can be generated.
    *
-   * AudioStream.AudioStream opens audio devices in a paused state, so this
+   * AudioDevice.OpenStream opens audio devices in a paused state, so this
    * function call is required for audio playback to begin on such devices.
    *
    * @throws Error on failure.
@@ -37023,7 +37022,7 @@ inline const char* GetCurrentAudioDriver()
  * GetAudioRecordingDevices() instead.
  *
  * This only returns a list of physical devices; it will not have any device IDs
- * returned by AudioDevice.AudioDevice().
+ * returned by OpenAudioDevice().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -37035,7 +37034,7 @@ inline const char* GetCurrentAudioDriver()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.AudioDevice
+ * @sa OpenAudioDevice
  * @sa GetAudioRecordingDevices
  */
 inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
@@ -37055,7 +37054,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  * GetAudioPlaybackDevices() instead.
  *
  * This only returns a list of physical devices; it will not have any device IDs
- * returned by AudioDevice.AudioDevice().
+ * returned by OpenAudioDevice().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -37067,7 +37066,7 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.AudioDevice
+ * @sa OpenAudioDevice
  * @sa GetAudioPlaybackDevices
  */
 inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
@@ -37197,7 +37196,7 @@ inline OwnArray<int> AudioDevice::GetChannelMap() const
  * playing, bind a stream and supply audio data to it. Unlike SDL2, there is no
  * audio callback; you only bind audio streams and make sure they have data
  * flowing into them (however, you can simulate SDL2's semantics fairly closely
- * by using AudioStream.AudioStream instead of this function).
+ * by using AudioDevice.OpenStream instead of this function).
  *
  * If you don't care about opening a specific device, pass a `devid` of either
  * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In this
@@ -37272,9 +37271,9 @@ inline AudioDevice::AudioDevice(AudioDeviceRef devid,
  *
  * An AudioDevice that represents physical hardware is a physical device; there
  * is one for each piece of hardware that SDL can see. Logical devices are
- * created by calling AudioDevice.AudioDevice or AudioStream.AudioStream, and
- * while each is associated with a physical device, there can be any number of
- * logical devices on one physical device.
+ * created by calling OpenAudioDevice or AudioDevice.OpenStream, and while each
+ * is associated with a physical device, there can be any number of logical
+ * devices on one physical device.
  *
  * For the most part, logical and physical IDs are interchangeable--if you try
  * to open a logical device, SDL understands to assign that effort to the
@@ -37338,9 +37337,9 @@ inline bool AudioDevice::IsPlayback() const
  * loading, etc.
  *
  * Physical devices can not be paused or unpaused, only logical devices created
- * through AudioDevice.AudioDevice() can be.
+ * through OpenAudioDevice() can be.
  *
- * @param devid a device opened by AudioDevice.AudioDevice().
+ * @param devid a device opened by OpenAudioDevice().
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -37369,9 +37368,9 @@ inline void AudioDevice::Pause() { SDL::PauseAudioDevice(m_resource); }
  * a legal no-op.
  *
  * Physical devices can not be paused or unpaused, only logical devices created
- * through AudioDevice.AudioDevice() can be.
+ * through OpenAudioDevice() can be.
  *
- * @param devid a device opened by AudioDevice.AudioDevice().
+ * @param devid a device opened by OpenAudioDevice().
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -37395,10 +37394,10 @@ inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(m_resource); }
  * to bind a stream before any audio will flow.
  *
  * Physical devices can not be paused or unpaused, only logical devices created
- * through AudioDevice.AudioDevice() can be. Physical and invalid device IDs
- * will report themselves as unpaused here.
+ * through OpenAudioDevice() can be. Physical and invalid device IDs will report
+ * themselves as unpaused here.
  *
- * @param devid a device opened by AudioDevice.AudioDevice().
+ * @param devid a device opened by OpenAudioDevice().
  * @returns true if device is valid and paused, false otherwise.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -37501,14 +37500,13 @@ inline void AudioDevice::SetGain(float gain)
  * hardware, so that applications don't drop the last buffer of data they
  * supplied if terminating immediately afterwards.
  *
- * @param devid an audio device id previously returned by
- *              AudioDevice.AudioDevice().
+ * @param devid an audio device id previously returned by OpenAudioDevice().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.AudioDevice
+ * @sa OpenAudioDevice
  */
 inline void CloseAudioDevice(AudioDeviceID devid)
 {
@@ -37731,7 +37729,7 @@ inline AudioStream::AudioStream(AudioDeviceRef devid,
  * - `prop::AudioStream._AUTO_CLEANUP_BOOLEAN`: if true (the default), the
  *   stream be automatically cleaned up when the audio subsystem quits. If set
  *   to false, the streams will persist beyond that. This property is ignored
- *   for streams created through AudioStream.AudioStream(), and will always be
+ *   for streams created through AudioDevice.OpenStream(), and will always be
  *   cleaned up. Streams that are not cleaned up will still be unbound from
  *   devices when the audio subsystem quits. This property was added in SDL
  *   3.4.0.
@@ -38588,7 +38586,7 @@ inline void AudioStream::PauseDevice()
  * previously been paused. Once unpaused, any bound audio streams will begin to
  * progress again, and audio can be generated.
  *
- * AudioStream.AudioStream opens audio devices in a paused state, so this
+ * AudioDevice.OpenStream opens audio devices in a paused state, so this
  * function call is required for audio playback to begin on such devices.
  *
  * @param stream the audio stream associated with the audio device to resume.
@@ -38931,8 +38929,8 @@ inline void AudioStream::SetPutCallback(AudioStreamCB callback)
  * queued. You do not need to manually clear the stream first.
  *
  * If this stream was bound to an audio device, it is unbound during this call.
- * If this stream was created with AudioStream.AudioStream, the audio device
- * that was opened alongside this stream's creation will be closed, too.
+ * If this stream was created with AudioDevice.OpenStream, the audio device that
+ * was opened alongside this stream's creation will be closed, too.
  *
  * @param stream the audio stream to destroy.
  *
@@ -38940,7 +38938,7 @@ inline void AudioStream::SetPutCallback(AudioStreamCB callback)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.AudioStream
+ * @sa CreateAudioStream
  */
 inline void DestroyAudioStream(AudioStreamRaw stream)
 {
@@ -40401,10 +40399,10 @@ constexpr Keycode ScancodeToKeycode(Scancode x)
  * These functions provide a cross-platform way to spawn and manage OS-level
  * processes.
  *
- * You can create a new subprocess with Process.Process() and optionally read
- * and write to it using Process.Read() or Process.GetInput() and
+ * You can create a new subprocess with CreateProcess() and optionally read and
+ * write to it using Process.Read() or Process.GetInput() and
  * Process.GetOutput(). If more advanced functionality like chaining input
- * between processes is necessary, you can use Process.Process().
+ * between processes is necessary, you can use CreateProcessWithProperties().
  *
  * You can get the status of a created process with Process.Wait(), or terminate
  * the process with Process.Kill().
@@ -40458,7 +40456,7 @@ struct ProcessRef;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa Process.Process
+ * @sa CreateProcessWithProperties
  * @sa Process.GetProperties
  * @sa Process.Read
  * @sa Process.GetInput
@@ -40487,7 +40485,7 @@ constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa Process.Process
+ * @sa CreateProcess
  *
  * @cat resource
  */
@@ -40543,7 +40541,7 @@ public:
    * `prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and will allow
    * the use of Process.Read() or Process.GetInput() and Process.GetOutput().
    *
-   * See Process.Process() for more details.
+   * See CreateProcessWithProperties() for more details.
    *
    * @param args the path and arguments for the new process.
    * @param pipe_stdio true to create pipes to the process's standard input and
@@ -40557,7 +40555,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa CreateProcessWithProperties
    * @sa Process.GetProperties
    * @sa Process.Read
    * @sa Process.GetInput
@@ -40629,7 +40627,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa CreateProcess
    * @sa Process.GetProperties
    * @sa Process.Read
    * @sa Process.GetInput
@@ -40680,8 +40678,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.Kill
    */
   void Destroy();
@@ -40711,8 +40709,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    */
   PropertiesRef GetProperties() const;
 
@@ -40738,8 +40736,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.Destroy
    */
   StringResult Read(int* exitcode = nullptr);
@@ -40780,8 +40778,8 @@ public:
   /**
    * Get the IOStream associated with process standard input.
    *
-   * The process must have been created with Process.Process() and pipe_stdio
-   * set to true, or with Process.Process() and
+   * The process must have been created with CreateProcess() and pipe_stdio set
+   * to true, or with CreateProcessWithProperties() and
    * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Writing to this stream can return less data than expected if the process
@@ -40796,8 +40794,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.GetOutput
    */
   IOStreamRef GetInput();
@@ -40805,8 +40803,8 @@ public:
   /**
    * Get the IOStream associated with process standard output.
    *
-   * The process must have been created with Process.Process() and pipe_stdio
-   * set to true, or with Process.Process() and
+   * The process must have been created with CreateProcess() and pipe_stdio set
+   * to true, or with CreateProcessWithProperties() and
    * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Reading from this stream can return 0 with IOStream.GetStatus() returning
@@ -40819,8 +40817,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.GetInput
    */
   IOStreamRef GetOutput();
@@ -40839,8 +40837,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.Wait
    * @sa Process.Destroy
    */
@@ -40871,8 +40869,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.Kill
    * @sa Process.Destroy
    */
@@ -40967,7 +40965,7 @@ struct ProcessRef : Process
  * to `PROCESS_STDIO_APP`, and will allow the use of Process.Read() or
  * Process.GetInput() and Process.GetOutput().
  *
- * See Process.Process() for more details.
+ * See CreateProcessWithProperties() for more details.
  *
  * @param args the path and arguments for the new process.
  * @param pipe_stdio true to create pipes to the process's standard input and
@@ -40981,7 +40979,7 @@ struct ProcessRef : Process
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
+ * @sa CreateProcessWithProperties
  * @sa Process.GetProperties
  * @sa Process.Read
  * @sa Process.GetInput
@@ -41066,7 +41064,7 @@ inline Process::Process(PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
+ * @sa CreateProcess
  * @sa Process.GetProperties
  * @sa Process.Read
  * @sa Process.GetInput
@@ -41156,8 +41154,8 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  */
 inline PropertiesRef GetProcessProperties(ProcessRef process)
 {
@@ -41192,8 +41190,8 @@ inline PropertiesRef Process::GetProperties() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.Destroy
  */
 inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
@@ -41211,9 +41209,9 @@ inline StringResult Process::Read(int* exitcode)
 /**
  * Get the IOStream associated with process standard input.
  *
- * The process must have been created with Process.Process() and pipe_stdio set
- * to true, or with Process.Process() and `prop::process.CREATE_STDIN_NUMBER`
- * set to `PROCESS_STDIO_APP`.
+ * The process must have been created with CreateProcess() and pipe_stdio set to
+ * true, or with CreateProcessWithProperties() and
+ * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
  *
  * Writing to this stream can return less data than expected if the process
  * hasn't read its input. It may be blocked waiting for its output to be read,
@@ -41228,8 +41226,8 @@ inline StringResult Process::Read(int* exitcode)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.GetOutput
  */
 inline IOStreamRef GetProcessInput(ProcessRef process)
@@ -41245,9 +41243,9 @@ inline IOStreamRef Process::GetInput()
 /**
  * Get the IOStream associated with process standard output.
  *
- * The process must have been created with Process.Process() and pipe_stdio set
- * to true, or with Process.Process() and `prop::process.CREATE_STDOUT_NUMBER`
- * set to `PROCESS_STDIO_APP`.
+ * The process must have been created with CreateProcess() and pipe_stdio set to
+ * true, or with CreateProcessWithProperties() and
+ * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
  *
  * Reading from this stream can return 0 with IOStream.GetStatus() returning
  * IO_STATUS_NOT_READY if no output is available yet.
@@ -41260,8 +41258,8 @@ inline IOStreamRef Process::GetInput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.GetInput
  */
 inline IOStreamRef GetProcessOutput(ProcessRef process)
@@ -41288,8 +41286,8 @@ inline IOStreamRef Process::GetOutput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.Wait
  * @sa Process.Destroy
  */
@@ -41326,8 +41324,8 @@ inline void Process::Kill(bool force) { SDL::KillProcess(m_resource, force); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.Kill
  * @sa Process.Destroy
  */
@@ -41353,8 +41351,8 @@ inline bool Process::Wait(bool block, int* exitcode)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.Kill
  */
 inline void DestroyProcess(ProcessRaw process) { SDL_DestroyProcess(process); }
@@ -41464,7 +41462,7 @@ inline void Process::Destroy() { DestroyProcess(release()); }
  *     extern char** fileNames;
  *     extern size_t numFiles;
  *
- *     Storage title(nullptr, 0);
+ *     Storage title = OpenTitleStorage(nullptr, 0);
  *     if (title == nullptr) {
  *         // Something bad happened!
  *     }
@@ -41492,7 +41490,7 @@ inline void Process::Destroy() { DestroyProcess(release()); }
  *
  * void ReadSave(void)
  * {
- *     Storage user("libsdl", "Storage Example", 0);
+ *     Storage user = OpenUserStorage("libsdl", "Storage Example", 0);
  *     if (user == nullptr) {
  *         // Something bad happened!
  *     }
@@ -41516,7 +41514,7 @@ inline void Process::Destroy() { DestroyProcess(release()); }
  *
  * void WriteSave(void)
  * {
- *     Storage user("libsdl", "Storage Example", 0);
+ *     Storage user = OpenUserStorage("libsdl", "Storage Example", 0);
  *     if (user == nullptr) {
  *         // Something bad happened!
  *     }
@@ -41591,7 +41589,7 @@ struct StorageRef;
  * Function interface for Storage.
  *
  * Apps that want to supply a custom implementation of Storage will fill in all
- * the functions in this struct, and then pass it to Storage.Storage to create a
+ * the functions in this struct, and then pass it to OpenStorage to create a
  * custom Storage object.
  *
  * It is not usually necessary to do this; SDL provides standard implementations
@@ -41609,8 +41607,8 @@ using StorageInterface = SDL_StorageInterface;
  * An abstract interface for filesystem access.
  *
  * This is an opaque datatype. One can create this object using standard SDL
- * functions like Storage.Storage, etc, or create an object with a custom
- * implementation using Storage.Storage.
+ * functions like OpenTitleStorage or OpenUserStorage, etc, or create an object
+ * with a custom implementation using OpenStorage.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -41655,7 +41653,7 @@ public:
   /**
    * Opens up a read-only container for the application's filesystem.
    *
-   * By default, Storage.Storage uses the generic storage implementation. When
+   * By default, OpenTitleStorage uses the generic storage implementation. When
    * the path override is not provided, the generic implementation will use the
    * output of GetBasePath as the base path.
    *
@@ -41668,7 +41666,7 @@ public:
    *
    * @sa Storage.Close
    * @sa Storage.GetFileSize
-   * @sa Storage.Storage
+   * @sa OpenUserStorage
    * @sa Storage.ReadFile
    */
   Storage(StringParam override, PropertiesRef props);
@@ -41692,7 +41690,7 @@ public:
    * @sa Storage.Close
    * @sa Storage.GetFileSize
    * @sa Storage.GetSpaceRemaining
-   * @sa Storage.Storage
+   * @sa OpenTitleStorage
    * @sa Storage.ReadFile
    * @sa Storage.Ready
    * @sa Storage.WriteFile
@@ -41703,7 +41701,7 @@ public:
    * Opens up a container for local filesystem storage.
    *
    * This is provided for development and tools. Portable applications should
-   * use Storage.Storage() for access to game data and Storage.Storage() for
+   * use OpenTitleStorage() for access to game data and OpenUserStorage() for
    * access to user data.
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
@@ -41716,8 +41714,8 @@ public:
    * @sa Storage.Close
    * @sa Storage.GetFileSize
    * @sa Storage.GetSpaceRemaining
-   * @sa Storage.Storage
-   * @sa Storage.Storage
+   * @sa OpenTitleStorage
+   * @sa OpenUserStorage
    * @sa Storage.ReadFile
    * @sa Storage.WriteFile
    */
@@ -41728,8 +41726,8 @@ public:
    *
    * Applications do not need to use this function unless they are providing
    * their own Storage implementation. If you just need an Storage, you should
-   * use the built-in implementations in SDL, like Storage.Storage() or
-   * Storage.Storage().
+   * use the built-in implementations in SDL, like OpenTitleStorage() or
+   * OpenUserStorage().
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -41792,7 +41790,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Storage
+   * @sa OpenFileStorage
+   * @sa OpenStorage
+   * @sa OpenTitleStorage
+   * @sa OpenUserStorage
    */
   bool Close();
 
@@ -42170,9 +42171,9 @@ struct StorageRef : Storage
 /**
  * Opens up a read-only container for the application's filesystem.
  *
- * By default, Storage.Storage uses the generic storage implementation. When the
- * path override is not provided, the generic implementation will use the output
- * of GetBasePath as the base path.
+ * By default, OpenTitleStorage uses the generic storage implementation. When
+ * the path override is not provided, the generic implementation will use the
+ * output of GetBasePath as the base path.
  *
  * @param override a path to override the backend's default title root.
  * @param props a property list that may contain backend-specific information.
@@ -42183,7 +42184,7 @@ struct StorageRef : Storage
  *
  * @sa Storage.Close
  * @sa Storage.GetFileSize
- * @sa Storage.Storage
+ * @sa OpenUserStorage
  * @sa Storage.ReadFile
  */
 inline Storage OpenTitleStorage(StringParam override, PropertiesRef props)
@@ -42230,7 +42231,7 @@ inline Storage::Storage(const StorageInterface& iface, void* userdata)
  * @sa Storage.Close
  * @sa Storage.GetFileSize
  * @sa Storage.GetSpaceRemaining
- * @sa Storage.Storage
+ * @sa OpenTitleStorage
  * @sa Storage.ReadFile
  * @sa Storage.Ready
  * @sa Storage.WriteFile
@@ -42246,8 +42247,8 @@ inline Storage OpenUserStorage(StringParam org,
  * Opens up a container for local filesystem storage.
  *
  * This is provided for development and tools. Portable applications should use
- * Storage.Storage() for access to game data and Storage.Storage() for access to
- * user data.
+ * OpenTitleStorage() for access to game data and OpenUserStorage() for access
+ * to user data.
  *
  * @param path the base path prepended to all storage paths, or nullptr for no
  *             base path.
@@ -42259,8 +42260,8 @@ inline Storage OpenUserStorage(StringParam org,
  * @sa Storage.Close
  * @sa Storage.GetFileSize
  * @sa Storage.GetSpaceRemaining
- * @sa Storage.Storage
- * @sa Storage.Storage
+ * @sa OpenTitleStorage
+ * @sa OpenUserStorage
  * @sa Storage.ReadFile
  * @sa Storage.WriteFile
  */
@@ -42274,7 +42275,8 @@ inline Storage OpenFileStorage(StringParam path)
  *
  * Applications do not need to use this function unless they are providing their
  * own Storage implementation. If you just need an Storage, you should use the
- * built-in implementations in SDL, like Storage.Storage() or Storage.Storage().
+ * built-in implementations in SDL, like OpenTitleStorage() or
+ * OpenUserStorage().
  *
  * This function makes a copy of `iface` and the caller does not need to keep it
  * around after this call.
@@ -42311,10 +42313,10 @@ inline Storage OpenStorage(const StorageInterface& iface, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Storage
- * @sa Storage.Storage
- * @sa Storage.Storage
- * @sa Storage.Storage
+ * @sa OpenFileStorage
+ * @sa OpenStorage
+ * @sa OpenTitleStorage
+ * @sa OpenUserStorage
  */
 inline bool CloseStorage(StorageRaw storage)
 {
@@ -42950,7 +42952,7 @@ constexpr FlipMode FLIP_HORIZONTAL_AND_VERTICAL =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Surface.Surface
+ * @sa CreateSurface
  * @sa Surface.Destroy
  */
 class Surface
@@ -43002,7 +43004,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
+   * @sa CreateSurfaceFrom
    * @sa Surface.Destroy
    */
   Surface(const PointRaw& size, PixelFormat format);
@@ -43030,7 +43032,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
+   * @sa CreateSurface
    * @sa Surface.Destroy
    */
   Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch);
@@ -43057,11 +43059,11 @@ public:
    *
    * There is a separate function to read files from an IOStream, if you need an
    * i/o abstraction to provide data from anywhere instead of a simple
-   * filesystem read; that function is Surface.Surface().
+   * filesystem read; that function is LoadSurface_IO().
    *
    * If you are using SDL's 2D rendering API, there is an equivalent call to
    * load images directly into an Texture for use by the GPU without using a
-   * software surface: call Texture.Texture() instead.
+   * software surface: call LoadTexture() instead.
    *
    * @param file a path on the filesystem to load an image from.
    * @post a new SDL surface, or nullptr on error.
@@ -43069,7 +43071,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa LoadSurfaceTyped_IO
-   * @sa Surface.Surface
+   * @sa LoadSurface_IO
    */
   Surface(StringParam file);
 
@@ -43098,9 +43100,9 @@ public:
    * during this call in any case.
    *
    * There is a separate function to read files from disk without having to deal
-   * with IOStream: `Surface.Surface("filename.jpg")` will call this function
-   * and manage those details for you, determining the file type from the
-   * filename's extension.
+   * with IOStream: `LoadSurface("filename.jpg")` will call this function and
+   * manage those details for you, determining the file type from the filename's
+   * extension.
    *
    * There is also LoadSurfaceTyped_IO(), which is equivalent to this function
    * except a file extension (like "BMP", "JPG", etc) can be specified, in case
@@ -43108,7 +43110,7 @@ public:
    *
    * If you are using SDL's 2D rendering API, there is an equivalent call to
    * load images directly into an Texture for use by the GPU without using a
-   * software surface: call Texture.Texture() instead.
+   * software surface: call LoadTexture_IO() instead.
    *
    * @param src an IOStream that data will be read from.
    * @param closeio true to close/free the IOStream before returning, false to
@@ -43117,7 +43119,7 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Surface.Surface
+   * @sa LoadSurface
    * @sa LoadSurfaceTyped_IO
    */
   Surface(IOStreamRef src, bool closeio = false);
@@ -43193,8 +43195,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
-   * @sa Surface.Surface
+   * @sa CreateSurface
+   * @sa CreateSurfaceFrom
    */
   void Destroy();
 
@@ -43326,7 +43328,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.Palette
+   * @sa CreatePalette
    * @sa Surface.GetPalette
    */
   void SetPalette(PaletteRef palette);
@@ -45029,7 +45031,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.Surface
+ * @sa CreateSurfaceFrom
  * @sa Surface.Destroy
  */
 inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
@@ -45074,7 +45076,7 @@ inline Surface::Surface(const PointRaw& size,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.Surface
+ * @sa CreateSurface
  * @sa Surface.Destroy
  */
 inline Surface CreateSurfaceFrom(const PointRaw& size,
@@ -45096,8 +45098,8 @@ inline Surface CreateSurfaceFrom(const PointRaw& size,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.Surface
- * @sa Surface.Surface
+ * @sa CreateSurface
+ * @sa CreateSurfaceFrom
  */
 inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
 
@@ -45284,7 +45286,7 @@ inline Palette Surface::CreatePalette()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Palette.Palette
+ * @sa CreatePalette
  * @sa Surface.GetPalette
  */
 inline void SetSurfacePalette(SurfaceRef surface, PaletteRef palette)
@@ -47750,7 +47752,7 @@ constexpr void* Surface::GetPixels() const
  * to each thread, but accessed from a single key).
  *
  * On platforms without thread support (such as Emscripten when built without
- * pthreads), these functions still exist, but things like Thread.Thread() will
+ * pthreads), these functions still exist, but things like CreateThread() will
  * report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
@@ -47831,9 +47833,9 @@ constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
 using ThreadID = SDL_ThreadID;
 
 /**
- * The function passed to Thread.Thread() as the new thread's entry point.
+ * The function passed to CreateThread() as the new thread's entry point.
  *
- * @param data what was passed as `data` to Thread.Thread().
+ * @param data what was passed as `data` to CreateThread().
  * @returns a value that can be reported through Thread.Wait().
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -47841,7 +47843,7 @@ using ThreadID = SDL_ThreadID;
 using ThreadFunction = int(SDLCALL*)(void* data);
 
 /**
- * The function passed to Thread.Thread() as the new thread's entry point.
+ * The function passed to CreateThread() as the new thread's entry point.
  *
  * @returns a value that can be reported through Thread.Wait().
  *
@@ -47871,7 +47873,7 @@ using TLSDestructorCallback = void(SDLCALL*)(void* value);
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThread
  * @sa Thread.Wait
  *
  * @cat resource
@@ -47915,8 +47917,8 @@ public:
   /**
    * Create a new thread with a default stack size.
    *
-   * This is a convenience function, equivalent to calling Thread.Thread with
-   * the following properties set:
+   * This is a convenience function, equivalent to calling
+   * CreateThreadWithProperties with the following properties set:
    *
    * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
    * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -47941,7 +47943,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa CreateThreadWithProperties
    * @sa Thread.Wait
    */
   Thread(ThreadFunction fn, StringParam name, void* data);
@@ -47949,8 +47951,8 @@ public:
   /**
    * Create a new thread with a default stack size.
    *
-   * This is a convenience function, equivalent to calling Thread.Thread with
-   * the following properties set:
+   * This is a convenience function, equivalent to calling
+   * CreateThreadWithProperties with the following properties set:
    *
    * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
    * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -47974,7 +47976,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa CreateThreadWithProperties
    * @sa Thread.Wait
    */
   Thread(ThreadCB fn, StringParam name);
@@ -48027,7 +48029,7 @@ public:
    *
    * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
    * there is no symbol clash, but trying to load an SDL shared library and look
-   * for "Thread.Thread" will fail.
+   * for "CreateThreadWithProperties" will fail.
    *
    * Usually, apps should just call this function the same way on every platform
    * and let the macros hide the details.
@@ -48040,7 +48042,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa CreateThread
    * @sa Thread.Wait
    */
   Thread(PropertiesRef props);
@@ -48105,13 +48107,13 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa CreateThread
    * @sa Thread.Wait
    */
   void Detach();
 
   /**
-   * Get the thread name as it was specified in Thread.Thread().
+   * Get the thread name as it was specified in CreateThread().
    *
    * @returns a pointer to a UTF-8 string that names the specified thread, or
    *          nullptr if it doesn't have a name.
@@ -48187,7 +48189,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa CreateThread
    * @sa Thread.Detach
    */
   void Wait(int* status);
@@ -48295,8 +48297,8 @@ using TLSID = AtomicInt;
 /**
  * Create a new thread with a default stack size.
  *
- * This is a convenience function, equivalent to calling Thread.Thread with the
- * following properties set:
+ * This is a convenience function, equivalent to calling
+ * CreateThreadWithProperties with the following properties set:
  *
  * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
  * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -48321,7 +48323,7 @@ using TLSID = AtomicInt;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThreadWithProperties
  * @sa Thread.Wait
  */
 inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
@@ -48332,8 +48334,8 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
 /**
  * Create a new thread with a default stack size.
  *
- * This is a convenience function, equivalent to calling Thread.Thread with the
- * following properties set:
+ * This is a convenience function, equivalent to calling
+ * CreateThreadWithProperties with the following properties set:
  *
  * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
  * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -48357,7 +48359,7 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThreadWithProperties
  * @sa Thread.Wait
  */
 inline Thread CreateThread(ThreadCB fn, StringParam name)
@@ -48430,7 +48432,7 @@ inline Thread::Thread(PropertiesRef props)
  *
  * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so there
  * is no symbol clash, but trying to load an SDL shared library and look for
- * "Thread.Thread" will fail.
+ * "CreateThreadWithProperties" will fail.
  *
  * Usually, apps should just call this function the same way on every platform
  * and let the macros hide the details.
@@ -48443,7 +48445,7 @@ inline Thread::Thread(PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThread
  * @sa Thread.Wait
  */
 inline Thread CreateThreadWithProperties(PropertiesRef props)
@@ -48467,7 +48469,7 @@ constexpr auto CREATE_STACKSIZE_NUMBER =
 } // namespace prop::thread
 
 /**
- * Get the thread name as it was specified in Thread.Thread().
+ * Get the thread name as it was specified in CreateThread().
  *
  * @param thread the thread to query.
  * @returns a pointer to a UTF-8 string that names the specified thread, or
@@ -48576,7 +48578,7 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  * Note that the thread pointer is freed by this function and is not valid
  * afterward.
  *
- * @param thread the Thread pointer that was returned from the Thread.Thread()
+ * @param thread the Thread pointer that was returned from the CreateThread()
  *               call that started this thread.
  * @param status a pointer filled in with the value returned from the thread
  *               function by its 'return', or -1 if the thread has been detached
@@ -48587,7 +48589,7 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThread
  * @sa Thread.Detach
  */
 inline void WaitThread(ThreadRef thread, int* status)
@@ -48647,12 +48649,12 @@ inline ThreadState Thread::GetState() const
  *
  * @threadsafety It is safe to call this function from any thread.
  *
- * @param thread the Thread pointer that was returned from the Thread.Thread()
+ * @param thread the Thread pointer that was returned from the CreateThread()
  *               call that started this thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThread
  * @sa Thread.Wait
  */
 inline void DetachThread(ThreadRaw thread) { SDL_DetachThread(thread); }
@@ -48985,7 +48987,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Camera.Camera
+   * @sa OpenCamera
    */
   void Close();
 
@@ -49018,7 +49020,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Camera.Camera
+   * @sa OpenCamera
    * @sa Camera.Close
    */
   CameraPermissionState GetPermissionState();
@@ -49033,7 +49035,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Camera.Camera
+   * @sa OpenCamera
    */
   CameraID GetID();
 
@@ -49067,7 +49069,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Camera.Camera
+   * @sa OpenCamera
    */
   std::optional<CameraSpec> GetFormat();
 
@@ -49414,7 +49416,7 @@ inline const char* GetCurrentCameraDriver()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Camera.Camera
+ * @sa OpenCamera
  */
 inline OwnArray<CameraID> GetCameras()
 {
@@ -49430,10 +49432,10 @@ inline OwnArray<CameraID> GetCameras()
  * offer. This is useful if your app can accept a variety of image formats and
  * sizes and so want to find the optimal spec that doesn't require conversion.
  *
- * This function isn't strictly required; if you call Camera.Camera with a
- * nullptr spec, SDL will choose a native format for you, and if you instead
- * specify a desired format, it will transparently convert to the requested
- * format on your behalf.
+ * This function isn't strictly required; if you call OpenCamera with a nullptr
+ * spec, SDL will choose a native format for you, and if you instead specify a
+ * desired format, it will transparently convert to the requested format on your
+ * behalf.
  *
  * If `count` is not nullptr, it will be filled with the number of elements in
  * the returned array.
@@ -49453,7 +49455,7 @@ inline OwnArray<CameraID> GetCameras()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetCameras
- * @sa Camera.Camera
+ * @sa OpenCamera
  */
 inline OwnArray<CameraSpec*> GetCameraSupportedFormats(CameraID instance_id)
 {
@@ -49586,7 +49588,7 @@ inline Camera::Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Camera.Camera
+ * @sa OpenCamera
  * @sa Camera.Close
  */
 inline CameraPermissionState GetCameraPermissionState(CameraRef camera)
@@ -49610,7 +49612,7 @@ inline CameraPermissionState Camera::GetPermissionState()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Camera.Camera
+ * @sa OpenCamera
  */
 inline CameraID GetCameraID(CameraRef camera)
 {
@@ -49622,7 +49624,7 @@ inline CameraID Camera::GetID() { return SDL::GetCameraID(m_resource); }
 /**
  * Get the properties associated with an opened camera.
  *
- * @param camera the Camera obtained from Camera.Camera().
+ * @param camera the Camera obtained from OpenCamera().
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
@@ -49659,7 +49661,7 @@ inline PropertiesRef Camera::GetProperties()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Camera.Camera
+ * @sa OpenCamera
  */
 inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
 {
@@ -49784,7 +49786,7 @@ inline void CameraFrame::reset()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Camera.Camera
+ * @sa OpenCamera
  */
 inline void CloseCamera(CameraRaw camera) { SDL_CloseCamera(camera); }
 
@@ -49800,10 +49802,10 @@ inline void Camera::Close() { CloseCamera(release()); }
  * these primitives are, why they are useful, and how to correctly use them is
  * vital to writing correct and safe multithreaded programs.
  *
- * - Mutexes: Mutex.Mutex()
- * - Read/Write locks: RWLock.RWLock()
- * - Semaphores: Semaphore.Semaphore()
- * - Condition variables: Condition.Condition()
+ * - Mutexes: CreateMutex()
+ * - Read/Write locks: CreateRWLock()
+ * - Semaphores: CreateSemaphore()
+ * - Condition variables: CreateCondition()
  *
  * SDL also offers a datatype, InitState, which can be used to make sure only
  * one thread initializes/deinitializes some resource that several threads might
@@ -49959,7 +49961,7 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Destroy a mutex created with Mutex.Mutex().
+   * Destroy a mutex created with CreateMutex().
    *
    * This function must be called on any mutex that is no longer needed. Failure
    * to destroy a mutex will result in a system memory or resource leak. While
@@ -49971,7 +49973,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Mutex.Mutex
+   * @sa CreateMutex
    */
   void Destroy();
 
@@ -50221,7 +50223,7 @@ inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
 
 /**
- * Destroy a mutex created with Mutex.Mutex().
+ * Destroy a mutex created with CreateMutex().
  *
  * This function must be called on any mutex that is no longer needed. Failure
  * to destroy a mutex will result in a system memory or resource leak. While it
@@ -50235,7 +50237,7 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Mutex.Mutex
+ * @sa CreateMutex
  */
 inline void DestroyMutex(MutexRaw mutex) { SDL_DestroyMutex(mutex); }
 
@@ -50314,7 +50316,7 @@ public:
    *
    * All newly-created read/write locks begin in the _unlocked_ state.
    *
-   * Calls to RWLock.LockForReading() and RWLock.LockForWriting will not return
+   * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
    * while the rwlock is locked _for writing_ by another thread. See
    * RWLock.TryLockForReading() and RWLock.TryLockForWriting() to attempt to
    * lock without blocking.
@@ -50333,8 +50335,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.Destroy
-   * @sa RWLock.LockForReading
-   * @sa RWLock.LockForWriting
+   * @sa LockRWLockForReading
+   * @sa LockRWLockForWriting
    * @sa RWLock.TryLockForReading
    * @sa RWLock.TryLockForWriting
    * @sa RWLock.Unlock
@@ -50372,7 +50374,7 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Destroy a read/write lock created with RWLock.RWLock().
+   * Destroy a read/write lock created with CreateRWLock().
    *
    * This function must be called on any read/write lock that is no longer
    * needed. Failure to destroy a rwlock will result in a system memory or
@@ -50384,7 +50386,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.RWLock
+   * @sa CreateRWLock
    */
   void Destroy();
 
@@ -50419,7 +50421,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.LockForWriting
+   * @sa LockRWLockForWriting
    * @sa RWLock.TryLockForReading
    * @sa RWLock.Unlock
    */
@@ -50450,7 +50452,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.LockForReading
+   * @sa LockRWLockForReading
    * @sa RWLock.TryLockForWriting
    * @sa RWLock.Unlock
    */
@@ -50459,7 +50461,7 @@ public:
   /**
    * Try to lock a read/write lock _for reading_ without blocking.
    *
-   * This works just like RWLock.LockForReading(), but if the rwlock is not
+   * This works just like LockRWLockForReading(), but if the rwlock is not
    * available, then this function returns false immediately.
    *
    * This technique is useful if you need access to a resource but don't want to
@@ -50476,7 +50478,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.LockForReading
+   * @sa LockRWLockForReading
    * @sa RWLock.TryLockForWriting
    * @sa RWLock.Unlock
    */
@@ -50485,7 +50487,7 @@ public:
   /**
    * Try to lock a read/write lock _for writing_ without blocking.
    *
-   * This works just like RWLock.LockForWriting(), but if the rwlock is not
+   * This works just like LockRWLockForWriting(), but if the rwlock is not
    * available, then this function returns false immediately.
    *
    * This technique is useful if you need exclusive access to a resource but
@@ -50507,7 +50509,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.LockForWriting
+   * @sa LockRWLockForWriting
    * @sa RWLock.TryLockForReading
    * @sa RWLock.Unlock
    */
@@ -50532,8 +50534,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.LockForReading
-   * @sa RWLock.LockForWriting
+   * @sa LockRWLockForReading
+   * @sa LockRWLockForWriting
    * @sa RWLock.TryLockForReading
    * @sa RWLock.TryLockForWriting
    */
@@ -50629,7 +50631,7 @@ struct RWLockRef : RWLock
  *
  * All newly-created read/write locks begin in the _unlocked_ state.
  *
- * Calls to RWLock.LockForReading() and RWLock.LockForWriting will not return
+ * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
  * while the rwlock is locked _for writing_ by another thread. See
  * RWLock.TryLockForReading() and RWLock.TryLockForWriting() to attempt to lock
  * without blocking.
@@ -50648,8 +50650,8 @@ struct RWLockRef : RWLock
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.Destroy
- * @sa RWLock.LockForReading
- * @sa RWLock.LockForWriting
+ * @sa LockRWLockForReading
+ * @sa LockRWLockForWriting
  * @sa RWLock.TryLockForReading
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
@@ -50694,7 +50696,7 @@ inline RWLock::RWLock()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.LockForWriting
+ * @sa LockRWLockForWriting
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
@@ -50732,7 +50734,7 @@ inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.LockForReading
+ * @sa LockRWLockForReading
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
@@ -50746,7 +50748,7 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
 /**
  * Try to lock a read/write lock _for reading_ without blocking.
  *
- * This works just like RWLock.LockForReading(), but if the rwlock is not
+ * This works just like LockRWLockForReading(), but if the rwlock is not
  * available, then this function returns false immediately.
  *
  * This technique is useful if you need access to a resource but don't want to
@@ -50764,7 +50766,7 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.LockForReading
+ * @sa LockRWLockForReading
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
@@ -50781,7 +50783,7 @@ inline bool RWLock::TryLockForReading()
 /**
  * Try to lock a read/write lock _for writing_ without blocking.
  *
- * This works just like RWLock.LockForWriting(), but if the rwlock is not
+ * This works just like LockRWLockForWriting(), but if the rwlock is not
  * available, then this function returns false immediately.
  *
  * This technique is useful if you need exclusive access to a resource but don't
@@ -50804,7 +50806,7 @@ inline bool RWLock::TryLockForReading()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.LockForWriting
+ * @sa LockRWLockForWriting
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
@@ -50839,8 +50841,8 @@ inline bool RWLock::TryLockForWriting()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.LockForReading
- * @sa RWLock.LockForWriting
+ * @sa LockRWLockForReading
+ * @sa LockRWLockForWriting
  * @sa RWLock.TryLockForReading
  * @sa RWLock.TryLockForWriting
  */
@@ -50849,7 +50851,7 @@ inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
 
 /**
- * Destroy a read/write lock created with RWLock.RWLock().
+ * Destroy a read/write lock created with CreateRWLock().
  *
  * This function must be called on any read/write lock that is no longer needed.
  * Failure to destroy a rwlock will result in a system memory or resource leak.
@@ -50863,7 +50865,7 @@ inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.RWLock
+ * @sa CreateRWLock
  */
 inline void DestroyRWLock(RWLockRaw rwlock) { SDL_DestroyRWLock(rwlock); }
 
@@ -50987,7 +50989,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Semaphore.Semaphore
+   * @sa CreateSemaphore
    */
   void Destroy();
 
@@ -51195,7 +51197,7 @@ inline Semaphore::Semaphore(Uint32 initial_value)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Semaphore.Semaphore
+ * @sa CreateSemaphore
  */
 inline void DestroySemaphore(SemaphoreRaw sem) { SDL_DestroySemaphore(sem); }
 
@@ -51425,7 +51427,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Condition.Condition
+   * @sa CreateCondition
    */
   void Destroy();
 
@@ -51616,7 +51618,7 @@ inline Condition::Condition()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Condition.Condition
+ * @sa CreateCondition
  */
 inline void DestroyCondition(ConditionRaw cond) { SDL_DestroyCondition(cond); }
 
@@ -52157,7 +52159,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa CreateTray
    */
   void Destroy();
 
@@ -52171,7 +52173,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa CreateTray
    */
   void SetIcon(SurfaceRef icon);
 
@@ -52185,7 +52187,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa CreateTray
    */
   void SetTooltip(StringParam tooltip);
 
@@ -52206,7 +52208,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa CreateTray
    * @sa Tray.GetMenu
    * @sa TrayMenu.GetParentTray
    */
@@ -52230,7 +52232,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.Tray
+   * @sa CreateTray
    * @sa Tray.CreateMenu
    */
   TrayMenu GetMenu() const;
@@ -52782,7 +52784,7 @@ inline Tray::Tray(SurfaceRef icon, StringParam tooltip)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.Tray
+ * @sa CreateTray
  */
 inline void SetTrayIcon(TrayRef tray, SurfaceRef icon)
 {
@@ -52805,7 +52807,7 @@ inline void Tray::SetIcon(SurfaceRef icon)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.Tray
+ * @sa CreateTray
  */
 inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
 {
@@ -52835,7 +52837,7 @@ inline void Tray::SetTooltip(StringParam tooltip)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.Tray
+ * @sa CreateTray
  * @sa Tray.GetMenu
  * @sa TrayMenu.GetParentTray
  */
@@ -52897,7 +52899,7 @@ inline TrayMenu TrayEntry::CreateSubmenu()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.Tray
+ * @sa CreateTray
  * @sa Tray.CreateMenu
  */
 inline TrayMenu GetTrayMenu(TrayRef tray) { return SDL_GetTrayMenu(tray); }
@@ -53238,7 +53240,7 @@ inline void TrayEntry::Click() { SDL::ClickTrayEntry(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.Tray
+ * @sa CreateTray
  */
 inline void DestroyTray(TrayRaw tray) { SDL_DestroyTray(tray); }
 
@@ -53368,7 +53370,7 @@ inline void TrayEntry::SetCallback(TrayCB callback)
  * The video subsystem covers a lot of functionality, out of necessity, so it is
  * worth perusing the list of functions just to see what's available, but most
  * apps can get by with simply creating a window and listening for events, so
- * start with Window.Window() and PollEvent().
+ * start with CreateWindow() and PollEvent().
  *
  * @{
  */
@@ -53827,7 +53829,7 @@ using DisplayModeData = SDL_DisplayModeData;
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
- * immutable after being set through Window.Window(), some of it can be changed
+ * immutable after being set through CreateWindow(), some of it can be changed
  * on existing windows by the app, and some of it might be altered by the user
  * or system outside of the app's control.
  *
@@ -54071,7 +54073,7 @@ constexpr ProgressState PROGRESS_STATE_ERROR = SDL_PROGRESS_STATE_ERROR;
  *
  * @cat resource
  *
- * @sa Window.Window
+ * @sa CreateWindow
  */
 class Window
 {
@@ -54115,8 +54117,7 @@ public:
    * @param title the title of the window, in UTF-8 encoding.
    * @param size the width and height of the window.
    * @param window_flags the flags used to create the window (see
-   *                     Window.Window(StringParam,const
-   *                     PointRaw&,WindowFlags)).
+   *                     CreateWindow()).
    * @param renderer a pointer filled with the renderer.
    * @throws Error on failure.
    *
@@ -54124,8 +54125,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
-   * @sa Window.Window(StringParam,const PointRaw&,WindowFlags))
+   * @sa CreateRenderer
+   * @sa CreateWindow
    */
   Window(StringParam title,
          const PointRaw& size,
@@ -54189,10 +54190,10 @@ public:
    * is called by Window.Destroy().
    *
    * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * Window.Window() will fail, because Vulkan_LoadLibrary() will fail.
+   * CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.
    *
    * If WINDOW_METAL is specified on an OS that does not support Metal,
-   * Window.Window() will fail.
+   * CreateWindow() will fail.
    *
    * If you intend to use this window with an Renderer, you should use
    * CreateWindowAndRenderer() instead of this function, to avoid window
@@ -54213,8 +54214,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateWindowAndRenderer
-   * @sa Window.Window
-   * @sa Window.Window
+   * @sa CreatePopupWindow
+   * @sa CreateWindowWithProperties
    * @sa Window.Destroy
    */
   Window(StringParam title, const PointRaw& size, WindowFlags flags = 0);
@@ -54285,8 +54286,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
-   * @sa Window.Window
+   * @sa CreateWindow
+   * @sa CreateWindowWithProperties
    * @sa Window.Destroy
    * @sa Window.GetParent
    */
@@ -54416,7 +54417,7 @@ public:
    * - any other string without a leading # sign applies to the element on the
    *   page with that ID. Windows with the "tooltip" and "menu" properties are
    *   popup windows and have the behaviors and guidelines outlined in
-   *   Window.Window().
+   *   CreatePopupWindow().
    *
    * If this window is being created to be used with an Renderer, you should not
    * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
@@ -54436,7 +54437,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Create
-   * @sa Window.Window
+   * @sa CreateWindow
    * @sa Window.Destroy
    */
   Window(PropertiesRef props);
@@ -54485,9 +54486,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
-   * @sa Window.Window
-   * @sa Window.Window
+   * @sa CreatePopupWindow
+   * @sa CreateWindow
+   * @sa CreateWindowWithProperties
    */
   void Destroy();
 
@@ -54679,7 +54680,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
+   * @sa CreatePopupWindow
    */
   WindowRef GetParent() const;
 
@@ -54819,7 +54820,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
+   * @sa CreateWindow
    * @sa Window.Hide
    * @sa Window.Maximize
    * @sa Window.Minimize
@@ -55154,7 +55155,7 @@ public:
    *
    * Note: This function may fail on systems where the window has not yet been
    * decorated by the display server (for example, immediately after calling
-   * Window.Window). It is recommended that you wait at least until the window
+   * CreateWindow). It is recommended that you wait at least until the window
    * has been presented and composited, so that the window system has a chance
    * to decorate the window and provide the border dimensions to SDL.
    *
@@ -55192,7 +55193,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
+   * @sa CreateWindow
    * @sa Window.GetSize
    * @sa GetSizeInPixels()
    */
@@ -55209,7 +55210,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
+   * @sa CreateWindow
    * @sa Window.GetSize
    * @sa GetSizeInPixels(int*, int*)
    */
@@ -56154,7 +56155,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContext.GLContext
+   * @sa Window.CreateGLContext
    */
   void MakeCurrent(GLContext context);
 
@@ -56617,7 +56618,7 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GLContext.GLContext
+ * @sa Window.CreateGLContext
  * @sa GL_SetAttribute
  * @sa GLContext.MakeCurrent
  * @sa GLContext.Destroy
@@ -56702,7 +56703,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContext.GLContext
+   * @sa Window.CreateGLContext
    */
   void Destroy();
 
@@ -56718,7 +56719,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContext.GLContext
+   * @sa Window.CreateGLContext
    */
   void MakeCurrent(WindowRef window);
 };
@@ -56781,7 +56782,7 @@ using EGLint = SDL_EGLint;
  * app add extra attributes to its eglGetPlatformDisplay() call.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
+ * with `EGL_NONE`. If this function returns nullptr, the CreateWindow process
  * will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be passed to
@@ -56810,7 +56811,7 @@ using EGLAttribArrayCallback = EGLAttrib*(SDLCALL*)(void* userdata);
  * callback.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
+ * with `EGL_NONE`. If this function returns nullptr, the CreateWindow process
  * will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be passed to
@@ -57842,10 +57843,10 @@ inline OwnArray<WindowRef> GetWindows()
  * called by Window.Destroy().
  *
  * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
- * Window.Window() will fail, because Vulkan_LoadLibrary() will fail.
+ * CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.
  *
  * If WINDOW_METAL is specified on an OS that does not support Metal,
- * Window.Window() will fail.
+ * CreateWindow() will fail.
  *
  * If you intend to use this window with an Renderer, you should use
  * CreateWindowAndRenderer() instead of this function, to avoid window flicker.
@@ -57865,8 +57866,8 @@ inline OwnArray<WindowRef> GetWindows()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateWindowAndRenderer
- * @sa Window.Window
- * @sa Window.Window
+ * @sa CreatePopupWindow
+ * @sa CreateWindowWithProperties
  * @sa Window.Destroy
  */
 inline Window CreateWindow(StringParam title,
@@ -57963,8 +57964,8 @@ inline Window::Window(PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
- * @sa Window.Window
+ * @sa CreateWindow
+ * @sa CreateWindowWithProperties
  * @sa Window.Destroy
  * @sa Window.GetParent
  */
@@ -58097,7 +58098,7 @@ inline Window CreatePopupWindow(WindowRef parent,
  * - any other string without a leading # sign applies to the element on the
  *   page with that ID. Windows with the "tooltip" and "menu" properties are
  *   popup windows and have the behaviors and guidelines outlined in
- *   Window.Window().
+ *   CreatePopupWindow().
  *
  * If this window is being created to be used with an Renderer, you should not
  * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
@@ -58117,7 +58118,7 @@ inline Window CreatePopupWindow(WindowRef parent,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Properties.Create
- * @sa Window.Window
+ * @sa CreateWindow
  * @sa Window.Destroy
  */
 inline Window CreateWindowWithProperties(PropertiesRef props)
@@ -58408,7 +58409,7 @@ inline WindowRef Window::FromID(WindowID id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
+ * @sa CreatePopupWindow
  */
 inline WindowRef GetWindowParent(WindowRef window)
 {
@@ -58564,7 +58565,7 @@ inline PropertiesRef Window::GetProperties() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
+ * @sa CreateWindow
  * @sa Window.Hide
  * @sa Window.Maximize
  * @sa Window.Minimize
@@ -59030,7 +59031,7 @@ inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
  *
  * Note: This function may fail on systems where the window has not yet been
  * decorated by the display server (for example, immediately after calling
- * Window.Window). It is recommended that you wait at least until the window has
+ * CreateWindow). It is recommended that you wait at least until the window has
  * been presented and composited, so that the window system has a chance to
  * decorate the window and provide the border dimensions to SDL.
  *
@@ -59085,7 +59086,7 @@ inline void Window::GetBordersSize(int* top,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
+ * @sa CreateWindow
  * @sa Window.GetSize
  */
 inline void GetWindowSizeInPixels(WindowRef window, int* w, int* h)
@@ -59105,7 +59106,7 @@ inline void GetWindowSizeInPixels(WindowRef window, int* w, int* h)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
+ * @sa CreateWindow
  * @sa Window.GetSize
  */
 inline Point GetWindowSizeInPixels(WindowRef window)
@@ -60411,9 +60412,9 @@ inline float Window::GetProgressValue()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
- * @sa Window.Window
- * @sa Window.Window
+ * @sa CreatePopupWindow
+ * @sa CreateWindow
+ * @sa CreateWindowWithProperties
  */
 inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
 
@@ -60641,7 +60642,7 @@ inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GLContext.GLContext
+ * @sa Window.CreateGLContext
  * @sa GL_GetAttribute
  * @sa GL_ResetAttributes
  */
@@ -60722,7 +60723,7 @@ inline GLContext::GLContext(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GLContext.GLContext
+ * @sa Window.CreateGLContext
  */
 inline void GL_MakeCurrent(WindowRef window, GLContext context)
 {
@@ -60939,7 +60940,7 @@ inline void Window::GL_Swap() { SDL::GL_SwapWindow(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GLContext.GLContext
+ * @sa Window.CreateGLContext
  */
 inline void GL_DestroyContext(GLContextRaw context)
 {
@@ -63423,7 +63424,7 @@ inline std::string GetEventDescription(const Event& event)
  *
  * A basic workflow might be something like this:
  *
- * The app creates a GPU device with GPUDevice.GPUDevice(), and assigns it to a
+ * The app creates a GPU device with CreateGPUDevice(), and assigns it to a
  * window with GPUDevice.ClaimWindow()--although strictly speaking you can
  * render offscreen entirely, perhaps for image processing, and not use a window
  * at all.
@@ -63431,14 +63432,14 @@ inline std::string GetEventDescription(const Event& event)
  * Next, the app prepares static data (things that are created once and used
  * over and over). For example:
  *
- * - Shaders (programs that run on the GPU): use GPUShader.GPUShader().
+ * - Shaders (programs that run on the GPU): use GPUDevice.CreateShader().
  * - Vertex buffers (arrays of geometry data) and other rendering data: use
- *   GPUBuffer.GPUBuffer() and GPUCopyPass.UploadToBuffer().
- * - Textures (images): use GPUTexture.GPUTexture() and
+ *   GPUDevice.CreateBuffer() and GPUCopyPass.UploadToBuffer().
+ * - Textures (images): use GPUDevice.CreateTexture() and
  *   GPUCopyPass.UploadToTexture().
- * - Samplers (how textures should be read from): use GPUSampler.GPUSampler().
+ * - Samplers (how textures should be read from): use GPUDevice.CreateSampler().
  * - Render pipelines (precalculated rendering state): use
- *   GPUGraphicsPipeline.GPUGraphicsPipeline()
+ *   GPUDevice.CreateGraphicsPipeline()
  *
  * To render, the app creates one or more command buffers, with
  * GPUDevice.AcquireCommandBuffer(). Command buffers collect rendering
@@ -63583,9 +63584,8 @@ inline std::string GetEventDescription(const Event& event)
  * shader resources/registers correctly. The GPU API is very strict with how it
  * wants resources to be laid out and it's difficult for the API to
  * automatically validate shaders to see if they have a compatible layout. See
- * the documentation for GPUShader.GPUShader() and
- * GPUComputePipeline.GPUComputePipeline() for information on the expected
- * layout.
+ * the documentation for GPUDevice.CreateShader() and
+ * GPUDevice.CreateComputePipeline() for information on the expected layout.
  *
  * Another common issue is not setting the correct number of samplers, textures,
  * and buffers in GPUShaderCreateInfo. If possible use shader reflection to
@@ -63607,7 +63607,7 @@ inline std::string GetEventDescription(const Event& event)
  *
  * ### Vulkan
  *
- * SDL driver name: "vulkan" (for use in GPUDevice.GPUDevice() and
+ * SDL driver name: "vulkan" (for use in CreateGPUDevice() and
  * prop::GpuDevice.CREATE_NAME_STRING)
  *
  * Supported on Windows, Linux, Nintendo Switch, and certain Android devices.
@@ -63624,7 +63624,7 @@ inline std::string GetEventDescription(const Event& event)
  *
  * You can remove some of these requirements to increase compatibility with
  * Android devices by using these properties when creating the GPU device with
- * GPUDevice.GPUDevice():
+ * CreateGPUDeviceWithProperties():
  *
  * - prop::GpuDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
  * - prop::GpuDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
@@ -63641,7 +63641,7 @@ inline std::string GetEventDescription(const Event& event)
  *
  * You can remove the Tier 2 resource binding requirement to support Intel
  * Haswell and Broadwell GPUs by using this property when creating the GPU
- * device with GPUDevice.GPUDevice():
+ * device with CreateGPUDeviceWithProperties():
  *
  * - prop::GpuDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
  *
@@ -63859,7 +63859,7 @@ struct GPUCopyPass;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUBuffer.GPUBuffer
+ * @sa GPUDevice.CreateBuffer
  * @sa GPUBufferUsageFlags
  */
 using GPUBufferCreateInfo = SDL_GPUBufferCreateInfo;
@@ -63871,7 +63871,7 @@ using GPUBufferCreateInfo = SDL_GPUBufferCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUBuffer.GPUBuffer
+ * @sa GPUDevice.CreateBuffer
  * @sa GPUCopyPass.UploadToBuffer
  * @sa GPUCopyPass.DownloadFromBuffer
  * @sa GPUCopyPass.CopyBufferToBuffer
@@ -63958,7 +63958,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUTransferBuffer.GPUTransferBuffer
+ * @sa GPUDevice.CreateTransferBuffer
  */
 using GPUTransferBufferCreateInfo = SDL_GPUTransferBufferCreateInfo;
 
@@ -63969,7 +63969,7 @@ using GPUTransferBufferCreateInfo = SDL_GPUTransferBufferCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUTransferBuffer.GPUTransferBuffer
+ * @sa GPUDevice.CreateTransferBuffer
  * @sa GPUDevice.MapTransferBuffer
  * @sa GPUDevice.UnmapTransferBuffer
  * @sa GPUCopyPass.UploadToBuffer
@@ -64044,7 +64044,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUTexture.GPUTexture
+ * @sa GPUDevice.CreateTexture
  * @sa GPUTextureType
  * @sa GPUTextureFormat
  * @sa GPUTextureUsageFlags
@@ -64057,7 +64057,7 @@ using GPUTextureCreateInfo = SDL_GPUTextureCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUTexture.GPUTexture
+ * @sa GPUDevice.CreateTexture
  * @sa GPUCopyPass.UploadToTexture
  * @sa GPUCopyPass.DownloadFromTexture
  * @sa GPUCopyPass.CopyTextureToTexture
@@ -64161,7 +64161,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUSampler.GPUSampler
+ * @sa GPUDevice.CreateSampler
  * @sa GPUFilter
  * @sa GPUSamplerMipmapMode
  * @sa GPUSamplerAddressMode
@@ -64174,7 +64174,7 @@ using GPUSamplerCreateInfo = SDL_GPUSamplerCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUSampler.GPUSampler
+ * @sa GPUDevice.CreateSampler
  * @sa GPURenderPass.BindVertexSamplers
  * @sa GPURenderPass.BindFragmentSamplers
  * @sa GPUDevice.ReleaseSampler
@@ -64230,7 +64230,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUDevice.CreateShader
  * @sa GPUShaderFormat
  * @sa GPUShaderStage
  */
@@ -64241,8 +64241,8 @@ using GPUShaderCreateInfo = SDL_GPUShaderCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateShader
+ * @sa GPUDevice.CreateGraphicsPipeline
  * @sa GPUDevice.ReleaseShader
  */
 class GPUShader
@@ -64315,7 +64315,7 @@ public:
    * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
    * prefix to something other than TEXCOORD you can use
    * prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
-   * GPUDevice.GPUDevice().
+   * CreateGPUDeviceWithProperties().
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
@@ -64330,7 +64330,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+   * @sa GPUDevice.CreateGraphicsPipeline
    * @sa GPUDevice.ReleaseShader
    */
   GPUShader(GPUDeviceRef device, const GPUShaderCreateInfo& createinfo);
@@ -64348,7 +64348,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUComputePipeline.GPUComputePipeline
+ * @sa GPUDevice.CreateComputePipeline
  * @sa GPUShaderFormat
  */
 using GPUComputePipelineCreateInfo = SDL_GPUComputePipelineCreateInfo;
@@ -64360,7 +64360,7 @@ using GPUComputePipelineCreateInfo = SDL_GPUComputePipelineCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUComputePipeline.GPUComputePipeline
+ * @sa GPUDevice.CreateComputePipeline
  * @sa GPUComputePass.BindPipeline
  * @sa GPUDevice.ReleaseComputePipeline
  */
@@ -64444,7 +64444,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  * @sa GPUShader
  * @sa GPUVertexInputState
  * @sa GPUPrimitiveType
@@ -64462,7 +64462,7 @@ using GPUGraphicsPipelineCreateInfo = SDL_GPUGraphicsPipelineCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  * @sa GPURenderPass.BindPipeline
  * @sa GPUDevice.ReleaseGraphicsPipeline
  */
@@ -64499,7 +64499,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUDevice.CreateShader
    * @sa GPURenderPass.BindPipeline
    * @sa GPUDevice.ReleaseGraphicsPipeline
    */
@@ -64541,7 +64541,7 @@ using GPUBufferBinding = SDL_GPUBufferBinding;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUIndexElementSize = SDL_GPUIndexElementSize;
 
@@ -64681,7 +64681,7 @@ public:
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUDevice.CreateShader().
    *
    * @param first_slot the vertex sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
@@ -64689,7 +64689,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUDevice.CreateShader
    */
   void BindVertexSamplers(
     Uint32 first_slot,
@@ -64702,14 +64702,14 @@ public:
    * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUDevice.CreateShader().
    *
    * @param first_slot the vertex storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUDevice.CreateShader
    */
   void BindVertexStorageTextures(Uint32 first_slot,
                                  SpanRef<const GPUTextureRaw> storage_textures);
@@ -64721,14 +64721,14 @@ public:
    * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUDevice.CreateShader().
    *
    * @param first_slot the vertex storage buffer slot to begin binding from.
    * @param storage_buffers an array of buffers.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUDevice.CreateShader
    */
   void BindVertexStorageBuffers(Uint32 first_slot,
                                 SpanRef<const GPUBufferRaw> storage_buffers);
@@ -64739,7 +64739,7 @@ public:
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUDevice.CreateShader().
    *
    * @param first_slot the fragment sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
@@ -64747,7 +64747,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUDevice.CreateShader
    */
   void BindFragmentSamplers(
     Uint32 first_slot,
@@ -64760,14 +64760,14 @@ public:
    * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUDevice.CreateShader().
    *
    * @param first_slot the fragment storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUDevice.CreateShader
    */
   void BindFragmentStorageTextures(
     Uint32 first_slot,
@@ -64780,14 +64780,14 @@ public:
    * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUDevice.CreateShader().
    *
    * @param first_slot the fragment storage buffer slot to begin binding from.
    * @param storage_buffers an array of storage buffers.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUDevice.CreateShader
    */
   void BindFragmentStorageBuffers(Uint32 first_slot,
                                   SpanRef<const GPUBufferRaw> storage_buffers);
@@ -64944,7 +64944,7 @@ public:
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUComputePipeline.GPUComputePipeline().
+   * GPUDevice.CreateComputePipeline().
    *
    * @param first_slot the compute sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
@@ -64952,7 +64952,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUComputePipeline.GPUComputePipeline
+   * @sa GPUDevice.CreateComputePipeline
    */
   void BindSamplers(
     Uint32 first_slot,
@@ -64965,14 +64965,14 @@ public:
    * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUComputePipeline.GPUComputePipeline().
+   * GPUDevice.CreateComputePipeline().
    *
    * @param first_slot the compute storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUComputePipeline.GPUComputePipeline
+   * @sa GPUDevice.CreateComputePipeline
    */
   void BindStorageTextures(Uint32 first_slot,
                            SpanRef<const GPUTextureRaw> storage_textures);
@@ -64984,14 +64984,14 @@ public:
    * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUComputePipeline.GPUComputePipeline().
+   * GPUDevice.CreateComputePipeline().
    *
    * @param first_slot the compute storage buffer slot to begin binding from.
    * @param storage_buffers an array of storage buffer binding structs.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUComputePipeline.GPUComputePipeline
+   * @sa GPUDevice.CreateComputePipeline
    */
   void BindStorageBuffers(Uint32 first_slot,
                           SpanRef<const GPUBufferRaw> storage_buffers);
@@ -65089,7 +65089,7 @@ using GPUBufferLocation = SDL_GPUBufferLocation;
  *
  * @sa GPUCopyPass.UploadToTexture
  * @sa GPUCopyPass.DownloadFromTexture
- * @sa GPUTexture.GPUTexture
+ * @sa GPUDevice.CreateTexture
  */
 using GPUTextureRegion = SDL_GPUTextureRegion;
 
@@ -65527,7 +65527,7 @@ public:
    * aligned.
    *
    * For detailed information about accessing uniform data from a shader, please
-   * refer to GPUShader.GPUShader.
+   * refer to GPUDevice.CreateShader.
    *
    * @param slot_index the vertex uniform slot to push data to.
    * @param data client data to write.
@@ -65845,7 +65845,7 @@ public:
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUDevice.CreateShader
  */
 using GPUShaderFormat = Uint32;
 
@@ -66027,7 +66027,7 @@ constexpr GPUPresentMode GPU_PRESENTMODE_MAILBOX =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUTexture.GPUTexture
+ * @sa GPUDevice.CreateTexture
  * @sa GPUDevice.TextureSupportsFormat
  */
 using GPUTextureFormat = SDL_GPUTextureFormat;
@@ -66352,7 +66352,7 @@ constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x12_FLOAT =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUTexture.GPUTexture
+ * @sa GPUDevice.CreateTexture
  */
 using GPUTextureType = SDL_GPUTextureType;
 
@@ -66389,7 +66389,7 @@ constexpr GPUTextureType GPU_TEXTURETYPE_CUBE_ARRAY =
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GPUTexture.GPUTexture
+ * @sa GPUDevice.CreateTexture
  */
 using GPUTextureUsageFlags = Uint32;
 
@@ -66431,7 +66431,7 @@ constexpr GPUTextureUsageFlags
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUTexture.GPUTexture
+ * @sa GPUDevice.CreateTexture
  * @sa GPUDevice.TextureSupportsSampleCount
  */
 using GPUSampleCount = SDL_GPUSampleCount;
@@ -66508,7 +66508,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.GPUDevice
+   * @sa CreateGPUDeviceWithProperties
    * @sa GPUDevice.GetShaderFormats
    * @sa GPUDevice.GetDriver
    * @sa GPUDevice.Destroy
@@ -66660,11 +66660,11 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
+   * Destroys a GPU context previously returned by CreateGPUDevice.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.GPUDevice
+   * @sa CreateGPUDevice
    */
   void Destroy();
 
@@ -66857,7 +66857,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUDevice.CreateShader
    * @sa GPURenderPass.BindPipeline
    * @sa GPUDevice.ReleaseGraphicsPipeline
    */
@@ -66941,7 +66941,7 @@ public:
    * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
    * prefix to something other than TEXCOORD you can use
    * prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
-   * GPUDevice.GPUDevice().
+   * CreateGPUDeviceWithProperties().
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
@@ -66955,7 +66955,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+   * @sa GPUDevice.CreateGraphicsPipeline
    * @sa GPUDevice.ReleaseShader
    */
   GPUShader CreateShader(const GPUShaderCreateInfo& createinfo);
@@ -67095,8 +67095,9 @@ public:
   /**
    * Sets an arbitrary string constant to label a buffer.
    *
-   * You should use prop::GPUBuffer.CREATE_NAME_STRING with GPUBuffer.GPUBuffer
-   * instead of this function to avoid thread safety issues.
+   * You should use prop::GPUBuffer.CREATE_NAME_STRING with
+   * GPUDevice.CreateBuffer instead of this function to avoid thread safety
+   * issues.
    *
    * @param buffer a buffer to attach the name to.
    * @param text a UTF-8 string constant to mark as the name of the buffer.
@@ -67106,7 +67107,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUBuffer.GPUBuffer
+   * @sa GPUDevice.CreateBuffer
    */
   void SetBufferName(GPUBuffer buffer, StringParam text);
 
@@ -67114,7 +67115,7 @@ public:
    * Sets an arbitrary string constant to label a texture.
    *
    * You should use prop::GPUTexture.CREATE_NAME_STRING with
-   * GPUTexture.GPUTexture instead of this function to avoid thread safety
+   * GPUDevice.CreateTexture instead of this function to avoid thread safety
    * issues.
    *
    * @param texture a texture to attach the name to.
@@ -67125,7 +67126,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUTexture.GPUTexture
+   * @sa GPUDevice.CreateTexture
    */
   void SetTextureName(GPUTexture texture, StringParam text);
 
@@ -67606,7 +67607,7 @@ struct GPUDeviceRef : GPUDevice
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUPrimitiveType = SDL_GPUPrimitiveType;
 
@@ -67723,7 +67724,7 @@ constexpr GPUCubeMapFace GPU_CUBEMAPFACE_NEGATIVEZ =
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GPUBuffer.GPUBuffer
+ * @sa GPUDevice.CreateBuffer
  */
 using GPUBufferUsageFlags = Uint32;
 
@@ -67756,7 +67757,7 @@ constexpr GPUBufferUsageFlags GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUTransferBuffer.GPUTransferBuffer
+ * @sa GPUDevice.CreateTransferBuffer
  */
 using GPUTransferBufferUsage = SDL_GPUTransferBufferUsage;
 
@@ -67771,7 +67772,7 @@ constexpr GPUTransferBufferUsage GPU_TRANSFERBUFFERUSAGE_DOWNLOAD =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUDevice.CreateShader
  */
 using GPUShaderStage = SDL_GPUShaderStage;
 
@@ -67786,7 +67787,7 @@ constexpr GPUShaderStage GPU_SHADERSTAGE_FRAGMENT =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUVertexElementFormat = SDL_GPUVertexElementFormat;
 
@@ -67888,7 +67889,7 @@ constexpr GPUVertexElementFormat GPU_VERTEXELEMENTFORMAT_HALF4 =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUVertexInputRate = SDL_GPUVertexInputRate;
 
@@ -67905,7 +67906,7 @@ constexpr GPUVertexInputRate GPU_VERTEXINPUTRATE_INSTANCE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUFillMode = SDL_GPUFillMode;
 
@@ -67920,7 +67921,7 @@ constexpr GPUFillMode GPU_FILLMODE_LINE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUCullMode = SDL_GPUCullMode;
 
@@ -67939,7 +67940,7 @@ constexpr GPUCullMode GPU_CULLMODE_BACK =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUFrontFace = SDL_GPUFrontFace;
 
@@ -67958,7 +67959,7 @@ constexpr GPUFrontFace GPU_FRONTFACE_CLOCKWISE = SDL_GPU_FRONTFACE_CLOCKWISE;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUCompareOp = SDL_GPUCompareOp;
 
@@ -67997,7 +67998,7 @@ constexpr GPUCompareOp GPU_COMPAREOP_ALWAYS =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUStencilOp = SDL_GPUStencilOp;
 
@@ -68041,7 +68042,7 @@ constexpr GPUStencilOp GPU_STENCILOP_DECREMENT_AND_WRAP =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUBlendOp = SDL_GPUBlendOp;
 
@@ -68073,7 +68074,7 @@ constexpr GPUBlendOp GPU_BLENDOP_MAX =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUBlendFactor = SDL_GPUBlendFactor;
 
@@ -68123,7 +68124,7 @@ constexpr GPUBlendFactor GPU_BLENDFACTOR_SRC_ALPHA_SATURATE =
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  */
 using GPUColorComponentFlags = Uint8;
 
@@ -68144,7 +68145,7 @@ constexpr GPUColorComponentFlags GPU_COLORCOMPONENT_A =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUSampler.GPUSampler
+ * @sa GPUDevice.CreateSampler
  */
 using GPUFilter = SDL_GPUFilter;
 
@@ -68159,7 +68160,7 @@ constexpr GPUFilter GPU_FILTER_LINEAR =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUSampler.GPUSampler
+ * @sa GPUDevice.CreateSampler
  */
 using GPUSamplerMipmapMode = SDL_GPUSamplerMipmapMode;
 
@@ -68175,7 +68176,7 @@ constexpr GPUSamplerMipmapMode GPU_SAMPLERMIPMAPMODE_LINEAR =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUSampler.GPUSampler
+ * @sa GPUDevice.CreateSampler
  */
 using GPUSamplerAddressMode = SDL_GPUSamplerAddressMode;
 
@@ -68379,7 +68380,7 @@ using GPUGraphicsPipelineTargetInfo = SDL_GPUGraphicsPipelineTargetInfo;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.GPUDevice
+ * @sa CreateGPUDevice
  */
 inline bool GPUSupportsShaderFormats(GPUShaderFormat format_flags,
                                      StringParam name)
@@ -68395,7 +68396,7 @@ inline bool GPUSupportsShaderFormats(GPUShaderFormat format_flags,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.GPUDevice
+ * @sa CreateGPUDeviceWithProperties
  */
 inline bool GPUSupportsProperties(PropertiesRef props)
 {
@@ -68422,7 +68423,7 @@ inline bool GPUSupportsProperties(PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.GPUDevice
+ * @sa CreateGPUDeviceWithProperties
  * @sa GPUDevice.GetShaderFormats
  * @sa GPUDevice.GetDriver
  * @sa GPUDevice.Destroy
@@ -68687,13 +68688,13 @@ using GPUVulkanOptions = SDL_GPUVulkanOptions;
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
+ * Destroys a GPU context previously returned by CreateGPUDevice.
  *
  * @param device a GPU Context to destroy.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.GPUDevice
+ * @sa CreateGPUDevice
  */
 inline void DestroyGPUDevice(GPUDeviceRaw device)
 {
@@ -68975,7 +68976,7 @@ constexpr auto CREATE_NAME_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUDevice.CreateShader
  * @sa GPURenderPass.BindPipeline
  * @sa GPUDevice.ReleaseGraphicsPipeline
  */
@@ -69104,7 +69105,8 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
  * language, your vertex semantics should start at TEXCOORD0 and increment like
  * so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic prefix to
  * something other than TEXCOORD you can use
- * prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with GPUDevice.GPUDevice().
+ * prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
+ * CreateGPUDeviceWithProperties().
  *
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
@@ -69119,7 +69121,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.CreateGraphicsPipeline
  * @sa GPUDevice.ReleaseShader
  */
 inline GPUShader CreateGPUShader(GPUDeviceRef device,
@@ -69373,7 +69375,7 @@ constexpr auto CREATE_NAME_STRING =
 /**
  * Sets an arbitrary string constant to label a buffer.
  *
- * You should use prop::GPUBuffer.CREATE_NAME_STRING with GPUBuffer.GPUBuffer
+ * You should use prop::GPUBuffer.CREATE_NAME_STRING with GPUDevice.CreateBuffer
  * instead of this function to avoid thread safety issues.
  *
  * @param device a GPU Context.
@@ -69385,7 +69387,7 @@ constexpr auto CREATE_NAME_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUBuffer.GPUBuffer
+ * @sa GPUDevice.CreateBuffer
  */
 inline void SetGPUBufferName(GPUDeviceRef device,
                              GPUBuffer buffer,
@@ -69402,8 +69404,9 @@ inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
 /**
  * Sets an arbitrary string constant to label a texture.
  *
- * You should use prop::GPUTexture.CREATE_NAME_STRING with GPUTexture.GPUTexture
- * instead of this function to avoid thread safety issues.
+ * You should use prop::GPUTexture.CREATE_NAME_STRING with
+ * GPUDevice.CreateTexture instead of this function to avoid thread safety
+ * issues.
  *
  * @param device a GPU Context.
  * @param texture a texture to attach the name to.
@@ -69414,7 +69417,7 @@ inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUTexture.GPUTexture
+ * @sa GPUDevice.CreateTexture
  */
 inline void SetGPUTextureName(GPUDeviceRef device,
                               GPUTexture texture,
@@ -69706,7 +69709,7 @@ inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
  * aligned.
  *
  * For detailed information about accessing uniform data from a shader, please
- * refer to GPUShader.GPUShader.
+ * refer to GPUDevice.CreateShader.
  *
  * @param command_buffer a command buffer.
  * @param slot_index the vertex uniform slot to push data to.
@@ -69992,7 +69995,7 @@ inline void GPURenderPass::BindIndexBuffer(
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUDevice.CreateShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the vertex sampler slot to begin binding from.
@@ -70000,7 +70003,7 @@ inline void GPURenderPass::BindIndexBuffer(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUDevice.CreateShader
  */
 inline void BindGPUVertexSamplers(
   GPURenderPass render_pass,
@@ -70028,7 +70031,7 @@ inline void GPURenderPass::BindVertexSamplers(
  * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUDevice.CreateShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the vertex storage texture slot to begin binding from.
@@ -70036,7 +70039,7 @@ inline void GPURenderPass::BindVertexSamplers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUDevice.CreateShader
  */
 inline void BindGPUVertexStorageTextures(
   GPURenderPass render_pass,
@@ -70064,7 +70067,7 @@ inline void GPURenderPass::BindVertexStorageTextures(
  * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUDevice.CreateShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the vertex storage buffer slot to begin binding from.
@@ -70072,7 +70075,7 @@ inline void GPURenderPass::BindVertexStorageTextures(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUDevice.CreateShader
  */
 inline void BindGPUVertexStorageBuffers(
   GPURenderPass render_pass,
@@ -70099,7 +70102,7 @@ inline void GPURenderPass::BindVertexStorageBuffers(
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUDevice.CreateShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the fragment sampler slot to begin binding from.
@@ -70107,7 +70110,7 @@ inline void GPURenderPass::BindVertexStorageBuffers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUDevice.CreateShader
  */
 inline void BindGPUFragmentSamplers(
   GPURenderPass render_pass,
@@ -70135,7 +70138,7 @@ inline void GPURenderPass::BindFragmentSamplers(
  * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUDevice.CreateShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the fragment storage texture slot to begin binding from.
@@ -70143,7 +70146,7 @@ inline void GPURenderPass::BindFragmentSamplers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUDevice.CreateShader
  */
 inline void BindGPUFragmentStorageTextures(
   GPURenderPass render_pass,
@@ -70171,7 +70174,7 @@ inline void GPURenderPass::BindFragmentStorageTextures(
  * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUDevice.CreateShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the fragment storage buffer slot to begin binding from.
@@ -70179,7 +70182,7 @@ inline void GPURenderPass::BindFragmentStorageTextures(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUDevice.CreateShader
  */
 inline void BindGPUFragmentStorageBuffers(
   GPURenderPass render_pass,
@@ -70449,7 +70452,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUComputePipeline.GPUComputePipeline().
+ * GPUDevice.CreateComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute sampler slot to begin binding from.
@@ -70457,7 +70460,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUComputePipeline.GPUComputePipeline
+ * @sa GPUDevice.CreateComputePipeline
  */
 inline void BindGPUComputeSamplers(
   GPUComputePass compute_pass,
@@ -70485,7 +70488,7 @@ inline void GPUComputePass::BindSamplers(
  * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUComputePipeline.GPUComputePipeline().
+ * GPUDevice.CreateComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage texture slot to begin binding from.
@@ -70493,7 +70496,7 @@ inline void GPUComputePass::BindSamplers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUComputePipeline.GPUComputePipeline
+ * @sa GPUDevice.CreateComputePipeline
  */
 inline void BindGPUComputeStorageTextures(
   GPUComputePass compute_pass,
@@ -70521,7 +70524,7 @@ inline void GPUComputePass::BindStorageTextures(
  * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUComputePipeline.GPUComputePipeline().
+ * GPUDevice.CreateComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage buffer slot to begin binding from.
@@ -70529,7 +70532,7 @@ inline void GPUComputePass::BindStorageTextures(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUComputePipeline.GPUComputePipeline
+ * @sa GPUDevice.CreateComputePipeline
  */
 inline void BindGPUComputeStorageBuffers(
   GPUComputePass compute_pass,
@@ -73380,7 +73383,7 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  * using Joystick.SetVirtualAxis(), etc.
  *
  * When no longer needed, the virtual joystick can be removed by calling
- * JoystickID.DetachVirtualJoystick().
+ * DetachVirtualJoystick().
  *
  * @param desc joystick description, initialized using InitInterface().
  * @returns the joystick instance ID on success.
@@ -73390,7 +73393,7 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.DetachVirtualJoystick
+ * @sa DetachVirtualJoystick
  * @sa Joystick.SetVirtualAxis
  * @sa Joystick.SetVirtualButton
  * @sa Joystick.SetVirtualBall
@@ -75392,12 +75395,12 @@ struct MetalViewRef;
  */
 class MetalView
 {
-  MetalViewRaw m_resource = 0;
+  MetalViewRaw m_resource = nullptr;
 
 public:
   /// Default ctor
   constexpr MetalView(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -75468,7 +75471,7 @@ public:
   constexpr MetalViewRaw release() noexcept
   {
     auto r = m_resource;
-    m_resource = 0;
+    m_resource = nullptr;
     return r;
   }
 
@@ -75481,14 +75484,14 @@ public:
   /**
    * Destroy an existing MetalView object.
    *
-   * This should be called before Window.Destroy, if MetalView.MetalView was
-   * called after Window.Window.
+   * This should be called before Window.Destroy, if Metal_CreateView was called
+   * after CreateWindow.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MetalView.MetalView
+   * @sa Metal_CreateView
    */
   void Destroy();
 
@@ -75609,8 +75612,8 @@ inline MetalView::MetalView(WindowRef window)
 /**
  * Destroy an existing MetalView object.
  *
- * This should be called before Window.Destroy, if MetalView.MetalView was
- * called after Window.Window.
+ * This should be called before Window.Destroy, if Metal_CreateView was called
+ * after CreateWindow.
  *
  * @param view the MetalView object.
  *
@@ -75618,7 +75621,7 @@ inline MetalView::MetalView(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa MetalView.MetalView
+ * @sa Metal_CreateView
  */
 inline void Metal_DestroyView(MetalViewRaw view)
 {
@@ -75666,8 +75669,8 @@ inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(m_resource); }
  * Games that want the system to track the mouse but want to draw their own
  * cursor can use HideCursor() and ShowCursor(). It might be more efficient to
  * let the system manage the cursor, if possible, using Cursor.Set() with a
- * custom image made through Cursor.Cursor(), or perhaps just a specific system
- * cursor from Cursor.Cursor().
+ * custom image made through CreateColorCursor(), or perhaps just a specific
+ * system cursor from CreateSystemCursor().
  *
  * SDL can, on many platforms, differentiate between multiple connected mice,
  * allowing for interesting input scenarios and multiplayer games. They can be
@@ -75693,7 +75696,7 @@ using CursorRaw = SDL_Cursor*;
 struct CursorRef;
 
 /**
- * Cursor types for Cursor.Cursor().
+ * Cursor types for CreateSystemCursor().
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -75843,11 +75846,11 @@ public:
    * Cursors created with this function must be freed with Cursor.Destroy().
    *
    * If you want to have a color cursor, or create your cursor from an Surface,
-   * you should use Cursor.Cursor(). Alternately, you can hide the cursor and
-   * draw your own as part of your game's rendering, but it will be bound to the
-   * framerate.
+   * you should use CreateColorCursor(). Alternately, you can hide the cursor
+   * and draw your own as part of your game's rendering, but it will be bound to
+   * the framerate.
    *
-   * Also, Cursor.Cursor() is available, which provides several
+   * Also, CreateSystemCursor() is available, which provides several
    * readily-available system cursors to pick from.
    *
    * @param data the color value for each pixel of the cursor.
@@ -75863,8 +75866,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateAnimatedCursor
-   * @sa Cursor.Cursor
-   * @sa Cursor.Cursor
+   * @sa CreateColorCursor
+   * @sa CreateSystemCursor
    * @sa Cursor.Destroy
    * @sa Cursor.Set
    */
@@ -75899,8 +75902,8 @@ public:
    *
    * @sa Surface.AddAlternateImage
    * @sa CreateAnimatedCursor
-   * @sa Cursor.Cursor
-   * @sa Cursor.Cursor
+   * @sa CreateCursor
+   * @sa CreateSystemCursor
    * @sa Cursor.Destroy
    * @sa Cursor.Set
    */
@@ -75954,17 +75957,17 @@ public:
   /**
    * Free a previously-created cursor.
    *
-   * Use this function to free cursor resources created with Cursor.Cursor(),
-   * Cursor.Cursor() or Cursor.Cursor().
+   * Use this function to free cursor resources created with CreateCursor(),
+   * CreateColorCursor() or CreateSystemCursor().
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateAnimatedCursor
-   * @sa Cursor.Cursor
-   * @sa Cursor.Cursor
-   * @sa Cursor.Cursor
+   * @sa CreateColorCursor
+   * @sa CreateCursor
+   * @sa CreateSystemCursor
    */
   void Destroy();
 
@@ -76542,12 +76545,12 @@ inline void CaptureMouse(bool enabled)
  * Cursors created with this function must be freed with Cursor.Destroy().
  *
  * If you want to have a color cursor, or create your cursor from an Surface,
- * you should use Cursor.Cursor(). Alternately, you can hide the cursor and draw
- * your own as part of your game's rendering, but it will be bound to the
+ * you should use CreateColorCursor(). Alternately, you can hide the cursor and
+ * draw your own as part of your game's rendering, but it will be bound to the
  * framerate.
  *
- * Also, Cursor.Cursor() is available, which provides several readily-available
- * system cursors to pick from.
+ * Also, CreateSystemCursor() is available, which provides several
+ * readily-available system cursors to pick from.
  *
  * @param data the color value for each pixel of the cursor.
  * @param mask the mask value for each pixel of the cursor.
@@ -76562,8 +76565,8 @@ inline void CaptureMouse(bool enabled)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateAnimatedCursor
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
+ * @sa CreateColorCursor
+ * @sa CreateSystemCursor
  * @sa Cursor.Destroy
  * @sa Cursor.Set
  */
@@ -76619,8 +76622,8 @@ inline Cursor::Cursor(SystemCursor id)
  *
  * @sa Surface.AddAlternateImage
  * @sa CreateAnimatedCursor
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
+ * @sa CreateCursor
+ * @sa CreateSystemCursor
  * @sa Cursor.Destroy
  * @sa Cursor.Set
  */
@@ -76669,9 +76672,9 @@ inline Cursor CreateColorCursor(SurfaceRef surface, const PointRaw& hot)
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Surface.AddAlternateImage
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
+ * @sa CreateCursor
+ * @sa CreateColorCursor
+ * @sa CreateSystemCursor
  * @sa Cursor.Destroy
  * @sa Cursor.Set
  */
@@ -76760,8 +76763,8 @@ inline CursorRef GetDefaultCursor()
 /**
  * Free a previously-created cursor.
  *
- * Use this function to free cursor resources created with Cursor.Cursor(),
- * Cursor.Cursor() or Cursor.Cursor().
+ * Use this function to free cursor resources created with CreateCursor(),
+ * CreateColorCursor() or CreateSystemCursor().
  *
  * @param cursor the cursor to free.
  *
@@ -76770,9 +76773,9 @@ inline CursorRef GetDefaultCursor()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateAnimatedCursor
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
+ * @sa CreateColorCursor
+ * @sa CreateCursor
+ * @sa CreateSystemCursor
  */
 inline void DestroyCursor(CursorRaw cursor) { SDL_DestroyCursor(cursor); }
 
@@ -77280,13 +77283,13 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Close a gamepad previously opened with Gamepad.Gamepad().
+   * Close a gamepad previously opened with OpenGamepad().
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.Gamepad
+   * @sa OpenGamepad
    */
   void Close();
 
@@ -78258,7 +78261,7 @@ inline bool HasGamepad() { return SDL_HasGamepad(); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa HasGamepad
- * @sa Gamepad.Gamepad
+ * @sa OpenGamepad
  */
 inline OwnArray<JoystickID> GetGamepads()
 {
@@ -78279,7 +78282,7 @@ inline OwnArray<JoystickID> GetGamepads()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetJoysticks
- * @sa Gamepad.Gamepad
+ * @sa OpenGamepad
  */
 inline bool IsGamepad(JoystickID instance_id)
 {
@@ -78575,7 +78578,7 @@ inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has simple
  *   trigger rumble
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
@@ -78611,7 +78614,7 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
 /**
  * Get the instance ID of an opened gamepad.
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  * @returns the instance ID of the specified gamepad on success.
  * @throws Error on failure.
  *
@@ -78629,7 +78632,7 @@ inline JoystickID Gamepad::GetID() { return SDL::GetGamepadID(m_resource); }
 /**
  * Get the implementation-dependent name for an opened gamepad.
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  * @returns the implementation dependent name for the gamepad, or nullptr if
  *          there is no name or the identifier passed is invalid.
  *
@@ -78652,7 +78655,7 @@ inline const char* Gamepad::GetName()
 /**
  * Get the implementation-dependent path for an opened gamepad.
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  * @returns the implementation dependent path for the gamepad, or nullptr if
  *          there is no path or the identifier passed is invalid.
  *
@@ -78953,7 +78956,7 @@ inline PowerState Gamepad::GetPowerInfo(int* percent)
 /**
  * Check if a gamepad has been opened and is currently connected.
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  * @returns true if the gamepad has been opened and is currently connected, or
  *          false if not.
  *
@@ -79708,15 +79711,15 @@ inline void Gamepad::SendEffect(const void* data, int size)
 }
 
 /**
- * Close a gamepad previously opened with Gamepad.Gamepad().
+ * Close a gamepad previously opened with OpenGamepad().
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.Gamepad
+ * @sa OpenGamepad
  */
 inline void CloseGamepad(GamepadRaw gamepad) { SDL_CloseGamepad(gamepad); }
 
@@ -79781,8 +79784,8 @@ inline const char* Gamepad::GetAppleSFSymbolsNameForAxis(GamepadAxis axis)
  *
  * - Initialize the subsystem (INIT_HAPTIC).
  * - Open a haptic device.
- * - Haptic.Haptic() to open from index.
- * - Haptic.Haptic() to open from an existing joystick.
+ * - OpenHaptic() to open from index.
+ * - OpenHapticFromJoystick() to open from an existing joystick.
  * - Create an effect (HapticEffect).
  * - Upload the effect with Haptic.CreateEffect().
  * - Run the effect with Haptic.RunEffect().
@@ -79797,7 +79800,7 @@ inline const char* Gamepad::GetAppleSFSymbolsNameForAxis(GamepadAxis axis)
  *    // Open the device
  *    HapticID *haptics = GetHaptics(nullptr);
  *    if (haptics) {
- *        haptic = Haptic.Haptic(haptics[0]);
+ *        haptic = OpenHaptic(haptics[0]);
  *        free(haptics);
  *    }
  *    if (haptic == nullptr)
@@ -79826,7 +79829,7 @@ inline const char* Gamepad::GetAppleSFSymbolsNameForAxis(GamepadAxis axis)
  *    HapticEffectID effect_id;
  *
  *    // Open the device
- *    haptic = Haptic.Haptic(joystick);
+ *    haptic = OpenHapticFromJoystick(joystick);
  *    if (haptic == nullptr) return false; // Most likely joystick isn't haptic
  *
  *    // See if it can do sine waves
@@ -80521,8 +80524,8 @@ using HapticID = SDL_HapticID;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Haptic.Haptic
- * @sa Haptic.Haptic
+ * @sa OpenHaptic
+ * @sa OpenHapticFromJoystick
  * @sa Haptic.Close
  *
  * @cat resource
@@ -80581,7 +80584,7 @@ public:
    *
    * @sa Haptic.Close
    * @sa GetHaptics
-   * @sa Haptic.Haptic
+   * @sa OpenHapticFromJoystick
    * @sa Haptic.OpenFromMouse
    * @sa Haptic.SetAutocenter
    * @sa Haptic.SetGain
@@ -80654,11 +80657,11 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Close a haptic device previously opened with Haptic.Haptic().
+   * Close a haptic device previously opened with OpenHaptic().
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.Haptic
+   * @sa OpenHaptic
    */
   void Close();
 
@@ -81065,7 +81068,7 @@ struct HapticRef : Haptic
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Haptic
+ * @sa OpenHaptic
  */
 inline OwnArray<HapticID> GetHaptics()
 {
@@ -81086,7 +81089,7 @@ inline OwnArray<HapticID> GetHaptics()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Haptic.GetName
- * @sa Haptic.Haptic
+ * @sa OpenHaptic
  */
 inline const char* GetHapticNameForID(HapticID instance_id)
 {
@@ -81111,7 +81114,7 @@ inline const char* GetHapticNameForID(HapticID instance_id)
  *
  * @sa Haptic.Close
  * @sa GetHaptics
- * @sa Haptic.Haptic
+ * @sa OpenHapticFromJoystick
  * @sa Haptic.OpenFromMouse
  * @sa Haptic.SetAutocenter
  * @sa Haptic.SetGain
@@ -81213,7 +81216,7 @@ inline Haptic Haptic::OpenFromMouse() { return SDL::OpenHapticFromMouse(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Haptic
+ * @sa OpenHapticFromJoystick
  */
 inline bool IsJoystickHaptic(JoystickRef joystick)
 {
@@ -81246,13 +81249,13 @@ inline Haptic OpenHapticFromJoystick(JoystickRef joystick)
 }
 
 /**
- * Close a haptic device previously opened with Haptic.Haptic().
+ * Close a haptic device previously opened with OpenHaptic().
  *
  * @param haptic the Haptic device to close.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Haptic
+ * @sa OpenHaptic
  */
 inline void CloseHaptic(HapticRaw haptic) { SDL_CloseHaptic(haptic); }
 
@@ -81917,7 +81920,7 @@ using AppQuit_func = void(SDLCALL*)(void* appstate, AppResult result);
  * used interchangeably. Though for readability of your code InitSubSystem()
  * might be preferred.
  *
- * The file I/O (for example: IOStream.FromFile) and threading (Thread.Thread)
+ * The file I/O (for example: IOStream.FromFile) and threading (CreateThread)
  * subsystems are initialized by default. Message boxes (ShowSimpleMessageBox)
  * also attempt to work without initializing the video subsystem, in hopes of
  * being useful in showing an error dialog when Init fails. You must
@@ -82704,7 +82707,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
  *
  * @since This struct is available since SDL 3.4.0.
  *
- * @sa GPURenderState.GPURenderState
+ * @sa Renderer.CreateGPURenderState
  */
 using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
 
@@ -82814,8 +82817,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
-   * @sa Renderer.Renderer
+   * @sa CreateRendererWithProperties
+   * @sa CreateSoftwareRenderer
    * @sa Renderer.Destroy
    * @sa GetNumRenderDrivers
    * @sa GetRenderDriver
@@ -82879,8 +82882,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Create
-   * @sa Renderer.Renderer
-   * @sa Renderer.Renderer
+   * @sa CreateRenderer
+   * @sa CreateSoftwareRenderer
    * @sa Renderer.Destroy
    * @sa Renderer.GetName
    */
@@ -82889,7 +82892,7 @@ public:
   /**
    * Create a 2D software rendering context for a surface.
    *
-   * Two other API which can be used to create Renderer: Renderer.Renderer() and
+   * Two other API which can be used to create Renderer: CreateRenderer() and
    * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
    * they are intended to be used with an Window as the final destination and
    * not an Surface.
@@ -82946,7 +82949,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
+   * @sa CreateRenderer
    */
   void Destroy();
 
@@ -82988,7 +82991,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
+   * @sa CreateRenderer
+   * @sa CreateRendererWithProperties
    */
   const char* GetName() const;
 
@@ -83175,8 +83179,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTextureFromSurface
+   * @sa Renderer.CreateTextureWithProperties
    * @sa Texture.Destroy
    * @sa Texture.GetSize
    * @sa Texture.Update
@@ -83205,8 +83209,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTexture
+   * @sa Renderer.CreateTextureWithProperties
    * @sa Texture.Destroy
    */
   Texture CreateTextureFromSurface(SurfaceRef surface);
@@ -83329,8 +83333,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Create
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTexture
+   * @sa Renderer.CreateTextureFromSurface
    * @sa Texture.Destroy
    * @sa Texture.GetSize
    * @sa Texture.Update
@@ -84501,7 +84505,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
+   * @sa CreateRenderer
    * @sa Renderer.RenderClear
    * @sa Renderer.RenderFillRect
    * @sa Renderer.RenderFillRects
@@ -84872,9 +84876,9 @@ struct RendererRef : Renderer
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Texture.Texture
- * @sa Texture.Texture
- * @sa Texture.Texture
+ * @sa Renderer.CreateTexture
+ * @sa Renderer.CreateTextureFromSurface
+ * @sa Renderer.CreateTextureWithProperties
  * @sa Texture.Destroy
  *
  * @cat resource
@@ -84930,8 +84934,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTextureFromSurface
+   * @sa Renderer.CreateTextureWithProperties
    * @sa Texture.Destroy
    * @sa Texture.GetSize
    * @sa Texture.Update
@@ -84961,7 +84965,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTexture
+   * @sa Renderer.CreateTextureWithProperties
    * @sa Texture.Destroy
    */
   Texture(RendererRef renderer, SurfaceRef surface);
@@ -85084,8 +85089,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Create
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTexture
+   * @sa Renderer.CreateTextureFromSurface
    * @sa Texture.Destroy
    * @sa Texture.GetSize
    * @sa Texture.Update
@@ -85107,10 +85112,10 @@ public:
    *
    * There is a separate function to read files from an IOStream, if you need an
    * i/o abstraction to provide data from anywhere instead of a simple
-   * filesystem read; that function is Texture.Texture().
+   * filesystem read; that function is LoadTexture_IO().
    *
    * If you would rather decode an image to an Surface (a buffer of pixels in
-   * CPU memory), call Surface.Surface() instead.
+   * CPU memory), call LoadSurface() instead.
    *
    * @param renderer the Renderer to use to create the texture.
    * @param file a path on the filesystem to load an image from.
@@ -85119,7 +85124,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa LoadTextureTyped_IO
-   * @sa Texture.Texture
+   * @sa LoadTexture_IO
    */
   Texture(RendererRef renderer, StringParam file);
 
@@ -85141,7 +85146,7 @@ public:
    * during this call in any case.
    *
    * There is a separate function to read files from disk without having to deal
-   * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call this
+   * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
    * function and manage those details for you, determining the file type from
    * the filename's extension.
    *
@@ -85150,7 +85155,7 @@ public:
    * SDL_image cannot autodetect the file format.
    *
    * If you would rather decode an image to an Surface (a buffer of pixels in
-   * CPU memory), call Surface.Surface() instead.
+   * CPU memory), call LoadSurface() instead.
    *
    * @param renderer the Renderer to use to create the texture.
    * @param src an IOStream that data will be read from.
@@ -85160,7 +85165,7 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Texture.Texture
+   * @sa LoadTexture
    * @sa LoadTextureTyped_IO
    */
   Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
@@ -85237,8 +85242,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTexture
+   * @sa Renderer.CreateTextureFromSurface
    */
   void Destroy();
 
@@ -85399,7 +85404,7 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Palette.Palette
+   * @sa CreatePalette
    * @sa Texture.GetPalette
    */
   void SetPalette(PaletteRef palette);
@@ -86305,7 +86310,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
+ * @sa CreateRenderer
  * @sa GetRenderDriver
  */
 inline int GetNumRenderDrivers() { return SDL_GetNumRenderDrivers(); }
@@ -86370,8 +86375,7 @@ inline void CreateWindowAndRendererRaw(StringParam title,
  *
  * @param title the title of the window, in UTF-8 encoding.
  * @param size the width and height of the window.
- * @param window_flags the flags used to create the window (see
- *                     Window.Window()).
+ * @param window_flags the flags used to create the window (see CreateWindow()).
  * @param window a pointer filled with the window, or nullptr on error.
  * @param renderer a pointer filled with the renderer, or nullptr on error.
  * @throws Error on failure.
@@ -86380,8 +86384,8 @@ inline void CreateWindowAndRendererRaw(StringParam title,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
- * @sa Window.Window
+ * @sa CreateRenderer
+ * @sa CreateWindow
  */
 inline void CreateWindowAndRenderer(StringParam title,
                                     const PointRaw& size,
@@ -86402,8 +86406,7 @@ inline void CreateWindowAndRenderer(StringParam title,
  *
  * @param title the title of the window, in UTF-8 encoding.
  * @param size the width and height of the window.
- * @param window_flags the flags used to create the window (see
- *                     Window.Window()).
+ * @param window_flags the flags used to create the window (see CreateWindow()).
  * @returns a pair with window and renderer.
  * @throws Error on failure.
  *
@@ -86411,8 +86414,8 @@ inline void CreateWindowAndRenderer(StringParam title,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
- * @sa Window.Window
+ * @sa CreateRenderer
+ * @sa CreateWindow
  */
 inline std::pair<Window, Renderer> CreateWindowAndRenderer(
   StringParam title,
@@ -86431,8 +86434,7 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
  *
  * @param title the title of the window, in UTF-8 encoding.
  * @param size the width and height of the window.
- * @param window_flags the flags used to create the window (see
- *                     Window.Window()).
+ * @param window_flags the flags used to create the window (see CreateWindow()).
  * @param renderer a pointer filled with the renderer, or nullptr on error.
  * @returns the created window on success.
  * @throws Error on failure.
@@ -86441,8 +86443,8 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
- * @sa Window.Window
+ * @sa CreateRenderer
+ * @sa CreateWindow
  */
 inline Window CreateWindowAndRenderer(StringParam title,
                                       const PointRaw& size,
@@ -86490,8 +86492,8 @@ inline Window::Window(StringParam title,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
- * @sa Renderer.Renderer
+ * @sa CreateRendererWithProperties
+ * @sa CreateSoftwareRenderer
  * @sa Renderer.Destroy
  * @sa GetNumRenderDrivers
  * @sa GetRenderDriver
@@ -86574,8 +86576,8 @@ inline Renderer::Renderer(SurfaceRef surface)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Properties.Create
- * @sa Renderer.Renderer
- * @sa Renderer.Renderer
+ * @sa CreateRenderer
+ * @sa CreateSoftwareRenderer
  * @sa Renderer.Destroy
  * @sa Renderer.GetName
  */
@@ -86729,10 +86731,10 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Renderer.Renderer
+ * @sa CreateRendererWithProperties
  * @sa Renderer.GetGPUDevice
- * @sa GPUShader.GPUShader
- * @sa GPURenderState.GPURenderState
+ * @sa GPUDevice.CreateShader
+ * @sa Renderer.CreateGPURenderState
  * @sa Renderer.SetGPURenderState
  */
 inline RendererRef CreateGPURenderer(GPUDeviceRef device, WindowRef window)
@@ -86766,7 +86768,7 @@ inline GPUDeviceRef Renderer::GetGPUDevice()
 /**
  * Create a 2D software rendering context for a surface.
  *
- * Two other API which can be used to create Renderer: Renderer.Renderer() and
+ * Two other API which can be used to create Renderer: CreateRenderer() and
  * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
  * they are intended to be used with an Window as the final destination and not
  * an Surface.
@@ -86824,8 +86826,8 @@ inline WindowRef Renderer::GetWindow()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
- * @sa Renderer.Renderer
+ * @sa CreateRenderer
+ * @sa CreateRendererWithProperties
  */
 inline const char* GetRendererName(RendererRef renderer)
 {
@@ -87070,8 +87072,8 @@ inline Point Renderer::GetCurrentOutputSize() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Texture
- * @sa Texture.Texture
+ * @sa Renderer.CreateTextureFromSurface
+ * @sa Renderer.CreateTextureWithProperties
  * @sa Texture.Destroy
  * @sa Texture.GetSize
  * @sa Texture.Update
@@ -87130,8 +87132,8 @@ inline Texture::Texture(RendererRef renderer, PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Texture
- * @sa Texture.Texture
+ * @sa Renderer.CreateTexture
+ * @sa Renderer.CreateTextureWithProperties
  * @sa Texture.Destroy
  */
 inline Texture CreateTextureFromSurface(RendererRef renderer,
@@ -87262,8 +87264,8 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Properties.Create
- * @sa Texture.Texture
- * @sa Texture.Texture
+ * @sa Renderer.CreateTexture
+ * @sa Renderer.CreateTextureFromSurface
  * @sa Texture.Destroy
  * @sa Texture.GetSize
  * @sa Texture.Update
@@ -87669,7 +87671,7 @@ inline PixelFormat Texture::GetFormat() const
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Palette.Palette
+ * @sa CreatePalette
  * @sa Texture.GetPalette
  */
 inline void SetTexturePalette(TextureRef texture, PaletteRef palette)
@@ -90306,7 +90308,7 @@ inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
+ * @sa CreateRenderer
  * @sa Renderer.RenderClear
  * @sa Renderer.RenderFillRect
  * @sa Renderer.RenderFillRects
@@ -90338,8 +90340,8 @@ inline void Renderer::Present() { SDL::RenderPresent(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Texture
- * @sa Texture.Texture
+ * @sa Renderer.CreateTexture
+ * @sa Renderer.CreateTextureFromSurface
  */
 inline void DestroyTexture(TextureRaw texture) { SDL_DestroyTexture(texture); }
 
@@ -90356,7 +90358,7 @@ inline void Texture::Destroy() { DestroyTexture(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
+ * @sa CreateRenderer
  */
 inline void DestroyRenderer(RendererRaw renderer)
 {
@@ -90728,7 +90730,7 @@ inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
  *
  * @since This struct is available since SDL 3.4.0.
  *
- * @sa GPURenderState.GPURenderState
+ * @sa Renderer.CreateGPURenderState
  * @sa GPURenderState.SetFragmentUniforms
  * @sa Renderer.SetGPURenderState
  * @sa GPURenderState.Destroy
@@ -90833,7 +90835,7 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa GPURenderState.GPURenderState
+   * @sa Renderer.CreateGPURenderState
    */
   void Destroy();
 
@@ -91032,7 +91034,7 @@ inline void Renderer::SetGPURenderState(GPURenderStateRef state)
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa GPURenderState.GPURenderState
+ * @sa Renderer.CreateGPURenderState
  */
 inline void DestroyGPURenderState(GPURenderStateRaw state)
 {
@@ -91805,7 +91807,7 @@ inline Sandbox GetSandbox() { return SDL_GetSandbox(); }
  * but since it doesn't do anything iOS-specific internally, it is available on
  * all platforms, in case it might be useful for some specific paradigm. Most
  * apps do not need to use this directly; SDL's internal event code will handle
- * all this for windows created by Window.Window!
+ * all this for windows created by CreateWindow!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -91822,7 +91824,7 @@ inline void OnApplicationWillTerminate() { SDL_OnApplicationWillTerminate(); }
  * but since it doesn't do anything iOS-specific internally, it is available on
  * all platforms, in case it might be useful for some specific paradigm. Most
  * apps do not need to use this directly; SDL's internal event code will handle
- * all this for windows created by Window.Window!
+ * all this for windows created by CreateWindow!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -91842,7 +91844,7 @@ inline void OnApplicationDidReceiveMemoryWarning()
  * but since it doesn't do anything iOS-specific internally, it is available on
  * all platforms, in case it might be useful for some specific paradigm. Most
  * apps do not need to use this directly; SDL's internal event code will handle
- * all this for windows created by Window.Window!
+ * all this for windows created by CreateWindow!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -91862,7 +91864,7 @@ inline void OnApplicationWillEnterBackground()
  * but since it doesn't do anything iOS-specific internally, it is available on
  * all platforms, in case it might be useful for some specific paradigm. Most
  * apps do not need to use this directly; SDL's internal event code will handle
- * all this for windows created by Window.Window!
+ * all this for windows created by CreateWindow!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -91882,7 +91884,7 @@ inline void OnApplicationDidEnterBackground()
  * but since it doesn't do anything iOS-specific internally, it is available on
  * all platforms, in case it might be useful for some specific paradigm. Most
  * apps do not need to use this directly; SDL's internal event code will handle
- * all this for windows created by Window.Window!
+ * all this for windows created by CreateWindow!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -91902,7 +91904,7 @@ inline void OnApplicationWillEnterForeground()
  * but since it doesn't do anything iOS-specific internally, it is available on
  * all platforms, in case it might be useful for some specific paradigm. Most
  * apps do not need to use this directly; SDL's internal event code will handle
- * all this for windows created by Window.Window!
+ * all this for windows created by CreateWindow!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -91924,7 +91926,7 @@ inline void OnApplicationDidEnterForeground()
  * but since it doesn't do anything iOS-specific internally, it is available on
  * all platforms, in case it might be useful for some specific paradigm. Most
  * apps do not need to use this directly; SDL's internal event code will handle
- * all this for windows created by Window.Window!
+ * all this for windows created by CreateWindow!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -92484,25 +92486,26 @@ namespace SDL {
  * time!
  *
  * To use the library, first call MIX.Init(). Then create a mixer with
- * Mixer.Mixer() (or Mixer.Mixer() to render to memory).
+ * CreateMixerDevice() (or CreateMixer() to render to memory).
  *
- * Once you have a mixer, you can load sound data with Audio.Audio(). Data gets
- * loaded once and can be played over and over.
+ * Once you have a mixer, you can load sound data with Mixer.LoadAudio(),
+ * Mixer.LoadAudio_IO(), or LoadAudioWithProperties(). Data gets loaded once and
+ * can be played over and over.
  *
  * When loading audio, SDL_mixer can parse out several metadata tag formats,
  * such as ID3 and APE tags, and exposes this information through the
  * Audio.GetProperties() function.
  *
- * To play audio, you create a track with Track.Track(). You need one track for
- * each sound that will be played simultaneously; think of tracks as individual
- * sliders on a mixer board. You might have loaded hundreds of audio files, but
- * you probably only have a handful of tracks that you assign those loaded files
- * to when they are ready to play, and reuse those tracks with different audio
- * later. Tracks take their input from a Audio (static data to be played
- * multiple times) or an AudioStream (streaming PCM audio the app supplies,
- * possibly as needed). A third option is to supply an IOStream, to load and
- * decode on the fly, which might be more efficient for background music that is
- * only used once, etc.
+ * To play audio, you create a track with Mixer.CreateTrack(). You need one
+ * track for each sound that will be played simultaneously; think of tracks as
+ * individual sliders on a mixer board. You might have loaded hundreds of audio
+ * files, but you probably only have a handful of tracks that you assign those
+ * loaded files to when they are ready to play, and reuse those tracks with
+ * different audio later. Tracks take their input from a Audio (static data to
+ * be played multiple times) or an AudioStream (streaming PCM audio the app
+ * supplies, possibly as needed). A third option is to supply an IOStream, to
+ * load and decode on the fly, which might be more efficient for background
+ * music that is only used once, etc.
  *
  * Assign input to a Track with Track.SetAudio(), Track.SetAudioStream(), or
  * Track.SetIOStream().
@@ -92617,10 +92620,10 @@ struct MixerLock;
  * A callback that fires when all mixing has completed.
  *
  * This callback is fired when the mixer has completed all its work. If this
- * mixer was created with Mixer.Mixer(), the data provided by this callback is
- * what is being sent to the audio hardware, minus last conversions for format
- * requirements. If this mixer was created with Mixer.Mixer(), this is what is
- * being output from Mixer.Generate(), after final conversions.
+ * mixer was created with CreateMixerDevice(), the data provided by this
+ * callback is what is being sent to the audio hardware, minus last conversions
+ * for format requirements. If this mixer was created with CreateMixer(), this
+ * is what is being output from Mixer.Generate(), after final conversions.
  *
  * The audio data passed through here is _not_ const data; the app is permitted
  * to change it in any way it likes, and those changes will replace the final
@@ -92656,10 +92659,10 @@ using PostMixCallback = void(SDLCALL*)(void* userdata,
  * A callback that fires when all mixing has completed.
  *
  * This callback is fired when the mixer has completed all its work. If this
- * mixer was created with Mixer.Mixer(), the data provided by this callback is
- * what is being sent to the audio hardware, minus last conversions for format
- * requirements. If this mixer was created with Mixer.Mixer(), this is what is
- * being output from Mixer.Generate(), after final conversions.
+ * mixer was created with CreateMixerDevice(), the data provided by this
+ * callback is what is being sent to the audio hardware, minus last conversions
+ * for format requirements. If this mixer was created with CreateMixer(), this
+ * is what is being output from Mixer.Generate(), after final conversions.
  *
  * The audio data passed through here is _not_ const data; the app is permitted
  * to change it in any way it likes, and those changes will replace the final
@@ -92697,9 +92700,9 @@ using PostMixCB = MakeFrontCallback<
  * for generating a single output stream of mixed audio, usually to an audio
  * device for realtime playback.
  *
- * Mixers are either created to feed an audio device (through Mixer.Mixer()), or
- * to generate audio to a buffer in memory, where it can be used for anything
- * (through Mixer.Mixer()).
+ * Mixers are either created to feed an audio device (through
+ * CreateMixerDevice()), or to generate audio to a buffer in memory, where it
+ * can be used for anything (through CreateMixer()).
  *
  * @since This datatype is available since SDL_mixer 3.0.0.
  *
@@ -92744,7 +92747,7 @@ public:
   /**
    * Create a mixer that plays sound directly to an audio device.
    *
-   * This is usually the function you want, vs Mixer.Mixer().
+   * This is usually the function you want, vs CreateMixer().
    *
    * You can choose a specific device ID to open, following SDL's usual rules,
    * but often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK
@@ -92768,8 +92771,8 @@ public:
    * The actual device format chosen is available through Mixer.GetFormat().
    *
    * Once a mixer is created, next steps are usually to load audio (through
-   * Audio.Audio() and friends), create a track (Track.Track()), and play that
-   * audio through that track.
+   * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
+   * play that audio through that track.
    *
    * When done with the mixer, it can be destroyed with Mixer.Destroy().
    *
@@ -92783,7 +92786,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Mixer
+   * @sa CreateMixer
    * @sa Mixer.Destroy
    */
   Mixer(AudioDeviceRef devid, const AudioSpec& spec);
@@ -92791,16 +92794,16 @@ public:
   /**
    * Create a mixer that generates audio to a memory buffer.
    *
-   * Usually you want Mixer.Mixer() instead of this function. The mixer created
-   * here can be used with Mixer.Generate() to produce more data on demand, as
-   * fast as desired.
+   * Usually you want CreateMixerDevice() instead of this function. The mixer
+   * created here can be used with Mixer.Generate() to produce more data on
+   * demand, as fast as desired.
    *
    * An audio format must be specified. This is the format it will output in.
    * This cannot be nullptr.
    *
    * Once a mixer is created, next steps are usually to load audio (through
-   * Audio.Audio() and friends), create a track (Track.Track()), and play that
-   * audio through that track.
+   * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
+   * play that audio through that track.
    *
    * When done with the mixer, it can be destroyed with Mixer.Destroy().
    *
@@ -92812,7 +92815,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Mixer
+   * @sa CreateMixerDevice
    * @sa Mixer.Destroy
    */
   Mixer(const AudioSpec& spec);
@@ -92850,23 +92853,23 @@ public:
   /**
    * Free a mixer.
    *
-   * If this mixer was created with Mixer.Mixer(), this function will also close
-   * the audio device and call QuitSubSystem(INIT_AUDIO).
+   * If this mixer was created with CreateMixerDevice(), this function will also
+   * close the audio device and call QuitSubSystem(INIT_AUDIO).
    *
    * Any Group or Track created for this mixer will also be destroyed. Do not
    * access them again or attempt to destroy them after the device is destroyed.
    * Audio objects will not be destroyed, since they can be shared between
    * mixers (but those will all be destroyed during MIX.Quit()).
    *
-   * @threadsafety If this is used with a Mixer from Mixer.Mixer, then this
-   *               function should only be called on the main thread. If this is
-   *               used with a Mixer from Mixer.Mixer, then it is safe to call
-   *               this function from any thread.
+   * @threadsafety If this is used with a Mixer from CreateMixerDevice, then
+   *               this function should only be called on the main thread. If
+   *               this is used with a Mixer from CreateMixer, then it is safe
+   *               to call this function from any thread.
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Mixer
-   * @sa Mixer.Mixer
+   * @sa CreateMixerDevice
+   * @sa CreateMixer
    */
   void Destroy();
 
@@ -92896,11 +92899,11 @@ public:
    * be useful if trying to match your inputs to reduce conversion and
    * resampling costs.
    *
-   * For mixers created with Mixer.Mixer(), this is the format of the audio
-   * device (and may change later if the device itself changes; SDL_mixer will
-   * seamlessly handle this change internally, though).
+   * For mixers created with CreateMixerDevice(), this is the format of the
+   * audio device (and may change later if the device itself changes; SDL_mixer
+   * will seamlessly handle this change internally, though).
    *
-   * For mixers created with Mixer.Mixer(), this is the format that
+   * For mixers created with CreateMixer(), this is the format that
    * Mixer.Generate() will produce, as requested at create time, and does not
    * change.
    *
@@ -93013,8 +93016,8 @@ public:
    * When done with a Audio, it can be freed with Audio.Destroy().
    *
    * This function loads data from an IOStream. There is also a version that
-   * loads from a path on the filesystem (Audio.Audio()), and one that accepts
-   * properties for ultimate control (LoadAudioWithProperties()).
+   * loads from a path on the filesystem (Mixer.LoadAudio()), and one that
+   * accepts properties for ultimate control (LoadAudioWithProperties()).
    *
    * The IOStream provided must be able to seek, or loading will fail. If the
    * stream can't seek (data is coming from an HTTP connection, etc), consider
@@ -93034,7 +93037,8 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio
+   * @sa LoadAudioWithProperties
    */
   Audio LoadAudio_IO(IOStreamRef io, bool predecode, bool closeio = false);
 
@@ -93044,12 +93048,12 @@ public:
    * This is equivalent to calling:
    *
    * ```cpp
-   * Audio audio(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+   * mixer.LoadAudio_IO(mixer, IOStream.FromFile(path, "rb"), predecode, true);
    * ```
    *
    * This function loads data from a path on the filesystem. There is also a
-   * version that loads from an IOStream (Audio.Audio()), and one that accepts
-   * properties for ultimate control (LoadAudioWithProperties()).
+   * version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that
+   * accepts properties for ultimate control (LoadAudioWithProperties()).
    *
    * @param path the path on the filesystem to load data from.
    * @param predecode if true, data will be fully uncompressed before returning.
@@ -93062,7 +93066,8 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio_IO
+   * @sa LoadAudioWithProperties
    */
   Audio LoadAudio(StringParam path, bool predecode);
 
@@ -93120,7 +93125,7 @@ public:
    * @sa Audio.Destroy
    * @sa Track.SetAudio
    * @sa Mixer.LoadRawAudioNoCopy
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio_IO
    */
   Audio LoadAudioNoCopy(SourceBytes data, bool free_when_done);
 
@@ -93153,7 +93158,7 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudio
    * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
@@ -93190,7 +93195,7 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudio_IO
    * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
@@ -93231,8 +93236,8 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudio
+   * @sa Mixer.LoadRawAudio_IO
    * @sa Mixer.LoadAudio_IO
    */
   Audio LoadRawAudioNoCopy(SourceBytes data,
@@ -93748,7 +93753,7 @@ public:
    * Generate mixer output when not driving an audio device.
    *
    * SDL_mixer allows the creation of Mixer objects that are not connected to an
-   * audio device, by calling Mixer.Mixer() instead of Mixer.Mixer(). Such
+   * audio device, by calling CreateMixer() instead of CreateMixerDevice(). Such
    * mixers will not generate output until explicitly requested through this
    * function.
    *
@@ -93772,7 +93777,7 @@ public:
    * does the same thing SDL_mixer does internally when the audio device needs
    * more audio to play.
    *
-   * This function can not be used with mixers from Mixer.Mixer(); those
+   * This function can not be used with mixers from CreateMixerDevice(); those
    * generate audio as needed internally.
    *
    * This function returns the number of _bytes_ of real audio mixed, which
@@ -93793,7 +93798,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Mixer
+   * @sa CreateMixer
    */
   int Generate(TargetBytes buffer);
 };
@@ -94037,7 +94042,7 @@ public:
  * An opaque object that represents audio data.
  *
  * Generally you load audio data (in whatever file format) into SDL_mixer with
- * Audio.Audio() or one of its several variants, producing a Audio object.
+ * Mixer.LoadAudio() or one of its several variants, producing a Audio object.
  *
  * A Audio represents static audio data; it could be background music, or maybe
  * a laser gun sound effect. It is loaded into RAM and can be played multiple
@@ -94116,8 +94121,8 @@ public:
    * When done with a Audio, it can be freed with Audio.Destroy().
    *
    * This function loads data from an IOStream. There is also a version that
-   * loads from a path on the filesystem (Audio.Audio()), and one that accepts
-   * properties for ultimate control (Audio.Audio()).
+   * loads from a path on the filesystem (Mixer.LoadAudio()), and one that
+   * accepts properties for ultimate control (LoadAudioWithProperties()).
    *
    * The IOStream provided must be able to seek, or loading will fail. If the
    * stream can't seek (data is coming from an HTTP connection, etc), consider
@@ -94139,8 +94144,8 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio
+   * @sa LoadAudioWithProperties
    */
   Audio(MixerRef mixer, IOStreamRef io, bool predecode, bool closeio = false);
 
@@ -94150,12 +94155,12 @@ public:
    * This is equivalent to calling:
    *
    * ```c
-   * Audio.Audio(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+   * Mixer.LoadAudio_IO(mixer, IOStream.FromFile(path, "rb"), predecode, true);
    * ```
    *
    * This function loads data from a path on the filesystem. There is also a
-   * version that loads from an IOStream (Audio.Audio()), and one that accepts
-   * properties for ultimate control (Audio.Audio()).
+   * version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that
+   * accepts properties for ultimate control (LoadAudioWithProperties()).
    *
    * @param mixer a mixer this audio is intended to be used with. May be
    *              nullptr.
@@ -94170,17 +94175,17 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio_IO
+   * @sa LoadAudioWithProperties
    */
   Audio(MixerRef mixer, StringParam path, bool predecode);
 
   /**
    * Load audio for playback through a collection of properties.
    *
-   * Please see Audio.Audio() for a description of what the various LoadAudio
-   * functions do. This function uses properties to dictate how it operates, and
-   * exposes functionality the other functions don't provide.
+   * Please see Mixer.LoadAudio_IO() for a description of what the various
+   * LoadAudio functions do. This function uses properties to dictate how it
+   * operates, and exposes functionality the other functions don't provide.
    *
    * Properties are discussed in [SDL's
    * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .
@@ -94218,8 +94223,8 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadAudio
+   * @sa Mixer.LoadAudio_IO
    */
   Audio(PropertiesRef props);
 
@@ -94253,7 +94258,7 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudio
    * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
@@ -94292,7 +94297,7 @@ public:
    *
    * @sa Audio.Destroy
    * @sa Track.SetAudio
-   * @sa Audio.Audio
+   * @sa Mixer.LoadRawAudio_IO
    * @sa Mixer.LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
@@ -94377,7 +94382,8 @@ public:
    *   out of sound to generate. This isn't necessarily always known to
    *   SDL_mixer, though.
    *
-   * Other properties, documented with Audio.Audio(), may also be present.
+   * Other properties, documented with LoadAudioWithProperties(), may also be
+   * present.
    *
    * Note that the metadata properties are whatever SDL_mixer finds in things
    * like ID3 tags, and they often have very little standardized formatting, may
@@ -94862,7 +94868,7 @@ public:
   /**
    * Get the Mixer that owns a Track.
    *
-   * This is the mixer pointer that was passed to Track.Track().
+   * This is the mixer pointer that was passed to Mixer.CreateTrack().
    *
    * @returns the mixer associated with the track on success.
    * @throws Error on failure.
@@ -95856,7 +95862,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Group.Group
+   * @sa Mixer.CreateGroup
    * @sa Group.SetPostMixCallback
    */
   void SetGroup(GroupRef group);
@@ -96319,7 +96325,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Group.Group
+   * @sa Mixer.CreateGroup
    */
   void Destroy();
 
@@ -96344,7 +96350,7 @@ public:
   /**
    * Get the Mixer that owns a Group.
    *
-   * This is the mixer pointer that was passed to Group.Group().
+   * This is the mixer pointer that was passed to Mixer.CreateGroup().
    *
    * @returns the mixer associated with the group on success.
    * @throws Error on failure.
@@ -96645,7 +96651,7 @@ inline const char* GetAudioDecoder(int index)
 /**
  * Create a mixer that plays sound directly to an audio device.
  *
- * This is usually the function you want, vs Mixer.Mixer().
+ * This is usually the function you want, vs CreateMixer().
  *
  * You can choose a specific device ID to open, following SDL's usual rules, but
  * often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK and let
@@ -96669,8 +96675,8 @@ inline const char* GetAudioDecoder(int index)
  * The actual device format chosen is available through Mixer.GetFormat().
  *
  * Once a mixer is created, next steps are usually to load audio (through
- * Audio.Audio() and friends), create a track (Track.Track()), and play that
- * audio through that track.
+ * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
+ * play that audio through that track.
  *
  * When done with the mixer, it can be destroyed with Mixer.Destroy().
  *
@@ -96684,7 +96690,7 @@ inline const char* GetAudioDecoder(int index)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Mixer
+ * @sa CreateMixer
  * @sa Mixer.Destroy
  */
 inline Mixer CreateMixerDevice(AudioDeviceRef devid, const AudioSpec& spec)
@@ -96705,16 +96711,16 @@ inline Mixer::Mixer(const AudioSpec& spec)
 /**
  * Create a mixer that generates audio to a memory buffer.
  *
- * Usually you want Mixer.Mixer() instead of this function. The mixer created
- * here can be used with Mixer.Generate() to produce more data on demand, as
- * fast as desired.
+ * Usually you want CreateMixerDevice() instead of this function. The mixer
+ * created here can be used with Mixer.Generate() to produce more data on
+ * demand, as fast as desired.
  *
  * An audio format must be specified. This is the format it will output in. This
  * cannot be nullptr.
  *
  * Once a mixer is created, next steps are usually to load audio (through
- * Audio.Audio() and friends), create a track (Track.Track()), and play that
- * audio through that track.
+ * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
+ * play that audio through that track.
  *
  * When done with the mixer, it can be destroyed with Mixer.Destroy().
  *
@@ -96726,7 +96732,7 @@ inline Mixer::Mixer(const AudioSpec& spec)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Mixer
+ * @sa CreateMixerDevice
  * @sa Mixer.Destroy
  */
 inline Mixer CreateMixer(const AudioSpec& spec) { return Mixer(spec); }
@@ -96734,8 +96740,8 @@ inline Mixer CreateMixer(const AudioSpec& spec) { return Mixer(spec); }
 /**
  * Free a mixer.
  *
- * If this mixer was created with Mixer.Mixer(), this function will also close
- * the audio device and call QuitSubSystem(INIT_AUDIO).
+ * If this mixer was created with CreateMixerDevice(), this function will also
+ * close the audio device and call QuitSubSystem(INIT_AUDIO).
  *
  * Any Group or Track created for this mixer will also be destroyed. Do not
  * access them again or attempt to destroy them after the device is destroyed.
@@ -96744,15 +96750,15 @@ inline Mixer CreateMixer(const AudioSpec& spec) { return Mixer(spec); }
  *
  * @param mixer the mixer to destroy.
  *
- * @threadsafety If this is used with a Mixer from Mixer.Mixer, then this
+ * @threadsafety If this is used with a Mixer from CreateMixerDevice, then this
  *               function should only be called on the main thread. If this is
- *               used with a Mixer from Mixer.Mixer, then it is safe to call
+ *               used with a Mixer from CreateMixer, then it is safe to call
  *               this function from any thread.
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Mixer
- * @sa Mixer.Mixer
+ * @sa CreateMixerDevice
+ * @sa CreateMixer
  */
 inline void DestroyMixer(MixerRaw mixer) { MIX_DestroyMixer(mixer); }
 
@@ -96799,11 +96805,11 @@ constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER;
  * useful if trying to match your inputs to reduce conversion and resampling
  * costs.
  *
- * For mixers created with Mixer.Mixer(), this is the format of the audio device
- * (and may change later if the device itself changes; SDL_mixer will seamlessly
- * handle this change internally, though).
+ * For mixers created with CreateMixerDevice(), this is the format of the audio
+ * device (and may change later if the device itself changes; SDL_mixer will
+ * seamlessly handle this change internally, though).
  *
- * For mixers created with Mixer.Mixer(), this is the format that
+ * For mixers created with CreateMixer(), this is the format that
  * Mixer.Generate() will produce, as requested at create time, and does not
  * change.
  *
@@ -96950,7 +96956,7 @@ inline void MixerLock::reset()
  * When done with a Audio, it can be freed with Audio.Destroy().
  *
  * This function loads data from an IOStream. There is also a version that loads
- * from a path on the filesystem (Audio.Audio()), and one that accepts
+ * from a path on the filesystem (Mixer.LoadAudio()), and one that accepts
  * properties for ultimate control (LoadAudioWithProperties()).
  *
  * The IOStream provided must be able to seek, or loading will fail. If the
@@ -96972,7 +96978,7 @@ inline void MixerLock::reset()
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
+ * @sa Mixer.LoadAudio
  * @sa LoadAudioWithProperties
  */
 inline Audio LoadAudio_IO(MixerRef mixer,
@@ -97026,12 +97032,12 @@ inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
  * This is equivalent to calling:
  *
  * ```cpp
- * Audio audio(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+ * mixer.LoadAudio_IO(mixer, IOStream.FromFile(path, "rb"), predecode, true);
  * ```
  *
  * This function loads data from a path on the filesystem. There is also a
- * version that loads from an IOStream (Audio.Audio()), and one that accepts
- * properties for ultimate control (LoadAudioWithProperties()).
+ * version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that
+ * accepts properties for ultimate control (LoadAudioWithProperties()).
  *
  * @param mixer a mixer this audio is intended to be used with. May be nullptr.
  * @param path the path on the filesystem to load data from.
@@ -97072,10 +97078,10 @@ inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
  * This function is meant to maximize efficiency: if the data is already in
  * memory and can remain there, don't copy it. This data can be in any supported
  * audio file format (WAV, MP3, etc); it will be decoded on the fly while
- * mixing. Unlike Audio.Audio(), there is no `predecode` option offered here, as
- * this is meant to optimize for data that's already in memory and intends to
- * exist there for significant time; since predecoding would only need the file
- * format data once, upfront, one could simply wrap it in
+ * mixing. Unlike Mixer.LoadAudio(), there is no `predecode` option offered
+ * here, as this is meant to optimize for data that's already in memory and
+ * intends to exist there for significant time; since predecoding would only
+ * need the file format data once, upfront, one could simply wrap it in
  * SDL_CreateIOFromConstMem() and pass that to Mixer.LoadAudio_IO().
  *
  * Audio objects can be shared between multiple mixers. The `mixer` parameter
@@ -97130,9 +97136,9 @@ inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
 /**
  * Load audio for playback through a collection of properties.
  *
- * Please see Audio.Audio() for a description of what the various LoadAudio
- * functions do. This function uses properties to dictate how it operates, and
- * exposes functionality the other functions don't provide.
+ * Please see Mixer.LoadAudio_IO() for a description of what the various
+ * LoadAudio functions do. This function uses properties to dictate how it
+ * operates, and exposes functionality the other functions don't provide.
  *
  * Properties are discussed in [SDL's
  * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .
@@ -97170,7 +97176,8 @@ inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
+ * @sa Mixer.LoadAudio
+ * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadAudioWithProperties(PropertiesRef props)
 {
@@ -97225,8 +97232,9 @@ constexpr auto DECODER_STRING = MIX_PROP_AUDIO_DECODER_STRING;
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
+ * @sa Mixer.LoadRawAudio
  * @sa Mixer.LoadRawAudioNoCopy
+ * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadRawAudio_IO(MixerRef mixer,
                              IOStreamRef io,
@@ -97273,8 +97281,9 @@ inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
+ * @sa Mixer.LoadRawAudio_IO
  * @sa Mixer.LoadRawAudioNoCopy
+ * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadRawAudio(MixerRef mixer,
                           SourceBytes data,
@@ -97324,8 +97333,9 @@ inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
- * @sa Audio.Audio
+ * @sa Mixer.LoadRawAudio
+ * @sa Mixer.LoadRawAudio_IO
+ * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadRawAudioNoCopy(MixerRef mixer,
                                 SourceBytes data,
@@ -97378,7 +97388,7 @@ inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
  *
  * @sa Audio.Destroy
  * @sa Track.SetAudio
- * @sa Audio.Audio
+ * @sa Mixer.LoadAudio_IO
  */
 inline Audio CreateSineWaveAudio(MixerRef mixer,
                                  int hz,
@@ -97648,7 +97658,7 @@ inline PropertiesRef Track::GetProperties()
 /**
  * Get the Mixer that owns a Track.
  *
- * This is the mixer pointer that was passed to Track.Track().
+ * This is the mixer pointer that was passed to Mixer.CreateTrack().
  *
  * @param track the track to query.
  * @returns the mixer associated with the track on success.
@@ -98675,7 +98685,7 @@ inline void Mixer::PlayTag(StringParam tag, PropertiesRef options)
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa Track.Play
- * @sa Audio.Audio
+ * @sa Mixer.LoadAudio
  */
 inline bool PlayAudio(MixerRef mixer, AudioRef audio)
 {
@@ -99535,7 +99545,7 @@ inline Group::Group(MixerRef mixer)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Group.Group
+ * @sa Mixer.CreateGroup
  */
 inline void DestroyGroup(GroupRaw group) { MIX_DestroyGroup(group); }
 
@@ -99571,7 +99581,7 @@ inline PropertiesRef Group::GetProperties()
 /**
  * Get the Mixer that owns a Group.
  *
- * This is the mixer pointer that was passed to Group.Group().
+ * This is the mixer pointer that was passed to Mixer.CreateGroup().
  *
  * @param group the group to query.
  * @returns the mixer associated with the group on success.
@@ -99608,7 +99618,7 @@ inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(m_resource); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Group.Group
+ * @sa Mixer.CreateGroup
  * @sa Group.SetPostMixCallback
  */
 inline void SetTrackGroup(TrackRef track, GroupRef group)
@@ -99996,8 +100006,9 @@ inline void Mixer::SetPostMixCallback(PostMixCB cb)
  * Generate mixer output when not driving an audio device.
  *
  * SDL_mixer allows the creation of Mixer objects that are not connected to an
- * audio device, by calling Mixer.Mixer() instead of Mixer.Mixer(). Such mixers
- * will not generate output until explicitly requested through this function.
+ * audio device, by calling CreateMixer() instead of CreateMixerDevice(). Such
+ * mixers will not generate output until explicitly requested through this
+ * function.
  *
  * The caller may request as much audio as desired, so long as `buflen` is a
  * multiple of the sample frame size specified when creating the mixer (for
@@ -100018,8 +100029,8 @@ inline void Mixer::SetPostMixCallback(PostMixCB cb)
  * does the same thing SDL_mixer does internally when the audio device needs
  * more audio to play.
  *
- * This function can not be used with mixers from Mixer.Mixer(); those generate
- * audio as needed internally.
+ * This function can not be used with mixers from CreateMixerDevice(); those
+ * generate audio as needed internally.
  *
  * This function returns the number of _bytes_ of real audio mixed, which might
  * be less than `buflen`. While all `buflen` bytes of `buffer` will be
@@ -100040,7 +100051,7 @@ inline void Mixer::SetPostMixCallback(PostMixCB cb)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Mixer
+ * @sa CreateMixer
  */
 inline int Generate(MixerRef mixer, TargetBytes buffer)
 {
@@ -100060,8 +100071,8 @@ inline int Mixer::Generate(TargetBytes buffer)
  * as needed. However, if one wants to decode an audio file into a memory buffer
  * without playing it, this interface offers that.
  *
- * These objects are created with AudioDecoder.AudioDecoder() or
- * AudioDecoder.AudioDecoder(), and then can use AudioDecoder.DecodeAudio() to
+ * These objects are created with CreateAudioDecoder() or
+ * CreateAudioDecoder_IO(), and then can use AudioDecoder.DecodeAudio() to
  * retrieve the raw PCM data.
  *
  * @since This struct is available since SDL_mixer 3.0.0.
@@ -100133,7 +100144,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa AudioDecoder.AudioDecoder
+   * @sa CreateAudioDecoder_IO
    * @sa AudioDecoder.DecodeAudio
    * @sa AudioDecoder.Destroy
    */
@@ -100170,7 +100181,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa AudioDecoder.AudioDecoder
+   * @sa CreateAudioDecoder_IO
    * @sa AudioDecoder.DecodeAudio
    * @sa AudioDecoder.Destroy
    */
@@ -100385,7 +100396,7 @@ struct AudioDecoderRef : AudioDecoder
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa AudioDecoder.AudioDecoder
+ * @sa CreateAudioDecoder_IO
  * @sa AudioDecoder.DecodeAudio
  * @sa AudioDecoder.Destroy
  */
@@ -100438,7 +100449,7 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa AudioDecoder.AudioDecoder
+ * @sa CreateAudioDecoder_IO
  * @sa AudioDecoder.DecodeAudio
  * @sa AudioDecoder.Destroy
  */
@@ -100684,7 +100695,7 @@ inline int Version() { return IMG_Version(); }
  *
  * There is a separate function to read files from an IOStream, if you need an
  * i/o abstraction to provide data from anywhere instead of a simple filesystem
- * read; that function is Surface.Surface().
+ * read; that function is LoadSurface_IO().
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to load
  * images directly into an Texture for use by the GPU without using a software
@@ -100696,7 +100707,7 @@ inline int Version() { return IMG_Version(); }
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa LoadSurfaceTyped_IO
- * @sa Surface.Surface
+ * @sa LoadSurface_IO
  */
 inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 
@@ -100752,7 +100763,7 @@ inline Surface::Surface(IOStreamRef src, bool closeio)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Surface.Surface
+ * @sa LoadSurface
  * @sa LoadSurfaceTyped_IO
  */
 inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
@@ -100793,7 +100804,7 @@ inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
- * There is also LoadSurface(), which is equivalent to this function except
+ * There is also LoadSurface_IO(), which is equivalent to this function except
  * that it will rely on SDL_image to determine what type of data it is loading,
  * much like passing a nullptr for type.
  *
@@ -100810,8 +100821,8 @@ inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Surface.Surface
- * @sa Surface.Surface
+ * @sa LoadSurface
+ * @sa LoadSurface_IO
  */
 inline Surface LoadSurfaceTyped_IO(IOStreamRef src,
                                    StringParam type,
@@ -100834,7 +100845,7 @@ inline Surface LoadSurfaceTyped_IO(IOStreamRef src,
  *
  * There is a separate function to read files from an IOStream, if you need an
  * i/o abstraction to provide data from anywhere instead of a simple filesystem
- * read; that function is Texture.Texture().
+ * read; that function is LoadTexture_IO().
  *
  * If you would rather decode an image to an Surface (a buffer of pixels in CPU
  * memory), call LoadSurface() instead.
@@ -100846,7 +100857,7 @@ inline Surface LoadSurfaceTyped_IO(IOStreamRef src,
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa LoadTextureTyped_IO
- * @sa Texture.Texture
+ * @sa LoadTexture_IO
  */
 inline Texture LoadTexture(RendererRef renderer, StringParam file)
 {
@@ -100880,7 +100891,7 @@ inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
  * during this call in any case.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call this
+ * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
  * function and manage those details for you, determining the file type from the
  * filename's extension.
  *
@@ -100899,7 +100910,7 @@ inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Texture.Texture
+ * @sa LoadTexture
  * @sa LoadTextureTyped_IO
  */
 inline Texture LoadTexture_IO(RendererRef renderer,
@@ -100932,11 +100943,11 @@ inline Texture LoadTexture_IO(RendererRef renderer,
  * ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStream: `Texture.Texture("filename.jpg")` will call this function and
+ * with IOStream: `LoadTexture("filename.jpg")` will call this function and
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
- * There is also Texture.Texture(), which is equivalent to this function except
+ * There is also LoadTexture_IO(), which is equivalent to this function except
  * that it will rely on SDL_image to determine what type of data it is loading,
  * much like passing a nullptr for type.
  *
@@ -100953,8 +100964,8 @@ inline Texture LoadTexture_IO(RendererRef renderer,
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Texture.Texture
- * @sa Texture.Destroy
+ * @sa LoadTexture
+ * @sa LoadTexture_IO
  */
 inline Texture LoadTextureTyped_IO(RendererRef renderer,
                                    IOStreamRef src,
@@ -103276,7 +103287,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa Animation.CreateCursor
-   * @sa Animation.Animation
+   * @sa LoadAnimation_IO
    * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation_IO
    * @sa LoadAPNGAnimation_IO
@@ -103305,7 +103316,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa Animation.CreateCursor
-   * @sa Animation.Animation
+   * @sa LoadAnimation
    * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation_IO
    * @sa LoadAPNGAnimation_IO
@@ -103362,8 +103373,8 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Animation.Animation
-   * @sa Animation.Animation
+   * @sa LoadAnimation
+   * @sa LoadAnimation_IO
    * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation_IO
    * @sa LoadAPNGAnimation_IO
@@ -103573,8 +103584,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.Animation
-   * @sa Animation.Animation
+   * @sa LoadAnimation
+   * @sa LoadAnimation_IO
    * @sa LoadAnimationTyped_IO
    */
   Cursor CreateCursor(const PointRaw& hotspot);
@@ -103733,7 +103744,7 @@ inline int Animation::GetDelay(int index) const
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa Animation.CreateCursor
- * @sa Animation.Animation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -103775,7 +103786,7 @@ inline Animation::Animation(IOStreamRef src, bool closeio)
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa Animation.CreateCursor
- * @sa Animation.Animation
+ * @sa LoadAnimation
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -103814,8 +103825,8 @@ inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa Animation.CreateCursor
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
  * @sa LoadAVIFAnimation_IO
@@ -103849,8 +103860,8 @@ inline Animation LoadAnimationTyped_IO(IOStreamRef src,
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa isANI
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadAPNGAnimation_IO
  * @sa LoadAVIFAnimation_IO
@@ -103880,8 +103891,8 @@ inline Animation LoadANIAnimation_IO(IOStreamRef src)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa isPNG
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAVIFAnimation_IO
@@ -103911,8 +103922,8 @@ inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa isAVIF
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -103941,8 +103952,8 @@ inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa isGIF
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -103969,8 +103980,8 @@ inline Animation LoadGIFAnimation_IO(IOStreamRef src)
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa isWEBP
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -104237,8 +104248,8 @@ inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  */
 inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
@@ -104263,8 +104274,8 @@ inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -104339,8 +104350,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
+   * @sa CreateAnimationEncoder_IO
+   * @sa CreateAnimationEncoderWithProperties
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
@@ -104370,8 +104381,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoderWithProperties
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
@@ -104419,8 +104430,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoder_IO
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
@@ -104467,9 +104478,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoder_IO
+   * @sa CreateAnimationEncoderWithProperties
    */
   void Close();
 
@@ -104485,9 +104496,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoder_IO
+   * @sa CreateAnimationEncoderWithProperties
    * @sa AnimationEncoder.Close
    */
   void AddFrame(SurfaceRef surface, Uint64 duration);
@@ -104585,8 +104596,8 @@ struct AnimationEncoderRef : AnimationEncoder
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
+ * @sa CreateAnimationEncoder_IO
+ * @sa CreateAnimationEncoderWithProperties
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
@@ -104634,8 +104645,8 @@ inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
+ * @sa CreateAnimationEncoder
+ * @sa CreateAnimationEncoderWithProperties
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
@@ -104687,8 +104698,8 @@ inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
+ * @sa CreateAnimationEncoder
+ * @sa CreateAnimationEncoder_IO
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
@@ -104745,9 +104756,9 @@ constexpr auto CREATE_GIF_USE_LUT_BOOLEAN =
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
+ * @sa CreateAnimationEncoder
+ * @sa CreateAnimationEncoder_IO
+ * @sa CreateAnimationEncoderWithProperties
  * @sa AnimationEncoder.Close
  */
 inline void AddAnimationEncoderFrame(AnimationEncoderRef encoder,
@@ -104773,9 +104784,9 @@ inline void AnimationEncoder::AddFrame(SurfaceRef surface, Uint64 duration)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
+ * @sa CreateAnimationEncoder
+ * @sa CreateAnimationEncoder_IO
+ * @sa CreateAnimationEncoderWithProperties
  */
 inline void CloseAnimationEncoder(AnimationEncoderRaw encoder)
 {
@@ -104865,8 +104876,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
    * @sa AnimationDecoder.GetFrame
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
@@ -104897,8 +104908,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoderWithProperties
    * @sa AnimationDecoder.GetFrame
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
@@ -104937,8 +104948,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
    * @sa AnimationDecoder.GetFrame
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
@@ -104986,9 +104997,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
    */
   void Close();
 
@@ -105004,9 +105015,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
    */
   PropertiesRef GetProperties();
 
@@ -105026,9 +105037,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
    * @sa AnimationDecoder.GetStatus
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
@@ -105058,9 +105069,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
    * @sa AnimationDecoder.GetFrame
    * @sa AnimationDecoder.Close
    */
@@ -105159,8 +105170,8 @@ struct AnimationDecoderRef : AnimationDecoder
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder_IO
+ * @sa CreateAnimationDecoderWithProperties
  * @sa AnimationDecoder.GetFrame
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
@@ -105197,8 +105208,8 @@ inline AnimationDecoder::AnimationDecoder(StringParam file)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoderWithProperties
  * @sa AnimationDecoder.GetFrame
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
@@ -105242,8 +105253,8 @@ inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoder_IO
  * @sa AnimationDecoder.GetFrame
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
@@ -105304,9 +105315,9 @@ constexpr auto CREATE_GIF_NUM_COLORS_NUMBER =
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoder_IO
+ * @sa CreateAnimationDecoderWithProperties
  */
 inline PropertiesRef GetAnimationDecoderProperties(AnimationDecoderRef decoder)
 {
@@ -105354,9 +105365,9 @@ constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoder_IO
+ * @sa CreateAnimationDecoderWithProperties
  * @sa AnimationDecoder.GetStatus
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
@@ -105408,9 +105419,9 @@ inline AnimationDecoderStatus AnimationDecoder::GetStatus()
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoder_IO
+ * @sa CreateAnimationDecoderWithProperties
  * @sa AnimationDecoder.GetFrame
  * @sa AnimationDecoder.Close
  */
@@ -105435,9 +105446,9 @@ inline void AnimationDecoder::Reset()
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoder_IO
+ * @sa CreateAnimationDecoderWithProperties
  */
 inline void CloseAnimationDecoder(AnimationDecoderRaw decoder)
 {
@@ -105971,7 +105982,7 @@ public:
    *
    * Call this when done with a font. This function will free any resources
    * associated with it. It is safe to call this function on nullptr, for
-   * example on the result of a failed call to Font.Font().
+   * example on the result of a failed call to OpenFont().
    *
    * The font is not valid after being passed to this function. String pointers
    * from functions that return information on this font, such as
@@ -105983,7 +105994,8 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.Font
+   * @sa OpenFont
+   * @sa OpenFont
    */
   void Close();
 
@@ -109378,10 +109390,9 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
  *
  * There are three text engines provided with the library:
  *
- * - Drawing to an Surface, created with SurfaceTextEngine.SurfaceTextEngine()
- * - Drawing with an SDL 2D renderer, created with
- *   RendererTextEngine.RendererTextEngine()
- * - Drawing with the SDL GPU API, created with GPUTextEngine.GPUTextEngine()
+ * - Drawing to an Surface, created with CreateSurfaceTextEngine()
+ * - Drawing with an SDL 2D renderer, created with CreateRendererTextEngine()
+ * - Drawing with the SDL GPU API, created with CreateGPUTextEngine()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
@@ -109505,7 +109516,7 @@ struct SurfaceTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa SurfaceTextEngine.SurfaceTextEngine
+   * @sa CreateSurfaceTextEngine
    */
   void Destroy() final;
 };
@@ -109527,7 +109538,7 @@ struct RendererTextEngine : TextEngine
    *
    * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
-   * @sa RendererTextEngine.RendererTextEngine
+   * @sa CreateRendererTextEngineWithProperties
    */
   RendererTextEngine(RendererRef renderer);
 
@@ -109551,7 +109562,7 @@ struct RendererTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa RendererTextEngine.RendererTextEngine
+   * @sa CreateRendererTextEngine
    * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    */
@@ -109574,7 +109585,7 @@ struct RendererTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa RendererTextEngine.RendererTextEngine
+   * @sa CreateRendererTextEngine
    */
   void Destroy() final;
 };
@@ -109594,7 +109605,7 @@ struct GPUTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GPUTextEngine.GPUTextEngine
+   * @sa CreateGPUTextEngineWithProperties
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
@@ -109620,7 +109631,7 @@ struct GPUTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GPUTextEngine.GPUTextEngine
+   * @sa CreateGPUTextEngine
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
@@ -109674,7 +109685,7 @@ struct GPUTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GPUTextEngine.GPUTextEngine
+   * @sa CreateGPUTextEngine
    */
   void Destroy() final;
 };
@@ -109713,11 +109724,11 @@ struct SubStringIterator;
 using TextData = TTF_TextData;
 
 /**
- * Text created with Text.Text()
+ * Text created with TextEngine.CreateText()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
- * @sa Text.Text
+ * @sa TextEngine.CreateText
  * @sa Text.GetProperties
  * @sa Text.Destroy
  *
@@ -109825,7 +109836,7 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.Text
+   * @sa TextEngine.CreateText
    */
   void Destroy();
 
@@ -109833,7 +109844,7 @@ public:
    * Draw text to an SDL surface.
    *
    * `text` must have been created using a TextEngine from
-   * SurfaceTextEngine.SurfaceTextEngine().
+   * CreateSurfaceTextEngine().
    *
    * @param p the x,y coordinates in pixels, positive from the top-left edge
    *          towards the bottom-right.
@@ -109845,8 +109856,8 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa SurfaceTextEngine.SurfaceTextEngine
-   * @sa Text.Text
+   * @sa CreateSurfaceTextEngine
+   * @sa TextEngine.CreateText
    */
   void DrawSurface(Point p, SurfaceRef surface) const;
 
@@ -109854,8 +109865,8 @@ public:
    * Draw text to an SDL renderer.
    *
    * `text` must have been created using a TextEngine from
-   * RendererTextEngine.RendererTextEngine(), and will draw using the renderer
-   * passed to that function.
+   * CreateRendererTextEngine(), and will draw using the renderer passed to that
+   * function.
    *
    * @param p the x,y coordinates in pixels, positive from the top-left edge
    *          towards the bottom-right.
@@ -109866,8 +109877,8 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa RendererTextEngine.RendererTextEngine
-   * @sa Text.Text
+   * @sa CreateRendererTextEngine
+   * @sa TextEngine.CreateText
    */
   void DrawRenderer(FPoint p) const;
 
@@ -109875,7 +109886,7 @@ public:
    * Get the geometry data needed for drawing the text.
    *
    * `text` must have been created using a TextEngine from
-   * GPUTextEngine.GPUTextEngine().
+   * CreateGPUTextEngine().
    *
    * The positive X-axis is taken towards the right and the positive Y-axis is
    * taken upwards for both the vertex and the texture coordinates, i.e, it
@@ -109894,8 +109905,8 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GPUTextEngine.GPUTextEngine
-   * @sa Text.Text
+   * @sa CreateGPUTextEngine
+   * @sa TextEngine.CreateText
    */
   GPUAtlasDrawSequence* GetGPUDrawData() const;
 
@@ -110778,7 +110789,7 @@ inline SurfaceTextEngine::SurfaceTextEngine()
  * Draw text to an SDL surface.
  *
  * `text` must have been created using a TextEngine from
- * SurfaceTextEngine.SurfaceTextEngine().
+ * CreateSurfaceTextEngine().
  *
  * @param text the text to draw.
  * @param p the (x, y) coordinate in pixels, positive from the left edge
@@ -110791,8 +110802,8 @@ inline SurfaceTextEngine::SurfaceTextEngine()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa SurfaceTextEngine.SurfaceTextEngine
- * @sa Text.Text
+ * @sa CreateSurfaceTextEngine
+ * @sa TextEngine.CreateText
  */
 inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceRef surface)
 {
@@ -110810,15 +110821,14 @@ inline void Text::DrawSurface(Point p, SurfaceRef surface) const
  * All text created by this engine should be destroyed before calling this
  * function.
  *
- * @param engine a TextEngine object created with
- *               SurfaceTextEngine.SurfaceTextEngine().
+ * @param engine a TextEngine object created with CreateSurfaceTextEngine().
  *
  * @threadsafety This function should be called on the thread that created the
  *               engine.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa SurfaceTextEngine.SurfaceTextEngine
+ * @sa CreateSurfaceTextEngine
  */
 inline void DestroySurfaceTextEngine(TextEngineRaw engine)
 {
@@ -110844,7 +110854,7 @@ inline void SurfaceTextEngine::Destroy()
  *
  * @sa RendererTextEngine.Destroy
  * @sa Text.DrawRenderer
- * @sa RendererTextEngine.RendererTextEngine
+ * @sa CreateRendererTextEngineWithProperties
  */
 inline RendererTextEngine CreateRendererTextEngine(RendererRef renderer)
 {
@@ -110881,7 +110891,7 @@ inline RendererTextEngine::RendererTextEngine(PropertiesRef props)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa RendererTextEngine.RendererTextEngine
+ * @sa CreateRendererTextEngine
  * @sa RendererTextEngine.Destroy
  * @sa Text.DrawRenderer
  */
@@ -110908,8 +110918,8 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  * Draw text to an SDL renderer.
  *
  * `text` must have been created using a TextEngine from
- * RendererTextEngine.RendererTextEngine(), and will draw using the renderer
- * passed to that function.
+ * CreateRendererTextEngine(), and will draw using the renderer passed to that
+ * function.
  *
  * @param text the text to draw.
  * @param p the (x, y) coordinate in pixels, positive from the left edge
@@ -110921,8 +110931,8 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa RendererTextEngine.RendererTextEngine
- * @sa GPUTextEngine.GPUTextEngine
+ * @sa CreateRendererTextEngine
+ * @sa TextEngine.CreateText
  */
 inline void DrawRendererText(TextConstRef text, FPoint p)
 {
@@ -110940,15 +110950,14 @@ inline void Text::DrawRenderer(FPoint p) const
  * All text created by this engine should be destroyed before calling this
  * function.
  *
- * @param engine a TextEngine object created with
- *               RendererTextEngine.RendererTextEngine().
+ * @param engine a TextEngine object created with CreateRendererTextEngine().
  *
  * @threadsafety This function should be called on the thread that created the
  *               engine.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa RendererTextEngine.RendererTextEngine
+ * @sa CreateRendererTextEngine
  */
 inline void DestroyRendererTextEngine(TextEngineRaw engine)
 {
@@ -110972,7 +110981,7 @@ inline void RendererTextEngine::Destroy()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa GPUTextEngine.GPUTextEngine
+ * @sa CreateGPUTextEngineWithProperties
  * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
@@ -111011,7 +111020,7 @@ inline GPUTextEngine::GPUTextEngine(PropertiesRef props)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa GPUTextEngine.GPUTextEngine
+ * @sa CreateGPUTextEngine
  * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
@@ -111036,8 +111045,7 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
 /**
  * Get the geometry data needed for drawing the text.
  *
- * `text` must have been created using a TextEngine from
- * GPUTextEngine.GPUTextEngine().
+ * `text` must have been created using a TextEngine from CreateGPUTextEngine().
  *
  * The positive X-axis is taken towards the right and the positive Y-axis is
  * taken upwards for both the vertex and the texture coordinates, i.e, it
@@ -111056,8 +111064,8 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa GPUTextEngine.GPUTextEngine
- * @sa GPUTextEngine.GPUTextEngine
+ * @sa CreateGPUTextEngine
+ * @sa TextEngine.CreateText
  */
 inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstRef text)
 {
@@ -111075,14 +111083,14 @@ inline GPUAtlasDrawSequence* Text::GetGPUDrawData() const
  * All text created by this engine should be destroyed before calling this
  * function.
  *
- * @param engine a TextEngine object created with GPUTextEngine.GPUTextEngine().
+ * @param engine a TextEngine object created with CreateGPUTextEngine().
  *
  * @threadsafety This function should be called on the thread that created the
  *               engine.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa GPUTextEngine.GPUTextEngine
+ * @sa CreateGPUTextEngine
  */
 inline void DestroyGPUTextEngine(TextEngineRaw engine)
 {
@@ -112146,7 +112154,7 @@ inline void Text::Update() { SDL::UpdateText(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa RendererTextEngine.RendererTextEngine
+ * @sa TextEngine.CreateText
  */
 inline void DestroyText(TextRaw text) { TTF_DestroyText(text); }
 
@@ -112157,7 +112165,7 @@ inline void Text::Destroy() { DestroyText(release()); }
  *
  * Call this when done with a font. This function will free any resources
  * associated with it. It is safe to call this function on nullptr, for example
- * on the result of a failed call to Font.Font().
+ * on the result of a failed call to OpenFont().
  *
  * The font is not valid after being passed to this function. String pointers
  * from functions that return information on this font, such as
@@ -112171,8 +112179,8 @@ inline void Text::Destroy() { DestroyText(release()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.Font
- * @sa Font.Font
+ * @sa OpenFont
+ * @sa OpenFont
  */
 inline void CloseFont(FontRaw font) { TTF_CloseFont(font); }
 

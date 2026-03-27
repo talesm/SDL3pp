@@ -188,7 +188,7 @@ inline void Vulkan_CreateSurface(WindowRef window,
  * Destroy the Vulkan rendering surface of a window.
  *
  * This should be called before Window.Destroy, if Vulkan_CreateSurface was
- * called after Window.Window.
+ * called after CreateWindow.
  *
  * The `instance` must have been created with extensions returned by
  * Vulkan_GetInstanceExtensions() enabled and `surface` must have been created

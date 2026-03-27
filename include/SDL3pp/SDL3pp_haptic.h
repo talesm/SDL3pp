@@ -17,8 +17,8 @@ namespace SDL {
  *
  * - Initialize the subsystem (INIT_HAPTIC).
  * - Open a haptic device.
- * - Haptic.Haptic() to open from index.
- * - Haptic.Haptic() to open from an existing joystick.
+ * - OpenHaptic() to open from index.
+ * - OpenHapticFromJoystick() to open from an existing joystick.
  * - Create an effect (HapticEffect).
  * - Upload the effect with Haptic.CreateEffect().
  * - Run the effect with Haptic.RunEffect().
@@ -33,7 +33,7 @@ namespace SDL {
  *    // Open the device
  *    HapticID *haptics = GetHaptics(nullptr);
  *    if (haptics) {
- *        haptic = Haptic.Haptic(haptics[0]);
+ *        haptic = OpenHaptic(haptics[0]);
  *        free(haptics);
  *    }
  *    if (haptic == nullptr)
@@ -62,7 +62,7 @@ namespace SDL {
  *    HapticEffectID effect_id;
  *
  *    // Open the device
- *    haptic = Haptic.Haptic(joystick);
+ *    haptic = OpenHapticFromJoystick(joystick);
  *    if (haptic == nullptr) return false; // Most likely joystick isn't haptic
  *
  *    // See if it can do sine waves
@@ -757,8 +757,8 @@ using HapticID = SDL_HapticID;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Haptic.Haptic
- * @sa Haptic.Haptic
+ * @sa OpenHaptic
+ * @sa OpenHapticFromJoystick
  * @sa Haptic.Close
  *
  * @cat resource
@@ -817,7 +817,7 @@ public:
    *
    * @sa Haptic.Close
    * @sa GetHaptics
-   * @sa Haptic.Haptic
+   * @sa OpenHapticFromJoystick
    * @sa Haptic.OpenFromMouse
    * @sa Haptic.SetAutocenter
    * @sa Haptic.SetGain
@@ -890,11 +890,11 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Close a haptic device previously opened with Haptic.Haptic().
+   * Close a haptic device previously opened with OpenHaptic().
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.Haptic
+   * @sa OpenHaptic
    */
   void Close();
 
@@ -1301,7 +1301,7 @@ struct HapticRef : Haptic
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Haptic
+ * @sa OpenHaptic
  */
 inline OwnArray<HapticID> GetHaptics()
 {
@@ -1322,7 +1322,7 @@ inline OwnArray<HapticID> GetHaptics()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Haptic.GetName
- * @sa Haptic.Haptic
+ * @sa OpenHaptic
  */
 inline const char* GetHapticNameForID(HapticID instance_id)
 {
@@ -1347,7 +1347,7 @@ inline const char* GetHapticNameForID(HapticID instance_id)
  *
  * @sa Haptic.Close
  * @sa GetHaptics
- * @sa Haptic.Haptic
+ * @sa OpenHapticFromJoystick
  * @sa Haptic.OpenFromMouse
  * @sa Haptic.SetAutocenter
  * @sa Haptic.SetGain
@@ -1449,7 +1449,7 @@ inline Haptic Haptic::OpenFromMouse() { return SDL::OpenHapticFromMouse(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Haptic
+ * @sa OpenHapticFromJoystick
  */
 inline bool IsJoystickHaptic(JoystickRef joystick)
 {
@@ -1482,13 +1482,13 @@ inline Haptic OpenHapticFromJoystick(JoystickRef joystick)
 }
 
 /**
- * Close a haptic device previously opened with Haptic.Haptic().
+ * Close a haptic device previously opened with OpenHaptic().
  *
  * @param haptic the Haptic device to close.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Haptic
+ * @sa OpenHaptic
  */
 inline void CloseHaptic(HapticRaw haptic) { SDL_CloseHaptic(haptic); }
 

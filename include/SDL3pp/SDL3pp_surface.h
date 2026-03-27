@@ -162,7 +162,7 @@ constexpr FlipMode FLIP_HORIZONTAL_AND_VERTICAL =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Surface.Surface
+ * @sa CreateSurface
  * @sa Surface.Destroy
  */
 class Surface
@@ -214,7 +214,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
+   * @sa CreateSurfaceFrom
    * @sa Surface.Destroy
    */
   Surface(const PointRaw& size, PixelFormat format);
@@ -242,7 +242,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
+   * @sa CreateSurface
    * @sa Surface.Destroy
    */
   Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch);
@@ -269,11 +269,11 @@ public:
    *
    * There is a separate function to read files from an IOStream, if you need an
    * i/o abstraction to provide data from anywhere instead of a simple
-   * filesystem read; that function is Surface.Surface().
+   * filesystem read; that function is LoadSurface_IO().
    *
    * If you are using SDL's 2D rendering API, there is an equivalent call to
    * load images directly into an Texture for use by the GPU without using a
-   * software surface: call Texture.Texture() instead.
+   * software surface: call LoadTexture() instead.
    *
    * @param file a path on the filesystem to load an image from.
    * @post a new SDL surface, or nullptr on error.
@@ -281,7 +281,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa LoadSurfaceTyped_IO
-   * @sa Surface.Surface
+   * @sa LoadSurface_IO
    */
   Surface(StringParam file);
 
@@ -310,9 +310,9 @@ public:
    * during this call in any case.
    *
    * There is a separate function to read files from disk without having to deal
-   * with IOStream: `Surface.Surface("filename.jpg")` will call this function
-   * and manage those details for you, determining the file type from the
-   * filename's extension.
+   * with IOStream: `LoadSurface("filename.jpg")` will call this function and
+   * manage those details for you, determining the file type from the filename's
+   * extension.
    *
    * There is also LoadSurfaceTyped_IO(), which is equivalent to this function
    * except a file extension (like "BMP", "JPG", etc) can be specified, in case
@@ -320,7 +320,7 @@ public:
    *
    * If you are using SDL's 2D rendering API, there is an equivalent call to
    * load images directly into an Texture for use by the GPU without using a
-   * software surface: call Texture.Texture() instead.
+   * software surface: call LoadTexture_IO() instead.
    *
    * @param src an IOStream that data will be read from.
    * @param closeio true to close/free the IOStream before returning, false to
@@ -329,7 +329,7 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Surface.Surface
+   * @sa LoadSurface
    * @sa LoadSurfaceTyped_IO
    */
   Surface(IOStreamRef src, bool closeio = false);
@@ -405,8 +405,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.Surface
-   * @sa Surface.Surface
+   * @sa CreateSurface
+   * @sa CreateSurfaceFrom
    */
   void Destroy();
 
@@ -538,7 +538,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.Palette
+   * @sa CreatePalette
    * @sa Surface.GetPalette
    */
   void SetPalette(PaletteRef palette);
@@ -2241,7 +2241,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.Surface
+ * @sa CreateSurfaceFrom
  * @sa Surface.Destroy
  */
 inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
@@ -2286,7 +2286,7 @@ inline Surface::Surface(const PointRaw& size,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.Surface
+ * @sa CreateSurface
  * @sa Surface.Destroy
  */
 inline Surface CreateSurfaceFrom(const PointRaw& size,
@@ -2308,8 +2308,8 @@ inline Surface CreateSurfaceFrom(const PointRaw& size,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.Surface
- * @sa Surface.Surface
+ * @sa CreateSurface
+ * @sa CreateSurfaceFrom
  */
 inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
 
@@ -2496,7 +2496,7 @@ inline Palette Surface::CreatePalette()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Palette.Palette
+ * @sa CreatePalette
  * @sa Surface.GetPalette
  */
 inline void SetSurfacePalette(SurfaceRef surface, PaletteRef palette)

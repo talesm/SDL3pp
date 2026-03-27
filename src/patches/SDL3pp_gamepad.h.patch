@@ -105,7 +105,7 @@
   *
 @@ -1458,7 +1450,12 @@
   * @sa HasGamepad
-  * @sa Gamepad.Gamepad
+  * @sa OpenGamepad
   */
 -inline OwnArray<JoystickID> GetGamepads() { return SDL_GetGamepads(); }
 +inline OwnArray<JoystickID> GetGamepads()

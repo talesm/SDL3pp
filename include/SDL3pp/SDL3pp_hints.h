@@ -3831,7 +3831,7 @@ namespace SDL {
  * - "1": the metal layer drawable size will be updated on the
  *   EVENT_WINDOW_PIXEL_SIZE_CHANGED event. (default)
  *
- * This hint should be set before MetalView.MetalView called.
+ * This hint should be set before Metal_CreateView called.
  *
  * @since This hint is available since SDL 3.4.0.
  */
@@ -4681,7 +4681,7 @@ namespace SDL {
 /**
  * A variable specifying the type of an X11 window.
  *
- * During Window.Window, SDL uses the _NET_WM_WINDOW_TYPE X11 property to report
+ * During CreateWindow, SDL uses the _NET_WM_WINDOW_TYPE X11 property to report
  * to the window manager the type of window it wants to create. This might be
  * set to various things if WINDOW_TOOLTIP or WINDOW_POPUP_MENU, etc, were
  * specified. For "normal" windows that haven't set a specific type, this hint

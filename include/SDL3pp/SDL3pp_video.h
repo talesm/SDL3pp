@@ -29,7 +29,7 @@ namespace SDL {
  * The video subsystem covers a lot of functionality, out of necessity, so it is
  * worth perusing the list of functions just to see what's available, but most
  * apps can get by with simply creating a window and listening for events, so
- * start with Window.Window() and PollEvent().
+ * start with CreateWindow() and PollEvent().
  *
  * @{
  */
@@ -488,7 +488,7 @@ using DisplayModeData = SDL_DisplayModeData;
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
- * immutable after being set through Window.Window(), some of it can be changed
+ * immutable after being set through CreateWindow(), some of it can be changed
  * on existing windows by the app, and some of it might be altered by the user
  * or system outside of the app's control.
  *
@@ -732,7 +732,7 @@ constexpr ProgressState PROGRESS_STATE_ERROR = SDL_PROGRESS_STATE_ERROR;
  *
  * @cat resource
  *
- * @sa Window.Window
+ * @sa CreateWindow
  */
 class Window
 {
@@ -776,8 +776,7 @@ public:
    * @param title the title of the window, in UTF-8 encoding.
    * @param size the width and height of the window.
    * @param window_flags the flags used to create the window (see
-   *                     Window.Window(StringParam,const
-   *                     PointRaw&,WindowFlags)).
+   *                     CreateWindow()).
    * @param renderer a pointer filled with the renderer.
    * @throws Error on failure.
    *
@@ -785,8 +784,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
-   * @sa Window.Window(StringParam,const PointRaw&,WindowFlags))
+   * @sa CreateRenderer
+   * @sa CreateWindow
    */
   Window(StringParam title,
          const PointRaw& size,
@@ -850,10 +849,10 @@ public:
    * is called by Window.Destroy().
    *
    * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * Window.Window() will fail, because Vulkan_LoadLibrary() will fail.
+   * CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.
    *
    * If WINDOW_METAL is specified on an OS that does not support Metal,
-   * Window.Window() will fail.
+   * CreateWindow() will fail.
    *
    * If you intend to use this window with an Renderer, you should use
    * CreateWindowAndRenderer() instead of this function, to avoid window
@@ -874,8 +873,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateWindowAndRenderer
-   * @sa Window.Window
-   * @sa Window.Window
+   * @sa CreatePopupWindow
+   * @sa CreateWindowWithProperties
    * @sa Window.Destroy
    */
   Window(StringParam title, const PointRaw& size, WindowFlags flags = 0);
@@ -946,8 +945,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
-   * @sa Window.Window
+   * @sa CreateWindow
+   * @sa CreateWindowWithProperties
    * @sa Window.Destroy
    * @sa Window.GetParent
    */
@@ -1077,7 +1076,7 @@ public:
    * - any other string without a leading # sign applies to the element on the
    *   page with that ID. Windows with the "tooltip" and "menu" properties are
    *   popup windows and have the behaviors and guidelines outlined in
-   *   Window.Window().
+   *   CreatePopupWindow().
    *
    * If this window is being created to be used with an Renderer, you should not
    * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
@@ -1097,7 +1096,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Create
-   * @sa Window.Window
+   * @sa CreateWindow
    * @sa Window.Destroy
    */
   Window(PropertiesRef props);
@@ -1146,9 +1145,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
-   * @sa Window.Window
-   * @sa Window.Window
+   * @sa CreatePopupWindow
+   * @sa CreateWindow
+   * @sa CreateWindowWithProperties
    */
   void Destroy();
 
@@ -1340,7 +1339,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
+   * @sa CreatePopupWindow
    */
   WindowRef GetParent() const;
 
@@ -1480,7 +1479,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
+   * @sa CreateWindow
    * @sa Window.Hide
    * @sa Window.Maximize
    * @sa Window.Minimize
@@ -1815,7 +1814,7 @@ public:
    *
    * Note: This function may fail on systems where the window has not yet been
    * decorated by the display server (for example, immediately after calling
-   * Window.Window). It is recommended that you wait at least until the window
+   * CreateWindow). It is recommended that you wait at least until the window
    * has been presented and composited, so that the window system has a chance
    * to decorate the window and provide the border dimensions to SDL.
    *
@@ -1853,7 +1852,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
+   * @sa CreateWindow
    * @sa Window.GetSize
    * @sa GetSizeInPixels()
    */
@@ -1870,7 +1869,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Window
+   * @sa CreateWindow
    * @sa Window.GetSize
    * @sa GetSizeInPixels(int*, int*)
    */
@@ -2815,7 +2814,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContext.GLContext
+   * @sa Window.CreateGLContext
    */
   void MakeCurrent(GLContext context);
 
@@ -3278,7 +3277,7 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GLContext.GLContext
+ * @sa Window.CreateGLContext
  * @sa GL_SetAttribute
  * @sa GLContext.MakeCurrent
  * @sa GLContext.Destroy
@@ -3363,7 +3362,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContext.GLContext
+   * @sa Window.CreateGLContext
    */
   void Destroy();
 
@@ -3379,7 +3378,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContext.GLContext
+   * @sa Window.CreateGLContext
    */
   void MakeCurrent(WindowRef window);
 };
@@ -3442,7 +3441,7 @@ using EGLint = SDL_EGLint;
  * app add extra attributes to its eglGetPlatformDisplay() call.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
+ * with `EGL_NONE`. If this function returns nullptr, the CreateWindow process
  * will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be passed to
@@ -3471,7 +3470,7 @@ using EGLAttribArrayCallback = EGLAttrib*(SDLCALL*)(void* userdata);
  * callback.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
+ * with `EGL_NONE`. If this function returns nullptr, the CreateWindow process
  * will fail gracefully.
  *
  * The returned pointer should be allocated with malloc() and will be passed to
@@ -4503,10 +4502,10 @@ inline OwnArray<WindowRef> GetWindows()
  * called by Window.Destroy().
  *
  * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
- * Window.Window() will fail, because Vulkan_LoadLibrary() will fail.
+ * CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.
  *
  * If WINDOW_METAL is specified on an OS that does not support Metal,
- * Window.Window() will fail.
+ * CreateWindow() will fail.
  *
  * If you intend to use this window with an Renderer, you should use
  * CreateWindowAndRenderer() instead of this function, to avoid window flicker.
@@ -4526,8 +4525,8 @@ inline OwnArray<WindowRef> GetWindows()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateWindowAndRenderer
- * @sa Window.Window
- * @sa Window.Window
+ * @sa CreatePopupWindow
+ * @sa CreateWindowWithProperties
  * @sa Window.Destroy
  */
 inline Window CreateWindow(StringParam title,
@@ -4624,8 +4623,8 @@ inline Window::Window(PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
- * @sa Window.Window
+ * @sa CreateWindow
+ * @sa CreateWindowWithProperties
  * @sa Window.Destroy
  * @sa Window.GetParent
  */
@@ -4758,7 +4757,7 @@ inline Window CreatePopupWindow(WindowRef parent,
  * - any other string without a leading # sign applies to the element on the
  *   page with that ID. Windows with the "tooltip" and "menu" properties are
  *   popup windows and have the behaviors and guidelines outlined in
- *   Window.Window().
+ *   CreatePopupWindow().
  *
  * If this window is being created to be used with an Renderer, you should not
  * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
@@ -4778,7 +4777,7 @@ inline Window CreatePopupWindow(WindowRef parent,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Properties.Create
- * @sa Window.Window
+ * @sa CreateWindow
  * @sa Window.Destroy
  */
 inline Window CreateWindowWithProperties(PropertiesRef props)
@@ -5069,7 +5068,7 @@ inline WindowRef Window::FromID(WindowID id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
+ * @sa CreatePopupWindow
  */
 inline WindowRef GetWindowParent(WindowRef window)
 {
@@ -5225,7 +5224,7 @@ inline PropertiesRef Window::GetProperties() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
+ * @sa CreateWindow
  * @sa Window.Hide
  * @sa Window.Maximize
  * @sa Window.Minimize
@@ -5691,7 +5690,7 @@ inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
  *
  * Note: This function may fail on systems where the window has not yet been
  * decorated by the display server (for example, immediately after calling
- * Window.Window). It is recommended that you wait at least until the window has
+ * CreateWindow). It is recommended that you wait at least until the window has
  * been presented and composited, so that the window system has a chance to
  * decorate the window and provide the border dimensions to SDL.
  *
@@ -5746,7 +5745,7 @@ inline void Window::GetBordersSize(int* top,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
+ * @sa CreateWindow
  * @sa Window.GetSize
  */
 inline void GetWindowSizeInPixels(WindowRef window, int* w, int* h)
@@ -5766,7 +5765,7 @@ inline void GetWindowSizeInPixels(WindowRef window, int* w, int* h)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
+ * @sa CreateWindow
  * @sa Window.GetSize
  */
 inline Point GetWindowSizeInPixels(WindowRef window)
@@ -7072,9 +7071,9 @@ inline float Window::GetProgressValue()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Window
- * @sa Window.Window
- * @sa Window.Window
+ * @sa CreatePopupWindow
+ * @sa CreateWindow
+ * @sa CreateWindowWithProperties
  */
 inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
 
@@ -7302,7 +7301,7 @@ inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GLContext.GLContext
+ * @sa Window.CreateGLContext
  * @sa GL_GetAttribute
  * @sa GL_ResetAttributes
  */
@@ -7383,7 +7382,7 @@ inline GLContext::GLContext(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GLContext.GLContext
+ * @sa Window.CreateGLContext
  */
 inline void GL_MakeCurrent(WindowRef window, GLContext context)
 {
@@ -7600,7 +7599,7 @@ inline void Window::GL_Swap() { SDL::GL_SwapWindow(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GLContext.GLContext
+ * @sa Window.CreateGLContext
  */
 inline void GL_DestroyContext(GLContextRaw context)
 {

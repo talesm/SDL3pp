@@ -210,7 +210,7 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Close a sensor previously opened with Sensor.Sensor().
+   * Close a sensor previously opened with OpenSensor().
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -560,7 +560,7 @@ inline void Sensor::GetData(float* data, int num_values)
 }
 
 /**
- * Close a sensor previously opened with Sensor.Sensor().
+ * Close a sensor previously opened with OpenSensor().
  *
  * @param sensor the Sensor object to close.
  *

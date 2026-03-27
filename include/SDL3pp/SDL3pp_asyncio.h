@@ -24,7 +24,7 @@ namespace SDL {
  * The general usage pattern for async I/O is:
  *
  * - Create one or more AsyncIOQueue objects.
- * - Open files with AsyncIO.AsyncIO.
+ * - Open files with AsyncIOFromFile.
  * - Start I/O tasks to the files with AsyncIO.Read or AsyncIO.Write, putting
  *   those tasks into one of the queues.
  * - Later on, use AsyncIOQueue.GetResult on a queue to see if any task is
@@ -112,7 +112,7 @@ struct AsyncIOQueueRef;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa AsyncIO.AsyncIO
+ * @sa AsyncIOFromFile
  *
  * @cat resource
  */
@@ -324,7 +324,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa AsyncIO.Write
-   * @sa AsyncIOQueue.AsyncIOQueue
+   * @sa CreateAsyncIOQueue
    */
   void Read(void* ptr,
             Uint64 offset,
@@ -363,7 +363,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa AsyncIO.Read
-   * @sa AsyncIOQueue.AsyncIOQueue
+   * @sa CreateAsyncIOQueue
    */
   void Write(void* ptr,
              Uint64 offset,
@@ -493,7 +493,7 @@ using AsyncIOOutcome = SDL_AsyncIOOutcome;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa AsyncIOQueue.AsyncIOQueue
+ * @sa CreateAsyncIOQueue
  * @sa AsyncIO.Read
  * @sa AsyncIO.Write
  * @sa AsyncIOQueue.GetResult
@@ -916,7 +916,7 @@ inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(m_resource); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa AsyncIO.Write
- * @sa AsyncIOQueue.AsyncIOQueue
+ * @sa CreateAsyncIOQueue
  */
 inline void ReadAsyncIO(AsyncIORef asyncio,
                         void* ptr,
@@ -969,7 +969,7 @@ inline void AsyncIO::Read(void* ptr,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa AsyncIO.Read
- * @sa AsyncIOQueue.AsyncIOQueue
+ * @sa CreateAsyncIOQueue
  */
 inline void WriteAsyncIO(AsyncIORef asyncio,
                          void* ptr,

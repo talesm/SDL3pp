@@ -498,7 +498,7 @@ public:
    *
    * Call this when done with a font. This function will free any resources
    * associated with it. It is safe to call this function on nullptr, for
-   * example on the result of a failed call to Font.Font().
+   * example on the result of a failed call to OpenFont().
    *
    * The font is not valid after being passed to this function. String pointers
    * from functions that return information on this font, such as
@@ -510,7 +510,8 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.Font
+   * @sa OpenFont
+   * @sa OpenFont
    */
   void Close();
 
@@ -3905,10 +3906,9 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
  *
  * There are three text engines provided with the library:
  *
- * - Drawing to an Surface, created with SurfaceTextEngine.SurfaceTextEngine()
- * - Drawing with an SDL 2D renderer, created with
- *   RendererTextEngine.RendererTextEngine()
- * - Drawing with the SDL GPU API, created with GPUTextEngine.GPUTextEngine()
+ * - Drawing to an Surface, created with CreateSurfaceTextEngine()
+ * - Drawing with an SDL 2D renderer, created with CreateRendererTextEngine()
+ * - Drawing with the SDL GPU API, created with CreateGPUTextEngine()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
@@ -4032,7 +4032,7 @@ struct SurfaceTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa SurfaceTextEngine.SurfaceTextEngine
+   * @sa CreateSurfaceTextEngine
    */
   void Destroy() final;
 };
@@ -4054,7 +4054,7 @@ struct RendererTextEngine : TextEngine
    *
    * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
-   * @sa RendererTextEngine.RendererTextEngine
+   * @sa CreateRendererTextEngineWithProperties
    */
   RendererTextEngine(RendererRef renderer);
 
@@ -4078,7 +4078,7 @@ struct RendererTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa RendererTextEngine.RendererTextEngine
+   * @sa CreateRendererTextEngine
    * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    */
@@ -4101,7 +4101,7 @@ struct RendererTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa RendererTextEngine.RendererTextEngine
+   * @sa CreateRendererTextEngine
    */
   void Destroy() final;
 };
@@ -4121,7 +4121,7 @@ struct GPUTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GPUTextEngine.GPUTextEngine
+   * @sa CreateGPUTextEngineWithProperties
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
@@ -4147,7 +4147,7 @@ struct GPUTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GPUTextEngine.GPUTextEngine
+   * @sa CreateGPUTextEngine
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
@@ -4201,7 +4201,7 @@ struct GPUTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GPUTextEngine.GPUTextEngine
+   * @sa CreateGPUTextEngine
    */
   void Destroy() final;
 };
@@ -4240,11 +4240,11 @@ struct SubStringIterator;
 using TextData = TTF_TextData;
 
 /**
- * Text created with Text.Text()
+ * Text created with TextEngine.CreateText()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
- * @sa Text.Text
+ * @sa TextEngine.CreateText
  * @sa Text.GetProperties
  * @sa Text.Destroy
  *
@@ -4352,7 +4352,7 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.Text
+   * @sa TextEngine.CreateText
    */
   void Destroy();
 
@@ -4360,7 +4360,7 @@ public:
    * Draw text to an SDL surface.
    *
    * `text` must have been created using a TextEngine from
-   * SurfaceTextEngine.SurfaceTextEngine().
+   * CreateSurfaceTextEngine().
    *
    * @param p the x,y coordinates in pixels, positive from the top-left edge
    *          towards the bottom-right.
@@ -4372,8 +4372,8 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa SurfaceTextEngine.SurfaceTextEngine
-   * @sa Text.Text
+   * @sa CreateSurfaceTextEngine
+   * @sa TextEngine.CreateText
    */
   void DrawSurface(Point p, SurfaceRef surface) const;
 
@@ -4381,8 +4381,8 @@ public:
    * Draw text to an SDL renderer.
    *
    * `text` must have been created using a TextEngine from
-   * RendererTextEngine.RendererTextEngine(), and will draw using the renderer
-   * passed to that function.
+   * CreateRendererTextEngine(), and will draw using the renderer passed to that
+   * function.
    *
    * @param p the x,y coordinates in pixels, positive from the top-left edge
    *          towards the bottom-right.
@@ -4393,8 +4393,8 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa RendererTextEngine.RendererTextEngine
-   * @sa Text.Text
+   * @sa CreateRendererTextEngine
+   * @sa TextEngine.CreateText
    */
   void DrawRenderer(FPoint p) const;
 
@@ -4402,7 +4402,7 @@ public:
    * Get the geometry data needed for drawing the text.
    *
    * `text` must have been created using a TextEngine from
-   * GPUTextEngine.GPUTextEngine().
+   * CreateGPUTextEngine().
    *
    * The positive X-axis is taken towards the right and the positive Y-axis is
    * taken upwards for both the vertex and the texture coordinates, i.e, it
@@ -4421,8 +4421,8 @@ public:
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GPUTextEngine.GPUTextEngine
-   * @sa Text.Text
+   * @sa CreateGPUTextEngine
+   * @sa TextEngine.CreateText
    */
   GPUAtlasDrawSequence* GetGPUDrawData() const;
 
@@ -5305,7 +5305,7 @@ inline SurfaceTextEngine::SurfaceTextEngine()
  * Draw text to an SDL surface.
  *
  * `text` must have been created using a TextEngine from
- * SurfaceTextEngine.SurfaceTextEngine().
+ * CreateSurfaceTextEngine().
  *
  * @param text the text to draw.
  * @param p the (x, y) coordinate in pixels, positive from the left edge
@@ -5318,8 +5318,8 @@ inline SurfaceTextEngine::SurfaceTextEngine()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa SurfaceTextEngine.SurfaceTextEngine
- * @sa Text.Text
+ * @sa CreateSurfaceTextEngine
+ * @sa TextEngine.CreateText
  */
 inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceRef surface)
 {
@@ -5337,15 +5337,14 @@ inline void Text::DrawSurface(Point p, SurfaceRef surface) const
  * All text created by this engine should be destroyed before calling this
  * function.
  *
- * @param engine a TextEngine object created with
- *               SurfaceTextEngine.SurfaceTextEngine().
+ * @param engine a TextEngine object created with CreateSurfaceTextEngine().
  *
  * @threadsafety This function should be called on the thread that created the
  *               engine.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa SurfaceTextEngine.SurfaceTextEngine
+ * @sa CreateSurfaceTextEngine
  */
 inline void DestroySurfaceTextEngine(TextEngineRaw engine)
 {
@@ -5371,7 +5370,7 @@ inline void SurfaceTextEngine::Destroy()
  *
  * @sa RendererTextEngine.Destroy
  * @sa Text.DrawRenderer
- * @sa RendererTextEngine.RendererTextEngine
+ * @sa CreateRendererTextEngineWithProperties
  */
 inline RendererTextEngine CreateRendererTextEngine(RendererRef renderer)
 {
@@ -5408,7 +5407,7 @@ inline RendererTextEngine::RendererTextEngine(PropertiesRef props)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa RendererTextEngine.RendererTextEngine
+ * @sa CreateRendererTextEngine
  * @sa RendererTextEngine.Destroy
  * @sa Text.DrawRenderer
  */
@@ -5435,8 +5434,8 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  * Draw text to an SDL renderer.
  *
  * `text` must have been created using a TextEngine from
- * RendererTextEngine.RendererTextEngine(), and will draw using the renderer
- * passed to that function.
+ * CreateRendererTextEngine(), and will draw using the renderer passed to that
+ * function.
  *
  * @param text the text to draw.
  * @param p the (x, y) coordinate in pixels, positive from the left edge
@@ -5448,8 +5447,8 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa RendererTextEngine.RendererTextEngine
- * @sa GPUTextEngine.GPUTextEngine
+ * @sa CreateRendererTextEngine
+ * @sa TextEngine.CreateText
  */
 inline void DrawRendererText(TextConstRef text, FPoint p)
 {
@@ -5467,15 +5466,14 @@ inline void Text::DrawRenderer(FPoint p) const
  * All text created by this engine should be destroyed before calling this
  * function.
  *
- * @param engine a TextEngine object created with
- *               RendererTextEngine.RendererTextEngine().
+ * @param engine a TextEngine object created with CreateRendererTextEngine().
  *
  * @threadsafety This function should be called on the thread that created the
  *               engine.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa RendererTextEngine.RendererTextEngine
+ * @sa CreateRendererTextEngine
  */
 inline void DestroyRendererTextEngine(TextEngineRaw engine)
 {
@@ -5499,7 +5497,7 @@ inline void RendererTextEngine::Destroy()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa GPUTextEngine.GPUTextEngine
+ * @sa CreateGPUTextEngineWithProperties
  * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
@@ -5538,7 +5536,7 @@ inline GPUTextEngine::GPUTextEngine(PropertiesRef props)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa GPUTextEngine.GPUTextEngine
+ * @sa CreateGPUTextEngine
  * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
@@ -5563,8 +5561,7 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
 /**
  * Get the geometry data needed for drawing the text.
  *
- * `text` must have been created using a TextEngine from
- * GPUTextEngine.GPUTextEngine().
+ * `text` must have been created using a TextEngine from CreateGPUTextEngine().
  *
  * The positive X-axis is taken towards the right and the positive Y-axis is
  * taken upwards for both the vertex and the texture coordinates, i.e, it
@@ -5583,8 +5580,8 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa GPUTextEngine.GPUTextEngine
- * @sa GPUTextEngine.GPUTextEngine
+ * @sa CreateGPUTextEngine
+ * @sa TextEngine.CreateText
  */
 inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstRef text)
 {
@@ -5602,14 +5599,14 @@ inline GPUAtlasDrawSequence* Text::GetGPUDrawData() const
  * All text created by this engine should be destroyed before calling this
  * function.
  *
- * @param engine a TextEngine object created with GPUTextEngine.GPUTextEngine().
+ * @param engine a TextEngine object created with CreateGPUTextEngine().
  *
  * @threadsafety This function should be called on the thread that created the
  *               engine.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa GPUTextEngine.GPUTextEngine
+ * @sa CreateGPUTextEngine
  */
 inline void DestroyGPUTextEngine(TextEngineRaw engine)
 {
@@ -6673,7 +6670,7 @@ inline void Text::Update() { SDL::UpdateText(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa RendererTextEngine.RendererTextEngine
+ * @sa TextEngine.CreateText
  */
 inline void DestroyText(TextRaw text) { TTF_DestroyText(text); }
 
@@ -6684,7 +6681,7 @@ inline void Text::Destroy() { DestroyText(release()); }
  *
  * Call this when done with a font. This function will free any resources
  * associated with it. It is safe to call this function on nullptr, for example
- * on the result of a failed call to Font.Font().
+ * on the result of a failed call to OpenFont().
  *
  * The font is not valid after being passed to this function. String pointers
  * from functions that return information on this font, such as
@@ -6698,8 +6695,8 @@ inline void Text::Destroy() { DestroyText(release()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.Font
- * @sa Font.Font
+ * @sa OpenFont
+ * @sa OpenFont
  */
 inline void CloseFont(FontRaw font) { TTF_CloseFont(font); }
 

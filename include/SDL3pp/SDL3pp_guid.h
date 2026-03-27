@@ -79,7 +79,7 @@ struct GUID : GUIDRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GUID.GUID
+   * @sa StringToGUID
    */
   std::string ToString() const;
 };
@@ -94,7 +94,7 @@ struct GUID : GUIDRaw
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GUID.GUID
+ * @sa StringToGUID
  */
 inline std::string GUIDToString(const GUIDRaw& guid)
 {

@@ -199,7 +199,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
  *
  * @since This struct is available since SDL 3.4.0.
  *
- * @sa GPURenderState.GPURenderState
+ * @sa Renderer.CreateGPURenderState
  */
 using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
 
@@ -309,8 +309,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
-   * @sa Renderer.Renderer
+   * @sa CreateRendererWithProperties
+   * @sa CreateSoftwareRenderer
    * @sa Renderer.Destroy
    * @sa GetNumRenderDrivers
    * @sa GetRenderDriver
@@ -374,8 +374,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Create
-   * @sa Renderer.Renderer
-   * @sa Renderer.Renderer
+   * @sa CreateRenderer
+   * @sa CreateSoftwareRenderer
    * @sa Renderer.Destroy
    * @sa Renderer.GetName
    */
@@ -384,7 +384,7 @@ public:
   /**
    * Create a 2D software rendering context for a surface.
    *
-   * Two other API which can be used to create Renderer: Renderer.Renderer() and
+   * Two other API which can be used to create Renderer: CreateRenderer() and
    * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
    * they are intended to be used with an Window as the final destination and
    * not an Surface.
@@ -441,7 +441,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
+   * @sa CreateRenderer
    */
   void Destroy();
 
@@ -483,7 +483,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
+   * @sa CreateRenderer
+   * @sa CreateRendererWithProperties
    */
   const char* GetName() const;
 
@@ -670,8 +671,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTextureFromSurface
+   * @sa Renderer.CreateTextureWithProperties
    * @sa Texture.Destroy
    * @sa Texture.GetSize
    * @sa Texture.Update
@@ -700,8 +701,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTexture
+   * @sa Renderer.CreateTextureWithProperties
    * @sa Texture.Destroy
    */
   Texture CreateTextureFromSurface(SurfaceRef surface);
@@ -824,8 +825,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Create
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTexture
+   * @sa Renderer.CreateTextureFromSurface
    * @sa Texture.Destroy
    * @sa Texture.GetSize
    * @sa Texture.Update
@@ -1996,7 +1997,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
+   * @sa CreateRenderer
    * @sa Renderer.RenderClear
    * @sa Renderer.RenderFillRect
    * @sa Renderer.RenderFillRects
@@ -2367,9 +2368,9 @@ struct RendererRef : Renderer
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Texture.Texture
- * @sa Texture.Texture
- * @sa Texture.Texture
+ * @sa Renderer.CreateTexture
+ * @sa Renderer.CreateTextureFromSurface
+ * @sa Renderer.CreateTextureWithProperties
  * @sa Texture.Destroy
  *
  * @cat resource
@@ -2425,8 +2426,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTextureFromSurface
+   * @sa Renderer.CreateTextureWithProperties
    * @sa Texture.Destroy
    * @sa Texture.GetSize
    * @sa Texture.Update
@@ -2456,7 +2457,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTexture
+   * @sa Renderer.CreateTextureWithProperties
    * @sa Texture.Destroy
    */
   Texture(RendererRef renderer, SurfaceRef surface);
@@ -2579,8 +2581,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Properties.Create
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTexture
+   * @sa Renderer.CreateTextureFromSurface
    * @sa Texture.Destroy
    * @sa Texture.GetSize
    * @sa Texture.Update
@@ -2602,10 +2604,10 @@ public:
    *
    * There is a separate function to read files from an IOStream, if you need an
    * i/o abstraction to provide data from anywhere instead of a simple
-   * filesystem read; that function is Texture.Texture().
+   * filesystem read; that function is LoadTexture_IO().
    *
    * If you would rather decode an image to an Surface (a buffer of pixels in
-   * CPU memory), call Surface.Surface() instead.
+   * CPU memory), call LoadSurface() instead.
    *
    * @param renderer the Renderer to use to create the texture.
    * @param file a path on the filesystem to load an image from.
@@ -2614,7 +2616,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa LoadTextureTyped_IO
-   * @sa Texture.Texture
+   * @sa LoadTexture_IO
    */
   Texture(RendererRef renderer, StringParam file);
 
@@ -2636,7 +2638,7 @@ public:
    * during this call in any case.
    *
    * There is a separate function to read files from disk without having to deal
-   * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call this
+   * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
    * function and manage those details for you, determining the file type from
    * the filename's extension.
    *
@@ -2645,7 +2647,7 @@ public:
    * SDL_image cannot autodetect the file format.
    *
    * If you would rather decode an image to an Surface (a buffer of pixels in
-   * CPU memory), call Surface.Surface() instead.
+   * CPU memory), call LoadSurface() instead.
    *
    * @param renderer the Renderer to use to create the texture.
    * @param src an IOStream that data will be read from.
@@ -2655,7 +2657,7 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Texture.Texture
+   * @sa LoadTexture
    * @sa LoadTextureTyped_IO
    */
   Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
@@ -2732,8 +2734,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
+   * @sa Renderer.CreateTexture
+   * @sa Renderer.CreateTextureFromSurface
    */
   void Destroy();
 
@@ -2894,7 +2896,7 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Palette.Palette
+   * @sa CreatePalette
    * @sa Texture.GetPalette
    */
   void SetPalette(PaletteRef palette);
@@ -3800,7 +3802,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
+ * @sa CreateRenderer
  * @sa GetRenderDriver
  */
 inline int GetNumRenderDrivers() { return SDL_GetNumRenderDrivers(); }
@@ -3865,8 +3867,7 @@ inline void CreateWindowAndRendererRaw(StringParam title,
  *
  * @param title the title of the window, in UTF-8 encoding.
  * @param size the width and height of the window.
- * @param window_flags the flags used to create the window (see
- *                     Window.Window()).
+ * @param window_flags the flags used to create the window (see CreateWindow()).
  * @param window a pointer filled with the window, or nullptr on error.
  * @param renderer a pointer filled with the renderer, or nullptr on error.
  * @throws Error on failure.
@@ -3875,8 +3876,8 @@ inline void CreateWindowAndRendererRaw(StringParam title,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
- * @sa Window.Window
+ * @sa CreateRenderer
+ * @sa CreateWindow
  */
 inline void CreateWindowAndRenderer(StringParam title,
                                     const PointRaw& size,
@@ -3897,8 +3898,7 @@ inline void CreateWindowAndRenderer(StringParam title,
  *
  * @param title the title of the window, in UTF-8 encoding.
  * @param size the width and height of the window.
- * @param window_flags the flags used to create the window (see
- *                     Window.Window()).
+ * @param window_flags the flags used to create the window (see CreateWindow()).
  * @returns a pair with window and renderer.
  * @throws Error on failure.
  *
@@ -3906,8 +3906,8 @@ inline void CreateWindowAndRenderer(StringParam title,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
- * @sa Window.Window
+ * @sa CreateRenderer
+ * @sa CreateWindow
  */
 inline std::pair<Window, Renderer> CreateWindowAndRenderer(
   StringParam title,
@@ -3926,8 +3926,7 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
  *
  * @param title the title of the window, in UTF-8 encoding.
  * @param size the width and height of the window.
- * @param window_flags the flags used to create the window (see
- *                     Window.Window()).
+ * @param window_flags the flags used to create the window (see CreateWindow()).
  * @param renderer a pointer filled with the renderer, or nullptr on error.
  * @returns the created window on success.
  * @throws Error on failure.
@@ -3936,8 +3935,8 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
- * @sa Window.Window
+ * @sa CreateRenderer
+ * @sa CreateWindow
  */
 inline Window CreateWindowAndRenderer(StringParam title,
                                       const PointRaw& size,
@@ -3985,8 +3984,8 @@ inline Window::Window(StringParam title,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
- * @sa Renderer.Renderer
+ * @sa CreateRendererWithProperties
+ * @sa CreateSoftwareRenderer
  * @sa Renderer.Destroy
  * @sa GetNumRenderDrivers
  * @sa GetRenderDriver
@@ -4069,8 +4068,8 @@ inline Renderer::Renderer(SurfaceRef surface)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Properties.Create
- * @sa Renderer.Renderer
- * @sa Renderer.Renderer
+ * @sa CreateRenderer
+ * @sa CreateSoftwareRenderer
  * @sa Renderer.Destroy
  * @sa Renderer.GetName
  */
@@ -4224,10 +4223,10 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Renderer.Renderer
+ * @sa CreateRendererWithProperties
  * @sa Renderer.GetGPUDevice
- * @sa GPUShader.GPUShader
- * @sa GPURenderState.GPURenderState
+ * @sa GPUDevice.CreateShader
+ * @sa Renderer.CreateGPURenderState
  * @sa Renderer.SetGPURenderState
  */
 inline RendererRef CreateGPURenderer(GPUDeviceRef device, WindowRef window)
@@ -4261,7 +4260,7 @@ inline GPUDeviceRef Renderer::GetGPUDevice()
 /**
  * Create a 2D software rendering context for a surface.
  *
- * Two other API which can be used to create Renderer: Renderer.Renderer() and
+ * Two other API which can be used to create Renderer: CreateRenderer() and
  * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
  * they are intended to be used with an Window as the final destination and not
  * an Surface.
@@ -4319,8 +4318,8 @@ inline WindowRef Renderer::GetWindow()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
- * @sa Renderer.Renderer
+ * @sa CreateRenderer
+ * @sa CreateRendererWithProperties
  */
 inline const char* GetRendererName(RendererRef renderer)
 {
@@ -4565,8 +4564,8 @@ inline Point Renderer::GetCurrentOutputSize() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Texture
- * @sa Texture.Texture
+ * @sa Renderer.CreateTextureFromSurface
+ * @sa Renderer.CreateTextureWithProperties
  * @sa Texture.Destroy
  * @sa Texture.GetSize
  * @sa Texture.Update
@@ -4625,8 +4624,8 @@ inline Texture::Texture(RendererRef renderer, PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Texture
- * @sa Texture.Texture
+ * @sa Renderer.CreateTexture
+ * @sa Renderer.CreateTextureWithProperties
  * @sa Texture.Destroy
  */
 inline Texture CreateTextureFromSurface(RendererRef renderer,
@@ -4757,8 +4756,8 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Properties.Create
- * @sa Texture.Texture
- * @sa Texture.Texture
+ * @sa Renderer.CreateTexture
+ * @sa Renderer.CreateTextureFromSurface
  * @sa Texture.Destroy
  * @sa Texture.GetSize
  * @sa Texture.Update
@@ -5164,7 +5163,7 @@ inline PixelFormat Texture::GetFormat() const
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Palette.Palette
+ * @sa CreatePalette
  * @sa Texture.GetPalette
  */
 inline void SetTexturePalette(TextureRef texture, PaletteRef palette)
@@ -7801,7 +7800,7 @@ inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
+ * @sa CreateRenderer
  * @sa Renderer.RenderClear
  * @sa Renderer.RenderFillRect
  * @sa Renderer.RenderFillRects
@@ -7833,8 +7832,8 @@ inline void Renderer::Present() { SDL::RenderPresent(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Texture
- * @sa Texture.Texture
+ * @sa Renderer.CreateTexture
+ * @sa Renderer.CreateTextureFromSurface
  */
 inline void DestroyTexture(TextureRaw texture) { SDL_DestroyTexture(texture); }
 
@@ -7851,7 +7850,7 @@ inline void Texture::Destroy() { DestroyTexture(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Renderer
+ * @sa CreateRenderer
  */
 inline void DestroyRenderer(RendererRaw renderer)
 {
@@ -8223,7 +8222,7 @@ inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
  *
  * @since This struct is available since SDL 3.4.0.
  *
- * @sa GPURenderState.GPURenderState
+ * @sa Renderer.CreateGPURenderState
  * @sa GPURenderState.SetFragmentUniforms
  * @sa Renderer.SetGPURenderState
  * @sa GPURenderState.Destroy
@@ -8328,7 +8327,7 @@ public:
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa GPURenderState.GPURenderState
+   * @sa Renderer.CreateGPURenderState
    */
   void Destroy();
 
@@ -8527,7 +8526,7 @@ inline void Renderer::SetGPURenderState(GPURenderStateRef state)
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa GPURenderState.GPURenderState
+ * @sa Renderer.CreateGPURenderState
  */
 inline void DestroyGPURenderState(GPURenderStateRaw state)
 {

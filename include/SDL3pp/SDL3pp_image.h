@@ -126,7 +126,7 @@ inline int Version() { return IMG_Version(); }
  *
  * There is a separate function to read files from an IOStream, if you need an
  * i/o abstraction to provide data from anywhere instead of a simple filesystem
- * read; that function is Surface.Surface().
+ * read; that function is LoadSurface_IO().
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to load
  * images directly into an Texture for use by the GPU without using a software
@@ -138,7 +138,7 @@ inline int Version() { return IMG_Version(); }
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa LoadSurfaceTyped_IO
- * @sa Surface.Surface
+ * @sa LoadSurface_IO
  */
 inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 
@@ -194,7 +194,7 @@ inline Surface::Surface(IOStreamRef src, bool closeio)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Surface.Surface
+ * @sa LoadSurface
  * @sa LoadSurfaceTyped_IO
  */
 inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
@@ -235,7 +235,7 @@ inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
- * There is also LoadSurface(), which is equivalent to this function except
+ * There is also LoadSurface_IO(), which is equivalent to this function except
  * that it will rely on SDL_image to determine what type of data it is loading,
  * much like passing a nullptr for type.
  *
@@ -252,8 +252,8 @@ inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Surface.Surface
- * @sa Surface.Surface
+ * @sa LoadSurface
+ * @sa LoadSurface_IO
  */
 inline Surface LoadSurfaceTyped_IO(IOStreamRef src,
                                    StringParam type,
@@ -276,7 +276,7 @@ inline Surface LoadSurfaceTyped_IO(IOStreamRef src,
  *
  * There is a separate function to read files from an IOStream, if you need an
  * i/o abstraction to provide data from anywhere instead of a simple filesystem
- * read; that function is Texture.Texture().
+ * read; that function is LoadTexture_IO().
  *
  * If you would rather decode an image to an Surface (a buffer of pixels in CPU
  * memory), call LoadSurface() instead.
@@ -288,7 +288,7 @@ inline Surface LoadSurfaceTyped_IO(IOStreamRef src,
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa LoadTextureTyped_IO
- * @sa Texture.Texture
+ * @sa LoadTexture_IO
  */
 inline Texture LoadTexture(RendererRef renderer, StringParam file)
 {
@@ -322,7 +322,7 @@ inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
  * during this call in any case.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call this
+ * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
  * function and manage those details for you, determining the file type from the
  * filename's extension.
  *
@@ -341,7 +341,7 @@ inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Texture.Texture
+ * @sa LoadTexture
  * @sa LoadTextureTyped_IO
  */
 inline Texture LoadTexture_IO(RendererRef renderer,
@@ -374,11 +374,11 @@ inline Texture LoadTexture_IO(RendererRef renderer,
  * ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStream: `Texture.Texture("filename.jpg")` will call this function and
+ * with IOStream: `LoadTexture("filename.jpg")` will call this function and
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
- * There is also Texture.Texture(), which is equivalent to this function except
+ * There is also LoadTexture_IO(), which is equivalent to this function except
  * that it will rely on SDL_image to determine what type of data it is loading,
  * much like passing a nullptr for type.
  *
@@ -395,8 +395,8 @@ inline Texture LoadTexture_IO(RendererRef renderer,
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Texture.Texture
- * @sa Texture.Destroy
+ * @sa LoadTexture
+ * @sa LoadTexture_IO
  */
 inline Texture LoadTextureTyped_IO(RendererRef renderer,
                                    IOStreamRef src,
@@ -2718,7 +2718,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa Animation.CreateCursor
-   * @sa Animation.Animation
+   * @sa LoadAnimation_IO
    * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation_IO
    * @sa LoadAPNGAnimation_IO
@@ -2747,7 +2747,7 @@ public:
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa Animation.CreateCursor
-   * @sa Animation.Animation
+   * @sa LoadAnimation
    * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation_IO
    * @sa LoadAPNGAnimation_IO
@@ -2804,8 +2804,8 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Animation.Animation
-   * @sa Animation.Animation
+   * @sa LoadAnimation
+   * @sa LoadAnimation_IO
    * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation_IO
    * @sa LoadAPNGAnimation_IO
@@ -3015,8 +3015,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.Animation
-   * @sa Animation.Animation
+   * @sa LoadAnimation
+   * @sa LoadAnimation_IO
    * @sa LoadAnimationTyped_IO
    */
   Cursor CreateCursor(const PointRaw& hotspot);
@@ -3175,7 +3175,7 @@ inline int Animation::GetDelay(int index) const
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa Animation.CreateCursor
- * @sa Animation.Animation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -3217,7 +3217,7 @@ inline Animation::Animation(IOStreamRef src, bool closeio)
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa Animation.CreateCursor
- * @sa Animation.Animation
+ * @sa LoadAnimation
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -3256,8 +3256,8 @@ inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa Animation.CreateCursor
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
  * @sa LoadAVIFAnimation_IO
@@ -3291,8 +3291,8 @@ inline Animation LoadAnimationTyped_IO(IOStreamRef src,
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa isANI
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadAPNGAnimation_IO
  * @sa LoadAVIFAnimation_IO
@@ -3322,8 +3322,8 @@ inline Animation LoadANIAnimation_IO(IOStreamRef src)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa isPNG
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAVIFAnimation_IO
@@ -3353,8 +3353,8 @@ inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa isAVIF
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -3383,8 +3383,8 @@ inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa isGIF
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -3411,8 +3411,8 @@ inline Animation LoadGIFAnimation_IO(IOStreamRef src)
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa isWEBP
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -3679,8 +3679,8 @@ inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  */
 inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
@@ -3705,8 +3705,8 @@ inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Animation.Animation
- * @sa Animation.Animation
+ * @sa LoadAnimation
+ * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
  * @sa LoadAPNGAnimation_IO
@@ -3781,8 +3781,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
+   * @sa CreateAnimationEncoder_IO
+   * @sa CreateAnimationEncoderWithProperties
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
@@ -3812,8 +3812,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoderWithProperties
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
@@ -3861,8 +3861,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoder_IO
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
@@ -3909,9 +3909,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoder_IO
+   * @sa CreateAnimationEncoderWithProperties
    */
   void Close();
 
@@ -3927,9 +3927,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
-   * @sa AnimationEncoder.AnimationEncoder
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoder_IO
+   * @sa CreateAnimationEncoderWithProperties
    * @sa AnimationEncoder.Close
    */
   void AddFrame(SurfaceRef surface, Uint64 duration);
@@ -4027,8 +4027,8 @@ struct AnimationEncoderRef : AnimationEncoder
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
+ * @sa CreateAnimationEncoder_IO
+ * @sa CreateAnimationEncoderWithProperties
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
@@ -4076,8 +4076,8 @@ inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
+ * @sa CreateAnimationEncoder
+ * @sa CreateAnimationEncoderWithProperties
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
@@ -4129,8 +4129,8 @@ inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
+ * @sa CreateAnimationEncoder
+ * @sa CreateAnimationEncoder_IO
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
@@ -4187,9 +4187,9 @@ constexpr auto CREATE_GIF_USE_LUT_BOOLEAN =
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
+ * @sa CreateAnimationEncoder
+ * @sa CreateAnimationEncoder_IO
+ * @sa CreateAnimationEncoderWithProperties
  * @sa AnimationEncoder.Close
  */
 inline void AddAnimationEncoderFrame(AnimationEncoderRef encoder,
@@ -4215,9 +4215,9 @@ inline void AnimationEncoder::AddFrame(SurfaceRef surface, Uint64 duration)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
- * @sa AnimationEncoder.AnimationEncoder
+ * @sa CreateAnimationEncoder
+ * @sa CreateAnimationEncoder_IO
+ * @sa CreateAnimationEncoderWithProperties
  */
 inline void CloseAnimationEncoder(AnimationEncoderRaw encoder)
 {
@@ -4307,8 +4307,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
    * @sa AnimationDecoder.GetFrame
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
@@ -4339,8 +4339,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoderWithProperties
    * @sa AnimationDecoder.GetFrame
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
@@ -4379,8 +4379,8 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
    * @sa AnimationDecoder.GetFrame
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
@@ -4428,9 +4428,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
    */
   void Close();
 
@@ -4446,9 +4446,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
    */
   PropertiesRef GetProperties();
 
@@ -4468,9 +4468,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
    * @sa AnimationDecoder.GetStatus
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
@@ -4500,9 +4500,9 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
-   * @sa AnimationDecoder.AnimationDecoder
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
    * @sa AnimationDecoder.GetFrame
    * @sa AnimationDecoder.Close
    */
@@ -4601,8 +4601,8 @@ struct AnimationDecoderRef : AnimationDecoder
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder_IO
+ * @sa CreateAnimationDecoderWithProperties
  * @sa AnimationDecoder.GetFrame
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
@@ -4639,8 +4639,8 @@ inline AnimationDecoder::AnimationDecoder(StringParam file)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoderWithProperties
  * @sa AnimationDecoder.GetFrame
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
@@ -4684,8 +4684,8 @@ inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoder_IO
  * @sa AnimationDecoder.GetFrame
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
@@ -4746,9 +4746,9 @@ constexpr auto CREATE_GIF_NUM_COLORS_NUMBER =
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoder_IO
+ * @sa CreateAnimationDecoderWithProperties
  */
 inline PropertiesRef GetAnimationDecoderProperties(AnimationDecoderRef decoder)
 {
@@ -4796,9 +4796,9 @@ constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoder_IO
+ * @sa CreateAnimationDecoderWithProperties
  * @sa AnimationDecoder.GetStatus
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
@@ -4850,9 +4850,9 @@ inline AnimationDecoderStatus AnimationDecoder::GetStatus()
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoder_IO
+ * @sa CreateAnimationDecoderWithProperties
  * @sa AnimationDecoder.GetFrame
  * @sa AnimationDecoder.Close
  */
@@ -4877,9 +4877,9 @@ inline void AnimationDecoder::Reset()
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
- * @sa AnimationDecoder.AnimationDecoder
+ * @sa CreateAnimationDecoder
+ * @sa CreateAnimationDecoder_IO
+ * @sa CreateAnimationDecoderWithProperties
  */
 inline void CloseAnimationDecoder(AnimationDecoderRaw decoder)
 {

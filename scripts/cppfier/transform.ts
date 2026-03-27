@@ -1503,7 +1503,8 @@ function transformEntries(
     const sourceName = targetEntry.sourceName;
     if (sourceName) context.addGlossary(sourceName, targetEntry);
     const targetDelta = transformMap[sourceName];
-    insertLinks(targetEntry, targetDelta?.link ?? targetEntry.link);
+    const targetLink = targetDelta?.link ?? targetEntry.link;
+    insertLinks(targetEntry, targetLink);
     if (targetDelta) {
       combineObject(targetEntry, targetDelta);
       delete targetEntry.link;
@@ -1518,8 +1519,17 @@ function transformEntries(
       delete targetEntry.hints.copyDoc;
       targetEntry.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
     }
-    if (sourceName)
-      context.addName(sourceName, targetEntry.name?.replaceAll("::", "."));
+    if (sourceName) {
+      const targetName = targetEntry.name?.replaceAll("::", ".");
+      if (targetName.match(/(\w+)\.\1/)) {
+        context.addName(
+          sourceName,
+          targetLink?.name?.replaceAll("::", ".") ?? targetName,
+        );
+      } else {
+        context.addName(sourceName, targetName);
+      }
+    }
     insertEntryAndCheck(targetEntries, targetEntry, context, sourceEntries);
   }
 
@@ -1771,7 +1781,7 @@ function makeSortedEntryArray(
             l = l.link;
           }
         }
-        file.transform[key].link = currLink;
+        nameChange.link = currLink;
       }
     }
   }
@@ -2036,7 +2046,6 @@ function insertEntry(
    */
   function doInsertEntry(entry: ApiEntry) {
     if (!entry.name) entry.name = defaultName;
-    entry = /** @type {ApiEntry} */ entry;
     fixEntry(entry);
     const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
     const key = name.startsWith("ObjectRef")

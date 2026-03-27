@@ -674,7 +674,7 @@ inline HidDevice hid_open_path(StringParam path)
  * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
  *   associated with the device, if it was opened using libusb.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
@@ -714,7 +714,7 @@ constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
  * exists. If it does not, it will send the data through the Control Endpoint
  * (Endpoint 0).
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data the data to send, including the report number as the first byte.
  * @returns the actual number of bytes written and -1 on on failure; call
  *          GetError() for more information.
@@ -738,7 +738,7 @@ inline int HidDevice::write(SourceBytes data)
  * first byte will contain the Report number if the device uses numbered
  * reports.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data a buffer to put the read data into.
  * @param timeout timeout in milliseconds
  * @returns the actual number of bytes read and -1 on on failure; call
@@ -767,7 +767,7 @@ inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
  * first byte will contain the Report number if the device uses numbered
  * reports.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data a buffer to put the read data into.
  * @returns the actual number of bytes read and -1 on failure; call GetError()
  *          for more information. If no packet was available to be read and the
@@ -794,7 +794,7 @@ inline int HidDevice::read(TargetBytes data)
  *
  * Nonblocking can be turned on and off at any time.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param nonblock enable or not the nonblocking reads - true to enable
  *                 nonblocking - false to disable nonblocking.
  * @throws Error on failure.
@@ -824,7 +824,7 @@ inline void HidDevice::set_nonblocking(bool nonblock)
  * devices which do not use numbered reports), followed by the report data (16
  * bytes). In this example, the length passed in would be 17.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data the data to send, including the report number as the first byte.
  * @returns the actual number of bytes written and -1 on failure; call
  *          GetError() for more information.
@@ -850,7 +850,7 @@ inline int HidDevice::send_feature_report(SourceBytes data)
  * byte will still contain the Report ID, and the report data will start in
  * data[1].
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data a buffer to put the read data into, including the Report ID. Set
  *             the first byte of `data` to the Report ID of the report to be
  *             read, or set it to zero if your device does not use numbered
@@ -880,7 +880,7 @@ inline int HidDevice::get_feature_report(TargetBytes data)
  * byte will still contain the Report ID, and the report data will start in
  * data[1].
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param data a buffer to put the read data into, including the Report ID. Set
  *             the first byte of `data` to the Report ID of the report to be
  *             read, or set it to zero if your device does not use numbered
@@ -905,7 +905,7 @@ inline int HidDevice::get_input_report(TargetBytes data)
 /**
  * Close a HID device.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -920,7 +920,7 @@ inline void HidDevice::close() { hid_close(release()); }
 /**
  * Get The Manufacturer String from a HID device.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param string a wide string buffer to put the data into.
  * @param maxlen the length of the buffer in multiples of wchar_t.
  * @throws Error on failure.
@@ -942,7 +942,7 @@ inline void HidDevice::get_manufacturer_string(wchar_t* string, size_t maxlen)
 /**
  * Get The Product String from a HID device.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param string a wide string buffer to put the data into.
  * @param maxlen the length of the buffer in multiples of wchar_t.
  * @throws Error on failure.
@@ -964,7 +964,7 @@ inline void HidDevice::get_product_string(wchar_t* string, size_t maxlen)
 /**
  * Get The Serial Number String from a HID device.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param string a wide string buffer to put the data into.
  * @param maxlen the length of the buffer in multiples of wchar_t.
  * @throws Error on failure.
@@ -986,7 +986,7 @@ inline void HidDevice::get_serial_number_string(wchar_t* string, size_t maxlen)
 /**
  * Get a string from a HID device, based on its string index.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param string_index the index of the string to get.
  * @param string a wide string buffer to put the data into.
  * @param maxlen the length of the buffer in multiples of wchar_t.
@@ -1013,7 +1013,7 @@ inline void HidDevice::get_indexed_string(int string_index,
 /**
  * Get the device info from a HID device.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @returns a pointer to the hid_device_info for this hid_device on success.
  *          This struct is valid until the device is closed with
  *          HidDevice.close().
@@ -1037,7 +1037,7 @@ inline hid_device_info* HidDevice::get_device_info()
  * User has to provide a preallocated buffer where descriptor will be copied to.
  * The recommended size for a preallocated buffer is 4096 bytes.
  *
- * @param dev a device handle returned from HidDevice.HidDevice().
+ * @param dev a device handle returned from hid_open().
  * @param buf the buffer to copy descriptor into.
  * @returns the number of bytes actually copied or -1 on failure; call
  *          GetError() for more information.

@@ -470,13 +470,13 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Close a gamepad previously opened with Gamepad.Gamepad().
+   * Close a gamepad previously opened with OpenGamepad().
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.Gamepad
+   * @sa OpenGamepad
    */
   void Close();
 
@@ -1448,7 +1448,7 @@ inline bool HasGamepad() { return SDL_HasGamepad(); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa HasGamepad
- * @sa Gamepad.Gamepad
+ * @sa OpenGamepad
  */
 inline OwnArray<JoystickID> GetGamepads()
 {
@@ -1469,7 +1469,7 @@ inline OwnArray<JoystickID> GetGamepads()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetJoysticks
- * @sa Gamepad.Gamepad
+ * @sa OpenGamepad
  */
 inline bool IsGamepad(JoystickID instance_id)
 {
@@ -1765,7 +1765,7 @@ inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has simple
  *   trigger rumble
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
@@ -1801,7 +1801,7 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
 /**
  * Get the instance ID of an opened gamepad.
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  * @returns the instance ID of the specified gamepad on success.
  * @throws Error on failure.
  *
@@ -1819,7 +1819,7 @@ inline JoystickID Gamepad::GetID() { return SDL::GetGamepadID(m_resource); }
 /**
  * Get the implementation-dependent name for an opened gamepad.
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  * @returns the implementation dependent name for the gamepad, or nullptr if
  *          there is no name or the identifier passed is invalid.
  *
@@ -1842,7 +1842,7 @@ inline const char* Gamepad::GetName()
 /**
  * Get the implementation-dependent path for an opened gamepad.
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  * @returns the implementation dependent path for the gamepad, or nullptr if
  *          there is no path or the identifier passed is invalid.
  *
@@ -2143,7 +2143,7 @@ inline PowerState Gamepad::GetPowerInfo(int* percent)
 /**
  * Check if a gamepad has been opened and is currently connected.
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  * @returns true if the gamepad has been opened and is currently connected, or
  *          false if not.
  *
@@ -2898,15 +2898,15 @@ inline void Gamepad::SendEffect(const void* data, int size)
 }
 
 /**
- * Close a gamepad previously opened with Gamepad.Gamepad().
+ * Close a gamepad previously opened with OpenGamepad().
  *
- * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by OpenGamepad().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.Gamepad
+ * @sa OpenGamepad
  */
 inline void CloseGamepad(GamepadRaw gamepad) { SDL_CloseGamepad(gamepad); }
 

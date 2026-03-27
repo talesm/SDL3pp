@@ -36,12 +36,12 @@ struct MetalViewRef;
  */
 class MetalView
 {
-  MetalViewRaw m_resource = 0;
+  MetalViewRaw m_resource = nullptr;
 
 public:
   /// Default ctor
   constexpr MetalView(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
+    : m_resource(nullptr)
   {
   }
 
@@ -112,7 +112,7 @@ public:
   constexpr MetalViewRaw release() noexcept
   {
     auto r = m_resource;
-    m_resource = 0;
+    m_resource = nullptr;
     return r;
   }
 
@@ -125,14 +125,14 @@ public:
   /**
    * Destroy an existing MetalView object.
    *
-   * This should be called before Window.Destroy, if MetalView.MetalView was
-   * called after Window.Window.
+   * This should be called before Window.Destroy, if Metal_CreateView was called
+   * after CreateWindow.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MetalView.MetalView
+   * @sa Metal_CreateView
    */
   void Destroy();
 
@@ -253,8 +253,8 @@ inline MetalView::MetalView(WindowRef window)
 /**
  * Destroy an existing MetalView object.
  *
- * This should be called before Window.Destroy, if MetalView.MetalView was
- * called after Window.Window.
+ * This should be called before Window.Destroy, if Metal_CreateView was called
+ * after CreateWindow.
  *
  * @param view the MetalView object.
  *
@@ -262,7 +262,7 @@ inline MetalView::MetalView(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa MetalView.MetalView
+ * @sa Metal_CreateView
  */
 inline void Metal_DestroyView(MetalViewRaw view)
 {

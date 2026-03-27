@@ -906,7 +906,7 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  * @cat resource
  *
  * @sa GetEnvironment
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  * @sa Environment.GetVariable
  * @sa Environment.GetVariables
  * @sa Environment.SetVariable
@@ -1009,7 +1009,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Environment.Environment
+   * @sa CreateEnvironment
    */
   void Destroy();
 
@@ -1025,7 +1025,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa Environment.Environment
+   * @sa CreateEnvironment
    * @sa Environment.GetVariables
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
@@ -1046,7 +1046,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa Environment.Environment
+   * @sa CreateEnvironment
    * @sa Environment.GetVariables
    * @sa Environment.SetVariable
    * @sa Environment.UnsetVariable
@@ -1077,7 +1077,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa Environment.Environment
+   * @sa CreateEnvironment
    * @sa Environment.GetVariable
    * @sa Environment.GetVariables
    * @sa Environment.UnsetVariable
@@ -1095,7 +1095,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetEnvironment
-   * @sa Environment.Environment
+   * @sa CreateEnvironment
    * @sa Environment.GetVariable
    * @sa Environment.GetVariables
    * @sa Environment.SetVariable
@@ -1242,7 +1242,7 @@ inline Environment::Environment(bool populated)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetEnvironment
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  * @sa Environment.GetVariables
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
@@ -1271,7 +1271,7 @@ inline const char* Environment::GetVariable(StringParam name)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetEnvironment
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  * @sa Environment.GetVariables
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
@@ -1301,7 +1301,7 @@ inline OwnArray<char*> Environment::GetVariables()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetEnvironment
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  * @sa Environment.GetVariable
  * @sa Environment.GetVariables
  * @sa Environment.UnsetVariable
@@ -1334,7 +1334,7 @@ inline void Environment::SetVariable(StringParam name,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetEnvironment
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  * @sa Environment.GetVariable
  * @sa Environment.GetVariables
  * @sa Environment.SetVariable
@@ -1360,7 +1360,7 @@ inline void Environment::UnsetVariable(StringParam name)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Environment.Environment
+ * @sa CreateEnvironment
  */
 inline void DestroyEnvironment(EnvironmentRaw env)
 {
@@ -5915,9 +5915,10 @@ inline float tan(float x) { return SDL_tanf(x); }
  *
  * @since This datatype is available since SDL 3.2.0.
  *
+ *
  * @cat resource
  *
- * @sa IConv.IConv
+ * @sa iconv_open
  */
 class IConv
 {
@@ -6016,7 +6017,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConv.iconv
-   * @sa IConv.IConv
+   * @sa iconv_open
    * @sa iconv_string
    */
   int close();
@@ -6053,7 +6054,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConv.IConv
+   * @sa iconv_open
    * @sa IConv.close
    * @sa iconv_string
    */
@@ -6173,7 +6174,7 @@ inline IConv::IConv(StringParam tocode, StringParam fromcode)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IConv.iconv
- * @sa IConv.IConv
+ * @sa iconv_open
  * @sa iconv_string
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
@@ -6199,7 +6200,7 @@ inline int IConv::close() { return iconv_close(release()); }
  * - outbuf will point to the location where to store the next output byte.
  * - outbytesleft will be set to the number of bytes left in the output buffer.
  *
- * @param cd The character set conversion context, created in IConv.IConv().
+ * @param cd The character set conversion context, created in iconv_open().
  * @param inbuf Address of variable that points to the first character of the
  *              input sequence.
  * @param inbytesleft The number of bytes in the input buffer.
@@ -6212,7 +6213,7 @@ inline int IConv::close() { return iconv_close(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConv.IConv
+ * @sa iconv_open
  * @sa IConv.close
  * @sa iconv_string
  */
@@ -6264,7 +6265,7 @@ constexpr size_t ICONV_EINVAL =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConv.IConv
+ * @sa iconv_open
  * @sa IConv.close
  * @sa IConv.iconv
  */

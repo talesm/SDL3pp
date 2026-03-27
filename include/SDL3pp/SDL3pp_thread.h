@@ -19,7 +19,7 @@ namespace SDL {
  * to each thread, but accessed from a single key).
  *
  * On platforms without thread support (such as Emscripten when built without
- * pthreads), these functions still exist, but things like Thread.Thread() will
+ * pthreads), these functions still exist, but things like CreateThread() will
  * report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
@@ -100,9 +100,9 @@ constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
 using ThreadID = SDL_ThreadID;
 
 /**
- * The function passed to Thread.Thread() as the new thread's entry point.
+ * The function passed to CreateThread() as the new thread's entry point.
  *
- * @param data what was passed as `data` to Thread.Thread().
+ * @param data what was passed as `data` to CreateThread().
  * @returns a value that can be reported through Thread.Wait().
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -110,7 +110,7 @@ using ThreadID = SDL_ThreadID;
 using ThreadFunction = int(SDLCALL*)(void* data);
 
 /**
- * The function passed to Thread.Thread() as the new thread's entry point.
+ * The function passed to CreateThread() as the new thread's entry point.
  *
  * @returns a value that can be reported through Thread.Wait().
  *
@@ -140,7 +140,7 @@ using TLSDestructorCallback = void(SDLCALL*)(void* value);
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThread
  * @sa Thread.Wait
  *
  * @cat resource
@@ -184,8 +184,8 @@ public:
   /**
    * Create a new thread with a default stack size.
    *
-   * This is a convenience function, equivalent to calling Thread.Thread with
-   * the following properties set:
+   * This is a convenience function, equivalent to calling
+   * CreateThreadWithProperties with the following properties set:
    *
    * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
    * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -210,7 +210,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa CreateThreadWithProperties
    * @sa Thread.Wait
    */
   Thread(ThreadFunction fn, StringParam name, void* data);
@@ -218,8 +218,8 @@ public:
   /**
    * Create a new thread with a default stack size.
    *
-   * This is a convenience function, equivalent to calling Thread.Thread with
-   * the following properties set:
+   * This is a convenience function, equivalent to calling
+   * CreateThreadWithProperties with the following properties set:
    *
    * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
    * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -243,7 +243,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa CreateThreadWithProperties
    * @sa Thread.Wait
    */
   Thread(ThreadCB fn, StringParam name);
@@ -296,7 +296,7 @@ public:
    *
    * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so
    * there is no symbol clash, but trying to load an SDL shared library and look
-   * for "Thread.Thread" will fail.
+   * for "CreateThreadWithProperties" will fail.
    *
    * Usually, apps should just call this function the same way on every platform
    * and let the macros hide the details.
@@ -309,7 +309,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa CreateThread
    * @sa Thread.Wait
    */
   Thread(PropertiesRef props);
@@ -374,13 +374,13 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa CreateThread
    * @sa Thread.Wait
    */
   void Detach();
 
   /**
-   * Get the thread name as it was specified in Thread.Thread().
+   * Get the thread name as it was specified in CreateThread().
    *
    * @returns a pointer to a UTF-8 string that names the specified thread, or
    *          nullptr if it doesn't have a name.
@@ -456,7 +456,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Thread.Thread
+   * @sa CreateThread
    * @sa Thread.Detach
    */
   void Wait(int* status);
@@ -564,8 +564,8 @@ using TLSID = AtomicInt;
 /**
  * Create a new thread with a default stack size.
  *
- * This is a convenience function, equivalent to calling Thread.Thread with the
- * following properties set:
+ * This is a convenience function, equivalent to calling
+ * CreateThreadWithProperties with the following properties set:
  *
  * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
  * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -590,7 +590,7 @@ using TLSID = AtomicInt;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThreadWithProperties
  * @sa Thread.Wait
  */
 inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
@@ -601,8 +601,8 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
 /**
  * Create a new thread with a default stack size.
  *
- * This is a convenience function, equivalent to calling Thread.Thread with the
- * following properties set:
+ * This is a convenience function, equivalent to calling
+ * CreateThreadWithProperties with the following properties set:
  *
  * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
  * - `prop::thread.CREATE_NAME_STRING`: `name`
@@ -626,7 +626,7 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThreadWithProperties
  * @sa Thread.Wait
  */
 inline Thread CreateThread(ThreadCB fn, StringParam name)
@@ -699,7 +699,7 @@ inline Thread::Thread(PropertiesRef props)
  *
  * The actual symbol in SDL is `SDL_CreateThreadWithPropertiesRuntime`, so there
  * is no symbol clash, but trying to load an SDL shared library and look for
- * "Thread.Thread" will fail.
+ * "CreateThreadWithProperties" will fail.
  *
  * Usually, apps should just call this function the same way on every platform
  * and let the macros hide the details.
@@ -712,7 +712,7 @@ inline Thread::Thread(PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThread
  * @sa Thread.Wait
  */
 inline Thread CreateThreadWithProperties(PropertiesRef props)
@@ -736,7 +736,7 @@ constexpr auto CREATE_STACKSIZE_NUMBER =
 } // namespace prop::thread
 
 /**
- * Get the thread name as it was specified in Thread.Thread().
+ * Get the thread name as it was specified in CreateThread().
  *
  * @param thread the thread to query.
  * @returns a pointer to a UTF-8 string that names the specified thread, or
@@ -845,7 +845,7 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  * Note that the thread pointer is freed by this function and is not valid
  * afterward.
  *
- * @param thread the Thread pointer that was returned from the Thread.Thread()
+ * @param thread the Thread pointer that was returned from the CreateThread()
  *               call that started this thread.
  * @param status a pointer filled in with the value returned from the thread
  *               function by its 'return', or -1 if the thread has been detached
@@ -856,7 +856,7 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThread
  * @sa Thread.Detach
  */
 inline void WaitThread(ThreadRef thread, int* status)
@@ -916,12 +916,12 @@ inline ThreadState Thread::GetState() const
  *
  * @threadsafety It is safe to call this function from any thread.
  *
- * @param thread the Thread pointer that was returned from the Thread.Thread()
+ * @param thread the Thread pointer that was returned from the CreateThread()
  *               call that started this thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.Thread
+ * @sa CreateThread
  * @sa Thread.Wait
  */
 inline void DetachThread(ThreadRaw thread) { SDL_DetachThread(thread); }

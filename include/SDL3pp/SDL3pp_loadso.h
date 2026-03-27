@@ -14,10 +14,10 @@ namespace SDL {
  * Shared objects are code that is programmatically loadable at runtime. Windows
  * calls these "DLLs", Linux calls them "shared libraries", etc.
  *
- * To use them, build such a library, then call SharedObject.SharedObject() on
- * it. Once loaded, you can use SharedObject.LoadFunction() on that object to
- * find the address of its exported symbols. When done with the object, call
- * SharedObject.Unload() to dispose of it.
+ * To use them, build such a library, then call LoadObject() on it. Once loaded,
+ * you can use SharedObject.LoadFunction() on that object to find the address of
+ * its exported symbols. When done with the object, call SharedObject.Unload()
+ * to dispose of it.
  *
  * Some things to keep in mind:
  *
@@ -54,7 +54,7 @@ struct SharedObjectRef;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SharedObject.SharedObject
+ * @sa LoadObject
  * @sa SharedObject.LoadFunction
  * @sa SharedObject.Unload
  *
@@ -153,7 +153,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObject.SharedObject
+   * @sa LoadObject
    */
   void Unload();
 
@@ -181,7 +181,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObject.SharedObject
+   * @sa LoadObject
    */
   FunctionPointer LoadFunction(StringParam name);
 };
@@ -297,8 +297,7 @@ inline SharedObject::SharedObject(StringParam sofile)
  *
  * If the requested function doesn't exist, nullptr is returned.
  *
- * @param handle a valid shared object handle returned by
- *               SharedObject.SharedObject().
+ * @param handle a valid shared object handle returned by LoadObject().
  * @param name the name of the function to look up.
  * @returns a pointer to the function or nullptr on failure; call GetError() for
  *          more information.
@@ -307,7 +306,7 @@ inline SharedObject::SharedObject(StringParam sofile)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SharedObject.SharedObject
+ * @sa LoadObject
  */
 inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
 {
@@ -325,14 +324,13 @@ inline FunctionPointer SharedObject::LoadFunction(StringParam name)
  * Note that any pointers from this object looked up through
  * SharedObject.LoadFunction() will no longer be valid.
  *
- * @param handle a valid shared object handle returned by
- *               SharedObject.SharedObject().
+ * @param handle a valid shared object handle returned by LoadObject().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SharedObject.SharedObject
+ * @sa LoadObject
  */
 inline void UnloadObject(SharedObjectRaw handle) { SDL_UnloadObject(handle); }
 

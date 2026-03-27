@@ -27,8 +27,8 @@ namespace SDL {
  * Games that want the system to track the mouse but want to draw their own
  * cursor can use HideCursor() and ShowCursor(). It might be more efficient to
  * let the system manage the cursor, if possible, using Cursor.Set() with a
- * custom image made through Cursor.Cursor(), or perhaps just a specific system
- * cursor from Cursor.Cursor().
+ * custom image made through CreateColorCursor(), or perhaps just a specific
+ * system cursor from CreateSystemCursor().
  *
  * SDL can, on many platforms, differentiate between multiple connected mice,
  * allowing for interesting input scenarios and multiplayer games. They can be
@@ -54,7 +54,7 @@ using CursorRaw = SDL_Cursor*;
 struct CursorRef;
 
 /**
- * Cursor types for Cursor.Cursor().
+ * Cursor types for CreateSystemCursor().
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -204,11 +204,11 @@ public:
    * Cursors created with this function must be freed with Cursor.Destroy().
    *
    * If you want to have a color cursor, or create your cursor from an Surface,
-   * you should use Cursor.Cursor(). Alternately, you can hide the cursor and
-   * draw your own as part of your game's rendering, but it will be bound to the
-   * framerate.
+   * you should use CreateColorCursor(). Alternately, you can hide the cursor
+   * and draw your own as part of your game's rendering, but it will be bound to
+   * the framerate.
    *
-   * Also, Cursor.Cursor() is available, which provides several
+   * Also, CreateSystemCursor() is available, which provides several
    * readily-available system cursors to pick from.
    *
    * @param data the color value for each pixel of the cursor.
@@ -224,8 +224,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateAnimatedCursor
-   * @sa Cursor.Cursor
-   * @sa Cursor.Cursor
+   * @sa CreateColorCursor
+   * @sa CreateSystemCursor
    * @sa Cursor.Destroy
    * @sa Cursor.Set
    */
@@ -260,8 +260,8 @@ public:
    *
    * @sa Surface.AddAlternateImage
    * @sa CreateAnimatedCursor
-   * @sa Cursor.Cursor
-   * @sa Cursor.Cursor
+   * @sa CreateCursor
+   * @sa CreateSystemCursor
    * @sa Cursor.Destroy
    * @sa Cursor.Set
    */
@@ -315,17 +315,17 @@ public:
   /**
    * Free a previously-created cursor.
    *
-   * Use this function to free cursor resources created with Cursor.Cursor(),
-   * Cursor.Cursor() or Cursor.Cursor().
+   * Use this function to free cursor resources created with CreateCursor(),
+   * CreateColorCursor() or CreateSystemCursor().
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateAnimatedCursor
-   * @sa Cursor.Cursor
-   * @sa Cursor.Cursor
-   * @sa Cursor.Cursor
+   * @sa CreateColorCursor
+   * @sa CreateCursor
+   * @sa CreateSystemCursor
    */
   void Destroy();
 
@@ -903,12 +903,12 @@ inline void CaptureMouse(bool enabled)
  * Cursors created with this function must be freed with Cursor.Destroy().
  *
  * If you want to have a color cursor, or create your cursor from an Surface,
- * you should use Cursor.Cursor(). Alternately, you can hide the cursor and draw
- * your own as part of your game's rendering, but it will be bound to the
+ * you should use CreateColorCursor(). Alternately, you can hide the cursor and
+ * draw your own as part of your game's rendering, but it will be bound to the
  * framerate.
  *
- * Also, Cursor.Cursor() is available, which provides several readily-available
- * system cursors to pick from.
+ * Also, CreateSystemCursor() is available, which provides several
+ * readily-available system cursors to pick from.
  *
  * @param data the color value for each pixel of the cursor.
  * @param mask the mask value for each pixel of the cursor.
@@ -923,8 +923,8 @@ inline void CaptureMouse(bool enabled)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateAnimatedCursor
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
+ * @sa CreateColorCursor
+ * @sa CreateSystemCursor
  * @sa Cursor.Destroy
  * @sa Cursor.Set
  */
@@ -980,8 +980,8 @@ inline Cursor::Cursor(SystemCursor id)
  *
  * @sa Surface.AddAlternateImage
  * @sa CreateAnimatedCursor
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
+ * @sa CreateCursor
+ * @sa CreateSystemCursor
  * @sa Cursor.Destroy
  * @sa Cursor.Set
  */
@@ -1030,9 +1030,9 @@ inline Cursor CreateColorCursor(SurfaceRef surface, const PointRaw& hot)
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Surface.AddAlternateImage
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
+ * @sa CreateCursor
+ * @sa CreateColorCursor
+ * @sa CreateSystemCursor
  * @sa Cursor.Destroy
  * @sa Cursor.Set
  */
@@ -1121,8 +1121,8 @@ inline CursorRef GetDefaultCursor()
 /**
  * Free a previously-created cursor.
  *
- * Use this function to free cursor resources created with Cursor.Cursor(),
- * Cursor.Cursor() or Cursor.Cursor().
+ * Use this function to free cursor resources created with CreateCursor(),
+ * CreateColorCursor() or CreateSystemCursor().
  *
  * @param cursor the cursor to free.
  *
@@ -1131,9 +1131,9 @@ inline CursorRef GetDefaultCursor()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateAnimatedCursor
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
- * @sa Cursor.Cursor
+ * @sa CreateColorCursor
+ * @sa CreateCursor
+ * @sa CreateSystemCursor
  */
 inline void DestroyCursor(CursorRaw cursor) { SDL_DestroyCursor(cursor); }
 

@@ -274,7 +274,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Camera.Camera
+   * @sa OpenCamera
    */
   void Close();
 
@@ -307,7 +307,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Camera.Camera
+   * @sa OpenCamera
    * @sa Camera.Close
    */
   CameraPermissionState GetPermissionState();
@@ -322,7 +322,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Camera.Camera
+   * @sa OpenCamera
    */
   CameraID GetID();
 
@@ -356,7 +356,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Camera.Camera
+   * @sa OpenCamera
    */
   std::optional<CameraSpec> GetFormat();
 
@@ -703,7 +703,7 @@ inline const char* GetCurrentCameraDriver()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Camera.Camera
+ * @sa OpenCamera
  */
 inline OwnArray<CameraID> GetCameras()
 {
@@ -719,10 +719,10 @@ inline OwnArray<CameraID> GetCameras()
  * offer. This is useful if your app can accept a variety of image formats and
  * sizes and so want to find the optimal spec that doesn't require conversion.
  *
- * This function isn't strictly required; if you call Camera.Camera with a
- * nullptr spec, SDL will choose a native format for you, and if you instead
- * specify a desired format, it will transparently convert to the requested
- * format on your behalf.
+ * This function isn't strictly required; if you call OpenCamera with a nullptr
+ * spec, SDL will choose a native format for you, and if you instead specify a
+ * desired format, it will transparently convert to the requested format on your
+ * behalf.
  *
  * If `count` is not nullptr, it will be filled with the number of elements in
  * the returned array.
@@ -742,7 +742,7 @@ inline OwnArray<CameraID> GetCameras()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetCameras
- * @sa Camera.Camera
+ * @sa OpenCamera
  */
 inline OwnArray<CameraSpec*> GetCameraSupportedFormats(CameraID instance_id)
 {
@@ -875,7 +875,7 @@ inline Camera::Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Camera.Camera
+ * @sa OpenCamera
  * @sa Camera.Close
  */
 inline CameraPermissionState GetCameraPermissionState(CameraRef camera)
@@ -899,7 +899,7 @@ inline CameraPermissionState Camera::GetPermissionState()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Camera.Camera
+ * @sa OpenCamera
  */
 inline CameraID GetCameraID(CameraRef camera)
 {
@@ -911,7 +911,7 @@ inline CameraID Camera::GetID() { return SDL::GetCameraID(m_resource); }
 /**
  * Get the properties associated with an opened camera.
  *
- * @param camera the Camera obtained from Camera.Camera().
+ * @param camera the Camera obtained from OpenCamera().
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
@@ -948,7 +948,7 @@ inline PropertiesRef Camera::GetProperties()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Camera.Camera
+ * @sa OpenCamera
  */
 inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
 {
@@ -1073,7 +1073,7 @@ inline void CameraFrame::reset()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Camera.Camera
+ * @sa OpenCamera
  */
 inline void CloseCamera(CameraRaw camera) { SDL_CloseCamera(camera); }
 

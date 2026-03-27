@@ -15,10 +15,10 @@ namespace SDL {
  * these primitives are, why they are useful, and how to correctly use them is
  * vital to writing correct and safe multithreaded programs.
  *
- * - Mutexes: Mutex.Mutex()
- * - Read/Write locks: RWLock.RWLock()
- * - Semaphores: Semaphore.Semaphore()
- * - Condition variables: Condition.Condition()
+ * - Mutexes: CreateMutex()
+ * - Read/Write locks: CreateRWLock()
+ * - Semaphores: CreateSemaphore()
+ * - Condition variables: CreateCondition()
  *
  * SDL also offers a datatype, InitState, which can be used to make sure only
  * one thread initializes/deinitializes some resource that several threads might
@@ -174,7 +174,7 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Destroy a mutex created with Mutex.Mutex().
+   * Destroy a mutex created with CreateMutex().
    *
    * This function must be called on any mutex that is no longer needed. Failure
    * to destroy a mutex will result in a system memory or resource leak. While
@@ -186,7 +186,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Mutex.Mutex
+   * @sa CreateMutex
    */
   void Destroy();
 
@@ -436,7 +436,7 @@ inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
 
 /**
- * Destroy a mutex created with Mutex.Mutex().
+ * Destroy a mutex created with CreateMutex().
  *
  * This function must be called on any mutex that is no longer needed. Failure
  * to destroy a mutex will result in a system memory or resource leak. While it
@@ -450,7 +450,7 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Mutex.Mutex
+ * @sa CreateMutex
  */
 inline void DestroyMutex(MutexRaw mutex) { SDL_DestroyMutex(mutex); }
 
@@ -529,7 +529,7 @@ public:
    *
    * All newly-created read/write locks begin in the _unlocked_ state.
    *
-   * Calls to RWLock.LockForReading() and RWLock.LockForWriting will not return
+   * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
    * while the rwlock is locked _for writing_ by another thread. See
    * RWLock.TryLockForReading() and RWLock.TryLockForWriting() to attempt to
    * lock without blocking.
@@ -548,8 +548,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.Destroy
-   * @sa RWLock.LockForReading
-   * @sa RWLock.LockForWriting
+   * @sa LockRWLockForReading
+   * @sa LockRWLockForWriting
    * @sa RWLock.TryLockForReading
    * @sa RWLock.TryLockForWriting
    * @sa RWLock.Unlock
@@ -587,7 +587,7 @@ public:
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
-   * Destroy a read/write lock created with RWLock.RWLock().
+   * Destroy a read/write lock created with CreateRWLock().
    *
    * This function must be called on any read/write lock that is no longer
    * needed. Failure to destroy a rwlock will result in a system memory or
@@ -599,7 +599,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.RWLock
+   * @sa CreateRWLock
    */
   void Destroy();
 
@@ -634,7 +634,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.LockForWriting
+   * @sa LockRWLockForWriting
    * @sa RWLock.TryLockForReading
    * @sa RWLock.Unlock
    */
@@ -665,7 +665,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.LockForReading
+   * @sa LockRWLockForReading
    * @sa RWLock.TryLockForWriting
    * @sa RWLock.Unlock
    */
@@ -674,7 +674,7 @@ public:
   /**
    * Try to lock a read/write lock _for reading_ without blocking.
    *
-   * This works just like RWLock.LockForReading(), but if the rwlock is not
+   * This works just like LockRWLockForReading(), but if the rwlock is not
    * available, then this function returns false immediately.
    *
    * This technique is useful if you need access to a resource but don't want to
@@ -691,7 +691,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.LockForReading
+   * @sa LockRWLockForReading
    * @sa RWLock.TryLockForWriting
    * @sa RWLock.Unlock
    */
@@ -700,7 +700,7 @@ public:
   /**
    * Try to lock a read/write lock _for writing_ without blocking.
    *
-   * This works just like RWLock.LockForWriting(), but if the rwlock is not
+   * This works just like LockRWLockForWriting(), but if the rwlock is not
    * available, then this function returns false immediately.
    *
    * This technique is useful if you need exclusive access to a resource but
@@ -722,7 +722,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.LockForWriting
+   * @sa LockRWLockForWriting
    * @sa RWLock.TryLockForReading
    * @sa RWLock.Unlock
    */
@@ -747,8 +747,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.LockForReading
-   * @sa RWLock.LockForWriting
+   * @sa LockRWLockForReading
+   * @sa LockRWLockForWriting
    * @sa RWLock.TryLockForReading
    * @sa RWLock.TryLockForWriting
    */
@@ -844,7 +844,7 @@ struct RWLockRef : RWLock
  *
  * All newly-created read/write locks begin in the _unlocked_ state.
  *
- * Calls to RWLock.LockForReading() and RWLock.LockForWriting will not return
+ * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
  * while the rwlock is locked _for writing_ by another thread. See
  * RWLock.TryLockForReading() and RWLock.TryLockForWriting() to attempt to lock
  * without blocking.
@@ -863,8 +863,8 @@ struct RWLockRef : RWLock
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.Destroy
- * @sa RWLock.LockForReading
- * @sa RWLock.LockForWriting
+ * @sa LockRWLockForReading
+ * @sa LockRWLockForWriting
  * @sa RWLock.TryLockForReading
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
@@ -909,7 +909,7 @@ inline RWLock::RWLock()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.LockForWriting
+ * @sa LockRWLockForWriting
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
@@ -947,7 +947,7 @@ inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.LockForReading
+ * @sa LockRWLockForReading
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
@@ -961,7 +961,7 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
 /**
  * Try to lock a read/write lock _for reading_ without blocking.
  *
- * This works just like RWLock.LockForReading(), but if the rwlock is not
+ * This works just like LockRWLockForReading(), but if the rwlock is not
  * available, then this function returns false immediately.
  *
  * This technique is useful if you need access to a resource but don't want to
@@ -979,7 +979,7 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.LockForReading
+ * @sa LockRWLockForReading
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
@@ -996,7 +996,7 @@ inline bool RWLock::TryLockForReading()
 /**
  * Try to lock a read/write lock _for writing_ without blocking.
  *
- * This works just like RWLock.LockForWriting(), but if the rwlock is not
+ * This works just like LockRWLockForWriting(), but if the rwlock is not
  * available, then this function returns false immediately.
  *
  * This technique is useful if you need exclusive access to a resource but don't
@@ -1019,7 +1019,7 @@ inline bool RWLock::TryLockForReading()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.LockForWriting
+ * @sa LockRWLockForWriting
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
@@ -1054,8 +1054,8 @@ inline bool RWLock::TryLockForWriting()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.LockForReading
- * @sa RWLock.LockForWriting
+ * @sa LockRWLockForReading
+ * @sa LockRWLockForWriting
  * @sa RWLock.TryLockForReading
  * @sa RWLock.TryLockForWriting
  */
@@ -1064,7 +1064,7 @@ inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
 
 /**
- * Destroy a read/write lock created with RWLock.RWLock().
+ * Destroy a read/write lock created with CreateRWLock().
  *
  * This function must be called on any read/write lock that is no longer needed.
  * Failure to destroy a rwlock will result in a system memory or resource leak.
@@ -1078,7 +1078,7 @@ inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.RWLock
+ * @sa CreateRWLock
  */
 inline void DestroyRWLock(RWLockRaw rwlock) { SDL_DestroyRWLock(rwlock); }
 
@@ -1202,7 +1202,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Semaphore.Semaphore
+   * @sa CreateSemaphore
    */
   void Destroy();
 
@@ -1410,7 +1410,7 @@ inline Semaphore::Semaphore(Uint32 initial_value)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Semaphore.Semaphore
+ * @sa CreateSemaphore
  */
 inline void DestroySemaphore(SemaphoreRaw sem) { SDL_DestroySemaphore(sem); }
 
@@ -1640,7 +1640,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Condition.Condition
+   * @sa CreateCondition
    */
   void Destroy();
 
@@ -1831,7 +1831,7 @@ inline Condition::Condition()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Condition.Condition
+ * @sa CreateCondition
  */
 inline void DestroyCondition(ConditionRaw cond) { SDL_DestroyCondition(cond); }
 

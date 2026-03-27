@@ -1727,7 +1727,7 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  * using Joystick.SetVirtualAxis(), etc.
  *
  * When no longer needed, the virtual joystick can be removed by calling
- * JoystickID.DetachVirtualJoystick().
+ * DetachVirtualJoystick().
  *
  * @param desc joystick description, initialized using InitInterface().
  * @returns the joystick instance ID on success.
@@ -1737,7 +1737,7 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.DetachVirtualJoystick
+ * @sa DetachVirtualJoystick
  * @sa Joystick.SetVirtualAxis
  * @sa Joystick.SetVirtualButton
  * @sa Joystick.SetVirtualBall

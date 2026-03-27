@@ -154,7 +154,7 @@
   *
 @@ -706,7 +705,12 @@
   *
-  * @sa Camera.Camera
+  * @sa OpenCamera
   */
 -inline OwnArray<CameraID> GetCameras() { return SDL_GetCameras(); }
 +inline OwnArray<CameraID> GetCameras()

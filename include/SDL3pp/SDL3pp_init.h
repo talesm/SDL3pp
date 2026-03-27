@@ -205,7 +205,7 @@ using AppQuit_func = void(SDLCALL*)(void* appstate, AppResult result);
  * used interchangeably. Though for readability of your code InitSubSystem()
  * might be preferred.
  *
- * The file I/O (for example: IOStream.FromFile) and threading (Thread.Thread)
+ * The file I/O (for example: IOStream.FromFile) and threading (CreateThread)
  * subsystems are initialized by default. Message boxes (ShowSimpleMessageBox)
  * also attempt to work without initializing the video subsystem, in hopes of
  * being useful in showing an error dialog when Init fails. You must

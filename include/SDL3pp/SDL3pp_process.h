@@ -16,10 +16,10 @@ namespace SDL {
  * These functions provide a cross-platform way to spawn and manage OS-level
  * processes.
  *
- * You can create a new subprocess with Process.Process() and optionally read
- * and write to it using Process.Read() or Process.GetInput() and
+ * You can create a new subprocess with CreateProcess() and optionally read and
+ * write to it using Process.Read() or Process.GetInput() and
  * Process.GetOutput(). If more advanced functionality like chaining input
- * between processes is necessary, you can use Process.Process().
+ * between processes is necessary, you can use CreateProcessWithProperties().
  *
  * You can get the status of a created process with Process.Wait(), or terminate
  * the process with Process.Kill().
@@ -73,7 +73,7 @@ struct ProcessRef;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa Process.Process
+ * @sa CreateProcessWithProperties
  * @sa Process.GetProperties
  * @sa Process.Read
  * @sa Process.GetInput
@@ -102,7 +102,7 @@ constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa Process.Process
+ * @sa CreateProcess
  *
  * @cat resource
  */
@@ -158,7 +158,7 @@ public:
    * `prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and will allow
    * the use of Process.Read() or Process.GetInput() and Process.GetOutput().
    *
-   * See Process.Process() for more details.
+   * See CreateProcessWithProperties() for more details.
    *
    * @param args the path and arguments for the new process.
    * @param pipe_stdio true to create pipes to the process's standard input and
@@ -172,7 +172,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa CreateProcessWithProperties
    * @sa Process.GetProperties
    * @sa Process.Read
    * @sa Process.GetInput
@@ -244,7 +244,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
+   * @sa CreateProcess
    * @sa Process.GetProperties
    * @sa Process.Read
    * @sa Process.GetInput
@@ -295,8 +295,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.Kill
    */
   void Destroy();
@@ -326,8 +326,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    */
   PropertiesRef GetProperties() const;
 
@@ -353,8 +353,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.Destroy
    */
   StringResult Read(int* exitcode = nullptr);
@@ -395,8 +395,8 @@ public:
   /**
    * Get the IOStream associated with process standard input.
    *
-   * The process must have been created with Process.Process() and pipe_stdio
-   * set to true, or with Process.Process() and
+   * The process must have been created with CreateProcess() and pipe_stdio set
+   * to true, or with CreateProcessWithProperties() and
    * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Writing to this stream can return less data than expected if the process
@@ -411,8 +411,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.GetOutput
    */
   IOStreamRef GetInput();
@@ -420,8 +420,8 @@ public:
   /**
    * Get the IOStream associated with process standard output.
    *
-   * The process must have been created with Process.Process() and pipe_stdio
-   * set to true, or with Process.Process() and
+   * The process must have been created with CreateProcess() and pipe_stdio set
+   * to true, or with CreateProcessWithProperties() and
    * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Reading from this stream can return 0 with IOStream.GetStatus() returning
@@ -434,8 +434,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.GetInput
    */
   IOStreamRef GetOutput();
@@ -454,8 +454,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.Wait
    * @sa Process.Destroy
    */
@@ -486,8 +486,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Process.Process
-   * @sa Process.Process
+   * @sa CreateProcess
+   * @sa CreateProcessWithProperties
    * @sa Process.Kill
    * @sa Process.Destroy
    */
@@ -582,7 +582,7 @@ struct ProcessRef : Process
  * to `PROCESS_STDIO_APP`, and will allow the use of Process.Read() or
  * Process.GetInput() and Process.GetOutput().
  *
- * See Process.Process() for more details.
+ * See CreateProcessWithProperties() for more details.
  *
  * @param args the path and arguments for the new process.
  * @param pipe_stdio true to create pipes to the process's standard input and
@@ -596,7 +596,7 @@ struct ProcessRef : Process
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
+ * @sa CreateProcessWithProperties
  * @sa Process.GetProperties
  * @sa Process.Read
  * @sa Process.GetInput
@@ -681,7 +681,7 @@ inline Process::Process(PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
+ * @sa CreateProcess
  * @sa Process.GetProperties
  * @sa Process.Read
  * @sa Process.GetInput
@@ -771,8 +771,8 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  */
 inline PropertiesRef GetProcessProperties(ProcessRef process)
 {
@@ -807,8 +807,8 @@ inline PropertiesRef Process::GetProperties() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.Destroy
  */
 inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
@@ -826,9 +826,9 @@ inline StringResult Process::Read(int* exitcode)
 /**
  * Get the IOStream associated with process standard input.
  *
- * The process must have been created with Process.Process() and pipe_stdio set
- * to true, or with Process.Process() and `prop::process.CREATE_STDIN_NUMBER`
- * set to `PROCESS_STDIO_APP`.
+ * The process must have been created with CreateProcess() and pipe_stdio set to
+ * true, or with CreateProcessWithProperties() and
+ * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
  *
  * Writing to this stream can return less data than expected if the process
  * hasn't read its input. It may be blocked waiting for its output to be read,
@@ -843,8 +843,8 @@ inline StringResult Process::Read(int* exitcode)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.GetOutput
  */
 inline IOStreamRef GetProcessInput(ProcessRef process)
@@ -860,9 +860,9 @@ inline IOStreamRef Process::GetInput()
 /**
  * Get the IOStream associated with process standard output.
  *
- * The process must have been created with Process.Process() and pipe_stdio set
- * to true, or with Process.Process() and `prop::process.CREATE_STDOUT_NUMBER`
- * set to `PROCESS_STDIO_APP`.
+ * The process must have been created with CreateProcess() and pipe_stdio set to
+ * true, or with CreateProcessWithProperties() and
+ * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
  *
  * Reading from this stream can return 0 with IOStream.GetStatus() returning
  * IO_STATUS_NOT_READY if no output is available yet.
@@ -875,8 +875,8 @@ inline IOStreamRef Process::GetInput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.GetInput
  */
 inline IOStreamRef GetProcessOutput(ProcessRef process)
@@ -903,8 +903,8 @@ inline IOStreamRef Process::GetOutput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.Wait
  * @sa Process.Destroy
  */
@@ -941,8 +941,8 @@ inline void Process::Kill(bool force) { SDL::KillProcess(m_resource, force); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.Kill
  * @sa Process.Destroy
  */
@@ -968,8 +968,8 @@ inline bool Process::Wait(bool block, int* exitcode)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Process.Process
- * @sa Process.Process
+ * @sa CreateProcess
+ * @sa CreateProcessWithProperties
  * @sa Process.Kill
  */
 inline void DestroyProcess(ProcessRaw process) { SDL_DestroyProcess(process); }
