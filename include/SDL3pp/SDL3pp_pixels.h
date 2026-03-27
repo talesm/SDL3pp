@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL_pixels.h>
 #include "SDL3pp_assert.h"
+#include "SDL3pp_objParam.h"
 #include "SDL3pp_stdinc.h"
 #include "SDL3pp_version.h"
 
@@ -104,40 +105,7 @@ using PaletteRawConst = const SDL_Palette*;
 struct PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
-struct PaletteConstRef
-{
-  PaletteRawConst value; ///< parameter's Palette
-
-  /// Constructs from PaletteRawConst
-  constexpr PaletteConstRef(PaletteRawConst value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr PaletteConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const PaletteConstRef& other) const = default;
-
-  /// Converts to underlying Palette
-  constexpr operator PaletteRawConst() const { return value; }
-
-  /// Converts to underlying Palette
-  constexpr operator PaletteRaw() const
-  {
-    return const_cast<PaletteRaw>(value);
-  }
-
-  /// member access to underlying PaletteRaw.
-  constexpr auto operator->() const { return value; }
-};
+using PaletteConstRef = ObjConstParam<PaletteRaw, PaletteRawConst>;
 
 /**
  * Details about the format of a pixel.

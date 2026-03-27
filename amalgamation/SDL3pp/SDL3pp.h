@@ -5,6 +5,7 @@
 #include <atomic>
 #include <chrono>
 #include <concepts>
+#include <cstdlib>
 #include <exception>
 #include <format>
 #include <functional>
@@ -769,6 +770,83 @@ struct MakeTrailingCallback<R(PARAMS...)>
 #endif // SDL3PP_DOC
 
 /// @}
+
+/// Reference wrapper for a given resource,
+template<typename RAW_POINTER>
+class ObjParam
+{
+public:
+  using RawPointer = RAW_POINTER;
+
+  /// Constructs from RawPointer
+  constexpr ObjParam(RawPointer resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr ObjParam(std::nullptr_t = nullptr)
+    : m_resource(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Comparison
+  constexpr auto operator<=>(const ObjParam& other) const = default;
+
+  /// Converts to underlying RawPointer
+  constexpr operator RawPointer() const { return m_resource; }
+
+  /// member access to underlying type.
+  constexpr auto operator->() const { return m_resource; }
+
+private:
+  RawPointer m_resource; ///< parameter's RawPointer
+};
+
+/// Const reference wrapper for a given resource,
+template<typename RAW_POINTER, typename RAW_CONST_POINTER>
+class ObjConstParam
+{
+public:
+  using RawPointer = RAW_POINTER;
+  using RawConstPointer = RAW_CONST_POINTER;
+
+  /// Constructs from const pointer.
+  constexpr ObjConstParam(RawConstPointer resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr ObjConstParam(std::nullptr_t = nullptr)
+    : m_resource(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Comparison.
+  constexpr auto operator<=>(const ObjConstParam& other) const = default;
+
+  /// Converts to underlying type.
+  constexpr operator RawConstPointer() const { return m_resource; }
+
+  /// Converts to underlying type.
+  constexpr operator RawPointer() const
+  {
+    return const_cast<RawPointer>(m_resource);
+  }
+
+  /// member access to underlying type.
+  constexpr auto operator->() const { return m_resource; }
+
+private:
+  RawConstPointer m_resource; ///< parameter's Surface
+};
 
 /**
  * @brief Optional-like shim for references
@@ -25757,40 +25835,7 @@ using PaletteRawConst = const SDL_Palette*;
 struct PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
-struct PaletteConstRef
-{
-  PaletteRawConst value; ///< parameter's Palette
-
-  /// Constructs from PaletteRawConst
-  constexpr PaletteConstRef(PaletteRawConst value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr PaletteConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const PaletteConstRef& other) const = default;
-
-  /// Converts to underlying Palette
-  constexpr operator PaletteRawConst() const { return value; }
-
-  /// Converts to underlying Palette
-  constexpr operator PaletteRaw() const
-  {
-    return const_cast<PaletteRaw>(value);
-  }
-
-  /// member access to underlying PaletteRaw.
-  constexpr auto operator->() const { return value; }
-};
+using PaletteConstRef = ObjConstParam<PaletteRaw, PaletteRawConst>;
 
 /**
  * Details about the format of a pixel.
@@ -42794,40 +42839,7 @@ using SurfaceRawConst = const SDL_Surface*;
 struct SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
-struct SurfaceConstRef
-{
-  SurfaceRawConst value; ///< parameter's Surface
-
-  /// Constructs from SurfaceRawConst
-  constexpr SurfaceConstRef(SurfaceRawConst value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SurfaceConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SurfaceConstRef& other) const = default;
-
-  /// Converts to underlying Surface
-  constexpr operator SurfaceRawConst() const { return value; }
-
-  /// Converts to underlying Surface
-  constexpr operator SurfaceRaw() const
-  {
-    return const_cast<SurfaceRaw>(value);
-  }
-
-  /// member access to underlying SurfaceRaw.
-  constexpr auto operator->() const { return value; }
-};
+using SurfaceConstRef = ObjConstParam<SurfaceRaw, SurfaceRawConst>;
 
 // Forward decl
 struct SurfaceLock;
@@ -42858,7 +42870,10 @@ constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool MustLock(SurfaceConstRef S) { return SDL_MUSTLOCK((S.value)); }
+constexpr bool MustLock(SurfaceConstRef S)
+{
+  return SDL_MUSTLOCK((static_cast<SurfaceRawConst>(S)));
+}
 
 /**
  * The scaling mode.
@@ -82553,40 +82568,7 @@ using TextureRawConst = const SDL_Texture*;
 struct TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
-struct TextureConstRef
-{
-  TextureRawConst value; ///< parameter's Texture
-
-  /// Constructs from TextureRawConst
-  constexpr TextureConstRef(TextureRawConst value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TextureConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextureConstRef& other) const = default;
-
-  /// Converts to underlying Texture
-  constexpr operator TextureRawConst() const { return value; }
-
-  /// Converts to underlying Texture
-  constexpr operator TextureRaw() const
-  {
-    return const_cast<TextureRaw>(value);
-  }
-
-  /// member access to underlying TextureRaw.
-  constexpr auto operator->() const { return value; }
-};
+using TextureConstRef = ObjConstParam<TextureRaw, TextureRawConst>;
 
 #if SDL_VERSION_ATLEAST(3, 3, 6)
 
@@ -100614,40 +100596,7 @@ using AnimationRawConst = const IMG_Animation*;
 struct AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
-struct AnimationConstRef
-{
-  AnimationRawConst value; ///< parameter's Animation
-
-  /// Constructs from AnimationRawConst
-  constexpr AnimationConstRef(AnimationRawConst value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationConstRef& other) const = default;
-
-  /// Converts to underlying Animation
-  constexpr operator AnimationRawConst() const { return value; }
-
-  /// Converts to underlying Animation
-  constexpr operator AnimationRaw() const
-  {
-    return const_cast<AnimationRaw>(value);
-  }
-
-  /// member access to underlying AnimationRaw.
-  constexpr auto operator->() const { return value; }
-};
+using AnimationConstRef = ObjConstParam<AnimationRaw, AnimationRawConst>;
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -105564,31 +105513,7 @@ struct TextEngine;
 using TextEngineRaw = TTF_TextEngine*;
 
 /// Safely wrap TextEngine for non owning parameters
-struct TextEngineRef
-{
-  TextEngineRaw value; ///< parameter's TextEngineRaw
-
-  /// Constructs from TextEngineRaw
-  constexpr TextEngineRef(TextEngineRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TextEngineRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextEngineRef& other) const = default;
-
-  /// Converts to underlying TextEngineRaw
-  constexpr operator TextEngineRaw() const { return value; }
-};
+using TextEngineRef = ObjParam<TextEngineRaw>;
 
 // Forward decl
 struct Text;
@@ -105603,37 +105528,7 @@ using TextRawConst = const TTF_Text*;
 struct TextRef;
 
 /// Safely wrap Text for non owning const parameters
-struct TextConstRef
-{
-  TextRawConst value; ///< parameter's Text
-
-  /// Constructs from TextRawConst
-  constexpr TextConstRef(TextRawConst value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TextConstRef(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextConstRef& other) const = default;
-
-  /// Converts to underlying Text
-  constexpr operator TextRawConst() const { return value; }
-
-  /// Converts to underlying Text
-  constexpr operator TextRaw() const { return const_cast<TextRaw>(value); }
-
-  /// member access to underlying TextRaw.
-  constexpr auto operator->() const { return value; }
-};
+using TextConstRef = ObjConstParam<TextRaw, TextRawConst>;
 
 #ifdef SDL3PP_DOC
 
@@ -109525,7 +109420,7 @@ public:
   }
 
   /// Destructor
-  virtual ~TextEngine() = default;
+  virtual ~TextEngine() { SDL_assert_paranoid(!m_resource); }
 
   /// Assignment operator.
   constexpr TextEngine& operator=(TextEngine&& other) noexcept
