@@ -20,7 +20,7 @@ int main(int argc, char** argv)
   SDL::Window window{"Test", WINDOW_SZ};
   SDL::Surface screen = window.GetSurface();
   auto smileyImg =
-    SDL::LoadBMP(std::format("{}../assets/smiley.bmp", SDL::GetBasePath()));
+    SDL::LoadPNG(std::format("{}../assets/smiley.png", SDL::GetBasePath()));
 
   constexpr int WW = 64;
 
