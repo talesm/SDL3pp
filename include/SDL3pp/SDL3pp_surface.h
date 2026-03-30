@@ -719,8 +719,6 @@ public:
    */
   void SaveBMP(StringParam file) const;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
   /**
    * Save a surface to a seekable SDL data stream in PNG format.
    *
@@ -760,8 +758,6 @@ public:
    * @sa Surface.SavePNG_IO
    */
   void SavePNG(StringParam file) const;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -1854,7 +1850,7 @@ public:
    *
    * For formats that accept a quality, a default quality of 90 will be used.
    *
-   * @param file path on the filesystem to write new file to.
+   * @param filename path on the filesystem to write new file to.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.

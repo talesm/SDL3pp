@@ -2513,11 +2513,6 @@ inline void SaveJPG_IO(SurfaceRef surface,
   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
 }
 
-inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
-{
-  SDL::SaveTrustedPNG_IO(m_resource, dst, closeio);
-}
-
 /**
  * Save an Surface into a PNG image file.
  *
@@ -2538,7 +2533,7 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
 
 inline void Surface::SavePNG(StringParam file) const
 {
-  SDL::SaveTrustedPNG(m_resource, std::move(file));
+  SDL::SavePNG(m_resource, std::move(file));
 }
 
 /**
@@ -2564,6 +2559,11 @@ inline void SavePNG_IO(SurfaceRef surface,
                        bool closeio = false)
 {
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
+}
+
+inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
+{
+  SDL::SavePNG_IO(m_resource, dst, closeio);
 }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
