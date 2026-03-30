@@ -34,11 +34,14 @@ Next version
   - [x] Remove Surface::LoadPNG_IO(), use freestanding LoadPNG_IO() instead;
   - [x] Remove Surface::LoadPNG(), use freestanding LoadPNG() instead;
 - [x] Create Surface::Save().
+- [x] Wrap TTF_OpenFontIO to just OpenFontIO, instead of overloading with
+  OpenFont;
+- [x] TTF_PROP_FONT_CREATE_EXISTING_FONT is now wrapped by CREATE_EXISTING_FONT
+  (removed the misleading `_PONTER` prefix);
 - [x] Fix bug preventing compilation on VisualStudio
   - [x] Use of gnu extension `?:`;
   - [x] Use of invalid constexpr;
 - [x] Fix Thread ctor for wrapped functions;
-- [ ] Create ReadPixelRaw/WritePixelRaw on surface;
 - [x] Added CI tests for linux/Clang and Windows/MSVC;
 - [x] Remove src/generated/ from version control;
 - [x] Warnings fixes:
@@ -61,6 +64,7 @@ Next version
 Backlog
 -------
 
+- [ ] Create ReadPixelRaw/WritePixelRaw on surface;
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;
   - [ ] CameraID;

@@ -426,11 +426,11 @@ public:
    * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
    *   IOStream isn't being used. This is required if
    *   `prop::Font.CREATE_IOSTREAM_POINTER` and
-   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to
    *   be opened. This should not be closed until the font is closed. This is
    *   required if `prop::Font.CREATE_FILENAME_STRING` and
-   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
    *   for the beginning of the font, defaults to 0.
    * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
@@ -447,9 +447,9 @@ public:
    * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
    *   rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER` if set,
    *   or 72 otherwise.
-   * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,
-   *   will be used as the font data source and the initial size and style of
-   *   the new font.
+   * - `prop::Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
+   *   used as the font data source and the initial size and style of the new
+   *   font.
    *
    * @param props the properties to use.
    * @post a valid Font on success.
@@ -511,7 +511,7 @@ public:
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa OpenFont
-   * @sa OpenFont
+   * @sa OpenFontIO
    */
   void Close();
 
@@ -1905,6 +1905,21 @@ inline Font OpenFont(StringParam file, float ptsize)
   return Font(std::move(file), ptsize);
 }
 
+inline Font::Font(StringParam file, float ptsize)
+  : m_resource(CheckError(TTF_OpenFont(file, ptsize)))
+{
+}
+
+inline Font::Font(IOStreamRef src, float ptsize, bool closeio)
+  : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
+{
+}
+
+inline Font::Font(PropertiesRef props)
+  : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
+{
+}
+
 /**
  * Create a font from an IOStream, using a specified point size.
  *
@@ -1930,24 +1945,9 @@ inline Font OpenFont(StringParam file, float ptsize)
  *
  * @sa Font.Close
  */
-inline Font OpenFont(IOStreamRef src, float ptsize, bool closeio = false)
+inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
 {
   return Font(src, ptsize, closeio);
-}
-
-inline Font::Font(StringParam file, float ptsize)
-  : m_resource(CheckError(TTF_OpenFont(file, ptsize)))
-{
-}
-
-inline Font::Font(IOStreamRef src, float ptsize, bool closeio)
-  : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
-{
-}
-
-inline Font::Font(PropertiesRef props)
-  : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
-{
 }
 
 /**
@@ -1957,11 +1957,11 @@ inline Font::Font(PropertiesRef props)
  *
  * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
  *   isn't being used. This is required if `prop::Font.CREATE_IOSTREAM_POINTER`
- *   and `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+ *   and `prop::Font.CREATE_EXISTING_FONT` aren't set.
  * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to be
  *   opened. This should not be closed until the font is closed. This is
  *   required if `prop::Font.CREATE_FILENAME_STRING` and
- *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+ *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
  * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
  *   the beginning of the font, defaults to 0.
  * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
@@ -1978,9 +1978,9 @@ inline Font::Font(PropertiesRef props)
  * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
  *   rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER` if set, or
  *   72 otherwise.
- * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,
- *   will be used as the font data source and the initial size and style of the
- *   new font.
+ * - `prop::Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
+ *   used as the font data source and the initial size and style of the new
+ *   font.
  *
  * @param props the properties to use.
  * @returns a valid Font on success.
@@ -2018,8 +2018,7 @@ constexpr auto CREATE_VERTICAL_DPI_NUMBER =
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto CREATE_EXISTING_FONT_POINTER =
-  TTF_PROP_FONT_CREATE_EXISTING_FONT;
+constexpr auto CREATE_EXISTING_FONT = TTF_PROP_FONT_CREATE_EXISTING_FONT;
 
 #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
@@ -2081,7 +2080,7 @@ inline Font Font::Copy() const { return SDL::CopyFont(m_resource); }
  */
 inline PropertiesRef GetFontProperties(FontRef font)
 {
-  return {CheckError(TTF_GetFontProperties(font))};
+  return CheckError(TTF_GetFontProperties(font));
 }
 
 inline PropertiesRef Font::GetProperties()
@@ -6696,7 +6695,7 @@ inline void Text::Destroy() { DestroyText(release()); }
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa OpenFont
- * @sa OpenFont
+ * @sa OpenFontIO
  */
 inline void CloseFont(FontRaw font) { TTF_CloseFont(font); }
 

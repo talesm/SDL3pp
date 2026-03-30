@@ -9266,7 +9266,6 @@ const transform = {
           since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
         },
         "TTF_OpenFontIO": {
-          name: "OpenFont",
           parameters: [
             {},
             { type: "float", name: "ptsize" },
