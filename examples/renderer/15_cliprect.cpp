@@ -36,7 +36,7 @@ struct Main
     texture (upload once, draw many times) with data from a bitmap file. */
   SDL::Texture texture{
     renderer,
-    std::format("{}../assets/sample.bmp", SDL::GetBasePath())};
+    std::format("{}../assets/sample.png", SDL::GetBasePath())};
 
   SDL::FPoint cliprect_position;
   SDL::FPoint cliprect_direction{1, 1};

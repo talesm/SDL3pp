@@ -832,32 +832,39 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.0.0.
-@@ -2505,7 +2510,12 @@
+@@ -2505,7 +2510,7 @@
                         int quality,
                         bool closeio = false)
  {
 -  CheckError(IMG_SaveJPG_IO(surface, dst, quality, closeio));
 +  CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
-+}
-+
-+inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
-+{
-+  SDL::SaveTrustedPNG_IO(m_resource, dst, closeio);
  }
  
  /**
-@@ -2526,6 +2536,11 @@
+@@ -2526,6 +2531,11 @@
    CheckError(IMG_SavePNG(surface, file));
  }
  
 +inline void Surface::SavePNG(StringParam file) const
 +{
-+  SDL::SaveTrustedPNG(m_resource, std::move(file));
++  SDL::SavePNG(m_resource, std::move(file));
 +}
 +
  /**
   * Save an Surface into PNG image data, via an IOStream.
   *
+@@ -2551,6 +2561,11 @@
+   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
+ }
+ 
++inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
++{
++  SDL::SavePNG_IO(m_resource, dst, closeio);
++}
++
+ #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+ 
+ /**
 @@ -2628,12 +2643,12 @@
   *
   * @param surface the SDL surface to save.

@@ -1,5 +1,57 @@
 # Changelog
 
+## Version 0.9.0
+
+Thanks to @kinderhead we found some cross-compiler compatibility problems caused
+by accidentally using gcc specific extensions, specially constexpr being used
+where it does not really applies. I worked with him to get it to compile on MSVC
+and updated the github actions to build and test to both MSVC and Clang in
+addition to GCC we already were testing.
+
+As removing constexpr is kind of a compatibility break, I bumped to 0.9.0 and
+included other breaking change in my backlog, the complete list of changes are
+bellow:
+
+- Make StringParam differentiate `nullptr` from "";
+- On Windows, downloads pre-compiled versions, if possible.
+- Disambiguate between SDL_image and SDL's load/save surface functions;
+  - Remove wrappers for IMG_LoadBMP_IO, IMG_SaveBMP and IMG_SaveBMP_IO, as they
+    just call SDL's version of these;
+  - Rename wrapper for SDL_LoadPNG_IO to LoadTrustedPNG_IO;
+  - Rename wrapper for SDL_LoadPNG to LoadTrustedPNG;
+  - Rename wrapper for SDL_SavePNG_IO to SaveTrustedPNG_IO;
+  - Rename wrapper for SDL_SavePNG to SaveTrustedPNG;
+- Remove Surface::Load\* functions:
+  - Remove Surface::LoadBMP_IO(), use freestanding LoadBMP_IO() instead;
+  - Remove Surface::LoadBMP(), use freestanding LoadBMP() instead;
+  - Remove Surface::LoadPNG_IO(), use freestanding LoadPNG_IO() instead;
+  - Remove Surface::LoadPNG(), use freestanding LoadPNG() instead;
+- Create Surface::Save();
+- Wrap TTF_OpenFontIO to just OpenFontIO, instead of overloading with OpenFont;
+- TTF_PROP_FONT_CREATE_EXISTING_FONT is now wrapped by CREATE_EXISTING_FONT
+  (removed the misleading `_PONTER` prefix);
+- Fix bug preventing compilation on VisualStudio
+  - Use of gnu extension `?:`;
+  - Use of invalid constexpr;
+- Fix Thread ctor for wrapped functions;
+- Added CI tests for linux/Clang and Windows/MSVC;
+- Remove src/generated/ from version control;
+- Warnings fixes:
+  - operator-> const for resources;
+  - Fix Camera::AcquireCameraFrame;
+  - Add SDL_assert on all narrowing due to different between std and SDL size
+    types width;
+  - Don't default shared resources' copy assignment operators;
+  - Remove copy assignment operators on non-copyable resources;
+  - Remove copy constructors on non-copyable resources;
+  - Simplify scoped resources constructors and assignment operators;
+  - Fix several minor warnings;
+- Properly encapsulate Param and ConstParam legacy:
+  - Create template for ConstParam;
+  - Create template for legacy Param;
+  - Make value private and rename to m_resource.
+- Documentation to refer to free functions instead of ctors whenever possible;
+
 ## Version 0.8.1
 
 Small bugs related shared resource copying and locking.

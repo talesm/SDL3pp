@@ -22,11 +22,11 @@ struct Main
   SDL::Renderer renderer{window};
   SDL::AsyncIOQueue queue;
 
-  static constexpr std::string_view bmps[] = {"sample.bmp",
-                                              "gamepad_front.bmp",
-                                              "speaker.bmp",
-                                              "icon2x.bmp"};
-  static constexpr size_t TOTAL_TEXTURES = std::size(bmps);
+  static constexpr std::string_view pngs[] = {"sample.png",
+                                              "gamepad_front.png",
+                                              "speaker.png",
+                                              "icon2x.png"};
+  static constexpr size_t TOTAL_TEXTURES = std::size(pngs);
   std::array<SDL::Texture, TOTAL_TEXTURES> textures;
   SDL::FRect texture_rects[TOTAL_TEXTURES] = {
     {116, 156, 408, 167},
@@ -38,8 +38,8 @@ struct Main
   Main()
   {
     int i = 0;
-    for (auto bmp : bmps) {
-      auto path = std::format("{}../assets/{}", SDL::GetBasePath(), bmp);
+    for (auto png : pngs) {
+      auto path = std::format("{}../assets/{}", SDL::GetBasePath(), png);
       SDL::LoadFileAsync(path, queue, reinterpret_cast<void*>(i++));
     }
   }
@@ -48,13 +48,16 @@ struct Main
   {
     if (auto outcome = queue.GetResult()) {
       if (outcome->result == SDL::ASYNCIO_COMPLETE) {
-        size_t i = reinterpret_cast<size_t>(outcome->userdata);
+        auto i = reinterpret_cast<size_t>(outcome->userdata);
         if (i < TOTAL_TEXTURES) { // (just in case.)
           SDL::Surface surface{
             SDL::IOFromConstMem({outcome->buffer, outcome->bytes_transferred})};
           // the renderer is not multithreaded, so create the texture here once
           // the data loads
           textures[i] = SDL::CreateTextureFromSurface(renderer, surface);
+          if (auto palette = surface.GetPalette()) {
+            textures[i].SetPalette(palette);
+          }
         }
       }
       SDL::free(outcome->buffer);

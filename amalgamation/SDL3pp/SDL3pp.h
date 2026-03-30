@@ -1610,10 +1610,10 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #define SDL3PP_MAJOR_VERSION 0
 
 /// The current minor version of SDL3pp wrapper.
-#define SDL3PP_MINOR_VERSION 8
+#define SDL3PP_MINOR_VERSION 9
 
 /// The current patch version of SDL3pp wrapper.
-#define SDL3PP_PATCH_VERSION 1
+#define SDL3PP_PATCH_VERSION 0
 
 /// This is the version number macro for the current SDL3pp wrapper version.
 #define SDL3PP_VERSION                                                         \
@@ -43509,8 +43509,6 @@ public:
    */
   void SaveBMP(StringParam file) const;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
   /**
    * Save a surface to a seekable SDL data stream in PNG format.
    *
@@ -43550,8 +43548,6 @@ public:
    * @sa Surface.SavePNG_IO
    */
   void SavePNG(StringParam file) const;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -44644,7 +44640,7 @@ public:
    *
    * For formats that accept a quality, a default quality of 90 will be used.
    *
-   * @param file path on the filesystem to write new file to.
+   * @param filename path on the filesystem to write new file to.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
@@ -103082,11 +103078,6 @@ inline void SaveJPG_IO(SurfaceRef surface,
   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
 }
 
-inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
-{
-  SDL::SaveTrustedPNG_IO(m_resource, dst, closeio);
-}
-
 /**
  * Save an Surface into a PNG image file.
  *
@@ -103107,7 +103098,7 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
 
 inline void Surface::SavePNG(StringParam file) const
 {
-  SDL::SaveTrustedPNG(m_resource, std::move(file));
+  SDL::SavePNG(m_resource, std::move(file));
 }
 
 /**
@@ -103133,6 +103124,11 @@ inline void SavePNG_IO(SurfaceRef surface,
                        bool closeio = false)
 {
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
+}
+
+inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
+{
+  SDL::SavePNG_IO(m_resource, dst, closeio);
 }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
