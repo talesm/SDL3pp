@@ -86,6 +86,7 @@ installed:
 
 - SDL3
 - SDL3_image (optional)
+- SDL3_mixer (optional)
 - SDL3_ttf (optional)
 
 Assuming you are on the source dir, you can build with:
