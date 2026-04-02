@@ -4,6 +4,7 @@ Todo for next version
 - [x] Docs improvements:
   - [x] Fix [./docs/DesignNotes.dox](DesignNotes) links;
   - [x] Use interactive SGV graphs;
+  - [x] Remove [./docs/constructor-tag.md](constructor tag);
 - [x] Add `<=>` operator for Point, FPoint;
 - [ ] Revamp README, with examples and clearer instructions to integrate to
   project and everything else moved to other files;
@@ -20,7 +21,6 @@ Backlog
   - [ ] Update [./docs/DesignNotes.dox](resources) to remove ResourceParam info;
   - [ ] Update [./docs/transformation.md](transformation);
   - [ ] Update [./docs/callback.md](callback);
-  - [ ] Remove [./docs/constructor-tag.md](constructor tag);
 - [ ] Create ReadPixelRaw/WritePixelRaw on surface;
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;
