@@ -4158,7 +4158,7 @@ const transform = {
         "SDL_Point": {
           wrapper: {
             attribute: "p",
-            comparable: true,
+            ordered: true,
           },
           entries: {
             "Point": {
@@ -4191,7 +4191,7 @@ const transform = {
         "SDL_FPoint": {
           wrapper: {
             attribute: "p",
-            comparable: true,
+            ordered: true,
           },
           entries: {
             "SDL_PointInRectFloat": {

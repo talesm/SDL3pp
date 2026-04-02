@@ -4,9 +4,7 @@ Todo for next version
 - [x] Docs improvements:
   - [x] Fix [./docs/DesignNotes.dox](DesignNotes) links;
   - [x] Use interactive SGV graphs;
-- [ ] Revamp `<=>` use:
-  - [ ] Add `<=>` operator for Point, FPoint;
-  - [ ] Make `<=>` a free function having the Raw types as operators;
+- [x] Add `<=>` operator for Point, FPoint;
 
 Backlog
 -------

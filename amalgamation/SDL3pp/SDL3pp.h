@@ -29034,6 +29034,20 @@ inline bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
   return SDL_RectsEqualFloat(&lhs, &rhs);
 }
 
+/// Spaceship operator for Point.
+constexpr auto operator<=>(const PointRaw& lhs, const PointRaw& rhs) noexcept
+{
+  if (lhs.x != rhs.x) return lhs.x <=> rhs.x;
+  return lhs.y <=> rhs.y;
+}
+
+/// Spaceship operator for FPoint.
+constexpr auto operator<=>(const FPointRaw& lhs, const FPointRaw& rhs) noexcept
+{
+  if (lhs.x != rhs.x) return lhs.x <=> rhs.x;
+  return lhs.y <=> rhs.y;
+}
+
 /**
  * The structure that defines a point (using integers).
  *
