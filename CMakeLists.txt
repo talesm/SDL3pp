@@ -137,7 +137,9 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test AND SDL3PP_BUILD_TESTING)
     endif(CMAKE_COMPILER_IS_GNUCXX)
 endif ()
 
-# The documentation
+###################
+## Documentation ##
+###################
 option(SDL3PP_GEN_DOCS "Generated docs" OFF)
 
 if (SDL3PP_GEN_DOCS AND EXISTS ${PROJECT_SOURCE_DIR}/docs/Doxyfile)
