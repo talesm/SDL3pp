@@ -5,6 +5,9 @@ Todo for next version
   - [x] Fix [./docs/DesignNotes.dox](DesignNotes) links;
   - [x] Use interactive SGV graphs;
 - [x] Add `<=>` operator for Point, FPoint;
+- [ ] Revamp README, with examples and clearer instructions to integrate to
+  project and everything else moved to other files;
+- [ ] Use a nicer theme for generated docs;
 
 Backlog
 -------
@@ -13,9 +16,6 @@ Backlog
   - [ ] Use inheritance;
   - [ ] Have base class with common methods;
   - [ ] Document it;
-- [ ] Revamp README, with examples and clearer instructions to integrate to
-  project and everything else moved to other files;
-- [ ] Use a nicer theme for generated docs;
 - [ ] Docs improvements:
   - [ ] Update [./docs/DesignNotes.dox](resources) to remove ResourceParam info;
   - [ ] Update [./docs/transformation.md](transformation);
