@@ -7,7 +7,7 @@ Todo for next version
 - [x] Add `<=>` operator for Point, FPoint;
 - [ ] Revamp README, with examples and clearer instructions to integrate to
   project and everything else moved to other files;
-- [ ] Use a nicer theme for generated docs;
+- [x] Use a nicer theme for generated docs;
 
 Backlog
 -------
