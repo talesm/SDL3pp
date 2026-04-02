@@ -19,6 +19,9 @@ New Version checklist:
 Next version
 ------------
 
+- [x] Docs improvements:
+  - [x] Fix [./docs/DesignNotes.dox](DesignNotes) links;
+  - [x] Use interactive SGV graphs;
 - [ ] Simplify class callbacks:
   - [ ] Use inheritance;
   - [ ] Have base class with common methods;
@@ -34,7 +37,6 @@ Backlog
   project and everything else moved to other files;
 - [ ] Use a nicer theme for generated docs;
 - [ ] Docs improvements:
-  - [ ] Fix [./docs/DesignNotes.dox](DesignNotes) links;
   - [ ] Update [./docs/DesignNotes.dox](resources) to remove ResourceParam info;
   - [ ] Update [./docs/transformation.md](transformation);
   - [ ] Update [./docs/callback.md](callback);
