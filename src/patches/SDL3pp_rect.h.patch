@@ -1766,7 +1766,7 @@
     * @threadsafety It is safe to call this function from any thread.
 @@ -936,17 +1891,16 @@
     *
-    * @sa Rect.GetIntersection
+    * @sa FRect.GetIntersection
     */
 -  constexpr bool HasIntersection(const FRectRaw& other) const;
 +  bool HasIntersection(const FRectRaw& other) const;
@@ -2212,7 +2212,7 @@
  /**
 @@ -1356,15 +2428,14 @@
   *
-  * @sa Rect.GetIntersection
+  * @sa FRect.GetIntersection
   */
 -constexpr bool HasRectIntersectionFloat(const FRectRaw& self,
 -                                        const FRectRaw& other)

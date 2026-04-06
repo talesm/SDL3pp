@@ -2255,7 +2255,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetInputChannelMap
+   * @sa AudioStream.SetOutputChannelMap
    */
   void SetInputChannelMap(std::span<int> chmap);
 
@@ -4251,7 +4251,7 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetInputChannelMap
+ * @sa AudioStream.SetOutputChannelMap
  */
 inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
                                           std::span<int> chmap)

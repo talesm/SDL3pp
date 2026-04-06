@@ -1167,7 +1167,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Haptic.RunEffect
-   * @sa Haptic.StopEffects
+   * @sa Haptic.StopEffect
    */
   void StopEffects();
 
@@ -1869,7 +1869,7 @@ inline void Haptic::Resume() { SDL::ResumeHaptic(m_resource); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Haptic.RunEffect
- * @sa Haptic.StopEffects
+ * @sa Haptic.StopEffect
  */
 inline void StopHapticEffects(HapticRef haptic)
 {

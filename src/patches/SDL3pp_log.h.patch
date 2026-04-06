@@ -787,7 +787,7 @@
   * @sa LogOutputFunction
   */
  using LogOutputCB = MakeFrontCallback<
-@@ -939,6 +1038,7 @@
+@@ -940,6 +1039,7 @@
   *
   * @sa GetDefaultLogOutputFunction
   * @sa GetLogOutputFunction
@@ -795,7 +795,7 @@
   */
  inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  {
-@@ -949,7 +1049,6 @@
+@@ -950,7 +1050,6 @@
   * Replace the default log output function with one of your own.
   *
   * @param callback an LogOutputFunction to call instead of the default.
@@ -803,7 +803,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -957,15 +1056,26 @@
+@@ -958,15 +1057,26 @@
   *
   * @sa GetDefaultLogOutputFunction
   * @sa GetLogOutputFunction

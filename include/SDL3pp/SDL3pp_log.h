@@ -993,7 +993,8 @@ using LogOutputCB = MakeFrontCallback<
 /**
  * Get the default log output function.
  *
- * @returns the default log output callback.
+ * @returns the default log output callback. It should be called with nullptr
+ *          for the userdata argument.
  *
  * @threadsafety It is safe to call this function from any thread.
  *

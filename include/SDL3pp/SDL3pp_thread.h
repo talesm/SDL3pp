@@ -914,10 +914,10 @@ inline ThreadState Thread::GetState() const
  *
  * It is safe to pass nullptr to this function; it is a no-op.
  *
- * @threadsafety It is safe to call this function from any thread.
- *
  * @param thread the Thread pointer that was returned from the CreateThread()
  *               call that started this thread.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *

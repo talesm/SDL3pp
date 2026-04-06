@@ -8,7 +8,7 @@ Todo for next version
 - [x] Add `<=>` operator for Point, FPoint;
 - [ ] Revamp README, with examples and clearer instructions to integrate to
   project and everything else moved to other files;
-- [ ] Bump SDL version to 3.4.4;
+- [x] Bump SDL version to 3.4.4;
 - [x] Use a nicer theme for generated docs;
 
 Backlog

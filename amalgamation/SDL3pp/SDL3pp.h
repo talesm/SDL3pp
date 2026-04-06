@@ -32,8 +32,7 @@ namespace SDL {
 /**
  * Get the index of the most significant (set) bit in a 32-bit number.
  *
- * Result is undefined when called with 0. This operation can also be stated as
- * "count leading zeroes" and "log base 2".
+ * This operation can also be stated as "count leading zeroes" and "log base 2".
  *
  * Note that this is a forced-inline function in a header, and not a public API
  * function available in the SDL library (which is to say, the code is embedded
@@ -3315,6 +3314,11 @@ inline bool ClearError() { return SDL_ClearError(); }
  * - "Movie" - Music or sound with dialog
  * - "Media" - Music or sound without dialog
  *
+ * Android's AAudio target supports this hint as of SDL 3.4.4. Android does not
+ * support the exact same options as WASAPI, but for portability, will attempt
+ * to map these same strings to the `aaudio_usage_t` constants. For example,
+ * "Movie" and "Media" will both map to `AAUDIO_USAGE_MEDIA`, etc.
+ *
  * If your application applies its own echo cancellation, gain control, and
  * noise reduction it should also set SDL_HINT_AUDIO_DEVICE_RAW_STREAM.
  *
@@ -4321,6 +4325,30 @@ inline bool ClearError() { return SDL_ClearError(); }
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_JOYSTICK_GAMEINPUT "SDL_JOYSTICK_GAMEINPUT"
+
+#if SDL_VERSION_ATLEAST(3, 4, 4)
+
+/**
+ * A variable controlling whether GameInput should be used for handling GIP
+ * devices that require raw report processing, but aren't supported by HIDRAW,
+ * such as Xbox One Guitars.
+ *
+ * Note that this is only supported with GameInput 3 or newer.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": GameInput is not used to handle raw GIP devices.
+ * - "1": GameInput is used.
+ *
+ * The default is "1" when using GameInput 3 or newer, and is "0" otherwise.
+ *
+ * This hint should be set before SDL is initialized.
+ *
+ * @since This hint is available since SDL 3.4.4.
+ */
+#define SDL_HINT_JOYSTICK_GAMEINPUT_RAW "SDL_JOYSTICK_GAMEINPUT_RAW"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 4)
 
 /**
  * A variable containing a list of devices known to have a GameCube form factor.
@@ -7498,6 +7526,29 @@ inline bool ClearError() { return SDL_ClearError(); }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
+#if SDL_VERSION_ATLEAST(3, 4, 4)
+
+/**
+ * A variable controlling whether the RIDEV_INPUTSINK flag is set when enabling
+ * Windows raw keyboard events.
+ *
+ * This enables the window to still receive input even if not in foreground.
+ *
+ * Focused windows that receive text input will still prevent input events from
+ * triggering.
+ *
+ * - "0": Input is not received when not in focus or foreground. (default)
+ * - "1": Input will be received even when not in focus or foreground.
+ *
+ * This hint can be set anytime.
+ *
+ * @since This hint is available since SDL 3.4.4.
+ */
+#define SDL_HINT_WINDOWS_RAW_KEYBOARD_INPUTSINK                                \
+  "SDL_WINDOWS_RAW_KEYBOARD_INPUTSINK"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 4)
+
 /**
  * A variable controlling whether SDL uses Kernel Semaphores on Windows.
  *
@@ -7841,7 +7892,8 @@ inline bool GetHintBoolean(StringParam name, bool default_value)
  * A callback used to send notifications of hint value changes.
  *
  * This is called an initial time during AddHintCallback with the hint's current
- * value, and then again each time the hint's value changes.
+ * value, and then again each time the hint's value changes. In the initial
+ * call, the current value is in both `oldValue` and `newValue`.
  *
  * @param userdata what was passed as `userdata` to AddHintCallback().
  * @param name what was passed as `name` to AddHintCallback().
@@ -7865,7 +7917,8 @@ using HintCallback = void(SDLCALL*)(void* userdata,
  * A callback used to send notifications of hint value changes.
  *
  * This is called an initial time during AddHintCallback with the hint's current
- * value, and then again each time the hint's value changes.
+ * value, and then again each time the hint's value changes. In the initial
+ * call, the current value is in both `oldValue` and `newValue`.
  *
  * @param name what was passed as `name` to AddHintCallback().
  * @param oldValue the previous hint value.
@@ -8938,7 +8991,8 @@ using LogOutputCB = MakeFrontCallback<
 /**
  * Get the default log output function.
  *
- * @returns the default log output callback.
+ * @returns the default log output callback. It should be called with nullptr
+ *          for the userdata argument.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -11968,6 +12022,8 @@ inline void Environment::Destroy() { DestroyEnvironment(release()); }
 /**
  * Get the value of a variable in the environment.
  *
+ * The name of the variable is case sensitive on all platforms.
+ *
  * This function uses SDL's cached copy of the environment and is thread-safe.
  *
  * @param name the name of the variable to get.
@@ -11985,6 +12041,10 @@ inline const char* getenv(StringParam name) { return SDL_getenv(name); }
  *
  * This function bypasses SDL's cached copy of the environment and is not
  * thread-safe.
+ *
+ * On some platforms, this may make case-insensitive matches, while other
+ * platforms are case-sensitive. It is best to be precise with strings used for
+ * queries through this interface. getenv is always case-sensitive, however.
  *
  * @param name the name of the variable to get.
  * @returns a pointer to the value of the variable or nullptr if it can't be
@@ -30857,7 +30917,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Rect.GetIntersection
+   * @sa FRect.GetIntersection
    */
   bool HasIntersection(const FRectRaw& other) const;
 
@@ -31394,7 +31454,7 @@ inline bool FRect::Equal(const FRectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Rect.GetIntersection
+ * @sa FRect.GetIntersection
  */
 inline bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
@@ -36096,7 +36156,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetInputChannelMap
+   * @sa AudioStream.SetOutputChannelMap
    */
   void SetInputChannelMap(std::span<int> chmap);
 
@@ -38092,7 +38152,7 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetInputChannelMap
+ * @sa AudioStream.SetOutputChannelMap
  */
 inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
                                           std::span<int> chmap)
@@ -42012,7 +42072,7 @@ public:
   /**
    * Remove a file or an empty directory in a writable storage container.
    *
-   * @param path the path of the directory to enumerate.
+   * @param path the path to remove from the filesystem.
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
@@ -42655,7 +42715,7 @@ inline void Storage::EnumerateDirectory(StringParam path,
  * Remove a file or an empty directory in a writable storage container.
  *
  * @param storage a storage container.
- * @param path the path of the directory to enumerate.
+ * @param path the path to remove from the filesystem.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -48657,10 +48717,10 @@ inline ThreadState Thread::GetState() const
  *
  * It is safe to pass nullptr to this function; it is a no-op.
  *
- * @threadsafety It is safe to call this function from any thread.
- *
  * @param thread the Thread pointer that was returned from the CreateThread()
  *               call that started this thread.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -80944,7 +81004,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Haptic.RunEffect
-   * @sa Haptic.StopEffects
+   * @sa Haptic.StopEffect
    */
   void StopEffects();
 
@@ -81646,7 +81706,7 @@ inline void Haptic::Resume() { SDL::ResumeHaptic(m_resource); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Haptic.RunEffect
- * @sa Haptic.StopEffects
+ * @sa Haptic.StopEffect
  */
 inline void StopHapticEffects(HapticRef haptic)
 {
@@ -83299,8 +83359,6 @@ public:
    *
    * With the opengles2 renderer:
    *
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
    * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
    * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
@@ -85055,8 +85113,6 @@ public:
    *
    * With the opengles2 renderer:
    *
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
    * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
    * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
@@ -87231,8 +87287,6 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
  *
  * With the opengles2 renderer:
  *
- * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
- *   associated with the texture, if you want to wrap an existing texture.
  * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
  *   associated with the texture, if you want to wrap an existing texture.
  * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
@@ -92297,9 +92351,9 @@ inline OwnArray<Finger*> GetTouchFingers(TouchID touchID)
  * example, some platforms can manage multiple devices at the same time, but
  * others will make any connected pens look like a single logical device, much
  * how all USB mice connected to a computer will move the same system cursor.
- * cursor. Other platforms might not support pen buttons, or the distance axis,
- * etc. Very few platforms can even report _what_ functionality the pen supports
- * in the first place, so best practices is to either build UI to let the user
+ * Other platforms might not support pen buttons, or the distance axis, etc.
+ * Very few platforms can even report _what_ functionality the pen supports in
+ * the first place, so best practices is to either build UI to let the user
  * configure their pens, or be prepared to handle new functionality for a pen
  * the first time an event is reported.
  *

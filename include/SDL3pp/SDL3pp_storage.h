@@ -645,7 +645,7 @@ public:
   /**
    * Remove a file or an empty directory in a writable storage container.
    *
-   * @param path the path of the directory to enumerate.
+   * @param path the path to remove from the filesystem.
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
@@ -1288,7 +1288,7 @@ inline void Storage::EnumerateDirectory(StringParam path,
  * Remove a file or an empty directory in a writable storage container.
  *
  * @param storage a storage container.
- * @param path the path of the directory to enumerate.
+ * @param path the path to remove from the filesystem.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.

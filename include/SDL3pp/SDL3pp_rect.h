@@ -1889,7 +1889,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Rect.GetIntersection
+   * @sa FRect.GetIntersection
    */
   bool HasIntersection(const FRectRaw& other) const;
 
@@ -2426,7 +2426,7 @@ inline bool FRect::Equal(const FRectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Rect.GetIntersection
+ * @sa FRect.GetIntersection
  */
 inline bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
