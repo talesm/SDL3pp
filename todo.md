@@ -64,9 +64,9 @@ Version release checklist
 - [ ] Update [README FetchContent](README.md#using-cmakes-fetchcontent)
   instructions to the new tag;
 - [ ] build SDL3pp_zip_amalgamation and SDL3pp_zip_headers;
+- [ ] Commit & Push changes;
 - [ ] Create new Release on <https://github.com/talesm/SDL3pp>
   - [ ] Don't forget go add SDL3pp_zip_amalgamation and SDL3pp_zip_full to the
     downloads!
-- [ ] Commit & Push changes;
 - [ ] Create new Release in the UI, using the changelog text;
 - [ ] Merge `releases` into `main`.

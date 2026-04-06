@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 0.9.1
+
+Minor update to bump base SDL and SDL_image, besides a few improvements
+
+- Docs improvements:
+  - Fix [./docs/DesignNotes.dox](DesignNotes) links;
+  - Use interactive SGV graphs;
+  - Remove [./docs/constructor-tag.md](constructor tag);
+- Add `<=>` operator for Point, FPoint;
+- Bump SDL version to 3.4.4;
+- Bump SDL_image version to 3.4.2;
+- Upgrade doxygen so we can have a nicer theme for generated docs;
+
 ## Version 0.9.0
 
 Thanks to @kinderhead we found some cross-compiler compatibility problems caused
