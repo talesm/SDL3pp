@@ -40,9 +40,9 @@ if (SDL3PP_ENABLE_IMAGE)
   if(SDL3PP_USE_SDL3IMAGE_URL)
     set(SDL3IMAGE_URL ${SDL3PP_USE_SDL3IMAGE_URL})
   elseif (WIN32)
-    set(SDL3IMAGE_URL https://github.com/libsdl-org/SDL_image/releases/download/release-3.4.0/SDL3_image-devel-3.4.0-mingw.tar.gz)
+    set(SDL3IMAGE_URL https://github.com/libsdl-org/SDL_image/releases/download/release-3.4.2/SDL3_image-devel-3.4.2-mingw.tar.gz)
   else ()
-    set(SDL3IMAGE_URL https://github.com/libsdl-org/SDL_image/releases/download/release-3.4.0/SDL3_image-3.4.0.tar.gz)
+    set(SDL3IMAGE_URL https://github.com/libsdl-org/SDL_image/releases/download/release-3.4.2/SDL3_image-3.4.2.tar.gz)
   endif ()
   FetchContent_Declare(SDL3ImageExternal
     URL ${SDL3IMAGE_URL}

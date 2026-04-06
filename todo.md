@@ -6,14 +6,15 @@ Todo for next version
   - [x] Use interactive SGV graphs;
   - [x] Remove [./docs/constructor-tag.md](constructor tag);
 - [x] Add `<=>` operator for Point, FPoint;
-- [ ] Revamp README, with examples and clearer instructions to integrate to
-  project and everything else moved to other files;
 - [x] Bump SDL version to 3.4.4;
+- [x] Bump SDL_image version to 3.4.2;
 - [x] Use a nicer theme for generated docs;
 
 Backlog
 -------
 
+- [ ] Revamp README, with examples and clearer instructions to integrate to
+  project and everything else moved to other files;
 - [ ] Simplify class callbacks:
   - [ ] Use inheritance;
   - [ ] Have base class with common methods;
