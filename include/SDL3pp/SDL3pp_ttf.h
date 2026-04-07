@@ -5428,14 +5428,10 @@ inline RendererTextEngine CreateRendererTextEngineWithProperties(
 
 namespace prop::RendererTextEngine {
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
-
 constexpr auto RENDERER_POINTER = TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER;
 
 constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
   TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
-
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 } // namespace prop::RendererTextEngine
 
@@ -5556,14 +5552,10 @@ inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
 
 namespace prop::GpuTextEngine {
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
-
 constexpr auto DEVICE_POINTER = TTF_PROP_GPU_TEXT_ENGINE_DEVICE;
 
 constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
   TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
-
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 } // namespace prop::GpuTextEngine
 
