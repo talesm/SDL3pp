@@ -45223,6 +45223,18 @@ inline PropertiesRef Surface::GetProperties() const
   return SDL::GetSurfaceProperties(m_resource);
 }
 
+/**
+ * Properties for Surface.
+ *
+ * These properties are intended to queries on surfaces, and may not be
+ * supported by all surfaces. You can use GetSurfaceProperties() to get the
+ * properties of a surface, and then query these properties with
+ * Properties.Get*() functions.
+ *
+ * @sa GetSurfaceProperties
+ * @sa Surface.GetProperties
+ *
+ */
 namespace prop::Surface {
 
 constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT;
