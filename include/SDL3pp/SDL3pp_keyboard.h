@@ -303,10 +303,25 @@ constexpr Capitalization CAPITALIZE_WORDS =
 constexpr Capitalization CAPITALIZE_LETTERS =
   SDL_CAPITALIZE_LETTERS; ///< All letters will be capitalized
 
+/**
+ * Properties for text input to be used on Window.StartTextInput.
+ *
+ * @sa Window.StartTextInput
+ */
 namespace prop::TextInput {
 
+/**
+ * The type of text input to be used.
+ *
+ * @see TextInputType
+ */
 constexpr auto TYPE_NUMBER = SDL_PROP_TEXTINPUT_TYPE_NUMBER;
 
+/**
+ * The auto-capitalization type to be used.
+ *
+ * @see Capitalization
+ */
 constexpr auto CAPITALIZATION_NUMBER = SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER;
 
 constexpr auto AUTOCORRECT_BOOLEAN = SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN;
