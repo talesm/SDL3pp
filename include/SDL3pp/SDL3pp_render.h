@@ -4074,6 +4074,16 @@ inline Renderer CreateRendererWithProperties(PropertiesRef props)
   return Renderer(props);
 }
 
+/**
+ * Properties for Renderer.
+ *
+ * Properties prefixed with `CREATE_` can be used when creating a renderer with
+ * CreateRendererWithProperties, and properties without that prefix can be used
+ * to query information about an existing renderer with Renderer.GetProperties.
+ *
+ * @sa CreateRendererWithProperties
+ * @sa Renderer.GetProperties
+ */
 namespace prop::Renderer {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_RENDERER_CREATE_NAME_STRING;
@@ -4767,6 +4777,16 @@ inline Texture Renderer::CreateTextureWithProperties(PropertiesRef props)
   return Texture(m_resource, props);
 }
 
+/**
+ * Properties for Texture.
+ *
+ * Properties prefixed with `CREATE_` can be used when creating a texture with
+ * CreateTextureWithProperties, and properties without that prefix can be used
+ * to query information about an existing texture with Texture.GetProperties.
+ *
+ * @sa CreateTextureWithProperties
+ * @sa Texture.GetProperties
+ */
 namespace prop::Texture {
 
 constexpr auto CREATE_COLORSPACE_NUMBER =

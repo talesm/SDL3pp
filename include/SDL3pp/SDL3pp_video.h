@@ -3858,6 +3858,11 @@ inline PropertiesRef Display::GetProperties() const
   return SDL::GetDisplayProperties(m_displayID);
 }
 
+/**
+ * Properties for Display.
+ *
+ * @sa Display.GetProperties
+ */
 namespace prop::Display {
 
 constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN;
@@ -4785,6 +4790,17 @@ inline Window CreateWindowWithProperties(PropertiesRef props)
   return Window(props);
 }
 
+/**
+ * Properties for Window
+ *
+ * Properties prefixed with `CREATE_` can be used in
+ * CreateWindowWithProperties() to specify window creation parameters. can be
+ * used to query information about an existing Window with
+ * Window.GetProperties()
+ *
+ * @sa CreateWindowWithProperties
+ * @sa Window.GetProperties
+ */
 namespace prop::Window {
 
 constexpr auto CREATE_ALWAYS_ON_TOP_BOOLEAN =

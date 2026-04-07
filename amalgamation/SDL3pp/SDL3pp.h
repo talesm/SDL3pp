@@ -41196,6 +41196,17 @@ inline Process CreateProcessWithProperties(PropertiesRef props)
   return Process(props);
 }
 
+/**
+ * Properties for processes.
+ *
+ * Properties prefixed by `CREATE_` can be used in the properties passed to
+ * CreateProcessWithProperties() to specify details about how the process should
+ * be created, and properties without that prefix can be used to query
+ * information about a process after it's created.
+ *
+ * @sa CreateProcessWithProperties
+ * @sa Process.GetProperties
+ */
 namespace prop::process {
 
 constexpr auto CREATE_ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
@@ -48579,6 +48590,15 @@ inline Thread CreateThreadWithProperties(PropertiesRef props)
   return Thread(props);
 }
 
+/**
+ * Properties for CreateThreadWithProperties.
+ *
+ * These are properties that can be passed to CreateThreadWithProperties() in
+ * the props parameter. See that function for details on what these properties
+ * do and how to use them.
+ *
+ * @sa CreateThreadWithProperties
+ */
 namespace prop::thread {
 
 constexpr auto CREATE_ENTRY_FUNCTION_POINTER =
@@ -57325,6 +57345,11 @@ inline PropertiesRef Display::GetProperties() const
   return SDL::GetDisplayProperties(m_displayID);
 }
 
+/**
+ * Properties for Display.
+ *
+ * @sa Display.GetProperties
+ */
 namespace prop::Display {
 
 constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN;
@@ -58252,6 +58277,17 @@ inline Window CreateWindowWithProperties(PropertiesRef props)
   return Window(props);
 }
 
+/**
+ * Properties for Window
+ *
+ * Properties prefixed with `CREATE_` can be used in
+ * CreateWindowWithProperties() to specify window creation parameters. can be
+ * used to query information about an existing Window with
+ * Window.GetProperties()
+ *
+ * @sa CreateWindowWithProperties
+ * @sa Window.GetProperties
+ */
 namespace prop::Window {
 
 constexpr auto CREATE_ALWAYS_ON_TOP_BOOLEAN =
@@ -86800,6 +86836,16 @@ inline Renderer CreateRendererWithProperties(PropertiesRef props)
   return Renderer(props);
 }
 
+/**
+ * Properties for Renderer.
+ *
+ * Properties prefixed with `CREATE_` can be used when creating a renderer with
+ * CreateRendererWithProperties, and properties without that prefix can be used
+ * to query information about an existing renderer with Renderer.GetProperties.
+ *
+ * @sa CreateRendererWithProperties
+ * @sa Renderer.GetProperties
+ */
 namespace prop::Renderer {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_RENDERER_CREATE_NAME_STRING;
@@ -87493,6 +87539,16 @@ inline Texture Renderer::CreateTextureWithProperties(PropertiesRef props)
   return Texture(m_resource, props);
 }
 
+/**
+ * Properties for Texture.
+ *
+ * Properties prefixed with `CREATE_` can be used when creating a texture with
+ * CreateTextureWithProperties, and properties without that prefix can be used
+ * to query information about an existing texture with Texture.GetProperties.
+ *
+ * @sa CreateTextureWithProperties
+ * @sa Texture.GetProperties
+ */
 namespace prop::Texture {
 
 constexpr auto CREATE_COLORSPACE_NUMBER =

@@ -720,6 +720,15 @@ inline Thread CreateThreadWithProperties(PropertiesRef props)
   return Thread(props);
 }
 
+/**
+ * Properties for CreateThreadWithProperties.
+ *
+ * These are properties that can be passed to CreateThreadWithProperties() in
+ * the props parameter. See that function for details on what these properties
+ * do and how to use them.
+ *
+ * @sa CreateThreadWithProperties
+ */
 namespace prop::thread {
 
 constexpr auto CREATE_ENTRY_FUNCTION_POINTER =

@@ -695,6 +695,17 @@ inline Process CreateProcessWithProperties(PropertiesRef props)
   return Process(props);
 }
 
+/**
+ * Properties for processes.
+ *
+ * Properties prefixed by `CREATE_` can be used in the properties passed to
+ * CreateProcessWithProperties() to specify details about how the process should
+ * be created, and properties without that prefix can be used to query
+ * information about a process after it's created.
+ *
+ * @sa CreateProcessWithProperties
+ * @sa Process.GetProperties
+ */
 namespace prop::process {
 
 constexpr auto CREATE_ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;

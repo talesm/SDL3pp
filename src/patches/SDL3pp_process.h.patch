@@ -65,7 +65,25 @@
    }
  
    /**
-@@ -751,7 +776,7 @@
+@@ -670,6 +695,17 @@
+   return Process(props);
+ }
+ 
++/**
++ * Properties for processes.
++ *
++ * Properties prefixed by `CREATE_` can be used in the properties passed to
++ * CreateProcessWithProperties() to specify details about how the process should
++ * be created, and properties without that prefix can be used to query
++ * information about a process after it's created.
++ *
++ * @sa CreateProcessWithProperties
++ * @sa Process.GetProperties
++ */
+ namespace prop::process {
+ 
+ constexpr auto CREATE_ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
+@@ -751,7 +787,7 @@
   */
  inline PropertiesRef GetProcessProperties(ProcessRef process)
  {
@@ -74,7 +92,7 @@
  }
  
  inline PropertiesRef Process::GetProperties() const
-@@ -773,8 +798,6 @@
+@@ -773,8 +809,6 @@
   * The data should be freed with free().
   *
   * @param process The process to read.
@@ -83,7 +101,7 @@
   * @param exitcode a pointer filled in with the process exit code if the process
   *                 has exited, may be nullptr.
   * @returns the data or nullptr on failure; call GetError() for more
-@@ -790,7 +813,9 @@
+@@ -790,7 +824,9 @@
   */
  inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
  {
@@ -94,7 +112,7 @@
  }
  
  inline StringResult Process::Read(int* exitcode)
-@@ -824,7 +849,7 @@
+@@ -824,7 +860,7 @@
   */
  inline IOStreamRef GetProcessInput(ProcessRef process)
  {
@@ -103,7 +121,7 @@
  }
  
  inline IOStreamRef Process::GetInput()
-@@ -856,7 +881,7 @@
+@@ -856,7 +892,7 @@
   */
  inline IOStreamRef GetProcessOutput(ProcessRef process)
  {
