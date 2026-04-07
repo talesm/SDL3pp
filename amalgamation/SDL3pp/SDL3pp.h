@@ -97059,6 +97059,11 @@ inline PropertiesRef Mixer::GetProperties()
   return SDL::GetMixerProperties(m_resource);
 }
 
+/**
+ * Properties for Mixer.
+ *
+ * @sa Mixer.GetProperties
+ */
 namespace prop::Mixer {
 
 constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER;
@@ -97452,6 +97457,11 @@ inline Audio LoadAudioWithProperties(PropertiesRef props)
   return Audio(props);
 }
 
+/**
+ * Properties for configuring audio loading.
+ *
+ * @sa LoadAudioWithProperties
+ */
 namespace prop::Audio {
 
 constexpr auto LOAD_IOSTREAM_POINTER = MIX_PROP_AUDIO_LOAD_IOSTREAM_POINTER;
@@ -97724,6 +97734,11 @@ inline PropertiesRef Audio::GetProperties()
   return SDL::GetAudioProperties(m_resource);
 }
 
+/**
+ * Metadata for audio.
+ *
+ * @sa Audio.GetProperties
+ */
 namespace prop::MixMetadata {
 
 constexpr auto TITLE_STRING = MIX_PROP_METADATA_TITLE_STRING;
@@ -98843,6 +98858,11 @@ inline void Track::Play(PropertiesRef options)
   SDL::PlayTrack(m_resource, options);
 }
 
+/**
+ * Properties that can be used in the `options` parameter of Track.Play()
+ *
+ * @sa Track.Play
+ */
 namespace prop::Play {
 
 constexpr auto LOOPS_NUMBER = MIX_PROP_PLAY_LOOPS_NUMBER;
@@ -104977,6 +104997,11 @@ inline AnimationEncoder CreateAnimationEncoderWithProperties(
   return AnimationEncoder(props);
 }
 
+/**
+ * Supported properties for creating an animation encoder.
+ *
+ * @sa CreateAnimationEncoderWithProperties
+ */
 namespace prop::AnimationEncoder {
 
 constexpr auto CREATE_FILENAME_STRING =
@@ -105533,6 +105558,11 @@ inline AnimationDecoder CreateAnimationDecoderWithProperties(
   return AnimationDecoder(props);
 }
 
+/**
+ * Supported properties for creating an animation decoder.
+ *
+ * @sa CreateAnimationDecoderWithProperties
+ */
 namespace prop::AnimationDecoder {
 
 constexpr auto CREATE_FILENAME_STRING =
@@ -105597,6 +105627,12 @@ inline PropertiesRef AnimationDecoder::GetProperties()
   return SDL::GetAnimationDecoderProperties(m_resource);
 }
 
+/**
+ * Animation metadata properties.
+ *
+ * @since These properties are available since SDL_image 3.4.0.
+ * @sa AnimationDecoder.GetProperties
+ */
 namespace prop::Metadata {
 
 constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
@@ -107746,6 +107782,16 @@ inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
  */
 inline Font OpenFontWithProperties(PropertiesRef props) { return Font(props); }
 
+/**
+ * Properties for Font.
+ *
+ * Properties prefixed with CREATE_ are used when creating a font with
+ * OpenFontWithProperties(). Poperties without the prefix can retrieved by using
+ * Font.GetProperties() on an existing font.
+ *
+ * @sa OpenFontWithProperties
+ * @sa Font.GetProperties
+ */
 namespace prop::Font {
 
 constexpr auto CREATE_FILENAME_STRING = TTF_PROP_FONT_CREATE_FILENAME_STRING;

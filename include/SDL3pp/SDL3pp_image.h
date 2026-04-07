@@ -4140,6 +4140,11 @@ inline AnimationEncoder CreateAnimationEncoderWithProperties(
   return AnimationEncoder(props);
 }
 
+/**
+ * Supported properties for creating an animation encoder.
+ *
+ * @sa CreateAnimationEncoderWithProperties
+ */
 namespace prop::AnimationEncoder {
 
 constexpr auto CREATE_FILENAME_STRING =
@@ -4696,6 +4701,11 @@ inline AnimationDecoder CreateAnimationDecoderWithProperties(
   return AnimationDecoder(props);
 }
 
+/**
+ * Supported properties for creating an animation decoder.
+ *
+ * @sa CreateAnimationDecoderWithProperties
+ */
 namespace prop::AnimationDecoder {
 
 constexpr auto CREATE_FILENAME_STRING =
@@ -4760,6 +4770,12 @@ inline PropertiesRef AnimationDecoder::GetProperties()
   return SDL::GetAnimationDecoderProperties(m_resource);
 }
 
+/**
+ * Animation metadata properties.
+ *
+ * @since These properties are available since SDL_image 3.4.0.
+ * @sa AnimationDecoder.GetProperties
+ */
 namespace prop::Metadata {
 
 constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;

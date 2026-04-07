@@ -4,15 +4,39 @@ Todo for next version
 - [x] Docs improvements:
   - [x] Add namespace tab;
   - [x] Document namespace `prop`;
-  - [x] Document namespace `prop::Surface`;
   - [x] Document namespace `prop::AudioStream`;
+  - [x] Document namespace `prop::Display`;
   - [x] Document namespace `prop::FileDialog`;
   - [x] Document namespace `prop::GamepadCap`;
+  - [x] Document namespace `prop::GPU*`;
+  - [x] Document namespace `prop::Hidapi`;
+  - [x] Document namespace `prop::IOStream`;
   - [x] Document namespace `prop::JoystickCap`;
+  - [x] Document namespace `prop::Process`;
+  - [x] Document namespace `prop::Renderer`;
+  - [x] Document namespace `prop::Renderer`;
+  - [x] Document namespace `prop::Surface`;
+  - [x] Document namespace `prop::TextInput`;
+  - [x] Document namespace `prop::Thread`;
+  - [x] Document namespace `prop::AnimationEncoder`;
+  - [x] Document namespace `prop::AnimationDecoder`;
+  - [x] Document namespace `prop::Metadata`;
+  - [x] Document namespace `prop::Audio`;
+  - [x] Document namespace `prop::Mixer`;
+  - [x] Document namespace `prop::MixMetadata`;
+  - [x] Document namespace `prop::Play`;
+  - [x] Document namespace `prop::Font`;
+  - [ ] Document namespace `prop::GpuFontEngine`;
+  - [ ] Document namespace `prop::RendererTextEngine`;
 
 Backlog
 -------
 
+- [ ] (SDL3pp_image) Rename prop::Metadata to AnimationMetadata or something
+  similar? Or even under AnimationDecoder;
+- [ ] (SDL3pp_mixer) Rename prop::MixMetadata to AudioMetadata or something
+  similar? Or even under Audio;
+- [ ] Add a constructor to Properties similar to std::map initializer list;
 - [ ] Revamp README, with examples and clearer instructions to integrate to
   project and everything else moved to other files;
 - [ ] Simplify class callbacks:

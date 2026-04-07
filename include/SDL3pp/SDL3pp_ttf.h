@@ -1994,6 +1994,16 @@ inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
  */
 inline Font OpenFontWithProperties(PropertiesRef props) { return Font(props); }
 
+/**
+ * Properties for Font.
+ *
+ * Properties prefixed with CREATE_ are used when creating a font with
+ * OpenFontWithProperties(). Poperties without the prefix can retrieved by using
+ * Font.GetProperties() on an existing font.
+ *
+ * @sa OpenFontWithProperties
+ * @sa Font.GetProperties
+ */
 namespace prop::Font {
 
 constexpr auto CREATE_FILENAME_STRING = TTF_PROP_FONT_CREATE_FILENAME_STRING;

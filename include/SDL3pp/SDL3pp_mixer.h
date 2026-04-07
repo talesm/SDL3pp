@@ -4328,6 +4328,11 @@ inline PropertiesRef Mixer::GetProperties()
   return SDL::GetMixerProperties(m_resource);
 }
 
+/**
+ * Properties for Mixer.
+ *
+ * @sa Mixer.GetProperties
+ */
 namespace prop::Mixer {
 
 constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER;
@@ -4721,6 +4726,11 @@ inline Audio LoadAudioWithProperties(PropertiesRef props)
   return Audio(props);
 }
 
+/**
+ * Properties for configuring audio loading.
+ *
+ * @sa LoadAudioWithProperties
+ */
 namespace prop::Audio {
 
 constexpr auto LOAD_IOSTREAM_POINTER = MIX_PROP_AUDIO_LOAD_IOSTREAM_POINTER;
@@ -4993,6 +5003,11 @@ inline PropertiesRef Audio::GetProperties()
   return SDL::GetAudioProperties(m_resource);
 }
 
+/**
+ * Metadata for audio.
+ *
+ * @sa Audio.GetProperties
+ */
 namespace prop::MixMetadata {
 
 constexpr auto TITLE_STRING = MIX_PROP_METADATA_TITLE_STRING;
@@ -6112,6 +6127,11 @@ inline void Track::Play(PropertiesRef options)
   SDL::PlayTrack(m_resource, options);
 }
 
+/**
+ * Properties that can be used in the `options` parameter of Track.Play()
+ *
+ * @sa Track.Play
+ */
 namespace prop::Play {
 
 constexpr auto LOOPS_NUMBER = MIX_PROP_PLAY_LOOPS_NUMBER;
