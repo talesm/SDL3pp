@@ -26,8 +26,8 @@ Todo for next version
   - [x] Document namespace `prop::MixMetadata`;
   - [x] Document namespace `prop::Play`;
   - [x] Document namespace `prop::Font`;
-  - [ ] Document namespace `prop::GpuFontEngine`;
-  - [ ] Document namespace `prop::RendererTextEngine`;
+  - [x] Document namespace `prop::GpuFontEngine`;
+  - [x] Document namespace `prop::RendererTextEngine`;
 
 Backlog
 -------

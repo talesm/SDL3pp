@@ -5426,6 +5426,14 @@ inline RendererTextEngine CreateRendererTextEngineWithProperties(
   return RendererTextEngine(props);
 }
 
+/**
+ * Properties for RendererTextEngine.
+ *
+ * Use these with CreateRendererTextEngineWithProperties() to specify properties
+ * when creating a renderer text engine.
+ *
+ * @sa CreateRendererTextEngineWithProperties
+ */
 namespace prop::RendererTextEngine {
 
 constexpr auto RENDERER_POINTER = TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER;
@@ -5550,6 +5558,14 @@ inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
   return GPUTextEngine(props);
 }
 
+/**
+ * Properties for GPUTextEngine.
+ *
+ * Use these with CreateGPUTextEngineWithProperties() to specify properties when
+ * creating a GPU text engine.
+ *
+ * @sa CreateGPUTextEngineWithProperties
+ */
 namespace prop::GpuTextEngine {
 
 constexpr auto DEVICE_POINTER = TTF_PROP_GPU_TEXT_ENGINE_DEVICE;
