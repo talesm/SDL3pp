@@ -17,7 +17,7 @@
       <tab type="modulelist" visible="yes" title="" intro=""/>
       <tab type="modulemembers" visible="yes" title="" intro=""/>
     </tab>
-    <tab type="namespaces" visible="no" title="">
+    <tab type="namespaces" visible="yes" title="">
       <tab type="namespacelist" visible="yes" title="" intro=""/>
       <tab type="namespacemembers" visible="yes" title="" intro=""/>
     </tab>
