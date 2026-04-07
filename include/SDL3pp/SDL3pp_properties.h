@@ -174,6 +174,7 @@ using CleanupPropertyCB = std::function<void(void* value)>;
  * @cat resource
  *
  * @sa Properties.Create
+ * @sa prop
  */
 class Properties
 {
@@ -1594,5 +1595,16 @@ inline void Properties::Destroy() { DestroyProperties(release()); }
 /// @}
 
 } // namespace SDL
+
+/**
+ * @namespace SDL::prop
+ * @brief Constants for properties.
+ *
+ * All subnamespaces in `prop` are intended to be used as namespaces for
+ * properties related to a specific type of object. For example, `prop::Surface`
+ * contains properties related to surfaces.
+ *
+ * @sa Properties
+ */
 
 #endif /* SDL3PP_PROPERTIES_H_ */

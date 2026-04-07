@@ -9244,6 +9244,7 @@ using CleanupPropertyCB = std::function<void(void* value)>;
  * @cat resource
  *
  * @sa Properties.Create
+ * @sa prop
  */
 class Properties
 {

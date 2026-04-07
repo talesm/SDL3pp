@@ -27,16 +27,17 @@
   */
  using EnumeratePropertiesCB =
    std::function<void(PropertiesID props, const char* name)>;
-@@ -173,6 +172,8 @@
+@@ -173,6 +172,9 @@
   * @since This datatype is available since SDL 3.2.0.
   *
   * @cat resource
 + *
 + * @sa Properties.Create
++ * @sa prop
   */
  class Properties
  {
-@@ -377,7 +378,6 @@
+@@ -377,7 +379,6 @@
     *              property.
     * @param cleanup the function to call when this property is deleted, or
     *                nullptr if no cleanup is necessary.
@@ -44,7 +45,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -660,7 +660,6 @@
+@@ -660,7 +661,6 @@
     * properties. The properties are locked during enumeration.
     *
     * @param callback the function to call for each property.
@@ -52,7 +53,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -669,6 +668,13 @@
+@@ -669,6 +669,13 @@
     */
    void Enumerate(EnumeratePropertiesCB callback);
  
@@ -66,7 +67,7 @@
    Uint64 GetCount();
  };
  
-@@ -783,7 +789,7 @@
+@@ -783,7 +790,7 @@
     * or want to guarantee that properties being queried aren't freed in another
     * thread.
     *
@@ -75,7 +76,7 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -807,8 +813,6 @@
+@@ -807,8 +814,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -84,7 +85,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -832,8 +836,6 @@
+@@ -832,8 +837,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -93,7 +94,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -873,7 +875,7 @@
+@@ -873,7 +876,7 @@
   *
   * @since This constant is available since SDL 3.4.0.
   */
@@ -102,7 +103,7 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
-@@ -890,7 +892,7 @@
+@@ -890,7 +893,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -111,7 +112,7 @@
  }
  
  /**
-@@ -1063,7 +1065,6 @@
+@@ -1063,7 +1066,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -119,7 +120,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1079,7 +1080,12 @@
+@@ -1079,7 +1081,12 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -133,7 +134,7 @@
  }
  
  inline void Properties::SetPointerPropertyWithCleanup(
-@@ -1097,7 +1103,7 @@
+@@ -1097,7 +1104,7 @@
                                                        CleanupPropertyCB cleanup)
  {
    SDL::SetPointerPropertyWithCleanup(
@@ -142,7 +143,7 @@
  }
  
  /**
-@@ -1513,7 +1519,6 @@
+@@ -1513,7 +1520,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -150,7 +151,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1523,7 +1528,13 @@
+@@ -1523,7 +1529,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -165,7 +166,7 @@
  }
  
  inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1534,12 +1545,22 @@
+@@ -1534,12 +1546,22 @@
  
  inline void Properties::Enumerate(EnumeratePropertiesCB callback)
  {
@@ -190,3 +191,19 @@
  }
  
  inline Uint64 Properties::GetCount()
+@@ -1574,4 +1596,15 @@
+ 
+ } // namespace SDL
+ 
++/**
++ * @namespace SDL::prop
++ * @brief Constants for properties.
++ *
++ * All subnamespaces in `prop` are intended to be used as namespaces for
++ * properties related to a specific type of object. For example, `prop::Surface`
++ * contains properties related to surfaces.
++ *
++ * @sa Properties
++ */
++
+ #endif /* SDL3PP_PROPERTIES_H_ */
