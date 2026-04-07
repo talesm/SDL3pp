@@ -204,7 +204,7 @@ namespace SDL {
  * ### Vulkan
  *
  * SDL driver name: "vulkan" (for use in CreateGPUDevice() and
- * prop::GpuDevice.CREATE_NAME_STRING)
+ * prop::GPUDevice.CREATE_NAME_STRING)
  *
  * Supported on Windows, Linux, Nintendo Switch, and certain Android devices.
  * Requires Vulkan 1.0 with the following extensions and device features:
@@ -222,10 +222,10 @@ namespace SDL {
  * Android devices by using these properties when creating the GPU device with
  * CreateGPUDeviceWithProperties():
  *
- * - prop::GpuDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
- * - prop::GpuDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
- * - prop::GpuDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
- * - prop::GpuDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN
+ * - prop::GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
+ * - prop::GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
+ * - prop::GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
+ * - prop::GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN
  *
  * ### D3D12
  *
@@ -239,7 +239,7 @@ namespace SDL {
  * Haswell and Broadwell GPUs by using this property when creating the GPU
  * device with CreateGPUDeviceWithProperties():
  *
- * - prop::GpuDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
+ * - prop::GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
  *
  * ### Metal
  *
@@ -910,7 +910,7 @@ public:
    * language, your vertex semantics should start at TEXCOORD0 and increment
    * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
    * prefix to something other than TEXCOORD you can use
-   * prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
+   * prop::GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
    * CreateGPUDeviceWithProperties().
    *
    * There are optional properties that can be provided through `props`. These
@@ -2549,9 +2549,6 @@ constexpr GPUPresentMode GPU_PRESENTMODE_MAILBOX =
  * format is supported before using it. However, there are a few guaranteed
  * formats.
  *
- * FIXME: Check universal support for 32-bit component formats FIXME: Check
- * universal support for SIMULTANEOUS_READ_WRITE
- *
  * For SAMPLER usage, the following formats are universally supported:
  *
  * - R8G8B8A8_UNORM
@@ -3117,31 +3114,31 @@ public:
    *
    * These are the supported properties:
    *
-   * - `prop::GpuDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode properties
+   * - `prop::GPUDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode properties
    *   and validations, defaults to true.
-   * - `prop::GpuDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
+   * - `prop::GPUDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
    *   efficiency over maximum GPU performance, defaults to false.
-   * - `prop::GpuDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
+   * - `prop::GPUDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
    *   useful debug information on device creation, defaults to true.
-   * - `prop::GpuDevice.CREATE_NAME_STRING`: the name of the GPU driver to use,
+   * - `prop::GPUDevice.CREATE_NAME_STRING`: the name of the GPU driver to use,
    *   if a specific one is desired.
-   * - `prop::GpuDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
+   * - `prop::GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
    *   device feature shaderClipDistance. If disabled, clip distances are not
    *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
    *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
    *   Metal. Disabling optional features allows the application to run on some
    *   older Android devices. Defaults to true.
-   * - `prop::GpuDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+   * - `prop::GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
    *   device feature depthClamp. If disabled, there is no depth clamp support
    *   and enable_depth_clip in GPURasterizerState must always be set to true.
    *   Disabling optional features allows the application to run on some older
    *   Android devices. Defaults to true.
-   * - `prop::GpuDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+   * - `prop::GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
    *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
    *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
    *   Disabling optional features allows the application to run on some older
    *   Android devices. Defaults to true.
-   * - `prop::GpuDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+   * - `prop::GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
    *   feature samplerAnisotropy. If disabled, enable_anisotropy of
    *   GPUSamplerCreateInfo must be set to false. Disabling optional features
    *   allows the application to run on some older Android devices. Defaults to
@@ -3149,24 +3146,24 @@ public:
    *
    * These are the current shader format properties:
    *
-   * - `prop::GpuDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
+   * - `prop::GPUDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
    *   provide shaders for an NDA platform.
-   * - `prop::GpuDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to
+   * - `prop::GPUDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to
    *   provide SPIR-V shaders if applicable.
-   * - `prop::GpuDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to provide
+   * - `prop::GPUDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to provide
    *   DXBC shaders if applicable
-   * - `prop::GpuDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to provide
+   * - `prop::GPUDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to provide
    *   DXIL shaders if applicable.
-   * - `prop::GpuDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to provide
+   * - `prop::GPUDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to provide
    *   MSL shaders if applicable.
-   * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
+   * - `prop::GPUDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
    *   provide Metal shader libraries if applicable.
    *
    * With the D3D12 backend:
    *
-   * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use
+   * - `prop::GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use
    *   for all vertex semantics, default is "TEXCOORD".
-   * - `prop::GpuDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+   * - `prop::GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
    *   default, Resourcing Binding Tier 2 is required for D3D12 support.
    *   However, an application can set this property to true to enable Tier 1
    *   support, if (and only if) the application uses 8 or fewer storage
@@ -3174,15 +3171,15 @@ public:
    *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
    *   either supports Tier 2 Resource Binding or does not support D3D12 in any
    *   capacity. Defaults to false.
-   * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain
+   * - `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain
    *   feature checks are only possible on Windows 11 by default. By setting
-   *   this alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+   *   this alongside `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
    *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
    *   feature checks possible on older platforms. The version you provide must
    *   match the one given in the DLL.
-   * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+   * - `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
    *   checks are only possible on Windows 11 by default. By setting this
-   *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+   *   alongside `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
    *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
    *   feature checks possible on older platforms. The path you provide must be
    *   relative to the executable path of your app. Be sure not to put the DLL
@@ -3191,20 +3188,20 @@ public:
    *
    * With the Vulkan backend:
    *
-   * - `prop::GpuDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+   * - `prop::GPUDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
    *   default, Vulkan device enumeration includes drivers of all types,
    *   including software renderers (for example, the Lavapipe Mesa driver).
    *   This can be useful if your application _requires_ SDL_GPU, but if you can
    *   provide your own fallback renderer (for example, an OpenGL renderer) this
    *   property can be set to true. Defaults to false.
-   * - `prop::GpuDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+   * - `prop::GPUDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
    *   GPUVulkanOptions structure to be processed during device creation. This
    *   allows configuring a variety of Vulkan-specific options such as
    *   increasing the API version and opting into extensions aside from the
    *   minimal set SDL requires.
    *
    * With the Metal backend: -
-   * `prop::GpuDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+   * `prop::GPUDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
    * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
    * However, an application can set this property to true to enable support for
    * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not
@@ -3293,7 +3290,7 @@ public:
    *
    * The following properties are provided by SDL:
    *
-   * `prop::GpuDevice.NAME_STRING`: Contains the name of the underlying device
+   * `prop::GPUDevice.NAME_STRING`: Contains the name of the underlying device
    * as reported by the system driver. This string has no standardized format,
    * is highly inconsistent between hardware devices and drivers, and is able to
    * change at any time. Do not attempt to parse this string as it is bound to
@@ -3329,7 +3326,7 @@ public:
    * of a translation interface, the device may be emulated in software, or the
    * string may contain generic text that does not identify the device at all.
    *
-   * `prop::GpuDevice.DRIVER_NAME_STRING`: Contains the self-reported name of
+   * `prop::GPUDevice.DRIVER_NAME_STRING`: Contains the self-reported name of
    * the underlying system driver.
    *
    * Strings that have been found in the wild include:
@@ -3341,9 +3338,9 @@ public:
    * - Mali-G715
    * - venus
    *
-   * `prop::GpuDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
+   * `prop::GPUDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
    * of the underlying system driver. This is a relatively short version string
-   * in an unspecified format. If prop::GpuDevice.DRIVER_INFO_STRING is
+   * in an unspecified format. If prop::GPUDevice.DRIVER_INFO_STRING is
    * available then that property should be preferred over this one as it may
    * contain additional information that is useful for identifying the exact
    * driver version used.
@@ -3354,11 +3351,11 @@ public:
    * - 0.405.2463
    * - 32.0.15.6614
    *
-   * `prop::GpuDevice.DRIVER_INFO_STRING`: Contains the detailed version
+   * `prop::GPUDevice.DRIVER_INFO_STRING`: Contains the detailed version
    * information of the underlying system driver as reported by the driver. This
    * is an arbitrary string with no standardized format and it may contain
    * newlines. This property should be preferred over
-   * prop::GpuDevice.DRIVER_VERSION_STRING if it is available as it usually
+   * prop::GPUDevice.DRIVER_VERSION_STRING if it is available as it usually
    * contains the same information but in a format that is easier to read.
    *
    * Strings that have been found in the wild include:
@@ -3536,7 +3533,7 @@ public:
    * language, your vertex semantics should start at TEXCOORD0 and increment
    * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
    * prefix to something other than TEXCOORD you can use
-   * prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
+   * prop::GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
    * CreateGPUDeviceWithProperties().
    *
    * There are optional properties that can be provided through `props`. These
@@ -5049,31 +5046,31 @@ inline GPUDevice::GPUDevice(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop::GpuDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode properties
+ * - `prop::GPUDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode properties
  *   and validations, defaults to true.
- * - `prop::GpuDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
+ * - `prop::GPUDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
  *   efficiency over maximum GPU performance, defaults to false.
- * - `prop::GpuDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
+ * - `prop::GPUDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
  *   useful debug information on device creation, defaults to true.
- * - `prop::GpuDevice.CREATE_NAME_STRING`: the name of the GPU driver to use, if
+ * - `prop::GPUDevice.CREATE_NAME_STRING`: the name of the GPU driver to use, if
  *   a specific one is desired.
- * - `prop::GpuDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
+ * - `prop::GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
  *   device feature shaderClipDistance. If disabled, clip distances are not
  *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
  *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
  *   Metal. Disabling optional features allows the application to run on some
  *   older Android devices. Defaults to true.
- * - `prop::GpuDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+ * - `prop::GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
  *   device feature depthClamp. If disabled, there is no depth clamp support and
  *   enable_depth_clip in GPURasterizerState must always be set to true.
  *   Disabling optional features allows the application to run on some older
  *   Android devices. Defaults to true.
- * - `prop::GpuDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+ * - `prop::GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
  *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
  *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
  *   Disabling optional features allows the application to run on some older
  *   Android devices. Defaults to true.
- * - `prop::GpuDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+ * - `prop::GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
  *   feature samplerAnisotropy. If disabled, enable_anisotropy of
  *   GPUSamplerCreateInfo must be set to false. Disabling optional features
  *   allows the application to run on some older Android devices. Defaults to
@@ -5081,39 +5078,39 @@ inline GPUDevice::GPUDevice(PropertiesRef props)
  *
  * These are the current shader format properties:
  *
- * - `prop::GpuDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
+ * - `prop::GPUDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
  *   provide shaders for an NDA platform.
- * - `prop::GpuDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to provide
+ * - `prop::GPUDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to provide
  *   SPIR-V shaders if applicable.
- * - `prop::GpuDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to provide
+ * - `prop::GPUDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to provide
  *   DXBC shaders if applicable
- * - `prop::GpuDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to provide
+ * - `prop::GPUDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to provide
  *   DXIL shaders if applicable.
- * - `prop::GpuDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to provide
+ * - `prop::GPUDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to provide
  *   MSL shaders if applicable.
- * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
+ * - `prop::GPUDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
  *   provide Metal shader libraries if applicable.
  *
  * With the D3D12 backend:
  *
- * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
+ * - `prop::GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
  *   all vertex semantics, default is "TEXCOORD".
- * - `prop::GpuDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+ * - `prop::GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
  *   default, Resourcing Binding Tier 2 is required for D3D12 support. However,
  *   an application can set this property to true to enable Tier 1 support, if
  *   (and only if) the application uses 8 or fewer storage resources across all
  *   shader stages. As of writing, this property is useful for targeting Intel
  *   Haswell and Broadwell GPUs; other hardware either supports Tier 2 Resource
  *   Binding or does not support D3D12 in any capacity. Defaults to false.
- * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
+ * - `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
  *   checks are only possible on Windows 11 by default. By setting this
- *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+ *   alongside `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
  *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
  *   feature checks possible on older platforms. The version you provide must
  *   match the one given in the DLL.
- * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+ * - `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
  *   checks are only possible on Windows 11 by default. By setting this
- *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+ *   alongside `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
  *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
  *   feature checks possible on older platforms. The path you provide must be
  *   relative to the executable path of your app. Be sure not to put the DLL in
@@ -5121,20 +5118,20 @@ inline GPUDevice::GPUDevice(PropertiesRef props)
  *
  * With the Vulkan backend:
  *
- * - `prop::GpuDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+ * - `prop::GPUDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
  *   default, Vulkan device enumeration includes drivers of all types, including
  *   software renderers (for example, the Lavapipe Mesa driver). This can be
  *   useful if your application _requires_ SDL_GPU, but if you can provide your
  *   own fallback renderer (for example, an OpenGL renderer) this property can
  *   be set to true. Defaults to false.
- * - `prop::GpuDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+ * - `prop::GPUDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
  *   GPUVulkanOptions structure to be processed during device creation. This
  *   allows configuring a variety of Vulkan-specific options such as increasing
  *   the API version and opting into extensions aside from the minimal set SDL
  *   requires.
  *
  * With the Metal backend: -
- * `prop::GpuDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+ * `prop::GPUDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
  * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
  * However, an application can set this property to true to enable support for
  * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not write
@@ -5158,7 +5155,18 @@ inline GPUDevice CreateGPUDeviceWithProperties(PropertiesRef props)
   return GPUDevice(props);
 }
 
-namespace prop::GpuDevice {
+/**
+ * Properties for GPUDevice creation and information.
+ *
+ * The properties prefixed with `CREATE_` can be used in the properties object
+ * passed to CreateGPUDeviceWithProperties to specify the desired GPU device and
+ * driver features, while the remainder can be queried from an existing GPU
+ * device via GPUDevice.GetProperties.
+ *
+ * @sa CreateGPUDeviceWithProperties
+ * @sa GPUDevice.GetProperties
+ */
+namespace prop::GPUDevice {
 
 constexpr auto CREATE_DEBUGMODE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN;
@@ -5259,7 +5267,7 @@ constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-} // namespace prop::GpuDevice
+} // namespace prop::GPUDevice
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -5376,7 +5384,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  *
  * The following properties are provided by SDL:
  *
- * `prop::GpuDevice.NAME_STRING`: Contains the name of the underlying device as
+ * `prop::GPUDevice.NAME_STRING`: Contains the name of the underlying device as
  * reported by the system driver. This string has no standardized format, is
  * highly inconsistent between hardware devices and drivers, and is able to
  * change at any time. Do not attempt to parse this string as it is bound to
@@ -5412,7 +5420,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  * translation interface, the device may be emulated in software, or the string
  * may contain generic text that does not identify the device at all.
  *
- * `prop::GpuDevice.DRIVER_NAME_STRING`: Contains the self-reported name of the
+ * `prop::GPUDevice.DRIVER_NAME_STRING`: Contains the self-reported name of the
  * underlying system driver.
  *
  * Strings that have been found in the wild include:
@@ -5424,9 +5432,9 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  * - Mali-G715
  * - venus
  *
- * `prop::GpuDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
+ * `prop::GPUDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
  * of the underlying system driver. This is a relatively short version string in
- * an unspecified format. If prop::GpuDevice.DRIVER_INFO_STRING is available
+ * an unspecified format. If prop::GPUDevice.DRIVER_INFO_STRING is available
  * then that property should be preferred over this one as it may contain
  * additional information that is useful for identifying the exact driver
  * version used.
@@ -5437,11 +5445,11 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  * - 0.405.2463
  * - 32.0.15.6614
  *
- * `prop::GpuDevice.DRIVER_INFO_STRING`: Contains the detailed version
+ * `prop::GPUDevice.DRIVER_INFO_STRING`: Contains the detailed version
  * information of the underlying system driver as reported by the driver. This
  * is an arbitrary string with no standardized format and it may contain
  * newlines. This property should be preferred over
- * prop::GpuDevice.DRIVER_VERSION_STRING if it is available as it usually
+ * prop::GPUDevice.DRIVER_VERSION_STRING if it is available as it usually
  * contains the same information but in a format that is easier to read.
  *
  * Strings that have been found in the wild include:
@@ -5548,6 +5556,11 @@ inline GPUComputePipeline::GPUComputePipeline(
 {
 }
 
+/**
+ * Properties for GPUComputePipeline creation.
+ *
+ * @sa GPUComputePipeline.CreateComputePipeline
+ */
 namespace prop::GPUComputePipeline {
 
 constexpr auto CREATE_NAME_STRING =
@@ -5597,6 +5610,11 @@ inline GPUGraphicsPipeline::GPUGraphicsPipeline(
 {
 }
 
+/**
+ * Properties for GPUGraphicsPipeline creation.
+ *
+ * @sa GPUGraphicsPipeline.CreateGraphicsPipeline
+ */
 namespace prop::GPUGraphicsPipeline {
 
 constexpr auto CREATE_NAME_STRING =
@@ -5643,6 +5661,11 @@ inline GPUSampler::GPUSampler(GPUDeviceRef device,
 {
 }
 
+/**
+ * Properties for GPUSampler creation.
+ *
+ * @sa GPUDevice.CreateSampler
+ */
 namespace prop::GPUSampler {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
@@ -5701,7 +5724,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
  * language, your vertex semantics should start at TEXCOORD0 and increment like
  * so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic prefix to
  * something other than TEXCOORD you can use
- * prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
+ * prop::GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
  * CreateGPUDeviceWithProperties().
  *
  * There are optional properties that can be provided through `props`. These are
@@ -5737,6 +5760,11 @@ inline GPUShader::GPUShader(GPUDeviceRef device,
 {
 }
 
+/**
+ * Properties for GPUShader creation.
+ *
+ * @sa GPUDevice.CreateShader
+ */
 namespace prop::GPUShader {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
@@ -5819,6 +5847,11 @@ inline GPUTexture::GPUTexture(GPUDeviceRef device,
 {
 }
 
+/**
+ * Properties for GPUTexture creation.
+ *
+ * @sa GPUDevice.CreateTexture
+ */
 namespace prop::GPUTexture {
 
 constexpr auto CREATE_D3D12_CLEAR_R_FLOAT =
@@ -5907,6 +5940,11 @@ inline GPUBuffer::GPUBuffer(GPUDeviceRef device,
 {
 }
 
+/**
+ * Properties for GPUBuffer creation.
+ *
+ * @sa GPUDevice.CreateBuffer
+ */
 namespace prop::GPUBuffer {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
@@ -5961,6 +5999,11 @@ inline GPUTransferBuffer::GPUTransferBuffer(
 {
 }
 
+/**
+ * Properties for GPUTransferBuffer creation.
+ *
+ * @sa GPUDevice.CreateTransferBuffer
+ */
 namespace prop::GPUTransferBuffer {
 
 constexpr auto CREATE_NAME_STRING =

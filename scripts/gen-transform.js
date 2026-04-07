@@ -1708,7 +1708,7 @@ const transform = {
         "SDL3pp_video.h",
       ],
       namespacesMap: {
-        "SDL_PROP_GPU_DEVICE_": "prop::GpuDevice",
+        "SDL_PROP_GPU_DEVICE_": "prop::GPUDevice",
         "SDL_PROP_GPU_COMPUTEPIPELINE_": "prop::GPUComputePipeline",
         "SDL_PROP_GPU_GRAPHICSPIPELINE_": "prop::GPUGraphicsPipeline",
         "SDL_PROP_GPU_SAMPLER_": "prop::GPUSampler",
