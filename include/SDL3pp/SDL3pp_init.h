@@ -545,6 +545,12 @@ inline void SetAppMetadataProperty(StringParam name, StringParam value)
   CheckError(SDL_SetAppMetadataProperty(name, value));
 }
 
+/**
+ * Metadata property names for application.
+ *
+ * @sa SetAppMetadataProperty
+ * @sa GetAppMetadataProperty
+ */
 namespace prop::appMetaData {
 
 constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;

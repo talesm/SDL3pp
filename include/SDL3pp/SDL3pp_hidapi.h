@@ -690,6 +690,13 @@ inline PropertiesRef HidDevice::hid_get_properties()
   return SDL::hid_get_properties(m_resource);
 }
 
+/**
+ * HIDAPI properties.
+ *
+ * @since This namespace is available since SDL 3.4.0.
+ *
+ * @sa Hidapi.GetProperties
+ */
 namespace prop::Hidapi {
 
 constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =

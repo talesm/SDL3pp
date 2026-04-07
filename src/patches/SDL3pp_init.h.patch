@@ -113,7 +113,20 @@
  }
  
  /**
-@@ -551,6 +589,219 @@
+@@ -507,6 +545,12 @@
+   CheckError(SDL_SetAppMetadataProperty(name, value));
+ }
+ 
++/**
++ * Metadata property names for application.
++ *
++ * @sa SetAppMetadataProperty
++ * @sa GetAppMetadataProperty
++ */
+ namespace prop::appMetaData {
+ 
+ constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
+@@ -551,6 +595,219 @@
    return SDL_GetAppMetadataProperty(name);
  }
  

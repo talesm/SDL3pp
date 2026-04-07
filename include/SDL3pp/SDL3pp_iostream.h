@@ -1782,6 +1782,20 @@ inline IOStream IOStream::FromFile(StringParam file, StringParam mode)
   return SDL::IOFromFile(std::move(file), std::move(mode));
 }
 
+/**
+ * Properties for IOStream.
+ *
+ * These properties may be set at creation time by SDL, or they may be
+ * recognized by SDL when set by the application. See the documentation of each
+ * property for details.
+ *
+ * @sa IOFromFile
+ * @sa IOFromMem
+ * @sa IOFromConstMem
+ * @sa IOFromDynamicMem
+ * @sa IOStream.GetProperties
+ * @sa OpenIO
+ */
 namespace prop::IOStream {
 
 constexpr auto WINDOWS_HANDLE_POINTER =

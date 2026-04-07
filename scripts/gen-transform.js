@@ -2218,7 +2218,8 @@ const transform = {
           parameters: [{}, { type: "TargetBytes" }],
           hints: { methodName: "get_report_descriptor" }
         },
-        "SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } }
+        "SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },
+        "prop::Hidapi": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },
       },
     },
     "SDL_hints.h": {
