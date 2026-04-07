@@ -10665,6 +10665,17 @@ inline void Properties::Destroy() { DestroyProperties(release()); }
 /// @}
 
 /**
+ * @namespace SDL::prop
+ * @brief Constants for Properties keys.
+ *
+ * All subnamespaces in `prop` are intended to be used as namespaces for
+ * properties related to a specific type of object. For example, `prop::Surface`
+ * contains properties related to surfaces.
+ *
+ * @sa Properties
+ */
+
+/**
  * @defgroup CategoryStdinc Standard Library Functionality
  *
  * SDL provides its own implementation of some of the most important C runtime
@@ -61641,6 +61652,14 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
     type, &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), props);
 }
 
+/**
+ * Properties for file dialogs.
+ *
+ * These are properties that can be supplied to ShowFileDialogWithProperties()
+ * to control the behavior of the dialog.
+ *
+ * @sa ShowFileDialogWithProperties
+ */
 namespace prop::FileDialog {
 
 constexpr auto FILTERS_POINTER = SDL_PROP_FILE_DIALOG_FILTERS_POINTER;
@@ -73812,6 +73831,16 @@ inline PropertiesRef Joystick::GetProperties()
   return SDL::GetJoystickProperties(m_resource);
 }
 
+/**
+ * Joystick capability properties.
+ *
+ * Use Joystick.GetProperties() to query these properties for a joystick.
+ *
+ * @sa Joystick.GetProperties
+ * @sa GetJoystickProperties
+ * @sa Gamepad.GetProperties
+ * @sa prop::GamepadCap
+ */
 namespace prop::JoystickCap {
 
 constexpr auto MONO_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_MONO_LED_BOOLEAN;
@@ -78690,6 +78719,16 @@ inline PropertiesRef Gamepad::GetProperties()
   return SDL::GetGamepadProperties(m_resource);
 }
 
+/**
+ * Gamepad capability properties.
+ *
+ * Use Gamepad.GetProperties() to query these properties for a gamepad.
+ *
+ * @sa Gamepad.GetProperties
+ * @sa GetGamepadProperties
+ * @sa Joystick.GetProperties
+ * @sa prop::JoystickCap
+ */
 namespace prop::GamepadCap {
 
 constexpr auto MONO_LED_BOOLEAN = SDL_PROP_GAMEPAD_CAP_MONO_LED_BOOLEAN;

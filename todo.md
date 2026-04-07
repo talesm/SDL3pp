@@ -2,13 +2,13 @@ Todo for next version
 =====================
 
 - [x] Docs improvements:
-  - [x] Fix [./docs/DesignNotes.dox](DesignNotes) links;
-  - [x] Use interactive SGV graphs;
-  - [x] Remove [./docs/constructor-tag.md](constructor tag);
-- [x] Add `<=>` operator for Point, FPoint;
-- [x] Bump SDL version to 3.4.4;
-- [x] Bump SDL_image version to 3.4.2;
-- [x] Use a nicer theme for generated docs;
+  - [x] Add namespace tab;
+  - [x] Document namespace `prop`;
+  - [x] Document namespace `prop::Surface`;
+  - [x] Document namespace `prop::AudioStream`;
+  - [x] Document namespace `prop::FileDialog`;
+  - [x] Document namespace `prop::GamepadCap`;
+  - [x] Document namespace `prop::JoystickCap`;
 
 Backlog
 -------

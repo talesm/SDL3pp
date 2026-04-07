@@ -1594,11 +1594,9 @@ inline void Properties::Destroy() { DestroyProperties(release()); }
 
 /// @}
 
-} // namespace SDL
-
 /**
  * @namespace SDL::prop
- * @brief Constants for properties.
+ * @brief Constants for Properties keys.
  *
  * All subnamespaces in `prop` are intended to be used as namespaces for
  * properties related to a specific type of object. For example, `prop::Surface`
@@ -1606,5 +1604,7 @@ inline void Properties::Destroy() { DestroyProperties(release()); }
  *
  * @sa Properties
  */
+
+} // namespace SDL
 
 #endif /* SDL3PP_PROPERTIES_H_ */

@@ -191,13 +191,13 @@
  }
  
  inline Uint64 Properties::GetCount()
-@@ -1574,4 +1596,15 @@
+@@ -1572,6 +1594,17 @@
  
- } // namespace SDL
+ /// @}
  
 +/**
 + * @namespace SDL::prop
-+ * @brief Constants for properties.
++ * @brief Constants for Properties keys.
 + *
 + * All subnamespaces in `prop` are intended to be used as namespaces for
 + * properties related to a specific type of object. For example, `prop::Surface`
@@ -206,4 +206,6 @@
 + * @sa Properties
 + */
 +
+ } // namespace SDL
+ 
  #endif /* SDL3PP_PROPERTIES_H_ */

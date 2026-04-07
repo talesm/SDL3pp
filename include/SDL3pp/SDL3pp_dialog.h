@@ -604,6 +604,14 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
     type, &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), props);
 }
 
+/**
+ * Properties for file dialogs.
+ *
+ * These are properties that can be supplied to ShowFileDialogWithProperties()
+ * to control the behavior of the dialog.
+ *
+ * @sa ShowFileDialogWithProperties
+ */
 namespace prop::FileDialog {
 
 constexpr auto FILTERS_POINTER = SDL_PROP_FILE_DIALOG_FILTERS_POINTER;

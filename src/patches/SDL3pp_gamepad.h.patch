@@ -144,7 +144,24 @@
  }
  
  inline PropertiesRef Gamepad::GetProperties()
-@@ -2231,11 +2228,8 @@
+@@ -1786,6 +1783,16 @@
+   return SDL::GetGamepadProperties(m_resource);
+ }
+ 
++/**
++ * Gamepad capability properties.
++ *
++ * Use Gamepad.GetProperties() to query these properties for a gamepad.
++ *
++ * @sa Gamepad.GetProperties
++ * @sa GetGamepadProperties
++ * @sa Joystick.GetProperties
++ * @sa prop::JoystickCap
++ */
+ namespace prop::GamepadCap {
+ 
+ constexpr auto MONO_LED_BOOLEAN = SDL_PROP_GAMEPAD_CAP_MONO_LED_BOOLEAN;
+@@ -2231,11 +2238,8 @@
   * Get the SDL joystick layer bindings for a gamepad.
   *
   * @param gamepad a gamepad.
@@ -157,7 +174,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2243,7 +2237,9 @@
+@@ -2243,7 +2247,9 @@
   */
  inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadRef gamepad)
  {

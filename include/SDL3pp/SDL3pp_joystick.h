@@ -2062,6 +2062,16 @@ inline PropertiesRef Joystick::GetProperties()
   return SDL::GetJoystickProperties(m_resource);
 }
 
+/**
+ * Joystick capability properties.
+ *
+ * Use Joystick.GetProperties() to query these properties for a joystick.
+ *
+ * @sa Joystick.GetProperties
+ * @sa GetJoystickProperties
+ * @sa Gamepad.GetProperties
+ * @sa prop::GamepadCap
+ */
 namespace prop::JoystickCap {
 
 constexpr auto MONO_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_MONO_LED_BOOLEAN;
