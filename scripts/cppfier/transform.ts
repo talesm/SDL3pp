@@ -1842,10 +1842,17 @@ export function expandNamespaces(
       context.addName(key, `${nsName}.${localName}`);
     }
     if (sourceEntriesListed.length) {
-      context.includeBefore(
-        { kind: "ns", name: nsName, entries: nsEntries },
-        sourceEntriesListed[0][0],
-      );
+      const nsEntry: ApiEntryTransform = {
+        kind: "ns",
+        name: nsName,
+        ...file.transform[nsName],
+      };
+      if (nsEntry.entries) {
+        combineObject(nsEntry.entries, nsEntries);
+      } else {
+        nsEntry.entries = nsEntries;
+      }
+      context.includeBefore(nsEntry, sourceEntriesListed[0][0]);
     }
   }
 }

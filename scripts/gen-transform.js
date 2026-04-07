@@ -373,7 +373,7 @@ const transform = {
     "SDL_audio.h": {
       localIncludes: ["SDL3pp_iostream.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],
       namespacesMap: {
-        "SDL_PROP_AUDIOSTREAM": "prop::AudioStream",
+        "SDL_PROP_AUDIOSTREAM_": "prop::AudioStream",
       },
       transform: {
         "SDL_AudioSpec": { before: "AudioFormat" },
@@ -874,7 +874,8 @@ const transform = {
         },
         "SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN": {
           since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
-        }
+        },
+        "prop::AudioStream": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },
       }
     },
     "SDL_blendmode.h": {

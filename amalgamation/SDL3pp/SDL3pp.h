@@ -35805,7 +35805,7 @@ public:
    * The application can hang any data it wants here, but the following
    * properties are understood by SDL:
    *
-   * - `prop::AudioStream._AUTO_CLEANUP_BOOLEAN`: if true (the default), the
+   * - `prop::AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the
    *   stream be automatically cleaned up when the audio subsystem quits. If set
    *   to false, the streams will persist beyond that. This property is ignored
    *   for streams created through AudioDevice.OpenStream(), and will always be
@@ -37801,10 +37801,10 @@ inline AudioStream::AudioStream(AudioDeviceRef devid,
  * The application can hang any data it wants here, but the following properties
  * are understood by SDL:
  *
- * - `prop::AudioStream._AUTO_CLEANUP_BOOLEAN`: if true (the default), the
- *   stream be automatically cleaned up when the audio subsystem quits. If set
- *   to false, the streams will persist beyond that. This property is ignored
- *   for streams created through AudioDevice.OpenStream(), and will always be
+ * - `prop::AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream
+ *   be automatically cleaned up when the audio subsystem quits. If set to
+ *   false, the streams will persist beyond that. This property is ignored for
+ *   streams created through AudioDevice.OpenStream(), and will always be
  *   cleaned up. Streams that are not cleaned up will still be unbound from
  *   devices when the audio subsystem quits. This property was added in SDL
  *   3.4.0.
@@ -37829,10 +37829,21 @@ inline PropertiesRef AudioStream::GetProperties() const
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
+/**
+ * Properties for AudioStream.
+ *
+ * These are properties that can be queried on an AudioStream through the
+ * properties API. See GetAudioStreamProperties and AudioStream.GetProperties
+ * for more details.
+ *
+ * @since This namespace  is available since SDL 3.4.0.
+ *
+ * @sa GetAudioStreamProperties
+ * @sa AudioStream.GetProperties
+ */
 namespace prop::AudioStream {
 
-constexpr auto _AUTO_CLEANUP_BOOLEAN =
-  SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN;
+constexpr auto AUTO_CLEANUP_BOOLEAN = SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN;
 
 } // namespace prop::AudioStream
 
