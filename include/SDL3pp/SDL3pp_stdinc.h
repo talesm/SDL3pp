@@ -8,6 +8,7 @@
 #include "SDL3pp_error.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_ownPtr.h"
+#include "SDL3pp_resource.h"
 #include "SDL3pp_spanRef.h"
 #include "SDL3pp_strings.h"
 

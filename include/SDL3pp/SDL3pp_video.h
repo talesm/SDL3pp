@@ -3284,26 +3284,12 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @cat resource
  */
-class GLContext
+class GLContext : public NonOwnedResourceBase<GLContextRaw>
 {
   GLContextRaw m_resource = nullptr;
 
 public:
-  /// Default ctor
-  constexpr GLContext(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from raw GLContext.
-   *
-   * @param resource a GLContextRaw to be wrapped.
-   */
-  constexpr GLContext(GLContextRaw resource) noexcept
-    : m_resource(resource)
-  {
-  }
+  using NonOwnedResourceBase::NonOwnedResourceBase;
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -3334,26 +3320,6 @@ public:
    * @sa GLContext.MakeCurrent
    */
   GLContext(WindowRef window);
-
-  /// Converts to underlying GLContextRaw.
-  constexpr operator GLContextRaw() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GLContextRaw.
-  constexpr GLContextRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GLContextRaw and clear this.
-  constexpr GLContextRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const GLContext& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Delete an OpenGL context.

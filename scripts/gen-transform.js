@@ -5632,6 +5632,7 @@ const transform = {
         "SDL3pp_error.h",
         "SDL3pp_optionalRef.h",
         "SDL3pp_ownPtr.h",
+        "SDL3pp_resource.h",
         "SDL3pp_spanRef.h",
         "SDL3pp_strings.h",
       ],

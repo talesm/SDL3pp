@@ -1307,6 +1307,53 @@ inline const char* GetPlatform() { return SDL_GetPlatform(); }
  * @{
  */
 
+/// Base class for non owned resources.
+template<typename RAW_POINTER, typename RAW_CONST_POINTER = RAW_POINTER>
+class NonOwnedResourceBase
+{
+public:
+  /// The underlying raw pointer type.
+  using RawPointer = RAW_POINTER;
+
+  /// The underlying const raw pointer type.
+  using RawConstPointer = RAW_CONST_POINTER;
+
+  /// Constructs from resource pointer.
+  constexpr NonOwnedResourceBase(RawPointer resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr NonOwnedResourceBase(std::nullptr_t = nullptr)
+    : m_resource(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Comparison
+  constexpr auto operator<=>(const NonOwnedResourceBase& other) const = default;
+
+  /// Converts to underlying resource pointer.
+  constexpr operator RawPointer() const noexcept { return m_resource; }
+
+  /// Retrieves underlying resource pointer.
+  constexpr RawPointer get() const noexcept { return m_resource; }
+
+  /// Retrieves underlying resource pointer and clear this.
+  constexpr RawPointer release() noexcept
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+private:
+  RawPointer m_resource; ///< parameter's RawPointer
+};
+
 /// Reference wrapper for a given resource,
 template<typename RAW_POINTER>
 class ResourceRef
@@ -56866,26 +56913,12 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @cat resource
  */
-class GLContext
+class GLContext : public NonOwnedResourceBase<GLContextRaw>
 {
   GLContextRaw m_resource = nullptr;
 
 public:
-  /// Default ctor
-  constexpr GLContext(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from raw GLContext.
-   *
-   * @param resource a GLContextRaw to be wrapped.
-   */
-  constexpr GLContext(GLContextRaw resource) noexcept
-    : m_resource(resource)
-  {
-  }
+  using NonOwnedResourceBase::NonOwnedResourceBase;
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -56916,26 +56949,6 @@ public:
    * @sa GLContext.MakeCurrent
    */
   GLContext(WindowRef window);
-
-  /// Converts to underlying GLContextRaw.
-  constexpr operator GLContextRaw() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GLContextRaw.
-  constexpr GLContextRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GLContextRaw and clear this.
-  constexpr GLContextRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const GLContext& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Delete an OpenGL context.
