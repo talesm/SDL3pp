@@ -40,7 +40,7 @@ struct TextEngine;
 using TextEngineRaw = TTF_TextEngine*;
 
 /// Safely wrap TextEngine for non owning parameters
-using TextEngineRef = ObjParam<TextEngineRaw>;
+using TextEngineRef = ResourceRef<TextEngineRaw>;
 
 // Forward decl
 struct Text;
@@ -55,7 +55,7 @@ using TextRawConst = const TTF_Text*;
 struct TextRef;
 
 /// Safely wrap Text for non owning const parameters
-using TextConstRef = ObjConstParam<TextRaw, TextRawConst>;
+using TextConstRef = ResourceConstRef<TextRaw, TextRawConst>;
 
 #ifdef SDL3PP_DOC
 

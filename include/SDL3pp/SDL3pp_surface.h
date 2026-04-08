@@ -51,7 +51,7 @@ using SurfaceRawConst = const SDL_Surface*;
 struct SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
-using SurfaceConstRef = ObjConstParam<SurfaceRaw, SurfaceRawConst>;
+using SurfaceConstRef = ResourceConstRef<SurfaceRaw, SurfaceRawConst>;
 
 // Forward decl
 struct SurfaceLock;

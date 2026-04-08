@@ -38,7 +38,7 @@ using AnimationRawConst = const IMG_Animation*;
 struct AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
-using AnimationConstRef = ObjConstParam<AnimationRaw, AnimationRawConst>;
+using AnimationConstRef = ResourceConstRef<AnimationRaw, AnimationRawConst>;
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 

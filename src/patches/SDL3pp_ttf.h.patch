@@ -25,7 +25,7 @@
   *
 @@ -54,25 +57,39 @@
  /// Safely wrap Text for non owning const parameters
- using TextConstRef = ObjConstParam<TextRaw, TextRawConst>;
+ using TextConstRef = ResourceConstRef<TextRaw, TextRawConst>;
  
 -/// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
 +#ifdef SDL3PP_DOC

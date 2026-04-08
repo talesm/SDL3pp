@@ -269,7 +269,7 @@ function createParam(
     name: paramType,
     kind: "alias",
     doc: [`Safely wrap ${targetName} for non owning parameters`],
-    type: `ObjParam<${rawName}>`,
+    type: `ResourceRef<${rawName}>`,
   };
 }
 
@@ -283,7 +283,7 @@ function createConstParam(
     name: constParamType,
     kind: "alias",
     doc: [`Safely wrap ${targetName} for non owning const parameters`],
-    type: `ObjConstParam<${rawName}, ${constRawName}>`,
+    type: `ResourceConstRef<${rawName}, ${constRawName}>`,
   };
 }
 

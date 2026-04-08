@@ -1309,19 +1309,20 @@ inline const char* GetPlatform() { return SDL_GetPlatform(); }
 
 /// Reference wrapper for a given resource,
 template<typename RAW_POINTER>
-class ObjParam
+class ResourceRef
 {
 public:
+  /// The underlying raw pointer type.
   using RawPointer = RAW_POINTER;
 
   /// Constructs from RawPointer
-  constexpr ObjParam(RawPointer resource)
+  constexpr ResourceRef(RawPointer resource)
     : m_resource(resource)
   {
   }
 
   /// Constructs null/invalid
-  constexpr ObjParam(std::nullptr_t = nullptr)
+  constexpr ResourceRef(std::nullptr_t = nullptr)
     : m_resource(nullptr)
   {
   }
@@ -1330,7 +1331,7 @@ public:
   constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Comparison
-  constexpr auto operator<=>(const ObjParam& other) const = default;
+  constexpr auto operator<=>(const ResourceRef& other) const = default;
 
   /// Converts to underlying RawPointer
   constexpr operator RawPointer() const { return m_resource; }
@@ -1344,20 +1345,23 @@ private:
 
 /// Const reference wrapper for a given resource,
 template<typename RAW_POINTER, typename RAW_CONST_POINTER>
-class ObjConstParam
+class ResourceConstRef
 {
 public:
+  /// The underlying raw pointer type.
   using RawPointer = RAW_POINTER;
+
+  /// The underlying const raw pointer type.
   using RawConstPointer = RAW_CONST_POINTER;
 
   /// Constructs from const pointer.
-  constexpr ObjConstParam(RawConstPointer resource)
+  constexpr ResourceConstRef(RawConstPointer resource)
     : m_resource(resource)
   {
   }
 
   /// Constructs null/invalid
-  constexpr ObjConstParam(std::nullptr_t = nullptr)
+  constexpr ResourceConstRef(std::nullptr_t = nullptr)
     : m_resource(nullptr)
   {
   }
@@ -1366,7 +1370,7 @@ public:
   constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Comparison.
-  constexpr auto operator<=>(const ObjConstParam& other) const = default;
+  constexpr auto operator<=>(const ResourceConstRef& other) const = default;
 
   /// Converts to underlying type.
   constexpr operator RawConstPointer() const { return m_resource; }
@@ -25938,7 +25942,7 @@ using PaletteRawConst = const SDL_Palette*;
 struct PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
-using PaletteConstRef = ObjConstParam<PaletteRaw, PaletteRawConst>;
+using PaletteConstRef = ResourceConstRef<PaletteRaw, PaletteRawConst>;
 
 /**
  * Details about the format of a pixel.
@@ -42981,7 +42985,7 @@ using SurfaceRawConst = const SDL_Surface*;
 struct SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
-using SurfaceConstRef = ObjConstParam<SurfaceRaw, SurfaceRawConst>;
+using SurfaceConstRef = ResourceConstRef<SurfaceRaw, SurfaceRawConst>;
 
 // Forward decl
 struct SurfaceLock;
@@ -82957,7 +82961,7 @@ using TextureRawConst = const SDL_Texture*;
 struct TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
-using TextureConstRef = ObjConstParam<TextureRaw, TextureRawConst>;
+using TextureConstRef = ResourceConstRef<TextureRaw, TextureRawConst>;
 
 #if SDL_VERSION_ATLEAST(3, 3, 6)
 
@@ -101027,7 +101031,7 @@ using AnimationRawConst = const IMG_Animation*;
 struct AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
-using AnimationConstRef = ObjConstParam<AnimationRaw, AnimationRawConst>;
+using AnimationConstRef = ResourceConstRef<AnimationRaw, AnimationRawConst>;
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -105960,7 +105964,7 @@ struct TextEngine;
 using TextEngineRaw = TTF_TextEngine*;
 
 /// Safely wrap TextEngine for non owning parameters
-using TextEngineRef = ObjParam<TextEngineRaw>;
+using TextEngineRef = ResourceRef<TextEngineRaw>;
 
 // Forward decl
 struct Text;
@@ -105975,7 +105979,7 @@ using TextRawConst = const TTF_Text*;
 struct TextRef;
 
 /// Safely wrap Text for non owning const parameters
-using TextConstRef = ObjConstParam<TextRaw, TextRawConst>;
+using TextConstRef = ResourceConstRef<TextRaw, TextRawConst>;
 
 #ifdef SDL3PP_DOC
 

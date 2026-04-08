@@ -105,7 +105,7 @@ using PaletteRawConst = const SDL_Palette*;
 struct PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
-using PaletteConstRef = ObjConstParam<PaletteRaw, PaletteRawConst>;
+using PaletteConstRef = ResourceConstRef<PaletteRaw, PaletteRawConst>;
 
 /**
  * Details about the format of a pixel.

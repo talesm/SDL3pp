@@ -63,7 +63,7 @@ using TextureRawConst = const SDL_Texture*;
 struct TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
-using TextureConstRef = ObjConstParam<TextureRaw, TextureRawConst>;
+using TextureConstRef = ResourceConstRef<TextureRaw, TextureRawConst>;
 
 #if SDL_VERSION_ATLEAST(3, 3, 6)
 

@@ -16,19 +16,20 @@ namespace SDL {
 
 /// Reference wrapper for a given resource,
 template<typename RAW_POINTER>
-class ObjParam
+class ResourceRef
 {
 public:
+  /// The underlying raw pointer type.
   using RawPointer = RAW_POINTER;
 
   /// Constructs from RawPointer
-  constexpr ObjParam(RawPointer resource)
+  constexpr ResourceRef(RawPointer resource)
     : m_resource(resource)
   {
   }
 
   /// Constructs null/invalid
-  constexpr ObjParam(std::nullptr_t = nullptr)
+  constexpr ResourceRef(std::nullptr_t = nullptr)
     : m_resource(nullptr)
   {
   }
@@ -37,7 +38,7 @@ public:
   constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Comparison
-  constexpr auto operator<=>(const ObjParam& other) const = default;
+  constexpr auto operator<=>(const ResourceRef& other) const = default;
 
   /// Converts to underlying RawPointer
   constexpr operator RawPointer() const { return m_resource; }
@@ -51,20 +52,23 @@ private:
 
 /// Const reference wrapper for a given resource,
 template<typename RAW_POINTER, typename RAW_CONST_POINTER>
-class ObjConstParam
+class ResourceConstRef
 {
 public:
+  /// The underlying raw pointer type.
   using RawPointer = RAW_POINTER;
+
+  /// The underlying const raw pointer type.
   using RawConstPointer = RAW_CONST_POINTER;
 
   /// Constructs from const pointer.
-  constexpr ObjConstParam(RawConstPointer resource)
+  constexpr ResourceConstRef(RawConstPointer resource)
     : m_resource(resource)
   {
   }
 
   /// Constructs null/invalid
-  constexpr ObjConstParam(std::nullptr_t = nullptr)
+  constexpr ResourceConstRef(std::nullptr_t = nullptr)
     : m_resource(nullptr)
   {
   }
@@ -73,7 +77,7 @@ public:
   constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Comparison.
-  constexpr auto operator<=>(const ObjConstParam& other) const = default;
+  constexpr auto operator<=>(const ResourceConstRef& other) const = default;
 
   /// Converts to underlying type.
   constexpr operator RawConstPointer() const { return m_resource; }
