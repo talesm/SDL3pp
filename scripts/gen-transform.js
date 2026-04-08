@@ -3444,7 +3444,7 @@ const transform = {
       }
     },
     "SDL_pixels.h": {
-      localIncludes: ["SDL3pp_assert.h", "SDL3pp_objParam.h", "SDL3pp_stdinc.h", "SDL3pp_version.h"],
+      localIncludes: ["SDL3pp_assert.h", "SDL3pp_resource.h", "SDL3pp_stdinc.h", "SDL3pp_version.h"],
       transform: {
         "SDL_PixelFormatDetails": {
           kind: "alias",
@@ -4728,7 +4728,7 @@ const transform = {
       },
     },
     "SDL_render.h": {
-      localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_events.h", "SDL3pp_gpu.h", "SDL3pp_objParam.h", "SDL3pp_pixels.h", "SDL3pp_video.h"],
+      localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_events.h", "SDL3pp_gpu.h", "SDL3pp_pixels.h", "SDL3pp_resource.h", "SDL3pp_video.h"],
       namespacesMap: {
         "SDL_PROP_RENDERER_": "prop::Renderer",
         "SDL_PROP_TEXTURE_": "prop::Texture"
@@ -6525,11 +6525,11 @@ const transform = {
         "SDL3pp_blendmode.h",
         "SDL3pp_error.h",
         "SDL3pp_iostream.h",
-        "SDL3pp_objParam.h",
         "SDL3pp_optionalRef.h",
         "SDL3pp_pixels.h",
         "SDL3pp_properties.h",
         "SDL3pp_rect.h",
+        "SDL3pp_resource.h",
         "SDL3pp_spanRef.h",
         "SDL3pp_strings.h",
         "SDL3pp_version.h",

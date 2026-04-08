@@ -5,8 +5,8 @@
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_events.h"
 #include "SDL3pp_gpu.h"
-#include "SDL3pp_objParam.h"
 #include "SDL3pp_pixels.h"
+#include "SDL3pp_resource.h"
 #include "SDL3pp_video.h"
 
 namespace SDL {

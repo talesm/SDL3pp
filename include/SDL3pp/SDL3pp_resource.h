@@ -1,5 +1,5 @@
-#ifndef SDL3PP_OBJ_PARAM_H_
-#define SDL3PP_OBJ_PARAM_H_
+#ifndef SDL3PP_RESOURCE_H_
+#define SDL3PP_RESOURCE_H_
 
 #include <cstdlib>
 
@@ -84,4 +84,4 @@ private:
 
 } // namespace SDL
 
-#endif /* SDL3PP_OBJ_PARAM_H_ */
+#endif /* SDL3PP_RESOURCE_H_ */
