@@ -687,7 +687,7 @@ inline PropertiesRef hid_get_properties(HidDeviceRef dev)
 
 inline PropertiesRef HidDevice::hid_get_properties()
 {
-  return SDL::hid_get_properties(m_resource);
+  return SDL::hid_get_properties(get());
 }
 
 /**
@@ -735,7 +735,7 @@ inline int hid_write(HidDeviceRef dev, SourceBytes data)
 
 inline int HidDevice::write(SourceBytes data)
 {
-  return SDL::hid_write(m_resource, std::move(data));
+  return SDL::hid_write(get(), std::move(data));
 }
 
 /**
@@ -764,7 +764,7 @@ inline int hid_read_timeout(HidDeviceRef dev,
 
 inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
 {
-  return SDL::hid_read_timeout(m_resource, std::move(data), timeout);
+  return SDL::hid_read_timeout(get(), std::move(data), timeout);
 }
 
 /**
@@ -789,7 +789,7 @@ inline int hid_read(HidDeviceRef dev, TargetBytes data)
 
 inline int HidDevice::read(TargetBytes data)
 {
-  return SDL::hid_read(m_resource, std::move(data));
+  return SDL::hid_read(get(), std::move(data));
 }
 
 /**
@@ -815,7 +815,7 @@ inline void hid_set_nonblocking(HidDeviceRef dev, bool nonblock)
 
 inline void HidDevice::set_nonblocking(bool nonblock)
 {
-  SDL::hid_set_nonblocking(m_resource, nonblock);
+  SDL::hid_set_nonblocking(get(), nonblock);
 }
 
 /**
@@ -846,7 +846,7 @@ inline int hid_send_feature_report(HidDeviceRef dev, SourceBytes data)
 
 inline int HidDevice::send_feature_report(SourceBytes data)
 {
-  return SDL::hid_send_feature_report(m_resource, std::move(data));
+  return SDL::hid_send_feature_report(get(), std::move(data));
 }
 
 /**
@@ -876,7 +876,7 @@ inline int hid_get_feature_report(HidDeviceRef dev, TargetBytes data)
 
 inline int HidDevice::get_feature_report(TargetBytes data)
 {
-  return SDL::hid_get_feature_report(m_resource, std::move(data));
+  return SDL::hid_get_feature_report(get(), std::move(data));
 }
 
 /**
@@ -906,7 +906,7 @@ inline int hid_get_input_report(HidDeviceRef dev, TargetBytes data)
 
 inline int HidDevice::get_input_report(TargetBytes data)
 {
-  return SDL::hid_get_input_report(m_resource, std::move(data));
+  return SDL::hid_get_input_report(get(), std::move(data));
 }
 
 /**
@@ -943,7 +943,7 @@ inline void hid_get_manufacturer_string(HidDeviceRef dev,
 
 inline void HidDevice::get_manufacturer_string(wchar_t* string, size_t maxlen)
 {
-  SDL::hid_get_manufacturer_string(m_resource, string, maxlen);
+  SDL::hid_get_manufacturer_string(get(), string, maxlen);
 }
 
 /**
@@ -965,7 +965,7 @@ inline void hid_get_product_string(HidDeviceRef dev,
 
 inline void HidDevice::get_product_string(wchar_t* string, size_t maxlen)
 {
-  SDL::hid_get_product_string(m_resource, string, maxlen);
+  SDL::hid_get_product_string(get(), string, maxlen);
 }
 
 /**
@@ -987,7 +987,7 @@ inline void hid_get_serial_number_string(HidDeviceRef dev,
 
 inline void HidDevice::get_serial_number_string(wchar_t* string, size_t maxlen)
 {
-  SDL::hid_get_serial_number_string(m_resource, string, maxlen);
+  SDL::hid_get_serial_number_string(get(), string, maxlen);
 }
 
 /**
@@ -1014,7 +1014,7 @@ inline void HidDevice::get_indexed_string(int string_index,
                                           wchar_t* string,
                                           size_t maxlen)
 {
-  SDL::hid_get_indexed_string(m_resource, string_index, string, maxlen);
+  SDL::hid_get_indexed_string(get(), string_index, string, maxlen);
 }
 
 /**
@@ -1035,7 +1035,7 @@ inline hid_device_info* hid_get_device_info(HidDeviceRef dev)
 
 inline hid_device_info* HidDevice::get_device_info()
 {
-  return SDL::hid_get_device_info(m_resource);
+  return SDL::hid_get_device_info(get());
 }
 
 /**
@@ -1059,7 +1059,7 @@ inline int hid_get_report_descriptor(HidDeviceRef dev, TargetBytes buf)
 
 inline int HidDevice::get_report_descriptor(TargetBytes buf)
 {
-  return SDL::hid_get_report_descriptor(m_resource, std::move(buf));
+  return SDL::hid_get_report_descriptor(get(), std::move(buf));
 }
 
 /**

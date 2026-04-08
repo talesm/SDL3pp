@@ -1392,7 +1392,7 @@ inline HapticID GetHapticID(HapticRef haptic)
   return CheckError(SDL_GetHapticID(haptic));
 }
 
-inline HapticID Haptic::GetID() { return SDL::GetHapticID(m_resource); }
+inline HapticID Haptic::GetID() { return SDL::GetHapticID(get()); }
 
 /**
  * Get the implementation dependent name of a haptic device.
@@ -1410,7 +1410,7 @@ inline const char* GetHapticName(HapticRef haptic)
   return SDL_GetHapticName(haptic);
 }
 
-inline const char* Haptic::GetName() { return SDL::GetHapticName(m_resource); }
+inline const char* Haptic::GetName() { return SDL::GetHapticName(get()); }
 
 /**
  * Query whether or not the current mouse has haptic capabilities.
@@ -1515,10 +1515,7 @@ inline int GetMaxHapticEffects(HapticRef haptic)
   return SDL_GetMaxHapticEffects(haptic);
 }
 
-inline int Haptic::GetMaxEffects()
-{
-  return SDL::GetMaxHapticEffects(m_resource);
-}
+inline int Haptic::GetMaxEffects() { return SDL::GetMaxHapticEffects(get()); }
 
 /**
  * Get the number of effects a haptic device can play at the same time.
@@ -1541,7 +1538,7 @@ inline int GetMaxHapticEffectsPlaying(HapticRef haptic)
 
 inline int Haptic::GetMaxEffectsPlaying()
 {
-  return SDL::GetMaxHapticEffectsPlaying(m_resource);
+  return SDL::GetMaxHapticEffectsPlaying(get());
 }
 
 /**
@@ -1562,10 +1559,7 @@ inline Uint32 GetHapticFeatures(HapticRef haptic)
   return CheckError(SDL_GetHapticFeatures(haptic));
 }
 
-inline Uint32 Haptic::GetFeatures()
-{
-  return SDL::GetHapticFeatures(m_resource);
-}
+inline Uint32 Haptic::GetFeatures() { return SDL::GetHapticFeatures(get()); }
 
 /**
  * Get the number of haptic axes the device has.
@@ -1584,7 +1578,7 @@ inline int GetNumHapticAxes(HapticRef haptic)
   return CheckError(SDL_GetNumHapticAxes(haptic));
 }
 
-inline int Haptic::GetNumAxes() { return SDL::GetNumHapticAxes(m_resource); }
+inline int Haptic::GetNumAxes() { return SDL::GetNumHapticAxes(get()); }
 
 /**
  * Check to see if an effect is supported by a haptic device.
@@ -1605,7 +1599,7 @@ inline bool HapticEffectSupported(HapticRef haptic, const HapticEffect& effect)
 
 inline bool Haptic::EffectSupported(const HapticEffect& effect)
 {
-  return SDL::HapticEffectSupported(m_resource, effect);
+  return SDL::HapticEffectSupported(get(), effect);
 }
 
 /**
@@ -1631,7 +1625,7 @@ inline HapticEffectID CreateHapticEffect(HapticRef haptic,
 
 inline HapticEffectID Haptic::CreateEffect(const HapticEffect& effect)
 {
-  return SDL::CreateHapticEffect(m_resource, effect);
+  return SDL::CreateHapticEffect(get(), effect);
 }
 
 /**
@@ -1663,7 +1657,7 @@ inline void UpdateHapticEffect(HapticRef haptic,
 inline void Haptic::UpdateEffect(HapticEffectID effect,
                                  const HapticEffect& data)
 {
-  SDL::UpdateHapticEffect(m_resource, effect, data);
+  SDL::UpdateHapticEffect(get(), effect, data);
 }
 
 /**
@@ -1695,7 +1689,7 @@ inline void RunHapticEffect(HapticRef haptic,
 
 inline void Haptic::RunEffect(HapticEffectID effect, Uint32 iterations)
 {
-  SDL::RunHapticEffect(m_resource, effect, iterations);
+  SDL::RunHapticEffect(get(), effect, iterations);
 }
 
 /**
@@ -1717,7 +1711,7 @@ inline void StopHapticEffect(HapticRef haptic, HapticEffectID effect)
 
 inline void Haptic::StopEffect(HapticEffectID effect)
 {
-  SDL::StopHapticEffect(m_resource, effect);
+  SDL::StopHapticEffect(get(), effect);
 }
 
 /**
@@ -1740,7 +1734,7 @@ inline void DestroyHapticEffect(HapticRef haptic, HapticEffectID effect)
 
 inline void Haptic::DestroyEffect(HapticEffectID effect)
 {
-  SDL::DestroyHapticEffect(m_resource, effect);
+  SDL::DestroyHapticEffect(get(), effect);
 }
 
 /**
@@ -1764,7 +1758,7 @@ inline bool GetHapticEffectStatus(HapticRef haptic, HapticEffectID effect)
 
 inline bool Haptic::GetEffectStatus(HapticEffectID effect)
 {
-  return SDL::GetHapticEffectStatus(m_resource, effect);
+  return SDL::GetHapticEffectStatus(get(), effect);
 }
 
 /**
@@ -1790,7 +1784,7 @@ inline void SetHapticGain(HapticRef haptic, int gain)
   CheckError(SDL_SetHapticGain(haptic, gain));
 }
 
-inline void Haptic::SetGain(int gain) { SDL::SetHapticGain(m_resource, gain); }
+inline void Haptic::SetGain(int gain) { SDL::SetHapticGain(get(), gain); }
 
 /**
  * Set the global autocenter of the device.
@@ -1815,7 +1809,7 @@ inline void SetHapticAutocenter(HapticRef haptic, int autocenter)
 
 inline void Haptic::SetAutocenter(int autocenter)
 {
-  SDL::SetHapticAutocenter(m_resource, autocenter);
+  SDL::SetHapticAutocenter(get(), autocenter);
 }
 
 /**
@@ -1839,7 +1833,7 @@ inline void PauseHaptic(HapticRef haptic)
   CheckError(SDL_PauseHaptic(haptic));
 }
 
-inline void Haptic::Pause() { SDL::PauseHaptic(m_resource); }
+inline void Haptic::Pause() { SDL::PauseHaptic(get()); }
 
 /**
  * Resume a haptic device.
@@ -1858,7 +1852,7 @@ inline void ResumeHaptic(HapticRef haptic)
   CheckError(SDL_ResumeHaptic(haptic));
 }
 
-inline void Haptic::Resume() { SDL::ResumeHaptic(m_resource); }
+inline void Haptic::Resume() { SDL::ResumeHaptic(get()); }
 
 /**
  * Stop all the currently playing effects on a haptic device.
@@ -1876,7 +1870,7 @@ inline void StopHapticEffects(HapticRef haptic)
   CheckError(SDL_StopHapticEffects(haptic));
 }
 
-inline void Haptic::StopEffects() { SDL::StopHapticEffects(m_resource); }
+inline void Haptic::StopEffects() { SDL::StopHapticEffects(get()); }
 
 /**
  * Check whether rumble is supported on a haptic device.
@@ -1895,7 +1889,7 @@ inline bool HapticRumbleSupported(HapticRef haptic)
 
 inline bool Haptic::RumbleSupported()
 {
-  return SDL::HapticRumbleSupported(m_resource);
+  return SDL::HapticRumbleSupported(get());
 }
 
 /**
@@ -1915,7 +1909,7 @@ inline void InitHapticRumble(HapticRef haptic)
   CheckError(SDL_InitHapticRumble(haptic));
 }
 
-inline void Haptic::InitRumble() { SDL::InitHapticRumble(m_resource); }
+inline void Haptic::InitRumble() { SDL::InitHapticRumble(get()); }
 
 /**
  * Run a simple rumble effect on a haptic device.
@@ -1937,7 +1931,7 @@ inline void PlayHapticRumble(HapticRef haptic, float strength, Uint32 length)
 
 inline void Haptic::PlayRumble(float strength, Uint32 length)
 {
-  SDL::PlayHapticRumble(m_resource, strength, length);
+  SDL::PlayHapticRumble(get(), strength, length);
 }
 
 /**
@@ -1955,7 +1949,7 @@ inline void StopHapticRumble(HapticRef haptic)
   CheckError(SDL_StopHapticRumble(haptic));
 }
 
-inline void Haptic::StopRumble() { SDL::StopHapticRumble(m_resource); }
+inline void Haptic::StopRumble() { SDL::StopHapticRumble(get()); }
 
 /// @}
 

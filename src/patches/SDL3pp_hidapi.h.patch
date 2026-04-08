@@ -249,7 +249,7 @@
   *
   * @since This function is available since SDL 3.2.0.
 @@ -708,6 +690,13 @@
-   return SDL::hid_get_properties(m_resource);
+   return SDL::hid_get_properties(get());
  }
  
 +/**

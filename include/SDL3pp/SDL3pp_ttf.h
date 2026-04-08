@@ -2066,7 +2066,7 @@ inline Font CopyFont(FontRef existing_font)
   return Font(CheckError(TTF_CopyFont(existing_font)));
 }
 
-inline Font Font::Copy() const { return SDL::CopyFont(m_resource); }
+inline Font Font::Copy() const { return SDL::CopyFont(get()); }
 
 /**
  * Get the properties associated with a font.
@@ -2095,7 +2095,7 @@ inline PropertiesRef GetFontProperties(FontRef font)
 
 inline PropertiesRef Font::GetProperties()
 {
-  return SDL::GetFontProperties(m_resource);
+  return SDL::GetFontProperties(get());
 }
 
 /**
@@ -2120,7 +2120,7 @@ inline Uint32 GetFontGeneration(FontRef font)
 
 inline Uint32 Font::GetGeneration() const
 {
-  return SDL::GetFontGeneration(m_resource);
+  return SDL::GetFontGeneration(get());
 }
 
 /**
@@ -2152,7 +2152,7 @@ inline void AddFallbackFont(FontRef font, FontRef fallback)
 
 inline void Font::AddFallback(FontRef fallback)
 {
-  SDL::AddFallbackFont(m_resource, fallback);
+  SDL::AddFallbackFont(get(), fallback);
 }
 
 /**
@@ -2178,7 +2178,7 @@ inline void RemoveFallbackFont(FontRef font, FontRef fallback)
 
 inline void Font::RemoveFallback(FontRef fallback)
 {
-  SDL::RemoveFallbackFont(m_resource, fallback);
+  SDL::RemoveFallbackFont(get(), fallback);
 }
 
 /**
@@ -2198,7 +2198,7 @@ inline void Font::RemoveFallback(FontRef fallback)
  */
 inline void ClearFallbackFonts(FontRef font) { TTF_ClearFallbackFonts(font); }
 
-inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(m_resource); }
+inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(get()); }
 
 /**
  * Set a font's size dynamically.
@@ -2222,10 +2222,7 @@ inline void SetFontSize(FontRef font, float ptsize)
   CheckError(TTF_SetFontSize(font, ptsize));
 }
 
-inline void Font::SetSize(float ptsize)
-{
-  SDL::SetFontSize(m_resource, ptsize);
-}
+inline void Font::SetSize(float ptsize) { SDL::SetFontSize(get(), ptsize); }
 
 /**
  * Set font size dynamically with target resolutions, in dots per inch.
@@ -2254,7 +2251,7 @@ inline void SetFontSizeDPI(FontRef font, float ptsize, int hdpi, int vdpi)
 
 inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
 {
-  SDL::SetFontSizeDPI(m_resource, ptsize, hdpi, vdpi);
+  SDL::SetFontSizeDPI(get(), ptsize, hdpi, vdpi);
 }
 
 /**
@@ -2274,7 +2271,7 @@ inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
  */
 inline float GetFontSize(FontRef font) { return TTF_GetFontSize(font); }
 
-inline float Font::GetSize() const { return SDL::GetFontSize(m_resource); }
+inline float Font::GetSize() const { return SDL::GetFontSize(get()); }
 
 /**
  * Get font target resolutions, in dots per inch.
@@ -2298,7 +2295,7 @@ inline void GetFontDPI(FontRef font, int* hdpi, int* vdpi)
 
 inline void Font::GetDPI(int* hdpi, int* vdpi) const
 {
-  SDL::GetFontDPI(m_resource, hdpi, vdpi);
+  SDL::GetFontDPI(get(), hdpi, vdpi);
 }
 
 /**
@@ -2332,7 +2329,7 @@ inline void SetFontStyle(FontRef font, FontStyleFlags style)
 
 inline void Font::SetStyle(FontStyleFlags style)
 {
-  SDL::SetFontStyle(m_resource, style);
+  SDL::SetFontStyle(get(), style);
 }
 
 /**
@@ -2362,7 +2359,7 @@ inline FontStyleFlags GetFontStyle(FontRef font)
 
 inline FontStyleFlags Font::GetStyle() const
 {
-  return SDL::GetFontStyle(m_resource);
+  return SDL::GetFontStyle(get());
 }
 
 /**
@@ -2393,7 +2390,7 @@ inline void SetFontOutline(FontRef font, int outline)
 
 inline void Font::SetOutline(int outline)
 {
-  SDL::SetFontOutline(m_resource, outline);
+  SDL::SetFontOutline(get(), outline);
 }
 
 /**
@@ -2410,7 +2407,7 @@ inline void Font::SetOutline(int outline)
  */
 inline int GetFontOutline(FontRef font) { return TTF_GetFontOutline(font); }
 
-inline int Font::GetOutline() const { return SDL::GetFontOutline(m_resource); }
+inline int Font::GetOutline() const { return SDL::GetFontOutline(get()); }
 
 /**
  * Set a font's current hinter setting.
@@ -2443,7 +2440,7 @@ inline void SetFontHinting(FontRef font, HintingFlags hinting)
 
 inline void Font::SetHinting(HintingFlags hinting)
 {
-  SDL::SetFontHinting(m_resource, hinting);
+  SDL::SetFontHinting(get(), hinting);
 }
 
 /**
@@ -2458,10 +2455,7 @@ inline void Font::SetHinting(HintingFlags hinting)
  */
 inline int GetNumFontFaces(FontRef font) { return TTF_GetNumFontFaces(font); }
 
-inline int Font::GetNumFaces() const
-{
-  return SDL::GetNumFontFaces(m_resource);
-}
+inline int Font::GetNumFaces() const { return SDL::GetNumFontFaces(get()); }
 
 /**
  * Query a font's current FreeType hinter setting.
@@ -2491,7 +2485,7 @@ inline HintingFlags GetFontHinting(FontRef font)
 
 inline HintingFlags Font::GetHinting() const
 {
-  return SDL::GetFontHinting(m_resource);
+  return SDL::GetFontHinting(get());
 }
 
 /**
@@ -2522,7 +2516,7 @@ inline void SetFontSDF(FontRef font, bool enabled)
   CheckError(TTF_SetFontSDF(font, enabled));
 }
 
-inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(m_resource, enabled); }
+inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(get(), enabled); }
 
 /**
  * Query whether Signed Distance Field rendering is enabled for a font.
@@ -2538,7 +2532,7 @@ inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(m_resource, enabled); }
  */
 inline bool GetFontSDF(FontRef font) { return TTF_GetFontSDF(font); }
 
-inline bool Font::GetSDF() const { return SDL::GetFontSDF(m_resource); }
+inline bool Font::GetSDF() const { return SDL::GetFontSDF(get()); }
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
@@ -2555,7 +2549,7 @@ inline bool Font::GetSDF() const { return SDL::GetFontSDF(m_resource); }
  */
 inline int GetFontWeight(FontRef font) { return TTF_GetFontWeight(font); }
 
-inline int Font::GetWeight() const { return SDL::GetFontWeight(m_resource); }
+inline int Font::GetWeight() const { return SDL::GetFontWeight(get()); }
 
 constexpr int FONT_WEIGHT_THIN =
   TTF_FONT_WEIGHT_THIN; ///< Thin (100) named font weight value
@@ -2611,7 +2605,7 @@ inline void SetFontWrapAlignment(FontRef font, HorizontalAlignment align)
 
 inline void Font::SetWrapAlignment(HorizontalAlignment align)
 {
-  SDL::SetFontWrapAlignment(m_resource, align);
+  SDL::SetFontWrapAlignment(get(), align);
 }
 
 /**
@@ -2633,7 +2627,7 @@ inline HorizontalAlignment GetFontWrapAlignment(FontRef font)
 
 inline HorizontalAlignment Font::GetWrapAlignment() const
 {
-  return SDL::GetFontWrapAlignment(m_resource);
+  return SDL::GetFontWrapAlignment(get());
 }
 
 /**
@@ -2650,7 +2644,7 @@ inline HorizontalAlignment Font::GetWrapAlignment() const
  */
 inline int GetFontHeight(FontRef font) { return TTF_GetFontHeight(font); }
 
-inline int Font::GetHeight() const { return SDL::GetFontHeight(m_resource); }
+inline int Font::GetHeight() const { return SDL::GetFontHeight(get()); }
 
 /**
  * Query the offset from the baseline to the top of a font.
@@ -2666,7 +2660,7 @@ inline int Font::GetHeight() const { return SDL::GetFontHeight(m_resource); }
  */
 inline int GetFontAscent(FontRef font) { return TTF_GetFontAscent(font); }
 
-inline int Font::GetAscent() const { return SDL::GetFontAscent(m_resource); }
+inline int Font::GetAscent() const { return SDL::GetFontAscent(get()); }
 
 /**
  * Query the offset from the baseline to the bottom of a font.
@@ -2682,7 +2676,7 @@ inline int Font::GetAscent() const { return SDL::GetFontAscent(m_resource); }
  */
 inline int GetFontDescent(FontRef font) { return TTF_GetFontDescent(font); }
 
-inline int Font::GetDescent() const { return SDL::GetFontDescent(m_resource); }
+inline int Font::GetDescent() const { return SDL::GetFontDescent(get()); }
 
 /**
  * Set the spacing between lines of text for a font.
@@ -2706,7 +2700,7 @@ inline void SetFontLineSkip(FontRef font, int lineskip)
 
 inline void Font::SetLineSkip(int lineskip)
 {
-  SDL::SetFontLineSkip(m_resource, lineskip);
+  SDL::SetFontLineSkip(get(), lineskip);
 }
 
 /**
@@ -2723,10 +2717,7 @@ inline void Font::SetLineSkip(int lineskip)
  */
 inline int GetFontLineSkip(FontRef font) { return TTF_GetFontLineSkip(font); }
 
-inline int Font::GetLineSkip() const
-{
-  return SDL::GetFontLineSkip(m_resource);
-}
+inline int Font::GetLineSkip() const { return SDL::GetFontLineSkip(get()); }
 
 /**
  * Set if kerning is enabled for a font.
@@ -2755,7 +2746,7 @@ inline void SetFontKerning(FontRef font, bool enabled)
 
 inline void Font::SetKerning(bool enabled)
 {
-  SDL::SetFontKerning(m_resource, enabled);
+  SDL::SetFontKerning(get(), enabled);
 }
 
 /**
@@ -2772,7 +2763,7 @@ inline void Font::SetKerning(bool enabled)
  */
 inline bool GetFontKerning(FontRef font) { return TTF_GetFontKerning(font); }
 
-inline bool Font::GetKerning() const { return SDL::GetFontKerning(m_resource); }
+inline bool Font::GetKerning() const { return SDL::GetFontKerning(get()); }
 
 /**
  * Query whether a font is fixed-width.
@@ -2795,10 +2786,7 @@ inline bool FontIsFixedWidth(FontRef font)
   return TTF_FontIsFixedWidth(font);
 }
 
-inline bool Font::IsFixedWidth() const
-{
-  return SDL::FontIsFixedWidth(m_resource);
-}
+inline bool Font::IsFixedWidth() const { return SDL::FontIsFixedWidth(get()); }
 
 /**
  * Query whether a font is scalable or not.
@@ -2816,7 +2804,7 @@ inline bool Font::IsFixedWidth() const
  */
 inline bool FontIsScalable(FontRef font) { return TTF_FontIsScalable(font); }
 
-inline bool Font::IsScalable() const { return SDL::FontIsScalable(m_resource); }
+inline bool Font::IsScalable() const { return SDL::FontIsScalable(get()); }
 
 /**
  * Query a font's family name.
@@ -2841,7 +2829,7 @@ inline const char* GetFontFamilyName(FontRef font)
 
 inline const char* Font::GetFamilyName() const
 {
-  return SDL::GetFontFamilyName(m_resource);
+  return SDL::GetFontFamilyName(get());
 }
 
 /**
@@ -2867,7 +2855,7 @@ inline const char* GetFontStyleName(FontRef font)
 
 inline const char* Font::GetStyleName() const
 {
-  return SDL::GetFontStyleName(m_resource);
+  return SDL::GetFontStyleName(get());
 }
 
 /**
@@ -2894,7 +2882,7 @@ inline void SetFontDirection(FontRef font, Direction direction)
 
 inline void Font::SetDirection(Direction direction)
 {
-  SDL::SetFontDirection(m_resource, direction);
+  SDL::SetFontDirection(get(), direction);
 }
 
 /**
@@ -2917,7 +2905,7 @@ inline Direction GetFontDirection(FontRef font)
 
 inline Direction Font::GetDirection() const
 {
-  return SDL::GetFontDirection(m_resource);
+  return SDL::GetFontDirection(get());
 }
 
 /**
@@ -2983,7 +2971,7 @@ inline void SetFontScript(FontRef font, Uint32 script)
 
 inline void Font::SetScript(Uint32 script)
 {
-  SDL::SetFontScript(m_resource, script);
+  SDL::SetFontScript(get(), script);
 }
 
 /**
@@ -3003,7 +2991,7 @@ inline void Font::SetScript(Uint32 script)
  */
 inline Uint32 GetFontScript(FontRef font) { return TTF_GetFontScript(font); }
 
-inline Uint32 Font::GetScript() const { return SDL::GetFontScript(m_resource); }
+inline Uint32 Font::GetScript() const { return SDL::GetFontScript(get()); }
 
 /**
  * Get the script used by a 32-bit codepoint.
@@ -3053,7 +3041,7 @@ inline void SetFontLanguage(FontRef font, StringParam language_bcp47)
 
 inline void Font::SetLanguage(StringParam language_bcp47)
 {
-  SDL::SetFontLanguage(m_resource, std::move(language_bcp47));
+  SDL::SetFontLanguage(get(), std::move(language_bcp47));
 }
 
 /**
@@ -3075,7 +3063,7 @@ inline bool FontHasGlyph(FontRef font, Uint32 ch)
 
 inline bool Font::HasGlyph(Uint32 ch) const
 {
-  return SDL::FontHasGlyph(m_resource, ch);
+  return SDL::FontHasGlyph(get(), ch);
 }
 
 /**
@@ -3100,7 +3088,7 @@ inline Surface GetGlyphImage(FontRef font, Uint32 ch, ImageType* image_type)
 
 inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
 {
-  return SDL::GetGlyphImage(m_resource, ch, image_type);
+  return SDL::GetGlyphImage(get(), ch, image_type);
 }
 
 /**
@@ -3132,7 +3120,7 @@ inline Surface GetGlyphImageForIndex(FontRef font,
 inline Surface Font::GetGlyphImageForIndex(Uint32 glyph_index,
                                            ImageType* image_type) const
 {
-  return SDL::GetGlyphImageForIndex(m_resource, glyph_index, image_type);
+  return SDL::GetGlyphImageForIndex(get(), glyph_index, image_type);
 }
 
 /**
@@ -3181,7 +3169,7 @@ inline void Font::GetGlyphMetrics(Uint32 ch,
                                   int* maxy,
                                   int* advance) const
 {
-  SDL::GetGlyphMetrics(m_resource, ch, minx, maxx, miny, maxy, advance);
+  SDL::GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance);
 }
 
 /**
@@ -3206,7 +3194,7 @@ inline int GetGlyphKerning(FontRef font, Uint32 previous_ch, Uint32 ch)
 
 inline int Font::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
 {
-  return SDL::GetGlyphKerning(m_resource, previous_ch, ch);
+  return SDL::GetGlyphKerning(get(), previous_ch, ch);
 }
 
 /**
@@ -3233,7 +3221,7 @@ inline void GetStringSize(FontRef font, std::string_view text, int* w, int* h)
 
 inline void Font::GetStringSize(std::string_view text, int* w, int* h) const
 {
-  SDL::GetStringSize(m_resource, text, w, h);
+  SDL::GetStringSize(get(), text, w, h);
 }
 
 /**
@@ -3274,7 +3262,7 @@ inline void Font::GetStringSizeWrapped(std::string_view text,
                                        int* w,
                                        int* h) const
 {
-  SDL::GetStringSizeWrapped(m_resource, text, wrap_width, w, h);
+  SDL::GetStringSizeWrapped(get(), text, wrap_width, w, h);
 }
 
 /**
@@ -3319,8 +3307,7 @@ inline void Font::MeasureString(std::string_view text,
                                 int* measured_width,
                                 size_t* measured_length) const
 {
-  SDL::MeasureString(
-    m_resource, text, max_width, measured_width, measured_length);
+  SDL::MeasureString(get(), text, max_width, measured_width, measured_length);
 }
 
 /**
@@ -3363,7 +3350,7 @@ inline Surface RenderText_Solid(FontRef font, std::string_view text, Color fg)
 
 inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
 {
-  return SDL::RenderText_Solid(m_resource, text, fg);
+  return SDL::RenderText_Solid(get(), text, fg);
 }
 
 /**
@@ -3411,7 +3398,7 @@ inline Surface Font::RenderText_Solid_Wrapped(std::string_view text,
                                               Color fg,
                                               int wrapLength) const
 {
-  return SDL::RenderText_Solid_Wrapped(m_resource, text, fg, wrapLength);
+  return SDL::RenderText_Solid_Wrapped(get(), text, fg, wrapLength);
 }
 
 /**
@@ -3448,7 +3435,7 @@ inline Surface RenderGlyph_Solid(FontRef font, Uint32 ch, ColorRaw fg)
 
 inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
 {
-  return SDL::RenderGlyph_Solid(m_resource, ch, fg);
+  return SDL::RenderGlyph_Solid(get(), ch, fg);
 }
 
 /**
@@ -3497,7 +3484,7 @@ inline Surface Font::RenderText_Shaded(std::string_view text,
                                        Color fg,
                                        Color bg) const
 {
-  return SDL::RenderText_Shaded(m_resource, text, fg, bg);
+  return SDL::RenderText_Shaded(get(), text, fg, bg);
 }
 
 /**
@@ -3549,7 +3536,7 @@ inline Surface Font::RenderText_Shaded_Wrapped(std::string_view text,
                                                Color bg,
                                                int wrap_width) const
 {
-  return SDL::RenderText_Shaded_Wrapped(m_resource, text, fg, bg, wrap_width);
+  return SDL::RenderText_Shaded_Wrapped(get(), text, fg, bg, wrap_width);
 }
 
 /**
@@ -3593,7 +3580,7 @@ inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
                                         ColorRaw fg,
                                         ColorRaw bg) const
 {
-  return SDL::RenderGlyph_Shaded(m_resource, ch, fg, bg);
+  return SDL::RenderGlyph_Shaded(get(), ch, fg, bg);
 }
 
 /**
@@ -3635,7 +3622,7 @@ inline Surface RenderText_Blended(FontRef font, std::string_view text, Color fg)
 
 inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
 {
-  return SDL::RenderText_Blended(m_resource, text, fg);
+  return SDL::RenderText_Blended(get(), text, fg);
 }
 
 /**
@@ -3683,7 +3670,7 @@ inline Surface Font::RenderText_Blended_Wrapped(std::string_view text,
                                                 Color fg,
                                                 int wrap_width) const
 {
-  return SDL::RenderText_Blended_Wrapped(m_resource, text, fg, wrap_width);
+  return SDL::RenderText_Blended_Wrapped(get(), text, fg, wrap_width);
 }
 
 /**
@@ -3720,7 +3707,7 @@ inline Surface RenderGlyph_Blended(FontRef font, Uint32 ch, ColorRaw fg)
 
 inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
 {
-  return SDL::RenderGlyph_Blended(m_resource, ch, fg);
+  return SDL::RenderGlyph_Blended(get(), ch, fg);
 }
 
 /**
@@ -3768,7 +3755,7 @@ inline Surface Font::RenderText_LCD(std::string_view text,
                                     Color fg,
                                     Color bg) const
 {
-  return SDL::RenderText_LCD(m_resource, text, fg, bg);
+  return SDL::RenderText_LCD(get(), text, fg, bg);
 }
 
 /**
@@ -3819,7 +3806,7 @@ inline Surface Font::RenderText_LCD_Wrapped(std::string_view text,
                                             Color bg,
                                             int wrap_width) const
 {
-  return SDL::RenderText_LCD_Wrapped(m_resource, text, fg, bg, wrap_width);
+  return SDL::RenderText_LCD_Wrapped(get(), text, fg, bg, wrap_width);
 }
 
 /**
@@ -3861,7 +3848,7 @@ inline Surface RenderGlyph_LCD(FontRef font,
 
 inline Surface Font::RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const
 {
-  return SDL::RenderGlyph_LCD(m_resource, ch, fg, bg);
+  return SDL::RenderGlyph_LCD(get(), ch, fg, bg);
 }
 
 /**
@@ -5337,7 +5324,7 @@ inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceRef surface)
 
 inline void Text::DrawSurface(Point p, SurfaceRef surface) const
 {
-  SDL::DrawSurfaceText(m_resource, p, surface);
+  SDL::DrawSurfaceText(get(), p, surface);
 }
 
 /**
@@ -5470,7 +5457,7 @@ inline void DrawRendererText(TextConstRef text, FPoint p)
 
 inline void Text::DrawRenderer(FPoint p) const
 {
-  SDL::DrawRendererText(m_resource, p);
+  SDL::DrawRendererText(get(), p);
 }
 
 /**
@@ -5607,7 +5594,7 @@ inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstRef text)
 
 inline GPUAtlasDrawSequence* Text::GetGPUDrawData() const
 {
-  return SDL::GetGPUTextDrawData(m_resource);
+  return SDL::GetGPUTextDrawData(get());
 }
 
 /**
@@ -5710,7 +5697,7 @@ inline Text CreateText(TextEngineRef engine,
 
 inline Text TextEngine::CreateText(FontRef font, std::string_view text)
 {
-  return Text(m_resource, font, text);
+  return Text(get(), font, text);
 }
 
 inline Text::Text(TextEngineRef engine, FontRef font, std::string_view text)
@@ -5737,7 +5724,7 @@ inline PropertiesRef GetTextProperties(TextConstRef text)
 
 inline PropertiesRef Text::GetProperties() const
 {
-  return SDL::GetTextProperties(m_resource);
+  return SDL::GetTextProperties(get());
 }
 
 /**
@@ -5763,7 +5750,7 @@ inline void SetTextEngine(TextRef text, TextEngineRef engine)
 
 inline void Text::SetEngine(TextEngineRef engine)
 {
-  SDL::SetTextEngine(m_resource, engine);
+  SDL::SetTextEngine(get(), engine);
 }
 
 /**
@@ -5787,7 +5774,7 @@ inline TextEngineRef GetTextEngine(TextConstRef text)
 
 inline TextEngineRef Text::GetEngine() const
 {
-  return SDL::GetTextEngine(m_resource);
+  return SDL::GetTextEngine(get());
 }
 
 /**
@@ -5818,7 +5805,7 @@ inline bool SetTextFont(TextRef text, FontRef font)
 
 inline bool Text::SetFont(FontRef font)
 {
-  return SDL::SetTextFont(m_resource, font);
+  return SDL::SetTextFont(get(), font);
 }
 
 /**
@@ -5840,7 +5827,7 @@ inline FontRef GetTextFont(TextConstRef text)
   return {CheckError(TTF_GetTextFont(text))};
 }
 
-inline FontRef Text::GetFont() const { return SDL::GetTextFont(m_resource); }
+inline FontRef Text::GetFont() const { return SDL::GetTextFont(get()); }
 
 /**
  * Set the direction to be used for text shaping a text object.
@@ -5864,7 +5851,7 @@ inline void SetTextDirection(TextRef text, Direction direction)
 
 inline void Text::SetDirection(Direction direction)
 {
-  SDL::SetTextDirection(m_resource, direction);
+  SDL::SetTextDirection(get(), direction);
 }
 
 /**
@@ -5887,7 +5874,7 @@ inline Direction GetTextDirection(TextConstRef text)
 
 inline Direction Text::GetDirection() const
 {
-  return SDL::GetTextDirection(m_resource);
+  return SDL::GetTextDirection(get());
 }
 
 /**
@@ -5914,7 +5901,7 @@ inline void SetTextScript(TextRef text, Uint32 script)
 
 inline void Text::SetScript(Uint32 script)
 {
-  SDL::SetTextScript(m_resource, script);
+  SDL::SetTextScript(get(), script);
 }
 
 /**
@@ -5939,7 +5926,7 @@ inline Uint32 GetTextScript(TextConstRef text)
   return TTF_GetTextScript(text);
 }
 
-inline Uint32 Text::GetScript() const { return SDL::GetTextScript(m_resource); }
+inline Uint32 Text::GetScript() const { return SDL::GetTextScript(get()); }
 
 /**
  * Set the color of a text object.
@@ -5963,7 +5950,7 @@ inline void SetTextColor(TextRef text, Color c)
   CheckError(TTF_SetTextColor(text, c.r, c.g, c.b, c.a));
 }
 
-inline void Text::SetColor(Color c) { SDL::SetTextColor(m_resource, c); }
+inline void Text::SetColor(Color c) { SDL::SetTextColor(get(), c); }
 
 /**
  * Set the color of a text object.
@@ -5987,10 +5974,7 @@ inline void SetTextColorFloat(TextRef text, FColor c)
   CheckError(TTF_SetTextColorFloat(text, c.r, c.g, c.b, c.a));
 }
 
-inline void Text::SetColorFloat(FColor c)
-{
-  SDL::SetTextColorFloat(m_resource, c);
-}
+inline void Text::SetColorFloat(FColor c) { SDL::SetTextColorFloat(get(), c); }
 
 /**
  * Get the color of a text object.
@@ -6047,10 +6031,10 @@ inline Color GetTextColor(TextRef text)
 
 inline void Text::GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
 {
-  SDL::GetTextColor(m_resource, r, g, b, a);
+  SDL::GetTextColor(get(), r, g, b, a);
 }
 
-inline Color Text::GetColor() const { return SDL::GetTextColor(m_resource); }
+inline Color Text::GetColor() const { return SDL::GetTextColor(get()); }
 
 /**
  * Get the color of a text object.
@@ -6107,12 +6091,12 @@ inline FColor GetTextColorFloat(TextRef text)
 
 inline void Text::GetColorFloat(float* r, float* g, float* b, float* a) const
 {
-  SDL::GetTextColorFloat(m_resource, r, g, b, a);
+  SDL::GetTextColorFloat(get(), r, g, b, a);
 }
 
 inline FColor Text::GetColorFloat() const
 {
-  return SDL::GetTextColorFloat(m_resource);
+  return SDL::GetTextColorFloat(get());
 }
 
 /**
@@ -6141,7 +6125,7 @@ inline void SetTextPosition(TextRef text, const PointRaw& p)
 
 inline void Text::SetPosition(const PointRaw& p)
 {
-  SDL::SetTextPosition(m_resource, p);
+  SDL::SetTextPosition(get(), p);
 }
 
 /**
@@ -6190,13 +6174,10 @@ inline Point GetTextPosition(TextRef text)
 
 inline void Text::GetPosition(int* x, int* y) const
 {
-  SDL::GetTextPosition(m_resource, x, y);
+  SDL::GetTextPosition(get(), x, y);
 }
 
-inline Point Text::GetPosition() const
-{
-  return SDL::GetTextPosition(m_resource);
-}
+inline Point Text::GetPosition() const { return SDL::GetTextPosition(get()); }
 
 /**
  * Set whether wrapping is enabled on a text object.
@@ -6222,7 +6203,7 @@ inline void SetTextWrapWidth(TextRef text, int wrap_width)
 
 inline void Text::SetWrapWidth(int wrap_width)
 {
-  SDL::SetTextWrapWidth(m_resource, wrap_width);
+  SDL::SetTextWrapWidth(get(), wrap_width);
 }
 
 /**
@@ -6247,10 +6228,7 @@ inline int GetTextWrapWidth(TextConstRef text)
   return w;
 }
 
-inline int Text::GetWrapWidth() const
-{
-  return SDL::GetTextWrapWidth(m_resource);
-}
+inline int Text::GetWrapWidth() const { return SDL::GetTextWrapWidth(get()); }
 
 /**
  * Set whether whitespace should be visible when wrapping a text object.
@@ -6279,7 +6257,7 @@ inline void SetTextWrapWhitespaceVisible(TextRef text, bool visible)
 
 inline void Text::SetWrapWhitespaceVisible(bool visible)
 {
-  SDL::SetTextWrapWhitespaceVisible(m_resource, visible);
+  SDL::SetTextWrapWhitespaceVisible(get(), visible);
 }
 
 /**
@@ -6302,7 +6280,7 @@ inline bool TextWrapWhitespaceVisible(TextConstRef text)
 
 inline bool Text::IsWrapWhitespaceVisible() const
 {
-  return SDL::TextWrapWhitespaceVisible(m_resource);
+  return SDL::TextWrapWhitespaceVisible(get());
 }
 
 /**
@@ -6330,7 +6308,7 @@ inline void SetTextString(TextRef text, std::string_view string)
 
 inline void Text::SetString(std::string_view string)
 {
-  SDL::SetTextString(m_resource, string);
+  SDL::SetTextString(get(), string);
 }
 
 /**
@@ -6362,7 +6340,7 @@ inline void InsertTextString(TextRef text, int offset, std::string_view string)
 
 inline void Text::InsertString(int offset, std::string_view string)
 {
-  SDL::InsertTextString(m_resource, offset, string);
+  SDL::InsertTextString(get(), offset, string);
 }
 
 /**
@@ -6390,7 +6368,7 @@ inline void AppendTextString(TextRef text, std::string_view string)
 
 inline void Text::AppendString(std::string_view string)
 {
-  SDL::AppendTextString(m_resource, string);
+  SDL::AppendTextString(get(), string);
 }
 
 /**
@@ -6423,7 +6401,7 @@ inline void DeleteTextString(TextRef text, int offset, int length)
 
 inline void Text::DeleteString(int offset, int length)
 {
-  SDL::DeleteTextString(m_resource, offset, length);
+  SDL::DeleteTextString(get(), offset, length);
 }
 
 /**
@@ -6472,10 +6450,10 @@ inline Point GetTextSize(TextRef text)
 
 inline void Text::GetSize(int* w, int* h) const
 {
-  SDL::GetTextSize(m_resource, w, h);
+  SDL::GetTextSize(get(), w, h);
 }
 
-inline Point Text::GetSize() const { return SDL::GetTextSize(m_resource); }
+inline Point Text::GetSize() const { return SDL::GetTextSize(get()); }
 
 /**
  * Get the substring of a text object that surrounds a text offset.
@@ -6506,7 +6484,7 @@ inline void GetTextSubString(TextConstRef text,
 
 inline void Text::GetSubString(int offset, SubString* substring) const
 {
-  SDL::GetTextSubString(m_resource, offset, substring);
+  SDL::GetTextSubString(get(), offset, substring);
 }
 
 /**
@@ -6537,7 +6515,7 @@ inline void GetTextSubStringForLine(TextConstRef text,
 
 inline void Text::GetSubStringForLine(int line, SubString* substring) const
 {
-  SDL::GetTextSubStringForLine(m_resource, line, substring);
+  SDL::GetTextSubStringForLine(get(), line, substring);
 }
 
 /**
@@ -6567,7 +6545,7 @@ inline OwnArray<SubString*> GetTextSubStringsForRange(TextConstRef text,
 inline OwnArray<SubString*> Text::GetSubStringsForRange(int offset,
                                                         int length) const
 {
-  return SDL::GetTextSubStringsForRange(m_resource, offset, length);
+  return SDL::GetTextSubStringsForRange(get(), offset, length);
 }
 
 /**
@@ -6596,7 +6574,7 @@ inline void GetTextSubStringForPoint(TextConstRef text,
 
 inline void Text::GetSubStringForPoint(Point p, SubString* substring) const
 {
-  SDL::GetTextSubStringForPoint(m_resource, p, substring);
+  SDL::GetTextSubStringForPoint(get(), p, substring);
 }
 
 /**
@@ -6626,7 +6604,7 @@ inline void GetPreviousTextSubString(TextConstRef text,
 inline void Text::GetPreviousSubString(const SubString& substring,
                                        SubString* previous) const
 {
-  SDL::GetPreviousTextSubString(m_resource, substring, previous);
+  SDL::GetPreviousTextSubString(get(), substring, previous);
 }
 
 /**
@@ -6655,7 +6633,7 @@ inline void GetNextTextSubString(TextConstRef text,
 inline void Text::GetNextSubString(const SubString& substring,
                                    SubString* next) const
 {
-  SDL::GetNextTextSubString(m_resource, substring, next);
+  SDL::GetNextTextSubString(get(), substring, next);
 }
 
 /**
@@ -6675,7 +6653,7 @@ inline void Text::GetNextSubString(const SubString& substring,
  */
 inline void UpdateText(TextRef text) { CheckError(TTF_UpdateText(text)); }
 
-inline void Text::Update() { SDL::UpdateText(m_resource); }
+inline void Text::Update() { SDL::UpdateText(get()); }
 
 /**
  * Destroy a text object created by a text engine.

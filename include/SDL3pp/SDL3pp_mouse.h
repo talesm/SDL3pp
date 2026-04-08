@@ -755,7 +755,7 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
 
 inline void Window::WarpMouse(const FPointRaw& p)
 {
-  SDL_WarpMouseInWindow(m_resource, p.x, p.y);
+  SDL_WarpMouseInWindow(get(), p.x, p.y);
 }
 
 /**
@@ -829,12 +829,12 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
 
 inline void Window::SetRelativeMouseMode(bool enabled)
 {
-  CheckError(SDL_SetWindowRelativeMouseMode(m_resource, enabled));
+  CheckError(SDL_SetWindowRelativeMouseMode(get(), enabled));
 }
 
 inline bool Window::GetRelativeMouseMode() const
 {
-  return SDL_GetWindowRelativeMouseMode(m_resource);
+  return SDL_GetWindowRelativeMouseMode(get());
 }
 
 /**
@@ -1081,7 +1081,7 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  */
 inline void SetCursor(CursorRef cursor) { CheckError(SDL_SetCursor(cursor)); }
 
-inline void Cursor::Set() { SDL::SetCursor(m_resource); }
+inline void Cursor::Set() { SDL::SetCursor(get()); }
 
 /**
  * Get the active cursor.

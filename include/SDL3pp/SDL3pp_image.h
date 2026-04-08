@@ -3099,17 +3099,14 @@ struct AnimationRef : Animation
 /// Get the width in pixels.
 inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
 
-inline int Animation::GetWidth() const
-{
-  return SDL::GetAnimationWidth(m_resource);
-}
+inline int Animation::GetWidth() const { return SDL::GetAnimationWidth(get()); }
 
 /// Get the height in pixels.
 inline int GetAnimationHeight(AnimationConstRef anim) { return anim->h; }
 
 inline int Animation::GetHeight() const
 {
-  return SDL::GetAnimationHeight(m_resource);
+  return SDL::GetAnimationHeight(get());
 }
 
 /// Get the size in pixels.
@@ -3118,18 +3115,12 @@ inline Point GetAnimationSize(AnimationConstRef anim)
   return {anim->w, anim->h};
 }
 
-inline Point Animation::GetSize() const
-{
-  return SDL::GetAnimationSize(m_resource);
-}
+inline Point Animation::GetSize() const { return SDL::GetAnimationSize(get()); }
 
 /// Return the number of frames.
 inline int GetAnimationCount(AnimationConstRef anim) { return anim->count; }
 
-inline int Animation::GetCount() const
-{
-  return SDL::GetAnimationCount(m_resource);
-}
+inline int Animation::GetCount() const { return SDL::GetAnimationCount(get()); }
 
 /**
  * Return the frame image under given index.
@@ -3144,7 +3135,7 @@ inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
 
 inline Surface Animation::GetFrame(int index) const
 {
-  return SDL::GetAnimationFrame(m_resource, index);
+  return SDL::GetAnimationFrame(get(), index);
 }
 
 /**
@@ -3160,7 +3151,7 @@ inline int GetAnimationDelay(AnimationConstRef anim, int index)
 
 inline int Animation::GetDelay(int index) const
 {
-  return SDL::GetAnimationDelay(m_resource, index);
+  return SDL::GetAnimationDelay(get(), index);
 }
 
 /**
@@ -3452,7 +3443,7 @@ inline void SaveAnimation(AnimationRef anim, StringParam file)
 
 inline void Animation::Save(StringParam file)
 {
-  SDL::SaveAnimation(m_resource, std::move(file));
+  SDL::SaveAnimation(get(), std::move(file));
 }
 
 /**
@@ -3493,7 +3484,7 @@ inline void Animation::SaveTyped_IO(IOStreamRef dst,
                                     StringParam type,
                                     bool closeio)
 {
-  SDL::SaveAnimationTyped_IO(m_resource, dst, std::move(type), closeio);
+  SDL::SaveAnimationTyped_IO(get(), dst, std::move(type), closeio);
 }
 
 /**
@@ -3526,7 +3517,7 @@ inline void SaveANIAnimation_IO(AnimationRef anim,
 
 inline void Animation::SaveANI_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveANIAnimation_IO(m_resource, dst, closeio);
+  SDL::SaveANIAnimation_IO(get(), dst, closeio);
 }
 
 /**
@@ -3559,7 +3550,7 @@ inline void SaveAPNGAnimation_IO(AnimationRef anim,
 
 inline void Animation::SaveAPNG_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveAPNGAnimation_IO(m_resource, dst, closeio);
+  SDL::SaveAPNGAnimation_IO(get(), dst, closeio);
 }
 
 /**
@@ -3595,7 +3586,7 @@ inline void SaveAVIFAnimation_IO(AnimationRef anim,
 
 inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
 {
-  SDL::SaveAVIFAnimation_IO(m_resource, dst, quality, closeio);
+  SDL::SaveAVIFAnimation_IO(get(), dst, quality, closeio);
 }
 
 /**
@@ -3628,7 +3619,7 @@ inline void SaveGIFAnimation_IO(AnimationRef anim,
 
 inline void Animation::SaveGIF_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveGIFAnimation_IO(m_resource, dst, closeio);
+  SDL::SaveGIFAnimation_IO(get(), dst, closeio);
 }
 
 /**
@@ -3666,7 +3657,7 @@ inline void SaveWEBPAnimation_IO(AnimationRef anim,
 
 inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
 {
-  SDL::SaveWEBPAnimation_IO(m_resource, dst, quality, closeio);
+  SDL::SaveWEBPAnimation_IO(get(), dst, quality, closeio);
 }
 
 /**
@@ -3691,7 +3682,7 @@ inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
 
 inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
 {
-  return SDL::CreateAnimatedCursor(m_resource, hotspot);
+  return SDL::CreateAnimatedCursor(get(), hotspot);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -4206,7 +4197,7 @@ inline void AddAnimationEncoderFrame(AnimationEncoderRef encoder,
 
 inline void AnimationEncoder::AddFrame(SurfaceRef surface, Uint64 duration)
 {
-  SDL::AddAnimationEncoderFrame(m_resource, surface, duration);
+  SDL::AddAnimationEncoderFrame(get(), surface, duration);
 }
 
 /**
@@ -4767,7 +4758,7 @@ inline PropertiesRef GetAnimationDecoderProperties(AnimationDecoderRef decoder)
 
 inline PropertiesRef AnimationDecoder::GetProperties()
 {
-  return SDL::GetAnimationDecoderProperties(m_resource);
+  return SDL::GetAnimationDecoderProperties(get());
 }
 
 /**
@@ -4829,7 +4820,7 @@ inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
 
 inline Surface AnimationDecoder::GetFrame(Uint64* duration)
 {
-  return SDL::GetAnimationDecoderFrame(m_resource, duration);
+  return SDL::GetAnimationDecoderFrame(get(), duration);
 }
 
 /**
@@ -4851,7 +4842,7 @@ inline AnimationDecoderStatus GetAnimationDecoderStatus(
 
 inline AnimationDecoderStatus AnimationDecoder::GetStatus()
 {
-  return SDL::GetAnimationDecoderStatus(m_resource);
+  return SDL::GetAnimationDecoderStatus(get());
 }
 
 /**
@@ -4877,10 +4868,7 @@ inline void ResetAnimationDecoder(AnimationDecoderRef decoder)
   CheckError(IMG_ResetAnimationDecoder(decoder));
 }
 
-inline void AnimationDecoder::Reset()
-{
-  SDL::ResetAnimationDecoder(m_resource);
-}
+inline void AnimationDecoder::Reset() { SDL::ResetAnimationDecoder(get()); }
 
 /**
  * Close an animation decoder, finishing any decoding.

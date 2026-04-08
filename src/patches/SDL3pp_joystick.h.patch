@@ -165,7 +165,7 @@
  }
  
  inline void Joystick::SetVirtualTouchpad(int touchpad,
-@@ -2055,7 +2054,7 @@
+@@ -2054,7 +2053,7 @@
   */
  inline PropertiesRef GetJoystickProperties(JoystickRef joystick)
  {
@@ -174,8 +174,8 @@
  }
  
  inline PropertiesRef Joystick::GetProperties()
-@@ -2063,6 +2062,16 @@
-   return SDL::GetJoystickProperties(m_resource);
+@@ -2062,6 +2061,16 @@
+   return SDL::GetJoystickProperties(get());
  }
  
 +/**

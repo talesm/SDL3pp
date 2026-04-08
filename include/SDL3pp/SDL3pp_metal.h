@@ -286,7 +286,7 @@ inline void* Metal_GetLayer(MetalViewRef view)
   return SDL_Metal_GetLayer(view);
 }
 
-inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(m_resource); }
+inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(get()); }
 
 /// @}
 

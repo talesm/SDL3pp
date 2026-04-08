@@ -111,8 +111,8 @@
  
  inline void Window::WarpMouse(const FPointRaw& p)
  {
--  SDL_WarpMouseInWindow(m_resource, p);
-+  SDL_WarpMouseInWindow(m_resource, p.x, p.y);
+-  SDL_WarpMouseInWindow(get(), p);
++  SDL_WarpMouseInWindow(get(), p.x, p.y);
  }
  
  /**

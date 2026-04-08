@@ -1254,7 +1254,7 @@ inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 
 inline const char* Environment::GetVariable(StringParam name)
 {
-  return SDL::GetEnvironmentVariable(m_resource, std::move(name));
+  return SDL::GetEnvironmentVariable(get(), std::move(name));
 }
 
 /**
@@ -1283,7 +1283,7 @@ inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
 
 inline OwnArray<char*> Environment::GetVariables()
 {
-  return SDL::GetEnvironmentVariables(m_resource);
+  return SDL::GetEnvironmentVariables(get());
 }
 
 /**
@@ -1319,7 +1319,7 @@ inline void Environment::SetVariable(StringParam name,
                                      bool overwrite)
 {
   SDL::SetEnvironmentVariable(
-    m_resource, std::move(name), std::move(value), overwrite);
+    get(), std::move(name), std::move(value), overwrite);
 }
 
 /**
@@ -1347,7 +1347,7 @@ inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 
 inline void Environment::UnsetVariable(StringParam name)
 {
-  SDL::UnsetEnvironmentVariable(m_resource, std::move(name));
+  SDL::UnsetEnvironmentVariable(get(), std::move(name));
 }
 
 /**
@@ -6237,7 +6237,7 @@ inline size_t IConv::iconv(const char** inbuf,
                            char** outbuf,
                            size_t* outbytesleft) const
 {
-  return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
+  return SDL::iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
 }
 
 constexpr size_t ICONV_ERROR =

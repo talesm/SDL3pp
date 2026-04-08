@@ -885,7 +885,7 @@ inline CameraPermissionState GetCameraPermissionState(CameraRef camera)
 
 inline CameraPermissionState Camera::GetPermissionState()
 {
-  return SDL::GetCameraPermissionState(m_resource);
+  return SDL::GetCameraPermissionState(get());
 }
 
 /**
@@ -906,7 +906,7 @@ inline CameraID GetCameraID(CameraRef camera)
   return CheckError(SDL_GetCameraID(camera));
 }
 
-inline CameraID Camera::GetID() { return SDL::GetCameraID(m_resource); }
+inline CameraID Camera::GetID() { return SDL::GetCameraID(get()); }
 
 /**
  * Get the properties associated with an opened camera.
@@ -926,7 +926,7 @@ inline PropertiesRef GetCameraProperties(CameraRef camera)
 
 inline PropertiesRef Camera::GetProperties()
 {
-  return SDL::GetCameraProperties(m_resource);
+  return SDL::GetCameraProperties(get());
 }
 
 /**
@@ -958,7 +958,7 @@ inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
 
 inline std::optional<CameraSpec> Camera::GetFormat()
 {
-  return SDL::GetCameraFormat(m_resource);
+  return SDL::GetCameraFormat(get());
 }
 
 /**

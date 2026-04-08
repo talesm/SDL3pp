@@ -315,7 +315,7 @@ inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
 
 inline FunctionPointer SharedObject::LoadFunction(StringParam name)
 {
-  return SDL::LoadFunction(m_resource, std::move(name));
+  return SDL::LoadFunction(get(), std::move(name));
 }
 
 /**

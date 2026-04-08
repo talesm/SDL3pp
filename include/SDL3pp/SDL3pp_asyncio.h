@@ -881,7 +881,7 @@ inline Sint64 GetAsyncIOSize(AsyncIORef asyncio)
   return CheckError(SDL_GetAsyncIOSize(asyncio));
 }
 
-inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(m_resource); }
+inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(get()); }
 
 /**
  * Start an async read.
@@ -934,7 +934,7 @@ inline void AsyncIO::Read(void* ptr,
                           AsyncIOQueueRef queue,
                           void* userdata)
 {
-  SDL::ReadAsyncIO(m_resource, ptr, offset, size, queue, userdata);
+  SDL::ReadAsyncIO(get(), ptr, offset, size, queue, userdata);
 }
 
 /**
@@ -987,7 +987,7 @@ inline void AsyncIO::Write(void* ptr,
                            AsyncIOQueueRef queue,
                            void* userdata)
 {
-  SDL::WriteAsyncIO(m_resource, ptr, offset, size, queue, userdata);
+  SDL::WriteAsyncIO(get(), ptr, offset, size, queue, userdata);
 }
 
 /**
@@ -1140,7 +1140,7 @@ inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueRef queue)
 
 inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
 {
-  return SDL::GetAsyncIOResult(m_resource);
+  return SDL::GetAsyncIOResult(get());
 }
 
 /**
@@ -1241,12 +1241,12 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue)
 inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult(
   Milliseconds timeout)
 {
-  return SDL::WaitAsyncIOResult(m_resource, timeout);
+  return SDL::WaitAsyncIOResult(get(), timeout);
 }
 
 inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
 {
-  return SDL::WaitAsyncIOResult(m_resource);
+  return SDL::WaitAsyncIOResult(get());
 }
 
 /**
@@ -1276,7 +1276,7 @@ inline void SignalAsyncIOQueue(AsyncIOQueueRef queue)
   SDL_SignalAsyncIOQueue(queue);
 }
 
-inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(m_resource); }
+inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(get()); }
 
 /**
  * Load all the data from a file path, asynchronously.

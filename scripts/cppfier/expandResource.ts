@@ -731,7 +731,7 @@ function populateTargetEntry(
   }
   targetEntry.entries = entries;
   addHints(targetEntry, {
-    self: "m_resource",
+    self: "get()",
     super: "m_resource",
     private: true,
   });

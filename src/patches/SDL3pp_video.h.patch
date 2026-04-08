@@ -813,7 +813,7 @@
  inline void Window::GetSize(int* w, int* h) const
 @@ -5530,16 +5550,43 @@
  
- inline Point Window::GetSize() const { return SDL::GetWindowSize(m_resource); }
+ inline Point Window::GetSize() const { return SDL::GetWindowSize(get()); }
  
 +/**
 + * @brief Request the window's position and size to be set.
@@ -834,7 +834,7 @@
 +  SetWindowSize(window, rect.GetSize());
  }
  
- inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(m_resource, rect); }
+ inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(get(), rect); }
  
 +/**
 + * Get the position and client size of a window.
@@ -856,7 +856,7 @@
 +  return Rect{GetWindowPosition(window), GetWindowSize(window)};
  }
  
- inline Rect Window::GetRect() const { return SDL::GetWindowRect(m_resource); }
+ inline Rect Window::GetRect() const { return SDL::GetWindowRect(get()); }
 @@ -5555,8 +5602,6 @@
   * interactable content.
   *
@@ -939,7 +939,7 @@
  }
  
  inline void Window::SetMaximumSize(const PointRaw& p)
-@@ -6270,7 +6315,7 @@
+@@ -6267,7 +6312,7 @@
   */
  inline Surface GetWindowSurface(WindowRef window)
  {
@@ -947,9 +947,9 @@
 +  return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
  }
  
- inline Surface Window::GetSurface()
-@@ -6311,16 +6356,16 @@
-   SDL::SetWindowSurfaceVSync(m_resource, vsync);
+ inline Surface Window::GetSurface() { return SDL::GetWindowSurface(get()); }
+@@ -6305,16 +6350,16 @@
+   SDL::SetWindowSurfaceVSync(get(), vsync);
  }
  
 +/// Constant to disable vsync
@@ -967,7 +967,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6331,7 +6376,9 @@
+@@ -6325,7 +6370,9 @@
   */
  inline int GetWindowSurfaceVSync(WindowRef window)
  {
@@ -978,7 +978,7 @@
  }
  
  inline int Window::GetSurfaceVSync() const
-@@ -6380,7 +6427,6 @@
+@@ -6374,7 +6421,6 @@
   * @param window the window to update.
   * @param rects an array of Rect structures representing areas of the surface to
   *              copy, in pixels.
@@ -986,7 +986,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6393,7 +6439,8 @@
+@@ -6387,7 +6433,8 @@
  inline void UpdateWindowSurfaceRects(WindowRef window,
                                       SpanRef<const RectRaw> rects)
  {
@@ -996,7 +996,7 @@
  }
  
  inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
-@@ -6546,7 +6593,7 @@
+@@ -6540,7 +6587,7 @@
   * @sa Window.SetMouseGrab
   * @sa Window.SetKeyboardGrab
   */
@@ -1005,7 +1005,7 @@
  
  inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
  
-@@ -6571,7 +6618,7 @@
+@@ -6565,7 +6612,7 @@
   */
  inline void SetWindowMouseRect(WindowRef window, const RectRaw& rect)
  {
@@ -1014,7 +1014,7 @@
  }
  
  inline void Window::SetMouseRect(const RectRaw& rect)
-@@ -6759,9 +6806,7 @@
+@@ -6747,9 +6794,7 @@
   * nothing.
   *
   * @param window the window for which the menu will be displayed.
@@ -1025,7 +1025,7 @@
   *          the client area.
   * @throws Error on failure.
   *
-@@ -6771,7 +6816,7 @@
+@@ -6759,7 +6804,7 @@
   */
  inline void ShowWindowSystemMenu(WindowRef window, const PointRaw& p)
  {
@@ -1034,7 +1034,7 @@
  }
  
  inline void Window::ShowSystemMenu(const PointRaw& p)
-@@ -6861,7 +6906,6 @@
+@@ -6849,7 +6894,6 @@
   *
   * @param window the window to set hit-testing on.
   * @param callback the function to call when doing a hit-test.
@@ -1042,7 +1042,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6870,7 +6914,7 @@
+@@ -6858,7 +6902,7 @@
   */
  inline void SetWindowHitTest(WindowRef window, HitTestCB callback)
  {
@@ -1051,7 +1051,7 @@
  }
  
  inline void Window::SetHitTest(HitTest callback, void* callback_data)
-@@ -6944,8 +6988,8 @@
+@@ -6932,8 +6976,8 @@
   * Sets the state of the progress bar for the given window’s taskbar icon.
   *
   * @param window the window whose progress state is to be modified.
@@ -1062,7 +1062,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -7358,7 +7402,7 @@
+@@ -7346,7 +7390,7 @@
   */
  inline void GL_MakeCurrent(WindowRef window, GLContext context)
  {
@@ -1071,16 +1071,16 @@
  }
  
  inline void Window::MakeCurrent(GLContext context)
-@@ -7368,7 +7412,7 @@
+@@ -7356,7 +7400,7 @@
  
  inline void GLContext::MakeCurrent(WindowRef window)
  {
--  SDL::Window::MakeCurrent(m_resource, window);
-+  SDL::GL_MakeCurrent(window, m_resource);
+-  SDL::Window::MakeCurrent(get(), window);
++  SDL::GL_MakeCurrent(window, get());
  }
  
  /**
-@@ -7384,7 +7428,7 @@
+@@ -7372,7 +7416,7 @@
   */
  inline WindowRef GL_GetCurrentWindow()
  {

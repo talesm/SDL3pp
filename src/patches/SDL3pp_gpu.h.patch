@@ -721,7 +721,7 @@
   * EVENT_DID_ENTER_BACKGROUND event.
 @@ -8261,6 +8304,8 @@
  
- inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(m_resource); }
+ inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(get()); }
  
 +#endif /* SDL_PLATFORM_GDK */
 +

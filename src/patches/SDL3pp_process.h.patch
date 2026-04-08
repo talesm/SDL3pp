@@ -120,8 +120,8 @@
 +  return {SDL_GetProcessInput(process)};
  }
  
- inline IOStreamRef Process::GetInput()
-@@ -856,7 +892,7 @@
+ inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
+@@ -853,7 +889,7 @@
   */
  inline IOStreamRef GetProcessOutput(ProcessRef process)
  {
@@ -129,4 +129,4 @@
 +  return {SDL_GetProcessOutput(process)};
  }
  
- inline IOStreamRef Process::GetOutput()
+ inline IOStreamRef Process::GetOutput() { return SDL::GetProcessOutput(get()); }

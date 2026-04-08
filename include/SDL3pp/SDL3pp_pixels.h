@@ -2864,7 +2864,7 @@ inline void SetPaletteColors(PaletteRef palette,
 
 inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
 {
-  SDL::SetPaletteColors(m_resource, colors, firstcolor);
+  SDL::SetPaletteColors(get(), colors, firstcolor);
 }
 
 inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)

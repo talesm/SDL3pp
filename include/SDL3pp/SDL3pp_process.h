@@ -792,7 +792,7 @@ inline PropertiesRef GetProcessProperties(ProcessRef process)
 
 inline PropertiesRef Process::GetProperties() const
 {
-  return SDL::GetProcessProperties(m_resource);
+  return SDL::GetProcessProperties(get());
 }
 
 /**
@@ -831,7 +831,7 @@ inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
 
 inline StringResult Process::Read(int* exitcode)
 {
-  return SDL::ReadProcess(m_resource, exitcode);
+  return SDL::ReadProcess(get(), exitcode);
 }
 
 /**
@@ -863,10 +863,7 @@ inline IOStreamRef GetProcessInput(ProcessRef process)
   return {SDL_GetProcessInput(process)};
 }
 
-inline IOStreamRef Process::GetInput()
-{
-  return SDL::GetProcessInput(m_resource);
-}
+inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
 
 /**
  * Get the IOStream associated with process standard output.
@@ -895,10 +892,7 @@ inline IOStreamRef GetProcessOutput(ProcessRef process)
   return {SDL_GetProcessOutput(process)};
 }
 
-inline IOStreamRef Process::GetOutput()
-{
-  return SDL::GetProcessOutput(m_resource);
-}
+inline IOStreamRef Process::GetOutput() { return SDL::GetProcessOutput(get()); }
 
 /**
  * Stop a process.
@@ -924,7 +918,7 @@ inline void KillProcess(ProcessRef process, bool force)
   CheckError(SDL_KillProcess(process, force));
 }
 
-inline void Process::Kill(bool force) { SDL::KillProcess(m_resource, force); }
+inline void Process::Kill(bool force) { SDL::KillProcess(get(), force); }
 
 /**
  * Wait for a process to finish.
@@ -964,7 +958,7 @@ inline bool WaitProcess(ProcessRef process, bool block, int* exitcode)
 
 inline bool Process::Wait(bool block, int* exitcode)
 {
-  return SDL::WaitProcess(m_resource, block, exitcode);
+  return SDL::WaitProcess(get(), block, exitcode);
 }
 
 /**

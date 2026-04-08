@@ -384,7 +384,7 @@ inline Mutex::Mutex()
  */
 inline void LockMutex(MutexRef mutex) { SDL_LockMutex(mutex); }
 
-inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
+inline void Mutex::Lock() { SDL::LockMutex(get()); }
 
 /**
  * Try to lock a mutex without blocking.
@@ -409,7 +409,7 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  */
 inline bool TryLockMutex(MutexRef mutex) { return SDL_TryLockMutex(mutex); }
 
-inline bool Mutex::TryLock() { return SDL::TryLockMutex(m_resource); }
+inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
 
 /**
  * Unlock the mutex.
@@ -433,7 +433,7 @@ inline bool Mutex::TryLock() { return SDL::TryLockMutex(m_resource); }
  */
 inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 
-inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
+inline void Mutex::Unlock() { SDL::UnlockMutex(get()); }
 
 /**
  * Destroy a mutex created with CreateMutex().
@@ -918,7 +918,7 @@ inline void LockRWLockForReading(RWLockRef rwlock)
   SDL_LockRWLockForReading(rwlock);
 }
 
-inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
+inline void RWLock::LockForReading() { SDL::LockRWLockForReading(get()); }
 
 /**
  * Lock the read/write lock for _write_ operations.
@@ -956,7 +956,7 @@ inline void LockRWLockForWriting(RWLockRef rwlock)
   SDL_LockRWLockForWriting(rwlock);
 }
 
-inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
+inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(get()); }
 
 /**
  * Try to lock a read/write lock _for reading_ without blocking.
@@ -990,7 +990,7 @@ inline bool TryLockRWLockForReading(RWLockRef rwlock)
 
 inline bool RWLock::TryLockForReading()
 {
-  return SDL::TryLockRWLockForReading(m_resource);
+  return SDL::TryLockRWLockForReading(get());
 }
 
 /**
@@ -1030,7 +1030,7 @@ inline bool TryLockRWLockForWriting(RWLockRef rwlock)
 
 inline bool RWLock::TryLockForWriting()
 {
-  return SDL::TryLockRWLockForWriting(m_resource);
+  return SDL::TryLockRWLockForWriting(get());
 }
 
 /**
@@ -1061,7 +1061,7 @@ inline bool RWLock::TryLockForWriting()
  */
 inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 
-inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
+inline void RWLock::Unlock() { SDL::UnlockRWLock(get()); }
 
 /**
  * Destroy a read/write lock created with CreateRWLock().
@@ -1438,7 +1438,7 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  */
 inline void WaitSemaphore(SemaphoreRef sem) { SDL_WaitSemaphore(sem); }
 
-inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
+inline void Semaphore::Wait() { SDL::WaitSemaphore(get()); }
 
 /**
  * See if a semaphore has a positive value and decrement it if it does.
@@ -1464,7 +1464,7 @@ inline bool TryWaitSemaphore(SemaphoreRef sem)
   return SDL_TryWaitSemaphore(sem);
 }
 
-inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
+inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(get()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -1494,7 +1494,7 @@ inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
 
 inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
 {
-  return SDL::WaitSemaphoreTimeout(m_resource, timeout);
+  return SDL::WaitSemaphoreTimeout(get(), timeout);
 }
 
 /**
@@ -1512,7 +1512,7 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  */
 inline void SignalSemaphore(SemaphoreRef sem) { SDL_SignalSemaphore(sem); }
 
-inline void Semaphore::Signal() { SDL::SignalSemaphore(m_resource); }
+inline void Semaphore::Signal() { SDL::SignalSemaphore(get()); }
 
 /**
  * Get the current value of a semaphore.
@@ -1531,7 +1531,7 @@ inline Uint32 GetSemaphoreValue(SemaphoreRef sem)
 
 inline Uint32 Semaphore::GetValue() const
 {
-  return SDL::GetSemaphoreValue(m_resource);
+  return SDL::GetSemaphoreValue(get());
 }
 
 /**
@@ -1852,7 +1852,7 @@ inline void Condition::Destroy() { DestroyCondition(release()); }
  */
 inline void SignalCondition(ConditionRef cond) { SDL_SignalCondition(cond); }
 
-inline void Condition::Signal() { SDL::SignalCondition(m_resource); }
+inline void Condition::Signal() { SDL::SignalCondition(get()); }
 
 /**
  * Restart all threads that are waiting on the condition variable.
@@ -1872,7 +1872,7 @@ inline void BroadcastCondition(ConditionRef cond)
   SDL_BroadcastCondition(cond);
 }
 
-inline void Condition::Broadcast() { SDL::BroadcastCondition(m_resource); }
+inline void Condition::Broadcast() { SDL::BroadcastCondition(get()); }
 
 /**
  * Wait until a condition variable is signaled.
@@ -1907,7 +1907,7 @@ inline void WaitCondition(ConditionRef cond, MutexRef mutex)
 
 inline void Condition::Wait(MutexRef mutex)
 {
-  SDL::WaitCondition(m_resource, mutex);
+  SDL::WaitCondition(get(), mutex);
 }
 
 /**
@@ -1948,7 +1948,7 @@ inline bool WaitConditionTimeout(ConditionRef cond,
 inline bool Condition::WaitTimeout(MutexRef mutex,
                                    std::chrono::milliseconds timeout)
 {
-  return SDL::WaitConditionTimeout(m_resource, mutex, timeout);
+  return SDL::WaitConditionTimeout(get(), mutex, timeout);
 }
 
 /**

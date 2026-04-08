@@ -1037,7 +1037,7 @@
 -                           size_t* outbytesleft)
 +                           size_t* outbytesleft) const
  {
-   return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
+   return SDL::iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
  }
 @@ -6077,14 +6261,10 @@
   * the number of bytes specified in `inbytesleft` whether there is a nullptr

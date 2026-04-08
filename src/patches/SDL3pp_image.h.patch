@@ -714,7 +714,7 @@
  
  inline void Surface::Save(StringParam filename) const
  {
--  Save(m_resource, std::move(filename));
+-  Save(get(), std::move(filename));
 +  SDL::Save(*this, std::move(filename));
  }
  
@@ -744,7 +744,7 @@
                                    StringParam type,
                                    bool closeio) const
  {
--  SaveTyped_IO(m_resource, dst, std::move(type), closeio);
+-  SaveTyped_IO(get(), dst, std::move(type), closeio);
 +  SDL::SaveTyped_IO(*this, dst, std::move(type), closeio);
  }
  
@@ -969,7 +969,7 @@
     * @returns the new cursor on success.
     * @throws Error on failure.
     *
-@@ -3068,29 +3096,26 @@
+@@ -3068,40 +3096,41 @@
    constexpr operator AnimationRaw() const noexcept { return get(); }
  };
  
@@ -980,10 +980,7 @@
 +/// Get the width in pixels.
 +inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
  
- inline int Animation::GetWidth() const
- {
-   return SDL::GetAnimationWidth(m_resource);
- }
+ inline int Animation::GetWidth() const { return SDL::GetAnimationWidth(get()); }
  
 -inline int GetAnimationHeight(AnimationConstRef anim)
 -{
@@ -994,7 +991,7 @@
  
  inline int Animation::GetHeight() const
  {
-   return SDL::GetAnimationHeight(m_resource);
+   return SDL::GetAnimationHeight(get());
  }
  
 +/// Get the size in pixels.
@@ -1004,10 +1001,7 @@
 +  return {anim->w, anim->h};
  }
  
- inline Point Animation::GetSize() const
-@@ -3098,19 +3123,23 @@
-   return SDL::GetAnimationSize(m_resource);
- }
+ inline Point Animation::GetSize() const { return SDL::GetAnimationSize(get()); }
  
 -inline int GetAnimationCount(AnimationConstRef anim)
 -{
@@ -1016,10 +1010,7 @@
 +/// Return the number of frames.
 +inline int GetAnimationCount(AnimationConstRef anim) { return anim->count; }
  
- inline int Animation::GetCount() const
- {
-   return SDL::GetAnimationCount(m_resource);
- }
+ inline int Animation::GetCount() const { return SDL::GetAnimationCount(get()); }
  
 +/**
 + * Return the frame image under given index.
@@ -1034,8 +1025,8 @@
  }
  
  inline Surface Animation::GetFrame(int index) const
-@@ -3118,9 +3147,15 @@
-   return SDL::GetAnimationFrame(m_resource, index);
+@@ -3109,9 +3138,15 @@
+   return SDL::GetAnimationFrame(get(), index);
  }
  
 +/**
@@ -1051,7 +1042,7 @@
  }
  
  inline int Animation::GetDelay(int index) const
-@@ -3213,9 +3248,9 @@
+@@ -3204,9 +3239,9 @@
   * call to Animation.Free().
   *
   * @param src an IOStream that data will be read from.
@@ -1062,7 +1053,7 @@
   * @returns a new Animation, or nullptr on error.
   *
   * @since This function is available since SDL_image 3.0.0.
-@@ -3234,7 +3269,7 @@
+@@ -3225,7 +3260,7 @@
                                         StringParam type,
                                         bool closeio = false)
  {
@@ -1071,7 +1062,7 @@
  }
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -3267,7 +3302,7 @@
+@@ -3258,7 +3293,7 @@
   */
  inline Animation LoadANIAnimation_IO(IOStreamRef src)
  {
@@ -1080,7 +1071,7 @@
  }
  
  /**
-@@ -3298,7 +3333,7 @@
+@@ -3289,7 +3324,7 @@
   */
  inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
  {
@@ -1089,7 +1080,7 @@
  }
  
  /**
-@@ -3329,7 +3364,7 @@
+@@ -3320,7 +3355,7 @@
   */
  inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
  {
@@ -1098,7 +1089,7 @@
  }
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -3359,7 +3394,7 @@
+@@ -3350,7 +3385,7 @@
   */
  inline Animation LoadGIFAnimation_IO(IOStreamRef src)
  {
@@ -1107,7 +1098,7 @@
  }
  
  /**
-@@ -3387,7 +3422,7 @@
+@@ -3378,7 +3413,7 @@
   */
  inline Animation LoadWEBPAnimation_IO(IOStreamRef src)
  {
@@ -1116,7 +1107,7 @@
  }
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -3451,7 +3486,7 @@
+@@ -3442,7 +3477,7 @@
                                    StringParam type,
                                    bool closeio = false)
  {
@@ -1125,7 +1116,7 @@
  }
  
  inline void Animation::SaveTyped_IO(IOStreamRef dst,
-@@ -3535,10 +3570,10 @@
+@@ -3526,10 +3561,10 @@
   *
   * @param anim the animation to save.
   * @param dst an IOStream from which data will be written to.
@@ -1138,7 +1129,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -3604,12 +3639,12 @@
+@@ -3595,12 +3630,12 @@
   *
   * @param anim the animation to save.
   * @param dst an IOStream from which data will be written to.
@@ -1153,7 +1144,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -3638,8 +3673,7 @@
+@@ -3629,8 +3664,7 @@
   * Create an animated cursor from an animation.
   *
   * @param anim an animation to use to create an animated cursor.
@@ -1163,7 +1154,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -3651,7 +3685,8 @@
+@@ -3642,7 +3676,8 @@
   */
  inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
  {
@@ -1173,7 +1164,7 @@
  }
  
  inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
-@@ -3683,6 +3718,8 @@
+@@ -3674,6 +3709,8 @@
  
  inline void Animation::Free() { FreeAnimation(release()); }
  
@@ -1182,7 +1173,7 @@
  /**
   * An object representing the encoder context.
   *
-@@ -3724,8 +3761,6 @@
+@@ -3715,8 +3752,6 @@
  
    constexpr AnimationEncoder(AnimationEncoderRef&& other) = delete;
  
@@ -1191,7 +1182,7 @@
    /**
     * Create an encoder to save a series of images to a file.
     *
-@@ -3769,9 +3804,9 @@
+@@ -3760,9 +3795,9 @@
     * succeeds.
     *
     * @param dst an IOStream that will be used to save the stream.
@@ -1202,7 +1193,7 @@
     * @post a new AnimationEncoder on success.
     * @throws Error on failure.
     *
-@@ -3833,8 +3868,6 @@
+@@ -3824,8 +3859,6 @@
     */
    AnimationEncoder(PropertiesRef props);
  
@@ -1211,7 +1202,7 @@
    /// Destructor
    ~AnimationEncoder() { IMG_CloseAnimationEncoder(m_resource); }
  
-@@ -3866,16 +3899,13 @@
+@@ -3857,16 +3890,13 @@
    /// Converts to bool
    constexpr explicit operator bool() const noexcept { return !!m_resource; }
  
@@ -1229,7 +1220,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -3883,7 +3913,7 @@
+@@ -3874,7 +3904,7 @@
     * @sa CreateAnimationEncoder_IO
     * @sa CreateAnimationEncoderWithProperties
     */
@@ -1238,7 +1229,7 @@
  
    /**
     * Add a frame to an animation encoder.
-@@ -3903,8 +3933,6 @@
+@@ -3894,8 +3924,6 @@
     * @sa AnimationEncoder.Close
     */
    void AddFrame(SurfaceRef surface, Uint64 duration);
@@ -1247,7 +1238,7 @@
  };
  
  /**
-@@ -3979,8 +4007,6 @@
+@@ -3970,8 +3998,6 @@
    constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
  };
  
@@ -1256,7 +1247,7 @@
  /**
   * Create an encoder to save a series of images to a file.
   *
-@@ -4019,7 +4045,7 @@
+@@ -4010,7 +4036,7 @@
  inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
                                            StringParam type,
                                            bool closeio)
@@ -1265,7 +1256,7 @@
  {
  }
  
-@@ -4043,8 +4069,8 @@
+@@ -4034,8 +4060,8 @@
   * fails, or when the animation encoder is closed if this function succeeds.
   *
   * @param dst an IOStream that will be used to save the stream.
@@ -1275,7 +1266,7 @@
   * @returns a new AnimationEncoder on success.
   * @throws Error on failure.
   *
-@@ -4114,8 +4140,11 @@
+@@ -4105,8 +4131,11 @@
    return AnimationEncoder(props);
  }
  
@@ -1289,7 +1280,7 @@
  namespace prop::AnimationEncoder {
  
  constexpr auto CREATE_FILENAME_STRING =
-@@ -4150,8 +4179,6 @@
+@@ -4141,8 +4170,6 @@
  
  } // namespace prop::AnimationEncoder
  
@@ -1298,7 +1289,7 @@
  /**
   * Add a frame to an animation encoder.
   *
-@@ -4202,10 +4229,7 @@
+@@ -4193,10 +4220,7 @@
    CheckError(IMG_CloseAnimationEncoder(encoder));
  }
  
@@ -1310,7 +1301,7 @@
  
  /**
   * An enum representing the status of an animation decoder.
-@@ -4214,8 +4238,6 @@
+@@ -4205,8 +4229,6 @@
   */
  using AnimationDecoderStatus = IMG_AnimationDecoderStatus;
  
@@ -1319,7 +1310,7 @@
  constexpr AnimationDecoderStatus DECODER_STATUS_INVALID =
    IMG_DECODER_STATUS_INVALID; ///< The decoder is invalid
  
-@@ -4270,8 +4292,6 @@
+@@ -4261,8 +4283,6 @@
  
    constexpr AnimationDecoder(AnimationDecoderRef&& other) = delete;
  
@@ -1328,7 +1319,7 @@
    /**
     * Create a decoder to read a series of images from a file.
     *
-@@ -4372,8 +4392,6 @@
+@@ -4363,8 +4383,6 @@
     */
    AnimationDecoder(PropertiesRef props);
  
@@ -1337,7 +1328,7 @@
    /// Destructor
    ~AnimationDecoder() { IMG_CloseAnimationDecoder(m_resource); }
  
-@@ -4405,16 +4423,13 @@
+@@ -4396,16 +4414,13 @@
    /// Converts to bool
    constexpr explicit operator bool() const noexcept { return !!m_resource; }
  
@@ -1355,7 +1346,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -4422,7 +4437,7 @@
+@@ -4413,7 +4428,7 @@
     * @sa CreateAnimationDecoder_IO
     * @sa CreateAnimationDecoderWithProperties
     */
@@ -1364,7 +1355,7 @@
  
    /**
     * Get the properties of an animation decoder.
-@@ -4449,18 +4464,11 @@
+@@ -4440,18 +4455,11 @@
     * as an Surface. The returned surface should be freed with SDL_FreeSurface()
     * when no longer needed.
     *
@@ -1384,7 +1375,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -4504,8 +4512,6 @@
+@@ -4495,8 +4503,6 @@
     * @sa AnimationDecoder.Close
     */
    void Reset();
@@ -1393,7 +1384,7 @@
  };
  
  /**
-@@ -4580,8 +4586,6 @@
+@@ -4571,8 +4577,6 @@
    constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
  };
  
@@ -1402,7 +1393,7 @@
  /**
   * Create a decoder to read a series of images from a file.
   *
-@@ -4618,18 +4622,6 @@
+@@ -4609,18 +4613,6 @@
  {
  }
  
@@ -1421,7 +1412,7 @@
  /**
   * Create a decoder to read a series of images from an IOStream.
   *
-@@ -4709,8 +4701,11 @@
+@@ -4700,8 +4692,11 @@
    return AnimationDecoder(props);
  }
  
@@ -1435,7 +1426,7 @@
  namespace prop::AnimationDecoder {
  
  constexpr auto CREATE_FILENAME_STRING =
-@@ -4748,8 +4743,6 @@
+@@ -4739,8 +4734,6 @@
  
  } // namespace prop::AnimationDecoder
  
@@ -1444,8 +1435,8 @@
  /**
   * Get the properties of an animation decoder.
   *
-@@ -4777,8 +4770,12 @@
-   return SDL::GetAnimationDecoderProperties(m_resource);
+@@ -4768,8 +4761,12 @@
+   return SDL::GetAnimationDecoderProperties(get());
  }
  
 -#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -1459,7 +1450,7 @@
  namespace prop::Metadata {
  
  constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
-@@ -4799,28 +4796,18 @@
+@@ -4790,28 +4787,18 @@
  
  } // namespace prop::Metadata
  
@@ -1490,7 +1481,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -4835,7 +4822,9 @@
+@@ -4826,7 +4813,9 @@
  inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                          Uint64* duration)
  {
@@ -1501,7 +1492,7 @@
  }
  
  inline Surface AnimationDecoder::GetFrame(Uint64* duration)
-@@ -4913,10 +4902,7 @@
+@@ -4901,10 +4890,7 @@
    CheckError(IMG_CloseAnimationDecoder(decoder));
  }
  
@@ -1513,7 +1504,7 @@
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
  
-@@ -4924,4 +4910,32 @@
+@@ -4912,4 +4898,32 @@
  
  } // namespace SDL
  

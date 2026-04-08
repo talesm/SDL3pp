@@ -1827,7 +1827,7 @@ inline void SetJoystickVirtualAxis(JoystickRef joystick, int axis, Sint16 value)
 
 inline void Joystick::SetVirtualAxis(int axis, Sint16 value)
 {
-  SDL::SetJoystickVirtualAxis(m_resource, axis, value);
+  SDL::SetJoystickVirtualAxis(get(), axis, value);
 }
 
 /**
@@ -1864,7 +1864,7 @@ inline void SetJoystickVirtualBall(JoystickRef joystick,
 
 inline void Joystick::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
 {
-  SDL::SetJoystickVirtualBall(m_resource, ball, xrel, yrel);
+  SDL::SetJoystickVirtualBall(get(), ball, xrel, yrel);
 }
 
 /**
@@ -1899,7 +1899,7 @@ inline void SetJoystickVirtualButton(JoystickRef joystick,
 
 inline void Joystick::SetVirtualButton(int button, bool down)
 {
-  SDL::SetJoystickVirtualButton(m_resource, button, down);
+  SDL::SetJoystickVirtualButton(get(), button, down);
 }
 
 /**
@@ -1932,7 +1932,7 @@ inline void SetJoystickVirtualHat(JoystickRef joystick, int hat, Uint8 value)
 
 inline void Joystick::SetVirtualHat(int hat, Uint8 value)
 {
-  SDL::SetJoystickVirtualHat(m_resource, hat, value);
+  SDL::SetJoystickVirtualHat(get(), hat, value);
 }
 
 /**
@@ -1979,8 +1979,7 @@ inline void Joystick::SetVirtualTouchpad(int touchpad,
                                          const FPointRaw& p,
                                          float pressure)
 {
-  SDL::SetJoystickVirtualTouchpad(
-    m_resource, touchpad, finger, down, p, pressure);
+  SDL::SetJoystickVirtualTouchpad(get(), touchpad, finger, down, p, pressure);
 }
 
 /**
@@ -2025,7 +2024,7 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
                                             int num_values)
 {
   SDL::SendJoystickVirtualSensorData(
-    m_resource, type, sensor_timestamp, data, num_values);
+    get(), type, sensor_timestamp, data, num_values);
 }
 
 /**
@@ -2059,7 +2058,7 @@ inline PropertiesRef GetJoystickProperties(JoystickRef joystick)
 
 inline PropertiesRef Joystick::GetProperties()
 {
-  return SDL::GetJoystickProperties(m_resource);
+  return SDL::GetJoystickProperties(get());
 }
 
 /**
@@ -2105,10 +2104,7 @@ inline const char* GetJoystickName(JoystickRef joystick)
   return SDL_GetJoystickName(joystick);
 }
 
-inline const char* Joystick::GetName()
-{
-  return SDL::GetJoystickName(m_resource);
-}
+inline const char* Joystick::GetName() { return SDL::GetJoystickName(get()); }
 
 /**
  * Get the implementation dependent path of a joystick.
@@ -2128,10 +2124,7 @@ inline const char* GetJoystickPath(JoystickRef joystick)
   return SDL_GetJoystickPath(joystick);
 }
 
-inline const char* Joystick::GetPath()
-{
-  return SDL::GetJoystickPath(m_resource);
-}
+inline const char* Joystick::GetPath() { return SDL::GetJoystickPath(get()); }
 
 /**
  * Get the player index of an opened joystick.
@@ -2155,7 +2148,7 @@ inline int GetJoystickPlayerIndex(JoystickRef joystick)
 
 inline int Joystick::GetPlayerIndex()
 {
-  return SDL::GetJoystickPlayerIndex(m_resource);
+  return SDL::GetJoystickPlayerIndex(get());
 }
 
 /**
@@ -2179,7 +2172,7 @@ inline void SetJoystickPlayerIndex(JoystickRef joystick, int player_index)
 
 inline void Joystick::SetPlayerIndex(int player_index)
 {
-  SDL::SetJoystickPlayerIndex(m_resource, player_index);
+  SDL::SetJoystickPlayerIndex(get(), player_index);
 }
 
 /**
@@ -2203,7 +2196,7 @@ inline GUID GetJoystickGUID(JoystickRef joystick)
   return SDL_GetJoystickGUID(joystick);
 }
 
-inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(m_resource); }
+inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(get()); }
 
 /**
  * Get the USB vendor ID of an opened joystick, if available.
@@ -2224,10 +2217,7 @@ inline Uint16 GetJoystickVendor(JoystickRef joystick)
   return SDL_GetJoystickVendor(joystick);
 }
 
-inline Uint16 Joystick::GetVendor()
-{
-  return SDL::GetJoystickVendor(m_resource);
-}
+inline Uint16 Joystick::GetVendor() { return SDL::GetJoystickVendor(get()); }
 
 /**
  * Get the USB product ID of an opened joystick, if available.
@@ -2248,10 +2238,7 @@ inline Uint16 GetJoystickProduct(JoystickRef joystick)
   return SDL_GetJoystickProduct(joystick);
 }
 
-inline Uint16 Joystick::GetProduct()
-{
-  return SDL::GetJoystickProduct(m_resource);
-}
+inline Uint16 Joystick::GetProduct() { return SDL::GetJoystickProduct(get()); }
 
 /**
  * Get the product version of an opened joystick, if available.
@@ -2274,7 +2261,7 @@ inline Uint16 GetJoystickProductVersion(JoystickRef joystick)
 
 inline Uint16 Joystick::GetProductVersion()
 {
-  return SDL::GetJoystickProductVersion(m_resource);
+  return SDL::GetJoystickProductVersion(get());
 }
 
 /**
@@ -2296,7 +2283,7 @@ inline Uint16 GetJoystickFirmwareVersion(JoystickRef joystick)
 
 inline Uint16 Joystick::GetFirmwareVersion()
 {
-  return SDL::GetJoystickFirmwareVersion(m_resource);
+  return SDL::GetJoystickFirmwareVersion(get());
 }
 
 /**
@@ -2319,7 +2306,7 @@ inline const char* GetJoystickSerial(JoystickRef joystick)
 
 inline const char* Joystick::GetSerial()
 {
-  return SDL::GetJoystickSerial(m_resource);
+  return SDL::GetJoystickSerial(get());
 }
 
 /**
@@ -2339,10 +2326,7 @@ inline JoystickType GetJoystickType(JoystickRef joystick)
   return SDL_GetJoystickType(joystick);
 }
 
-inline JoystickType Joystick::GetType()
-{
-  return SDL::GetJoystickType(m_resource);
-}
+inline JoystickType Joystick::GetType() { return SDL::GetJoystickType(get()); }
 
 /**
  * Get the device information encoded in a GUID structure.
@@ -2387,7 +2371,7 @@ inline bool JoystickConnected(JoystickRef joystick)
   return SDL_JoystickConnected(joystick);
 }
 
-inline bool Joystick::Connected() { return SDL::JoystickConnected(m_resource); }
+inline bool Joystick::Connected() { return SDL::JoystickConnected(get()); }
 
 /**
  * Get the instance ID of an opened joystick.
@@ -2405,7 +2389,7 @@ inline JoystickID GetJoystickID(JoystickRef joystick)
   return CheckError(SDL_GetJoystickID(joystick));
 }
 
-inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(m_resource); }
+inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(get()); }
 
 /**
  * Get the number of general axis controls on a joystick.
@@ -2432,10 +2416,7 @@ inline int GetNumJoystickAxes(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickAxes(joystick));
 }
 
-inline int Joystick::GetNumAxes()
-{
-  return SDL::GetNumJoystickAxes(m_resource);
-}
+inline int Joystick::GetNumAxes() { return SDL::GetNumJoystickAxes(get()); }
 
 /**
  * Get the number of trackballs on a joystick.
@@ -2463,10 +2444,7 @@ inline int GetNumJoystickBalls(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickBalls(joystick));
 }
 
-inline int Joystick::GetNumBalls()
-{
-  return SDL::GetNumJoystickBalls(m_resource);
-}
+inline int Joystick::GetNumBalls() { return SDL::GetNumJoystickBalls(get()); }
 
 /**
  * Get the number of POV hats on a joystick.
@@ -2489,10 +2467,7 @@ inline int GetNumJoystickHats(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickHats(joystick));
 }
 
-inline int Joystick::GetNumHats()
-{
-  return SDL::GetNumJoystickHats(m_resource);
-}
+inline int Joystick::GetNumHats() { return SDL::GetNumJoystickHats(get()); }
 
 /**
  * Get the number of buttons on a joystick.
@@ -2517,7 +2492,7 @@ inline int GetNumJoystickButtons(JoystickRef joystick)
 
 inline int Joystick::GetNumButtons()
 {
-  return SDL::GetNumJoystickButtons(m_resource);
+  return SDL::GetNumJoystickButtons(get());
 }
 
 /**
@@ -2599,7 +2574,7 @@ inline Sint16 GetJoystickAxis(JoystickRef joystick, int axis)
 
 inline Sint16 Joystick::GetAxis(int axis)
 {
-  return SDL::GetJoystickAxis(m_resource, axis);
+  return SDL::GetJoystickAxis(get(), axis);
 }
 
 /**
@@ -2627,7 +2602,7 @@ inline bool GetJoystickAxisInitialState(JoystickRef joystick,
 
 inline bool Joystick::GetAxisInitialState(int axis, Sint16* state)
 {
-  return SDL::GetJoystickAxisInitialState(m_resource, axis, state);
+  return SDL::GetJoystickAxisInitialState(get(), axis, state);
 }
 
 /**
@@ -2657,7 +2632,7 @@ inline void GetJoystickBall(JoystickRef joystick, int ball, int* dx, int* dy)
 
 inline void Joystick::GetBall(int ball, int* dx, int* dy)
 {
-  SDL::GetJoystickBall(m_resource, ball, dx, dy);
+  SDL::GetJoystickBall(get(), ball, dx, dy);
 }
 
 /**
@@ -2682,7 +2657,7 @@ inline Uint8 GetJoystickHat(JoystickRef joystick, int hat)
 
 inline Uint8 Joystick::GetHat(int hat)
 {
-  return SDL::GetJoystickHat(m_resource, hat);
+  return SDL::GetJoystickHat(get(), hat);
 }
 
 /**
@@ -2706,7 +2681,7 @@ inline bool GetJoystickButton(JoystickRef joystick, int button)
 
 inline bool Joystick::GetButton(int button)
 {
-  return SDL::GetJoystickButton(m_resource, button);
+  return SDL::GetJoystickButton(get(), button);
 }
 
 /**
@@ -2744,7 +2719,7 @@ inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
                              Uint32 duration_ms)
 {
   return SDL::RumbleJoystick(
-    m_resource, low_frequency_rumble, high_frequency_rumble, duration_ms);
+    get(), low_frequency_rumble, high_frequency_rumble, duration_ms);
 }
 
 /**
@@ -2787,8 +2762,7 @@ inline void Joystick::RumbleTriggers(Uint16 left_rumble,
                                      Uint16 right_rumble,
                                      Uint32 duration_ms)
 {
-  SDL::RumbleJoystickTriggers(
-    m_resource, left_rumble, right_rumble, duration_ms);
+  SDL::RumbleJoystickTriggers(get(), left_rumble, right_rumble, duration_ms);
 }
 
 /**
@@ -2820,7 +2794,7 @@ inline void SetJoystickLED(JoystickRef joystick,
 
 inline void Joystick::SetLED(Uint8 red, Uint8 green, Uint8 blue)
 {
-  SDL::SetJoystickLED(m_resource, red, green, blue);
+  SDL::SetJoystickLED(get(), red, green, blue);
 }
 
 /**
@@ -2842,7 +2816,7 @@ inline void SendJoystickEffect(JoystickRef joystick, const void* data, int size)
 
 inline void Joystick::SendEffect(const void* data, int size)
 {
-  SDL::SendJoystickEffect(m_resource, data, size);
+  SDL::SendJoystickEffect(get(), data, size);
 }
 
 /**
@@ -2878,7 +2852,7 @@ inline JoystickConnectionState GetJoystickConnectionState(JoystickRef joystick)
 
 inline JoystickConnectionState Joystick::GetConnectionState()
 {
-  return SDL::GetJoystickConnectionState(m_resource);
+  return SDL::GetJoystickConnectionState(get());
 }
 
 /**
@@ -2908,7 +2882,7 @@ inline PowerState GetJoystickPowerInfo(JoystickRef joystick, int* percent)
 
 inline PowerState Joystick::GetPowerInfo(int* percent)
 {
-  return SDL::GetJoystickPowerInfo(m_resource, percent);
+  return SDL::GetJoystickPowerInfo(get(), percent);
 }
 
 /// @}

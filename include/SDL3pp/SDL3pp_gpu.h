@@ -5352,7 +5352,7 @@ inline const char* GetGPUDeviceDriver(GPUDeviceRef device)
 
 inline const char* GPUDevice::GetDriver()
 {
-  return SDL::GetGPUDeviceDriver(m_resource);
+  return SDL::GetGPUDeviceDriver(get());
 }
 
 /**
@@ -5371,7 +5371,7 @@ inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceRef device)
 
 inline GPUShaderFormat GPUDevice::GetShaderFormats()
 {
-  return SDL::GetGPUShaderFormats(m_resource);
+  return SDL::GetGPUShaderFormats(get());
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -5485,7 +5485,7 @@ inline PropertiesRef GetGPUDeviceProperties(GPUDeviceRef device)
 
 inline PropertiesRef GPUDevice::GetProperties()
 {
-  return SDL::GetGPUDeviceProperties(m_resource);
+  return SDL::GetGPUDeviceProperties(get());
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -5545,7 +5545,7 @@ inline GPUComputePipeline CreateGPUComputePipeline(
 inline GPUComputePipeline GPUDevice::CreateComputePipeline(
   const GPUComputePipelineCreateInfo& createinfo)
 {
-  return GPUComputePipeline(m_resource, createinfo);
+  return GPUComputePipeline(get(), createinfo);
 }
 
 inline GPUComputePipeline::GPUComputePipeline(
@@ -5599,7 +5599,7 @@ inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
 inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
   const GPUGraphicsPipelineCreateInfo& createinfo)
 {
-  return GPUGraphicsPipeline(m_resource, createinfo);
+  return GPUGraphicsPipeline(get(), createinfo);
 }
 
 inline GPUGraphicsPipeline::GPUGraphicsPipeline(
@@ -5652,7 +5652,7 @@ inline GPUSampler CreateGPUSampler(GPUDeviceRef device,
 inline GPUSampler GPUDevice::CreateSampler(
   const GPUSamplerCreateInfo& createinfo)
 {
-  return GPUSampler(m_resource, createinfo);
+  return GPUSampler(get(), createinfo);
 }
 
 inline GPUSampler::GPUSampler(GPUDeviceRef device,
@@ -5751,7 +5751,7 @@ inline GPUShader CreateGPUShader(GPUDeviceRef device,
 
 inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
 {
-  return GPUShader(m_resource, createinfo);
+  return GPUShader(get(), createinfo);
 }
 
 inline GPUShader::GPUShader(GPUDeviceRef device,
@@ -5838,7 +5838,7 @@ inline GPUTexture CreateGPUTexture(GPUDeviceRef device,
 inline GPUTexture GPUDevice::CreateTexture(
   const GPUTextureCreateInfo& createinfo)
 {
-  return GPUTexture(m_resource, createinfo);
+  return GPUTexture(get(), createinfo);
 }
 
 inline GPUTexture::GPUTexture(GPUDeviceRef device,
@@ -5931,7 +5931,7 @@ inline GPUBuffer CreateGPUBuffer(GPUDeviceRef device,
 
 inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
 {
-  return GPUBuffer(m_resource, createinfo);
+  return GPUBuffer(get(), createinfo);
 }
 
 inline GPUBuffer::GPUBuffer(GPUDeviceRef device,
@@ -5988,7 +5988,7 @@ inline GPUTransferBuffer CreateGPUTransferBuffer(
 inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
   const GPUTransferBufferCreateInfo& createinfo)
 {
-  return GPUTransferBuffer(m_resource, createinfo);
+  return GPUTransferBuffer(get(), createinfo);
 }
 
 inline GPUTransferBuffer::GPUTransferBuffer(
@@ -6037,7 +6037,7 @@ inline void SetGPUBufferName(GPUDeviceRef device,
 
 inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
 {
-  SDL::SetGPUBufferName(m_resource, buffer, std::move(text));
+  SDL::SetGPUBufferName(get(), buffer, std::move(text));
 }
 
 /**
@@ -6067,7 +6067,7 @@ inline void SetGPUTextureName(GPUDeviceRef device,
 
 inline void GPUDevice::SetTextureName(GPUTexture texture, StringParam text)
 {
-  SDL::SetGPUTextureName(m_resource, texture, std::move(text));
+  SDL::SetGPUTextureName(get(), texture, std::move(text));
 }
 
 /**
@@ -6176,7 +6176,7 @@ inline void ReleaseGPUTexture(GPUDeviceRef device, GPUTexture texture)
 
 inline void GPUDevice::ReleaseTexture(GPUTexture texture)
 {
-  SDL::ReleaseGPUTexture(m_resource, texture);
+  SDL::ReleaseGPUTexture(get(), texture);
 }
 
 /**
@@ -6196,7 +6196,7 @@ inline void ReleaseGPUSampler(GPUDeviceRef device, GPUSampler sampler)
 
 inline void GPUDevice::ReleaseSampler(GPUSampler sampler)
 {
-  SDL::ReleaseGPUSampler(m_resource, sampler);
+  SDL::ReleaseGPUSampler(get(), sampler);
 }
 
 /**
@@ -6216,7 +6216,7 @@ inline void ReleaseGPUBuffer(GPUDeviceRef device, GPUBuffer buffer)
 
 inline void GPUDevice::ReleaseBuffer(GPUBuffer buffer)
 {
-  SDL::ReleaseGPUBuffer(m_resource, buffer);
+  SDL::ReleaseGPUBuffer(get(), buffer);
 }
 
 /**
@@ -6237,7 +6237,7 @@ inline void ReleaseGPUTransferBuffer(GPUDeviceRef device,
 
 inline void GPUDevice::ReleaseTransferBuffer(GPUTransferBuffer transfer_buffer)
 {
-  SDL::ReleaseGPUTransferBuffer(m_resource, transfer_buffer);
+  SDL::ReleaseGPUTransferBuffer(get(), transfer_buffer);
 }
 
 /**
@@ -6259,7 +6259,7 @@ inline void ReleaseGPUComputePipeline(GPUDeviceRef device,
 inline void GPUDevice::ReleaseComputePipeline(
   GPUComputePipeline compute_pipeline)
 {
-  SDL::ReleaseGPUComputePipeline(m_resource, compute_pipeline);
+  SDL::ReleaseGPUComputePipeline(get(), compute_pipeline);
 }
 
 /**
@@ -6279,7 +6279,7 @@ inline void ReleaseGPUShader(GPUDeviceRef device, GPUShader shader)
 
 inline void GPUDevice::ReleaseShader(GPUShader shader)
 {
-  SDL::ReleaseGPUShader(m_resource, shader);
+  SDL::ReleaseGPUShader(get(), shader);
 }
 
 /**
@@ -6301,7 +6301,7 @@ inline void ReleaseGPUGraphicsPipeline(GPUDeviceRef device,
 inline void GPUDevice::ReleaseGraphicsPipeline(
   GPUGraphicsPipeline graphics_pipeline)
 {
-  SDL::ReleaseGPUGraphicsPipeline(m_resource, graphics_pipeline);
+  SDL::ReleaseGPUGraphicsPipeline(get(), graphics_pipeline);
 }
 
 /**
@@ -6335,7 +6335,7 @@ inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceRef device)
 
 inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
 {
-  return SDL::AcquireGPUCommandBuffer(m_resource);
+  return SDL::AcquireGPUCommandBuffer(get());
 }
 
 /**
@@ -7300,7 +7300,7 @@ inline void* MapGPUTransferBuffer(GPUDeviceRef device,
 inline void* GPUDevice::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
                                           bool cycle)
 {
-  return SDL::MapGPUTransferBuffer(m_resource, transfer_buffer, cycle);
+  return SDL::MapGPUTransferBuffer(get(), transfer_buffer, cycle);
 }
 
 /**
@@ -7319,7 +7319,7 @@ inline void UnmapGPUTransferBuffer(GPUDeviceRef device,
 
 inline void GPUDevice::UnmapTransferBuffer(GPUTransferBuffer transfer_buffer)
 {
-  SDL::UnmapGPUTransferBuffer(m_resource, transfer_buffer);
+  SDL::UnmapGPUTransferBuffer(get(), transfer_buffer);
 }
 
 /**
@@ -7620,7 +7620,7 @@ inline bool GPUDevice::WindowSupportsSwapchainComposition(
   GPUSwapchainComposition swapchain_composition)
 {
   return SDL::WindowSupportsGPUSwapchainComposition(
-    m_resource, window, swapchain_composition);
+    get(), window, swapchain_composition);
 }
 
 /**
@@ -7647,7 +7647,7 @@ inline bool WindowSupportsGPUPresentMode(GPUDeviceRef device,
 inline bool GPUDevice::WindowSupportsPresentMode(WindowRef window,
                                                  GPUPresentMode present_mode)
 {
-  return SDL::WindowSupportsGPUPresentMode(m_resource, window, present_mode);
+  return SDL::WindowSupportsGPUPresentMode(get(), window, present_mode);
 }
 
 /**
@@ -7682,7 +7682,7 @@ inline void ClaimWindowForGPUDevice(GPUDeviceRef device, WindowRef window)
 
 inline void GPUDevice::ClaimWindow(WindowRef window)
 {
-  SDL::ClaimWindowForGPUDevice(m_resource, window);
+  SDL::ClaimWindowForGPUDevice(get(), window);
 }
 
 /**
@@ -7702,7 +7702,7 @@ inline void ReleaseWindowFromGPUDevice(GPUDeviceRef device, WindowRef window)
 
 inline void GPUDevice::ReleaseWindow(WindowRef window)
 {
-  SDL::ReleaseWindowFromGPUDevice(m_resource, window);
+  SDL::ReleaseWindowFromGPUDevice(get(), window);
 }
 
 /**
@@ -7743,7 +7743,7 @@ inline bool GPUDevice::SetSwapchainParameters(
   GPUPresentMode present_mode)
 {
   return SDL::SetGPUSwapchainParameters(
-    m_resource, window, swapchain_composition, present_mode);
+    get(), window, swapchain_composition, present_mode);
 }
 
 /**
@@ -7779,7 +7779,7 @@ inline bool SetGPUAllowedFramesInFlight(GPUDeviceRef device,
 
 inline bool GPUDevice::SetAllowedFramesInFlight(Uint32 allowed_frames_in_flight)
 {
-  return SDL::SetGPUAllowedFramesInFlight(m_resource, allowed_frames_in_flight);
+  return SDL::SetGPUAllowedFramesInFlight(get(), allowed_frames_in_flight);
 }
 
 /**
@@ -7801,7 +7801,7 @@ inline GPUTextureFormat GetGPUSwapchainTextureFormat(GPUDeviceRef device,
 
 inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowRef window)
 {
-  return SDL::GetGPUSwapchainTextureFormat(m_resource, window);
+  return SDL::GetGPUSwapchainTextureFormat(get(), window);
 }
 
 /**
@@ -7899,7 +7899,7 @@ inline void WaitForGPUSwapchain(GPUDeviceRef device, WindowRef window)
 
 inline void GPUDevice::WaitForSwapchain(WindowRef window)
 {
-  SDL::WaitForGPUSwapchain(m_resource, window);
+  SDL::WaitForGPUSwapchain(get(), window);
 }
 
 /**
@@ -8079,7 +8079,7 @@ inline void WaitForGPUIdle(GPUDeviceRef device)
   CheckError(SDL_WaitForGPUIdle(device));
 }
 
-inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(m_resource); }
+inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(get()); }
 
 /**
  * Blocks the thread until the given fences are signaled.
@@ -8106,7 +8106,7 @@ inline void WaitForGPUFences(GPUDeviceRef device,
 inline void GPUDevice::WaitForFences(bool wait_all,
                                      std::span<GPUFence* const> fences)
 {
-  SDL::WaitForGPUFences(m_resource, wait_all, fences);
+  SDL::WaitForGPUFences(get(), wait_all, fences);
 }
 
 /**
@@ -8127,7 +8127,7 @@ inline bool QueryGPUFence(GPUDeviceRef device, GPUFence* fence)
 
 inline bool GPUDevice::QueryFence(GPUFence* fence)
 {
-  return SDL::QueryGPUFence(m_resource, fence);
+  return SDL::QueryGPUFence(get(), fence);
 }
 
 /**
@@ -8149,7 +8149,7 @@ inline void ReleaseGPUFence(GPUDeviceRef device, GPUFence* fence)
 
 inline void GPUDevice::ReleaseFence(GPUFence* fence)
 {
-  SDL::ReleaseGPUFence(m_resource, fence);
+  SDL::ReleaseGPUFence(get(), fence);
 }
 
 /**
@@ -8190,7 +8190,7 @@ inline bool GPUDevice::TextureSupportsFormat(GPUTextureFormat format,
                                              GPUTextureType type,
                                              GPUTextureUsageFlags usage)
 {
-  return SDL::GPUTextureSupportsFormat(m_resource, format, type, usage);
+  return SDL::GPUTextureSupportsFormat(get(), format, type, usage);
 }
 
 /**
@@ -8213,7 +8213,7 @@ inline bool GPUTextureSupportsSampleCount(GPUDeviceRef device,
 inline bool GPUDevice::TextureSupportsSampleCount(GPUTextureFormat format,
                                                   GPUSampleCount sample_count)
 {
-  return SDL::GPUTextureSupportsSampleCount(m_resource, format, sample_count);
+  return SDL::GPUTextureSupportsSampleCount(get(), format, sample_count);
 }
 
 /**
@@ -8285,7 +8285,7 @@ inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
  */
 inline void GDKSuspendGPU(GPUDeviceRef device) { SDL_GDKSuspendGPU(device); }
 
-inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
+inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(get()); }
 
 /**
  * Call this to resume GPU operation on Xbox when you receive the
@@ -8302,7 +8302,7 @@ inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
  */
 inline void GDKResumeGPU(GPUDeviceRef device) { SDL_GDKResumeGPU(device); }
 
-inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(m_resource); }
+inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(get()); }
 
 #endif /* SDL_PLATFORM_GDK */
 

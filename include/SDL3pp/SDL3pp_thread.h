@@ -760,10 +760,7 @@ inline const char* GetThreadName(ThreadRef thread)
   return SDL_GetThreadName(thread);
 }
 
-inline const char* Thread::GetName() const
-{
-  return SDL::GetThreadName(m_resource);
-}
+inline const char* Thread::GetName() const { return SDL::GetThreadName(get()); }
 
 /**
  * Get the thread identifier for the current thread.
@@ -807,7 +804,7 @@ inline ThreadID GetThreadID(ThreadRef thread)
   return SDL_GetThreadID(thread);
 }
 
-inline ThreadID Thread::GetID() const { return SDL::GetThreadID(m_resource); }
+inline ThreadID Thread::GetID() const { return SDL::GetThreadID(get()); }
 
 /**
  * Set the priority for the current thread.
@@ -873,7 +870,7 @@ inline void WaitThread(ThreadRef thread, int* status)
   SDL_WaitThread(thread, status);
 }
 
-inline void Thread::Wait(int* status) { SDL::WaitThread(m_resource, status); }
+inline void Thread::Wait(int* status) { SDL::WaitThread(get(), status); }
 
 /**
  * Get the current state of a thread.
@@ -895,7 +892,7 @@ inline ThreadState GetThreadState(ThreadRef thread)
 
 inline ThreadState Thread::GetState() const
 {
-  return SDL::GetThreadState(m_resource);
+  return SDL::GetThreadState(get());
 }
 
 /**

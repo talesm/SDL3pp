@@ -223,14 +223,11 @@ inline const char* Keycode::GetName() const
   return SDL_GetKeyName(m_keycode);
 }
 
-inline void Window::StartTextInput()
-{
-  CheckError(SDL_StartTextInput(m_resource));
-}
+inline void Window::StartTextInput() { CheckError(SDL_StartTextInput(get())); }
 
 inline void Window::StartTextInput(PropertiesRef props)
 {
-  CheckError(SDL_StartTextInputWithProperties(m_resource, props));
+  CheckError(SDL_StartTextInputWithProperties(get(), props));
 }
 
 /**
@@ -335,27 +332,24 @@ constexpr auto ANDROID_INPUTTYPE_NUMBER =
 
 inline bool Window::IsTextInputActive() const
 {
-  return SDL_TextInputActive(m_resource);
+  return SDL_TextInputActive(get());
 }
 
-inline void Window::StopTextInput()
-{
-  CheckError(SDL_StopTextInput(m_resource));
-}
+inline void Window::StopTextInput() { CheckError(SDL_StopTextInput(get())); }
 
 inline void Window::ClearComposition()
 {
-  CheckError(SDL_ClearComposition(m_resource));
+  CheckError(SDL_ClearComposition(get()));
 }
 
 inline void Window::SetTextInputArea(const RectRaw& rect, int cursor)
 {
-  CheckError(SDL_SetTextInputArea(m_resource, &rect, cursor));
+  CheckError(SDL_SetTextInputArea(get(), &rect, cursor));
 }
 
 inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)
 {
-  CheckError(SDL_GetTextInputArea(m_resource, rect, cursor));
+  CheckError(SDL_GetTextInputArea(get(), rect, cursor));
 }
 
 /**
@@ -378,7 +372,7 @@ inline bool HasScreenKeyboardSupport()
 
 inline bool Window::IsScreenKeyboardShown() const
 {
-  return SDL_ScreenKeyboardShown(m_resource);
+  return SDL_ScreenKeyboardShown(get());
 }
 
 /// @}

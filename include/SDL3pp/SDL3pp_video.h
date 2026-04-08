@@ -4263,7 +4263,7 @@ inline Display GetDisplayForWindow(WindowRef window)
 
 inline Display Window::GetDisplay() const
 {
-  return SDL::GetDisplayForWindow(m_resource);
+  return SDL::GetDisplayForWindow(get());
 }
 
 /**
@@ -4290,7 +4290,7 @@ inline float GetWindowPixelDensity(WindowRef window)
 
 inline float Window::GetPixelDensity() const
 {
-  return SDL::GetWindowPixelDensity(m_resource);
+  return SDL::GetWindowPixelDensity(get());
 }
 
 /**
@@ -4321,7 +4321,7 @@ inline float GetWindowDisplayScale(WindowRef window)
 
 inline float Window::GetDisplayScale() const
 {
-  return SDL::GetWindowDisplayScale(m_resource);
+  return SDL::GetWindowDisplayScale(get());
 }
 
 /**
@@ -4363,7 +4363,7 @@ inline void SetWindowFullscreenMode(WindowRef window,
 
 inline void Window::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
 {
-  SDL::SetWindowFullscreenMode(m_resource, mode);
+  SDL::SetWindowFullscreenMode(get(), mode);
 }
 
 /**
@@ -4387,7 +4387,7 @@ inline const DisplayMode& GetWindowFullscreenMode(WindowRef window)
 
 inline const DisplayMode& Window::GetFullscreenMode() const
 {
-  return SDL::GetWindowFullscreenMode(m_resource);
+  return SDL::GetWindowFullscreenMode(get());
 }
 
 /**
@@ -4409,7 +4409,7 @@ inline OwnPtr<void> GetWindowICCProfile(WindowRef window)
 
 inline OwnPtr<void> Window::GetICCProfile() const
 {
-  return SDL::GetWindowICCProfile(m_resource);
+  return SDL::GetWindowICCProfile(get());
 }
 
 /**
@@ -4430,7 +4430,7 @@ inline PixelFormat GetWindowPixelFormat(WindowRef window)
 
 inline PixelFormat Window::GetPixelFormat() const
 {
-  return SDL::GetWindowPixelFormat(m_resource);
+  return SDL::GetWindowPixelFormat(get());
 }
 
 /**
@@ -5045,7 +5045,7 @@ inline WindowID GetWindowID(WindowRef window)
   return CheckError(SDL_GetWindowID(window));
 }
 
-inline WindowID Window::GetID() const { return SDL::GetWindowID(m_resource); }
+inline WindowID Window::GetID() const { return SDL::GetWindowID(get()); }
 
 /**
  * Get a window from a stored ID.
@@ -5093,7 +5093,7 @@ inline WindowRef GetWindowParent(WindowRef window)
 
 inline WindowRef Window::GetParent() const
 {
-  return SDL::GetWindowParent(m_resource);
+  return SDL::GetWindowParent(get());
 }
 
 /**
@@ -5227,7 +5227,7 @@ inline PropertiesRef GetWindowProperties(WindowRef window)
 
 inline PropertiesRef Window::GetProperties() const
 {
-  return SDL::GetWindowProperties(m_resource);
+  return SDL::GetWindowProperties(get());
 }
 
 /**
@@ -5256,7 +5256,7 @@ inline WindowFlags GetWindowFlags(WindowRef window)
 
 inline WindowFlags Window::GetFlags() const
 {
-  return SDL::GetWindowFlags(m_resource);
+  return SDL::GetWindowFlags(get());
 }
 
 /**
@@ -5281,7 +5281,7 @@ inline void SetWindowTitle(WindowRef window, StringParam title)
 
 inline void Window::SetTitle(StringParam title)
 {
-  SDL::SetWindowTitle(m_resource, std::move(title));
+  SDL::SetWindowTitle(get(), std::move(title));
 }
 
 /**
@@ -5303,7 +5303,7 @@ inline const char* GetWindowTitle(WindowRef window)
 
 inline const char* Window::GetTitle() const
 {
-  return SDL::GetWindowTitle(m_resource);
+  return SDL::GetWindowTitle(get());
 }
 
 /**
@@ -5336,7 +5336,7 @@ inline void SetWindowIcon(WindowRef window, SurfaceRef icon)
 
 inline void Window::SetIcon(SurfaceRef icon)
 {
-  SDL::SetWindowIcon(m_resource, icon);
+  SDL::SetWindowIcon(get(), icon);
 }
 
 /**
@@ -5381,7 +5381,7 @@ inline void SetWindowPosition(WindowRef window, const PointRaw& p)
 
 inline void Window::SetPosition(const PointRaw& p)
 {
-  SDL::SetWindowPosition(m_resource, p);
+  SDL::SetWindowPosition(get(), p);
 }
 
 /**
@@ -5439,12 +5439,12 @@ inline Point GetWindowPosition(WindowRef window)
 
 inline void Window::GetPosition(int* x, int* y) const
 {
-  SDL::GetWindowPosition(m_resource, x, y);
+  SDL::GetWindowPosition(get(), x, y);
 }
 
 inline Point Window::GetPosition() const
 {
-  return SDL::GetWindowPosition(m_resource);
+  return SDL::GetWindowPosition(get());
 }
 
 /**
@@ -5487,7 +5487,7 @@ inline void SetWindowSize(WindowRef window, const PointRaw& size)
 
 inline void Window::SetSize(const PointRaw& size)
 {
-  SDL::SetWindowSize(m_resource, size);
+  SDL::SetWindowSize(get(), size);
 }
 
 /**
@@ -5545,10 +5545,10 @@ inline Point GetWindowSize(WindowRef window)
 
 inline void Window::GetSize(int* w, int* h) const
 {
-  SDL::GetWindowSize(m_resource, w, h);
+  SDL::GetWindowSize(get(), w, h);
 }
 
-inline Point Window::GetSize() const { return SDL::GetWindowSize(m_resource); }
+inline Point Window::GetSize() const { return SDL::GetWindowSize(get()); }
 
 /**
  * @brief Request the window's position and size to be set.
@@ -5568,7 +5568,7 @@ inline void SetWindowRect(WindowRef window, Rect rect)
   SetWindowSize(window, rect.GetSize());
 }
 
-inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(m_resource, rect); }
+inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(get(), rect); }
 
 /**
  * Get the position and client size of a window.
@@ -5589,7 +5589,7 @@ inline Rect GetWindowRect(WindowRef window)
   return Rect{GetWindowPosition(window), GetWindowSize(window)};
 }
 
-inline Rect Window::GetRect() const { return SDL::GetWindowRect(m_resource); }
+inline Rect Window::GetRect() const { return SDL::GetWindowRect(get()); }
 
 /**
  * Get the safe area for this window.
@@ -5617,7 +5617,7 @@ inline Rect GetWindowSafeArea(WindowRef window)
 
 inline Rect Window::GetSafeArea() const
 {
-  return SDL::GetWindowSafeArea(m_resource);
+  return SDL::GetWindowSafeArea(get());
 }
 
 /**
@@ -5666,7 +5666,7 @@ inline void SetWindowAspectRatio(WindowRef window,
 
 inline void Window::SetAspectRatio(float min_aspect, float max_aspect)
 {
-  SDL::SetWindowAspectRatio(m_resource, min_aspect, max_aspect);
+  SDL::SetWindowAspectRatio(get(), min_aspect, max_aspect);
 }
 
 /**
@@ -5694,7 +5694,7 @@ inline void GetWindowAspectRatio(WindowRef window,
 
 inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
 {
-  SDL::GetWindowAspectRatio(m_resource, min_aspect, max_aspect);
+  SDL::GetWindowAspectRatio(get(), min_aspect, max_aspect);
 }
 
 /**
@@ -5744,7 +5744,7 @@ inline void Window::GetBordersSize(int* top,
                                    int* bottom,
                                    int* right) const
 {
-  SDL::GetWindowBordersSize(m_resource, top, left, bottom, right);
+  SDL::GetWindowBordersSize(get(), top, left, bottom, right);
 }
 
 /**
@@ -5793,12 +5793,12 @@ inline Point GetWindowSizeInPixels(WindowRef window)
 
 inline void Window::GetSizeInPixels(int* w, int* h) const
 {
-  SDL::GetWindowSizeInPixels(m_resource, w, h);
+  SDL::GetWindowSizeInPixels(get(), w, h);
 }
 
 inline Point Window::GetSizeInPixels() const
 {
-  return SDL::GetWindowSizeInPixels(m_resource);
+  return SDL::GetWindowSizeInPixels(get());
 }
 
 /**
@@ -5822,7 +5822,7 @@ inline void SetWindowMinimumSize(WindowRef window, const PointRaw& p)
 
 inline void Window::SetMinimumSize(const PointRaw& p)
 {
-  SDL::SetWindowMinimumSize(m_resource, p);
+  SDL::SetWindowMinimumSize(get(), p);
 }
 
 /**
@@ -5849,7 +5849,7 @@ inline void GetWindowMinimumSize(WindowRef window, int* w, int* h)
 
 inline void Window::GetMinimumSize(int* w, int* h) const
 {
-  SDL::GetWindowMinimumSize(m_resource, w, h);
+  SDL::GetWindowMinimumSize(get(), w, h);
 }
 
 /**
@@ -5873,7 +5873,7 @@ inline void SetWindowMaximumSize(WindowRef window, const PointRaw& p)
 
 inline void Window::SetMaximumSize(const PointRaw& p)
 {
-  SDL::SetWindowMaximumSize(m_resource, p);
+  SDL::SetWindowMaximumSize(get(), p);
 }
 
 /**
@@ -5900,7 +5900,7 @@ inline void GetWindowMaximumSize(WindowRef window, int* w, int* h)
 
 inline void Window::GetMaximumSize(int* w, int* h) const
 {
-  SDL::GetWindowMaximumSize(m_resource, w, h);
+  SDL::GetWindowMaximumSize(get(), w, h);
 }
 
 /**
@@ -5929,7 +5929,7 @@ inline void SetWindowBordered(WindowRef window, bool bordered)
 
 inline void Window::SetBordered(bool bordered)
 {
-  SDL::SetWindowBordered(m_resource, bordered);
+  SDL::SetWindowBordered(get(), bordered);
 }
 
 /**
@@ -5958,7 +5958,7 @@ inline void SetWindowResizable(WindowRef window, bool resizable)
 
 inline void Window::SetResizable(bool resizable)
 {
-  SDL::SetWindowResizable(m_resource, resizable);
+  SDL::SetWindowResizable(get(), resizable);
 }
 
 /**
@@ -5984,7 +5984,7 @@ inline void SetWindowAlwaysOnTop(WindowRef window, bool on_top)
 
 inline void Window::SetAlwaysOnTop(bool on_top)
 {
-  SDL::SetWindowAlwaysOnTop(m_resource, on_top);
+  SDL::SetWindowAlwaysOnTop(get(), on_top);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -6024,7 +6024,7 @@ inline void SetWindowFillDocument(WindowRef window, bool fill)
 
 inline void Window::SetFillDocument(bool fill)
 {
-  SDL::SetWindowFillDocument(m_resource, fill);
+  SDL::SetWindowFillDocument(get(), fill);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -6044,7 +6044,7 @@ inline void Window::SetFillDocument(bool fill)
  */
 inline void ShowWindow(WindowRef window) { CheckError(SDL_ShowWindow(window)); }
 
-inline void Window::Show() { SDL::ShowWindow(m_resource); }
+inline void Window::Show() { SDL::ShowWindow(get()); }
 
 /**
  * Hide a window.
@@ -6061,7 +6061,7 @@ inline void Window::Show() { SDL::ShowWindow(m_resource); }
  */
 inline void HideWindow(WindowRef window) { CheckError(SDL_HideWindow(window)); }
 
-inline void Window::Hide() { SDL::HideWindow(m_resource); }
+inline void Window::Hide() { SDL::HideWindow(get()); }
 
 /**
  * Request that a window be raised above other windows and gain the input focus.
@@ -6084,7 +6084,7 @@ inline void RaiseWindow(WindowRef window)
   CheckError(SDL_RaiseWindow(window));
 }
 
-inline void Window::Raise() { SDL::RaiseWindow(m_resource); }
+inline void Window::Raise() { SDL::RaiseWindow(get()); }
 
 /**
  * Request that the window be made as large as possible.
@@ -6122,7 +6122,7 @@ inline void MaximizeWindow(WindowRef window)
   CheckError(SDL_MaximizeWindow(window));
 }
 
-inline void Window::Maximize() { SDL::MaximizeWindow(m_resource); }
+inline void Window::Maximize() { SDL::MaximizeWindow(get()); }
 
 /**
  * Request that the window be minimized to an iconic representation.
@@ -6155,7 +6155,7 @@ inline void MinimizeWindow(WindowRef window)
   CheckError(SDL_MinimizeWindow(window));
 }
 
-inline void Window::Minimize() { SDL::MinimizeWindow(m_resource); }
+inline void Window::Minimize() { SDL::MinimizeWindow(get()); }
 
 /**
  * Request that the size and position of a minimized or maximized window be
@@ -6189,7 +6189,7 @@ inline void RestoreWindow(WindowRef window)
   CheckError(SDL_RestoreWindow(window));
 }
 
-inline void Window::Restore() { SDL::RestoreWindow(m_resource); }
+inline void Window::Restore() { SDL::RestoreWindow(get()); }
 
 /**
  * Request that the window's fullscreen state be changed.
@@ -6227,7 +6227,7 @@ inline void SetWindowFullscreen(WindowRef window, bool fullscreen)
 
 inline void Window::SetFullscreen(bool fullscreen)
 {
-  SDL::SetWindowFullscreen(m_resource, fullscreen);
+  SDL::SetWindowFullscreen(get(), fullscreen);
 }
 
 /**
@@ -6261,7 +6261,7 @@ inline void Window::SetFullscreen(bool fullscreen)
  */
 inline bool SyncWindow(WindowRef window) { return SDL_SyncWindow(window); }
 
-inline bool Window::Sync() { return SDL::SyncWindow(m_resource); }
+inline bool Window::Sync() { return SDL::SyncWindow(get()); }
 
 /**
  * Return whether the window has a surface associated with it.
@@ -6281,10 +6281,7 @@ inline bool WindowHasSurface(WindowRef window)
   return SDL_WindowHasSurface(window);
 }
 
-inline bool Window::HasSurface() const
-{
-  return SDL::WindowHasSurface(m_resource);
-}
+inline bool Window::HasSurface() const { return SDL::WindowHasSurface(get()); }
 
 /**
  * Get the SDL surface associated with the window.
@@ -6318,10 +6315,7 @@ inline Surface GetWindowSurface(WindowRef window)
   return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
 }
 
-inline Surface Window::GetSurface()
-{
-  return SDL::GetWindowSurface(m_resource);
-}
+inline Surface Window::GetSurface() { return SDL::GetWindowSurface(get()); }
 
 /**
  * Toggle VSync for the window surface.
@@ -6353,7 +6347,7 @@ inline void SetWindowSurfaceVSync(WindowRef window, int vsync)
 
 inline void Window::SetSurfaceVSync(int vsync)
 {
-  SDL::SetWindowSurfaceVSync(m_resource, vsync);
+  SDL::SetWindowSurfaceVSync(get(), vsync);
 }
 
 /// Constant to disable vsync
@@ -6383,7 +6377,7 @@ inline int GetWindowSurfaceVSync(WindowRef window)
 
 inline int Window::GetSurfaceVSync() const
 {
-  return SDL::GetWindowSurfaceVSync(m_resource);
+  return SDL::GetWindowSurfaceVSync(get());
 }
 
 /**
@@ -6409,7 +6403,7 @@ inline void UpdateWindowSurface(WindowRef window)
   CheckError(SDL_UpdateWindowSurface(window));
 }
 
-inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
+inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(get()); }
 
 /**
  * Copy areas of the window surface to the screen.
@@ -6445,7 +6439,7 @@ inline void UpdateWindowSurfaceRects(WindowRef window,
 
 inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
 {
-  SDL::UpdateWindowSurfaceRects(m_resource, rects);
+  SDL::UpdateWindowSurfaceRects(get(), rects);
 }
 
 /**
@@ -6466,7 +6460,7 @@ inline void DestroyWindowSurface(WindowRef window)
   CheckError(SDL_DestroyWindowSurface(window));
 }
 
-inline void Window::DestroySurface() { SDL::DestroyWindowSurface(m_resource); }
+inline void Window::DestroySurface() { SDL::DestroyWindowSurface(get()); }
 
 /**
  * Set a window's keyboard grab mode.
@@ -6504,7 +6498,7 @@ inline void SetWindowKeyboardGrab(WindowRef window, bool grabbed)
 
 inline void Window::SetKeyboardGrab(bool grabbed)
 {
-  SDL::SetWindowKeyboardGrab(m_resource, grabbed);
+  SDL::SetWindowKeyboardGrab(get(), grabbed);
 }
 
 /**
@@ -6531,7 +6525,7 @@ inline void SetWindowMouseGrab(WindowRef window, bool grabbed)
 
 inline void Window::SetMouseGrab(bool grabbed)
 {
-  SDL::SetWindowMouseGrab(m_resource, grabbed);
+  SDL::SetWindowMouseGrab(get(), grabbed);
 }
 
 /**
@@ -6553,7 +6547,7 @@ inline bool GetWindowKeyboardGrab(WindowRef window)
 
 inline bool Window::GetKeyboardGrab() const
 {
-  return SDL::GetWindowKeyboardGrab(m_resource);
+  return SDL::GetWindowKeyboardGrab(get());
 }
 
 /**
@@ -6578,7 +6572,7 @@ inline bool GetWindowMouseGrab(WindowRef window)
 
 inline bool Window::GetMouseGrab() const
 {
-  return SDL::GetWindowMouseGrab(m_resource);
+  return SDL::GetWindowMouseGrab(get());
 }
 
 /**
@@ -6623,7 +6617,7 @@ inline void SetWindowMouseRect(WindowRef window, const RectRaw& rect)
 
 inline void Window::SetMouseRect(const RectRaw& rect)
 {
-  SDL::SetWindowMouseRect(m_resource, rect);
+  SDL::SetWindowMouseRect(get(), rect);
 }
 
 /**
@@ -6648,7 +6642,7 @@ inline const RectRaw* GetWindowMouseRect(WindowRef window)
 
 inline const RectRaw* Window::GetMouseRect() const
 {
-  return SDL::GetWindowMouseRect(m_resource);
+  return SDL::GetWindowMouseRect(get());
 }
 
 /**
@@ -6676,7 +6670,7 @@ inline void SetWindowOpacity(WindowRef window, float opacity)
 
 inline void Window::SetOpacity(float opacity)
 {
-  SDL::SetWindowOpacity(m_resource, opacity);
+  SDL::SetWindowOpacity(get(), opacity);
 }
 
 /**
@@ -6700,10 +6694,7 @@ inline float GetWindowOpacity(WindowRef window)
   return SDL_GetWindowOpacity(window);
 }
 
-inline float Window::GetOpacity() const
-{
-  return SDL::GetWindowOpacity(m_resource);
-}
+inline float Window::GetOpacity() const { return SDL::GetWindowOpacity(get()); }
 
 /**
  * Set the window as a child of a parent window.
@@ -6743,7 +6734,7 @@ inline void SetWindowParent(WindowRef window, WindowRef parent)
 
 inline void Window::SetParent(WindowRef parent)
 {
-  SDL::SetWindowParent(m_resource, parent);
+  SDL::SetWindowParent(get(), parent);
 }
 
 /**
@@ -6768,10 +6759,7 @@ inline void SetWindowModal(WindowRef window, bool modal)
   CheckError(SDL_SetWindowModal(window, modal));
 }
 
-inline void Window::SetModal(bool modal)
-{
-  SDL::SetWindowModal(m_resource, modal);
-}
+inline void Window::SetModal(bool modal) { SDL::SetWindowModal(get(), modal); }
 
 /**
  * Set whether the window may have input focus.
@@ -6791,7 +6779,7 @@ inline void SetWindowFocusable(WindowRef window, bool focusable)
 
 inline void Window::SetFocusable(bool focusable)
 {
-  SDL::SetWindowFocusable(m_resource, focusable);
+  SDL::SetWindowFocusable(get(), focusable);
 }
 
 /**
@@ -6821,7 +6809,7 @@ inline void ShowWindowSystemMenu(WindowRef window, const PointRaw& p)
 
 inline void Window::ShowSystemMenu(const PointRaw& p)
 {
-  SDL::ShowWindowSystemMenu(m_resource, p);
+  SDL::ShowWindowSystemMenu(get(), p);
 }
 
 /**
@@ -6919,12 +6907,12 @@ inline void SetWindowHitTest(WindowRef window, HitTestCB callback)
 
 inline void Window::SetHitTest(HitTest callback, void* callback_data)
 {
-  SDL::SetWindowHitTest(m_resource, callback, callback_data);
+  SDL::SetWindowHitTest(get(), callback, callback_data);
 }
 
 inline void Window::SetHitTest(HitTestCB callback)
 {
-  SDL::SetWindowHitTest(m_resource, callback);
+  SDL::SetWindowHitTest(get(), callback);
 }
 
 /**
@@ -6958,7 +6946,7 @@ inline void SetWindowShape(WindowRef window, SurfaceRef shape)
 
 inline void Window::SetShape(SurfaceRef shape)
 {
-  SDL::SetWindowShape(m_resource, shape);
+  SDL::SetWindowShape(get(), shape);
 }
 
 /**
@@ -6979,7 +6967,7 @@ inline void FlashWindow(WindowRef window, FlashOperation operation)
 
 inline void Window::Flash(FlashOperation operation)
 {
-  SDL::FlashWindow(m_resource, operation);
+  SDL::FlashWindow(get(), operation);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -7003,7 +6991,7 @@ inline void SetWindowProgressState(WindowRef window, ProgressState state)
 
 inline void Window::SetProgressState(ProgressState state)
 {
-  SDL::SetWindowProgressState(m_resource, state);
+  SDL::SetWindowProgressState(get(), state);
 }
 
 /**
@@ -7024,7 +7012,7 @@ inline ProgressState GetWindowProgressState(WindowRef window)
 
 inline ProgressState Window::GetProgressState()
 {
-  return SDL::GetWindowProgressState(m_resource);
+  return SDL::GetWindowProgressState(get());
 }
 
 /**
@@ -7046,7 +7034,7 @@ inline void SetWindowProgressValue(WindowRef window, float value)
 
 inline void Window::SetProgressValue(float value)
 {
-  SDL::SetWindowProgressValue(m_resource, value);
+  SDL::SetWindowProgressValue(get(), value);
 }
 
 /**
@@ -7067,7 +7055,7 @@ inline float GetWindowProgressValue(WindowRef window)
 
 inline float Window::GetProgressValue()
 {
-  return SDL::GetWindowProgressValue(m_resource);
+  return SDL::GetWindowProgressValue(get());
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -7378,7 +7366,7 @@ inline GLContext GL_CreateContext(WindowRef window)
   return GLContext(window);
 }
 
-inline GLContext Window::CreateGLContext() { return GLContext(m_resource); }
+inline GLContext Window::CreateGLContext() { return GLContext(get()); }
 
 inline GLContext::GLContext(WindowRef window)
   : m_resource(SDL_GL_CreateContext(window))
@@ -7407,12 +7395,12 @@ inline void GL_MakeCurrent(WindowRef window, GLContext context)
 
 inline void Window::MakeCurrent(GLContext context)
 {
-  SDL::GL_MakeCurrent(m_resource, context);
+  SDL::GL_MakeCurrent(get(), context);
 }
 
 inline void GLContext::MakeCurrent(WindowRef window)
 {
-  SDL::GL_MakeCurrent(window, m_resource);
+  SDL::GL_MakeCurrent(window, get());
 }
 
 /**
@@ -7490,7 +7478,7 @@ inline EGLSurface EGL_GetWindowSurface(WindowRef window)
 
 inline EGLSurface Window::GetEGLSurface()
 {
-  return SDL::EGL_GetWindowSurface(m_resource);
+  return SDL::EGL_GetWindowSurface(get());
 }
 
 /**
@@ -7603,7 +7591,7 @@ inline void GL_SwapWindow(WindowRef window)
   CheckError(SDL_GL_SwapWindow(window));
 }
 
-inline void Window::GL_Swap() { SDL::GL_SwapWindow(m_resource); }
+inline void Window::GL_Swap() { SDL::GL_SwapWindow(get()); }
 
 /**
  * Delete an OpenGL context.

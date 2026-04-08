@@ -4325,7 +4325,7 @@ inline PropertiesRef GetMixerProperties(MixerRef mixer)
 
 inline PropertiesRef Mixer::GetProperties()
 {
-  return SDL::GetMixerProperties(m_resource);
+  return SDL::GetMixerProperties(get());
 }
 
 /**
@@ -4374,7 +4374,7 @@ inline void GetMixerFormat(MixerRef mixer, AudioSpec* spec)
 
 inline void Mixer::GetFormat(AudioSpec* spec)
 {
-  SDL::GetMixerFormat(m_resource, spec);
+  SDL::GetMixerFormat(get(), spec);
 }
 
 /**
@@ -4533,7 +4533,7 @@ inline Audio LoadAudio_IO(MixerRef mixer,
 
 inline Audio Mixer::LoadAudio_IO(IOStreamRef io, bool predecode, bool closeio)
 {
-  return Audio(m_resource, io, predecode, closeio);
+  return Audio(get(), io, predecode, closeio);
 }
 
 inline Audio::Audio(MixerRef mixer,
@@ -4603,7 +4603,7 @@ inline Audio LoadAudio(MixerRef mixer, StringParam path, bool predecode)
 
 inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
 {
-  return Audio(m_resource, std::move(path), predecode);
+  return Audio(get(), std::move(path), predecode);
 }
 
 /**
@@ -4672,7 +4672,7 @@ inline Audio LoadAudioNoCopy(MixerRef mixer,
 
 inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
 {
-  return SDL::LoadAudioNoCopy(m_resource, std::move(data), free_when_done);
+  return SDL::LoadAudioNoCopy(get(), std::move(data), free_when_done);
 }
 
 /**
@@ -4795,7 +4795,7 @@ inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
                                     const AudioSpec& spec,
                                     bool closeio)
 {
-  return Audio(m_resource, io, spec, closeio);
+  return Audio(get(), io, spec, closeio);
 }
 
 /**
@@ -4841,7 +4841,7 @@ inline Audio LoadRawAudio(MixerRef mixer,
 
 inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
 {
-  return Audio(m_resource, std::move(data), spec);
+  return Audio(get(), std::move(data), spec);
 }
 
 /**
@@ -4897,8 +4897,7 @@ inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
                                        const AudioSpec& spec,
                                        bool free_when_done)
 {
-  return SDL::LoadRawAudioNoCopy(
-    m_resource, std::move(data), spec, free_when_done);
+  return SDL::LoadRawAudioNoCopy(get(), std::move(data), spec, free_when_done);
 }
 
 /**
@@ -4947,7 +4946,7 @@ inline Audio CreateSineWaveAudio(MixerRef mixer,
 
 inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
 {
-  return SDL::CreateSineWaveAudio(m_resource, hz, amplitude, ms);
+  return SDL::CreateSineWaveAudio(get(), hz, amplitude, ms);
 }
 
 /**
@@ -5000,7 +4999,7 @@ inline PropertiesRef GetAudioProperties(AudioRef audio)
 
 inline PropertiesRef Audio::GetProperties()
 {
-  return SDL::GetAudioProperties(m_resource);
+  return SDL::GetAudioProperties(get());
 }
 
 /**
@@ -5069,7 +5068,7 @@ inline Sint64 GetAudioDuration(AudioRef audio)
   return MIX_GetAudioDuration(audio);
 }
 
-inline Sint64 Audio::GetDuration() { return SDL::GetAudioDuration(m_resource); }
+inline Sint64 Audio::GetDuration() { return SDL::GetAudioDuration(get()); }
 
 /// Unknown duration, when the length of the audio can't be determined.
 constexpr Sint64 DURATION_UNKNOWN = MIX_DURATION_UNKNOWN;
@@ -5100,7 +5099,7 @@ inline void GetAudioFormat(AudioRef audio, AudioSpec* spec)
 
 inline void Audio::GetFormat(AudioSpec* spec)
 {
-  SDL::GetAudioFormat(m_resource, spec);
+  SDL::GetAudioFormat(get(), spec);
 }
 
 /**
@@ -5151,7 +5150,7 @@ inline void Audio::Destroy() { DestroyAudio(release()); }
  */
 inline Track CreateTrack(MixerRef mixer) { return Track(mixer); }
 
-inline TrackRef Mixer::CreateTrack() { return Track(m_resource); }
+inline TrackRef Mixer::CreateTrack() { return Track(get()); }
 
 inline Track::Track(MixerRef mixer)
   : m_resource(CheckError(MIX_CreateTrack(mixer)))
@@ -5204,7 +5203,7 @@ inline PropertiesRef GetTrackProperties(TrackRef track)
 
 inline PropertiesRef Track::GetProperties()
 {
-  return SDL::GetTrackProperties(m_resource);
+  return SDL::GetTrackProperties(get());
 }
 
 /**
@@ -5225,7 +5224,7 @@ inline MixerRef GetTrackMixer(TrackRef track)
   return CheckError(MIX_GetTrackMixer(track));
 }
 
-inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(m_resource); }
+inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(get()); }
 
 /**
  * Set a Track's input to a Audio.
@@ -5265,7 +5264,7 @@ inline void SetTrackAudio(TrackRef track, AudioRef audio)
 
 inline void Track::SetAudio(AudioRef audio)
 {
-  SDL::SetTrackAudio(m_resource, audio);
+  SDL::SetTrackAudio(get(), audio);
 }
 
 /**
@@ -5315,7 +5314,7 @@ inline void SetTrackAudioStream(TrackRef track, AudioStreamRef stream)
 
 inline void Track::SetAudioStream(AudioStreamRef stream)
 {
-  SDL::SetTrackAudioStream(m_resource, stream);
+  SDL::SetTrackAudioStream(get(), stream);
 }
 
 /**
@@ -5374,7 +5373,7 @@ inline void SetTrackIOStream(TrackRef track,
 
 inline void Track::SetIOStream(IOStreamRef io, bool closeio)
 {
-  SDL::SetTrackIOStream(m_resource, io, closeio);
+  SDL::SetTrackIOStream(get(), io, closeio);
 }
 
 /**
@@ -5437,7 +5436,7 @@ inline void Track::SetRawIOStream(IOStreamRef io,
                                   const AudioSpec& spec,
                                   bool closeio)
 {
-  SDL::SetTrackRawIOStream(m_resource, io, spec, closeio);
+  SDL::SetTrackRawIOStream(get(), io, spec, closeio);
 }
 
 /**
@@ -5474,7 +5473,7 @@ inline void TagTrack(TrackRef track, StringParam tag)
 
 inline void Track::Tag(StringParam tag)
 {
-  SDL::TagTrack(m_resource, std::move(tag));
+  SDL::TagTrack(get(), std::move(tag));
 }
 
 /**
@@ -5507,7 +5506,7 @@ inline void UntagTrack(TrackRef track, StringParam tag)
 
 inline void Track::Untag(StringParam tag)
 {
-  SDL::UntagTrack(m_resource, std::move(tag));
+  SDL::UntagTrack(get(), std::move(tag));
 }
 
 /**
@@ -5530,10 +5529,7 @@ inline OwnArray<char*> GetTrackTags(TrackRef track)
   return OwnArray<char*>(result, count);
 }
 
-inline OwnArray<char*> Track::GetTags()
-{
-  return SDL::GetTrackTags(m_resource);
-}
+inline OwnArray<char*> Track::GetTags() { return SDL::GetTrackTags(get()); }
 
 /**
  * Get all tracks with a specific tag.
@@ -5558,7 +5554,7 @@ inline OwnArray<TrackRef> GetTaggedTracks(MixerRef mixer, StringParam tag)
 
 inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
 {
-  return SDL::GetTaggedTracks(m_resource, std::move(tag));
+  return SDL::GetTaggedTracks(get(), std::move(tag));
 }
 
 /**
@@ -5603,7 +5599,7 @@ inline void SetTrackPlaybackPosition(TrackRef track, Sint64 frames)
 
 inline void Track::SetPlaybackPosition(Sint64 frames)
 {
-  SDL::SetTrackPlaybackPosition(m_resource, frames);
+  SDL::SetTrackPlaybackPosition(get(), frames);
 }
 
 /**
@@ -5636,7 +5632,7 @@ inline Sint64 GetTrackPlaybackPosition(TrackRef track)
 
 inline Sint64 Track::GetPlaybackPosition()
 {
-  return SDL::GetTrackPlaybackPosition(m_resource);
+  return SDL::GetTrackPlaybackPosition(get());
 }
 
 /**
@@ -5666,10 +5662,7 @@ inline Sint64 GetTrackFadeFrames(TrackRef track)
   return MIX_GetTrackFadeFrames(track);
 }
 
-inline Sint64 Track::GetFadeFrames()
-{
-  return SDL::GetTrackFadeFrames(m_resource);
-}
+inline Sint64 Track::GetFadeFrames() { return SDL::GetTrackFadeFrames(get()); }
 
 /**
  * Query how many loops remain for a given track.
@@ -5699,7 +5692,7 @@ inline Sint64 Track::GetFadeFrames()
  */
 inline int GetTrackLoops(TrackRef track) { return MIX_GetTrackLoops(track); }
 
-inline int Track::GetLoops() { return SDL::GetTrackLoops(m_resource); }
+inline int Track::GetLoops() { return SDL::GetTrackLoops(get()); }
 
 /**
  * Change the number of times a currently-playing track will loop.
@@ -5736,7 +5729,7 @@ inline void SetTrackLoops(TrackRef track, int num_loops)
 
 inline void Track::SetLoops(int num_loops)
 {
-  SDL::SetTrackLoops(m_resource, num_loops);
+  SDL::SetTrackLoops(get(), num_loops);
 }
 
 /**
@@ -5764,7 +5757,7 @@ inline AudioRef GetTrackAudio(TrackRef track)
   return MIX_GetTrackAudio(track);
 }
 
-inline AudioRef Track::GetAudio() { return SDL::GetTrackAudio(m_resource); }
+inline AudioRef Track::GetAudio() { return SDL::GetTrackAudio(get()); }
 
 /**
  * Query the AudioStream assigned to a track.
@@ -5794,7 +5787,7 @@ inline AudioStreamRef GetTrackAudioStream(TrackRef track)
 
 inline AudioStreamRef Track::GetAudioStream()
 {
-  return SDL::GetTrackAudioStream(m_resource);
+  return SDL::GetTrackAudioStream(get());
 }
 
 /**
@@ -5827,10 +5820,7 @@ inline Sint64 GetTrackRemaining(TrackRef track)
   return MIX_GetTrackRemaining(track);
 }
 
-inline Sint64 Track::GetRemaining()
-{
-  return SDL::GetTrackRemaining(m_resource);
-}
+inline Sint64 Track::GetRemaining() { return SDL::GetTrackRemaining(get()); }
 
 /**
  * Convert milliseconds to sample frames for a track's current format.
@@ -5861,7 +5851,7 @@ inline Sint64 TrackMSToFrames(TrackRef track, Milliseconds ms)
 
 inline Sint64 Track::MSToFrames(Milliseconds ms)
 {
-  return SDL::TrackMSToFrames(m_resource, ms);
+  return SDL::TrackMSToFrames(get(), ms);
 }
 
 /**
@@ -5896,7 +5886,7 @@ inline Milliseconds TrackFramesToMS(TrackRef track, Sint64 frames)
 
 inline Milliseconds Track::FramesToMS(Sint64 frames)
 {
-  return SDL::TrackFramesToMS(m_resource, frames);
+  return SDL::TrackFramesToMS(get(), frames);
 }
 
 /**
@@ -5925,7 +5915,7 @@ inline Sint64 AudioMSToFrames(AudioRef audio, Milliseconds ms)
 
 inline Sint64 Audio::MSToFrames(Milliseconds ms)
 {
-  return SDL::AudioMSToFrames(m_resource, ms);
+  return SDL::AudioMSToFrames(get(), ms);
 }
 
 /**
@@ -5957,7 +5947,7 @@ inline Milliseconds AudioFramesToMS(AudioRef audio, Sint64 frames)
 
 inline Milliseconds Audio::FramesToMS(Sint64 frames)
 {
-  return SDL::AudioFramesToMS(m_resource, frames);
+  return SDL::AudioFramesToMS(get(), frames);
 }
 
 /**
@@ -6124,7 +6114,7 @@ inline void PlayTrack(TrackRef track, PropertiesRef options = nullptr)
 
 inline void Track::Play(PropertiesRef options)
 {
-  SDL::PlayTrack(m_resource, options);
+  SDL::PlayTrack(get(), options);
 }
 
 /**
@@ -6211,7 +6201,7 @@ inline void PlayTag(MixerRef mixer, StringParam tag, PropertiesRef options)
 
 inline void Mixer::PlayTag(StringParam tag, PropertiesRef options)
 {
-  SDL::PlayTag(m_resource, std::move(tag), options);
+  SDL::PlayTag(get(), std::move(tag), options);
 }
 
 /**
@@ -6251,7 +6241,7 @@ inline bool PlayAudio(MixerRef mixer, AudioRef audio)
 
 inline bool Mixer::PlayAudio(AudioRef audio)
 {
-  return SDL::PlayAudio(m_resource, audio);
+  return SDL::PlayAudio(get(), audio);
 }
 
 /**
@@ -6293,7 +6283,7 @@ inline bool StopTrack(TrackRef track, Sint64 fade_out_frames)
 
 inline bool Track::Stop(Sint64 fade_out_frames)
 {
-  return SDL::StopTrack(m_resource, fade_out_frames);
+  return SDL::StopTrack(get(), fade_out_frames);
 }
 
 /**
@@ -6332,7 +6322,7 @@ inline void StopAllTracks(MixerRef mixer, Sint64 fade_out_ms)
 
 inline void Mixer::StopAllTracks(Sint64 fade_out_ms)
 {
-  SDL::StopAllTracks(m_resource, fade_out_ms);
+  SDL::StopAllTracks(get(), fade_out_ms);
 }
 
 /**
@@ -6373,7 +6363,7 @@ inline void StopTag(MixerRef mixer, StringParam tag, Sint64 fade_out_ms)
 
 inline void Mixer::StopTag(StringParam tag, Sint64 fade_out_ms)
 {
-  SDL::StopTag(m_resource, std::move(tag), fade_out_ms);
+  SDL::StopTag(get(), std::move(tag), fade_out_ms);
 }
 
 /**
@@ -6400,7 +6390,7 @@ inline void Mixer::StopTag(StringParam tag, Sint64 fade_out_ms)
  */
 inline bool PauseTrack(TrackRef track) { return MIX_PauseTrack(track); }
 
-inline bool Track::Pause() { return SDL::PauseTrack(m_resource); }
+inline bool Track::Pause() { return SDL::PauseTrack(get()); }
 
 /**
  * Pause all currently-playing tracks.
@@ -6427,7 +6417,7 @@ inline void PauseAllTracks(MixerRef mixer)
   CheckError(MIX_PauseAllTracks(mixer));
 }
 
-inline void Mixer::PauseAllTracks() { SDL::PauseAllTracks(m_resource); }
+inline void Mixer::PauseAllTracks() { SDL::PauseAllTracks(get()); }
 
 /**
  * Pause all tracks with a specific tag.
@@ -6462,7 +6452,7 @@ inline void PauseTag(MixerRef mixer, StringParam tag)
 
 inline void Mixer::PauseTag(StringParam tag)
 {
-  SDL::PauseTag(m_resource, std::move(tag));
+  SDL::PauseTag(get(), std::move(tag));
 }
 
 /**
@@ -6489,7 +6479,7 @@ inline void Mixer::PauseTag(StringParam tag)
  */
 inline bool ResumeTrack(TrackRef track) { return MIX_ResumeTrack(track); }
 
-inline bool Track::Resume() { return SDL::ResumeTrack(m_resource); }
+inline bool Track::Resume() { return SDL::ResumeTrack(get()); }
 
 /**
  * Resume all currently-paused tracks.
@@ -6516,7 +6506,7 @@ inline void ResumeAllTracks(MixerRef mixer)
   CheckError(MIX_ResumeAllTracks(mixer));
 }
 
-inline void Mixer::ResumeAllTracks() { SDL::ResumeAllTracks(m_resource); }
+inline void Mixer::ResumeAllTracks() { SDL::ResumeAllTracks(get()); }
 
 /**
  * Resume all tracks with a specific tag.
@@ -6550,7 +6540,7 @@ inline void ResumeTag(MixerRef mixer, StringParam tag)
 
 inline void Mixer::ResumeTag(StringParam tag)
 {
-  SDL::ResumeTag(m_resource, std::move(tag));
+  SDL::ResumeTag(get(), std::move(tag));
 }
 
 /**
@@ -6578,7 +6568,7 @@ inline void Mixer::ResumeTag(StringParam tag)
  */
 inline bool TrackPlaying(TrackRef track) { return MIX_TrackPlaying(track); }
 
-inline bool Track::Playing() { return SDL::TrackPlaying(m_resource); }
+inline bool Track::Playing() { return SDL::TrackPlaying(get()); }
 
 /**
  * Query if a track is currently paused.
@@ -6605,7 +6595,7 @@ inline bool Track::Playing() { return SDL::TrackPlaying(m_resource); }
  */
 inline bool TrackPaused(TrackRef track) { return MIX_TrackPaused(track); }
 
-inline bool Track::Paused() { return SDL::TrackPaused(m_resource); }
+inline bool Track::Paused() { return SDL::TrackPaused(get()); }
 
 /**
  * Set a mixer's master gain control.
@@ -6637,7 +6627,7 @@ inline void SetMixerGain(MixerRef mixer, float gain)
   CheckError(MIX_SetMixerGain(mixer, gain));
 }
 
-inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(m_resource, gain); }
+inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
 
 /**
  * Get a mixer's master gain control.
@@ -6657,7 +6647,7 @@ inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(m_resource, gain); }
  */
 inline float GetMixerGain(MixerRef mixer) { return MIX_GetMixerGain(mixer); }
 
-inline float Mixer::GetGain() { return SDL::GetMixerGain(m_resource); }
+inline float Mixer::GetGain() { return SDL::GetMixerGain(get()); }
 
 /**
  * Set a track's gain control.
@@ -6689,7 +6679,7 @@ inline void SetTrackGain(TrackRef track, float gain)
   CheckError(MIX_SetTrackGain(track, gain));
 }
 
-inline void Track::SetGain(float gain) { SDL::SetTrackGain(m_resource, gain); }
+inline void Track::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
 
 /**
  * Get a track's gain control.
@@ -6709,7 +6699,7 @@ inline void Track::SetGain(float gain) { SDL::SetTrackGain(m_resource, gain); }
  */
 inline float GetTrackGain(TrackRef track) { return MIX_GetTrackGain(track); }
 
-inline float Track::GetGain() { return SDL::GetTrackGain(m_resource); }
+inline float Track::GetGain() { return SDL::GetTrackGain(get()); }
 
 /**
  * Set the gain control of all tracks with a specific tag.
@@ -6752,7 +6742,7 @@ inline void SetTagGain(MixerRef mixer, StringParam tag, float gain)
 
 inline void Mixer::SetTagGain(StringParam tag, float gain)
 {
-  SDL::SetTagGain(m_resource, std::move(tag), gain);
+  SDL::SetTagGain(get(), std::move(tag), gain);
 }
 
 /**
@@ -6789,7 +6779,7 @@ inline void SetMixerFrequencyRatio(MixerRef mixer, float ratio)
 
 inline void Mixer::SetFrequencyRatio(float ratio)
 {
-  SDL::SetMixerFrequencyRatio(m_resource, ratio);
+  SDL::SetMixerFrequencyRatio(get(), ratio);
 }
 
 /**
@@ -6815,7 +6805,7 @@ inline float GetMixerFrequencyRatio(MixerRef mixer)
 
 inline float Mixer::GetFrequencyRatio()
 {
-  return SDL::GetMixerFrequencyRatio(m_resource);
+  return SDL::GetMixerFrequencyRatio(get());
 }
 
 /**
@@ -6848,7 +6838,7 @@ inline void SetTrackFrequencyRatio(TrackRef track, float ratio)
 
 inline void Track::SetFrequencyRatio(float ratio)
 {
-  SDL::SetTrackFrequencyRatio(m_resource, ratio);
+  SDL::SetTrackFrequencyRatio(get(), ratio);
 }
 
 /**
@@ -6883,7 +6873,7 @@ inline float GetTrackFrequencyRatio(TrackRef track)
 
 inline float Track::GetFrequencyRatio()
 {
-  return SDL::GetTrackFrequencyRatio(m_resource);
+  return SDL::GetTrackFrequencyRatio(get());
 }
 
 /**
@@ -6929,7 +6919,7 @@ inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
 
 inline void Track::SetOutputChannelMap(std::span<const int> chmap)
 {
-  SDL::SetTrackOutputChannelMap(m_resource, chmap);
+  SDL::SetTrackOutputChannelMap(get(), chmap);
 }
 
 /**
@@ -6969,7 +6959,7 @@ inline void SetTrackStereo(TrackRef track, const StereoGains& gains)
 
 inline void Track::SetStereo(const StereoGains& gains)
 {
-  SDL::SetTrackStereo(m_resource, gains);
+  SDL::SetTrackStereo(get(), gains);
 }
 
 /**
@@ -7021,7 +7011,7 @@ inline void SetTrack3DPosition(TrackRef track, const Point3D& position)
 
 inline void Track::Set3DPosition(const Point3D& position)
 {
-  SDL::SetTrack3DPosition(m_resource, position);
+  SDL::SetTrack3DPosition(get(), position);
 }
 
 /**
@@ -7047,10 +7037,7 @@ inline Point3D GetTrack3DPosition(TrackRef track)
   return position;
 }
 
-inline Point3D Track::Get3DPosition()
-{
-  return SDL::GetTrack3DPosition(m_resource);
-}
+inline Point3D Track::Get3DPosition() { return SDL::GetTrack3DPosition(get()); }
 
 /**
  * Create a mixing group.
@@ -7083,7 +7070,7 @@ inline Point3D Track::Get3DPosition()
  */
 inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 
-inline GroupRef Mixer::CreateGroup() { return Group(m_resource); }
+inline GroupRef Mixer::CreateGroup() { return Group(get()); }
 
 inline Group::Group(MixerRef mixer)
   : m_resource(CheckError(MIX_CreateGroup(mixer)))
@@ -7132,7 +7119,7 @@ inline PropertiesRef GetGroupProperties(GroupRef group)
 
 inline PropertiesRef Group::GetProperties()
 {
-  return SDL::GetGroupProperties(m_resource);
+  return SDL::GetGroupProperties(get());
 }
 
 /**
@@ -7153,7 +7140,7 @@ inline MixerRef GetGroupMixer(GroupRef group)
   return CheckError(MIX_GetGroupMixer(group));
 }
 
-inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(m_resource); }
+inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(get()); }
 
 /**
  * Assign a track to a mixing group.
@@ -7185,7 +7172,7 @@ inline void SetTrackGroup(TrackRef track, GroupRef group)
 
 inline void Track::SetGroup(GroupRef group)
 {
-  SDL::SetTrackGroup(m_resource, group);
+  SDL::SetTrackGroup(get(), group);
 }
 
 /**
@@ -7258,12 +7245,12 @@ inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB cb)
 
 inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
 {
-  SDL::SetTrackStoppedCallback(m_resource, cb, userdata);
+  SDL::SetTrackStoppedCallback(get(), cb, userdata);
 }
 
 inline void Track::SetStoppedCallback(TrackStoppedCB cb)
 {
-  SDL::SetTrackStoppedCallback(m_resource, cb);
+  SDL::SetTrackStoppedCallback(get(), cb);
 }
 
 /**
@@ -7336,12 +7323,12 @@ inline void SetTrackRawCallback(TrackRef track, TrackMixCB cb)
 
 inline void Track::SetRawCallback(TrackMixCallback cb, void* userdata)
 {
-  SDL::SetTrackRawCallback(m_resource, cb, userdata);
+  SDL::SetTrackRawCallback(get(), cb, userdata);
 }
 
 inline void Track::SetRawCallback(TrackMixCB cb)
 {
-  SDL::SetTrackRawCallback(m_resource, cb);
+  SDL::SetTrackRawCallback(get(), cb);
 }
 
 /**
@@ -7420,12 +7407,12 @@ inline void SetTrackCookedCallback(TrackRef track, TrackMixCB cb)
 
 inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
 {
-  SDL::SetTrackCookedCallback(m_resource, cb, userdata);
+  SDL::SetTrackCookedCallback(get(), cb, userdata);
 }
 
 inline void Track::SetCookedCallback(TrackMixCB cb)
 {
-  SDL::SetTrackCookedCallback(m_resource, cb);
+  SDL::SetTrackCookedCallback(get(), cb);
 }
 
 /**
@@ -7490,7 +7477,7 @@ inline void SetGroupPostMixCallback(GroupRef group, GroupMixCB cb)
 
 inline void Group::SetPostMixCallback(GroupMixCallback cb, void* userdata)
 {
-  SDL::SetGroupPostMixCallback(m_resource, cb, userdata);
+  SDL::SetGroupPostMixCallback(get(), cb, userdata);
 }
 
 /**
@@ -7551,12 +7538,12 @@ inline void SetPostMixCallback(MixerRef mixer, PostMixCB cb)
 
 inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
 {
-  SDL::SetPostMixCallback(m_resource, cb, userdata);
+  SDL::SetPostMixCallback(get(), cb, userdata);
 }
 
 inline void Mixer::SetPostMixCallback(PostMixCB cb)
 {
-  SDL::SetPostMixCallback(m_resource, cb);
+  SDL::SetPostMixCallback(get(), cb);
 }
 
 /**
@@ -7618,7 +7605,7 @@ inline int Generate(MixerRef mixer, TargetBytes buffer)
 
 inline int Mixer::Generate(TargetBytes buffer)
 {
-  return SDL::Generate(m_resource, std::move(buffer));
+  return SDL::Generate(get(), std::move(buffer));
 }
 
 /**
@@ -8065,7 +8052,7 @@ inline PropertiesRef GetAudioDecoderProperties(AudioDecoderRef audiodecoder)
 
 inline PropertiesRef AudioDecoder::GetProperties()
 {
-  return SDL::GetAudioDecoderProperties(m_resource);
+  return SDL::GetAudioDecoderProperties(get());
 }
 
 /**
@@ -8091,7 +8078,7 @@ inline void GetAudioDecoderFormat(AudioDecoderRef audiodecoder, AudioSpec* spec)
 
 inline void AudioDecoder::GetFormat(AudioSpec* spec)
 {
-  SDL::GetAudioDecoderFormat(m_resource, spec);
+  SDL::GetAudioDecoderFormat(get(), spec);
 }
 
 /**
@@ -8126,7 +8113,7 @@ inline int DecodeAudio(AudioDecoderRef audiodecoder,
 
 inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
 {
-  return SDL::DecodeAudio(m_resource, std::move(buffer), spec);
+  return SDL::DecodeAudio(get(), std::move(buffer), spec);
 }
 
 /// @}

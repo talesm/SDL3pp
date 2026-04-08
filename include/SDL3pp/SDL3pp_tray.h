@@ -894,10 +894,7 @@ inline void SetTrayIcon(TrayRef tray, SurfaceRef icon)
   SDL_SetTrayIcon(tray, icon);
 }
 
-inline void Tray::SetIcon(SurfaceRef icon)
-{
-  SDL::SetTrayIcon(m_resource, icon);
-}
+inline void Tray::SetIcon(SurfaceRef icon) { SDL::SetTrayIcon(get(), icon); }
 
 /**
  * Updates the system tray icon's tooltip.
@@ -919,7 +916,7 @@ inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
 
 inline void Tray::SetTooltip(StringParam tooltip)
 {
-  SDL::SetTrayTooltip(m_resource, std::move(tooltip));
+  SDL::SetTrayTooltip(get(), std::move(tooltip));
 }
 
 /**
@@ -949,7 +946,7 @@ inline TrayMenu CreateTrayMenu(TrayRef tray)
   return SDL_CreateTrayMenu(tray);
 }
 
-inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(m_resource); }
+inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(get()); }
 
 /**
  * Create a submenu for a system tray entry.
@@ -980,7 +977,7 @@ inline TrayMenu CreateTraySubmenu(TrayEntry entry)
 
 inline TrayMenu TrayEntry::CreateSubmenu()
 {
-  return SDL::CreateTraySubmenu(m_resource);
+  return SDL::CreateTraySubmenu(get());
 }
 
 /**
@@ -1007,7 +1004,7 @@ inline TrayMenu TrayEntry::CreateSubmenu()
  */
 inline TrayMenu GetTrayMenu(TrayRef tray) { return SDL_GetTrayMenu(tray); }
 
-inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(m_resource); }
+inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(get()); }
 
 /**
  * Gets a previously created tray entry submenu.
@@ -1036,10 +1033,7 @@ inline TrayMenu GetTraySubmenu(TrayEntry entry)
   return SDL_GetTraySubmenu(entry);
 }
 
-inline TrayMenu TrayEntry::GetSubmenu()
-{
-  return SDL::GetTraySubmenu(m_resource);
-}
+inline TrayMenu TrayEntry::GetSubmenu() { return SDL::GetTraySubmenu(get()); }
 
 /**
  * Returns a list of entries in the menu, in order.
@@ -1207,7 +1201,7 @@ inline void SetTrayEntryLabel(TrayEntry entry, StringParam label)
 
 inline void TrayEntry::SetLabel(StringParam label)
 {
-  SDL::SetTrayEntryLabel(m_resource, std::move(label));
+  SDL::SetTrayEntryLabel(get(), std::move(label));
 }
 
 /**
@@ -1234,7 +1228,7 @@ inline const char* GetTrayEntryLabel(TrayEntryRef entry)
 
 inline const char* TrayEntry::GetLabel() const
 {
-  return SDL::GetTrayEntryLabel(m_resource);
+  return SDL::GetTrayEntryLabel(get());
 }
 
 /**
@@ -1261,7 +1255,7 @@ inline void SetTrayEntryChecked(TrayEntry entry, bool checked)
 
 inline void TrayEntry::SetChecked(bool checked)
 {
-  SDL::SetTrayEntryChecked(m_resource, checked);
+  SDL::SetTrayEntryChecked(get(), checked);
 }
 
 /**
@@ -1288,7 +1282,7 @@ inline bool GetTrayEntryChecked(TrayEntryRef entry)
 
 inline bool TrayEntry::GetChecked() const
 {
-  return SDL::GetTrayEntryChecked(m_resource);
+  return SDL::GetTrayEntryChecked(get());
 }
 
 /**
@@ -1313,7 +1307,7 @@ inline void SetTrayEntryEnabled(TrayEntry entry, bool enabled)
 
 inline void TrayEntry::SetEnabled(bool enabled)
 {
-  SDL::SetTrayEntryEnabled(m_resource, enabled);
+  SDL::SetTrayEntryEnabled(get(), enabled);
 }
 
 /**
@@ -1338,7 +1332,7 @@ inline bool GetTrayEntryEnabled(TrayEntryRef entry)
 
 inline bool TrayEntry::GetEnabled() const
 {
-  return SDL::GetTrayEntryEnabled(m_resource);
+  return SDL::GetTrayEntryEnabled(get());
 }
 
 /**
@@ -1385,7 +1379,7 @@ inline void SetTrayEntryCallback(TrayEntry entry, TrayCB callback)
 
 inline void TrayEntry::SetCallback(TrayCallback callback, void* userdata)
 {
-  SDL::SetTrayEntryCallback(m_resource, callback, userdata);
+  SDL::SetTrayEntryCallback(get(), callback, userdata);
 }
 
 inline void TrayEntry::SetCallback(TrayCB callback)
@@ -1405,7 +1399,7 @@ inline void TrayEntry::SetCallback(TrayCB callback)
  */
 inline void ClickTrayEntry(TrayEntry entry) { SDL_ClickTrayEntry(entry); }
 
-inline void TrayEntry::Click() { SDL::ClickTrayEntry(m_resource); }
+inline void TrayEntry::Click() { SDL::ClickTrayEntry(get()); }
 
 /**
  * Destroys a tray object.
@@ -1445,7 +1439,7 @@ inline TrayMenu GetTrayEntryParent(TrayEntry entry)
 
 inline TrayMenu TrayEntry::GetParent()
 {
-  return SDL::GetTrayEntryParent(m_resource);
+  return SDL::GetTrayEntryParent(get());
 }
 
 /**

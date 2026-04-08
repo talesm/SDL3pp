@@ -990,7 +990,7 @@ inline bool StorageReady(StorageRef storage)
   return SDL_StorageReady(storage);
 }
 
-inline bool Storage::Ready() { return SDL::StorageReady(m_resource); }
+inline bool Storage::Ready() { return SDL::StorageReady(get()); }
 
 /**
  * Query the size of a file within a storage container.
@@ -1016,7 +1016,7 @@ inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
 
 inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
 {
-  return SDL::GetStorageFileSize(m_resource, std::move(path));
+  return SDL::GetStorageFileSize(get(), std::move(path));
 }
 
 /**
@@ -1073,13 +1073,12 @@ inline std::string ReadStorageFile(StorageRef storage, StringParam path)
 
 inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
 {
-  return SDL::ReadStorageFile(
-    m_resource, std::move(path), std::move(destination));
+  return SDL::ReadStorageFile(get(), std::move(path), std::move(destination));
 }
 
 inline std::string Storage::ReadFile(StringParam path)
 {
-  return SDL::ReadStorageFile(m_resource, std::move(path));
+  return SDL::ReadStorageFile(get(), std::move(path));
 }
 
 /**
@@ -1110,7 +1109,7 @@ inline std::vector<T> ReadStorageFileAs(StorageRef storage, StringParam path)
 template<class T>
 inline std::vector<T> Storage::ReadFileAs(StringParam path)
 {
-  return SDL::ReadStorageFileAs<T>(m_resource, std::move(path));
+  return SDL::ReadStorageFileAs<T>(get(), std::move(path));
 }
 
 /**
@@ -1137,7 +1136,7 @@ inline void WriteStorageFile(StorageRef storage,
 
 inline void Storage::WriteFile(StringParam path, SourceBytes source)
 {
-  SDL::WriteStorageFile(m_resource, std::move(path), std::move(source));
+  SDL::WriteStorageFile(get(), std::move(path), std::move(source));
 }
 
 /**
@@ -1158,7 +1157,7 @@ inline void CreateStorageDirectory(StorageRef storage, StringParam path)
 
 inline void Storage::CreateDirectory(StringParam path)
 {
-  SDL::CreateStorageDirectory(m_resource, std::move(path));
+  SDL::CreateStorageDirectory(get(), std::move(path));
 }
 
 /**
@@ -1269,19 +1268,18 @@ inline void Storage::EnumerateDirectory(StringParam path,
                                         EnumerateDirectoryCallback callback,
                                         void* userdata)
 {
-  SDL::EnumerateStorageDirectory(
-    m_resource, std::move(path), callback, userdata);
+  SDL::EnumerateStorageDirectory(get(), std::move(path), callback, userdata);
 }
 
 inline std::vector<Path> Storage::EnumerateDirectory(StringParam path)
 {
-  return SDL::EnumerateStorageDirectory(m_resource, std::move(path));
+  return SDL::EnumerateStorageDirectory(get(), std::move(path));
 }
 
 inline void Storage::EnumerateDirectory(StringParam path,
                                         EnumerateDirectoryCB callback)
 {
-  SDL::EnumerateStorageDirectory(m_resource, std::move(path), callback);
+  SDL::EnumerateStorageDirectory(get(), std::move(path), callback);
 }
 
 /**
@@ -1302,7 +1300,7 @@ inline void RemoveStoragePath(StorageRef storage, StringParam path)
 
 inline void Storage::RemovePath(StringParam path)
 {
-  SDL::RemoveStoragePath(m_resource, std::move(path));
+  SDL::RemoveStoragePath(get(), std::move(path));
 }
 
 /**
@@ -1326,7 +1324,7 @@ inline void RenameStoragePath(StorageRef storage,
 
 inline void Storage::RenamePath(StringParam oldpath, StringParam newpath)
 {
-  SDL::RenameStoragePath(m_resource, std::move(oldpath), std::move(newpath));
+  SDL::RenameStoragePath(get(), std::move(oldpath), std::move(newpath));
 }
 
 /**
@@ -1350,7 +1348,7 @@ inline void CopyStorageFile(StorageRef storage,
 
 inline void Storage::CopyFile(StringParam oldpath, StringParam newpath)
 {
-  SDL::CopyStorageFile(m_resource, std::move(oldpath), std::move(newpath));
+  SDL::CopyStorageFile(get(), std::move(oldpath), std::move(newpath));
 }
 
 /**
@@ -1375,7 +1373,7 @@ inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
 
 inline PathInfo Storage::GetPathInfo(StringParam path)
 {
-  return SDL::GetStoragePathInfo(m_resource, std::move(path));
+  return SDL::GetStoragePathInfo(get(), std::move(path));
 }
 
 /**
@@ -1396,7 +1394,7 @@ inline Uint64 GetStorageSpaceRemaining(StorageRef storage)
 
 inline Uint64 Storage::GetSpaceRemaining()
 {
-  return SDL::GetStorageSpaceRemaining(m_resource);
+  return SDL::GetStorageSpaceRemaining(get());
 }
 
 /**
@@ -1448,7 +1446,7 @@ inline OwnArray<char*> Storage::GlobDirectory(StringParam path,
                                               GlobFlags flags)
 {
   return SDL::GlobStorageDirectory(
-    m_resource, std::move(path), std::move(pattern), flags);
+    get(), std::move(path), std::move(pattern), flags);
 }
 
 /// @}

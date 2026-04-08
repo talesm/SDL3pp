@@ -134,16 +134,17 @@
  }
  
  inline void Properties::SetPointerPropertyWithCleanup(
-@@ -1097,7 +1104,7 @@
+@@ -1096,7 +1103,8 @@
+                                                       void* value,
                                                        CleanupPropertyCB cleanup)
  {
-   SDL::SetPointerPropertyWithCleanup(
--    m_resource, std::move(name), value, cleanup);
-+    m_resource, std::move(name), value, std::move(cleanup));
+-  SDL::SetPointerPropertyWithCleanup(get(), std::move(name), value, cleanup);
++  SDL::SetPointerPropertyWithCleanup(
++    get(), std::move(name), value, std::move(cleanup));
  }
  
  /**
-@@ -1513,7 +1520,6 @@
+@@ -1512,7 +1520,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -151,7 +152,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1523,7 +1529,13 @@
+@@ -1522,7 +1529,13 @@
  inline void EnumerateProperties(PropertiesRef props,
                                  EnumeratePropertiesCB callback)
  {
@@ -166,12 +167,12 @@
  }
  
  inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1534,12 +1546,22 @@
+@@ -1533,12 +1546,22 @@
  
  inline void Properties::Enumerate(EnumeratePropertiesCB callback)
  {
--  SDL::EnumerateProperties(m_resource, callback);
-+  SDL::EnumerateProperties(m_resource, std::move(callback));
+-  SDL::EnumerateProperties(get(), callback);
++  SDL::EnumerateProperties(get(), std::move(callback));
  }
  
 +/**
@@ -190,8 +191,8 @@
 +  return count;
  }
  
- inline Uint64 Properties::GetCount()
-@@ -1572,6 +1594,17 @@
+ inline Uint64 Properties::GetCount() { return SDL::CountProperties(get()); }
+@@ -1568,6 +1591,17 @@
  
  /// @}
  

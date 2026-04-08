@@ -415,7 +415,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool MustLock() const { return SDL::MustLock(m_resource); }
+  constexpr bool MustLock() const { return SDL::MustLock(get()); }
 
   /**
    * Get the properties associated with a surface.
@@ -2355,7 +2355,7 @@ inline PropertiesRef GetSurfaceProperties(SurfaceConstRef surface)
 
 inline PropertiesRef Surface::GetProperties() const
 {
-  return SDL::GetSurfaceProperties(m_resource);
+  return SDL::GetSurfaceProperties(get());
 }
 
 /**
@@ -2419,7 +2419,7 @@ inline void SetSurfaceColorspace(SurfaceRef surface, Colorspace colorspace)
 
 inline void Surface::SetColorspace(Colorspace colorspace)
 {
-  SDL::SetSurfaceColorspace(m_resource, colorspace);
+  SDL::SetSurfaceColorspace(get(), colorspace);
 }
 
 /**
@@ -2447,7 +2447,7 @@ inline Colorspace GetSurfaceColorspace(SurfaceConstRef surface)
 
 inline Colorspace Surface::GetColorspace() const
 {
-  return SDL::GetSurfaceColorspace(m_resource);
+  return SDL::GetSurfaceColorspace(get());
 }
 
 /**
@@ -2484,7 +2484,7 @@ inline Palette CreateSurfacePalette(SurfaceRef surface)
 
 inline Palette Surface::CreatePalette()
 {
-  return SDL::CreateSurfacePalette(m_resource);
+  return SDL::CreateSurfacePalette(get());
 }
 
 /**
@@ -2514,7 +2514,7 @@ inline void SetSurfacePalette(SurfaceRef surface, PaletteRef palette)
 
 inline void Surface::SetPalette(PaletteRef palette)
 {
-  SDL::SetSurfacePalette(m_resource, palette);
+  SDL::SetSurfacePalette(get(), palette);
 }
 
 /**
@@ -2537,7 +2537,7 @@ inline Palette GetSurfacePalette(SurfaceConstRef surface)
 
 inline Palette Surface::GetPalette() const
 {
-  return SDL::GetSurfacePalette(m_resource);
+  return SDL::GetSurfacePalette(get());
 }
 
 /**
@@ -2572,7 +2572,7 @@ inline void AddSurfaceAlternateImage(SurfaceRef surface, SurfaceRef image)
 
 inline void Surface::AddAlternateImage(SurfaceRef image)
 {
-  SDL::AddSurfaceAlternateImage(m_resource, image);
+  SDL::AddSurfaceAlternateImage(get(), image);
 }
 
 /**
@@ -2596,7 +2596,7 @@ inline bool SurfaceHasAlternateImages(SurfaceConstRef surface)
 
 inline bool Surface::HasAlternateImages() const
 {
-  return SDL::SurfaceHasAlternateImages(m_resource);
+  return SDL::SurfaceHasAlternateImages(get());
 }
 
 /**
@@ -2631,7 +2631,7 @@ inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstRef surface)
 
 inline OwnArray<SurfaceRaw> Surface::GetImages() const
 {
-  return SDL::GetSurfaceImages(m_resource);
+  return SDL::GetSurfaceImages(get());
 }
 
 /**
@@ -2658,7 +2658,7 @@ inline void RemoveSurfaceAlternateImages(SurfaceRef surface)
 
 inline void Surface::RemoveAlternateImages()
 {
-  SDL::RemoveSurfaceAlternateImages(m_resource);
+  SDL::RemoveSurfaceAlternateImages(get());
 }
 
 /**
@@ -2849,7 +2849,7 @@ inline void SaveBMP_IO(SurfaceConstRef surface,
 
 inline void Surface::SaveBMP_IO(IOStreamRef dst, bool closeio) const
 {
-  SDL::SaveBMP_IO(m_resource, dst, closeio);
+  SDL::SaveBMP_IO(get(), dst, closeio);
 }
 
 /**
@@ -2880,7 +2880,7 @@ inline void SaveBMP(SurfaceConstRef surface, StringParam file)
 
 inline void Surface::SaveBMP(StringParam file) const
 {
-  SDL::SaveBMP(m_resource, std::move(file));
+  SDL::SaveBMP(get(), std::move(file));
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -2981,7 +2981,7 @@ inline void SaveTrustedPNG_IO(SurfaceConstRef surface,
 #if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
 {
-  SDL::SaveTrustedPNG_IO(m_resource, dst, closeio);
+  SDL::SaveTrustedPNG_IO(get(), dst, closeio);
 }
 #endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
@@ -3008,7 +3008,7 @@ inline void SaveTrustedPNG(SurfaceConstRef surface, StringParam file)
 #if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 inline void Surface::SavePNG(StringParam file) const
 {
-  SDL::SaveTrustedPNG(m_resource, std::move(file));
+  SDL::SaveTrustedPNG(get(), std::move(file));
 }
 #endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
@@ -3040,7 +3040,7 @@ inline void SetSurfaceRLE(SurfaceRef surface, bool enabled)
 
 inline void Surface::SetRLE(bool enabled)
 {
-  SDL::SetSurfaceRLE(m_resource, enabled);
+  SDL::SetSurfaceRLE(get(), enabled);
 }
 
 /**
@@ -3062,7 +3062,7 @@ inline bool SurfaceHasRLE(SurfaceConstRef surface)
   return SDL_SurfaceHasRLE(surface);
 }
 
-inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(m_resource); }
+inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(get()); }
 
 /**
  * Set the color key (transparent pixel) in a surface.
@@ -3093,7 +3093,7 @@ inline void SetSurfaceColorKey(SurfaceRef surface, std::optional<Uint32> key)
 
 inline void Surface::SetColorKey(std::optional<Uint32> key)
 {
-  SDL::SetSurfaceColorKey(m_resource, key);
+  SDL::SetSurfaceColorKey(get(), key);
 }
 
 /**
@@ -3111,7 +3111,7 @@ inline void ClearSurfaceColorKey(SurfaceRef surface)
   SetSurfaceColorKey(surface, std::nullopt);
 }
 
-inline void Surface::ClearColorKey() { SDL::ClearSurfaceColorKey(m_resource); }
+inline void Surface::ClearColorKey() { SDL::ClearSurfaceColorKey(get()); }
 
 /**
  * Returns whether the surface has a color key.
@@ -3135,7 +3135,7 @@ inline bool SurfaceHasColorKey(SurfaceConstRef surface)
 
 inline bool Surface::HasColorKey() const
 {
-  return SDL::SurfaceHasColorKey(m_resource);
+  return SDL::SurfaceHasColorKey(get());
 }
 
 /**
@@ -3165,7 +3165,7 @@ inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstRef surface)
 
 inline std::optional<Uint32> Surface::GetColorKey() const
 {
-  return SDL::GetSurfaceColorKey(m_resource);
+  return SDL::GetSurfaceColorKey(get());
 }
 
 /**
@@ -3198,7 +3198,7 @@ inline void SetSurfaceColorMod(SurfaceRef surface, Uint8 r, Uint8 g, Uint8 b)
 
 inline void Surface::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
 {
-  SDL::SetSurfaceColorMod(m_resource, r, g, b);
+  SDL::SetSurfaceColorMod(get(), r, g, b);
 }
 
 /**
@@ -3228,7 +3228,7 @@ inline void GetSurfaceColorMod(SurfaceConstRef surface,
 
 inline void Surface::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
 {
-  SDL::GetSurfaceColorMod(m_resource, r, g, b);
+  SDL::GetSurfaceColorMod(get(), r, g, b);
 }
 
 /**
@@ -3258,7 +3258,7 @@ inline void SetSurfaceAlphaMod(SurfaceRef surface, Uint8 alpha)
 
 inline void Surface::SetAlphaMod(Uint8 alpha)
 {
-  SDL::SetSurfaceAlphaMod(m_resource, alpha);
+  SDL::SetSurfaceAlphaMod(get(), alpha);
 }
 
 /**
@@ -3284,7 +3284,7 @@ inline Uint8 GetSurfaceAlphaMod(SurfaceConstRef surface)
 
 inline Uint8 Surface::GetAlphaMod() const
 {
-  return SDL::GetSurfaceAlphaMod(m_resource);
+  return SDL::GetSurfaceAlphaMod(get());
 }
 
 /**
@@ -3308,7 +3308,7 @@ inline void SetSurfaceMod(SurfaceRef surface, Color color)
   SetSurfaceAlphaMod(surface, color.a);
 }
 
-inline void Surface::SetMod(Color color) { SetSurfaceMod(m_resource, color); }
+inline void Surface::SetMod(Color color) { SetSurfaceMod(get(), color); }
 
 /**
  * Get the additional color and alpha value multiplied into blit
@@ -3326,7 +3326,7 @@ inline Color GetSurfaceMod(SurfaceConstRef surface)
   return c;
 }
 
-inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(m_resource); }
+inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(get()); }
 
 /**
  * Set the blend mode used for blit operations.
@@ -3353,7 +3353,7 @@ inline void SetSurfaceBlendMode(SurfaceRef surface, BlendMode blendMode)
 
 inline void Surface::SetBlendMode(BlendMode blendMode)
 {
-  SDL::SetSurfaceBlendMode(m_resource, blendMode);
+  SDL::SetSurfaceBlendMode(get(), blendMode);
 }
 
 /**
@@ -3378,7 +3378,7 @@ inline BlendMode GetSurfaceBlendMode(SurfaceConstRef surface)
 
 inline BlendMode Surface::GetBlendMode() const
 {
-  return SDL::GetSurfaceBlendMode(m_resource);
+  return SDL::GetSurfaceBlendMode(get());
 }
 
 /**
@@ -3411,7 +3411,7 @@ inline bool SetSurfaceClipRect(SurfaceRef surface,
 
 inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
 {
-  return SDL::SetSurfaceClipRect(m_resource, rect);
+  return SDL::SetSurfaceClipRect(get(), rect);
 }
 
 /**
@@ -3424,7 +3424,7 @@ inline void ResetSurfaceClipRect(SurfaceRef surface)
   SetSurfaceClipRect(surface, std::nullopt);
 }
 
-inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(m_resource); }
+inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(get()); }
 
 /**
  * Get the clipping rectangle for a surface.
@@ -3453,7 +3453,7 @@ inline Rect GetSurfaceClipRect(SurfaceConstRef surface)
 
 inline Rect Surface::GetClipRect() const
 {
-  return SDL::GetSurfaceClipRect(m_resource);
+  return SDL::GetSurfaceClipRect(get());
 }
 
 /**
@@ -3473,7 +3473,7 @@ inline void FlipSurface(SurfaceRef surface, FlipMode flip)
   CheckError(SDL_FlipSurface(surface, flip));
 }
 
-inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
+inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(get(), flip); }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -3511,7 +3511,7 @@ inline Surface RotateSurface(SurfaceRef surface, float angle)
 
 inline Surface Surface::Rotate(float angle)
 {
-  return SDL::RotateSurface(m_resource, angle);
+  return SDL::RotateSurface(get(), angle);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -3542,7 +3542,7 @@ inline Surface DuplicateSurface(SurfaceConstRef surface)
 
 inline Surface Surface::Duplicate() const
 {
-  return SDL::DuplicateSurface(m_resource);
+  return SDL::DuplicateSurface(get());
 }
 
 /**
@@ -3573,7 +3573,7 @@ inline Surface ScaleSurface(SurfaceConstRef surface,
 
 inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
 {
-  return SDL::ScaleSurface(m_resource, size, scaleMode);
+  return SDL::ScaleSurface(get(), size, scaleMode);
 }
 
 /**
@@ -3610,7 +3610,7 @@ inline Surface ConvertSurface(SurfaceConstRef surface, PixelFormat format)
 
 inline Surface Surface::Convert(PixelFormat format) const
 {
-  return SDL::ConvertSurface(m_resource, format);
+  return SDL::ConvertSurface(get(), format);
 }
 
 /**
@@ -3657,7 +3657,7 @@ inline Surface Surface::Convert(PixelFormat format,
                                 PropertiesRef props) const
 {
   return SDL::ConvertSurfaceAndColorspace(
-    m_resource, format, palette, colorspace, props);
+    get(), format, palette, colorspace, props);
 }
 
 /**
@@ -3811,7 +3811,7 @@ inline void PremultiplySurfaceAlpha(SurfaceRef surface, bool linear)
 
 inline void Surface::PremultiplyAlpha(bool linear)
 {
-  SDL::PremultiplySurfaceAlpha(m_resource, linear);
+  SDL::PremultiplySurfaceAlpha(get(), linear);
 }
 
 /**
@@ -3836,10 +3836,7 @@ inline void ClearSurface(SurfaceRef surface, const FColorRaw& c)
   CheckError(SDL_ClearSurface(surface, c.r, c.g, c.b, c.a));
 }
 
-inline void Surface::Clear(const FColorRaw& c)
-{
-  SDL::ClearSurface(m_resource, c);
-}
+inline void Surface::Clear(const FColorRaw& c) { SDL::ClearSurface(get(), c); }
 
 /**
  * Perform a fast fill of a rectangle with a specific color.
@@ -3875,7 +3872,7 @@ inline void FillSurfaceRect(SurfaceRef dst,
 
 inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
 {
-  SDL::FillSurfaceRect(m_resource, rect, color);
+  SDL::FillSurfaceRect(get(), rect, color);
 }
 
 /**
@@ -3894,7 +3891,7 @@ inline void FillSurface(SurfaceRef dst, Uint32 color)
   FillSurfaceRect(dst, std::nullopt, color);
 }
 
-inline void Surface::Fill(Uint32 color) { SDL::FillSurface(m_resource, color); }
+inline void Surface::Fill(Uint32 color) { SDL::FillSurface(get(), color); }
 
 /**
  * Perform a fast fill of a set of rectangles with a specific color.
@@ -3930,7 +3927,7 @@ inline void FillSurfaceRects(SurfaceRef dst,
 
 inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
 {
-  SDL::FillSurfaceRects(m_resource, rects, color);
+  SDL::FillSurfaceRects(get(), rects, color);
 }
 
 /**
@@ -4015,7 +4012,7 @@ inline void Surface::Blit(SurfaceRef src,
                           OptionalRef<const RectRaw> srcrect,
                           OptionalRef<const RectRaw> dstrect)
 {
-  SDL::BlitSurface(src, srcrect, m_resource, dstrect);
+  SDL::BlitSurface(src, srcrect, get(), dstrect);
 }
 
 inline void Surface::BlitAt(SurfaceRef src,
@@ -4133,7 +4130,7 @@ inline void Surface::BlitUnchecked(SurfaceRef src,
                                    const RectRaw& srcrect,
                                    const RectRaw& dstrect)
 {
-  SDL::BlitSurfaceUnchecked(src, srcrect, m_resource, dstrect);
+  SDL::BlitSurfaceUnchecked(src, srcrect, get(), dstrect);
 }
 
 /**
@@ -4171,7 +4168,7 @@ inline void Surface::BlitScaled(SurfaceRef src,
                                 OptionalRef<const RectRaw> dstrect,
                                 ScaleMode scaleMode)
 {
-  SDL::BlitSurfaceScaled(src, srcrect, m_resource, dstrect, scaleMode);
+  SDL::BlitSurfaceScaled(src, srcrect, get(), dstrect, scaleMode);
 }
 
 /**
@@ -4211,7 +4208,7 @@ inline void Surface::BlitUncheckedScaled(SurfaceRef src,
                                          const RectRaw& dstrect,
                                          ScaleMode scaleMode)
 {
-  SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
+  SDL::BlitSurfaceUncheckedScaled(src, srcrect, get(), dstrect, scaleMode);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -4250,7 +4247,7 @@ inline void Surface::Stretch(SurfaceRef src,
                              OptionalRef<RectRaw> dstrect,
                              ScaleMode scaleMode)
 {
-  SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
+  SDL::StretchSurface(src, srcrect, get(), dstrect, scaleMode);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -4289,7 +4286,7 @@ inline void Surface::BlitTiled(SurfaceRef src,
                                OptionalRef<const RectRaw> srcrect,
                                OptionalRef<const RectRaw> dstrect)
 {
-  SDL::BlitSurfaceTiled(src, srcrect, m_resource, dstrect);
+  SDL::BlitSurfaceTiled(src, srcrect, get(), dstrect);
 }
 
 /**
@@ -4336,7 +4333,7 @@ inline void Surface::BlitTiledWithScale(SurfaceRef src,
                                         OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurfaceTiledWithScale(
-    src, srcrect, scale, scaleMode, m_resource, dstrect);
+    src, srcrect, scale, scaleMode, get(), dstrect);
 }
 
 /**
@@ -4411,7 +4408,7 @@ inline void Surface::Blit9Grid(SurfaceRef src,
                         right_width,
                         top_height,
                         bottom_height,
-                        m_resource,
+                        get(),
                         dstrect,
                         scale,
                         scaleMode);
@@ -4455,7 +4452,7 @@ inline Uint32 MapSurfaceRGB(SurfaceConstRef surface, Uint8 r, Uint8 g, Uint8 b)
 
 inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
 {
-  return SDL::MapSurfaceRGB(m_resource, r, g, b);
+  return SDL::MapSurfaceRGB(get(), r, g, b);
 }
 
 /**
@@ -4494,7 +4491,7 @@ inline Uint32 MapSurfaceRGBA(SurfaceConstRef surface, ColorRaw c)
 
 inline Uint32 Surface::MapRGBA(ColorRaw c) const
 {
-  return SDL::MapSurfaceRGBA(m_resource, c);
+  return SDL::MapSurfaceRGBA(get(), c);
 }
 
 /**
@@ -4625,12 +4622,12 @@ inline void Surface::ReadPixel(const PointRaw& p,
                                Uint8* b,
                                Uint8* a) const
 {
-  SDL::ReadSurfacePixel(m_resource, p, r, g, b, a);
+  SDL::ReadSurfacePixel(get(), p, r, g, b, a);
 }
 
 inline Color Surface::ReadPixel(const PointRaw& p) const
 {
-  return SDL::ReadSurfacePixel(m_resource, p);
+  return SDL::ReadSurfacePixel(get(), p);
 }
 
 /**
@@ -4749,12 +4746,12 @@ inline void Surface::ReadPixelFloat(const PointRaw& p,
                                     float* b,
                                     float* a) const
 {
-  SDL::ReadSurfacePixelFloat(m_resource, p, r, g, b, a);
+  SDL::ReadSurfacePixelFloat(get(), p, r, g, b, a);
 }
 
 inline FColor Surface::ReadPixelFloat(const PointRaw& p) const
 {
-  return SDL::ReadSurfacePixelFloat(m_resource, p);
+  return SDL::ReadSurfacePixelFloat(get(), p);
 }
 
 /**
@@ -4807,7 +4804,7 @@ inline void WriteSurfacePixel(SurfaceLock& lock, const PointRaw& p, ColorRaw c)
 
 inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
 {
-  SDL::WriteSurfacePixel(m_resource, p, c);
+  SDL::WriteSurfacePixel(get(), p, c);
 }
 
 /**
@@ -4858,7 +4855,7 @@ inline void WriteSurfacePixelFloat(SurfaceLock& lock,
 
 inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
 {
-  SDL::WriteSurfacePixelFloat(m_resource, p, c);
+  SDL::WriteSurfacePixelFloat(get(), p, c);
 }
 
 /// Get the width in pixels.
@@ -4870,10 +4867,7 @@ constexpr int GetSurfaceWidth(const SurfaceLock& lock)
   return lock.GetWidth();
 }
 
-constexpr int Surface::GetWidth() const
-{
-  return SDL::GetSurfaceWidth(m_resource);
-}
+constexpr int Surface::GetWidth() const { return SDL::GetSurfaceWidth(get()); }
 
 /// Get the height in pixels.
 constexpr int GetSurfaceHeight(SurfaceConstRef surface) { return surface->h; }
@@ -4886,7 +4880,7 @@ constexpr int GetSurfaceHeight(const SurfaceLock& lock)
 
 constexpr int Surface::GetHeight() const
 {
-  return SDL::GetSurfaceHeight(m_resource);
+  return SDL::GetSurfaceHeight(get());
 }
 
 /// Get the size in pixels.
@@ -4901,10 +4895,7 @@ constexpr Point GetSurfaceSize(const SurfaceLock& lock)
   return lock.GetSize();
 }
 
-constexpr Point Surface::GetSize() const
-{
-  return SDL::GetSurfaceSize(m_resource);
-}
+constexpr Point Surface::GetSize() const { return SDL::GetSurfaceSize(get()); }
 
 /// Get pitch in bytes.
 constexpr int GetSurfacePitch(SurfaceConstRef surface)
@@ -4918,10 +4909,7 @@ constexpr int GetSurfacePitch(const SurfaceLock& lock)
   return lock.GetPitch();
 }
 
-constexpr int Surface::GetPitch() const
-{
-  return SDL::GetSurfacePitch(m_resource);
-}
+constexpr int Surface::GetPitch() const { return SDL::GetSurfacePitch(get()); }
 
 /// Get the pixel format.
 constexpr PixelFormat GetSurfaceFormat(SurfaceConstRef surface)
@@ -4937,7 +4925,7 @@ constexpr PixelFormat GetSurfaceFormat(const SurfaceLock& lock)
 
 constexpr PixelFormat Surface::GetFormat() const
 {
-  return SDL::GetSurfaceFormat(m_resource);
+  return SDL::GetSurfaceFormat(get());
 }
 
 /// Get the pixels.
@@ -4954,7 +4942,7 @@ constexpr void* GetSurfacePixels(const SurfaceLock& lock)
 
 constexpr void* Surface::GetPixels() const
 {
-  return SDL::GetSurfacePixels(m_resource);
+  return SDL::GetSurfacePixels(get());
 }
 
 /// @}

@@ -677,7 +677,7 @@ public:
     size_t result;
 
     va_start(ap, fmt);
-    result = vprintf(fmt, ap);
+    result = SDL_IOvprintf(get(), fmt, ap);
     va_end(ap);
 
     return result;
@@ -2053,7 +2053,7 @@ inline PropertiesRef GetIOProperties(IOStreamRef context)
 
 inline PropertiesRef IOStream::GetProperties() const
 {
-  return SDL::GetIOProperties(m_resource);
+  return SDL::GetIOProperties(get());
 }
 
 /**
@@ -2079,10 +2079,7 @@ inline IOStatus GetIOStatus(IOStreamRef context)
   return SDL_GetIOStatus(context);
 }
 
-inline IOStatus IOStream::GetStatus() const
-{
-  return SDL::GetIOStatus(m_resource);
-}
+inline IOStatus IOStream::GetStatus() const { return SDL::GetIOStatus(get()); }
 
 /**
  * Use this function to get the size of the data stream in an IOStream.
@@ -2100,7 +2097,7 @@ inline Sint64 GetIOSize(IOStreamRef context)
   return CheckError(SDL_GetIOSize(context));
 }
 
-inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(m_resource); }
+inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(get()); }
 
 /**
  * Seek within an IOStream data stream.
@@ -2135,7 +2132,7 @@ inline Sint64 SeekIO(IOStreamRef context, Sint64 offset, IOWhence whence)
 
 inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
 {
-  return SDL::SeekIO(m_resource, offset, whence);
+  return SDL::SeekIO(get(), offset, whence);
 }
 
 /**
@@ -2158,7 +2155,7 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
  */
 inline Sint64 TellIO(IOStreamRef context) { return SDL_TellIO(context); }
 
-inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
+inline Sint64 IOStream::Tell() const { return SDL::TellIO(get()); }
 
 /**
  * Read from a data source.
@@ -2194,7 +2191,7 @@ inline size_t ReadIO(IOStreamRef context, TargetBytes buf)
 
 inline size_t IOStream::Read(TargetBytes buf)
 {
-  return SDL::ReadIO(m_resource, std::move(buf));
+  return SDL::ReadIO(get(), std::move(buf));
 }
 
 /**
@@ -2237,7 +2234,7 @@ inline size_t WriteIO(IOStreamRef context, SourceBytes buf)
 
 inline size_t IOStream::Write(SourceBytes buf)
 {
-  return SDL::WriteIO(m_resource, std::move(buf));
+  return SDL::WriteIO(get(), std::move(buf));
 }
 
 /**
@@ -2303,7 +2300,7 @@ inline size_t IOvprintf(IOStreamRef context,
 inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
                                 va_list ap)
 {
-  return SDL::IOvprintf(m_resource, fmt, ap);
+  return SDL::IOvprintf(get(), fmt, ap);
 }
 
 /**
@@ -2325,7 +2322,7 @@ inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
  */
 inline void FlushIO(IOStreamRef context) { CheckError(SDL_FlushIO(context)); }
 
-inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
+inline void IOStream::Flush() { SDL::FlushIO(get()); }
 
 /**
  * Load all the data from an SDL data stream.
@@ -2356,10 +2353,7 @@ inline StringResult LoadFile_IO(IOStreamRef src, bool closeio = true)
   return StringResult{CheckError(data), datasize};
 }
 
-inline StringResult IOStream::LoadFile()
-{
-  return SDL::LoadFile_IO(m_resource);
-}
+inline StringResult IOStream::LoadFile() { return SDL::LoadFile_IO(get()); }
 
 /**
  * Load all the data from a file path.
@@ -2435,7 +2429,7 @@ inline void SaveFile_IO(IOStreamRef src, SourceBytes data, bool closeio = true)
 
 inline void IOStream::SaveFile(SourceBytes data)
 {
-  SDL::SaveFile_IO(m_resource, std::move(data));
+  SDL::SaveFile_IO(get(), std::move(data));
 }
 
 /**
@@ -2480,6 +2474,8 @@ inline Uint8 ReadU8(IOStreamRef src)
   return value;
 }
 
+inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(get()); }
+
 /**
  * Use this function to read a signed byte from an IOStream.
  *
@@ -2502,6 +2498,8 @@ inline Sint8 ReadS8(IOStreamRef src)
   CheckError(SDL_ReadS8(src, &value));
   return value;
 }
+
+inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(get()); }
 
 /**
  * Use this function to read 16 bits of little-endian data from an IOStream and
@@ -2530,7 +2528,7 @@ inline Uint16 ReadU16LE(IOStreamRef src)
   return value;
 }
 
-inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
+inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(get()); }
 
 /**
  * Use this function to read 16 bits of little-endian data from an IOStream and
@@ -2559,7 +2557,7 @@ inline Sint16 ReadS16LE(IOStreamRef src)
   return value;
 }
 
-inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
+inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(get()); }
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream and
@@ -2588,7 +2586,7 @@ inline Uint16 ReadU16BE(IOStreamRef src)
   return value;
 }
 
-inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
+inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(get()); }
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream and
@@ -2617,7 +2615,7 @@ inline Sint16 ReadS16BE(IOStreamRef src)
   return value;
 }
 
-inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
+inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(get()); }
 
 /**
  * Use this function to read 32 bits of little-endian data from an IOStream and
@@ -2646,7 +2644,7 @@ inline Uint32 ReadU32LE(IOStreamRef src)
   return value;
 }
 
-inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
+inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(get()); }
 
 /**
  * Use this function to read 32 bits of little-endian data from an IOStream and
@@ -2675,7 +2673,7 @@ inline Sint32 ReadS32LE(IOStreamRef src)
   return value;
 }
 
-inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
+inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(get()); }
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream and
@@ -2704,7 +2702,7 @@ inline Uint32 ReadU32BE(IOStreamRef src)
   return value;
 }
 
-inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
+inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(get()); }
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream and
@@ -2733,7 +2731,7 @@ inline Sint32 ReadS32BE(IOStreamRef src)
   return value;
 }
 
-inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
+inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(get()); }
 
 /**
  * Use this function to read 64 bits of little-endian data from an IOStream and
@@ -2762,7 +2760,7 @@ inline Uint64 ReadU64LE(IOStreamRef src)
   return value;
 }
 
-inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
+inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(get()); }
 
 /**
  * Use this function to read 64 bits of little-endian data from an IOStream and
@@ -2791,7 +2789,7 @@ inline Sint64 ReadS64LE(IOStreamRef src)
   return value;
 }
 
-inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
+inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(get()); }
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream and
@@ -2820,7 +2818,7 @@ inline Uint64 ReadU64BE(IOStreamRef src)
   return value;
 }
 
-inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
+inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(get()); }
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream and
@@ -2849,7 +2847,7 @@ inline Sint64 ReadS64BE(IOStreamRef src)
   return value;
 }
 
-inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(m_resource); }
+inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(get()); }
 
 /**
  * Use this function to write a byte to an IOStream.
@@ -2867,7 +2865,7 @@ inline void WriteU8(IOStreamRef dst, Uint8 value)
   CheckError(SDL_WriteU8(dst, value));
 }
 
-inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(m_resource, value); }
+inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(get(), value); }
 
 /**
  * Use this function to write a signed byte to an IOStream.
@@ -2885,7 +2883,7 @@ inline void WriteS8(IOStreamRef dst, Sint8 value)
   CheckError(SDL_WriteS8(dst, value));
 }
 
-inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(m_resource, value); }
+inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(get(), value); }
 
 /**
  * Use this function to write 16 bits in native format to an IOStream as
@@ -2909,7 +2907,7 @@ inline void WriteU16LE(IOStreamRef dst, Uint16 value)
 
 inline void IOStream::WriteU16LE(Uint16 value)
 {
-  SDL::WriteU16LE(m_resource, value);
+  SDL::WriteU16LE(get(), value);
 }
 
 /**
@@ -2934,7 +2932,7 @@ inline void WriteS16LE(IOStreamRef dst, Sint16 value)
 
 inline void IOStream::WriteS16LE(Sint16 value)
 {
-  SDL::WriteS16LE(m_resource, value);
+  SDL::WriteS16LE(get(), value);
 }
 
 /**
@@ -2959,7 +2957,7 @@ inline void WriteU16BE(IOStreamRef dst, Uint16 value)
 
 inline void IOStream::WriteU16BE(Uint16 value)
 {
-  SDL::WriteU16BE(m_resource, value);
+  SDL::WriteU16BE(get(), value);
 }
 
 /**
@@ -2984,7 +2982,7 @@ inline void WriteS16BE(IOStreamRef dst, Sint16 value)
 
 inline void IOStream::WriteS16BE(Sint16 value)
 {
-  SDL::WriteS16BE(m_resource, value);
+  SDL::WriteS16BE(get(), value);
 }
 
 /**
@@ -3009,7 +3007,7 @@ inline void WriteU32LE(IOStreamRef dst, Uint32 value)
 
 inline void IOStream::WriteU32LE(Uint32 value)
 {
-  SDL::WriteU32LE(m_resource, value);
+  SDL::WriteU32LE(get(), value);
 }
 
 /**
@@ -3034,7 +3032,7 @@ inline void WriteS32LE(IOStreamRef dst, Sint32 value)
 
 inline void IOStream::WriteS32LE(Sint32 value)
 {
-  SDL::WriteS32LE(m_resource, value);
+  SDL::WriteS32LE(get(), value);
 }
 
 /**
@@ -3059,7 +3057,7 @@ inline void WriteU32BE(IOStreamRef dst, Uint32 value)
 
 inline void IOStream::WriteU32BE(Uint32 value)
 {
-  SDL::WriteU32BE(m_resource, value);
+  SDL::WriteU32BE(get(), value);
 }
 
 /**
@@ -3084,7 +3082,7 @@ inline void WriteS32BE(IOStreamRef dst, Sint32 value)
 
 inline void IOStream::WriteS32BE(Sint32 value)
 {
-  SDL::WriteS32BE(m_resource, value);
+  SDL::WriteS32BE(get(), value);
 }
 
 /**
@@ -3109,7 +3107,7 @@ inline void WriteU64LE(IOStreamRef dst, Uint64 value)
 
 inline void IOStream::WriteU64LE(Uint64 value)
 {
-  SDL::WriteU64LE(m_resource, value);
+  SDL::WriteU64LE(get(), value);
 }
 
 /**
@@ -3134,7 +3132,7 @@ inline void WriteS64LE(IOStreamRef dst, Sint64 value)
 
 inline void IOStream::WriteS64LE(Sint64 value)
 {
-  SDL::WriteS64LE(m_resource, value);
+  SDL::WriteS64LE(get(), value);
 }
 
 /**
@@ -3159,7 +3157,7 @@ inline void WriteU64BE(IOStreamRef dst, Uint64 value)
 
 inline void IOStream::WriteU64BE(Uint64 value)
 {
-  SDL::WriteU64BE(m_resource, value);
+  SDL::WriteU64BE(get(), value);
 }
 
 /**
@@ -3184,7 +3182,7 @@ inline void WriteS64BE(IOStreamRef dst, Sint64 value)
 
 inline void IOStream::WriteS64BE(Sint64 value)
 {
-  SDL::WriteS64BE(m_resource, value);
+  SDL::WriteS64BE(get(), value);
 }
 
 /// @}

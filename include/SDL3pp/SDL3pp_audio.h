@@ -3280,7 +3280,7 @@ inline const char* GetAudioDeviceName(AudioDeviceRef devid)
 
 inline const char* AudioDevice::GetName() const
 {
-  return SDL::GetAudioDeviceName(m_resource);
+  return SDL::GetAudioDeviceName(get());
 }
 
 /**
@@ -3323,7 +3323,7 @@ inline AudioSpec GetAudioDeviceFormat(AudioDeviceRef devid,
 
 inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
 {
-  return SDL::GetAudioDeviceFormat(m_resource, sample_frames);
+  return SDL::GetAudioDeviceFormat(get(), sample_frames);
 }
 
 /**
@@ -3354,7 +3354,7 @@ inline OwnArray<int> GetAudioDeviceChannelMap(AudioDeviceRef devid)
 
 inline OwnArray<int> AudioDevice::GetChannelMap() const
 {
-  return SDL::GetAudioDeviceChannelMap(m_resource);
+  return SDL::GetAudioDeviceChannelMap(get());
 }
 
 /**
@@ -3469,7 +3469,7 @@ inline bool IsAudioDevicePhysical(AudioDeviceRef devid)
 
 inline bool AudioDevice::IsPhysical() const
 {
-  return SDL::IsAudioDevicePhysical(m_resource);
+  return SDL::IsAudioDevicePhysical(get());
 }
 
 /**
@@ -3491,7 +3491,7 @@ inline bool IsAudioDevicePlayback(AudioDeviceRef devid)
 
 inline bool AudioDevice::IsPlayback() const
 {
-  return SDL::IsAudioDevicePlayback(m_resource);
+  return SDL::IsAudioDevicePlayback(get());
 }
 
 /**
@@ -3527,7 +3527,7 @@ inline void PauseAudioDevice(AudioDeviceRef devid)
   CheckError(SDL_PauseAudioDevice(devid));
 }
 
-inline void AudioDevice::Pause() { SDL::PauseAudioDevice(m_resource); }
+inline void AudioDevice::Pause() { SDL::PauseAudioDevice(get()); }
 
 /**
  * Use this function to unpause audio playback on a specified device.
@@ -3558,7 +3558,7 @@ inline void ResumeAudioDevice(AudioDeviceRef devid)
   CheckError(SDL_ResumeAudioDevice(devid));
 }
 
-inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(m_resource); }
+inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(get()); }
 
 /**
  * Use this function to query if an audio device is paused.
@@ -3587,7 +3587,7 @@ inline bool AudioDevicePaused(AudioDeviceRef devid)
 
 inline bool AudioDevice::Paused() const
 {
-  return SDL::AudioDevicePaused(m_resource);
+  return SDL::AudioDevicePaused(get());
 }
 
 /**
@@ -3618,7 +3618,7 @@ inline float GetAudioDeviceGain(AudioDeviceRef devid)
 
 inline float AudioDevice::GetGain() const
 {
-  return SDL::GetAudioDeviceGain(m_resource);
+  return SDL::GetAudioDeviceGain(get());
 }
 
 /**
@@ -3660,7 +3660,7 @@ inline void SetAudioDeviceGain(AudioDeviceRef devid, float gain)
 
 inline void AudioDevice::SetGain(float gain)
 {
-  SDL::SetAudioDeviceGain(m_resource, gain);
+  SDL::SetAudioDeviceGain(get(), gain);
 }
 
 /**
@@ -3735,7 +3735,7 @@ inline void BindAudioStreams(AudioDeviceRef devid,
 
 inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
 {
-  SDL::BindAudioStreams(m_resource, streams);
+  SDL::BindAudioStreams(get(), streams);
 }
 
 /**
@@ -3763,7 +3763,7 @@ inline void BindAudioStream(AudioDeviceRef devid, AudioStreamRef stream)
 
 inline void AudioDevice::BindAudioStream(AudioStreamRef stream)
 {
-  SDL::BindAudioStream(m_resource, stream);
+  SDL::BindAudioStream(get(), stream);
 }
 
 /**
@@ -3810,7 +3810,7 @@ inline void UnbindAudioStream(AudioStreamRef stream)
   SDL_UnbindAudioStream(stream);
 }
 
-inline void AudioStream::Unbind() { SDL::UnbindAudioStream(m_resource); }
+inline void AudioStream::Unbind() { SDL::UnbindAudioStream(get()); }
 
 /**
  * Query an audio stream for its currently-bound device.
@@ -3837,7 +3837,7 @@ inline AudioDeviceRef GetAudioStreamDevice(AudioStreamRef stream)
 
 inline AudioDeviceRef AudioStream::GetDevice() const
 {
-  return SDL::GetAudioStreamDevice(m_resource);
+  return SDL::GetAudioStreamDevice(get());
 }
 
 /**
@@ -3922,7 +3922,7 @@ inline PropertiesRef GetAudioStreamProperties(AudioStreamRef stream)
 
 inline PropertiesRef AudioStream::GetProperties() const
 {
-  return SDL::GetAudioStreamProperties(m_resource);
+  return SDL::GetAudioStreamProperties(get());
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -3972,7 +3972,7 @@ inline void GetAudioStreamFormat(AudioStreamRef stream,
 inline void AudioStream::GetFormat(AudioSpec* src_spec,
                                    AudioSpec* dst_spec) const
 {
-  SDL::GetAudioStreamFormat(m_resource, src_spec, dst_spec);
+  SDL::GetAudioStreamFormat(get(), src_spec, dst_spec);
 }
 
 /**
@@ -4019,7 +4019,7 @@ inline void SetAudioStreamFormat(AudioStreamRef stream,
 inline void AudioStream::SetFormat(OptionalRef<const AudioSpec> src_spec,
                                    OptionalRef<const AudioSpec> dst_spec)
 {
-  SDL::SetAudioStreamFormat(m_resource, src_spec, dst_spec);
+  SDL::SetAudioStreamFormat(get(), src_spec, dst_spec);
 }
 
 /**
@@ -4043,7 +4043,7 @@ inline float GetAudioStreamFrequencyRatio(AudioStreamRef stream)
 
 inline float AudioStream::GetFrequencyRatio() const
 {
-  return SDL::GetAudioStreamFrequencyRatio(m_resource);
+  return SDL::GetAudioStreamFrequencyRatio(get());
 }
 
 /**
@@ -4078,7 +4078,7 @@ inline void SetAudioStreamFrequencyRatio(AudioStreamRef stream, float ratio)
 
 inline void AudioStream::SetFrequencyRatio(float ratio)
 {
-  SDL::SetAudioStreamFrequencyRatio(m_resource, ratio);
+  SDL::SetAudioStreamFrequencyRatio(get(), ratio);
 }
 
 /**
@@ -4107,7 +4107,7 @@ inline float GetAudioStreamGain(AudioStreamRef stream)
 
 inline float AudioStream::GetGain() const
 {
-  return SDL::GetAudioStreamGain(m_resource);
+  return SDL::GetAudioStreamGain(get());
 }
 
 /**
@@ -4139,7 +4139,7 @@ inline void SetAudioStreamGain(AudioStreamRef stream, float gain)
 
 inline void AudioStream::SetGain(float gain)
 {
-  SDL::SetAudioStreamGain(m_resource, gain);
+  SDL::SetAudioStreamGain(get(), gain);
 }
 
 /**
@@ -4172,7 +4172,7 @@ inline OwnArray<int> GetAudioStreamInputChannelMap(AudioStreamRef stream)
 
 inline OwnArray<int> AudioStream::GetInputChannelMap() const
 {
-  return SDL::GetAudioStreamInputChannelMap(m_resource);
+  return SDL::GetAudioStreamInputChannelMap(get());
 }
 
 /**
@@ -4205,7 +4205,7 @@ inline OwnArray<int> GetAudioStreamOutputChannelMap(AudioStreamRef stream)
 
 inline OwnArray<int> AudioStream::GetOutputChannelMap() const
 {
-  return SDL::GetAudioStreamOutputChannelMap(m_resource);
+  return SDL::GetAudioStreamOutputChannelMap(get());
 }
 
 /**
@@ -4273,7 +4273,7 @@ inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
 
 inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
 {
-  SDL::SetAudioStreamInputChannelMap(m_resource, chmap);
+  SDL::SetAudioStreamInputChannelMap(get(), chmap);
 }
 
 /**
@@ -4339,7 +4339,7 @@ inline void SetAudioStreamOutputChannelMap(AudioStreamRef stream,
 
 inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
 {
-  SDL::SetAudioStreamOutputChannelMap(m_resource, chmap);
+  SDL::SetAudioStreamOutputChannelMap(get(), chmap);
 }
 
 /**
@@ -4376,7 +4376,7 @@ inline void PutAudioStreamData(AudioStreamRef stream, SourceBytes buf)
 
 inline void AudioStream::PutData(SourceBytes buf)
 {
-  SDL::PutAudioStreamData(m_resource, std::move(buf));
+  SDL::PutAudioStreamData(get(), std::move(buf));
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -4489,14 +4489,13 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCallback callback,
                                        void* userdata)
 {
-  SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback, userdata);
+  SDL::PutAudioStreamDataNoCopy(get(), std::move(buf), callback, userdata);
 }
 
 inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCB callback)
 {
-  SDL::PutAudioStreamDataNoCopy(
-    m_resource, std::move(buf), std::move(callback));
+  SDL::PutAudioStreamDataNoCopy(get(), std::move(buf), std::move(callback));
 }
 
 /**
@@ -4561,7 +4560,7 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
                                        int num_samples)
 {
   SDL::PutAudioStreamPlanarData(
-    m_resource, channel_buffers, num_channels, num_samples);
+    get(), channel_buffers, num_channels, num_samples);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -4601,7 +4600,7 @@ inline int GetAudioStreamData(AudioStreamRef stream, TargetBytes buf)
 
 inline int AudioStream::GetData(TargetBytes buf)
 {
-  return SDL::GetAudioStreamData(m_resource, std::move(buf));
+  return SDL::GetAudioStreamData(get(), std::move(buf));
 }
 
 /**
@@ -4634,7 +4633,7 @@ inline int GetAudioStreamAvailable(AudioStreamRef stream)
 
 inline int AudioStream::GetAvailable() const
 {
-  return SDL::GetAudioStreamAvailable(m_resource);
+  return SDL::GetAudioStreamAvailable(get());
 }
 
 /**
@@ -4679,7 +4678,7 @@ inline int GetAudioStreamQueued(AudioStreamRef stream)
 
 inline int AudioStream::GetQueued() const
 {
-  return SDL::GetAudioStreamQueued(m_resource);
+  return SDL::GetAudioStreamQueued(get());
 }
 
 /**
@@ -4704,7 +4703,7 @@ inline void FlushAudioStream(AudioStreamRef stream)
   CheckError(SDL_FlushAudioStream(stream));
 }
 
-inline void AudioStream::Flush() { SDL::FlushAudioStream(m_resource); }
+inline void AudioStream::Flush() { SDL::FlushAudioStream(get()); }
 
 /**
  * Clear any pending data in the stream.
@@ -4729,7 +4728,7 @@ inline void ClearAudioStream(AudioStreamRef stream)
   CheckError(SDL_ClearAudioStream(stream));
 }
 
-inline void AudioStream::Clear() { SDL::ClearAudioStream(m_resource); }
+inline void AudioStream::Clear() { SDL::ClearAudioStream(get()); }
 
 /**
  * Use this function to pause audio playback on the audio device associated with
@@ -4757,10 +4756,7 @@ inline void PauseAudioStreamDevice(AudioStreamRef stream)
   CheckError(SDL_PauseAudioStreamDevice(stream));
 }
 
-inline void AudioStream::PauseDevice()
-{
-  SDL::PauseAudioStreamDevice(m_resource);
-}
+inline void AudioStream::PauseDevice() { SDL::PauseAudioStreamDevice(get()); }
 
 /**
  * Use this function to unpause audio playback on the audio device associated
@@ -4787,10 +4783,7 @@ inline void ResumeAudioStreamDevice(AudioStreamRef stream)
   CheckError(SDL_ResumeAudioStreamDevice(stream));
 }
 
-inline void AudioStream::ResumeDevice()
-{
-  SDL::ResumeAudioStreamDevice(m_resource);
-}
+inline void AudioStream::ResumeDevice() { SDL::ResumeAudioStreamDevice(get()); }
 
 /**
  * Use this function to query if an audio device associated with a stream is
@@ -4816,7 +4809,7 @@ inline bool AudioStreamDevicePaused(AudioStreamRef stream)
 
 inline bool AudioStream::DevicePaused() const
 {
-  return SDL::AudioStreamDevicePaused(m_resource);
+  return SDL::AudioStreamDevicePaused(get());
 }
 
 /**
@@ -4986,12 +4979,12 @@ inline void SetAudioStreamGetCallback(AudioStreamRef stream,
 inline void AudioStream::SetGetCallback(AudioStreamCallback callback,
                                         void* userdata)
 {
-  SDL::SetAudioStreamGetCallback(m_resource, callback, userdata);
+  SDL::SetAudioStreamGetCallback(get(), callback, userdata);
 }
 
 inline void AudioStream::SetGetCallback(AudioStreamCB callback)
 {
-  SDL::SetAudioStreamGetCallback(m_resource, callback);
+  SDL::SetAudioStreamGetCallback(get(), callback);
 }
 
 /**
@@ -5098,12 +5091,12 @@ inline void SetAudioStreamPutCallback(AudioStreamRef stream,
 inline void AudioStream::SetPutCallback(AudioStreamCallback callback,
                                         void* userdata)
 {
-  SDL::SetAudioStreamPutCallback(m_resource, callback, userdata);
+  SDL::SetAudioStreamPutCallback(get(), callback, userdata);
 }
 
 inline void AudioStream::SetPutCallback(AudioStreamCB callback)
 {
-  SDL::SetAudioStreamPutCallback(m_resource, callback);
+  SDL::SetAudioStreamPutCallback(get(), callback);
 }
 
 /**
@@ -5260,13 +5253,13 @@ inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
                                            AudioStreamCallback callback,
                                            void* userdata)
 {
-  return AudioStream(m_resource, spec, callback, userdata);
+  return AudioStream(get(), spec, callback, userdata);
 }
 
 inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
                                            AudioStreamCB callback)
 {
-  return AudioStream(m_resource, spec, callback);
+  return SDL::OpenAudioDeviceStream(get(), spec, callback);
 }
 
 /**
@@ -5386,12 +5379,12 @@ inline void SetAudioPostmixCallback(AudioDeviceRef devid,
 inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
                                             void* userdata)
 {
-  SDL::SetAudioPostmixCallback(m_resource, callback, userdata);
+  SDL::SetAudioPostmixCallback(get(), callback, userdata);
 }
 
 inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
 {
-  SDL::SetAudioPostmixCallback(m_resource, callback);
+  SDL::SetAudioPostmixCallback(get(), callback);
 }
 
 /**

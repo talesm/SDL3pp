@@ -66,7 +66,7 @@
  }
  
  /**
-@@ -299,10 +303,25 @@
+@@ -296,10 +300,25 @@
  constexpr Capitalization CAPITALIZE_LETTERS =
    SDL_CAPITALIZE_LETTERS; ///< All letters will be capitalized
  
@@ -92,12 +92,12 @@
  constexpr auto CAPITALIZATION_NUMBER = SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER;
  
  constexpr auto AUTOCORRECT_BOOLEAN = SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN;
-@@ -331,7 +350,7 @@
+@@ -325,7 +344,7 @@
  
  inline void Window::SetTextInputArea(const RectRaw& rect, int cursor)
  {
--  CheckError(SDL_SetTextInputArea(m_resource, rect, cursor));
-+  CheckError(SDL_SetTextInputArea(m_resource, &rect, cursor));
+-  CheckError(SDL_SetTextInputArea(get(), rect, cursor));
++  CheckError(SDL_SetTextInputArea(get(), &rect, cursor));
  }
  
  inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)

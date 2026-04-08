@@ -4258,7 +4258,7 @@ inline GPUDeviceRef GetGPURendererDevice(RendererRef renderer)
 
 inline GPUDeviceRef Renderer::GetGPUDevice()
 {
-  return SDL::GetGPURendererDevice(m_resource);
+  return SDL::GetGPURendererDevice(get());
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -4289,7 +4289,7 @@ inline Renderer CreateSoftwareRenderer(SurfaceRef surface)
 
 inline RendererRef Window::GetRenderer() const
 {
-  return CheckError(SDL_GetRenderer(m_resource));
+  return CheckError(SDL_GetRenderer(get()));
 }
 
 /**
@@ -4308,10 +4308,7 @@ inline WindowRef GetRenderWindow(RendererRef renderer)
   return CheckError(SDL_GetRenderWindow(renderer));
 }
 
-inline WindowRef Renderer::GetWindow()
-{
-  return SDL::GetRenderWindow(m_resource);
-}
+inline WindowRef Renderer::GetWindow() { return SDL::GetRenderWindow(get()); }
 
 /**
  * Get the name of a renderer.
@@ -4334,7 +4331,7 @@ inline const char* GetRendererName(RendererRef renderer)
 
 inline const char* Renderer::GetName() const
 {
-  return SDL::GetRendererName(m_resource);
+  return SDL::GetRendererName(get());
 }
 
 /**
@@ -4429,7 +4426,7 @@ inline PropertiesRef GetRendererProperties(RendererRef renderer)
 
 inline PropertiesRef Renderer::GetProperties() const
 {
-  return SDL::GetRendererProperties(m_resource);
+  return SDL::GetRendererProperties(get());
 }
 
 /**
@@ -4485,12 +4482,12 @@ inline Point GetRenderOutputSize(RendererRef renderer)
 
 inline void Renderer::GetOutputSize(int* w, int* h) const
 {
-  SDL::GetRenderOutputSize(m_resource, w, h);
+  SDL::GetRenderOutputSize(get(), w, h);
 }
 
 inline Point Renderer::GetOutputSize() const
 {
-  return SDL::GetRenderOutputSize(m_resource);
+  return SDL::GetRenderOutputSize(get());
 }
 
 /**
@@ -4546,12 +4543,12 @@ inline Point GetCurrentRenderOutputSize(RendererRef renderer)
 
 inline void Renderer::GetCurrentOutputSize(int* w, int* h) const
 {
-  SDL::GetCurrentRenderOutputSize(m_resource, w, h);
+  SDL::GetCurrentRenderOutputSize(get(), w, h);
 }
 
 inline Point Renderer::GetCurrentOutputSize() const
 {
-  return SDL::GetCurrentRenderOutputSize(m_resource);
+  return SDL::GetCurrentRenderOutputSize(get());
 }
 
 /**
@@ -4588,7 +4585,7 @@ inline Texture Renderer::CreateTexture(PixelFormat format,
                                        TextureAccess access,
                                        const PointRaw& size)
 {
-  return Texture(m_resource, format, access, size);
+  return Texture(get(), format, access, size);
 }
 
 inline Texture::Texture(RendererRef renderer,
@@ -4642,7 +4639,7 @@ inline Texture CreateTextureFromSurface(RendererRef renderer,
 
 inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
 {
-  return Texture(m_resource, surface);
+  return Texture(get(), surface);
 }
 
 /**
@@ -4774,7 +4771,7 @@ inline Texture CreateTextureWithProperties(RendererRef renderer,
 
 inline Texture Renderer::CreateTextureWithProperties(PropertiesRef props)
 {
-  return Texture(m_resource, props);
+  return Texture(get(), props);
 }
 
 /**
@@ -5060,7 +5057,7 @@ inline PropertiesRef GetTextureProperties(TextureConstRef texture)
 
 inline PropertiesRef Texture::GetProperties() const
 {
-  return SDL::GetTextureProperties(m_resource);
+  return SDL::GetTextureProperties(get());
 }
 
 /**
@@ -5081,7 +5078,7 @@ inline RendererRef GetRendererFromTexture(TextureConstRef texture)
 
 inline RendererRef Texture::GetRenderer() const
 {
-  return SDL::GetRendererFromTexture(m_resource);
+  return SDL::GetRendererFromTexture(get());
 }
 
 /**
@@ -5111,13 +5108,10 @@ inline Point GetTextureSize(TextureConstRef texture)
 
 inline void Texture::GetSize(float* w, float* h) const
 {
-  SDL::GetTextureSize(m_resource, w, h);
+  SDL::GetTextureSize(get(), w, h);
 }
 
-inline Point Texture::GetSize() const
-{
-  return SDL::GetTextureSize(m_resource);
-}
+inline Point Texture::GetSize() const { return SDL::GetTextureSize(get()); }
 
 /// Get the size of a texture, as floating point values.
 inline FPoint GetTextureSizeFloat(TextureConstRef texture)
@@ -5129,24 +5123,18 @@ inline FPoint GetTextureSizeFloat(TextureConstRef texture)
 
 inline FPoint Texture::GetSizeFloat() const
 {
-  return SDL::GetTextureSizeFloat(m_resource);
+  return SDL::GetTextureSizeFloat(get());
 }
 
 /// Get the width in pixels.
 inline int GetTextureWidth(TextureConstRef texture) { return texture->w; }
 
-inline int Texture::GetWidth() const
-{
-  return SDL::GetTextureWidth(m_resource);
-}
+inline int Texture::GetWidth() const { return SDL::GetTextureWidth(get()); }
 
 /// Get the height in pixels.
 inline int GetTextureHeight(TextureConstRef texture) { return texture->h; }
 
-inline int Texture::GetHeight() const
-{
-  return SDL::GetTextureHeight(m_resource);
-}
+inline int Texture::GetHeight() const { return SDL::GetTextureHeight(get()); }
 
 /// Get the pixel format.
 inline PixelFormat GetTextureFormat(TextureConstRef texture)
@@ -5156,7 +5144,7 @@ inline PixelFormat GetTextureFormat(TextureConstRef texture)
 
 inline PixelFormat Texture::GetFormat() const
 {
-  return SDL::GetTextureFormat(m_resource);
+  return SDL::GetTextureFormat(get());
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -5187,7 +5175,7 @@ inline void SetTexturePalette(TextureRef texture, PaletteRef palette)
 
 inline void Texture::SetPalette(PaletteRef palette)
 {
-  SDL::SetTexturePalette(m_resource, palette);
+  SDL::SetTexturePalette(get(), palette);
 }
 
 /**
@@ -5208,10 +5196,7 @@ inline Palette GetTexturePalette(TextureRef texture)
   return Palette::Borrow(SDL_GetTexturePalette(texture));
 }
 
-inline Palette Texture::GetPalette()
-{
-  return SDL::GetTexturePalette(m_resource);
-}
+inline Palette Texture::GetPalette() { return SDL::GetTexturePalette(get()); }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -5248,7 +5233,7 @@ inline void SetTextureColorMod(TextureRef texture, Uint8 r, Uint8 g, Uint8 b)
 
 inline void Texture::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
 {
-  SDL::SetTextureColorMod(m_resource, r, g, b);
+  SDL::SetTextureColorMod(get(), r, g, b);
 }
 
 /**
@@ -5287,7 +5272,7 @@ inline void SetTextureColorModFloat(TextureRef texture,
 
 inline void Texture::SetColorModFloat(float r, float g, float b)
 {
-  SDL::SetTextureColorModFloat(m_resource, r, g, b);
+  SDL::SetTextureColorModFloat(get(), r, g, b);
 }
 
 /**
@@ -5317,7 +5302,7 @@ inline void GetTextureColorMod(TextureConstRef texture,
 
 inline void Texture::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
 {
-  SDL::GetTextureColorMod(m_resource, r, g, b);
+  SDL::GetTextureColorMod(get(), r, g, b);
 }
 
 /**
@@ -5347,7 +5332,7 @@ inline void GetTextureColorModFloat(TextureConstRef texture,
 
 inline void Texture::GetColorModFloat(float* r, float* g, float* b) const
 {
-  SDL::GetTextureColorModFloat(m_resource, r, g, b);
+  SDL::GetTextureColorModFloat(get(), r, g, b);
 }
 
 /**
@@ -5380,7 +5365,7 @@ inline void SetTextureAlphaMod(TextureRef texture, Uint8 alpha)
 
 inline void Texture::SetAlphaMod(Uint8 alpha)
 {
-  SDL::SetTextureAlphaMod(m_resource, alpha);
+  SDL::SetTextureAlphaMod(get(), alpha);
 }
 
 /**
@@ -5413,7 +5398,7 @@ inline void SetTextureAlphaModFloat(TextureRef texture, float alpha)
 
 inline void Texture::SetAlphaModFloat(float alpha)
 {
-  SDL::SetTextureAlphaModFloat(m_resource, alpha);
+  SDL::SetTextureAlphaModFloat(get(), alpha);
 }
 
 /**
@@ -5440,7 +5425,7 @@ inline Uint8 GetTextureAlphaMod(TextureConstRef texture)
 
 inline Uint8 Texture::GetAlphaMod() const
 {
-  return SDL::GetTextureAlphaMod(m_resource);
+  return SDL::GetTextureAlphaMod(get());
 }
 
 /**
@@ -5467,7 +5452,7 @@ inline float GetTextureAlphaModFloat(TextureConstRef texture)
 
 inline float Texture::GetAlphaModFloat() const
 {
-  return SDL::GetTextureAlphaModFloat(m_resource);
+  return SDL::GetTextureAlphaModFloat(get());
 }
 
 /**
@@ -5499,7 +5484,7 @@ inline void SetTextureMod(TextureRef texture, Color c)
   SetTextureAlphaMod(texture, c.a);
 }
 
-inline void Texture::SetMod(Color c) { SDL::SetTextureMod(m_resource, c); }
+inline void Texture::SetMod(Color c) { SDL::SetTextureMod(get(), c); }
 
 /**
  * Set an additional color and alpha values multiplied into render copy
@@ -5532,7 +5517,7 @@ inline void SetTextureModFloat(TextureRef texture, FColor c)
 
 inline void Texture::SetModFloat(FColor c)
 {
-  SDL::SetTextureModFloat(m_resource, c);
+  SDL::SetTextureModFloat(get(), c);
 }
 
 /**
@@ -5557,7 +5542,7 @@ inline Color GetTextureMod(TextureConstRef texture)
   return c;
 }
 
-inline Color Texture::GetMod() const { return SDL::GetTextureMod(m_resource); }
+inline Color Texture::GetMod() const { return SDL::GetTextureMod(get()); }
 
 /**
  * Get the additional color value multiplied into render copy operations.
@@ -5583,7 +5568,7 @@ inline FColor GetTextureModFloat(TextureConstRef texture)
 
 inline FColor Texture::GetModFloat() const
 {
-  return SDL::GetTextureModFloat(m_resource);
+  return SDL::GetTextureModFloat(get());
 }
 
 /**
@@ -5609,7 +5594,7 @@ inline void SetTextureBlendMode(TextureRef texture, BlendMode blendMode)
 
 inline void Texture::SetBlendMode(BlendMode blendMode)
 {
-  SDL::SetTextureBlendMode(m_resource, blendMode);
+  SDL::SetTextureBlendMode(get(), blendMode);
 }
 
 /**
@@ -5634,7 +5619,7 @@ inline BlendMode GetTextureBlendMode(TextureConstRef texture)
 
 inline BlendMode Texture::GetBlendMode() const
 {
-  return SDL::GetTextureBlendMode(m_resource);
+  return SDL::GetTextureBlendMode(get());
 }
 
 /**
@@ -5661,7 +5646,7 @@ inline void SetTextureScaleMode(TextureRef texture, ScaleMode scaleMode)
 
 inline void Texture::SetScaleMode(ScaleMode scaleMode)
 {
-  SDL::SetTextureScaleMode(m_resource, scaleMode);
+  SDL::SetTextureScaleMode(get(), scaleMode);
 }
 
 /**
@@ -5686,7 +5671,7 @@ inline ScaleMode GetTextureScaleMode(TextureConstRef texture)
 
 inline ScaleMode Texture::GetScaleMode() const
 {
-  return SDL::GetTextureScaleMode(m_resource);
+  return SDL::GetTextureScaleMode(get());
 }
 
 /**
@@ -5769,13 +5754,13 @@ inline void Texture::Update(OptionalRef<const RectRaw> rect,
                             const void* pixels,
                             int pitch)
 {
-  SDL::UpdateTexture(m_resource, rect, pixels, pitch);
+  SDL::UpdateTexture(get(), rect, pixels, pitch);
 }
 
 inline void Texture::Update(SurfaceConstRef surface,
                             OptionalRef<const RectRaw> rect)
 {
-  SDL::UpdateTexture(m_resource, surface, rect);
+  SDL::UpdateTexture(get(), surface, rect);
 }
 
 /**
@@ -5825,7 +5810,7 @@ inline void Texture::UpdateYUV(OptionalRef<const RectRaw> rect,
                                int Vpitch)
 {
   SDL::UpdateYUVTexture(
-    m_resource, rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch);
+    get(), rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch);
 }
 
 /**
@@ -5869,7 +5854,7 @@ inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
                               const Uint8* UVplane,
                               int UVpitch)
 {
-  SDL::UpdateNVTexture(m_resource, rect, Yplane, Ypitch, UVplane, UVpitch);
+  SDL::UpdateNVTexture(get(), rect, Yplane, Ypitch, UVplane, UVpitch);
 }
 
 /**
@@ -6055,7 +6040,7 @@ inline void SetRenderTarget(RendererRef renderer, TextureRef texture)
 
 inline void Renderer::SetTarget(TextureRef texture)
 {
-  SDL::SetRenderTarget(m_resource, texture);
+  SDL::SetRenderTarget(get(), texture);
 }
 
 /**
@@ -6078,7 +6063,7 @@ inline void ResetRenderTarget(RendererRef renderer)
   SetRenderTarget(renderer, nullptr);
 }
 
-inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(m_resource); }
+inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(get()); }
 
 /**
  * Get the current render target.
@@ -6104,7 +6089,7 @@ inline Texture GetRenderTarget(RendererRef renderer)
 
 inline Texture Renderer::GetTarget() const
 {
-  return SDL::GetRenderTarget(m_resource);
+  return SDL::GetRenderTarget(get());
 }
 
 /**
@@ -6160,7 +6145,7 @@ inline void SetRenderLogicalPresentation(RendererRef renderer,
 inline void Renderer::SetLogicalPresentation(const PointRaw& size,
                                              RendererLogicalPresentation mode)
 {
-  SDL::SetRenderLogicalPresentation(m_resource, size, mode);
+  SDL::SetRenderLogicalPresentation(get(), size, mode);
 }
 
 /**
@@ -6228,13 +6213,13 @@ inline void Renderer::GetLogicalPresentation(
   int* h,
   RendererLogicalPresentation* mode) const
 {
-  SDL::GetRenderLogicalPresentation(m_resource, w, h, mode);
+  SDL::GetRenderLogicalPresentation(get(), w, h, mode);
 }
 
 inline void Renderer::GetLogicalPresentation(PointRaw* size,
                                              RendererLogicalPresentation* mode)
 {
-  SDL::GetRenderLogicalPresentation(m_resource, size, mode);
+  SDL::GetRenderLogicalPresentation(get(), size, mode);
 }
 
 /**
@@ -6266,7 +6251,7 @@ inline FRect GetRenderLogicalPresentationRect(RendererRef renderer)
 
 inline FRect Renderer::GetLogicalPresentationRect() const
 {
-  return SDL::GetRenderLogicalPresentationRect(m_resource);
+  return SDL::GetRenderLogicalPresentationRect(get());
 }
 
 /**
@@ -6303,7 +6288,7 @@ inline FPoint RenderCoordinatesFromWindow(RendererRef renderer,
 inline FPoint Renderer::RenderCoordinatesFromWindow(
   const FPointRaw& window_coord) const
 {
-  return SDL::RenderCoordinatesFromWindow(m_resource, window_coord);
+  return SDL::RenderCoordinatesFromWindow(get(), window_coord);
 }
 
 /**
@@ -6340,7 +6325,7 @@ inline FPoint RenderCoordinatesToWindow(RendererRef renderer,
 
 inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
 {
-  return SDL::RenderCoordinatesToWindow(m_resource, coord);
+  return SDL::RenderCoordinatesToWindow(get(), coord);
 }
 
 /**
@@ -6382,7 +6367,7 @@ inline void ConvertEventToRenderCoordinates(RendererRef renderer, Event* event)
 
 inline void Renderer::ConvertEventToRenderCoordinates(Event* event) const
 {
-  SDL::ConvertEventToRenderCoordinates(m_resource, event);
+  SDL::ConvertEventToRenderCoordinates(get(), event);
 }
 
 /**
@@ -6417,7 +6402,7 @@ inline void SetRenderViewport(RendererRef renderer,
 
 inline void Renderer::SetViewport(OptionalRef<const RectRaw> rect)
 {
-  SDL::SetRenderViewport(m_resource, rect);
+  SDL::SetRenderViewport(get(), rect);
 }
 
 /**
@@ -6441,7 +6426,7 @@ inline void ResetRenderViewport(RendererRef renderer)
   SetRenderViewport(renderer, std::nullopt);
 }
 
-inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(m_resource); }
+inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(get()); }
 
 /**
  * Get the drawing area for the current target.
@@ -6469,7 +6454,7 @@ inline Rect GetRenderViewport(RendererRef renderer)
 
 inline Rect Renderer::GetViewport() const
 {
-  return SDL::GetRenderViewport(m_resource);
+  return SDL::GetRenderViewport(get());
 }
 
 /**
@@ -6499,7 +6484,7 @@ inline bool RenderViewportSet(RendererRef renderer)
 
 inline bool Renderer::ViewportSet() const
 {
-  return SDL::RenderViewportSet(m_resource);
+  return SDL::RenderViewportSet(get());
 }
 
 /**
@@ -6529,7 +6514,7 @@ inline Rect GetRenderSafeArea(RendererRef renderer)
 
 inline Rect Renderer::GetSafeArea() const
 {
-  return SDL::GetRenderSafeArea(m_resource);
+  return SDL::GetRenderSafeArea(get());
 }
 
 /**
@@ -6558,7 +6543,7 @@ inline void SetRenderClipRect(RendererRef renderer,
 
 inline void Renderer::SetClipRect(OptionalRef<const RectRaw> rect)
 {
-  SDL::SetRenderClipRect(m_resource, rect);
+  SDL::SetRenderClipRect(get(), rect);
 }
 
 /**
@@ -6582,7 +6567,7 @@ inline void ResetRenderClipRect(RendererRef renderer)
   SetRenderClipRect(renderer, std::nullopt);
 }
 
-inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(m_resource); }
+inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(get()); }
 
 /**
  * Get the clip rectangle for the current target.
@@ -6611,7 +6596,7 @@ inline Rect GetRenderClipRect(RendererRef renderer)
 
 inline Rect Renderer::GetClipRect() const
 {
-  return SDL::GetRenderClipRect(m_resource);
+  return SDL::GetRenderClipRect(get());
 }
 
 /**
@@ -6638,7 +6623,7 @@ inline bool RenderClipEnabled(RendererRef renderer)
 
 inline bool Renderer::IsClipEnabled() const
 {
-  return SDL::RenderClipEnabled(m_resource);
+  return SDL::RenderClipEnabled(get());
 }
 
 /**
@@ -6672,7 +6657,7 @@ inline void SetRenderScale(RendererRef renderer, const FPointRaw& scale)
 
 inline void Renderer::SetScale(const FPointRaw& scale)
 {
-  SDL::SetRenderScale(m_resource, scale);
+  SDL::SetRenderScale(get(), scale);
 }
 
 /**
@@ -6721,13 +6706,10 @@ inline FPoint GetRenderScale(RendererRef renderer)
 
 inline void Renderer::GetScale(float* scaleX, float* scaleY) const
 {
-  SDL::GetRenderScale(m_resource, scaleX, scaleY);
+  SDL::GetRenderScale(get(), scaleX, scaleY);
 }
 
-inline FPoint Renderer::GetScale() const
-{
-  return SDL::GetRenderScale(m_resource);
-}
+inline FPoint Renderer::GetScale() const { return SDL::GetRenderScale(get()); }
 
 /**
  * Set the color used for drawing operations.
@@ -6753,7 +6735,7 @@ inline void SetRenderDrawColor(RendererRef renderer, ColorRaw c)
 
 inline void Renderer::SetDrawColor(ColorRaw c)
 {
-  SDL::SetRenderDrawColor(m_resource, c);
+  SDL::SetRenderDrawColor(get(), c);
 }
 
 /**
@@ -6780,7 +6762,7 @@ inline void SetRenderDrawColorFloat(RendererRef renderer, const FColorRaw& c)
 
 inline void Renderer::SetDrawColorFloat(const FColorRaw& c)
 {
-  SDL::SetRenderDrawColorFloat(m_resource, c);
+  SDL::SetRenderDrawColorFloat(get(), c);
 }
 
 /**
@@ -6836,12 +6818,12 @@ inline Color GetRenderDrawColor(RendererRef renderer)
 
 inline void Renderer::GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
 {
-  SDL::GetRenderDrawColor(m_resource, r, g, b, a);
+  SDL::GetRenderDrawColor(get(), r, g, b, a);
 }
 
 inline Color Renderer::GetDrawColor() const
 {
-  return SDL::GetRenderDrawColor(m_resource);
+  return SDL::GetRenderDrawColor(get());
 }
 
 /**
@@ -6900,12 +6882,12 @@ inline void Renderer::GetDrawColorFloat(float* r,
                                         float* b,
                                         float* a) const
 {
-  SDL::GetRenderDrawColorFloat(m_resource, r, g, b, a);
+  SDL::GetRenderDrawColorFloat(get(), r, g, b, a);
 }
 
 inline FColor Renderer::GetDrawColorFloat() const
 {
-  return SDL::GetRenderDrawColorFloat(m_resource);
+  return SDL::GetRenderDrawColorFloat(get());
 }
 
 /**
@@ -6935,7 +6917,7 @@ inline void SetRenderColorScale(RendererRef renderer, float scale)
 
 inline void Renderer::SetColorScale(float scale)
 {
-  SDL::SetRenderColorScale(m_resource, scale);
+  SDL::SetRenderColorScale(get(), scale);
 }
 
 /**
@@ -6960,7 +6942,7 @@ inline float GetRenderColorScale(RendererRef renderer)
 
 inline float Renderer::GetColorScale() const
 {
-  return SDL::GetRenderColorScale(m_resource);
+  return SDL::GetRenderColorScale(get());
 }
 
 /**
@@ -6985,7 +6967,7 @@ inline void SetRenderDrawBlendMode(RendererRef renderer, BlendMode blendMode)
 
 inline void Renderer::SetDrawBlendMode(BlendMode blendMode)
 {
-  SDL::SetRenderDrawBlendMode(m_resource, blendMode);
+  SDL::SetRenderDrawBlendMode(get(), blendMode);
 }
 
 /**
@@ -7010,7 +6992,7 @@ inline BlendMode GetRenderDrawBlendMode(RendererRef renderer)
 
 inline BlendMode Renderer::GetDrawBlendMode() const
 {
-  return SDL::GetRenderDrawBlendMode(m_resource);
+  return SDL::GetRenderDrawBlendMode(get());
 }
 
 /**
@@ -7035,7 +7017,7 @@ inline void RenderClear(RendererRef renderer)
   CheckError(SDL_RenderClear(renderer));
 }
 
-inline void Renderer::RenderClear() { SDL::RenderClear(m_resource); }
+inline void Renderer::RenderClear() { SDL::RenderClear(get()); }
 
 /**
  * Draw a point on the current rendering target at subpixel precision.
@@ -7057,7 +7039,7 @@ inline void RenderPoint(RendererRef renderer, const FPointRaw& p)
 
 inline void Renderer::RenderPoint(const FPointRaw& p)
 {
-  SDL::RenderPoint(m_resource, p);
+  SDL::RenderPoint(get(), p);
 }
 
 /**
@@ -7081,7 +7063,7 @@ inline void RenderPoints(RendererRef renderer, SpanRef<const FPointRaw> points)
 
 inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
 {
-  SDL::RenderPoints(m_resource, points);
+  SDL::RenderPoints(get(), points);
 }
 
 /**
@@ -7107,7 +7089,7 @@ inline void RenderLine(RendererRef renderer,
 
 inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
 {
-  SDL::RenderLine(m_resource, p1, p2);
+  SDL::RenderLine(get(), p1, p2);
 }
 
 /**
@@ -7132,7 +7114,7 @@ inline void RenderLines(RendererRef renderer, SpanRef<const FPointRaw> points)
 
 inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
 {
-  SDL::RenderLines(m_resource, points);
+  SDL::RenderLines(get(), points);
 }
 
 /**
@@ -7156,7 +7138,7 @@ inline void RenderRect(RendererRef renderer, OptionalRef<const FRectRaw> rect)
 
 inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
 {
-  SDL::RenderRect(m_resource, rect);
+  SDL::RenderRect(get(), rect);
 }
 
 /**
@@ -7180,7 +7162,7 @@ inline void RenderRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 
 inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
 {
-  SDL::RenderRects(m_resource, rects);
+  SDL::RenderRects(get(), rects);
 }
 
 /**
@@ -7206,7 +7188,7 @@ inline void RenderFillRect(RendererRef renderer,
 
 inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
 {
-  SDL::RenderFillRect(m_resource, rect);
+  SDL::RenderFillRect(get(), rect);
 }
 
 /**
@@ -7231,7 +7213,7 @@ inline void RenderFillRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 
 inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
 {
-  SDL::RenderFillRects(m_resource, rects);
+  SDL::RenderFillRects(get(), rects);
 }
 
 /**
@@ -7265,7 +7247,7 @@ inline void Renderer::RenderTexture(TextureRef texture,
                                     OptionalRef<const FRectRaw> srcrect,
                                     OptionalRef<const FRectRaw> dstrect)
 {
-  SDL::RenderTexture(m_resource, texture, srcrect, dstrect);
+  SDL::RenderTexture(get(), texture, srcrect, dstrect);
 }
 
 /**
@@ -7313,7 +7295,7 @@ inline void Renderer::RenderTextureRotated(TextureRef texture,
                                            FlipMode flip)
 {
   SDL::RenderTextureRotated(
-    m_resource, texture, srcrect, dstrect, angle, center, flip);
+    get(), texture, srcrect, dstrect, angle, center, flip);
 }
 
 /**
@@ -7358,7 +7340,7 @@ inline void Renderer::RenderTextureAffine(TextureRef texture,
                                           OptionalRef<const FPointRaw> right,
                                           OptionalRef<const FPointRaw> down)
 {
-  SDL::RenderTextureAffine(m_resource, texture, srcrect, origin, right, down);
+  SDL::RenderTextureAffine(get(), texture, srcrect, origin, right, down);
 }
 
 /**
@@ -7400,7 +7382,7 @@ inline void Renderer::RenderTextureTiled(TextureRef texture,
                                          float scale,
                                          OptionalRef<const FRectRaw> dstrect)
 {
-  SDL::RenderTextureTiled(m_resource, texture, srcrect, scale, dstrect);
+  SDL::RenderTextureTiled(get(), texture, srcrect, scale, dstrect);
 }
 
 /**
@@ -7465,7 +7447,7 @@ inline void Renderer::RenderTexture9Grid(TextureRef texture,
                                          float scale,
                                          OptionalRef<const FRectRaw> dstrect)
 {
-  SDL::RenderTexture9Grid(m_resource,
+  SDL::RenderTexture9Grid(get(),
                           texture,
                           srcrect,
                           left_width,
@@ -7546,7 +7528,7 @@ inline void Renderer::RenderTexture9GridTiled(TextureRef texture,
                                               const FRectRaw& dstrect,
                                               float tileScale)
 {
-  SDL::RenderTexture9GridTiled(m_resource,
+  SDL::RenderTexture9GridTiled(get(),
                                texture,
                                srcrect,
                                left_width,
@@ -7597,7 +7579,7 @@ inline void Renderer::RenderGeometry(TextureRef texture,
                                      std::span<const Vertex> vertices,
                                      std::span<const int> indices)
 {
-  SDL::RenderGeometry(m_resource, texture, vertices, indices);
+  SDL::RenderGeometry(get(), texture, vertices, indices);
 }
 
 /**
@@ -7666,7 +7648,7 @@ inline void Renderer::RenderGeometryRaw(TextureRef texture,
                                         int num_indices,
                                         int size_indices)
 {
-  SDL::RenderGeometryRaw(m_resource,
+  SDL::RenderGeometryRaw(get(),
                          texture,
                          xy,
                          xy_stride,
@@ -7710,7 +7692,7 @@ inline void SetRenderTextureAddressMode(RendererRef renderer,
 inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
                                                   TextureAddressMode v_mode)
 {
-  SDL::SetRenderTextureAddressMode(m_resource, u_mode, v_mode);
+  SDL::SetRenderTextureAddressMode(get(), u_mode, v_mode);
 }
 
 /**
@@ -7741,7 +7723,7 @@ inline void GetRenderTextureAddressMode(RendererRef renderer,
 inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
                                                   TextureAddressMode* v_mode)
 {
-  SDL::GetRenderTextureAddressMode(m_resource, u_mode, v_mode);
+  SDL::GetRenderTextureAddressMode(get(), u_mode, v_mode);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -7779,7 +7761,7 @@ inline Surface RenderReadPixels(RendererRef renderer,
 
 inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
 {
-  return SDL::RenderReadPixels(m_resource, rect);
+  return SDL::RenderReadPixels(get(), rect);
 }
 
 /**
@@ -7832,7 +7814,7 @@ inline void RenderPresent(RendererRef renderer)
   CheckError(SDL_RenderPresent(renderer));
 }
 
-inline void Renderer::Present() { SDL::RenderPresent(m_resource); }
+inline void Renderer::Present() { SDL::RenderPresent(get()); }
 
 /**
  * Destroy the specified texture.
@@ -7908,7 +7890,7 @@ inline void FlushRenderer(RendererRef renderer)
   CheckError(SDL_FlushRenderer(renderer));
 }
 
-inline void Renderer::Flush() { SDL::FlushRenderer(m_resource); }
+inline void Renderer::Flush() { SDL::FlushRenderer(get()); }
 
 /**
  * Get the CAMetalLayer associated with the given Metal renderer.
@@ -7933,7 +7915,7 @@ inline void* GetRenderMetalLayer(RendererRef renderer)
 
 inline void* Renderer::GetRenderMetalLayer()
 {
-  return SDL::GetRenderMetalLayer(m_resource);
+  return SDL::GetRenderMetalLayer(get());
 }
 
 /**
@@ -7964,7 +7946,7 @@ inline void* GetRenderMetalCommandEncoder(RendererRef renderer)
 
 inline void* Renderer::GetRenderMetalCommandEncoder()
 {
-  return SDL::GetRenderMetalCommandEncoder(m_resource);
+  return SDL::GetRenderMetalCommandEncoder(get());
 }
 
 /**
@@ -8007,7 +7989,7 @@ inline void Renderer::AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
                                                 Sint64 signal_semaphore)
 {
   SDL::AddVulkanRenderSemaphores(
-    m_resource, wait_stage_mask, wait_semaphore, signal_semaphore);
+    get(), wait_stage_mask, wait_semaphore, signal_semaphore);
 }
 
 /**
@@ -8037,10 +8019,7 @@ inline void SetRenderVSync(RendererRef renderer, int vsync)
   CheckError(SDL_SetRenderVSync(renderer, vsync));
 }
 
-inline void Renderer::SetVSync(int vsync)
-{
-  SDL::SetRenderVSync(m_resource, vsync);
-}
+inline void Renderer::SetVSync(int vsync) { SDL::SetRenderVSync(get(), vsync); }
 
 /// Constant for disabling renderer vsync
 constexpr int RENDERER_VSYNC_DISABLED = SDL_RENDERER_VSYNC_DISABLED;
@@ -8069,10 +8048,7 @@ inline int GetRenderVSync(RendererRef renderer)
   return vsync;
 }
 
-inline int Renderer::GetVSync() const
-{
-  return SDL::GetRenderVSync(m_resource);
-}
+inline int Renderer::GetVSync() const { return SDL::GetRenderVSync(get()); }
 
 /**
  * The size, in pixels, of a single Renderer.RenderDebugText() character.
@@ -8132,7 +8108,7 @@ inline void RenderDebugText(RendererRef renderer,
 
 inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
 {
-  SDL::RenderDebugText(m_resource, p, std::move(str));
+  SDL::RenderDebugText(get(), p, std::move(str));
 }
 
 /**
@@ -8174,7 +8150,7 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
                                             std::string_view fmt,
                                             ARGS... args)
 {
-  SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
+  SDL::RenderDebugTextFormat(get(), p, fmt, args...);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -8202,7 +8178,7 @@ inline void SetDefaultTextureScaleMode(RendererRef renderer,
 
 inline void Renderer::SetDefaultTextureScaleMode(ScaleMode scale_mode)
 {
-  SDL::SetDefaultTextureScaleMode(m_resource, scale_mode);
+  SDL::SetDefaultTextureScaleMode(get(), scale_mode);
 }
 
 /**
@@ -8228,7 +8204,7 @@ inline void GetDefaultTextureScaleMode(RendererRef renderer,
 
 inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
 {
-  SDL::GetDefaultTextureScaleMode(m_resource, scale_mode);
+  SDL::GetDefaultTextureScaleMode(get(), scale_mode);
 }
 
 /**
@@ -8461,7 +8437,7 @@ inline GPURenderState CreateGPURenderState(
 inline GPURenderState Renderer::CreateGPURenderState(
   const GPURenderStateCreateInfo& createinfo)
 {
-  return GPURenderState(m_resource, createinfo);
+  return GPURenderState(get(), createinfo);
 }
 
 inline GPURenderState::GPURenderState(
@@ -8501,7 +8477,7 @@ inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
                                                 const void* data,
                                                 Uint32 length)
 {
-  SDL::SetGPURenderStateFragmentUniforms(m_resource, slot_index, data, length);
+  SDL::SetGPURenderStateFragmentUniforms(get(), slot_index, data, length);
 }
 
 /**
@@ -8527,7 +8503,7 @@ inline void SetGPURenderState(RendererRef renderer, GPURenderStateRef state)
 
 inline void Renderer::SetGPURenderState(GPURenderStateRef state)
 {
-  SDL::SetGPURenderState(m_resource, state);
+  SDL::SetGPURenderState(get(), state);
 }
 
 /**

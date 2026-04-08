@@ -10028,7 +10028,7 @@ inline void CopyProperties(PropertiesRef src, PropertiesRef dst)
 
 inline void Properties::Copy(PropertiesRef dst)
 {
-  SDL::CopyProperties(m_resource, dst);
+  SDL::CopyProperties(get(), dst);
 }
 
 /**
@@ -10181,7 +10181,7 @@ inline void Properties::SetPointerPropertyWithCleanup(
   void* userdata)
 {
   SDL::SetPointerPropertyWithCleanup(
-    m_resource, std::move(name), value, cleanup, userdata);
+    get(), std::move(name), value, cleanup, userdata);
 }
 
 inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
@@ -10189,7 +10189,7 @@ inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
                                                       CleanupPropertyCB cleanup)
 {
   SDL::SetPointerPropertyWithCleanup(
-    m_resource, std::move(name), value, std::move(cleanup));
+    get(), std::move(name), value, std::move(cleanup));
 }
 
 /**
@@ -10222,7 +10222,7 @@ inline void SetPointerProperty(PropertiesRef props,
 
 inline void Properties::SetPointerProperty(StringParam name, void* value)
 {
-  SDL::SetPointerProperty(m_resource, std::move(name), value);
+  SDL::SetPointerProperty(get(), std::move(name), value);
 }
 
 /**
@@ -10252,7 +10252,7 @@ inline void SetStringProperty(PropertiesRef props,
 
 inline void Properties::SetStringProperty(StringParam name, StringParam value)
 {
-  SDL::SetStringProperty(m_resource, std::move(name), std::move(value));
+  SDL::SetStringProperty(get(), std::move(name), std::move(value));
 }
 
 /**
@@ -10278,7 +10278,7 @@ inline void SetNumberProperty(PropertiesRef props,
 
 inline void Properties::SetNumberProperty(StringParam name, Sint64 value)
 {
-  SDL::SetNumberProperty(m_resource, std::move(name), value);
+  SDL::SetNumberProperty(get(), std::move(name), value);
 }
 
 /**
@@ -10302,7 +10302,7 @@ inline void SetFloatProperty(PropertiesRef props, StringParam name, float value)
 
 inline void Properties::SetFloatProperty(StringParam name, float value)
 {
-  SDL::SetFloatProperty(m_resource, std::move(name), value);
+  SDL::SetFloatProperty(get(), std::move(name), value);
 }
 
 /**
@@ -10328,7 +10328,7 @@ inline void SetBooleanProperty(PropertiesRef props,
 
 inline void Properties::SetBooleanProperty(StringParam name, bool value)
 {
-  SDL::SetBooleanProperty(m_resource, std::move(name), value);
+  SDL::SetBooleanProperty(get(), std::move(name), value);
 }
 
 /**
@@ -10351,7 +10351,7 @@ inline bool HasProperty(PropertiesRef props, StringParam name)
 
 inline bool Properties::HasProperty(StringParam name)
 {
-  return SDL::HasProperty(m_resource, std::move(name));
+  return SDL::HasProperty(get(), std::move(name));
 }
 
 /**
@@ -10374,7 +10374,7 @@ inline PropertyType GetPropertyType(PropertiesRef props, StringParam name)
 
 inline PropertyType Properties::GetPropertyType(StringParam name)
 {
-  return SDL::GetPropertyType(m_resource, std::move(name));
+  return SDL::GetPropertyType(get(), std::move(name));
 }
 
 /**
@@ -10418,7 +10418,7 @@ inline void* GetPointerProperty(PropertiesRef props,
 inline void* Properties::GetPointerProperty(StringParam name,
                                             void* default_value)
 {
-  return SDL::GetPointerProperty(m_resource, std::move(name), default_value);
+  return SDL::GetPointerProperty(get(), std::move(name), default_value);
 }
 
 /**
@@ -10454,7 +10454,7 @@ inline const char* Properties::GetStringProperty(StringParam name,
                                                  StringParam default_value)
 {
   return SDL::GetStringProperty(
-    m_resource, std::move(name), std::move(default_value));
+    get(), std::move(name), std::move(default_value));
 }
 
 /**
@@ -10487,7 +10487,7 @@ inline Sint64 GetNumberProperty(PropertiesRef props,
 inline Sint64 Properties::GetNumberProperty(StringParam name,
                                             Sint64 default_value)
 {
-  return SDL::GetNumberProperty(m_resource, std::move(name), default_value);
+  return SDL::GetNumberProperty(get(), std::move(name), default_value);
 }
 
 /**
@@ -10519,7 +10519,7 @@ inline float GetFloatProperty(PropertiesRef props,
 
 inline float Properties::GetFloatProperty(StringParam name, float default_value)
 {
-  return SDL::GetFloatProperty(m_resource, std::move(name), default_value);
+  return SDL::GetFloatProperty(get(), std::move(name), default_value);
 }
 
 /**
@@ -10551,7 +10551,7 @@ inline bool GetBooleanProperty(PropertiesRef props,
 
 inline bool Properties::GetBooleanProperty(StringParam name, bool default_value)
 {
-  return SDL::GetBooleanProperty(m_resource, std::move(name), default_value);
+  return SDL::GetBooleanProperty(get(), std::move(name), default_value);
 }
 
 /**
@@ -10572,7 +10572,7 @@ inline void ClearProperty(PropertiesRef props, StringParam name)
 
 inline void Properties::ClearProperty(StringParam name)
 {
-  SDL::ClearProperty(m_resource, std::move(name));
+  SDL::ClearProperty(get(), std::move(name));
 }
 
 /**
@@ -10626,12 +10626,12 @@ inline void EnumerateProperties(PropertiesRef props,
 inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
                                   void* userdata)
 {
-  SDL::EnumerateProperties(m_resource, callback, userdata);
+  SDL::EnumerateProperties(get(), callback, userdata);
 }
 
 inline void Properties::Enumerate(EnumeratePropertiesCB callback)
 {
-  SDL::EnumerateProperties(m_resource, std::move(callback));
+  SDL::EnumerateProperties(get(), std::move(callback));
 }
 
 /**
@@ -10649,10 +10649,7 @@ inline Uint64 CountProperties(PropertiesRef props)
   return count;
 }
 
-inline Uint64 Properties::GetCount()
-{
-  return SDL::CountProperties(m_resource);
-}
+inline Uint64 Properties::GetCount() { return SDL::CountProperties(get()); }
 
 /**
  * Destroy a group of properties.
@@ -11931,7 +11928,7 @@ inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 
 inline const char* Environment::GetVariable(StringParam name)
 {
-  return SDL::GetEnvironmentVariable(m_resource, std::move(name));
+  return SDL::GetEnvironmentVariable(get(), std::move(name));
 }
 
 /**
@@ -11960,7 +11957,7 @@ inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
 
 inline OwnArray<char*> Environment::GetVariables()
 {
-  return SDL::GetEnvironmentVariables(m_resource);
+  return SDL::GetEnvironmentVariables(get());
 }
 
 /**
@@ -11996,7 +11993,7 @@ inline void Environment::SetVariable(StringParam name,
                                      bool overwrite)
 {
   SDL::SetEnvironmentVariable(
-    m_resource, std::move(name), std::move(value), overwrite);
+    get(), std::move(name), std::move(value), overwrite);
 }
 
 /**
@@ -12024,7 +12021,7 @@ inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 
 inline void Environment::UnsetVariable(StringParam name)
 {
-  SDL::UnsetEnvironmentVariable(m_resource, std::move(name));
+  SDL::UnsetEnvironmentVariable(get(), std::move(name));
 }
 
 /**
@@ -16914,7 +16911,7 @@ inline size_t IConv::iconv(const char** inbuf,
                            char** outbuf,
                            size_t* outbytesleft) const
 {
-  return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
+  return SDL::iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
 }
 
 constexpr size_t ICONV_ERROR =
@@ -17998,7 +17995,7 @@ inline Sint64 GetAsyncIOSize(AsyncIORef asyncio)
   return CheckError(SDL_GetAsyncIOSize(asyncio));
 }
 
-inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(m_resource); }
+inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(get()); }
 
 /**
  * Start an async read.
@@ -18051,7 +18048,7 @@ inline void AsyncIO::Read(void* ptr,
                           AsyncIOQueueRef queue,
                           void* userdata)
 {
-  SDL::ReadAsyncIO(m_resource, ptr, offset, size, queue, userdata);
+  SDL::ReadAsyncIO(get(), ptr, offset, size, queue, userdata);
 }
 
 /**
@@ -18104,7 +18101,7 @@ inline void AsyncIO::Write(void* ptr,
                            AsyncIOQueueRef queue,
                            void* userdata)
 {
-  SDL::WriteAsyncIO(m_resource, ptr, offset, size, queue, userdata);
+  SDL::WriteAsyncIO(get(), ptr, offset, size, queue, userdata);
 }
 
 /**
@@ -18257,7 +18254,7 @@ inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueRef queue)
 
 inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
 {
-  return SDL::GetAsyncIOResult(m_resource);
+  return SDL::GetAsyncIOResult(get());
 }
 
 /**
@@ -18358,12 +18355,12 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue)
 inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult(
   Milliseconds timeout)
 {
-  return SDL::WaitAsyncIOResult(m_resource, timeout);
+  return SDL::WaitAsyncIOResult(get(), timeout);
 }
 
 inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
 {
-  return SDL::WaitAsyncIOResult(m_resource);
+  return SDL::WaitAsyncIOResult(get());
 }
 
 /**
@@ -18393,7 +18390,7 @@ inline void SignalAsyncIOQueue(AsyncIOQueueRef queue)
   SDL_SignalAsyncIOQueue(queue);
 }
 
-inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(m_resource); }
+inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(get()); }
 
 /**
  * Load all the data from a file path, asynchronously.
@@ -21829,7 +21826,7 @@ inline PropertiesRef hid_get_properties(HidDeviceRef dev)
 
 inline PropertiesRef HidDevice::hid_get_properties()
 {
-  return SDL::hid_get_properties(m_resource);
+  return SDL::hid_get_properties(get());
 }
 
 /**
@@ -21877,7 +21874,7 @@ inline int hid_write(HidDeviceRef dev, SourceBytes data)
 
 inline int HidDevice::write(SourceBytes data)
 {
-  return SDL::hid_write(m_resource, std::move(data));
+  return SDL::hid_write(get(), std::move(data));
 }
 
 /**
@@ -21906,7 +21903,7 @@ inline int hid_read_timeout(HidDeviceRef dev,
 
 inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
 {
-  return SDL::hid_read_timeout(m_resource, std::move(data), timeout);
+  return SDL::hid_read_timeout(get(), std::move(data), timeout);
 }
 
 /**
@@ -21931,7 +21928,7 @@ inline int hid_read(HidDeviceRef dev, TargetBytes data)
 
 inline int HidDevice::read(TargetBytes data)
 {
-  return SDL::hid_read(m_resource, std::move(data));
+  return SDL::hid_read(get(), std::move(data));
 }
 
 /**
@@ -21957,7 +21954,7 @@ inline void hid_set_nonblocking(HidDeviceRef dev, bool nonblock)
 
 inline void HidDevice::set_nonblocking(bool nonblock)
 {
-  SDL::hid_set_nonblocking(m_resource, nonblock);
+  SDL::hid_set_nonblocking(get(), nonblock);
 }
 
 /**
@@ -21988,7 +21985,7 @@ inline int hid_send_feature_report(HidDeviceRef dev, SourceBytes data)
 
 inline int HidDevice::send_feature_report(SourceBytes data)
 {
-  return SDL::hid_send_feature_report(m_resource, std::move(data));
+  return SDL::hid_send_feature_report(get(), std::move(data));
 }
 
 /**
@@ -22018,7 +22015,7 @@ inline int hid_get_feature_report(HidDeviceRef dev, TargetBytes data)
 
 inline int HidDevice::get_feature_report(TargetBytes data)
 {
-  return SDL::hid_get_feature_report(m_resource, std::move(data));
+  return SDL::hid_get_feature_report(get(), std::move(data));
 }
 
 /**
@@ -22048,7 +22045,7 @@ inline int hid_get_input_report(HidDeviceRef dev, TargetBytes data)
 
 inline int HidDevice::get_input_report(TargetBytes data)
 {
-  return SDL::hid_get_input_report(m_resource, std::move(data));
+  return SDL::hid_get_input_report(get(), std::move(data));
 }
 
 /**
@@ -22085,7 +22082,7 @@ inline void hid_get_manufacturer_string(HidDeviceRef dev,
 
 inline void HidDevice::get_manufacturer_string(wchar_t* string, size_t maxlen)
 {
-  SDL::hid_get_manufacturer_string(m_resource, string, maxlen);
+  SDL::hid_get_manufacturer_string(get(), string, maxlen);
 }
 
 /**
@@ -22107,7 +22104,7 @@ inline void hid_get_product_string(HidDeviceRef dev,
 
 inline void HidDevice::get_product_string(wchar_t* string, size_t maxlen)
 {
-  SDL::hid_get_product_string(m_resource, string, maxlen);
+  SDL::hid_get_product_string(get(), string, maxlen);
 }
 
 /**
@@ -22129,7 +22126,7 @@ inline void hid_get_serial_number_string(HidDeviceRef dev,
 
 inline void HidDevice::get_serial_number_string(wchar_t* string, size_t maxlen)
 {
-  SDL::hid_get_serial_number_string(m_resource, string, maxlen);
+  SDL::hid_get_serial_number_string(get(), string, maxlen);
 }
 
 /**
@@ -22156,7 +22153,7 @@ inline void HidDevice::get_indexed_string(int string_index,
                                           wchar_t* string,
                                           size_t maxlen)
 {
-  SDL::hid_get_indexed_string(m_resource, string_index, string, maxlen);
+  SDL::hid_get_indexed_string(get(), string_index, string, maxlen);
 }
 
 /**
@@ -22177,7 +22174,7 @@ inline hid_device_info* hid_get_device_info(HidDeviceRef dev)
 
 inline hid_device_info* HidDevice::get_device_info()
 {
-  return SDL::hid_get_device_info(m_resource);
+  return SDL::hid_get_device_info(get());
 }
 
 /**
@@ -22201,7 +22198,7 @@ inline int hid_get_report_descriptor(HidDeviceRef dev, TargetBytes buf)
 
 inline int HidDevice::get_report_descriptor(TargetBytes buf)
 {
-  return SDL::hid_get_report_descriptor(m_resource, std::move(buf));
+  return SDL::hid_get_report_descriptor(get(), std::move(buf));
 }
 
 /**
@@ -22885,7 +22882,7 @@ public:
     size_t result;
 
     va_start(ap, fmt);
-    result = vprintf(fmt, ap);
+    result = SDL_IOvprintf(get(), fmt, ap);
     va_end(ap);
 
     return result;
@@ -24261,7 +24258,7 @@ inline PropertiesRef GetIOProperties(IOStreamRef context)
 
 inline PropertiesRef IOStream::GetProperties() const
 {
-  return SDL::GetIOProperties(m_resource);
+  return SDL::GetIOProperties(get());
 }
 
 /**
@@ -24287,10 +24284,7 @@ inline IOStatus GetIOStatus(IOStreamRef context)
   return SDL_GetIOStatus(context);
 }
 
-inline IOStatus IOStream::GetStatus() const
-{
-  return SDL::GetIOStatus(m_resource);
-}
+inline IOStatus IOStream::GetStatus() const { return SDL::GetIOStatus(get()); }
 
 /**
  * Use this function to get the size of the data stream in an IOStream.
@@ -24308,7 +24302,7 @@ inline Sint64 GetIOSize(IOStreamRef context)
   return CheckError(SDL_GetIOSize(context));
 }
 
-inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(m_resource); }
+inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(get()); }
 
 /**
  * Seek within an IOStream data stream.
@@ -24343,7 +24337,7 @@ inline Sint64 SeekIO(IOStreamRef context, Sint64 offset, IOWhence whence)
 
 inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
 {
-  return SDL::SeekIO(m_resource, offset, whence);
+  return SDL::SeekIO(get(), offset, whence);
 }
 
 /**
@@ -24366,7 +24360,7 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
  */
 inline Sint64 TellIO(IOStreamRef context) { return SDL_TellIO(context); }
 
-inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
+inline Sint64 IOStream::Tell() const { return SDL::TellIO(get()); }
 
 /**
  * Read from a data source.
@@ -24402,7 +24396,7 @@ inline size_t ReadIO(IOStreamRef context, TargetBytes buf)
 
 inline size_t IOStream::Read(TargetBytes buf)
 {
-  return SDL::ReadIO(m_resource, std::move(buf));
+  return SDL::ReadIO(get(), std::move(buf));
 }
 
 /**
@@ -24445,7 +24439,7 @@ inline size_t WriteIO(IOStreamRef context, SourceBytes buf)
 
 inline size_t IOStream::Write(SourceBytes buf)
 {
-  return SDL::WriteIO(m_resource, std::move(buf));
+  return SDL::WriteIO(get(), std::move(buf));
 }
 
 /**
@@ -24511,7 +24505,7 @@ inline size_t IOvprintf(IOStreamRef context,
 inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
                                 va_list ap)
 {
-  return SDL::IOvprintf(m_resource, fmt, ap);
+  return SDL::IOvprintf(get(), fmt, ap);
 }
 
 /**
@@ -24533,7 +24527,7 @@ inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
  */
 inline void FlushIO(IOStreamRef context) { CheckError(SDL_FlushIO(context)); }
 
-inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
+inline void IOStream::Flush() { SDL::FlushIO(get()); }
 
 /**
  * Load all the data from an SDL data stream.
@@ -24564,10 +24558,7 @@ inline StringResult LoadFile_IO(IOStreamRef src, bool closeio = true)
   return StringResult{CheckError(data), datasize};
 }
 
-inline StringResult IOStream::LoadFile()
-{
-  return SDL::LoadFile_IO(m_resource);
-}
+inline StringResult IOStream::LoadFile() { return SDL::LoadFile_IO(get()); }
 
 /**
  * Load all the data from a file path.
@@ -24643,7 +24634,7 @@ inline void SaveFile_IO(IOStreamRef src, SourceBytes data, bool closeio = true)
 
 inline void IOStream::SaveFile(SourceBytes data)
 {
-  SDL::SaveFile_IO(m_resource, std::move(data));
+  SDL::SaveFile_IO(get(), std::move(data));
 }
 
 /**
@@ -24688,6 +24679,8 @@ inline Uint8 ReadU8(IOStreamRef src)
   return value;
 }
 
+inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(get()); }
+
 /**
  * Use this function to read a signed byte from an IOStream.
  *
@@ -24710,6 +24703,8 @@ inline Sint8 ReadS8(IOStreamRef src)
   CheckError(SDL_ReadS8(src, &value));
   return value;
 }
+
+inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(get()); }
 
 /**
  * Use this function to read 16 bits of little-endian data from an IOStream and
@@ -24738,7 +24733,7 @@ inline Uint16 ReadU16LE(IOStreamRef src)
   return value;
 }
 
-inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
+inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(get()); }
 
 /**
  * Use this function to read 16 bits of little-endian data from an IOStream and
@@ -24767,7 +24762,7 @@ inline Sint16 ReadS16LE(IOStreamRef src)
   return value;
 }
 
-inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
+inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(get()); }
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream and
@@ -24796,7 +24791,7 @@ inline Uint16 ReadU16BE(IOStreamRef src)
   return value;
 }
 
-inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
+inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(get()); }
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream and
@@ -24825,7 +24820,7 @@ inline Sint16 ReadS16BE(IOStreamRef src)
   return value;
 }
 
-inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
+inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(get()); }
 
 /**
  * Use this function to read 32 bits of little-endian data from an IOStream and
@@ -24854,7 +24849,7 @@ inline Uint32 ReadU32LE(IOStreamRef src)
   return value;
 }
 
-inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
+inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(get()); }
 
 /**
  * Use this function to read 32 bits of little-endian data from an IOStream and
@@ -24883,7 +24878,7 @@ inline Sint32 ReadS32LE(IOStreamRef src)
   return value;
 }
 
-inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
+inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(get()); }
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream and
@@ -24912,7 +24907,7 @@ inline Uint32 ReadU32BE(IOStreamRef src)
   return value;
 }
 
-inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
+inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(get()); }
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream and
@@ -24941,7 +24936,7 @@ inline Sint32 ReadS32BE(IOStreamRef src)
   return value;
 }
 
-inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
+inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(get()); }
 
 /**
  * Use this function to read 64 bits of little-endian data from an IOStream and
@@ -24970,7 +24965,7 @@ inline Uint64 ReadU64LE(IOStreamRef src)
   return value;
 }
 
-inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
+inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(get()); }
 
 /**
  * Use this function to read 64 bits of little-endian data from an IOStream and
@@ -24999,7 +24994,7 @@ inline Sint64 ReadS64LE(IOStreamRef src)
   return value;
 }
 
-inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
+inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(get()); }
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream and
@@ -25028,7 +25023,7 @@ inline Uint64 ReadU64BE(IOStreamRef src)
   return value;
 }
 
-inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
+inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(get()); }
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream and
@@ -25057,7 +25052,7 @@ inline Sint64 ReadS64BE(IOStreamRef src)
   return value;
 }
 
-inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(m_resource); }
+inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(get()); }
 
 /**
  * Use this function to write a byte to an IOStream.
@@ -25075,7 +25070,7 @@ inline void WriteU8(IOStreamRef dst, Uint8 value)
   CheckError(SDL_WriteU8(dst, value));
 }
 
-inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(m_resource, value); }
+inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(get(), value); }
 
 /**
  * Use this function to write a signed byte to an IOStream.
@@ -25093,7 +25088,7 @@ inline void WriteS8(IOStreamRef dst, Sint8 value)
   CheckError(SDL_WriteS8(dst, value));
 }
 
-inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(m_resource, value); }
+inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(get(), value); }
 
 /**
  * Use this function to write 16 bits in native format to an IOStream as
@@ -25117,7 +25112,7 @@ inline void WriteU16LE(IOStreamRef dst, Uint16 value)
 
 inline void IOStream::WriteU16LE(Uint16 value)
 {
-  SDL::WriteU16LE(m_resource, value);
+  SDL::WriteU16LE(get(), value);
 }
 
 /**
@@ -25142,7 +25137,7 @@ inline void WriteS16LE(IOStreamRef dst, Sint16 value)
 
 inline void IOStream::WriteS16LE(Sint16 value)
 {
-  SDL::WriteS16LE(m_resource, value);
+  SDL::WriteS16LE(get(), value);
 }
 
 /**
@@ -25167,7 +25162,7 @@ inline void WriteU16BE(IOStreamRef dst, Uint16 value)
 
 inline void IOStream::WriteU16BE(Uint16 value)
 {
-  SDL::WriteU16BE(m_resource, value);
+  SDL::WriteU16BE(get(), value);
 }
 
 /**
@@ -25192,7 +25187,7 @@ inline void WriteS16BE(IOStreamRef dst, Sint16 value)
 
 inline void IOStream::WriteS16BE(Sint16 value)
 {
-  SDL::WriteS16BE(m_resource, value);
+  SDL::WriteS16BE(get(), value);
 }
 
 /**
@@ -25217,7 +25212,7 @@ inline void WriteU32LE(IOStreamRef dst, Uint32 value)
 
 inline void IOStream::WriteU32LE(Uint32 value)
 {
-  SDL::WriteU32LE(m_resource, value);
+  SDL::WriteU32LE(get(), value);
 }
 
 /**
@@ -25242,7 +25237,7 @@ inline void WriteS32LE(IOStreamRef dst, Sint32 value)
 
 inline void IOStream::WriteS32LE(Sint32 value)
 {
-  SDL::WriteS32LE(m_resource, value);
+  SDL::WriteS32LE(get(), value);
 }
 
 /**
@@ -25267,7 +25262,7 @@ inline void WriteU32BE(IOStreamRef dst, Uint32 value)
 
 inline void IOStream::WriteU32BE(Uint32 value)
 {
-  SDL::WriteU32BE(m_resource, value);
+  SDL::WriteU32BE(get(), value);
 }
 
 /**
@@ -25292,7 +25287,7 @@ inline void WriteS32BE(IOStreamRef dst, Sint32 value)
 
 inline void IOStream::WriteS32BE(Sint32 value)
 {
-  SDL::WriteS32BE(m_resource, value);
+  SDL::WriteS32BE(get(), value);
 }
 
 /**
@@ -25317,7 +25312,7 @@ inline void WriteU64LE(IOStreamRef dst, Uint64 value)
 
 inline void IOStream::WriteU64LE(Uint64 value)
 {
-  SDL::WriteU64LE(m_resource, value);
+  SDL::WriteU64LE(get(), value);
 }
 
 /**
@@ -25342,7 +25337,7 @@ inline void WriteS64LE(IOStreamRef dst, Sint64 value)
 
 inline void IOStream::WriteS64LE(Sint64 value)
 {
-  SDL::WriteS64LE(m_resource, value);
+  SDL::WriteS64LE(get(), value);
 }
 
 /**
@@ -25367,7 +25362,7 @@ inline void WriteU64BE(IOStreamRef dst, Uint64 value)
 
 inline void IOStream::WriteU64BE(Uint64 value)
 {
-  SDL::WriteU64BE(m_resource, value);
+  SDL::WriteU64BE(get(), value);
 }
 
 /**
@@ -25392,7 +25387,7 @@ inline void WriteS64BE(IOStreamRef dst, Sint64 value)
 
 inline void IOStream::WriteS64BE(Sint64 value)
 {
-  SDL::WriteS64BE(m_resource, value);
+  SDL::WriteS64BE(get(), value);
 }
 
 /// @}
@@ -25706,7 +25701,7 @@ inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
 
 inline FunctionPointer SharedObject::LoadFunction(StringParam name)
 {
-  return SDL::LoadFunction(m_resource, std::move(name));
+  return SDL::LoadFunction(get(), std::move(name));
 }
 
 /**
@@ -28701,7 +28696,7 @@ inline void SetPaletteColors(PaletteRef palette,
 
 inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
 {
-  SDL::SetPaletteColors(m_resource, colors, firstcolor);
+  SDL::SetPaletteColors(get(), colors, firstcolor);
 }
 
 inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
@@ -32929,7 +32924,7 @@ inline PropertiesRef GetSensorProperties(SensorRef sensor)
 
 inline PropertiesRef Sensor::GetProperties()
 {
-  return SDL::GetSensorProperties(m_resource);
+  return SDL::GetSensorProperties(get());
 }
 
 /**
@@ -32946,7 +32941,7 @@ inline const char* GetSensorName(SensorRef sensor)
   return SDL_GetSensorName(sensor);
 }
 
-inline const char* Sensor::GetName() { return SDL::GetSensorName(m_resource); }
+inline const char* Sensor::GetName() { return SDL::GetSensorName(get()); }
 
 /**
  * Get the type of a sensor.
@@ -32961,7 +32956,7 @@ inline SensorType GetSensorType(SensorRef sensor)
   return SDL_GetSensorType(sensor);
 }
 
-inline SensorType Sensor::GetType() { return SDL::GetSensorType(m_resource); }
+inline SensorType Sensor::GetType() { return SDL::GetSensorType(get()); }
 
 /**
  * Get the platform dependent type of a sensor.
@@ -32978,7 +32973,7 @@ inline int GetSensorNonPortableType(SensorRef sensor)
 
 inline int Sensor::GetNonPortableType()
 {
-  return SDL::GetSensorNonPortableType(m_resource);
+  return SDL::GetSensorNonPortableType(get());
 }
 
 /**
@@ -32995,7 +32990,7 @@ inline SensorID GetSensorID(SensorRef sensor)
   return CheckError(SDL_GetSensorID(sensor));
 }
 
-inline SensorID Sensor::GetID() { return SDL::GetSensorID(m_resource); }
+inline SensorID Sensor::GetID() { return SDL::GetSensorID(get()); }
 
 /**
  * Get the current state of an opened sensor.
@@ -33016,7 +33011,7 @@ inline void GetSensorData(SensorRef sensor, float* data, int num_values)
 
 inline void Sensor::GetData(float* data, int num_values)
 {
-  SDL::GetSensorData(m_resource, data, num_values);
+  SDL::GetSensorData(get(), data, num_values);
 }
 
 /**
@@ -37229,7 +37224,7 @@ inline const char* GetAudioDeviceName(AudioDeviceRef devid)
 
 inline const char* AudioDevice::GetName() const
 {
-  return SDL::GetAudioDeviceName(m_resource);
+  return SDL::GetAudioDeviceName(get());
 }
 
 /**
@@ -37272,7 +37267,7 @@ inline AudioSpec GetAudioDeviceFormat(AudioDeviceRef devid,
 
 inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
 {
-  return SDL::GetAudioDeviceFormat(m_resource, sample_frames);
+  return SDL::GetAudioDeviceFormat(get(), sample_frames);
 }
 
 /**
@@ -37303,7 +37298,7 @@ inline OwnArray<int> GetAudioDeviceChannelMap(AudioDeviceRef devid)
 
 inline OwnArray<int> AudioDevice::GetChannelMap() const
 {
-  return SDL::GetAudioDeviceChannelMap(m_resource);
+  return SDL::GetAudioDeviceChannelMap(get());
 }
 
 /**
@@ -37418,7 +37413,7 @@ inline bool IsAudioDevicePhysical(AudioDeviceRef devid)
 
 inline bool AudioDevice::IsPhysical() const
 {
-  return SDL::IsAudioDevicePhysical(m_resource);
+  return SDL::IsAudioDevicePhysical(get());
 }
 
 /**
@@ -37440,7 +37435,7 @@ inline bool IsAudioDevicePlayback(AudioDeviceRef devid)
 
 inline bool AudioDevice::IsPlayback() const
 {
-  return SDL::IsAudioDevicePlayback(m_resource);
+  return SDL::IsAudioDevicePlayback(get());
 }
 
 /**
@@ -37476,7 +37471,7 @@ inline void PauseAudioDevice(AudioDeviceRef devid)
   CheckError(SDL_PauseAudioDevice(devid));
 }
 
-inline void AudioDevice::Pause() { SDL::PauseAudioDevice(m_resource); }
+inline void AudioDevice::Pause() { SDL::PauseAudioDevice(get()); }
 
 /**
  * Use this function to unpause audio playback on a specified device.
@@ -37507,7 +37502,7 @@ inline void ResumeAudioDevice(AudioDeviceRef devid)
   CheckError(SDL_ResumeAudioDevice(devid));
 }
 
-inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(m_resource); }
+inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(get()); }
 
 /**
  * Use this function to query if an audio device is paused.
@@ -37536,7 +37531,7 @@ inline bool AudioDevicePaused(AudioDeviceRef devid)
 
 inline bool AudioDevice::Paused() const
 {
-  return SDL::AudioDevicePaused(m_resource);
+  return SDL::AudioDevicePaused(get());
 }
 
 /**
@@ -37567,7 +37562,7 @@ inline float GetAudioDeviceGain(AudioDeviceRef devid)
 
 inline float AudioDevice::GetGain() const
 {
-  return SDL::GetAudioDeviceGain(m_resource);
+  return SDL::GetAudioDeviceGain(get());
 }
 
 /**
@@ -37609,7 +37604,7 @@ inline void SetAudioDeviceGain(AudioDeviceRef devid, float gain)
 
 inline void AudioDevice::SetGain(float gain)
 {
-  SDL::SetAudioDeviceGain(m_resource, gain);
+  SDL::SetAudioDeviceGain(get(), gain);
 }
 
 /**
@@ -37684,7 +37679,7 @@ inline void BindAudioStreams(AudioDeviceRef devid,
 
 inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
 {
-  SDL::BindAudioStreams(m_resource, streams);
+  SDL::BindAudioStreams(get(), streams);
 }
 
 /**
@@ -37712,7 +37707,7 @@ inline void BindAudioStream(AudioDeviceRef devid, AudioStreamRef stream)
 
 inline void AudioDevice::BindAudioStream(AudioStreamRef stream)
 {
-  SDL::BindAudioStream(m_resource, stream);
+  SDL::BindAudioStream(get(), stream);
 }
 
 /**
@@ -37759,7 +37754,7 @@ inline void UnbindAudioStream(AudioStreamRef stream)
   SDL_UnbindAudioStream(stream);
 }
 
-inline void AudioStream::Unbind() { SDL::UnbindAudioStream(m_resource); }
+inline void AudioStream::Unbind() { SDL::UnbindAudioStream(get()); }
 
 /**
  * Query an audio stream for its currently-bound device.
@@ -37786,7 +37781,7 @@ inline AudioDeviceRef GetAudioStreamDevice(AudioStreamRef stream)
 
 inline AudioDeviceRef AudioStream::GetDevice() const
 {
-  return SDL::GetAudioStreamDevice(m_resource);
+  return SDL::GetAudioStreamDevice(get());
 }
 
 /**
@@ -37871,7 +37866,7 @@ inline PropertiesRef GetAudioStreamProperties(AudioStreamRef stream)
 
 inline PropertiesRef AudioStream::GetProperties() const
 {
-  return SDL::GetAudioStreamProperties(m_resource);
+  return SDL::GetAudioStreamProperties(get());
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -37921,7 +37916,7 @@ inline void GetAudioStreamFormat(AudioStreamRef stream,
 inline void AudioStream::GetFormat(AudioSpec* src_spec,
                                    AudioSpec* dst_spec) const
 {
-  SDL::GetAudioStreamFormat(m_resource, src_spec, dst_spec);
+  SDL::GetAudioStreamFormat(get(), src_spec, dst_spec);
 }
 
 /**
@@ -37968,7 +37963,7 @@ inline void SetAudioStreamFormat(AudioStreamRef stream,
 inline void AudioStream::SetFormat(OptionalRef<const AudioSpec> src_spec,
                                    OptionalRef<const AudioSpec> dst_spec)
 {
-  SDL::SetAudioStreamFormat(m_resource, src_spec, dst_spec);
+  SDL::SetAudioStreamFormat(get(), src_spec, dst_spec);
 }
 
 /**
@@ -37992,7 +37987,7 @@ inline float GetAudioStreamFrequencyRatio(AudioStreamRef stream)
 
 inline float AudioStream::GetFrequencyRatio() const
 {
-  return SDL::GetAudioStreamFrequencyRatio(m_resource);
+  return SDL::GetAudioStreamFrequencyRatio(get());
 }
 
 /**
@@ -38027,7 +38022,7 @@ inline void SetAudioStreamFrequencyRatio(AudioStreamRef stream, float ratio)
 
 inline void AudioStream::SetFrequencyRatio(float ratio)
 {
-  SDL::SetAudioStreamFrequencyRatio(m_resource, ratio);
+  SDL::SetAudioStreamFrequencyRatio(get(), ratio);
 }
 
 /**
@@ -38056,7 +38051,7 @@ inline float GetAudioStreamGain(AudioStreamRef stream)
 
 inline float AudioStream::GetGain() const
 {
-  return SDL::GetAudioStreamGain(m_resource);
+  return SDL::GetAudioStreamGain(get());
 }
 
 /**
@@ -38088,7 +38083,7 @@ inline void SetAudioStreamGain(AudioStreamRef stream, float gain)
 
 inline void AudioStream::SetGain(float gain)
 {
-  SDL::SetAudioStreamGain(m_resource, gain);
+  SDL::SetAudioStreamGain(get(), gain);
 }
 
 /**
@@ -38121,7 +38116,7 @@ inline OwnArray<int> GetAudioStreamInputChannelMap(AudioStreamRef stream)
 
 inline OwnArray<int> AudioStream::GetInputChannelMap() const
 {
-  return SDL::GetAudioStreamInputChannelMap(m_resource);
+  return SDL::GetAudioStreamInputChannelMap(get());
 }
 
 /**
@@ -38154,7 +38149,7 @@ inline OwnArray<int> GetAudioStreamOutputChannelMap(AudioStreamRef stream)
 
 inline OwnArray<int> AudioStream::GetOutputChannelMap() const
 {
-  return SDL::GetAudioStreamOutputChannelMap(m_resource);
+  return SDL::GetAudioStreamOutputChannelMap(get());
 }
 
 /**
@@ -38222,7 +38217,7 @@ inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
 
 inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
 {
-  SDL::SetAudioStreamInputChannelMap(m_resource, chmap);
+  SDL::SetAudioStreamInputChannelMap(get(), chmap);
 }
 
 /**
@@ -38288,7 +38283,7 @@ inline void SetAudioStreamOutputChannelMap(AudioStreamRef stream,
 
 inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
 {
-  SDL::SetAudioStreamOutputChannelMap(m_resource, chmap);
+  SDL::SetAudioStreamOutputChannelMap(get(), chmap);
 }
 
 /**
@@ -38325,7 +38320,7 @@ inline void PutAudioStreamData(AudioStreamRef stream, SourceBytes buf)
 
 inline void AudioStream::PutData(SourceBytes buf)
 {
-  SDL::PutAudioStreamData(m_resource, std::move(buf));
+  SDL::PutAudioStreamData(get(), std::move(buf));
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -38438,14 +38433,13 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCallback callback,
                                        void* userdata)
 {
-  SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback, userdata);
+  SDL::PutAudioStreamDataNoCopy(get(), std::move(buf), callback, userdata);
 }
 
 inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCB callback)
 {
-  SDL::PutAudioStreamDataNoCopy(
-    m_resource, std::move(buf), std::move(callback));
+  SDL::PutAudioStreamDataNoCopy(get(), std::move(buf), std::move(callback));
 }
 
 /**
@@ -38510,7 +38504,7 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
                                        int num_samples)
 {
   SDL::PutAudioStreamPlanarData(
-    m_resource, channel_buffers, num_channels, num_samples);
+    get(), channel_buffers, num_channels, num_samples);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -38550,7 +38544,7 @@ inline int GetAudioStreamData(AudioStreamRef stream, TargetBytes buf)
 
 inline int AudioStream::GetData(TargetBytes buf)
 {
-  return SDL::GetAudioStreamData(m_resource, std::move(buf));
+  return SDL::GetAudioStreamData(get(), std::move(buf));
 }
 
 /**
@@ -38583,7 +38577,7 @@ inline int GetAudioStreamAvailable(AudioStreamRef stream)
 
 inline int AudioStream::GetAvailable() const
 {
-  return SDL::GetAudioStreamAvailable(m_resource);
+  return SDL::GetAudioStreamAvailable(get());
 }
 
 /**
@@ -38628,7 +38622,7 @@ inline int GetAudioStreamQueued(AudioStreamRef stream)
 
 inline int AudioStream::GetQueued() const
 {
-  return SDL::GetAudioStreamQueued(m_resource);
+  return SDL::GetAudioStreamQueued(get());
 }
 
 /**
@@ -38653,7 +38647,7 @@ inline void FlushAudioStream(AudioStreamRef stream)
   CheckError(SDL_FlushAudioStream(stream));
 }
 
-inline void AudioStream::Flush() { SDL::FlushAudioStream(m_resource); }
+inline void AudioStream::Flush() { SDL::FlushAudioStream(get()); }
 
 /**
  * Clear any pending data in the stream.
@@ -38678,7 +38672,7 @@ inline void ClearAudioStream(AudioStreamRef stream)
   CheckError(SDL_ClearAudioStream(stream));
 }
 
-inline void AudioStream::Clear() { SDL::ClearAudioStream(m_resource); }
+inline void AudioStream::Clear() { SDL::ClearAudioStream(get()); }
 
 /**
  * Use this function to pause audio playback on the audio device associated with
@@ -38706,10 +38700,7 @@ inline void PauseAudioStreamDevice(AudioStreamRef stream)
   CheckError(SDL_PauseAudioStreamDevice(stream));
 }
 
-inline void AudioStream::PauseDevice()
-{
-  SDL::PauseAudioStreamDevice(m_resource);
-}
+inline void AudioStream::PauseDevice() { SDL::PauseAudioStreamDevice(get()); }
 
 /**
  * Use this function to unpause audio playback on the audio device associated
@@ -38736,10 +38727,7 @@ inline void ResumeAudioStreamDevice(AudioStreamRef stream)
   CheckError(SDL_ResumeAudioStreamDevice(stream));
 }
 
-inline void AudioStream::ResumeDevice()
-{
-  SDL::ResumeAudioStreamDevice(m_resource);
-}
+inline void AudioStream::ResumeDevice() { SDL::ResumeAudioStreamDevice(get()); }
 
 /**
  * Use this function to query if an audio device associated with a stream is
@@ -38765,7 +38753,7 @@ inline bool AudioStreamDevicePaused(AudioStreamRef stream)
 
 inline bool AudioStream::DevicePaused() const
 {
-  return SDL::AudioStreamDevicePaused(m_resource);
+  return SDL::AudioStreamDevicePaused(get());
 }
 
 /**
@@ -38935,12 +38923,12 @@ inline void SetAudioStreamGetCallback(AudioStreamRef stream,
 inline void AudioStream::SetGetCallback(AudioStreamCallback callback,
                                         void* userdata)
 {
-  SDL::SetAudioStreamGetCallback(m_resource, callback, userdata);
+  SDL::SetAudioStreamGetCallback(get(), callback, userdata);
 }
 
 inline void AudioStream::SetGetCallback(AudioStreamCB callback)
 {
-  SDL::SetAudioStreamGetCallback(m_resource, callback);
+  SDL::SetAudioStreamGetCallback(get(), callback);
 }
 
 /**
@@ -39047,12 +39035,12 @@ inline void SetAudioStreamPutCallback(AudioStreamRef stream,
 inline void AudioStream::SetPutCallback(AudioStreamCallback callback,
                                         void* userdata)
 {
-  SDL::SetAudioStreamPutCallback(m_resource, callback, userdata);
+  SDL::SetAudioStreamPutCallback(get(), callback, userdata);
 }
 
 inline void AudioStream::SetPutCallback(AudioStreamCB callback)
 {
-  SDL::SetAudioStreamPutCallback(m_resource, callback);
+  SDL::SetAudioStreamPutCallback(get(), callback);
 }
 
 /**
@@ -39209,13 +39197,13 @@ inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
                                            AudioStreamCallback callback,
                                            void* userdata)
 {
-  return AudioStream(m_resource, spec, callback, userdata);
+  return AudioStream(get(), spec, callback, userdata);
 }
 
 inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
                                            AudioStreamCB callback)
 {
-  return AudioStream(m_resource, spec, callback);
+  return SDL::OpenAudioDeviceStream(get(), spec, callback);
 }
 
 /**
@@ -39335,12 +39323,12 @@ inline void SetAudioPostmixCallback(AudioDeviceRef devid,
 inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
                                             void* userdata)
 {
-  SDL::SetAudioPostmixCallback(m_resource, callback, userdata);
+  SDL::SetAudioPostmixCallback(get(), callback, userdata);
 }
 
 inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
 {
-  SDL::SetAudioPostmixCallback(m_resource, callback);
+  SDL::SetAudioPostmixCallback(get(), callback);
 }
 
 /**
@@ -41308,7 +41296,7 @@ inline PropertiesRef GetProcessProperties(ProcessRef process)
 
 inline PropertiesRef Process::GetProperties() const
 {
-  return SDL::GetProcessProperties(m_resource);
+  return SDL::GetProcessProperties(get());
 }
 
 /**
@@ -41347,7 +41335,7 @@ inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
 
 inline StringResult Process::Read(int* exitcode)
 {
-  return SDL::ReadProcess(m_resource, exitcode);
+  return SDL::ReadProcess(get(), exitcode);
 }
 
 /**
@@ -41379,10 +41367,7 @@ inline IOStreamRef GetProcessInput(ProcessRef process)
   return {SDL_GetProcessInput(process)};
 }
 
-inline IOStreamRef Process::GetInput()
-{
-  return SDL::GetProcessInput(m_resource);
-}
+inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
 
 /**
  * Get the IOStream associated with process standard output.
@@ -41411,10 +41396,7 @@ inline IOStreamRef GetProcessOutput(ProcessRef process)
   return {SDL_GetProcessOutput(process)};
 }
 
-inline IOStreamRef Process::GetOutput()
-{
-  return SDL::GetProcessOutput(m_resource);
-}
+inline IOStreamRef Process::GetOutput() { return SDL::GetProcessOutput(get()); }
 
 /**
  * Stop a process.
@@ -41440,7 +41422,7 @@ inline void KillProcess(ProcessRef process, bool force)
   CheckError(SDL_KillProcess(process, force));
 }
 
-inline void Process::Kill(bool force) { SDL::KillProcess(m_resource, force); }
+inline void Process::Kill(bool force) { SDL::KillProcess(get(), force); }
 
 /**
  * Wait for a process to finish.
@@ -41480,7 +41462,7 @@ inline bool WaitProcess(ProcessRef process, bool block, int* exitcode)
 
 inline bool Process::Wait(bool block, int* exitcode)
 {
-  return SDL::WaitProcess(m_resource, block, exitcode);
+  return SDL::WaitProcess(get(), block, exitcode);
 }
 
 /**
@@ -42487,7 +42469,7 @@ inline bool StorageReady(StorageRef storage)
   return SDL_StorageReady(storage);
 }
 
-inline bool Storage::Ready() { return SDL::StorageReady(m_resource); }
+inline bool Storage::Ready() { return SDL::StorageReady(get()); }
 
 /**
  * Query the size of a file within a storage container.
@@ -42513,7 +42495,7 @@ inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
 
 inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
 {
-  return SDL::GetStorageFileSize(m_resource, std::move(path));
+  return SDL::GetStorageFileSize(get(), std::move(path));
 }
 
 /**
@@ -42570,13 +42552,12 @@ inline std::string ReadStorageFile(StorageRef storage, StringParam path)
 
 inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
 {
-  return SDL::ReadStorageFile(
-    m_resource, std::move(path), std::move(destination));
+  return SDL::ReadStorageFile(get(), std::move(path), std::move(destination));
 }
 
 inline std::string Storage::ReadFile(StringParam path)
 {
-  return SDL::ReadStorageFile(m_resource, std::move(path));
+  return SDL::ReadStorageFile(get(), std::move(path));
 }
 
 /**
@@ -42607,7 +42588,7 @@ inline std::vector<T> ReadStorageFileAs(StorageRef storage, StringParam path)
 template<class T>
 inline std::vector<T> Storage::ReadFileAs(StringParam path)
 {
-  return SDL::ReadStorageFileAs<T>(m_resource, std::move(path));
+  return SDL::ReadStorageFileAs<T>(get(), std::move(path));
 }
 
 /**
@@ -42634,7 +42615,7 @@ inline void WriteStorageFile(StorageRef storage,
 
 inline void Storage::WriteFile(StringParam path, SourceBytes source)
 {
-  SDL::WriteStorageFile(m_resource, std::move(path), std::move(source));
+  SDL::WriteStorageFile(get(), std::move(path), std::move(source));
 }
 
 /**
@@ -42655,7 +42636,7 @@ inline void CreateStorageDirectory(StorageRef storage, StringParam path)
 
 inline void Storage::CreateDirectory(StringParam path)
 {
-  SDL::CreateStorageDirectory(m_resource, std::move(path));
+  SDL::CreateStorageDirectory(get(), std::move(path));
 }
 
 /**
@@ -42766,19 +42747,18 @@ inline void Storage::EnumerateDirectory(StringParam path,
                                         EnumerateDirectoryCallback callback,
                                         void* userdata)
 {
-  SDL::EnumerateStorageDirectory(
-    m_resource, std::move(path), callback, userdata);
+  SDL::EnumerateStorageDirectory(get(), std::move(path), callback, userdata);
 }
 
 inline std::vector<Path> Storage::EnumerateDirectory(StringParam path)
 {
-  return SDL::EnumerateStorageDirectory(m_resource, std::move(path));
+  return SDL::EnumerateStorageDirectory(get(), std::move(path));
 }
 
 inline void Storage::EnumerateDirectory(StringParam path,
                                         EnumerateDirectoryCB callback)
 {
-  SDL::EnumerateStorageDirectory(m_resource, std::move(path), callback);
+  SDL::EnumerateStorageDirectory(get(), std::move(path), callback);
 }
 
 /**
@@ -42799,7 +42779,7 @@ inline void RemoveStoragePath(StorageRef storage, StringParam path)
 
 inline void Storage::RemovePath(StringParam path)
 {
-  SDL::RemoveStoragePath(m_resource, std::move(path));
+  SDL::RemoveStoragePath(get(), std::move(path));
 }
 
 /**
@@ -42823,7 +42803,7 @@ inline void RenameStoragePath(StorageRef storage,
 
 inline void Storage::RenamePath(StringParam oldpath, StringParam newpath)
 {
-  SDL::RenameStoragePath(m_resource, std::move(oldpath), std::move(newpath));
+  SDL::RenameStoragePath(get(), std::move(oldpath), std::move(newpath));
 }
 
 /**
@@ -42847,7 +42827,7 @@ inline void CopyStorageFile(StorageRef storage,
 
 inline void Storage::CopyFile(StringParam oldpath, StringParam newpath)
 {
-  SDL::CopyStorageFile(m_resource, std::move(oldpath), std::move(newpath));
+  SDL::CopyStorageFile(get(), std::move(oldpath), std::move(newpath));
 }
 
 /**
@@ -42872,7 +42852,7 @@ inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
 
 inline PathInfo Storage::GetPathInfo(StringParam path)
 {
-  return SDL::GetStoragePathInfo(m_resource, std::move(path));
+  return SDL::GetStoragePathInfo(get(), std::move(path));
 }
 
 /**
@@ -42893,7 +42873,7 @@ inline Uint64 GetStorageSpaceRemaining(StorageRef storage)
 
 inline Uint64 Storage::GetSpaceRemaining()
 {
-  return SDL::GetStorageSpaceRemaining(m_resource);
+  return SDL::GetStorageSpaceRemaining(get());
 }
 
 /**
@@ -42945,7 +42925,7 @@ inline OwnArray<char*> Storage::GlobDirectory(StringParam path,
                                               GlobFlags flags)
 {
   return SDL::GlobStorageDirectory(
-    m_resource, std::move(path), std::move(pattern), flags);
+    get(), std::move(path), std::move(pattern), flags);
 }
 
 /// @}
@@ -43349,7 +43329,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool MustLock() const { return SDL::MustLock(m_resource); }
+  constexpr bool MustLock() const { return SDL::MustLock(get()); }
 
   /**
    * Get the properties associated with a surface.
@@ -45289,7 +45269,7 @@ inline PropertiesRef GetSurfaceProperties(SurfaceConstRef surface)
 
 inline PropertiesRef Surface::GetProperties() const
 {
-  return SDL::GetSurfaceProperties(m_resource);
+  return SDL::GetSurfaceProperties(get());
 }
 
 /**
@@ -45353,7 +45333,7 @@ inline void SetSurfaceColorspace(SurfaceRef surface, Colorspace colorspace)
 
 inline void Surface::SetColorspace(Colorspace colorspace)
 {
-  SDL::SetSurfaceColorspace(m_resource, colorspace);
+  SDL::SetSurfaceColorspace(get(), colorspace);
 }
 
 /**
@@ -45381,7 +45361,7 @@ inline Colorspace GetSurfaceColorspace(SurfaceConstRef surface)
 
 inline Colorspace Surface::GetColorspace() const
 {
-  return SDL::GetSurfaceColorspace(m_resource);
+  return SDL::GetSurfaceColorspace(get());
 }
 
 /**
@@ -45418,7 +45398,7 @@ inline Palette CreateSurfacePalette(SurfaceRef surface)
 
 inline Palette Surface::CreatePalette()
 {
-  return SDL::CreateSurfacePalette(m_resource);
+  return SDL::CreateSurfacePalette(get());
 }
 
 /**
@@ -45448,7 +45428,7 @@ inline void SetSurfacePalette(SurfaceRef surface, PaletteRef palette)
 
 inline void Surface::SetPalette(PaletteRef palette)
 {
-  SDL::SetSurfacePalette(m_resource, palette);
+  SDL::SetSurfacePalette(get(), palette);
 }
 
 /**
@@ -45471,7 +45451,7 @@ inline Palette GetSurfacePalette(SurfaceConstRef surface)
 
 inline Palette Surface::GetPalette() const
 {
-  return SDL::GetSurfacePalette(m_resource);
+  return SDL::GetSurfacePalette(get());
 }
 
 /**
@@ -45506,7 +45486,7 @@ inline void AddSurfaceAlternateImage(SurfaceRef surface, SurfaceRef image)
 
 inline void Surface::AddAlternateImage(SurfaceRef image)
 {
-  SDL::AddSurfaceAlternateImage(m_resource, image);
+  SDL::AddSurfaceAlternateImage(get(), image);
 }
 
 /**
@@ -45530,7 +45510,7 @@ inline bool SurfaceHasAlternateImages(SurfaceConstRef surface)
 
 inline bool Surface::HasAlternateImages() const
 {
-  return SDL::SurfaceHasAlternateImages(m_resource);
+  return SDL::SurfaceHasAlternateImages(get());
 }
 
 /**
@@ -45565,7 +45545,7 @@ inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstRef surface)
 
 inline OwnArray<SurfaceRaw> Surface::GetImages() const
 {
-  return SDL::GetSurfaceImages(m_resource);
+  return SDL::GetSurfaceImages(get());
 }
 
 /**
@@ -45592,7 +45572,7 @@ inline void RemoveSurfaceAlternateImages(SurfaceRef surface)
 
 inline void Surface::RemoveAlternateImages()
 {
-  SDL::RemoveSurfaceAlternateImages(m_resource);
+  SDL::RemoveSurfaceAlternateImages(get());
 }
 
 /**
@@ -45783,7 +45763,7 @@ inline void SaveBMP_IO(SurfaceConstRef surface,
 
 inline void Surface::SaveBMP_IO(IOStreamRef dst, bool closeio) const
 {
-  SDL::SaveBMP_IO(m_resource, dst, closeio);
+  SDL::SaveBMP_IO(get(), dst, closeio);
 }
 
 /**
@@ -45814,7 +45794,7 @@ inline void SaveBMP(SurfaceConstRef surface, StringParam file)
 
 inline void Surface::SaveBMP(StringParam file) const
 {
-  SDL::SaveBMP(m_resource, std::move(file));
+  SDL::SaveBMP(get(), std::move(file));
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -45915,7 +45895,7 @@ inline void SaveTrustedPNG_IO(SurfaceConstRef surface,
 #if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
 {
-  SDL::SaveTrustedPNG_IO(m_resource, dst, closeio);
+  SDL::SaveTrustedPNG_IO(get(), dst, closeio);
 }
 #endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
@@ -45942,7 +45922,7 @@ inline void SaveTrustedPNG(SurfaceConstRef surface, StringParam file)
 #if !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 inline void Surface::SavePNG(StringParam file) const
 {
-  SDL::SaveTrustedPNG(m_resource, std::move(file));
+  SDL::SaveTrustedPNG(get(), std::move(file));
 }
 #endif // !defined(SDL3PP_ENABLE_IMAGE) && !defined(SDL3PP_DOC)
 
@@ -45974,7 +45954,7 @@ inline void SetSurfaceRLE(SurfaceRef surface, bool enabled)
 
 inline void Surface::SetRLE(bool enabled)
 {
-  SDL::SetSurfaceRLE(m_resource, enabled);
+  SDL::SetSurfaceRLE(get(), enabled);
 }
 
 /**
@@ -45996,7 +45976,7 @@ inline bool SurfaceHasRLE(SurfaceConstRef surface)
   return SDL_SurfaceHasRLE(surface);
 }
 
-inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(m_resource); }
+inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(get()); }
 
 /**
  * Set the color key (transparent pixel) in a surface.
@@ -46027,7 +46007,7 @@ inline void SetSurfaceColorKey(SurfaceRef surface, std::optional<Uint32> key)
 
 inline void Surface::SetColorKey(std::optional<Uint32> key)
 {
-  SDL::SetSurfaceColorKey(m_resource, key);
+  SDL::SetSurfaceColorKey(get(), key);
 }
 
 /**
@@ -46045,7 +46025,7 @@ inline void ClearSurfaceColorKey(SurfaceRef surface)
   SetSurfaceColorKey(surface, std::nullopt);
 }
 
-inline void Surface::ClearColorKey() { SDL::ClearSurfaceColorKey(m_resource); }
+inline void Surface::ClearColorKey() { SDL::ClearSurfaceColorKey(get()); }
 
 /**
  * Returns whether the surface has a color key.
@@ -46069,7 +46049,7 @@ inline bool SurfaceHasColorKey(SurfaceConstRef surface)
 
 inline bool Surface::HasColorKey() const
 {
-  return SDL::SurfaceHasColorKey(m_resource);
+  return SDL::SurfaceHasColorKey(get());
 }
 
 /**
@@ -46099,7 +46079,7 @@ inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstRef surface)
 
 inline std::optional<Uint32> Surface::GetColorKey() const
 {
-  return SDL::GetSurfaceColorKey(m_resource);
+  return SDL::GetSurfaceColorKey(get());
 }
 
 /**
@@ -46132,7 +46112,7 @@ inline void SetSurfaceColorMod(SurfaceRef surface, Uint8 r, Uint8 g, Uint8 b)
 
 inline void Surface::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
 {
-  SDL::SetSurfaceColorMod(m_resource, r, g, b);
+  SDL::SetSurfaceColorMod(get(), r, g, b);
 }
 
 /**
@@ -46162,7 +46142,7 @@ inline void GetSurfaceColorMod(SurfaceConstRef surface,
 
 inline void Surface::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
 {
-  SDL::GetSurfaceColorMod(m_resource, r, g, b);
+  SDL::GetSurfaceColorMod(get(), r, g, b);
 }
 
 /**
@@ -46192,7 +46172,7 @@ inline void SetSurfaceAlphaMod(SurfaceRef surface, Uint8 alpha)
 
 inline void Surface::SetAlphaMod(Uint8 alpha)
 {
-  SDL::SetSurfaceAlphaMod(m_resource, alpha);
+  SDL::SetSurfaceAlphaMod(get(), alpha);
 }
 
 /**
@@ -46218,7 +46198,7 @@ inline Uint8 GetSurfaceAlphaMod(SurfaceConstRef surface)
 
 inline Uint8 Surface::GetAlphaMod() const
 {
-  return SDL::GetSurfaceAlphaMod(m_resource);
+  return SDL::GetSurfaceAlphaMod(get());
 }
 
 /**
@@ -46242,7 +46222,7 @@ inline void SetSurfaceMod(SurfaceRef surface, Color color)
   SetSurfaceAlphaMod(surface, color.a);
 }
 
-inline void Surface::SetMod(Color color) { SetSurfaceMod(m_resource, color); }
+inline void Surface::SetMod(Color color) { SetSurfaceMod(get(), color); }
 
 /**
  * Get the additional color and alpha value multiplied into blit
@@ -46260,7 +46240,7 @@ inline Color GetSurfaceMod(SurfaceConstRef surface)
   return c;
 }
 
-inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(m_resource); }
+inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(get()); }
 
 /**
  * Set the blend mode used for blit operations.
@@ -46287,7 +46267,7 @@ inline void SetSurfaceBlendMode(SurfaceRef surface, BlendMode blendMode)
 
 inline void Surface::SetBlendMode(BlendMode blendMode)
 {
-  SDL::SetSurfaceBlendMode(m_resource, blendMode);
+  SDL::SetSurfaceBlendMode(get(), blendMode);
 }
 
 /**
@@ -46312,7 +46292,7 @@ inline BlendMode GetSurfaceBlendMode(SurfaceConstRef surface)
 
 inline BlendMode Surface::GetBlendMode() const
 {
-  return SDL::GetSurfaceBlendMode(m_resource);
+  return SDL::GetSurfaceBlendMode(get());
 }
 
 /**
@@ -46345,7 +46325,7 @@ inline bool SetSurfaceClipRect(SurfaceRef surface,
 
 inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
 {
-  return SDL::SetSurfaceClipRect(m_resource, rect);
+  return SDL::SetSurfaceClipRect(get(), rect);
 }
 
 /**
@@ -46358,7 +46338,7 @@ inline void ResetSurfaceClipRect(SurfaceRef surface)
   SetSurfaceClipRect(surface, std::nullopt);
 }
 
-inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(m_resource); }
+inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(get()); }
 
 /**
  * Get the clipping rectangle for a surface.
@@ -46387,7 +46367,7 @@ inline Rect GetSurfaceClipRect(SurfaceConstRef surface)
 
 inline Rect Surface::GetClipRect() const
 {
-  return SDL::GetSurfaceClipRect(m_resource);
+  return SDL::GetSurfaceClipRect(get());
 }
 
 /**
@@ -46407,7 +46387,7 @@ inline void FlipSurface(SurfaceRef surface, FlipMode flip)
   CheckError(SDL_FlipSurface(surface, flip));
 }
 
-inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
+inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(get(), flip); }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -46445,7 +46425,7 @@ inline Surface RotateSurface(SurfaceRef surface, float angle)
 
 inline Surface Surface::Rotate(float angle)
 {
-  return SDL::RotateSurface(m_resource, angle);
+  return SDL::RotateSurface(get(), angle);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -46476,7 +46456,7 @@ inline Surface DuplicateSurface(SurfaceConstRef surface)
 
 inline Surface Surface::Duplicate() const
 {
-  return SDL::DuplicateSurface(m_resource);
+  return SDL::DuplicateSurface(get());
 }
 
 /**
@@ -46507,7 +46487,7 @@ inline Surface ScaleSurface(SurfaceConstRef surface,
 
 inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
 {
-  return SDL::ScaleSurface(m_resource, size, scaleMode);
+  return SDL::ScaleSurface(get(), size, scaleMode);
 }
 
 /**
@@ -46544,7 +46524,7 @@ inline Surface ConvertSurface(SurfaceConstRef surface, PixelFormat format)
 
 inline Surface Surface::Convert(PixelFormat format) const
 {
-  return SDL::ConvertSurface(m_resource, format);
+  return SDL::ConvertSurface(get(), format);
 }
 
 /**
@@ -46591,7 +46571,7 @@ inline Surface Surface::Convert(PixelFormat format,
                                 PropertiesRef props) const
 {
   return SDL::ConvertSurfaceAndColorspace(
-    m_resource, format, palette, colorspace, props);
+    get(), format, palette, colorspace, props);
 }
 
 /**
@@ -46745,7 +46725,7 @@ inline void PremultiplySurfaceAlpha(SurfaceRef surface, bool linear)
 
 inline void Surface::PremultiplyAlpha(bool linear)
 {
-  SDL::PremultiplySurfaceAlpha(m_resource, linear);
+  SDL::PremultiplySurfaceAlpha(get(), linear);
 }
 
 /**
@@ -46770,10 +46750,7 @@ inline void ClearSurface(SurfaceRef surface, const FColorRaw& c)
   CheckError(SDL_ClearSurface(surface, c.r, c.g, c.b, c.a));
 }
 
-inline void Surface::Clear(const FColorRaw& c)
-{
-  SDL::ClearSurface(m_resource, c);
-}
+inline void Surface::Clear(const FColorRaw& c) { SDL::ClearSurface(get(), c); }
 
 /**
  * Perform a fast fill of a rectangle with a specific color.
@@ -46809,7 +46786,7 @@ inline void FillSurfaceRect(SurfaceRef dst,
 
 inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
 {
-  SDL::FillSurfaceRect(m_resource, rect, color);
+  SDL::FillSurfaceRect(get(), rect, color);
 }
 
 /**
@@ -46828,7 +46805,7 @@ inline void FillSurface(SurfaceRef dst, Uint32 color)
   FillSurfaceRect(dst, std::nullopt, color);
 }
 
-inline void Surface::Fill(Uint32 color) { SDL::FillSurface(m_resource, color); }
+inline void Surface::Fill(Uint32 color) { SDL::FillSurface(get(), color); }
 
 /**
  * Perform a fast fill of a set of rectangles with a specific color.
@@ -46864,7 +46841,7 @@ inline void FillSurfaceRects(SurfaceRef dst,
 
 inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
 {
-  SDL::FillSurfaceRects(m_resource, rects, color);
+  SDL::FillSurfaceRects(get(), rects, color);
 }
 
 /**
@@ -46949,7 +46926,7 @@ inline void Surface::Blit(SurfaceRef src,
                           OptionalRef<const RectRaw> srcrect,
                           OptionalRef<const RectRaw> dstrect)
 {
-  SDL::BlitSurface(src, srcrect, m_resource, dstrect);
+  SDL::BlitSurface(src, srcrect, get(), dstrect);
 }
 
 inline void Surface::BlitAt(SurfaceRef src,
@@ -47067,7 +47044,7 @@ inline void Surface::BlitUnchecked(SurfaceRef src,
                                    const RectRaw& srcrect,
                                    const RectRaw& dstrect)
 {
-  SDL::BlitSurfaceUnchecked(src, srcrect, m_resource, dstrect);
+  SDL::BlitSurfaceUnchecked(src, srcrect, get(), dstrect);
 }
 
 /**
@@ -47105,7 +47082,7 @@ inline void Surface::BlitScaled(SurfaceRef src,
                                 OptionalRef<const RectRaw> dstrect,
                                 ScaleMode scaleMode)
 {
-  SDL::BlitSurfaceScaled(src, srcrect, m_resource, dstrect, scaleMode);
+  SDL::BlitSurfaceScaled(src, srcrect, get(), dstrect, scaleMode);
 }
 
 /**
@@ -47145,7 +47122,7 @@ inline void Surface::BlitUncheckedScaled(SurfaceRef src,
                                          const RectRaw& dstrect,
                                          ScaleMode scaleMode)
 {
-  SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
+  SDL::BlitSurfaceUncheckedScaled(src, srcrect, get(), dstrect, scaleMode);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -47184,7 +47161,7 @@ inline void Surface::Stretch(SurfaceRef src,
                              OptionalRef<RectRaw> dstrect,
                              ScaleMode scaleMode)
 {
-  SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
+  SDL::StretchSurface(src, srcrect, get(), dstrect, scaleMode);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -47223,7 +47200,7 @@ inline void Surface::BlitTiled(SurfaceRef src,
                                OptionalRef<const RectRaw> srcrect,
                                OptionalRef<const RectRaw> dstrect)
 {
-  SDL::BlitSurfaceTiled(src, srcrect, m_resource, dstrect);
+  SDL::BlitSurfaceTiled(src, srcrect, get(), dstrect);
 }
 
 /**
@@ -47270,7 +47247,7 @@ inline void Surface::BlitTiledWithScale(SurfaceRef src,
                                         OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurfaceTiledWithScale(
-    src, srcrect, scale, scaleMode, m_resource, dstrect);
+    src, srcrect, scale, scaleMode, get(), dstrect);
 }
 
 /**
@@ -47345,7 +47322,7 @@ inline void Surface::Blit9Grid(SurfaceRef src,
                         right_width,
                         top_height,
                         bottom_height,
-                        m_resource,
+                        get(),
                         dstrect,
                         scale,
                         scaleMode);
@@ -47389,7 +47366,7 @@ inline Uint32 MapSurfaceRGB(SurfaceConstRef surface, Uint8 r, Uint8 g, Uint8 b)
 
 inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
 {
-  return SDL::MapSurfaceRGB(m_resource, r, g, b);
+  return SDL::MapSurfaceRGB(get(), r, g, b);
 }
 
 /**
@@ -47428,7 +47405,7 @@ inline Uint32 MapSurfaceRGBA(SurfaceConstRef surface, ColorRaw c)
 
 inline Uint32 Surface::MapRGBA(ColorRaw c) const
 {
-  return SDL::MapSurfaceRGBA(m_resource, c);
+  return SDL::MapSurfaceRGBA(get(), c);
 }
 
 /**
@@ -47559,12 +47536,12 @@ inline void Surface::ReadPixel(const PointRaw& p,
                                Uint8* b,
                                Uint8* a) const
 {
-  SDL::ReadSurfacePixel(m_resource, p, r, g, b, a);
+  SDL::ReadSurfacePixel(get(), p, r, g, b, a);
 }
 
 inline Color Surface::ReadPixel(const PointRaw& p) const
 {
-  return SDL::ReadSurfacePixel(m_resource, p);
+  return SDL::ReadSurfacePixel(get(), p);
 }
 
 /**
@@ -47683,12 +47660,12 @@ inline void Surface::ReadPixelFloat(const PointRaw& p,
                                     float* b,
                                     float* a) const
 {
-  SDL::ReadSurfacePixelFloat(m_resource, p, r, g, b, a);
+  SDL::ReadSurfacePixelFloat(get(), p, r, g, b, a);
 }
 
 inline FColor Surface::ReadPixelFloat(const PointRaw& p) const
 {
-  return SDL::ReadSurfacePixelFloat(m_resource, p);
+  return SDL::ReadSurfacePixelFloat(get(), p);
 }
 
 /**
@@ -47741,7 +47718,7 @@ inline void WriteSurfacePixel(SurfaceLock& lock, const PointRaw& p, ColorRaw c)
 
 inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
 {
-  SDL::WriteSurfacePixel(m_resource, p, c);
+  SDL::WriteSurfacePixel(get(), p, c);
 }
 
 /**
@@ -47792,7 +47769,7 @@ inline void WriteSurfacePixelFloat(SurfaceLock& lock,
 
 inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
 {
-  SDL::WriteSurfacePixelFloat(m_resource, p, c);
+  SDL::WriteSurfacePixelFloat(get(), p, c);
 }
 
 /// Get the width in pixels.
@@ -47804,10 +47781,7 @@ constexpr int GetSurfaceWidth(const SurfaceLock& lock)
   return lock.GetWidth();
 }
 
-constexpr int Surface::GetWidth() const
-{
-  return SDL::GetSurfaceWidth(m_resource);
-}
+constexpr int Surface::GetWidth() const { return SDL::GetSurfaceWidth(get()); }
 
 /// Get the height in pixels.
 constexpr int GetSurfaceHeight(SurfaceConstRef surface) { return surface->h; }
@@ -47820,7 +47794,7 @@ constexpr int GetSurfaceHeight(const SurfaceLock& lock)
 
 constexpr int Surface::GetHeight() const
 {
-  return SDL::GetSurfaceHeight(m_resource);
+  return SDL::GetSurfaceHeight(get());
 }
 
 /// Get the size in pixels.
@@ -47835,10 +47809,7 @@ constexpr Point GetSurfaceSize(const SurfaceLock& lock)
   return lock.GetSize();
 }
 
-constexpr Point Surface::GetSize() const
-{
-  return SDL::GetSurfaceSize(m_resource);
-}
+constexpr Point Surface::GetSize() const { return SDL::GetSurfaceSize(get()); }
 
 /// Get pitch in bytes.
 constexpr int GetSurfacePitch(SurfaceConstRef surface)
@@ -47852,10 +47823,7 @@ constexpr int GetSurfacePitch(const SurfaceLock& lock)
   return lock.GetPitch();
 }
 
-constexpr int Surface::GetPitch() const
-{
-  return SDL::GetSurfacePitch(m_resource);
-}
+constexpr int Surface::GetPitch() const { return SDL::GetSurfacePitch(get()); }
 
 /// Get the pixel format.
 constexpr PixelFormat GetSurfaceFormat(SurfaceConstRef surface)
@@ -47871,7 +47839,7 @@ constexpr PixelFormat GetSurfaceFormat(const SurfaceLock& lock)
 
 constexpr PixelFormat Surface::GetFormat() const
 {
-  return SDL::GetSurfaceFormat(m_resource);
+  return SDL::GetSurfaceFormat(get());
 }
 
 /// Get the pixels.
@@ -47888,7 +47856,7 @@ constexpr void* GetSurfacePixels(const SurfaceLock& lock)
 
 constexpr void* Surface::GetPixels() const
 {
-  return SDL::GetSurfacePixels(m_resource);
+  return SDL::GetSurfacePixels(get());
 }
 
 /// @}
@@ -48645,10 +48613,7 @@ inline const char* GetThreadName(ThreadRef thread)
   return SDL_GetThreadName(thread);
 }
 
-inline const char* Thread::GetName() const
-{
-  return SDL::GetThreadName(m_resource);
-}
+inline const char* Thread::GetName() const { return SDL::GetThreadName(get()); }
 
 /**
  * Get the thread identifier for the current thread.
@@ -48692,7 +48657,7 @@ inline ThreadID GetThreadID(ThreadRef thread)
   return SDL_GetThreadID(thread);
 }
 
-inline ThreadID Thread::GetID() const { return SDL::GetThreadID(m_resource); }
+inline ThreadID Thread::GetID() const { return SDL::GetThreadID(get()); }
 
 /**
  * Set the priority for the current thread.
@@ -48758,7 +48723,7 @@ inline void WaitThread(ThreadRef thread, int* status)
   SDL_WaitThread(thread, status);
 }
 
-inline void Thread::Wait(int* status) { SDL::WaitThread(m_resource, status); }
+inline void Thread::Wait(int* status) { SDL::WaitThread(get(), status); }
 
 /**
  * Get the current state of a thread.
@@ -48780,7 +48745,7 @@ inline ThreadState GetThreadState(ThreadRef thread)
 
 inline ThreadState Thread::GetState() const
 {
-  return SDL::GetThreadState(m_resource);
+  return SDL::GetThreadState(get());
 }
 
 /**
@@ -49759,7 +49724,7 @@ inline CameraPermissionState GetCameraPermissionState(CameraRef camera)
 
 inline CameraPermissionState Camera::GetPermissionState()
 {
-  return SDL::GetCameraPermissionState(m_resource);
+  return SDL::GetCameraPermissionState(get());
 }
 
 /**
@@ -49780,7 +49745,7 @@ inline CameraID GetCameraID(CameraRef camera)
   return CheckError(SDL_GetCameraID(camera));
 }
 
-inline CameraID Camera::GetID() { return SDL::GetCameraID(m_resource); }
+inline CameraID Camera::GetID() { return SDL::GetCameraID(get()); }
 
 /**
  * Get the properties associated with an opened camera.
@@ -49800,7 +49765,7 @@ inline PropertiesRef GetCameraProperties(CameraRef camera)
 
 inline PropertiesRef Camera::GetProperties()
 {
-  return SDL::GetCameraProperties(m_resource);
+  return SDL::GetCameraProperties(get());
 }
 
 /**
@@ -49832,7 +49797,7 @@ inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
 
 inline std::optional<CameraSpec> Camera::GetFormat()
 {
-  return SDL::GetCameraFormat(m_resource);
+  return SDL::GetCameraFormat(get());
 }
 
 /**
@@ -50332,7 +50297,7 @@ inline Mutex::Mutex()
  */
 inline void LockMutex(MutexRef mutex) { SDL_LockMutex(mutex); }
 
-inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
+inline void Mutex::Lock() { SDL::LockMutex(get()); }
 
 /**
  * Try to lock a mutex without blocking.
@@ -50357,7 +50322,7 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  */
 inline bool TryLockMutex(MutexRef mutex) { return SDL_TryLockMutex(mutex); }
 
-inline bool Mutex::TryLock() { return SDL::TryLockMutex(m_resource); }
+inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
 
 /**
  * Unlock the mutex.
@@ -50381,7 +50346,7 @@ inline bool Mutex::TryLock() { return SDL::TryLockMutex(m_resource); }
  */
 inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 
-inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
+inline void Mutex::Unlock() { SDL::UnlockMutex(get()); }
 
 /**
  * Destroy a mutex created with CreateMutex().
@@ -50866,7 +50831,7 @@ inline void LockRWLockForReading(RWLockRef rwlock)
   SDL_LockRWLockForReading(rwlock);
 }
 
-inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
+inline void RWLock::LockForReading() { SDL::LockRWLockForReading(get()); }
 
 /**
  * Lock the read/write lock for _write_ operations.
@@ -50904,7 +50869,7 @@ inline void LockRWLockForWriting(RWLockRef rwlock)
   SDL_LockRWLockForWriting(rwlock);
 }
 
-inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
+inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(get()); }
 
 /**
  * Try to lock a read/write lock _for reading_ without blocking.
@@ -50938,7 +50903,7 @@ inline bool TryLockRWLockForReading(RWLockRef rwlock)
 
 inline bool RWLock::TryLockForReading()
 {
-  return SDL::TryLockRWLockForReading(m_resource);
+  return SDL::TryLockRWLockForReading(get());
 }
 
 /**
@@ -50978,7 +50943,7 @@ inline bool TryLockRWLockForWriting(RWLockRef rwlock)
 
 inline bool RWLock::TryLockForWriting()
 {
-  return SDL::TryLockRWLockForWriting(m_resource);
+  return SDL::TryLockRWLockForWriting(get());
 }
 
 /**
@@ -51009,7 +50974,7 @@ inline bool RWLock::TryLockForWriting()
  */
 inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 
-inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
+inline void RWLock::Unlock() { SDL::UnlockRWLock(get()); }
 
 /**
  * Destroy a read/write lock created with CreateRWLock().
@@ -51386,7 +51351,7 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  */
 inline void WaitSemaphore(SemaphoreRef sem) { SDL_WaitSemaphore(sem); }
 
-inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
+inline void Semaphore::Wait() { SDL::WaitSemaphore(get()); }
 
 /**
  * See if a semaphore has a positive value and decrement it if it does.
@@ -51412,7 +51377,7 @@ inline bool TryWaitSemaphore(SemaphoreRef sem)
   return SDL_TryWaitSemaphore(sem);
 }
 
-inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
+inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(get()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -51442,7 +51407,7 @@ inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
 
 inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
 {
-  return SDL::WaitSemaphoreTimeout(m_resource, timeout);
+  return SDL::WaitSemaphoreTimeout(get(), timeout);
 }
 
 /**
@@ -51460,7 +51425,7 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  */
 inline void SignalSemaphore(SemaphoreRef sem) { SDL_SignalSemaphore(sem); }
 
-inline void Semaphore::Signal() { SDL::SignalSemaphore(m_resource); }
+inline void Semaphore::Signal() { SDL::SignalSemaphore(get()); }
 
 /**
  * Get the current value of a semaphore.
@@ -51479,7 +51444,7 @@ inline Uint32 GetSemaphoreValue(SemaphoreRef sem)
 
 inline Uint32 Semaphore::GetValue() const
 {
-  return SDL::GetSemaphoreValue(m_resource);
+  return SDL::GetSemaphoreValue(get());
 }
 
 /**
@@ -51800,7 +51765,7 @@ inline void Condition::Destroy() { DestroyCondition(release()); }
  */
 inline void SignalCondition(ConditionRef cond) { SDL_SignalCondition(cond); }
 
-inline void Condition::Signal() { SDL::SignalCondition(m_resource); }
+inline void Condition::Signal() { SDL::SignalCondition(get()); }
 
 /**
  * Restart all threads that are waiting on the condition variable.
@@ -51820,7 +51785,7 @@ inline void BroadcastCondition(ConditionRef cond)
   SDL_BroadcastCondition(cond);
 }
 
-inline void Condition::Broadcast() { SDL::BroadcastCondition(m_resource); }
+inline void Condition::Broadcast() { SDL::BroadcastCondition(get()); }
 
 /**
  * Wait until a condition variable is signaled.
@@ -51855,7 +51820,7 @@ inline void WaitCondition(ConditionRef cond, MutexRef mutex)
 
 inline void Condition::Wait(MutexRef mutex)
 {
-  SDL::WaitCondition(m_resource, mutex);
+  SDL::WaitCondition(get(), mutex);
 }
 
 /**
@@ -51896,7 +51861,7 @@ inline bool WaitConditionTimeout(ConditionRef cond,
 inline bool Condition::WaitTimeout(MutexRef mutex,
                                    std::chrono::milliseconds timeout)
 {
-  return SDL::WaitConditionTimeout(m_resource, mutex, timeout);
+  return SDL::WaitConditionTimeout(get(), mutex, timeout);
 }
 
 /**
@@ -53007,10 +52972,7 @@ inline void SetTrayIcon(TrayRef tray, SurfaceRef icon)
   SDL_SetTrayIcon(tray, icon);
 }
 
-inline void Tray::SetIcon(SurfaceRef icon)
-{
-  SDL::SetTrayIcon(m_resource, icon);
-}
+inline void Tray::SetIcon(SurfaceRef icon) { SDL::SetTrayIcon(get(), icon); }
 
 /**
  * Updates the system tray icon's tooltip.
@@ -53032,7 +52994,7 @@ inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
 
 inline void Tray::SetTooltip(StringParam tooltip)
 {
-  SDL::SetTrayTooltip(m_resource, std::move(tooltip));
+  SDL::SetTrayTooltip(get(), std::move(tooltip));
 }
 
 /**
@@ -53062,7 +53024,7 @@ inline TrayMenu CreateTrayMenu(TrayRef tray)
   return SDL_CreateTrayMenu(tray);
 }
 
-inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(m_resource); }
+inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(get()); }
 
 /**
  * Create a submenu for a system tray entry.
@@ -53093,7 +53055,7 @@ inline TrayMenu CreateTraySubmenu(TrayEntry entry)
 
 inline TrayMenu TrayEntry::CreateSubmenu()
 {
-  return SDL::CreateTraySubmenu(m_resource);
+  return SDL::CreateTraySubmenu(get());
 }
 
 /**
@@ -53120,7 +53082,7 @@ inline TrayMenu TrayEntry::CreateSubmenu()
  */
 inline TrayMenu GetTrayMenu(TrayRef tray) { return SDL_GetTrayMenu(tray); }
 
-inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(m_resource); }
+inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(get()); }
 
 /**
  * Gets a previously created tray entry submenu.
@@ -53149,10 +53111,7 @@ inline TrayMenu GetTraySubmenu(TrayEntry entry)
   return SDL_GetTraySubmenu(entry);
 }
 
-inline TrayMenu TrayEntry::GetSubmenu()
-{
-  return SDL::GetTraySubmenu(m_resource);
-}
+inline TrayMenu TrayEntry::GetSubmenu() { return SDL::GetTraySubmenu(get()); }
 
 /**
  * Returns a list of entries in the menu, in order.
@@ -53320,7 +53279,7 @@ inline void SetTrayEntryLabel(TrayEntry entry, StringParam label)
 
 inline void TrayEntry::SetLabel(StringParam label)
 {
-  SDL::SetTrayEntryLabel(m_resource, std::move(label));
+  SDL::SetTrayEntryLabel(get(), std::move(label));
 }
 
 /**
@@ -53347,7 +53306,7 @@ inline const char* GetTrayEntryLabel(TrayEntryRef entry)
 
 inline const char* TrayEntry::GetLabel() const
 {
-  return SDL::GetTrayEntryLabel(m_resource);
+  return SDL::GetTrayEntryLabel(get());
 }
 
 /**
@@ -53374,7 +53333,7 @@ inline void SetTrayEntryChecked(TrayEntry entry, bool checked)
 
 inline void TrayEntry::SetChecked(bool checked)
 {
-  SDL::SetTrayEntryChecked(m_resource, checked);
+  SDL::SetTrayEntryChecked(get(), checked);
 }
 
 /**
@@ -53401,7 +53360,7 @@ inline bool GetTrayEntryChecked(TrayEntryRef entry)
 
 inline bool TrayEntry::GetChecked() const
 {
-  return SDL::GetTrayEntryChecked(m_resource);
+  return SDL::GetTrayEntryChecked(get());
 }
 
 /**
@@ -53426,7 +53385,7 @@ inline void SetTrayEntryEnabled(TrayEntry entry, bool enabled)
 
 inline void TrayEntry::SetEnabled(bool enabled)
 {
-  SDL::SetTrayEntryEnabled(m_resource, enabled);
+  SDL::SetTrayEntryEnabled(get(), enabled);
 }
 
 /**
@@ -53451,7 +53410,7 @@ inline bool GetTrayEntryEnabled(TrayEntryRef entry)
 
 inline bool TrayEntry::GetEnabled() const
 {
-  return SDL::GetTrayEntryEnabled(m_resource);
+  return SDL::GetTrayEntryEnabled(get());
 }
 
 /**
@@ -53498,7 +53457,7 @@ inline void SetTrayEntryCallback(TrayEntry entry, TrayCB callback)
 
 inline void TrayEntry::SetCallback(TrayCallback callback, void* userdata)
 {
-  SDL::SetTrayEntryCallback(m_resource, callback, userdata);
+  SDL::SetTrayEntryCallback(get(), callback, userdata);
 }
 
 inline void TrayEntry::SetCallback(TrayCB callback)
@@ -53518,7 +53477,7 @@ inline void TrayEntry::SetCallback(TrayCB callback)
  */
 inline void ClickTrayEntry(TrayEntry entry) { SDL_ClickTrayEntry(entry); }
 
-inline void TrayEntry::Click() { SDL::ClickTrayEntry(m_resource); }
+inline void TrayEntry::Click() { SDL::ClickTrayEntry(get()); }
 
 /**
  * Destroys a tray object.
@@ -53558,7 +53517,7 @@ inline TrayMenu GetTrayEntryParent(TrayEntry entry)
 
 inline TrayMenu TrayEntry::GetParent()
 {
-  return SDL::GetTrayEntryParent(m_resource);
+  return SDL::GetTrayEntryParent(get());
 }
 
 /**
@@ -57886,7 +57845,7 @@ inline Display GetDisplayForWindow(WindowRef window)
 
 inline Display Window::GetDisplay() const
 {
-  return SDL::GetDisplayForWindow(m_resource);
+  return SDL::GetDisplayForWindow(get());
 }
 
 /**
@@ -57913,7 +57872,7 @@ inline float GetWindowPixelDensity(WindowRef window)
 
 inline float Window::GetPixelDensity() const
 {
-  return SDL::GetWindowPixelDensity(m_resource);
+  return SDL::GetWindowPixelDensity(get());
 }
 
 /**
@@ -57944,7 +57903,7 @@ inline float GetWindowDisplayScale(WindowRef window)
 
 inline float Window::GetDisplayScale() const
 {
-  return SDL::GetWindowDisplayScale(m_resource);
+  return SDL::GetWindowDisplayScale(get());
 }
 
 /**
@@ -57986,7 +57945,7 @@ inline void SetWindowFullscreenMode(WindowRef window,
 
 inline void Window::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
 {
-  SDL::SetWindowFullscreenMode(m_resource, mode);
+  SDL::SetWindowFullscreenMode(get(), mode);
 }
 
 /**
@@ -58010,7 +57969,7 @@ inline const DisplayMode& GetWindowFullscreenMode(WindowRef window)
 
 inline const DisplayMode& Window::GetFullscreenMode() const
 {
-  return SDL::GetWindowFullscreenMode(m_resource);
+  return SDL::GetWindowFullscreenMode(get());
 }
 
 /**
@@ -58032,7 +57991,7 @@ inline OwnPtr<void> GetWindowICCProfile(WindowRef window)
 
 inline OwnPtr<void> Window::GetICCProfile() const
 {
-  return SDL::GetWindowICCProfile(m_resource);
+  return SDL::GetWindowICCProfile(get());
 }
 
 /**
@@ -58053,7 +58012,7 @@ inline PixelFormat GetWindowPixelFormat(WindowRef window)
 
 inline PixelFormat Window::GetPixelFormat() const
 {
-  return SDL::GetWindowPixelFormat(m_resource);
+  return SDL::GetWindowPixelFormat(get());
 }
 
 /**
@@ -58668,7 +58627,7 @@ inline WindowID GetWindowID(WindowRef window)
   return CheckError(SDL_GetWindowID(window));
 }
 
-inline WindowID Window::GetID() const { return SDL::GetWindowID(m_resource); }
+inline WindowID Window::GetID() const { return SDL::GetWindowID(get()); }
 
 /**
  * Get a window from a stored ID.
@@ -58716,7 +58675,7 @@ inline WindowRef GetWindowParent(WindowRef window)
 
 inline WindowRef Window::GetParent() const
 {
-  return SDL::GetWindowParent(m_resource);
+  return SDL::GetWindowParent(get());
 }
 
 /**
@@ -58850,7 +58809,7 @@ inline PropertiesRef GetWindowProperties(WindowRef window)
 
 inline PropertiesRef Window::GetProperties() const
 {
-  return SDL::GetWindowProperties(m_resource);
+  return SDL::GetWindowProperties(get());
 }
 
 /**
@@ -58879,7 +58838,7 @@ inline WindowFlags GetWindowFlags(WindowRef window)
 
 inline WindowFlags Window::GetFlags() const
 {
-  return SDL::GetWindowFlags(m_resource);
+  return SDL::GetWindowFlags(get());
 }
 
 /**
@@ -58904,7 +58863,7 @@ inline void SetWindowTitle(WindowRef window, StringParam title)
 
 inline void Window::SetTitle(StringParam title)
 {
-  SDL::SetWindowTitle(m_resource, std::move(title));
+  SDL::SetWindowTitle(get(), std::move(title));
 }
 
 /**
@@ -58926,7 +58885,7 @@ inline const char* GetWindowTitle(WindowRef window)
 
 inline const char* Window::GetTitle() const
 {
-  return SDL::GetWindowTitle(m_resource);
+  return SDL::GetWindowTitle(get());
 }
 
 /**
@@ -58959,7 +58918,7 @@ inline void SetWindowIcon(WindowRef window, SurfaceRef icon)
 
 inline void Window::SetIcon(SurfaceRef icon)
 {
-  SDL::SetWindowIcon(m_resource, icon);
+  SDL::SetWindowIcon(get(), icon);
 }
 
 /**
@@ -59004,7 +58963,7 @@ inline void SetWindowPosition(WindowRef window, const PointRaw& p)
 
 inline void Window::SetPosition(const PointRaw& p)
 {
-  SDL::SetWindowPosition(m_resource, p);
+  SDL::SetWindowPosition(get(), p);
 }
 
 /**
@@ -59062,12 +59021,12 @@ inline Point GetWindowPosition(WindowRef window)
 
 inline void Window::GetPosition(int* x, int* y) const
 {
-  SDL::GetWindowPosition(m_resource, x, y);
+  SDL::GetWindowPosition(get(), x, y);
 }
 
 inline Point Window::GetPosition() const
 {
-  return SDL::GetWindowPosition(m_resource);
+  return SDL::GetWindowPosition(get());
 }
 
 /**
@@ -59110,7 +59069,7 @@ inline void SetWindowSize(WindowRef window, const PointRaw& size)
 
 inline void Window::SetSize(const PointRaw& size)
 {
-  SDL::SetWindowSize(m_resource, size);
+  SDL::SetWindowSize(get(), size);
 }
 
 /**
@@ -59168,10 +59127,10 @@ inline Point GetWindowSize(WindowRef window)
 
 inline void Window::GetSize(int* w, int* h) const
 {
-  SDL::GetWindowSize(m_resource, w, h);
+  SDL::GetWindowSize(get(), w, h);
 }
 
-inline Point Window::GetSize() const { return SDL::GetWindowSize(m_resource); }
+inline Point Window::GetSize() const { return SDL::GetWindowSize(get()); }
 
 /**
  * @brief Request the window's position and size to be set.
@@ -59191,7 +59150,7 @@ inline void SetWindowRect(WindowRef window, Rect rect)
   SetWindowSize(window, rect.GetSize());
 }
 
-inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(m_resource, rect); }
+inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(get(), rect); }
 
 /**
  * Get the position and client size of a window.
@@ -59212,7 +59171,7 @@ inline Rect GetWindowRect(WindowRef window)
   return Rect{GetWindowPosition(window), GetWindowSize(window)};
 }
 
-inline Rect Window::GetRect() const { return SDL::GetWindowRect(m_resource); }
+inline Rect Window::GetRect() const { return SDL::GetWindowRect(get()); }
 
 /**
  * Get the safe area for this window.
@@ -59240,7 +59199,7 @@ inline Rect GetWindowSafeArea(WindowRef window)
 
 inline Rect Window::GetSafeArea() const
 {
-  return SDL::GetWindowSafeArea(m_resource);
+  return SDL::GetWindowSafeArea(get());
 }
 
 /**
@@ -59289,7 +59248,7 @@ inline void SetWindowAspectRatio(WindowRef window,
 
 inline void Window::SetAspectRatio(float min_aspect, float max_aspect)
 {
-  SDL::SetWindowAspectRatio(m_resource, min_aspect, max_aspect);
+  SDL::SetWindowAspectRatio(get(), min_aspect, max_aspect);
 }
 
 /**
@@ -59317,7 +59276,7 @@ inline void GetWindowAspectRatio(WindowRef window,
 
 inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
 {
-  SDL::GetWindowAspectRatio(m_resource, min_aspect, max_aspect);
+  SDL::GetWindowAspectRatio(get(), min_aspect, max_aspect);
 }
 
 /**
@@ -59367,7 +59326,7 @@ inline void Window::GetBordersSize(int* top,
                                    int* bottom,
                                    int* right) const
 {
-  SDL::GetWindowBordersSize(m_resource, top, left, bottom, right);
+  SDL::GetWindowBordersSize(get(), top, left, bottom, right);
 }
 
 /**
@@ -59416,12 +59375,12 @@ inline Point GetWindowSizeInPixels(WindowRef window)
 
 inline void Window::GetSizeInPixels(int* w, int* h) const
 {
-  SDL::GetWindowSizeInPixels(m_resource, w, h);
+  SDL::GetWindowSizeInPixels(get(), w, h);
 }
 
 inline Point Window::GetSizeInPixels() const
 {
-  return SDL::GetWindowSizeInPixels(m_resource);
+  return SDL::GetWindowSizeInPixels(get());
 }
 
 /**
@@ -59445,7 +59404,7 @@ inline void SetWindowMinimumSize(WindowRef window, const PointRaw& p)
 
 inline void Window::SetMinimumSize(const PointRaw& p)
 {
-  SDL::SetWindowMinimumSize(m_resource, p);
+  SDL::SetWindowMinimumSize(get(), p);
 }
 
 /**
@@ -59472,7 +59431,7 @@ inline void GetWindowMinimumSize(WindowRef window, int* w, int* h)
 
 inline void Window::GetMinimumSize(int* w, int* h) const
 {
-  SDL::GetWindowMinimumSize(m_resource, w, h);
+  SDL::GetWindowMinimumSize(get(), w, h);
 }
 
 /**
@@ -59496,7 +59455,7 @@ inline void SetWindowMaximumSize(WindowRef window, const PointRaw& p)
 
 inline void Window::SetMaximumSize(const PointRaw& p)
 {
-  SDL::SetWindowMaximumSize(m_resource, p);
+  SDL::SetWindowMaximumSize(get(), p);
 }
 
 /**
@@ -59523,7 +59482,7 @@ inline void GetWindowMaximumSize(WindowRef window, int* w, int* h)
 
 inline void Window::GetMaximumSize(int* w, int* h) const
 {
-  SDL::GetWindowMaximumSize(m_resource, w, h);
+  SDL::GetWindowMaximumSize(get(), w, h);
 }
 
 /**
@@ -59552,7 +59511,7 @@ inline void SetWindowBordered(WindowRef window, bool bordered)
 
 inline void Window::SetBordered(bool bordered)
 {
-  SDL::SetWindowBordered(m_resource, bordered);
+  SDL::SetWindowBordered(get(), bordered);
 }
 
 /**
@@ -59581,7 +59540,7 @@ inline void SetWindowResizable(WindowRef window, bool resizable)
 
 inline void Window::SetResizable(bool resizable)
 {
-  SDL::SetWindowResizable(m_resource, resizable);
+  SDL::SetWindowResizable(get(), resizable);
 }
 
 /**
@@ -59607,7 +59566,7 @@ inline void SetWindowAlwaysOnTop(WindowRef window, bool on_top)
 
 inline void Window::SetAlwaysOnTop(bool on_top)
 {
-  SDL::SetWindowAlwaysOnTop(m_resource, on_top);
+  SDL::SetWindowAlwaysOnTop(get(), on_top);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -59647,7 +59606,7 @@ inline void SetWindowFillDocument(WindowRef window, bool fill)
 
 inline void Window::SetFillDocument(bool fill)
 {
-  SDL::SetWindowFillDocument(m_resource, fill);
+  SDL::SetWindowFillDocument(get(), fill);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -59667,7 +59626,7 @@ inline void Window::SetFillDocument(bool fill)
  */
 inline void ShowWindow(WindowRef window) { CheckError(SDL_ShowWindow(window)); }
 
-inline void Window::Show() { SDL::ShowWindow(m_resource); }
+inline void Window::Show() { SDL::ShowWindow(get()); }
 
 /**
  * Hide a window.
@@ -59684,7 +59643,7 @@ inline void Window::Show() { SDL::ShowWindow(m_resource); }
  */
 inline void HideWindow(WindowRef window) { CheckError(SDL_HideWindow(window)); }
 
-inline void Window::Hide() { SDL::HideWindow(m_resource); }
+inline void Window::Hide() { SDL::HideWindow(get()); }
 
 /**
  * Request that a window be raised above other windows and gain the input focus.
@@ -59707,7 +59666,7 @@ inline void RaiseWindow(WindowRef window)
   CheckError(SDL_RaiseWindow(window));
 }
 
-inline void Window::Raise() { SDL::RaiseWindow(m_resource); }
+inline void Window::Raise() { SDL::RaiseWindow(get()); }
 
 /**
  * Request that the window be made as large as possible.
@@ -59745,7 +59704,7 @@ inline void MaximizeWindow(WindowRef window)
   CheckError(SDL_MaximizeWindow(window));
 }
 
-inline void Window::Maximize() { SDL::MaximizeWindow(m_resource); }
+inline void Window::Maximize() { SDL::MaximizeWindow(get()); }
 
 /**
  * Request that the window be minimized to an iconic representation.
@@ -59778,7 +59737,7 @@ inline void MinimizeWindow(WindowRef window)
   CheckError(SDL_MinimizeWindow(window));
 }
 
-inline void Window::Minimize() { SDL::MinimizeWindow(m_resource); }
+inline void Window::Minimize() { SDL::MinimizeWindow(get()); }
 
 /**
  * Request that the size and position of a minimized or maximized window be
@@ -59812,7 +59771,7 @@ inline void RestoreWindow(WindowRef window)
   CheckError(SDL_RestoreWindow(window));
 }
 
-inline void Window::Restore() { SDL::RestoreWindow(m_resource); }
+inline void Window::Restore() { SDL::RestoreWindow(get()); }
 
 /**
  * Request that the window's fullscreen state be changed.
@@ -59850,7 +59809,7 @@ inline void SetWindowFullscreen(WindowRef window, bool fullscreen)
 
 inline void Window::SetFullscreen(bool fullscreen)
 {
-  SDL::SetWindowFullscreen(m_resource, fullscreen);
+  SDL::SetWindowFullscreen(get(), fullscreen);
 }
 
 /**
@@ -59884,7 +59843,7 @@ inline void Window::SetFullscreen(bool fullscreen)
  */
 inline bool SyncWindow(WindowRef window) { return SDL_SyncWindow(window); }
 
-inline bool Window::Sync() { return SDL::SyncWindow(m_resource); }
+inline bool Window::Sync() { return SDL::SyncWindow(get()); }
 
 /**
  * Return whether the window has a surface associated with it.
@@ -59904,10 +59863,7 @@ inline bool WindowHasSurface(WindowRef window)
   return SDL_WindowHasSurface(window);
 }
 
-inline bool Window::HasSurface() const
-{
-  return SDL::WindowHasSurface(m_resource);
-}
+inline bool Window::HasSurface() const { return SDL::WindowHasSurface(get()); }
 
 /**
  * Get the SDL surface associated with the window.
@@ -59941,10 +59897,7 @@ inline Surface GetWindowSurface(WindowRef window)
   return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
 }
 
-inline Surface Window::GetSurface()
-{
-  return SDL::GetWindowSurface(m_resource);
-}
+inline Surface Window::GetSurface() { return SDL::GetWindowSurface(get()); }
 
 /**
  * Toggle VSync for the window surface.
@@ -59976,7 +59929,7 @@ inline void SetWindowSurfaceVSync(WindowRef window, int vsync)
 
 inline void Window::SetSurfaceVSync(int vsync)
 {
-  SDL::SetWindowSurfaceVSync(m_resource, vsync);
+  SDL::SetWindowSurfaceVSync(get(), vsync);
 }
 
 /// Constant to disable vsync
@@ -60006,7 +59959,7 @@ inline int GetWindowSurfaceVSync(WindowRef window)
 
 inline int Window::GetSurfaceVSync() const
 {
-  return SDL::GetWindowSurfaceVSync(m_resource);
+  return SDL::GetWindowSurfaceVSync(get());
 }
 
 /**
@@ -60032,7 +59985,7 @@ inline void UpdateWindowSurface(WindowRef window)
   CheckError(SDL_UpdateWindowSurface(window));
 }
 
-inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
+inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(get()); }
 
 /**
  * Copy areas of the window surface to the screen.
@@ -60068,7 +60021,7 @@ inline void UpdateWindowSurfaceRects(WindowRef window,
 
 inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
 {
-  SDL::UpdateWindowSurfaceRects(m_resource, rects);
+  SDL::UpdateWindowSurfaceRects(get(), rects);
 }
 
 /**
@@ -60089,7 +60042,7 @@ inline void DestroyWindowSurface(WindowRef window)
   CheckError(SDL_DestroyWindowSurface(window));
 }
 
-inline void Window::DestroySurface() { SDL::DestroyWindowSurface(m_resource); }
+inline void Window::DestroySurface() { SDL::DestroyWindowSurface(get()); }
 
 /**
  * Set a window's keyboard grab mode.
@@ -60127,7 +60080,7 @@ inline void SetWindowKeyboardGrab(WindowRef window, bool grabbed)
 
 inline void Window::SetKeyboardGrab(bool grabbed)
 {
-  SDL::SetWindowKeyboardGrab(m_resource, grabbed);
+  SDL::SetWindowKeyboardGrab(get(), grabbed);
 }
 
 /**
@@ -60154,7 +60107,7 @@ inline void SetWindowMouseGrab(WindowRef window, bool grabbed)
 
 inline void Window::SetMouseGrab(bool grabbed)
 {
-  SDL::SetWindowMouseGrab(m_resource, grabbed);
+  SDL::SetWindowMouseGrab(get(), grabbed);
 }
 
 /**
@@ -60176,7 +60129,7 @@ inline bool GetWindowKeyboardGrab(WindowRef window)
 
 inline bool Window::GetKeyboardGrab() const
 {
-  return SDL::GetWindowKeyboardGrab(m_resource);
+  return SDL::GetWindowKeyboardGrab(get());
 }
 
 /**
@@ -60201,7 +60154,7 @@ inline bool GetWindowMouseGrab(WindowRef window)
 
 inline bool Window::GetMouseGrab() const
 {
-  return SDL::GetWindowMouseGrab(m_resource);
+  return SDL::GetWindowMouseGrab(get());
 }
 
 /**
@@ -60246,7 +60199,7 @@ inline void SetWindowMouseRect(WindowRef window, const RectRaw& rect)
 
 inline void Window::SetMouseRect(const RectRaw& rect)
 {
-  SDL::SetWindowMouseRect(m_resource, rect);
+  SDL::SetWindowMouseRect(get(), rect);
 }
 
 /**
@@ -60271,7 +60224,7 @@ inline const RectRaw* GetWindowMouseRect(WindowRef window)
 
 inline const RectRaw* Window::GetMouseRect() const
 {
-  return SDL::GetWindowMouseRect(m_resource);
+  return SDL::GetWindowMouseRect(get());
 }
 
 /**
@@ -60299,7 +60252,7 @@ inline void SetWindowOpacity(WindowRef window, float opacity)
 
 inline void Window::SetOpacity(float opacity)
 {
-  SDL::SetWindowOpacity(m_resource, opacity);
+  SDL::SetWindowOpacity(get(), opacity);
 }
 
 /**
@@ -60323,10 +60276,7 @@ inline float GetWindowOpacity(WindowRef window)
   return SDL_GetWindowOpacity(window);
 }
 
-inline float Window::GetOpacity() const
-{
-  return SDL::GetWindowOpacity(m_resource);
-}
+inline float Window::GetOpacity() const { return SDL::GetWindowOpacity(get()); }
 
 /**
  * Set the window as a child of a parent window.
@@ -60366,7 +60316,7 @@ inline void SetWindowParent(WindowRef window, WindowRef parent)
 
 inline void Window::SetParent(WindowRef parent)
 {
-  SDL::SetWindowParent(m_resource, parent);
+  SDL::SetWindowParent(get(), parent);
 }
 
 /**
@@ -60391,10 +60341,7 @@ inline void SetWindowModal(WindowRef window, bool modal)
   CheckError(SDL_SetWindowModal(window, modal));
 }
 
-inline void Window::SetModal(bool modal)
-{
-  SDL::SetWindowModal(m_resource, modal);
-}
+inline void Window::SetModal(bool modal) { SDL::SetWindowModal(get(), modal); }
 
 /**
  * Set whether the window may have input focus.
@@ -60414,7 +60361,7 @@ inline void SetWindowFocusable(WindowRef window, bool focusable)
 
 inline void Window::SetFocusable(bool focusable)
 {
-  SDL::SetWindowFocusable(m_resource, focusable);
+  SDL::SetWindowFocusable(get(), focusable);
 }
 
 /**
@@ -60444,7 +60391,7 @@ inline void ShowWindowSystemMenu(WindowRef window, const PointRaw& p)
 
 inline void Window::ShowSystemMenu(const PointRaw& p)
 {
-  SDL::ShowWindowSystemMenu(m_resource, p);
+  SDL::ShowWindowSystemMenu(get(), p);
 }
 
 /**
@@ -60542,12 +60489,12 @@ inline void SetWindowHitTest(WindowRef window, HitTestCB callback)
 
 inline void Window::SetHitTest(HitTest callback, void* callback_data)
 {
-  SDL::SetWindowHitTest(m_resource, callback, callback_data);
+  SDL::SetWindowHitTest(get(), callback, callback_data);
 }
 
 inline void Window::SetHitTest(HitTestCB callback)
 {
-  SDL::SetWindowHitTest(m_resource, callback);
+  SDL::SetWindowHitTest(get(), callback);
 }
 
 /**
@@ -60581,7 +60528,7 @@ inline void SetWindowShape(WindowRef window, SurfaceRef shape)
 
 inline void Window::SetShape(SurfaceRef shape)
 {
-  SDL::SetWindowShape(m_resource, shape);
+  SDL::SetWindowShape(get(), shape);
 }
 
 /**
@@ -60602,7 +60549,7 @@ inline void FlashWindow(WindowRef window, FlashOperation operation)
 
 inline void Window::Flash(FlashOperation operation)
 {
-  SDL::FlashWindow(m_resource, operation);
+  SDL::FlashWindow(get(), operation);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -60626,7 +60573,7 @@ inline void SetWindowProgressState(WindowRef window, ProgressState state)
 
 inline void Window::SetProgressState(ProgressState state)
 {
-  SDL::SetWindowProgressState(m_resource, state);
+  SDL::SetWindowProgressState(get(), state);
 }
 
 /**
@@ -60647,7 +60594,7 @@ inline ProgressState GetWindowProgressState(WindowRef window)
 
 inline ProgressState Window::GetProgressState()
 {
-  return SDL::GetWindowProgressState(m_resource);
+  return SDL::GetWindowProgressState(get());
 }
 
 /**
@@ -60669,7 +60616,7 @@ inline void SetWindowProgressValue(WindowRef window, float value)
 
 inline void Window::SetProgressValue(float value)
 {
-  SDL::SetWindowProgressValue(m_resource, value);
+  SDL::SetWindowProgressValue(get(), value);
 }
 
 /**
@@ -60690,7 +60637,7 @@ inline float GetWindowProgressValue(WindowRef window)
 
 inline float Window::GetProgressValue()
 {
-  return SDL::GetWindowProgressValue(m_resource);
+  return SDL::GetWindowProgressValue(get());
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -61001,7 +60948,7 @@ inline GLContext GL_CreateContext(WindowRef window)
   return GLContext(window);
 }
 
-inline GLContext Window::CreateGLContext() { return GLContext(m_resource); }
+inline GLContext Window::CreateGLContext() { return GLContext(get()); }
 
 inline GLContext::GLContext(WindowRef window)
   : m_resource(SDL_GL_CreateContext(window))
@@ -61030,12 +60977,12 @@ inline void GL_MakeCurrent(WindowRef window, GLContext context)
 
 inline void Window::MakeCurrent(GLContext context)
 {
-  SDL::GL_MakeCurrent(m_resource, context);
+  SDL::GL_MakeCurrent(get(), context);
 }
 
 inline void GLContext::MakeCurrent(WindowRef window)
 {
-  SDL::GL_MakeCurrent(window, m_resource);
+  SDL::GL_MakeCurrent(window, get());
 }
 
 /**
@@ -61113,7 +61060,7 @@ inline EGLSurface EGL_GetWindowSurface(WindowRef window)
 
 inline EGLSurface Window::GetEGLSurface()
 {
-  return SDL::EGL_GetWindowSurface(m_resource);
+  return SDL::EGL_GetWindowSurface(get());
 }
 
 /**
@@ -61226,7 +61173,7 @@ inline void GL_SwapWindow(WindowRef window)
   CheckError(SDL_GL_SwapWindow(window));
 }
 
-inline void Window::GL_Swap() { SDL::GL_SwapWindow(m_resource); }
+inline void Window::GL_Swap() { SDL::GL_SwapWindow(get()); }
 
 /**
  * Delete an OpenGL context.
@@ -69062,7 +69009,7 @@ inline const char* GetGPUDeviceDriver(GPUDeviceRef device)
 
 inline const char* GPUDevice::GetDriver()
 {
-  return SDL::GetGPUDeviceDriver(m_resource);
+  return SDL::GetGPUDeviceDriver(get());
 }
 
 /**
@@ -69081,7 +69028,7 @@ inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceRef device)
 
 inline GPUShaderFormat GPUDevice::GetShaderFormats()
 {
-  return SDL::GetGPUShaderFormats(m_resource);
+  return SDL::GetGPUShaderFormats(get());
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -69195,7 +69142,7 @@ inline PropertiesRef GetGPUDeviceProperties(GPUDeviceRef device)
 
 inline PropertiesRef GPUDevice::GetProperties()
 {
-  return SDL::GetGPUDeviceProperties(m_resource);
+  return SDL::GetGPUDeviceProperties(get());
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -69255,7 +69202,7 @@ inline GPUComputePipeline CreateGPUComputePipeline(
 inline GPUComputePipeline GPUDevice::CreateComputePipeline(
   const GPUComputePipelineCreateInfo& createinfo)
 {
-  return GPUComputePipeline(m_resource, createinfo);
+  return GPUComputePipeline(get(), createinfo);
 }
 
 inline GPUComputePipeline::GPUComputePipeline(
@@ -69309,7 +69256,7 @@ inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
 inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
   const GPUGraphicsPipelineCreateInfo& createinfo)
 {
-  return GPUGraphicsPipeline(m_resource, createinfo);
+  return GPUGraphicsPipeline(get(), createinfo);
 }
 
 inline GPUGraphicsPipeline::GPUGraphicsPipeline(
@@ -69362,7 +69309,7 @@ inline GPUSampler CreateGPUSampler(GPUDeviceRef device,
 inline GPUSampler GPUDevice::CreateSampler(
   const GPUSamplerCreateInfo& createinfo)
 {
-  return GPUSampler(m_resource, createinfo);
+  return GPUSampler(get(), createinfo);
 }
 
 inline GPUSampler::GPUSampler(GPUDeviceRef device,
@@ -69461,7 +69408,7 @@ inline GPUShader CreateGPUShader(GPUDeviceRef device,
 
 inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
 {
-  return GPUShader(m_resource, createinfo);
+  return GPUShader(get(), createinfo);
 }
 
 inline GPUShader::GPUShader(GPUDeviceRef device,
@@ -69548,7 +69495,7 @@ inline GPUTexture CreateGPUTexture(GPUDeviceRef device,
 inline GPUTexture GPUDevice::CreateTexture(
   const GPUTextureCreateInfo& createinfo)
 {
-  return GPUTexture(m_resource, createinfo);
+  return GPUTexture(get(), createinfo);
 }
 
 inline GPUTexture::GPUTexture(GPUDeviceRef device,
@@ -69641,7 +69588,7 @@ inline GPUBuffer CreateGPUBuffer(GPUDeviceRef device,
 
 inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
 {
-  return GPUBuffer(m_resource, createinfo);
+  return GPUBuffer(get(), createinfo);
 }
 
 inline GPUBuffer::GPUBuffer(GPUDeviceRef device,
@@ -69698,7 +69645,7 @@ inline GPUTransferBuffer CreateGPUTransferBuffer(
 inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
   const GPUTransferBufferCreateInfo& createinfo)
 {
-  return GPUTransferBuffer(m_resource, createinfo);
+  return GPUTransferBuffer(get(), createinfo);
 }
 
 inline GPUTransferBuffer::GPUTransferBuffer(
@@ -69747,7 +69694,7 @@ inline void SetGPUBufferName(GPUDeviceRef device,
 
 inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
 {
-  SDL::SetGPUBufferName(m_resource, buffer, std::move(text));
+  SDL::SetGPUBufferName(get(), buffer, std::move(text));
 }
 
 /**
@@ -69777,7 +69724,7 @@ inline void SetGPUTextureName(GPUDeviceRef device,
 
 inline void GPUDevice::SetTextureName(GPUTexture texture, StringParam text)
 {
-  SDL::SetGPUTextureName(m_resource, texture, std::move(text));
+  SDL::SetGPUTextureName(get(), texture, std::move(text));
 }
 
 /**
@@ -69886,7 +69833,7 @@ inline void ReleaseGPUTexture(GPUDeviceRef device, GPUTexture texture)
 
 inline void GPUDevice::ReleaseTexture(GPUTexture texture)
 {
-  SDL::ReleaseGPUTexture(m_resource, texture);
+  SDL::ReleaseGPUTexture(get(), texture);
 }
 
 /**
@@ -69906,7 +69853,7 @@ inline void ReleaseGPUSampler(GPUDeviceRef device, GPUSampler sampler)
 
 inline void GPUDevice::ReleaseSampler(GPUSampler sampler)
 {
-  SDL::ReleaseGPUSampler(m_resource, sampler);
+  SDL::ReleaseGPUSampler(get(), sampler);
 }
 
 /**
@@ -69926,7 +69873,7 @@ inline void ReleaseGPUBuffer(GPUDeviceRef device, GPUBuffer buffer)
 
 inline void GPUDevice::ReleaseBuffer(GPUBuffer buffer)
 {
-  SDL::ReleaseGPUBuffer(m_resource, buffer);
+  SDL::ReleaseGPUBuffer(get(), buffer);
 }
 
 /**
@@ -69947,7 +69894,7 @@ inline void ReleaseGPUTransferBuffer(GPUDeviceRef device,
 
 inline void GPUDevice::ReleaseTransferBuffer(GPUTransferBuffer transfer_buffer)
 {
-  SDL::ReleaseGPUTransferBuffer(m_resource, transfer_buffer);
+  SDL::ReleaseGPUTransferBuffer(get(), transfer_buffer);
 }
 
 /**
@@ -69969,7 +69916,7 @@ inline void ReleaseGPUComputePipeline(GPUDeviceRef device,
 inline void GPUDevice::ReleaseComputePipeline(
   GPUComputePipeline compute_pipeline)
 {
-  SDL::ReleaseGPUComputePipeline(m_resource, compute_pipeline);
+  SDL::ReleaseGPUComputePipeline(get(), compute_pipeline);
 }
 
 /**
@@ -69989,7 +69936,7 @@ inline void ReleaseGPUShader(GPUDeviceRef device, GPUShader shader)
 
 inline void GPUDevice::ReleaseShader(GPUShader shader)
 {
-  SDL::ReleaseGPUShader(m_resource, shader);
+  SDL::ReleaseGPUShader(get(), shader);
 }
 
 /**
@@ -70011,7 +69958,7 @@ inline void ReleaseGPUGraphicsPipeline(GPUDeviceRef device,
 inline void GPUDevice::ReleaseGraphicsPipeline(
   GPUGraphicsPipeline graphics_pipeline)
 {
-  SDL::ReleaseGPUGraphicsPipeline(m_resource, graphics_pipeline);
+  SDL::ReleaseGPUGraphicsPipeline(get(), graphics_pipeline);
 }
 
 /**
@@ -70045,7 +69992,7 @@ inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceRef device)
 
 inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
 {
-  return SDL::AcquireGPUCommandBuffer(m_resource);
+  return SDL::AcquireGPUCommandBuffer(get());
 }
 
 /**
@@ -71010,7 +70957,7 @@ inline void* MapGPUTransferBuffer(GPUDeviceRef device,
 inline void* GPUDevice::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
                                           bool cycle)
 {
-  return SDL::MapGPUTransferBuffer(m_resource, transfer_buffer, cycle);
+  return SDL::MapGPUTransferBuffer(get(), transfer_buffer, cycle);
 }
 
 /**
@@ -71029,7 +70976,7 @@ inline void UnmapGPUTransferBuffer(GPUDeviceRef device,
 
 inline void GPUDevice::UnmapTransferBuffer(GPUTransferBuffer transfer_buffer)
 {
-  SDL::UnmapGPUTransferBuffer(m_resource, transfer_buffer);
+  SDL::UnmapGPUTransferBuffer(get(), transfer_buffer);
 }
 
 /**
@@ -71330,7 +71277,7 @@ inline bool GPUDevice::WindowSupportsSwapchainComposition(
   GPUSwapchainComposition swapchain_composition)
 {
   return SDL::WindowSupportsGPUSwapchainComposition(
-    m_resource, window, swapchain_composition);
+    get(), window, swapchain_composition);
 }
 
 /**
@@ -71357,7 +71304,7 @@ inline bool WindowSupportsGPUPresentMode(GPUDeviceRef device,
 inline bool GPUDevice::WindowSupportsPresentMode(WindowRef window,
                                                  GPUPresentMode present_mode)
 {
-  return SDL::WindowSupportsGPUPresentMode(m_resource, window, present_mode);
+  return SDL::WindowSupportsGPUPresentMode(get(), window, present_mode);
 }
 
 /**
@@ -71392,7 +71339,7 @@ inline void ClaimWindowForGPUDevice(GPUDeviceRef device, WindowRef window)
 
 inline void GPUDevice::ClaimWindow(WindowRef window)
 {
-  SDL::ClaimWindowForGPUDevice(m_resource, window);
+  SDL::ClaimWindowForGPUDevice(get(), window);
 }
 
 /**
@@ -71412,7 +71359,7 @@ inline void ReleaseWindowFromGPUDevice(GPUDeviceRef device, WindowRef window)
 
 inline void GPUDevice::ReleaseWindow(WindowRef window)
 {
-  SDL::ReleaseWindowFromGPUDevice(m_resource, window);
+  SDL::ReleaseWindowFromGPUDevice(get(), window);
 }
 
 /**
@@ -71453,7 +71400,7 @@ inline bool GPUDevice::SetSwapchainParameters(
   GPUPresentMode present_mode)
 {
   return SDL::SetGPUSwapchainParameters(
-    m_resource, window, swapchain_composition, present_mode);
+    get(), window, swapchain_composition, present_mode);
 }
 
 /**
@@ -71489,7 +71436,7 @@ inline bool SetGPUAllowedFramesInFlight(GPUDeviceRef device,
 
 inline bool GPUDevice::SetAllowedFramesInFlight(Uint32 allowed_frames_in_flight)
 {
-  return SDL::SetGPUAllowedFramesInFlight(m_resource, allowed_frames_in_flight);
+  return SDL::SetGPUAllowedFramesInFlight(get(), allowed_frames_in_flight);
 }
 
 /**
@@ -71511,7 +71458,7 @@ inline GPUTextureFormat GetGPUSwapchainTextureFormat(GPUDeviceRef device,
 
 inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowRef window)
 {
-  return SDL::GetGPUSwapchainTextureFormat(m_resource, window);
+  return SDL::GetGPUSwapchainTextureFormat(get(), window);
 }
 
 /**
@@ -71609,7 +71556,7 @@ inline void WaitForGPUSwapchain(GPUDeviceRef device, WindowRef window)
 
 inline void GPUDevice::WaitForSwapchain(WindowRef window)
 {
-  SDL::WaitForGPUSwapchain(m_resource, window);
+  SDL::WaitForGPUSwapchain(get(), window);
 }
 
 /**
@@ -71789,7 +71736,7 @@ inline void WaitForGPUIdle(GPUDeviceRef device)
   CheckError(SDL_WaitForGPUIdle(device));
 }
 
-inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(m_resource); }
+inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(get()); }
 
 /**
  * Blocks the thread until the given fences are signaled.
@@ -71816,7 +71763,7 @@ inline void WaitForGPUFences(GPUDeviceRef device,
 inline void GPUDevice::WaitForFences(bool wait_all,
                                      std::span<GPUFence* const> fences)
 {
-  SDL::WaitForGPUFences(m_resource, wait_all, fences);
+  SDL::WaitForGPUFences(get(), wait_all, fences);
 }
 
 /**
@@ -71837,7 +71784,7 @@ inline bool QueryGPUFence(GPUDeviceRef device, GPUFence* fence)
 
 inline bool GPUDevice::QueryFence(GPUFence* fence)
 {
-  return SDL::QueryGPUFence(m_resource, fence);
+  return SDL::QueryGPUFence(get(), fence);
 }
 
 /**
@@ -71859,7 +71806,7 @@ inline void ReleaseGPUFence(GPUDeviceRef device, GPUFence* fence)
 
 inline void GPUDevice::ReleaseFence(GPUFence* fence)
 {
-  SDL::ReleaseGPUFence(m_resource, fence);
+  SDL::ReleaseGPUFence(get(), fence);
 }
 
 /**
@@ -71900,7 +71847,7 @@ inline bool GPUDevice::TextureSupportsFormat(GPUTextureFormat format,
                                              GPUTextureType type,
                                              GPUTextureUsageFlags usage)
 {
-  return SDL::GPUTextureSupportsFormat(m_resource, format, type, usage);
+  return SDL::GPUTextureSupportsFormat(get(), format, type, usage);
 }
 
 /**
@@ -71923,7 +71870,7 @@ inline bool GPUTextureSupportsSampleCount(GPUDeviceRef device,
 inline bool GPUDevice::TextureSupportsSampleCount(GPUTextureFormat format,
                                                   GPUSampleCount sample_count)
 {
-  return SDL::GPUTextureSupportsSampleCount(m_resource, format, sample_count);
+  return SDL::GPUTextureSupportsSampleCount(get(), format, sample_count);
 }
 
 /**
@@ -71995,7 +71942,7 @@ inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
  */
 inline void GDKSuspendGPU(GPUDeviceRef device) { SDL_GDKSuspendGPU(device); }
 
-inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
+inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(get()); }
 
 /**
  * Call this to resume GPU operation on Xbox when you receive the
@@ -72012,7 +71959,7 @@ inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
  */
 inline void GDKResumeGPU(GPUDeviceRef device) { SDL_GDKResumeGPU(device); }
 
-inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(m_resource); }
+inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(get()); }
 
 #endif /* SDL_PLATFORM_GDK */
 
@@ -73832,7 +73779,7 @@ inline void SetJoystickVirtualAxis(JoystickRef joystick, int axis, Sint16 value)
 
 inline void Joystick::SetVirtualAxis(int axis, Sint16 value)
 {
-  SDL::SetJoystickVirtualAxis(m_resource, axis, value);
+  SDL::SetJoystickVirtualAxis(get(), axis, value);
 }
 
 /**
@@ -73869,7 +73816,7 @@ inline void SetJoystickVirtualBall(JoystickRef joystick,
 
 inline void Joystick::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
 {
-  SDL::SetJoystickVirtualBall(m_resource, ball, xrel, yrel);
+  SDL::SetJoystickVirtualBall(get(), ball, xrel, yrel);
 }
 
 /**
@@ -73904,7 +73851,7 @@ inline void SetJoystickVirtualButton(JoystickRef joystick,
 
 inline void Joystick::SetVirtualButton(int button, bool down)
 {
-  SDL::SetJoystickVirtualButton(m_resource, button, down);
+  SDL::SetJoystickVirtualButton(get(), button, down);
 }
 
 /**
@@ -73937,7 +73884,7 @@ inline void SetJoystickVirtualHat(JoystickRef joystick, int hat, Uint8 value)
 
 inline void Joystick::SetVirtualHat(int hat, Uint8 value)
 {
-  SDL::SetJoystickVirtualHat(m_resource, hat, value);
+  SDL::SetJoystickVirtualHat(get(), hat, value);
 }
 
 /**
@@ -73984,8 +73931,7 @@ inline void Joystick::SetVirtualTouchpad(int touchpad,
                                          const FPointRaw& p,
                                          float pressure)
 {
-  SDL::SetJoystickVirtualTouchpad(
-    m_resource, touchpad, finger, down, p, pressure);
+  SDL::SetJoystickVirtualTouchpad(get(), touchpad, finger, down, p, pressure);
 }
 
 /**
@@ -74030,7 +73976,7 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
                                             int num_values)
 {
   SDL::SendJoystickVirtualSensorData(
-    m_resource, type, sensor_timestamp, data, num_values);
+    get(), type, sensor_timestamp, data, num_values);
 }
 
 /**
@@ -74064,7 +74010,7 @@ inline PropertiesRef GetJoystickProperties(JoystickRef joystick)
 
 inline PropertiesRef Joystick::GetProperties()
 {
-  return SDL::GetJoystickProperties(m_resource);
+  return SDL::GetJoystickProperties(get());
 }
 
 /**
@@ -74110,10 +74056,7 @@ inline const char* GetJoystickName(JoystickRef joystick)
   return SDL_GetJoystickName(joystick);
 }
 
-inline const char* Joystick::GetName()
-{
-  return SDL::GetJoystickName(m_resource);
-}
+inline const char* Joystick::GetName() { return SDL::GetJoystickName(get()); }
 
 /**
  * Get the implementation dependent path of a joystick.
@@ -74133,10 +74076,7 @@ inline const char* GetJoystickPath(JoystickRef joystick)
   return SDL_GetJoystickPath(joystick);
 }
 
-inline const char* Joystick::GetPath()
-{
-  return SDL::GetJoystickPath(m_resource);
-}
+inline const char* Joystick::GetPath() { return SDL::GetJoystickPath(get()); }
 
 /**
  * Get the player index of an opened joystick.
@@ -74160,7 +74100,7 @@ inline int GetJoystickPlayerIndex(JoystickRef joystick)
 
 inline int Joystick::GetPlayerIndex()
 {
-  return SDL::GetJoystickPlayerIndex(m_resource);
+  return SDL::GetJoystickPlayerIndex(get());
 }
 
 /**
@@ -74184,7 +74124,7 @@ inline void SetJoystickPlayerIndex(JoystickRef joystick, int player_index)
 
 inline void Joystick::SetPlayerIndex(int player_index)
 {
-  SDL::SetJoystickPlayerIndex(m_resource, player_index);
+  SDL::SetJoystickPlayerIndex(get(), player_index);
 }
 
 /**
@@ -74208,7 +74148,7 @@ inline GUID GetJoystickGUID(JoystickRef joystick)
   return SDL_GetJoystickGUID(joystick);
 }
 
-inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(m_resource); }
+inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(get()); }
 
 /**
  * Get the USB vendor ID of an opened joystick, if available.
@@ -74229,10 +74169,7 @@ inline Uint16 GetJoystickVendor(JoystickRef joystick)
   return SDL_GetJoystickVendor(joystick);
 }
 
-inline Uint16 Joystick::GetVendor()
-{
-  return SDL::GetJoystickVendor(m_resource);
-}
+inline Uint16 Joystick::GetVendor() { return SDL::GetJoystickVendor(get()); }
 
 /**
  * Get the USB product ID of an opened joystick, if available.
@@ -74253,10 +74190,7 @@ inline Uint16 GetJoystickProduct(JoystickRef joystick)
   return SDL_GetJoystickProduct(joystick);
 }
 
-inline Uint16 Joystick::GetProduct()
-{
-  return SDL::GetJoystickProduct(m_resource);
-}
+inline Uint16 Joystick::GetProduct() { return SDL::GetJoystickProduct(get()); }
 
 /**
  * Get the product version of an opened joystick, if available.
@@ -74279,7 +74213,7 @@ inline Uint16 GetJoystickProductVersion(JoystickRef joystick)
 
 inline Uint16 Joystick::GetProductVersion()
 {
-  return SDL::GetJoystickProductVersion(m_resource);
+  return SDL::GetJoystickProductVersion(get());
 }
 
 /**
@@ -74301,7 +74235,7 @@ inline Uint16 GetJoystickFirmwareVersion(JoystickRef joystick)
 
 inline Uint16 Joystick::GetFirmwareVersion()
 {
-  return SDL::GetJoystickFirmwareVersion(m_resource);
+  return SDL::GetJoystickFirmwareVersion(get());
 }
 
 /**
@@ -74324,7 +74258,7 @@ inline const char* GetJoystickSerial(JoystickRef joystick)
 
 inline const char* Joystick::GetSerial()
 {
-  return SDL::GetJoystickSerial(m_resource);
+  return SDL::GetJoystickSerial(get());
 }
 
 /**
@@ -74344,10 +74278,7 @@ inline JoystickType GetJoystickType(JoystickRef joystick)
   return SDL_GetJoystickType(joystick);
 }
 
-inline JoystickType Joystick::GetType()
-{
-  return SDL::GetJoystickType(m_resource);
-}
+inline JoystickType Joystick::GetType() { return SDL::GetJoystickType(get()); }
 
 /**
  * Get the device information encoded in a GUID structure.
@@ -74392,7 +74323,7 @@ inline bool JoystickConnected(JoystickRef joystick)
   return SDL_JoystickConnected(joystick);
 }
 
-inline bool Joystick::Connected() { return SDL::JoystickConnected(m_resource); }
+inline bool Joystick::Connected() { return SDL::JoystickConnected(get()); }
 
 /**
  * Get the instance ID of an opened joystick.
@@ -74410,7 +74341,7 @@ inline JoystickID GetJoystickID(JoystickRef joystick)
   return CheckError(SDL_GetJoystickID(joystick));
 }
 
-inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(m_resource); }
+inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(get()); }
 
 /**
  * Get the number of general axis controls on a joystick.
@@ -74437,10 +74368,7 @@ inline int GetNumJoystickAxes(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickAxes(joystick));
 }
 
-inline int Joystick::GetNumAxes()
-{
-  return SDL::GetNumJoystickAxes(m_resource);
-}
+inline int Joystick::GetNumAxes() { return SDL::GetNumJoystickAxes(get()); }
 
 /**
  * Get the number of trackballs on a joystick.
@@ -74468,10 +74396,7 @@ inline int GetNumJoystickBalls(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickBalls(joystick));
 }
 
-inline int Joystick::GetNumBalls()
-{
-  return SDL::GetNumJoystickBalls(m_resource);
-}
+inline int Joystick::GetNumBalls() { return SDL::GetNumJoystickBalls(get()); }
 
 /**
  * Get the number of POV hats on a joystick.
@@ -74494,10 +74419,7 @@ inline int GetNumJoystickHats(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickHats(joystick));
 }
 
-inline int Joystick::GetNumHats()
-{
-  return SDL::GetNumJoystickHats(m_resource);
-}
+inline int Joystick::GetNumHats() { return SDL::GetNumJoystickHats(get()); }
 
 /**
  * Get the number of buttons on a joystick.
@@ -74522,7 +74444,7 @@ inline int GetNumJoystickButtons(JoystickRef joystick)
 
 inline int Joystick::GetNumButtons()
 {
-  return SDL::GetNumJoystickButtons(m_resource);
+  return SDL::GetNumJoystickButtons(get());
 }
 
 /**
@@ -74604,7 +74526,7 @@ inline Sint16 GetJoystickAxis(JoystickRef joystick, int axis)
 
 inline Sint16 Joystick::GetAxis(int axis)
 {
-  return SDL::GetJoystickAxis(m_resource, axis);
+  return SDL::GetJoystickAxis(get(), axis);
 }
 
 /**
@@ -74632,7 +74554,7 @@ inline bool GetJoystickAxisInitialState(JoystickRef joystick,
 
 inline bool Joystick::GetAxisInitialState(int axis, Sint16* state)
 {
-  return SDL::GetJoystickAxisInitialState(m_resource, axis, state);
+  return SDL::GetJoystickAxisInitialState(get(), axis, state);
 }
 
 /**
@@ -74662,7 +74584,7 @@ inline void GetJoystickBall(JoystickRef joystick, int ball, int* dx, int* dy)
 
 inline void Joystick::GetBall(int ball, int* dx, int* dy)
 {
-  SDL::GetJoystickBall(m_resource, ball, dx, dy);
+  SDL::GetJoystickBall(get(), ball, dx, dy);
 }
 
 /**
@@ -74687,7 +74609,7 @@ inline Uint8 GetJoystickHat(JoystickRef joystick, int hat)
 
 inline Uint8 Joystick::GetHat(int hat)
 {
-  return SDL::GetJoystickHat(m_resource, hat);
+  return SDL::GetJoystickHat(get(), hat);
 }
 
 /**
@@ -74711,7 +74633,7 @@ inline bool GetJoystickButton(JoystickRef joystick, int button)
 
 inline bool Joystick::GetButton(int button)
 {
-  return SDL::GetJoystickButton(m_resource, button);
+  return SDL::GetJoystickButton(get(), button);
 }
 
 /**
@@ -74749,7 +74671,7 @@ inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
                              Uint32 duration_ms)
 {
   return SDL::RumbleJoystick(
-    m_resource, low_frequency_rumble, high_frequency_rumble, duration_ms);
+    get(), low_frequency_rumble, high_frequency_rumble, duration_ms);
 }
 
 /**
@@ -74792,8 +74714,7 @@ inline void Joystick::RumbleTriggers(Uint16 left_rumble,
                                      Uint16 right_rumble,
                                      Uint32 duration_ms)
 {
-  SDL::RumbleJoystickTriggers(
-    m_resource, left_rumble, right_rumble, duration_ms);
+  SDL::RumbleJoystickTriggers(get(), left_rumble, right_rumble, duration_ms);
 }
 
 /**
@@ -74825,7 +74746,7 @@ inline void SetJoystickLED(JoystickRef joystick,
 
 inline void Joystick::SetLED(Uint8 red, Uint8 green, Uint8 blue)
 {
-  SDL::SetJoystickLED(m_resource, red, green, blue);
+  SDL::SetJoystickLED(get(), red, green, blue);
 }
 
 /**
@@ -74847,7 +74768,7 @@ inline void SendJoystickEffect(JoystickRef joystick, const void* data, int size)
 
 inline void Joystick::SendEffect(const void* data, int size)
 {
-  SDL::SendJoystickEffect(m_resource, data, size);
+  SDL::SendJoystickEffect(get(), data, size);
 }
 
 /**
@@ -74883,7 +74804,7 @@ inline JoystickConnectionState GetJoystickConnectionState(JoystickRef joystick)
 
 inline JoystickConnectionState Joystick::GetConnectionState()
 {
-  return SDL::GetJoystickConnectionState(m_resource);
+  return SDL::GetJoystickConnectionState(get());
 }
 
 /**
@@ -74913,7 +74834,7 @@ inline PowerState GetJoystickPowerInfo(JoystickRef joystick, int* percent)
 
 inline PowerState Joystick::GetPowerInfo(int* percent)
 {
-  return SDL::GetJoystickPowerInfo(m_resource, percent);
+  return SDL::GetJoystickPowerInfo(get(), percent);
 }
 
 /// @}
@@ -75132,14 +75053,11 @@ inline const char* Keycode::GetName() const
   return SDL_GetKeyName(m_keycode);
 }
 
-inline void Window::StartTextInput()
-{
-  CheckError(SDL_StartTextInput(m_resource));
-}
+inline void Window::StartTextInput() { CheckError(SDL_StartTextInput(get())); }
 
 inline void Window::StartTextInput(PropertiesRef props)
 {
-  CheckError(SDL_StartTextInputWithProperties(m_resource, props));
+  CheckError(SDL_StartTextInputWithProperties(get(), props));
 }
 
 /**
@@ -75244,27 +75162,24 @@ constexpr auto ANDROID_INPUTTYPE_NUMBER =
 
 inline bool Window::IsTextInputActive() const
 {
-  return SDL_TextInputActive(m_resource);
+  return SDL_TextInputActive(get());
 }
 
-inline void Window::StopTextInput()
-{
-  CheckError(SDL_StopTextInput(m_resource));
-}
+inline void Window::StopTextInput() { CheckError(SDL_StopTextInput(get())); }
 
 inline void Window::ClearComposition()
 {
-  CheckError(SDL_ClearComposition(m_resource));
+  CheckError(SDL_ClearComposition(get()));
 }
 
 inline void Window::SetTextInputArea(const RectRaw& rect, int cursor)
 {
-  CheckError(SDL_SetTextInputArea(m_resource, &rect, cursor));
+  CheckError(SDL_SetTextInputArea(get(), &rect, cursor));
 }
 
 inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)
 {
-  CheckError(SDL_GetTextInputArea(m_resource, rect, cursor));
+  CheckError(SDL_GetTextInputArea(get(), rect, cursor));
 }
 
 /**
@@ -75287,7 +75202,7 @@ inline bool HasScreenKeyboardSupport()
 
 inline bool Window::IsScreenKeyboardShown() const
 {
-  return SDL_ScreenKeyboardShown(m_resource);
+  return SDL_ScreenKeyboardShown(get());
 }
 
 /// @}
@@ -76019,7 +75934,7 @@ inline void* Metal_GetLayer(MetalViewRef view)
   return SDL_Metal_GetLayer(view);
 }
 
-inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(m_resource); }
+inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(get()); }
 
 /// @}
 
@@ -76771,7 +76686,7 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
 
 inline void Window::WarpMouse(const FPointRaw& p)
 {
-  SDL_WarpMouseInWindow(m_resource, p.x, p.y);
+  SDL_WarpMouseInWindow(get(), p.x, p.y);
 }
 
 /**
@@ -76845,12 +76760,12 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
 
 inline void Window::SetRelativeMouseMode(bool enabled)
 {
-  CheckError(SDL_SetWindowRelativeMouseMode(m_resource, enabled));
+  CheckError(SDL_SetWindowRelativeMouseMode(get(), enabled));
 }
 
 inline bool Window::GetRelativeMouseMode() const
 {
-  return SDL_GetWindowRelativeMouseMode(m_resource);
+  return SDL_GetWindowRelativeMouseMode(get());
 }
 
 /**
@@ -77097,7 +77012,7 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  */
 inline void SetCursor(CursorRef cursor) { CheckError(SDL_SetCursor(cursor)); }
 
-inline void Cursor::Set() { SDL::SetCursor(m_resource); }
+inline void Cursor::Set() { SDL::SetCursor(get()); }
 
 /**
  * Get the active cursor.
@@ -78586,7 +78501,7 @@ inline StringResult GetGamepadMapping(GamepadRef gamepad)
 
 inline StringResult Gamepad::GetMapping()
 {
-  return SDL::GetGamepadMapping(m_resource);
+  return SDL::GetGamepadMapping(get());
 }
 
 /**
@@ -78967,7 +78882,7 @@ inline PropertiesRef GetGamepadProperties(GamepadRef gamepad)
 
 inline PropertiesRef Gamepad::GetProperties()
 {
-  return SDL::GetGamepadProperties(m_resource);
+  return SDL::GetGamepadProperties(get());
 }
 
 /**
@@ -79011,7 +78926,7 @@ inline JoystickID GetGamepadID(GamepadRef gamepad)
   return CheckError(SDL_GetGamepadID(gamepad));
 }
 
-inline JoystickID Gamepad::GetID() { return SDL::GetGamepadID(m_resource); }
+inline JoystickID Gamepad::GetID() { return SDL::GetGamepadID(get()); }
 
 /**
  * Get the implementation-dependent name for an opened gamepad.
@@ -79031,10 +78946,7 @@ inline const char* GetGamepadName(GamepadRef gamepad)
   return SDL_GetGamepadName(gamepad);
 }
 
-inline const char* Gamepad::GetName()
-{
-  return SDL::GetGamepadName(m_resource);
-}
+inline const char* Gamepad::GetName() { return SDL::GetGamepadName(get()); }
 
 /**
  * Get the implementation-dependent path for an opened gamepad.
@@ -79054,10 +78966,7 @@ inline const char* GetGamepadPath(GamepadRef gamepad)
   return SDL_GetGamepadPath(gamepad);
 }
 
-inline const char* Gamepad::GetPath()
-{
-  return SDL::GetGamepadPath(m_resource);
-}
+inline const char* Gamepad::GetPath() { return SDL::GetGamepadPath(get()); }
 
 /**
  * Get the type of an opened gamepad.
@@ -79076,10 +78985,7 @@ inline GamepadType GetGamepadType(GamepadRef gamepad)
   return SDL_GetGamepadType(gamepad);
 }
 
-inline GamepadType Gamepad::GetType()
-{
-  return SDL::GetGamepadType(m_resource);
-}
+inline GamepadType Gamepad::GetType() { return SDL::GetGamepadType(get()); }
 
 /**
  * Get the type of an opened gamepad, ignoring any mapping override.
@@ -79100,7 +79006,7 @@ inline GamepadType GetRealGamepadType(GamepadRef gamepad)
 
 inline GamepadType Gamepad::GetRealType()
 {
-  return SDL::GetRealGamepadType(m_resource);
+  return SDL::GetRealGamepadType(get());
 }
 
 /**
@@ -79124,7 +79030,7 @@ inline int GetGamepadPlayerIndex(GamepadRef gamepad)
 
 inline int Gamepad::GetPlayerIndex()
 {
-  return SDL::GetGamepadPlayerIndex(m_resource);
+  return SDL::GetGamepadPlayerIndex(get());
 }
 
 /**
@@ -79148,7 +79054,7 @@ inline void SetGamepadPlayerIndex(GamepadRef gamepad, int player_index)
 
 inline void Gamepad::SetPlayerIndex(int player_index)
 {
-  SDL::SetGamepadPlayerIndex(m_resource, player_index);
+  SDL::SetGamepadPlayerIndex(get(), player_index);
 }
 
 /**
@@ -79170,7 +79076,7 @@ inline Uint16 GetGamepadVendor(GamepadRef gamepad)
   return SDL_GetGamepadVendor(gamepad);
 }
 
-inline Uint16 Gamepad::GetVendor() { return SDL::GetGamepadVendor(m_resource); }
+inline Uint16 Gamepad::GetVendor() { return SDL::GetGamepadVendor(get()); }
 
 /**
  * Get the USB product ID of an opened gamepad, if available.
@@ -79191,10 +79097,7 @@ inline Uint16 GetGamepadProduct(GamepadRef gamepad)
   return SDL_GetGamepadProduct(gamepad);
 }
 
-inline Uint16 Gamepad::GetProduct()
-{
-  return SDL::GetGamepadProduct(m_resource);
-}
+inline Uint16 Gamepad::GetProduct() { return SDL::GetGamepadProduct(get()); }
 
 /**
  * Get the product version of an opened gamepad, if available.
@@ -79217,7 +79120,7 @@ inline Uint16 GetGamepadProductVersion(GamepadRef gamepad)
 
 inline Uint16 Gamepad::GetProductVersion()
 {
-  return SDL::GetGamepadProductVersion(m_resource);
+  return SDL::GetGamepadProductVersion(get());
 }
 
 /**
@@ -79239,7 +79142,7 @@ inline Uint16 GetGamepadFirmwareVersion(GamepadRef gamepad)
 
 inline Uint16 Gamepad::GetFirmwareVersion()
 {
-  return SDL::GetGamepadFirmwareVersion(m_resource);
+  return SDL::GetGamepadFirmwareVersion(get());
 }
 
 /**
@@ -79259,10 +79162,7 @@ inline const char* GetGamepadSerial(GamepadRef gamepad)
   return SDL_GetGamepadSerial(gamepad);
 }
 
-inline const char* Gamepad::GetSerial()
-{
-  return SDL::GetGamepadSerial(m_resource);
-}
+inline const char* Gamepad::GetSerial() { return SDL::GetGamepadSerial(get()); }
 
 /**
  * Get the Steam Input handle of an opened gamepad, if available.
@@ -79284,7 +79184,7 @@ inline Uint64 GetGamepadSteamHandle(GamepadRef gamepad)
 
 inline Uint64 Gamepad::GetSteamHandle()
 {
-  return SDL::GetGamepadSteamHandle(m_resource);
+  return SDL::GetGamepadSteamHandle(get());
 }
 
 /**
@@ -79305,7 +79205,7 @@ inline JoystickConnectionState GetGamepadConnectionState(GamepadRef gamepad)
 
 inline JoystickConnectionState Gamepad::GetConnectionState()
 {
-  return SDL::GetGamepadConnectionState(m_resource);
+  return SDL::GetGamepadConnectionState(get());
 }
 
 /**
@@ -79334,7 +79234,7 @@ inline PowerState GetGamepadPowerInfo(GamepadRef gamepad, int* percent)
 
 inline PowerState Gamepad::GetPowerInfo(int* percent)
 {
-  return SDL::GetGamepadPowerInfo(m_resource, percent);
+  return SDL::GetGamepadPowerInfo(get(), percent);
 }
 
 /**
@@ -79353,7 +79253,7 @@ inline bool GamepadConnected(GamepadRef gamepad)
   return SDL_GamepadConnected(gamepad);
 }
 
-inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
+inline bool Gamepad::Connected() { return SDL::GamepadConnected(get()); }
 
 /**
  * Get the underlying joystick from a gamepad.
@@ -79382,7 +79282,7 @@ inline JoystickRef GetGamepadJoystick(GamepadRef gamepad)
 
 inline JoystickRef Gamepad::GetJoystick()
 {
-  return SDL::GetGamepadJoystick(m_resource);
+  return SDL::GetGamepadJoystick(get());
 }
 
 /**
@@ -79441,7 +79341,7 @@ inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadRef gamepad)
 
 inline OwnArray<GamepadBinding*> Gamepad::GetBindings()
 {
-  return SDL::GetGamepadBindings(m_resource);
+  return SDL::GetGamepadBindings(get());
 }
 
 /**
@@ -79568,7 +79468,7 @@ inline bool GamepadHasAxis(GamepadRef gamepad, GamepadAxis axis)
 
 inline bool Gamepad::HasAxis(GamepadAxis axis)
 {
-  return SDL::GamepadHasAxis(m_resource, axis);
+  return SDL::GamepadHasAxis(get(), axis);
 }
 
 /**
@@ -79604,7 +79504,7 @@ inline Sint16 GetGamepadAxis(GamepadRef gamepad, GamepadAxis axis)
 
 inline Sint16 Gamepad::GetAxis(GamepadAxis axis)
 {
-  return SDL::GetGamepadAxis(m_resource, axis);
+  return SDL::GetGamepadAxis(get(), axis);
 }
 
 /**
@@ -79672,7 +79572,7 @@ inline bool GamepadHasButton(GamepadRef gamepad, GamepadButton button)
 
 inline bool Gamepad::HasButton(GamepadButton button)
 {
-  return SDL::GamepadHasButton(m_resource, button);
+  return SDL::GamepadHasButton(get(), button);
 }
 
 /**
@@ -79696,7 +79596,7 @@ inline bool GetGamepadButton(GamepadRef gamepad, GamepadButton button)
 
 inline bool Gamepad::GetButton(GamepadButton button)
 {
-  return SDL::GetGamepadButton(m_resource, button);
+  return SDL::GetGamepadButton(get(), button);
 }
 
 /**
@@ -79739,7 +79639,7 @@ inline GamepadButtonLabel GetGamepadButtonLabel(GamepadRef gamepad,
 
 inline GamepadButtonLabel Gamepad::GetButtonLabel(GamepadButton button)
 {
-  return SDL::GetGamepadButtonLabel(m_resource, button);
+  return SDL::GetGamepadButtonLabel(get(), button);
 }
 
 /**
@@ -79761,7 +79661,7 @@ inline int GetNumGamepadTouchpads(GamepadRef gamepad)
 
 inline int Gamepad::GetNumTouchpads()
 {
-  return SDL::GetNumGamepadTouchpads(m_resource);
+  return SDL::GetNumGamepadTouchpads(get());
 }
 
 /**
@@ -79786,7 +79686,7 @@ inline int GetNumGamepadTouchpadFingers(GamepadRef gamepad, int touchpad)
 
 inline int Gamepad::GetNumTouchpadFingers(int touchpad)
 {
-  return SDL::GetNumGamepadTouchpadFingers(m_resource, touchpad);
+  return SDL::GetNumGamepadTouchpadFingers(get(), touchpad);
 }
 
 /**
@@ -79829,8 +79729,7 @@ inline void Gamepad::GetTouchpadFinger(int touchpad,
                                        float* y,
                                        float* pressure)
 {
-  SDL::GetGamepadTouchpadFinger(
-    m_resource, touchpad, finger, down, x, y, pressure);
+  SDL::GetGamepadTouchpadFinger(get(), touchpad, finger, down, x, y, pressure);
 }
 
 /**
@@ -79855,7 +79754,7 @@ inline bool GamepadHasSensor(GamepadRef gamepad, SensorType type)
 
 inline bool Gamepad::HasSensor(SensorType type)
 {
-  return SDL::GamepadHasSensor(m_resource, type);
+  return SDL::GamepadHasSensor(get(), type);
 }
 
 /**
@@ -79882,7 +79781,7 @@ inline void SetGamepadSensorEnabled(GamepadRef gamepad,
 
 inline void Gamepad::SetSensorEnabled(SensorType type, bool enabled)
 {
-  SDL::SetGamepadSensorEnabled(m_resource, type, enabled);
+  SDL::SetGamepadSensorEnabled(get(), type, enabled);
 }
 
 /**
@@ -79905,7 +79804,7 @@ inline bool GamepadSensorEnabled(GamepadRef gamepad, SensorType type)
 
 inline bool Gamepad::SensorEnabled(SensorType type)
 {
-  return SDL::GamepadSensorEnabled(m_resource, type);
+  return SDL::GamepadSensorEnabled(get(), type);
 }
 
 /**
@@ -79926,7 +79825,7 @@ inline float GetGamepadSensorDataRate(GamepadRef gamepad, SensorType type)
 
 inline float Gamepad::GetSensorDataRate(SensorType type)
 {
-  return SDL::GetGamepadSensorDataRate(m_resource, type);
+  return SDL::GetGamepadSensorDataRate(get(), type);
 }
 
 /**
@@ -79955,7 +79854,7 @@ inline void GetGamepadSensorData(GamepadRef gamepad,
 
 inline void Gamepad::GetSensorData(SensorType type, float* data, int num_values)
 {
-  SDL::GetGamepadSensorData(m_resource, type, data, num_values);
+  SDL::GetGamepadSensorData(get(), type, data, num_values);
 }
 
 /**
@@ -79993,7 +79892,7 @@ inline void Gamepad::Rumble(Uint16 low_frequency_rumble,
                             Uint32 duration_ms)
 {
   SDL::RumbleGamepad(
-    m_resource, low_frequency_rumble, high_frequency_rumble, duration_ms);
+    get(), low_frequency_rumble, high_frequency_rumble, duration_ms);
 }
 
 /**
@@ -80036,8 +79935,7 @@ inline void Gamepad::RumbleTriggers(Uint16 left_rumble,
                                     Uint16 right_rumble,
                                     Uint32 duration_ms)
 {
-  SDL::RumbleGamepadTriggers(
-    m_resource, left_rumble, right_rumble, duration_ms);
+  SDL::RumbleGamepadTriggers(get(), left_rumble, right_rumble, duration_ms);
 }
 
 /**
@@ -80069,7 +79967,7 @@ inline void SetGamepadLED(GamepadRef gamepad,
 
 inline void Gamepad::SetLED(Uint8 red, Uint8 green, Uint8 blue)
 {
-  SDL::SetGamepadLED(m_resource, red, green, blue);
+  SDL::SetGamepadLED(get(), red, green, blue);
 }
 
 /**
@@ -80091,7 +79989,7 @@ inline void SendGamepadEffect(GamepadRef gamepad, const void* data, int size)
 
 inline void Gamepad::SendEffect(const void* data, int size)
 {
-  SDL::SendGamepadEffect(m_resource, data, size);
+  SDL::SendGamepadEffect(get(), data, size);
 }
 
 /**
@@ -80130,7 +80028,7 @@ inline const char* GetGamepadAppleSFSymbolsNameForButton(GamepadRef gamepad,
 
 inline const char* Gamepad::GetAppleSFSymbolsNameForButton(GamepadButton button)
 {
-  return SDL::GetGamepadAppleSFSymbolsNameForButton(m_resource, button);
+  return SDL::GetGamepadAppleSFSymbolsNameForButton(get(), button);
 }
 
 /**
@@ -80154,7 +80052,7 @@ inline const char* GetGamepadAppleSFSymbolsNameForAxis(GamepadRef gamepad,
 
 inline const char* Gamepad::GetAppleSFSymbolsNameForAxis(GamepadAxis axis)
 {
-  return SDL::GetGamepadAppleSFSymbolsNameForAxis(m_resource, axis);
+  return SDL::GetGamepadAppleSFSymbolsNameForAxis(get(), axis);
 }
 
 /// @}
@@ -81543,7 +81441,7 @@ inline HapticID GetHapticID(HapticRef haptic)
   return CheckError(SDL_GetHapticID(haptic));
 }
 
-inline HapticID Haptic::GetID() { return SDL::GetHapticID(m_resource); }
+inline HapticID Haptic::GetID() { return SDL::GetHapticID(get()); }
 
 /**
  * Get the implementation dependent name of a haptic device.
@@ -81561,7 +81459,7 @@ inline const char* GetHapticName(HapticRef haptic)
   return SDL_GetHapticName(haptic);
 }
 
-inline const char* Haptic::GetName() { return SDL::GetHapticName(m_resource); }
+inline const char* Haptic::GetName() { return SDL::GetHapticName(get()); }
 
 /**
  * Query whether or not the current mouse has haptic capabilities.
@@ -81666,10 +81564,7 @@ inline int GetMaxHapticEffects(HapticRef haptic)
   return SDL_GetMaxHapticEffects(haptic);
 }
 
-inline int Haptic::GetMaxEffects()
-{
-  return SDL::GetMaxHapticEffects(m_resource);
-}
+inline int Haptic::GetMaxEffects() { return SDL::GetMaxHapticEffects(get()); }
 
 /**
  * Get the number of effects a haptic device can play at the same time.
@@ -81692,7 +81587,7 @@ inline int GetMaxHapticEffectsPlaying(HapticRef haptic)
 
 inline int Haptic::GetMaxEffectsPlaying()
 {
-  return SDL::GetMaxHapticEffectsPlaying(m_resource);
+  return SDL::GetMaxHapticEffectsPlaying(get());
 }
 
 /**
@@ -81713,10 +81608,7 @@ inline Uint32 GetHapticFeatures(HapticRef haptic)
   return CheckError(SDL_GetHapticFeatures(haptic));
 }
 
-inline Uint32 Haptic::GetFeatures()
-{
-  return SDL::GetHapticFeatures(m_resource);
-}
+inline Uint32 Haptic::GetFeatures() { return SDL::GetHapticFeatures(get()); }
 
 /**
  * Get the number of haptic axes the device has.
@@ -81735,7 +81627,7 @@ inline int GetNumHapticAxes(HapticRef haptic)
   return CheckError(SDL_GetNumHapticAxes(haptic));
 }
 
-inline int Haptic::GetNumAxes() { return SDL::GetNumHapticAxes(m_resource); }
+inline int Haptic::GetNumAxes() { return SDL::GetNumHapticAxes(get()); }
 
 /**
  * Check to see if an effect is supported by a haptic device.
@@ -81756,7 +81648,7 @@ inline bool HapticEffectSupported(HapticRef haptic, const HapticEffect& effect)
 
 inline bool Haptic::EffectSupported(const HapticEffect& effect)
 {
-  return SDL::HapticEffectSupported(m_resource, effect);
+  return SDL::HapticEffectSupported(get(), effect);
 }
 
 /**
@@ -81782,7 +81674,7 @@ inline HapticEffectID CreateHapticEffect(HapticRef haptic,
 
 inline HapticEffectID Haptic::CreateEffect(const HapticEffect& effect)
 {
-  return SDL::CreateHapticEffect(m_resource, effect);
+  return SDL::CreateHapticEffect(get(), effect);
 }
 
 /**
@@ -81814,7 +81706,7 @@ inline void UpdateHapticEffect(HapticRef haptic,
 inline void Haptic::UpdateEffect(HapticEffectID effect,
                                  const HapticEffect& data)
 {
-  SDL::UpdateHapticEffect(m_resource, effect, data);
+  SDL::UpdateHapticEffect(get(), effect, data);
 }
 
 /**
@@ -81846,7 +81738,7 @@ inline void RunHapticEffect(HapticRef haptic,
 
 inline void Haptic::RunEffect(HapticEffectID effect, Uint32 iterations)
 {
-  SDL::RunHapticEffect(m_resource, effect, iterations);
+  SDL::RunHapticEffect(get(), effect, iterations);
 }
 
 /**
@@ -81868,7 +81760,7 @@ inline void StopHapticEffect(HapticRef haptic, HapticEffectID effect)
 
 inline void Haptic::StopEffect(HapticEffectID effect)
 {
-  SDL::StopHapticEffect(m_resource, effect);
+  SDL::StopHapticEffect(get(), effect);
 }
 
 /**
@@ -81891,7 +81783,7 @@ inline void DestroyHapticEffect(HapticRef haptic, HapticEffectID effect)
 
 inline void Haptic::DestroyEffect(HapticEffectID effect)
 {
-  SDL::DestroyHapticEffect(m_resource, effect);
+  SDL::DestroyHapticEffect(get(), effect);
 }
 
 /**
@@ -81915,7 +81807,7 @@ inline bool GetHapticEffectStatus(HapticRef haptic, HapticEffectID effect)
 
 inline bool Haptic::GetEffectStatus(HapticEffectID effect)
 {
-  return SDL::GetHapticEffectStatus(m_resource, effect);
+  return SDL::GetHapticEffectStatus(get(), effect);
 }
 
 /**
@@ -81941,7 +81833,7 @@ inline void SetHapticGain(HapticRef haptic, int gain)
   CheckError(SDL_SetHapticGain(haptic, gain));
 }
 
-inline void Haptic::SetGain(int gain) { SDL::SetHapticGain(m_resource, gain); }
+inline void Haptic::SetGain(int gain) { SDL::SetHapticGain(get(), gain); }
 
 /**
  * Set the global autocenter of the device.
@@ -81966,7 +81858,7 @@ inline void SetHapticAutocenter(HapticRef haptic, int autocenter)
 
 inline void Haptic::SetAutocenter(int autocenter)
 {
-  SDL::SetHapticAutocenter(m_resource, autocenter);
+  SDL::SetHapticAutocenter(get(), autocenter);
 }
 
 /**
@@ -81990,7 +81882,7 @@ inline void PauseHaptic(HapticRef haptic)
   CheckError(SDL_PauseHaptic(haptic));
 }
 
-inline void Haptic::Pause() { SDL::PauseHaptic(m_resource); }
+inline void Haptic::Pause() { SDL::PauseHaptic(get()); }
 
 /**
  * Resume a haptic device.
@@ -82009,7 +81901,7 @@ inline void ResumeHaptic(HapticRef haptic)
   CheckError(SDL_ResumeHaptic(haptic));
 }
 
-inline void Haptic::Resume() { SDL::ResumeHaptic(m_resource); }
+inline void Haptic::Resume() { SDL::ResumeHaptic(get()); }
 
 /**
  * Stop all the currently playing effects on a haptic device.
@@ -82027,7 +81919,7 @@ inline void StopHapticEffects(HapticRef haptic)
   CheckError(SDL_StopHapticEffects(haptic));
 }
 
-inline void Haptic::StopEffects() { SDL::StopHapticEffects(m_resource); }
+inline void Haptic::StopEffects() { SDL::StopHapticEffects(get()); }
 
 /**
  * Check whether rumble is supported on a haptic device.
@@ -82046,7 +81938,7 @@ inline bool HapticRumbleSupported(HapticRef haptic)
 
 inline bool Haptic::RumbleSupported()
 {
-  return SDL::HapticRumbleSupported(m_resource);
+  return SDL::HapticRumbleSupported(get());
 }
 
 /**
@@ -82066,7 +81958,7 @@ inline void InitHapticRumble(HapticRef haptic)
   CheckError(SDL_InitHapticRumble(haptic));
 }
 
-inline void Haptic::InitRumble() { SDL::InitHapticRumble(m_resource); }
+inline void Haptic::InitRumble() { SDL::InitHapticRumble(get()); }
 
 /**
  * Run a simple rumble effect on a haptic device.
@@ -82088,7 +81980,7 @@ inline void PlayHapticRumble(HapticRef haptic, float strength, Uint32 length)
 
 inline void Haptic::PlayRumble(float strength, Uint32 length)
 {
-  SDL::PlayHapticRumble(m_resource, strength, length);
+  SDL::PlayHapticRumble(get(), strength, length);
 }
 
 /**
@@ -82106,7 +81998,7 @@ inline void StopHapticRumble(HapticRef haptic)
   CheckError(SDL_StopHapticRumble(haptic));
 }
 
-inline void Haptic::StopRumble() { SDL::StopHapticRumble(m_resource); }
+inline void Haptic::StopRumble() { SDL::StopHapticRumble(get()); }
 
 /// @}
 
@@ -87156,7 +87048,7 @@ inline GPUDeviceRef GetGPURendererDevice(RendererRef renderer)
 
 inline GPUDeviceRef Renderer::GetGPUDevice()
 {
-  return SDL::GetGPURendererDevice(m_resource);
+  return SDL::GetGPURendererDevice(get());
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -87187,7 +87079,7 @@ inline Renderer CreateSoftwareRenderer(SurfaceRef surface)
 
 inline RendererRef Window::GetRenderer() const
 {
-  return CheckError(SDL_GetRenderer(m_resource));
+  return CheckError(SDL_GetRenderer(get()));
 }
 
 /**
@@ -87206,10 +87098,7 @@ inline WindowRef GetRenderWindow(RendererRef renderer)
   return CheckError(SDL_GetRenderWindow(renderer));
 }
 
-inline WindowRef Renderer::GetWindow()
-{
-  return SDL::GetRenderWindow(m_resource);
-}
+inline WindowRef Renderer::GetWindow() { return SDL::GetRenderWindow(get()); }
 
 /**
  * Get the name of a renderer.
@@ -87232,7 +87121,7 @@ inline const char* GetRendererName(RendererRef renderer)
 
 inline const char* Renderer::GetName() const
 {
-  return SDL::GetRendererName(m_resource);
+  return SDL::GetRendererName(get());
 }
 
 /**
@@ -87327,7 +87216,7 @@ inline PropertiesRef GetRendererProperties(RendererRef renderer)
 
 inline PropertiesRef Renderer::GetProperties() const
 {
-  return SDL::GetRendererProperties(m_resource);
+  return SDL::GetRendererProperties(get());
 }
 
 /**
@@ -87383,12 +87272,12 @@ inline Point GetRenderOutputSize(RendererRef renderer)
 
 inline void Renderer::GetOutputSize(int* w, int* h) const
 {
-  SDL::GetRenderOutputSize(m_resource, w, h);
+  SDL::GetRenderOutputSize(get(), w, h);
 }
 
 inline Point Renderer::GetOutputSize() const
 {
-  return SDL::GetRenderOutputSize(m_resource);
+  return SDL::GetRenderOutputSize(get());
 }
 
 /**
@@ -87444,12 +87333,12 @@ inline Point GetCurrentRenderOutputSize(RendererRef renderer)
 
 inline void Renderer::GetCurrentOutputSize(int* w, int* h) const
 {
-  SDL::GetCurrentRenderOutputSize(m_resource, w, h);
+  SDL::GetCurrentRenderOutputSize(get(), w, h);
 }
 
 inline Point Renderer::GetCurrentOutputSize() const
 {
-  return SDL::GetCurrentRenderOutputSize(m_resource);
+  return SDL::GetCurrentRenderOutputSize(get());
 }
 
 /**
@@ -87486,7 +87375,7 @@ inline Texture Renderer::CreateTexture(PixelFormat format,
                                        TextureAccess access,
                                        const PointRaw& size)
 {
-  return Texture(m_resource, format, access, size);
+  return Texture(get(), format, access, size);
 }
 
 inline Texture::Texture(RendererRef renderer,
@@ -87540,7 +87429,7 @@ inline Texture CreateTextureFromSurface(RendererRef renderer,
 
 inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
 {
-  return Texture(m_resource, surface);
+  return Texture(get(), surface);
 }
 
 /**
@@ -87672,7 +87561,7 @@ inline Texture CreateTextureWithProperties(RendererRef renderer,
 
 inline Texture Renderer::CreateTextureWithProperties(PropertiesRef props)
 {
-  return Texture(m_resource, props);
+  return Texture(get(), props);
 }
 
 /**
@@ -87958,7 +87847,7 @@ inline PropertiesRef GetTextureProperties(TextureConstRef texture)
 
 inline PropertiesRef Texture::GetProperties() const
 {
-  return SDL::GetTextureProperties(m_resource);
+  return SDL::GetTextureProperties(get());
 }
 
 /**
@@ -87979,7 +87868,7 @@ inline RendererRef GetRendererFromTexture(TextureConstRef texture)
 
 inline RendererRef Texture::GetRenderer() const
 {
-  return SDL::GetRendererFromTexture(m_resource);
+  return SDL::GetRendererFromTexture(get());
 }
 
 /**
@@ -88009,13 +87898,10 @@ inline Point GetTextureSize(TextureConstRef texture)
 
 inline void Texture::GetSize(float* w, float* h) const
 {
-  SDL::GetTextureSize(m_resource, w, h);
+  SDL::GetTextureSize(get(), w, h);
 }
 
-inline Point Texture::GetSize() const
-{
-  return SDL::GetTextureSize(m_resource);
-}
+inline Point Texture::GetSize() const { return SDL::GetTextureSize(get()); }
 
 /// Get the size of a texture, as floating point values.
 inline FPoint GetTextureSizeFloat(TextureConstRef texture)
@@ -88027,24 +87913,18 @@ inline FPoint GetTextureSizeFloat(TextureConstRef texture)
 
 inline FPoint Texture::GetSizeFloat() const
 {
-  return SDL::GetTextureSizeFloat(m_resource);
+  return SDL::GetTextureSizeFloat(get());
 }
 
 /// Get the width in pixels.
 inline int GetTextureWidth(TextureConstRef texture) { return texture->w; }
 
-inline int Texture::GetWidth() const
-{
-  return SDL::GetTextureWidth(m_resource);
-}
+inline int Texture::GetWidth() const { return SDL::GetTextureWidth(get()); }
 
 /// Get the height in pixels.
 inline int GetTextureHeight(TextureConstRef texture) { return texture->h; }
 
-inline int Texture::GetHeight() const
-{
-  return SDL::GetTextureHeight(m_resource);
-}
+inline int Texture::GetHeight() const { return SDL::GetTextureHeight(get()); }
 
 /// Get the pixel format.
 inline PixelFormat GetTextureFormat(TextureConstRef texture)
@@ -88054,7 +87934,7 @@ inline PixelFormat GetTextureFormat(TextureConstRef texture)
 
 inline PixelFormat Texture::GetFormat() const
 {
-  return SDL::GetTextureFormat(m_resource);
+  return SDL::GetTextureFormat(get());
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -88085,7 +87965,7 @@ inline void SetTexturePalette(TextureRef texture, PaletteRef palette)
 
 inline void Texture::SetPalette(PaletteRef palette)
 {
-  SDL::SetTexturePalette(m_resource, palette);
+  SDL::SetTexturePalette(get(), palette);
 }
 
 /**
@@ -88106,10 +87986,7 @@ inline Palette GetTexturePalette(TextureRef texture)
   return Palette::Borrow(SDL_GetTexturePalette(texture));
 }
 
-inline Palette Texture::GetPalette()
-{
-  return SDL::GetTexturePalette(m_resource);
-}
+inline Palette Texture::GetPalette() { return SDL::GetTexturePalette(get()); }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -88146,7 +88023,7 @@ inline void SetTextureColorMod(TextureRef texture, Uint8 r, Uint8 g, Uint8 b)
 
 inline void Texture::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
 {
-  SDL::SetTextureColorMod(m_resource, r, g, b);
+  SDL::SetTextureColorMod(get(), r, g, b);
 }
 
 /**
@@ -88185,7 +88062,7 @@ inline void SetTextureColorModFloat(TextureRef texture,
 
 inline void Texture::SetColorModFloat(float r, float g, float b)
 {
-  SDL::SetTextureColorModFloat(m_resource, r, g, b);
+  SDL::SetTextureColorModFloat(get(), r, g, b);
 }
 
 /**
@@ -88215,7 +88092,7 @@ inline void GetTextureColorMod(TextureConstRef texture,
 
 inline void Texture::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
 {
-  SDL::GetTextureColorMod(m_resource, r, g, b);
+  SDL::GetTextureColorMod(get(), r, g, b);
 }
 
 /**
@@ -88245,7 +88122,7 @@ inline void GetTextureColorModFloat(TextureConstRef texture,
 
 inline void Texture::GetColorModFloat(float* r, float* g, float* b) const
 {
-  SDL::GetTextureColorModFloat(m_resource, r, g, b);
+  SDL::GetTextureColorModFloat(get(), r, g, b);
 }
 
 /**
@@ -88278,7 +88155,7 @@ inline void SetTextureAlphaMod(TextureRef texture, Uint8 alpha)
 
 inline void Texture::SetAlphaMod(Uint8 alpha)
 {
-  SDL::SetTextureAlphaMod(m_resource, alpha);
+  SDL::SetTextureAlphaMod(get(), alpha);
 }
 
 /**
@@ -88311,7 +88188,7 @@ inline void SetTextureAlphaModFloat(TextureRef texture, float alpha)
 
 inline void Texture::SetAlphaModFloat(float alpha)
 {
-  SDL::SetTextureAlphaModFloat(m_resource, alpha);
+  SDL::SetTextureAlphaModFloat(get(), alpha);
 }
 
 /**
@@ -88338,7 +88215,7 @@ inline Uint8 GetTextureAlphaMod(TextureConstRef texture)
 
 inline Uint8 Texture::GetAlphaMod() const
 {
-  return SDL::GetTextureAlphaMod(m_resource);
+  return SDL::GetTextureAlphaMod(get());
 }
 
 /**
@@ -88365,7 +88242,7 @@ inline float GetTextureAlphaModFloat(TextureConstRef texture)
 
 inline float Texture::GetAlphaModFloat() const
 {
-  return SDL::GetTextureAlphaModFloat(m_resource);
+  return SDL::GetTextureAlphaModFloat(get());
 }
 
 /**
@@ -88397,7 +88274,7 @@ inline void SetTextureMod(TextureRef texture, Color c)
   SetTextureAlphaMod(texture, c.a);
 }
 
-inline void Texture::SetMod(Color c) { SDL::SetTextureMod(m_resource, c); }
+inline void Texture::SetMod(Color c) { SDL::SetTextureMod(get(), c); }
 
 /**
  * Set an additional color and alpha values multiplied into render copy
@@ -88430,7 +88307,7 @@ inline void SetTextureModFloat(TextureRef texture, FColor c)
 
 inline void Texture::SetModFloat(FColor c)
 {
-  SDL::SetTextureModFloat(m_resource, c);
+  SDL::SetTextureModFloat(get(), c);
 }
 
 /**
@@ -88455,7 +88332,7 @@ inline Color GetTextureMod(TextureConstRef texture)
   return c;
 }
 
-inline Color Texture::GetMod() const { return SDL::GetTextureMod(m_resource); }
+inline Color Texture::GetMod() const { return SDL::GetTextureMod(get()); }
 
 /**
  * Get the additional color value multiplied into render copy operations.
@@ -88481,7 +88358,7 @@ inline FColor GetTextureModFloat(TextureConstRef texture)
 
 inline FColor Texture::GetModFloat() const
 {
-  return SDL::GetTextureModFloat(m_resource);
+  return SDL::GetTextureModFloat(get());
 }
 
 /**
@@ -88507,7 +88384,7 @@ inline void SetTextureBlendMode(TextureRef texture, BlendMode blendMode)
 
 inline void Texture::SetBlendMode(BlendMode blendMode)
 {
-  SDL::SetTextureBlendMode(m_resource, blendMode);
+  SDL::SetTextureBlendMode(get(), blendMode);
 }
 
 /**
@@ -88532,7 +88409,7 @@ inline BlendMode GetTextureBlendMode(TextureConstRef texture)
 
 inline BlendMode Texture::GetBlendMode() const
 {
-  return SDL::GetTextureBlendMode(m_resource);
+  return SDL::GetTextureBlendMode(get());
 }
 
 /**
@@ -88559,7 +88436,7 @@ inline void SetTextureScaleMode(TextureRef texture, ScaleMode scaleMode)
 
 inline void Texture::SetScaleMode(ScaleMode scaleMode)
 {
-  SDL::SetTextureScaleMode(m_resource, scaleMode);
+  SDL::SetTextureScaleMode(get(), scaleMode);
 }
 
 /**
@@ -88584,7 +88461,7 @@ inline ScaleMode GetTextureScaleMode(TextureConstRef texture)
 
 inline ScaleMode Texture::GetScaleMode() const
 {
-  return SDL::GetTextureScaleMode(m_resource);
+  return SDL::GetTextureScaleMode(get());
 }
 
 /**
@@ -88667,13 +88544,13 @@ inline void Texture::Update(OptionalRef<const RectRaw> rect,
                             const void* pixels,
                             int pitch)
 {
-  SDL::UpdateTexture(m_resource, rect, pixels, pitch);
+  SDL::UpdateTexture(get(), rect, pixels, pitch);
 }
 
 inline void Texture::Update(SurfaceConstRef surface,
                             OptionalRef<const RectRaw> rect)
 {
-  SDL::UpdateTexture(m_resource, surface, rect);
+  SDL::UpdateTexture(get(), surface, rect);
 }
 
 /**
@@ -88723,7 +88600,7 @@ inline void Texture::UpdateYUV(OptionalRef<const RectRaw> rect,
                                int Vpitch)
 {
   SDL::UpdateYUVTexture(
-    m_resource, rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch);
+    get(), rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch);
 }
 
 /**
@@ -88767,7 +88644,7 @@ inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
                               const Uint8* UVplane,
                               int UVpitch)
 {
-  SDL::UpdateNVTexture(m_resource, rect, Yplane, Ypitch, UVplane, UVpitch);
+  SDL::UpdateNVTexture(get(), rect, Yplane, Ypitch, UVplane, UVpitch);
 }
 
 /**
@@ -88953,7 +88830,7 @@ inline void SetRenderTarget(RendererRef renderer, TextureRef texture)
 
 inline void Renderer::SetTarget(TextureRef texture)
 {
-  SDL::SetRenderTarget(m_resource, texture);
+  SDL::SetRenderTarget(get(), texture);
 }
 
 /**
@@ -88976,7 +88853,7 @@ inline void ResetRenderTarget(RendererRef renderer)
   SetRenderTarget(renderer, nullptr);
 }
 
-inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(m_resource); }
+inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(get()); }
 
 /**
  * Get the current render target.
@@ -89002,7 +88879,7 @@ inline Texture GetRenderTarget(RendererRef renderer)
 
 inline Texture Renderer::GetTarget() const
 {
-  return SDL::GetRenderTarget(m_resource);
+  return SDL::GetRenderTarget(get());
 }
 
 /**
@@ -89058,7 +88935,7 @@ inline void SetRenderLogicalPresentation(RendererRef renderer,
 inline void Renderer::SetLogicalPresentation(const PointRaw& size,
                                              RendererLogicalPresentation mode)
 {
-  SDL::SetRenderLogicalPresentation(m_resource, size, mode);
+  SDL::SetRenderLogicalPresentation(get(), size, mode);
 }
 
 /**
@@ -89126,13 +89003,13 @@ inline void Renderer::GetLogicalPresentation(
   int* h,
   RendererLogicalPresentation* mode) const
 {
-  SDL::GetRenderLogicalPresentation(m_resource, w, h, mode);
+  SDL::GetRenderLogicalPresentation(get(), w, h, mode);
 }
 
 inline void Renderer::GetLogicalPresentation(PointRaw* size,
                                              RendererLogicalPresentation* mode)
 {
-  SDL::GetRenderLogicalPresentation(m_resource, size, mode);
+  SDL::GetRenderLogicalPresentation(get(), size, mode);
 }
 
 /**
@@ -89164,7 +89041,7 @@ inline FRect GetRenderLogicalPresentationRect(RendererRef renderer)
 
 inline FRect Renderer::GetLogicalPresentationRect() const
 {
-  return SDL::GetRenderLogicalPresentationRect(m_resource);
+  return SDL::GetRenderLogicalPresentationRect(get());
 }
 
 /**
@@ -89201,7 +89078,7 @@ inline FPoint RenderCoordinatesFromWindow(RendererRef renderer,
 inline FPoint Renderer::RenderCoordinatesFromWindow(
   const FPointRaw& window_coord) const
 {
-  return SDL::RenderCoordinatesFromWindow(m_resource, window_coord);
+  return SDL::RenderCoordinatesFromWindow(get(), window_coord);
 }
 
 /**
@@ -89238,7 +89115,7 @@ inline FPoint RenderCoordinatesToWindow(RendererRef renderer,
 
 inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
 {
-  return SDL::RenderCoordinatesToWindow(m_resource, coord);
+  return SDL::RenderCoordinatesToWindow(get(), coord);
 }
 
 /**
@@ -89280,7 +89157,7 @@ inline void ConvertEventToRenderCoordinates(RendererRef renderer, Event* event)
 
 inline void Renderer::ConvertEventToRenderCoordinates(Event* event) const
 {
-  SDL::ConvertEventToRenderCoordinates(m_resource, event);
+  SDL::ConvertEventToRenderCoordinates(get(), event);
 }
 
 /**
@@ -89315,7 +89192,7 @@ inline void SetRenderViewport(RendererRef renderer,
 
 inline void Renderer::SetViewport(OptionalRef<const RectRaw> rect)
 {
-  SDL::SetRenderViewport(m_resource, rect);
+  SDL::SetRenderViewport(get(), rect);
 }
 
 /**
@@ -89339,7 +89216,7 @@ inline void ResetRenderViewport(RendererRef renderer)
   SetRenderViewport(renderer, std::nullopt);
 }
 
-inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(m_resource); }
+inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(get()); }
 
 /**
  * Get the drawing area for the current target.
@@ -89367,7 +89244,7 @@ inline Rect GetRenderViewport(RendererRef renderer)
 
 inline Rect Renderer::GetViewport() const
 {
-  return SDL::GetRenderViewport(m_resource);
+  return SDL::GetRenderViewport(get());
 }
 
 /**
@@ -89397,7 +89274,7 @@ inline bool RenderViewportSet(RendererRef renderer)
 
 inline bool Renderer::ViewportSet() const
 {
-  return SDL::RenderViewportSet(m_resource);
+  return SDL::RenderViewportSet(get());
 }
 
 /**
@@ -89427,7 +89304,7 @@ inline Rect GetRenderSafeArea(RendererRef renderer)
 
 inline Rect Renderer::GetSafeArea() const
 {
-  return SDL::GetRenderSafeArea(m_resource);
+  return SDL::GetRenderSafeArea(get());
 }
 
 /**
@@ -89456,7 +89333,7 @@ inline void SetRenderClipRect(RendererRef renderer,
 
 inline void Renderer::SetClipRect(OptionalRef<const RectRaw> rect)
 {
-  SDL::SetRenderClipRect(m_resource, rect);
+  SDL::SetRenderClipRect(get(), rect);
 }
 
 /**
@@ -89480,7 +89357,7 @@ inline void ResetRenderClipRect(RendererRef renderer)
   SetRenderClipRect(renderer, std::nullopt);
 }
 
-inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(m_resource); }
+inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(get()); }
 
 /**
  * Get the clip rectangle for the current target.
@@ -89509,7 +89386,7 @@ inline Rect GetRenderClipRect(RendererRef renderer)
 
 inline Rect Renderer::GetClipRect() const
 {
-  return SDL::GetRenderClipRect(m_resource);
+  return SDL::GetRenderClipRect(get());
 }
 
 /**
@@ -89536,7 +89413,7 @@ inline bool RenderClipEnabled(RendererRef renderer)
 
 inline bool Renderer::IsClipEnabled() const
 {
-  return SDL::RenderClipEnabled(m_resource);
+  return SDL::RenderClipEnabled(get());
 }
 
 /**
@@ -89570,7 +89447,7 @@ inline void SetRenderScale(RendererRef renderer, const FPointRaw& scale)
 
 inline void Renderer::SetScale(const FPointRaw& scale)
 {
-  SDL::SetRenderScale(m_resource, scale);
+  SDL::SetRenderScale(get(), scale);
 }
 
 /**
@@ -89619,13 +89496,10 @@ inline FPoint GetRenderScale(RendererRef renderer)
 
 inline void Renderer::GetScale(float* scaleX, float* scaleY) const
 {
-  SDL::GetRenderScale(m_resource, scaleX, scaleY);
+  SDL::GetRenderScale(get(), scaleX, scaleY);
 }
 
-inline FPoint Renderer::GetScale() const
-{
-  return SDL::GetRenderScale(m_resource);
-}
+inline FPoint Renderer::GetScale() const { return SDL::GetRenderScale(get()); }
 
 /**
  * Set the color used for drawing operations.
@@ -89651,7 +89525,7 @@ inline void SetRenderDrawColor(RendererRef renderer, ColorRaw c)
 
 inline void Renderer::SetDrawColor(ColorRaw c)
 {
-  SDL::SetRenderDrawColor(m_resource, c);
+  SDL::SetRenderDrawColor(get(), c);
 }
 
 /**
@@ -89678,7 +89552,7 @@ inline void SetRenderDrawColorFloat(RendererRef renderer, const FColorRaw& c)
 
 inline void Renderer::SetDrawColorFloat(const FColorRaw& c)
 {
-  SDL::SetRenderDrawColorFloat(m_resource, c);
+  SDL::SetRenderDrawColorFloat(get(), c);
 }
 
 /**
@@ -89734,12 +89608,12 @@ inline Color GetRenderDrawColor(RendererRef renderer)
 
 inline void Renderer::GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
 {
-  SDL::GetRenderDrawColor(m_resource, r, g, b, a);
+  SDL::GetRenderDrawColor(get(), r, g, b, a);
 }
 
 inline Color Renderer::GetDrawColor() const
 {
-  return SDL::GetRenderDrawColor(m_resource);
+  return SDL::GetRenderDrawColor(get());
 }
 
 /**
@@ -89798,12 +89672,12 @@ inline void Renderer::GetDrawColorFloat(float* r,
                                         float* b,
                                         float* a) const
 {
-  SDL::GetRenderDrawColorFloat(m_resource, r, g, b, a);
+  SDL::GetRenderDrawColorFloat(get(), r, g, b, a);
 }
 
 inline FColor Renderer::GetDrawColorFloat() const
 {
-  return SDL::GetRenderDrawColorFloat(m_resource);
+  return SDL::GetRenderDrawColorFloat(get());
 }
 
 /**
@@ -89833,7 +89707,7 @@ inline void SetRenderColorScale(RendererRef renderer, float scale)
 
 inline void Renderer::SetColorScale(float scale)
 {
-  SDL::SetRenderColorScale(m_resource, scale);
+  SDL::SetRenderColorScale(get(), scale);
 }
 
 /**
@@ -89858,7 +89732,7 @@ inline float GetRenderColorScale(RendererRef renderer)
 
 inline float Renderer::GetColorScale() const
 {
-  return SDL::GetRenderColorScale(m_resource);
+  return SDL::GetRenderColorScale(get());
 }
 
 /**
@@ -89883,7 +89757,7 @@ inline void SetRenderDrawBlendMode(RendererRef renderer, BlendMode blendMode)
 
 inline void Renderer::SetDrawBlendMode(BlendMode blendMode)
 {
-  SDL::SetRenderDrawBlendMode(m_resource, blendMode);
+  SDL::SetRenderDrawBlendMode(get(), blendMode);
 }
 
 /**
@@ -89908,7 +89782,7 @@ inline BlendMode GetRenderDrawBlendMode(RendererRef renderer)
 
 inline BlendMode Renderer::GetDrawBlendMode() const
 {
-  return SDL::GetRenderDrawBlendMode(m_resource);
+  return SDL::GetRenderDrawBlendMode(get());
 }
 
 /**
@@ -89933,7 +89807,7 @@ inline void RenderClear(RendererRef renderer)
   CheckError(SDL_RenderClear(renderer));
 }
 
-inline void Renderer::RenderClear() { SDL::RenderClear(m_resource); }
+inline void Renderer::RenderClear() { SDL::RenderClear(get()); }
 
 /**
  * Draw a point on the current rendering target at subpixel precision.
@@ -89955,7 +89829,7 @@ inline void RenderPoint(RendererRef renderer, const FPointRaw& p)
 
 inline void Renderer::RenderPoint(const FPointRaw& p)
 {
-  SDL::RenderPoint(m_resource, p);
+  SDL::RenderPoint(get(), p);
 }
 
 /**
@@ -89979,7 +89853,7 @@ inline void RenderPoints(RendererRef renderer, SpanRef<const FPointRaw> points)
 
 inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
 {
-  SDL::RenderPoints(m_resource, points);
+  SDL::RenderPoints(get(), points);
 }
 
 /**
@@ -90005,7 +89879,7 @@ inline void RenderLine(RendererRef renderer,
 
 inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
 {
-  SDL::RenderLine(m_resource, p1, p2);
+  SDL::RenderLine(get(), p1, p2);
 }
 
 /**
@@ -90030,7 +89904,7 @@ inline void RenderLines(RendererRef renderer, SpanRef<const FPointRaw> points)
 
 inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
 {
-  SDL::RenderLines(m_resource, points);
+  SDL::RenderLines(get(), points);
 }
 
 /**
@@ -90054,7 +89928,7 @@ inline void RenderRect(RendererRef renderer, OptionalRef<const FRectRaw> rect)
 
 inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
 {
-  SDL::RenderRect(m_resource, rect);
+  SDL::RenderRect(get(), rect);
 }
 
 /**
@@ -90078,7 +89952,7 @@ inline void RenderRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 
 inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
 {
-  SDL::RenderRects(m_resource, rects);
+  SDL::RenderRects(get(), rects);
 }
 
 /**
@@ -90104,7 +89978,7 @@ inline void RenderFillRect(RendererRef renderer,
 
 inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
 {
-  SDL::RenderFillRect(m_resource, rect);
+  SDL::RenderFillRect(get(), rect);
 }
 
 /**
@@ -90129,7 +90003,7 @@ inline void RenderFillRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 
 inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
 {
-  SDL::RenderFillRects(m_resource, rects);
+  SDL::RenderFillRects(get(), rects);
 }
 
 /**
@@ -90163,7 +90037,7 @@ inline void Renderer::RenderTexture(TextureRef texture,
                                     OptionalRef<const FRectRaw> srcrect,
                                     OptionalRef<const FRectRaw> dstrect)
 {
-  SDL::RenderTexture(m_resource, texture, srcrect, dstrect);
+  SDL::RenderTexture(get(), texture, srcrect, dstrect);
 }
 
 /**
@@ -90211,7 +90085,7 @@ inline void Renderer::RenderTextureRotated(TextureRef texture,
                                            FlipMode flip)
 {
   SDL::RenderTextureRotated(
-    m_resource, texture, srcrect, dstrect, angle, center, flip);
+    get(), texture, srcrect, dstrect, angle, center, flip);
 }
 
 /**
@@ -90256,7 +90130,7 @@ inline void Renderer::RenderTextureAffine(TextureRef texture,
                                           OptionalRef<const FPointRaw> right,
                                           OptionalRef<const FPointRaw> down)
 {
-  SDL::RenderTextureAffine(m_resource, texture, srcrect, origin, right, down);
+  SDL::RenderTextureAffine(get(), texture, srcrect, origin, right, down);
 }
 
 /**
@@ -90298,7 +90172,7 @@ inline void Renderer::RenderTextureTiled(TextureRef texture,
                                          float scale,
                                          OptionalRef<const FRectRaw> dstrect)
 {
-  SDL::RenderTextureTiled(m_resource, texture, srcrect, scale, dstrect);
+  SDL::RenderTextureTiled(get(), texture, srcrect, scale, dstrect);
 }
 
 /**
@@ -90363,7 +90237,7 @@ inline void Renderer::RenderTexture9Grid(TextureRef texture,
                                          float scale,
                                          OptionalRef<const FRectRaw> dstrect)
 {
-  SDL::RenderTexture9Grid(m_resource,
+  SDL::RenderTexture9Grid(get(),
                           texture,
                           srcrect,
                           left_width,
@@ -90444,7 +90318,7 @@ inline void Renderer::RenderTexture9GridTiled(TextureRef texture,
                                               const FRectRaw& dstrect,
                                               float tileScale)
 {
-  SDL::RenderTexture9GridTiled(m_resource,
+  SDL::RenderTexture9GridTiled(get(),
                                texture,
                                srcrect,
                                left_width,
@@ -90495,7 +90369,7 @@ inline void Renderer::RenderGeometry(TextureRef texture,
                                      std::span<const Vertex> vertices,
                                      std::span<const int> indices)
 {
-  SDL::RenderGeometry(m_resource, texture, vertices, indices);
+  SDL::RenderGeometry(get(), texture, vertices, indices);
 }
 
 /**
@@ -90564,7 +90438,7 @@ inline void Renderer::RenderGeometryRaw(TextureRef texture,
                                         int num_indices,
                                         int size_indices)
 {
-  SDL::RenderGeometryRaw(m_resource,
+  SDL::RenderGeometryRaw(get(),
                          texture,
                          xy,
                          xy_stride,
@@ -90608,7 +90482,7 @@ inline void SetRenderTextureAddressMode(RendererRef renderer,
 inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
                                                   TextureAddressMode v_mode)
 {
-  SDL::SetRenderTextureAddressMode(m_resource, u_mode, v_mode);
+  SDL::SetRenderTextureAddressMode(get(), u_mode, v_mode);
 }
 
 /**
@@ -90639,7 +90513,7 @@ inline void GetRenderTextureAddressMode(RendererRef renderer,
 inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
                                                   TextureAddressMode* v_mode)
 {
-  SDL::GetRenderTextureAddressMode(m_resource, u_mode, v_mode);
+  SDL::GetRenderTextureAddressMode(get(), u_mode, v_mode);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
@@ -90677,7 +90551,7 @@ inline Surface RenderReadPixels(RendererRef renderer,
 
 inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
 {
-  return SDL::RenderReadPixels(m_resource, rect);
+  return SDL::RenderReadPixels(get(), rect);
 }
 
 /**
@@ -90730,7 +90604,7 @@ inline void RenderPresent(RendererRef renderer)
   CheckError(SDL_RenderPresent(renderer));
 }
 
-inline void Renderer::Present() { SDL::RenderPresent(m_resource); }
+inline void Renderer::Present() { SDL::RenderPresent(get()); }
 
 /**
  * Destroy the specified texture.
@@ -90806,7 +90680,7 @@ inline void FlushRenderer(RendererRef renderer)
   CheckError(SDL_FlushRenderer(renderer));
 }
 
-inline void Renderer::Flush() { SDL::FlushRenderer(m_resource); }
+inline void Renderer::Flush() { SDL::FlushRenderer(get()); }
 
 /**
  * Get the CAMetalLayer associated with the given Metal renderer.
@@ -90831,7 +90705,7 @@ inline void* GetRenderMetalLayer(RendererRef renderer)
 
 inline void* Renderer::GetRenderMetalLayer()
 {
-  return SDL::GetRenderMetalLayer(m_resource);
+  return SDL::GetRenderMetalLayer(get());
 }
 
 /**
@@ -90862,7 +90736,7 @@ inline void* GetRenderMetalCommandEncoder(RendererRef renderer)
 
 inline void* Renderer::GetRenderMetalCommandEncoder()
 {
-  return SDL::GetRenderMetalCommandEncoder(m_resource);
+  return SDL::GetRenderMetalCommandEncoder(get());
 }
 
 /**
@@ -90905,7 +90779,7 @@ inline void Renderer::AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
                                                 Sint64 signal_semaphore)
 {
   SDL::AddVulkanRenderSemaphores(
-    m_resource, wait_stage_mask, wait_semaphore, signal_semaphore);
+    get(), wait_stage_mask, wait_semaphore, signal_semaphore);
 }
 
 /**
@@ -90935,10 +90809,7 @@ inline void SetRenderVSync(RendererRef renderer, int vsync)
   CheckError(SDL_SetRenderVSync(renderer, vsync));
 }
 
-inline void Renderer::SetVSync(int vsync)
-{
-  SDL::SetRenderVSync(m_resource, vsync);
-}
+inline void Renderer::SetVSync(int vsync) { SDL::SetRenderVSync(get(), vsync); }
 
 /// Constant for disabling renderer vsync
 constexpr int RENDERER_VSYNC_DISABLED = SDL_RENDERER_VSYNC_DISABLED;
@@ -90967,10 +90838,7 @@ inline int GetRenderVSync(RendererRef renderer)
   return vsync;
 }
 
-inline int Renderer::GetVSync() const
-{
-  return SDL::GetRenderVSync(m_resource);
-}
+inline int Renderer::GetVSync() const { return SDL::GetRenderVSync(get()); }
 
 /**
  * The size, in pixels, of a single Renderer.RenderDebugText() character.
@@ -91030,7 +90898,7 @@ inline void RenderDebugText(RendererRef renderer,
 
 inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
 {
-  SDL::RenderDebugText(m_resource, p, std::move(str));
+  SDL::RenderDebugText(get(), p, std::move(str));
 }
 
 /**
@@ -91072,7 +90940,7 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
                                             std::string_view fmt,
                                             ARGS... args)
 {
-  SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
+  SDL::RenderDebugTextFormat(get(), p, fmt, args...);
 }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -91100,7 +90968,7 @@ inline void SetDefaultTextureScaleMode(RendererRef renderer,
 
 inline void Renderer::SetDefaultTextureScaleMode(ScaleMode scale_mode)
 {
-  SDL::SetDefaultTextureScaleMode(m_resource, scale_mode);
+  SDL::SetDefaultTextureScaleMode(get(), scale_mode);
 }
 
 /**
@@ -91126,7 +90994,7 @@ inline void GetDefaultTextureScaleMode(RendererRef renderer,
 
 inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
 {
-  SDL::GetDefaultTextureScaleMode(m_resource, scale_mode);
+  SDL::GetDefaultTextureScaleMode(get(), scale_mode);
 }
 
 /**
@@ -91359,7 +91227,7 @@ inline GPURenderState CreateGPURenderState(
 inline GPURenderState Renderer::CreateGPURenderState(
   const GPURenderStateCreateInfo& createinfo)
 {
-  return GPURenderState(m_resource, createinfo);
+  return GPURenderState(get(), createinfo);
 }
 
 inline GPURenderState::GPURenderState(
@@ -91399,7 +91267,7 @@ inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
                                                 const void* data,
                                                 Uint32 length)
 {
-  SDL::SetGPURenderStateFragmentUniforms(m_resource, slot_index, data, length);
+  SDL::SetGPURenderStateFragmentUniforms(get(), slot_index, data, length);
 }
 
 /**
@@ -91425,7 +91293,7 @@ inline void SetGPURenderState(RendererRef renderer, GPURenderStateRef state)
 
 inline void Renderer::SetGPURenderState(GPURenderStateRef state)
 {
-  SDL::SetGPURenderState(m_resource, state);
+  SDL::SetGPURenderState(get(), state);
 }
 
 /**
@@ -97192,7 +97060,7 @@ inline PropertiesRef GetMixerProperties(MixerRef mixer)
 
 inline PropertiesRef Mixer::GetProperties()
 {
-  return SDL::GetMixerProperties(m_resource);
+  return SDL::GetMixerProperties(get());
 }
 
 /**
@@ -97241,7 +97109,7 @@ inline void GetMixerFormat(MixerRef mixer, AudioSpec* spec)
 
 inline void Mixer::GetFormat(AudioSpec* spec)
 {
-  SDL::GetMixerFormat(m_resource, spec);
+  SDL::GetMixerFormat(get(), spec);
 }
 
 /**
@@ -97400,7 +97268,7 @@ inline Audio LoadAudio_IO(MixerRef mixer,
 
 inline Audio Mixer::LoadAudio_IO(IOStreamRef io, bool predecode, bool closeio)
 {
-  return Audio(m_resource, io, predecode, closeio);
+  return Audio(get(), io, predecode, closeio);
 }
 
 inline Audio::Audio(MixerRef mixer,
@@ -97470,7 +97338,7 @@ inline Audio LoadAudio(MixerRef mixer, StringParam path, bool predecode)
 
 inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
 {
-  return Audio(m_resource, std::move(path), predecode);
+  return Audio(get(), std::move(path), predecode);
 }
 
 /**
@@ -97539,7 +97407,7 @@ inline Audio LoadAudioNoCopy(MixerRef mixer,
 
 inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
 {
-  return SDL::LoadAudioNoCopy(m_resource, std::move(data), free_when_done);
+  return SDL::LoadAudioNoCopy(get(), std::move(data), free_when_done);
 }
 
 /**
@@ -97662,7 +97530,7 @@ inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
                                     const AudioSpec& spec,
                                     bool closeio)
 {
-  return Audio(m_resource, io, spec, closeio);
+  return Audio(get(), io, spec, closeio);
 }
 
 /**
@@ -97708,7 +97576,7 @@ inline Audio LoadRawAudio(MixerRef mixer,
 
 inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
 {
-  return Audio(m_resource, std::move(data), spec);
+  return Audio(get(), std::move(data), spec);
 }
 
 /**
@@ -97764,8 +97632,7 @@ inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
                                        const AudioSpec& spec,
                                        bool free_when_done)
 {
-  return SDL::LoadRawAudioNoCopy(
-    m_resource, std::move(data), spec, free_when_done);
+  return SDL::LoadRawAudioNoCopy(get(), std::move(data), spec, free_when_done);
 }
 
 /**
@@ -97814,7 +97681,7 @@ inline Audio CreateSineWaveAudio(MixerRef mixer,
 
 inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
 {
-  return SDL::CreateSineWaveAudio(m_resource, hz, amplitude, ms);
+  return SDL::CreateSineWaveAudio(get(), hz, amplitude, ms);
 }
 
 /**
@@ -97867,7 +97734,7 @@ inline PropertiesRef GetAudioProperties(AudioRef audio)
 
 inline PropertiesRef Audio::GetProperties()
 {
-  return SDL::GetAudioProperties(m_resource);
+  return SDL::GetAudioProperties(get());
 }
 
 /**
@@ -97936,7 +97803,7 @@ inline Sint64 GetAudioDuration(AudioRef audio)
   return MIX_GetAudioDuration(audio);
 }
 
-inline Sint64 Audio::GetDuration() { return SDL::GetAudioDuration(m_resource); }
+inline Sint64 Audio::GetDuration() { return SDL::GetAudioDuration(get()); }
 
 /// Unknown duration, when the length of the audio can't be determined.
 constexpr Sint64 DURATION_UNKNOWN = MIX_DURATION_UNKNOWN;
@@ -97967,7 +97834,7 @@ inline void GetAudioFormat(AudioRef audio, AudioSpec* spec)
 
 inline void Audio::GetFormat(AudioSpec* spec)
 {
-  SDL::GetAudioFormat(m_resource, spec);
+  SDL::GetAudioFormat(get(), spec);
 }
 
 /**
@@ -98018,7 +97885,7 @@ inline void Audio::Destroy() { DestroyAudio(release()); }
  */
 inline Track CreateTrack(MixerRef mixer) { return Track(mixer); }
 
-inline TrackRef Mixer::CreateTrack() { return Track(m_resource); }
+inline TrackRef Mixer::CreateTrack() { return Track(get()); }
 
 inline Track::Track(MixerRef mixer)
   : m_resource(CheckError(MIX_CreateTrack(mixer)))
@@ -98071,7 +97938,7 @@ inline PropertiesRef GetTrackProperties(TrackRef track)
 
 inline PropertiesRef Track::GetProperties()
 {
-  return SDL::GetTrackProperties(m_resource);
+  return SDL::GetTrackProperties(get());
 }
 
 /**
@@ -98092,7 +97959,7 @@ inline MixerRef GetTrackMixer(TrackRef track)
   return CheckError(MIX_GetTrackMixer(track));
 }
 
-inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(m_resource); }
+inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(get()); }
 
 /**
  * Set a Track's input to a Audio.
@@ -98132,7 +97999,7 @@ inline void SetTrackAudio(TrackRef track, AudioRef audio)
 
 inline void Track::SetAudio(AudioRef audio)
 {
-  SDL::SetTrackAudio(m_resource, audio);
+  SDL::SetTrackAudio(get(), audio);
 }
 
 /**
@@ -98182,7 +98049,7 @@ inline void SetTrackAudioStream(TrackRef track, AudioStreamRef stream)
 
 inline void Track::SetAudioStream(AudioStreamRef stream)
 {
-  SDL::SetTrackAudioStream(m_resource, stream);
+  SDL::SetTrackAudioStream(get(), stream);
 }
 
 /**
@@ -98241,7 +98108,7 @@ inline void SetTrackIOStream(TrackRef track,
 
 inline void Track::SetIOStream(IOStreamRef io, bool closeio)
 {
-  SDL::SetTrackIOStream(m_resource, io, closeio);
+  SDL::SetTrackIOStream(get(), io, closeio);
 }
 
 /**
@@ -98304,7 +98171,7 @@ inline void Track::SetRawIOStream(IOStreamRef io,
                                   const AudioSpec& spec,
                                   bool closeio)
 {
-  SDL::SetTrackRawIOStream(m_resource, io, spec, closeio);
+  SDL::SetTrackRawIOStream(get(), io, spec, closeio);
 }
 
 /**
@@ -98341,7 +98208,7 @@ inline void TagTrack(TrackRef track, StringParam tag)
 
 inline void Track::Tag(StringParam tag)
 {
-  SDL::TagTrack(m_resource, std::move(tag));
+  SDL::TagTrack(get(), std::move(tag));
 }
 
 /**
@@ -98374,7 +98241,7 @@ inline void UntagTrack(TrackRef track, StringParam tag)
 
 inline void Track::Untag(StringParam tag)
 {
-  SDL::UntagTrack(m_resource, std::move(tag));
+  SDL::UntagTrack(get(), std::move(tag));
 }
 
 /**
@@ -98397,10 +98264,7 @@ inline OwnArray<char*> GetTrackTags(TrackRef track)
   return OwnArray<char*>(result, count);
 }
 
-inline OwnArray<char*> Track::GetTags()
-{
-  return SDL::GetTrackTags(m_resource);
-}
+inline OwnArray<char*> Track::GetTags() { return SDL::GetTrackTags(get()); }
 
 /**
  * Get all tracks with a specific tag.
@@ -98425,7 +98289,7 @@ inline OwnArray<TrackRef> GetTaggedTracks(MixerRef mixer, StringParam tag)
 
 inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
 {
-  return SDL::GetTaggedTracks(m_resource, std::move(tag));
+  return SDL::GetTaggedTracks(get(), std::move(tag));
 }
 
 /**
@@ -98470,7 +98334,7 @@ inline void SetTrackPlaybackPosition(TrackRef track, Sint64 frames)
 
 inline void Track::SetPlaybackPosition(Sint64 frames)
 {
-  SDL::SetTrackPlaybackPosition(m_resource, frames);
+  SDL::SetTrackPlaybackPosition(get(), frames);
 }
 
 /**
@@ -98503,7 +98367,7 @@ inline Sint64 GetTrackPlaybackPosition(TrackRef track)
 
 inline Sint64 Track::GetPlaybackPosition()
 {
-  return SDL::GetTrackPlaybackPosition(m_resource);
+  return SDL::GetTrackPlaybackPosition(get());
 }
 
 /**
@@ -98533,10 +98397,7 @@ inline Sint64 GetTrackFadeFrames(TrackRef track)
   return MIX_GetTrackFadeFrames(track);
 }
 
-inline Sint64 Track::GetFadeFrames()
-{
-  return SDL::GetTrackFadeFrames(m_resource);
-}
+inline Sint64 Track::GetFadeFrames() { return SDL::GetTrackFadeFrames(get()); }
 
 /**
  * Query how many loops remain for a given track.
@@ -98566,7 +98427,7 @@ inline Sint64 Track::GetFadeFrames()
  */
 inline int GetTrackLoops(TrackRef track) { return MIX_GetTrackLoops(track); }
 
-inline int Track::GetLoops() { return SDL::GetTrackLoops(m_resource); }
+inline int Track::GetLoops() { return SDL::GetTrackLoops(get()); }
 
 /**
  * Change the number of times a currently-playing track will loop.
@@ -98603,7 +98464,7 @@ inline void SetTrackLoops(TrackRef track, int num_loops)
 
 inline void Track::SetLoops(int num_loops)
 {
-  SDL::SetTrackLoops(m_resource, num_loops);
+  SDL::SetTrackLoops(get(), num_loops);
 }
 
 /**
@@ -98631,7 +98492,7 @@ inline AudioRef GetTrackAudio(TrackRef track)
   return MIX_GetTrackAudio(track);
 }
 
-inline AudioRef Track::GetAudio() { return SDL::GetTrackAudio(m_resource); }
+inline AudioRef Track::GetAudio() { return SDL::GetTrackAudio(get()); }
 
 /**
  * Query the AudioStream assigned to a track.
@@ -98661,7 +98522,7 @@ inline AudioStreamRef GetTrackAudioStream(TrackRef track)
 
 inline AudioStreamRef Track::GetAudioStream()
 {
-  return SDL::GetTrackAudioStream(m_resource);
+  return SDL::GetTrackAudioStream(get());
 }
 
 /**
@@ -98694,10 +98555,7 @@ inline Sint64 GetTrackRemaining(TrackRef track)
   return MIX_GetTrackRemaining(track);
 }
 
-inline Sint64 Track::GetRemaining()
-{
-  return SDL::GetTrackRemaining(m_resource);
-}
+inline Sint64 Track::GetRemaining() { return SDL::GetTrackRemaining(get()); }
 
 /**
  * Convert milliseconds to sample frames for a track's current format.
@@ -98728,7 +98586,7 @@ inline Sint64 TrackMSToFrames(TrackRef track, Milliseconds ms)
 
 inline Sint64 Track::MSToFrames(Milliseconds ms)
 {
-  return SDL::TrackMSToFrames(m_resource, ms);
+  return SDL::TrackMSToFrames(get(), ms);
 }
 
 /**
@@ -98763,7 +98621,7 @@ inline Milliseconds TrackFramesToMS(TrackRef track, Sint64 frames)
 
 inline Milliseconds Track::FramesToMS(Sint64 frames)
 {
-  return SDL::TrackFramesToMS(m_resource, frames);
+  return SDL::TrackFramesToMS(get(), frames);
 }
 
 /**
@@ -98792,7 +98650,7 @@ inline Sint64 AudioMSToFrames(AudioRef audio, Milliseconds ms)
 
 inline Sint64 Audio::MSToFrames(Milliseconds ms)
 {
-  return SDL::AudioMSToFrames(m_resource, ms);
+  return SDL::AudioMSToFrames(get(), ms);
 }
 
 /**
@@ -98824,7 +98682,7 @@ inline Milliseconds AudioFramesToMS(AudioRef audio, Sint64 frames)
 
 inline Milliseconds Audio::FramesToMS(Sint64 frames)
 {
-  return SDL::AudioFramesToMS(m_resource, frames);
+  return SDL::AudioFramesToMS(get(), frames);
 }
 
 /**
@@ -98991,7 +98849,7 @@ inline void PlayTrack(TrackRef track, PropertiesRef options = nullptr)
 
 inline void Track::Play(PropertiesRef options)
 {
-  SDL::PlayTrack(m_resource, options);
+  SDL::PlayTrack(get(), options);
 }
 
 /**
@@ -99078,7 +98936,7 @@ inline void PlayTag(MixerRef mixer, StringParam tag, PropertiesRef options)
 
 inline void Mixer::PlayTag(StringParam tag, PropertiesRef options)
 {
-  SDL::PlayTag(m_resource, std::move(tag), options);
+  SDL::PlayTag(get(), std::move(tag), options);
 }
 
 /**
@@ -99118,7 +98976,7 @@ inline bool PlayAudio(MixerRef mixer, AudioRef audio)
 
 inline bool Mixer::PlayAudio(AudioRef audio)
 {
-  return SDL::PlayAudio(m_resource, audio);
+  return SDL::PlayAudio(get(), audio);
 }
 
 /**
@@ -99160,7 +99018,7 @@ inline bool StopTrack(TrackRef track, Sint64 fade_out_frames)
 
 inline bool Track::Stop(Sint64 fade_out_frames)
 {
-  return SDL::StopTrack(m_resource, fade_out_frames);
+  return SDL::StopTrack(get(), fade_out_frames);
 }
 
 /**
@@ -99199,7 +99057,7 @@ inline void StopAllTracks(MixerRef mixer, Sint64 fade_out_ms)
 
 inline void Mixer::StopAllTracks(Sint64 fade_out_ms)
 {
-  SDL::StopAllTracks(m_resource, fade_out_ms);
+  SDL::StopAllTracks(get(), fade_out_ms);
 }
 
 /**
@@ -99240,7 +99098,7 @@ inline void StopTag(MixerRef mixer, StringParam tag, Sint64 fade_out_ms)
 
 inline void Mixer::StopTag(StringParam tag, Sint64 fade_out_ms)
 {
-  SDL::StopTag(m_resource, std::move(tag), fade_out_ms);
+  SDL::StopTag(get(), std::move(tag), fade_out_ms);
 }
 
 /**
@@ -99267,7 +99125,7 @@ inline void Mixer::StopTag(StringParam tag, Sint64 fade_out_ms)
  */
 inline bool PauseTrack(TrackRef track) { return MIX_PauseTrack(track); }
 
-inline bool Track::Pause() { return SDL::PauseTrack(m_resource); }
+inline bool Track::Pause() { return SDL::PauseTrack(get()); }
 
 /**
  * Pause all currently-playing tracks.
@@ -99294,7 +99152,7 @@ inline void PauseAllTracks(MixerRef mixer)
   CheckError(MIX_PauseAllTracks(mixer));
 }
 
-inline void Mixer::PauseAllTracks() { SDL::PauseAllTracks(m_resource); }
+inline void Mixer::PauseAllTracks() { SDL::PauseAllTracks(get()); }
 
 /**
  * Pause all tracks with a specific tag.
@@ -99329,7 +99187,7 @@ inline void PauseTag(MixerRef mixer, StringParam tag)
 
 inline void Mixer::PauseTag(StringParam tag)
 {
-  SDL::PauseTag(m_resource, std::move(tag));
+  SDL::PauseTag(get(), std::move(tag));
 }
 
 /**
@@ -99356,7 +99214,7 @@ inline void Mixer::PauseTag(StringParam tag)
  */
 inline bool ResumeTrack(TrackRef track) { return MIX_ResumeTrack(track); }
 
-inline bool Track::Resume() { return SDL::ResumeTrack(m_resource); }
+inline bool Track::Resume() { return SDL::ResumeTrack(get()); }
 
 /**
  * Resume all currently-paused tracks.
@@ -99383,7 +99241,7 @@ inline void ResumeAllTracks(MixerRef mixer)
   CheckError(MIX_ResumeAllTracks(mixer));
 }
 
-inline void Mixer::ResumeAllTracks() { SDL::ResumeAllTracks(m_resource); }
+inline void Mixer::ResumeAllTracks() { SDL::ResumeAllTracks(get()); }
 
 /**
  * Resume all tracks with a specific tag.
@@ -99417,7 +99275,7 @@ inline void ResumeTag(MixerRef mixer, StringParam tag)
 
 inline void Mixer::ResumeTag(StringParam tag)
 {
-  SDL::ResumeTag(m_resource, std::move(tag));
+  SDL::ResumeTag(get(), std::move(tag));
 }
 
 /**
@@ -99445,7 +99303,7 @@ inline void Mixer::ResumeTag(StringParam tag)
  */
 inline bool TrackPlaying(TrackRef track) { return MIX_TrackPlaying(track); }
 
-inline bool Track::Playing() { return SDL::TrackPlaying(m_resource); }
+inline bool Track::Playing() { return SDL::TrackPlaying(get()); }
 
 /**
  * Query if a track is currently paused.
@@ -99472,7 +99330,7 @@ inline bool Track::Playing() { return SDL::TrackPlaying(m_resource); }
  */
 inline bool TrackPaused(TrackRef track) { return MIX_TrackPaused(track); }
 
-inline bool Track::Paused() { return SDL::TrackPaused(m_resource); }
+inline bool Track::Paused() { return SDL::TrackPaused(get()); }
 
 /**
  * Set a mixer's master gain control.
@@ -99504,7 +99362,7 @@ inline void SetMixerGain(MixerRef mixer, float gain)
   CheckError(MIX_SetMixerGain(mixer, gain));
 }
 
-inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(m_resource, gain); }
+inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
 
 /**
  * Get a mixer's master gain control.
@@ -99524,7 +99382,7 @@ inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(m_resource, gain); }
  */
 inline float GetMixerGain(MixerRef mixer) { return MIX_GetMixerGain(mixer); }
 
-inline float Mixer::GetGain() { return SDL::GetMixerGain(m_resource); }
+inline float Mixer::GetGain() { return SDL::GetMixerGain(get()); }
 
 /**
  * Set a track's gain control.
@@ -99556,7 +99414,7 @@ inline void SetTrackGain(TrackRef track, float gain)
   CheckError(MIX_SetTrackGain(track, gain));
 }
 
-inline void Track::SetGain(float gain) { SDL::SetTrackGain(m_resource, gain); }
+inline void Track::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
 
 /**
  * Get a track's gain control.
@@ -99576,7 +99434,7 @@ inline void Track::SetGain(float gain) { SDL::SetTrackGain(m_resource, gain); }
  */
 inline float GetTrackGain(TrackRef track) { return MIX_GetTrackGain(track); }
 
-inline float Track::GetGain() { return SDL::GetTrackGain(m_resource); }
+inline float Track::GetGain() { return SDL::GetTrackGain(get()); }
 
 /**
  * Set the gain control of all tracks with a specific tag.
@@ -99619,7 +99477,7 @@ inline void SetTagGain(MixerRef mixer, StringParam tag, float gain)
 
 inline void Mixer::SetTagGain(StringParam tag, float gain)
 {
-  SDL::SetTagGain(m_resource, std::move(tag), gain);
+  SDL::SetTagGain(get(), std::move(tag), gain);
 }
 
 /**
@@ -99656,7 +99514,7 @@ inline void SetMixerFrequencyRatio(MixerRef mixer, float ratio)
 
 inline void Mixer::SetFrequencyRatio(float ratio)
 {
-  SDL::SetMixerFrequencyRatio(m_resource, ratio);
+  SDL::SetMixerFrequencyRatio(get(), ratio);
 }
 
 /**
@@ -99682,7 +99540,7 @@ inline float GetMixerFrequencyRatio(MixerRef mixer)
 
 inline float Mixer::GetFrequencyRatio()
 {
-  return SDL::GetMixerFrequencyRatio(m_resource);
+  return SDL::GetMixerFrequencyRatio(get());
 }
 
 /**
@@ -99715,7 +99573,7 @@ inline void SetTrackFrequencyRatio(TrackRef track, float ratio)
 
 inline void Track::SetFrequencyRatio(float ratio)
 {
-  SDL::SetTrackFrequencyRatio(m_resource, ratio);
+  SDL::SetTrackFrequencyRatio(get(), ratio);
 }
 
 /**
@@ -99750,7 +99608,7 @@ inline float GetTrackFrequencyRatio(TrackRef track)
 
 inline float Track::GetFrequencyRatio()
 {
-  return SDL::GetTrackFrequencyRatio(m_resource);
+  return SDL::GetTrackFrequencyRatio(get());
 }
 
 /**
@@ -99796,7 +99654,7 @@ inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
 
 inline void Track::SetOutputChannelMap(std::span<const int> chmap)
 {
-  SDL::SetTrackOutputChannelMap(m_resource, chmap);
+  SDL::SetTrackOutputChannelMap(get(), chmap);
 }
 
 /**
@@ -99836,7 +99694,7 @@ inline void SetTrackStereo(TrackRef track, const StereoGains& gains)
 
 inline void Track::SetStereo(const StereoGains& gains)
 {
-  SDL::SetTrackStereo(m_resource, gains);
+  SDL::SetTrackStereo(get(), gains);
 }
 
 /**
@@ -99888,7 +99746,7 @@ inline void SetTrack3DPosition(TrackRef track, const Point3D& position)
 
 inline void Track::Set3DPosition(const Point3D& position)
 {
-  SDL::SetTrack3DPosition(m_resource, position);
+  SDL::SetTrack3DPosition(get(), position);
 }
 
 /**
@@ -99914,10 +99772,7 @@ inline Point3D GetTrack3DPosition(TrackRef track)
   return position;
 }
 
-inline Point3D Track::Get3DPosition()
-{
-  return SDL::GetTrack3DPosition(m_resource);
-}
+inline Point3D Track::Get3DPosition() { return SDL::GetTrack3DPosition(get()); }
 
 /**
  * Create a mixing group.
@@ -99950,7 +99805,7 @@ inline Point3D Track::Get3DPosition()
  */
 inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 
-inline GroupRef Mixer::CreateGroup() { return Group(m_resource); }
+inline GroupRef Mixer::CreateGroup() { return Group(get()); }
 
 inline Group::Group(MixerRef mixer)
   : m_resource(CheckError(MIX_CreateGroup(mixer)))
@@ -99999,7 +99854,7 @@ inline PropertiesRef GetGroupProperties(GroupRef group)
 
 inline PropertiesRef Group::GetProperties()
 {
-  return SDL::GetGroupProperties(m_resource);
+  return SDL::GetGroupProperties(get());
 }
 
 /**
@@ -100020,7 +99875,7 @@ inline MixerRef GetGroupMixer(GroupRef group)
   return CheckError(MIX_GetGroupMixer(group));
 }
 
-inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(m_resource); }
+inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(get()); }
 
 /**
  * Assign a track to a mixing group.
@@ -100052,7 +99907,7 @@ inline void SetTrackGroup(TrackRef track, GroupRef group)
 
 inline void Track::SetGroup(GroupRef group)
 {
-  SDL::SetTrackGroup(m_resource, group);
+  SDL::SetTrackGroup(get(), group);
 }
 
 /**
@@ -100125,12 +99980,12 @@ inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB cb)
 
 inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
 {
-  SDL::SetTrackStoppedCallback(m_resource, cb, userdata);
+  SDL::SetTrackStoppedCallback(get(), cb, userdata);
 }
 
 inline void Track::SetStoppedCallback(TrackStoppedCB cb)
 {
-  SDL::SetTrackStoppedCallback(m_resource, cb);
+  SDL::SetTrackStoppedCallback(get(), cb);
 }
 
 /**
@@ -100203,12 +100058,12 @@ inline void SetTrackRawCallback(TrackRef track, TrackMixCB cb)
 
 inline void Track::SetRawCallback(TrackMixCallback cb, void* userdata)
 {
-  SDL::SetTrackRawCallback(m_resource, cb, userdata);
+  SDL::SetTrackRawCallback(get(), cb, userdata);
 }
 
 inline void Track::SetRawCallback(TrackMixCB cb)
 {
-  SDL::SetTrackRawCallback(m_resource, cb);
+  SDL::SetTrackRawCallback(get(), cb);
 }
 
 /**
@@ -100287,12 +100142,12 @@ inline void SetTrackCookedCallback(TrackRef track, TrackMixCB cb)
 
 inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
 {
-  SDL::SetTrackCookedCallback(m_resource, cb, userdata);
+  SDL::SetTrackCookedCallback(get(), cb, userdata);
 }
 
 inline void Track::SetCookedCallback(TrackMixCB cb)
 {
-  SDL::SetTrackCookedCallback(m_resource, cb);
+  SDL::SetTrackCookedCallback(get(), cb);
 }
 
 /**
@@ -100357,7 +100212,7 @@ inline void SetGroupPostMixCallback(GroupRef group, GroupMixCB cb)
 
 inline void Group::SetPostMixCallback(GroupMixCallback cb, void* userdata)
 {
-  SDL::SetGroupPostMixCallback(m_resource, cb, userdata);
+  SDL::SetGroupPostMixCallback(get(), cb, userdata);
 }
 
 /**
@@ -100418,12 +100273,12 @@ inline void SetPostMixCallback(MixerRef mixer, PostMixCB cb)
 
 inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
 {
-  SDL::SetPostMixCallback(m_resource, cb, userdata);
+  SDL::SetPostMixCallback(get(), cb, userdata);
 }
 
 inline void Mixer::SetPostMixCallback(PostMixCB cb)
 {
-  SDL::SetPostMixCallback(m_resource, cb);
+  SDL::SetPostMixCallback(get(), cb);
 }
 
 /**
@@ -100485,7 +100340,7 @@ inline int Generate(MixerRef mixer, TargetBytes buffer)
 
 inline int Mixer::Generate(TargetBytes buffer)
 {
-  return SDL::Generate(m_resource, std::move(buffer));
+  return SDL::Generate(get(), std::move(buffer));
 }
 
 /**
@@ -100932,7 +100787,7 @@ inline PropertiesRef GetAudioDecoderProperties(AudioDecoderRef audiodecoder)
 
 inline PropertiesRef AudioDecoder::GetProperties()
 {
-  return SDL::GetAudioDecoderProperties(m_resource);
+  return SDL::GetAudioDecoderProperties(get());
 }
 
 /**
@@ -100958,7 +100813,7 @@ inline void GetAudioDecoderFormat(AudioDecoderRef audiodecoder, AudioSpec* spec)
 
 inline void AudioDecoder::GetFormat(AudioSpec* spec)
 {
-  SDL::GetAudioDecoderFormat(m_resource, spec);
+  SDL::GetAudioDecoderFormat(get(), spec);
 }
 
 /**
@@ -100993,7 +100848,7 @@ inline int DecodeAudio(AudioDecoderRef audiodecoder,
 
 inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
 {
-  return SDL::DecodeAudio(m_resource, std::move(buffer), spec);
+  return SDL::DecodeAudio(get(), std::move(buffer), spec);
 }
 
 /// @}
@@ -104092,17 +103947,14 @@ struct AnimationRef : Animation
 /// Get the width in pixels.
 inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
 
-inline int Animation::GetWidth() const
-{
-  return SDL::GetAnimationWidth(m_resource);
-}
+inline int Animation::GetWidth() const { return SDL::GetAnimationWidth(get()); }
 
 /// Get the height in pixels.
 inline int GetAnimationHeight(AnimationConstRef anim) { return anim->h; }
 
 inline int Animation::GetHeight() const
 {
-  return SDL::GetAnimationHeight(m_resource);
+  return SDL::GetAnimationHeight(get());
 }
 
 /// Get the size in pixels.
@@ -104111,18 +103963,12 @@ inline Point GetAnimationSize(AnimationConstRef anim)
   return {anim->w, anim->h};
 }
 
-inline Point Animation::GetSize() const
-{
-  return SDL::GetAnimationSize(m_resource);
-}
+inline Point Animation::GetSize() const { return SDL::GetAnimationSize(get()); }
 
 /// Return the number of frames.
 inline int GetAnimationCount(AnimationConstRef anim) { return anim->count; }
 
-inline int Animation::GetCount() const
-{
-  return SDL::GetAnimationCount(m_resource);
-}
+inline int Animation::GetCount() const { return SDL::GetAnimationCount(get()); }
 
 /**
  * Return the frame image under given index.
@@ -104137,7 +103983,7 @@ inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
 
 inline Surface Animation::GetFrame(int index) const
 {
-  return SDL::GetAnimationFrame(m_resource, index);
+  return SDL::GetAnimationFrame(get(), index);
 }
 
 /**
@@ -104153,7 +103999,7 @@ inline int GetAnimationDelay(AnimationConstRef anim, int index)
 
 inline int Animation::GetDelay(int index) const
 {
-  return SDL::GetAnimationDelay(m_resource, index);
+  return SDL::GetAnimationDelay(get(), index);
 }
 
 /**
@@ -104445,7 +104291,7 @@ inline void SaveAnimation(AnimationRef anim, StringParam file)
 
 inline void Animation::Save(StringParam file)
 {
-  SDL::SaveAnimation(m_resource, std::move(file));
+  SDL::SaveAnimation(get(), std::move(file));
 }
 
 /**
@@ -104486,7 +104332,7 @@ inline void Animation::SaveTyped_IO(IOStreamRef dst,
                                     StringParam type,
                                     bool closeio)
 {
-  SDL::SaveAnimationTyped_IO(m_resource, dst, std::move(type), closeio);
+  SDL::SaveAnimationTyped_IO(get(), dst, std::move(type), closeio);
 }
 
 /**
@@ -104519,7 +104365,7 @@ inline void SaveANIAnimation_IO(AnimationRef anim,
 
 inline void Animation::SaveANI_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveANIAnimation_IO(m_resource, dst, closeio);
+  SDL::SaveANIAnimation_IO(get(), dst, closeio);
 }
 
 /**
@@ -104552,7 +104398,7 @@ inline void SaveAPNGAnimation_IO(AnimationRef anim,
 
 inline void Animation::SaveAPNG_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveAPNGAnimation_IO(m_resource, dst, closeio);
+  SDL::SaveAPNGAnimation_IO(get(), dst, closeio);
 }
 
 /**
@@ -104588,7 +104434,7 @@ inline void SaveAVIFAnimation_IO(AnimationRef anim,
 
 inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
 {
-  SDL::SaveAVIFAnimation_IO(m_resource, dst, quality, closeio);
+  SDL::SaveAVIFAnimation_IO(get(), dst, quality, closeio);
 }
 
 /**
@@ -104621,7 +104467,7 @@ inline void SaveGIFAnimation_IO(AnimationRef anim,
 
 inline void Animation::SaveGIF_IO(IOStreamRef dst, bool closeio)
 {
-  SDL::SaveGIFAnimation_IO(m_resource, dst, closeio);
+  SDL::SaveGIFAnimation_IO(get(), dst, closeio);
 }
 
 /**
@@ -104659,7 +104505,7 @@ inline void SaveWEBPAnimation_IO(AnimationRef anim,
 
 inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
 {
-  SDL::SaveWEBPAnimation_IO(m_resource, dst, quality, closeio);
+  SDL::SaveWEBPAnimation_IO(get(), dst, quality, closeio);
 }
 
 /**
@@ -104684,7 +104530,7 @@ inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
 
 inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
 {
-  return SDL::CreateAnimatedCursor(m_resource, hotspot);
+  return SDL::CreateAnimatedCursor(get(), hotspot);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -105199,7 +105045,7 @@ inline void AddAnimationEncoderFrame(AnimationEncoderRef encoder,
 
 inline void AnimationEncoder::AddFrame(SurfaceRef surface, Uint64 duration)
 {
-  SDL::AddAnimationEncoderFrame(m_resource, surface, duration);
+  SDL::AddAnimationEncoderFrame(get(), surface, duration);
 }
 
 /**
@@ -105760,7 +105606,7 @@ inline PropertiesRef GetAnimationDecoderProperties(AnimationDecoderRef decoder)
 
 inline PropertiesRef AnimationDecoder::GetProperties()
 {
-  return SDL::GetAnimationDecoderProperties(m_resource);
+  return SDL::GetAnimationDecoderProperties(get());
 }
 
 /**
@@ -105822,7 +105668,7 @@ inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
 
 inline Surface AnimationDecoder::GetFrame(Uint64* duration)
 {
-  return SDL::GetAnimationDecoderFrame(m_resource, duration);
+  return SDL::GetAnimationDecoderFrame(get(), duration);
 }
 
 /**
@@ -105844,7 +105690,7 @@ inline AnimationDecoderStatus GetAnimationDecoderStatus(
 
 inline AnimationDecoderStatus AnimationDecoder::GetStatus()
 {
-  return SDL::GetAnimationDecoderStatus(m_resource);
+  return SDL::GetAnimationDecoderStatus(get());
 }
 
 /**
@@ -105870,10 +105716,7 @@ inline void ResetAnimationDecoder(AnimationDecoderRef decoder)
   CheckError(IMG_ResetAnimationDecoder(decoder));
 }
 
-inline void AnimationDecoder::Reset()
-{
-  SDL::ResetAnimationDecoder(m_resource);
-}
+inline void AnimationDecoder::Reset() { SDL::ResetAnimationDecoder(get()); }
 
 /**
  * Close an animation decoder, finishing any decoding.
@@ -107990,7 +107833,7 @@ inline Font CopyFont(FontRef existing_font)
   return Font(CheckError(TTF_CopyFont(existing_font)));
 }
 
-inline Font Font::Copy() const { return SDL::CopyFont(m_resource); }
+inline Font Font::Copy() const { return SDL::CopyFont(get()); }
 
 /**
  * Get the properties associated with a font.
@@ -108019,7 +107862,7 @@ inline PropertiesRef GetFontProperties(FontRef font)
 
 inline PropertiesRef Font::GetProperties()
 {
-  return SDL::GetFontProperties(m_resource);
+  return SDL::GetFontProperties(get());
 }
 
 /**
@@ -108044,7 +107887,7 @@ inline Uint32 GetFontGeneration(FontRef font)
 
 inline Uint32 Font::GetGeneration() const
 {
-  return SDL::GetFontGeneration(m_resource);
+  return SDL::GetFontGeneration(get());
 }
 
 /**
@@ -108076,7 +107919,7 @@ inline void AddFallbackFont(FontRef font, FontRef fallback)
 
 inline void Font::AddFallback(FontRef fallback)
 {
-  SDL::AddFallbackFont(m_resource, fallback);
+  SDL::AddFallbackFont(get(), fallback);
 }
 
 /**
@@ -108102,7 +107945,7 @@ inline void RemoveFallbackFont(FontRef font, FontRef fallback)
 
 inline void Font::RemoveFallback(FontRef fallback)
 {
-  SDL::RemoveFallbackFont(m_resource, fallback);
+  SDL::RemoveFallbackFont(get(), fallback);
 }
 
 /**
@@ -108122,7 +107965,7 @@ inline void Font::RemoveFallback(FontRef fallback)
  */
 inline void ClearFallbackFonts(FontRef font) { TTF_ClearFallbackFonts(font); }
 
-inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(m_resource); }
+inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(get()); }
 
 /**
  * Set a font's size dynamically.
@@ -108146,10 +107989,7 @@ inline void SetFontSize(FontRef font, float ptsize)
   CheckError(TTF_SetFontSize(font, ptsize));
 }
 
-inline void Font::SetSize(float ptsize)
-{
-  SDL::SetFontSize(m_resource, ptsize);
-}
+inline void Font::SetSize(float ptsize) { SDL::SetFontSize(get(), ptsize); }
 
 /**
  * Set font size dynamically with target resolutions, in dots per inch.
@@ -108178,7 +108018,7 @@ inline void SetFontSizeDPI(FontRef font, float ptsize, int hdpi, int vdpi)
 
 inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
 {
-  SDL::SetFontSizeDPI(m_resource, ptsize, hdpi, vdpi);
+  SDL::SetFontSizeDPI(get(), ptsize, hdpi, vdpi);
 }
 
 /**
@@ -108198,7 +108038,7 @@ inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
  */
 inline float GetFontSize(FontRef font) { return TTF_GetFontSize(font); }
 
-inline float Font::GetSize() const { return SDL::GetFontSize(m_resource); }
+inline float Font::GetSize() const { return SDL::GetFontSize(get()); }
 
 /**
  * Get font target resolutions, in dots per inch.
@@ -108222,7 +108062,7 @@ inline void GetFontDPI(FontRef font, int* hdpi, int* vdpi)
 
 inline void Font::GetDPI(int* hdpi, int* vdpi) const
 {
-  SDL::GetFontDPI(m_resource, hdpi, vdpi);
+  SDL::GetFontDPI(get(), hdpi, vdpi);
 }
 
 /**
@@ -108256,7 +108096,7 @@ inline void SetFontStyle(FontRef font, FontStyleFlags style)
 
 inline void Font::SetStyle(FontStyleFlags style)
 {
-  SDL::SetFontStyle(m_resource, style);
+  SDL::SetFontStyle(get(), style);
 }
 
 /**
@@ -108286,7 +108126,7 @@ inline FontStyleFlags GetFontStyle(FontRef font)
 
 inline FontStyleFlags Font::GetStyle() const
 {
-  return SDL::GetFontStyle(m_resource);
+  return SDL::GetFontStyle(get());
 }
 
 /**
@@ -108317,7 +108157,7 @@ inline void SetFontOutline(FontRef font, int outline)
 
 inline void Font::SetOutline(int outline)
 {
-  SDL::SetFontOutline(m_resource, outline);
+  SDL::SetFontOutline(get(), outline);
 }
 
 /**
@@ -108334,7 +108174,7 @@ inline void Font::SetOutline(int outline)
  */
 inline int GetFontOutline(FontRef font) { return TTF_GetFontOutline(font); }
 
-inline int Font::GetOutline() const { return SDL::GetFontOutline(m_resource); }
+inline int Font::GetOutline() const { return SDL::GetFontOutline(get()); }
 
 /**
  * Set a font's current hinter setting.
@@ -108367,7 +108207,7 @@ inline void SetFontHinting(FontRef font, HintingFlags hinting)
 
 inline void Font::SetHinting(HintingFlags hinting)
 {
-  SDL::SetFontHinting(m_resource, hinting);
+  SDL::SetFontHinting(get(), hinting);
 }
 
 /**
@@ -108382,10 +108222,7 @@ inline void Font::SetHinting(HintingFlags hinting)
  */
 inline int GetNumFontFaces(FontRef font) { return TTF_GetNumFontFaces(font); }
 
-inline int Font::GetNumFaces() const
-{
-  return SDL::GetNumFontFaces(m_resource);
-}
+inline int Font::GetNumFaces() const { return SDL::GetNumFontFaces(get()); }
 
 /**
  * Query a font's current FreeType hinter setting.
@@ -108415,7 +108252,7 @@ inline HintingFlags GetFontHinting(FontRef font)
 
 inline HintingFlags Font::GetHinting() const
 {
-  return SDL::GetFontHinting(m_resource);
+  return SDL::GetFontHinting(get());
 }
 
 /**
@@ -108446,7 +108283,7 @@ inline void SetFontSDF(FontRef font, bool enabled)
   CheckError(TTF_SetFontSDF(font, enabled));
 }
 
-inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(m_resource, enabled); }
+inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(get(), enabled); }
 
 /**
  * Query whether Signed Distance Field rendering is enabled for a font.
@@ -108462,7 +108299,7 @@ inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(m_resource, enabled); }
  */
 inline bool GetFontSDF(FontRef font) { return TTF_GetFontSDF(font); }
 
-inline bool Font::GetSDF() const { return SDL::GetFontSDF(m_resource); }
+inline bool Font::GetSDF() const { return SDL::GetFontSDF(get()); }
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
@@ -108479,7 +108316,7 @@ inline bool Font::GetSDF() const { return SDL::GetFontSDF(m_resource); }
  */
 inline int GetFontWeight(FontRef font) { return TTF_GetFontWeight(font); }
 
-inline int Font::GetWeight() const { return SDL::GetFontWeight(m_resource); }
+inline int Font::GetWeight() const { return SDL::GetFontWeight(get()); }
 
 constexpr int FONT_WEIGHT_THIN =
   TTF_FONT_WEIGHT_THIN; ///< Thin (100) named font weight value
@@ -108535,7 +108372,7 @@ inline void SetFontWrapAlignment(FontRef font, HorizontalAlignment align)
 
 inline void Font::SetWrapAlignment(HorizontalAlignment align)
 {
-  SDL::SetFontWrapAlignment(m_resource, align);
+  SDL::SetFontWrapAlignment(get(), align);
 }
 
 /**
@@ -108557,7 +108394,7 @@ inline HorizontalAlignment GetFontWrapAlignment(FontRef font)
 
 inline HorizontalAlignment Font::GetWrapAlignment() const
 {
-  return SDL::GetFontWrapAlignment(m_resource);
+  return SDL::GetFontWrapAlignment(get());
 }
 
 /**
@@ -108574,7 +108411,7 @@ inline HorizontalAlignment Font::GetWrapAlignment() const
  */
 inline int GetFontHeight(FontRef font) { return TTF_GetFontHeight(font); }
 
-inline int Font::GetHeight() const { return SDL::GetFontHeight(m_resource); }
+inline int Font::GetHeight() const { return SDL::GetFontHeight(get()); }
 
 /**
  * Query the offset from the baseline to the top of a font.
@@ -108590,7 +108427,7 @@ inline int Font::GetHeight() const { return SDL::GetFontHeight(m_resource); }
  */
 inline int GetFontAscent(FontRef font) { return TTF_GetFontAscent(font); }
 
-inline int Font::GetAscent() const { return SDL::GetFontAscent(m_resource); }
+inline int Font::GetAscent() const { return SDL::GetFontAscent(get()); }
 
 /**
  * Query the offset from the baseline to the bottom of a font.
@@ -108606,7 +108443,7 @@ inline int Font::GetAscent() const { return SDL::GetFontAscent(m_resource); }
  */
 inline int GetFontDescent(FontRef font) { return TTF_GetFontDescent(font); }
 
-inline int Font::GetDescent() const { return SDL::GetFontDescent(m_resource); }
+inline int Font::GetDescent() const { return SDL::GetFontDescent(get()); }
 
 /**
  * Set the spacing between lines of text for a font.
@@ -108630,7 +108467,7 @@ inline void SetFontLineSkip(FontRef font, int lineskip)
 
 inline void Font::SetLineSkip(int lineskip)
 {
-  SDL::SetFontLineSkip(m_resource, lineskip);
+  SDL::SetFontLineSkip(get(), lineskip);
 }
 
 /**
@@ -108647,10 +108484,7 @@ inline void Font::SetLineSkip(int lineskip)
  */
 inline int GetFontLineSkip(FontRef font) { return TTF_GetFontLineSkip(font); }
 
-inline int Font::GetLineSkip() const
-{
-  return SDL::GetFontLineSkip(m_resource);
-}
+inline int Font::GetLineSkip() const { return SDL::GetFontLineSkip(get()); }
 
 /**
  * Set if kerning is enabled for a font.
@@ -108679,7 +108513,7 @@ inline void SetFontKerning(FontRef font, bool enabled)
 
 inline void Font::SetKerning(bool enabled)
 {
-  SDL::SetFontKerning(m_resource, enabled);
+  SDL::SetFontKerning(get(), enabled);
 }
 
 /**
@@ -108696,7 +108530,7 @@ inline void Font::SetKerning(bool enabled)
  */
 inline bool GetFontKerning(FontRef font) { return TTF_GetFontKerning(font); }
 
-inline bool Font::GetKerning() const { return SDL::GetFontKerning(m_resource); }
+inline bool Font::GetKerning() const { return SDL::GetFontKerning(get()); }
 
 /**
  * Query whether a font is fixed-width.
@@ -108719,10 +108553,7 @@ inline bool FontIsFixedWidth(FontRef font)
   return TTF_FontIsFixedWidth(font);
 }
 
-inline bool Font::IsFixedWidth() const
-{
-  return SDL::FontIsFixedWidth(m_resource);
-}
+inline bool Font::IsFixedWidth() const { return SDL::FontIsFixedWidth(get()); }
 
 /**
  * Query whether a font is scalable or not.
@@ -108740,7 +108571,7 @@ inline bool Font::IsFixedWidth() const
  */
 inline bool FontIsScalable(FontRef font) { return TTF_FontIsScalable(font); }
 
-inline bool Font::IsScalable() const { return SDL::FontIsScalable(m_resource); }
+inline bool Font::IsScalable() const { return SDL::FontIsScalable(get()); }
 
 /**
  * Query a font's family name.
@@ -108765,7 +108596,7 @@ inline const char* GetFontFamilyName(FontRef font)
 
 inline const char* Font::GetFamilyName() const
 {
-  return SDL::GetFontFamilyName(m_resource);
+  return SDL::GetFontFamilyName(get());
 }
 
 /**
@@ -108791,7 +108622,7 @@ inline const char* GetFontStyleName(FontRef font)
 
 inline const char* Font::GetStyleName() const
 {
-  return SDL::GetFontStyleName(m_resource);
+  return SDL::GetFontStyleName(get());
 }
 
 /**
@@ -108818,7 +108649,7 @@ inline void SetFontDirection(FontRef font, Direction direction)
 
 inline void Font::SetDirection(Direction direction)
 {
-  SDL::SetFontDirection(m_resource, direction);
+  SDL::SetFontDirection(get(), direction);
 }
 
 /**
@@ -108841,7 +108672,7 @@ inline Direction GetFontDirection(FontRef font)
 
 inline Direction Font::GetDirection() const
 {
-  return SDL::GetFontDirection(m_resource);
+  return SDL::GetFontDirection(get());
 }
 
 /**
@@ -108907,7 +108738,7 @@ inline void SetFontScript(FontRef font, Uint32 script)
 
 inline void Font::SetScript(Uint32 script)
 {
-  SDL::SetFontScript(m_resource, script);
+  SDL::SetFontScript(get(), script);
 }
 
 /**
@@ -108927,7 +108758,7 @@ inline void Font::SetScript(Uint32 script)
  */
 inline Uint32 GetFontScript(FontRef font) { return TTF_GetFontScript(font); }
 
-inline Uint32 Font::GetScript() const { return SDL::GetFontScript(m_resource); }
+inline Uint32 Font::GetScript() const { return SDL::GetFontScript(get()); }
 
 /**
  * Get the script used by a 32-bit codepoint.
@@ -108977,7 +108808,7 @@ inline void SetFontLanguage(FontRef font, StringParam language_bcp47)
 
 inline void Font::SetLanguage(StringParam language_bcp47)
 {
-  SDL::SetFontLanguage(m_resource, std::move(language_bcp47));
+  SDL::SetFontLanguage(get(), std::move(language_bcp47));
 }
 
 /**
@@ -108999,7 +108830,7 @@ inline bool FontHasGlyph(FontRef font, Uint32 ch)
 
 inline bool Font::HasGlyph(Uint32 ch) const
 {
-  return SDL::FontHasGlyph(m_resource, ch);
+  return SDL::FontHasGlyph(get(), ch);
 }
 
 /**
@@ -109024,7 +108855,7 @@ inline Surface GetGlyphImage(FontRef font, Uint32 ch, ImageType* image_type)
 
 inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
 {
-  return SDL::GetGlyphImage(m_resource, ch, image_type);
+  return SDL::GetGlyphImage(get(), ch, image_type);
 }
 
 /**
@@ -109056,7 +108887,7 @@ inline Surface GetGlyphImageForIndex(FontRef font,
 inline Surface Font::GetGlyphImageForIndex(Uint32 glyph_index,
                                            ImageType* image_type) const
 {
-  return SDL::GetGlyphImageForIndex(m_resource, glyph_index, image_type);
+  return SDL::GetGlyphImageForIndex(get(), glyph_index, image_type);
 }
 
 /**
@@ -109105,7 +108936,7 @@ inline void Font::GetGlyphMetrics(Uint32 ch,
                                   int* maxy,
                                   int* advance) const
 {
-  SDL::GetGlyphMetrics(m_resource, ch, minx, maxx, miny, maxy, advance);
+  SDL::GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance);
 }
 
 /**
@@ -109130,7 +108961,7 @@ inline int GetGlyphKerning(FontRef font, Uint32 previous_ch, Uint32 ch)
 
 inline int Font::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
 {
-  return SDL::GetGlyphKerning(m_resource, previous_ch, ch);
+  return SDL::GetGlyphKerning(get(), previous_ch, ch);
 }
 
 /**
@@ -109157,7 +108988,7 @@ inline void GetStringSize(FontRef font, std::string_view text, int* w, int* h)
 
 inline void Font::GetStringSize(std::string_view text, int* w, int* h) const
 {
-  SDL::GetStringSize(m_resource, text, w, h);
+  SDL::GetStringSize(get(), text, w, h);
 }
 
 /**
@@ -109198,7 +109029,7 @@ inline void Font::GetStringSizeWrapped(std::string_view text,
                                        int* w,
                                        int* h) const
 {
-  SDL::GetStringSizeWrapped(m_resource, text, wrap_width, w, h);
+  SDL::GetStringSizeWrapped(get(), text, wrap_width, w, h);
 }
 
 /**
@@ -109243,8 +109074,7 @@ inline void Font::MeasureString(std::string_view text,
                                 int* measured_width,
                                 size_t* measured_length) const
 {
-  SDL::MeasureString(
-    m_resource, text, max_width, measured_width, measured_length);
+  SDL::MeasureString(get(), text, max_width, measured_width, measured_length);
 }
 
 /**
@@ -109287,7 +109117,7 @@ inline Surface RenderText_Solid(FontRef font, std::string_view text, Color fg)
 
 inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
 {
-  return SDL::RenderText_Solid(m_resource, text, fg);
+  return SDL::RenderText_Solid(get(), text, fg);
 }
 
 /**
@@ -109335,7 +109165,7 @@ inline Surface Font::RenderText_Solid_Wrapped(std::string_view text,
                                               Color fg,
                                               int wrapLength) const
 {
-  return SDL::RenderText_Solid_Wrapped(m_resource, text, fg, wrapLength);
+  return SDL::RenderText_Solid_Wrapped(get(), text, fg, wrapLength);
 }
 
 /**
@@ -109372,7 +109202,7 @@ inline Surface RenderGlyph_Solid(FontRef font, Uint32 ch, ColorRaw fg)
 
 inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
 {
-  return SDL::RenderGlyph_Solid(m_resource, ch, fg);
+  return SDL::RenderGlyph_Solid(get(), ch, fg);
 }
 
 /**
@@ -109421,7 +109251,7 @@ inline Surface Font::RenderText_Shaded(std::string_view text,
                                        Color fg,
                                        Color bg) const
 {
-  return SDL::RenderText_Shaded(m_resource, text, fg, bg);
+  return SDL::RenderText_Shaded(get(), text, fg, bg);
 }
 
 /**
@@ -109473,7 +109303,7 @@ inline Surface Font::RenderText_Shaded_Wrapped(std::string_view text,
                                                Color bg,
                                                int wrap_width) const
 {
-  return SDL::RenderText_Shaded_Wrapped(m_resource, text, fg, bg, wrap_width);
+  return SDL::RenderText_Shaded_Wrapped(get(), text, fg, bg, wrap_width);
 }
 
 /**
@@ -109517,7 +109347,7 @@ inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
                                         ColorRaw fg,
                                         ColorRaw bg) const
 {
-  return SDL::RenderGlyph_Shaded(m_resource, ch, fg, bg);
+  return SDL::RenderGlyph_Shaded(get(), ch, fg, bg);
 }
 
 /**
@@ -109559,7 +109389,7 @@ inline Surface RenderText_Blended(FontRef font, std::string_view text, Color fg)
 
 inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
 {
-  return SDL::RenderText_Blended(m_resource, text, fg);
+  return SDL::RenderText_Blended(get(), text, fg);
 }
 
 /**
@@ -109607,7 +109437,7 @@ inline Surface Font::RenderText_Blended_Wrapped(std::string_view text,
                                                 Color fg,
                                                 int wrap_width) const
 {
-  return SDL::RenderText_Blended_Wrapped(m_resource, text, fg, wrap_width);
+  return SDL::RenderText_Blended_Wrapped(get(), text, fg, wrap_width);
 }
 
 /**
@@ -109644,7 +109474,7 @@ inline Surface RenderGlyph_Blended(FontRef font, Uint32 ch, ColorRaw fg)
 
 inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
 {
-  return SDL::RenderGlyph_Blended(m_resource, ch, fg);
+  return SDL::RenderGlyph_Blended(get(), ch, fg);
 }
 
 /**
@@ -109692,7 +109522,7 @@ inline Surface Font::RenderText_LCD(std::string_view text,
                                     Color fg,
                                     Color bg) const
 {
-  return SDL::RenderText_LCD(m_resource, text, fg, bg);
+  return SDL::RenderText_LCD(get(), text, fg, bg);
 }
 
 /**
@@ -109743,7 +109573,7 @@ inline Surface Font::RenderText_LCD_Wrapped(std::string_view text,
                                             Color bg,
                                             int wrap_width) const
 {
-  return SDL::RenderText_LCD_Wrapped(m_resource, text, fg, bg, wrap_width);
+  return SDL::RenderText_LCD_Wrapped(get(), text, fg, bg, wrap_width);
 }
 
 /**
@@ -109785,7 +109615,7 @@ inline Surface RenderGlyph_LCD(FontRef font,
 
 inline Surface Font::RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const
 {
-  return SDL::RenderGlyph_LCD(m_resource, ch, fg, bg);
+  return SDL::RenderGlyph_LCD(get(), ch, fg, bg);
 }
 
 /**
@@ -111261,7 +111091,7 @@ inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceRef surface)
 
 inline void Text::DrawSurface(Point p, SurfaceRef surface) const
 {
-  SDL::DrawSurfaceText(m_resource, p, surface);
+  SDL::DrawSurfaceText(get(), p, surface);
 }
 
 /**
@@ -111394,7 +111224,7 @@ inline void DrawRendererText(TextConstRef text, FPoint p)
 
 inline void Text::DrawRenderer(FPoint p) const
 {
-  SDL::DrawRendererText(m_resource, p);
+  SDL::DrawRendererText(get(), p);
 }
 
 /**
@@ -111531,7 +111361,7 @@ inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstRef text)
 
 inline GPUAtlasDrawSequence* Text::GetGPUDrawData() const
 {
-  return SDL::GetGPUTextDrawData(m_resource);
+  return SDL::GetGPUTextDrawData(get());
 }
 
 /**
@@ -111634,7 +111464,7 @@ inline Text CreateText(TextEngineRef engine,
 
 inline Text TextEngine::CreateText(FontRef font, std::string_view text)
 {
-  return Text(m_resource, font, text);
+  return Text(get(), font, text);
 }
 
 inline Text::Text(TextEngineRef engine, FontRef font, std::string_view text)
@@ -111661,7 +111491,7 @@ inline PropertiesRef GetTextProperties(TextConstRef text)
 
 inline PropertiesRef Text::GetProperties() const
 {
-  return SDL::GetTextProperties(m_resource);
+  return SDL::GetTextProperties(get());
 }
 
 /**
@@ -111687,7 +111517,7 @@ inline void SetTextEngine(TextRef text, TextEngineRef engine)
 
 inline void Text::SetEngine(TextEngineRef engine)
 {
-  SDL::SetTextEngine(m_resource, engine);
+  SDL::SetTextEngine(get(), engine);
 }
 
 /**
@@ -111711,7 +111541,7 @@ inline TextEngineRef GetTextEngine(TextConstRef text)
 
 inline TextEngineRef Text::GetEngine() const
 {
-  return SDL::GetTextEngine(m_resource);
+  return SDL::GetTextEngine(get());
 }
 
 /**
@@ -111742,7 +111572,7 @@ inline bool SetTextFont(TextRef text, FontRef font)
 
 inline bool Text::SetFont(FontRef font)
 {
-  return SDL::SetTextFont(m_resource, font);
+  return SDL::SetTextFont(get(), font);
 }
 
 /**
@@ -111764,7 +111594,7 @@ inline FontRef GetTextFont(TextConstRef text)
   return {CheckError(TTF_GetTextFont(text))};
 }
 
-inline FontRef Text::GetFont() const { return SDL::GetTextFont(m_resource); }
+inline FontRef Text::GetFont() const { return SDL::GetTextFont(get()); }
 
 /**
  * Set the direction to be used for text shaping a text object.
@@ -111788,7 +111618,7 @@ inline void SetTextDirection(TextRef text, Direction direction)
 
 inline void Text::SetDirection(Direction direction)
 {
-  SDL::SetTextDirection(m_resource, direction);
+  SDL::SetTextDirection(get(), direction);
 }
 
 /**
@@ -111811,7 +111641,7 @@ inline Direction GetTextDirection(TextConstRef text)
 
 inline Direction Text::GetDirection() const
 {
-  return SDL::GetTextDirection(m_resource);
+  return SDL::GetTextDirection(get());
 }
 
 /**
@@ -111838,7 +111668,7 @@ inline void SetTextScript(TextRef text, Uint32 script)
 
 inline void Text::SetScript(Uint32 script)
 {
-  SDL::SetTextScript(m_resource, script);
+  SDL::SetTextScript(get(), script);
 }
 
 /**
@@ -111863,7 +111693,7 @@ inline Uint32 GetTextScript(TextConstRef text)
   return TTF_GetTextScript(text);
 }
 
-inline Uint32 Text::GetScript() const { return SDL::GetTextScript(m_resource); }
+inline Uint32 Text::GetScript() const { return SDL::GetTextScript(get()); }
 
 /**
  * Set the color of a text object.
@@ -111887,7 +111717,7 @@ inline void SetTextColor(TextRef text, Color c)
   CheckError(TTF_SetTextColor(text, c.r, c.g, c.b, c.a));
 }
 
-inline void Text::SetColor(Color c) { SDL::SetTextColor(m_resource, c); }
+inline void Text::SetColor(Color c) { SDL::SetTextColor(get(), c); }
 
 /**
  * Set the color of a text object.
@@ -111911,10 +111741,7 @@ inline void SetTextColorFloat(TextRef text, FColor c)
   CheckError(TTF_SetTextColorFloat(text, c.r, c.g, c.b, c.a));
 }
 
-inline void Text::SetColorFloat(FColor c)
-{
-  SDL::SetTextColorFloat(m_resource, c);
-}
+inline void Text::SetColorFloat(FColor c) { SDL::SetTextColorFloat(get(), c); }
 
 /**
  * Get the color of a text object.
@@ -111971,10 +111798,10 @@ inline Color GetTextColor(TextRef text)
 
 inline void Text::GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
 {
-  SDL::GetTextColor(m_resource, r, g, b, a);
+  SDL::GetTextColor(get(), r, g, b, a);
 }
 
-inline Color Text::GetColor() const { return SDL::GetTextColor(m_resource); }
+inline Color Text::GetColor() const { return SDL::GetTextColor(get()); }
 
 /**
  * Get the color of a text object.
@@ -112031,12 +111858,12 @@ inline FColor GetTextColorFloat(TextRef text)
 
 inline void Text::GetColorFloat(float* r, float* g, float* b, float* a) const
 {
-  SDL::GetTextColorFloat(m_resource, r, g, b, a);
+  SDL::GetTextColorFloat(get(), r, g, b, a);
 }
 
 inline FColor Text::GetColorFloat() const
 {
-  return SDL::GetTextColorFloat(m_resource);
+  return SDL::GetTextColorFloat(get());
 }
 
 /**
@@ -112065,7 +111892,7 @@ inline void SetTextPosition(TextRef text, const PointRaw& p)
 
 inline void Text::SetPosition(const PointRaw& p)
 {
-  SDL::SetTextPosition(m_resource, p);
+  SDL::SetTextPosition(get(), p);
 }
 
 /**
@@ -112114,13 +111941,10 @@ inline Point GetTextPosition(TextRef text)
 
 inline void Text::GetPosition(int* x, int* y) const
 {
-  SDL::GetTextPosition(m_resource, x, y);
+  SDL::GetTextPosition(get(), x, y);
 }
 
-inline Point Text::GetPosition() const
-{
-  return SDL::GetTextPosition(m_resource);
-}
+inline Point Text::GetPosition() const { return SDL::GetTextPosition(get()); }
 
 /**
  * Set whether wrapping is enabled on a text object.
@@ -112146,7 +111970,7 @@ inline void SetTextWrapWidth(TextRef text, int wrap_width)
 
 inline void Text::SetWrapWidth(int wrap_width)
 {
-  SDL::SetTextWrapWidth(m_resource, wrap_width);
+  SDL::SetTextWrapWidth(get(), wrap_width);
 }
 
 /**
@@ -112171,10 +111995,7 @@ inline int GetTextWrapWidth(TextConstRef text)
   return w;
 }
 
-inline int Text::GetWrapWidth() const
-{
-  return SDL::GetTextWrapWidth(m_resource);
-}
+inline int Text::GetWrapWidth() const { return SDL::GetTextWrapWidth(get()); }
 
 /**
  * Set whether whitespace should be visible when wrapping a text object.
@@ -112203,7 +112024,7 @@ inline void SetTextWrapWhitespaceVisible(TextRef text, bool visible)
 
 inline void Text::SetWrapWhitespaceVisible(bool visible)
 {
-  SDL::SetTextWrapWhitespaceVisible(m_resource, visible);
+  SDL::SetTextWrapWhitespaceVisible(get(), visible);
 }
 
 /**
@@ -112226,7 +112047,7 @@ inline bool TextWrapWhitespaceVisible(TextConstRef text)
 
 inline bool Text::IsWrapWhitespaceVisible() const
 {
-  return SDL::TextWrapWhitespaceVisible(m_resource);
+  return SDL::TextWrapWhitespaceVisible(get());
 }
 
 /**
@@ -112254,7 +112075,7 @@ inline void SetTextString(TextRef text, std::string_view string)
 
 inline void Text::SetString(std::string_view string)
 {
-  SDL::SetTextString(m_resource, string);
+  SDL::SetTextString(get(), string);
 }
 
 /**
@@ -112286,7 +112107,7 @@ inline void InsertTextString(TextRef text, int offset, std::string_view string)
 
 inline void Text::InsertString(int offset, std::string_view string)
 {
-  SDL::InsertTextString(m_resource, offset, string);
+  SDL::InsertTextString(get(), offset, string);
 }
 
 /**
@@ -112314,7 +112135,7 @@ inline void AppendTextString(TextRef text, std::string_view string)
 
 inline void Text::AppendString(std::string_view string)
 {
-  SDL::AppendTextString(m_resource, string);
+  SDL::AppendTextString(get(), string);
 }
 
 /**
@@ -112347,7 +112168,7 @@ inline void DeleteTextString(TextRef text, int offset, int length)
 
 inline void Text::DeleteString(int offset, int length)
 {
-  SDL::DeleteTextString(m_resource, offset, length);
+  SDL::DeleteTextString(get(), offset, length);
 }
 
 /**
@@ -112396,10 +112217,10 @@ inline Point GetTextSize(TextRef text)
 
 inline void Text::GetSize(int* w, int* h) const
 {
-  SDL::GetTextSize(m_resource, w, h);
+  SDL::GetTextSize(get(), w, h);
 }
 
-inline Point Text::GetSize() const { return SDL::GetTextSize(m_resource); }
+inline Point Text::GetSize() const { return SDL::GetTextSize(get()); }
 
 /**
  * Get the substring of a text object that surrounds a text offset.
@@ -112430,7 +112251,7 @@ inline void GetTextSubString(TextConstRef text,
 
 inline void Text::GetSubString(int offset, SubString* substring) const
 {
-  SDL::GetTextSubString(m_resource, offset, substring);
+  SDL::GetTextSubString(get(), offset, substring);
 }
 
 /**
@@ -112461,7 +112282,7 @@ inline void GetTextSubStringForLine(TextConstRef text,
 
 inline void Text::GetSubStringForLine(int line, SubString* substring) const
 {
-  SDL::GetTextSubStringForLine(m_resource, line, substring);
+  SDL::GetTextSubStringForLine(get(), line, substring);
 }
 
 /**
@@ -112491,7 +112312,7 @@ inline OwnArray<SubString*> GetTextSubStringsForRange(TextConstRef text,
 inline OwnArray<SubString*> Text::GetSubStringsForRange(int offset,
                                                         int length) const
 {
-  return SDL::GetTextSubStringsForRange(m_resource, offset, length);
+  return SDL::GetTextSubStringsForRange(get(), offset, length);
 }
 
 /**
@@ -112520,7 +112341,7 @@ inline void GetTextSubStringForPoint(TextConstRef text,
 
 inline void Text::GetSubStringForPoint(Point p, SubString* substring) const
 {
-  SDL::GetTextSubStringForPoint(m_resource, p, substring);
+  SDL::GetTextSubStringForPoint(get(), p, substring);
 }
 
 /**
@@ -112550,7 +112371,7 @@ inline void GetPreviousTextSubString(TextConstRef text,
 inline void Text::GetPreviousSubString(const SubString& substring,
                                        SubString* previous) const
 {
-  SDL::GetPreviousTextSubString(m_resource, substring, previous);
+  SDL::GetPreviousTextSubString(get(), substring, previous);
 }
 
 /**
@@ -112579,7 +112400,7 @@ inline void GetNextTextSubString(TextConstRef text,
 inline void Text::GetNextSubString(const SubString& substring,
                                    SubString* next) const
 {
-  SDL::GetNextTextSubString(m_resource, substring, next);
+  SDL::GetNextTextSubString(get(), substring, next);
 }
 
 /**
@@ -112599,7 +112420,7 @@ inline void Text::GetNextSubString(const SubString& substring,
  */
 inline void UpdateText(TextRef text) { CheckError(TTF_UpdateText(text)); }
 
-inline void Text::Update() { SDL::UpdateText(m_resource); }
+inline void Text::Update() { SDL::UpdateText(get()); }
 
 /**
  * Destroy a text object created by a text engine.

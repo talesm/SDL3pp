@@ -943,7 +943,7 @@ inline void CopyProperties(PropertiesRef src, PropertiesRef dst)
 
 inline void Properties::Copy(PropertiesRef dst)
 {
-  SDL::CopyProperties(m_resource, dst);
+  SDL::CopyProperties(get(), dst);
 }
 
 /**
@@ -1096,7 +1096,7 @@ inline void Properties::SetPointerPropertyWithCleanup(
   void* userdata)
 {
   SDL::SetPointerPropertyWithCleanup(
-    m_resource, std::move(name), value, cleanup, userdata);
+    get(), std::move(name), value, cleanup, userdata);
 }
 
 inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
@@ -1104,7 +1104,7 @@ inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
                                                       CleanupPropertyCB cleanup)
 {
   SDL::SetPointerPropertyWithCleanup(
-    m_resource, std::move(name), value, std::move(cleanup));
+    get(), std::move(name), value, std::move(cleanup));
 }
 
 /**
@@ -1137,7 +1137,7 @@ inline void SetPointerProperty(PropertiesRef props,
 
 inline void Properties::SetPointerProperty(StringParam name, void* value)
 {
-  SDL::SetPointerProperty(m_resource, std::move(name), value);
+  SDL::SetPointerProperty(get(), std::move(name), value);
 }
 
 /**
@@ -1167,7 +1167,7 @@ inline void SetStringProperty(PropertiesRef props,
 
 inline void Properties::SetStringProperty(StringParam name, StringParam value)
 {
-  SDL::SetStringProperty(m_resource, std::move(name), std::move(value));
+  SDL::SetStringProperty(get(), std::move(name), std::move(value));
 }
 
 /**
@@ -1193,7 +1193,7 @@ inline void SetNumberProperty(PropertiesRef props,
 
 inline void Properties::SetNumberProperty(StringParam name, Sint64 value)
 {
-  SDL::SetNumberProperty(m_resource, std::move(name), value);
+  SDL::SetNumberProperty(get(), std::move(name), value);
 }
 
 /**
@@ -1217,7 +1217,7 @@ inline void SetFloatProperty(PropertiesRef props, StringParam name, float value)
 
 inline void Properties::SetFloatProperty(StringParam name, float value)
 {
-  SDL::SetFloatProperty(m_resource, std::move(name), value);
+  SDL::SetFloatProperty(get(), std::move(name), value);
 }
 
 /**
@@ -1243,7 +1243,7 @@ inline void SetBooleanProperty(PropertiesRef props,
 
 inline void Properties::SetBooleanProperty(StringParam name, bool value)
 {
-  SDL::SetBooleanProperty(m_resource, std::move(name), value);
+  SDL::SetBooleanProperty(get(), std::move(name), value);
 }
 
 /**
@@ -1266,7 +1266,7 @@ inline bool HasProperty(PropertiesRef props, StringParam name)
 
 inline bool Properties::HasProperty(StringParam name)
 {
-  return SDL::HasProperty(m_resource, std::move(name));
+  return SDL::HasProperty(get(), std::move(name));
 }
 
 /**
@@ -1289,7 +1289,7 @@ inline PropertyType GetPropertyType(PropertiesRef props, StringParam name)
 
 inline PropertyType Properties::GetPropertyType(StringParam name)
 {
-  return SDL::GetPropertyType(m_resource, std::move(name));
+  return SDL::GetPropertyType(get(), std::move(name));
 }
 
 /**
@@ -1333,7 +1333,7 @@ inline void* GetPointerProperty(PropertiesRef props,
 inline void* Properties::GetPointerProperty(StringParam name,
                                             void* default_value)
 {
-  return SDL::GetPointerProperty(m_resource, std::move(name), default_value);
+  return SDL::GetPointerProperty(get(), std::move(name), default_value);
 }
 
 /**
@@ -1369,7 +1369,7 @@ inline const char* Properties::GetStringProperty(StringParam name,
                                                  StringParam default_value)
 {
   return SDL::GetStringProperty(
-    m_resource, std::move(name), std::move(default_value));
+    get(), std::move(name), std::move(default_value));
 }
 
 /**
@@ -1402,7 +1402,7 @@ inline Sint64 GetNumberProperty(PropertiesRef props,
 inline Sint64 Properties::GetNumberProperty(StringParam name,
                                             Sint64 default_value)
 {
-  return SDL::GetNumberProperty(m_resource, std::move(name), default_value);
+  return SDL::GetNumberProperty(get(), std::move(name), default_value);
 }
 
 /**
@@ -1434,7 +1434,7 @@ inline float GetFloatProperty(PropertiesRef props,
 
 inline float Properties::GetFloatProperty(StringParam name, float default_value)
 {
-  return SDL::GetFloatProperty(m_resource, std::move(name), default_value);
+  return SDL::GetFloatProperty(get(), std::move(name), default_value);
 }
 
 /**
@@ -1466,7 +1466,7 @@ inline bool GetBooleanProperty(PropertiesRef props,
 
 inline bool Properties::GetBooleanProperty(StringParam name, bool default_value)
 {
-  return SDL::GetBooleanProperty(m_resource, std::move(name), default_value);
+  return SDL::GetBooleanProperty(get(), std::move(name), default_value);
 }
 
 /**
@@ -1487,7 +1487,7 @@ inline void ClearProperty(PropertiesRef props, StringParam name)
 
 inline void Properties::ClearProperty(StringParam name)
 {
-  SDL::ClearProperty(m_resource, std::move(name));
+  SDL::ClearProperty(get(), std::move(name));
 }
 
 /**
@@ -1541,12 +1541,12 @@ inline void EnumerateProperties(PropertiesRef props,
 inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
                                   void* userdata)
 {
-  SDL::EnumerateProperties(m_resource, callback, userdata);
+  SDL::EnumerateProperties(get(), callback, userdata);
 }
 
 inline void Properties::Enumerate(EnumeratePropertiesCB callback)
 {
-  SDL::EnumerateProperties(m_resource, std::move(callback));
+  SDL::EnumerateProperties(get(), std::move(callback));
 }
 
 /**
@@ -1564,10 +1564,7 @@ inline Uint64 CountProperties(PropertiesRef props)
   return count;
 }
 
-inline Uint64 Properties::GetCount()
-{
-  return SDL::CountProperties(m_resource);
-}
+inline Uint64 Properties::GetCount() { return SDL::CountProperties(get()); }
 
 /**
  * Destroy a group of properties.

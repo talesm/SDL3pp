@@ -469,7 +469,7 @@ inline PropertiesRef GetSensorProperties(SensorRef sensor)
 
 inline PropertiesRef Sensor::GetProperties()
 {
-  return SDL::GetSensorProperties(m_resource);
+  return SDL::GetSensorProperties(get());
 }
 
 /**
@@ -486,7 +486,7 @@ inline const char* GetSensorName(SensorRef sensor)
   return SDL_GetSensorName(sensor);
 }
 
-inline const char* Sensor::GetName() { return SDL::GetSensorName(m_resource); }
+inline const char* Sensor::GetName() { return SDL::GetSensorName(get()); }
 
 /**
  * Get the type of a sensor.
@@ -501,7 +501,7 @@ inline SensorType GetSensorType(SensorRef sensor)
   return SDL_GetSensorType(sensor);
 }
 
-inline SensorType Sensor::GetType() { return SDL::GetSensorType(m_resource); }
+inline SensorType Sensor::GetType() { return SDL::GetSensorType(get()); }
 
 /**
  * Get the platform dependent type of a sensor.
@@ -518,7 +518,7 @@ inline int GetSensorNonPortableType(SensorRef sensor)
 
 inline int Sensor::GetNonPortableType()
 {
-  return SDL::GetSensorNonPortableType(m_resource);
+  return SDL::GetSensorNonPortableType(get());
 }
 
 /**
@@ -535,7 +535,7 @@ inline SensorID GetSensorID(SensorRef sensor)
   return CheckError(SDL_GetSensorID(sensor));
 }
 
-inline SensorID Sensor::GetID() { return SDL::GetSensorID(m_resource); }
+inline SensorID Sensor::GetID() { return SDL::GetSensorID(get()); }
 
 /**
  * Get the current state of an opened sensor.
@@ -556,7 +556,7 @@ inline void GetSensorData(SensorRef sensor, float* data, int num_values)
 
 inline void Sensor::GetData(float* data, int num_values)
 {
-  SDL::GetSensorData(m_resource, data, num_values);
+  SDL::GetSensorData(get(), data, num_values);
 }
 
 /**
