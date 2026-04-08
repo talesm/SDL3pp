@@ -1298,6 +1298,15 @@ inline const char* GetPlatform() { return SDL_GetPlatform(); }
 
 /// @}
 
+/**
+ * @defgroup CategoryResource Helpers to wrap SDL Resources.
+ *
+ * A resource is any SDL object that is created and destroyed by SDL, such as a
+ * Window, a Renderer, a Texture, etc.
+ *
+ * @{
+ */
+
 /// Reference wrapper for a given resource,
 template<typename RAW_POINTER>
 class ObjParam
@@ -1374,6 +1383,8 @@ public:
 private:
   RawConstPointer m_resource; ///< parameter's Surface
 };
+
+/// @}
 
 template<class T, class BASE>
 concept DerivedWrapper =

@@ -133,6 +133,7 @@ Category                                            | Header
 @ref CategoryCallbackWrapper                        | SDL3pp_callbackWrapper.h
 [Optional references](#SDL::OptionalRef)            | SDL3pp_optionalRef.h
 @ref CategoryOwnPtr                                 | SDL3pp_ownPtr.h
+@ref CategoryResource                               | SDL3pp_resource.h
 [Span-like for derived structs](#SDL::SpanRef)      | SDL3pp_spanRef.h
 @ref CategoryStrings                                | SDL3pp_strings.h
 
@@ -249,6 +250,7 @@ thread facilities.
 @{
 @addtogroup CategoryCallbackWrapper
 @addtogroup CategoryOwnPtr
+@addtogroup CategoryResource
 @addtogroup CategoryStrings
 @}
 
