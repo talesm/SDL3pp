@@ -472,7 +472,7 @@ public:
    * @sa TrayEntry.CreateSubmenu
    * @sa TrayMenu.GetParentTray
    */
-  TrayEntryRef GetParentEntry() const;
+  TrayEntry GetParentEntry() const;
 
   /**
    * Gets the tray for which this menu is the first-level menu, if the current
@@ -712,21 +712,6 @@ public:
    * Sets a callback to be invoked when the entry is selected.
    *
    * @param callback a callback to be invoked when the entry is selected.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               tray.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TrayMenu.GetEntries
-   * @sa TrayMenu.InsertEntry
-   */
-  void SetCallback(TrayCB callback);
-
-  /**
-   * Sets a callback to be invoked when the entry is selected.
-   *
-   * @param callback a callback to be invoked when the entry is selected.
    * @param userdata an optional pointer to pass extra data to the callback when
    *                 it will be invoked.
    *
@@ -739,6 +724,21 @@ public:
    * @sa TrayMenu.InsertEntry
    */
   void SetCallback(TrayCallback callback, void* userdata);
+
+  /**
+   * Sets a callback to be invoked when the entry is selected.
+   *
+   * @param callback a callback to be invoked when the entry is selected.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TrayMenu.GetEntries
+   * @sa TrayMenu.InsertEntry
+   */
+  void SetCallback(TrayCB callback);
 
   /**
    * Simulate a click on a tray entry.
@@ -918,7 +918,7 @@ inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(m_resource); }
  * @sa TrayEntry.GetSubmenu
  * @sa TrayMenu.GetParentEntry
  */
-inline TrayMenu CreateTraySubmenu(TrayEntryRef entry)
+inline TrayMenu CreateTraySubmenu(TrayEntry entry)
 {
   return SDL_CreateTraySubmenu(entry);
 }
@@ -976,7 +976,7 @@ inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(m_resource); }
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.CreateSubmenu
  */
-inline TrayMenu GetTraySubmenu(TrayEntryRef entry)
+inline TrayMenu GetTraySubmenu(TrayEntry entry)
 {
   return SDL_GetTraySubmenu(entry);
 }
@@ -1073,6 +1073,11 @@ inline TrayEntry TrayMenu::InsertEntry(int pos,
   return SDL::InsertTrayEntryAt(m_trayMenu, pos, std::move(label), flags);
 }
 
+inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
+{
+  return InsertEntry(-1, std::move(label), flags);
+}
+
 /**
  * Sets the label of an entry.
  *
@@ -1093,7 +1098,7 @@ inline TrayEntry TrayMenu::InsertEntry(int pos,
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.GetLabel
  */
-inline void SetTrayEntryLabel(TrayEntryRef entry, StringParam label)
+inline void SetTrayEntryLabel(TrayEntry entry, StringParam label)
 {
   SDL_SetTrayEntryLabel(entry, label);
 }
@@ -1147,7 +1152,7 @@ inline const char* TrayEntry::GetLabel() const
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.GetChecked
  */
-inline void SetTrayEntryChecked(TrayEntryRef entry, bool checked)
+inline void SetTrayEntryChecked(TrayEntry entry, bool checked)
 {
   SDL_SetTrayEntryChecked(entry, checked);
 }
@@ -1199,7 +1204,7 @@ inline bool TrayEntry::GetChecked() const
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.GetEnabled
  */
-inline void SetTrayEntryEnabled(TrayEntryRef entry, bool enabled)
+inline void SetTrayEntryEnabled(TrayEntry entry, bool enabled)
 {
   SDL_SetTrayEntryEnabled(entry, enabled);
 }
@@ -1250,7 +1255,7 @@ inline bool TrayEntry::GetEnabled() const
  * @sa TrayMenu.GetEntries
  * @sa TrayMenu.InsertEntry
  */
-inline void SetTrayEntryCallback(TrayEntryRef entry,
+inline void SetTrayEntryCallback(TrayEntry entry,
                                  TrayCallback callback,
                                  void* userdata)
 {
@@ -1260,6 +1265,11 @@ inline void SetTrayEntryCallback(TrayEntryRef entry,
 inline void TrayEntry::SetCallback(TrayCallback callback, void* userdata)
 {
   SDL::SetTrayEntryCallback(m_resource, callback, userdata);
+}
+
+inline void TrayEntry::SetCallback(TrayCB callback)
+{
+  SetCallback(callback.wrapper, callback.data);
 }
 
 /**
@@ -1272,7 +1282,7 @@ inline void TrayEntry::SetCallback(TrayCallback callback, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ClickTrayEntry(TrayEntryRef entry) { SDL_ClickTrayEntry(entry); }
+inline void ClickTrayEntry(TrayEntry entry) { SDL_ClickTrayEntry(entry); }
 
 inline void TrayEntry::Click() { SDL::ClickTrayEntry(m_resource); }
 
@@ -1307,7 +1317,7 @@ inline void Tray::Destroy() { DestroyTray(release()); }
  *
  * @sa TrayMenu.InsertEntry
  */
-inline TrayMenu GetTrayEntryParent(TrayEntryRef entry)
+inline TrayMenu GetTrayEntryParent(TrayEntry entry)
 {
   return SDL_GetTrayEntryParent(entry);
 }
@@ -1335,12 +1345,12 @@ inline TrayMenu TrayEntry::GetParent()
  * @sa TrayEntry.CreateSubmenu
  * @sa TrayMenu.GetParentTray
  */
-inline TrayEntryRef GetTrayMenuParentEntry(TrayMenuRaw menu)
+inline TrayEntry GetTrayMenuParentEntry(TrayMenuRaw menu)
 {
   return SDL_GetTrayMenuParentEntry(menu);
 }
 
-inline TrayEntryRef TrayMenu::GetParentEntry() const
+inline TrayEntry TrayMenu::GetParentEntry() const
 {
   return SDL::GetTrayMenuParentEntry(m_trayMenu);
 }
@@ -1386,16 +1396,6 @@ inline TrayRef TrayMenu::GetParentTray() const
 inline void UpdateTrays() { SDL_UpdateTrays(); }
 
 /// @}
-
-inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
-{
-  return InsertEntry(-1, std::move(label), flags);
-}
-
-inline void TrayEntry::SetCallback(TrayCB callback)
-{
-  SetCallback(callback.wrapper, callback.data);
-}
 
 } // namespace SDL
 

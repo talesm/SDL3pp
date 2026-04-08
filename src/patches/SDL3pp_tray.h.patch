@@ -49,27 +49,16 @@
    TrayEntry AppendEntry(StringParam label, TrayEntryFlags flags);
  
    /**
-@@ -686,6 +708,19 @@
-    */
-   bool GetEnabled() const;
- 
-+  /**
-+   * Sets a callback to be invoked when the entry is selected.
-+   *
-+   * @param callback a callback to be invoked when the entry is selected.
-+   *
-+   * @threadsafety This function should be called on the thread that created the
-+   *               tray.
-+   *
-+   * @since This function is available since SDL 3.2.0.
-+   *
-+   * @sa TrayMenu.GetEntries
-+   * @sa TrayMenu.InsertEntry
-+   */
-   void SetCallback(TrayCB callback);
- 
-   /**
-@@ -955,7 +990,6 @@
+@@ -707,8 +729,6 @@
+    * Sets a callback to be invoked when the entry is selected.
+    *
+    * @param callback a callback to be invoked when the entry is selected.
+-   * @param userdata an optional pointer to pass extra data to the callback when
+-   *                 it will be invoked.
+    *
+    * @threadsafety This function should be called on the thread that created the
+    *               tray.
+@@ -970,7 +990,6 @@
   * Returns a list of entries in the menu, in order.
   *
   * @param menu The menu to get entries from.
@@ -77,7 +66,7 @@
   * @returns a nullptr-terminated list of entries within the given menu. The
   *          pointer becomes invalid when any function that inserts or deletes
   *          entries in the menu is called.
-@@ -970,7 +1004,10 @@
+@@ -985,7 +1004,10 @@
   */
  inline std::span<TrayEntry> GetTrayEntries(TrayMenu menu)
  {
@@ -89,20 +78,21 @@
  }
  
  inline std::span<TrayEntry> TrayMenu::GetEntries()
-@@ -1350,6 +1387,16 @@
+@@ -1053,7 +1075,7 @@
  
- /// @}
- 
-+inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
-+{
+ inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
+ {
+-  static_assert(false, "Not implemented");
 +  return InsertEntry(-1, std::move(label), flags);
-+}
-+
-+inline void TrayEntry::SetCallback(TrayCB callback)
-+{
-+  SetCallback(callback.wrapper, callback.data);
-+}
-+
- } // namespace SDL
+ }
  
- #endif /* SDL3PP_TRAY_H_ */
+ /**
+@@ -1247,7 +1269,7 @@
+ 
+ inline void TrayEntry::SetCallback(TrayCB callback)
+ {
+-  static_assert(false, "Not implemented");
++  SetCallback(callback.wrapper, callback.data);
+ }
+ 
+ /**

@@ -7802,115 +7802,64 @@ const transform = {
         "SDL_TrayCallback": { before: "SDL_Tray", callback: "lightweight" },
         "SDL_Tray": {
           resource: true,
-          entries: {
-            "SDL_CreateTray": "ctor",
-            "SDL_SetTrayIcon": "function",
-            "SDL_SetTrayTooltip": "function",
-            "SDL_CreateTrayMenu": {
-              proto: true,
-            },
-            "SDL_GetTrayMenu": {
-              proto: true,
-              immutable: true,
-            }
-          }
+          entries: { "SDL_CreateTray": "ctor" }
         },
+        "SDL_GetTrayMenu": { immutable: true },
         "SDL_TrayEntry": {
           resource: {
             free: "SDL_RemoveTrayEntry",
             owning: false,
           },
-          entries: {
-            "SDL_CreateTraySubmenu": {
-              name: "CreateSubmenu",
-            },
-            "SDL_GetTraySubmenu": {
-              name: "GetSubmenu",
-            },
-            "SDL_SetTrayEntryLabel": {
-              name: "SetLabel",
-            },
-            "SDL_GetTrayEntryLabel": {
-              name: "GetLabel",
-              immutable: true,
-            },
-            "SDL_SetTrayEntryChecked": {
-              name: "SetChecked",
-            },
-            "SDL_GetTrayEntryChecked": {
-              name: "GetChecked",
-              immutable: true,
-            },
-            "SDL_SetTrayEntryEnabled": {
-              name: "SetEnabled",
-            },
-            "SDL_GetTrayEntryEnabled": {
-              name: "GetEnabled",
-              immutable: true,
-            },
-            "SetCallback": {
-              kind: "function",
-              type: "void",
-              proto: true,
-              parameters: [{
-                type: "TrayCB",
-                name: "callback",
-              }],
-            },
-            "SDL_SetTrayEntryCallback": {
-              name: "SetCallback",
-            },
-            "SDL_ClickTrayEntry": {
-              name: "Click",
-            },
-            "SDL_GetTrayEntryParent": {
-              name: "GetParent",
-            }
-          }
         },
-        "SDL_TrayMenu": {
-          wrapper: true,
-          entries: {
-            "SDL_GetTrayEntries": {
-              name: "GetEntries",
-              type: "std::span<TrayEntry>",
-              proto: true,
-              parameters: [{}],
+        "SDL_CreateTraySubmenu": {
+          hints: { methodName: "CreateSubmenu" },
+        },
+        "SDL_GetTraySubmenu": {
+          hints: { methodName: "GetSubmenu" },
+        },
+        "SDL_GetTrayEntryLabel": { immutable: true },
+        "SDL_GetTrayEntryChecked": { immutable: true },
+        "SDL_GetTrayEntryEnabled": { immutable: true },
+        "TrayEntry::SetCallback": {
+          after: "SDL_SetTrayEntryCallback",
+          kind: "function",
+          type: "void",
+          static: false,
+          parameters: [{
+            type: "TrayCB",
+            name: "callback",
+          }],
+        },
+        "SDL_TrayMenu": { wrapper: true },
+        "SDL_GetTrayEntries": {
+          type: "std::span<TrayEntry>",
+          parameters: [{}],
+          hints: { methodName: "GetEntries" },
+        },
+        "SDL_InsertTrayEntryAt": {
+          type: "TrayEntry",
+          hints: { methodName: "InsertEntry" },
+        },
+        "TrayMenu::AppendEntry": {
+          kind: "function",
+          type: "TrayEntry",
+          static: false,
+          parameters: [
+            {
+              type: "StringParam",
+              name: "label"
             },
-            "SDL_InsertTrayEntryAt": {
-              name: "InsertEntry",
-              type: "TrayEntry",
-              proto: true,
+            {
+              type: "TrayEntryFlags",
+              name: "flags"
             },
-            "AppendEntry": {
-              kind: "function",
-              type: "TrayEntry",
-              static: false,
-              proto: true,
-              parameters: [
-                {
-                  type: "StringParam",
-                  name: "label"
-                },
-                {
-                  type: "TrayEntryFlags",
-                  name: "flags"
-                },
-              ],
-            },
-            "SDL_GetTrayMenuParentEntry": {
-              name: "GetParentEntry",
-              type: "TrayEntryRef",
-              immutable: true,
-              proto: true,
-            },
-            "SDL_GetTrayMenuParentTray": {
-              name: "GetParentTray",
-              type: "TrayRef",
-              immutable: true,
-              proto: true,
-            },
-          }
+          ],
+        },
+        "SDL_GetTrayMenuParentEntry": {
+          immutable: true,
+        },
+        "SDL_GetTrayMenuParentTray": {
+          immutable: true,
         },
       }
     },
