@@ -2534,7 +2534,7 @@ public:
   constexpr PaletteRaw operator->() noexcept { return m_resource; }
 
   /// Converts to PaletteConstRef
-  constexpr operator PaletteConstRef() const noexcept { return m_resource; }
+  constexpr operator PaletteConstRef() const noexcept { return get(); }
 
   /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }

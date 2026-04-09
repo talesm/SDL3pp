@@ -2681,7 +2681,7 @@ public:
   constexpr TextureRaw operator->() noexcept { return m_resource; }
 
   /// Converts to TextureConstRef
-  constexpr operator TextureConstRef() const noexcept { return m_resource; }
+  constexpr operator TextureConstRef() const noexcept { return get(); }
 
   /// Destructor
   ~Texture() { SDL_DestroyTexture(m_resource); }

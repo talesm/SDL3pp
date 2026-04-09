@@ -357,7 +357,7 @@ public:
   constexpr SurfaceRaw operator->() noexcept { return m_resource; }
 
   /// Converts to SurfaceConstRef
-  constexpr operator SurfaceConstRef() const noexcept { return m_resource; }
+  constexpr operator SurfaceConstRef() const noexcept { return get(); }
 
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }

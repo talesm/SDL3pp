@@ -2765,7 +2765,7 @@ public:
   constexpr AnimationRaw operator->() noexcept { return m_resource; }
 
   /// Converts to AnimationConstRef
-  constexpr operator AnimationConstRef() const noexcept { return m_resource; }
+  constexpr operator AnimationConstRef() const noexcept { return get(); }
 
   /// Destructor
   ~Animation() { IMG_FreeAnimation(m_resource); }

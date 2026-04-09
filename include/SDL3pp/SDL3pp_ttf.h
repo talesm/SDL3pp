@@ -4308,7 +4308,7 @@ public:
   constexpr TextRaw operator->() noexcept { return m_resource; }
 
   /// Converts to TextConstRef
-  constexpr operator TextConstRef() const noexcept { return m_resource; }
+  constexpr operator TextConstRef() const noexcept { return get(); }
 
   /// Destructor
   ~Text() { TTF_DestroyText(m_resource); }

@@ -28421,7 +28421,7 @@ public:
   constexpr PaletteRaw operator->() noexcept { return m_resource; }
 
   /// Converts to PaletteConstRef
-  constexpr operator PaletteConstRef() const noexcept { return m_resource; }
+  constexpr operator PaletteConstRef() const noexcept { return get(); }
 
   /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }
@@ -43326,7 +43326,7 @@ public:
   constexpr SurfaceRaw operator->() noexcept { return m_resource; }
 
   /// Converts to SurfaceConstRef
-  constexpr operator SurfaceConstRef() const noexcept { return m_resource; }
+  constexpr operator SurfaceConstRef() const noexcept { return get(); }
 
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
@@ -85458,7 +85458,7 @@ public:
   constexpr TextureRaw operator->() noexcept { return m_resource; }
 
   /// Converts to TextureConstRef
-  constexpr operator TextureConstRef() const noexcept { return m_resource; }
+  constexpr operator TextureConstRef() const noexcept { return get(); }
 
   /// Destructor
   ~Texture() { SDL_DestroyTexture(m_resource); }
@@ -103600,7 +103600,7 @@ public:
   constexpr AnimationRaw operator->() noexcept { return m_resource; }
 
   /// Converts to AnimationConstRef
-  constexpr operator AnimationConstRef() const noexcept { return m_resource; }
+  constexpr operator AnimationConstRef() const noexcept { return get(); }
 
   /// Destructor
   ~Animation() { IMG_FreeAnimation(m_resource); }
@@ -110062,7 +110062,7 @@ public:
   constexpr TextRaw operator->() noexcept { return m_resource; }
 
   /// Converts to TextConstRef
-  constexpr operator TextConstRef() const noexcept { return m_resource; }
+  constexpr operator TextConstRef() const noexcept { return get(); }
 
   /// Destructor
   ~Text() { TTF_DestroyText(m_resource); }

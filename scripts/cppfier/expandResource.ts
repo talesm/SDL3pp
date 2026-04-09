@@ -631,7 +631,7 @@ function populateTargetEntry(
       immutable: true,
       constexpr: true,
       parameters: [],
-      hints: { body: "return m_resource;", noexcept: true },
+      hints: { body: "return get();", noexcept: true },
       doc: [`Converts to ${constParamType}`],
     };
   } else if (hasScoped) {
