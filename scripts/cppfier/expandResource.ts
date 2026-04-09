@@ -60,7 +60,15 @@ export function expandResource(
   const constPointerType = `const ${pointerType}`;
   const nullValue = isStruct ? "nullptr" : "0";
   const title = targetName[0].toLowerCase() + targetName.slice(1);
-  if (sourceEntry.type && !targetEntry.type) targetEntry.type = "";
+  if (sourceEntry.type && !targetEntry.type) {
+    if (hasScoped) {
+      targetEntry.type = enableConstParam
+        ? `ResourceBase<${rawName}, ${constRawName}>`
+        : `ResourceBase<${rawName}>`;
+    } else {
+      targetEntry.type = "";
+    }
+  }
   context.addName(sourceName, targetName);
   context.addCallbackType(isStruct ? `${sourceName} *` : sourceName, rawName);
 
@@ -219,17 +227,6 @@ export function expandResource(
   } else {
     targetEntry.doc = [`Wraps ${title} resource.`, "@cat resource"];
   }
-  if (hasScoped) {
-    ctors[`operator ${rawName}`] = {
-      kind: "function",
-      type: "",
-      immutable: true,
-      constexpr: true,
-      parameters: [],
-      hints: { body: "return m_resource;", noexcept: true },
-      doc: [`Converts to underlying ${rawName}.`],
-    };
-  }
   populateTargetEntry(
     hasScoped,
     hasShared,
@@ -331,9 +328,7 @@ function createBaselineCtors(
   rawName: string,
   isStruct: boolean,
 ) {
-  const ownershipDisclaimer = hasScoped
-    ? []
-    : ["This assumes the ownership, call release() if you need to take back."];
+  if (hasScoped) return {};
 
   const ctors: Dict<ApiEntryTransform> = {
     [targetName]: {
@@ -361,7 +356,7 @@ function createBaselineCtors(
       doc: [
         `Constructs from raw ${targetName}.`,
         { tag: "@param resource", content: `a ${rawName} to be wrapped.` },
-        ...ownershipDisclaimer,
+        "This assumes the ownership, call release() if you need to take back.",
       ],
     },
     [`${targetName}#3`]: {
@@ -639,8 +634,19 @@ function populateTargetEntry(
       hints: { body: "return m_resource;", noexcept: true },
       doc: [`Converts to ${constParamType}`],
     };
+  } else if (hasScoped) {
+    ctors[`operator ${rawName}`] = {
+      kind: "function",
+      type: "",
+      immutable: true,
+      constexpr: true,
+      parameters: [],
+      hints: { body: "return get();", noexcept: true },
+      doc: [`Converts to underlying ${rawName}.`],
+    };
   }
   const entries: ApiEntryTransformMap = {
+    "ResourceBase::ResourceBase": "alias",
     m_resource: {
       kind: "var",
       type: rawName,
@@ -725,16 +731,27 @@ function populateTargetEntry(
     ...subEntries,
   };
   if (hasScoped) {
+    delete entries["m_resource"];
     delete entries[`~${targetName}`];
     delete entries["operator="];
     delete entries["operator=#2"];
+    delete entries["get"];
+    delete entries["release"];
+    delete entries["operator <=>"];
+    delete entries["operator bool"];
+    addHints(targetEntry, {
+      self: "get()",
+      super: "ResourceBase",
+    });
+  } else {
+    delete entries["ResourceBase::ResourceBase"];
+    addHints(targetEntry, {
+      self: "get()",
+      super: "m_resource",
+      private: true,
+    });
   }
   targetEntry.entries = entries;
-  addHints(targetEntry, {
-    self: "get()",
-    super: "m_resource",
-    private: true,
-  });
 }
 
 function createRefEntry(

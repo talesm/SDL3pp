@@ -501,26 +501,9 @@ public:
  *
  * @cat resource
  */
-class TrayEntry
+struct TrayEntry : ResourceBase<TrayEntryRaw>
 {
-  TrayEntryRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr TrayEntry(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from raw TrayEntry.
-   *
-   * @param resource a TrayEntryRaw to be wrapped.
-   */
-  constexpr TrayEntry(TrayEntryRaw resource) noexcept
-    : m_resource(resource)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Insert a tray entry at a given position.
@@ -578,24 +561,7 @@ public:
   TrayEntry(TrayMenuRaw menu, StringParam label, TrayEntryFlags flags);
 
   /// Converts to underlying TrayEntryRaw.
-  constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TrayEntryRaw.
-  constexpr TrayEntryRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TrayEntryRaw and clear this.
-  constexpr TrayEntryRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const TrayEntry& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
+  constexpr operator TrayEntryRaw() const noexcept { return get(); }
 
   /**
    * Removes a tray entry.
@@ -1126,7 +1092,7 @@ inline TrayEntry::TrayEntry(TrayMenu menu,
                             int pos,
                             StringParam label,
                             TrayEntryFlags flags)
-  : m_resource(SDL_InsertTrayEntryAt(menu, pos, label, flags))
+  : ResourceBase(SDL_InsertTrayEntryAt(menu, pos, label, flags))
 {
 }
 

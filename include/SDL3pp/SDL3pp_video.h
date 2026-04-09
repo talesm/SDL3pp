@@ -3284,7 +3284,7 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @cat resource
  */
-struct GLContext : public ResourceBase<GLContextRaw>
+struct GLContext : ResourceBase<GLContextRaw>
 {
   using ResourceBase::ResourceBase;
 
