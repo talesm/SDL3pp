@@ -165,16 +165,9 @@ constexpr FlipMode FLIP_HORIZONTAL_AND_VERTICAL =
  * @sa CreateSurface
  * @sa Surface.Destroy
  */
-class Surface
+struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
 {
-  SurfaceRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Surface(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Surface.
@@ -184,15 +177,15 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Surface(SurfaceRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
   constexpr Surface(const Surface& other)
-    : m_resource(other.m_resource)
+    : ResourceBase(other.get())
   {
-    if (m_resource) ++m_resource->refcount;
+    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor
@@ -350,51 +343,31 @@ public:
     return {};
   }
 
-  /// member access to underlying SurfaceRaw.
-  constexpr SurfaceRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying SurfaceRaw.
-  constexpr SurfaceRaw operator->() noexcept { return m_resource; }
-
   /// Converts to SurfaceConstRef
   constexpr operator SurfaceConstRef() const noexcept { return get(); }
 
   /// Destructor
-  ~Surface() { SDL_DestroySurface(m_resource); }
+  ~Surface() { SDL_DestroySurface(get()); }
 
   /// Assignment operator.
   constexpr Surface& operator=(Surface&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Surface& operator=(const Surface& other)
   {
-    if (m_resource != other.m_resource) {
+    if (auto r = other.get(); get() != r) {
       Surface tmp(other);
-      std::swap(m_resource, tmp.m_resource);
+      swap(*this, tmp);
     }
     return *this;
   }
 
-  /// Retrieves underlying SurfaceRaw.
-  constexpr SurfaceRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying SurfaceRaw and clear this.
-  constexpr SurfaceRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
   /// Comparison
   constexpr auto operator<=>(const Surface& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Free this surface.
@@ -2246,7 +2219,7 @@ inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 }
 
 inline Surface::Surface(const PointRaw& size, PixelFormat format)
-  : m_resource(CheckError(SDL_CreateSurface(size.x, size.y, format)))
+  : ResourceBase(CheckError(SDL_CreateSurface(size.x, size.y, format)))
 {
 }
 
@@ -2254,7 +2227,7 @@ inline Surface::Surface(const PointRaw& size,
                         PixelFormat format,
                         void* pixels,
                         int pitch)
-  : m_resource(
+  : ResourceBase(
       CheckError(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
 {
 }

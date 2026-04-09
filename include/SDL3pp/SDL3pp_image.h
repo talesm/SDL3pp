@@ -143,12 +143,12 @@ inline int Version() { return IMG_Version(); }
 inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 
 inline Surface::Surface(StringParam file)
-  : m_resource(IMG_Load(file))
+  : ResourceBase(IMG_Load(file))
 {
 }
 
 inline Surface::Surface(IOStreamRef src, bool closeio)
-  : m_resource(IMG_Load_IO(src, closeio))
+  : ResourceBase(IMG_Load_IO(src, closeio))
 {
 }
 
@@ -2533,7 +2533,7 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
 
 inline void Surface::SavePNG(StringParam file) const
 {
-  SDL::SavePNG(m_resource, std::move(file));
+  SDL::SavePNG(get(), std::move(file));
 }
 
 /**
@@ -2563,7 +2563,7 @@ inline void SavePNG_IO(SurfaceRef surface,
 
 inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
 {
-  SDL::SavePNG_IO(m_resource, dst, closeio);
+  SDL::SavePNG_IO(get(), dst, closeio);
 }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
