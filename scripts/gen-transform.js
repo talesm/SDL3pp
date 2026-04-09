@@ -7810,6 +7810,7 @@ const transform = {
             free: "SDL_RemoveTrayEntry",
             owning: false,
           },
+          entries: { "SDL_InsertTrayEntryAt": "ctor" },
         },
         "SDL_CreateTraySubmenu": {
           hints: { methodName: "CreateSubmenu" },
@@ -7820,8 +7821,19 @@ const transform = {
         "SDL_GetTrayEntryLabel": { immutable: true },
         "SDL_GetTrayEntryChecked": { immutable: true },
         "SDL_GetTrayEntryEnabled": { immutable: true },
-        "TrayEntry::SetCallback": {
+        "SetTrayEntryCallback": {
           after: "SDL_SetTrayEntryCallback",
+          kind: "function",
+          type: "void",
+          parameters: [{
+            type: "TrayEntry",
+            name: "entry",
+          }, {
+            type: "TrayCB",
+            name: "callback",
+          }],
+        },
+        "TrayEntry::SetCallback": {
           kind: "function",
           type: "void",
           static: false,
@@ -7829,6 +7841,7 @@ const transform = {
             type: "TrayCB",
             name: "callback",
           }],
+          hints: { delegate: "SetTrayEntryCallback" },
         },
         "SDL_TrayMenu": { wrapper: true },
         "SDL_GetTrayEntries": {
@@ -7840,20 +7853,38 @@ const transform = {
           type: "TrayEntry",
           hints: { methodName: "InsertEntry" },
         },
-        "TrayMenu::AppendEntry": {
+        "TrayEntry::TrayEntry": {
+          kind: "function",
+          type: "",
+          parameters: [{
+            type: "TrayMenuRaw",
+            name: "menu"
+          }, {
+            type: "StringParam",
+            name: "label"
+          }, {
+            type: "TrayEntryFlags",
+            name: "flags"
+          }],
+        },
+        "AppendTrayEntry": {
           kind: "function",
           type: "TrayEntry",
-          static: false,
-          parameters: [
-            {
-              type: "StringParam",
-              name: "label"
-            },
-            {
-              type: "TrayEntryFlags",
-              name: "flags"
-            },
-          ],
+          parameters: [{
+            type: "TrayMenuRaw",
+            name: "menu"
+          }, {
+            type: "StringParam",
+            name: "label"
+          }, {
+            type: "TrayEntryFlags",
+            name: "flags"
+          }],
+          hints: {
+            delegate: "TrayEntry",
+            methodName: "AppendEntry",
+            copyDoc: "SDL_InsertTrayEntryAt",
+          },
         },
         "SDL_GetTrayMenuParentEntry": {
           immutable: true,

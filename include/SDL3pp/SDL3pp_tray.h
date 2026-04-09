@@ -522,6 +522,61 @@ public:
   {
   }
 
+  /**
+   * Insert a tray entry at a given position.
+   *
+   * If label is nullptr, the entry will be a separator. Many functions won't
+   * work for an entry that is a separator.
+   *
+   * An entry does not need to be destroyed; it will be destroyed with the tray.
+   *
+   * @param menu the menu to append the entry to.
+   * @param pos the desired position for the new entry. Entries at or following
+   *            this place will be moved. If pos is -1, the entry is appended.
+   * @param label the text to be displayed on the entry, in UTF-8 encoding, or
+   *              nullptr for a separator.
+   * @param flags a combination of flags, some of which are mandatory.
+   * @post the newly created entry, or nullptr if pos is out of bounds.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TrayEntryFlags
+   * @sa TrayMenu.GetEntries
+   * @sa TrayEntry.Remove
+   * @sa TrayEntry.GetParent
+   */
+  TrayEntry(TrayMenu menu, int pos, StringParam label, TrayEntryFlags flags);
+
+  /**
+   * Appends a tray entry.
+   *
+   * If label is nullptr, the entry will be a separator. Many functions won't
+   * work for an entry that is a separator.
+   *
+   * An entry does not need to be destroyed; it will be destroyed with the tray.
+   *
+   * @param menu the menu to append the entry to.
+   * @param label the text to be displayed on the entry, in UTF-8 encoding, or
+   *              nullptr for a separator.
+   * @param flags a combination of flags, some of which are mandatory.
+   * @post the newly created entry, or nullptr if pos is out of bounds.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TrayMenu.InsertEntry
+   * @sa TrayEntryFlags
+   * @sa TrayMenu.GetEntries
+   * @sa TrayEntry.Remove
+   * @sa TrayEntry.GetParent
+   */
+  TrayEntry(TrayMenuRaw menu, StringParam label, TrayEntryFlags flags);
+
   /// Converts to underlying TrayEntryRaw.
   constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
 
@@ -1063,19 +1118,66 @@ inline TrayEntry InsertTrayEntryAt(TrayMenu menu,
                                    StringParam label,
                                    TrayEntryFlags flags)
 {
-  return SDL_InsertTrayEntryAt(menu, pos, label, flags);
+  return TrayEntry(menu, pos, std::move(label), flags);
 }
 
 inline TrayEntry TrayMenu::InsertEntry(int pos,
                                        StringParam label,
                                        TrayEntryFlags flags)
 {
-  return SDL::InsertTrayEntryAt(m_trayMenu, pos, std::move(label), flags);
+  return TrayEntry(m_trayMenu, pos, std::move(label), flags);
+}
+
+inline TrayEntry::TrayEntry(TrayMenu menu,
+                            int pos,
+                            StringParam label,
+                            TrayEntryFlags flags)
+  : m_resource(SDL_InsertTrayEntryAt(menu, pos, label, flags))
+{
+}
+
+inline TrayEntry::TrayEntry(TrayMenuRaw menu,
+                            StringParam label,
+                            TrayEntryFlags flags)
+  : TrayEntry(menu, -1, std::move(label), flags)
+{
+}
+
+/**
+ * Appends a tray entry.
+ *
+ * If label is nullptr, the entry will be a separator. Many functions won't
+ * work for an entry that is a separator.
+ *
+ * An entry does not need to be destroyed; it will be destroyed with the tray.
+ *
+ * @param menu the menu to append the entry to.
+ * @param label the text to be displayed on the entry, in UTF-8 encoding, or
+ *              nullptr for a separator.
+ * @param flags a combination of flags, some of which are mandatory.
+ * @returns the newly created entry, or nullptr if pos is out of bounds.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               tray.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa TrayMenu.InsertEntry
+ * @sa TrayEntryFlags
+ * @sa TrayMenu.GetEntries
+ * @sa TrayEntry.Remove
+ * @sa TrayEntry.GetParent
+ */
+inline TrayEntry AppendTrayEntry(TrayMenuRaw menu,
+                                 StringParam label,
+                                 TrayEntryFlags flags)
+{
+  return TrayEntry(menu, std::move(label), flags);
 }
 
 inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 {
-  return InsertEntry(-1, std::move(label), flags);
+  return SDL::AppendTrayEntry(m_trayMenu, std::move(label), flags);
 }
 
 /**
@@ -1262,6 +1364,25 @@ inline void SetTrayEntryCallback(TrayEntry entry,
   SDL_SetTrayEntryCallback(entry, callback, userdata);
 }
 
+/**
+ * Sets a callback to be invoked when the entry is selected.
+ *
+ * @param entry the entry to be updated.
+ * @param callback a callback to be invoked when the entry is selected.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               tray.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa TrayMenu.GetEntries
+ * @sa TrayMenu.InsertEntry
+ */
+inline void SetTrayEntryCallback(TrayEntry entry, TrayCB callback)
+{
+  SetTrayEntryCallback(entry, callback.wrapper, callback.data);
+}
+
 inline void TrayEntry::SetCallback(TrayCallback callback, void* userdata)
 {
   SDL::SetTrayEntryCallback(m_resource, callback, userdata);
@@ -1269,7 +1390,7 @@ inline void TrayEntry::SetCallback(TrayCallback callback, void* userdata)
 
 inline void TrayEntry::SetCallback(TrayCB callback)
 {
-  SetCallback(callback.wrapper, callback.data);
+  SetTrayEntryCallback(get(), callback);
 }
 
 /**
