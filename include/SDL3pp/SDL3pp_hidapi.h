@@ -125,7 +125,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) noexcept = delete;
+  constexpr HidDevice(const HidDevice& other) = delete;
 
   /// Move constructor
   constexpr HidDevice(HidDevice&& other) noexcept
@@ -638,12 +638,12 @@ inline HidDevice hid_open(unsigned short vendor_id,
 inline HidDevice::HidDevice(unsigned short vendor_id,
                             unsigned short product_id,
                             const wchar_t* serial_number)
-  : m_resource(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
+  : HidDevice(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
 {
 }
 
 inline HidDevice::HidDevice(StringParam path)
-  : m_resource(CheckError(SDL_hid_open_path(path)))
+  : HidDevice(CheckError(SDL_hid_open_path(path)))
 {
 }
 

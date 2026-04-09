@@ -348,8 +348,9 @@ function createBaselineCtors(
       constexpr: true,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
-        init: [`${targetName}(other.m_resource)`],
-        noexcept: true,
+        delete: shared ? undefined : true,
+        init: shared ? [`${targetName}(other.get())`] : undefined,
+        body: shared ? `if (auto res = get()) ++res->${shared};` : undefined,
       },
       doc: ["Copy constructor"],
     },
@@ -368,9 +369,8 @@ function createBaselineCtors(
   if (shared) {
     addBorrowFunction(ctors, targetName, shared, rawName);
     delete ctors[`${targetName}`];
-  } else {
-    ctors[`${targetName}#3`].hints.delete = true;
-    if (refName) deleteCtorsFromRef(ctors, refName, targetName);
+  } else if (refName) {
+    deleteCtorsFromRef(ctors, refName, targetName);
   }
   return ctors;
 }
@@ -381,11 +381,9 @@ function addBorrowFunction(
   shared: true | string,
   rawName: string,
 ) {
-  const copyCtorHints: EntryHint = {};
-  ctors[`${targetName}#3`].hints = copyCtorHints;
-  if (shared !== true) {
-    copyCtorHints.init = [`${targetName}(other.get())`];
-    copyCtorHints.body = `if (auto res = get()) ++res->${shared};`;
+  if (shared === true) {
+    ctors[`${targetName}#3`].hints = {};
+  } else {
     ctors["Borrow"] = {
       kind: "function",
       static: true,
@@ -731,7 +729,7 @@ function populateTargetEntry(
     delete entries["ResourceBase::ResourceBase"];
     addHints(targetEntry, {
       self: "get()",
-      super: "m_resource",
+      super: targetName,
       private: true,
     });
   }

@@ -140,7 +140,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) noexcept = delete;
+  constexpr AsyncIO(const AsyncIO& other) = delete;
 
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
@@ -525,7 +525,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept = delete;
+  constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
 
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
@@ -858,7 +858,7 @@ inline AsyncIO AsyncIOFromFile(StringParam file, StringParam mode)
 }
 
 inline AsyncIO::AsyncIO(StringParam file, StringParam mode)
-  : m_resource(SDL_AsyncIOFromFile(file, mode))
+  : AsyncIO(SDL_AsyncIOFromFile(file, mode))
 {
 }
 
@@ -1069,7 +1069,7 @@ inline bool AsyncIO::Close(bool flush, AsyncIOQueueRef queue, void* userdata)
 inline AsyncIOQueue CreateAsyncIOQueue() { return AsyncIOQueue(); }
 
 inline AsyncIOQueue::AsyncIOQueue()
-  : m_resource(SDL_CreateAsyncIOQueue())
+  : AsyncIOQueue(SDL_CreateAsyncIOQueue())
 {
 }
 

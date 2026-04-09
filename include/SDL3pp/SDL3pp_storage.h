@@ -285,7 +285,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Storage(const Storage& other) noexcept = delete;
+  constexpr Storage(const Storage& other) = delete;
 
   /// Move constructor
   constexpr Storage(Storage&& other) noexcept
@@ -840,22 +840,22 @@ inline Storage OpenTitleStorage(StringParam override, PropertiesRef props)
 }
 
 inline Storage::Storage(StringParam override, PropertiesRef props)
-  : m_resource(CheckError(SDL_OpenTitleStorage(override, props)))
+  : Storage(CheckError(SDL_OpenTitleStorage(override, props)))
 {
 }
 
 inline Storage::Storage(StringParam org, StringParam app, PropertiesRef props)
-  : m_resource(CheckError(SDL_OpenUserStorage(org, app, props)))
+  : Storage(CheckError(SDL_OpenUserStorage(org, app, props)))
 {
 }
 
 inline Storage::Storage(StringParam path)
-  : m_resource(CheckError(SDL_OpenFileStorage(path)))
+  : Storage(CheckError(SDL_OpenFileStorage(path)))
 {
 }
 
 inline Storage::Storage(const StorageInterface& iface, void* userdata)
-  : m_resource(CheckError(SDL_OpenStorage(&iface, userdata)))
+  : Storage(CheckError(SDL_OpenStorage(&iface, userdata)))
 {
 }
 

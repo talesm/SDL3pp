@@ -177,7 +177,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Camera(const Camera& other) noexcept = delete;
+  constexpr Camera(const Camera& other) = delete;
 
   /// Move constructor
   constexpr Camera(Camera&& other) noexcept
@@ -842,7 +842,7 @@ inline Camera OpenCamera(CameraID instance_id,
 }
 
 inline Camera::Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec)
-  : m_resource(SDL_OpenCamera(instance_id, spec))
+  : Camera(SDL_OpenCamera(instance_id, spec))
 {
 }
 

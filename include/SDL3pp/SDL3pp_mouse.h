@@ -175,7 +175,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) noexcept = delete;
+  constexpr Cursor(const Cursor& other) = delete;
 
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
@@ -940,18 +940,18 @@ inline Cursor::Cursor(const Uint8* data,
                       const Uint8* mask,
                       const PointRaw& size,
                       const PointRaw& hot)
-  : m_resource(
+  : Cursor(
       CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
 {
 }
 
 inline Cursor::Cursor(SurfaceRef surface, const PointRaw& hot)
-  : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
+  : Cursor(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
 {
 }
 
 inline Cursor::Cursor(SystemCursor id)
-  : m_resource(CheckError(SDL_CreateSystemCursor(id)))
+  : Cursor(CheckError(SDL_CreateSystemCursor(id)))
 {
 }
 

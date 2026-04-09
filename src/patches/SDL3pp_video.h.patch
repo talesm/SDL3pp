@@ -650,8 +650,8 @@
  inline Window::Window(StringParam title,
                        const PointRaw& size,
                        WindowFlags flags)
--  : m_resource(SDL_CreateWindow(title, size, flags))
-+  : m_resource(SDL_CreateWindow(title, size.x, size.y, flags))
+-  : Window(SDL_CreateWindow(title, size, flags))
++  : Window(SDL_CreateWindow(title, size.x, size.y, flags))
  {
  }
  
@@ -659,8 +659,8 @@
                        const PointRaw& offset,
                        const PointRaw& size,
                        WindowFlags flags)
--  : m_resource(SDL_CreatePopupWindow(parent, offset, size, flags))
-+  : m_resource(
+-  : Window(SDL_CreatePopupWindow(parent, offset, size, flags))
++  : Window(
 +      SDL_CreatePopupWindow(parent, offset.x, offset.y, size.x, size.y, flags))
  {
  }

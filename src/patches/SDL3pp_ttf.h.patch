@@ -325,8 +325,8 @@
  }
  
  inline Font::Font(IOStreamRef src, float ptsize, bool closeio)
--  : m_resource(CheckError(TTF_OpenFontIO(src, ptsize, closeio)))
-+  : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
+-  : Font(CheckError(TTF_OpenFontIO(src, ptsize, closeio)))
++  : Font(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
  {
  }
  
@@ -1568,8 +1568,8 @@
  }
  
  inline Text::Text(TextEngineRef engine, FontRef font, std::string_view text)
--  : m_resource(TTF_CreateText(engine, font, text))
-+  : m_resource(TTF_CreateText(engine, font, text.data(), text.size()))
+-  : Text(TTF_CreateText(engine, font, text))
++  : Text(TTF_CreateText(engine, font, text.data(), text.size()))
  {
  }
  

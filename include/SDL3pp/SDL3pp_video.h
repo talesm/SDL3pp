@@ -758,7 +758,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Window(const Window& other) noexcept = delete;
+  constexpr Window(const Window& other) = delete;
 
   /// Move constructor
   constexpr Window(Window&& other) noexcept
@@ -4510,7 +4510,7 @@ inline Window CreateWindow(StringParam title,
 inline Window::Window(StringParam title,
                       const PointRaw& size,
                       WindowFlags flags)
-  : m_resource(SDL_CreateWindow(title, size.x, size.y, flags))
+  : Window(SDL_CreateWindow(title, size.x, size.y, flags))
 {
 }
 
@@ -4518,13 +4518,13 @@ inline Window::Window(WindowRef parent,
                       const PointRaw& offset,
                       const PointRaw& size,
                       WindowFlags flags)
-  : m_resource(
+  : Window(
       SDL_CreatePopupWindow(parent, offset.x, offset.y, size.x, size.y, flags))
 {
 }
 
 inline Window::Window(PropertiesRef props)
-  : m_resource(SDL_CreateWindowWithProperties(props))
+  : Window(SDL_CreateWindowWithProperties(props))
 {
 }
 

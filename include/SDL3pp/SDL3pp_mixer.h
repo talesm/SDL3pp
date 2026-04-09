@@ -269,7 +269,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Mixer(const Mixer& other) noexcept = delete;
+  constexpr Mixer(const Mixer& other) = delete;
 
   /// Move constructor
   constexpr Mixer(Mixer&& other) noexcept
@@ -1615,7 +1615,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Audio(const Audio& other) noexcept = delete;
+  constexpr Audio(const Audio& other) = delete;
 
   /// Move constructor
   constexpr Audio(Audio&& other) noexcept
@@ -2298,7 +2298,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Track(const Track& other) noexcept = delete;
+  constexpr Track(const Track& other) = delete;
 
   /// Move constructor
   constexpr Track(Track&& other) noexcept
@@ -3778,7 +3778,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Group(const Group& other) noexcept = delete;
+  constexpr Group(const Group& other) = delete;
 
   /// Move constructor
   constexpr Group(Group&& other) noexcept
@@ -4236,12 +4236,12 @@ inline Mixer CreateMixerDevice(AudioDeviceRef devid, const AudioSpec& spec)
 }
 
 inline Mixer::Mixer(AudioDeviceRef devid, const AudioSpec& spec)
-  : m_resource(CheckError(MIX_CreateMixerDevice(devid, &spec)))
+  : Mixer(CheckError(MIX_CreateMixerDevice(devid, &spec)))
 {
 }
 
 inline Mixer::Mixer(const AudioSpec& spec)
-  : m_resource(CheckError(MIX_CreateMixer(&spec)))
+  : Mixer(CheckError(MIX_CreateMixer(&spec)))
 {
 }
 
@@ -4540,17 +4540,17 @@ inline Audio::Audio(MixerRef mixer,
                     IOStreamRef io,
                     bool predecode,
                     bool closeio)
-  : m_resource(MIX_LoadAudio_IO(mixer, io, predecode, closeio))
+  : Audio(MIX_LoadAudio_IO(mixer, io, predecode, closeio))
 {
 }
 
 inline Audio::Audio(MixerRef mixer, StringParam path, bool predecode)
-  : m_resource(MIX_LoadAudio(mixer, path, predecode))
+  : Audio(MIX_LoadAudio(mixer, path, predecode))
 {
 }
 
 inline Audio::Audio(PropertiesRef props)
-  : m_resource(CheckError(MIX_LoadAudioWithProperties(props)))
+  : Audio(CheckError(MIX_LoadAudioWithProperties(props)))
 {
 }
 
@@ -4558,12 +4558,12 @@ inline Audio::Audio(MixerRef mixer,
                     IOStreamRef io,
                     const AudioSpec& spec,
                     bool closeio)
-  : m_resource(CheckError(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio)))
+  : Audio(CheckError(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio)))
 {
 }
 
 inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
-  : m_resource(CheckError(
+  : Audio(CheckError(
       MIX_LoadRawAudio(mixer, data.data(), data.size_bytes(), &spec)))
 {
 }
@@ -5153,7 +5153,7 @@ inline Track CreateTrack(MixerRef mixer) { return Track(mixer); }
 inline TrackRef Mixer::CreateTrack() { return Track(get()); }
 
 inline Track::Track(MixerRef mixer)
-  : m_resource(CheckError(MIX_CreateTrack(mixer)))
+  : Track(CheckError(MIX_CreateTrack(mixer)))
 {
 }
 
@@ -7073,7 +7073,7 @@ inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 inline GroupRef Mixer::CreateGroup() { return Group(get()); }
 
 inline Group::Group(MixerRef mixer)
-  : m_resource(CheckError(MIX_CreateGroup(mixer)))
+  : Group(CheckError(MIX_CreateGroup(mixer)))
 {
 }
 
@@ -7647,7 +7647,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) noexcept = delete;
+  constexpr AudioDecoder(const AudioDecoder& other) = delete;
 
   /// Move constructor
   constexpr AudioDecoder(AudioDecoder&& other) noexcept
@@ -7951,14 +7951,14 @@ inline AudioDecoder CreateAudioDecoder(StringParam path,
 }
 
 inline AudioDecoder::AudioDecoder(StringParam path, PropertiesRef props)
-  : m_resource(MIX_CreateAudioDecoder(path, props))
+  : AudioDecoder(MIX_CreateAudioDecoder(path, props))
 {
 }
 
 inline AudioDecoder::AudioDecoder(IOStreamRef io,
                                   bool closeio,
                                   PropertiesRef props)
-  : m_resource(MIX_CreateAudioDecoder_IO(io, closeio, props))
+  : AudioDecoder(MIX_CreateAudioDecoder_IO(io, closeio, props))
 {
 }
 

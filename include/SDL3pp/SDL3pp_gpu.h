@@ -3069,7 +3069,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) noexcept = delete;
+  constexpr GPUDevice(const GPUDevice& other) = delete;
 
   /// Move constructor
   constexpr GPUDevice(GPUDevice&& other) noexcept
@@ -5032,12 +5032,12 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
 inline GPUDevice::GPUDevice(GPUShaderFormat format_flags,
                             bool debug_mode,
                             StringParam name)
-  : m_resource(CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
+  : GPUDevice(CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
 {
 }
 
 inline GPUDevice::GPUDevice(PropertiesRef props)
-  : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
+  : GPUDevice(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
 {
 }
 

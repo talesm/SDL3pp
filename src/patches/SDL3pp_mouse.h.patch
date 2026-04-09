@@ -172,15 +172,15 @@
                        const Uint8* mask,
                        const PointRaw& size,
                        const PointRaw& hot)
--  : m_resource(CheckError(SDL_CreateCursor(data, mask, size, hot)))
-+  : m_resource(
+-  : Cursor(CheckError(SDL_CreateCursor(data, mask, size, hot)))
++  : Cursor(
 +      CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
  {
  }
  
  inline Cursor::Cursor(SurfaceRef surface, const PointRaw& hot)
--  : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
-+  : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
+-  : Cursor(CheckError(SDL_CreateColorCursor(surface, hot)))
++  : Cursor(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
  {
  }
  

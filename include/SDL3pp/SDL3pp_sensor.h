@@ -156,7 +156,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Sensor(const Sensor& other) noexcept = delete;
+  constexpr Sensor(const Sensor& other) = delete;
 
   /// Move constructor
   constexpr Sensor(Sensor&& other) noexcept
@@ -435,7 +435,7 @@ inline int GetSensorNonPortableTypeForID(SensorID instance_id)
 inline Sensor OpenSensor(SensorID instance_id) { return Sensor(instance_id); }
 
 inline Sensor::Sensor(SensorID instance_id)
-  : m_resource(SDL_OpenSensor(instance_id))
+  : Sensor(SDL_OpenSensor(instance_id))
 {
 }
 

@@ -107,7 +107,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Mutex(const Mutex& other) noexcept = delete;
+  constexpr Mutex(const Mutex& other) = delete;
 
   /// Move constructor
   constexpr Mutex(Mutex&& other) noexcept
@@ -354,7 +354,7 @@ struct MutexRef : Mutex
 inline Mutex CreateMutex() { return Mutex(); }
 
 inline Mutex::Mutex()
-  : m_resource(SDL_CreateMutex())
+  : Mutex(SDL_CreateMutex())
 {
 }
 
@@ -500,7 +500,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr RWLock(const RWLock& other) noexcept = delete;
+  constexpr RWLock(const RWLock& other) = delete;
 
   /// Move constructor
   constexpr RWLock(RWLock&& other) noexcept
@@ -872,7 +872,7 @@ struct RWLockRef : RWLock
 inline RWLock CreateRWLock() { return RWLock(); }
 
 inline RWLock::RWLock()
-  : m_resource(SDL_CreateRWLock())
+  : RWLock(SDL_CreateRWLock())
 {
 }
 
@@ -1124,7 +1124,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) noexcept = delete;
+  constexpr Semaphore(const Semaphore& other) = delete;
 
   /// Move constructor
   constexpr Semaphore(Semaphore&& other) noexcept
@@ -1394,7 +1394,7 @@ inline Semaphore CreateSemaphore(Uint32 initial_value)
 }
 
 inline Semaphore::Semaphore(Uint32 initial_value)
-  : m_resource(SDL_CreateSemaphore(initial_value))
+  : Semaphore(SDL_CreateSemaphore(initial_value))
 {
 }
 
@@ -1573,7 +1573,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Condition(const Condition& other) noexcept = delete;
+  constexpr Condition(const Condition& other) = delete;
 
   /// Move constructor
   constexpr Condition(Condition&& other) noexcept
@@ -1818,7 +1818,7 @@ struct ConditionRef : Condition
 inline Condition CreateCondition() { return Condition(); }
 
 inline Condition::Condition()
-  : m_resource(SDL_CreateCondition())
+  : Condition(SDL_CreateCondition())
 {
 }
 

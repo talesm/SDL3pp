@@ -130,7 +130,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Tray(const Tray& other) noexcept = delete;
+  constexpr Tray(const Tray& other) = delete;
 
   /// Move constructor
   constexpr Tray(Tray&& other) noexcept
@@ -838,7 +838,7 @@ inline Tray CreateTray(SurfaceRef icon, StringParam tooltip)
 }
 
 inline Tray::Tray(SurfaceRef icon, StringParam tooltip)
-  : m_resource(SDL_CreateTray(icon, tooltip))
+  : Tray(SDL_CreateTray(icon, tooltip))
 {
 }
 

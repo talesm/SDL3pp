@@ -361,7 +361,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Font(const Font& other) noexcept = delete;
+  constexpr Font(const Font& other) = delete;
 
   /// Move constructor
   constexpr Font(Font&& other) noexcept
@@ -1906,17 +1906,17 @@ inline Font OpenFont(StringParam file, float ptsize)
 }
 
 inline Font::Font(StringParam file, float ptsize)
-  : m_resource(CheckError(TTF_OpenFont(file, ptsize)))
+  : Font(CheckError(TTF_OpenFont(file, ptsize)))
 {
 }
 
 inline Font::Font(IOStreamRef src, float ptsize, bool closeio)
-  : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
+  : Font(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
 {
 }
 
 inline Font::Font(PropertiesRef props)
-  : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
+  : Font(CheckError(TTF_OpenFontWithProperties(props)))
 {
 }
 
@@ -3934,7 +3934,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) noexcept = delete;
+  constexpr TextEngine(const TextEngine& other) = delete;
 
   /// Move constructor
   constexpr TextEngine(TextEngine&& other) noexcept
@@ -4270,7 +4270,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Text(const Text& other) noexcept = delete;
+  constexpr Text(const Text& other) = delete;
 
   /// Move constructor
   constexpr Text(Text&& other) noexcept
@@ -5695,7 +5695,7 @@ inline Text TextEngine::CreateText(FontRef font, std::string_view text)
 }
 
 inline Text::Text(TextEngineRef engine, FontRef font, std::string_view text)
-  : m_resource(TTF_CreateText(engine, font, text.data(), text.size()))
+  : Text(TTF_CreateText(engine, font, text.data(), text.size()))
 {
 }
 

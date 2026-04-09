@@ -236,7 +236,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Renderer(const Renderer& other) noexcept = delete;
+  constexpr Renderer(const Renderer& other) = delete;
 
   /// Move constructor
   constexpr Renderer(Renderer&& other) noexcept
@@ -3963,17 +3963,17 @@ inline Renderer CreateRenderer(WindowRef window, StringParam name)
 }
 
 inline Renderer::Renderer(WindowRef window, StringParam name)
-  : m_resource(SDL_CreateRenderer(window, name))
+  : Renderer(SDL_CreateRenderer(window, name))
 {
 }
 
 inline Renderer::Renderer(PropertiesRef props)
-  : m_resource(SDL_CreateRendererWithProperties(props))
+  : Renderer(SDL_CreateRendererWithProperties(props))
 {
 }
 
 inline Renderer::Renderer(SurfaceRef surface)
-  : m_resource(SDL_CreateSoftwareRenderer(surface))
+  : Renderer(SDL_CreateSoftwareRenderer(surface))
 {
 }
 
@@ -8213,7 +8213,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) noexcept = delete;
+  constexpr GPURenderState(const GPURenderState& other) = delete;
 
   /// Move constructor
   constexpr GPURenderState(GPURenderState&& other) noexcept
@@ -8413,7 +8413,7 @@ inline GPURenderState Renderer::CreateGPURenderState(
 inline GPURenderState::GPURenderState(
   RendererRef renderer,
   const GPURenderStateCreateInfo& createinfo)
-  : m_resource(SDL_CreateGPURenderState(renderer, &createinfo))
+  : GPURenderState(SDL_CreateGPURenderState(renderer, &createinfo))
 {
 }
 

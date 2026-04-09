@@ -112,8 +112,8 @@
  }
  
  inline Joystick::Joystick(JoystickID instance_id)
--  : m_resource(SDL_OpenJoystick(instance_id))
-+  : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
+-  : Joystick(SDL_OpenJoystick(instance_id))
++  : Joystick(CheckError(SDL_OpenJoystick(instance_id)))
  {
  }
  

@@ -169,7 +169,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Thread(const Thread& other) noexcept = delete;
+  constexpr Thread(const Thread& other) = delete;
 
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
@@ -635,7 +635,7 @@ inline Thread CreateThread(ThreadCB fn, StringParam name)
 }
 
 inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
-  : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
+  : Thread(CheckError(SDL_CreateThread(fn, name, data)))
 {
 }
 
@@ -647,7 +647,7 @@ inline Thread::Thread(ThreadCB fn, StringParam name)
 }
 
 inline Thread::Thread(PropertiesRef props)
-  : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
+  : Thread(CheckError(SDL_CreateThreadWithProperties(props)))
 {
 }
 

@@ -124,7 +124,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr IOStream(const IOStream& other) noexcept = delete;
+  constexpr IOStream(const IOStream& other) = delete;
 
   /// Move constructor
   constexpr IOStream(IOStream&& other) noexcept

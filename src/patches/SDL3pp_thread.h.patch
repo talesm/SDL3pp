@@ -64,7 +64,7 @@
 +}
  
  inline Thread::Thread(PropertiesRef props)
-   : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
+   : Thread(CheckError(SDL_CreateThreadWithProperties(props)))
 @@ -718,6 +720,15 @@
    return Thread(props);
  }

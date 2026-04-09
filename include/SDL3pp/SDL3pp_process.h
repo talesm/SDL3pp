@@ -130,7 +130,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Process(const Process& other) noexcept = delete;
+  constexpr Process(const Process& other) = delete;
 
   /// Move constructor
   constexpr Process(Process&& other) noexcept
@@ -611,12 +611,12 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
 }
 
 inline Process::Process(const char* const* args, bool pipe_stdio)
-  : m_resource(SDL_CreateProcess(args, pipe_stdio))
+  : Process(SDL_CreateProcess(args, pipe_stdio))
 {
 }
 
 inline Process::Process(PropertiesRef props)
-  : m_resource(SDL_CreateProcessWithProperties(props))
+  : Process(SDL_CreateProcessWithProperties(props))
 {
 }
 

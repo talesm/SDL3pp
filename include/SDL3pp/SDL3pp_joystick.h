@@ -427,7 +427,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Joystick(const Joystick& other) noexcept = delete;
+  constexpr Joystick(const Joystick& other) = delete;
 
   /// Move constructor
   constexpr Joystick(Joystick&& other) noexcept
@@ -1636,7 +1636,7 @@ inline Joystick OpenJoystick(JoystickID instance_id)
 }
 
 inline Joystick::Joystick(JoystickID instance_id)
-  : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
+  : Joystick(CheckError(SDL_OpenJoystick(instance_id)))
 {
 }
 

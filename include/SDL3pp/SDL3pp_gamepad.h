@@ -411,7 +411,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) noexcept = delete;
+  constexpr Gamepad(const Gamepad& other) = delete;
 
   /// Move constructor
   constexpr Gamepad(Gamepad&& other) noexcept
@@ -1708,7 +1708,7 @@ inline Gamepad OpenGamepad(JoystickID instance_id)
 }
 
 inline Gamepad::Gamepad(JoystickID instance_id)
-  : m_resource(SDL_OpenGamepad(instance_id))
+  : Gamepad(SDL_OpenGamepad(instance_id))
 {
 }
 

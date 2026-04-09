@@ -938,7 +938,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept = delete;
+  constexpr Environment(const Environment& other) = delete;
 
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
@@ -1226,7 +1226,7 @@ inline Environment CreateEnvironment(bool populated)
 }
 
 inline Environment::Environment(bool populated)
-  : m_resource(SDL_CreateEnvironment(populated))
+  : Environment(SDL_CreateEnvironment(populated))
 {
 }
 
@@ -5951,7 +5951,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept = delete;
+  constexpr IConv(const IConv& other) = delete;
 
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
@@ -6165,7 +6165,7 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 }
 
 inline IConv::IConv(StringParam tocode, StringParam fromcode)
-  : m_resource(SDL_iconv_open(tocode, fromcode))
+  : IConv(SDL_iconv_open(tocode, fromcode))
 {
 }
 

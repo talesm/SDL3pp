@@ -817,7 +817,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AudioDevice(const AudioDevice& other) noexcept = delete;
+  constexpr AudioDevice(const AudioDevice& other) = delete;
 
   /// Move constructor
   constexpr AudioDevice(AudioDevice&& other) noexcept
@@ -1694,7 +1694,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AudioStream(const AudioStream& other) noexcept = delete;
+  constexpr AudioStream(const AudioStream& other) = delete;
 
   /// Move constructor
   constexpr AudioStream(AudioStream&& other) noexcept
@@ -3435,7 +3435,7 @@ inline AudioDevice OpenAudioDevice(AudioDeviceRef devid,
 
 inline AudioDevice::AudioDevice(AudioDeviceRef devid,
                                 OptionalRef<const AudioSpec> spec)
-  : m_resource(CheckError(SDL_OpenAudioDevice(devid, spec)))
+  : AudioDevice(CheckError(SDL_OpenAudioDevice(devid, spec)))
 {
 }
 
@@ -3868,7 +3868,7 @@ inline AudioStream CreateAudioStream(OptionalRef<const AudioSpec> src_spec,
 
 inline AudioStream::AudioStream(OptionalRef<const AudioSpec> src_spec,
                                 OptionalRef<const AudioSpec> dst_spec)
-  : m_resource(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
+  : AudioStream(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
 {
 }
 
@@ -3876,7 +3876,7 @@ inline AudioStream::AudioStream(AudioDeviceRef devid,
                                 OptionalRef<const AudioSpec> spec,
                                 AudioStreamCallback callback,
                                 void* userdata)
-  : m_resource(
+  : AudioStream(
       CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)))
 {
 }

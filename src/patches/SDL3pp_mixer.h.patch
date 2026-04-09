@@ -293,14 +293,14 @@
                      IOStreamRef io,
                      bool predecode,
                      bool closeio)
--  : m_resource(CheckError(MIX_LoadAudio_IO(mixer, io, predecode, closeio)))
-+  : m_resource(MIX_LoadAudio_IO(mixer, io, predecode, closeio))
+-  : Audio(CheckError(MIX_LoadAudio_IO(mixer, io, predecode, closeio)))
++  : Audio(MIX_LoadAudio_IO(mixer, io, predecode, closeio))
  {
  }
  
  inline Audio::Audio(MixerRef mixer, StringParam path, bool predecode)
--  : m_resource(CheckError(MIX_LoadAudio(mixer, path, predecode)))
-+  : m_resource(MIX_LoadAudio(mixer, path, predecode))
+-  : Audio(CheckError(MIX_LoadAudio(mixer, path, predecode)))
++  : Audio(MIX_LoadAudio(mixer, path, predecode))
  {
  }
  

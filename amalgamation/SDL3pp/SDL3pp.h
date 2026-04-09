@@ -9340,7 +9340,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Properties(const Properties& other) noexcept = delete;
+  constexpr Properties(const Properties& other) = delete;
 
   /// Move constructor
   constexpr Properties(Properties&& other) noexcept
@@ -11666,7 +11666,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept = delete;
+  constexpr Environment(const Environment& other) = delete;
 
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
@@ -11954,7 +11954,7 @@ inline Environment CreateEnvironment(bool populated)
 }
 
 inline Environment::Environment(bool populated)
-  : m_resource(SDL_CreateEnvironment(populated))
+  : Environment(SDL_CreateEnvironment(populated))
 {
 }
 
@@ -16679,7 +16679,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept = delete;
+  constexpr IConv(const IConv& other) = delete;
 
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
@@ -16893,7 +16893,7 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 }
 
 inline IConv::IConv(StringParam tocode, StringParam fromcode)
-  : m_resource(SDL_iconv_open(tocode, fromcode))
+  : IConv(SDL_iconv_open(tocode, fromcode))
 {
 }
 
@@ -17309,7 +17309,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) noexcept = delete;
+  constexpr AsyncIO(const AsyncIO& other) = delete;
 
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
@@ -17694,7 +17694,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept = delete;
+  constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
 
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
@@ -18027,7 +18027,7 @@ inline AsyncIO AsyncIOFromFile(StringParam file, StringParam mode)
 }
 
 inline AsyncIO::AsyncIO(StringParam file, StringParam mode)
-  : m_resource(SDL_AsyncIOFromFile(file, mode))
+  : AsyncIO(SDL_AsyncIOFromFile(file, mode))
 {
 }
 
@@ -18238,7 +18238,7 @@ inline bool AsyncIO::Close(bool flush, AsyncIOQueueRef queue, void* userdata)
 inline AsyncIOQueue CreateAsyncIOQueue() { return AsyncIOQueue(); }
 
 inline AsyncIOQueue::AsyncIOQueue()
-  : m_resource(SDL_CreateAsyncIOQueue())
+  : AsyncIOQueue(SDL_CreateAsyncIOQueue())
 {
 }
 
@@ -21319,7 +21319,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) noexcept = delete;
+  constexpr HidDevice(const HidDevice& other) = delete;
 
   /// Move constructor
   constexpr HidDevice(HidDevice&& other) noexcept
@@ -21832,12 +21832,12 @@ inline HidDevice hid_open(unsigned short vendor_id,
 inline HidDevice::HidDevice(unsigned short vendor_id,
                             unsigned short product_id,
                             const wchar_t* serial_number)
-  : m_resource(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
+  : HidDevice(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
 {
 }
 
 inline HidDevice::HidDevice(StringParam path)
-  : m_resource(CheckError(SDL_hid_open_path(path)))
+  : HidDevice(CheckError(SDL_hid_open_path(path)))
 {
 }
 
@@ -22384,7 +22384,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr IOStream(const IOStream& other) noexcept = delete;
+  constexpr IOStream(const IOStream& other) = delete;
 
   /// Move constructor
   constexpr IOStream(IOStream&& other) noexcept
@@ -25525,7 +25525,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) noexcept = delete;
+  constexpr SharedObject(const SharedObject& other) = delete;
 
   /// Move constructor
   constexpr SharedObject(SharedObject&& other) noexcept
@@ -25719,7 +25719,7 @@ inline SharedObject LoadObject(StringParam sofile)
 }
 
 inline SharedObject::SharedObject(StringParam sofile)
-  : m_resource(SDL_LoadObject(sofile))
+  : SharedObject(SDL_LoadObject(sofile))
 {
 }
 
@@ -32636,7 +32636,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Sensor(const Sensor& other) noexcept = delete;
+  constexpr Sensor(const Sensor& other) = delete;
 
   /// Move constructor
   constexpr Sensor(Sensor&& other) noexcept
@@ -32915,7 +32915,7 @@ inline int GetSensorNonPortableTypeForID(SensorID instance_id)
 inline Sensor OpenSensor(SensorID instance_id) { return Sensor(instance_id); }
 
 inline Sensor::Sensor(SensorID instance_id)
-  : m_resource(SDL_OpenSensor(instance_id))
+  : Sensor(SDL_OpenSensor(instance_id))
 {
 }
 
@@ -34786,7 +34786,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AudioDevice(const AudioDevice& other) noexcept = delete;
+  constexpr AudioDevice(const AudioDevice& other) = delete;
 
   /// Move constructor
   constexpr AudioDevice(AudioDevice&& other) noexcept
@@ -35663,7 +35663,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AudioStream(const AudioStream& other) noexcept = delete;
+  constexpr AudioStream(const AudioStream& other) = delete;
 
   /// Move constructor
   constexpr AudioStream(AudioStream&& other) noexcept
@@ -37404,7 +37404,7 @@ inline AudioDevice OpenAudioDevice(AudioDeviceRef devid,
 
 inline AudioDevice::AudioDevice(AudioDeviceRef devid,
                                 OptionalRef<const AudioSpec> spec)
-  : m_resource(CheckError(SDL_OpenAudioDevice(devid, spec)))
+  : AudioDevice(CheckError(SDL_OpenAudioDevice(devid, spec)))
 {
 }
 
@@ -37837,7 +37837,7 @@ inline AudioStream CreateAudioStream(OptionalRef<const AudioSpec> src_spec,
 
 inline AudioStream::AudioStream(OptionalRef<const AudioSpec> src_spec,
                                 OptionalRef<const AudioSpec> dst_spec)
-  : m_resource(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
+  : AudioStream(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
 {
 }
 
@@ -37845,7 +37845,7 @@ inline AudioStream::AudioStream(AudioDeviceRef devid,
                                 OptionalRef<const AudioSpec> spec,
                                 AudioStreamCallback callback,
                                 void* userdata)
-  : m_resource(
+  : AudioStream(
       CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)))
 {
 }
@@ -40659,7 +40659,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Process(const Process& other) noexcept = delete;
+  constexpr Process(const Process& other) = delete;
 
   /// Move constructor
   constexpr Process(Process&& other) noexcept
@@ -41140,12 +41140,12 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
 }
 
 inline Process::Process(const char* const* args, bool pipe_stdio)
-  : m_resource(SDL_CreateProcess(args, pipe_stdio))
+  : Process(SDL_CreateProcess(args, pipe_stdio))
 {
 }
 
 inline Process::Process(PropertiesRef props)
-  : m_resource(SDL_CreateProcessWithProperties(props))
+  : Process(SDL_CreateProcessWithProperties(props))
 {
 }
 
@@ -41789,7 +41789,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Storage(const Storage& other) noexcept = delete;
+  constexpr Storage(const Storage& other) = delete;
 
   /// Move constructor
   constexpr Storage(Storage&& other) noexcept
@@ -42344,22 +42344,22 @@ inline Storage OpenTitleStorage(StringParam override, PropertiesRef props)
 }
 
 inline Storage::Storage(StringParam override, PropertiesRef props)
-  : m_resource(CheckError(SDL_OpenTitleStorage(override, props)))
+  : Storage(CheckError(SDL_OpenTitleStorage(override, props)))
 {
 }
 
 inline Storage::Storage(StringParam org, StringParam app, PropertiesRef props)
-  : m_resource(CheckError(SDL_OpenUserStorage(org, app, props)))
+  : Storage(CheckError(SDL_OpenUserStorage(org, app, props)))
 {
 }
 
 inline Storage::Storage(StringParam path)
-  : m_resource(CheckError(SDL_OpenFileStorage(path)))
+  : Storage(CheckError(SDL_OpenFileStorage(path)))
 {
 }
 
 inline Storage::Storage(const StorageInterface& iface, void* userdata)
-  : m_resource(CheckError(SDL_OpenStorage(&iface, userdata)))
+  : Storage(CheckError(SDL_OpenStorage(&iface, userdata)))
 {
 }
 
@@ -48017,7 +48017,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Thread(const Thread& other) noexcept = delete;
+  constexpr Thread(const Thread& other) = delete;
 
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
@@ -48483,7 +48483,7 @@ inline Thread CreateThread(ThreadCB fn, StringParam name)
 }
 
 inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
-  : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
+  : Thread(CheckError(SDL_CreateThread(fn, name, data)))
 {
 }
 
@@ -48495,7 +48495,7 @@ inline Thread::Thread(ThreadCB fn, StringParam name)
 }
 
 inline Thread::Thread(PropertiesRef props)
-  : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
+  : Thread(CheckError(SDL_CreateThreadWithProperties(props)))
 {
 }
 
@@ -49011,7 +49011,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Camera(const Camera& other) noexcept = delete;
+  constexpr Camera(const Camera& other) = delete;
 
   /// Move constructor
   constexpr Camera(Camera&& other) noexcept
@@ -49676,7 +49676,7 @@ inline Camera OpenCamera(CameraID instance_id,
 }
 
 inline Camera::Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec)
-  : m_resource(SDL_OpenCamera(instance_id, spec))
+  : Camera(SDL_OpenCamera(instance_id, spec))
 {
 }
 
@@ -50015,7 +50015,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Mutex(const Mutex& other) noexcept = delete;
+  constexpr Mutex(const Mutex& other) = delete;
 
   /// Move constructor
   constexpr Mutex(Mutex&& other) noexcept
@@ -50262,7 +50262,7 @@ struct MutexRef : Mutex
 inline Mutex CreateMutex() { return Mutex(); }
 
 inline Mutex::Mutex()
-  : m_resource(SDL_CreateMutex())
+  : Mutex(SDL_CreateMutex())
 {
 }
 
@@ -50408,7 +50408,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr RWLock(const RWLock& other) noexcept = delete;
+  constexpr RWLock(const RWLock& other) = delete;
 
   /// Move constructor
   constexpr RWLock(RWLock&& other) noexcept
@@ -50780,7 +50780,7 @@ struct RWLockRef : RWLock
 inline RWLock CreateRWLock() { return RWLock(); }
 
 inline RWLock::RWLock()
-  : m_resource(SDL_CreateRWLock())
+  : RWLock(SDL_CreateRWLock())
 {
 }
 
@@ -51032,7 +51032,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) noexcept = delete;
+  constexpr Semaphore(const Semaphore& other) = delete;
 
   /// Move constructor
   constexpr Semaphore(Semaphore&& other) noexcept
@@ -51302,7 +51302,7 @@ inline Semaphore CreateSemaphore(Uint32 initial_value)
 }
 
 inline Semaphore::Semaphore(Uint32 initial_value)
-  : m_resource(SDL_CreateSemaphore(initial_value))
+  : Semaphore(SDL_CreateSemaphore(initial_value))
 {
 }
 
@@ -51481,7 +51481,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Condition(const Condition& other) noexcept = delete;
+  constexpr Condition(const Condition& other) = delete;
 
   /// Move constructor
   constexpr Condition(Condition&& other) noexcept
@@ -51726,7 +51726,7 @@ struct ConditionRef : Condition
 inline Condition CreateCondition() { return Condition(); }
 
 inline Condition::Condition()
-  : m_resource(SDL_CreateCondition())
+  : Condition(SDL_CreateCondition())
 {
 }
 
@@ -52203,7 +52203,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Tray(const Tray& other) noexcept = delete;
+  constexpr Tray(const Tray& other) = delete;
 
   /// Move constructor
   constexpr Tray(Tray&& other) noexcept
@@ -52911,7 +52911,7 @@ inline Tray CreateTray(SurfaceRef icon, StringParam tooltip)
 }
 
 inline Tray::Tray(SurfaceRef icon, StringParam tooltip)
-  : m_resource(SDL_CreateTray(icon, tooltip))
+  : Tray(SDL_CreateTray(icon, tooltip))
 {
 }
 
@@ -54301,7 +54301,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Window(const Window& other) noexcept = delete;
+  constexpr Window(const Window& other) = delete;
 
   /// Move constructor
   constexpr Window(Window&& other) noexcept
@@ -58053,7 +58053,7 @@ inline Window CreateWindow(StringParam title,
 inline Window::Window(StringParam title,
                       const PointRaw& size,
                       WindowFlags flags)
-  : m_resource(SDL_CreateWindow(title, size.x, size.y, flags))
+  : Window(SDL_CreateWindow(title, size.x, size.y, flags))
 {
 }
 
@@ -58061,13 +58061,13 @@ inline Window::Window(WindowRef parent,
                       const PointRaw& offset,
                       const PointRaw& size,
                       WindowFlags flags)
-  : m_resource(
+  : Window(
       SDL_CreatePopupWindow(parent, offset.x, offset.y, size.x, size.y, flags))
 {
 }
 
 inline Window::Window(PropertiesRef props)
-  : m_resource(SDL_CreateWindowWithProperties(props))
+  : Window(SDL_CreateWindowWithProperties(props))
 {
 }
 
@@ -66653,7 +66653,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) noexcept = delete;
+  constexpr GPUDevice(const GPUDevice& other) = delete;
 
   /// Move constructor
   constexpr GPUDevice(GPUDevice&& other) noexcept
@@ -68616,12 +68616,12 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
 inline GPUDevice::GPUDevice(GPUShaderFormat format_flags,
                             bool debug_mode,
                             StringParam name)
-  : m_resource(CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
+  : GPUDevice(CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
 {
 }
 
 inline GPUDevice::GPUDevice(PropertiesRef props)
-  : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
+  : GPUDevice(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
 {
 }
 
@@ -72306,7 +72306,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Joystick(const Joystick& other) noexcept = delete;
+  constexpr Joystick(const Joystick& other) = delete;
 
   /// Move constructor
   constexpr Joystick(Joystick&& other) noexcept
@@ -73515,7 +73515,7 @@ inline Joystick OpenJoystick(JoystickID instance_id)
 }
 
 inline Joystick::Joystick(JoystickID instance_id)
-  : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
+  : Joystick(CheckError(SDL_OpenJoystick(instance_id)))
 {
 }
 
@@ -75633,7 +75633,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr MetalView(const MetalView& other) noexcept = delete;
+  constexpr MetalView(const MetalView& other) = delete;
 
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
@@ -75821,7 +75821,7 @@ inline MetalView Metal_CreateView(WindowRef window)
 }
 
 inline MetalView::MetalView(WindowRef window)
-  : m_resource(SDL_Metal_CreateView(window))
+  : MetalView(SDL_Metal_CreateView(window))
 {
 }
 
@@ -76033,7 +76033,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) noexcept = delete;
+  constexpr Cursor(const Cursor& other) = delete;
 
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
@@ -76798,18 +76798,18 @@ inline Cursor::Cursor(const Uint8* data,
                       const Uint8* mask,
                       const PointRaw& size,
                       const PointRaw& hot)
-  : m_resource(
+  : Cursor(
       CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
 {
 }
 
 inline Cursor::Cursor(SurfaceRef surface, const PointRaw& hot)
-  : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
+  : Cursor(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
 {
 }
 
 inline Cursor::Cursor(SystemCursor id)
-  : m_resource(CheckError(SDL_CreateSystemCursor(id)))
+  : Cursor(CheckError(SDL_CreateSystemCursor(id)))
 {
 }
 
@@ -77440,7 +77440,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) noexcept = delete;
+  constexpr Gamepad(const Gamepad& other) = delete;
 
   /// Move constructor
   constexpr Gamepad(Gamepad&& other) noexcept
@@ -78737,7 +78737,7 @@ inline Gamepad OpenGamepad(JoystickID instance_id)
 }
 
 inline Gamepad::Gamepad(JoystickID instance_id)
-  : m_resource(SDL_OpenGamepad(instance_id))
+  : Gamepad(SDL_OpenGamepad(instance_id))
 {
 }
 
@@ -80763,7 +80763,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Haptic(const Haptic& other) noexcept = delete;
+  constexpr Haptic(const Haptic& other) = delete;
 
   /// Move constructor
   constexpr Haptic(Haptic&& other) noexcept
@@ -81331,12 +81331,12 @@ inline const char* GetHapticNameForID(HapticID instance_id)
 inline Haptic OpenHaptic(HapticID instance_id) { return Haptic(instance_id); }
 
 inline Haptic::Haptic(HapticID instance_id)
-  : m_resource(SDL_OpenHaptic(instance_id))
+  : Haptic(SDL_OpenHaptic(instance_id))
 {
 }
 
 inline Haptic::Haptic(JoystickRef joystick)
-  : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
+  : Haptic(CheckError(SDL_OpenHapticFromJoystick(joystick)))
 {
 }
 
@@ -82953,7 +82953,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Renderer(const Renderer& other) noexcept = delete;
+  constexpr Renderer(const Renderer& other) = delete;
 
   /// Move constructor
   constexpr Renderer(Renderer&& other) noexcept
@@ -86680,17 +86680,17 @@ inline Renderer CreateRenderer(WindowRef window, StringParam name)
 }
 
 inline Renderer::Renderer(WindowRef window, StringParam name)
-  : m_resource(SDL_CreateRenderer(window, name))
+  : Renderer(SDL_CreateRenderer(window, name))
 {
 }
 
 inline Renderer::Renderer(PropertiesRef props)
-  : m_resource(SDL_CreateRendererWithProperties(props))
+  : Renderer(SDL_CreateRendererWithProperties(props))
 {
 }
 
 inline Renderer::Renderer(SurfaceRef surface)
-  : m_resource(SDL_CreateSoftwareRenderer(surface))
+  : Renderer(SDL_CreateSoftwareRenderer(surface))
 {
 }
 
@@ -90930,7 +90930,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) noexcept = delete;
+  constexpr GPURenderState(const GPURenderState& other) = delete;
 
   /// Move constructor
   constexpr GPURenderState(GPURenderState&& other) noexcept
@@ -91130,7 +91130,7 @@ inline GPURenderState Renderer::CreateGPURenderState(
 inline GPURenderState::GPURenderState(
   RendererRef renderer,
   const GPURenderStateCreateInfo& createinfo)
-  : m_resource(SDL_CreateGPURenderState(renderer, &createinfo))
+  : GPURenderState(SDL_CreateGPURenderState(renderer, &createinfo))
 {
 }
 
@@ -92901,7 +92901,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Mixer(const Mixer& other) noexcept = delete;
+  constexpr Mixer(const Mixer& other) = delete;
 
   /// Move constructor
   constexpr Mixer(Mixer&& other) noexcept
@@ -94247,7 +94247,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Audio(const Audio& other) noexcept = delete;
+  constexpr Audio(const Audio& other) = delete;
 
   /// Move constructor
   constexpr Audio(Audio&& other) noexcept
@@ -94930,7 +94930,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Track(const Track& other) noexcept = delete;
+  constexpr Track(const Track& other) = delete;
 
   /// Move constructor
   constexpr Track(Track&& other) noexcept
@@ -96410,7 +96410,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Group(const Group& other) noexcept = delete;
+  constexpr Group(const Group& other) = delete;
 
   /// Move constructor
   constexpr Group(Group&& other) noexcept
@@ -96868,12 +96868,12 @@ inline Mixer CreateMixerDevice(AudioDeviceRef devid, const AudioSpec& spec)
 }
 
 inline Mixer::Mixer(AudioDeviceRef devid, const AudioSpec& spec)
-  : m_resource(CheckError(MIX_CreateMixerDevice(devid, &spec)))
+  : Mixer(CheckError(MIX_CreateMixerDevice(devid, &spec)))
 {
 }
 
 inline Mixer::Mixer(const AudioSpec& spec)
-  : m_resource(CheckError(MIX_CreateMixer(&spec)))
+  : Mixer(CheckError(MIX_CreateMixer(&spec)))
 {
 }
 
@@ -97172,17 +97172,17 @@ inline Audio::Audio(MixerRef mixer,
                     IOStreamRef io,
                     bool predecode,
                     bool closeio)
-  : m_resource(MIX_LoadAudio_IO(mixer, io, predecode, closeio))
+  : Audio(MIX_LoadAudio_IO(mixer, io, predecode, closeio))
 {
 }
 
 inline Audio::Audio(MixerRef mixer, StringParam path, bool predecode)
-  : m_resource(MIX_LoadAudio(mixer, path, predecode))
+  : Audio(MIX_LoadAudio(mixer, path, predecode))
 {
 }
 
 inline Audio::Audio(PropertiesRef props)
-  : m_resource(CheckError(MIX_LoadAudioWithProperties(props)))
+  : Audio(CheckError(MIX_LoadAudioWithProperties(props)))
 {
 }
 
@@ -97190,12 +97190,12 @@ inline Audio::Audio(MixerRef mixer,
                     IOStreamRef io,
                     const AudioSpec& spec,
                     bool closeio)
-  : m_resource(CheckError(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio)))
+  : Audio(CheckError(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio)))
 {
 }
 
 inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
-  : m_resource(CheckError(
+  : Audio(CheckError(
       MIX_LoadRawAudio(mixer, data.data(), data.size_bytes(), &spec)))
 {
 }
@@ -97785,7 +97785,7 @@ inline Track CreateTrack(MixerRef mixer) { return Track(mixer); }
 inline TrackRef Mixer::CreateTrack() { return Track(get()); }
 
 inline Track::Track(MixerRef mixer)
-  : m_resource(CheckError(MIX_CreateTrack(mixer)))
+  : Track(CheckError(MIX_CreateTrack(mixer)))
 {
 }
 
@@ -99705,7 +99705,7 @@ inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 inline GroupRef Mixer::CreateGroup() { return Group(get()); }
 
 inline Group::Group(MixerRef mixer)
-  : m_resource(CheckError(MIX_CreateGroup(mixer)))
+  : Group(CheckError(MIX_CreateGroup(mixer)))
 {
 }
 
@@ -100279,7 +100279,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) noexcept = delete;
+  constexpr AudioDecoder(const AudioDecoder& other) = delete;
 
   /// Move constructor
   constexpr AudioDecoder(AudioDecoder&& other) noexcept
@@ -100583,14 +100583,14 @@ inline AudioDecoder CreateAudioDecoder(StringParam path,
 }
 
 inline AudioDecoder::AudioDecoder(StringParam path, PropertiesRef props)
-  : m_resource(MIX_CreateAudioDecoder(path, props))
+  : AudioDecoder(MIX_CreateAudioDecoder(path, props))
 {
 }
 
 inline AudioDecoder::AudioDecoder(IOStreamRef io,
                                   bool closeio,
                                   PropertiesRef props)
-  : m_resource(MIX_CreateAudioDecoder_IO(io, closeio, props))
+  : AudioDecoder(MIX_CreateAudioDecoder_IO(io, closeio, props))
 {
 }
 
@@ -103439,7 +103439,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Animation(const Animation& other) noexcept = delete;
+  constexpr Animation(const Animation& other) = delete;
 
   /// Move constructor
   constexpr Animation(Animation&& other) noexcept
@@ -103920,12 +103920,12 @@ inline Animation LoadAnimation(StringParam file)
 }
 
 inline Animation::Animation(StringParam file)
-  : m_resource(IMG_LoadAnimation(file))
+  : Animation(IMG_LoadAnimation(file))
 {
 }
 
 inline Animation::Animation(IOStreamRef src, bool closeio)
-  : m_resource(IMG_LoadAnimation_IO(src, closeio))
+  : Animation(IMG_LoadAnimation_IO(src, closeio))
 {
 }
 
@@ -104479,7 +104479,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept = delete;
+  constexpr AnimationEncoder(const AnimationEncoder& other) = delete;
 
   /// Move constructor
   constexpr AnimationEncoder(AnimationEncoder&& other) noexcept
@@ -104768,19 +104768,21 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
 }
 
 inline AnimationEncoder::AnimationEncoder(StringParam file)
-  : m_resource(CheckError(IMG_CreateAnimationEncoder(file)))
+  : AnimationEncoder(CheckError(IMG_CreateAnimationEncoder(file)))
 {
 }
 
 inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
                                           StringParam type,
                                           bool closeio)
-  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
+  : AnimationEncoder(
+      CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
 {
 }
 
 inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
-  : m_resource(CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
+  : AnimationEncoder(
+      CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
 {
 }
 
@@ -105010,7 +105012,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept = delete;
+  constexpr AnimationDecoder(const AnimationDecoder& other) = delete;
 
   /// Move constructor
   constexpr AnimationDecoder(AnimationDecoder&& other) noexcept
@@ -105348,7 +105350,21 @@ inline AnimationDecoder CreateAnimationDecoder(StringParam file)
 }
 
 inline AnimationDecoder::AnimationDecoder(StringParam file)
-  : m_resource(CheckError(IMG_CreateAnimationDecoder(file)))
+  : AnimationDecoder(CheckError(IMG_CreateAnimationDecoder(file)))
+{
+}
+
+inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
+                                          StringParam type,
+                                          bool closeio)
+  : AnimationDecoder(
+      CheckError(IMG_CreateAnimationDecoder_IO(src, closeio, type)))
+{
+}
+
+inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
+  : AnimationDecoder(
+      CheckError(IMG_CreateAnimationDecoderWithProperties(props)))
 {
 }
 
@@ -106019,7 +106035,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Font(const Font& other) noexcept = delete;
+  constexpr Font(const Font& other) = delete;
 
   /// Move constructor
   constexpr Font(Font&& other) noexcept
@@ -107564,17 +107580,17 @@ inline Font OpenFont(StringParam file, float ptsize)
 }
 
 inline Font::Font(StringParam file, float ptsize)
-  : m_resource(CheckError(TTF_OpenFont(file, ptsize)))
+  : Font(CheckError(TTF_OpenFont(file, ptsize)))
 {
 }
 
 inline Font::Font(IOStreamRef src, float ptsize, bool closeio)
-  : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
+  : Font(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
 {
 }
 
 inline Font::Font(PropertiesRef props)
-  : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
+  : Font(CheckError(TTF_OpenFontWithProperties(props)))
 {
 }
 
@@ -109592,7 +109608,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) noexcept = delete;
+  constexpr TextEngine(const TextEngine& other) = delete;
 
   /// Move constructor
   constexpr TextEngine(TextEngine&& other) noexcept
@@ -109928,7 +109944,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Text(const Text& other) noexcept = delete;
+  constexpr Text(const Text& other) = delete;
 
   /// Move constructor
   constexpr Text(Text&& other) noexcept
@@ -111353,7 +111369,7 @@ inline Text TextEngine::CreateText(FontRef font, std::string_view text)
 }
 
 inline Text::Text(TextEngineRef engine, FontRef font, std::string_view text)
-  : m_resource(TTF_CreateText(engine, font, text.data(), text.size()))
+  : Text(TTF_CreateText(engine, font, text.data(), text.size()))
 {
 }
 

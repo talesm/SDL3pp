@@ -58,7 +58,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr MetalView(const MetalView& other) noexcept = delete;
+  constexpr MetalView(const MetalView& other) = delete;
 
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
@@ -246,7 +246,7 @@ inline MetalView Metal_CreateView(WindowRef window)
 }
 
 inline MetalView::MetalView(WindowRef window)
-  : m_resource(SDL_Metal_CreateView(window))
+  : MetalView(SDL_Metal_CreateView(window))
 {
 }
 

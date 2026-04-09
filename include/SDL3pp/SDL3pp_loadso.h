@@ -84,7 +84,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) noexcept = delete;
+  constexpr SharedObject(const SharedObject& other) = delete;
 
   /// Move constructor
   constexpr SharedObject(SharedObject&& other) noexcept
@@ -278,7 +278,7 @@ inline SharedObject LoadObject(StringParam sofile)
 }
 
 inline SharedObject::SharedObject(StringParam sofile)
-  : m_resource(SDL_LoadObject(sofile))
+  : SharedObject(SDL_LoadObject(sofile))
 {
 }
 

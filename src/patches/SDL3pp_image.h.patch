@@ -1247,16 +1247,16 @@
  /**
   * Create an encoder to save a series of images to a file.
   *
-@@ -4004,7 +4030,7 @@
- inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
+@@ -4005,7 +4031,7 @@
                                            StringParam type,
                                            bool closeio)
--  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, type, closeio)))
-+  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
+   : AnimationEncoder(
+-      CheckError(IMG_CreateAnimationEncoder_IO(dst, type, closeio)))
++      CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
  {
  }
  
-@@ -4028,8 +4054,8 @@
+@@ -4030,8 +4056,8 @@
   * fails, or when the animation encoder is closed if this function succeeds.
   *
   * @param dst an IOStream that will be used to save the stream.
@@ -1266,7 +1266,7 @@
   * @returns a new AnimationEncoder on success.
   * @throws Error on failure.
   *
-@@ -4099,8 +4125,11 @@
+@@ -4101,8 +4127,11 @@
    return AnimationEncoder(props);
  }
  
@@ -1280,7 +1280,7 @@
  namespace prop::AnimationEncoder {
  
  constexpr auto CREATE_FILENAME_STRING =
-@@ -4135,8 +4164,6 @@
+@@ -4137,8 +4166,6 @@
  
  } // namespace prop::AnimationEncoder
  
@@ -1289,7 +1289,7 @@
  /**
   * Add a frame to an animation encoder.
   *
-@@ -4187,10 +4214,7 @@
+@@ -4189,10 +4216,7 @@
    CheckError(IMG_CloseAnimationEncoder(encoder));
  }
  
@@ -1301,7 +1301,7 @@
  
  /**
   * An enum representing the status of an animation decoder.
-@@ -4199,8 +4223,6 @@
+@@ -4201,8 +4225,6 @@
   */
  using AnimationDecoderStatus = IMG_AnimationDecoderStatus;
  
@@ -1310,7 +1310,7 @@
  constexpr AnimationDecoderStatus DECODER_STATUS_INVALID =
    IMG_DECODER_STATUS_INVALID; ///< The decoder is invalid
  
-@@ -4255,8 +4277,6 @@
+@@ -4257,8 +4279,6 @@
  
    constexpr AnimationDecoder(AnimationDecoderRef&& other) = delete;
  
@@ -1319,7 +1319,7 @@
    /**
     * Create a decoder to read a series of images from a file.
     *
-@@ -4357,8 +4377,6 @@
+@@ -4359,8 +4379,6 @@
     */
    AnimationDecoder(PropertiesRef props);
  
@@ -1328,7 +1328,7 @@
    /// Destructor
    ~AnimationDecoder() { IMG_CloseAnimationDecoder(m_resource); }
  
-@@ -4390,16 +4408,13 @@
+@@ -4392,16 +4410,13 @@
    /// Converts to bool
    constexpr explicit operator bool() const noexcept { return !!m_resource; }
  
@@ -1346,7 +1346,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -4407,7 +4422,7 @@
+@@ -4409,7 +4424,7 @@
     * @sa CreateAnimationDecoder_IO
     * @sa CreateAnimationDecoderWithProperties
     */
@@ -1355,7 +1355,7 @@
  
    /**
     * Get the properties of an animation decoder.
-@@ -4434,18 +4449,11 @@
+@@ -4436,18 +4451,11 @@
     * as an Surface. The returned surface should be freed with SDL_FreeSurface()
     * when no longer needed.
     *
@@ -1375,7 +1375,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -4489,8 +4497,6 @@
+@@ -4491,8 +4499,6 @@
     * @sa AnimationDecoder.Close
     */
    void Reset();
@@ -1384,7 +1384,7 @@
  };
  
  /**
-@@ -4565,8 +4571,6 @@
+@@ -4567,8 +4573,6 @@
    constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
  };
  
@@ -1393,26 +1393,16 @@
  /**
   * Create a decoder to read a series of images from a file.
   *
-@@ -4603,18 +4607,6 @@
+@@ -4609,7 +4613,7 @@
+                                           StringParam type,
+                                           bool closeio)
+   : AnimationDecoder(
+-      CheckError(IMG_CreateAnimationDecoder_IO(src, type, closeio)))
++      CheckError(IMG_CreateAnimationDecoder_IO(src, closeio, type)))
  {
  }
  
--inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
--                                          StringParam type,
--                                          bool closeio)
--  : m_resource(CheckError(IMG_CreateAnimationDecoder_IO(src, type, closeio)))
--{
--}
--
--inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
--  : m_resource(CheckError(IMG_CreateAnimationDecoderWithProperties(props)))
--{
--}
--
- /**
-  * Create a decoder to read a series of images from an IOStream.
-  *
-@@ -4694,8 +4686,11 @@
+@@ -4698,8 +4702,11 @@
    return AnimationDecoder(props);
  }
  
@@ -1426,7 +1416,7 @@
  namespace prop::AnimationDecoder {
  
  constexpr auto CREATE_FILENAME_STRING =
-@@ -4733,8 +4728,6 @@
+@@ -4737,8 +4744,6 @@
  
  } // namespace prop::AnimationDecoder
  
@@ -1435,7 +1425,7 @@
  /**
   * Get the properties of an animation decoder.
   *
-@@ -4762,8 +4755,12 @@
+@@ -4766,8 +4771,12 @@
    return SDL::GetAnimationDecoderProperties(get());
  }
  
@@ -1450,7 +1440,7 @@
  namespace prop::Metadata {
  
  constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
-@@ -4784,28 +4781,18 @@
+@@ -4788,28 +4797,18 @@
  
  } // namespace prop::Metadata
  
@@ -1481,7 +1471,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -4820,7 +4807,9 @@
+@@ -4824,7 +4823,9 @@
  inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                          Uint64* duration)
  {
@@ -1492,7 +1482,7 @@
  }
  
  inline Surface AnimationDecoder::GetFrame(Uint64* duration)
-@@ -4895,10 +4884,7 @@
+@@ -4899,10 +4900,7 @@
    CheckError(IMG_CloseAnimationDecoder(decoder));
  }
  
@@ -1504,7 +1494,7 @@
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
  
-@@ -4906,4 +4892,32 @@
+@@ -4910,4 +4908,32 @@
  
  } // namespace SDL
  

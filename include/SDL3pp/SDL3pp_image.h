@@ -2694,7 +2694,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Animation(const Animation& other) noexcept = delete;
+  constexpr Animation(const Animation& other) = delete;
 
   /// Move constructor
   constexpr Animation(Animation&& other) noexcept
@@ -3175,12 +3175,12 @@ inline Animation LoadAnimation(StringParam file)
 }
 
 inline Animation::Animation(StringParam file)
-  : m_resource(IMG_LoadAnimation(file))
+  : Animation(IMG_LoadAnimation(file))
 {
 }
 
 inline Animation::Animation(IOStreamRef src, bool closeio)
-  : m_resource(IMG_LoadAnimation_IO(src, closeio))
+  : Animation(IMG_LoadAnimation_IO(src, closeio))
 {
 }
 
@@ -3734,7 +3734,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept = delete;
+  constexpr AnimationEncoder(const AnimationEncoder& other) = delete;
 
   /// Move constructor
   constexpr AnimationEncoder(AnimationEncoder&& other) noexcept
@@ -4023,19 +4023,21 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
 }
 
 inline AnimationEncoder::AnimationEncoder(StringParam file)
-  : m_resource(CheckError(IMG_CreateAnimationEncoder(file)))
+  : AnimationEncoder(CheckError(IMG_CreateAnimationEncoder(file)))
 {
 }
 
 inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
                                           StringParam type,
                                           bool closeio)
-  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
+  : AnimationEncoder(
+      CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
 {
 }
 
 inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
-  : m_resource(CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
+  : AnimationEncoder(
+      CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
 {
 }
 
@@ -4265,7 +4267,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept = delete;
+  constexpr AnimationDecoder(const AnimationDecoder& other) = delete;
 
   /// Move constructor
   constexpr AnimationDecoder(AnimationDecoder&& other) noexcept
@@ -4603,7 +4605,21 @@ inline AnimationDecoder CreateAnimationDecoder(StringParam file)
 }
 
 inline AnimationDecoder::AnimationDecoder(StringParam file)
-  : m_resource(CheckError(IMG_CreateAnimationDecoder(file)))
+  : AnimationDecoder(CheckError(IMG_CreateAnimationDecoder(file)))
+{
+}
+
+inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
+                                          StringParam type,
+                                          bool closeio)
+  : AnimationDecoder(
+      CheckError(IMG_CreateAnimationDecoder_IO(src, closeio, type)))
+{
+}
+
+inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
+  : AnimationDecoder(
+      CheckError(IMG_CreateAnimationDecoderWithProperties(props)))
 {
 }
 

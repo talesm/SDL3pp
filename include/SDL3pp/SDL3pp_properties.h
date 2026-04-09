@@ -200,7 +200,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Properties(const Properties& other) noexcept = delete;
+  constexpr Properties(const Properties& other) = delete;
 
   /// Move constructor
   constexpr Properties(Properties&& other) noexcept

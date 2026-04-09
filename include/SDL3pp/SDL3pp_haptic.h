@@ -787,7 +787,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr Haptic(const Haptic& other) noexcept = delete;
+  constexpr Haptic(const Haptic& other) = delete;
 
   /// Move constructor
   constexpr Haptic(Haptic&& other) noexcept
@@ -1355,12 +1355,12 @@ inline const char* GetHapticNameForID(HapticID instance_id)
 inline Haptic OpenHaptic(HapticID instance_id) { return Haptic(instance_id); }
 
 inline Haptic::Haptic(HapticID instance_id)
-  : m_resource(SDL_OpenHaptic(instance_id))
+  : Haptic(SDL_OpenHaptic(instance_id))
 {
 }
 
 inline Haptic::Haptic(JoystickRef joystick)
-  : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
+  : Haptic(CheckError(SDL_OpenHapticFromJoystick(joystick)))
 {
 }
 
