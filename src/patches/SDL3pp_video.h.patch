@@ -365,16 +365,16 @@
     *
     * @threadsafety This function should only be called on the main thread.
     *
-@@ -3284,26 +3284,12 @@
+@@ -3284,26 +3284,9 @@
   *
   * @cat resource
   */
 -class GLContext
-+class GLContext : public NonOwnedResourceBase<GLContextRaw>
++struct GLContext : public ResourceBase<GLContextRaw>
  {
-   GLContextRaw m_resource = nullptr;
- 
- public:
+-  GLContextRaw m_resource = nullptr;
+-
+-public:
 -  /// Default ctor
 -  constexpr GLContext(std::nullptr_t = nullptr) noexcept
 -    : m_resource(nullptr)
@@ -390,15 +390,14 @@
 -    : m_resource(resource)
 -  {
 -  }
-+  using NonOwnedResourceBase::NonOwnedResourceBase;
++  using ResourceBase::ResourceBase;
  
    /**
     * Create an OpenGL context for an OpenGL window, and make it current.
-@@ -3335,32 +3321,9 @@
-    */
+@@ -3336,31 +3319,11 @@
    GLContext(WindowRef window);
  
--  /// Converts to underlying GLContextRaw.
+   /// Converts to underlying GLContextRaw.
 -  constexpr operator GLContextRaw() const noexcept { return m_resource; }
 -
 -  /// Retrieves underlying GLContextRaw.
@@ -417,7 +416,8 @@
 -
 -  /// Converts to bool
 -  constexpr explicit operator bool() const noexcept { return !!m_resource; }
--
++  constexpr operator GLContextRaw() const noexcept { return get(); }
+ 
    /**
     * Delete an OpenGL context.
     *
@@ -1114,6 +1114,15 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
+@@ -7325,7 +7335,7 @@
+ inline GLContext Window::CreateGLContext() { return GLContext(get()); }
+ 
+ inline GLContext::GLContext(WindowRef window)
+-  : m_resource(SDL_GL_CreateContext(window))
++  : ResourceBase(SDL_GL_CreateContext(window))
+ {
+ }
+ 
 @@ -7346,7 +7356,7 @@
   */
  inline void GL_MakeCurrent(WindowRef window, GLContext context)

@@ -3284,12 +3284,9 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @cat resource
  */
-class GLContext : public NonOwnedResourceBase<GLContextRaw>
+struct GLContext : public ResourceBase<GLContextRaw>
 {
-  GLContextRaw m_resource = nullptr;
-
-public:
-  using NonOwnedResourceBase::NonOwnedResourceBase;
+  using ResourceBase::ResourceBase;
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -3320,6 +3317,9 @@ public:
    * @sa GLContext.MakeCurrent
    */
   GLContext(WindowRef window);
+
+  /// Converts to underlying GLContextRaw.
+  constexpr operator GLContextRaw() const noexcept { return get(); }
 
   /**
    * Delete an OpenGL context.
@@ -7335,7 +7335,7 @@ inline GLContext GL_CreateContext(WindowRef window)
 inline GLContext Window::CreateGLContext() { return GLContext(get()); }
 
 inline GLContext::GLContext(WindowRef window)
-  : m_resource(SDL_GL_CreateContext(window))
+  : ResourceBase(SDL_GL_CreateContext(window))
 {
 }
 
