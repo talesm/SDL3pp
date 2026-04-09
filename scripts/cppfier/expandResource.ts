@@ -60,12 +60,13 @@ export function expandResource(
   const constPointerType = `const ${pointerType}`;
   const nullValue = isStruct ? "nullptr" : "0";
   const title = targetName[0].toLowerCase() + targetName.slice(1);
-  if (sourceEntry.type && !targetEntry.type) {
-    if (hasScoped) {
+
+  if (!targetEntry.type) {
+    if (hasScoped || hasShared) {
       targetEntry.type = enableConstParam
         ? `ResourceBase<${rawName}, ${constRawName}>`
         : `ResourceBase<${rawName}>`;
-    } else {
+    } else if (sourceEntry.type) {
       targetEntry.type = "";
     }
   }
@@ -200,25 +201,6 @@ export function expandResource(
     combineObject(subEntries, detectedMethods);
   }
 
-  if (enableMemberAccess) {
-    ctors["operator->"] = {
-      doc: [`member access to underlying ${rawName}.`],
-      kind: "function",
-      constexpr: true,
-      immutable: true,
-      type: constRawName,
-      parameters: [],
-      hints: { body: "return m_resource;", noexcept: true },
-    };
-    ctors["operator->#2"] = {
-      kind: "function",
-      constexpr: true,
-      type: rawName,
-      parameters: [],
-      hints: { body: "return m_resource;", noexcept: true },
-    };
-  }
-
   if (sourceEntry.doc) {
     targetEntry.doc = [
       ...transformDoc(sourceEntry.doc, context),
@@ -329,6 +311,7 @@ function createBaselineCtors(
   isStruct: boolean,
 ) {
   if (hasScoped) return {};
+  const self = shared ? "ResourceBase" : "m_resource";
 
   const ctors: Dict<ApiEntryTransform> = {
     [targetName]: {
@@ -350,7 +333,7 @@ function createBaselineCtors(
       explicit: true,
       parameters: [{ name: "resource", type: rawName }],
       hints: {
-        init: ["m_resource(resource)"],
+        init: [`${self}(resource)`],
         noexcept: true,
       },
       doc: [
@@ -384,10 +367,7 @@ function createBaselineCtors(
   };
   if (shared) {
     addBorrowFunction(ctors, targetName, shared, rawName);
-  } else if (hasScoped) {
-    delete ctors[`${targetName}#2`].explicit;
-    delete ctors[`${targetName}#3`];
-    delete ctors[`${targetName}#4`];
+    delete ctors[`${targetName}`];
   } else {
     ctors[`${targetName}#3`].hints.delete = true;
     if (refName) deleteCtorsFromRef(ctors, refName, targetName);
@@ -404,8 +384,8 @@ function addBorrowFunction(
   const copyCtorHints: EntryHint = {};
   ctors[`${targetName}#3`].hints = copyCtorHints;
   if (shared !== true) {
-    copyCtorHints.init = ["m_resource(other.m_resource)"];
-    copyCtorHints.body = `if (m_resource) ++m_resource->${shared};`;
+    copyCtorHints.init = [`${targetName}(other.get())`];
+    copyCtorHints.body = `if (auto res = get()) ++res->${shared};`;
     ctors["Borrow"] = {
       kind: "function",
       static: true,
@@ -660,7 +640,7 @@ function populateTargetEntry(
       parameters: [],
       hints: {
         body: freeFunction
-          ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);`
+          ? `${freeFunction.sourceName ?? freeFunction.name}(${hasShared ? "get()" : "m_resource"});`
           : "",
       },
     },
@@ -670,7 +650,9 @@ function populateTargetEntry(
       parameters: [{ name: "other", type: `${targetName} &&` }],
       constexpr: true,
       hints: {
-        body: "std::swap(m_resource, other.m_resource);\nreturn *this;",
+        body: hasShared
+          ? "swap(*this, other);\nreturn *this;"
+          : "std::swap(m_resource, other.m_resource);\nreturn *this;",
         noexcept: true,
       },
       doc: ["Assignment operator."],
@@ -681,7 +663,7 @@ function populateTargetEntry(
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
         delete: !hasShared,
-        body: `if (m_resource != other.m_resource) {\n  ${targetName} tmp(other);\n  std::swap(m_resource, tmp.m_resource);\n}\nreturn *this;`,
+        body: `if (get() != other.get()) {\n  ${targetName} tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;`,
       },
       doc: ["Assignment operator."],
     },
@@ -730,18 +712,20 @@ function populateTargetEntry(
     [freeFunction.name]: "plc",
     ...subEntries,
   };
-  if (hasScoped) {
+  if (hasScoped || hasShared) {
+    if (hasScoped) {
+      delete entries[`~${targetName}`];
+      delete entries["operator="];
+      delete entries["operator=#2"];
+    }
     delete entries["m_resource"];
-    delete entries[`~${targetName}`];
-    delete entries["operator="];
-    delete entries["operator=#2"];
     delete entries["get"];
     delete entries["release"];
     delete entries["operator <=>"];
     delete entries["operator bool"];
     addHints(targetEntry, {
       self: "get()",
-      super: "ResourceBase",
+      super: targetName,
     });
   } else {
     delete entries["ResourceBase::ResourceBase"];

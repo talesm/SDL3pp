@@ -143,12 +143,12 @@ inline int Version() { return IMG_Version(); }
 inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 
 inline Surface::Surface(StringParam file)
-  : ResourceBase(IMG_Load(file))
+  : Surface(IMG_Load(file))
 {
 }
 
 inline Surface::Surface(IOStreamRef src, bool closeio)
-  : ResourceBase(IMG_Load_IO(src, closeio))
+  : Surface(IMG_Load_IO(src, closeio))
 {
 }
 
@@ -296,12 +296,12 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
 }
 
 inline Texture::Texture(RendererRef renderer, StringParam file)
-  : m_resource(IMG_LoadTexture(renderer, file))
+  : Texture(IMG_LoadTexture(renderer, file))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
-  : m_resource(IMG_LoadTexture_IO(renderer, src, closeio))
+  : Texture(IMG_LoadTexture_IO(renderer, src, closeio))
 {
 }
 
@@ -2757,12 +2757,6 @@ public:
    * @sa Animation.Free
    */
   Animation(IOStreamRef src, bool closeio = false);
-
-  /// member access to underlying AnimationRaw.
-  constexpr AnimationRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying AnimationRaw.
-  constexpr AnimationRaw operator->() noexcept { return m_resource; }
 
   /// Converts to AnimationConstRef
   constexpr operator AnimationConstRef() const noexcept { return get(); }

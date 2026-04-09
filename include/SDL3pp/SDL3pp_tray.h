@@ -1092,7 +1092,7 @@ inline TrayEntry::TrayEntry(TrayMenu menu,
                             int pos,
                             StringParam label,
                             TrayEntryFlags flags)
-  : ResourceBase(SDL_InsertTrayEntryAt(menu, pos, label, flags))
+  : TrayEntry(SDL_InsertTrayEntryAt(menu, pos, label, flags))
 {
 }
 

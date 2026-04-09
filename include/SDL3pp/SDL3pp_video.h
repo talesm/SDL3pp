@@ -7335,7 +7335,7 @@ inline GLContext GL_CreateContext(WindowRef window)
 inline GLContext Window::CreateGLContext() { return GLContext(get()); }
 
 inline GLContext::GLContext(WindowRef window)
-  : ResourceBase(SDL_GL_CreateContext(window))
+  : GLContext(SDL_GL_CreateContext(window))
 {
 }
 

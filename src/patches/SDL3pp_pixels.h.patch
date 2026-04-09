@@ -1027,7 +1027,7 @@
    PaletteIndex& operator=(ColorRaw color);
  };
  
-@@ -2388,18 +2585,19 @@
+@@ -2358,18 +2555,19 @@
     */
    void Destroy();
  
@@ -1036,24 +1036,24 @@
 -    static_assert(false, "Not implemented");
 -  }
 +  /// Access specific pallete colors
-+  constexpr const ColorRaw* data() const { return m_resource->colors; }
++  constexpr const ColorRaw* data() const { return get()->colors; }
  
 -  constexpr int size() const { static_assert(false, "Not implemented"); }
 +  /// Returns number of colors in the palette.
-+  constexpr int size() const { return m_resource->ncolors; }
++  constexpr int size() const { return get()->ncolors; }
  
 +  /// Access specific pallete index
    constexpr ColorRaw operator[](int index) const
    {
 -    static_assert(false, "Not implemented");
-+    return m_resource->colors[index];
++    return get()->colors[index];
    }
  
 +  /// Change specific pallete index
    constexpr PaletteIndex operator[](int index)
    {
-     return PaletteIndex{m_resource, index};
-@@ -2410,13 +2608,14 @@
+     return PaletteIndex{get(), index};
+@@ -2380,13 +2578,14 @@
     *
     * @param colors an array of Color structures to copy into the palette.
     * @param firstcolor the index of the first palette entry to modify.
@@ -1069,7 +1069,7 @@
     */
    void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
  };
-@@ -2596,8 +2795,8 @@
+@@ -2566,8 +2765,8 @@
   * errors such as `Blit combination not supported` may occur.
   *
   * @param format one of the PixelFormat values.
@@ -1080,7 +1080,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2605,7 +2804,7 @@
+@@ -2575,7 +2774,7 @@
   */
  inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
  {
@@ -1089,7 +1089,7 @@
  }
  
  inline const PixelFormatDetails& PixelFormat::GetDetails() const
-@@ -2648,7 +2847,6 @@
+@@ -2618,7 +2817,6 @@
   * @param palette the Palette structure to modify.
   * @param colors an array of Color structures to copy into the palette.
   * @param firstcolor the index of the first palette entry to modify.
@@ -1097,7 +1097,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread, as long as
-@@ -2660,7 +2858,8 @@
+@@ -2630,7 +2828,8 @@
                               SpanRef<const ColorRaw> colors,
                               int firstcolor = 0)
  {
@@ -1107,7 +1107,7 @@
  }
  
  inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
-@@ -2670,7 +2869,8 @@
+@@ -2640,7 +2839,8 @@
  
  inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
  {
@@ -1117,7 +1117,7 @@
  }
  
  /**
-@@ -2733,6 +2933,43 @@
+@@ -2703,6 +2903,43 @@
    return SDL_MapRGB(&format, palette, r, g, b);
  }
  
@@ -1161,7 +1161,7 @@
  inline Uint32 MapRGBA(const PixelFormatDetails& format,
                        Uint8 r,
                        Uint8 g,
-@@ -2740,7 +2977,7 @@
+@@ -2710,7 +2947,7 @@
                        Uint8 a,
                        PaletteConstRef palette = {})
  {
@@ -1170,7 +1170,7 @@
  }
  
  /**
-@@ -2762,11 +2999,8 @@
+@@ -2732,11 +2969,8 @@
   * for an 8-bpp format).
   *
   * @param format a pointer to PixelFormatDetails describing the pixel format.
@@ -1183,7 +1183,7 @@
   * @returns a pixel value.
   *
   * @threadsafety It is safe to call this function from any thread, as long as
-@@ -2783,18 +3017,18 @@
+@@ -2753,18 +2987,18 @@
                         ColorRaw c,
                         PaletteConstRef palette = {})
  {
@@ -1205,7 +1205,7 @@
  }
  
  /**
-@@ -2872,23 +3106,52 @@
+@@ -2842,23 +3076,52 @@
    SDL_GetRGBA(pixelvalue, &format, palette, r, g, b, a);
  }
  

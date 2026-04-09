@@ -21,48 +21,16 @@
  
  /**
   * The scaling mode.
-@@ -161,19 +164,10 @@
+@@ -161,8 +164,6 @@
   *
   * @sa CreateSurface
   * @sa Surface.Destroy
 - *
 - * @cat resource
   */
--class Surface
-+struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
+ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
  {
--  SurfaceRaw m_resource = nullptr;
--
--public:
--  /// Default ctor
--  constexpr Surface(std::nullptr_t = nullptr) noexcept
--    : m_resource(nullptr)
--  {
--  }
-+  using ResourceBase::ResourceBase;
- 
-   /**
-    * Constructs from raw Surface.
-@@ -183,15 +177,15 @@
-    * This assumes the ownership, call release() if you need to take back.
-    */
-   constexpr explicit Surface(SurfaceRaw resource) noexcept
--    : m_resource(resource)
-+    : ResourceBase(resource)
-   {
-   }
- 
-   /// Copy constructor
-   constexpr Surface(const Surface& other)
--    : m_resource(other.m_resource)
-+    : ResourceBase(other.get())
-   {
--    if (m_resource) ++m_resource->refcount;
-+    if (auto res = get()) ++res->refcount;
-   }
- 
-   /// Move constructor
-@@ -205,11 +199,9 @@
+@@ -198,11 +199,9 @@
     *
     * The pixels of the new surface are initialized to zero.
     *
@@ -76,7 +44,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -233,13 +225,11 @@
+@@ -226,13 +225,11 @@
     * You may pass nullptr for pixels and 0 for pitch to create a surface that
     * you will fill in with valid values later.
     *
@@ -92,7 +60,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -278,9 +268,6 @@
+@@ -271,9 +268,6 @@
     * load images directly into an Texture for use by the GPU without using a
     * software surface: call LoadTexture() instead.
     *
@@ -102,7 +70,7 @@
     * @param file a path on the filesystem to load an image from.
     * @post a new SDL surface, or nullptr on error.
     *
-@@ -328,9 +315,6 @@
+@@ -321,9 +315,6 @@
     * load images directly into an Texture for use by the GPU without using a
     * software surface: call LoadTexture_IO() instead.
     *
@@ -112,60 +80,9 @@
     * @param src an IOStream that data will be read from.
     * @param closeio true to close/free the IOStream before returning, false to
     *                leave it open.
-@@ -359,56 +343,36 @@
-     return {};
+@@ -376,9 +367,9 @@
    }
  
--  /// member access to underlying SurfaceRaw.
--  constexpr SurfaceRawConst operator->() const noexcept { return m_resource; }
--
--  /// member access to underlying SurfaceRaw.
--  constexpr SurfaceRaw operator->() noexcept { return m_resource; }
--
-   /// Converts to SurfaceConstRef
-   constexpr operator SurfaceConstRef() const noexcept { return get(); }
- 
-   /// Destructor
--  ~Surface() { SDL_DestroySurface(m_resource); }
-+  ~Surface() { SDL_DestroySurface(get()); }
- 
-   /// Assignment operator.
-   constexpr Surface& operator=(Surface&& other) noexcept
-   {
--    std::swap(m_resource, other.m_resource);
-+    swap(*this, other);
-     return *this;
-   }
- 
-   /// Assignment operator.
-   Surface& operator=(const Surface& other)
-   {
--    if (m_resource != other.m_resource) {
-+    if (auto r = other.get(); get() != r) {
-       Surface tmp(other);
--      std::swap(m_resource, tmp.m_resource);
-+      swap(*this, tmp);
-     }
-     return *this;
-   }
- 
--  /// Retrieves underlying SurfaceRaw.
--  constexpr SurfaceRaw get() const noexcept { return m_resource; }
--
--  /// Retrieves underlying SurfaceRaw and clear this.
--  constexpr SurfaceRaw release() noexcept
--  {
--    auto r = m_resource;
--    m_resource = nullptr;
--    return r;
--  }
--
-   /// Comparison
-   constexpr auto operator<=>(const Surface& other) const noexcept = default;
- 
--  /// Converts to bool
--  constexpr explicit operator bool() const noexcept { return !!m_resource; }
--
    /**
 -   * Free a surface.
 +   * Free this surface.
@@ -175,7 +92,7 @@
     *
     * @threadsafety No other thread should be using the surface when it is freed.
     *
-@@ -471,7 +435,7 @@
+@@ -441,7 +432,7 @@
     * Setting the colorspace doesn't change the pixels, only how they are
     * interpreted in color operations.
     *
@@ -184,7 +101,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function can be called on different threads with
-@@ -577,8 +541,7 @@
+@@ -547,8 +538,7 @@
     * This function adds a reference to the alternate version, so you should call
     * Surface.Destroy() on the image after this call.
     *
@@ -194,7 +111,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function can be called on different threads with
-@@ -613,15 +576,8 @@
+@@ -583,15 +573,8 @@
     * This returns all versions of a surface, with the surface being queried as
     * the first element in the returned array.
     *
@@ -211,7 +128,7 @@
     *
     * @threadsafety This function can be called on different threads with
     *               different surfaces.
-@@ -736,11 +692,11 @@
+@@ -706,11 +689,11 @@
     */
    void SaveBMP(StringParam file) const;
  
@@ -225,7 +142,7 @@
     * @param dst a data stream to save to.
     * @param closeio if true, calls IOStream.Close() on `dst` before returning,
     *                even in the case of an error.
-@@ -751,6 +707,7 @@
+@@ -721,6 +704,7 @@
     *
     * @since This function is available since SDL 3.4.0.
     *
@@ -233,7 +150,7 @@
     * @sa LoadTrustedPNG_IO
     * @sa Surface.SavePNG
     */
-@@ -759,6 +716,8 @@
+@@ -729,6 +713,8 @@
    /**
     * Save a surface to a file in PNG format.
     *
@@ -242,7 +159,7 @@
     * @param file a file to save to.
     * @throws Error on failure.
     *
-@@ -767,13 +726,12 @@
+@@ -737,13 +723,12 @@
     *
     * @since This function is available since SDL 3.4.0.
     *
@@ -257,7 +174,7 @@
    /**
     * Set the RLE acceleration hint for a surface.
     *
-@@ -818,8 +776,7 @@
+@@ -788,8 +773,7 @@
     *
     * It is a pixel of the format used by the surface, as generated by MapRGB().
     *
@@ -267,7 +184,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function can be called on different threads with
-@@ -833,13 +790,20 @@
+@@ -803,13 +787,20 @@
     */
    void SetColorKey(std::optional<Uint32> key);
  
@@ -290,7 +207,7 @@
     * @returns true if the surface has a color key, false otherwise.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -859,7 +823,7 @@
+@@ -829,7 +820,7 @@
     *
     * If the surface doesn't have color key enabled this function returns false.
     *
@@ -299,7 +216,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -937,7 +901,6 @@
+@@ -907,7 +898,6 @@
    /**
     * Get the additional alpha value used in blit operations.
     *
@@ -307,7 +224,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -949,8 +912,29 @@
+@@ -919,8 +909,29 @@
     */
    Uint8 GetAlphaMod() const;
  
@@ -337,7 +254,7 @@
    Color GetMod() const;
  
    /**
-@@ -975,7 +959,7 @@
+@@ -945,7 +956,7 @@
    /**
     * Get the blend mode used for blit operations.
     *
@@ -346,7 +263,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -1005,10 +989,16 @@
+@@ -975,10 +986,16 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
@@ -363,7 +280,7 @@
    void ResetClipRect();
  
    /**
-@@ -1017,8 +1007,8 @@
+@@ -987,8 +1004,8 @@
     * When `surface` is the destination of a blit, only the area within the clip
     * rectangle is drawn into.
     *
@@ -374,7 +291,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function can be called on different threads with
-@@ -1081,8 +1071,6 @@
+@@ -1051,8 +1068,6 @@
     * If the original surface has alternate images, the new surface will have a
     * reference to them as well.
     *
@@ -383,7 +300,7 @@
     * @returns a copy of the surface or nullptr on failure; call GetError() for
     *          more information.
     *
-@@ -1099,10 +1087,7 @@
+@@ -1069,10 +1084,7 @@
     * Creates a new surface identical to the existing surface, scaled to the
     * desired size.
     *
@@ -395,7 +312,7 @@
     * @param scaleMode the ScaleMode to be used.
     * @returns a copy of the surface or nullptr on failure; call GetError() for
     *          more information.
-@@ -1200,10 +1185,7 @@
+@@ -1170,10 +1182,7 @@
     * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
     * otherwise the color is assumed to be in the colorspace of the surface.
     *
@@ -407,7 +324,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function can be called on different threads with
-@@ -1239,6 +1221,16 @@
+@@ -1209,6 +1218,16 @@
     */
    void FillRect(OptionalRef<const RectRaw> rect, Uint32 color);
  
@@ -424,7 +341,7 @@
    void Fill(Uint32 color);
  
    /**
-@@ -1254,7 +1246,6 @@
+@@ -1224,7 +1243,6 @@
     * intersection of the clip rectangle and `rect`.
     *
     * @param rects an array of SDL_Rects representing the rectangles to fill.
@@ -432,7 +349,7 @@
     * @param color the color to fill with.
     * @throws Error on failure.
     *
-@@ -1319,9 +1310,9 @@
+@@ -1289,9 +1307,9 @@
     *       source color key.
     * ```
     *
@@ -443,7 +360,7 @@
     * @param dstrect the Rect structure representing the x and y position in the
     *                destination surface, or nullptr for (0,0). The width and
     *                height are ignored, and are copied from `srcrect`. If you
-@@ -1340,6 +1331,76 @@
+@@ -1310,6 +1328,76 @@
              OptionalRef<const RectRaw> srcrect,
              OptionalRef<const RectRaw> dstrect);
  
@@ -520,7 +437,7 @@
    void BlitAt(SurfaceRef src,
                OptionalRef<const RectRaw> srcrect,
                const PointRaw& dstpos);
-@@ -1350,9 +1411,9 @@
+@@ -1320,9 +1408,9 @@
     * This is a semi-private blit function and it performs low-level surface
     * blitting, assuming the input rectangles have already been clipped.
     *
@@ -531,7 +448,7 @@
     * @param dstrect the Rect structure representing the target rectangle in the
     *                destination surface, may not be nullptr.
     * @throws Error on failure.
-@@ -1372,9 +1433,9 @@
+@@ -1342,9 +1430,9 @@
     * Perform a scaled blit to a destination surface, which may be of a different
     * format.
     *
@@ -542,7 +459,7 @@
     * @param dstrect the Rect structure representing the target rectangle in the
     *                destination surface, or nullptr to fill the entire
     *                destination surface.
-@@ -1399,9 +1460,9 @@
+@@ -1369,9 +1457,9 @@
     * This is a semi-private function and it performs low-level surface blitting,
     * assuming the input rectangles have already been clipped.
     *
@@ -553,7 +470,7 @@
     * @param dstrect the Rect structure representing the target rectangle in the
     *                destination surface, may not be nullptr.
     * @param scaleMode the ScaleMode to be used.
-@@ -1424,9 +1485,9 @@
+@@ -1394,9 +1482,9 @@
    /**
     * Perform a stretched pixel copy from one surface to another.
     *
@@ -564,7 +481,7 @@
     * @param dstrect the Rect structure representing the target rectangle in the
     *                destination surface, or nullptr to fill the entire
     *                destination surface.
-@@ -1454,9 +1515,9 @@
+@@ -1424,9 +1512,9 @@
     * The pixels in `srcrect` will be repeated as many times as needed to
     * completely fill `dstrect`.
     *
@@ -575,7 +492,7 @@
     * @param dstrect the Rect structure representing the target rectangle in the
     *                destination surface, or nullptr to fill the entire surface.
     * @throws Error on failure.
-@@ -1479,13 +1540,13 @@
+@@ -1449,13 +1537,13 @@
     * The pixels in `srcrect` will be scaled and repeated as many times as needed
     * to completely fill `dstrect`.
     *
@@ -590,7 +507,7 @@
     * @param dstrect the Rect structure representing the target rectangle in the
     *                destination surface, or nullptr to fill the entire surface.
     * @throws Error on failure.
-@@ -1513,6 +1574,7 @@
+@@ -1483,6 +1571,7 @@
     * into the corners of the destination rectangle. The sides and center are
     * then stretched into place to cover the remaining destination rectangle.
     *
@@ -598,7 +515,7 @@
     * @param srcrect the Rect structure representing the rectangle to be used for
     *                the 9-grid, or nullptr to use the entire surface.
     * @param left_width the width, in pixels, of the left corners in `srcrect`.
-@@ -1520,12 +1582,11 @@
+@@ -1490,12 +1579,11 @@
     * @param top_height the height, in pixels, of the top corners in `srcrect`.
     * @param bottom_height the height, in pixels, of the bottom corners in
     *                      `srcrect`.
@@ -613,7 +530,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Only one thread should be using the `src` and `dst` surfaces
-@@ -1595,10 +1656,7 @@
+@@ -1565,10 +1653,7 @@
     * format the return value can be assigned to a Uint16, and similarly a Uint8
     * for an 8-bpp format).
     *
@@ -625,7 +542,7 @@
     * @returns a pixel value.
     *
     * @threadsafety This function can be called on different threads with
-@@ -1619,8 +1677,7 @@
+@@ -1589,8 +1674,7 @@
     * Like GetRGBA, this uses the entire 0..255 range when converting color
     * components from pixel formats with less than 8 bits per RGB component.
     *
@@ -635,7 +552,7 @@
     * @param r a pointer filled in with the red channel, 0-255, or nullptr to
     *          ignore this channel.
     * @param g a pointer filled in with the green channel, 0-255, or nullptr to
-@@ -1648,19 +1705,8 @@
+@@ -1618,19 +1702,8 @@
     * This function prioritizes correctness over speed: it is suitable for unit
     * tests, but is not intended for use in a game engine.
     *
@@ -657,7 +574,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function can be called on different threads with
-@@ -1676,8 +1722,7 @@
+@@ -1646,8 +1719,7 @@
     * This function prioritizes correctness over speed: it is suitable for unit
     * tests, but is not intended for use in a game engine.
     *
@@ -667,7 +584,7 @@
     * @param r a pointer filled in with the red channel, normally in the range
     *          0-1, or nullptr to ignore this channel.
     * @param g a pointer filled in with the green channel, normally in the range
-@@ -1705,16 +1750,8 @@
+@@ -1675,16 +1747,8 @@
     * This function prioritizes correctness over speed: it is suitable for unit
     * tests, but is not intended for use in a game engine.
     *
@@ -686,7 +603,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function can be called on different threads with
-@@ -1733,12 +1770,8 @@
+@@ -1703,12 +1767,8 @@
     * Like MapColor, this uses the entire 0..255 range when converting color
     * components from pixel formats with less than 8 bits per RGB component.
     *
@@ -701,7 +618,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function can be called on different threads with
-@@ -1754,12 +1787,8 @@
+@@ -1724,12 +1784,8 @@
     * This function prioritizes correctness over speed: it is suitable for unit
     * tests, but is not intended for use in a game engine.
     *
@@ -716,7 +633,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function can be called on different threads with
-@@ -1787,8 +1816,6 @@
+@@ -1757,8 +1813,6 @@
    /// Get the pixels.
    constexpr void* GetPixels() const;
  
@@ -725,7 +642,7 @@
    /**
     * Save an Surface into an image file.
     *
-@@ -1796,23 +1823,12 @@
+@@ -1766,23 +1820,12 @@
     *
     * For formats that accept a quality, a default quality of 90 will be used.
     *
@@ -752,7 +669,7 @@
     */
    void Save(StringParam filename) const;
  
-@@ -1826,33 +1842,20 @@
+@@ -1796,33 +1839,20 @@
     *
     * For formats that accept a quality, a default quality of 90 will be used.
     *
@@ -788,7 +705,7 @@
  };
  
  /**
-@@ -1939,15 +1942,6 @@
+@@ -1909,15 +1939,6 @@
   * 0, then you can read and write to the surface at any time, and the pixel
   * format of the surface will not change.
   *
@@ -804,7 +721,7 @@
   * @since This function is available since SDL 3.2.0.
   *
   * @sa Surface.MustLock
-@@ -1955,7 +1949,7 @@
+@@ -1925,7 +1946,7 @@
   */
  class SurfaceLock
  {
@@ -813,7 +730,7 @@
  
  public:
    /**
-@@ -1970,7 +1964,6 @@
+@@ -1940,7 +1961,6 @@
     * to 0, then you can read and write to the surface at any time, and the pixel
     * format of the surface will not change.
     *
@@ -821,7 +738,7 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -1998,8 +1991,6 @@
+@@ -1968,8 +1988,6 @@
    /**
     * Release a surface after directly accessing the pixels.
     *
@@ -830,7 +747,7 @@
     * @threadsafety This function is not thread safe. The locking referred to by
     *               this function is making the pixels available for direct
     *               access, not thread-safe locking.
-@@ -2031,9 +2022,7 @@
+@@ -2001,9 +2019,7 @@
     * Like GetRGBA, this uses the entire 0..255 range when converting color
     * components from pixel formats with less than 8 bits per RGB component.
     *
@@ -841,7 +758,7 @@
     * @param r a pointer filled in with the red channel, 0-255, or nullptr to
     *          ignore this channel.
     * @param g a pointer filled in with the green channel, 0-255, or nullptr to
-@@ -2042,8 +2031,7 @@
+@@ -2012,8 +2028,7 @@
     *          ignore this channel.
     * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
     *          ignore this channel.
@@ -851,7 +768,7 @@
     *
     * @threadsafety This function can be called on different threads with
     *               different surfaces.
-@@ -2068,19 +2056,9 @@
+@@ -2038,19 +2053,9 @@
     * Like GetRGBA, this uses the entire 0..255 range when converting color
     * components from pixel formats with less than 8 bits per RGB component.
     *
@@ -874,7 +791,7 @@
     *
     * @threadsafety This function can be called on different threads with
     *               different surfaces.
-@@ -2095,9 +2073,7 @@
+@@ -2065,9 +2070,7 @@
     * This function prioritizes correctness over speed: it is suitable for unit
     * tests, but is not intended for use in a game engine.
     *
@@ -885,7 +802,7 @@
     * @param r a pointer filled in with the red channel, normally in the range
     *          0-1, or nullptr to ignore this channel.
     * @param g a pointer filled in with the green channel, normally in the range
-@@ -2106,8 +2082,7 @@
+@@ -2076,8 +2079,7 @@
     *          0-1, or nullptr to ignore this channel.
     * @param a a pointer filled in with the alpha channel, normally in the range
     *          0-1, or nullptr to ignore this channel.
@@ -895,7 +812,7 @@
     *
     * @threadsafety This function can be called on different threads with
     *               different surfaces.
-@@ -2129,19 +2104,9 @@
+@@ -2099,19 +2101,9 @@
     * This function prioritizes correctness over speed: it is suitable for unit
     * tests, but is not intended for use in a game engine.
     *
@@ -918,7 +835,7 @@
     *
     * @threadsafety This function can be called on different threads with
     *               different surfaces.
-@@ -2162,15 +2127,9 @@
+@@ -2132,15 +2124,9 @@
     * Like MapColor, this uses the entire 0..255 range when converting color
     * components from pixel formats with less than 8 bits per RGB component.
     *
@@ -937,7 +854,7 @@
     *
     * @threadsafety This function can be called on different threads with
     *               different surfaces.
-@@ -2185,15 +2144,9 @@
+@@ -2155,15 +2141,9 @@
     * This function prioritizes correctness over speed: it is suitable for unit
     * tests, but is not intended for use in a game engine.
     *
@@ -956,7 +873,7 @@
     *
     * @threadsafety This function can be called on different threads with
     *               different surfaces.
-@@ -2226,8 +2179,6 @@
+@@ -2196,8 +2176,6 @@
    /**
     * Release a surface after directly accessing the pixels.
     *
@@ -965,7 +882,7 @@
     * @threadsafety This function is not thread safe. The locking referred to by
     *               this function is making the pixels available for direct
     *               access, not thread-safe locking.
-@@ -2250,8 +2201,7 @@
+@@ -2220,8 +2198,7 @@
   *
   * The pixels of the new surface are initialized to zero.
   *
@@ -975,26 +892,26 @@
   * @param format the PixelFormat for the new surface's pixel format.
   * @returns the new Surface structure that is created or nullptr on failure;
   *          call GetError() for more information.
-@@ -2269,7 +2219,7 @@
+@@ -2239,7 +2216,7 @@
  }
  
  inline Surface::Surface(const PointRaw& size, PixelFormat format)
--  : m_resource(SDL_CreateSurface(size, format))
-+  : ResourceBase(CheckError(SDL_CreateSurface(size.x, size.y, format)))
+-  : Surface(SDL_CreateSurface(size, format))
++  : Surface(CheckError(SDL_CreateSurface(size.x, size.y, format)))
  {
  }
  
-@@ -2277,7 +2227,8 @@
+@@ -2247,7 +2224,8 @@
                          PixelFormat format,
                          void* pixels,
                          int pitch)
--  : m_resource(SDL_CreateSurfaceFrom(size, format, pixels, pitch))
-+  : ResourceBase(
+-  : Surface(SDL_CreateSurfaceFrom(size, format, pixels, pitch))
++  : Surface(
 +      CheckError(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
  {
  }
  
-@@ -2293,8 +2244,7 @@
+@@ -2263,8 +2241,7 @@
   * You may pass nullptr for pixels and 0 for pitch to create a surface that you
   * will fill in with valid values later.
   *
@@ -1004,7 +921,7 @@
   * @param format the PixelFormat for the new surface's pixel format.
   * @param pixels a pointer to existing pixel data.
   * @param pitch the number of bytes between each row, including padding.
-@@ -2373,7 +2323,7 @@
+@@ -2343,7 +2320,7 @@
   */
  inline PropertiesRef GetSurfaceProperties(SurfaceConstRef surface)
  {
@@ -1013,7 +930,7 @@
  }
  
  inline PropertiesRef Surface::GetProperties() const
-@@ -2381,6 +2331,18 @@
+@@ -2351,6 +2328,18 @@
    return SDL::GetSurfaceProperties(get());
  }
  
@@ -1032,7 +949,7 @@
  namespace prop::Surface {
  
  constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT;
-@@ -2490,7 +2452,7 @@
+@@ -2460,7 +2449,7 @@
   */
  inline Palette CreateSurfacePalette(SurfaceRef surface)
  {
@@ -1041,7 +958,7 @@
  }
  
  inline Palette Surface::CreatePalette()
-@@ -2543,7 +2505,7 @@
+@@ -2513,7 +2502,7 @@
   */
  inline Palette GetSurfacePalette(SurfaceConstRef surface)
  {
@@ -1050,7 +967,7 @@
  }
  
  inline Palette Surface::GetPalette() const
-@@ -2621,11 +2583,8 @@
+@@ -2591,11 +2580,8 @@
   * normally.
   *
   * @param surface the Surface structure to query.
@@ -1063,7 +980,7 @@
   *
   * @threadsafety This function can be called on different threads with different
   *               surfaces.
-@@ -2638,7 +2597,9 @@
+@@ -2608,7 +2594,9 @@
   */
  inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstRef surface)
  {
@@ -1074,7 +991,7 @@
  }
  
  inline OwnArray<SurfaceRaw> Surface::GetImages() const
-@@ -2681,7 +2642,7 @@
+@@ -2651,7 +2639,7 @@
   * Once you are done accessing the surface, you should use Surface.Unlock() to
   * release it.
   *
@@ -1083,7 +1000,7 @@
   * 0, then you can read and write to the surface at any time, and the pixel
   * format of the surface will not change.
   *
-@@ -2706,7 +2667,7 @@
+@@ -2676,7 +2664,7 @@
  inline SurfaceLock Surface::Lock() { return {SurfaceRef(*this)}; }
  
  inline SurfaceLock::SurfaceLock(SurfaceRef resource)
@@ -1092,7 +1009,7 @@
  {
    LockSurface(m_lock);
  }
-@@ -2739,18 +2700,16 @@
+@@ -2709,18 +2697,16 @@
    m_lock = {};
  }
  
@@ -1114,7 +1031,7 @@
   *          GetError() for more information.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -2762,17 +2721,14 @@
+@@ -2732,17 +2718,14 @@
   */
  inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
  {
@@ -1134,7 +1051,7 @@
   *          GetError() for more information.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -2782,9 +2738,12 @@
+@@ -2752,9 +2735,12 @@
   * @sa Surface.Destroy
   * @sa LoadSurface_IO
   */
@@ -1149,7 +1066,7 @@
  
  /**
   * Load a BMP image from a seekable SDL data stream.
-@@ -2808,7 +2767,7 @@
+@@ -2778,7 +2764,7 @@
   */
  inline Surface LoadBMP_IO(IOStreamRef src, bool closeio = false)
  {
@@ -1158,7 +1075,7 @@
  }
  
  /**
-@@ -2829,7 +2788,7 @@
+@@ -2799,7 +2785,7 @@
   * @sa LoadBMP_IO
   * @sa Surface.SaveBMP
   */
@@ -1167,7 +1084,7 @@
  
  /**
   * Save a surface to a seekable SDL data stream in BMP format.
-@@ -2906,13 +2865,10 @@
+@@ -2876,13 +2862,10 @@
   * sources. If you want to load arbitrary images you should use libpng or
   * another image loading library designed with security in mind.
   *
@@ -1182,7 +1099,7 @@
   *          GetError() for more information.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -2925,7 +2881,7 @@
+@@ -2895,7 +2878,7 @@
   */
  inline Surface LoadTrustedPNG_IO(IOStreamRef src, bool closeio = false)
  {
@@ -1191,7 +1108,7 @@
  }
  
  /**
-@@ -2939,7 +2895,7 @@
+@@ -2909,7 +2892,7 @@
   * result in a memory leak.
   *
   * @param file the PNG file to load.
@@ -1200,7 +1117,7 @@
   *          GetError() for more information.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -2950,7 +2906,26 @@
+@@ -2920,7 +2903,26 @@
   * @sa LoadTrustedPNG_IO
   * @sa Surface.SavePNG
   */
@@ -1228,7 +1145,7 @@
  
  /**
   * Save a surface to a seekable SDL data stream in PNG format.
-@@ -2976,10 +2951,12 @@
+@@ -2946,10 +2948,12 @@
    CheckError(SDL_SavePNG_IO(surface, dst, closeio));
  }
  
@@ -1241,7 +1158,7 @@
  
  /**
   * Save a surface to a file in PNG format.
-@@ -3001,10 +2978,12 @@
+@@ -2971,10 +2975,12 @@
    CheckError(SDL_SavePNG(surface, file));
  }
  
@@ -1254,7 +1171,7 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
-@@ -3068,8 +3047,7 @@
+@@ -3038,8 +3044,7 @@
   * It is a pixel of the format used by the surface, as generated by MapRGB().
   *
   * @param surface the Surface structure to update.
@@ -1264,7 +1181,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -3083,7 +3061,7 @@
+@@ -3053,7 +3058,7 @@
   */
  inline void SetSurfaceColorKey(SurfaceRef surface, std::optional<Uint32> key)
  {
@@ -1273,7 +1190,7 @@
  }
  
  inline void Surface::SetColorKey(std::optional<Uint32> key)
-@@ -3091,9 +3069,19 @@
+@@ -3061,9 +3066,19 @@
    SDL::SetSurfaceColorKey(get(), key);
  }
  
@@ -1294,7 +1211,7 @@
  }
  
  inline void Surface::ClearColorKey() { SDL::ClearSurfaceColorKey(get()); }
-@@ -3132,7 +3120,7 @@
+@@ -3102,7 +3117,7 @@
   * If the surface doesn't have color key enabled this function returns false.
   *
   * @param surface the Surface structure to query.
@@ -1303,7 +1220,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -3144,7 +3132,8 @@
+@@ -3114,7 +3129,8 @@
   */
  inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstRef surface)
  {
@@ -1313,7 +1230,7 @@
  }
  
  inline std::optional<Uint32> Surface::GetColorKey() const
-@@ -3249,7 +3238,7 @@
+@@ -3219,7 +3235,7 @@
   * Get the additional alpha value used in blit operations.
   *
   * @param surface the Surface structure to query.
@@ -1322,7 +1239,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -3261,7 +3250,9 @@
+@@ -3231,7 +3247,9 @@
   */
  inline Uint8 GetSurfaceAlphaMod(SurfaceConstRef surface)
  {
@@ -1333,7 +1250,7 @@
  }
  
  inline Uint8 Surface::GetAlphaMod() const
-@@ -3269,16 +3260,43 @@
+@@ -3239,16 +3257,43 @@
    return SDL::GetSurfaceAlphaMod(get());
  }
  
@@ -1380,7 +1297,7 @@
  }
  
  inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(get()); }
-@@ -3315,7 +3333,7 @@
+@@ -3285,7 +3330,7 @@
   * Get the blend mode used for blit operations.
   *
   * @param surface the Surface structure to query.
@@ -1389,7 +1306,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -3326,7 +3344,9 @@
+@@ -3296,7 +3341,9 @@
   */
  inline BlendMode GetSurfaceBlendMode(SurfaceConstRef surface)
  {
@@ -1400,7 +1317,7 @@
  }
  
  inline BlendMode Surface::GetBlendMode() const
-@@ -3367,9 +3387,14 @@
+@@ -3337,9 +3384,14 @@
    return SDL::SetSurfaceClipRect(get(), rect);
  }
  
@@ -1416,7 +1333,7 @@
  }
  
  inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(get()); }
-@@ -3381,8 +3406,8 @@
+@@ -3351,8 +3403,8 @@
   * rectangle is drawn into.
   *
   * @param surface the Surface structure representing the surface to be clipped.
@@ -1427,7 +1344,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -3394,7 +3419,9 @@
+@@ -3364,7 +3416,9 @@
   */
  inline Rect GetSurfaceClipRect(SurfaceConstRef surface)
  {
@@ -1438,7 +1355,7 @@
  }
  
  inline Rect Surface::GetClipRect() const
-@@ -3452,7 +3479,7 @@
+@@ -3422,7 +3476,7 @@
   */
  inline Surface RotateSurface(SurfaceRef surface, float angle)
  {
@@ -1447,7 +1364,7 @@
  }
  
  inline Surface Surface::Rotate(float angle)
-@@ -3483,7 +3510,7 @@
+@@ -3453,7 +3507,7 @@
   */
  inline Surface DuplicateSurface(SurfaceConstRef surface)
  {
@@ -1456,7 +1373,7 @@
  }
  
  inline Surface Surface::Duplicate() const
-@@ -3498,8 +3525,7 @@
+@@ -3468,8 +3522,7 @@
   * The returned surface should be freed with Surface.Destroy().
   *
   * @param surface the surface to duplicate and scale.
@@ -1466,7 +1383,7 @@
   * @param scaleMode the ScaleMode to be used.
   * @returns a copy of the surface or nullptr on failure; call GetError() for
   *          more information.
-@@ -3515,7 +3541,7 @@
+@@ -3485,7 +3538,7 @@
                              const PointRaw& size,
                              ScaleMode scaleMode)
  {
@@ -1475,7 +1392,7 @@
  }
  
  inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
-@@ -3552,7 +3578,7 @@
+@@ -3522,7 +3575,7 @@
   */
  inline Surface ConvertSurface(SurfaceConstRef surface, PixelFormat format)
  {
@@ -1484,7 +1401,7 @@
  }
  
  inline Surface Surface::Convert(PixelFormat format) const
-@@ -3560,15 +3586,6 @@
+@@ -3530,15 +3583,6 @@
    return SDL::ConvertSurface(get(), format);
  }
  
@@ -1500,7 +1417,7 @@
  /**
   * Copy an existing surface to a new surface of the specified format and
   * colorspace.
-@@ -3603,15 +3620,23 @@
+@@ -3573,15 +3617,23 @@
                                             Colorspace colorspace,
                                             PropertiesRef props)
  {
@@ -1528,7 +1445,7 @@
   * @param src_format an PixelFormat value of the `src` pixels format.
   * @param src a pointer to the source pixels.
   * @param src_pitch the pitch of the source pixels, in bytes.
-@@ -3637,15 +3662,14 @@
+@@ -3607,15 +3659,14 @@
                            int dst_pitch)
  {
    CheckError(SDL_ConvertPixels(
@@ -1546,7 +1463,7 @@
   * @param src_format an PixelFormat value of the `src` pixels format.
   * @param src_colorspace an Colorspace value describing the colorspace of the
   *                       `src` pixels.
-@@ -3682,7 +3706,8 @@
+@@ -3652,7 +3703,8 @@
                                         void* dst,
                                         int dst_pitch)
  {
@@ -1556,7 +1473,7 @@
                                              src_format,
                                              src_colorspace,
                                              src_properties,
-@@ -3700,8 +3725,7 @@
+@@ -3670,8 +3722,7 @@
   *
   * This is safe to use with src == dst, but not for other overlapping areas.
   *
@@ -1566,7 +1483,7 @@
   * @param src_format an PixelFormat value of the `src` pixels format.
   * @param src a pointer to the source pixels.
   * @param src_pitch the pitch of the source pixels, in bytes.
-@@ -3727,8 +3751,15 @@
+@@ -3697,8 +3748,15 @@
                               int dst_pitch,
                               bool linear)
  {
@@ -1584,7 +1501,7 @@
  }
  
  /**
-@@ -3765,10 +3796,7 @@
+@@ -3735,10 +3793,7 @@
   * otherwise the color is assumed to be in the colorspace of the surface.
   *
   * @param surface the Surface to clear.
@@ -1596,7 +1513,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -3778,7 +3806,7 @@
+@@ -3748,7 +3803,7 @@
   */
  inline void ClearSurface(SurfaceRef surface, const FColorRaw& c)
  {
@@ -1605,7 +1522,7 @@
  }
  
  inline void Surface::Clear(const FColorRaw& c) { SDL::ClearSurface(get(), c); }
-@@ -3820,9 +3848,20 @@
+@@ -3790,9 +3845,20 @@
    SDL::FillSurfaceRect(get(), rect, color);
  }
  
@@ -1627,7 +1544,7 @@
  }
  
  inline void Surface::Fill(Uint32 color) { SDL::FillSurface(get(), color); }
-@@ -3841,7 +3880,6 @@
+@@ -3811,7 +3877,6 @@
   *
   * @param dst the Surface structure that is the drawing target.
   * @param rects an array of SDL_Rects representing the rectangles to fill.
@@ -1635,7 +1552,7 @@
   * @param color the color to fill with.
   * @throws Error on failure.
   *
-@@ -3856,7 +3894,8 @@
+@@ -3826,7 +3891,8 @@
                               SpanRef<const RectRaw> rects,
                               Uint32 color)
  {
@@ -1645,7 +1562,7 @@
  }
  
  inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
-@@ -3946,22 +3985,89 @@
+@@ -3916,22 +3982,89 @@
                            OptionalRef<const RectRaw> srcrect,
                            OptionalRef<const RectRaw> dstrect)
  {
@@ -1738,7 +1655,7 @@
  }
  
  /**
-@@ -3990,14 +4096,14 @@
+@@ -3960,14 +4093,14 @@
                                   SurfaceRef dst,
                                   const RectRaw& dstrect)
  {
@@ -1755,7 +1672,7 @@
  }
  
  /**
-@@ -4035,7 +4141,7 @@
+@@ -4005,7 +4138,7 @@
                                  OptionalRef<const RectRaw> dstrect,
                                  ScaleMode scaleMode)
  {
@@ -1764,7 +1681,7 @@
  }
  
  /**
-@@ -4067,7 +4173,7 @@
+@@ -4037,7 +4170,7 @@
                                         ScaleMode scaleMode)
  {
    CheckError(
@@ -1773,7 +1690,7 @@
  }
  
  inline void Surface::BlitUncheckedScaled(SurfaceRef src,
-@@ -4075,7 +4181,7 @@
+@@ -4045,7 +4178,7 @@
                                           const RectRaw& dstrect,
                                           ScaleMode scaleMode)
  {
@@ -1782,7 +1699,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -4114,7 +4220,7 @@
+@@ -4084,7 +4217,7 @@
                               OptionalRef<RectRaw> dstrect,
                               ScaleMode scaleMode)
  {
@@ -1791,7 +1708,7 @@
  }
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -4153,7 +4259,7 @@
+@@ -4123,7 +4256,7 @@
                                 OptionalRef<const RectRaw> srcrect,
                                 OptionalRef<const RectRaw> dstrect)
  {
@@ -1800,7 +1717,7 @@
  }
  
  /**
-@@ -4200,7 +4306,7 @@
+@@ -4170,7 +4303,7 @@
                                          OptionalRef<const RectRaw> dstrect)
  {
    SDL::BlitSurfaceTiledWithScale(
@@ -1809,7 +1726,7 @@
  }
  
  /**
-@@ -4221,12 +4327,12 @@
+@@ -4191,12 +4324,12 @@
   * @param top_height the height, in pixels, of the top corners in `srcrect`.
   * @param bottom_height the height, in pixels, of the bottom corners in
   *                      `srcrect`.
@@ -1825,7 +1742,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Only one thread should be using the `src` and `dst` surfaces at
-@@ -4253,10 +4359,10 @@
+@@ -4223,10 +4356,10 @@
                                    right_width,
                                    top_height,
                                    bottom_height,
@@ -1839,7 +1756,7 @@
  }
  
  inline void Surface::Blit9Grid(SurfaceRef src,
-@@ -4269,13 +4375,13 @@
+@@ -4239,13 +4372,13 @@
                                 float scale,
                                 ScaleMode scaleMode)
  {
@@ -1855,7 +1772,7 @@
                          dstrect,
                          scale,
                          scaleMode);
-@@ -4341,10 +4447,7 @@
+@@ -4311,10 +4444,7 @@
   * for an 8-bpp format).
   *
   * @param surface the surface to use for the pixel format and palette.
@@ -1867,7 +1784,7 @@
   * @returns a pixel value.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4356,7 +4459,7 @@
+@@ -4326,7 +4456,7 @@
   */
  inline Uint32 MapSurfaceRGBA(SurfaceConstRef surface, ColorRaw c)
  {
@@ -1876,7 +1793,7 @@
  }
  
  inline Uint32 Surface::MapRGBA(ColorRaw c) const
-@@ -4374,8 +4477,7 @@
+@@ -4344,8 +4474,7 @@
   * components from pixel formats with less than 8 bits per RGB component.
   *
   * @param surface the surface to read.
@@ -1886,7 +1803,7 @@
   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
   *          ignore this channel.
   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
-@@ -4398,7 +4500,7 @@
+@@ -4368,7 +4497,7 @@
                               Uint8* b,
                               Uint8* a)
  {
@@ -1895,7 +1812,7 @@
  }
  
  /**
-@@ -4411,16 +4513,8 @@
+@@ -4381,16 +4510,8 @@
   * components from pixel formats with less than 8 bits per RGB component.
   *
   * @param surface the surface to read.
@@ -1914,7 +1831,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4430,7 +4524,9 @@
+@@ -4400,7 +4521,9 @@
   */
  inline Color ReadSurfacePixel(SurfaceConstRef surface, const PointRaw& p)
  {
@@ -1925,7 +1842,7 @@
  }
  
  /**
-@@ -4442,9 +4538,8 @@
+@@ -4412,9 +4535,8 @@
   * Like GetRGBA, this uses the entire 0..255 range when converting color
   * components from pixel formats with less than 8 bits per RGB component.
   *
@@ -1937,7 +1854,7 @@
   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
   *          ignore this channel.
   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
-@@ -4479,17 +4574,9 @@
+@@ -4449,17 +4571,9 @@
   * Like GetRGBA, this uses the entire 0..255 range when converting color
   * components from pixel formats with less than 8 bits per RGB component.
   *
@@ -1958,7 +1875,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4523,8 +4610,7 @@
+@@ -4493,8 +4607,7 @@
   * tests, but is not intended for use in a game engine.
   *
   * @param surface the surface to read.
@@ -1968,7 +1885,7 @@
   * @param r a pointer filled in with the red channel, normally in the range 0-1,
   *          or nullptr to ignore this channel.
   * @param g a pointer filled in with the green channel, normally in the range
-@@ -4547,7 +4633,7 @@
+@@ -4517,7 +4630,7 @@
                                    float* b,
                                    float* a)
  {
@@ -1977,7 +1894,7 @@
  }
  
  /**
-@@ -4557,16 +4643,8 @@
+@@ -4527,16 +4640,8 @@
   * tests, but is not intended for use in a game engine.
   *
   * @param surface the surface to read.
@@ -1996,7 +1913,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4576,7 +4654,9 @@
+@@ -4546,7 +4651,9 @@
   */
  inline FColor ReadSurfacePixelFloat(SurfaceConstRef surface, const PointRaw& p)
  {
@@ -2007,7 +1924,7 @@
  }
  
  /**
-@@ -4585,9 +4665,8 @@
+@@ -4555,9 +4662,8 @@
   * This function prioritizes correctness over speed: it is suitable for unit
   * tests, but is not intended for use in a game engine.
   *
@@ -2019,7 +1936,7 @@
   * @param r a pointer filled in with the red channel, normally in the range 0-1,
   *          or nullptr to ignore this channel.
   * @param g a pointer filled in with the green channel, normally in the range
-@@ -4619,17 +4698,9 @@
+@@ -4589,17 +4695,9 @@
   * This function prioritizes correctness over speed: it is suitable for unit
   * tests, but is not intended for use in a game engine.
   *
@@ -2040,7 +1957,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4666,12 +4737,8 @@
+@@ -4636,12 +4734,8 @@
   * components from pixel formats with less than 8 bits per RGB component.
   *
   * @param surface the surface to write.
@@ -2055,7 +1972,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4681,7 +4748,7 @@
+@@ -4651,7 +4745,7 @@
   */
  inline void WriteSurfacePixel(SurfaceRef surface, const PointRaw& p, ColorRaw c)
  {
@@ -2064,7 +1981,7 @@
  }
  
  /**
-@@ -4693,13 +4760,9 @@
+@@ -4663,13 +4757,9 @@
   * Like MapColor, this uses the entire 0..255 range when converting color
   * components from pixel formats with less than 8 bits per RGB component.
   *
@@ -2081,7 +1998,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4724,12 +4787,8 @@
+@@ -4694,12 +4784,8 @@
   * tests, but is not intended for use in a game engine.
   *
   * @param surface the surface to write.
@@ -2096,7 +2013,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4741,7 +4800,7 @@
+@@ -4711,7 +4797,7 @@
                                     const PointRaw& p,
                                     const FColorRaw& c)
  {
@@ -2105,7 +2022,7 @@
  }
  
  /**
-@@ -4750,13 +4809,9 @@
+@@ -4720,13 +4806,9 @@
   * This function prioritizes correctness over speed: it is suitable for unit
   * tests, but is not intended for use in a game engine.
   *
@@ -2122,7 +2039,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4777,10 +4832,7 @@
+@@ -4747,10 +4829,7 @@
  }
  
  /// Get the width in pixels.
@@ -2134,7 +2051,7 @@
  
  /// Get the width in pixels.
  constexpr int GetSurfaceWidth(const SurfaceLock& lock)
-@@ -4791,10 +4843,7 @@
+@@ -4761,10 +4840,7 @@
  constexpr int Surface::GetWidth() const { return SDL::GetSurfaceWidth(get()); }
  
  /// Get the height in pixels.
@@ -2146,7 +2063,7 @@
  
  /// Get the height in pixels.
  constexpr int GetSurfaceHeight(const SurfaceLock& lock)
-@@ -4810,7 +4859,7 @@
+@@ -4780,7 +4856,7 @@
  /// Get the size in pixels.
  constexpr Point GetSurfaceSize(SurfaceConstRef surface)
  {
@@ -2155,7 +2072,7 @@
  }
  
  /// Get the size in pixels.
-@@ -4824,7 +4873,7 @@
+@@ -4794,7 +4870,7 @@
  /// Get pitch in bytes.
  constexpr int GetSurfacePitch(SurfaceConstRef surface)
  {
@@ -2164,7 +2081,7 @@
  }
  
  /// Get pitch in bytes.
-@@ -4838,7 +4887,7 @@
+@@ -4808,7 +4884,7 @@
  /// Get the pixel format.
  constexpr PixelFormat GetSurfaceFormat(SurfaceConstRef surface)
  {
@@ -2173,7 +2090,7 @@
  }
  
  /// Get the pixel format.
-@@ -4855,7 +4904,7 @@
+@@ -4825,7 +4901,7 @@
  /// Get the pixels.
  constexpr void* GetSurfacePixels(SurfaceConstRef surface)
  {

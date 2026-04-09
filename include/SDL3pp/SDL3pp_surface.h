@@ -183,7 +183,7 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
 
   /// Copy constructor
   constexpr Surface(const Surface& other)
-    : ResourceBase(other.get())
+    : Surface(other.get())
   {
     if (auto res = get()) ++res->refcount;
   }
@@ -359,15 +359,12 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
   /// Assignment operator.
   Surface& operator=(const Surface& other)
   {
-    if (auto r = other.get(); get() != r) {
+    if (get() != other.get()) {
       Surface tmp(other);
       swap(*this, tmp);
     }
     return *this;
   }
-
-  /// Comparison
-  constexpr auto operator<=>(const Surface& other) const noexcept = default;
 
   /**
    * Free this surface.
@@ -2219,7 +2216,7 @@ inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 }
 
 inline Surface::Surface(const PointRaw& size, PixelFormat format)
-  : ResourceBase(CheckError(SDL_CreateSurface(size.x, size.y, format)))
+  : Surface(CheckError(SDL_CreateSurface(size.x, size.y, format)))
 {
 }
 
@@ -2227,7 +2224,7 @@ inline Surface::Surface(const PointRaw& size,
                         PixelFormat format,
                         void* pixels,
                         int pitch)
-  : ResourceBase(
+  : Surface(
       CheckError(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
 {
 }

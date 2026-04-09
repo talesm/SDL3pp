@@ -31,7 +31,7 @@ Todo for next version
 - [ ] Resource improvements:
   - [x] Create template base class for non-owning (Like TrayEntry);
   - [ ] Create template base class for unique owning (Like Window);
-  - [ ] Create template base class for shared owning (Like Surface);
+  - [x] Create template base class for shared owning (Like Surface);
 
 Backlog
 -------

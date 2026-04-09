@@ -28343,16 +28343,9 @@ public:
  *
  * @cat resource
  */
-class Palette
+struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
 {
-  PaletteRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Palette(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Palette.
@@ -28362,15 +28355,15 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Palette(PaletteRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
   constexpr Palette(const Palette& other)
-    : m_resource(other.m_resource)
+    : Palette(other.get())
   {
-    if (m_resource) ++m_resource->refcount;
+    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor
@@ -28414,51 +28407,28 @@ public:
     return {};
   }
 
-  /// member access to underlying PaletteRaw.
-  constexpr PaletteRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying PaletteRaw.
-  constexpr PaletteRaw operator->() noexcept { return m_resource; }
-
   /// Converts to PaletteConstRef
   constexpr operator PaletteConstRef() const noexcept { return get(); }
 
   /// Destructor
-  ~Palette() { SDL_DestroyPalette(m_resource); }
+  ~Palette() { SDL_DestroyPalette(get()); }
 
   /// Assignment operator.
   constexpr Palette& operator=(Palette&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Palette& operator=(const Palette& other)
   {
-    if (m_resource != other.m_resource) {
+    if (get() != other.get()) {
       Palette tmp(other);
-      std::swap(m_resource, tmp.m_resource);
+      swap(*this, tmp);
     }
     return *this;
   }
-
-  /// Retrieves underlying PaletteRaw.
-  constexpr PaletteRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying PaletteRaw and clear this.
-  constexpr PaletteRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Palette& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Free a palette created with CreatePalette().
@@ -28473,21 +28443,21 @@ public:
   void Destroy();
 
   /// Access specific pallete colors
-  constexpr const ColorRaw* data() const { return m_resource->colors; }
+  constexpr const ColorRaw* data() const { return get()->colors; }
 
   /// Returns number of colors in the palette.
-  constexpr int size() const { return m_resource->ncolors; }
+  constexpr int size() const { return get()->ncolors; }
 
   /// Access specific pallete index
   constexpr ColorRaw operator[](int index) const
   {
-    return m_resource->colors[index];
+    return get()->colors[index];
   }
 
   /// Change specific pallete index
   constexpr PaletteIndex operator[](int index)
   {
-    return PaletteIndex{m_resource, index};
+    return PaletteIndex{get(), index};
   }
 
   /**
@@ -28724,7 +28694,7 @@ inline PixelFormat::operator const PixelFormatDetails&() const
 inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
 
 inline Palette::Palette(int ncolors)
-  : m_resource(CheckError(SDL_CreatePalette(ncolors)))
+  : Palette(CheckError(SDL_CreatePalette(ncolors)))
 {
 }
 
@@ -43152,7 +43122,7 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
 
   /// Copy constructor
   constexpr Surface(const Surface& other)
-    : ResourceBase(other.get())
+    : Surface(other.get())
   {
     if (auto res = get()) ++res->refcount;
   }
@@ -43328,15 +43298,12 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
   /// Assignment operator.
   Surface& operator=(const Surface& other)
   {
-    if (auto r = other.get(); get() != r) {
+    if (get() != other.get()) {
       Surface tmp(other);
       swap(*this, tmp);
     }
     return *this;
   }
-
-  /// Comparison
-  constexpr auto operator<=>(const Surface& other) const noexcept = default;
 
   /**
    * Free this surface.
@@ -45188,7 +45155,7 @@ inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 }
 
 inline Surface::Surface(const PointRaw& size, PixelFormat format)
-  : ResourceBase(CheckError(SDL_CreateSurface(size.x, size.y, format)))
+  : Surface(CheckError(SDL_CreateSurface(size.x, size.y, format)))
 {
 }
 
@@ -45196,7 +45163,7 @@ inline Surface::Surface(const PointRaw& size,
                         PixelFormat format,
                         void* pixels,
                         int pitch)
-  : ResourceBase(
+  : Surface(
       CheckError(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
 {
 }
@@ -53198,7 +53165,7 @@ inline TrayEntry::TrayEntry(TrayMenu menu,
                             int pos,
                             StringParam label,
                             TrayEntryFlags flags)
-  : ResourceBase(SDL_InsertTrayEntryAt(menu, pos, label, flags))
+  : TrayEntry(SDL_InsertTrayEntryAt(menu, pos, label, flags))
 {
 }
 
@@ -60911,7 +60878,7 @@ inline GLContext GL_CreateContext(WindowRef window)
 inline GLContext Window::CreateGLContext() { return GLContext(get()); }
 
 inline GLContext::GLContext(WindowRef window)
-  : ResourceBase(SDL_GL_CreateContext(window))
+  : GLContext(SDL_GL_CreateContext(window))
 {
 }
 
@@ -85123,16 +85090,9 @@ struct RendererRef : Renderer
  *
  * @cat resource
  */
-class Texture
+struct Texture : ResourceBase<TextureRaw, TextureRawConst>
 {
-  TextureRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Texture(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Texture.
@@ -85142,15 +85102,15 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Texture(TextureRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
   constexpr Texture(const Texture& other)
-    : m_resource(other.m_resource)
+    : Texture(other.get())
   {
-    if (m_resource) ++m_resource->refcount;
+    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor
@@ -85424,51 +85384,28 @@ public:
     return {};
   }
 
-  /// member access to underlying TextureRaw.
-  constexpr TextureRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying TextureRaw.
-  constexpr TextureRaw operator->() noexcept { return m_resource; }
-
   /// Converts to TextureConstRef
   constexpr operator TextureConstRef() const noexcept { return get(); }
 
   /// Destructor
-  ~Texture() { SDL_DestroyTexture(m_resource); }
+  ~Texture() { SDL_DestroyTexture(get()); }
 
   /// Assignment operator.
   constexpr Texture& operator=(Texture&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Texture& operator=(const Texture& other)
   {
-    if (m_resource != other.m_resource) {
+    if (get() != other.get()) {
       Texture tmp(other);
-      std::swap(m_resource, tmp.m_resource);
+      swap(*this, tmp);
     }
     return *this;
   }
-
-  /// Retrieves underlying TextureRaw.
-  constexpr TextureRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TextureRaw and clear this.
-  constexpr TextureRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Texture& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy the specified texture.
@@ -87342,17 +87279,17 @@ inline Texture::Texture(RendererRef renderer,
                         PixelFormat format,
                         TextureAccess access,
                         const PointRaw& size)
-  : m_resource(SDL_CreateTexture(renderer, format, access, size.x, size.y))
+  : Texture(SDL_CreateTexture(renderer, format, access, size.x, size.y))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, SurfaceRef surface)
-  : m_resource(SDL_CreateTextureFromSurface(renderer, surface))
+  : Texture(SDL_CreateTextureFromSurface(renderer, surface))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, PropertiesRef props)
-  : m_resource(SDL_CreateTextureWithProperties(renderer, props))
+  : Texture(SDL_CreateTextureWithProperties(renderer, props))
 {
 }
 
@@ -100951,12 +100888,12 @@ inline int Version() { return IMG_Version(); }
 inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 
 inline Surface::Surface(StringParam file)
-  : ResourceBase(IMG_Load(file))
+  : Surface(IMG_Load(file))
 {
 }
 
 inline Surface::Surface(IOStreamRef src, bool closeio)
-  : ResourceBase(IMG_Load_IO(src, closeio))
+  : Surface(IMG_Load_IO(src, closeio))
 {
 }
 
@@ -101104,12 +101041,12 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
 }
 
 inline Texture::Texture(RendererRef renderer, StringParam file)
-  : m_resource(IMG_LoadTexture(renderer, file))
+  : Texture(IMG_LoadTexture(renderer, file))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
-  : m_resource(IMG_LoadTexture_IO(renderer, src, closeio))
+  : Texture(IMG_LoadTexture_IO(renderer, src, closeio))
 {
 }
 
@@ -103565,12 +103502,6 @@ public:
    * @sa Animation.Free
    */
   Animation(IOStreamRef src, bool closeio = false);
-
-  /// member access to underlying AnimationRaw.
-  constexpr AnimationRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying AnimationRaw.
-  constexpr AnimationRaw operator->() noexcept { return m_resource; }
 
   /// Converts to AnimationConstRef
   constexpr operator AnimationConstRef() const noexcept { return get(); }
@@ -110027,12 +109958,6 @@ public:
    * @sa Text.Destroy
    */
   Text(TextEngineRef engine, FontRef font, std::string_view text);
-
-  /// member access to underlying TextRaw.
-  constexpr TextRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying TextRaw.
-  constexpr TextRaw operator->() noexcept { return m_resource; }
 
   /// Converts to TextConstRef
   constexpr operator TextConstRef() const noexcept { return get(); }

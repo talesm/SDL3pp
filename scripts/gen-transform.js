@@ -3907,7 +3907,7 @@ const transform = {
                   name: "index"
                 }
               ],
-              hints: { body: "return PaletteIndex{m_resource, index};" },
+              hints: { body: "return PaletteIndex{get(), index};" },
             },
           }
         },

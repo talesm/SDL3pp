@@ -2373,16 +2373,9 @@ struct RendererRef : Renderer
  *
  * @cat resource
  */
-class Texture
+struct Texture : ResourceBase<TextureRaw, TextureRawConst>
 {
-  TextureRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Texture(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Texture.
@@ -2392,15 +2385,15 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Texture(TextureRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
   constexpr Texture(const Texture& other)
-    : m_resource(other.m_resource)
+    : Texture(other.get())
   {
-    if (m_resource) ++m_resource->refcount;
+    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor
@@ -2674,51 +2667,28 @@ public:
     return {};
   }
 
-  /// member access to underlying TextureRaw.
-  constexpr TextureRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying TextureRaw.
-  constexpr TextureRaw operator->() noexcept { return m_resource; }
-
   /// Converts to TextureConstRef
   constexpr operator TextureConstRef() const noexcept { return get(); }
 
   /// Destructor
-  ~Texture() { SDL_DestroyTexture(m_resource); }
+  ~Texture() { SDL_DestroyTexture(get()); }
 
   /// Assignment operator.
   constexpr Texture& operator=(Texture&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Texture& operator=(const Texture& other)
   {
-    if (m_resource != other.m_resource) {
+    if (get() != other.get()) {
       Texture tmp(other);
-      std::swap(m_resource, tmp.m_resource);
+      swap(*this, tmp);
     }
     return *this;
   }
-
-  /// Retrieves underlying TextureRaw.
-  constexpr TextureRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TextureRaw and clear this.
-  constexpr TextureRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Texture& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy the specified texture.
@@ -4592,17 +4562,17 @@ inline Texture::Texture(RendererRef renderer,
                         PixelFormat format,
                         TextureAccess access,
                         const PointRaw& size)
-  : m_resource(SDL_CreateTexture(renderer, format, access, size.x, size.y))
+  : Texture(SDL_CreateTexture(renderer, format, access, size.x, size.y))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, SurfaceRef surface)
-  : m_resource(SDL_CreateTextureFromSurface(renderer, surface))
+  : Texture(SDL_CreateTextureFromSurface(renderer, surface))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, PropertiesRef props)
-  : m_resource(SDL_CreateTextureWithProperties(renderer, props))
+  : Texture(SDL_CreateTextureWithProperties(renderer, props))
 {
 }
 

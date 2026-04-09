@@ -4301,12 +4301,6 @@ public:
    */
   Text(TextEngineRef engine, FontRef font, std::string_view text);
 
-  /// member access to underlying TextRaw.
-  constexpr TextRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying TextRaw.
-  constexpr TextRaw operator->() noexcept { return m_resource; }
-
   /// Converts to TextConstRef
   constexpr operator TextConstRef() const noexcept { return get(); }
 
