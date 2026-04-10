@@ -243,7 +243,7 @@ function createParam(
     name: paramType,
     kind: "alias",
     doc: [`Safely wrap ${targetName} for non owning parameters`],
-    type: `ResourceRef<${rawName}>`,
+    type: `ResourceLegacyRef<${rawName}>`,
   };
 }
 

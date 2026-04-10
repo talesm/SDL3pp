@@ -1364,20 +1364,20 @@ private:
 
 /// Reference wrapper for a given resource,
 template<typename RAW_POINTER>
-class ResourceRef
+class ResourceLegacyRef
 {
 public:
   /// The underlying raw pointer type.
   using RawPointer = RAW_POINTER;
 
   /// Constructs from RawPointer
-  constexpr ResourceRef(RawPointer resource)
+  constexpr ResourceLegacyRef(RawPointer resource)
     : m_resource(resource)
   {
   }
 
   /// Constructs null/invalid
-  constexpr ResourceRef(std::nullptr_t = nullptr)
+  constexpr ResourceLegacyRef(std::nullptr_t = nullptr)
     : m_resource(nullptr)
   {
   }
@@ -1386,7 +1386,7 @@ public:
   constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Comparison
-  constexpr auto operator<=>(const ResourceRef& other) const = default;
+  constexpr auto operator<=>(const ResourceLegacyRef& other) const = default;
 
   /// Converts to underlying RawPointer
   constexpr operator RawPointer() const { return m_resource; }
@@ -104791,7 +104791,7 @@ struct TextEngine;
 using TextEngineRaw = TTF_TextEngine*;
 
 /// Safely wrap TextEngine for non owning parameters
-using TextEngineRef = ResourceRef<TextEngineRaw>;
+using TextEngineRef = ResourceLegacyRef<TextEngineRaw>;
 
 // Forward decl
 struct Text;

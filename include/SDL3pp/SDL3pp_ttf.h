@@ -40,7 +40,7 @@ struct TextEngine;
 using TextEngineRaw = TTF_TextEngine*;
 
 /// Safely wrap TextEngine for non owning parameters
-using TextEngineRef = ResourceRef<TextEngineRaw>;
+using TextEngineRef = ResourceLegacyRef<TextEngineRaw>;
 
 // Forward decl
 struct Text;
