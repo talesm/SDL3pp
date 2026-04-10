@@ -1443,6 +1443,81 @@ private:
   RawConstPointer m_resource; ///< parameter's Surface
 };
 
+/// A non-owning reference wrapper for a given resource
+template<typename RESOURCE>
+struct ResourceRef : RESOURCE
+{
+  using RESOURCE::RESOURCE;
+
+  /// The underlying raw pointer type.
+  using RawPointer = RESOURCE::RawPointer;
+
+  /// The underlying const raw pointer type.
+  using RawConstPointer = RESOURCE::RawConstPointer;
+
+  /**
+   * Constructs from raw resource.
+   *
+   * @param resource a raw pointer.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ResourceRef(RawPointer resource) noexcept
+    : RESOURCE(resource)
+  {
+  }
+
+  /**
+   * Constructs from resource.
+   *
+   * @param resource a RESOURCE.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ResourceRef(const RESOURCE& resource) noexcept
+    : RESOURCE(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from RESOURCE.
+   *
+   * @param resource a RESOURCE.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr ResourceRef(RESOURCE&& resource) noexcept
+    : RESOURCE(std::move(resource).release())
+  {
+  }
+
+  /// Copy constructor.
+  constexpr ResourceRef(const ResourceRef& other) noexcept
+    : RESOURCE(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ResourceRef(ResourceRef&& other) noexcept
+    : RESOURCE(other.get())
+  {
+  }
+
+  /// Destructor
+  ~ResourceRef() { this->release(); }
+
+  /// Assignment operator.
+  ResourceRef& operator=(const ResourceRef& other) noexcept
+  {
+    this->release();
+    RESOURCE::operator=(RESOURCE(other.get()));
+    return *this;
+  }
+
+  /// Converts to raw pointer.
+  constexpr operator RawPointer() const noexcept { return this->get(); }
+};
+
 /// @}
 
 template<class T, class BASE>
@@ -9185,8 +9260,12 @@ struct Properties;
 /// Alias to raw representation for Properties.
 using PropertiesID = SDL_PropertiesID;
 
-// Forward decl
-struct PropertiesRef;
+/**
+ * Reference for Properties.
+ *
+ * This does not take ownership!
+ */
+using PropertiesRef = ResourceRef<Properties>;
 
 // Forward decl
 struct PropertiesLock;
@@ -9793,78 +9872,6 @@ struct Properties : ResourceBase<PropertiesID>
    * @return Uint64
    */
   Uint64 GetCount();
-};
-
-/**
- * Reference for Properties.
- *
- * This does not take ownership!
- */
-struct PropertiesRef : Properties
-{
-  using Properties::Properties;
-
-  /**
-   * Constructs from raw Properties.
-   *
-   * @param resource a PropertiesID.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PropertiesRef(PropertiesID resource) noexcept
-    : Properties(resource)
-  {
-  }
-
-  /**
-   * Constructs from Properties.
-   *
-   * @param resource a Properties.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PropertiesRef(const Properties& resource) noexcept
-    : Properties(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Properties.
-   *
-   * @param resource a Properties.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr PropertiesRef(Properties&& resource) noexcept
-    : Properties(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr PropertiesRef(const PropertiesRef& other) noexcept
-    : Properties(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr PropertiesRef(PropertiesRef&& other) noexcept
-    : Properties(other.get())
-  {
-  }
-
-  /// Destructor
-  ~PropertiesRef() { release(); }
-
-  /// Assignment operator.
-  PropertiesRef& operator=(const PropertiesRef& other) noexcept
-  {
-    release();
-    Properties::operator=(Properties(other.get()));
-    return *this;
-  }
-
-  /// Converts to PropertiesID
-  constexpr operator PropertiesID() const noexcept { return get(); }
 };
 
 /**
@@ -10755,8 +10762,12 @@ struct Environment;
 /// Alias to raw representation for Environment.
 using EnvironmentRaw = SDL_Environment*;
 
-// Forward decl
-struct EnvironmentRef;
+/**
+ * Reference for Environment.
+ *
+ * This does not take ownership!
+ */
+using EnvironmentRef = ResourceRef<Environment>;
 
 // Forward decl
 struct IConv;
@@ -10764,8 +10775,12 @@ struct IConv;
 /// Alias to raw representation for IConv.
 using IConvRaw = SDL_iconv_t;
 
-// Forward decl
-struct IConvRef;
+/**
+ * Reference for IConv.
+ *
+ * This does not take ownership!
+ */
+using IConvRef = ResourceRef<IConv>;
 
 #ifdef SDL3PP_DOC
 
@@ -11783,78 +11798,6 @@ struct Environment : ResourceBase<EnvironmentRaw>
    * @sa Environment.UnsetVariable
    */
   void UnsetVariable(StringParam name);
-};
-
-/**
- * Reference for Environment.
- *
- * This does not take ownership!
- */
-struct EnvironmentRef : Environment
-{
-  using Environment::Environment;
-
-  /**
-   * Constructs from raw Environment.
-   *
-   * @param resource a EnvironmentRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr EnvironmentRef(EnvironmentRaw resource) noexcept
-    : Environment(resource)
-  {
-  }
-
-  /**
-   * Constructs from Environment.
-   *
-   * @param resource a Environment.
-   *
-   * This does not takes ownership!
-   */
-  constexpr EnvironmentRef(const Environment& resource) noexcept
-    : Environment(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Environment.
-   *
-   * @param resource a Environment.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr EnvironmentRef(Environment&& resource) noexcept
-    : Environment(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept
-    : Environment(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr EnvironmentRef(EnvironmentRef&& other) noexcept
-    : Environment(other.get())
-  {
-  }
-
-  /// Destructor
-  ~EnvironmentRef() { release(); }
-
-  /// Assignment operator.
-  EnvironmentRef& operator=(const EnvironmentRef& other) noexcept
-  {
-    release();
-    Environment::operator=(Environment(other.get()));
-    return *this;
-  }
-
-  /// Converts to EnvironmentRaw
-  constexpr operator EnvironmentRaw() const noexcept { return get(); }
 };
 
 /**
@@ -16737,78 +16680,6 @@ struct IConv : ResourceBase<IConvRaw>
 };
 
 /**
- * Reference for IConv.
- *
- * This does not take ownership!
- */
-struct IConvRef : IConv
-{
-  using IConv::IConv;
-
-  /**
-   * Constructs from raw IConv.
-   *
-   * @param resource a IConvRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr IConvRef(IConvRaw resource) noexcept
-    : IConv(resource)
-  {
-  }
-
-  /**
-   * Constructs from IConv.
-   *
-   * @param resource a IConv.
-   *
-   * This does not takes ownership!
-   */
-  constexpr IConvRef(const IConv& resource) noexcept
-    : IConv(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from IConv.
-   *
-   * @param resource a IConv.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr IConvRef(IConv&& resource) noexcept
-    : IConv(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr IConvRef(const IConvRef& other) noexcept
-    : IConv(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr IConvRef(IConvRef&& other) noexcept
-    : IConv(other.get())
-  {
-  }
-
-  /// Destructor
-  ~IConvRef() { release(); }
-
-  /// Assignment operator.
-  IConvRef& operator=(const IConvRef& other) noexcept
-  {
-    release();
-    IConv::operator=(IConv(other.get()));
-    return *this;
-  }
-
-  /// Converts to IConvRaw
-  constexpr operator IConvRaw() const noexcept { return get(); }
-};
-
-/**
  * This function allocates a context for the specified character set conversion.
  *
  * @param tocode The target character encoding, must not be nullptr.
@@ -17198,8 +17069,12 @@ struct AsyncIO;
 /// Alias to raw representation for AsyncIO.
 using AsyncIORaw = SDL_AsyncIO*;
 
-// Forward decl
-struct AsyncIORef;
+/**
+ * Reference for AsyncIO.
+ *
+ * This does not take ownership!
+ */
+using AsyncIORef = ResourceRef<AsyncIO>;
 
 // Forward decl
 struct AsyncIOQueue;
@@ -17207,8 +17082,12 @@ struct AsyncIOQueue;
 /// Alias to raw representation for AsyncIOQueue.
 using AsyncIOQueueRaw = SDL_AsyncIOQueue*;
 
-// Forward decl
-struct AsyncIOQueueRef;
+/**
+ * Reference for AsyncIOQueue.
+ *
+ * This does not take ownership!
+ */
+using AsyncIOQueueRef = ResourceRef<AsyncIOQueue>;
 
 /**
  * The asynchronous I/O operation structure.
@@ -17452,78 +17331,6 @@ struct AsyncIO : ResourceBase<AsyncIORaw>
              Uint64 size,
              AsyncIOQueueRef queue,
              void* userdata);
-};
-
-/**
- * Reference for AsyncIO.
- *
- * This does not take ownership!
- */
-struct AsyncIORef : AsyncIO
-{
-  using AsyncIO::AsyncIO;
-
-  /**
-   * Constructs from raw AsyncIO.
-   *
-   * @param resource a AsyncIORaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIORef(AsyncIORaw resource) noexcept
-    : AsyncIO(resource)
-  {
-  }
-
-  /**
-   * Constructs from AsyncIO.
-   *
-   * @param resource a AsyncIO.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIORef(const AsyncIO& resource) noexcept
-    : AsyncIO(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AsyncIO.
-   *
-   * @param resource a AsyncIO.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AsyncIORef(AsyncIO&& resource) noexcept
-    : AsyncIO(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AsyncIORef(const AsyncIORef& other) noexcept
-    : AsyncIO(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AsyncIORef(AsyncIORef&& other) noexcept
-    : AsyncIO(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AsyncIORef() { release(); }
-
-  /// Assignment operator.
-  AsyncIORef& operator=(const AsyncIORef& other) noexcept
-  {
-    release();
-    AsyncIO::operator=(AsyncIO(other.get()));
-    return *this;
-  }
-
-  /// Converts to AsyncIORaw
-  constexpr operator AsyncIORaw() const noexcept { return get(); }
 };
 
 /**
@@ -17797,78 +17604,6 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
    * @sa AsyncIOQueue.WaitResult
    */
   void Signal();
-};
-
-/**
- * Reference for AsyncIOQueue.
- *
- * This does not take ownership!
- */
-struct AsyncIOQueueRef : AsyncIOQueue
-{
-  using AsyncIOQueue::AsyncIOQueue;
-
-  /**
-   * Constructs from raw AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueueRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
-    : AsyncIOQueue(resource)
-  {
-  }
-
-  /**
-   * Constructs from AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueue.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIOQueueRef(const AsyncIOQueue& resource) noexcept
-    : AsyncIOQueue(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueue.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AsyncIOQueueRef(AsyncIOQueue&& resource) noexcept
-    : AsyncIOQueue(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
-    : AsyncIOQueue(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AsyncIOQueueRef(AsyncIOQueueRef&& other) noexcept
-    : AsyncIOQueue(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AsyncIOQueueRef() { release(); }
-
-  /// Assignment operator.
-  AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
-  {
-    release();
-    AsyncIOQueue::operator=(AsyncIOQueue(other.get()));
-    return *this;
-  }
-
-  /// Converts to AsyncIOQueueRaw
-  constexpr operator AsyncIOQueueRaw() const noexcept { return get(); }
 };
 
 /**
@@ -21126,8 +20861,12 @@ struct HidDevice;
 /// Alias to raw representation for HidDevice.
 using HidDeviceRaw = SDL_hid_device*;
 
-// Forward decl
-struct HidDeviceRef;
+/**
+ * Reference for HidDevice.
+ *
+ * This does not take ownership!
+ */
+using HidDeviceRef = ResourceRef<HidDevice>;
 
 /**
  * HID underlying bus types.
@@ -21493,78 +21232,6 @@ struct HidDevice : ResourceBase<HidDeviceRaw>
    * @since This function is available since SDL 3.2.0.
    */
   int get_report_descriptor(TargetBytes buf);
-};
-
-/**
- * Reference for HidDevice.
- *
- * This does not take ownership!
- */
-struct HidDeviceRef : HidDevice
-{
-  using HidDevice::HidDevice;
-
-  /**
-   * Constructs from raw HidDevice.
-   *
-   * @param resource a HidDeviceRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HidDeviceRef(HidDeviceRaw resource) noexcept
-    : HidDevice(resource)
-  {
-  }
-
-  /**
-   * Constructs from HidDevice.
-   *
-   * @param resource a HidDevice.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HidDeviceRef(const HidDevice& resource) noexcept
-    : HidDevice(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from HidDevice.
-   *
-   * @param resource a HidDevice.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr HidDeviceRef(HidDevice&& resource) noexcept
-    : HidDevice(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr HidDeviceRef(const HidDeviceRef& other) noexcept
-    : HidDevice(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr HidDeviceRef(HidDeviceRef&& other) noexcept
-    : HidDevice(other.get())
-  {
-  }
-
-  /// Destructor
-  ~HidDeviceRef() { release(); }
-
-  /// Assignment operator.
-  HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
-  {
-    release();
-    HidDevice::operator=(HidDevice(other.get()));
-    return *this;
-  }
-
-  /// Converts to HidDeviceRaw
-  constexpr operator HidDeviceRaw() const noexcept { return get(); }
 };
 
 /**
@@ -22150,8 +21817,12 @@ struct IOStream;
 /// Alias to raw representation for IOStream.
 using IOStreamRaw = SDL_IOStream*;
 
-// Forward decl
-struct IOStreamRef;
+/**
+ * Reference for IOStream.
+ *
+ * This does not take ownership!
+ */
+using IOStreamRef = ResourceRef<IOStream>;
 
 /**
  * IOStream status, set by a read or write operation.
@@ -23719,78 +23390,6 @@ struct IOStream : ResourceBase<IOStreamRaw>
 };
 
 /**
- * Reference for IOStream.
- *
- * This does not take ownership!
- */
-struct IOStreamRef : IOStream
-{
-  using IOStream::IOStream;
-
-  /**
-   * Constructs from raw IOStream.
-   *
-   * @param resource a IOStreamRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr IOStreamRef(IOStreamRaw resource) noexcept
-    : IOStream(resource)
-  {
-  }
-
-  /**
-   * Constructs from IOStream.
-   *
-   * @param resource a IOStream.
-   *
-   * This does not takes ownership!
-   */
-  constexpr IOStreamRef(const IOStream& resource) noexcept
-    : IOStream(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from IOStream.
-   *
-   * @param resource a IOStream.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr IOStreamRef(IOStream&& resource) noexcept
-    : IOStream(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr IOStreamRef(const IOStreamRef& other) noexcept
-    : IOStream(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr IOStreamRef(IOStreamRef&& other) noexcept
-    : IOStream(other.get())
-  {
-  }
-
-  /// Destructor
-  ~IOStreamRef() { release(); }
-
-  /// Assignment operator.
-  IOStreamRef& operator=(const IOStreamRef& other) noexcept
-  {
-    release();
-    IOStream::operator=(IOStream(other.get()));
-    return *this;
-  }
-
-  /// Converts to IOStreamRaw
-  constexpr operator IOStreamRaw() const noexcept { return get(); }
-};
-
-/**
  * Use this function to create a new IOStream structure for reading from and/or
  * writing to a named file.
  *
@@ -25327,8 +24926,12 @@ struct SharedObject;
 /// Alias to raw representation for SharedObject.
 using SharedObjectRaw = SDL_SharedObject*;
 
-// Forward decl
-struct SharedObjectRef;
+/**
+ * Reference for SharedObject.
+ *
+ * This does not take ownership!
+ */
+using SharedObjectRef = ResourceRef<SharedObject>;
 
 /**
  * An opaque datatype that represents a loaded shared object.
@@ -25440,78 +25043,6 @@ struct SharedObject : ResourceBase<SharedObjectRaw>
    * @sa LoadObject
    */
   FunctionPointer LoadFunction(StringParam name);
-};
-
-/**
- * Reference for SharedObject.
- *
- * This does not take ownership!
- */
-struct SharedObjectRef : SharedObject
-{
-  using SharedObject::SharedObject;
-
-  /**
-   * Constructs from raw SharedObject.
-   *
-   * @param resource a SharedObjectRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SharedObjectRef(SharedObjectRaw resource) noexcept
-    : SharedObject(resource)
-  {
-  }
-
-  /**
-   * Constructs from SharedObject.
-   *
-   * @param resource a SharedObject.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SharedObjectRef(const SharedObject& resource) noexcept
-    : SharedObject(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from SharedObject.
-   *
-   * @param resource a SharedObject.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr SharedObjectRef(SharedObject&& resource) noexcept
-    : SharedObject(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr SharedObjectRef(const SharedObjectRef& other) noexcept
-    : SharedObject(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr SharedObjectRef(SharedObjectRef&& other) noexcept
-    : SharedObject(other.get())
-  {
-  }
-
-  /// Destructor
-  ~SharedObjectRef() { release(); }
-
-  /// Assignment operator.
-  SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
-  {
-    release();
-    SharedObject::operator=(SharedObject(other.get()));
-    return *this;
-  }
-
-  /// Converts to SharedObjectRaw
-  constexpr operator SharedObjectRaw() const noexcept { return get(); }
 };
 
 /**
@@ -25803,8 +25334,12 @@ using PaletteRaw = SDL_Palette*;
 /// Alias to const raw representation for Palette.
 using PaletteRawConst = const SDL_Palette*;
 
-// Forward decl
-struct PaletteRef;
+/**
+ * Reference for Palette.
+ *
+ * This does not take ownership!
+ */
+using PaletteRef = ResourceRef<Palette>;
 
 /// Safely wrap Palette for non owning const parameters
 using PaletteConstRef = ResourceConstRef<PaletteRaw, PaletteRawConst>;
@@ -28290,78 +27825,6 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
    * @sa Palette.Palette
    */
   void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
-};
-
-/**
- * Reference for Palette.
- *
- * This does not take ownership!
- */
-struct PaletteRef : Palette
-{
-  using Palette::Palette;
-
-  /**
-   * Constructs from raw Palette.
-   *
-   * @param resource a PaletteRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PaletteRef(PaletteRaw resource) noexcept
-    : Palette(resource)
-  {
-  }
-
-  /**
-   * Constructs from Palette.
-   *
-   * @param resource a Palette.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PaletteRef(const Palette& resource) noexcept
-    : Palette(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Palette.
-   *
-   * @param resource a Palette.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr PaletteRef(Palette&& resource) noexcept
-    : Palette(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr PaletteRef(const PaletteRef& other) noexcept
-    : Palette(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr PaletteRef(PaletteRef&& other) noexcept
-    : Palette(other.get())
-  {
-  }
-
-  /// Destructor
-  ~PaletteRef() { release(); }
-
-  /// Assignment operator.
-  PaletteRef& operator=(const PaletteRef& other) noexcept
-  {
-    release();
-    Palette::operator=(Palette(other.get()));
-    return *this;
-  }
-
-  /// Converts to PaletteRaw
-  constexpr operator PaletteRaw() const noexcept { return get(); }
 };
 
 /**
@@ -32324,8 +31787,12 @@ struct Sensor;
 /// Alias to raw representation for Sensor.
 using SensorRaw = SDL_Sensor*;
 
-// Forward decl
-struct SensorRef;
+/**
+ * Reference for Sensor.
+ *
+ * This does not take ownership!
+ */
+using SensorRef = ResourceRef<Sensor>;
 
 /**
  * This is a unique ID for a sensor for the time it is connected to the system,
@@ -32547,78 +32014,6 @@ struct Sensor : ResourceBase<SensorRaw>
    * @since This function is available since SDL 3.2.0.
    */
   void GetData(float* data, int num_values);
-};
-
-/**
- * Reference for Sensor.
- *
- * This does not take ownership!
- */
-struct SensorRef : Sensor
-{
-  using Sensor::Sensor;
-
-  /**
-   * Constructs from raw Sensor.
-   *
-   * @param resource a SensorRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SensorRef(SensorRaw resource) noexcept
-    : Sensor(resource)
-  {
-  }
-
-  /**
-   * Constructs from Sensor.
-   *
-   * @param resource a Sensor.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SensorRef(const Sensor& resource) noexcept
-    : Sensor(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Sensor.
-   *
-   * @param resource a Sensor.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr SensorRef(Sensor&& resource) noexcept
-    : Sensor(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr SensorRef(const SensorRef& other) noexcept
-    : Sensor(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr SensorRef(SensorRef&& other) noexcept
-    : Sensor(other.get())
-  {
-  }
-
-  /// Destructor
-  ~SensorRef() { release(); }
-
-  /// Assignment operator.
-  SensorRef& operator=(const SensorRef& other) noexcept
-  {
-    release();
-    Sensor::operator=(Sensor(other.get()));
-    return *this;
-  }
-
-  /// Converts to SensorRaw
-  constexpr operator SensorRaw() const noexcept { return get(); }
 };
 
 /**
@@ -33885,8 +33280,12 @@ struct AudioDevice;
 /// Alias to raw representation for AudioDevice.
 using AudioDeviceID = SDL_AudioDeviceID;
 
-// Forward decl
-struct AudioDeviceRef;
+/**
+ * Reference for AudioDevice.
+ *
+ * This does not take ownership!
+ */
+using AudioDeviceRef = ResourceRef<AudioDevice>;
 
 // Forward decl
 struct AudioStream;
@@ -33894,8 +33293,12 @@ struct AudioStream;
 /// Alias to raw representation for AudioStream.
 using AudioStreamRaw = SDL_AudioStream*;
 
-// Forward decl
-struct AudioStreamRef;
+/**
+ * Reference for AudioStream.
+ *
+ * This does not take ownership!
+ */
+using AudioStreamRef = ResourceRef<AudioStream>;
 
 // Forward decl
 struct AudioStreamLock;
@@ -35201,78 +34604,6 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    */
   AudioStream OpenStream(OptionalRef<const AudioSpec> spec,
                          AudioStreamCB callback);
-};
-
-/**
- * Reference for AudioDevice.
- *
- * This does not take ownership!
- */
-struct AudioDeviceRef : AudioDevice
-{
-  using AudioDevice::AudioDevice;
-
-  /**
-   * Constructs from raw AudioDevice.
-   *
-   * @param resource a AudioDeviceID.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioDeviceRef(AudioDeviceID resource) noexcept
-    : AudioDevice(resource)
-  {
-  }
-
-  /**
-   * Constructs from AudioDevice.
-   *
-   * @param resource a AudioDevice.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioDeviceRef(const AudioDevice& resource) noexcept
-    : AudioDevice(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AudioDevice.
-   *
-   * @param resource a AudioDevice.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AudioDeviceRef(AudioDevice&& resource) noexcept
-    : AudioDevice(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept
-    : AudioDevice(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AudioDeviceRef(AudioDeviceRef&& other) noexcept
-    : AudioDevice(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AudioDeviceRef() { release(); }
-
-  /// Assignment operator.
-  AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept
-  {
-    release();
-    AudioDevice::operator=(AudioDevice(other.get()));
-    return *this;
-  }
-
-  /// Converts to AudioDeviceID
-  constexpr operator AudioDeviceID() const noexcept { return get(); }
 };
 
 /**
@@ -36642,78 +35973,6 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
                      int num_samples);
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-};
-
-/**
- * Reference for AudioStream.
- *
- * This does not take ownership!
- */
-struct AudioStreamRef : AudioStream
-{
-  using AudioStream::AudioStream;
-
-  /**
-   * Constructs from raw AudioStream.
-   *
-   * @param resource a AudioStreamRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioStreamRef(AudioStreamRaw resource) noexcept
-    : AudioStream(resource)
-  {
-  }
-
-  /**
-   * Constructs from AudioStream.
-   *
-   * @param resource a AudioStream.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioStreamRef(const AudioStream& resource) noexcept
-    : AudioStream(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AudioStream.
-   *
-   * @param resource a AudioStream.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AudioStreamRef(AudioStream&& resource) noexcept
-    : AudioStream(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AudioStreamRef(const AudioStreamRef& other) noexcept
-    : AudioStream(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AudioStreamRef(AudioStreamRef&& other) noexcept
-    : AudioStream(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AudioStreamRef() { release(); }
-
-  /// Assignment operator.
-  AudioStreamRef& operator=(const AudioStreamRef& other) noexcept
-  {
-    release();
-    AudioStream::operator=(AudioStream(other.get()));
-    return *this;
-  }
-
-  /// Converts to AudioStreamRaw
-  constexpr operator AudioStreamRaw() const noexcept { return get(); }
 };
 
 /**
@@ -40308,8 +39567,12 @@ struct Process;
 /// Alias to raw representation for Process.
 using ProcessRaw = SDL_Process*;
 
-// Forward decl
-struct ProcessRef;
+/**
+ * Reference for Process.
+ *
+ * This does not take ownership!
+ */
+using ProcessRef = ResourceRef<Process>;
 
 /**
  * Description of where standard I/O should be directed when creating a process.
@@ -40740,78 +40003,6 @@ struct Process : ResourceBase<ProcessRaw>
    * @sa Process.Destroy
    */
   bool Wait(bool block, int* exitcode);
-};
-
-/**
- * Reference for Process.
- *
- * This does not take ownership!
- */
-struct ProcessRef : Process
-{
-  using Process::Process;
-
-  /**
-   * Constructs from raw Process.
-   *
-   * @param resource a ProcessRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ProcessRef(ProcessRaw resource) noexcept
-    : Process(resource)
-  {
-  }
-
-  /**
-   * Constructs from Process.
-   *
-   * @param resource a Process.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ProcessRef(const Process& resource) noexcept
-    : Process(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Process.
-   *
-   * @param resource a Process.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ProcessRef(Process&& resource) noexcept
-    : Process(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ProcessRef(const ProcessRef& other) noexcept
-    : Process(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ProcessRef(ProcessRef&& other) noexcept
-    : Process(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ProcessRef() { release(); }
-
-  /// Assignment operator.
-  ProcessRef& operator=(const ProcessRef& other) noexcept
-  {
-    release();
-    Process::operator=(Process(other.get()));
-    return *this;
-  }
-
-  /// Converts to ProcessRaw
-  constexpr operator ProcessRaw() const noexcept { return get(); }
 };
 
 /**
@@ -41452,8 +40643,12 @@ struct Storage;
 /// Alias to raw representation for Storage.
 using StorageRaw = SDL_Storage*;
 
-// Forward decl
-struct StorageRef;
+/**
+ * Reference for Storage.
+ *
+ * This does not take ownership!
+ */
+using StorageRef = ResourceRef<Storage>;
 
 /**
  * Function interface for Storage.
@@ -41940,78 +41135,6 @@ struct Storage : ResourceBase<StorageRaw>
   OwnArray<char*> GlobDirectory(StringParam path,
                                 StringParam pattern,
                                 GlobFlags flags);
-};
-
-/**
- * Reference for Storage.
- *
- * This does not take ownership!
- */
-struct StorageRef : Storage
-{
-  using Storage::Storage;
-
-  /**
-   * Constructs from raw Storage.
-   *
-   * @param resource a StorageRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr StorageRef(StorageRaw resource) noexcept
-    : Storage(resource)
-  {
-  }
-
-  /**
-   * Constructs from Storage.
-   *
-   * @param resource a Storage.
-   *
-   * This does not takes ownership!
-   */
-  constexpr StorageRef(const Storage& resource) noexcept
-    : Storage(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Storage.
-   *
-   * @param resource a Storage.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr StorageRef(Storage&& resource) noexcept
-    : Storage(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr StorageRef(const StorageRef& other) noexcept
-    : Storage(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr StorageRef(StorageRef&& other) noexcept
-    : Storage(other.get())
-  {
-  }
-
-  /// Destructor
-  ~StorageRef() { release(); }
-
-  /// Assignment operator.
-  StorageRef& operator=(const StorageRef& other) noexcept
-  {
-    release();
-    Storage::operator=(Storage(other.get()));
-    return *this;
-  }
-
-  /// Converts to StorageRaw
-  constexpr operator StorageRaw() const noexcept { return get(); }
 };
 
 /**
@@ -42681,8 +41804,12 @@ using SurfaceRaw = SDL_Surface*;
 /// Alias to const raw representation for Surface.
 using SurfaceRawConst = const SDL_Surface*;
 
-// Forward decl
-struct SurfaceRef;
+/**
+ * Reference for Surface.
+ *
+ * This does not take ownership!
+ */
+using SurfaceRef = ResourceRef<Surface>;
 
 /// Safely wrap Surface for non owning const parameters
 using SurfaceConstRef = ResourceConstRef<SurfaceRaw, SurfaceRawConst>;
@@ -44487,78 +43614,6 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
   void SaveTyped_IO(IOStreamRef dst,
                     StringParam type,
                     bool closeio = false) const;
-};
-
-/**
- * Reference for Surface.
- *
- * This does not take ownership!
- */
-struct SurfaceRef : Surface
-{
-  using Surface::Surface;
-
-  /**
-   * Constructs from raw Surface.
-   *
-   * @param resource a SurfaceRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SurfaceRef(SurfaceRaw resource) noexcept
-    : Surface(resource)
-  {
-  }
-
-  /**
-   * Constructs from Surface.
-   *
-   * @param resource a Surface.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SurfaceRef(const Surface& resource) noexcept
-    : Surface(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Surface.
-   *
-   * @param resource a Surface.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr SurfaceRef(Surface&& resource) noexcept
-    : Surface(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr SurfaceRef(const SurfaceRef& other) noexcept
-    : Surface(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr SurfaceRef(SurfaceRef&& other) noexcept
-    : Surface(other.get())
-  {
-  }
-
-  /// Destructor
-  ~SurfaceRef() { release(); }
-
-  /// Assignment operator.
-  SurfaceRef& operator=(const SurfaceRef& other) noexcept
-  {
-    release();
-    Surface::operator=(Surface(other.get()));
-    return *this;
-  }
-
-  /// Converts to SurfaceRaw
-  constexpr operator SurfaceRaw() const noexcept { return get(); }
 };
 
 /**
@@ -47578,8 +46633,12 @@ struct Thread;
 /// Alias to raw representation for Thread.
 using ThreadRaw = SDL_Thread*;
 
-// Forward decl
-struct ThreadRef;
+/**
+ * Reference for Thread.
+ *
+ * This does not take ownership!
+ */
+using ThreadRef = ResourceRef<Thread>;
 
 /**
  * The SDL thread priority.
@@ -47993,78 +47052,6 @@ struct Thread : ResourceBase<ThreadRaw>
    * @sa ThreadState
    */
   ThreadState GetState() const;
-};
-
-/**
- * Reference for Thread.
- *
- * This does not take ownership!
- */
-struct ThreadRef : Thread
-{
-  using Thread::Thread;
-
-  /**
-   * Constructs from raw Thread.
-   *
-   * @param resource a ThreadRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ThreadRef(ThreadRaw resource) noexcept
-    : Thread(resource)
-  {
-  }
-
-  /**
-   * Constructs from Thread.
-   *
-   * @param resource a Thread.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ThreadRef(const Thread& resource) noexcept
-    : Thread(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Thread.
-   *
-   * @param resource a Thread.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ThreadRef(Thread&& resource) noexcept
-    : Thread(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ThreadRef(const ThreadRef& other) noexcept
-    : Thread(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ThreadRef(ThreadRef&& other) noexcept
-    : Thread(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ThreadRef() { release(); }
-
-  /// Assignment operator.
-  ThreadRef& operator=(const ThreadRef& other) noexcept
-  {
-    release();
-    Thread::operator=(Thread(other.get()));
-    return *this;
-  }
-
-  /// Converts to ThreadRaw
-  constexpr operator ThreadRaw() const noexcept { return get(); }
 };
 
 /**
@@ -48568,8 +47555,12 @@ struct Camera;
 /// Alias to raw representation for Camera.
 using CameraRaw = SDL_Camera*;
 
-// Forward decl
-struct CameraRef;
+/**
+ * Reference for Camera.
+ *
+ * This does not take ownership!
+ */
+using CameraRef = ResourceRef<Camera>;
 
 // Forward decl
 struct CameraFrame;
@@ -48909,78 +47900,6 @@ struct Camera : ResourceBase<CameraRaw>
    * @sa Camera.AcquireFrame
    */
   void ReleaseFrame(CameraFrame&& lock);
-};
-
-/**
- * Reference for Camera.
- *
- * This does not take ownership!
- */
-struct CameraRef : Camera
-{
-  using Camera::Camera;
-
-  /**
-   * Constructs from raw Camera.
-   *
-   * @param resource a CameraRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CameraRef(CameraRaw resource) noexcept
-    : Camera(resource)
-  {
-  }
-
-  /**
-   * Constructs from Camera.
-   *
-   * @param resource a Camera.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CameraRef(const Camera& resource) noexcept
-    : Camera(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Camera.
-   *
-   * @param resource a Camera.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr CameraRef(Camera&& resource) noexcept
-    : Camera(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr CameraRef(const CameraRef& other) noexcept
-    : Camera(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr CameraRef(CameraRef&& other) noexcept
-    : Camera(other.get())
-  {
-  }
-
-  /// Destructor
-  ~CameraRef() { release(); }
-
-  /// Assignment operator.
-  CameraRef& operator=(const CameraRef& other) noexcept
-  {
-    release();
-    Camera::operator=(Camera(other.get()));
-    return *this;
-  }
-
-  /// Converts to CameraRaw
-  constexpr operator CameraRaw() const noexcept { return get(); }
 };
 
 /// Camera Frame.
@@ -49588,8 +48507,12 @@ struct Mutex;
 /// Alias to raw representation for Mutex.
 using MutexRaw = SDL_Mutex*;
 
-// Forward decl
-struct MutexRef;
+/**
+ * Reference for Mutex.
+ *
+ * This does not take ownership!
+ */
+using MutexRef = ResourceRef<Mutex>;
 
 // Forward decl
 struct RWLock;
@@ -49597,8 +48520,12 @@ struct RWLock;
 /// Alias to raw representation for RWLock.
 using RWLockRaw = SDL_RWLock*;
 
-// Forward decl
-struct RWLockRef;
+/**
+ * Reference for RWLock.
+ *
+ * This does not take ownership!
+ */
+using RWLockRef = ResourceRef<RWLock>;
 
 // Forward decl
 struct Semaphore;
@@ -49606,8 +48533,12 @@ struct Semaphore;
 /// Alias to raw representation for Semaphore.
 using SemaphoreRaw = SDL_Semaphore*;
 
-// Forward decl
-struct SemaphoreRef;
+/**
+ * Reference for Semaphore.
+ *
+ * This does not take ownership!
+ */
+using SemaphoreRef = ResourceRef<Semaphore>;
 
 // Forward decl
 struct Condition;
@@ -49615,8 +48546,12 @@ struct Condition;
 /// Alias to raw representation for Condition.
 using ConditionRaw = SDL_Condition*;
 
-// Forward decl
-struct ConditionRef;
+/**
+ * Reference for Condition.
+ *
+ * This does not take ownership!
+ */
+using ConditionRef = ResourceRef<Condition>;
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -49786,78 +48721,6 @@ struct Mutex : ResourceBase<MutexRaw>
    * @sa Mutex.TryLock
    */
   void Unlock();
-};
-
-/**
- * Reference for Mutex.
- *
- * This does not take ownership!
- */
-struct MutexRef : Mutex
-{
-  using Mutex::Mutex;
-
-  /**
-   * Constructs from raw Mutex.
-   *
-   * @param resource a MutexRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MutexRef(MutexRaw resource) noexcept
-    : Mutex(resource)
-  {
-  }
-
-  /**
-   * Constructs from Mutex.
-   *
-   * @param resource a Mutex.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MutexRef(const Mutex& resource) noexcept
-    : Mutex(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Mutex.
-   *
-   * @param resource a Mutex.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr MutexRef(Mutex&& resource) noexcept
-    : Mutex(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr MutexRef(const MutexRef& other) noexcept
-    : Mutex(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr MutexRef(MutexRef&& other) noexcept
-    : Mutex(other.get())
-  {
-  }
-
-  /// Destructor
-  ~MutexRef() { release(); }
-
-  /// Assignment operator.
-  MutexRef& operator=(const MutexRef& other) noexcept
-  {
-    release();
-    Mutex::operator=(Mutex(other.get()));
-    return *this;
-  }
-
-  /// Converts to MutexRaw
-  constexpr operator MutexRaw() const noexcept { return get(); }
 };
 
 /**
@@ -50260,78 +49123,6 @@ struct RWLock : ResourceBase<RWLockRaw>
    * @sa RWLock.TryLockForWriting
    */
   void Unlock();
-};
-
-/**
- * Reference for RWLock.
- *
- * This does not take ownership!
- */
-struct RWLockRef : RWLock
-{
-  using RWLock::RWLock;
-
-  /**
-   * Constructs from raw RWLock.
-   *
-   * @param resource a RWLockRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr RWLockRef(RWLockRaw resource) noexcept
-    : RWLock(resource)
-  {
-  }
-
-  /**
-   * Constructs from RWLock.
-   *
-   * @param resource a RWLock.
-   *
-   * This does not takes ownership!
-   */
-  constexpr RWLockRef(const RWLock& resource) noexcept
-    : RWLock(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from RWLock.
-   *
-   * @param resource a RWLock.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr RWLockRef(RWLock&& resource) noexcept
-    : RWLock(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr RWLockRef(const RWLockRef& other) noexcept
-    : RWLock(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr RWLockRef(RWLockRef&& other) noexcept
-    : RWLock(other.get())
-  {
-  }
-
-  /// Destructor
-  ~RWLockRef() { release(); }
-
-  /// Assignment operator.
-  RWLockRef& operator=(const RWLockRef& other) noexcept
-  {
-    release();
-    RWLock::operator=(RWLock(other.get()));
-    return *this;
-  }
-
-  /// Converts to RWLockRaw
-  constexpr operator RWLockRaw() const noexcept { return get(); }
 };
 
 /**
@@ -50776,78 +49567,6 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
 };
 
 /**
- * Reference for Semaphore.
- *
- * This does not take ownership!
- */
-struct SemaphoreRef : Semaphore
-{
-  using Semaphore::Semaphore;
-
-  /**
-   * Constructs from raw Semaphore.
-   *
-   * @param resource a SemaphoreRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SemaphoreRef(SemaphoreRaw resource) noexcept
-    : Semaphore(resource)
-  {
-  }
-
-  /**
-   * Constructs from Semaphore.
-   *
-   * @param resource a Semaphore.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SemaphoreRef(const Semaphore& resource) noexcept
-    : Semaphore(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Semaphore.
-   *
-   * @param resource a Semaphore.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr SemaphoreRef(Semaphore&& resource) noexcept
-    : Semaphore(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr SemaphoreRef(const SemaphoreRef& other) noexcept
-    : Semaphore(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr SemaphoreRef(SemaphoreRef&& other) noexcept
-    : Semaphore(other.get())
-  {
-  }
-
-  /// Destructor
-  ~SemaphoreRef() { release(); }
-
-  /// Assignment operator.
-  SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
-  {
-    release();
-    Semaphore::operator=(Semaphore(other.get()));
-    return *this;
-  }
-
-  /// Converts to SemaphoreRaw
-  constexpr operator SemaphoreRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a semaphore.
  *
  * This function creates a new semaphore and initializes it with the value
@@ -51184,78 +49903,6 @@ struct Condition : ResourceBase<ConditionRaw>
    * @sa Condition.Wait
    */
   bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout);
-};
-
-/**
- * Reference for Condition.
- *
- * This does not take ownership!
- */
-struct ConditionRef : Condition
-{
-  using Condition::Condition;
-
-  /**
-   * Constructs from raw Condition.
-   *
-   * @param resource a ConditionRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ConditionRef(ConditionRaw resource) noexcept
-    : Condition(resource)
-  {
-  }
-
-  /**
-   * Constructs from Condition.
-   *
-   * @param resource a Condition.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ConditionRef(const Condition& resource) noexcept
-    : Condition(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Condition.
-   *
-   * @param resource a Condition.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ConditionRef(Condition&& resource) noexcept
-    : Condition(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ConditionRef(const ConditionRef& other) noexcept
-    : Condition(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ConditionRef(ConditionRef&& other) noexcept
-    : Condition(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ConditionRef() { release(); }
-
-  /// Assignment operator.
-  ConditionRef& operator=(const ConditionRef& other) noexcept
-  {
-    release();
-    Condition::operator=(Condition(other.get()));
-    return *this;
-  }
-
-  /// Converts to ConditionRaw
-  constexpr operator ConditionRaw() const noexcept { return get(); }
 };
 
 /**
@@ -51648,8 +50295,12 @@ struct Tray;
 /// Alias to raw representation for Tray.
 using TrayRaw = SDL_Tray*;
 
-// Forward decl
-struct TrayRef;
+/**
+ * Reference for Tray.
+ *
+ * This does not take ownership!
+ */
+using TrayRef = ResourceRef<Tray>;
 
 /// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
@@ -51884,78 +50535,6 @@ struct Tray : ResourceBase<TrayRaw>
    * @sa Tray.CreateMenu
    */
   TrayMenu GetMenu() const;
-};
-
-/**
- * Reference for Tray.
- *
- * This does not take ownership!
- */
-struct TrayRef : Tray
-{
-  using Tray::Tray;
-
-  /**
-   * Constructs from raw Tray.
-   *
-   * @param resource a TrayRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TrayRef(TrayRaw resource) noexcept
-    : Tray(resource)
-  {
-  }
-
-  /**
-   * Constructs from Tray.
-   *
-   * @param resource a Tray.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TrayRef(const Tray& resource) noexcept
-    : Tray(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Tray.
-   *
-   * @param resource a Tray.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr TrayRef(Tray&& resource) noexcept
-    : Tray(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr TrayRef(const TrayRef& other) noexcept
-    : Tray(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr TrayRef(TrayRef&& other) noexcept
-    : Tray(other.get())
-  {
-  }
-
-  /// Destructor
-  ~TrayRef() { release(); }
-
-  /// Assignment operator.
-  TrayRef& operator=(const TrayRef& other) noexcept
-  {
-    release();
-    Tray::operator=(Tray(other.get()));
-    return *this;
-  }
-
-  /// Converts to TrayRaw
-  constexpr operator TrayRaw() const noexcept { return get(); }
 };
 
 /**
@@ -53116,8 +51695,12 @@ struct Window;
 /// Alias to raw representation for Window.
 using WindowRaw = SDL_Window*;
 
-// Forward decl
-struct WindowRef;
+/**
+ * Reference for Window.
+ *
+ * This does not take ownership!
+ */
+using WindowRef = ResourceRef<Window>;
 
 // Forward decl
 struct GLContext;
@@ -53131,8 +51714,14 @@ struct GLContextScoped;
 /// Alias to GLContext for non owning parameters.
 using GLContextRef = GLContext;
 
-// Forward decl
-struct RendererRef;
+struct Renderer;
+
+/**
+ * Reference for Renderer.
+ *
+ * This does not take ownership!
+ */
+using RendererRef = ResourceRef<Renderer>;
 
 /**
  * Display orientation values; the way a display is rotated.
@@ -56136,78 +54725,6 @@ struct Window : ResourceBase<WindowRaw>
    * @since This function is available since SDL 3.2.0.
    */
   RendererRef GetRenderer() const;
-};
-
-/**
- * Reference for Window.
- *
- * This does not take ownership!
- */
-struct WindowRef : Window
-{
-  using Window::Window;
-
-  /**
-   * Constructs from raw Window.
-   *
-   * @param resource a WindowRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr WindowRef(WindowRaw resource) noexcept
-    : Window(resource)
-  {
-  }
-
-  /**
-   * Constructs from Window.
-   *
-   * @param resource a Window.
-   *
-   * This does not takes ownership!
-   */
-  constexpr WindowRef(const Window& resource) noexcept
-    : Window(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Window.
-   *
-   * @param resource a Window.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr WindowRef(Window&& resource) noexcept
-    : Window(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr WindowRef(const WindowRef& other) noexcept
-    : Window(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr WindowRef(WindowRef&& other) noexcept
-    : Window(other.get())
-  {
-  }
-
-  /// Destructor
-  ~WindowRef() { release(); }
-
-  /// Assignment operator.
-  WindowRef& operator=(const WindowRef& other) noexcept
-  {
-    release();
-    Window::operator=(Window(other.get()));
-    return *this;
-  }
-
-  /// Converts to WindowRaw
-  constexpr operator WindowRaw() const noexcept { return get(); }
 };
 
 /**
@@ -63465,8 +61982,12 @@ struct GPUDevice;
 /// Alias to raw representation for GPUDevice.
 using GPUDeviceRaw = SDL_GPUDevice*;
 
-// Forward decl
-struct GPUDeviceRef;
+/**
+ * Reference for GPUDevice.
+ *
+ * This does not take ownership!
+ */
+using GPUDeviceRef = ResourceRef<GPUDevice>;
 
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
@@ -67171,78 +65692,6 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
   void GDKResumeGPU();
 
 #endif /* SDL_PLATFORM_GDK */
-};
-
-/**
- * Reference for GPUDevice.
- *
- * This does not take ownership!
- */
-struct GPUDeviceRef : GPUDevice
-{
-  using GPUDevice::GPUDevice;
-
-  /**
-   * Constructs from raw GPUDevice.
-   *
-   * @param resource a GPUDeviceRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GPUDeviceRef(GPUDeviceRaw resource) noexcept
-    : GPUDevice(resource)
-  {
-  }
-
-  /**
-   * Constructs from GPUDevice.
-   *
-   * @param resource a GPUDevice.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GPUDeviceRef(const GPUDevice& resource) noexcept
-    : GPUDevice(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from GPUDevice.
-   *
-   * @param resource a GPUDevice.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr GPUDeviceRef(GPUDevice&& resource) noexcept
-    : GPUDevice(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr GPUDeviceRef(const GPUDeviceRef& other) noexcept
-    : GPUDevice(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr GPUDeviceRef(GPUDeviceRef&& other) noexcept
-    : GPUDevice(other.get())
-  {
-  }
-
-  /// Destructor
-  ~GPUDeviceRef() { release(); }
-
-  /// Assignment operator.
-  GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
-  {
-    release();
-    GPUDevice::operator=(GPUDevice(other.get()));
-    return *this;
-  }
-
-  /// Converts to GPUDeviceRaw
-  constexpr operator GPUDeviceRaw() const noexcept { return get(); }
 };
 
 /**
@@ -71418,8 +69867,12 @@ struct Joystick;
 /// Alias to raw representation for Joystick.
 using JoystickRaw = SDL_Joystick*;
 
-// Forward decl
-struct JoystickRef;
+/**
+ * Reference for Joystick.
+ *
+ * This does not take ownership!
+ */
+using JoystickRef = ResourceRef<Joystick>;
 
 /// Alias to raw representation for JoystickID.
 using JoystickIDRaw = SDL_JoystickID;
@@ -72500,78 +70953,6 @@ struct Joystick : ResourceBase<JoystickRaw>
    * @since This function is available since SDL 3.2.0.
    */
   PowerState GetPowerInfo(int* percent);
-};
-
-/**
- * Reference for Joystick.
- *
- * This does not take ownership!
- */
-struct JoystickRef : Joystick
-{
-  using Joystick::Joystick;
-
-  /**
-   * Constructs from raw Joystick.
-   *
-   * @param resource a JoystickRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr JoystickRef(JoystickRaw resource) noexcept
-    : Joystick(resource)
-  {
-  }
-
-  /**
-   * Constructs from Joystick.
-   *
-   * @param resource a Joystick.
-   *
-   * This does not takes ownership!
-   */
-  constexpr JoystickRef(const Joystick& resource) noexcept
-    : Joystick(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Joystick.
-   *
-   * @param resource a Joystick.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr JoystickRef(Joystick&& resource) noexcept
-    : Joystick(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr JoystickRef(const JoystickRef& other) noexcept
-    : Joystick(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr JoystickRef(JoystickRef&& other) noexcept
-    : Joystick(other.get())
-  {
-  }
-
-  /// Destructor
-  ~JoystickRef() { release(); }
-
-  /// Assignment operator.
-  JoystickRef& operator=(const JoystickRef& other) noexcept
-  {
-    release();
-    Joystick::operator=(Joystick(other.get()));
-    return *this;
-  }
-
-  /// Converts to JoystickRaw
-  constexpr operator JoystickRaw() const noexcept { return get(); }
 };
 
 /**
@@ -75054,8 +73435,12 @@ struct MetalView;
 /// Alias to raw representation for MetalView.
 using MetalViewRaw = SDL_MetalView;
 
-// Forward decl
-struct MetalViewRef;
+/**
+ * Reference for MetalView.
+ *
+ * This does not take ownership!
+ */
+using MetalViewRef = ResourceRef<MetalView>;
 
 /**
  * A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
@@ -75152,78 +73537,6 @@ struct MetalView : ResourceBase<MetalViewRaw>
    * @since This function is available since SDL 3.2.0.
    */
   void* GetLayer();
-};
-
-/**
- * Reference for MetalView.
- *
- * This does not take ownership!
- */
-struct MetalViewRef : MetalView
-{
-  using MetalView::MetalView;
-
-  /**
-   * Constructs from raw MetalView.
-   *
-   * @param resource a MetalViewRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MetalViewRef(MetalViewRaw resource) noexcept
-    : MetalView(resource)
-  {
-  }
-
-  /**
-   * Constructs from MetalView.
-   *
-   * @param resource a MetalView.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MetalViewRef(const MetalView& resource) noexcept
-    : MetalView(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from MetalView.
-   *
-   * @param resource a MetalView.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr MetalViewRef(MetalView&& resource) noexcept
-    : MetalView(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr MetalViewRef(const MetalViewRef& other) noexcept
-    : MetalView(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr MetalViewRef(MetalViewRef&& other) noexcept
-    : MetalView(other.get())
-  {
-  }
-
-  /// Destructor
-  ~MetalViewRef() { release(); }
-
-  /// Assignment operator.
-  MetalViewRef& operator=(const MetalViewRef& other) noexcept
-  {
-    release();
-    MetalView::operator=(MetalView(other.get()));
-    return *this;
-  }
-
-  /// Converts to MetalViewRaw
-  constexpr operator MetalViewRaw() const noexcept { return get(); }
 };
 
 /**
@@ -75339,8 +73652,12 @@ struct Cursor;
 /// Alias to raw representation for Cursor.
 using CursorRaw = SDL_Cursor*;
 
-// Forward decl
-struct CursorRef;
+/**
+ * Reference for Cursor.
+ *
+ * This does not take ownership!
+ */
+using CursorRef = ResourceRef<Cursor>;
 
 /**
  * Cursor types for CreateSystemCursor().
@@ -75611,78 +73928,6 @@ struct Cursor : ResourceBase<CursorRaw>
    * @sa GetCursor
    */
   void Set();
-};
-
-/**
- * Reference for Cursor.
- *
- * This does not take ownership!
- */
-struct CursorRef : Cursor
-{
-  using Cursor::Cursor;
-
-  /**
-   * Constructs from raw Cursor.
-   *
-   * @param resource a CursorRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CursorRef(CursorRaw resource) noexcept
-    : Cursor(resource)
-  {
-  }
-
-  /**
-   * Constructs from Cursor.
-   *
-   * @param resource a Cursor.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CursorRef(const Cursor& resource) noexcept
-    : Cursor(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Cursor.
-   *
-   * @param resource a Cursor.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr CursorRef(Cursor&& resource) noexcept
-    : Cursor(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr CursorRef(const CursorRef& other) noexcept
-    : Cursor(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr CursorRef(CursorRef&& other) noexcept
-    : Cursor(other.get())
-  {
-  }
-
-  /// Destructor
-  ~CursorRef() { release(); }
-
-  /// Assignment operator.
-  CursorRef& operator=(const CursorRef& other) noexcept
-  {
-    release();
-    Cursor::operator=(Cursor(other.get()));
-    return *this;
-  }
-
-  /// Converts to CursorRaw
-  constexpr operator CursorRaw() const noexcept { return get(); }
 };
 
 /**
@@ -76510,8 +74755,12 @@ struct Gamepad;
 /// Alias to raw representation for Gamepad.
 using GamepadRaw = SDL_Gamepad*;
 
-// Forward decl
-struct GamepadRef;
+/**
+ * Reference for Gamepad.
+ *
+ * This does not take ownership!
+ */
+using GamepadRef = ResourceRef<Gamepad>;
 
 /**
  * Standard gamepad types.
@@ -77536,78 +75785,6 @@ struct Gamepad : ResourceBase<GamepadRaw>
    * @sa Gamepad.GetAppleSFSymbolsNameForButton
    */
   const char* GetAppleSFSymbolsNameForAxis(GamepadAxis axis);
-};
-
-/**
- * Reference for Gamepad.
- *
- * This does not take ownership!
- */
-struct GamepadRef : Gamepad
-{
-  using Gamepad::Gamepad;
-
-  /**
-   * Constructs from raw Gamepad.
-   *
-   * @param resource a GamepadRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GamepadRef(GamepadRaw resource) noexcept
-    : Gamepad(resource)
-  {
-  }
-
-  /**
-   * Constructs from Gamepad.
-   *
-   * @param resource a Gamepad.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GamepadRef(const Gamepad& resource) noexcept
-    : Gamepad(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Gamepad.
-   *
-   * @param resource a Gamepad.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr GamepadRef(Gamepad&& resource) noexcept
-    : Gamepad(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr GamepadRef(const GamepadRef& other) noexcept
-    : Gamepad(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr GamepadRef(GamepadRef&& other) noexcept
-    : Gamepad(other.get())
-  {
-  }
-
-  /// Destructor
-  ~GamepadRef() { release(); }
-
-  /// Assignment operator.
-  GamepadRef& operator=(const GamepadRef& other) noexcept
-  {
-    release();
-    Gamepad::operator=(Gamepad(other.get()));
-    return *this;
-  }
-
-  /// Converts to GamepadRaw
-  constexpr operator GamepadRaw() const noexcept { return get(); }
 };
 
 /**
@@ -79469,8 +77646,12 @@ struct Haptic;
 /// Alias to raw representation for Haptic.
 using HapticRaw = SDL_Haptic*;
 
-// Forward decl
-struct HapticRef;
+/**
+ * Reference for Haptic.
+ *
+ * This does not take ownership!
+ */
+using HapticRef = ResourceRef<Haptic>;
 
 /**
  * @name Haptic effects
@@ -80554,78 +78735,6 @@ struct Haptic : ResourceBase<HapticRaw>
    * @sa Haptic.PlayRumble
    */
   void StopRumble();
-};
-
-/**
- * Reference for Haptic.
- *
- * This does not take ownership!
- */
-struct HapticRef : Haptic
-{
-  using Haptic::Haptic;
-
-  /**
-   * Constructs from raw Haptic.
-   *
-   * @param resource a HapticRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HapticRef(HapticRaw resource) noexcept
-    : Haptic(resource)
-  {
-  }
-
-  /**
-   * Constructs from Haptic.
-   *
-   * @param resource a Haptic.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HapticRef(const Haptic& resource) noexcept
-    : Haptic(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Haptic.
-   *
-   * @param resource a Haptic.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr HapticRef(Haptic&& resource) noexcept
-    : Haptic(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr HapticRef(const HapticRef& other) noexcept
-    : Haptic(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr HapticRef(HapticRef&& other) noexcept
-    : Haptic(other.get())
-  {
-  }
-
-  /// Destructor
-  ~HapticRef() { release(); }
-
-  /// Assignment operator.
-  HapticRef& operator=(const HapticRef& other) noexcept
-  {
-    release();
-    Haptic::operator=(Haptic(other.get()));
-    return *this;
-  }
-
-  /// Converts to HapticRaw
-  constexpr operator HapticRaw() const noexcept { return get(); }
 };
 
 /**
@@ -82124,9 +80233,6 @@ struct Renderer;
 using RendererRaw = SDL_Renderer*;
 
 // Forward decl
-struct RendererRef;
-
-// Forward decl
 struct Texture;
 
 /// Alias to raw representation for Texture.
@@ -82135,8 +80241,12 @@ using TextureRaw = SDL_Texture*;
 /// Alias to const raw representation for Texture.
 using TextureRawConst = const SDL_Texture*;
 
-// Forward decl
-struct TextureRef;
+/**
+ * Reference for Texture.
+ *
+ * This does not take ownership!
+ */
+using TextureRef = ResourceRef<Texture>;
 
 /// Safely wrap Texture for non owning const parameters
 using TextureConstRef = ResourceConstRef<TextureRaw, TextureRawConst>;
@@ -82149,8 +80259,12 @@ struct GPURenderState;
 /// Alias to raw representation for GPURenderState.
 using GPURenderStateRaw = SDL_GPURenderState*;
 
-// Forward decl
-struct GPURenderStateRef;
+/**
+ * Reference for GPURenderState.
+ *
+ * This does not take ownership!
+ */
+using GPURenderStateRef = ResourceRef<GPURenderState>;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
@@ -84306,78 +82420,6 @@ struct Renderer : ResourceBase<RendererRaw>
 };
 
 /**
- * Reference for Renderer.
- *
- * This does not take ownership!
- */
-struct RendererRef : Renderer
-{
-  using Renderer::Renderer;
-
-  /**
-   * Constructs from raw Renderer.
-   *
-   * @param resource a RendererRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr RendererRef(RendererRaw resource) noexcept
-    : Renderer(resource)
-  {
-  }
-
-  /**
-   * Constructs from Renderer.
-   *
-   * @param resource a Renderer.
-   *
-   * This does not takes ownership!
-   */
-  constexpr RendererRef(const Renderer& resource) noexcept
-    : Renderer(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Renderer.
-   *
-   * @param resource a Renderer.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr RendererRef(Renderer&& resource) noexcept
-    : Renderer(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr RendererRef(const RendererRef& other) noexcept
-    : Renderer(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr RendererRef(RendererRef&& other) noexcept
-    : Renderer(other.get())
-  {
-  }
-
-  /// Destructor
-  ~RendererRef() { release(); }
-
-  /// Assignment operator.
-  RendererRef& operator=(const RendererRef& other) noexcept
-  {
-    release();
-    Renderer::operator=(Renderer(other.get()));
-    return *this;
-  }
-
-  /// Converts to RendererRaw
-  constexpr operator RendererRaw() const noexcept { return get(); }
-};
-
-/**
  * An efficient driver-specific representation of pixel data
  *
  * @since This struct is available since SDL 3.2.0.
@@ -85437,78 +83479,6 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * @sa Texture.Lock
    */
   void Unlock(TextureSurfaceLock&& lock);
-};
-
-/**
- * Reference for Texture.
- *
- * This does not take ownership!
- */
-struct TextureRef : Texture
-{
-  using Texture::Texture;
-
-  /**
-   * Constructs from raw Texture.
-   *
-   * @param resource a TextureRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TextureRef(TextureRaw resource) noexcept
-    : Texture(resource)
-  {
-  }
-
-  /**
-   * Constructs from Texture.
-   *
-   * @param resource a Texture.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TextureRef(const Texture& resource) noexcept
-    : Texture(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Texture.
-   *
-   * @param resource a Texture.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr TextureRef(Texture&& resource) noexcept
-    : Texture(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr TextureRef(const TextureRef& other) noexcept
-    : Texture(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr TextureRef(TextureRef&& other) noexcept
-    : Texture(other.get())
-  {
-  }
-
-  /// Destructor
-  ~TextureRef() { release(); }
-
-  /// Assignment operator.
-  TextureRef& operator=(const TextureRef& other) noexcept
-  {
-    release();
-    Texture::operator=(Texture(other.get()));
-    return *this;
-  }
-
-  /// Converts to TextureRaw
-  constexpr operator TextureRaw() const noexcept { return get(); }
 };
 
 /**
@@ -90300,76 +88270,6 @@ struct GPURenderState : ResourceBase<GPURenderStateRaw>
 };
 
 /**
- * Reference for GPURenderState.
- *
- * This does not take ownership!
- */
-struct GPURenderStateRef : GPURenderState
-{
-  /**
-   * Constructs from raw GPURenderState.
-   *
-   * @param resource a GPURenderStateRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GPURenderStateRef(GPURenderStateRaw resource) noexcept
-    : GPURenderState(resource)
-  {
-  }
-
-  /**
-   * Constructs from GPURenderState.
-   *
-   * @param resource a GPURenderState.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GPURenderStateRef(const GPURenderState& resource) noexcept
-    : GPURenderState(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from GPURenderState.
-   *
-   * @param resource a GPURenderState.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr GPURenderStateRef(GPURenderState&& resource) noexcept
-    : GPURenderState(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept
-    : GPURenderState(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr GPURenderStateRef(GPURenderStateRef&& other) noexcept
-    : GPURenderState(other.get())
-  {
-  }
-
-  /// Destructor
-  ~GPURenderStateRef() { release(); }
-
-  /// Assignment operator.
-  GPURenderStateRef& operator=(const GPURenderStateRef& other) noexcept
-  {
-    release();
-    GPURenderState::operator=(GPURenderState(other.get()));
-    return *this;
-  }
-
-  /// Converts to GPURenderStateRaw
-  constexpr operator GPURenderStateRaw() const noexcept { return get(); }
-};
-
-/**
  * Create custom GPU render state.
  *
  * @param renderer the renderer to use.
@@ -92015,8 +89915,12 @@ struct Mixer;
 /// Alias to raw representation for Mixer.
 using MixerRaw = MIX_Mixer*;
 
-// Forward decl
-struct MixerRef;
+/**
+ * Reference for Mixer.
+ *
+ * This does not take ownership!
+ */
+using MixerRef = ResourceRef<Mixer>;
 
 // Forward decl
 struct Audio;
@@ -92024,8 +89928,12 @@ struct Audio;
 /// Alias to raw representation for Audio.
 using AudioRaw = MIX_Audio*;
 
-// Forward decl
-struct AudioRef;
+/**
+ * Reference for Audio.
+ *
+ * This does not take ownership!
+ */
+using AudioRef = ResourceRef<Audio>;
 
 // Forward decl
 struct Track;
@@ -92033,8 +89941,12 @@ struct Track;
 /// Alias to raw representation for Track.
 using TrackRaw = MIX_Track*;
 
-// Forward decl
-struct TrackRef;
+/**
+ * Reference for Track.
+ *
+ * This does not take ownership!
+ */
+using TrackRef = ResourceRef<Track>;
 
 // Forward decl
 struct Group;
@@ -92042,8 +89954,12 @@ struct Group;
 /// Alias to raw representation for Group.
 using GroupRaw = MIX_Group*;
 
-// Forward decl
-struct GroupRef;
+/**
+ * Reference for Group.
+ *
+ * This does not take ownership!
+ */
+using GroupRef = ResourceRef<Group>;
 
 // Forward decl
 struct AudioDecoder;
@@ -92051,8 +89967,12 @@ struct AudioDecoder;
 /// Alias to raw representation for AudioDecoder.
 using AudioDecoderRaw = MIX_AudioDecoder*;
 
-// Forward decl
-struct AudioDecoderRef;
+/**
+ * Reference for AudioDecoder.
+ *
+ * This does not take ownership!
+ */
+using AudioDecoderRef = ResourceRef<AudioDecoder>;
 
 // Forward decl
 struct MixerLock;
@@ -93221,78 +91141,6 @@ struct Mixer : ResourceBase<MixerRaw>
 };
 
 /**
- * Reference for Mixer.
- *
- * This does not take ownership!
- */
-struct MixerRef : Mixer
-{
-  using Mixer::Mixer;
-
-  /**
-   * Constructs from raw Mixer.
-   *
-   * @param resource a MixerRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MixerRef(MixerRaw resource) noexcept
-    : Mixer(resource)
-  {
-  }
-
-  /**
-   * Constructs from Mixer.
-   *
-   * @param resource a Mixer.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MixerRef(const Mixer& resource) noexcept
-    : Mixer(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Mixer.
-   *
-   * @param resource a Mixer.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr MixerRef(Mixer&& resource) noexcept
-    : Mixer(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr MixerRef(const MixerRef& other) noexcept
-    : Mixer(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr MixerRef(MixerRef&& other) noexcept
-    : Mixer(other.get())
-  {
-  }
-
-  /// Destructor
-  ~MixerRef() { release(); }
-
-  /// Assignment operator.
-  MixerRef& operator=(const MixerRef& other) noexcept
-  {
-    release();
-    Mixer::operator=(Mixer(other.get()));
-    return *this;
-  }
-
-  /// Converts to MixerRaw
-  constexpr operator MixerRaw() const noexcept { return get(); }
-};
-
-/**
  * Lock a mixer by obtaining its internal mutex.
  *
  * While locked, the mixer will not be able to mix more audio or change its
@@ -93887,78 +91735,6 @@ struct Audio : ResourceBase<AudioRaw>
 };
 
 /**
- * Reference for Audio.
- *
- * This does not take ownership!
- */
-struct AudioRef : Audio
-{
-  using Audio::Audio;
-
-  /**
-   * Constructs from raw Audio.
-   *
-   * @param resource a AudioRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioRef(AudioRaw resource) noexcept
-    : Audio(resource)
-  {
-  }
-
-  /**
-   * Constructs from Audio.
-   *
-   * @param resource a Audio.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioRef(const Audio& resource) noexcept
-    : Audio(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Audio.
-   *
-   * @param resource a Audio.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AudioRef(Audio&& resource) noexcept
-    : Audio(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AudioRef(const AudioRef& other) noexcept
-    : Audio(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AudioRef(AudioRef&& other) noexcept
-    : Audio(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AudioRef() { release(); }
-
-  /// Assignment operator.
-  AudioRef& operator=(const AudioRef& other) noexcept
-  {
-    release();
-    Audio::operator=(Audio(other.get()));
-    return *this;
-  }
-
-  /// Converts to AudioRaw
-  constexpr operator AudioRaw() const noexcept { return get(); }
-};
-
-/**
  * A set of per-channel gains for tracks using Track.SetStereo().
  *
  * When forcing a track to stereo, the app can specify a per-channel gain, to
@@ -94039,7 +91815,7 @@ using TrackStoppedCB = MakeFrontCallback<void(TrackRaw track)>;
  * A callback that fires when a Track is mixing at various stages.
  *
  * This callback is fired for different parts of the mixing pipeline, and gives
- * the app visibility into the audio data that is being generated at various
+ * the app visbility into the audio data that is being generated at various
  * stages.
  *
  * The audio data passed through here is _not_ const data; the app is permitted
@@ -94126,7 +91902,13 @@ using TrackMixCB = MakeFrontCallback<
  * and other attributes that alter the produced sound; many can be altered
  * during playback.
  *
+<<<<<<<
  * @since This datatype is available since SDL_mixer 3.0.0.
+=======
+ * This callback is fired for different parts of the mixing pipeline, and gives
+ * the app visibility into the audio data that is being generated at various
+ * stages.
+>>>>>>>
  *
  * @cat resource
  */
@@ -95424,78 +93206,6 @@ struct Track : ResourceBase<TrackRaw>
 };
 
 /**
- * Reference for Track.
- *
- * This does not take ownership!
- */
-struct TrackRef : Track
-{
-  using Track::Track;
-
-  /**
-   * Constructs from raw Track.
-   *
-   * @param resource a TrackRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TrackRef(TrackRaw resource) noexcept
-    : Track(resource)
-  {
-  }
-
-  /**
-   * Constructs from Track.
-   *
-   * @param resource a Track.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TrackRef(const Track& resource) noexcept
-    : Track(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Track.
-   *
-   * @param resource a Track.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr TrackRef(Track&& resource) noexcept
-    : Track(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr TrackRef(const TrackRef& other) noexcept
-    : Track(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr TrackRef(TrackRef&& other) noexcept
-    : Track(other.get())
-  {
-  }
-
-  /// Destructor
-  ~TrackRef() { release(); }
-
-  /// Assignment operator.
-  TrackRef& operator=(const TrackRef& other) noexcept
-  {
-    release();
-    Track::operator=(Track(other.get()));
-    return *this;
-  }
-
-  /// Converts to TrackRaw
-  constexpr operator TrackRaw() const noexcept { return get(); }
-};
-
-/**
  * A callback that fires when a Group has completed mixing.
  *
  * This callback is fired when a mixing group has finished mixing: all tracks in
@@ -95732,78 +93442,6 @@ struct Group : ResourceBase<GroupRaw>
    * @sa GroupMixCallback
    */
   void SetPostMixCallback(GroupMixCallback cb, void* userdata);
-};
-
-/**
- * Reference for Group.
- *
- * This does not take ownership!
- */
-struct GroupRef : Group
-{
-  using Group::Group;
-
-  /**
-   * Constructs from raw Group.
-   *
-   * @param resource a GroupRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GroupRef(GroupRaw resource) noexcept
-    : Group(resource)
-  {
-  }
-
-  /**
-   * Constructs from Group.
-   *
-   * @param resource a Group.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GroupRef(const Group& resource) noexcept
-    : Group(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Group.
-   *
-   * @param resource a Group.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr GroupRef(Group&& resource) noexcept
-    : Group(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr GroupRef(const GroupRef& other) noexcept
-    : Group(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr GroupRef(GroupRef&& other) noexcept
-    : Group(other.get())
-  {
-  }
-
-  /// Destructor
-  ~GroupRef() { release(); }
-
-  /// Assignment operator.
-  GroupRef& operator=(const GroupRef& other) noexcept
-  {
-    release();
-    Group::operator=(Group(other.get()));
-    return *this;
-  }
-
-  /// Converts to GroupRaw
-  constexpr operator GroupRaw() const noexcept { return get(); }
 };
 
 #ifdef SDL3PP_DOC
@@ -99623,78 +97261,6 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
 };
 
 /**
- * Reference for AudioDecoder.
- *
- * This does not take ownership!
- */
-struct AudioDecoderRef : AudioDecoder
-{
-  using AudioDecoder::AudioDecoder;
-
-  /**
-   * Constructs from raw AudioDecoder.
-   *
-   * @param resource a AudioDecoderRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioDecoderRef(AudioDecoderRaw resource) noexcept
-    : AudioDecoder(resource)
-  {
-  }
-
-  /**
-   * Constructs from AudioDecoder.
-   *
-   * @param resource a AudioDecoder.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioDecoderRef(const AudioDecoder& resource) noexcept
-    : AudioDecoder(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AudioDecoder.
-   *
-   * @param resource a AudioDecoder.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AudioDecoderRef(AudioDecoder&& resource) noexcept
-    : AudioDecoder(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AudioDecoderRef(const AudioDecoderRef& other) noexcept
-    : AudioDecoder(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AudioDecoderRef(AudioDecoderRef&& other) noexcept
-    : AudioDecoder(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AudioDecoderRef() { release(); }
-
-  /// Assignment operator.
-  AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept
-  {
-    release();
-    AudioDecoder::operator=(AudioDecoder(other.get()));
-    return *this;
-  }
-
-  /// Converts to AudioDecoderRaw
-  constexpr operator AudioDecoderRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a AudioDecoder from a path on the filesystem.
  *
  * Most apps won't need this, as SDL_mixer's usual interfaces will decode audio
@@ -99930,8 +97496,12 @@ using AnimationRaw = IMG_Animation*;
 /// Alias to const raw representation for Animation.
 using AnimationRawConst = const IMG_Animation*;
 
-// Forward decl
-struct AnimationRef;
+/**
+ * Reference for Animation.
+ *
+ * This does not take ownership!
+ */
+using AnimationRef = ResourceRef<Animation>;
 
 /// Safely wrap Animation for non owning const parameters
 using AnimationConstRef = ResourceConstRef<AnimationRaw, AnimationRawConst>;
@@ -99944,8 +97514,12 @@ struct AnimationEncoder;
 /// Alias to raw representation for AnimationEncoder.
 using AnimationEncoderRaw = IMG_AnimationEncoder*;
 
-// Forward decl
-struct AnimationEncoderRef;
+/**
+ * Reference for AnimationEncoder.
+ *
+ * This does not take ownership!
+ */
+using AnimationEncoderRef = ResourceRef<AnimationEncoder>;
 
 // Forward decl
 struct AnimationDecoder;
@@ -99953,8 +97527,12 @@ struct AnimationDecoder;
 /// Alias to raw representation for AnimationDecoder.
 using AnimationDecoderRaw = IMG_AnimationDecoder*;
 
-// Forward decl
-struct AnimationDecoderRef;
+/**
+ * Reference for AnimationDecoder.
+ *
+ * This does not take ownership!
+ */
+using AnimationDecoderRef = ResourceRef<AnimationDecoder>;
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -102890,78 +100468,6 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
-/**
- * Reference for Animation.
- *
- * This does not take ownership!
- */
-struct AnimationRef : Animation
-{
-  using Animation::Animation;
-
-  /**
-   * Constructs from raw Animation.
-   *
-   * @param resource a AnimationRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationRef(AnimationRaw resource) noexcept
-    : Animation(resource)
-  {
-  }
-
-  /**
-   * Constructs from Animation.
-   *
-   * @param resource a Animation.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationRef(const Animation& resource) noexcept
-    : Animation(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Animation.
-   *
-   * @param resource a Animation.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AnimationRef(Animation&& resource) noexcept
-    : Animation(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AnimationRef(const AnimationRef& other) noexcept
-    : Animation(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AnimationRef(AnimationRef&& other) noexcept
-    : Animation(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AnimationRef() { release(); }
-
-  /// Assignment operator.
-  AnimationRef& operator=(const AnimationRef& other) noexcept
-  {
-    release();
-    Animation::operator=(Animation(other.get()));
-    return *this;
-  }
-
-  /// Converts to AnimationRaw
-  constexpr operator AnimationRaw() const noexcept { return get(); }
-};
-
 /// Get the width in pixels.
 inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
 
@@ -103768,78 +101274,6 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
 };
 
 /**
- * Reference for AnimationEncoder.
- *
- * This does not take ownership!
- */
-struct AnimationEncoderRef : AnimationEncoder
-{
-  using AnimationEncoder::AnimationEncoder;
-
-  /**
-   * Constructs from raw AnimationEncoder.
-   *
-   * @param resource a AnimationEncoderRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationEncoderRef(AnimationEncoderRaw resource) noexcept
-    : AnimationEncoder(resource)
-  {
-  }
-
-  /**
-   * Constructs from AnimationEncoder.
-   *
-   * @param resource a AnimationEncoder.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationEncoderRef(const AnimationEncoder& resource) noexcept
-    : AnimationEncoder(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AnimationEncoder.
-   *
-   * @param resource a AnimationEncoder.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AnimationEncoderRef(AnimationEncoder&& resource) noexcept
-    : AnimationEncoder(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept
-    : AnimationEncoder(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AnimationEncoderRef(AnimationEncoderRef&& other) noexcept
-    : AnimationEncoder(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AnimationEncoderRef() { release(); }
-
-  /// Assignment operator.
-  AnimationEncoderRef& operator=(const AnimationEncoderRef& other) noexcept
-  {
-    release();
-    AnimationEncoder::operator=(AnimationEncoder(other.get()));
-    return *this;
-  }
-
-  /// Converts to AnimationEncoderRaw
-  constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
-};
-
-/**
  * Create an encoder to save a series of images to a file.
  *
  * These animation types are currently supported:
@@ -104324,78 +101758,6 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
 };
 
 /**
- * Reference for AnimationDecoder.
- *
- * This does not take ownership!
- */
-struct AnimationDecoderRef : AnimationDecoder
-{
-  using AnimationDecoder::AnimationDecoder;
-
-  /**
-   * Constructs from raw AnimationDecoder.
-   *
-   * @param resource a AnimationDecoderRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationDecoderRef(AnimationDecoderRaw resource) noexcept
-    : AnimationDecoder(resource)
-  {
-  }
-
-  /**
-   * Constructs from AnimationDecoder.
-   *
-   * @param resource a AnimationDecoder.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationDecoderRef(const AnimationDecoder& resource) noexcept
-    : AnimationDecoder(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AnimationDecoder.
-   *
-   * @param resource a AnimationDecoder.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AnimationDecoderRef(AnimationDecoder&& resource) noexcept
-    : AnimationDecoder(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept
-    : AnimationDecoder(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AnimationDecoderRef(AnimationDecoderRef&& other) noexcept
-    : AnimationDecoder(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AnimationDecoderRef() { release(); }
-
-  /// Assignment operator.
-  AnimationDecoderRef& operator=(const AnimationDecoderRef& other) noexcept
-  {
-    release();
-    AnimationDecoder::operator=(AnimationDecoder(other.get()));
-    return *this;
-  }
-
-  /// Converts to AnimationDecoderRaw
-  constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a decoder to read a series of images from a file.
  *
  * These animation types are currently supported:
@@ -104781,8 +102143,12 @@ struct Font;
 /// Alias to raw representation for Font.
 using FontRaw = TTF_Font*;
 
-// Forward decl
-struct FontRef;
+/**
+ * Reference for Font.
+ *
+ * This does not take ownership!
+ */
+using FontRef = ResourceRef<Font>;
 
 // Forward decl
 struct TextEngine;
@@ -104790,7 +102156,11 @@ struct TextEngine;
 /// Alias to raw representation for TextEngine.
 using TextEngineRaw = TTF_TextEngine*;
 
-/// Safely wrap TextEngine for non owning parameters
+/**
+ * Reference for TextEngine.
+ *
+ * This does not take ownership!
+ */
 using TextEngineRef = ResourceLegacyRef<TextEngineRaw>;
 
 // Forward decl
@@ -104802,8 +102172,12 @@ using TextRaw = TTF_Text*;
 /// Alias to const raw representation for Text.
 using TextRawConst = const TTF_Text*;
 
-// Forward decl
-struct TextRef;
+/**
+ * Reference for Text.
+ *
+ * This does not take ownership!
+ */
+using TextRef = ResourceRef<Text>;
 
 /// Safely wrap Text for non owning const parameters
 using TextConstRef = ResourceConstRef<TextRaw, TextRawConst>;
@@ -106533,78 +103907,6 @@ struct Font : ResourceBase<FontRaw>
    * @sa Font.RenderGlyph_Solid
    */
   Surface RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const;
-};
-
-/**
- * Reference for Font.
- *
- * This does not take ownership!
- */
-struct FontRef : Font
-{
-  using Font::Font;
-
-  /**
-   * Constructs from raw Font.
-   *
-   * @param resource a FontRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr FontRef(FontRaw resource) noexcept
-    : Font(resource)
-  {
-  }
-
-  /**
-   * Constructs from Font.
-   *
-   * @param resource a Font.
-   *
-   * This does not takes ownership!
-   */
-  constexpr FontRef(const Font& resource) noexcept
-    : Font(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Font.
-   *
-   * @param resource a Font.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr FontRef(Font&& resource) noexcept
-    : Font(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr FontRef(const FontRef& other) noexcept
-    : Font(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr FontRef(FontRef&& other) noexcept
-    : Font(other.get())
-  {
-  }
-
-  /// Destructor
-  ~FontRef() { release(); }
-
-  /// Assignment operator.
-  FontRef& operator=(const FontRef& other) noexcept
-  {
-    release();
-    Font::operator=(Font(other.get()));
-    return *this;
-  }
-
-  /// Converts to FontRaw
-  constexpr operator FontRaw() const noexcept { return get(); }
 };
 
 /**
@@ -109802,78 +107104,6 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
 
   /// The number of lines in the text, 0 if it's empty
   int GetNumLines() const { return get()->num_lines; }
-};
-
-/**
- * Reference for Text.
- *
- * This does not take ownership!
- */
-struct TextRef : Text
-{
-  using Text::Text;
-
-  /**
-   * Constructs from raw Text.
-   *
-   * @param resource a TextRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TextRef(TextRaw resource) noexcept
-    : Text(resource)
-  {
-  }
-
-  /**
-   * Constructs from Text.
-   *
-   * @param resource a Text.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TextRef(const Text& resource) noexcept
-    : Text(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Text.
-   *
-   * @param resource a Text.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr TextRef(Text&& resource) noexcept
-    : Text(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr TextRef(const TextRef& other) noexcept
-    : Text(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr TextRef(TextRef&& other) noexcept
-    : Text(other.get())
-  {
-  }
-
-  /// Destructor
-  ~TextRef() { release(); }
-
-  /// Assignment operator.
-  TextRef& operator=(const TextRef& other) noexcept
-  {
-    release();
-    Text::operator=(Text(other.get()));
-    return *this;
-  }
-
-  /// Converts to TextRaw
-  constexpr operator TextRaw() const noexcept { return get(); }
 };
 
 /**

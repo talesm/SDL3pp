@@ -34,17 +34,19 @@ Todo for next version
   - [x] Document namespace `prop::Font`;
   - [x] Document namespace `prop::GpuFontEngine`;
   - [x] Document namespace `prop::RendererTextEngine`;
-- [ ] Resource improvements:
+- [x] Resource improvements:
   - [x] Create template base class for non-owning (Like TrayEntry);
   - [x] Create template base class for unique owning (Like Window);
   - [x] Create template base class for shared owning (Like Surface);
+  - [x] Make ResourceRef template class for all \*Ref;
 
 Backlog
 -------
 
-- [ ] (SDL3pp_image) Rename prop::Metadata to AnimationMetadata or something
+- [ ] Properties prefixed by CREATE should their own subnamespace;
+- [ ] (SDL3pp_image) Rename prop::Metadata to prop::Animation or something
   similar? Or even under AnimationDecoder;
-- [ ] (SDL3pp_mixer) Rename prop::MixMetadata to AudioMetadata or something
+- [ ] (SDL3pp_mixer) Rename prop::MixMetadata to prop::Audio or something
   similar? Or even under Audio;
 - [ ] Add a constructor to Properties similar to std::map initializer list;
 - [ ] Revamp README, with examples and clearer instructions to integrate to

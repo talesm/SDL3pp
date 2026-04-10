@@ -46,8 +46,12 @@ struct SharedObject;
 /// Alias to raw representation for SharedObject.
 using SharedObjectRaw = SDL_SharedObject*;
 
-// Forward decl
-struct SharedObjectRef;
+/**
+ * Reference for SharedObject.
+ *
+ * This does not take ownership!
+ */
+using SharedObjectRef = ResourceRef<SharedObject>;
 
 /**
  * An opaque datatype that represents a loaded shared object.
@@ -159,78 +163,6 @@ struct SharedObject : ResourceBase<SharedObjectRaw>
    * @sa LoadObject
    */
   FunctionPointer LoadFunction(StringParam name);
-};
-
-/**
- * Reference for SharedObject.
- *
- * This does not take ownership!
- */
-struct SharedObjectRef : SharedObject
-{
-  using SharedObject::SharedObject;
-
-  /**
-   * Constructs from raw SharedObject.
-   *
-   * @param resource a SharedObjectRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SharedObjectRef(SharedObjectRaw resource) noexcept
-    : SharedObject(resource)
-  {
-  }
-
-  /**
-   * Constructs from SharedObject.
-   *
-   * @param resource a SharedObject.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SharedObjectRef(const SharedObject& resource) noexcept
-    : SharedObject(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from SharedObject.
-   *
-   * @param resource a SharedObject.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr SharedObjectRef(SharedObject&& resource) noexcept
-    : SharedObject(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr SharedObjectRef(const SharedObjectRef& other) noexcept
-    : SharedObject(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr SharedObjectRef(SharedObjectRef&& other) noexcept
-    : SharedObject(other.get())
-  {
-  }
-
-  /// Destructor
-  ~SharedObjectRef() { release(); }
-
-  /// Assignment operator.
-  SharedObjectRef& operator=(const SharedObjectRef& other) noexcept
-  {
-    release();
-    SharedObject::operator=(SharedObject(other.get()));
-    return *this;
-  }
-
-  /// Converts to SharedObjectRaw
-  constexpr operator SharedObjectRaw() const noexcept { return get(); }
 };
 
 /**

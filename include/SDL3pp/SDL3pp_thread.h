@@ -35,8 +35,12 @@ struct Thread;
 /// Alias to raw representation for Thread.
 using ThreadRaw = SDL_Thread*;
 
-// Forward decl
-struct ThreadRef;
+/**
+ * Reference for Thread.
+ *
+ * This does not take ownership!
+ */
+using ThreadRef = ResourceRef<Thread>;
 
 /**
  * The SDL thread priority.
@@ -450,78 +454,6 @@ struct Thread : ResourceBase<ThreadRaw>
    * @sa ThreadState
    */
   ThreadState GetState() const;
-};
-
-/**
- * Reference for Thread.
- *
- * This does not take ownership!
- */
-struct ThreadRef : Thread
-{
-  using Thread::Thread;
-
-  /**
-   * Constructs from raw Thread.
-   *
-   * @param resource a ThreadRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ThreadRef(ThreadRaw resource) noexcept
-    : Thread(resource)
-  {
-  }
-
-  /**
-   * Constructs from Thread.
-   *
-   * @param resource a Thread.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ThreadRef(const Thread& resource) noexcept
-    : Thread(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Thread.
-   *
-   * @param resource a Thread.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ThreadRef(Thread&& resource) noexcept
-    : Thread(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ThreadRef(const ThreadRef& other) noexcept
-    : Thread(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ThreadRef(ThreadRef&& other) noexcept
-    : Thread(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ThreadRef() { release(); }
-
-  /// Assignment operator.
-  ThreadRef& operator=(const ThreadRef& other) noexcept
-  {
-    release();
-    Thread::operator=(Thread(other.get()));
-    return *this;
-  }
-
-  /// Converts to ThreadRaw
-  constexpr operator ThreadRaw() const noexcept { return get(); }
 };
 
 /**

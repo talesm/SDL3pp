@@ -86,7 +86,6 @@ export function expandResource(
       doc: [`Alias to const raw representation for ${targetName}.`],
     });
   }
-  if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
   if (hasScoped) referenceAliases.push({ name: scopedName, kind: "forward" });
   const hasLock = getLockDefinition(targetEntry, targetName);
   let lockName = makeResourceLock(
@@ -104,8 +103,8 @@ export function expandResource(
       type: targetName,
       doc: [`Alias to ${targetName} for non owning parameters.`],
     });
-  } else if (!hasRef) {
-    referenceAliases.push(createParam(refName, targetName, rawName));
+  } else {
+    referenceAliases.push(createParam(refName, targetName, rawName, hasRef));
   }
 
   if (enableConstParam) {
@@ -221,9 +220,7 @@ export function expandResource(
 
   const derivedEntries: ApiEntryTransform[] = [];
 
-  if (hasRef) {
-    derivedEntries.push(createRefEntry(refName, targetName, rawName));
-  } else if (hasScoped) {
+  if (hasScoped) {
     derivedEntries.push(
       createScopedEntry(scopedName, targetName, destroyFunction),
     );
@@ -238,12 +235,15 @@ function createParam(
   paramType: string,
   targetName: string,
   rawName: string,
+  targetAsBase = false,
 ): ApiEntryTransform {
   return {
     name: paramType,
     kind: "alias",
-    doc: [`Safely wrap ${targetName} for non owning parameters`],
-    type: `ResourceLegacyRef<${rawName}>`,
+    doc: [`Reference for ${targetName}.`, "This does not take ownership!"],
+    type: targetAsBase
+      ? `ResourceRef<${targetName}>`
+      : `ResourceLegacyRef<${rawName}>`,
   };
 }
 
@@ -655,138 +655,6 @@ function populateTargetEntry(
   targetEntry.entries = entries;
 }
 
-function createRefEntry(
-  refName: string,
-  targetName: string,
-  rawName: string,
-): ApiEntryTransform {
-  const entries = {
-    [`${targetName}::${targetName}`]: "alias",
-    [refName]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [
-        {
-          type: rawName,
-          name: "resource",
-        },
-      ],
-      hints: { init: [`${targetName}(resource)`], noexcept: true },
-      doc: [
-        `Constructs from raw ${targetName}.`,
-        {
-          tag: "@param resource",
-          content: `a ${rawName}.`,
-        },
-        "This does not takes ownership!",
-      ],
-    },
-    [`${refName}#2`]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [
-        {
-          type: `const ${targetName} &`,
-          name: "resource",
-        },
-      ],
-      hints: { init: [`${targetName}(resource.get())`], noexcept: true },
-      doc: [
-        `Constructs from ${targetName}.`,
-        {
-          tag: "@param resource",
-          content: `a ${targetName}.`,
-        },
-        "This does not takes ownership!",
-      ],
-    },
-    [`${refName}#3`]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [
-        {
-          type: `${targetName} &&`,
-          name: "resource",
-        },
-      ],
-      hints: {
-        init: [`${targetName}(std::move(resource).release())`],
-        noexcept: true,
-      },
-      doc: [
-        `Constructs from ${targetName}.`,
-        {
-          tag: "@param resource",
-          content: `a ${targetName}.`,
-        },
-        "This will release the ownership from resource!",
-      ],
-    },
-    [`${refName}#4`]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [
-        {
-          type: `const ${refName} &`,
-          name: "other",
-        },
-      ],
-      hints: { init: [`${targetName}(other.get())`], noexcept: true },
-      doc: ["Copy constructor."],
-    },
-    [`${refName}#5`]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [
-        {
-          type: `${refName} &&`,
-          name: "other",
-        },
-      ],
-      hints: { init: [`${targetName}(other.get())`], noexcept: true },
-      doc: ["Move constructor."],
-    },
-    [`~${refName}`]: {
-      kind: "function",
-      doc: ["Destructor"],
-      type: "",
-      parameters: [],
-      hints: { body: "release();" },
-    },
-    [`operator=`]: {
-      kind: "function",
-      type: `${refName} &`,
-      parameters: [{ type: `const ${refName} &`, name: "other" }],
-      hints: {
-        body: `release();${targetName}::operator=(${targetName}(other.get()));\nreturn *this;`,
-        noexcept: true,
-      },
-      doc: [`Assignment operator.`],
-    },
-    [`operator ${rawName}`]: {
-      kind: "function",
-      type: "",
-      immutable: true,
-      constexpr: true,
-      parameters: [],
-      hints: { body: "return get();", noexcept: true },
-      doc: [`Converts to ${rawName}`],
-    },
-  } as Dict<ApiEntryTransform>;
-  return {
-    kind: "struct",
-    name: refName,
-    type: targetName,
-    doc: [`Reference for ${targetName}.`, "This does not take ownership!"],
-    entries,
-  };
-}
-
 function createScopedEntry(
   scopedName: string,
   targetName: string,
@@ -872,7 +740,7 @@ function makeResourceLock(
     if (currDef) {
       combineObject(lockEntry, currDef ?? {});
     } else {
-      lockEntry.after = controlType;
+      lockEntry.after = targetName;
     }
     file.transform[lockName] = lockEntry;
   }

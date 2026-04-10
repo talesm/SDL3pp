@@ -30,8 +30,12 @@ struct Font;
 /// Alias to raw representation for Font.
 using FontRaw = TTF_Font*;
 
-// Forward decl
-struct FontRef;
+/**
+ * Reference for Font.
+ *
+ * This does not take ownership!
+ */
+using FontRef = ResourceRef<Font>;
 
 // Forward decl
 struct TextEngine;
@@ -39,7 +43,11 @@ struct TextEngine;
 /// Alias to raw representation for TextEngine.
 using TextEngineRaw = TTF_TextEngine*;
 
-/// Safely wrap TextEngine for non owning parameters
+/**
+ * Reference for TextEngine.
+ *
+ * This does not take ownership!
+ */
 using TextEngineRef = ResourceLegacyRef<TextEngineRaw>;
 
 // Forward decl
@@ -51,8 +59,12 @@ using TextRaw = TTF_Text*;
 /// Alias to const raw representation for Text.
 using TextRawConst = const TTF_Text*;
 
-// Forward decl
-struct TextRef;
+/**
+ * Reference for Text.
+ *
+ * This does not take ownership!
+ */
+using TextRef = ResourceRef<Text>;
 
 /// Safely wrap Text for non owning const parameters
 using TextConstRef = ResourceConstRef<TextRaw, TextRawConst>;
@@ -1782,78 +1794,6 @@ struct Font : ResourceBase<FontRaw>
    * @sa Font.RenderGlyph_Solid
    */
   Surface RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const;
-};
-
-/**
- * Reference for Font.
- *
- * This does not take ownership!
- */
-struct FontRef : Font
-{
-  using Font::Font;
-
-  /**
-   * Constructs from raw Font.
-   *
-   * @param resource a FontRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr FontRef(FontRaw resource) noexcept
-    : Font(resource)
-  {
-  }
-
-  /**
-   * Constructs from Font.
-   *
-   * @param resource a Font.
-   *
-   * This does not takes ownership!
-   */
-  constexpr FontRef(const Font& resource) noexcept
-    : Font(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Font.
-   *
-   * @param resource a Font.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr FontRef(Font&& resource) noexcept
-    : Font(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr FontRef(const FontRef& other) noexcept
-    : Font(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr FontRef(FontRef&& other) noexcept
-    : Font(other.get())
-  {
-  }
-
-  /// Destructor
-  ~FontRef() { release(); }
-
-  /// Assignment operator.
-  FontRef& operator=(const FontRef& other) noexcept
-  {
-    release();
-    Font::operator=(Font(other.get()));
-    return *this;
-  }
-
-  /// Converts to FontRaw
-  constexpr operator FontRaw() const noexcept { return get(); }
 };
 
 /**
@@ -5051,78 +4991,6 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
 
   /// The number of lines in the text, 0 if it's empty
   int GetNumLines() const { return get()->num_lines; }
-};
-
-/**
- * Reference for Text.
- *
- * This does not take ownership!
- */
-struct TextRef : Text
-{
-  using Text::Text;
-
-  /**
-   * Constructs from raw Text.
-   *
-   * @param resource a TextRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TextRef(TextRaw resource) noexcept
-    : Text(resource)
-  {
-  }
-
-  /**
-   * Constructs from Text.
-   *
-   * @param resource a Text.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TextRef(const Text& resource) noexcept
-    : Text(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Text.
-   *
-   * @param resource a Text.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr TextRef(Text&& resource) noexcept
-    : Text(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr TextRef(const TextRef& other) noexcept
-    : Text(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr TextRef(TextRef&& other) noexcept
-    : Text(other.get())
-  {
-  }
-
-  /// Destructor
-  ~TextRef() { release(); }
-
-  /// Assignment operator.
-  TextRef& operator=(const TextRef& other) noexcept
-  {
-    release();
-    Text::operator=(Text(other.get()));
-    return *this;
-  }
-
-  /// Converts to TextRaw
-  constexpr operator TextRaw() const noexcept { return get(); }
 };
 
 /**

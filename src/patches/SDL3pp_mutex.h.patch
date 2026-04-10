@@ -9,7 +9,7 @@
   *
   * SDL offers several thread synchronization primitives. This document can't
   * cover the complicated topic of thread safety, but reading up on what each of
-@@ -1181,8 +1181,8 @@
+@@ -1053,8 +1053,8 @@
     * pointed to by `sem` has a positive value or the specified time has elapsed.
     * If the call is successful it will atomically decrement the semaphore value.
     *
@@ -20,7 +20,7 @@
     * @returns true if the wait succeeds or false if the wait times out.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -1402,8 +1402,8 @@
+@@ -1202,8 +1202,8 @@
   * call is successful it will atomically decrement the semaphore value.
   *
   * @param sem the semaphore to wait on.
@@ -31,7 +31,7 @@
   * @returns true if the wait succeeds or false if the wait times out.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1417,7 +1417,7 @@
+@@ -1217,7 +1217,7 @@
  inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                   std::chrono::milliseconds timeout)
  {
@@ -40,7 +40,7 @@
  }
  
  inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
-@@ -1615,8 +1615,8 @@
+@@ -1415,8 +1415,8 @@
     * behavior.
     *
     * @param mutex the mutex used to coordinate thread access.
@@ -51,7 +51,7 @@
     * @returns true if the condition variable is signaled, false if the condition
     *          is not signaled in the allotted time.
     *
-@@ -1829,8 +1829,8 @@
+@@ -1557,8 +1557,8 @@
   *
   * @param cond the condition variable to wait on.
   * @param mutex the mutex used to coordinate thread access.
@@ -62,7 +62,7 @@
   * @returns true if the condition variable is signaled, false if the condition
   *          is not signaled in the allotted time.
   *
-@@ -1846,7 +1846,7 @@
+@@ -1574,7 +1574,7 @@
                                   MutexRef mutex,
                                   std::chrono::milliseconds timeout)
  {
@@ -71,7 +71,7 @@
  }
  
  inline bool Condition::WaitTimeout(MutexRef mutex,
-@@ -1879,8 +1879,8 @@
+@@ -1607,8 +1607,8 @@
   *
   * Here is an example of using this:
   *
@@ -82,7 +82,7 @@
   *
   *    bool InitSystem(void)
   *    {
-@@ -1934,7 +1934,7 @@
+@@ -1662,7 +1662,7 @@
  struct InitState : InitStateRaw
  {
    constexpr InitState()

@@ -29,8 +29,12 @@ struct Sensor;
 /// Alias to raw representation for Sensor.
 using SensorRaw = SDL_Sensor*;
 
-// Forward decl
-struct SensorRef;
+/**
+ * Reference for Sensor.
+ *
+ * This does not take ownership!
+ */
+using SensorRef = ResourceRef<Sensor>;
 
 /**
  * This is a unique ID for a sensor for the time it is connected to the system,
@@ -252,78 +256,6 @@ struct Sensor : ResourceBase<SensorRaw>
    * @since This function is available since SDL 3.2.0.
    */
   void GetData(float* data, int num_values);
-};
-
-/**
- * Reference for Sensor.
- *
- * This does not take ownership!
- */
-struct SensorRef : Sensor
-{
-  using Sensor::Sensor;
-
-  /**
-   * Constructs from raw Sensor.
-   *
-   * @param resource a SensorRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SensorRef(SensorRaw resource) noexcept
-    : Sensor(resource)
-  {
-  }
-
-  /**
-   * Constructs from Sensor.
-   *
-   * @param resource a Sensor.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SensorRef(const Sensor& resource) noexcept
-    : Sensor(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Sensor.
-   *
-   * @param resource a Sensor.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr SensorRef(Sensor&& resource) noexcept
-    : Sensor(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr SensorRef(const SensorRef& other) noexcept
-    : Sensor(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr SensorRef(SensorRef&& other) noexcept
-    : Sensor(other.get())
-  {
-  }
-
-  /// Destructor
-  ~SensorRef() { release(); }
-
-  /// Assignment operator.
-  SensorRef& operator=(const SensorRef& other) noexcept
-  {
-    release();
-    Sensor::operator=(Sensor(other.get()));
-    return *this;
-  }
-
-  /// Converts to SensorRaw
-  constexpr operator SensorRaw() const noexcept { return get(); }
 };
 
 /**

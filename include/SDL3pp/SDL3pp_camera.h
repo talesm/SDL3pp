@@ -63,8 +63,12 @@ struct Camera;
 /// Alias to raw representation for Camera.
 using CameraRaw = SDL_Camera*;
 
-// Forward decl
-struct CameraRef;
+/**
+ * Reference for Camera.
+ *
+ * This does not take ownership!
+ */
+using CameraRef = ResourceRef<Camera>;
 
 // Forward decl
 struct CameraFrame;
@@ -404,78 +408,6 @@ struct Camera : ResourceBase<CameraRaw>
    * @sa Camera.AcquireFrame
    */
   void ReleaseFrame(CameraFrame&& lock);
-};
-
-/**
- * Reference for Camera.
- *
- * This does not take ownership!
- */
-struct CameraRef : Camera
-{
-  using Camera::Camera;
-
-  /**
-   * Constructs from raw Camera.
-   *
-   * @param resource a CameraRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CameraRef(CameraRaw resource) noexcept
-    : Camera(resource)
-  {
-  }
-
-  /**
-   * Constructs from Camera.
-   *
-   * @param resource a Camera.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CameraRef(const Camera& resource) noexcept
-    : Camera(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Camera.
-   *
-   * @param resource a Camera.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr CameraRef(Camera&& resource) noexcept
-    : Camera(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr CameraRef(const CameraRef& other) noexcept
-    : Camera(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr CameraRef(CameraRef&& other) noexcept
-    : Camera(other.get())
-  {
-  }
-
-  /// Destructor
-  ~CameraRef() { release(); }
-
-  /// Assignment operator.
-  CameraRef& operator=(const CameraRef& other) noexcept
-  {
-    release();
-    Camera::operator=(Camera(other.get()));
-    return *this;
-  }
-
-  /// Converts to CameraRaw
-  constexpr operator CameraRaw() const noexcept { return get(); }
 };
 
 /// Camera Frame.

@@ -36,8 +36,12 @@ struct Process;
 /// Alias to raw representation for Process.
 using ProcessRaw = SDL_Process*;
 
-// Forward decl
-struct ProcessRef;
+/**
+ * Reference for Process.
+ *
+ * This does not take ownership!
+ */
+using ProcessRef = ResourceRef<Process>;
 
 /**
  * Description of where standard I/O should be directed when creating a process.
@@ -468,78 +472,6 @@ struct Process : ResourceBase<ProcessRaw>
    * @sa Process.Destroy
    */
   bool Wait(bool block, int* exitcode);
-};
-
-/**
- * Reference for Process.
- *
- * This does not take ownership!
- */
-struct ProcessRef : Process
-{
-  using Process::Process;
-
-  /**
-   * Constructs from raw Process.
-   *
-   * @param resource a ProcessRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ProcessRef(ProcessRaw resource) noexcept
-    : Process(resource)
-  {
-  }
-
-  /**
-   * Constructs from Process.
-   *
-   * @param resource a Process.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ProcessRef(const Process& resource) noexcept
-    : Process(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Process.
-   *
-   * @param resource a Process.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ProcessRef(Process&& resource) noexcept
-    : Process(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ProcessRef(const ProcessRef& other) noexcept
-    : Process(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ProcessRef(ProcessRef&& other) noexcept
-    : Process(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ProcessRef() { release(); }
-
-  /// Assignment operator.
-  ProcessRef& operator=(const ProcessRef& other) noexcept
-  {
-    release();
-    Process::operator=(Process(other.get()));
-    return *this;
-  }
-
-  /// Converts to ProcessRaw
-  constexpr operator ProcessRaw() const noexcept { return get(); }
 };
 
 /**

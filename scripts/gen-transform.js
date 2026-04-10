@@ -7933,7 +7933,15 @@ const transform = {
         "SDL_PROP_WINDOW_": "prop::Window"
       },
       transform: {
-        "RendererRef": { kind: "forward" },
+        "Renderer": { kind: "forward" },
+        "RendererRef": {
+          kind: "alias",
+          type: "ResourceRef<Renderer>",
+          doc: [
+            "Reference for Renderer.",
+            "This does not take ownership!"
+          ],
+        },
         "SDL_WINDOWPOS_UNDEFINED_MASK": { kind: "var", type: "int", constexpr: true },
         "SDL_WINDOWPOS_UNDEFINED_DISPLAY": {
           kind: "function",

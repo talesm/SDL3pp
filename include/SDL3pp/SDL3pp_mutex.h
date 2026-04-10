@@ -33,8 +33,12 @@ struct Mutex;
 /// Alias to raw representation for Mutex.
 using MutexRaw = SDL_Mutex*;
 
-// Forward decl
-struct MutexRef;
+/**
+ * Reference for Mutex.
+ *
+ * This does not take ownership!
+ */
+using MutexRef = ResourceRef<Mutex>;
 
 // Forward decl
 struct RWLock;
@@ -42,8 +46,12 @@ struct RWLock;
 /// Alias to raw representation for RWLock.
 using RWLockRaw = SDL_RWLock*;
 
-// Forward decl
-struct RWLockRef;
+/**
+ * Reference for RWLock.
+ *
+ * This does not take ownership!
+ */
+using RWLockRef = ResourceRef<RWLock>;
 
 // Forward decl
 struct Semaphore;
@@ -51,8 +59,12 @@ struct Semaphore;
 /// Alias to raw representation for Semaphore.
 using SemaphoreRaw = SDL_Semaphore*;
 
-// Forward decl
-struct SemaphoreRef;
+/**
+ * Reference for Semaphore.
+ *
+ * This does not take ownership!
+ */
+using SemaphoreRef = ResourceRef<Semaphore>;
 
 // Forward decl
 struct Condition;
@@ -60,8 +72,12 @@ struct Condition;
 /// Alias to raw representation for Condition.
 using ConditionRaw = SDL_Condition*;
 
-// Forward decl
-struct ConditionRef;
+/**
+ * Reference for Condition.
+ *
+ * This does not take ownership!
+ */
+using ConditionRef = ResourceRef<Condition>;
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -231,78 +247,6 @@ struct Mutex : ResourceBase<MutexRaw>
    * @sa Mutex.TryLock
    */
   void Unlock();
-};
-
-/**
- * Reference for Mutex.
- *
- * This does not take ownership!
- */
-struct MutexRef : Mutex
-{
-  using Mutex::Mutex;
-
-  /**
-   * Constructs from raw Mutex.
-   *
-   * @param resource a MutexRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MutexRef(MutexRaw resource) noexcept
-    : Mutex(resource)
-  {
-  }
-
-  /**
-   * Constructs from Mutex.
-   *
-   * @param resource a Mutex.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MutexRef(const Mutex& resource) noexcept
-    : Mutex(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Mutex.
-   *
-   * @param resource a Mutex.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr MutexRef(Mutex&& resource) noexcept
-    : Mutex(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr MutexRef(const MutexRef& other) noexcept
-    : Mutex(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr MutexRef(MutexRef&& other) noexcept
-    : Mutex(other.get())
-  {
-  }
-
-  /// Destructor
-  ~MutexRef() { release(); }
-
-  /// Assignment operator.
-  MutexRef& operator=(const MutexRef& other) noexcept
-  {
-    release();
-    Mutex::operator=(Mutex(other.get()));
-    return *this;
-  }
-
-  /// Converts to MutexRaw
-  constexpr operator MutexRaw() const noexcept { return get(); }
 };
 
 /**
@@ -705,78 +649,6 @@ struct RWLock : ResourceBase<RWLockRaw>
    * @sa RWLock.TryLockForWriting
    */
   void Unlock();
-};
-
-/**
- * Reference for RWLock.
- *
- * This does not take ownership!
- */
-struct RWLockRef : RWLock
-{
-  using RWLock::RWLock;
-
-  /**
-   * Constructs from raw RWLock.
-   *
-   * @param resource a RWLockRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr RWLockRef(RWLockRaw resource) noexcept
-    : RWLock(resource)
-  {
-  }
-
-  /**
-   * Constructs from RWLock.
-   *
-   * @param resource a RWLock.
-   *
-   * This does not takes ownership!
-   */
-  constexpr RWLockRef(const RWLock& resource) noexcept
-    : RWLock(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from RWLock.
-   *
-   * @param resource a RWLock.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr RWLockRef(RWLock&& resource) noexcept
-    : RWLock(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr RWLockRef(const RWLockRef& other) noexcept
-    : RWLock(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr RWLockRef(RWLockRef&& other) noexcept
-    : RWLock(other.get())
-  {
-  }
-
-  /// Destructor
-  ~RWLockRef() { release(); }
-
-  /// Assignment operator.
-  RWLockRef& operator=(const RWLockRef& other) noexcept
-  {
-    release();
-    RWLock::operator=(RWLock(other.get()));
-    return *this;
-  }
-
-  /// Converts to RWLockRaw
-  constexpr operator RWLockRaw() const noexcept { return get(); }
 };
 
 /**
@@ -1221,78 +1093,6 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
 };
 
 /**
- * Reference for Semaphore.
- *
- * This does not take ownership!
- */
-struct SemaphoreRef : Semaphore
-{
-  using Semaphore::Semaphore;
-
-  /**
-   * Constructs from raw Semaphore.
-   *
-   * @param resource a SemaphoreRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SemaphoreRef(SemaphoreRaw resource) noexcept
-    : Semaphore(resource)
-  {
-  }
-
-  /**
-   * Constructs from Semaphore.
-   *
-   * @param resource a Semaphore.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SemaphoreRef(const Semaphore& resource) noexcept
-    : Semaphore(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Semaphore.
-   *
-   * @param resource a Semaphore.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr SemaphoreRef(Semaphore&& resource) noexcept
-    : Semaphore(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr SemaphoreRef(const SemaphoreRef& other) noexcept
-    : Semaphore(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr SemaphoreRef(SemaphoreRef&& other) noexcept
-    : Semaphore(other.get())
-  {
-  }
-
-  /// Destructor
-  ~SemaphoreRef() { release(); }
-
-  /// Assignment operator.
-  SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
-  {
-    release();
-    Semaphore::operator=(Semaphore(other.get()));
-    return *this;
-  }
-
-  /// Converts to SemaphoreRaw
-  constexpr operator SemaphoreRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a semaphore.
  *
  * This function creates a new semaphore and initializes it with the value
@@ -1629,78 +1429,6 @@ struct Condition : ResourceBase<ConditionRaw>
    * @sa Condition.Wait
    */
   bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout);
-};
-
-/**
- * Reference for Condition.
- *
- * This does not take ownership!
- */
-struct ConditionRef : Condition
-{
-  using Condition::Condition;
-
-  /**
-   * Constructs from raw Condition.
-   *
-   * @param resource a ConditionRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ConditionRef(ConditionRaw resource) noexcept
-    : Condition(resource)
-  {
-  }
-
-  /**
-   * Constructs from Condition.
-   *
-   * @param resource a Condition.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ConditionRef(const Condition& resource) noexcept
-    : Condition(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Condition.
-   *
-   * @param resource a Condition.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ConditionRef(Condition&& resource) noexcept
-    : Condition(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ConditionRef(const ConditionRef& other) noexcept
-    : Condition(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ConditionRef(ConditionRef&& other) noexcept
-    : Condition(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ConditionRef() { release(); }
-
-  /// Assignment operator.
-  ConditionRef& operator=(const ConditionRef& other) noexcept
-  {
-    release();
-    Condition::operator=(Condition(other.get()));
-    return *this;
-  }
-
-  /// Converts to ConditionRaw
-  constexpr operator ConditionRaw() const noexcept { return get(); }
 };
 
 /**

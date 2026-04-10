@@ -74,8 +74,12 @@ struct Gamepad;
 /// Alias to raw representation for Gamepad.
 using GamepadRaw = SDL_Gamepad*;
 
-// Forward decl
-struct GamepadRef;
+/**
+ * Reference for Gamepad.
+ *
+ * This does not take ownership!
+ */
+using GamepadRef = ResourceRef<Gamepad>;
 
 /**
  * Standard gamepad types.
@@ -1100,78 +1104,6 @@ struct Gamepad : ResourceBase<GamepadRaw>
    * @sa Gamepad.GetAppleSFSymbolsNameForButton
    */
   const char* GetAppleSFSymbolsNameForAxis(GamepadAxis axis);
-};
-
-/**
- * Reference for Gamepad.
- *
- * This does not take ownership!
- */
-struct GamepadRef : Gamepad
-{
-  using Gamepad::Gamepad;
-
-  /**
-   * Constructs from raw Gamepad.
-   *
-   * @param resource a GamepadRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GamepadRef(GamepadRaw resource) noexcept
-    : Gamepad(resource)
-  {
-  }
-
-  /**
-   * Constructs from Gamepad.
-   *
-   * @param resource a Gamepad.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GamepadRef(const Gamepad& resource) noexcept
-    : Gamepad(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Gamepad.
-   *
-   * @param resource a Gamepad.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr GamepadRef(Gamepad&& resource) noexcept
-    : Gamepad(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr GamepadRef(const GamepadRef& other) noexcept
-    : Gamepad(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr GamepadRef(GamepadRef&& other) noexcept
-    : Gamepad(other.get())
-  {
-  }
-
-  /// Destructor
-  ~GamepadRef() { release(); }
-
-  /// Assignment operator.
-  GamepadRef& operator=(const GamepadRef& other) noexcept
-  {
-    release();
-    Gamepad::operator=(Gamepad(other.get()));
-    return *this;
-  }
-
-  /// Converts to GamepadRaw
-  constexpr operator GamepadRaw() const noexcept { return get(); }
 };
 
 /**

@@ -46,8 +46,12 @@ struct Properties;
 /// Alias to raw representation for Properties.
 using PropertiesID = SDL_PropertiesID;
 
-// Forward decl
-struct PropertiesRef;
+/**
+ * Reference for Properties.
+ *
+ * This does not take ownership!
+ */
+using PropertiesRef = ResourceRef<Properties>;
 
 // Forward decl
 struct PropertiesLock;
@@ -654,78 +658,6 @@ struct Properties : ResourceBase<PropertiesID>
    * @return Uint64
    */
   Uint64 GetCount();
-};
-
-/**
- * Reference for Properties.
- *
- * This does not take ownership!
- */
-struct PropertiesRef : Properties
-{
-  using Properties::Properties;
-
-  /**
-   * Constructs from raw Properties.
-   *
-   * @param resource a PropertiesID.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PropertiesRef(PropertiesID resource) noexcept
-    : Properties(resource)
-  {
-  }
-
-  /**
-   * Constructs from Properties.
-   *
-   * @param resource a Properties.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PropertiesRef(const Properties& resource) noexcept
-    : Properties(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Properties.
-   *
-   * @param resource a Properties.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr PropertiesRef(Properties&& resource) noexcept
-    : Properties(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr PropertiesRef(const PropertiesRef& other) noexcept
-    : Properties(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr PropertiesRef(PropertiesRef&& other) noexcept
-    : Properties(other.get())
-  {
-  }
-
-  /// Destructor
-  ~PropertiesRef() { release(); }
-
-  /// Assignment operator.
-  PropertiesRef& operator=(const PropertiesRef& other) noexcept
-  {
-    release();
-    Properties::operator=(Properties(other.get()));
-    return *this;
-  }
-
-  /// Converts to PropertiesID
-  constexpr operator PropertiesID() const noexcept { return get(); }
 };
 
 /**

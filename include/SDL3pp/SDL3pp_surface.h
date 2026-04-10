@@ -46,8 +46,12 @@ using SurfaceRaw = SDL_Surface*;
 /// Alias to const raw representation for Surface.
 using SurfaceRawConst = const SDL_Surface*;
 
-// Forward decl
-struct SurfaceRef;
+/**
+ * Reference for Surface.
+ *
+ * This does not take ownership!
+ */
+using SurfaceRef = ResourceRef<Surface>;
 
 /// Safely wrap Surface for non owning const parameters
 using SurfaceConstRef = ResourceConstRef<SurfaceRaw, SurfaceRawConst>;
@@ -1852,78 +1856,6 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
   void SaveTyped_IO(IOStreamRef dst,
                     StringParam type,
                     bool closeio = false) const;
-};
-
-/**
- * Reference for Surface.
- *
- * This does not take ownership!
- */
-struct SurfaceRef : Surface
-{
-  using Surface::Surface;
-
-  /**
-   * Constructs from raw Surface.
-   *
-   * @param resource a SurfaceRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SurfaceRef(SurfaceRaw resource) noexcept
-    : Surface(resource)
-  {
-  }
-
-  /**
-   * Constructs from Surface.
-   *
-   * @param resource a Surface.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SurfaceRef(const Surface& resource) noexcept
-    : Surface(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Surface.
-   *
-   * @param resource a Surface.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr SurfaceRef(Surface&& resource) noexcept
-    : Surface(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr SurfaceRef(const SurfaceRef& other) noexcept
-    : Surface(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr SurfaceRef(SurfaceRef&& other) noexcept
-    : Surface(other.get())
-  {
-  }
-
-  /// Destructor
-  ~SurfaceRef() { release(); }
-
-  /// Assignment operator.
-  SurfaceRef& operator=(const SurfaceRef& other) noexcept
-  {
-    release();
-    Surface::operator=(Surface(other.get()));
-    return *this;
-  }
-
-  /// Converts to SurfaceRaw
-  constexpr operator SurfaceRaw() const noexcept { return get(); }
 };
 
 /**

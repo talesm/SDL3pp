@@ -229,8 +229,12 @@ struct Storage;
 /// Alias to raw representation for Storage.
 using StorageRaw = SDL_Storage*;
 
-// Forward decl
-struct StorageRef;
+/**
+ * Reference for Storage.
+ *
+ * This does not take ownership!
+ */
+using StorageRef = ResourceRef<Storage>;
 
 /**
  * Function interface for Storage.
@@ -717,78 +721,6 @@ struct Storage : ResourceBase<StorageRaw>
   OwnArray<char*> GlobDirectory(StringParam path,
                                 StringParam pattern,
                                 GlobFlags flags);
-};
-
-/**
- * Reference for Storage.
- *
- * This does not take ownership!
- */
-struct StorageRef : Storage
-{
-  using Storage::Storage;
-
-  /**
-   * Constructs from raw Storage.
-   *
-   * @param resource a StorageRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr StorageRef(StorageRaw resource) noexcept
-    : Storage(resource)
-  {
-  }
-
-  /**
-   * Constructs from Storage.
-   *
-   * @param resource a Storage.
-   *
-   * This does not takes ownership!
-   */
-  constexpr StorageRef(const Storage& resource) noexcept
-    : Storage(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Storage.
-   *
-   * @param resource a Storage.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr StorageRef(Storage&& resource) noexcept
-    : Storage(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr StorageRef(const StorageRef& other) noexcept
-    : Storage(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr StorageRef(StorageRef&& other) noexcept
-    : Storage(other.get())
-  {
-  }
-
-  /// Destructor
-  ~StorageRef() { release(); }
-
-  /// Assignment operator.
-  StorageRef& operator=(const StorageRef& other) noexcept
-  {
-    release();
-    Storage::operator=(Storage(other.get()));
-    return *this;
-  }
-
-  /// Converts to StorageRaw
-  constexpr operator StorageRaw() const noexcept { return get(); }
 };
 
 /**

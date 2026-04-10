@@ -50,8 +50,12 @@ struct Cursor;
 /// Alias to raw representation for Cursor.
 using CursorRaw = SDL_Cursor*;
 
-// Forward decl
-struct CursorRef;
+/**
+ * Reference for Cursor.
+ *
+ * This does not take ownership!
+ */
+using CursorRef = ResourceRef<Cursor>;
 
 /**
  * Cursor types for CreateSystemCursor().
@@ -322,78 +326,6 @@ struct Cursor : ResourceBase<CursorRaw>
    * @sa GetCursor
    */
   void Set();
-};
-
-/**
- * Reference for Cursor.
- *
- * This does not take ownership!
- */
-struct CursorRef : Cursor
-{
-  using Cursor::Cursor;
-
-  /**
-   * Constructs from raw Cursor.
-   *
-   * @param resource a CursorRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CursorRef(CursorRaw resource) noexcept
-    : Cursor(resource)
-  {
-  }
-
-  /**
-   * Constructs from Cursor.
-   *
-   * @param resource a Cursor.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CursorRef(const Cursor& resource) noexcept
-    : Cursor(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Cursor.
-   *
-   * @param resource a Cursor.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr CursorRef(Cursor&& resource) noexcept
-    : Cursor(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr CursorRef(const CursorRef& other) noexcept
-    : Cursor(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr CursorRef(CursorRef&& other) noexcept
-    : Cursor(other.get())
-  {
-  }
-
-  /// Destructor
-  ~CursorRef() { release(); }
-
-  /// Assignment operator.
-  CursorRef& operator=(const CursorRef& other) noexcept
-  {
-    release();
-    Cursor::operator=(Cursor(other.get()));
-    return *this;
-  }
-
-  /// Converts to CursorRaw
-  constexpr operator CursorRaw() const noexcept { return get(); }
 };
 
 /**

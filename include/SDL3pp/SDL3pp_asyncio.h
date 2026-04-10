@@ -92,8 +92,12 @@ struct AsyncIO;
 /// Alias to raw representation for AsyncIO.
 using AsyncIORaw = SDL_AsyncIO*;
 
-// Forward decl
-struct AsyncIORef;
+/**
+ * Reference for AsyncIO.
+ *
+ * This does not take ownership!
+ */
+using AsyncIORef = ResourceRef<AsyncIO>;
 
 // Forward decl
 struct AsyncIOQueue;
@@ -101,8 +105,12 @@ struct AsyncIOQueue;
 /// Alias to raw representation for AsyncIOQueue.
 using AsyncIOQueueRaw = SDL_AsyncIOQueue*;
 
-// Forward decl
-struct AsyncIOQueueRef;
+/**
+ * Reference for AsyncIOQueue.
+ *
+ * This does not take ownership!
+ */
+using AsyncIOQueueRef = ResourceRef<AsyncIOQueue>;
 
 /**
  * The asynchronous I/O operation structure.
@@ -346,78 +354,6 @@ struct AsyncIO : ResourceBase<AsyncIORaw>
              Uint64 size,
              AsyncIOQueueRef queue,
              void* userdata);
-};
-
-/**
- * Reference for AsyncIO.
- *
- * This does not take ownership!
- */
-struct AsyncIORef : AsyncIO
-{
-  using AsyncIO::AsyncIO;
-
-  /**
-   * Constructs from raw AsyncIO.
-   *
-   * @param resource a AsyncIORaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIORef(AsyncIORaw resource) noexcept
-    : AsyncIO(resource)
-  {
-  }
-
-  /**
-   * Constructs from AsyncIO.
-   *
-   * @param resource a AsyncIO.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIORef(const AsyncIO& resource) noexcept
-    : AsyncIO(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AsyncIO.
-   *
-   * @param resource a AsyncIO.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AsyncIORef(AsyncIO&& resource) noexcept
-    : AsyncIO(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AsyncIORef(const AsyncIORef& other) noexcept
-    : AsyncIO(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AsyncIORef(AsyncIORef&& other) noexcept
-    : AsyncIO(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AsyncIORef() { release(); }
-
-  /// Assignment operator.
-  AsyncIORef& operator=(const AsyncIORef& other) noexcept
-  {
-    release();
-    AsyncIO::operator=(AsyncIO(other.get()));
-    return *this;
-  }
-
-  /// Converts to AsyncIORaw
-  constexpr operator AsyncIORaw() const noexcept { return get(); }
 };
 
 /**
@@ -691,78 +627,6 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
    * @sa AsyncIOQueue.WaitResult
    */
   void Signal();
-};
-
-/**
- * Reference for AsyncIOQueue.
- *
- * This does not take ownership!
- */
-struct AsyncIOQueueRef : AsyncIOQueue
-{
-  using AsyncIOQueue::AsyncIOQueue;
-
-  /**
-   * Constructs from raw AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueueRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
-    : AsyncIOQueue(resource)
-  {
-  }
-
-  /**
-   * Constructs from AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueue.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIOQueueRef(const AsyncIOQueue& resource) noexcept
-    : AsyncIOQueue(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueue.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AsyncIOQueueRef(AsyncIOQueue&& resource) noexcept
-    : AsyncIOQueue(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
-    : AsyncIOQueue(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AsyncIOQueueRef(AsyncIOQueueRef&& other) noexcept
-    : AsyncIOQueue(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AsyncIOQueueRef() { release(); }
-
-  /// Assignment operator.
-  AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
-  {
-    release();
-    AsyncIOQueue::operator=(AsyncIOQueue(other.get()));
-    return *this;
-  }
-
-  /// Converts to AsyncIOQueueRaw
-  constexpr operator AsyncIOQueueRaw() const noexcept { return get(); }
 };
 
 /**

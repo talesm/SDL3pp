@@ -150,6 +150,81 @@ private:
   RawConstPointer m_resource; ///< parameter's Surface
 };
 
+/// A non-owning reference wrapper for a given resource
+template<typename RESOURCE>
+struct ResourceRef : RESOURCE
+{
+  using RESOURCE::RESOURCE;
+
+  /// The underlying raw pointer type.
+  using RawPointer = RESOURCE::RawPointer;
+
+  /// The underlying const raw pointer type.
+  using RawConstPointer = RESOURCE::RawConstPointer;
+
+  /**
+   * Constructs from raw resource.
+   *
+   * @param resource a raw pointer.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ResourceRef(RawPointer resource) noexcept
+    : RESOURCE(resource)
+  {
+  }
+
+  /**
+   * Constructs from resource.
+   *
+   * @param resource a RESOURCE.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ResourceRef(const RESOURCE& resource) noexcept
+    : RESOURCE(resource.get())
+  {
+  }
+
+  /**
+   * Constructs from RESOURCE.
+   *
+   * @param resource a RESOURCE.
+   *
+   * This will release the ownership from resource!
+   */
+  constexpr ResourceRef(RESOURCE&& resource) noexcept
+    : RESOURCE(std::move(resource).release())
+  {
+  }
+
+  /// Copy constructor.
+  constexpr ResourceRef(const ResourceRef& other) noexcept
+    : RESOURCE(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ResourceRef(ResourceRef&& other) noexcept
+    : RESOURCE(other.get())
+  {
+  }
+
+  /// Destructor
+  ~ResourceRef() { this->release(); }
+
+  /// Assignment operator.
+  ResourceRef& operator=(const ResourceRef& other) noexcept
+  {
+    this->release();
+    RESOURCE::operator=(RESOURCE(other.get()));
+    return *this;
+  }
+
+  /// Converts to raw pointer.
+  constexpr operator RawPointer() const noexcept { return this->get(); }
+};
+
 /// @}
 
 } // namespace SDL

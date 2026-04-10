@@ -60,8 +60,12 @@ struct Joystick;
 /// Alias to raw representation for Joystick.
 using JoystickRaw = SDL_Joystick*;
 
-// Forward decl
-struct JoystickRef;
+/**
+ * Reference for Joystick.
+ *
+ * This does not take ownership!
+ */
+using JoystickRef = ResourceRef<Joystick>;
 
 /// Alias to raw representation for JoystickID.
 using JoystickIDRaw = SDL_JoystickID;
@@ -1142,78 +1146,6 @@ struct Joystick : ResourceBase<JoystickRaw>
    * @since This function is available since SDL 3.2.0.
    */
   PowerState GetPowerInfo(int* percent);
-};
-
-/**
- * Reference for Joystick.
- *
- * This does not take ownership!
- */
-struct JoystickRef : Joystick
-{
-  using Joystick::Joystick;
-
-  /**
-   * Constructs from raw Joystick.
-   *
-   * @param resource a JoystickRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr JoystickRef(JoystickRaw resource) noexcept
-    : Joystick(resource)
-  {
-  }
-
-  /**
-   * Constructs from Joystick.
-   *
-   * @param resource a Joystick.
-   *
-   * This does not takes ownership!
-   */
-  constexpr JoystickRef(const Joystick& resource) noexcept
-    : Joystick(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Joystick.
-   *
-   * @param resource a Joystick.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr JoystickRef(Joystick&& resource) noexcept
-    : Joystick(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr JoystickRef(const JoystickRef& other) noexcept
-    : Joystick(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr JoystickRef(JoystickRef&& other) noexcept
-    : Joystick(other.get())
-  {
-  }
-
-  /// Destructor
-  ~JoystickRef() { release(); }
-
-  /// Assignment operator.
-  JoystickRef& operator=(const JoystickRef& other) noexcept
-  {
-    release();
-    Joystick::operator=(Joystick(other.get()));
-    return *this;
-  }
-
-  /// Converts to JoystickRaw
-  constexpr operator JoystickRaw() const noexcept { return get(); }
 };
 
 /**

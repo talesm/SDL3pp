@@ -46,8 +46,12 @@ struct Window;
 /// Alias to raw representation for Window.
 using WindowRaw = SDL_Window*;
 
-// Forward decl
-struct WindowRef;
+/**
+ * Reference for Window.
+ *
+ * This does not take ownership!
+ */
+using WindowRef = ResourceRef<Window>;
 
 // Forward decl
 struct GLContext;
@@ -61,8 +65,14 @@ struct GLContextScoped;
 /// Alias to GLContext for non owning parameters.
 using GLContextRef = GLContext;
 
-// Forward decl
-struct RendererRef;
+struct Renderer;
+
+/**
+ * Reference for Renderer.
+ *
+ * This does not take ownership!
+ */
+using RendererRef = ResourceRef<Renderer>;
 
 /**
  * Display orientation values; the way a display is rotated.
@@ -3066,78 +3076,6 @@ struct Window : ResourceBase<WindowRaw>
    * @since This function is available since SDL 3.2.0.
    */
   RendererRef GetRenderer() const;
-};
-
-/**
- * Reference for Window.
- *
- * This does not take ownership!
- */
-struct WindowRef : Window
-{
-  using Window::Window;
-
-  /**
-   * Constructs from raw Window.
-   *
-   * @param resource a WindowRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr WindowRef(WindowRaw resource) noexcept
-    : Window(resource)
-  {
-  }
-
-  /**
-   * Constructs from Window.
-   *
-   * @param resource a Window.
-   *
-   * This does not takes ownership!
-   */
-  constexpr WindowRef(const Window& resource) noexcept
-    : Window(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Window.
-   *
-   * @param resource a Window.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr WindowRef(Window&& resource) noexcept
-    : Window(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr WindowRef(const WindowRef& other) noexcept
-    : Window(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr WindowRef(WindowRef&& other) noexcept
-    : Window(other.get())
-  {
-  }
-
-  /// Destructor
-  ~WindowRef() { release(); }
-
-  /// Assignment operator.
-  WindowRef& operator=(const WindowRef& other) noexcept
-  {
-    release();
-    Window::operator=(Window(other.get()));
-    return *this;
-  }
-
-  /// Converts to WindowRaw
-  constexpr operator WindowRaw() const noexcept { return get(); }
 };
 
 /**

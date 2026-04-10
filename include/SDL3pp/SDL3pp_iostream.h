@@ -26,8 +26,12 @@ struct IOStream;
 /// Alias to raw representation for IOStream.
 using IOStreamRaw = SDL_IOStream*;
 
-// Forward decl
-struct IOStreamRef;
+/**
+ * Reference for IOStream.
+ *
+ * This does not take ownership!
+ */
+using IOStreamRef = ResourceRef<IOStream>;
 
 /**
  * IOStream status, set by a read or write operation.
@@ -1592,78 +1596,6 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * @since This function is available since SDL 3.2.0.
    */
   void WriteS64BE(Sint64 value);
-};
-
-/**
- * Reference for IOStream.
- *
- * This does not take ownership!
- */
-struct IOStreamRef : IOStream
-{
-  using IOStream::IOStream;
-
-  /**
-   * Constructs from raw IOStream.
-   *
-   * @param resource a IOStreamRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr IOStreamRef(IOStreamRaw resource) noexcept
-    : IOStream(resource)
-  {
-  }
-
-  /**
-   * Constructs from IOStream.
-   *
-   * @param resource a IOStream.
-   *
-   * This does not takes ownership!
-   */
-  constexpr IOStreamRef(const IOStream& resource) noexcept
-    : IOStream(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from IOStream.
-   *
-   * @param resource a IOStream.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr IOStreamRef(IOStream&& resource) noexcept
-    : IOStream(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr IOStreamRef(const IOStreamRef& other) noexcept
-    : IOStream(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr IOStreamRef(IOStreamRef&& other) noexcept
-    : IOStream(other.get())
-  {
-  }
-
-  /// Destructor
-  ~IOStreamRef() { release(); }
-
-  /// Assignment operator.
-  IOStreamRef& operator=(const IOStreamRef& other) noexcept
-  {
-    release();
-    IOStream::operator=(IOStream(other.get()));
-    return *this;
-  }
-
-  /// Converts to IOStreamRaw
-  constexpr operator IOStreamRaw() const noexcept { return get(); }
 };
 
 /**

@@ -51,8 +51,12 @@ struct Environment;
 /// Alias to raw representation for Environment.
 using EnvironmentRaw = SDL_Environment*;
 
-// Forward decl
-struct EnvironmentRef;
+/**
+ * Reference for Environment.
+ *
+ * This does not take ownership!
+ */
+using EnvironmentRef = ResourceRef<Environment>;
 
 // Forward decl
 struct IConv;
@@ -60,8 +64,12 @@ struct IConv;
 /// Alias to raw representation for IConv.
 using IConvRaw = SDL_iconv_t;
 
-// Forward decl
-struct IConvRef;
+/**
+ * Reference for IConv.
+ *
+ * This does not take ownership!
+ */
+using IConvRef = ResourceRef<IConv>;
 
 #ifdef SDL3PP_DOC
 
@@ -1079,78 +1087,6 @@ struct Environment : ResourceBase<EnvironmentRaw>
    * @sa Environment.UnsetVariable
    */
   void UnsetVariable(StringParam name);
-};
-
-/**
- * Reference for Environment.
- *
- * This does not take ownership!
- */
-struct EnvironmentRef : Environment
-{
-  using Environment::Environment;
-
-  /**
-   * Constructs from raw Environment.
-   *
-   * @param resource a EnvironmentRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr EnvironmentRef(EnvironmentRaw resource) noexcept
-    : Environment(resource)
-  {
-  }
-
-  /**
-   * Constructs from Environment.
-   *
-   * @param resource a Environment.
-   *
-   * This does not takes ownership!
-   */
-  constexpr EnvironmentRef(const Environment& resource) noexcept
-    : Environment(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Environment.
-   *
-   * @param resource a Environment.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr EnvironmentRef(Environment&& resource) noexcept
-    : Environment(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept
-    : Environment(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr EnvironmentRef(EnvironmentRef&& other) noexcept
-    : Environment(other.get())
-  {
-  }
-
-  /// Destructor
-  ~EnvironmentRef() { release(); }
-
-  /// Assignment operator.
-  EnvironmentRef& operator=(const EnvironmentRef& other) noexcept
-  {
-    release();
-    Environment::operator=(Environment(other.get()));
-    return *this;
-  }
-
-  /// Converts to EnvironmentRaw
-  constexpr operator EnvironmentRaw() const noexcept { return get(); }
 };
 
 /**
@@ -6030,78 +5966,6 @@ struct IConv : ResourceBase<IConvRaw>
                size_t* inbytesleft,
                char** outbuf,
                size_t* outbytesleft) const;
-};
-
-/**
- * Reference for IConv.
- *
- * This does not take ownership!
- */
-struct IConvRef : IConv
-{
-  using IConv::IConv;
-
-  /**
-   * Constructs from raw IConv.
-   *
-   * @param resource a IConvRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr IConvRef(IConvRaw resource) noexcept
-    : IConv(resource)
-  {
-  }
-
-  /**
-   * Constructs from IConv.
-   *
-   * @param resource a IConv.
-   *
-   * This does not takes ownership!
-   */
-  constexpr IConvRef(const IConv& resource) noexcept
-    : IConv(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from IConv.
-   *
-   * @param resource a IConv.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr IConvRef(IConv&& resource) noexcept
-    : IConv(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr IConvRef(const IConvRef& other) noexcept
-    : IConv(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr IConvRef(IConvRef&& other) noexcept
-    : IConv(other.get())
-  {
-  }
-
-  /// Destructor
-  ~IConvRef() { release(); }
-
-  /// Assignment operator.
-  IConvRef& operator=(const IConvRef& other) noexcept
-  {
-    release();
-    IConv::operator=(IConv(other.get()));
-    return *this;
-  }
-
-  /// Converts to IConvRaw
-  constexpr operator IConvRaw() const noexcept { return get(); }
 };
 
 /**

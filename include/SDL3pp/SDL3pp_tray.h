@@ -24,8 +24,12 @@ struct Tray;
 /// Alias to raw representation for Tray.
 using TrayRaw = SDL_Tray*;
 
-// Forward decl
-struct TrayRef;
+/**
+ * Reference for Tray.
+ *
+ * This does not take ownership!
+ */
+using TrayRef = ResourceRef<Tray>;
 
 /// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
@@ -260,78 +264,6 @@ struct Tray : ResourceBase<TrayRaw>
    * @sa Tray.CreateMenu
    */
   TrayMenu GetMenu() const;
-};
-
-/**
- * Reference for Tray.
- *
- * This does not take ownership!
- */
-struct TrayRef : Tray
-{
-  using Tray::Tray;
-
-  /**
-   * Constructs from raw Tray.
-   *
-   * @param resource a TrayRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TrayRef(TrayRaw resource) noexcept
-    : Tray(resource)
-  {
-  }
-
-  /**
-   * Constructs from Tray.
-   *
-   * @param resource a Tray.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TrayRef(const Tray& resource) noexcept
-    : Tray(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Tray.
-   *
-   * @param resource a Tray.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr TrayRef(Tray&& resource) noexcept
-    : Tray(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr TrayRef(const TrayRef& other) noexcept
-    : Tray(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr TrayRef(TrayRef&& other) noexcept
-    : Tray(other.get())
-  {
-  }
-
-  /// Destructor
-  ~TrayRef() { release(); }
-
-  /// Assignment operator.
-  TrayRef& operator=(const TrayRef& other) noexcept
-  {
-    release();
-    Tray::operator=(Tray(other.get()));
-    return *this;
-  }
-
-  /// Converts to TrayRaw
-  constexpr operator TrayRaw() const noexcept { return get(); }
 };
 
 /**

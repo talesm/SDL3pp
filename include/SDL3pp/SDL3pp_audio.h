@@ -125,8 +125,12 @@ struct AudioDevice;
 /// Alias to raw representation for AudioDevice.
 using AudioDeviceID = SDL_AudioDeviceID;
 
-// Forward decl
-struct AudioDeviceRef;
+/**
+ * Reference for AudioDevice.
+ *
+ * This does not take ownership!
+ */
+using AudioDeviceRef = ResourceRef<AudioDevice>;
 
 // Forward decl
 struct AudioStream;
@@ -134,8 +138,12 @@ struct AudioStream;
 /// Alias to raw representation for AudioStream.
 using AudioStreamRaw = SDL_AudioStream*;
 
-// Forward decl
-struct AudioStreamRef;
+/**
+ * Reference for AudioStream.
+ *
+ * This does not take ownership!
+ */
+using AudioStreamRef = ResourceRef<AudioStream>;
 
 // Forward decl
 struct AudioStreamLock;
@@ -1441,78 +1449,6 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    */
   AudioStream OpenStream(OptionalRef<const AudioSpec> spec,
                          AudioStreamCB callback);
-};
-
-/**
- * Reference for AudioDevice.
- *
- * This does not take ownership!
- */
-struct AudioDeviceRef : AudioDevice
-{
-  using AudioDevice::AudioDevice;
-
-  /**
-   * Constructs from raw AudioDevice.
-   *
-   * @param resource a AudioDeviceID.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioDeviceRef(AudioDeviceID resource) noexcept
-    : AudioDevice(resource)
-  {
-  }
-
-  /**
-   * Constructs from AudioDevice.
-   *
-   * @param resource a AudioDevice.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioDeviceRef(const AudioDevice& resource) noexcept
-    : AudioDevice(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AudioDevice.
-   *
-   * @param resource a AudioDevice.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AudioDeviceRef(AudioDevice&& resource) noexcept
-    : AudioDevice(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept
-    : AudioDevice(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AudioDeviceRef(AudioDeviceRef&& other) noexcept
-    : AudioDevice(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AudioDeviceRef() { release(); }
-
-  /// Assignment operator.
-  AudioDeviceRef& operator=(const AudioDeviceRef& other) noexcept
-  {
-    release();
-    AudioDevice::operator=(AudioDevice(other.get()));
-    return *this;
-  }
-
-  /// Converts to AudioDeviceID
-  constexpr operator AudioDeviceID() const noexcept { return get(); }
 };
 
 /**
@@ -2882,78 +2818,6 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
                      int num_samples);
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-};
-
-/**
- * Reference for AudioStream.
- *
- * This does not take ownership!
- */
-struct AudioStreamRef : AudioStream
-{
-  using AudioStream::AudioStream;
-
-  /**
-   * Constructs from raw AudioStream.
-   *
-   * @param resource a AudioStreamRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioStreamRef(AudioStreamRaw resource) noexcept
-    : AudioStream(resource)
-  {
-  }
-
-  /**
-   * Constructs from AudioStream.
-   *
-   * @param resource a AudioStream.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioStreamRef(const AudioStream& resource) noexcept
-    : AudioStream(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AudioStream.
-   *
-   * @param resource a AudioStream.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AudioStreamRef(AudioStream&& resource) noexcept
-    : AudioStream(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AudioStreamRef(const AudioStreamRef& other) noexcept
-    : AudioStream(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AudioStreamRef(AudioStreamRef&& other) noexcept
-    : AudioStream(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AudioStreamRef() { release(); }
-
-  /// Assignment operator.
-  AudioStreamRef& operator=(const AudioStreamRef& other) noexcept
-  {
-    release();
-    AudioStream::operator=(AudioStream(other.get()));
-    return *this;
-  }
-
-  /// Converts to AudioStreamRaw
-  constexpr operator AudioStreamRaw() const noexcept { return get(); }
 };
 
 /**

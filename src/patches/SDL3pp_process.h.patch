@@ -17,7 +17,7 @@
   *
   * Process control support.
   *
-@@ -320,8 +320,6 @@
+@@ -324,8 +324,6 @@
     *
     * The data should be freed with free().
     *
@@ -26,7 +26,7 @@
     * @param exitcode a pointer filled in with the process exit code if the
     *                 process has exited, may be nullptr.
     * @returns the data or nullptr on failure; call GetError() for more
-@@ -337,10 +335,37 @@
+@@ -341,10 +339,37 @@
     */
    StringResult Read(int* exitcode = nullptr);
  
@@ -65,7 +65,7 @@
    }
  
    /**
-@@ -646,6 +671,17 @@
+@@ -578,6 +603,17 @@
    return Process(props);
  }
  
@@ -83,7 +83,7 @@
  namespace prop::process {
  
  constexpr auto CREATE_ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
-@@ -727,7 +763,7 @@
+@@ -659,7 +695,7 @@
   */
  inline PropertiesRef GetProcessProperties(ProcessRef process)
  {
@@ -92,7 +92,7 @@
  }
  
  inline PropertiesRef Process::GetProperties() const
-@@ -749,8 +785,6 @@
+@@ -681,8 +717,6 @@
   * The data should be freed with free().
   *
   * @param process The process to read.
@@ -101,7 +101,7 @@
   * @param exitcode a pointer filled in with the process exit code if the process
   *                 has exited, may be nullptr.
   * @returns the data or nullptr on failure; call GetError() for more
-@@ -766,7 +800,9 @@
+@@ -698,7 +732,9 @@
   */
  inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
  {
@@ -112,7 +112,7 @@
  }
  
  inline StringResult Process::Read(int* exitcode)
-@@ -800,7 +836,7 @@
+@@ -732,7 +768,7 @@
   */
  inline IOStreamRef GetProcessInput(ProcessRef process)
  {
@@ -121,7 +121,7 @@
  }
  
  inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
-@@ -829,7 +865,7 @@
+@@ -761,7 +797,7 @@
   */
  inline IOStreamRef GetProcessOutput(ProcessRef process)
  {

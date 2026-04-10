@@ -100,8 +100,12 @@ using PaletteRaw = SDL_Palette*;
 /// Alias to const raw representation for Palette.
 using PaletteRawConst = const SDL_Palette*;
 
-// Forward decl
-struct PaletteRef;
+/**
+ * Reference for Palette.
+ *
+ * This does not take ownership!
+ */
+using PaletteRef = ResourceRef<Palette>;
 
 /// Safely wrap Palette for non owning const parameters
 using PaletteConstRef = ResourceConstRef<PaletteRaw, PaletteRawConst>;
@@ -2587,78 +2591,6 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
    * @sa Palette.Palette
    */
   void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
-};
-
-/**
- * Reference for Palette.
- *
- * This does not take ownership!
- */
-struct PaletteRef : Palette
-{
-  using Palette::Palette;
-
-  /**
-   * Constructs from raw Palette.
-   *
-   * @param resource a PaletteRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PaletteRef(PaletteRaw resource) noexcept
-    : Palette(resource)
-  {
-  }
-
-  /**
-   * Constructs from Palette.
-   *
-   * @param resource a Palette.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PaletteRef(const Palette& resource) noexcept
-    : Palette(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Palette.
-   *
-   * @param resource a Palette.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr PaletteRef(Palette&& resource) noexcept
-    : Palette(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr PaletteRef(const PaletteRef& other) noexcept
-    : Palette(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr PaletteRef(PaletteRef&& other) noexcept
-    : Palette(other.get())
-  {
-  }
-
-  /// Destructor
-  ~PaletteRef() { release(); }
-
-  /// Assignment operator.
-  PaletteRef& operator=(const PaletteRef& other) noexcept
-  {
-    release();
-    Palette::operator=(Palette(other.get()));
-    return *this;
-  }
-
-  /// Converts to PaletteRaw
-  constexpr operator PaletteRaw() const noexcept { return get(); }
 };
 
 /**

@@ -44,8 +44,12 @@ struct HidDevice;
 /// Alias to raw representation for HidDevice.
 using HidDeviceRaw = SDL_hid_device*;
 
-// Forward decl
-struct HidDeviceRef;
+/**
+ * Reference for HidDevice.
+ *
+ * This does not take ownership!
+ */
+using HidDeviceRef = ResourceRef<HidDevice>;
 
 /**
  * HID underlying bus types.
@@ -411,78 +415,6 @@ struct HidDevice : ResourceBase<HidDeviceRaw>
    * @since This function is available since SDL 3.2.0.
    */
   int get_report_descriptor(TargetBytes buf);
-};
-
-/**
- * Reference for HidDevice.
- *
- * This does not take ownership!
- */
-struct HidDeviceRef : HidDevice
-{
-  using HidDevice::HidDevice;
-
-  /**
-   * Constructs from raw HidDevice.
-   *
-   * @param resource a HidDeviceRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HidDeviceRef(HidDeviceRaw resource) noexcept
-    : HidDevice(resource)
-  {
-  }
-
-  /**
-   * Constructs from HidDevice.
-   *
-   * @param resource a HidDevice.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HidDeviceRef(const HidDevice& resource) noexcept
-    : HidDevice(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from HidDevice.
-   *
-   * @param resource a HidDevice.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr HidDeviceRef(HidDevice&& resource) noexcept
-    : HidDevice(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr HidDeviceRef(const HidDeviceRef& other) noexcept
-    : HidDevice(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr HidDeviceRef(HidDeviceRef&& other) noexcept
-    : HidDevice(other.get())
-  {
-  }
-
-  /// Destructor
-  ~HidDeviceRef() { release(); }
-
-  /// Assignment operator.
-  HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
-  {
-    release();
-    HidDevice::operator=(HidDevice(other.get()));
-    return *this;
-  }
-
-  /// Converts to HidDeviceRaw
-  constexpr operator HidDeviceRaw() const noexcept { return get(); }
 };
 
 /**

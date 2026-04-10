@@ -110,8 +110,12 @@ struct Haptic;
 /// Alias to raw representation for Haptic.
 using HapticRaw = SDL_Haptic*;
 
-// Forward decl
-struct HapticRef;
+/**
+ * Reference for Haptic.
+ *
+ * This does not take ownership!
+ */
+using HapticRef = ResourceRef<Haptic>;
 
 /**
  * @name Haptic effects
@@ -1195,78 +1199,6 @@ struct Haptic : ResourceBase<HapticRaw>
    * @sa Haptic.PlayRumble
    */
   void StopRumble();
-};
-
-/**
- * Reference for Haptic.
- *
- * This does not take ownership!
- */
-struct HapticRef : Haptic
-{
-  using Haptic::Haptic;
-
-  /**
-   * Constructs from raw Haptic.
-   *
-   * @param resource a HapticRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HapticRef(HapticRaw resource) noexcept
-    : Haptic(resource)
-  {
-  }
-
-  /**
-   * Constructs from Haptic.
-   *
-   * @param resource a Haptic.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HapticRef(const Haptic& resource) noexcept
-    : Haptic(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Haptic.
-   *
-   * @param resource a Haptic.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr HapticRef(Haptic&& resource) noexcept
-    : Haptic(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr HapticRef(const HapticRef& other) noexcept
-    : Haptic(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr HapticRef(HapticRef&& other) noexcept
-    : Haptic(other.get())
-  {
-  }
-
-  /// Destructor
-  ~HapticRef() { release(); }
-
-  /// Assignment operator.
-  HapticRef& operator=(const HapticRef& other) noexcept
-  {
-    release();
-    Haptic::operator=(Haptic(other.get()));
-    return *this;
-  }
-
-  /// Converts to HapticRaw
-  constexpr operator HapticRaw() const noexcept { return get(); }
 };
 
 /**

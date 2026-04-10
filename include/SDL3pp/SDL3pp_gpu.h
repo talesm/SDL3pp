@@ -378,8 +378,12 @@ struct GPUDevice;
 /// Alias to raw representation for GPUDevice.
 using GPUDeviceRaw = SDL_GPUDevice*;
 
-// Forward decl
-struct GPUDeviceRef;
+/**
+ * Reference for GPUDevice.
+ *
+ * This does not take ownership!
+ */
+using GPUDeviceRef = ResourceRef<GPUDevice>;
 
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
@@ -4084,78 +4088,6 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
   void GDKResumeGPU();
 
 #endif /* SDL_PLATFORM_GDK */
-};
-
-/**
- * Reference for GPUDevice.
- *
- * This does not take ownership!
- */
-struct GPUDeviceRef : GPUDevice
-{
-  using GPUDevice::GPUDevice;
-
-  /**
-   * Constructs from raw GPUDevice.
-   *
-   * @param resource a GPUDeviceRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GPUDeviceRef(GPUDeviceRaw resource) noexcept
-    : GPUDevice(resource)
-  {
-  }
-
-  /**
-   * Constructs from GPUDevice.
-   *
-   * @param resource a GPUDevice.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GPUDeviceRef(const GPUDevice& resource) noexcept
-    : GPUDevice(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from GPUDevice.
-   *
-   * @param resource a GPUDevice.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr GPUDeviceRef(GPUDevice&& resource) noexcept
-    : GPUDevice(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr GPUDeviceRef(const GPUDeviceRef& other) noexcept
-    : GPUDevice(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr GPUDeviceRef(GPUDeviceRef&& other) noexcept
-    : GPUDevice(other.get())
-  {
-  }
-
-  /// Destructor
-  ~GPUDeviceRef() { release(); }
-
-  /// Assignment operator.
-  GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
-  {
-    release();
-    GPUDevice::operator=(GPUDevice(other.get()));
-    return *this;
-  }
-
-  /// Converts to GPUDeviceRaw
-  constexpr operator GPUDeviceRaw() const noexcept { return get(); }
 };
 
 /**
