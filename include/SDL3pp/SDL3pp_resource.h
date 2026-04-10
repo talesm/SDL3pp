@@ -60,7 +60,7 @@ public:
     return r;
   }
 
-  friend void swap(ResourceBase& lhs, ResourceBase& rhs) noexcept
+  friend constexpr void swap(ResourceBase& lhs, ResourceBase& rhs) noexcept
   {
     std::swap(lhs.m_resource, rhs.m_resource);
   }
