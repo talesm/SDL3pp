@@ -4745,20 +4745,13 @@ const transform = {
         "SDL_Renderer": {
           resource: true,
           entries: {
-            "Renderer": {
-              kind: "function",
-              type: "",
-              parameters: [
-                {
-                  "type": "WindowRef",
-                  "name": "window"
-                }
-              ]
-            },
             "SDL_CreateRenderer": "ctor",
             "SDL_CreateRendererWithProperties": "ctor",
             "SDL_CreateSoftwareRenderer": "ctor",
           }
+        },
+        "SDL_CreateRenderer": {
+          parameters: [{}, { default: "nullptr" }]
         },
         "CreateWindowAndRendererRaw": {
           before: "SDL_CreateWindowAndRenderer",

@@ -244,42 +244,6 @@ struct Renderer : ResourceBase<RendererRaw>
    * Create a 2D rendering context for a window.
    *
    * If you want a specific renderer, you can specify its name here. A list of
-   * available renderers can be obtained by calling GetRenderDriver()
-   * multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you
-   * don't need a specific renderer, specify nullptr and SDL will attempt to
-   * choose the best option for you, based on what is available on the user's
-   * system.
-   *
-   * If `name` is a comma-separated list, SDL will try each name, in the order
-   * listed, until one succeeds or all of them fail.
-   *
-   * By default the rendering size matches the window size in pixels, but you
-   * can call Renderer.SetLogicalPresentation() to change the content size and
-   * scaling options.
-   *
-   * @param window the window where rendering is displayed.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.Renderer
-   * @sa Renderer.Renderer
-   * @sa Renderer.Destroy
-   * @sa GetNumRenderDrivers
-   * @sa GetRenderDriver
-   * @sa Renderer.GetName
-   */
-  Renderer(WindowRef window)
-    : Renderer(CheckError(SDL_CreateRenderer(window, nullptr)))
-  {
-  }
-
-  /**
-   * Create a 2D rendering context for a window.
-   *
-   * If you want a specific renderer, you can specify its name here. A list of
    * available renderers can be obtained by calling GetRenderDriver() multiple
    * times, with indices from 0 to GetNumRenderDrivers()-1. If you don't need a
    * specific renderer, specify nullptr and SDL will attempt to choose the best
@@ -308,7 +272,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * @sa GetRenderDriver
    * @sa Renderer.GetName
    */
-  Renderer(WindowRef window, StringParam name);
+  Renderer(WindowRef window, StringParam name = nullptr);
 
   /**
    * Create a 2D rendering context for a window, with the specified properties.
@@ -3932,7 +3896,7 @@ inline Window::Window(StringParam title,
  * @sa GetRenderDriver
  * @sa Renderer.GetName
  */
-inline Renderer CreateRenderer(WindowRef window, StringParam name)
+inline Renderer CreateRenderer(WindowRef window, StringParam name = nullptr)
 {
   return Renderer(window, std::move(name));
 }

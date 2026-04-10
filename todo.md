@@ -5,6 +5,8 @@ Todo for next version
   - [x] SetTrayEntryCallback with TrayCB callback;
   - [x] AppendTrayEntry;
 - [x] Add TrayEntry constructor;
+- [x] Remove `Renderer(Window)` constructor, make second parameter of
+  `Renderer(Window, StringParam)` nullptr instead;
 - [x] Docs improvements:
   - [x] Add namespace tab;
   - [x] Document namespace `prop`;
