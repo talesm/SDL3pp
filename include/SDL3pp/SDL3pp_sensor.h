@@ -132,16 +132,9 @@ constexpr SensorType SENSOR_COUNT = SDL_SENSOR_COUNT; ///< SENSOR_COUNT
  *
  * @cat resource
  */
-class Sensor
+struct Sensor : ResourceBase<SensorRaw>
 {
-  SensorRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Sensor(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Sensor.
@@ -151,7 +144,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Sensor(SensorRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -180,34 +173,17 @@ public:
   Sensor(SensorID instance_id);
 
   /// Destructor
-  ~Sensor() { SDL_CloseSensor(m_resource); }
+  ~Sensor() { SDL_CloseSensor(get()); }
 
   /// Assignment operator.
   constexpr Sensor& operator=(Sensor&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Sensor& operator=(const Sensor& other) = delete;
-
-  /// Retrieves underlying SensorRaw.
-  constexpr SensorRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying SensorRaw and clear this.
-  constexpr SensorRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Sensor& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close a sensor previously opened with OpenSensor().

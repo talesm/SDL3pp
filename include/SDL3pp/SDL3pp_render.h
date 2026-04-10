@@ -6,7 +6,6 @@
 #include "SDL3pp_events.h"
 #include "SDL3pp_gpu.h"
 #include "SDL3pp_pixels.h"
-#include "SDL3pp_resource.h"
 #include "SDL3pp_video.h"
 
 namespace SDL {
@@ -212,16 +211,9 @@ using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
  *
  * @cat resource
  */
-class Renderer
+struct Renderer : ResourceBase<RendererRaw>
 {
-  RendererRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Renderer(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Renderer.
@@ -231,7 +223,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Renderer(RendererRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -280,7 +272,7 @@ public:
    * @sa Renderer.GetName
    */
   Renderer(WindowRef window)
-    : m_resource(CheckError(SDL_CreateRenderer(window, nullptr)))
+    : Renderer(CheckError(SDL_CreateRenderer(window, nullptr)))
   {
   }
 
@@ -402,34 +394,17 @@ public:
   Renderer(SurfaceRef surface);
 
   /// Destructor
-  ~Renderer() { SDL_DestroyRenderer(m_resource); }
+  ~Renderer() { SDL_DestroyRenderer(get()); }
 
   /// Assignment operator.
   constexpr Renderer& operator=(Renderer&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Renderer& operator=(const Renderer& other) = delete;
-
-  /// Retrieves underlying RendererRaw.
-  constexpr RendererRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying RendererRaw and clear this.
-  constexpr RendererRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Renderer& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy the rendering context for a window and free all associated
@@ -8189,16 +8164,9 @@ inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
  *
  * @cat resource
  */
-class GPURenderState
+struct GPURenderState : ResourceBase<GPURenderStateRaw>
 {
-  GPURenderStateRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr GPURenderState(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw GPURenderState.
@@ -8208,7 +8176,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit GPURenderState(GPURenderStateRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -8246,37 +8214,17 @@ public:
                  const GPURenderStateCreateInfo& createinfo);
 
   /// Destructor
-  ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
+  ~GPURenderState() { SDL_DestroyGPURenderState(get()); }
 
   /// Assignment operator.
   constexpr GPURenderState& operator=(GPURenderState&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   GPURenderState& operator=(const GPURenderState& other) = delete;
-
-  /// Retrieves underlying GPURenderStateRaw.
-  constexpr GPURenderStateRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GPURenderStateRaw and clear this.
-  constexpr GPURenderStateRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const GPURenderState& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t) const { return !m_resource; }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
 
   /**
    * Destroy custom GPU render state.

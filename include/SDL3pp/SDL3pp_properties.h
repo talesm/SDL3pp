@@ -4,6 +4,7 @@
 #include <SDL3/SDL_properties.h>
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
+#include "SDL3pp_resource.h"
 #include "SDL3pp_strings.h"
 #include "SDL3pp_version.h"
 
@@ -176,16 +177,9 @@ using CleanupPropertyCB = std::function<void(void* value)>;
  * @sa Properties.Create
  * @sa prop
  */
-class Properties
+struct Properties : ResourceBase<PropertiesID>
 {
-  PropertiesID m_resource = 0;
-
-public:
-  /// Default ctor
-  constexpr Properties(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Properties.
@@ -195,7 +189,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Properties(PropertiesID resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -230,34 +224,17 @@ public:
   static Properties Create();
 
   /// Destructor
-  ~Properties() { SDL_DestroyProperties(m_resource); }
+  ~Properties() { SDL_DestroyProperties(get()); }
 
   /// Assignment operator.
   constexpr Properties& operator=(Properties&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Properties& operator=(const Properties& other) = delete;
-
-  /// Retrieves underlying PropertiesID.
-  constexpr PropertiesID get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying PropertiesID and clear this.
-  constexpr PropertiesID release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = 0;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Properties& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a group of properties.

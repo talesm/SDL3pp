@@ -100,16 +100,9 @@ using IOStreamInterface = SDL_IOStreamInterface;
  *
  * @cat resource
  */
-class IOStream
+struct IOStream : ResourceBase<IOStreamRaw>
 {
-  IOStreamRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr IOStream(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw IOStream.
@@ -119,7 +112,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit IOStream(IOStreamRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -376,34 +369,17 @@ public:
   static IOStream Open(const IOStreamInterface& iface, void* userdata);
 
   /// Destructor
-  ~IOStream() { SDL_CloseIO(m_resource); }
+  ~IOStream() { SDL_CloseIO(get()); }
 
   /// Assignment operator.
   constexpr IOStream& operator=(IOStream&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   IOStream& operator=(const IOStream& other) = delete;
-
-  /// Retrieves underlying IOStreamRaw.
-  constexpr IOStreamRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying IOStreamRaw and clear this.
-  constexpr IOStreamRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const IOStream& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close and free an allocated IOStream structure.

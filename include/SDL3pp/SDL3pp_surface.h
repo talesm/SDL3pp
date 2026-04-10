@@ -9,7 +9,6 @@
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
-#include "SDL3pp_resource.h"
 #include "SDL3pp_spanRef.h"
 #include "SDL3pp_strings.h"
 #include "SDL3pp_version.h"

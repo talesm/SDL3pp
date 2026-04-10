@@ -151,16 +151,9 @@ using MouseID = SDL_MouseID;
  *
  * @cat resource
  */
-class Cursor
+struct Cursor : ResourceBase<CursorRaw>
 {
-  CursorRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Cursor(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Cursor.
@@ -170,7 +163,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Cursor(CursorRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -283,34 +276,17 @@ public:
   Cursor(SystemCursor id);
 
   /// Destructor
-  ~Cursor() { SDL_DestroyCursor(m_resource); }
+  ~Cursor() { SDL_DestroyCursor(get()); }
 
   /// Assignment operator.
   constexpr Cursor& operator=(Cursor&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Cursor& operator=(const Cursor& other) = delete;
-
-  /// Retrieves underlying CursorRaw.
-  constexpr CursorRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying CursorRaw and clear this.
-  constexpr CursorRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Cursor& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Free a previously-created cursor.

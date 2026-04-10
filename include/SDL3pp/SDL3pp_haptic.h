@@ -763,16 +763,9 @@ using HapticID = SDL_HapticID;
  *
  * @cat resource
  */
-class Haptic
+struct Haptic : ResourceBase<HapticRaw>
 {
-  HapticRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Haptic(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Haptic.
@@ -782,7 +775,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Haptic(HapticRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -860,34 +853,17 @@ public:
   static Haptic OpenFromMouse();
 
   /// Destructor
-  ~Haptic() { SDL_CloseHaptic(m_resource); }
+  ~Haptic() { SDL_CloseHaptic(get()); }
 
   /// Assignment operator.
   constexpr Haptic& operator=(Haptic&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Haptic& operator=(const Haptic& other) = delete;
-
-  /// Retrieves underlying HapticRaw.
-  constexpr HapticRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying HapticRaw and clear this.
-  constexpr HapticRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Haptic& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close a haptic device previously opened with OpenHaptic().

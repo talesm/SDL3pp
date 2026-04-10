@@ -145,16 +145,9 @@ using TLSDestructorCallback = void(SDLCALL*)(void* value);
  *
  * @cat resource
  */
-class Thread
+struct Thread : ResourceBase<ThreadRaw>
 {
-  ThreadRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Thread(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Thread.
@@ -164,7 +157,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Thread(ThreadRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -315,34 +308,17 @@ public:
   Thread(PropertiesRef props);
 
   /// Destructor
-  ~Thread() { SDL_DetachThread(m_resource); }
+  ~Thread() { SDL_DetachThread(get()); }
 
   /// Assignment operator.
   constexpr Thread& operator=(Thread&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Thread& operator=(const Thread& other) = delete;
-
-  /// Retrieves underlying ThreadRaw.
-  constexpr ThreadRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying ThreadRaw and clear this.
-  constexpr ThreadRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Thread& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Let a thread clean up on exit without intervention.

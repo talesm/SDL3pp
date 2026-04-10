@@ -106,16 +106,9 @@ using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
  *
  * @cat resource
  */
-class Tray
+struct Tray : ResourceBase<TrayRaw>
 {
-  TrayRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Tray(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Tray.
@@ -125,7 +118,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Tray(TrayRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -168,34 +161,17 @@ public:
   Tray(SurfaceRef icon, StringParam tooltip);
 
   /// Destructor
-  ~Tray() { SDL_DestroyTray(m_resource); }
+  ~Tray() { SDL_DestroyTray(get()); }
 
   /// Assignment operator.
   constexpr Tray& operator=(Tray&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Tray& operator=(const Tray& other) = delete;
-
-  /// Retrieves underlying TrayRaw.
-  constexpr TrayRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TrayRaw and clear this.
-  constexpr TrayRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Tray& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroys a tray object.

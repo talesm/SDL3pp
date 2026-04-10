@@ -60,16 +60,9 @@ struct SharedObjectRef;
  *
  * @cat resource
  */
-class SharedObject
+struct SharedObject : ResourceBase<SharedObjectRaw>
 {
-  SharedObjectRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr SharedObject(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw SharedObject.
@@ -79,7 +72,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -113,35 +106,17 @@ public:
   SharedObject(StringParam sofile);
 
   /// Destructor
-  ~SharedObject() { SDL_UnloadObject(m_resource); }
+  ~SharedObject() { SDL_UnloadObject(get()); }
 
   /// Assignment operator.
   constexpr SharedObject& operator=(SharedObject&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   SharedObject& operator=(const SharedObject& other) = delete;
-
-  /// Retrieves underlying SharedObjectRaw.
-  constexpr SharedObjectRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying SharedObjectRaw and clear this.
-  constexpr SharedObjectRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const SharedObject& other) const noexcept =
-    default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Unload a shared object from memory.

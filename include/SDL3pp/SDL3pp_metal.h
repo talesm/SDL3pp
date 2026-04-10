@@ -34,16 +34,9 @@ struct MetalViewRef;
  *
  * @cat resource
  */
-class MetalView
+struct MetalView : ResourceBase<MetalViewRaw>
 {
-  MetalViewRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr MetalView(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw MetalView.
@@ -53,7 +46,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit MetalView(MetalViewRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -93,34 +86,17 @@ public:
   MetalView(WindowRef window);
 
   /// Destructor
-  ~MetalView() { SDL_Metal_DestroyView(m_resource); }
+  ~MetalView() { SDL_Metal_DestroyView(get()); }
 
   /// Assignment operator.
   constexpr MetalView& operator=(MetalView&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   MetalView& operator=(const MetalView& other) = delete;
-
-  /// Retrieves underlying MetalViewRaw.
-  constexpr MetalViewRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying MetalViewRaw and clear this.
-  constexpr MetalViewRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const MetalView& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy an existing MetalView object.

@@ -914,16 +914,9 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  * @sa Environment.UnsetVariable
  * @sa Environment.Destroy
  */
-class Environment
+struct Environment : ResourceBase<EnvironmentRaw>
 {
-  EnvironmentRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Environment(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Environment.
@@ -933,7 +926,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Environment(EnvironmentRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -973,34 +966,17 @@ public:
   Environment(bool populated);
 
   /// Destructor
-  ~Environment() { SDL_DestroyEnvironment(m_resource); }
+  ~Environment() { SDL_DestroyEnvironment(get()); }
 
   /// Assignment operator.
   constexpr Environment& operator=(Environment&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Environment& operator=(const Environment& other) = delete;
-
-  /// Retrieves underlying EnvironmentRaw.
-  constexpr EnvironmentRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying EnvironmentRaw and clear this.
-  constexpr EnvironmentRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Environment& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a set of environment variables.
@@ -5927,14 +5903,13 @@ inline float tan(float x) { return SDL_tanf(x); }
  *
  * @sa iconv_open
  */
-class IConv
+struct IConv : ResourceBase<IConvRaw>
 {
-  IConvRaw m_resource = nullptr;
+  using ResourceBase::ResourceBase;
 
-public:
   /// Default ctor
   IConv(std::nullptr_t = nullptr) noexcept
-    : m_resource(IConvRaw(SDL_ICONV_ERROR))
+    : IConv(IConvRaw(SDL_ICONV_ERROR))
   {
   }
 
@@ -5946,7 +5921,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit IConv(IConvRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -5982,36 +5957,22 @@ public:
   IConv(StringParam tocode, StringParam fromcode);
 
   /// Destructor
-  ~IConv() { SDL_iconv_close(m_resource); }
+  ~IConv() { SDL_iconv_close(get()); }
 
   /// Assignment operator.
   constexpr IConv& operator=(IConv&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   IConv& operator=(const IConv& other) = delete;
 
-  /// Retrieves underlying IConvRaw.
-  constexpr IConvRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying IConvRaw and clear this.
-  constexpr IConvRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const IConv& other) const noexcept = default;
-
   /// Converts to bool
   explicit operator bool() const noexcept
   {
-    return reinterpret_cast<size_t>(m_resource) != SDL_ICONV_ERROR;
+    return reinterpret_cast<size_t>(get()) != SDL_ICONV_ERROR;
   }
 
   /**

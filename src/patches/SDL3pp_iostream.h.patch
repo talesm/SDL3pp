@@ -9,7 +9,7 @@
   *
   * SDL provides an abstract interface for reading and writing data streams. It
   * offers implementations for files, memory, etc, and the app can provide their
-@@ -151,7 +151,7 @@
+@@ -144,7 +144,7 @@
     *   already exists its content is erased and the file is treated as a new
     *   empty file.
     * - "wx": Create an empty file for writing. If a file with the same name
@@ -18,7 +18,7 @@
     * - "a": Append to a file. Writing operations append data at the end of the
     *   file. The file is created if it does not exist.
     * - "r+": Open a file for update both reading and writing. The file must
-@@ -160,7 +160,7 @@
+@@ -153,7 +153,7 @@
     *   the same name already exists its content is erased and the file is
     *   treated as a new empty file.
     * - "w+x": Create an empty file for both reading and writing. If a file with
@@ -27,7 +27,7 @@
     * - "a+": Open a file for reading and appending. All writing operations are
     *   performed at the end of the file, protecting the previous content to be
     *   overwritten. You can reposition (fseek, rewind) the internal pointer to
-@@ -252,10 +252,9 @@
+@@ -245,10 +245,9 @@
     *   and called with the passed `mem` pointer when closing the stream. By
     *   default it is unset, i.e., the memory will not be freed.
     *
@@ -41,7 +41,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -301,10 +300,9 @@
+@@ -294,10 +293,9 @@
     *   and called with the passed `mem` pointer when closing the stream. By
     *   default it is unset, i.e., the memory will not be freed.
     *
@@ -55,7 +55,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -332,8 +330,8 @@
+@@ -325,8 +323,8 @@
     * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
     *   multiples of this size, defaulting to 1024.
     *
@@ -66,7 +66,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -362,7 +360,7 @@
+@@ -355,7 +353,7 @@
     * @param iface the interface that implements this IOStream, initialized using
     *              InitInterface().
     * @param userdata the pointer that will be passed to the interface functions.
@@ -75,7 +75,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -428,8 +426,7 @@
+@@ -404,8 +402,7 @@
     * and makes the system and your app operate less efficiently, so do so
     * sparingly.
     *
@@ -85,7 +85,7 @@
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
     *
-@@ -527,9 +524,43 @@
+@@ -503,9 +500,43 @@
     */
    Sint64 Tell() const;
  
@@ -130,7 +130,7 @@
    }
  
    /**
-@@ -547,8 +578,7 @@
+@@ -523,8 +554,7 @@
     * without accessing the stream, so the stream status (EOF, err, etc) will not
     * change.
     *
@@ -140,7 +140,7 @@
     * @returns the number of bytes read, or 0 on end of file or other failure;
     *          call GetError() for more information.
     *
-@@ -579,8 +609,7 @@
+@@ -555,8 +585,7 @@
     * without accessing the stream, so the stream status (EOF, err, etc) will not
     * change.
     *
@@ -150,7 +150,7 @@
     * @returns the number of bytes written, which will be less than `size` on
     *          failure; call GetError() for more information.
     *
-@@ -596,21 +625,37 @@
+@@ -572,21 +601,37 @@
     */
    size_t Write(SourceBytes buf);
  
@@ -192,7 +192,7 @@
     * This function does formatted printing to the stream.
     *
     * @param fmt a printf() style format string.
-@@ -628,12 +673,21 @@
+@@ -604,12 +649,21 @@
     */
    size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
    {
@@ -215,7 +215,7 @@
     * This function does formatted printing to the stream.
     *
     * @param fmt a printf() style format string.
-@@ -672,17 +726,10 @@
+@@ -648,17 +702,10 @@
     * Load all the data from an SDL data stream.
     *
     * The data is allocated with a zero byte at the end (null terminated) for
@@ -236,7 +236,7 @@
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
     *
-@@ -693,10 +740,29 @@
+@@ -669,10 +716,29 @@
     */
    StringResult LoadFile();
  
@@ -267,7 +267,7 @@
    }
  
    /**
-@@ -704,9 +770,6 @@
+@@ -680,9 +746,6 @@
     *
     * @param data the data to be written. If datasize is 0, may be nullptr or a
     *             invalid pointer.
@@ -277,7 +277,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -726,8 +789,7 @@
+@@ -702,8 +765,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -287,7 +287,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -744,8 +806,7 @@
+@@ -720,8 +782,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -297,7 +297,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -766,8 +827,7 @@
+@@ -742,8 +803,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -307,7 +307,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -788,8 +848,7 @@
+@@ -764,8 +824,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -317,7 +317,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -810,8 +869,7 @@
+@@ -786,8 +845,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -327,7 +327,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -832,8 +890,7 @@
+@@ -808,8 +866,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -337,7 +337,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -854,8 +911,7 @@
+@@ -830,8 +887,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -347,7 +347,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -876,8 +932,7 @@
+@@ -852,8 +908,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -357,7 +357,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -898,8 +953,7 @@
+@@ -874,8 +929,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -367,7 +367,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -920,8 +974,7 @@
+@@ -896,8 +950,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -377,7 +377,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -942,8 +995,7 @@
+@@ -918,8 +971,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -387,7 +387,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -964,8 +1016,7 @@
+@@ -940,8 +992,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -397,7 +397,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -986,8 +1037,7 @@
+@@ -962,8 +1013,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -407,7 +407,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -1008,8 +1058,7 @@
+@@ -984,8 +1034,7 @@
     * and the stream is not at EOF, IOStream.GetStatus() will return a different
     * error value and GetError() will offer a human-readable message.
     *
@@ -417,7 +417,7 @@
     * @throws Error on failure.
     *
     * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -1018,68 +1067,332 @@
+@@ -994,68 +1043,332 @@
     */
    Sint64 ReadS64BE();
  
@@ -776,7 +776,7 @@
    }
  
    /**
-@@ -1390,7 +1703,7 @@
+@@ -1366,7 +1679,7 @@
   * - "w": Create an empty file for writing. If a file with the same name already
   *   exists its content is erased and the file is treated as a new empty file.
   * - "wx": Create an empty file for writing. If a file with the same name
@@ -785,7 +785,7 @@
   * - "a": Append to a file. Writing operations append data at the end of the
   *   file. The file is created if it does not exist.
   * - "r+": Open a file for update both reading and writing. The file must exist.
-@@ -1398,7 +1711,7 @@
+@@ -1374,7 +1687,7 @@
   *   same name already exists its content is erased and the file is treated as a
   *   new empty file.
   * - "w+x": Create an empty file for both reading and writing. If a file with
@@ -794,7 +794,7 @@
   * - "a+": Open a file for reading and appending. All writing operations are
   *   performed at the end of the file, protecting the previous content to be
   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
-@@ -1469,6 +1782,20 @@
+@@ -1445,6 +1758,20 @@
    return SDL::IOFromFile(std::move(file), std::move(mode));
  }
  
@@ -815,7 +815,7 @@
  namespace prop::IOStream {
  
  constexpr auto WINDOWS_HANDLE_POINTER =
-@@ -1528,10 +1855,9 @@
+@@ -1504,10 +1831,9 @@
   *   and called with the passed `mem` pointer when closing the stream. By
   *   default it is unset, i.e., the memory will not be freed.
   *
@@ -829,7 +829,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1545,9 +1871,9 @@
+@@ -1521,9 +1847,9 @@
   * @sa IOStream.Tell
   * @sa IOStream.Write
   */
@@ -841,7 +841,7 @@
  }
  
  inline IOStream IOStream::FromMem(TargetBytes mem)
-@@ -1584,10 +1910,9 @@
+@@ -1560,10 +1886,9 @@
   *   and called with the passed `mem` pointer when closing the stream. By
   *   default it is unset, i.e., the memory will not be freed.
   *
@@ -855,7 +855,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1599,9 +1924,9 @@
+@@ -1575,9 +1900,9 @@
   * @sa IOStream.Seek
   * @sa IOStream.Tell
   */
@@ -867,7 +867,7 @@
  }
  
  inline IOStream IOStream::FromConstMem(SourceBytes mem)
-@@ -1723,7 +2048,7 @@
+@@ -1699,7 +2024,7 @@
   */
  inline PropertiesRef GetIOProperties(IOStreamRef context)
  {
@@ -876,7 +876,7 @@
  }
  
  inline PropertiesRef IOStream::GetProperties() const
-@@ -1848,8 +2173,7 @@
+@@ -1824,8 +2149,7 @@
   * change.
   *
   * @param context a pointer to an IOStream structure.
@@ -886,7 +886,7 @@
   * @returns the number of bytes read, or 0 on end of file or other failure; call
   *          GetError() for more information.
   *
-@@ -1889,8 +2213,7 @@
+@@ -1865,8 +2189,7 @@
   * change.
   *
   * @param context a pointer to an IOStream structure.
@@ -896,7 +896,7 @@
   * @returns the number of bytes written, which will be less than `size` on
   *          failure; call GetError() for more information.
   *
-@@ -1917,6 +2240,8 @@
+@@ -1893,6 +2216,8 @@
  /**
   * Print to an IOStream data stream.
   *
@@ -905,7 +905,7 @@
   * This function does formatted printing to the stream.
   *
   * @param context a pointer to an IOStream structure.
-@@ -1934,9 +2259,17 @@
+@@ -1910,9 +2235,17 @@
   * @sa IOStream.Write
   */
  inline size_t IOprintf(IOStreamRef context,
@@ -925,7 +925,7 @@
  }
  
  /**
-@@ -1995,14 +2328,12 @@
+@@ -1971,14 +2304,12 @@
   * Load all the data from an SDL data stream.
   *
   * The data is allocated with a zero byte at the end (null terminated) for
@@ -942,7 +942,7 @@
   * @param closeio if true, calls IOStream.Close() on `src` before returning,
   *                even in the case of an error.
   * @returns the data or nullptr on failure; call GetError() for more
-@@ -2017,30 +2348,49 @@
+@@ -1993,30 +2324,49 @@
   */
  inline StringResult LoadFile_IO(IOStreamRef src, bool closeio = true)
  {
@@ -1001,7 +1001,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2049,15 +2399,18 @@
+@@ -2025,15 +2375,18 @@
   * @sa IOStream.LoadFile
   * @sa SaveFile
   */
@@ -1024,7 +1024,7 @@
   * @param closeio if true, calls IOStream.Close() on `src` before returning,
   *                even in the case of an error.
   * @throws Error on failure.
-@@ -2083,9 +2436,7 @@
+@@ -2059,9 +2412,7 @@
   * Save all the data into a file path.
   *
   * @param file the path to write all available data into.
@@ -1035,7 +1035,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -2109,14 +2460,19 @@
+@@ -2085,14 +2436,19 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the IOStream to read from.
@@ -1057,7 +1057,7 @@
  
  inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(get()); }
  
-@@ -2129,14 +2485,19 @@
+@@ -2105,14 +2461,19 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the IOStream to read from.
@@ -1079,7 +1079,7 @@
  
  inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(get()); }
  
-@@ -2153,7 +2514,7 @@
+@@ -2129,7 +2490,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1088,7 +1088,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2162,7 +2523,9 @@
+@@ -2138,7 +2499,9 @@
   */
  inline Uint16 ReadU16LE(IOStreamRef src)
  {
@@ -1099,7 +1099,7 @@
  }
  
  inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(get()); }
-@@ -2180,7 +2543,7 @@
+@@ -2156,7 +2519,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1108,7 +1108,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2189,7 +2552,9 @@
+@@ -2165,7 +2528,9 @@
   */
  inline Sint16 ReadS16LE(IOStreamRef src)
  {
@@ -1119,7 +1119,7 @@
  }
  
  inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(get()); }
-@@ -2207,7 +2572,7 @@
+@@ -2183,7 +2548,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1128,7 +1128,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2216,7 +2581,9 @@
+@@ -2192,7 +2557,9 @@
   */
  inline Uint16 ReadU16BE(IOStreamRef src)
  {
@@ -1139,7 +1139,7 @@
  }
  
  inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(get()); }
-@@ -2234,7 +2601,7 @@
+@@ -2210,7 +2577,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1148,7 +1148,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2243,7 +2610,9 @@
+@@ -2219,7 +2586,9 @@
   */
  inline Sint16 ReadS16BE(IOStreamRef src)
  {
@@ -1159,7 +1159,7 @@
  }
  
  inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(get()); }
-@@ -2261,7 +2630,7 @@
+@@ -2237,7 +2606,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1168,7 +1168,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2270,7 +2639,9 @@
+@@ -2246,7 +2615,9 @@
   */
  inline Uint32 ReadU32LE(IOStreamRef src)
  {
@@ -1179,7 +1179,7 @@
  }
  
  inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(get()); }
-@@ -2288,7 +2659,7 @@
+@@ -2264,7 +2635,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1188,7 +1188,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2297,7 +2668,9 @@
+@@ -2273,7 +2644,9 @@
   */
  inline Sint32 ReadS32LE(IOStreamRef src)
  {
@@ -1199,7 +1199,7 @@
  }
  
  inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(get()); }
-@@ -2315,7 +2688,7 @@
+@@ -2291,7 +2664,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1208,7 +1208,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2324,7 +2697,9 @@
+@@ -2300,7 +2673,9 @@
   */
  inline Uint32 ReadU32BE(IOStreamRef src)
  {
@@ -1219,7 +1219,7 @@
  }
  
  inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(get()); }
-@@ -2342,7 +2717,7 @@
+@@ -2318,7 +2693,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1228,7 +1228,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2351,7 +2726,9 @@
+@@ -2327,7 +2702,9 @@
   */
  inline Sint32 ReadS32BE(IOStreamRef src)
  {
@@ -1239,7 +1239,7 @@
  }
  
  inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(get()); }
-@@ -2369,7 +2746,7 @@
+@@ -2345,7 +2722,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1248,7 +1248,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2378,7 +2755,9 @@
+@@ -2354,7 +2731,9 @@
   */
  inline Uint64 ReadU64LE(IOStreamRef src)
  {
@@ -1259,7 +1259,7 @@
  }
  
  inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(get()); }
-@@ -2396,7 +2775,7 @@
+@@ -2372,7 +2751,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1268,7 +1268,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2405,7 +2784,9 @@
+@@ -2381,7 +2760,9 @@
   */
  inline Sint64 ReadS64LE(IOStreamRef src)
  {
@@ -1279,7 +1279,7 @@
  }
  
  inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(get()); }
-@@ -2423,7 +2804,7 @@
+@@ -2399,7 +2780,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1288,7 +1288,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2432,7 +2813,9 @@
+@@ -2408,7 +2789,9 @@
   */
  inline Uint64 ReadU64BE(IOStreamRef src)
  {
@@ -1299,7 +1299,7 @@
  }
  
  inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(get()); }
-@@ -2450,7 +2833,7 @@
+@@ -2426,7 +2809,7 @@
   * value and GetError() will offer a human-readable message.
   *
   * @param src the stream from which to read data.
@@ -1308,7 +1308,7 @@
   * @throws Error on failure.
   *
   * @threadsafety Do not use the same IOStream from two threads at once.
-@@ -2459,7 +2842,9 @@
+@@ -2435,7 +2818,9 @@
   */
  inline Sint64 ReadS64BE(IOStreamRef src)
  {

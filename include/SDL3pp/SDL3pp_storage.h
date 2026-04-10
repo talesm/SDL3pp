@@ -261,16 +261,9 @@ using StorageInterface = SDL_StorageInterface;
  *
  * @cat resource
  */
-class Storage
+struct Storage : ResourceBase<StorageRaw>
 {
-  StorageRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Storage(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Storage.
@@ -280,7 +273,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Storage(StorageRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -398,34 +391,17 @@ public:
   Storage(const StorageInterface& iface, void* userdata);
 
   /// Destructor
-  ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
+  ~Storage() { CheckError(SDL_CloseStorage(get())); }
 
   /// Assignment operator.
   constexpr Storage& operator=(Storage&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Storage& operator=(const Storage& other) = delete;
-
-  /// Retrieves underlying StorageRaw.
-  constexpr StorageRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying StorageRaw and clear this.
-  constexpr StorageRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Storage& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Closes and frees a storage container.

@@ -83,16 +83,9 @@ struct InitState;
  *
  * @cat resource
  */
-class Mutex
+struct Mutex : ResourceBase<MutexRaw>
 {
-  MutexRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Mutex(std::nullptr_t) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Mutex.
@@ -102,7 +95,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Mutex(MutexRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -144,34 +137,17 @@ public:
   Mutex();
 
   /// Destructor
-  ~Mutex() { SDL_DestroyMutex(m_resource); }
+  ~Mutex() { SDL_DestroyMutex(get()); }
 
   /// Assignment operator.
   constexpr Mutex& operator=(Mutex&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Mutex& operator=(const Mutex& other) = delete;
-
-  /// Retrieves underlying MutexRaw.
-  constexpr MutexRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying MutexRaw and clear this.
-  constexpr MutexRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Mutex& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a mutex created with CreateMutex().
@@ -476,16 +452,9 @@ inline void Mutex::Destroy() { DestroyMutex(release()); }
  *
  * @cat resource
  */
-class RWLock
+struct RWLock : ResourceBase<RWLockRaw>
 {
-  RWLockRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr RWLock(std::nullptr_t) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw RWLock.
@@ -495,7 +464,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit RWLock(RWLockRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -557,34 +526,17 @@ public:
   RWLock();
 
   /// Destructor
-  ~RWLock() { SDL_DestroyRWLock(m_resource); }
+  ~RWLock() { SDL_DestroyRWLock(get()); }
 
   /// Assignment operator.
   constexpr RWLock& operator=(RWLock&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   RWLock& operator=(const RWLock& other) = delete;
-
-  /// Retrieves underlying RWLockRaw.
-  constexpr RWLockRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying RWLockRaw and clear this.
-  constexpr RWLockRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const RWLock& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a read/write lock created with CreateRWLock().
@@ -1100,16 +1052,9 @@ inline void RWLock::Destroy() { DestroyRWLock(release()); }
  *
  * @cat resource
  */
-class Semaphore
+struct Semaphore : ResourceBase<SemaphoreRaw>
 {
-  SemaphoreRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Semaphore(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Semaphore.
@@ -1119,7 +1064,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -1163,34 +1108,17 @@ public:
   Semaphore(Uint32 initial_value);
 
   /// Destructor
-  ~Semaphore() { SDL_DestroySemaphore(m_resource); }
+  ~Semaphore() { SDL_DestroySemaphore(get()); }
 
   /// Assignment operator.
   constexpr Semaphore& operator=(Semaphore&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Semaphore& operator=(const Semaphore& other) = delete;
-
-  /// Retrieves underlying SemaphoreRaw.
-  constexpr SemaphoreRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying SemaphoreRaw and clear this.
-  constexpr SemaphoreRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Semaphore& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a semaphore.
@@ -1549,16 +1477,9 @@ inline Uint32 Semaphore::GetValue() const
  *
  * @cat resource
  */
-class Condition
+struct Condition : ResourceBase<ConditionRaw>
 {
-  ConditionRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Condition(std::nullptr_t) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Condition.
@@ -1568,7 +1489,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Condition(ConditionRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -1604,34 +1525,17 @@ public:
   Condition();
 
   /// Destructor
-  ~Condition() { SDL_DestroyCondition(m_resource); }
+  ~Condition() { SDL_DestroyCondition(get()); }
 
   /// Assignment operator.
   constexpr Condition& operator=(Condition&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Condition& operator=(const Condition& other) = delete;
-
-  /// Retrieves underlying ConditionRaw.
-  constexpr ConditionRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying ConditionRaw and clear this.
-  constexpr ConditionRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Condition& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a condition variable.

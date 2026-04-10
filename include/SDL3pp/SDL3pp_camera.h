@@ -153,16 +153,9 @@ using CameraPermissionState = int;
  *
  * @cat resource
  */
-class Camera
+struct Camera : ResourceBase<CameraRaw>
 {
-  CameraRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Camera(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Camera.
@@ -172,7 +165,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Camera(CameraRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -236,34 +229,17 @@ public:
   Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
 
   /// Destructor
-  ~Camera() { SDL_CloseCamera(m_resource); }
+  ~Camera() { SDL_CloseCamera(get()); }
 
   /// Assignment operator.
   constexpr Camera& operator=(Camera&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Camera& operator=(const Camera& other) = delete;
-
-  /// Retrieves underlying CameraRaw.
-  constexpr CameraRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying CameraRaw and clear this.
-  constexpr CameraRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Camera& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Use this function to shut down camera processing and close the camera

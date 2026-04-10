@@ -33,7 +33,7 @@ public:
 
   /// Constructs null/invalid
   constexpr ResourceBase(std::nullptr_t = nullptr)
-    : m_resource(nullptr)
+    : m_resource{}
   {
   }
 
@@ -56,7 +56,7 @@ public:
   constexpr RawPointer release() noexcept
   {
     auto r = m_resource;
-    m_resource = nullptr;
+    m_resource = {};
     return r;
   }
 

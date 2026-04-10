@@ -106,16 +106,9 @@ constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
  *
  * @cat resource
  */
-class Process
+struct Process : ResourceBase<ProcessRaw>
 {
-  ProcessRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Process(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Process.
@@ -125,7 +118,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Process(ProcessRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -256,34 +249,17 @@ public:
   Process(PropertiesRef props);
 
   /// Destructor
-  ~Process() { SDL_DestroyProcess(m_resource); }
+  ~Process() { SDL_DestroyProcess(get()); }
 
   /// Assignment operator.
   constexpr Process& operator=(Process&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Process& operator=(const Process& other) = delete;
-
-  /// Retrieves underlying ProcessRaw.
-  constexpr ProcessRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying ProcessRaw and clear this.
-  constexpr ProcessRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Process& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a previously created process object.

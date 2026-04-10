@@ -101,16 +101,9 @@ using hid_device_info = SDL_hid_device_info;
  *
  * @cat resource
  */
-class HidDevice
+struct HidDevice : ResourceBase<HidDeviceRaw>
 {
-  HidDeviceRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr HidDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw HidDevice.
@@ -120,7 +113,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit HidDevice(HidDeviceRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -170,34 +163,17 @@ public:
   HidDevice(StringParam path);
 
   /// Destructor
-  ~HidDevice() { SDL_hid_close(m_resource); }
+  ~HidDevice() { SDL_hid_close(get()); }
 
   /// Assignment operator.
   constexpr HidDevice& operator=(HidDevice&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   HidDevice& operator=(const HidDevice& other) = delete;
-
-  /// Retrieves underlying HidDeviceRaw.
-  constexpr HidDeviceRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying HidDeviceRaw and clear this.
-  constexpr HidDeviceRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const HidDevice& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close a HID device.

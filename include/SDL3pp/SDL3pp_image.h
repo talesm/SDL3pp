@@ -2670,16 +2670,9 @@ inline void SaveWEBP_IO(SurfaceRef surface,
  *
  * @cat resource
  */
-class Animation
+struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
 {
-  AnimationRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Animation(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Animation.
@@ -2689,7 +2682,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Animation(AnimationRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -2762,34 +2755,17 @@ public:
   constexpr operator AnimationConstRef() const noexcept { return get(); }
 
   /// Destructor
-  ~Animation() { IMG_FreeAnimation(m_resource); }
+  ~Animation() { IMG_FreeAnimation(get()); }
 
   /// Assignment operator.
   constexpr Animation& operator=(Animation&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Animation& operator=(const Animation& other) = delete;
-
-  /// Retrieves underlying AnimationRaw.
-  constexpr AnimationRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AnimationRaw and clear this.
-  constexpr AnimationRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Animation& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Dispose of an Animation and free its resources.
@@ -3710,16 +3686,9 @@ inline void Animation::Free() { FreeAnimation(release()); }
  *
  * @cat resource
  */
-class AnimationEncoder
+struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
 {
-  AnimationEncoderRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr AnimationEncoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AnimationEncoder.
@@ -3729,7 +3698,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AnimationEncoder(AnimationEncoderRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -3854,35 +3823,17 @@ public:
   AnimationEncoder(PropertiesRef props);
 
   /// Destructor
-  ~AnimationEncoder() { IMG_CloseAnimationEncoder(m_resource); }
+  ~AnimationEncoder() { IMG_CloseAnimationEncoder(get()); }
 
   /// Assignment operator.
   constexpr AnimationEncoder& operator=(AnimationEncoder&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
-
-  /// Retrieves underlying AnimationEncoderRaw.
-  constexpr AnimationEncoderRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AnimationEncoderRaw and clear this.
-  constexpr AnimationEncoderRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationEncoder& other) const noexcept =
-    default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close an animation encoder, finishing any encoding.
@@ -4243,16 +4194,9 @@ constexpr AnimationDecoderStatus DECODER_STATUS_COMPLETE =
  *
  * @cat resource
  */
-class AnimationDecoder
+struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
 {
-  AnimationDecoderRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr AnimationDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AnimationDecoder.
@@ -4262,7 +4206,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AnimationDecoder(AnimationDecoderRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -4380,35 +4324,17 @@ public:
   AnimationDecoder(PropertiesRef props);
 
   /// Destructor
-  ~AnimationDecoder() { IMG_CloseAnimationDecoder(m_resource); }
+  ~AnimationDecoder() { IMG_CloseAnimationDecoder(get()); }
 
   /// Assignment operator.
   constexpr AnimationDecoder& operator=(AnimationDecoder&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
-
-  /// Retrieves underlying AnimationDecoderRaw.
-  constexpr AnimationDecoderRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AnimationDecoderRaw and clear this.
-  constexpr AnimationDecoderRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationDecoder& other) const noexcept =
-    default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close an animation decoder, finishing any decoding.

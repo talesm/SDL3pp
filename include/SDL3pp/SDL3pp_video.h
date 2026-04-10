@@ -734,16 +734,9 @@ constexpr ProgressState PROGRESS_STATE_ERROR = SDL_PROGRESS_STATE_ERROR;
  *
  * @sa CreateWindow
  */
-class Window
+struct Window : ResourceBase<WindowRaw>
 {
-  WindowRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Window(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Window.
@@ -753,7 +746,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Window(WindowRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -1102,34 +1095,17 @@ public:
   Window(PropertiesRef props);
 
   /// Destructor
-  ~Window() { SDL_DestroyWindow(m_resource); }
+  ~Window() { SDL_DestroyWindow(get()); }
 
   /// Assignment operator.
   constexpr Window& operator=(Window&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Window& operator=(const Window& other) = delete;
-
-  /// Retrieves underlying WindowRaw.
-  constexpr WindowRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying WindowRaw and clear this.
-  constexpr WindowRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Window& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a window.

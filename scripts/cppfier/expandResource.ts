@@ -21,7 +21,6 @@ import {
   ApiEntryTransformMap,
   ApiFileTransform,
   Dict,
-  EntryHint,
   LockDefinition,
   ResourceDefinition,
 } from "./types";
@@ -62,13 +61,9 @@ export function expandResource(
   const title = targetName[0].toLowerCase() + targetName.slice(1);
 
   if (!targetEntry.type) {
-    if (hasScoped || hasShared) {
-      targetEntry.type = enableConstParam
-        ? `ResourceBase<${rawName}, ${constRawName}>`
-        : `ResourceBase<${rawName}>`;
-    } else if (sourceEntry.type) {
-      targetEntry.type = "";
-    }
+    targetEntry.type = enableConstParam
+      ? `ResourceBase<${rawName}, ${constRawName}>`
+      : `ResourceBase<${rawName}>`;
   }
   context.addName(sourceName, targetName);
   context.addCallbackType(isStruct ? `${sourceName} *` : sourceName, rawName);
@@ -311,21 +306,7 @@ function createBaselineCtors(
   isStruct: boolean,
 ) {
   if (hasScoped) return {};
-  const self = shared ? "ResourceBase" : "m_resource";
-
   const ctors: Dict<ApiEntryTransform> = {
-    [targetName]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [{ name: "", type: "std::nullptr_t", default: "nullptr" }],
-      hints: {
-        init: [isStruct ? "m_resource(nullptr)" : "m_resource(0)"],
-        noexcept: true,
-        changeAccess: "public",
-      },
-      doc: ["Default ctor"],
-    },
     [`${targetName}#2`]: {
       kind: "function",
       type: "",
@@ -333,7 +314,7 @@ function createBaselineCtors(
       explicit: true,
       parameters: [{ name: "resource", type: rawName }],
       hints: {
-        init: [`${self}(resource)`],
+        init: [`ResourceBase(resource)`],
         noexcept: true,
       },
       doc: [
@@ -368,7 +349,6 @@ function createBaselineCtors(
   };
   if (shared) {
     addBorrowFunction(ctors, targetName, shared, rawName);
-    delete ctors[`${targetName}`];
   } else if (refName) {
     deleteCtorsFromRef(ctors, refName, targetName);
   }
@@ -625,11 +605,6 @@ function populateTargetEntry(
   }
   const entries: ApiEntryTransformMap = {
     "ResourceBase::ResourceBase": "alias",
-    m_resource: {
-      kind: "var",
-      type: rawName,
-      hints: { body: nullValue },
-    },
     ...ctors,
     [`~${targetName}`]: {
       kind: "function",
@@ -638,7 +613,7 @@ function populateTargetEntry(
       parameters: [],
       hints: {
         body: freeFunction
-          ? `${freeFunction.sourceName ?? freeFunction.name}(${hasShared ? "get()" : "m_resource"});`
+          ? `${freeFunction.sourceName ?? freeFunction.name}(get());`
           : "",
       },
     },
@@ -648,9 +623,7 @@ function populateTargetEntry(
       parameters: [{ name: "other", type: `${targetName} &&` }],
       constexpr: true,
       hints: {
-        body: hasShared
-          ? "swap(*this, other);\nreturn *this;"
-          : "std::swap(m_resource, other.m_resource);\nreturn *this;",
+        body: "swap(*this, other);\nreturn *this;",
         noexcept: true,
       },
       doc: ["Assignment operator."],
@@ -661,78 +634,24 @@ function populateTargetEntry(
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
         delete: !hasShared,
-        body: `if (get() != other.get()) {\n  ${targetName} tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;`,
+        body: hasShared
+          ? `if (get() != other.get()) {\n  ${targetName} tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;`
+          : undefined,
       },
       doc: ["Assignment operator."],
-    },
-    get: {
-      kind: "function",
-      type: rawName,
-      immutable: true,
-      constexpr: true,
-      parameters: [],
-      hints: {
-        body: "return m_resource;",
-        noexcept: true,
-      },
-      doc: [`Retrieves underlying ${rawName}.`],
-    },
-    release: {
-      kind: "function",
-      type: rawName,
-      constexpr: true,
-      parameters: [],
-      hints: {
-        body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;`,
-        noexcept: true,
-      },
-      doc: [`Retrieves underlying ${rawName} and clear this.`],
-    },
-    "operator <=>": {
-      kind: "function",
-      type: "auto",
-      immutable: true,
-      constexpr: true,
-      parameters: [{ type: `const ${targetName} &`, name: "other" }],
-      hints: { default: true, noexcept: true },
-      doc: [`Comparison`],
-    },
-    "operator bool": {
-      kind: "function",
-      type: "",
-      immutable: true,
-      constexpr: true,
-      explicit: true,
-      parameters: [],
-      hints: { body: "return !!m_resource;", noexcept: true },
-      doc: [`Converts to bool`],
     },
     [freeFunction.name]: "plc",
     ...subEntries,
   };
-  if (hasScoped || hasShared) {
-    if (hasScoped) {
-      delete entries[`~${targetName}`];
-      delete entries["operator="];
-      delete entries["operator=#2"];
-    }
-    delete entries["m_resource"];
-    delete entries["get"];
-    delete entries["release"];
-    delete entries["operator <=>"];
-    delete entries["operator bool"];
-    addHints(targetEntry, {
-      self: "get()",
-      super: targetName,
-    });
-  } else {
-    delete entries["ResourceBase::ResourceBase"];
-    addHints(targetEntry, {
-      self: "get()",
-      super: targetName,
-      private: true,
-    });
+  if (hasScoped) {
+    delete entries[`~${targetName}`];
+    delete entries["operator="];
+    delete entries["operator=#2"];
   }
+  addHints(targetEntry, {
+    self: "get()",
+    super: targetName,
+  });
   targetEntry.entries = entries;
 }
 

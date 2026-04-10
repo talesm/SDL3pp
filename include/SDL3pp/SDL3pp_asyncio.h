@@ -116,16 +116,9 @@ struct AsyncIOQueueRef;
  *
  * @cat resource
  */
-class AsyncIO
+struct AsyncIO : ResourceBase<AsyncIORaw>
 {
-  AsyncIORaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr AsyncIO(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AsyncIO.
@@ -135,7 +128,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AsyncIO(AsyncIORaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -196,38 +189,21 @@ public:
   /// Destructor
   ~AsyncIO()
   {
-    if (m_resource) {
+    if (get()) {
       LOG_CATEGORY_ERROR.LogDebug("AsyncIO ID was not properly Destroyed: {}",
-                                  (void*)(m_resource));
+                                  (void*)(get()));
     }
   }
 
   /// Assignment operator.
   constexpr AsyncIO& operator=(AsyncIO&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AsyncIO& operator=(const AsyncIO& other) = delete;
-
-  /// Retrieves underlying AsyncIORaw.
-  constexpr AsyncIORaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AsyncIORaw and clear this.
-  constexpr AsyncIORaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AsyncIO& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close and free any allocated resources for an async I/O object.
@@ -501,16 +477,9 @@ using AsyncIOOutcome = SDL_AsyncIOOutcome;
  *
  * @cat resource
  */
-class AsyncIOQueue
+struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
 {
-  AsyncIOQueueRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr AsyncIOQueue(std::nullptr_t) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AsyncIOQueue.
@@ -520,7 +489,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AsyncIOQueue(AsyncIOQueueRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -557,35 +526,17 @@ public:
   AsyncIOQueue();
 
   /// Destructor
-  ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(m_resource); }
+  ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(get()); }
 
   /// Assignment operator.
   constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AsyncIOQueue& operator=(const AsyncIOQueue& other) = delete;
-
-  /// Retrieves underlying AsyncIOQueueRaw.
-  constexpr AsyncIOQueueRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AsyncIOQueueRaw and clear this.
-  constexpr AsyncIOQueueRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AsyncIOQueue& other) const noexcept =
-    default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a previously-created async I/O task queue.

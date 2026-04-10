@@ -793,16 +793,9 @@ using AudioStreamCB = MakeFrontCallback<
  *
  * @cat resource
  */
-class AudioDevice
+struct AudioDevice : ResourceBase<AudioDeviceID>
 {
-  AudioDeviceID m_resource = 0;
-
-public:
-  /// Default ctor
-  constexpr AudioDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AudioDevice.
@@ -812,7 +805,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AudioDevice(AudioDeviceID resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -903,34 +896,17 @@ public:
   AudioDevice(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec);
 
   /// Destructor
-  ~AudioDevice() { SDL_CloseAudioDevice(m_resource); }
+  ~AudioDevice() { SDL_CloseAudioDevice(get()); }
 
   /// Assignment operator.
   constexpr AudioDevice& operator=(AudioDevice&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AudioDevice& operator=(const AudioDevice& other) = delete;
-
-  /// Retrieves underlying AudioDeviceID.
-  constexpr AudioDeviceID get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AudioDeviceID and clear this.
-  constexpr AudioDeviceID release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = 0;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AudioDevice& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close a previously-opened audio device.
@@ -1670,16 +1646,9 @@ using AudioStreamDataCompleteCB =
  *
  * @cat resource
  */
-class AudioStream
+struct AudioStream : ResourceBase<AudioStreamRaw>
 {
-  AudioStreamRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr AudioStream(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AudioStream.
@@ -1689,7 +1658,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AudioStream(AudioStreamRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -1849,34 +1818,17 @@ public:
               AudioStreamCB callback);
 
   /// Destructor
-  ~AudioStream() { SDL_DestroyAudioStream(m_resource); }
+  ~AudioStream() { SDL_DestroyAudioStream(get()); }
 
   /// Assignment operator.
   constexpr AudioStream& operator=(AudioStream&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AudioStream& operator=(const AudioStream& other) = delete;
-
-  /// Retrieves underlying AudioStreamRaw.
-  constexpr AudioStreamRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AudioStreamRaw and clear this.
-  constexpr AudioStreamRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AudioStream& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Free an audio stream.

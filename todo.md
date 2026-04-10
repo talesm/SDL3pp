@@ -1,6 +1,10 @@
 Todo for next version
 =====================
 
+- [x] Add missing tray free functions when previously had only methods:
+  - [x] SetTrayEntryCallback with TrayCB callback;
+  - [x] AppendTrayEntry;
+- [x] Add TrayEntry constructor;
 - [x] Docs improvements:
   - [x] Add namespace tab;
   - [x] Document namespace `prop`;
@@ -30,7 +34,7 @@ Todo for next version
   - [x] Document namespace `prop::RendererTextEngine`;
 - [ ] Resource improvements:
   - [x] Create template base class for non-owning (Like TrayEntry);
-  - [ ] Create template base class for unique owning (Like Window);
+  - [x] Create template base class for unique owning (Like Window);
   - [x] Create template base class for shared owning (Like Surface);
 
 Backlog

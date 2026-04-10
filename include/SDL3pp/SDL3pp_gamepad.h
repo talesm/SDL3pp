@@ -387,16 +387,9 @@ using GamepadBinding = SDL_GamepadBinding;
  *
  * @cat resource
  */
-class Gamepad
+struct Gamepad : ResourceBase<GamepadRaw>
 {
-  GamepadRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Gamepad(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Gamepad.
@@ -406,7 +399,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Gamepad(GamepadRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -440,34 +433,17 @@ public:
   Gamepad(JoystickID instance_id);
 
   /// Destructor
-  ~Gamepad() { SDL_CloseGamepad(m_resource); }
+  ~Gamepad() { SDL_CloseGamepad(get()); }
 
   /// Assignment operator.
   constexpr Gamepad& operator=(Gamepad&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Gamepad& operator=(const Gamepad& other) = delete;
-
-  /// Retrieves underlying GamepadRaw.
-  constexpr GamepadRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GamepadRaw and clear this.
-  constexpr GamepadRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Gamepad& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close a gamepad previously opened with OpenGamepad().

@@ -3045,16 +3045,9 @@ constexpr GPUSampleCount GPU_SAMPLECOUNT_8 = SDL_GPU_SAMPLECOUNT_8; ///< MSAA 8x
  *
  * @cat resource
  */
-class GPUDevice
+struct GPUDevice : ResourceBase<GPUDeviceRaw>
 {
-  GPUDeviceRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr GPUDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw GPUDevice.
@@ -3064,7 +3057,7 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit GPUDevice(GPUDeviceRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
@@ -3223,34 +3216,17 @@ public:
   GPUDevice(PropertiesRef props);
 
   /// Destructor
-  ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
+  ~GPUDevice() { SDL_DestroyGPUDevice(get()); }
 
   /// Assignment operator.
   constexpr GPUDevice& operator=(GPUDevice&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   GPUDevice& operator=(const GPUDevice& other) = delete;
-
-  /// Retrieves underlying GPUDeviceRaw.
-  constexpr GPUDeviceRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GPUDeviceRaw and clear this.
-  constexpr GPUDeviceRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const GPUDevice& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroys a GPU context previously returned by CreateGPUDevice.
