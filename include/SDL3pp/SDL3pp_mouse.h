@@ -50,8 +50,12 @@ struct Cursor;
 /// Alias to raw representation for Cursor.
 using CursorRaw = SDL_Cursor*;
 
-// Forward decl
-struct CursorRef;
+/**
+ * Reference for Cursor.
+ *
+ * This does not take ownership!
+ */
+using CursorRef = ResourceRef<Cursor>;
 
 /**
  * Cursor types for CreateSystemCursor().
@@ -151,16 +155,9 @@ using MouseID = SDL_MouseID;
  *
  * @cat resource
  */
-class Cursor
+struct Cursor : ResourceBase<CursorRaw>
 {
-  CursorRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Cursor(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Cursor.
@@ -170,12 +167,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Cursor(CursorRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) noexcept = delete;
+  constexpr Cursor(const Cursor& other) = delete;
 
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
@@ -283,34 +280,17 @@ public:
   Cursor(SystemCursor id);
 
   /// Destructor
-  ~Cursor() { SDL_DestroyCursor(m_resource); }
+  ~Cursor() { SDL_DestroyCursor(get()); }
 
   /// Assignment operator.
   constexpr Cursor& operator=(Cursor&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Cursor& operator=(const Cursor& other) = delete;
-
-  /// Retrieves underlying CursorRaw.
-  constexpr CursorRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying CursorRaw and clear this.
-  constexpr CursorRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Cursor& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Free a previously-created cursor.
@@ -346,78 +326,6 @@ public:
    * @sa GetCursor
    */
   void Set();
-};
-
-/**
- * Reference for Cursor.
- *
- * This does not take ownership!
- */
-struct CursorRef : Cursor
-{
-  using Cursor::Cursor;
-
-  /**
-   * Constructs from raw Cursor.
-   *
-   * @param resource a CursorRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CursorRef(CursorRaw resource) noexcept
-    : Cursor(resource)
-  {
-  }
-
-  /**
-   * Constructs from Cursor.
-   *
-   * @param resource a Cursor.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CursorRef(const Cursor& resource) noexcept
-    : Cursor(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Cursor.
-   *
-   * @param resource a Cursor.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr CursorRef(Cursor&& resource) noexcept
-    : Cursor(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr CursorRef(const CursorRef& other) noexcept
-    : Cursor(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr CursorRef(CursorRef&& other) noexcept
-    : Cursor(other.get())
-  {
-  }
-
-  /// Destructor
-  ~CursorRef() { release(); }
-
-  /// Assignment operator.
-  CursorRef& operator=(const CursorRef& other) noexcept
-  {
-    release();
-    Cursor::operator=(Cursor(other.get()));
-    return *this;
-  }
-
-  /// Converts to CursorRaw
-  constexpr operator CursorRaw() const noexcept { return get(); }
 };
 
 /**
@@ -940,18 +848,18 @@ inline Cursor::Cursor(const Uint8* data,
                       const Uint8* mask,
                       const PointRaw& size,
                       const PointRaw& hot)
-  : m_resource(
+  : Cursor(
       CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
 {
 }
 
 inline Cursor::Cursor(SurfaceRef surface, const PointRaw& hot)
-  : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
+  : Cursor(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
 {
 }
 
 inline Cursor::Cursor(SystemCursor id)
-  : m_resource(CheckError(SDL_CreateSystemCursor(id)))
+  : Cursor(CheckError(SDL_CreateSystemCursor(id)))
 {
 }
 

@@ -9,22 +9,7 @@
   *
   * Functions to creating Metal layers and views on SDL windows.
   *
-@@ -36,12 +36,12 @@
-  */
- class MetalView
- {
--  MetalViewRaw m_resource = 0;
-+  MetalViewRaw m_resource = nullptr;
- 
- public:
-   /// Default ctor
-   constexpr MetalView(std::nullptr_t = nullptr) noexcept
--    : m_resource(0)
-+    : m_resource(nullptr)
-   {
-   }
- 
-@@ -87,7 +87,7 @@
+@@ -84,7 +84,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
@@ -33,16 +18,7 @@
     * @sa MetalView.GetLayer
     */
    MetalView(WindowRef window);
-@@ -112,7 +112,7 @@
-   constexpr MetalViewRaw release() noexcept
-   {
-     auto r = m_resource;
--    m_resource = 0;
-+    m_resource = nullptr;
-     return r;
-   }
- 
-@@ -134,7 +134,7 @@
+@@ -114,7 +114,7 @@
     *
     * @sa Metal_CreateView
     */
@@ -51,7 +27,7 @@
  
    /**
     * Get a pointer to the backing CAMetalLayer for the given view.
-@@ -237,7 +237,7 @@
+@@ -145,7 +145,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
@@ -60,7 +36,7 @@
   * @sa MetalView.GetLayer
   */
  inline MetalView Metal_CreateView(WindowRef window)
-@@ -269,7 +269,7 @@
+@@ -177,7 +177,7 @@
    SDL_Metal_DestroyView(view);
  }
  

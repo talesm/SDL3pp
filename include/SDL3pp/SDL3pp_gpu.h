@@ -378,8 +378,12 @@ struct GPUDevice;
 /// Alias to raw representation for GPUDevice.
 using GPUDeviceRaw = SDL_GPUDevice*;
 
-// Forward decl
-struct GPUDeviceRef;
+/**
+ * Reference for GPUDevice.
+ *
+ * This does not take ownership!
+ */
+using GPUDeviceRef = ResourceRef<GPUDevice>;
 
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
@@ -3045,16 +3049,9 @@ constexpr GPUSampleCount GPU_SAMPLECOUNT_8 = SDL_GPU_SAMPLECOUNT_8; ///< MSAA 8x
  *
  * @cat resource
  */
-class GPUDevice
+struct GPUDevice : ResourceBase<GPUDeviceRaw>
 {
-  GPUDeviceRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr GPUDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw GPUDevice.
@@ -3064,12 +3061,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit GPUDevice(GPUDeviceRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) noexcept = delete;
+  constexpr GPUDevice(const GPUDevice& other) = delete;
 
   /// Move constructor
   constexpr GPUDevice(GPUDevice&& other) noexcept
@@ -3223,34 +3220,17 @@ public:
   GPUDevice(PropertiesRef props);
 
   /// Destructor
-  ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
+  ~GPUDevice() { SDL_DestroyGPUDevice(get()); }
 
   /// Assignment operator.
   constexpr GPUDevice& operator=(GPUDevice&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   GPUDevice& operator=(const GPUDevice& other) = delete;
-
-  /// Retrieves underlying GPUDeviceRaw.
-  constexpr GPUDeviceRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GPUDeviceRaw and clear this.
-  constexpr GPUDeviceRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const GPUDevice& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroys a GPU context previously returned by CreateGPUDevice.
@@ -4111,78 +4091,6 @@ public:
 };
 
 /**
- * Reference for GPUDevice.
- *
- * This does not take ownership!
- */
-struct GPUDeviceRef : GPUDevice
-{
-  using GPUDevice::GPUDevice;
-
-  /**
-   * Constructs from raw GPUDevice.
-   *
-   * @param resource a GPUDeviceRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GPUDeviceRef(GPUDeviceRaw resource) noexcept
-    : GPUDevice(resource)
-  {
-  }
-
-  /**
-   * Constructs from GPUDevice.
-   *
-   * @param resource a GPUDevice.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GPUDeviceRef(const GPUDevice& resource) noexcept
-    : GPUDevice(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from GPUDevice.
-   *
-   * @param resource a GPUDevice.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr GPUDeviceRef(GPUDevice&& resource) noexcept
-    : GPUDevice(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr GPUDeviceRef(const GPUDeviceRef& other) noexcept
-    : GPUDevice(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr GPUDeviceRef(GPUDeviceRef&& other) noexcept
-    : GPUDevice(other.get())
-  {
-  }
-
-  /// Destructor
-  ~GPUDeviceRef() { release(); }
-
-  /// Assignment operator.
-  GPUDeviceRef& operator=(const GPUDeviceRef& other) noexcept
-  {
-    release();
-    GPUDevice::operator=(GPUDevice(other.get()));
-    return *this;
-  }
-
-  /// Converts to GPUDeviceRaw
-  constexpr operator GPUDeviceRaw() const noexcept { return get(); }
-};
-
-/**
  * Specifies the primitive topology of a graphics pipeline.
  *
  * If you are using POINTLIST you must include a point size output in the vertex
@@ -5032,12 +4940,12 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
 inline GPUDevice::GPUDevice(GPUShaderFormat format_flags,
                             bool debug_mode,
                             StringParam name)
-  : m_resource(CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
+  : GPUDevice(CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
 {
 }
 
 inline GPUDevice::GPUDevice(PropertiesRef props)
-  : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
+  : GPUDevice(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
 {
 }
 

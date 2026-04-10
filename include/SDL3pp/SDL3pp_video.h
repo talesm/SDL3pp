@@ -46,8 +46,12 @@ struct Window;
 /// Alias to raw representation for Window.
 using WindowRaw = SDL_Window*;
 
-// Forward decl
-struct WindowRef;
+/**
+ * Reference for Window.
+ *
+ * This does not take ownership!
+ */
+using WindowRef = ResourceRef<Window>;
 
 // Forward decl
 struct GLContext;
@@ -61,8 +65,14 @@ struct GLContextScoped;
 /// Alias to GLContext for non owning parameters.
 using GLContextRef = GLContext;
 
-// Forward decl
-struct RendererRef;
+struct Renderer;
+
+/**
+ * Reference for Renderer.
+ *
+ * This does not take ownership!
+ */
+using RendererRef = ResourceRef<Renderer>;
 
 /**
  * Display orientation values; the way a display is rotated.
@@ -734,16 +744,9 @@ constexpr ProgressState PROGRESS_STATE_ERROR = SDL_PROGRESS_STATE_ERROR;
  *
  * @sa CreateWindow
  */
-class Window
+struct Window : ResourceBase<WindowRaw>
 {
-  WindowRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Window(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Window.
@@ -753,12 +756,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Window(WindowRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Window(const Window& other) noexcept = delete;
+  constexpr Window(const Window& other) = delete;
 
   /// Move constructor
   constexpr Window(Window&& other) noexcept
@@ -1102,34 +1105,17 @@ public:
   Window(PropertiesRef props);
 
   /// Destructor
-  ~Window() { SDL_DestroyWindow(m_resource); }
+  ~Window() { SDL_DestroyWindow(get()); }
 
   /// Assignment operator.
   constexpr Window& operator=(Window&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Window& operator=(const Window& other) = delete;
-
-  /// Retrieves underlying WindowRaw.
-  constexpr WindowRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying WindowRaw and clear this.
-  constexpr WindowRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Window& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a window.
@@ -3093,78 +3079,6 @@ public:
 };
 
 /**
- * Reference for Window.
- *
- * This does not take ownership!
- */
-struct WindowRef : Window
-{
-  using Window::Window;
-
-  /**
-   * Constructs from raw Window.
-   *
-   * @param resource a WindowRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr WindowRef(WindowRaw resource) noexcept
-    : Window(resource)
-  {
-  }
-
-  /**
-   * Constructs from Window.
-   *
-   * @param resource a Window.
-   *
-   * This does not takes ownership!
-   */
-  constexpr WindowRef(const Window& resource) noexcept
-    : Window(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Window.
-   *
-   * @param resource a Window.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr WindowRef(Window&& resource) noexcept
-    : Window(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr WindowRef(const WindowRef& other) noexcept
-    : Window(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr WindowRef(WindowRef&& other) noexcept
-    : Window(other.get())
-  {
-  }
-
-  /// Destructor
-  ~WindowRef() { release(); }
-
-  /// Assignment operator.
-  WindowRef& operator=(const WindowRef& other) noexcept
-  {
-    release();
-    Window::operator=(Window(other.get()));
-    return *this;
-  }
-
-  /// Converts to WindowRaw
-  constexpr operator WindowRaw() const noexcept { return get(); }
-};
-
-/**
  * A magic value used with WINDOWPOS_UNDEFINED.
  *
  * Generally this macro isn't used directly, but rather through
@@ -3284,26 +3198,9 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @cat resource
  */
-class GLContext
+struct GLContext : ResourceBase<GLContextRaw>
 {
-  GLContextRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr GLContext(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from raw GLContext.
-   *
-   * @param resource a GLContextRaw to be wrapped.
-   */
-  constexpr GLContext(GLContextRaw resource) noexcept
-    : m_resource(resource)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -3336,24 +3233,7 @@ public:
   GLContext(WindowRef window);
 
   /// Converts to underlying GLContextRaw.
-  constexpr operator GLContextRaw() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GLContextRaw.
-  constexpr GLContextRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GLContextRaw and clear this.
-  constexpr GLContextRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const GLContext& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
+  constexpr operator GLContextRaw() const noexcept { return get(); }
 
   /**
    * Delete an OpenGL context.
@@ -4544,7 +4424,7 @@ inline Window CreateWindow(StringParam title,
 inline Window::Window(StringParam title,
                       const PointRaw& size,
                       WindowFlags flags)
-  : m_resource(SDL_CreateWindow(title, size.x, size.y, flags))
+  : Window(SDL_CreateWindow(title, size.x, size.y, flags))
 {
 }
 
@@ -4552,13 +4432,13 @@ inline Window::Window(WindowRef parent,
                       const PointRaw& offset,
                       const PointRaw& size,
                       WindowFlags flags)
-  : m_resource(
+  : Window(
       SDL_CreatePopupWindow(parent, offset.x, offset.y, size.x, size.y, flags))
 {
 }
 
 inline Window::Window(PropertiesRef props)
-  : m_resource(SDL_CreateWindowWithProperties(props))
+  : Window(SDL_CreateWindowWithProperties(props))
 {
 }
 
@@ -7369,7 +7249,7 @@ inline GLContext GL_CreateContext(WindowRef window)
 inline GLContext Window::CreateGLContext() { return GLContext(get()); }
 
 inline GLContext::GLContext(WindowRef window)
-  : m_resource(SDL_GL_CreateContext(window))
+  : GLContext(SDL_GL_CreateContext(window))
 {
 }
 

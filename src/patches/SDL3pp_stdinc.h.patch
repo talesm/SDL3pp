@@ -8,7 +8,7 @@
  #include <SDL3/SDL_stdinc.h>
  #include "SDL3pp_callbackWrapper.h"
  #include "SDL3pp_error.h"
-@@ -13,7 +14,7 @@
+@@ -14,7 +15,7 @@
  namespace SDL {
  
  /**
@@ -17,15 +17,18 @@
   *
   * SDL provides its own implementation of some of the most important C runtime
   * functions.
-@@ -56,30 +57,12 @@
+@@ -61,7 +62,7 @@
  struct IConv;
  
  /// Alias to raw representation for IConv.
 -using IConvRaw = SDL_iconv_t*;
 +using IConvRaw = SDL_iconv_t;
  
- // Forward decl
- struct IConvRef;
+ /**
+  * Reference for IConv.
+@@ -70,25 +71,7 @@
+  */
+ using IConvRef = ResourceRef<IConv>;
  
 -using int8_t = ::int8_t;
 -
@@ -50,7 +53,7 @@
  
  /**
   * Don't let SDL use "long long" C types.
-@@ -148,24 +131,24 @@
+@@ -157,24 +140,24 @@
   */
  #define SDL_COMPILE_TIME_ASSERT(name, x) FailToCompileIf_x_IsFalse(x)
  
@@ -80,7 +83,7 @@
  /**
   * Macro useful for building other macros with strings in them.
   *
-@@ -175,13 +158,15 @@
+@@ -184,13 +167,15 @@
   */
  #define SDL_STRINGIFY_ARG(arg) #arg
  
@@ -100,7 +103,7 @@
   * @returns the four characters converted into a Uint32, one character per-byte.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -193,6 +178,8 @@
+@@ -202,6 +187,8 @@
    return SDL_FOURCC(a, b, c, d);
  }
  
@@ -109,7 +112,7 @@
  /**
   * Append the 64 bit integer suffix to a signed integer literal.
   *
-@@ -219,6 +206,8 @@
+@@ -228,6 +215,8 @@
   */
  #define SDL_UINT64_C(c) c##ULL /* or whatever the current compiler uses. */
  
@@ -118,7 +121,7 @@
  /**
   * A signed 8-bit integer type.
   *
-@@ -226,8 +215,10 @@
+@@ -235,8 +224,10 @@
   */
  using Sint8 = ::Sint8;
  
@@ -129,7 +132,7 @@
  constexpr Sint8 MIN_SINT8 = SDL_MIN_SINT8;
  
  /**
-@@ -237,8 +228,10 @@
+@@ -246,8 +237,10 @@
   */
  using Uint8 = ::Uint8;
  
@@ -140,7 +143,7 @@
  constexpr Uint8 MIN_UINT8 = SDL_MIN_UINT8;
  
  /**
-@@ -248,8 +241,10 @@
+@@ -257,8 +250,10 @@
   */
  using Sint16 = ::Sint16;
  
@@ -151,7 +154,7 @@
  constexpr Sint16 MIN_SINT16 = SDL_MIN_SINT16;
  
  /**
-@@ -259,8 +254,10 @@
+@@ -268,8 +263,10 @@
   */
  using Uint16 = ::Uint16;
  
@@ -162,7 +165,7 @@
  constexpr Uint16 MIN_UINT16 = SDL_MIN_UINT16;
  
  /**
-@@ -270,8 +267,10 @@
+@@ -279,8 +276,10 @@
   */
  using Sint32 = ::Sint32;
  
@@ -173,7 +176,7 @@
  constexpr Sint32 MIN_SINT32 = SDL_MIN_SINT32;
  
  /**
-@@ -281,8 +280,10 @@
+@@ -290,8 +289,10 @@
   */
  using Uint32 = ::Uint32;
  
@@ -184,7 +187,7 @@
  constexpr Uint8 MIN_UINT32 = SDL_MIN_UINT32;
  
  /**
-@@ -294,8 +295,10 @@
+@@ -303,8 +304,10 @@
   */
  using Sint64 = ::Sint64;
  
@@ -195,7 +198,7 @@
  constexpr Sint64 MIN_SINT64 = SDL_MIN_SINT64;
  
  /**
-@@ -307,8 +310,10 @@
+@@ -316,8 +319,10 @@
   */
  using Uint64 = ::Uint64;
  
@@ -206,7 +209,7 @@
  constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
  
  /// Duration in seconds (float).
-@@ -321,28 +326,16 @@
+@@ -330,28 +335,16 @@
  using Milliseconds = std::chrono::milliseconds;
  
  /// Converts a time duration to seconds (float).
@@ -241,7 +244,7 @@
  
  /**
   * SDL times are signed, 64-bit integers representing nanoseconds since the Unix
-@@ -359,15 +352,17 @@
+@@ -368,15 +361,17 @@
   */
  class Time
  {
@@ -261,7 +264,7 @@
      : m_time(time)
    {
    }
-@@ -377,20 +372,20 @@
+@@ -386,20 +381,20 @@
     *
     * @param time the value to be wrapped
     */
@@ -292,7 +295,7 @@
    /**
     * Gets the current value of the system realtime clock in nanoseconds since
     * Jan 1, 1970 in Universal Coordinated Time (UTC).
-@@ -401,22 +396,24 @@
+@@ -410,22 +405,24 @@
     *
     * @since This function is available since SDL 3.2.0.
     */
@@ -322,7 +325,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -427,11 +424,9 @@
+@@ -436,11 +433,9 @@
    /**
     * Convert nanoseconds to seconds.
     *
@@ -336,7 +339,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -474,28 +469,37 @@
+@@ -483,28 +478,37 @@
    void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
  
    /// Converts a time to seconds (float) since epoch.
@@ -381,7 +384,7 @@
  
  /**
   * Epsilon constant, used for comparing floating-point numbers.
-@@ -505,7 +509,17 @@
+@@ -514,7 +518,17 @@
   *
   * @since This constant is available since SDL 3.2.0.
   */
@@ -400,7 +403,7 @@
  
  /**
   * A macro to initialize an SDL interface.
-@@ -515,7 +529,7 @@
+@@ -524,7 +538,7 @@
   *
   * You can use it like this:
   *
@@ -409,7 +412,7 @@
   * IOStreamInterface iface;
   *
   * InitInterface(&iface);
-@@ -529,7 +543,7 @@
+@@ -538,7 +552,7 @@
   * If you are using designated initializers, you can use the size of the
   * interface as the version, e.g.
   *
@@ -418,7 +421,7 @@
   * IOStreamInterface iface = {
   *     .version = sizeof(iface),
   *     .seek = ...
-@@ -889,6 +903,8 @@
+@@ -898,6 +912,8 @@
   *
   * @since This struct is available since SDL 3.2.0.
   *
@@ -427,16 +430,16 @@
   * @sa GetEnvironment
   * @sa CreateEnvironment
   * @sa Environment.GetVariable
-@@ -896,8 +912,6 @@
+@@ -905,8 +921,6 @@
   * @sa Environment.SetVariable
   * @sa Environment.UnsetVariable
   * @sa Environment.Destroy
 - *
 - * @cat resource
   */
- class Environment
+ struct Environment : ResourceBase<EnvironmentRaw>
  {
-@@ -1022,9 +1036,10 @@
+@@ -1007,9 +1021,10 @@
     * Get all variables in the environment.
     *
     * @returns a nullptr terminated array of pointers to environment variables in
@@ -450,7 +453,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -1038,7 +1053,14 @@
+@@ -1023,7 +1038,14 @@
     */
    OwnArray<char*> GetVariables();
  
@@ -466,7 +469,7 @@
  
    /**
     * Set the value of a variable in the environment.
-@@ -1256,7 +1278,7 @@
+@@ -1169,7 +1191,7 @@
   */
  inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
  {
@@ -475,7 +478,7 @@
  }
  
  inline OwnArray<char*> Environment::GetVariables()
-@@ -1695,7 +1717,6 @@
+@@ -1608,7 +1630,6 @@
   * @param nmemb the number of elements in the array.
   * @param size the size of the elements in the array.
   * @param compare a function used to compare elements in the array.
@@ -483,7 +486,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1706,7 +1727,15 @@
+@@ -1619,7 +1640,15 @@
   */
  inline void qsort_r(void* base, size_t nmemb, size_t size, CompareCB compare)
  {
@@ -500,7 +503,7 @@
  }
  
  /**
-@@ -1822,7 +1851,6 @@
+@@ -1735,7 +1764,6 @@
   * @param nmemb the number of elements in the array.
   * @param size the size of the elements in the array.
   * @param compare a function used to compare elements in the array.
@@ -508,7 +511,7 @@
   * @returns a pointer to the matching element in the array, or nullptr if not
   *          found.
   *
-@@ -1839,7 +1867,16 @@
+@@ -1752,7 +1780,16 @@
                         size_t size,
                         CompareCB compare)
  {
@@ -526,7 +529,7 @@
  }
  
  /**
-@@ -1946,9 +1983,9 @@
+@@ -1859,9 +1896,9 @@
   * If `x` is outside the range a values between `a` and `b`, the returned value
   * will be `a` or `b` as appropriate. Otherwise, `x` is returned.
   *
@@ -538,7 +541,7 @@
   * comparisons directly, and works with any type that can be compared with the
   * `<` and `>` operators. However, it double-evaluates all its parameters, so do
   * not use expressions with side-effects here.
-@@ -2301,7 +2338,11 @@
+@@ -2214,7 +2251,11 @@
   */
  inline void* memcpy(void* dst, const void* src, size_t len)
  {
@@ -550,7 +553,7 @@
  }
  
  /**
-@@ -2331,7 +2372,8 @@
+@@ -2244,7 +2285,8 @@
  template<typename T, typename U>
  constexpr T* copyp(T* dst, const U* src)
  {
@@ -560,7 +563,7 @@
  }
  
  /**
-@@ -2353,7 +2395,11 @@
+@@ -2266,7 +2308,11 @@
   */
  inline void* memmove(void* dst, const void* src, size_t len)
  {
@@ -572,7 +575,7 @@
  }
  
  /**
-@@ -2376,7 +2422,11 @@
+@@ -2289,7 +2335,11 @@
   */
  inline void* memset(void* dst, int c, size_t len)
  {
@@ -584,7 +587,7 @@
  }
  
  /**
-@@ -2468,7 +2518,7 @@
+@@ -2381,7 +2431,7 @@
  template<class T, std::size_t N>
  inline void zeroa(T (&x)[N])
  {
@@ -593,7 +596,7 @@
  }
  
  /**
-@@ -3415,6 +3465,8 @@
+@@ -3328,6 +3378,8 @@
    return SDL_ultoa(value, str, radix);
  }
  
@@ -602,7 +605,7 @@
  /**
   * Convert a long long integer into a string.
   *
-@@ -3475,6 +3527,8 @@
+@@ -3388,6 +3440,8 @@
    return SDL_ulltoa(value, str, radix);
  }
  
@@ -611,7 +614,7 @@
  /**
   * Parse an `int` from a string.
   *
-@@ -3590,6 +3644,8 @@
+@@ -3503,6 +3557,8 @@
    return SDL_strtoul(str, endp, base);
  }
  
@@ -620,7 +623,7 @@
  /**
   * Parse a `long long` from a string.
   *
-@@ -3660,6 +3716,8 @@
+@@ -3573,6 +3629,8 @@
    return SDL_strtoull(str, endp, base);
  }
  
@@ -629,7 +632,7 @@
  /**
   * Parse a `double` from a string.
   *
-@@ -3982,7 +4040,12 @@
+@@ -3895,7 +3953,12 @@
                    SDL_SCANF_FORMAT_STRING const char* fmt,
                    ...)
  {
@@ -643,7 +646,7 @@
  }
  
  /**
-@@ -4043,7 +4106,14 @@
+@@ -3956,7 +4019,14 @@
                      SDL_PRINTF_FORMAT_STRING const char* fmt,
                      ...)
  {
@@ -659,7 +662,7 @@
  }
  
  /**
-@@ -4082,7 +4152,14 @@
+@@ -3995,7 +4065,14 @@
                      SDL_PRINTF_FORMAT_STRING const wchar_t* fmt,
                      ...)
  {
@@ -675,7 +678,7 @@
  }
  
  /**
-@@ -4166,7 +4243,14 @@
+@@ -4079,7 +4156,14 @@
   */
  inline int asprintf(char** strp, SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
  {
@@ -691,7 +694,7 @@
  }
  
  /**
-@@ -4212,27 +4296,114 @@
+@@ -4125,27 +4209,114 @@
   */
  inline void srand(Uint64 seed) { SDL_srand(seed); }
  
@@ -806,7 +809,7 @@
    Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
  };
  
-@@ -4310,12 +4481,11 @@
+@@ -4223,12 +4394,11 @@
   * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
   * much worse as n gets bigger.
   *
@@ -822,7 +825,7 @@
   *
   * There are no guarantees as to the quality of the random sequence produced,
   * and this should not be used for security (cryptography, passwords) or where
-@@ -4323,14 +4493,18 @@
+@@ -4236,14 +4406,18 @@
   * libraries available with different characteristics and you should pick one of
   * those to meet any serious needs.
   *
@@ -843,7 +846,7 @@
   * @sa randf
   */
  inline Sint32 rand(Random& state, Sint32 n) { return state.rand(n); }
-@@ -4394,21 +4568,25 @@
+@@ -4307,21 +4481,25 @@
   * libraries available with different characteristics and you should pick one of
   * those to meet any serious needs.
   *
@@ -872,7 +875,7 @@
   *
   * There are no guarantees as to the quality of the random sequence produced,
   * and this should not be used for security (cryptography, passwords) or where
-@@ -4431,7 +4609,7 @@
+@@ -4344,7 +4522,7 @@
  /**
   * Generate 32 pseudo-random bits.
   *
@@ -881,7 +884,7 @@
   *
   * There are no guarantees as to the quality of the random sequence produced,
   * and this should not be used for security (cryptography, passwords) or where
-@@ -4456,7 +4634,7 @@
+@@ -4369,7 +4547,7 @@
  /**
   * Generate 32 pseudo-random bits.
   *
@@ -890,7 +893,7 @@
   *
   * There are no guarantees as to the quality of the random sequence produced,
   * and this should not be used for security (cryptography, passwords) or where
-@@ -4464,15 +4642,17 @@
+@@ -4377,15 +4555,17 @@
   * libraries available with different characteristics and you should pick one of
   * those to meet any serious needs.
   *
@@ -910,7 +913,7 @@
   */
  inline Uint32 rand_bits(Random& state) { return state.rand_bits(); }
  
-@@ -4701,7 +4881,6 @@
+@@ -4614,7 +4794,6 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
@@ -918,7 +921,7 @@
   * @sa atan
   * @sa tan
   */
-@@ -5742,9 +5921,10 @@
+@@ -5655,14 +5834,21 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -928,20 +931,20 @@
 + *
 + * @sa iconv_open
   */
- class IConv
+ struct IConv : ResourceBase<IConvRaw>
  {
-@@ -5752,8 +5932,8 @@
+   using ResourceBase::ResourceBase;
  
- public:
-   /// Default ctor
--  constexpr IConv(std::nullptr_t = nullptr) noexcept
--    : m_resource(nullptr)
++  /// Default ctor
 +  IConv(std::nullptr_t = nullptr) noexcept
-+    : m_resource(IConvRaw(SDL_ICONV_ERROR))
-   {
-   }
- 
-@@ -5788,8 +5968,7 @@
++    : IConv(IConvRaw(SDL_ICONV_ERROR))
++  {
++  }
++
+   /**
+    * Constructs from raw IConv.
+    *
+@@ -5694,8 +5880,7 @@
     *
     * @param tocode The target character encoding, must not be nullptr.
     * @param fromcode The source character encoding, must not be nullptr.
@@ -951,16 +954,16 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -5829,12 +6008,14 @@
-   constexpr auto operator<=>(const IConv& other) const noexcept = default;
+@@ -5720,10 +5905,15 @@
+   /// Assignment operator.
+   IConv& operator=(const IConv& other) = delete;
  
-   /// Converts to bool
--  constexpr explicit operator bool() const noexcept { return !!m_resource; }
++  /// Converts to bool
 +  explicit operator bool() const noexcept
 +  {
-+    return reinterpret_cast<size_t>(m_resource) != SDL_ICONV_ERROR;
++    return reinterpret_cast<size_t>(get()) != SDL_ICONV_ERROR;
 +  }
- 
++
    /**
     * This function frees a context used for character set conversion.
     *
@@ -968,7 +971,7 @@
     * @returns 0 on success, or -1 on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -5872,7 +6053,8 @@
+@@ -5761,7 +5951,8 @@
     * @param inbytesleft The number of bytes in the input buffer.
     * @param outbuf Address of variable that points to the output buffer.
     * @param outbytesleft The number of bytes in the output buffer.
@@ -978,7 +981,7 @@
     *
     * @threadsafety Do not use the same IConv from two threads at once.
     *
-@@ -5885,7 +6067,7 @@
+@@ -5774,7 +5965,7 @@
    size_t iconv(const char** inbuf,
                 size_t* inbytesleft,
                 char** outbuf,
@@ -987,7 +990,7 @@
  };
  
  /**
-@@ -5990,7 +6172,8 @@
+@@ -5807,7 +5998,8 @@
   * This function frees a context used for character set conversion.
   *
   * @param cd The character set conversion handle.
@@ -997,7 +1000,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -6000,7 +6183,7 @@
+@@ -5817,7 +6009,7 @@
   * @sa iconv_open
   * @sa iconv_string
   */
@@ -1006,7 +1009,7 @@
  
  inline int IConv::close() { return iconv_close(release()); }
  
-@@ -6029,7 +6212,8 @@
+@@ -5846,7 +6038,8 @@
   * @param inbytesleft The number of bytes in the input buffer.
   * @param outbuf Address of variable that points to the output buffer.
   * @param outbytesleft The number of bytes in the output buffer.
@@ -1016,7 +1019,7 @@
   *
   * @threadsafety Do not use the same IConv from two threads at once.
   *
-@@ -6039,19 +6223,19 @@
+@@ -5856,19 +6049,19 @@
   * @sa IConv.close
   * @sa iconv_string
   */
@@ -1039,7 +1042,7 @@
  {
    return SDL::iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
  }
-@@ -6077,14 +6261,10 @@
+@@ -5894,14 +6087,10 @@
   * the number of bytes specified in `inbytesleft` whether there is a nullptr
   * character anywhere in the buffer.
   *
@@ -1054,7 +1057,7 @@
   * @returns a new string, converted to the new encoding, or nullptr on error.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -6099,7 +6279,8 @@
+@@ -5916,7 +6105,8 @@
                                     StringParam fromcode,
                                     SourceBytes inbuf)
  {
@@ -1064,7 +1067,7 @@
  }
  
  /**
-@@ -6118,7 +6299,7 @@
+@@ -5935,7 +6125,7 @@
   */
  inline OwnArray<char> iconv_utf8_locale(std::string_view S)
  {
@@ -1073,7 +1076,7 @@
  }
  
  /**
-@@ -6137,7 +6318,8 @@
+@@ -5954,7 +6144,8 @@
   */
  inline OwnArray<Uint16> iconv_utf8_ucs2(std::string_view S)
  {
@@ -1083,7 +1086,7 @@
  }
  
  /**
-@@ -6156,7 +6338,8 @@
+@@ -5973,7 +6164,8 @@
   */
  inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
  {
@@ -1093,7 +1096,7 @@
  }
  
  /**
-@@ -6175,7 +6358,7 @@
+@@ -5992,7 +6184,7 @@
   */
  inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
  {
@@ -1102,7 +1105,7 @@
  }
  
  /**
-@@ -6195,7 +6378,7 @@
+@@ -6012,7 +6204,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -1111,7 +1114,7 @@
  {
    return SDL_size_mul_check_overflow(a, b, ret);
  }
-@@ -6217,7 +6400,7 @@
+@@ -6034,7 +6226,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -1120,7 +1123,7 @@
  {
    return SDL_size_add_check_overflow(a, b, ret);
  }
-@@ -6241,6 +6424,29 @@
+@@ -6058,6 +6250,29 @@
  
  /// @}
  

@@ -111,8 +111,12 @@ struct Mixer;
 /// Alias to raw representation for Mixer.
 using MixerRaw = MIX_Mixer*;
 
-// Forward decl
-struct MixerRef;
+/**
+ * Reference for Mixer.
+ *
+ * This does not take ownership!
+ */
+using MixerRef = ResourceRef<Mixer>;
 
 // Forward decl
 struct Audio;
@@ -120,8 +124,12 @@ struct Audio;
 /// Alias to raw representation for Audio.
 using AudioRaw = MIX_Audio*;
 
-// Forward decl
-struct AudioRef;
+/**
+ * Reference for Audio.
+ *
+ * This does not take ownership!
+ */
+using AudioRef = ResourceRef<Audio>;
 
 // Forward decl
 struct Track;
@@ -129,8 +137,12 @@ struct Track;
 /// Alias to raw representation for Track.
 using TrackRaw = MIX_Track*;
 
-// Forward decl
-struct TrackRef;
+/**
+ * Reference for Track.
+ *
+ * This does not take ownership!
+ */
+using TrackRef = ResourceRef<Track>;
 
 // Forward decl
 struct Group;
@@ -138,8 +150,12 @@ struct Group;
 /// Alias to raw representation for Group.
 using GroupRaw = MIX_Group*;
 
-// Forward decl
-struct GroupRef;
+/**
+ * Reference for Group.
+ *
+ * This does not take ownership!
+ */
+using GroupRef = ResourceRef<Group>;
 
 // Forward decl
 struct AudioDecoder;
@@ -147,8 +163,12 @@ struct AudioDecoder;
 /// Alias to raw representation for AudioDecoder.
 using AudioDecoderRaw = MIX_AudioDecoder*;
 
-// Forward decl
-struct AudioDecoderRef;
+/**
+ * Reference for AudioDecoder.
+ *
+ * This does not take ownership!
+ */
+using AudioDecoderRef = ResourceRef<AudioDecoder>;
 
 // Forward decl
 struct MixerLock;
@@ -245,16 +265,9 @@ using PostMixCB = MakeFrontCallback<
  *
  * @cat resource
  */
-class Mixer
+struct Mixer : ResourceBase<MixerRaw>
 {
-  MixerRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Mixer(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Mixer.
@@ -264,12 +277,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Mixer(MixerRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Mixer(const Mixer& other) noexcept = delete;
+  constexpr Mixer(const Mixer& other) = delete;
 
   /// Move constructor
   constexpr Mixer(Mixer&& other) noexcept
@@ -358,34 +371,17 @@ public:
   Mixer(const AudioSpec& spec);
 
   /// Destructor
-  ~Mixer() { MIX_DestroyMixer(m_resource); }
+  ~Mixer() { MIX_DestroyMixer(get()); }
 
   /// Assignment operator.
   constexpr Mixer& operator=(Mixer&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Mixer& operator=(const Mixer& other) = delete;
-
-  /// Retrieves underlying MixerRaw.
-  constexpr MixerRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying MixerRaw and clear this.
-  constexpr MixerRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Mixer& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Free a mixer.
@@ -1341,78 +1337,6 @@ public:
 };
 
 /**
- * Reference for Mixer.
- *
- * This does not take ownership!
- */
-struct MixerRef : Mixer
-{
-  using Mixer::Mixer;
-
-  /**
-   * Constructs from raw Mixer.
-   *
-   * @param resource a MixerRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MixerRef(MixerRaw resource) noexcept
-    : Mixer(resource)
-  {
-  }
-
-  /**
-   * Constructs from Mixer.
-   *
-   * @param resource a Mixer.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MixerRef(const Mixer& resource) noexcept
-    : Mixer(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Mixer.
-   *
-   * @param resource a Mixer.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr MixerRef(Mixer&& resource) noexcept
-    : Mixer(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr MixerRef(const MixerRef& other) noexcept
-    : Mixer(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr MixerRef(MixerRef&& other) noexcept
-    : Mixer(other.get())
-  {
-  }
-
-  /// Destructor
-  ~MixerRef() { release(); }
-
-  /// Assignment operator.
-  MixerRef& operator=(const MixerRef& other) noexcept
-  {
-    release();
-    Mixer::operator=(Mixer(other.get()));
-    return *this;
-  }
-
-  /// Converts to MixerRaw
-  constexpr operator MixerRaw() const noexcept { return get(); }
-};
-
-/**
  * Lock a mixer by obtaining its internal mutex.
  *
  * While locked, the mixer will not be able to mix more audio or change its
@@ -1591,16 +1515,9 @@ public:
  *
  * @cat resource
  */
-class Audio
+struct Audio : ResourceBase<AudioRaw>
 {
-  AudioRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Audio(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Audio.
@@ -1610,12 +1527,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Audio(AudioRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Audio(const Audio& other) noexcept = delete;
+  constexpr Audio(const Audio& other) = delete;
 
   /// Move constructor
   constexpr Audio(Audio&& other) noexcept
@@ -1841,34 +1758,17 @@ public:
   Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec);
 
   /// Destructor
-  ~Audio() { MIX_DestroyAudio(m_resource); }
+  ~Audio() { MIX_DestroyAudio(get()); }
 
   /// Assignment operator.
   constexpr Audio& operator=(Audio&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Audio& operator=(const Audio& other) = delete;
-
-  /// Retrieves underlying AudioRaw.
-  constexpr AudioRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AudioRaw and clear this.
-  constexpr AudioRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Audio& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy the specified audio.
@@ -2031,78 +1931,6 @@ public:
 };
 
 /**
- * Reference for Audio.
- *
- * This does not take ownership!
- */
-struct AudioRef : Audio
-{
-  using Audio::Audio;
-
-  /**
-   * Constructs from raw Audio.
-   *
-   * @param resource a AudioRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioRef(AudioRaw resource) noexcept
-    : Audio(resource)
-  {
-  }
-
-  /**
-   * Constructs from Audio.
-   *
-   * @param resource a Audio.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioRef(const Audio& resource) noexcept
-    : Audio(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Audio.
-   *
-   * @param resource a Audio.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AudioRef(Audio&& resource) noexcept
-    : Audio(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AudioRef(const AudioRef& other) noexcept
-    : Audio(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AudioRef(AudioRef&& other) noexcept
-    : Audio(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AudioRef() { release(); }
-
-  /// Assignment operator.
-  AudioRef& operator=(const AudioRef& other) noexcept
-  {
-    release();
-    Audio::operator=(Audio(other.get()));
-    return *this;
-  }
-
-  /// Converts to AudioRaw
-  constexpr operator AudioRaw() const noexcept { return get(); }
-};
-
-/**
  * A set of per-channel gains for tracks using Track.SetStereo().
  *
  * When forcing a track to stereo, the app can specify a per-channel gain, to
@@ -2183,7 +2011,7 @@ using TrackStoppedCB = MakeFrontCallback<void(TrackRaw track)>;
  * A callback that fires when a Track is mixing at various stages.
  *
  * This callback is fired for different parts of the mixing pipeline, and gives
- * the app visibility into the audio data that is being generated at various
+ * the app visbility into the audio data that is being generated at various
  * stages.
  *
  * The audio data passed through here is _not_ const data; the app is permitted
@@ -2270,20 +2098,19 @@ using TrackMixCB = MakeFrontCallback<
  * and other attributes that alter the produced sound; many can be altered
  * during playback.
  *
+<<<<<<<
  * @since This datatype is available since SDL_mixer 3.0.0.
+=======
+ * This callback is fired for different parts of the mixing pipeline, and gives
+ * the app visibility into the audio data that is being generated at various
+ * stages.
+>>>>>>>
  *
  * @cat resource
  */
-class Track
+struct Track : ResourceBase<TrackRaw>
 {
-  TrackRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Track(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Track.
@@ -2293,12 +2120,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Track(TrackRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Track(const Track& other) noexcept = delete;
+  constexpr Track(const Track& other) = delete;
 
   /// Move constructor
   constexpr Track(Track&& other) noexcept
@@ -2337,34 +2164,17 @@ public:
   Track(MixerRef mixer);
 
   /// Destructor
-  ~Track() { MIX_DestroyTrack(m_resource); }
+  ~Track() { MIX_DestroyTrack(get()); }
 
   /// Assignment operator.
   constexpr Track& operator=(Track&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Track& operator=(const Track& other) = delete;
-
-  /// Retrieves underlying TrackRaw.
-  constexpr TrackRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TrackRaw and clear this.
-  constexpr TrackRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Track& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy the specified track.
@@ -3592,78 +3402,6 @@ public:
 };
 
 /**
- * Reference for Track.
- *
- * This does not take ownership!
- */
-struct TrackRef : Track
-{
-  using Track::Track;
-
-  /**
-   * Constructs from raw Track.
-   *
-   * @param resource a TrackRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TrackRef(TrackRaw resource) noexcept
-    : Track(resource)
-  {
-  }
-
-  /**
-   * Constructs from Track.
-   *
-   * @param resource a Track.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TrackRef(const Track& resource) noexcept
-    : Track(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Track.
-   *
-   * @param resource a Track.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr TrackRef(Track&& resource) noexcept
-    : Track(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr TrackRef(const TrackRef& other) noexcept
-    : Track(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr TrackRef(TrackRef&& other) noexcept
-    : Track(other.get())
-  {
-  }
-
-  /// Destructor
-  ~TrackRef() { release(); }
-
-  /// Assignment operator.
-  TrackRef& operator=(const TrackRef& other) noexcept
-  {
-    release();
-    Track::operator=(Track(other.get()));
-    return *this;
-  }
-
-  /// Converts to TrackRaw
-  constexpr operator TrackRaw() const noexcept { return get(); }
-};
-
-/**
  * A callback that fires when a Group has completed mixing.
  *
  * This callback is fired when a mixing group has finished mixing: all tracks in
@@ -3754,16 +3492,9 @@ using GroupMixCB = MakeFrontCallback<
  *
  * @cat resource
  */
-class Group
+struct Group : ResourceBase<GroupRaw>
 {
-  GroupRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Group(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Group.
@@ -3773,12 +3504,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Group(GroupRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Group(const Group& other) noexcept = delete;
+  constexpr Group(const Group& other) = delete;
 
   /// Move constructor
   constexpr Group(Group&& other) noexcept
@@ -3823,34 +3554,17 @@ public:
   Group(MixerRef mixer);
 
   /// Destructor
-  ~Group() { MIX_DestroyGroup(m_resource); }
+  ~Group() { MIX_DestroyGroup(get()); }
 
   /// Assignment operator.
   constexpr Group& operator=(Group&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Group& operator=(const Group& other) = delete;
-
-  /// Retrieves underlying GroupRaw.
-  constexpr GroupRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GroupRaw and clear this.
-  constexpr GroupRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Group& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a mixing group.
@@ -3924,78 +3638,6 @@ public:
    * @sa GroupMixCallback
    */
   void SetPostMixCallback(GroupMixCallback cb, void* userdata);
-};
-
-/**
- * Reference for Group.
- *
- * This does not take ownership!
- */
-struct GroupRef : Group
-{
-  using Group::Group;
-
-  /**
-   * Constructs from raw Group.
-   *
-   * @param resource a GroupRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GroupRef(GroupRaw resource) noexcept
-    : Group(resource)
-  {
-  }
-
-  /**
-   * Constructs from Group.
-   *
-   * @param resource a Group.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GroupRef(const Group& resource) noexcept
-    : Group(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Group.
-   *
-   * @param resource a Group.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr GroupRef(Group&& resource) noexcept
-    : Group(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr GroupRef(const GroupRef& other) noexcept
-    : Group(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr GroupRef(GroupRef&& other) noexcept
-    : Group(other.get())
-  {
-  }
-
-  /// Destructor
-  ~GroupRef() { release(); }
-
-  /// Assignment operator.
-  GroupRef& operator=(const GroupRef& other) noexcept
-  {
-    release();
-    Group::operator=(Group(other.get()));
-    return *this;
-  }
-
-  /// Converts to GroupRaw
-  constexpr operator GroupRaw() const noexcept { return get(); }
 };
 
 #ifdef SDL3PP_DOC
@@ -4236,12 +3878,12 @@ inline Mixer CreateMixerDevice(AudioDeviceRef devid, const AudioSpec& spec)
 }
 
 inline Mixer::Mixer(AudioDeviceRef devid, const AudioSpec& spec)
-  : m_resource(CheckError(MIX_CreateMixerDevice(devid, &spec)))
+  : Mixer(CheckError(MIX_CreateMixerDevice(devid, &spec)))
 {
 }
 
 inline Mixer::Mixer(const AudioSpec& spec)
-  : m_resource(CheckError(MIX_CreateMixer(&spec)))
+  : Mixer(CheckError(MIX_CreateMixer(&spec)))
 {
 }
 
@@ -4540,17 +4182,17 @@ inline Audio::Audio(MixerRef mixer,
                     IOStreamRef io,
                     bool predecode,
                     bool closeio)
-  : m_resource(MIX_LoadAudio_IO(mixer, io, predecode, closeio))
+  : Audio(MIX_LoadAudio_IO(mixer, io, predecode, closeio))
 {
 }
 
 inline Audio::Audio(MixerRef mixer, StringParam path, bool predecode)
-  : m_resource(MIX_LoadAudio(mixer, path, predecode))
+  : Audio(MIX_LoadAudio(mixer, path, predecode))
 {
 }
 
 inline Audio::Audio(PropertiesRef props)
-  : m_resource(CheckError(MIX_LoadAudioWithProperties(props)))
+  : Audio(CheckError(MIX_LoadAudioWithProperties(props)))
 {
 }
 
@@ -4558,12 +4200,12 @@ inline Audio::Audio(MixerRef mixer,
                     IOStreamRef io,
                     const AudioSpec& spec,
                     bool closeio)
-  : m_resource(CheckError(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio)))
+  : Audio(CheckError(MIX_LoadRawAudio_IO(mixer, io, &spec, closeio)))
 {
 }
 
 inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
-  : m_resource(CheckError(
+  : Audio(CheckError(
       MIX_LoadRawAudio(mixer, data.data(), data.size_bytes(), &spec)))
 {
 }
@@ -5153,7 +4795,7 @@ inline Track CreateTrack(MixerRef mixer) { return Track(mixer); }
 inline TrackRef Mixer::CreateTrack() { return Track(get()); }
 
 inline Track::Track(MixerRef mixer)
-  : m_resource(CheckError(MIX_CreateTrack(mixer)))
+  : Track(CheckError(MIX_CreateTrack(mixer)))
 {
 }
 
@@ -7073,7 +6715,7 @@ inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 inline GroupRef Mixer::CreateGroup() { return Group(get()); }
 
 inline Group::Group(MixerRef mixer)
-  : m_resource(CheckError(MIX_CreateGroup(mixer)))
+  : Group(CheckError(MIX_CreateGroup(mixer)))
 {
 }
 
@@ -7623,16 +7265,9 @@ inline int Mixer::Generate(TargetBytes buffer)
  *
  * @cat resource
  */
-class AudioDecoder
+struct AudioDecoder : ResourceBase<AudioDecoderRaw>
 {
-  AudioDecoderRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr AudioDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AudioDecoder.
@@ -7642,12 +7277,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AudioDecoder(AudioDecoderRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) noexcept = delete;
+  constexpr AudioDecoder(const AudioDecoder& other) = delete;
 
   /// Move constructor
   constexpr AudioDecoder(AudioDecoder&& other) noexcept
@@ -7734,35 +7369,17 @@ public:
                PropertiesRef props = nullptr);
 
   /// Destructor
-  ~AudioDecoder() { MIX_DestroyAudioDecoder(m_resource); }
+  ~AudioDecoder() { MIX_DestroyAudioDecoder(get()); }
 
   /// Assignment operator.
   constexpr AudioDecoder& operator=(AudioDecoder&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AudioDecoder& operator=(const AudioDecoder& other) = delete;
-
-  /// Retrieves underlying AudioDecoderRaw.
-  constexpr AudioDecoderRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AudioDecoderRaw and clear this.
-  constexpr AudioDecoderRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AudioDecoder& other) const noexcept =
-    default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy the specified audio decoder.
@@ -7840,78 +7457,6 @@ public:
 };
 
 /**
- * Reference for AudioDecoder.
- *
- * This does not take ownership!
- */
-struct AudioDecoderRef : AudioDecoder
-{
-  using AudioDecoder::AudioDecoder;
-
-  /**
-   * Constructs from raw AudioDecoder.
-   *
-   * @param resource a AudioDecoderRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioDecoderRef(AudioDecoderRaw resource) noexcept
-    : AudioDecoder(resource)
-  {
-  }
-
-  /**
-   * Constructs from AudioDecoder.
-   *
-   * @param resource a AudioDecoder.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AudioDecoderRef(const AudioDecoder& resource) noexcept
-    : AudioDecoder(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AudioDecoder.
-   *
-   * @param resource a AudioDecoder.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AudioDecoderRef(AudioDecoder&& resource) noexcept
-    : AudioDecoder(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AudioDecoderRef(const AudioDecoderRef& other) noexcept
-    : AudioDecoder(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AudioDecoderRef(AudioDecoderRef&& other) noexcept
-    : AudioDecoder(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AudioDecoderRef() { release(); }
-
-  /// Assignment operator.
-  AudioDecoderRef& operator=(const AudioDecoderRef& other) noexcept
-  {
-    release();
-    AudioDecoder::operator=(AudioDecoder(other.get()));
-    return *this;
-  }
-
-  /// Converts to AudioDecoderRaw
-  constexpr operator AudioDecoderRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a AudioDecoder from a path on the filesystem.
  *
  * Most apps won't need this, as SDL_mixer's usual interfaces will decode audio
@@ -7951,14 +7496,14 @@ inline AudioDecoder CreateAudioDecoder(StringParam path,
 }
 
 inline AudioDecoder::AudioDecoder(StringParam path, PropertiesRef props)
-  : m_resource(MIX_CreateAudioDecoder(path, props))
+  : AudioDecoder(MIX_CreateAudioDecoder(path, props))
 {
 }
 
 inline AudioDecoder::AudioDecoder(IOStreamRef io,
                                   bool closeio,
                                   PropertiesRef props)
-  : m_resource(MIX_CreateAudioDecoder_IO(io, closeio, props))
+  : AudioDecoder(MIX_CreateAudioDecoder_IO(io, closeio, props))
 {
 }
 

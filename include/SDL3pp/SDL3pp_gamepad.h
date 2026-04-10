@@ -74,8 +74,12 @@ struct Gamepad;
 /// Alias to raw representation for Gamepad.
 using GamepadRaw = SDL_Gamepad*;
 
-// Forward decl
-struct GamepadRef;
+/**
+ * Reference for Gamepad.
+ *
+ * This does not take ownership!
+ */
+using GamepadRef = ResourceRef<Gamepad>;
 
 /**
  * Standard gamepad types.
@@ -387,16 +391,9 @@ using GamepadBinding = SDL_GamepadBinding;
  *
  * @cat resource
  */
-class Gamepad
+struct Gamepad : ResourceBase<GamepadRaw>
 {
-  GamepadRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Gamepad(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Gamepad.
@@ -406,12 +403,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Gamepad(GamepadRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) noexcept = delete;
+  constexpr Gamepad(const Gamepad& other) = delete;
 
   /// Move constructor
   constexpr Gamepad(Gamepad&& other) noexcept
@@ -440,34 +437,17 @@ public:
   Gamepad(JoystickID instance_id);
 
   /// Destructor
-  ~Gamepad() { SDL_CloseGamepad(m_resource); }
+  ~Gamepad() { SDL_CloseGamepad(get()); }
 
   /// Assignment operator.
   constexpr Gamepad& operator=(Gamepad&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Gamepad& operator=(const Gamepad& other) = delete;
-
-  /// Retrieves underlying GamepadRaw.
-  constexpr GamepadRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GamepadRaw and clear this.
-  constexpr GamepadRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Gamepad& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close a gamepad previously opened with OpenGamepad().
@@ -1127,78 +1107,6 @@ public:
 };
 
 /**
- * Reference for Gamepad.
- *
- * This does not take ownership!
- */
-struct GamepadRef : Gamepad
-{
-  using Gamepad::Gamepad;
-
-  /**
-   * Constructs from raw Gamepad.
-   *
-   * @param resource a GamepadRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GamepadRef(GamepadRaw resource) noexcept
-    : Gamepad(resource)
-  {
-  }
-
-  /**
-   * Constructs from Gamepad.
-   *
-   * @param resource a Gamepad.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GamepadRef(const Gamepad& resource) noexcept
-    : Gamepad(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Gamepad.
-   *
-   * @param resource a Gamepad.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr GamepadRef(Gamepad&& resource) noexcept
-    : Gamepad(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr GamepadRef(const GamepadRef& other) noexcept
-    : Gamepad(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr GamepadRef(GamepadRef&& other) noexcept
-    : Gamepad(other.get())
-  {
-  }
-
-  /// Destructor
-  ~GamepadRef() { release(); }
-
-  /// Assignment operator.
-  GamepadRef& operator=(const GamepadRef& other) noexcept
-  {
-    release();
-    Gamepad::operator=(Gamepad(other.get()));
-    return *this;
-  }
-
-  /// Converts to GamepadRaw
-  constexpr operator GamepadRaw() const noexcept { return get(); }
-};
-
-/**
  * Add support for gamepads that SDL is unaware of or change the binding of an
  * existing gamepad.
  *
@@ -1708,7 +1616,7 @@ inline Gamepad OpenGamepad(JoystickID instance_id)
 }
 
 inline Gamepad::Gamepad(JoystickID instance_id)
-  : m_resource(SDL_OpenGamepad(instance_id))
+  : Gamepad(SDL_OpenGamepad(instance_id))
 {
 }
 

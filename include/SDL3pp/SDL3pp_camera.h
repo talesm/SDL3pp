@@ -63,8 +63,12 @@ struct Camera;
 /// Alias to raw representation for Camera.
 using CameraRaw = SDL_Camera*;
 
-// Forward decl
-struct CameraRef;
+/**
+ * Reference for Camera.
+ *
+ * This does not take ownership!
+ */
+using CameraRef = ResourceRef<Camera>;
 
 // Forward decl
 struct CameraFrame;
@@ -153,16 +157,9 @@ using CameraPermissionState = int;
  *
  * @cat resource
  */
-class Camera
+struct Camera : ResourceBase<CameraRaw>
 {
-  CameraRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Camera(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Camera.
@@ -172,12 +169,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Camera(CameraRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Camera(const Camera& other) noexcept = delete;
+  constexpr Camera(const Camera& other) = delete;
 
   /// Move constructor
   constexpr Camera(Camera&& other) noexcept
@@ -236,34 +233,17 @@ public:
   Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
 
   /// Destructor
-  ~Camera() { SDL_CloseCamera(m_resource); }
+  ~Camera() { SDL_CloseCamera(get()); }
 
   /// Assignment operator.
   constexpr Camera& operator=(Camera&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Camera& operator=(const Camera& other) = delete;
-
-  /// Retrieves underlying CameraRaw.
-  constexpr CameraRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying CameraRaw and clear this.
-  constexpr CameraRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Camera& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Use this function to shut down camera processing and close the camera
@@ -428,78 +408,6 @@ public:
    * @sa Camera.AcquireFrame
    */
   void ReleaseFrame(CameraFrame&& lock);
-};
-
-/**
- * Reference for Camera.
- *
- * This does not take ownership!
- */
-struct CameraRef : Camera
-{
-  using Camera::Camera;
-
-  /**
-   * Constructs from raw Camera.
-   *
-   * @param resource a CameraRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CameraRef(CameraRaw resource) noexcept
-    : Camera(resource)
-  {
-  }
-
-  /**
-   * Constructs from Camera.
-   *
-   * @param resource a Camera.
-   *
-   * This does not takes ownership!
-   */
-  constexpr CameraRef(const Camera& resource) noexcept
-    : Camera(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Camera.
-   *
-   * @param resource a Camera.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr CameraRef(Camera&& resource) noexcept
-    : Camera(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr CameraRef(const CameraRef& other) noexcept
-    : Camera(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr CameraRef(CameraRef&& other) noexcept
-    : Camera(other.get())
-  {
-  }
-
-  /// Destructor
-  ~CameraRef() { release(); }
-
-  /// Assignment operator.
-  CameraRef& operator=(const CameraRef& other) noexcept
-  {
-    release();
-    Camera::operator=(Camera(other.get()));
-    return *this;
-  }
-
-  /// Converts to CameraRaw
-  constexpr operator CameraRaw() const noexcept { return get(); }
 };
 
 /// Camera Frame.
@@ -842,7 +750,7 @@ inline Camera OpenCamera(CameraID instance_id,
 }
 
 inline Camera::Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec)
-  : m_resource(SDL_OpenCamera(instance_id, spec))
+  : Camera(SDL_OpenCamera(instance_id, spec))
 {
 }
 

@@ -9,7 +9,6 @@
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
-#include "SDL3pp_resource.h"
 #include "SDL3pp_spanRef.h"
 #include "SDL3pp_strings.h"
 #include "SDL3pp_version.h"
@@ -47,8 +46,12 @@ using SurfaceRaw = SDL_Surface*;
 /// Alias to const raw representation for Surface.
 using SurfaceRawConst = const SDL_Surface*;
 
-// Forward decl
-struct SurfaceRef;
+/**
+ * Reference for Surface.
+ *
+ * This does not take ownership!
+ */
+using SurfaceRef = ResourceRef<Surface>;
 
 /// Safely wrap Surface for non owning const parameters
 using SurfaceConstRef = ResourceConstRef<SurfaceRaw, SurfaceRawConst>;
@@ -165,16 +168,9 @@ constexpr FlipMode FLIP_HORIZONTAL_AND_VERTICAL =
  * @sa CreateSurface
  * @sa Surface.Destroy
  */
-class Surface
+struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
 {
-  SurfaceRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Surface(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Surface.
@@ -184,15 +180,15 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Surface(SurfaceRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
   constexpr Surface(const Surface& other)
-    : m_resource(other.m_resource)
+    : Surface(other.get())
   {
-    if (m_resource) ++m_resource->refcount;
+    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor
@@ -350,51 +346,28 @@ public:
     return {};
   }
 
-  /// member access to underlying SurfaceRaw.
-  constexpr SurfaceRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying SurfaceRaw.
-  constexpr SurfaceRaw operator->() noexcept { return m_resource; }
-
   /// Converts to SurfaceConstRef
-  constexpr operator SurfaceConstRef() const noexcept { return m_resource; }
+  constexpr operator SurfaceConstRef() const noexcept { return get(); }
 
   /// Destructor
-  ~Surface() { SDL_DestroySurface(m_resource); }
+  ~Surface() { SDL_DestroySurface(get()); }
 
   /// Assignment operator.
   constexpr Surface& operator=(Surface&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Surface& operator=(const Surface& other)
   {
-    if (m_resource != other.m_resource) {
+    if (get() != other.get()) {
       Surface tmp(other);
-      std::swap(m_resource, tmp.m_resource);
+      swap(*this, tmp);
     }
     return *this;
   }
-
-  /// Retrieves underlying SurfaceRaw.
-  constexpr SurfaceRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying SurfaceRaw and clear this.
-  constexpr SurfaceRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Surface& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Free this surface.
@@ -1886,78 +1859,6 @@ public:
 };
 
 /**
- * Reference for Surface.
- *
- * This does not take ownership!
- */
-struct SurfaceRef : Surface
-{
-  using Surface::Surface;
-
-  /**
-   * Constructs from raw Surface.
-   *
-   * @param resource a SurfaceRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SurfaceRef(SurfaceRaw resource) noexcept
-    : Surface(resource)
-  {
-  }
-
-  /**
-   * Constructs from Surface.
-   *
-   * @param resource a Surface.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SurfaceRef(const Surface& resource) noexcept
-    : Surface(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Surface.
-   *
-   * @param resource a Surface.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr SurfaceRef(Surface&& resource) noexcept
-    : Surface(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr SurfaceRef(const SurfaceRef& other) noexcept
-    : Surface(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr SurfaceRef(SurfaceRef&& other) noexcept
-    : Surface(other.get())
-  {
-  }
-
-  /// Destructor
-  ~SurfaceRef() { release(); }
-
-  /// Assignment operator.
-  SurfaceRef& operator=(const SurfaceRef& other) noexcept
-  {
-    release();
-    Surface::operator=(Surface(other.get()));
-    return *this;
-  }
-
-  /// Converts to SurfaceRaw
-  constexpr operator SurfaceRaw() const noexcept { return get(); }
-};
-
-/**
  * Set up a surface for directly accessing the pixels.
  *
  * Between calls to Surface.Lock() / Surface.Unlock(), you can write to and read
@@ -2246,7 +2147,7 @@ inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 }
 
 inline Surface::Surface(const PointRaw& size, PixelFormat format)
-  : m_resource(CheckError(SDL_CreateSurface(size.x, size.y, format)))
+  : Surface(CheckError(SDL_CreateSurface(size.x, size.y, format)))
 {
 }
 
@@ -2254,7 +2155,7 @@ inline Surface::Surface(const PointRaw& size,
                         PixelFormat format,
                         void* pixels,
                         int pitch)
-  : m_resource(
+  : Surface(
       CheckError(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
 {
 }

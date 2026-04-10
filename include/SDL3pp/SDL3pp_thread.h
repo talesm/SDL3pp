@@ -35,8 +35,12 @@ struct Thread;
 /// Alias to raw representation for Thread.
 using ThreadRaw = SDL_Thread*;
 
-// Forward decl
-struct ThreadRef;
+/**
+ * Reference for Thread.
+ *
+ * This does not take ownership!
+ */
+using ThreadRef = ResourceRef<Thread>;
 
 /**
  * The SDL thread priority.
@@ -145,16 +149,9 @@ using TLSDestructorCallback = void(SDLCALL*)(void* value);
  *
  * @cat resource
  */
-class Thread
+struct Thread : ResourceBase<ThreadRaw>
 {
-  ThreadRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Thread(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Thread.
@@ -164,12 +161,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Thread(ThreadRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Thread(const Thread& other) noexcept = delete;
+  constexpr Thread(const Thread& other) = delete;
 
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
@@ -315,34 +312,17 @@ public:
   Thread(PropertiesRef props);
 
   /// Destructor
-  ~Thread() { SDL_DetachThread(m_resource); }
+  ~Thread() { SDL_DetachThread(get()); }
 
   /// Assignment operator.
   constexpr Thread& operator=(Thread&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Thread& operator=(const Thread& other) = delete;
-
-  /// Retrieves underlying ThreadRaw.
-  constexpr ThreadRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying ThreadRaw and clear this.
-  constexpr ThreadRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Thread& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Let a thread clean up on exit without intervention.
@@ -477,78 +457,6 @@ public:
 };
 
 /**
- * Reference for Thread.
- *
- * This does not take ownership!
- */
-struct ThreadRef : Thread
-{
-  using Thread::Thread;
-
-  /**
-   * Constructs from raw Thread.
-   *
-   * @param resource a ThreadRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ThreadRef(ThreadRaw resource) noexcept
-    : Thread(resource)
-  {
-  }
-
-  /**
-   * Constructs from Thread.
-   *
-   * @param resource a Thread.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ThreadRef(const Thread& resource) noexcept
-    : Thread(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Thread.
-   *
-   * @param resource a Thread.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ThreadRef(Thread&& resource) noexcept
-    : Thread(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ThreadRef(const ThreadRef& other) noexcept
-    : Thread(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ThreadRef(ThreadRef&& other) noexcept
-    : Thread(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ThreadRef() { release(); }
-
-  /// Assignment operator.
-  ThreadRef& operator=(const ThreadRef& other) noexcept
-  {
-    release();
-    Thread::operator=(Thread(other.get()));
-    return *this;
-  }
-
-  /// Converts to ThreadRaw
-  constexpr operator ThreadRaw() const noexcept { return get(); }
-};
-
-/**
  * Thread local storage ID.
  *
  * 0 is the invalid ID. An app can create these and then set data for these IDs
@@ -635,7 +543,7 @@ inline Thread CreateThread(ThreadCB fn, StringParam name)
 }
 
 inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
-  : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
+  : Thread(CheckError(SDL_CreateThread(fn, name, data)))
 {
 }
 
@@ -647,7 +555,7 @@ inline Thread::Thread(ThreadCB fn, StringParam name)
 }
 
 inline Thread::Thread(PropertiesRef props)
-  : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
+  : Thread(CheckError(SDL_CreateThreadWithProperties(props)))
 {
 }
 

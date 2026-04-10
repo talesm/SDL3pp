@@ -8,6 +8,7 @@
 #include "SDL3pp_error.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_ownPtr.h"
+#include "SDL3pp_resource.h"
 #include "SDL3pp_spanRef.h"
 #include "SDL3pp_strings.h"
 
@@ -50,8 +51,12 @@ struct Environment;
 /// Alias to raw representation for Environment.
 using EnvironmentRaw = SDL_Environment*;
 
-// Forward decl
-struct EnvironmentRef;
+/**
+ * Reference for Environment.
+ *
+ * This does not take ownership!
+ */
+using EnvironmentRef = ResourceRef<Environment>;
 
 // Forward decl
 struct IConv;
@@ -59,8 +64,12 @@ struct IConv;
 /// Alias to raw representation for IConv.
 using IConvRaw = SDL_iconv_t;
 
-// Forward decl
-struct IConvRef;
+/**
+ * Reference for IConv.
+ *
+ * This does not take ownership!
+ */
+using IConvRef = ResourceRef<IConv>;
 
 #ifdef SDL3PP_DOC
 
@@ -913,16 +922,9 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  * @sa Environment.UnsetVariable
  * @sa Environment.Destroy
  */
-class Environment
+struct Environment : ResourceBase<EnvironmentRaw>
 {
-  EnvironmentRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Environment(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Environment.
@@ -932,12 +934,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Environment(EnvironmentRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Environment(const Environment& other) noexcept = delete;
+  constexpr Environment(const Environment& other) = delete;
 
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
@@ -972,34 +974,17 @@ public:
   Environment(bool populated);
 
   /// Destructor
-  ~Environment() { SDL_DestroyEnvironment(m_resource); }
+  ~Environment() { SDL_DestroyEnvironment(get()); }
 
   /// Assignment operator.
   constexpr Environment& operator=(Environment&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Environment& operator=(const Environment& other) = delete;
-
-  /// Retrieves underlying EnvironmentRaw.
-  constexpr EnvironmentRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying EnvironmentRaw and clear this.
-  constexpr EnvironmentRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Environment& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a set of environment variables.
@@ -1105,78 +1090,6 @@ public:
 };
 
 /**
- * Reference for Environment.
- *
- * This does not take ownership!
- */
-struct EnvironmentRef : Environment
-{
-  using Environment::Environment;
-
-  /**
-   * Constructs from raw Environment.
-   *
-   * @param resource a EnvironmentRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr EnvironmentRef(EnvironmentRaw resource) noexcept
-    : Environment(resource)
-  {
-  }
-
-  /**
-   * Constructs from Environment.
-   *
-   * @param resource a Environment.
-   *
-   * This does not takes ownership!
-   */
-  constexpr EnvironmentRef(const Environment& resource) noexcept
-    : Environment(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Environment.
-   *
-   * @param resource a Environment.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr EnvironmentRef(Environment&& resource) noexcept
-    : Environment(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept
-    : Environment(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr EnvironmentRef(EnvironmentRef&& other) noexcept
-    : Environment(other.get())
-  {
-  }
-
-  /// Destructor
-  ~EnvironmentRef() { release(); }
-
-  /// Assignment operator.
-  EnvironmentRef& operator=(const EnvironmentRef& other) noexcept
-  {
-    release();
-    Environment::operator=(Environment(other.get()));
-    return *this;
-  }
-
-  /// Converts to EnvironmentRaw
-  constexpr operator EnvironmentRaw() const noexcept { return get(); }
-};
-
-/**
  * Get the process environment.
  *
  * This is initialized at application start and is not affected by setenv() and
@@ -1225,7 +1138,7 @@ inline Environment CreateEnvironment(bool populated)
 }
 
 inline Environment::Environment(bool populated)
-  : m_resource(SDL_CreateEnvironment(populated))
+  : Environment(SDL_CreateEnvironment(populated))
 {
 }
 
@@ -5926,14 +5839,13 @@ inline float tan(float x) { return SDL_tanf(x); }
  *
  * @sa iconv_open
  */
-class IConv
+struct IConv : ResourceBase<IConvRaw>
 {
-  IConvRaw m_resource = nullptr;
+  using ResourceBase::ResourceBase;
 
-public:
   /// Default ctor
   IConv(std::nullptr_t = nullptr) noexcept
-    : m_resource(IConvRaw(SDL_ICONV_ERROR))
+    : IConv(IConvRaw(SDL_ICONV_ERROR))
   {
   }
 
@@ -5945,12 +5857,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit IConv(IConvRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr IConv(const IConv& other) noexcept = delete;
+  constexpr IConv(const IConv& other) = delete;
 
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
@@ -5981,36 +5893,22 @@ public:
   IConv(StringParam tocode, StringParam fromcode);
 
   /// Destructor
-  ~IConv() { SDL_iconv_close(m_resource); }
+  ~IConv() { SDL_iconv_close(get()); }
 
   /// Assignment operator.
   constexpr IConv& operator=(IConv&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   IConv& operator=(const IConv& other) = delete;
 
-  /// Retrieves underlying IConvRaw.
-  constexpr IConvRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying IConvRaw and clear this.
-  constexpr IConvRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const IConv& other) const noexcept = default;
-
   /// Converts to bool
   explicit operator bool() const noexcept
   {
-    return reinterpret_cast<size_t>(m_resource) != SDL_ICONV_ERROR;
+    return reinterpret_cast<size_t>(get()) != SDL_ICONV_ERROR;
   }
 
   /**
@@ -6071,78 +5969,6 @@ public:
 };
 
 /**
- * Reference for IConv.
- *
- * This does not take ownership!
- */
-struct IConvRef : IConv
-{
-  using IConv::IConv;
-
-  /**
-   * Constructs from raw IConv.
-   *
-   * @param resource a IConvRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr IConvRef(IConvRaw resource) noexcept
-    : IConv(resource)
-  {
-  }
-
-  /**
-   * Constructs from IConv.
-   *
-   * @param resource a IConv.
-   *
-   * This does not takes ownership!
-   */
-  constexpr IConvRef(const IConv& resource) noexcept
-    : IConv(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from IConv.
-   *
-   * @param resource a IConv.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr IConvRef(IConv&& resource) noexcept
-    : IConv(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr IConvRef(const IConvRef& other) noexcept
-    : IConv(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr IConvRef(IConvRef&& other) noexcept
-    : IConv(other.get())
-  {
-  }
-
-  /// Destructor
-  ~IConvRef() { release(); }
-
-  /// Assignment operator.
-  IConvRef& operator=(const IConvRef& other) noexcept
-  {
-    release();
-    IConv::operator=(IConv(other.get()));
-    return *this;
-  }
-
-  /// Converts to IConvRaw
-  constexpr operator IConvRaw() const noexcept { return get(); }
-};
-
-/**
  * This function allocates a context for the specified character set conversion.
  *
  * @param tocode The target character encoding, must not be nullptr.
@@ -6164,7 +5990,7 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 }
 
 inline IConv::IConv(StringParam tocode, StringParam fromcode)
-  : m_resource(SDL_iconv_open(tocode, fromcode))
+  : IConv(SDL_iconv_open(tocode, fromcode))
 {
 }
 

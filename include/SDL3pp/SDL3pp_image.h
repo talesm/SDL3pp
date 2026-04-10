@@ -34,8 +34,12 @@ using AnimationRaw = IMG_Animation*;
 /// Alias to const raw representation for Animation.
 using AnimationRawConst = const IMG_Animation*;
 
-// Forward decl
-struct AnimationRef;
+/**
+ * Reference for Animation.
+ *
+ * This does not take ownership!
+ */
+using AnimationRef = ResourceRef<Animation>;
 
 /// Safely wrap Animation for non owning const parameters
 using AnimationConstRef = ResourceConstRef<AnimationRaw, AnimationRawConst>;
@@ -48,8 +52,12 @@ struct AnimationEncoder;
 /// Alias to raw representation for AnimationEncoder.
 using AnimationEncoderRaw = IMG_AnimationEncoder*;
 
-// Forward decl
-struct AnimationEncoderRef;
+/**
+ * Reference for AnimationEncoder.
+ *
+ * This does not take ownership!
+ */
+using AnimationEncoderRef = ResourceRef<AnimationEncoder>;
 
 // Forward decl
 struct AnimationDecoder;
@@ -57,8 +65,12 @@ struct AnimationDecoder;
 /// Alias to raw representation for AnimationDecoder.
 using AnimationDecoderRaw = IMG_AnimationDecoder*;
 
-// Forward decl
-struct AnimationDecoderRef;
+/**
+ * Reference for AnimationDecoder.
+ *
+ * This does not take ownership!
+ */
+using AnimationDecoderRef = ResourceRef<AnimationDecoder>;
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -143,12 +155,12 @@ inline int Version() { return IMG_Version(); }
 inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 
 inline Surface::Surface(StringParam file)
-  : m_resource(IMG_Load(file))
+  : Surface(IMG_Load(file))
 {
 }
 
 inline Surface::Surface(IOStreamRef src, bool closeio)
-  : m_resource(IMG_Load_IO(src, closeio))
+  : Surface(IMG_Load_IO(src, closeio))
 {
 }
 
@@ -296,12 +308,12 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
 }
 
 inline Texture::Texture(RendererRef renderer, StringParam file)
-  : m_resource(IMG_LoadTexture(renderer, file))
+  : Texture(IMG_LoadTexture(renderer, file))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
-  : m_resource(IMG_LoadTexture_IO(renderer, src, closeio))
+  : Texture(IMG_LoadTexture_IO(renderer, src, closeio))
 {
 }
 
@@ -2533,7 +2545,7 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
 
 inline void Surface::SavePNG(StringParam file) const
 {
-  SDL::SavePNG(m_resource, std::move(file));
+  SDL::SavePNG(get(), std::move(file));
 }
 
 /**
@@ -2563,7 +2575,7 @@ inline void SavePNG_IO(SurfaceRef surface,
 
 inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
 {
-  SDL::SavePNG_IO(m_resource, dst, closeio);
+  SDL::SavePNG_IO(get(), dst, closeio);
 }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2670,16 +2682,9 @@ inline void SaveWEBP_IO(SurfaceRef surface,
  *
  * @cat resource
  */
-class Animation
+struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
 {
-  AnimationRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Animation(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Animation.
@@ -2689,12 +2694,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Animation(AnimationRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Animation(const Animation& other) noexcept = delete;
+  constexpr Animation(const Animation& other) = delete;
 
   /// Move constructor
   constexpr Animation(Animation&& other) noexcept
@@ -2758,44 +2763,21 @@ public:
    */
   Animation(IOStreamRef src, bool closeio = false);
 
-  /// member access to underlying AnimationRaw.
-  constexpr AnimationRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying AnimationRaw.
-  constexpr AnimationRaw operator->() noexcept { return m_resource; }
-
   /// Converts to AnimationConstRef
-  constexpr operator AnimationConstRef() const noexcept { return m_resource; }
+  constexpr operator AnimationConstRef() const noexcept { return get(); }
 
   /// Destructor
-  ~Animation() { IMG_FreeAnimation(m_resource); }
+  ~Animation() { IMG_FreeAnimation(get()); }
 
   /// Assignment operator.
   constexpr Animation& operator=(Animation&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Animation& operator=(const Animation& other) = delete;
-
-  /// Retrieves underlying AnimationRaw.
-  constexpr AnimationRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AnimationRaw and clear this.
-  constexpr AnimationRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Animation& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Dispose of an Animation and free its resources.
@@ -3024,78 +3006,6 @@ public:
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
-/**
- * Reference for Animation.
- *
- * This does not take ownership!
- */
-struct AnimationRef : Animation
-{
-  using Animation::Animation;
-
-  /**
-   * Constructs from raw Animation.
-   *
-   * @param resource a AnimationRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationRef(AnimationRaw resource) noexcept
-    : Animation(resource)
-  {
-  }
-
-  /**
-   * Constructs from Animation.
-   *
-   * @param resource a Animation.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationRef(const Animation& resource) noexcept
-    : Animation(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Animation.
-   *
-   * @param resource a Animation.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AnimationRef(Animation&& resource) noexcept
-    : Animation(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AnimationRef(const AnimationRef& other) noexcept
-    : Animation(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AnimationRef(AnimationRef&& other) noexcept
-    : Animation(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AnimationRef() { release(); }
-
-  /// Assignment operator.
-  AnimationRef& operator=(const AnimationRef& other) noexcept
-  {
-    release();
-    Animation::operator=(Animation(other.get()));
-    return *this;
-  }
-
-  /// Converts to AnimationRaw
-  constexpr operator AnimationRaw() const noexcept { return get(); }
-};
-
 /// Get the width in pixels.
 inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
 
@@ -3181,12 +3091,12 @@ inline Animation LoadAnimation(StringParam file)
 }
 
 inline Animation::Animation(StringParam file)
-  : m_resource(IMG_LoadAnimation(file))
+  : Animation(IMG_LoadAnimation(file))
 {
 }
 
 inline Animation::Animation(IOStreamRef src, bool closeio)
-  : m_resource(IMG_LoadAnimation_IO(src, closeio))
+  : Animation(IMG_LoadAnimation_IO(src, closeio))
 {
 }
 
@@ -3716,16 +3626,9 @@ inline void Animation::Free() { FreeAnimation(release()); }
  *
  * @cat resource
  */
-class AnimationEncoder
+struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
 {
-  AnimationEncoderRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr AnimationEncoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AnimationEncoder.
@@ -3735,12 +3638,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AnimationEncoder(AnimationEncoderRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) noexcept = delete;
+  constexpr AnimationEncoder(const AnimationEncoder& other) = delete;
 
   /// Move constructor
   constexpr AnimationEncoder(AnimationEncoder&& other) noexcept
@@ -3860,35 +3763,17 @@ public:
   AnimationEncoder(PropertiesRef props);
 
   /// Destructor
-  ~AnimationEncoder() { IMG_CloseAnimationEncoder(m_resource); }
+  ~AnimationEncoder() { IMG_CloseAnimationEncoder(get()); }
 
   /// Assignment operator.
   constexpr AnimationEncoder& operator=(AnimationEncoder&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
-
-  /// Retrieves underlying AnimationEncoderRaw.
-  constexpr AnimationEncoderRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AnimationEncoderRaw and clear this.
-  constexpr AnimationEncoderRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationEncoder& other) const noexcept =
-    default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close an animation encoder, finishing any encoding.
@@ -3927,78 +3812,6 @@ public:
 };
 
 /**
- * Reference for AnimationEncoder.
- *
- * This does not take ownership!
- */
-struct AnimationEncoderRef : AnimationEncoder
-{
-  using AnimationEncoder::AnimationEncoder;
-
-  /**
-   * Constructs from raw AnimationEncoder.
-   *
-   * @param resource a AnimationEncoderRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationEncoderRef(AnimationEncoderRaw resource) noexcept
-    : AnimationEncoder(resource)
-  {
-  }
-
-  /**
-   * Constructs from AnimationEncoder.
-   *
-   * @param resource a AnimationEncoder.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationEncoderRef(const AnimationEncoder& resource) noexcept
-    : AnimationEncoder(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AnimationEncoder.
-   *
-   * @param resource a AnimationEncoder.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AnimationEncoderRef(AnimationEncoder&& resource) noexcept
-    : AnimationEncoder(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept
-    : AnimationEncoder(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AnimationEncoderRef(AnimationEncoderRef&& other) noexcept
-    : AnimationEncoder(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AnimationEncoderRef() { release(); }
-
-  /// Assignment operator.
-  AnimationEncoderRef& operator=(const AnimationEncoderRef& other) noexcept
-  {
-    release();
-    AnimationEncoder::operator=(AnimationEncoder(other.get()));
-    return *this;
-  }
-
-  /// Converts to AnimationEncoderRaw
-  constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
-};
-
-/**
  * Create an encoder to save a series of images to a file.
  *
  * These animation types are currently supported:
@@ -4029,19 +3842,21 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
 }
 
 inline AnimationEncoder::AnimationEncoder(StringParam file)
-  : m_resource(CheckError(IMG_CreateAnimationEncoder(file)))
+  : AnimationEncoder(CheckError(IMG_CreateAnimationEncoder(file)))
 {
 }
 
 inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
                                           StringParam type,
                                           bool closeio)
-  : m_resource(CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
+  : AnimationEncoder(
+      CheckError(IMG_CreateAnimationEncoder_IO(dst, closeio, type)))
 {
 }
 
 inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
-  : m_resource(CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
+  : AnimationEncoder(
+      CheckError(IMG_CreateAnimationEncoderWithProperties(props)))
 {
 }
 
@@ -4247,16 +4062,9 @@ constexpr AnimationDecoderStatus DECODER_STATUS_COMPLETE =
  *
  * @cat resource
  */
-class AnimationDecoder
+struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
 {
-  AnimationDecoderRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr AnimationDecoder(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AnimationDecoder.
@@ -4266,12 +4074,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AnimationDecoder(AnimationDecoderRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) noexcept = delete;
+  constexpr AnimationDecoder(const AnimationDecoder& other) = delete;
 
   /// Move constructor
   constexpr AnimationDecoder(AnimationDecoder&& other) noexcept
@@ -4384,35 +4192,17 @@ public:
   AnimationDecoder(PropertiesRef props);
 
   /// Destructor
-  ~AnimationDecoder() { IMG_CloseAnimationDecoder(m_resource); }
+  ~AnimationDecoder() { IMG_CloseAnimationDecoder(get()); }
 
   /// Assignment operator.
   constexpr AnimationDecoder& operator=(AnimationDecoder&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
-
-  /// Retrieves underlying AnimationDecoderRaw.
-  constexpr AnimationDecoderRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AnimationDecoderRaw and clear this.
-  constexpr AnimationDecoderRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationDecoder& other) const noexcept =
-    default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close an animation decoder, finishing any decoding.
@@ -4506,78 +4296,6 @@ public:
 };
 
 /**
- * Reference for AnimationDecoder.
- *
- * This does not take ownership!
- */
-struct AnimationDecoderRef : AnimationDecoder
-{
-  using AnimationDecoder::AnimationDecoder;
-
-  /**
-   * Constructs from raw AnimationDecoder.
-   *
-   * @param resource a AnimationDecoderRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationDecoderRef(AnimationDecoderRaw resource) noexcept
-    : AnimationDecoder(resource)
-  {
-  }
-
-  /**
-   * Constructs from AnimationDecoder.
-   *
-   * @param resource a AnimationDecoder.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AnimationDecoderRef(const AnimationDecoder& resource) noexcept
-    : AnimationDecoder(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AnimationDecoder.
-   *
-   * @param resource a AnimationDecoder.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AnimationDecoderRef(AnimationDecoder&& resource) noexcept
-    : AnimationDecoder(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept
-    : AnimationDecoder(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AnimationDecoderRef(AnimationDecoderRef&& other) noexcept
-    : AnimationDecoder(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AnimationDecoderRef() { release(); }
-
-  /// Assignment operator.
-  AnimationDecoderRef& operator=(const AnimationDecoderRef& other) noexcept
-  {
-    release();
-    AnimationDecoder::operator=(AnimationDecoder(other.get()));
-    return *this;
-  }
-
-  /// Converts to AnimationDecoderRaw
-  constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a decoder to read a series of images from a file.
  *
  * These animation types are currently supported:
@@ -4609,7 +4327,21 @@ inline AnimationDecoder CreateAnimationDecoder(StringParam file)
 }
 
 inline AnimationDecoder::AnimationDecoder(StringParam file)
-  : m_resource(CheckError(IMG_CreateAnimationDecoder(file)))
+  : AnimationDecoder(CheckError(IMG_CreateAnimationDecoder(file)))
+{
+}
+
+inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
+                                          StringParam type,
+                                          bool closeio)
+  : AnimationDecoder(
+      CheckError(IMG_CreateAnimationDecoder_IO(src, closeio, type)))
+{
+}
+
+inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
+  : AnimationDecoder(
+      CheckError(IMG_CreateAnimationDecoderWithProperties(props)))
 {
 }
 

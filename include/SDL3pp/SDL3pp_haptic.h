@@ -110,8 +110,12 @@ struct Haptic;
 /// Alias to raw representation for Haptic.
 using HapticRaw = SDL_Haptic*;
 
-// Forward decl
-struct HapticRef;
+/**
+ * Reference for Haptic.
+ *
+ * This does not take ownership!
+ */
+using HapticRef = ResourceRef<Haptic>;
 
 /**
  * @name Haptic effects
@@ -763,16 +767,9 @@ using HapticID = SDL_HapticID;
  *
  * @cat resource
  */
-class Haptic
+struct Haptic : ResourceBase<HapticRaw>
 {
-  HapticRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Haptic(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Haptic.
@@ -782,12 +779,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Haptic(HapticRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Haptic(const Haptic& other) noexcept = delete;
+  constexpr Haptic(const Haptic& other) = delete;
 
   /// Move constructor
   constexpr Haptic(Haptic&& other) noexcept
@@ -860,34 +857,17 @@ public:
   static Haptic OpenFromMouse();
 
   /// Destructor
-  ~Haptic() { SDL_CloseHaptic(m_resource); }
+  ~Haptic() { SDL_CloseHaptic(get()); }
 
   /// Assignment operator.
   constexpr Haptic& operator=(Haptic&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Haptic& operator=(const Haptic& other) = delete;
-
-  /// Retrieves underlying HapticRaw.
-  constexpr HapticRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying HapticRaw and clear this.
-  constexpr HapticRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Haptic& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close a haptic device previously opened with OpenHaptic().
@@ -1222,78 +1202,6 @@ public:
 };
 
 /**
- * Reference for Haptic.
- *
- * This does not take ownership!
- */
-struct HapticRef : Haptic
-{
-  using Haptic::Haptic;
-
-  /**
-   * Constructs from raw Haptic.
-   *
-   * @param resource a HapticRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HapticRef(HapticRaw resource) noexcept
-    : Haptic(resource)
-  {
-  }
-
-  /**
-   * Constructs from Haptic.
-   *
-   * @param resource a Haptic.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HapticRef(const Haptic& resource) noexcept
-    : Haptic(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Haptic.
-   *
-   * @param resource a Haptic.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr HapticRef(Haptic&& resource) noexcept
-    : Haptic(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr HapticRef(const HapticRef& other) noexcept
-    : Haptic(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr HapticRef(HapticRef&& other) noexcept
-    : Haptic(other.get())
-  {
-  }
-
-  /// Destructor
-  ~HapticRef() { release(); }
-
-  /// Assignment operator.
-  HapticRef& operator=(const HapticRef& other) noexcept
-  {
-    release();
-    Haptic::operator=(Haptic(other.get()));
-    return *this;
-  }
-
-  /// Converts to HapticRaw
-  constexpr operator HapticRaw() const noexcept { return get(); }
-};
-
-/**
  * Get a list of currently connected haptic devices.
  *
  * @returns a 0 terminated array of haptic device instance IDs or nullptr on
@@ -1355,12 +1263,12 @@ inline const char* GetHapticNameForID(HapticID instance_id)
 inline Haptic OpenHaptic(HapticID instance_id) { return Haptic(instance_id); }
 
 inline Haptic::Haptic(HapticID instance_id)
-  : m_resource(SDL_OpenHaptic(instance_id))
+  : Haptic(SDL_OpenHaptic(instance_id))
 {
 }
 
 inline Haptic::Haptic(JoystickRef joystick)
-  : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
+  : Haptic(CheckError(SDL_OpenHapticFromJoystick(joystick)))
 {
 }
 

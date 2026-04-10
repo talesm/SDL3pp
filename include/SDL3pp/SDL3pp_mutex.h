@@ -33,8 +33,12 @@ struct Mutex;
 /// Alias to raw representation for Mutex.
 using MutexRaw = SDL_Mutex*;
 
-// Forward decl
-struct MutexRef;
+/**
+ * Reference for Mutex.
+ *
+ * This does not take ownership!
+ */
+using MutexRef = ResourceRef<Mutex>;
 
 // Forward decl
 struct RWLock;
@@ -42,8 +46,12 @@ struct RWLock;
 /// Alias to raw representation for RWLock.
 using RWLockRaw = SDL_RWLock*;
 
-// Forward decl
-struct RWLockRef;
+/**
+ * Reference for RWLock.
+ *
+ * This does not take ownership!
+ */
+using RWLockRef = ResourceRef<RWLock>;
 
 // Forward decl
 struct Semaphore;
@@ -51,8 +59,12 @@ struct Semaphore;
 /// Alias to raw representation for Semaphore.
 using SemaphoreRaw = SDL_Semaphore*;
 
-// Forward decl
-struct SemaphoreRef;
+/**
+ * Reference for Semaphore.
+ *
+ * This does not take ownership!
+ */
+using SemaphoreRef = ResourceRef<Semaphore>;
 
 // Forward decl
 struct Condition;
@@ -60,8 +72,12 @@ struct Condition;
 /// Alias to raw representation for Condition.
 using ConditionRaw = SDL_Condition*;
 
-// Forward decl
-struct ConditionRef;
+/**
+ * Reference for Condition.
+ *
+ * This does not take ownership!
+ */
+using ConditionRef = ResourceRef<Condition>;
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -83,16 +99,9 @@ struct InitState;
  *
  * @cat resource
  */
-class Mutex
+struct Mutex : ResourceBase<MutexRaw>
 {
-  MutexRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Mutex(std::nullptr_t) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Mutex.
@@ -102,12 +111,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Mutex(MutexRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Mutex(const Mutex& other) noexcept = delete;
+  constexpr Mutex(const Mutex& other) = delete;
 
   /// Move constructor
   constexpr Mutex(Mutex&& other) noexcept
@@ -144,34 +153,17 @@ public:
   Mutex();
 
   /// Destructor
-  ~Mutex() { SDL_DestroyMutex(m_resource); }
+  ~Mutex() { SDL_DestroyMutex(get()); }
 
   /// Assignment operator.
   constexpr Mutex& operator=(Mutex&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Mutex& operator=(const Mutex& other) = delete;
-
-  /// Retrieves underlying MutexRaw.
-  constexpr MutexRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying MutexRaw and clear this.
-  constexpr MutexRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Mutex& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a mutex created with CreateMutex().
@@ -258,78 +250,6 @@ public:
 };
 
 /**
- * Reference for Mutex.
- *
- * This does not take ownership!
- */
-struct MutexRef : Mutex
-{
-  using Mutex::Mutex;
-
-  /**
-   * Constructs from raw Mutex.
-   *
-   * @param resource a MutexRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MutexRef(MutexRaw resource) noexcept
-    : Mutex(resource)
-  {
-  }
-
-  /**
-   * Constructs from Mutex.
-   *
-   * @param resource a Mutex.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MutexRef(const Mutex& resource) noexcept
-    : Mutex(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Mutex.
-   *
-   * @param resource a Mutex.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr MutexRef(Mutex&& resource) noexcept
-    : Mutex(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr MutexRef(const MutexRef& other) noexcept
-    : Mutex(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr MutexRef(MutexRef&& other) noexcept
-    : Mutex(other.get())
-  {
-  }
-
-  /// Destructor
-  ~MutexRef() { release(); }
-
-  /// Assignment operator.
-  MutexRef& operator=(const MutexRef& other) noexcept
-  {
-    release();
-    Mutex::operator=(Mutex(other.get()));
-    return *this;
-  }
-
-  /// Converts to MutexRaw
-  constexpr operator MutexRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a new mutex.
  *
  * All newly-created mutexes begin in the _unlocked_ state.
@@ -354,7 +274,7 @@ struct MutexRef : Mutex
 inline Mutex CreateMutex() { return Mutex(); }
 
 inline Mutex::Mutex()
-  : m_resource(SDL_CreateMutex())
+  : Mutex(SDL_CreateMutex())
 {
 }
 
@@ -476,16 +396,9 @@ inline void Mutex::Destroy() { DestroyMutex(release()); }
  *
  * @cat resource
  */
-class RWLock
+struct RWLock : ResourceBase<RWLockRaw>
 {
-  RWLockRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr RWLock(std::nullptr_t) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw RWLock.
@@ -495,12 +408,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit RWLock(RWLockRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr RWLock(const RWLock& other) noexcept = delete;
+  constexpr RWLock(const RWLock& other) = delete;
 
   /// Move constructor
   constexpr RWLock(RWLock&& other) noexcept
@@ -557,34 +470,17 @@ public:
   RWLock();
 
   /// Destructor
-  ~RWLock() { SDL_DestroyRWLock(m_resource); }
+  ~RWLock() { SDL_DestroyRWLock(get()); }
 
   /// Assignment operator.
   constexpr RWLock& operator=(RWLock&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   RWLock& operator=(const RWLock& other) = delete;
-
-  /// Retrieves underlying RWLockRaw.
-  constexpr RWLockRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying RWLockRaw and clear this.
-  constexpr RWLockRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const RWLock& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a read/write lock created with CreateRWLock().
@@ -756,78 +652,6 @@ public:
 };
 
 /**
- * Reference for RWLock.
- *
- * This does not take ownership!
- */
-struct RWLockRef : RWLock
-{
-  using RWLock::RWLock;
-
-  /**
-   * Constructs from raw RWLock.
-   *
-   * @param resource a RWLockRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr RWLockRef(RWLockRaw resource) noexcept
-    : RWLock(resource)
-  {
-  }
-
-  /**
-   * Constructs from RWLock.
-   *
-   * @param resource a RWLock.
-   *
-   * This does not takes ownership!
-   */
-  constexpr RWLockRef(const RWLock& resource) noexcept
-    : RWLock(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from RWLock.
-   *
-   * @param resource a RWLock.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr RWLockRef(RWLock&& resource) noexcept
-    : RWLock(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr RWLockRef(const RWLockRef& other) noexcept
-    : RWLock(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr RWLockRef(RWLockRef&& other) noexcept
-    : RWLock(other.get())
-  {
-  }
-
-  /// Destructor
-  ~RWLockRef() { release(); }
-
-  /// Assignment operator.
-  RWLockRef& operator=(const RWLockRef& other) noexcept
-  {
-    release();
-    RWLock::operator=(RWLock(other.get()));
-    return *this;
-  }
-
-  /// Converts to RWLockRaw
-  constexpr operator RWLockRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a new read/write lock.
  *
  * A read/write lock is useful for situations where you have multiple threads
@@ -872,7 +696,7 @@ struct RWLockRef : RWLock
 inline RWLock CreateRWLock() { return RWLock(); }
 
 inline RWLock::RWLock()
-  : m_resource(SDL_CreateRWLock())
+  : RWLock(SDL_CreateRWLock())
 {
 }
 
@@ -1100,16 +924,9 @@ inline void RWLock::Destroy() { DestroyRWLock(release()); }
  *
  * @cat resource
  */
-class Semaphore
+struct Semaphore : ResourceBase<SemaphoreRaw>
 {
-  SemaphoreRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Semaphore(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Semaphore.
@@ -1119,12 +936,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) noexcept = delete;
+  constexpr Semaphore(const Semaphore& other) = delete;
 
   /// Move constructor
   constexpr Semaphore(Semaphore&& other) noexcept
@@ -1163,34 +980,17 @@ public:
   Semaphore(Uint32 initial_value);
 
   /// Destructor
-  ~Semaphore() { SDL_DestroySemaphore(m_resource); }
+  ~Semaphore() { SDL_DestroySemaphore(get()); }
 
   /// Assignment operator.
   constexpr Semaphore& operator=(Semaphore&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Semaphore& operator=(const Semaphore& other) = delete;
-
-  /// Retrieves underlying SemaphoreRaw.
-  constexpr SemaphoreRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying SemaphoreRaw and clear this.
-  constexpr SemaphoreRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Semaphore& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a semaphore.
@@ -1293,78 +1093,6 @@ public:
 };
 
 /**
- * Reference for Semaphore.
- *
- * This does not take ownership!
- */
-struct SemaphoreRef : Semaphore
-{
-  using Semaphore::Semaphore;
-
-  /**
-   * Constructs from raw Semaphore.
-   *
-   * @param resource a SemaphoreRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SemaphoreRef(SemaphoreRaw resource) noexcept
-    : Semaphore(resource)
-  {
-  }
-
-  /**
-   * Constructs from Semaphore.
-   *
-   * @param resource a Semaphore.
-   *
-   * This does not takes ownership!
-   */
-  constexpr SemaphoreRef(const Semaphore& resource) noexcept
-    : Semaphore(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Semaphore.
-   *
-   * @param resource a Semaphore.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr SemaphoreRef(Semaphore&& resource) noexcept
-    : Semaphore(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr SemaphoreRef(const SemaphoreRef& other) noexcept
-    : Semaphore(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr SemaphoreRef(SemaphoreRef&& other) noexcept
-    : Semaphore(other.get())
-  {
-  }
-
-  /// Destructor
-  ~SemaphoreRef() { release(); }
-
-  /// Assignment operator.
-  SemaphoreRef& operator=(const SemaphoreRef& other) noexcept
-  {
-    release();
-    Semaphore::operator=(Semaphore(other.get()));
-    return *this;
-  }
-
-  /// Converts to SemaphoreRaw
-  constexpr operator SemaphoreRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a semaphore.
  *
  * This function creates a new semaphore and initializes it with the value
@@ -1394,7 +1122,7 @@ inline Semaphore CreateSemaphore(Uint32 initial_value)
 }
 
 inline Semaphore::Semaphore(Uint32 initial_value)
-  : m_resource(SDL_CreateSemaphore(initial_value))
+  : Semaphore(SDL_CreateSemaphore(initial_value))
 {
 }
 
@@ -1549,16 +1277,9 @@ inline Uint32 Semaphore::GetValue() const
  *
  * @cat resource
  */
-class Condition
+struct Condition : ResourceBase<ConditionRaw>
 {
-  ConditionRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Condition(std::nullptr_t) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Condition.
@@ -1568,12 +1289,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Condition(ConditionRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Condition(const Condition& other) noexcept = delete;
+  constexpr Condition(const Condition& other) = delete;
 
   /// Move constructor
   constexpr Condition(Condition&& other) noexcept
@@ -1604,34 +1325,17 @@ public:
   Condition();
 
   /// Destructor
-  ~Condition() { SDL_DestroyCondition(m_resource); }
+  ~Condition() { SDL_DestroyCondition(get()); }
 
   /// Assignment operator.
   constexpr Condition& operator=(Condition&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Condition& operator=(const Condition& other) = delete;
-
-  /// Retrieves underlying ConditionRaw.
-  constexpr ConditionRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying ConditionRaw and clear this.
-  constexpr ConditionRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Condition& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a condition variable.
@@ -1728,78 +1432,6 @@ public:
 };
 
 /**
- * Reference for Condition.
- *
- * This does not take ownership!
- */
-struct ConditionRef : Condition
-{
-  using Condition::Condition;
-
-  /**
-   * Constructs from raw Condition.
-   *
-   * @param resource a ConditionRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ConditionRef(ConditionRaw resource) noexcept
-    : Condition(resource)
-  {
-  }
-
-  /**
-   * Constructs from Condition.
-   *
-   * @param resource a Condition.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ConditionRef(const Condition& resource) noexcept
-    : Condition(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Condition.
-   *
-   * @param resource a Condition.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ConditionRef(Condition&& resource) noexcept
-    : Condition(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ConditionRef(const ConditionRef& other) noexcept
-    : Condition(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ConditionRef(ConditionRef&& other) noexcept
-    : Condition(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ConditionRef() { release(); }
-
-  /// Assignment operator.
-  ConditionRef& operator=(const ConditionRef& other) noexcept
-  {
-    release();
-    Condition::operator=(Condition(other.get()));
-    return *this;
-  }
-
-  /// Converts to ConditionRaw
-  constexpr operator ConditionRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a condition variable.
  *
  * @returns a new condition variable or nullptr on failure; call GetError() for
@@ -1818,7 +1450,7 @@ struct ConditionRef : Condition
 inline Condition CreateCondition() { return Condition(); }
 
 inline Condition::Condition()
-  : m_resource(SDL_CreateCondition())
+  : Condition(SDL_CreateCondition())
 {
 }
 

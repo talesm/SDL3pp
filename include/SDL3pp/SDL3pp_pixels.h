@@ -3,7 +3,6 @@
 
 #include <SDL3/SDL_pixels.h>
 #include "SDL3pp_assert.h"
-#include "SDL3pp_resource.h"
 #include "SDL3pp_stdinc.h"
 #include "SDL3pp_version.h"
 
@@ -101,8 +100,12 @@ using PaletteRaw = SDL_Palette*;
 /// Alias to const raw representation for Palette.
 using PaletteRawConst = const SDL_Palette*;
 
-// Forward decl
-struct PaletteRef;
+/**
+ * Reference for Palette.
+ *
+ * This does not take ownership!
+ */
+using PaletteRef = ResourceRef<Palette>;
 
 /// Safely wrap Palette for non owning const parameters
 using PaletteConstRef = ResourceConstRef<PaletteRaw, PaletteRawConst>;
@@ -2456,16 +2459,9 @@ public:
  *
  * @cat resource
  */
-class Palette
+struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
 {
-  PaletteRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Palette(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Palette.
@@ -2475,15 +2471,15 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Palette(PaletteRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
   constexpr Palette(const Palette& other)
-    : m_resource(other.m_resource)
+    : Palette(other.get())
   {
-    if (m_resource) ++m_resource->refcount;
+    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor
@@ -2527,51 +2523,28 @@ public:
     return {};
   }
 
-  /// member access to underlying PaletteRaw.
-  constexpr PaletteRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying PaletteRaw.
-  constexpr PaletteRaw operator->() noexcept { return m_resource; }
-
   /// Converts to PaletteConstRef
-  constexpr operator PaletteConstRef() const noexcept { return m_resource; }
+  constexpr operator PaletteConstRef() const noexcept { return get(); }
 
   /// Destructor
-  ~Palette() { SDL_DestroyPalette(m_resource); }
+  ~Palette() { SDL_DestroyPalette(get()); }
 
   /// Assignment operator.
   constexpr Palette& operator=(Palette&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Palette& operator=(const Palette& other)
   {
-    if (m_resource != other.m_resource) {
+    if (get() != other.get()) {
       Palette tmp(other);
-      std::swap(m_resource, tmp.m_resource);
+      swap(*this, tmp);
     }
     return *this;
   }
-
-  /// Retrieves underlying PaletteRaw.
-  constexpr PaletteRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying PaletteRaw and clear this.
-  constexpr PaletteRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Palette& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Free a palette created with CreatePalette().
@@ -2586,21 +2559,21 @@ public:
   void Destroy();
 
   /// Access specific pallete colors
-  constexpr const ColorRaw* data() const { return m_resource->colors; }
+  constexpr const ColorRaw* data() const { return get()->colors; }
 
   /// Returns number of colors in the palette.
-  constexpr int size() const { return m_resource->ncolors; }
+  constexpr int size() const { return get()->ncolors; }
 
   /// Access specific pallete index
   constexpr ColorRaw operator[](int index) const
   {
-    return m_resource->colors[index];
+    return get()->colors[index];
   }
 
   /// Change specific pallete index
   constexpr PaletteIndex operator[](int index)
   {
-    return PaletteIndex{m_resource, index};
+    return PaletteIndex{get(), index};
   }
 
   /**
@@ -2618,78 +2591,6 @@ public:
    * @sa Palette.Palette
    */
   void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
-};
-
-/**
- * Reference for Palette.
- *
- * This does not take ownership!
- */
-struct PaletteRef : Palette
-{
-  using Palette::Palette;
-
-  /**
-   * Constructs from raw Palette.
-   *
-   * @param resource a PaletteRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PaletteRef(PaletteRaw resource) noexcept
-    : Palette(resource)
-  {
-  }
-
-  /**
-   * Constructs from Palette.
-   *
-   * @param resource a Palette.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PaletteRef(const Palette& resource) noexcept
-    : Palette(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Palette.
-   *
-   * @param resource a Palette.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr PaletteRef(Palette&& resource) noexcept
-    : Palette(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr PaletteRef(const PaletteRef& other) noexcept
-    : Palette(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr PaletteRef(PaletteRef&& other) noexcept
-    : Palette(other.get())
-  {
-  }
-
-  /// Destructor
-  ~PaletteRef() { release(); }
-
-  /// Assignment operator.
-  PaletteRef& operator=(const PaletteRef& other) noexcept
-  {
-    release();
-    Palette::operator=(Palette(other.get()));
-    return *this;
-  }
-
-  /// Converts to PaletteRaw
-  constexpr operator PaletteRaw() const noexcept { return get(); }
 };
 
 /**
@@ -2837,7 +2738,7 @@ inline PixelFormat::operator const PixelFormatDetails&() const
 inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
 
 inline Palette::Palette(int ncolors)
-  : m_resource(CheckError(SDL_CreatePalette(ncolors)))
+  : Palette(CheckError(SDL_CreatePalette(ncolors)))
 {
 }
 

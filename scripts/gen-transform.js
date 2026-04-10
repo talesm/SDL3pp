@@ -3444,7 +3444,7 @@ const transform = {
       }
     },
     "SDL_pixels.h": {
-      localIncludes: ["SDL3pp_assert.h", "SDL3pp_resource.h", "SDL3pp_stdinc.h", "SDL3pp_version.h"],
+      localIncludes: ["SDL3pp_assert.h", "SDL3pp_stdinc.h", "SDL3pp_version.h"],
       transform: {
         "SDL_PixelFormatDetails": {
           kind: "alias",
@@ -3907,7 +3907,7 @@ const transform = {
                   name: "index"
                 }
               ],
-              hints: { body: "return PaletteIndex{m_resource, index};" },
+              hints: { body: "return PaletteIndex{get(), index};" },
             },
           }
         },
@@ -4076,7 +4076,7 @@ const transform = {
       }
     },
     "SDL_properties.h": {
-      localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_strings.h", "SDL3pp_version.h"],
+      localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_resource.h", "SDL3pp_strings.h", "SDL3pp_version.h"],
       transform: {
         "SDL_PropertiesID": {
           name: "Properties",
@@ -4728,7 +4728,7 @@ const transform = {
       },
     },
     "SDL_render.h": {
-      localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_events.h", "SDL3pp_gpu.h", "SDL3pp_pixels.h", "SDL3pp_resource.h", "SDL3pp_video.h"],
+      localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_events.h", "SDL3pp_gpu.h", "SDL3pp_pixels.h", "SDL3pp_video.h"],
       namespacesMap: {
         "SDL_PROP_RENDERER_": "prop::Renderer",
         "SDL_PROP_TEXTURE_": "prop::Texture"
@@ -4745,20 +4745,13 @@ const transform = {
         "SDL_Renderer": {
           resource: true,
           entries: {
-            "Renderer": {
-              kind: "function",
-              type: "",
-              parameters: [
-                {
-                  "type": "WindowRef",
-                  "name": "window"
-                }
-              ]
-            },
             "SDL_CreateRenderer": "ctor",
             "SDL_CreateRendererWithProperties": "ctor",
             "SDL_CreateSoftwareRenderer": "ctor",
           }
+        },
+        "SDL_CreateRenderer": {
+          parameters: [{}, { default: "nullptr" }]
         },
         "CreateWindowAndRendererRaw": {
           before: "SDL_CreateWindowAndRenderer",
@@ -5632,6 +5625,7 @@ const transform = {
         "SDL3pp_error.h",
         "SDL3pp_optionalRef.h",
         "SDL3pp_ownPtr.h",
+        "SDL3pp_resource.h",
         "SDL3pp_spanRef.h",
         "SDL3pp_strings.h",
       ],
@@ -6529,7 +6523,6 @@ const transform = {
         "SDL3pp_pixels.h",
         "SDL3pp_properties.h",
         "SDL3pp_rect.h",
-        "SDL3pp_resource.h",
         "SDL3pp_spanRef.h",
         "SDL3pp_strings.h",
         "SDL3pp_version.h",
@@ -7940,7 +7933,15 @@ const transform = {
         "SDL_PROP_WINDOW_": "prop::Window"
       },
       transform: {
-        "RendererRef": { kind: "forward" },
+        "Renderer": { kind: "forward" },
+        "RendererRef": {
+          kind: "alias",
+          type: "ResourceRef<Renderer>",
+          doc: [
+            "Reference for Renderer.",
+            "This does not take ownership!"
+          ],
+        },
         "SDL_WINDOWPOS_UNDEFINED_MASK": { kind: "var", type: "int", constexpr: true },
         "SDL_WINDOWPOS_UNDEFINED_DISPLAY": {
           kind: "function",

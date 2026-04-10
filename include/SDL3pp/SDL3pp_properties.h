@@ -4,6 +4,7 @@
 #include <SDL3/SDL_properties.h>
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
+#include "SDL3pp_resource.h"
 #include "SDL3pp_strings.h"
 #include "SDL3pp_version.h"
 
@@ -45,8 +46,12 @@ struct Properties;
 /// Alias to raw representation for Properties.
 using PropertiesID = SDL_PropertiesID;
 
-// Forward decl
-struct PropertiesRef;
+/**
+ * Reference for Properties.
+ *
+ * This does not take ownership!
+ */
+using PropertiesRef = ResourceRef<Properties>;
 
 // Forward decl
 struct PropertiesLock;
@@ -176,16 +181,9 @@ using CleanupPropertyCB = std::function<void(void* value)>;
  * @sa Properties.Create
  * @sa prop
  */
-class Properties
+struct Properties : ResourceBase<PropertiesID>
 {
-  PropertiesID m_resource = 0;
-
-public:
-  /// Default ctor
-  constexpr Properties(std::nullptr_t = nullptr) noexcept
-    : m_resource(0)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Properties.
@@ -195,12 +193,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Properties(PropertiesID resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Properties(const Properties& other) noexcept = delete;
+  constexpr Properties(const Properties& other) = delete;
 
   /// Move constructor
   constexpr Properties(Properties&& other) noexcept
@@ -230,34 +228,17 @@ public:
   static Properties Create();
 
   /// Destructor
-  ~Properties() { SDL_DestroyProperties(m_resource); }
+  ~Properties() { SDL_DestroyProperties(get()); }
 
   /// Assignment operator.
   constexpr Properties& operator=(Properties&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Properties& operator=(const Properties& other) = delete;
-
-  /// Retrieves underlying PropertiesID.
-  constexpr PropertiesID get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying PropertiesID and clear this.
-  constexpr PropertiesID release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = 0;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Properties& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a group of properties.
@@ -677,78 +658,6 @@ public:
    * @return Uint64
    */
   Uint64 GetCount();
-};
-
-/**
- * Reference for Properties.
- *
- * This does not take ownership!
- */
-struct PropertiesRef : Properties
-{
-  using Properties::Properties;
-
-  /**
-   * Constructs from raw Properties.
-   *
-   * @param resource a PropertiesID.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PropertiesRef(PropertiesID resource) noexcept
-    : Properties(resource)
-  {
-  }
-
-  /**
-   * Constructs from Properties.
-   *
-   * @param resource a Properties.
-   *
-   * This does not takes ownership!
-   */
-  constexpr PropertiesRef(const Properties& resource) noexcept
-    : Properties(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Properties.
-   *
-   * @param resource a Properties.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr PropertiesRef(Properties&& resource) noexcept
-    : Properties(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr PropertiesRef(const PropertiesRef& other) noexcept
-    : Properties(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr PropertiesRef(PropertiesRef&& other) noexcept
-    : Properties(other.get())
-  {
-  }
-
-  /// Destructor
-  ~PropertiesRef() { release(); }
-
-  /// Assignment operator.
-  PropertiesRef& operator=(const PropertiesRef& other) noexcept
-  {
-    release();
-    Properties::operator=(Properties(other.get()));
-    return *this;
-  }
-
-  /// Converts to PropertiesID
-  constexpr operator PropertiesID() const noexcept { return get(); }
 };
 
 /**

@@ -24,8 +24,12 @@ struct Tray;
 /// Alias to raw representation for Tray.
 using TrayRaw = SDL_Tray*;
 
-// Forward decl
-struct TrayRef;
+/**
+ * Reference for Tray.
+ *
+ * This does not take ownership!
+ */
+using TrayRef = ResourceRef<Tray>;
 
 /// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
@@ -106,16 +110,9 @@ using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
  *
  * @cat resource
  */
-class Tray
+struct Tray : ResourceBase<TrayRaw>
 {
-  TrayRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Tray(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Tray.
@@ -125,12 +122,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Tray(TrayRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Tray(const Tray& other) noexcept = delete;
+  constexpr Tray(const Tray& other) = delete;
 
   /// Move constructor
   constexpr Tray(Tray&& other) noexcept
@@ -168,34 +165,17 @@ public:
   Tray(SurfaceRef icon, StringParam tooltip);
 
   /// Destructor
-  ~Tray() { SDL_DestroyTray(m_resource); }
+  ~Tray() { SDL_DestroyTray(get()); }
 
   /// Assignment operator.
   constexpr Tray& operator=(Tray&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Tray& operator=(const Tray& other) = delete;
-
-  /// Retrieves underlying TrayRaw.
-  constexpr TrayRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TrayRaw and clear this.
-  constexpr TrayRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Tray& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroys a tray object.
@@ -284,78 +264,6 @@ public:
    * @sa Tray.CreateMenu
    */
   TrayMenu GetMenu() const;
-};
-
-/**
- * Reference for Tray.
- *
- * This does not take ownership!
- */
-struct TrayRef : Tray
-{
-  using Tray::Tray;
-
-  /**
-   * Constructs from raw Tray.
-   *
-   * @param resource a TrayRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TrayRef(TrayRaw resource) noexcept
-    : Tray(resource)
-  {
-  }
-
-  /**
-   * Constructs from Tray.
-   *
-   * @param resource a Tray.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TrayRef(const Tray& resource) noexcept
-    : Tray(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Tray.
-   *
-   * @param resource a Tray.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr TrayRef(Tray&& resource) noexcept
-    : Tray(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr TrayRef(const TrayRef& other) noexcept
-    : Tray(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr TrayRef(TrayRef&& other) noexcept
-    : Tray(other.get())
-  {
-  }
-
-  /// Destructor
-  ~TrayRef() { release(); }
-
-  /// Assignment operator.
-  TrayRef& operator=(const TrayRef& other) noexcept
-  {
-    release();
-    Tray::operator=(Tray(other.get()));
-    return *this;
-  }
-
-  /// Converts to TrayRaw
-  constexpr operator TrayRaw() const noexcept { return get(); }
 };
 
 /**
@@ -501,26 +409,9 @@ public:
  *
  * @cat resource
  */
-class TrayEntry
+struct TrayEntry : ResourceBase<TrayEntryRaw>
 {
-  TrayEntryRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr TrayEntry(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
-
-  /**
-   * Constructs from raw TrayEntry.
-   *
-   * @param resource a TrayEntryRaw to be wrapped.
-   */
-  constexpr TrayEntry(TrayEntryRaw resource) noexcept
-    : m_resource(resource)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Insert a tray entry at a given position.
@@ -578,24 +469,7 @@ public:
   TrayEntry(TrayMenuRaw menu, StringParam label, TrayEntryFlags flags);
 
   /// Converts to underlying TrayEntryRaw.
-  constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TrayEntryRaw.
-  constexpr TrayEntryRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TrayEntryRaw and clear this.
-  constexpr TrayEntryRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const TrayEntry& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
+  constexpr operator TrayEntryRaw() const noexcept { return get(); }
 
   /**
    * Removes a tray entry.
@@ -872,7 +746,7 @@ inline Tray CreateTray(SurfaceRef icon, StringParam tooltip)
 }
 
 inline Tray::Tray(SurfaceRef icon, StringParam tooltip)
-  : m_resource(SDL_CreateTray(icon, tooltip))
+  : Tray(SDL_CreateTray(icon, tooltip))
 {
 }
 
@@ -1126,7 +1000,7 @@ inline TrayEntry::TrayEntry(TrayMenu menu,
                             int pos,
                             StringParam label,
                             TrayEntryFlags flags)
-  : m_resource(SDL_InsertTrayEntryAt(menu, pos, label, flags))
+  : TrayEntry(SDL_InsertTrayEntryAt(menu, pos, label, flags))
 {
 }
 

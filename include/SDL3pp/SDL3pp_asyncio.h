@@ -92,8 +92,12 @@ struct AsyncIO;
 /// Alias to raw representation for AsyncIO.
 using AsyncIORaw = SDL_AsyncIO*;
 
-// Forward decl
-struct AsyncIORef;
+/**
+ * Reference for AsyncIO.
+ *
+ * This does not take ownership!
+ */
+using AsyncIORef = ResourceRef<AsyncIO>;
 
 // Forward decl
 struct AsyncIOQueue;
@@ -101,8 +105,12 @@ struct AsyncIOQueue;
 /// Alias to raw representation for AsyncIOQueue.
 using AsyncIOQueueRaw = SDL_AsyncIOQueue*;
 
-// Forward decl
-struct AsyncIOQueueRef;
+/**
+ * Reference for AsyncIOQueue.
+ *
+ * This does not take ownership!
+ */
+using AsyncIOQueueRef = ResourceRef<AsyncIOQueue>;
 
 /**
  * The asynchronous I/O operation structure.
@@ -116,16 +124,9 @@ struct AsyncIOQueueRef;
  *
  * @cat resource
  */
-class AsyncIO
+struct AsyncIO : ResourceBase<AsyncIORaw>
 {
-  AsyncIORaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr AsyncIO(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AsyncIO.
@@ -135,12 +136,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AsyncIO(AsyncIORaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) noexcept = delete;
+  constexpr AsyncIO(const AsyncIO& other) = delete;
 
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
@@ -196,38 +197,21 @@ public:
   /// Destructor
   ~AsyncIO()
   {
-    if (m_resource) {
+    if (get()) {
       LOG_CATEGORY_ERROR.LogDebug("AsyncIO ID was not properly Destroyed: {}",
-                                  (void*)(m_resource));
+                                  (void*)(get()));
     }
   }
 
   /// Assignment operator.
   constexpr AsyncIO& operator=(AsyncIO&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AsyncIO& operator=(const AsyncIO& other) = delete;
-
-  /// Retrieves underlying AsyncIORaw.
-  constexpr AsyncIORaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AsyncIORaw and clear this.
-  constexpr AsyncIORaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AsyncIO& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close and free any allocated resources for an async I/O object.
@@ -373,78 +357,6 @@ public:
 };
 
 /**
- * Reference for AsyncIO.
- *
- * This does not take ownership!
- */
-struct AsyncIORef : AsyncIO
-{
-  using AsyncIO::AsyncIO;
-
-  /**
-   * Constructs from raw AsyncIO.
-   *
-   * @param resource a AsyncIORaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIORef(AsyncIORaw resource) noexcept
-    : AsyncIO(resource)
-  {
-  }
-
-  /**
-   * Constructs from AsyncIO.
-   *
-   * @param resource a AsyncIO.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIORef(const AsyncIO& resource) noexcept
-    : AsyncIO(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AsyncIO.
-   *
-   * @param resource a AsyncIO.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AsyncIORef(AsyncIO&& resource) noexcept
-    : AsyncIO(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AsyncIORef(const AsyncIORef& other) noexcept
-    : AsyncIO(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AsyncIORef(AsyncIORef&& other) noexcept
-    : AsyncIO(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AsyncIORef() { release(); }
-
-  /// Assignment operator.
-  AsyncIORef& operator=(const AsyncIORef& other) noexcept
-  {
-    release();
-    AsyncIO::operator=(AsyncIO(other.get()));
-    return *this;
-  }
-
-  /// Converts to AsyncIORaw
-  constexpr operator AsyncIORaw() const noexcept { return get(); }
-};
-
-/**
  * Types of asynchronous I/O tasks.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -501,16 +413,9 @@ using AsyncIOOutcome = SDL_AsyncIOOutcome;
  *
  * @cat resource
  */
-class AsyncIOQueue
+struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
 {
-  AsyncIOQueueRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr AsyncIOQueue(std::nullptr_t) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw AsyncIOQueue.
@@ -520,12 +425,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AsyncIOQueue(AsyncIOQueueRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept = delete;
+  constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
 
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
@@ -557,35 +462,17 @@ public:
   AsyncIOQueue();
 
   /// Destructor
-  ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(m_resource); }
+  ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(get()); }
 
   /// Assignment operator.
   constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   AsyncIOQueue& operator=(const AsyncIOQueue& other) = delete;
-
-  /// Retrieves underlying AsyncIOQueueRaw.
-  constexpr AsyncIOQueueRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying AsyncIOQueueRaw and clear this.
-  constexpr AsyncIOQueueRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const AsyncIOQueue& other) const noexcept =
-    default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a previously-created async I/O task queue.
@@ -743,78 +630,6 @@ public:
 };
 
 /**
- * Reference for AsyncIOQueue.
- *
- * This does not take ownership!
- */
-struct AsyncIOQueueRef : AsyncIOQueue
-{
-  using AsyncIOQueue::AsyncIOQueue;
-
-  /**
-   * Constructs from raw AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueueRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
-    : AsyncIOQueue(resource)
-  {
-  }
-
-  /**
-   * Constructs from AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueue.
-   *
-   * This does not takes ownership!
-   */
-  constexpr AsyncIOQueueRef(const AsyncIOQueue& resource) noexcept
-    : AsyncIOQueue(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueue.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr AsyncIOQueueRef(AsyncIOQueue&& resource) noexcept
-    : AsyncIOQueue(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
-    : AsyncIOQueue(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr AsyncIOQueueRef(AsyncIOQueueRef&& other) noexcept
-    : AsyncIOQueue(other.get())
-  {
-  }
-
-  /// Destructor
-  ~AsyncIOQueueRef() { release(); }
-
-  /// Assignment operator.
-  AsyncIOQueueRef& operator=(const AsyncIOQueueRef& other) noexcept
-  {
-    release();
-    AsyncIOQueue::operator=(AsyncIOQueue(other.get()));
-    return *this;
-  }
-
-  /// Converts to AsyncIOQueueRaw
-  constexpr operator AsyncIOQueueRaw() const noexcept { return get(); }
-};
-
-/**
  * Use this function to create a new AsyncIO object for reading from and/or
  * writing to a named file.
  *
@@ -858,7 +673,7 @@ inline AsyncIO AsyncIOFromFile(StringParam file, StringParam mode)
 }
 
 inline AsyncIO::AsyncIO(StringParam file, StringParam mode)
-  : m_resource(SDL_AsyncIOFromFile(file, mode))
+  : AsyncIO(SDL_AsyncIOFromFile(file, mode))
 {
 }
 
@@ -1069,7 +884,7 @@ inline bool AsyncIO::Close(bool flush, AsyncIOQueueRef queue, void* userdata)
 inline AsyncIOQueue CreateAsyncIOQueue() { return AsyncIOQueue(); }
 
 inline AsyncIOQueue::AsyncIOQueue()
-  : m_resource(SDL_CreateAsyncIOQueue())
+  : AsyncIOQueue(SDL_CreateAsyncIOQueue())
 {
 }
 

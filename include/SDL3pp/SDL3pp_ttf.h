@@ -30,8 +30,12 @@ struct Font;
 /// Alias to raw representation for Font.
 using FontRaw = TTF_Font*;
 
-// Forward decl
-struct FontRef;
+/**
+ * Reference for Font.
+ *
+ * This does not take ownership!
+ */
+using FontRef = ResourceRef<Font>;
 
 // Forward decl
 struct TextEngine;
@@ -39,8 +43,12 @@ struct TextEngine;
 /// Alias to raw representation for TextEngine.
 using TextEngineRaw = TTF_TextEngine*;
 
-/// Safely wrap TextEngine for non owning parameters
-using TextEngineRef = ResourceRef<TextEngineRaw>;
+/**
+ * Reference for TextEngine.
+ *
+ * This does not take ownership!
+ */
+using TextEngineRef = ResourceLegacyRef<TextEngineRaw>;
 
 // Forward decl
 struct Text;
@@ -51,8 +59,12 @@ using TextRaw = TTF_Text*;
 /// Alias to const raw representation for Text.
 using TextRawConst = const TTF_Text*;
 
-// Forward decl
-struct TextRef;
+/**
+ * Reference for Text.
+ *
+ * This does not take ownership!
+ */
+using TextRef = ResourceRef<Text>;
 
 /// Safely wrap Text for non owning const parameters
 using TextConstRef = ResourceConstRef<TextRaw, TextRawConst>;
@@ -337,16 +349,9 @@ constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
  *
  * @cat resource
  */
-class Font
+struct Font : ResourceBase<FontRaw>
 {
-  FontRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Font(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Font.
@@ -356,12 +361,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Font(FontRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Font(const Font& other) noexcept = delete;
+  constexpr Font(const Font& other) = delete;
 
   /// Move constructor
   constexpr Font(Font&& other) noexcept
@@ -464,34 +469,17 @@ public:
   Font(PropertiesRef props);
 
   /// Destructor
-  ~Font() { TTF_CloseFont(m_resource); }
+  ~Font() { TTF_CloseFont(get()); }
 
   /// Assignment operator.
   constexpr Font& operator=(Font&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Font& operator=(const Font& other) = delete;
-
-  /// Retrieves underlying FontRaw.
-  constexpr FontRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying FontRaw and clear this.
-  constexpr FontRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Font& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Dispose of a previously-created font.
@@ -1809,78 +1797,6 @@ public:
 };
 
 /**
- * Reference for Font.
- *
- * This does not take ownership!
- */
-struct FontRef : Font
-{
-  using Font::Font;
-
-  /**
-   * Constructs from raw Font.
-   *
-   * @param resource a FontRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr FontRef(FontRaw resource) noexcept
-    : Font(resource)
-  {
-  }
-
-  /**
-   * Constructs from Font.
-   *
-   * @param resource a Font.
-   *
-   * This does not takes ownership!
-   */
-  constexpr FontRef(const Font& resource) noexcept
-    : Font(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Font.
-   *
-   * @param resource a Font.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr FontRef(Font&& resource) noexcept
-    : Font(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr FontRef(const FontRef& other) noexcept
-    : Font(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr FontRef(FontRef&& other) noexcept
-    : Font(other.get())
-  {
-  }
-
-  /// Destructor
-  ~FontRef() { release(); }
-
-  /// Assignment operator.
-  FontRef& operator=(const FontRef& other) noexcept
-  {
-    release();
-    Font::operator=(Font(other.get()));
-    return *this;
-  }
-
-  /// Converts to FontRaw
-  constexpr operator FontRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a font from a file, using a specified point size.
  *
  * Some .fon fonts will have several sizes embedded in the file, so the point
@@ -1906,17 +1822,17 @@ inline Font OpenFont(StringParam file, float ptsize)
 }
 
 inline Font::Font(StringParam file, float ptsize)
-  : m_resource(CheckError(TTF_OpenFont(file, ptsize)))
+  : Font(CheckError(TTF_OpenFont(file, ptsize)))
 {
 }
 
 inline Font::Font(IOStreamRef src, float ptsize, bool closeio)
-  : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
+  : Font(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
 {
 }
 
 inline Font::Font(PropertiesRef props)
-  : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
+  : Font(CheckError(TTF_OpenFontWithProperties(props)))
 {
 }
 
@@ -3910,16 +3826,9 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
  *
  * @cat resource
  */
-class TextEngine
+struct TextEngine : ResourceBase<TextEngineRaw>
 {
-  TextEngineRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr TextEngine(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw TextEngine.
@@ -3929,12 +3838,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit TextEngine(TextEngineRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) noexcept = delete;
+  constexpr TextEngine(const TextEngine& other) = delete;
 
   /// Move constructor
   constexpr TextEngine(TextEngine&& other) noexcept
@@ -3943,34 +3852,17 @@ public:
   }
 
   /// Destructor
-  virtual ~TextEngine() { SDL_assert_paranoid(!m_resource); }
+  virtual ~TextEngine() { SDL_assert_paranoid(!get()); }
 
   /// Assignment operator.
   constexpr TextEngine& operator=(TextEngine&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   TextEngine& operator=(const TextEngine& other) = delete;
-
-  /// Retrieves underlying TextEngineRaw.
-  constexpr TextEngineRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TextEngineRaw and clear this.
-  constexpr TextEngineRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextEngine& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// frees up textEngine. Pure virtual
   virtual void Destroy() = 0;
@@ -4246,16 +4138,9 @@ using TextData = TTF_TextData;
  *
  * @cat resource
  */
-class Text
+struct Text : ResourceBase<TextRaw, TextRawConst>
 {
-  TextRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Text(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Text.
@@ -4265,12 +4150,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Text(TextRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Text(const Text& other) noexcept = delete;
+  constexpr Text(const Text& other) = delete;
 
   /// Move constructor
   constexpr Text(Text&& other) noexcept
@@ -4301,44 +4186,21 @@ public:
    */
   Text(TextEngineRef engine, FontRef font, std::string_view text);
 
-  /// member access to underlying TextRaw.
-  constexpr TextRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying TextRaw.
-  constexpr TextRaw operator->() noexcept { return m_resource; }
-
   /// Converts to TextConstRef
-  constexpr operator TextConstRef() const noexcept { return m_resource; }
+  constexpr operator TextConstRef() const noexcept { return get(); }
 
   /// Destructor
-  ~Text() { TTF_DestroyText(m_resource); }
+  ~Text() { TTF_DestroyText(get()); }
 
   /// Assignment operator.
   constexpr Text& operator=(Text&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Text& operator=(const Text& other) = delete;
-
-  /// Retrieves underlying TextRaw.
-  constexpr TextRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TextRaw and clear this.
-  constexpr TextRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Text& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a text object created by a text engine.
@@ -5125,82 +4987,10 @@ public:
    * A copy of the UTF-8 string that this text object represents, useful for
    * layout, debugging and retrieving substring text
    */
-  const char* GetText() const { return m_resource->text; }
+  const char* GetText() const { return get()->text; }
 
   /// The number of lines in the text, 0 if it's empty
-  int GetNumLines() const { return m_resource->num_lines; }
-};
-
-/**
- * Reference for Text.
- *
- * This does not take ownership!
- */
-struct TextRef : Text
-{
-  using Text::Text;
-
-  /**
-   * Constructs from raw Text.
-   *
-   * @param resource a TextRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TextRef(TextRaw resource) noexcept
-    : Text(resource)
-  {
-  }
-
-  /**
-   * Constructs from Text.
-   *
-   * @param resource a Text.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TextRef(const Text& resource) noexcept
-    : Text(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Text.
-   *
-   * @param resource a Text.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr TextRef(Text&& resource) noexcept
-    : Text(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr TextRef(const TextRef& other) noexcept
-    : Text(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr TextRef(TextRef&& other) noexcept
-    : Text(other.get())
-  {
-  }
-
-  /// Destructor
-  ~TextRef() { release(); }
-
-  /// Assignment operator.
-  TextRef& operator=(const TextRef& other) noexcept
-  {
-    release();
-    Text::operator=(Text(other.get()));
-    return *this;
-  }
-
-  /// Converts to TextRaw
-  constexpr operator TextRaw() const noexcept { return get(); }
+  int GetNumLines() const { return get()->num_lines; }
 };
 
 /**
@@ -5701,7 +5491,7 @@ inline Text TextEngine::CreateText(FontRef font, std::string_view text)
 }
 
 inline Text::Text(TextEngineRef engine, FontRef font, std::string_view text)
-  : m_resource(TTF_CreateText(engine, font, text.data(), text.size()))
+  : Text(TTF_CreateText(engine, font, text.data(), text.size()))
 {
 }
 

@@ -44,8 +44,12 @@ struct HidDevice;
 /// Alias to raw representation for HidDevice.
 using HidDeviceRaw = SDL_hid_device*;
 
-// Forward decl
-struct HidDeviceRef;
+/**
+ * Reference for HidDevice.
+ *
+ * This does not take ownership!
+ */
+using HidDeviceRef = ResourceRef<HidDevice>;
 
 /**
  * HID underlying bus types.
@@ -101,16 +105,9 @@ using hid_device_info = SDL_hid_device_info;
  *
  * @cat resource
  */
-class HidDevice
+struct HidDevice : ResourceBase<HidDeviceRaw>
 {
-  HidDeviceRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr HidDevice(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw HidDevice.
@@ -120,12 +117,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit HidDevice(HidDeviceRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) noexcept = delete;
+  constexpr HidDevice(const HidDevice& other) = delete;
 
   /// Move constructor
   constexpr HidDevice(HidDevice&& other) noexcept
@@ -170,34 +167,17 @@ public:
   HidDevice(StringParam path);
 
   /// Destructor
-  ~HidDevice() { SDL_hid_close(m_resource); }
+  ~HidDevice() { SDL_hid_close(get()); }
 
   /// Assignment operator.
   constexpr HidDevice& operator=(HidDevice&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   HidDevice& operator=(const HidDevice& other) = delete;
-
-  /// Retrieves underlying HidDeviceRaw.
-  constexpr HidDeviceRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying HidDeviceRaw and clear this.
-  constexpr HidDeviceRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const HidDevice& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Close a HID device.
@@ -438,78 +418,6 @@ public:
 };
 
 /**
- * Reference for HidDevice.
- *
- * This does not take ownership!
- */
-struct HidDeviceRef : HidDevice
-{
-  using HidDevice::HidDevice;
-
-  /**
-   * Constructs from raw HidDevice.
-   *
-   * @param resource a HidDeviceRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HidDeviceRef(HidDeviceRaw resource) noexcept
-    : HidDevice(resource)
-  {
-  }
-
-  /**
-   * Constructs from HidDevice.
-   *
-   * @param resource a HidDevice.
-   *
-   * This does not takes ownership!
-   */
-  constexpr HidDeviceRef(const HidDevice& resource) noexcept
-    : HidDevice(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from HidDevice.
-   *
-   * @param resource a HidDevice.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr HidDeviceRef(HidDevice&& resource) noexcept
-    : HidDevice(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr HidDeviceRef(const HidDeviceRef& other) noexcept
-    : HidDevice(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr HidDeviceRef(HidDeviceRef&& other) noexcept
-    : HidDevice(other.get())
-  {
-  }
-
-  /// Destructor
-  ~HidDeviceRef() { release(); }
-
-  /// Assignment operator.
-  HidDeviceRef& operator=(const HidDeviceRef& other) noexcept
-  {
-    release();
-    HidDevice::operator=(HidDevice(other.get()));
-    return *this;
-  }
-
-  /// Converts to HidDeviceRaw
-  constexpr operator HidDeviceRaw() const noexcept { return get(); }
-};
-
-/**
  * Initialize the HIDAPI library.
  *
  * This function initializes the HIDAPI library. Calling it is not strictly
@@ -638,12 +546,12 @@ inline HidDevice hid_open(unsigned short vendor_id,
 inline HidDevice::HidDevice(unsigned short vendor_id,
                             unsigned short product_id,
                             const wchar_t* serial_number)
-  : m_resource(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
+  : HidDevice(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
 {
 }
 
 inline HidDevice::HidDevice(StringParam path)
-  : m_resource(CheckError(SDL_hid_open_path(path)))
+  : HidDevice(CheckError(SDL_hid_open_path(path)))
 {
 }
 

@@ -24,8 +24,12 @@ struct MetalView;
 /// Alias to raw representation for MetalView.
 using MetalViewRaw = SDL_MetalView;
 
-// Forward decl
-struct MetalViewRef;
+/**
+ * Reference for MetalView.
+ *
+ * This does not take ownership!
+ */
+using MetalViewRef = ResourceRef<MetalView>;
 
 /**
  * A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
@@ -34,16 +38,9 @@ struct MetalViewRef;
  *
  * @cat resource
  */
-class MetalView
+struct MetalView : ResourceBase<MetalViewRaw>
 {
-  MetalViewRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr MetalView(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw MetalView.
@@ -53,12 +50,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit MetalView(MetalViewRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr MetalView(const MetalView& other) noexcept = delete;
+  constexpr MetalView(const MetalView& other) = delete;
 
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
@@ -93,34 +90,17 @@ public:
   MetalView(WindowRef window);
 
   /// Destructor
-  ~MetalView() { SDL_Metal_DestroyView(m_resource); }
+  ~MetalView() { SDL_Metal_DestroyView(get()); }
 
   /// Assignment operator.
   constexpr MetalView& operator=(MetalView&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   MetalView& operator=(const MetalView& other) = delete;
-
-  /// Retrieves underlying MetalViewRaw.
-  constexpr MetalViewRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying MetalViewRaw and clear this.
-  constexpr MetalViewRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const MetalView& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy an existing MetalView object.
@@ -149,78 +129,6 @@ public:
 };
 
 /**
- * Reference for MetalView.
- *
- * This does not take ownership!
- */
-struct MetalViewRef : MetalView
-{
-  using MetalView::MetalView;
-
-  /**
-   * Constructs from raw MetalView.
-   *
-   * @param resource a MetalViewRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MetalViewRef(MetalViewRaw resource) noexcept
-    : MetalView(resource)
-  {
-  }
-
-  /**
-   * Constructs from MetalView.
-   *
-   * @param resource a MetalView.
-   *
-   * This does not takes ownership!
-   */
-  constexpr MetalViewRef(const MetalView& resource) noexcept
-    : MetalView(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from MetalView.
-   *
-   * @param resource a MetalView.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr MetalViewRef(MetalView&& resource) noexcept
-    : MetalView(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr MetalViewRef(const MetalViewRef& other) noexcept
-    : MetalView(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr MetalViewRef(MetalViewRef&& other) noexcept
-    : MetalView(other.get())
-  {
-  }
-
-  /// Destructor
-  ~MetalViewRef() { release(); }
-
-  /// Assignment operator.
-  MetalViewRef& operator=(const MetalViewRef& other) noexcept
-  {
-    release();
-    MetalView::operator=(MetalView(other.get()));
-    return *this;
-  }
-
-  /// Converts to MetalViewRaw
-  constexpr operator MetalViewRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a CAMetalLayer-backed NSView/UIView and attach it to the specified
  * window.
  *
@@ -246,7 +154,7 @@ inline MetalView Metal_CreateView(WindowRef window)
 }
 
 inline MetalView::MetalView(WindowRef window)
-  : m_resource(SDL_Metal_CreateView(window))
+  : MetalView(SDL_Metal_CreateView(window))
 {
 }
 

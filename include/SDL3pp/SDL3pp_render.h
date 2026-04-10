@@ -6,7 +6,6 @@
 #include "SDL3pp_events.h"
 #include "SDL3pp_gpu.h"
 #include "SDL3pp_pixels.h"
-#include "SDL3pp_resource.h"
 #include "SDL3pp_video.h"
 
 namespace SDL {
@@ -48,9 +47,6 @@ struct Renderer;
 using RendererRaw = SDL_Renderer*;
 
 // Forward decl
-struct RendererRef;
-
-// Forward decl
 struct Texture;
 
 /// Alias to raw representation for Texture.
@@ -59,8 +55,12 @@ using TextureRaw = SDL_Texture*;
 /// Alias to const raw representation for Texture.
 using TextureRawConst = const SDL_Texture*;
 
-// Forward decl
-struct TextureRef;
+/**
+ * Reference for Texture.
+ *
+ * This does not take ownership!
+ */
+using TextureRef = ResourceRef<Texture>;
 
 /// Safely wrap Texture for non owning const parameters
 using TextureConstRef = ResourceConstRef<TextureRaw, TextureRawConst>;
@@ -73,8 +73,12 @@ struct GPURenderState;
 /// Alias to raw representation for GPURenderState.
 using GPURenderStateRaw = SDL_GPURenderState*;
 
-// Forward decl
-struct GPURenderStateRef;
+/**
+ * Reference for GPURenderState.
+ *
+ * This does not take ownership!
+ */
+using GPURenderStateRef = ResourceRef<GPURenderState>;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
@@ -212,16 +216,9 @@ using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
  *
  * @cat resource
  */
-class Renderer
+struct Renderer : ResourceBase<RendererRaw>
 {
-  RendererRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Renderer(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Renderer.
@@ -231,12 +228,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Renderer(RendererRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Renderer(const Renderer& other) noexcept = delete;
+  constexpr Renderer(const Renderer& other) = delete;
 
   /// Move constructor
   constexpr Renderer(Renderer&& other) noexcept
@@ -247,42 +244,6 @@ public:
   constexpr Renderer(const RendererRef& other) = delete;
 
   constexpr Renderer(RendererRef&& other) = delete;
-
-  /**
-   * Create a 2D rendering context for a window.
-   *
-   * If you want a specific renderer, you can specify its name here. A list of
-   * available renderers can be obtained by calling GetRenderDriver()
-   * multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you
-   * don't need a specific renderer, specify nullptr and SDL will attempt to
-   * choose the best option for you, based on what is available on the user's
-   * system.
-   *
-   * If `name` is a comma-separated list, SDL will try each name, in the order
-   * listed, until one succeeds or all of them fail.
-   *
-   * By default the rendering size matches the window size in pixels, but you
-   * can call Renderer.SetLogicalPresentation() to change the content size and
-   * scaling options.
-   *
-   * @param window the window where rendering is displayed.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.Renderer
-   * @sa Renderer.Renderer
-   * @sa Renderer.Destroy
-   * @sa GetNumRenderDrivers
-   * @sa GetRenderDriver
-   * @sa Renderer.GetName
-   */
-  Renderer(WindowRef window)
-    : m_resource(CheckError(SDL_CreateRenderer(window, nullptr)))
-  {
-  }
 
   /**
    * Create a 2D rendering context for a window.
@@ -316,7 +277,7 @@ public:
    * @sa GetRenderDriver
    * @sa Renderer.GetName
    */
-  Renderer(WindowRef window, StringParam name);
+  Renderer(WindowRef window, StringParam name = nullptr);
 
   /**
    * Create a 2D rendering context for a window, with the specified properties.
@@ -402,34 +363,17 @@ public:
   Renderer(SurfaceRef surface);
 
   /// Destructor
-  ~Renderer() { SDL_DestroyRenderer(m_resource); }
+  ~Renderer() { SDL_DestroyRenderer(get()); }
 
   /// Assignment operator.
   constexpr Renderer& operator=(Renderer&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Renderer& operator=(const Renderer& other) = delete;
-
-  /// Retrieves underlying RendererRaw.
-  constexpr RendererRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying RendererRaw and clear this.
-  constexpr RendererRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Renderer& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy the rendering context for a window and free all associated
@@ -2290,78 +2234,6 @@ public:
 };
 
 /**
- * Reference for Renderer.
- *
- * This does not take ownership!
- */
-struct RendererRef : Renderer
-{
-  using Renderer::Renderer;
-
-  /**
-   * Constructs from raw Renderer.
-   *
-   * @param resource a RendererRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr RendererRef(RendererRaw resource) noexcept
-    : Renderer(resource)
-  {
-  }
-
-  /**
-   * Constructs from Renderer.
-   *
-   * @param resource a Renderer.
-   *
-   * This does not takes ownership!
-   */
-  constexpr RendererRef(const Renderer& resource) noexcept
-    : Renderer(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Renderer.
-   *
-   * @param resource a Renderer.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr RendererRef(Renderer&& resource) noexcept
-    : Renderer(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr RendererRef(const RendererRef& other) noexcept
-    : Renderer(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr RendererRef(RendererRef&& other) noexcept
-    : Renderer(other.get())
-  {
-  }
-
-  /// Destructor
-  ~RendererRef() { release(); }
-
-  /// Assignment operator.
-  RendererRef& operator=(const RendererRef& other) noexcept
-  {
-    release();
-    Renderer::operator=(Renderer(other.get()));
-    return *this;
-  }
-
-  /// Converts to RendererRaw
-  constexpr operator RendererRaw() const noexcept { return get(); }
-};
-
-/**
  * An efficient driver-specific representation of pixel data
  *
  * @since This struct is available since SDL 3.2.0.
@@ -2373,16 +2245,9 @@ struct RendererRef : Renderer
  *
  * @cat resource
  */
-class Texture
+struct Texture : ResourceBase<TextureRaw, TextureRawConst>
 {
-  TextureRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Texture(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Texture.
@@ -2392,15 +2257,15 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Texture(TextureRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
   constexpr Texture(const Texture& other)
-    : m_resource(other.m_resource)
+    : Texture(other.get())
   {
-    if (m_resource) ++m_resource->refcount;
+    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor
@@ -2674,51 +2539,28 @@ public:
     return {};
   }
 
-  /// member access to underlying TextureRaw.
-  constexpr TextureRawConst operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying TextureRaw.
-  constexpr TextureRaw operator->() noexcept { return m_resource; }
-
   /// Converts to TextureConstRef
-  constexpr operator TextureConstRef() const noexcept { return m_resource; }
+  constexpr operator TextureConstRef() const noexcept { return get(); }
 
   /// Destructor
-  ~Texture() { SDL_DestroyTexture(m_resource); }
+  ~Texture() { SDL_DestroyTexture(get()); }
 
   /// Assignment operator.
   constexpr Texture& operator=(Texture&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Texture& operator=(const Texture& other)
   {
-    if (m_resource != other.m_resource) {
+    if (get() != other.get()) {
       Texture tmp(other);
-      std::swap(m_resource, tmp.m_resource);
+      swap(*this, tmp);
     }
     return *this;
   }
-
-  /// Retrieves underlying TextureRaw.
-  constexpr TextureRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying TextureRaw and clear this.
-  constexpr TextureRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Texture& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy the specified texture.
@@ -3454,78 +3296,6 @@ public:
 };
 
 /**
- * Reference for Texture.
- *
- * This does not take ownership!
- */
-struct TextureRef : Texture
-{
-  using Texture::Texture;
-
-  /**
-   * Constructs from raw Texture.
-   *
-   * @param resource a TextureRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TextureRef(TextureRaw resource) noexcept
-    : Texture(resource)
-  {
-  }
-
-  /**
-   * Constructs from Texture.
-   *
-   * @param resource a Texture.
-   *
-   * This does not takes ownership!
-   */
-  constexpr TextureRef(const Texture& resource) noexcept
-    : Texture(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Texture.
-   *
-   * @param resource a Texture.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr TextureRef(Texture&& resource) noexcept
-    : Texture(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr TextureRef(const TextureRef& other) noexcept
-    : Texture(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr TextureRef(TextureRef&& other) noexcept
-    : Texture(other.get())
-  {
-  }
-
-  /// Destructor
-  ~TextureRef() { release(); }
-
-  /// Assignment operator.
-  TextureRef& operator=(const TextureRef& other) noexcept
-  {
-    release();
-    Texture::operator=(Texture(other.get()));
-    return *this;
-  }
-
-  /// Converts to TextureRaw
-  constexpr operator TextureRaw() const noexcept { return get(); }
-};
-
-/**
  * Lock a portion of the texture for **write-only** pixel access.
  *
  * As an optimization, the pixels made available for editing don't necessarily
@@ -3987,23 +3757,23 @@ inline Window::Window(StringParam title,
  * @sa GetRenderDriver
  * @sa Renderer.GetName
  */
-inline Renderer CreateRenderer(WindowRef window, StringParam name)
+inline Renderer CreateRenderer(WindowRef window, StringParam name = nullptr)
 {
   return Renderer(window, std::move(name));
 }
 
 inline Renderer::Renderer(WindowRef window, StringParam name)
-  : m_resource(SDL_CreateRenderer(window, name))
+  : Renderer(SDL_CreateRenderer(window, name))
 {
 }
 
 inline Renderer::Renderer(PropertiesRef props)
-  : m_resource(SDL_CreateRendererWithProperties(props))
+  : Renderer(SDL_CreateRendererWithProperties(props))
 {
 }
 
 inline Renderer::Renderer(SurfaceRef surface)
-  : m_resource(SDL_CreateSoftwareRenderer(surface))
+  : Renderer(SDL_CreateSoftwareRenderer(surface))
 {
 }
 
@@ -4592,17 +4362,17 @@ inline Texture::Texture(RendererRef renderer,
                         PixelFormat format,
                         TextureAccess access,
                         const PointRaw& size)
-  : m_resource(SDL_CreateTexture(renderer, format, access, size.x, size.y))
+  : Texture(SDL_CreateTexture(renderer, format, access, size.x, size.y))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, SurfaceRef surface)
-  : m_resource(SDL_CreateTextureFromSurface(renderer, surface))
+  : Texture(SDL_CreateTextureFromSurface(renderer, surface))
 {
 }
 
 inline Texture::Texture(RendererRef renderer, PropertiesRef props)
-  : m_resource(SDL_CreateTextureWithProperties(renderer, props))
+  : Texture(SDL_CreateTextureWithProperties(renderer, props))
 {
 }
 
@@ -8219,16 +7989,9 @@ inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
  *
  * @cat resource
  */
-class GPURenderState
+struct GPURenderState : ResourceBase<GPURenderStateRaw>
 {
-  GPURenderStateRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr GPURenderState(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw GPURenderState.
@@ -8238,12 +8001,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit GPURenderState(GPURenderStateRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) noexcept = delete;
+  constexpr GPURenderState(const GPURenderState& other) = delete;
 
   /// Move constructor
   constexpr GPURenderState(GPURenderState&& other) noexcept
@@ -8276,37 +8039,17 @@ public:
                  const GPURenderStateCreateInfo& createinfo);
 
   /// Destructor
-  ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
+  ~GPURenderState() { SDL_DestroyGPURenderState(get()); }
 
   /// Assignment operator.
   constexpr GPURenderState& operator=(GPURenderState&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   GPURenderState& operator=(const GPURenderState& other) = delete;
-
-  /// Retrieves underlying GPURenderStateRaw.
-  constexpr GPURenderStateRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying GPURenderStateRaw and clear this.
-  constexpr GPURenderStateRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const GPURenderState& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t) const { return !m_resource; }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
 
   /**
    * Destroy custom GPU render state.
@@ -8338,76 +8081,6 @@ public:
    * @since This function is available since SDL 3.4.0.
    */
   void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
-};
-
-/**
- * Reference for GPURenderState.
- *
- * This does not take ownership!
- */
-struct GPURenderStateRef : GPURenderState
-{
-  /**
-   * Constructs from raw GPURenderState.
-   *
-   * @param resource a GPURenderStateRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GPURenderStateRef(GPURenderStateRaw resource) noexcept
-    : GPURenderState(resource)
-  {
-  }
-
-  /**
-   * Constructs from GPURenderState.
-   *
-   * @param resource a GPURenderState.
-   *
-   * This does not takes ownership!
-   */
-  constexpr GPURenderStateRef(const GPURenderState& resource) noexcept
-    : GPURenderState(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from GPURenderState.
-   *
-   * @param resource a GPURenderState.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr GPURenderStateRef(GPURenderState&& resource) noexcept
-    : GPURenderState(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept
-    : GPURenderState(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr GPURenderStateRef(GPURenderStateRef&& other) noexcept
-    : GPURenderState(other.get())
-  {
-  }
-
-  /// Destructor
-  ~GPURenderStateRef() { release(); }
-
-  /// Assignment operator.
-  GPURenderStateRef& operator=(const GPURenderStateRef& other) noexcept
-  {
-    release();
-    GPURenderState::operator=(GPURenderState(other.get()));
-    return *this;
-  }
-
-  /// Converts to GPURenderStateRaw
-  constexpr operator GPURenderStateRaw() const noexcept { return get(); }
 };
 
 /**
@@ -8443,7 +8116,7 @@ inline GPURenderState Renderer::CreateGPURenderState(
 inline GPURenderState::GPURenderState(
   RendererRef renderer,
   const GPURenderStateCreateInfo& createinfo)
-  : m_resource(SDL_CreateGPURenderState(renderer, &createinfo))
+  : GPURenderState(SDL_CreateGPURenderState(renderer, &createinfo))
 {
 }
 

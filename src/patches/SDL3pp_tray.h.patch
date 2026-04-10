@@ -9,7 +9,7 @@
   *
   * SDL offers a way to add items to the "system tray" (more correctly called the
   * "notification area" on Windows). On platforms that offer this concept, an SDL
-@@ -388,8 +388,6 @@
+@@ -296,8 +296,6 @@
    /**
     * Returns a list of entries in the menu, in order.
     *
@@ -18,7 +18,7 @@
     * @returns a nullptr-terminated list of entries within the given menu. The
     *          pointer becomes invalid when any function that inserts or deletes
     *          entries in the menu is called.
-@@ -431,6 +429,30 @@
+@@ -339,6 +337,30 @@
     */
    TrayEntry InsertEntry(int pos, StringParam label, TrayEntryFlags flags);
  
@@ -49,7 +49,7 @@
    TrayEntry AppendEntry(StringParam label, TrayEntryFlags flags);
  
    /**
-@@ -529,7 +551,7 @@
+@@ -420,7 +442,7 @@
    TrayEntry(TrayMenu menu, int pos, StringParam label, TrayEntryFlags flags);
  
    /**
@@ -58,7 +58,7 @@
     *
     * If label is nullptr, the entry will be a separator. Many functions won't
     * work for an entry that is a separator.
-@@ -537,8 +559,6 @@
+@@ -428,8 +450,6 @@
     * An entry does not need to be destroyed; it will be destroyed with the tray.
     *
     * @param menu the menu to append the entry to.
@@ -67,7 +67,7 @@
     * @param label the text to be displayed on the entry, in UTF-8 encoding, or
     *              nullptr for a separator.
     * @param flags a combination of flags, some of which are mandatory.
-@@ -549,6 +569,7 @@
+@@ -440,6 +460,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
@@ -75,7 +75,7 @@
     * @sa TrayEntryFlags
     * @sa TrayMenu.GetEntries
     * @sa TrayEntry.Remove
-@@ -763,8 +784,6 @@
+@@ -637,8 +658,6 @@
     * Sets a callback to be invoked when the entry is selected.
     *
     * @param callback a callback to be invoked when the entry is selected.
@@ -84,7 +84,7 @@
     *
     * @threadsafety This function should be called on the thread that created the
     *               tray.
-@@ -1020,7 +1039,6 @@
+@@ -894,7 +913,6 @@
   * Returns a list of entries in the menu, in order.
   *
   * @param menu The menu to get entries from.
@@ -92,7 +92,7 @@
   * @returns a nullptr-terminated list of entries within the given menu. The
   *          pointer becomes invalid when any function that inserts or deletes
   *          entries in the menu is called.
-@@ -1035,7 +1053,10 @@
+@@ -909,7 +927,10 @@
   */
  inline std::span<TrayEntry> GetTrayEntries(TrayMenu menu)
  {
@@ -104,7 +104,7 @@
  }
  
  inline std::span<TrayEntry> TrayMenu::GetEntries()
-@@ -1112,20 +1133,19 @@
+@@ -986,20 +1007,19 @@
  inline TrayEntry::TrayEntry(TrayMenuRaw menu,
                              StringParam label,
                              TrayEntryFlags flags)
@@ -129,7 +129,7 @@
   * @param label the text to be displayed on the entry, in UTF-8 encoding, or
   *              nullptr for a separator.
   * @param flags a combination of flags, some of which are mandatory.
-@@ -1136,6 +1156,7 @@
+@@ -1010,6 +1030,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
@@ -137,7 +137,7 @@
   * @sa TrayEntryFlags
   * @sa TrayMenu.GetEntries
   * @sa TrayEntry.Remove
-@@ -1342,8 +1363,6 @@
+@@ -1216,8 +1237,6 @@
   *
   * @param entry the entry to be updated.
   * @param callback a callback to be invoked when the entry is selected.
@@ -146,7 +146,7 @@
   *
   * @threadsafety This function should be called on the thread that created the
   *               tray.
-@@ -1355,7 +1374,7 @@
+@@ -1229,7 +1248,7 @@
   */
  inline void SetTrayEntryCallback(TrayEntry entry, TrayCB callback)
  {

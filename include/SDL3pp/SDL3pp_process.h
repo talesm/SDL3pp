@@ -36,8 +36,12 @@ struct Process;
 /// Alias to raw representation for Process.
 using ProcessRaw = SDL_Process*;
 
-// Forward decl
-struct ProcessRef;
+/**
+ * Reference for Process.
+ *
+ * This does not take ownership!
+ */
+using ProcessRef = ResourceRef<Process>;
 
 /**
  * Description of where standard I/O should be directed when creating a process.
@@ -106,16 +110,9 @@ constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
  *
  * @cat resource
  */
-class Process
+struct Process : ResourceBase<ProcessRaw>
 {
-  ProcessRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Process(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Process.
@@ -125,12 +122,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Process(ProcessRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Process(const Process& other) noexcept = delete;
+  constexpr Process(const Process& other) = delete;
 
   /// Move constructor
   constexpr Process(Process&& other) noexcept
@@ -256,34 +253,17 @@ public:
   Process(PropertiesRef props);
 
   /// Destructor
-  ~Process() { SDL_DestroyProcess(m_resource); }
+  ~Process() { SDL_DestroyProcess(get()); }
 
   /// Assignment operator.
   constexpr Process& operator=(Process&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Process& operator=(const Process& other) = delete;
-
-  /// Retrieves underlying ProcessRaw.
-  constexpr ProcessRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying ProcessRaw and clear this.
-  constexpr ProcessRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Process& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Destroy a previously created process object.
@@ -495,78 +475,6 @@ public:
 };
 
 /**
- * Reference for Process.
- *
- * This does not take ownership!
- */
-struct ProcessRef : Process
-{
-  using Process::Process;
-
-  /**
-   * Constructs from raw Process.
-   *
-   * @param resource a ProcessRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ProcessRef(ProcessRaw resource) noexcept
-    : Process(resource)
-  {
-  }
-
-  /**
-   * Constructs from Process.
-   *
-   * @param resource a Process.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ProcessRef(const Process& resource) noexcept
-    : Process(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Process.
-   *
-   * @param resource a Process.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ProcessRef(Process&& resource) noexcept
-    : Process(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ProcessRef(const ProcessRef& other) noexcept
-    : Process(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ProcessRef(ProcessRef&& other) noexcept
-    : Process(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ProcessRef() { release(); }
-
-  /// Assignment operator.
-  ProcessRef& operator=(const ProcessRef& other) noexcept
-  {
-    release();
-    Process::operator=(Process(other.get()));
-    return *this;
-  }
-
-  /// Converts to ProcessRaw
-  constexpr operator ProcessRaw() const noexcept { return get(); }
-};
-
-/**
  * Create a new process.
  *
  * The path to the executable is supplied in args[0]. args[1..N] are additional
@@ -611,12 +519,12 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
 }
 
 inline Process::Process(const char* const* args, bool pipe_stdio)
-  : m_resource(SDL_CreateProcess(args, pipe_stdio))
+  : Process(SDL_CreateProcess(args, pipe_stdio))
 {
 }
 
 inline Process::Process(PropertiesRef props)
-  : m_resource(SDL_CreateProcessWithProperties(props))
+  : Process(SDL_CreateProcessWithProperties(props))
 {
 }
 

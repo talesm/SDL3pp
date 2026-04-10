@@ -18,7 +18,7 @@
   *
   * @{
   */
-@@ -112,7 +112,6 @@
+@@ -116,7 +116,6 @@
  /**
   * The function passed to CreateThread() as the new thread's entry point.
   *
@@ -26,7 +26,7 @@
   * @returns a value that can be reported through Thread.Wait().
   *
   * @since This datatype is available since SDL 3.2.0.
-@@ -237,7 +236,6 @@
+@@ -234,7 +233,6 @@
     *
     * @param fn the ThreadFunction function to call in the new thread.
     * @param name the name of the thread.
@@ -34,7 +34,7 @@
     * @post an opaque pointer to the new thread object on success.
     * @throws Error on failure.
     *
-@@ -621,7 +619,6 @@
+@@ -529,7 +527,6 @@
   *
   * @param fn the ThreadFunction function to call in the new thread.
   * @param name the name of the thread.
@@ -42,7 +42,7 @@
   * @returns an opaque pointer to the new thread object on success.
   * @throws Error on failure.
   *
-@@ -634,7 +631,7 @@
+@@ -542,7 +539,7 @@
   */
  inline Thread CreateThread(ThreadCB fn, StringParam name)
  {
@@ -51,7 +51,7 @@
  }
  
  inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
-@@ -642,7 +639,12 @@
+@@ -550,7 +547,12 @@
  {
  }
  
@@ -64,8 +64,8 @@
 +}
  
  inline Thread::Thread(PropertiesRef props)
-   : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
-@@ -718,6 +720,15 @@
+   : Thread(CheckError(SDL_CreateThreadWithProperties(props)))
+@@ -626,6 +628,15 @@
    return Thread(props);
  }
  

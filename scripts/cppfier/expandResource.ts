@@ -21,7 +21,6 @@ import {
   ApiEntryTransformMap,
   ApiFileTransform,
   Dict,
-  EntryHint,
   LockDefinition,
   ResourceDefinition,
 } from "./types";
@@ -60,7 +59,12 @@ export function expandResource(
   const constPointerType = `const ${pointerType}`;
   const nullValue = isStruct ? "nullptr" : "0";
   const title = targetName[0].toLowerCase() + targetName.slice(1);
-  if (sourceEntry.type && !targetEntry.type) targetEntry.type = "";
+
+  if (!targetEntry.type) {
+    targetEntry.type = enableConstParam
+      ? `ResourceBase<${rawName}, ${constRawName}>`
+      : `ResourceBase<${rawName}>`;
+  }
   context.addName(sourceName, targetName);
   context.addCallbackType(isStruct ? `${sourceName} *` : sourceName, rawName);
 
@@ -82,7 +86,6 @@ export function expandResource(
       doc: [`Alias to const raw representation for ${targetName}.`],
     });
   }
-  if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
   if (hasScoped) referenceAliases.push({ name: scopedName, kind: "forward" });
   const hasLock = getLockDefinition(targetEntry, targetName);
   let lockName = makeResourceLock(
@@ -100,8 +103,8 @@ export function expandResource(
       type: targetName,
       doc: [`Alias to ${targetName} for non owning parameters.`],
     });
-  } else if (!hasRef) {
-    referenceAliases.push(createParam(refName, targetName, rawName));
+  } else {
+    referenceAliases.push(createParam(refName, targetName, rawName, hasRef));
   }
 
   if (enableConstParam) {
@@ -192,25 +195,6 @@ export function expandResource(
     combineObject(subEntries, detectedMethods);
   }
 
-  if (enableMemberAccess) {
-    ctors["operator->"] = {
-      doc: [`member access to underlying ${rawName}.`],
-      kind: "function",
-      constexpr: true,
-      immutable: true,
-      type: constRawName,
-      parameters: [],
-      hints: { body: "return m_resource;", noexcept: true },
-    };
-    ctors["operator->#2"] = {
-      kind: "function",
-      constexpr: true,
-      type: rawName,
-      parameters: [],
-      hints: { body: "return m_resource;", noexcept: true },
-    };
-  }
-
   if (sourceEntry.doc) {
     targetEntry.doc = [
       ...transformDoc(sourceEntry.doc, context),
@@ -218,17 +202,6 @@ export function expandResource(
     ];
   } else {
     targetEntry.doc = [`Wraps ${title} resource.`, "@cat resource"];
-  }
-  if (hasScoped) {
-    ctors[`operator ${rawName}`] = {
-      kind: "function",
-      type: "",
-      immutable: true,
-      constexpr: true,
-      parameters: [],
-      hints: { body: "return m_resource;", noexcept: true },
-      doc: [`Converts to underlying ${rawName}.`],
-    };
   }
   populateTargetEntry(
     hasScoped,
@@ -247,9 +220,7 @@ export function expandResource(
 
   const derivedEntries: ApiEntryTransform[] = [];
 
-  if (hasRef) {
-    derivedEntries.push(createRefEntry(refName, targetName, rawName));
-  } else if (hasScoped) {
+  if (hasScoped) {
     derivedEntries.push(
       createScopedEntry(scopedName, targetName, destroyFunction),
     );
@@ -264,12 +235,15 @@ function createParam(
   paramType: string,
   targetName: string,
   rawName: string,
+  targetAsBase = false,
 ): ApiEntryTransform {
   return {
     name: paramType,
     kind: "alias",
-    doc: [`Safely wrap ${targetName} for non owning parameters`],
-    type: `ResourceRef<${rawName}>`,
+    doc: [`Reference for ${targetName}.`, "This does not take ownership!"],
+    type: targetAsBase
+      ? `ResourceRef<${targetName}>`
+      : `ResourceLegacyRef<${rawName}>`,
   };
 }
 
@@ -331,23 +305,8 @@ function createBaselineCtors(
   rawName: string,
   isStruct: boolean,
 ) {
-  const ownershipDisclaimer = hasScoped
-    ? []
-    : ["This assumes the ownership, call release() if you need to take back."];
-
+  if (hasScoped) return {};
   const ctors: Dict<ApiEntryTransform> = {
-    [targetName]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [{ name: "", type: "std::nullptr_t", default: "nullptr" }],
-      hints: {
-        init: [isStruct ? "m_resource(nullptr)" : "m_resource(0)"],
-        noexcept: true,
-        changeAccess: "public",
-      },
-      doc: ["Default ctor"],
-    },
     [`${targetName}#2`]: {
       kind: "function",
       type: "",
@@ -355,13 +314,13 @@ function createBaselineCtors(
       explicit: true,
       parameters: [{ name: "resource", type: rawName }],
       hints: {
-        init: ["m_resource(resource)"],
+        init: [`ResourceBase(resource)`],
         noexcept: true,
       },
       doc: [
         `Constructs from raw ${targetName}.`,
         { tag: "@param resource", content: `a ${rawName} to be wrapped.` },
-        ...ownershipDisclaimer,
+        "This assumes the ownership, call release() if you need to take back.",
       ],
     },
     [`${targetName}#3`]: {
@@ -370,8 +329,9 @@ function createBaselineCtors(
       constexpr: true,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
-        init: [`${targetName}(other.m_resource)`],
-        noexcept: true,
+        delete: shared ? undefined : true,
+        init: shared ? [`${targetName}(other.get())`] : undefined,
+        body: shared ? `if (auto res = get()) ++res->${shared};` : undefined,
       },
       doc: ["Copy constructor"],
     },
@@ -389,13 +349,8 @@ function createBaselineCtors(
   };
   if (shared) {
     addBorrowFunction(ctors, targetName, shared, rawName);
-  } else if (hasScoped) {
-    delete ctors[`${targetName}#2`].explicit;
-    delete ctors[`${targetName}#3`];
-    delete ctors[`${targetName}#4`];
-  } else {
-    ctors[`${targetName}#3`].hints.delete = true;
-    if (refName) deleteCtorsFromRef(ctors, refName, targetName);
+  } else if (refName) {
+    deleteCtorsFromRef(ctors, refName, targetName);
   }
   return ctors;
 }
@@ -406,11 +361,9 @@ function addBorrowFunction(
   shared: true | string,
   rawName: string,
 ) {
-  const copyCtorHints: EntryHint = {};
-  ctors[`${targetName}#3`].hints = copyCtorHints;
-  if (shared !== true) {
-    copyCtorHints.init = ["m_resource(other.m_resource)"];
-    copyCtorHints.body = `if (m_resource) ++m_resource->${shared};`;
+  if (shared === true) {
+    ctors[`${targetName}#3`].hints = {};
+  } else {
     ctors["Borrow"] = {
       kind: "function",
       static: true,
@@ -636,16 +589,22 @@ function populateTargetEntry(
       immutable: true,
       constexpr: true,
       parameters: [],
-      hints: { body: "return m_resource;", noexcept: true },
+      hints: { body: "return get();", noexcept: true },
       doc: [`Converts to ${constParamType}`],
+    };
+  } else if (hasScoped) {
+    ctors[`operator ${rawName}`] = {
+      kind: "function",
+      type: "",
+      immutable: true,
+      constexpr: true,
+      parameters: [],
+      hints: { body: "return get();", noexcept: true },
+      doc: [`Converts to underlying ${rawName}.`],
     };
   }
   const entries: ApiEntryTransformMap = {
-    m_resource: {
-      kind: "var",
-      type: rawName,
-      hints: { body: nullValue },
-    },
+    "ResourceBase::ResourceBase": "alias",
     ...ctors,
     [`~${targetName}`]: {
       kind: "function",
@@ -654,7 +613,7 @@ function populateTargetEntry(
       parameters: [],
       hints: {
         body: freeFunction
-          ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);`
+          ? `${freeFunction.sourceName ?? freeFunction.name}(get());`
           : "",
       },
     },
@@ -664,7 +623,7 @@ function populateTargetEntry(
       parameters: [{ name: "other", type: `${targetName} &&` }],
       constexpr: true,
       hints: {
-        body: "std::swap(m_resource, other.m_resource);\nreturn *this;",
+        body: "swap(*this, other);\nreturn *this;",
         noexcept: true,
       },
       doc: ["Assignment operator."],
@@ -675,51 +634,11 @@ function populateTargetEntry(
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
         delete: !hasShared,
-        body: `if (m_resource != other.m_resource) {\n  ${targetName} tmp(other);\n  std::swap(m_resource, tmp.m_resource);\n}\nreturn *this;`,
+        body: hasShared
+          ? `if (get() != other.get()) {\n  ${targetName} tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;`
+          : undefined,
       },
       doc: ["Assignment operator."],
-    },
-    get: {
-      kind: "function",
-      type: rawName,
-      immutable: true,
-      constexpr: true,
-      parameters: [],
-      hints: {
-        body: "return m_resource;",
-        noexcept: true,
-      },
-      doc: [`Retrieves underlying ${rawName}.`],
-    },
-    release: {
-      kind: "function",
-      type: rawName,
-      constexpr: true,
-      parameters: [],
-      hints: {
-        body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;`,
-        noexcept: true,
-      },
-      doc: [`Retrieves underlying ${rawName} and clear this.`],
-    },
-    "operator <=>": {
-      kind: "function",
-      type: "auto",
-      immutable: true,
-      constexpr: true,
-      parameters: [{ type: `const ${targetName} &`, name: "other" }],
-      hints: { default: true, noexcept: true },
-      doc: [`Comparison`],
-    },
-    "operator bool": {
-      kind: "function",
-      type: "",
-      immutable: true,
-      constexpr: true,
-      explicit: true,
-      parameters: [],
-      hints: { body: "return !!m_resource;", noexcept: true },
-      doc: [`Converts to bool`],
     },
     [freeFunction.name]: "plc",
     ...subEntries,
@@ -729,144 +648,11 @@ function populateTargetEntry(
     delete entries["operator="];
     delete entries["operator=#2"];
   }
-  targetEntry.entries = entries;
   addHints(targetEntry, {
     self: "get()",
-    super: "m_resource",
-    private: true,
+    super: targetName,
   });
-}
-
-function createRefEntry(
-  refName: string,
-  targetName: string,
-  rawName: string,
-): ApiEntryTransform {
-  const entries = {
-    [`${targetName}::${targetName}`]: "alias",
-    [refName]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [
-        {
-          type: rawName,
-          name: "resource",
-        },
-      ],
-      hints: { init: [`${targetName}(resource)`], noexcept: true },
-      doc: [
-        `Constructs from raw ${targetName}.`,
-        {
-          tag: "@param resource",
-          content: `a ${rawName}.`,
-        },
-        "This does not takes ownership!",
-      ],
-    },
-    [`${refName}#2`]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [
-        {
-          type: `const ${targetName} &`,
-          name: "resource",
-        },
-      ],
-      hints: { init: [`${targetName}(resource.get())`], noexcept: true },
-      doc: [
-        `Constructs from ${targetName}.`,
-        {
-          tag: "@param resource",
-          content: `a ${targetName}.`,
-        },
-        "This does not takes ownership!",
-      ],
-    },
-    [`${refName}#3`]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [
-        {
-          type: `${targetName} &&`,
-          name: "resource",
-        },
-      ],
-      hints: {
-        init: [`${targetName}(std::move(resource).release())`],
-        noexcept: true,
-      },
-      doc: [
-        `Constructs from ${targetName}.`,
-        {
-          tag: "@param resource",
-          content: `a ${targetName}.`,
-        },
-        "This will release the ownership from resource!",
-      ],
-    },
-    [`${refName}#4`]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [
-        {
-          type: `const ${refName} &`,
-          name: "other",
-        },
-      ],
-      hints: { init: [`${targetName}(other.get())`], noexcept: true },
-      doc: ["Copy constructor."],
-    },
-    [`${refName}#5`]: {
-      kind: "function",
-      type: "",
-      constexpr: true,
-      parameters: [
-        {
-          type: `${refName} &&`,
-          name: "other",
-        },
-      ],
-      hints: { init: [`${targetName}(other.get())`], noexcept: true },
-      doc: ["Move constructor."],
-    },
-    [`~${refName}`]: {
-      kind: "function",
-      doc: ["Destructor"],
-      type: "",
-      parameters: [],
-      hints: { body: "release();" },
-    },
-    [`operator=`]: {
-      kind: "function",
-      type: `${refName} &`,
-      parameters: [{ type: `const ${refName} &`, name: "other" }],
-      hints: {
-        body: `release();${targetName}::operator=(${targetName}(other.get()));\nreturn *this;`,
-        noexcept: true,
-      },
-      doc: [`Assignment operator.`],
-    },
-    [`operator ${rawName}`]: {
-      kind: "function",
-      type: "",
-      immutable: true,
-      constexpr: true,
-      parameters: [],
-      hints: { body: "return get();", noexcept: true },
-      doc: [`Converts to ${rawName}`],
-    },
-  } as Dict<ApiEntryTransform>;
-  return {
-    kind: "struct",
-    name: refName,
-    type: targetName,
-    doc: [`Reference for ${targetName}.`, "This does not take ownership!"],
-    entries,
-  };
+  targetEntry.entries = entries;
 }
 
 function createScopedEntry(
@@ -954,7 +740,7 @@ function makeResourceLock(
     if (currDef) {
       combineObject(lockEntry, currDef ?? {});
     } else {
-      lockEntry.after = controlType;
+      lockEntry.after = targetName;
     }
     file.transform[lockName] = lockEntry;
   }

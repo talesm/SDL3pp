@@ -229,8 +229,12 @@ struct Storage;
 /// Alias to raw representation for Storage.
 using StorageRaw = SDL_Storage*;
 
-// Forward decl
-struct StorageRef;
+/**
+ * Reference for Storage.
+ *
+ * This does not take ownership!
+ */
+using StorageRef = ResourceRef<Storage>;
 
 /**
  * Function interface for Storage.
@@ -261,16 +265,9 @@ using StorageInterface = SDL_StorageInterface;
  *
  * @cat resource
  */
-class Storage
+struct Storage : ResourceBase<StorageRaw>
 {
-  StorageRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr Storage(std::nullptr_t = nullptr) noexcept
-    : m_resource(nullptr)
-  {
-  }
+  using ResourceBase::ResourceBase;
 
   /**
    * Constructs from raw Storage.
@@ -280,12 +277,12 @@ public:
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Storage(StorageRaw resource) noexcept
-    : m_resource(resource)
+    : ResourceBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Storage(const Storage& other) noexcept = delete;
+  constexpr Storage(const Storage& other) = delete;
 
   /// Move constructor
   constexpr Storage(Storage&& other) noexcept
@@ -398,34 +395,17 @@ public:
   Storage(const StorageInterface& iface, void* userdata);
 
   /// Destructor
-  ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
+  ~Storage() { CheckError(SDL_CloseStorage(get())); }
 
   /// Assignment operator.
   constexpr Storage& operator=(Storage&& other) noexcept
   {
-    std::swap(m_resource, other.m_resource);
+    swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
   Storage& operator=(const Storage& other) = delete;
-
-  /// Retrieves underlying StorageRaw.
-  constexpr StorageRaw get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying StorageRaw and clear this.
-  constexpr StorageRaw release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const Storage& other) const noexcept = default;
-
-  /// Converts to bool
-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /**
    * Closes and frees a storage container.
@@ -744,78 +724,6 @@ public:
 };
 
 /**
- * Reference for Storage.
- *
- * This does not take ownership!
- */
-struct StorageRef : Storage
-{
-  using Storage::Storage;
-
-  /**
-   * Constructs from raw Storage.
-   *
-   * @param resource a StorageRaw.
-   *
-   * This does not takes ownership!
-   */
-  constexpr StorageRef(StorageRaw resource) noexcept
-    : Storage(resource)
-  {
-  }
-
-  /**
-   * Constructs from Storage.
-   *
-   * @param resource a Storage.
-   *
-   * This does not takes ownership!
-   */
-  constexpr StorageRef(const Storage& resource) noexcept
-    : Storage(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from Storage.
-   *
-   * @param resource a Storage.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr StorageRef(Storage&& resource) noexcept
-    : Storage(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr StorageRef(const StorageRef& other) noexcept
-    : Storage(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr StorageRef(StorageRef&& other) noexcept
-    : Storage(other.get())
-  {
-  }
-
-  /// Destructor
-  ~StorageRef() { release(); }
-
-  /// Assignment operator.
-  StorageRef& operator=(const StorageRef& other) noexcept
-  {
-    release();
-    Storage::operator=(Storage(other.get()));
-    return *this;
-  }
-
-  /// Converts to StorageRaw
-  constexpr operator StorageRaw() const noexcept { return get(); }
-};
-
-/**
  * Opens up a read-only container for the application's filesystem.
  *
  * By default, OpenTitleStorage uses the generic storage implementation. When
@@ -840,22 +748,22 @@ inline Storage OpenTitleStorage(StringParam override, PropertiesRef props)
 }
 
 inline Storage::Storage(StringParam override, PropertiesRef props)
-  : m_resource(CheckError(SDL_OpenTitleStorage(override, props)))
+  : Storage(CheckError(SDL_OpenTitleStorage(override, props)))
 {
 }
 
 inline Storage::Storage(StringParam org, StringParam app, PropertiesRef props)
-  : m_resource(CheckError(SDL_OpenUserStorage(org, app, props)))
+  : Storage(CheckError(SDL_OpenUserStorage(org, app, props)))
 {
 }
 
 inline Storage::Storage(StringParam path)
-  : m_resource(CheckError(SDL_OpenFileStorage(path)))
+  : Storage(CheckError(SDL_OpenFileStorage(path)))
 {
 }
 
 inline Storage::Storage(const StorageInterface& iface, void* userdata)
-  : m_resource(CheckError(SDL_OpenStorage(&iface, userdata)))
+  : Storage(CheckError(SDL_OpenStorage(&iface, userdata)))
 {
 }
 
