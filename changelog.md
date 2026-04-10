@@ -1,5 +1,49 @@
 # Changelog
 
+## Version 0.9.2
+
+Minor addition of missing functions and grouping common resource functionality
+in template classes.
+
+- Add missing tray free functions when previously had only methods:
+  - SetTrayEntryCallback with TrayCB callback;
+  - AppendTrayEntry;
+- Add TrayEntry constructor;
+- Remove `Renderer(Window)` constructor, make second parameter of
+  `Renderer(Window, StringParam)` nullptr instead;
+- Docs improvements:
+  - Add namespace tab;
+  - Document namespace `prop`;
+  - Document namespace `prop::AudioStream`;
+  - Document namespace `prop::Display`;
+  - Document namespace `prop::FileDialog`;
+  - Document namespace `prop::GamepadCap`;
+  - Document namespace `prop::GPU*`;
+  - Document namespace `prop::Hidapi`;
+  - Document namespace `prop::IOStream`;
+  - Document namespace `prop::JoystickCap`;
+  - Document namespace `prop::Process`;
+  - Document namespace `prop::Renderer`;
+  - Document namespace `prop::Renderer`;
+  - Document namespace `prop::Surface`;
+  - Document namespace `prop::TextInput`;
+  - Document namespace `prop::Thread`;
+  - Document namespace `prop::AnimationEncoder`;
+  - Document namespace `prop::AnimationDecoder`;
+  - Document namespace `prop::Metadata`;
+  - Document namespace `prop::Audio`;
+  - Document namespace `prop::Mixer`;
+  - Document namespace `prop::MixMetadata`;
+  - Document namespace `prop::Play`;
+  - Document namespace `prop::Font`;
+  - Document namespace `prop::GpuFontEngine`;
+  - Document namespace `prop::RendererTextEngine`;
+- Resource improvements:
+  - Create template base class for non-owning (Like TrayEntry);
+  - Create template base class for unique owning (Like Window);
+  - Create template base class for shared owning (Like Surface);
+  - Make ResourceRef template class for all \*Ref;
+
 ## Version 0.9.1
 
 Minor update to bump base SDL and SDL_image, besides a few improvements
