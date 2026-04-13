@@ -22,25 +22,23 @@ Pages:
 A Resource is a type where its memory is controlled by SDL, usually with
 functions like `SDL_Create*()` and `SDL_Destroy*()`.
 
-To represent this type, we create RAII class where the Create* functions become its 
-constructors and the Destroy is called by the destructor. Special *Param and *Ref 
-exist to ease the use and allow flexibility on lifetime handling. Eg, for refcounted
-structs like SDL_Surface we get:
+To represent this type, we create RAII class where the Create* functions become 
+its constructors and the Destroy is called by the destructor. Special \*Ref
+exist to ease the use and allow flexibility on lifetime handling. Eg, for 
+refcount'ed structs like SDL_Surface we get:
 
 - Surface: the main class, with all wrapped methods inside it. Copying an object 
   of it increments the refcount field. The surface is destroyed when the last 
   instance goes out of scope.
-- SurfaceParam, SurfaceConstParam: wrappers to allow interchangeable use of raw
+- SurfaceRef, SurfaceConstRef: wrappers to allow interchangeable use of raw
   SDL_Surface and Surface as parameter.
 
 For an opaque or non-refcounted type such as SDL_Window e get:
 
 - Window: the main class, with all wrapped methods inside it. Copying it
   disallowed. When the instance goes out of scope it destroy the window.
-- WindowRef: a non owned version, with same methods, but it can be copy and it
-  does not destroy the window.
-- WindowParam: a wrapper to allow interchangeable use of raw
-  SDL_Window and Window and WindowRef as parameter.
+- WindowRef: a wrapper to allow interchangeable use of raw SDL_Window and 
+  Window and WindowRef as parameter.
 
 */
 /**
