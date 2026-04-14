@@ -101194,26 +101194,26 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    *
    * These are the supported properties:
    *
-   * - `prop.AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
+   * - `prop.AnimationEncoder.Create.FILENAME_STRING`: the file to save, if an
    *   IOStream isn't being used. This is required if
-   *   `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
-   * - `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will be
+   *   `prop.AnimationEncoder.Create.IOSTREAM_POINTER` isn't set.
+   * - `prop.AnimationEncoder.Create.IOSTREAM_POINTER`: an IOStream that will be
    *   used to save the stream. This should not be closed until the animation
    *   encoder is closed. This is required if
-   *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
-   * - `prop.AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
+   *   `prop.AnimationEncoder.Create.FILENAME_STRING` isn't set.
+   * - `prop.AnimationEncoder.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
    *   closing the animation encoder should also close the associated IOStream.
-   * - `prop.AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
+   * - `prop.AnimationEncoder.Create.TYPE_STRING`: the output file type, e.g.
    *   "webp", defaults to the file extension if
-   *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` is set.
-   * - `prop.AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality,
+   *   `prop.AnimationEncoder.Create.FILENAME_STRING` is set.
+   * - `prop.AnimationEncoder.Create.QUALITY_NUMBER`: the compression quality,
    *   in the range of 0 to 100. The higher the number, the higher the quality
    *   and file size. This defaults to a balanced value for compression and
    *   quality.
-   * - `prop.AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator
+   * - `prop.AnimationEncoder.Create.TIMEBASE_NUMERATOR_NUMBER`: the numerator
    *   of the fraction used to multiply the pts to convert it to seconds. This
    *   defaults to 1.
-   * - `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
+   * - `prop.AnimationEncoder.Create.TIMEBASE_DENOMINATOR_NUMBER`: the
    *   denominator of the fraction used to multiply the pts to convert it to
    *   seconds. This defaults to 1000.
    *
@@ -101265,7 +101265,7 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    * @param surface the surface to add as the next frame in the animation.
    * @param duration the duration of the frame, usually in milliseconds but can
    *                 be other units if the
-   *                 `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+   *                 `prop.AnimationEncoder.Create.TIMEBASE_DENOMINATOR_NUMBER`
    *                 property is set when creating the encoder.
    * @throws Error on failure.
    *
@@ -101375,25 +101375,25 @@ inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
  *
  * These are the supported properties:
  *
- * - `prop.AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
+ * - `prop.AnimationEncoder.Create.FILENAME_STRING`: the file to save, if an
  *   IOStream isn't being used. This is required if
- *   `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
- * - `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will be
+ *   `prop.AnimationEncoder.Create.IOSTREAM_POINTER` isn't set.
+ * - `prop.AnimationEncoder.Create.IOSTREAM_POINTER`: an IOStream that will be
  *   used to save the stream. This should not be closed until the animation
  *   encoder is closed. This is required if
- *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
- * - `prop.AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
+ *   `prop.AnimationEncoder.Create.FILENAME_STRING` isn't set.
+ * - `prop.AnimationEncoder.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
  *   the animation encoder should also close the associated IOStream.
- * - `prop.AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
+ * - `prop.AnimationEncoder.Create.TYPE_STRING`: the output file type, e.g.
  *   "webp", defaults to the file extension if
- *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` is set.
- * - `prop.AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality, in
+ *   `prop.AnimationEncoder.Create.FILENAME_STRING` is set.
+ * - `prop.AnimationEncoder.Create.QUALITY_NUMBER`: the compression quality, in
  *   the range of 0 to 100. The higher the number, the higher the quality and
  *   file size. This defaults to a balanced value for compression and quality.
- * - `prop.AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator of
+ * - `prop.AnimationEncoder.Create.TIMEBASE_NUMERATOR_NUMBER`: the numerator of
  *   the fraction used to multiply the pts to convert it to seconds. This
  *   defaults to 1.
- * - `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the denominator
+ * - `prop.AnimationEncoder.Create.TIMEBASE_DENOMINATOR_NUMBER`: the denominator
  *   of the fraction used to multiply the pts to convert it to seconds. This
  *   defaults to 1000.
  *
@@ -101419,39 +101419,38 @@ inline AnimationEncoder CreateAnimationEncoderWithProperties(
  *
  * @sa CreateAnimationEncoderWithProperties
  */
-namespace prop::AnimationEncoder {
+namespace prop::AnimationEncoder::Create {
 
-constexpr auto CREATE_FILENAME_STRING =
+constexpr auto FILENAME_STRING =
   IMG_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING;
 
-constexpr auto CREATE_IOSTREAM_POINTER =
+constexpr auto IOSTREAM_POINTER =
   IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER;
 
-constexpr auto CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN =
+constexpr auto IOSTREAM_AUTOCLOSE_BOOLEAN =
   IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
 
-constexpr auto CREATE_TYPE_STRING =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING;
+constexpr auto TYPE_STRING = IMG_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING;
 
-constexpr auto CREATE_QUALITY_NUMBER =
+constexpr auto QUALITY_NUMBER =
   IMG_PROP_ANIMATION_ENCODER_CREATE_QUALITY_NUMBER;
 
-constexpr auto CREATE_TIMEBASE_NUMERATOR_NUMBER =
+constexpr auto TIMEBASE_NUMERATOR_NUMBER =
   IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_NUMERATOR_NUMBER;
 
-constexpr auto CREATE_TIMEBASE_DENOMINATOR_NUMBER =
+constexpr auto TIMEBASE_DENOMINATOR_NUMBER =
   IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER;
 
-constexpr auto CREATE_AVIF_MAX_THREADS_NUMBER =
+constexpr auto AVIF_MAX_THREADS_NUMBER =
   IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_MAX_THREADS_NUMBER;
 
-constexpr auto CREATE_AVIF_KEYFRAME_INTERVAL_NUMBER =
+constexpr auto AVIF_KEYFRAME_INTERVAL_NUMBER =
   IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_KEYFRAME_INTERVAL_NUMBER;
 
-constexpr auto CREATE_GIF_USE_LUT_BOOLEAN =
+constexpr auto GIF_USE_LUT_BOOLEAN =
   IMG_PROP_ANIMATION_ENCODER_CREATE_GIF_USE_LUT_BOOLEAN;
 
-} // namespace prop::AnimationEncoder
+} // namespace prop::AnimationEncoder::Create
 
 /**
  * Add a frame to an animation encoder.
@@ -101460,7 +101459,7 @@ constexpr auto CREATE_GIF_USE_LUT_BOOLEAN =
  * @param surface the surface to add as the next frame in the animation.
  * @param duration the duration of the frame, usually in milliseconds but can be
  *                 other units if the
- *                 `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+ *                 `prop.AnimationEncoder.Create.TIMEBASE_DENOMINATOR_NUMBER`
  *                 property is set when creating the encoder.
  * @throws Error on failure.
  *
@@ -101632,18 +101631,18 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    *
    * These are the supported properties:
    *
-   * - `prop.AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
+   * - `prop.AnimationDecoder.Create.FILENAME_STRING`: the file to load, if an
    *   IOStream isn't being used. This is required if
-   *   `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
-   * - `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing a
+   *   `prop.AnimationDecoder.Create.IOSTREAM_POINTER` isn't set.
+   * - `prop.AnimationDecoder.Create.IOSTREAM_POINTER`: an IOStream containing a
    *   series of images. This should not be closed until the animation decoder
    *   is closed. This is required if
-   *   `prop.AnimationDecoder.CREATE_FILENAME_STRING` isn't set.
-   * - `prop.AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
+   *   `prop.AnimationDecoder.Create.FILENAME_STRING` isn't set.
+   * - `prop.AnimationDecoder.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
    *   closing the animation decoder should also close the associated IOStream.
-   * - `prop.AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
+   * - `prop.AnimationDecoder.Create.TYPE_STRING`: the input file type, e.g.
    *   "webp", defaults to the file extension if
-   *   `prop.AnimationDecoder.CREATE_FILENAME_STRING` is set.
+   *   `prop.AnimationDecoder.Create.FILENAME_STRING` is set.
    *
    * @param props the properties of the animation decoder.
    * @post a new AnimationDecoder on success.
@@ -101861,18 +101860,18 @@ inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
  *
  * These are the supported properties:
  *
- * - `prop.AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
+ * - `prop.AnimationDecoder.Create.FILENAME_STRING`: the file to load, if an
  *   IOStream isn't being used. This is required if
- *   `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
- * - `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing a
+ *   `prop.AnimationDecoder.Create.IOSTREAM_POINTER` isn't set.
+ * - `prop.AnimationDecoder.Create.IOSTREAM_POINTER`: an IOStream containing a
  *   series of images. This should not be closed until the animation decoder is
- *   closed. This is required if `prop.AnimationDecoder.CREATE_FILENAME_STRING`
+ *   closed. This is required if `prop.AnimationDecoder.Create.FILENAME_STRING`
  *   isn't set.
- * - `prop.AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
+ * - `prop.AnimationDecoder.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
  *   the animation decoder should also close the associated IOStream.
- * - `prop.AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
+ * - `prop.AnimationDecoder.Create.TYPE_STRING`: the input file type, e.g.
  *   "webp", defaults to the file extension if
- *   `prop.AnimationDecoder.CREATE_FILENAME_STRING` is set.
+ *   `prop.AnimationDecoder.Create.FILENAME_STRING` is set.
  *
  * @param props the properties of the animation decoder.
  * @returns a new AnimationDecoder on success.
@@ -101897,42 +101896,41 @@ inline AnimationDecoder CreateAnimationDecoderWithProperties(
  *
  * @sa CreateAnimationDecoderWithProperties
  */
-namespace prop::AnimationDecoder {
+namespace prop::AnimationDecoder::Create {
 
-constexpr auto CREATE_FILENAME_STRING =
+constexpr auto FILENAME_STRING =
   IMG_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING;
 
-constexpr auto CREATE_IOSTREAM_POINTER =
+constexpr auto IOSTREAM_POINTER =
   IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER;
 
-constexpr auto CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN =
+constexpr auto IOSTREAM_AUTOCLOSE_BOOLEAN =
   IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
 
-constexpr auto CREATE_TYPE_STRING =
-  IMG_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING;
+constexpr auto TYPE_STRING = IMG_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING;
 
-constexpr auto CREATE_TIMEBASE_NUMERATOR_NUMBER =
+constexpr auto TIMEBASE_NUMERATOR_NUMBER =
   IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_NUMERATOR_NUMBER;
 
-constexpr auto CREATE_TIMEBASE_DENOMINATOR_NUMBER =
+constexpr auto TIMEBASE_DENOMINATOR_NUMBER =
   IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER;
 
-constexpr auto CREATE_AVIF_MAX_THREADS_NUMBER =
+constexpr auto AVIF_MAX_THREADS_NUMBER =
   IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_MAX_THREADS_NUMBER;
 
-constexpr auto CREATE_AVIF_ALLOW_INCREMENTAL_BOOLEAN =
+constexpr auto AVIF_ALLOW_INCREMENTAL_BOOLEAN =
   IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_INCREMENTAL_BOOLEAN;
 
-constexpr auto CREATE_AVIF_ALLOW_PROGRESSIVE_BOOLEAN =
+constexpr auto AVIF_ALLOW_PROGRESSIVE_BOOLEAN =
   IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_PROGRESSIVE_BOOLEAN;
 
-constexpr auto CREATE_GIF_TRANSPARENT_COLOR_INDEX_NUMBER =
+constexpr auto GIF_TRANSPARENT_COLOR_INDEX_NUMBER =
   IMG_PROP_ANIMATION_DECODER_CREATE_GIF_TRANSPARENT_COLOR_INDEX_NUMBER;
 
-constexpr auto CREATE_GIF_NUM_COLORS_NUMBER =
+constexpr auto GIF_NUM_COLORS_NUMBER =
   IMG_PROP_ANIMATION_DECODER_CREATE_GIF_NUM_COLORS_NUMBER;
 
-} // namespace prop::AnimationDecoder
+} // namespace prop::AnimationDecoder::Create
 
 /**
  * Get the properties of an animation decoder.
@@ -101996,7 +101994,7 @@ constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
  * @param decoder the animation decoder.
  * @param duration the duration of the frame, usually in milliseconds but can be
  *                 other units if the
- *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+ *                 `prop.AnimationDecoder.Create.TIMEBASE_DENOMINATOR_NUMBER`
  *                 property is set when creating the decoder.
  * @returns the Surface for the next frame in the animation.
  * @throws Error on failure.

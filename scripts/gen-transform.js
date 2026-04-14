@@ -8344,8 +8344,8 @@ const transform = {
         "SDL3pp_video.h",
       ],
       namespacesMap: {
-        "IMG_PROP_ANIMATION_ENCODER_": "prop::AnimationEncoder",
-        "IMG_PROP_ANIMATION_DECODER_": "prop::AnimationDecoder",
+        "IMG_PROP_ANIMATION_ENCODER_CREATE_": "prop::AnimationEncoder::Create",
+        "IMG_PROP_ANIMATION_DECODER_CREATE_": "prop::AnimationDecoder::Create",
         "IMG_PROP_METADATA_": "prop::Metadata",
       },
       transform: {
@@ -8681,7 +8681,9 @@ const transform = {
         "IMG_GetAnimationDecoderFrame": {
           type: "Surface",
           parameters: [{}, { type: "Uint64 *", name: "duration" }],
-        }
+        },
+        "prop::AnimationEncoder::Create": { since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 } },
+        "prop::AnimationDecoder::Create": { since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 } },
       }
     },
     "SDL_mixer.h": {
