@@ -56,16 +56,16 @@ using ProcessRef = ResourceRef<Process>;
  *
  * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected to a
  * new IOStream that is available to the application. Standard input will be
- * available as `prop.process.STDIN_POINTER` and allows Process.GetInput(),
- * standard output will be available as `prop.process.STDOUT_POINTER` and allows
+ * available as `prop.Process.STDIN_POINTER` and allows Process.GetInput(),
+ * standard output will be available as `prop.Process.STDOUT_POINTER` and allows
  * Process.Read() and Process.GetOutput(), and standard error will be available
- * as `prop.process.STDERR_POINTER` in the properties for the created process.
+ * as `prop.Process.STDERR_POINTER` in the properties for the created process.
  *
  * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is connected to
  * an existing IOStream provided by the application. Standard input is provided
- * using `prop.process.CREATE_STDIN_POINTER`, standard output is provided using
- * `prop.process.CREATE_STDOUT_POINTER`, and standard error is provided using
- * `prop.process.CREATE_STDERR_POINTER` in the creation properties. These
+ * using `prop.Process.Create.STDIN_POINTER`, standard output is provided using
+ * `prop.Process.Create.STDOUT_POINTER`, and standard error is provided using
+ * `prop.Process.Create.STDERR_POINTER` in the creation properties. These
  * existing streams should be closed by the application once the new process is
  * created.
  *
@@ -150,7 +150,7 @@ struct Process : ResourceBase<ProcessRaw>
    * ```
    *
    * Setting pipe_stdio to true is equivalent to setting
-   * `prop.process.CREATE_STDIN_NUMBER` and `prop.process.CREATE_STDOUT_NUMBER`
+   * `prop.Process.Create.STDIN_NUMBER` and `prop.Process.Create.STDOUT_NUMBER`
    * to `PROCESS_STDIO_APP`, and will allow the use of Process.Read() or
    * Process.GetInput() and Process.GetOutput().
    *
@@ -184,48 +184,48 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * These are the supported properties:
    *
-   * - `prop.process.CREATE_ARGS_POINTER`: an array of strings containing the
+   * - `prop.Process.Create.ARGS_POINTER`: an array of strings containing the
    *   program to run, any arguments, and a nullptr pointer, e.g. const char
    *   *args[] = { "myprogram", "argument", nullptr }. This is a required
    *   property.
-   * - `prop.process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If
+   * - `prop.Process.Create.ENVIRONMENT_POINTER`: an Environment pointer. If
    *   this property is set, it will be the entire environment for the process,
    *   otherwise the current environment is used.
-   * - `prop.process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+   * - `prop.Process.Create.WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
    *   representing the working directory for the process, defaults to the
    *   current working directory.
-   * - `prop.process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
+   * - `prop.Process.Create.STDIN_NUMBER`: an ProcessIO value describing where
    *   standard input for the process comes from, defaults to
    *   `SDL_PROCESS_STDIO_nullptr`.
-   * - `prop.process.CREATE_STDIN_POINTER`: an IOStream pointer used for
-   *   standard input when `prop.process.CREATE_STDIN_NUMBER` is set to
+   * - `prop.Process.Create.STDIN_POINTER`: an IOStream pointer used for
+   *   standard input when `prop.Process.Create.STDIN_NUMBER` is set to
    *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop.process.CREATE_STDOUT_NUMBER`: an ProcessIO value describing where
+   * - `prop.Process.Create.STDOUT_NUMBER`: an ProcessIO value describing where
    *   standard output for the process goes to, defaults to
    *   `PROCESS_STDIO_INHERITED`.
-   * - `prop.process.CREATE_STDOUT_POINTER`: an IOStream pointer used for
-   *   standard output when `prop.process.CREATE_STDOUT_NUMBER` is set to
+   * - `prop.Process.Create.STDOUT_POINTER`: an IOStream pointer used for
+   *   standard output when `prop.Process.Create.STDOUT_NUMBER` is set to
    *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop.process.CREATE_STDERR_NUMBER`: an ProcessIO value describing where
+   * - `prop.Process.Create.STDERR_NUMBER`: an ProcessIO value describing where
    *   standard error for the process goes to, defaults to
    *   `PROCESS_STDIO_INHERITED`.
-   * - `prop.process.CREATE_STDERR_POINTER`: an IOStream pointer used for
-   *   standard error when `prop.process.CREATE_STDERR_NUMBER` is set to
+   * - `prop.Process.Create.STDERR_POINTER`: an IOStream pointer used for
+   *   standard error when `prop.Process.Create.STDERR_NUMBER` is set to
    *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop.process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error output
+   * - `prop.Process.Create.STDERR_TO_STDOUT_BOOLEAN`: true if the error output
    *   of the process should be redirected into the standard output of the
    *   process. This property has no effect if
-   *   `prop.process.CREATE_STDERR_NUMBER` is set.
-   * - `prop.process.CREATE_BACKGROUND_BOOLEAN`: true if the process should run
+   *   `prop.Process.Create.STDERR_NUMBER` is set.
+   * - `prop.Process.Create.BACKGROUND_BOOLEAN`: true if the process should run
    *   in the background. In this case the default input and output is
    *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
    *   available, and will always be 0.
-   * - `prop.process.CREATE_CMDLINE_STRING`: a string containing the program to
+   * - `prop.Process.Create.CMDLINE_STRING`: a string containing the program to
    *   run and any parameters. This string is passed directly to `CreateProcess`
    *   on Windows, and does nothing on other platforms. This property is only
    *   important if you want to start programs that does non-standard
    *   command-line processing, and in most cases using
-   *   `prop.process.CREATE_ARGS_POINTER` is sufficient.
+   *   `prop.Process.Create.ARGS_POINTER` is sufficient.
    *
    * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
    * SIGCHLD should not be ignored or handled because those would prevent SDL
@@ -285,17 +285,17 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop.process.PID_NUMBER`: the process ID of the process.
-   * - `prop.process.STDIN_POINTER`: an IOStream that can be used to write input
-   *   to the process, if it was created with `prop.process.CREATE_STDIN_NUMBER`
+   * - `prop.Process.PID_NUMBER`: the process ID of the process.
+   * - `prop.Process.STDIN_POINTER`: an IOStream that can be used to write input
+   *   to the process, if it was created with `prop.Process.Create.STDIN_NUMBER`
    *   set to `PROCESS_STDIO_APP`.
-   * - `prop.process.STDOUT_POINTER`: a non-blocking IOStream that can be used
+   * - `prop.Process.STDOUT_POINTER`: a non-blocking IOStream that can be used
    *   to read output from the process, if it was created with
-   *   `prop.process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
-   * - `prop.process.STDERR_POINTER`: a non-blocking IOStream that can be used
+   *   `prop.Process.Create.STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
+   * - `prop.Process.STDERR_POINTER`: a non-blocking IOStream that can be used
    *   to read error output from the process, if it was created with
-   *   `prop.process.CREATE_STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
-   * - `prop.process.BACKGROUND_BOOLEAN`: true if the process is running in the
+   *   `prop.Process.Create.STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
+   * - `prop.Process.BACKGROUND_BOOLEAN`: true if the process is running in the
    *   background.
    *
    * @returns a valid property ID on success.
@@ -376,7 +376,7 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * The process must have been created with CreateProcess() and pipe_stdio set
    * to true, or with CreateProcessWithProperties() and
-   * `prop.process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
+   * `prop.Process.Create.STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Writing to this stream can return less data than expected if the process
    * hasn't read its input. It may be blocked waiting for its output to be read,
@@ -401,7 +401,7 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * The process must have been created with CreateProcess() and pipe_stdio set
    * to true, or with CreateProcessWithProperties() and
-   * `prop.process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
+   * `prop.Process.Create.STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Reading from this stream can return 0 with IOStream.GetStatus() returning
    * IO_STATUS_NOT_READY if no output is available yet.
@@ -485,7 +485,7 @@ struct Process : ResourceBase<ProcessRaw>
  * ```
  *
  * Setting pipe_stdio to true is equivalent to setting
- * `prop.process.CREATE_STDIN_NUMBER` and `prop.process.CREATE_STDOUT_NUMBER` to
+ * `prop.Process.Create.STDIN_NUMBER` and `prop.Process.Create.STDOUT_NUMBER` to
  * `PROCESS_STDIO_APP`, and will allow the use of Process.Read() or
  * Process.GetInput() and Process.GetOutput().
  *
@@ -532,46 +532,46 @@ inline Process::Process(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop.process.CREATE_ARGS_POINTER`: an array of strings containing the
+ * - `prop.Process.Create.ARGS_POINTER`: an array of strings containing the
  *   program to run, any arguments, and a nullptr pointer, e.g. const char
  *   *args[] = { "myprogram", "argument", nullptr }. This is a required
  *   property.
- * - `prop.process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If this
+ * - `prop.Process.Create.ENVIRONMENT_POINTER`: an Environment pointer. If this
  *   property is set, it will be the entire environment for the process,
  *   otherwise the current environment is used.
- * - `prop.process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+ * - `prop.Process.Create.WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
  *   representing the working directory for the process, defaults to the current
  *   working directory.
- * - `prop.process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
+ * - `prop.Process.Create.STDIN_NUMBER`: an ProcessIO value describing where
  *   standard input for the process comes from, defaults to
  *   `SDL_PROCESS_STDIO_nullptr`.
- * - `prop.process.CREATE_STDIN_POINTER`: an IOStream pointer used for standard
- *   input when `prop.process.CREATE_STDIN_NUMBER` is set to
+ * - `prop.Process.Create.STDIN_POINTER`: an IOStream pointer used for standard
+ *   input when `prop.Process.Create.STDIN_NUMBER` is set to
  *   `PROCESS_STDIO_REDIRECT`.
- * - `prop.process.CREATE_STDOUT_NUMBER`: an ProcessIO value describing where
+ * - `prop.Process.Create.STDOUT_NUMBER`: an ProcessIO value describing where
  *   standard output for the process goes to, defaults to
  *   `PROCESS_STDIO_INHERITED`.
- * - `prop.process.CREATE_STDOUT_POINTER`: an IOStream pointer used for standard
- *   output when `prop.process.CREATE_STDOUT_NUMBER` is set to
+ * - `prop.Process.Create.STDOUT_POINTER`: an IOStream pointer used for standard
+ *   output when `prop.Process.Create.STDOUT_NUMBER` is set to
  *   `PROCESS_STDIO_REDIRECT`.
- * - `prop.process.CREATE_STDERR_NUMBER`: an ProcessIO value describing where
+ * - `prop.Process.Create.STDERR_NUMBER`: an ProcessIO value describing where
  *   standard error for the process goes to, defaults to
  *   `PROCESS_STDIO_INHERITED`.
- * - `prop.process.CREATE_STDERR_POINTER`: an IOStream pointer used for standard
- *   error when `prop.process.CREATE_STDERR_NUMBER` is set to
+ * - `prop.Process.Create.STDERR_POINTER`: an IOStream pointer used for standard
+ *   error when `prop.Process.Create.STDERR_NUMBER` is set to
  *   `PROCESS_STDIO_REDIRECT`.
- * - `prop.process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error output of
+ * - `prop.Process.Create.STDERR_TO_STDOUT_BOOLEAN`: true if the error output of
  *   the process should be redirected into the standard output of the process.
- *   This property has no effect if `prop.process.CREATE_STDERR_NUMBER` is set.
- * - `prop.process.CREATE_BACKGROUND_BOOLEAN`: true if the process should run in
+ *   This property has no effect if `prop.Process.Create.STDERR_NUMBER` is set.
+ * - `prop.Process.Create.BACKGROUND_BOOLEAN`: true if the process should run in
  *   the background. In this case the default input and output is
  *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
  *   available, and will always be 0.
- * - `prop.process.CREATE_CMDLINE_STRING`: a string containing the program to
+ * - `prop.Process.Create.CMDLINE_STRING`: a string containing the program to
  *   run and any parameters. This string is passed directly to `CreateProcess`
  *   on Windows, and does nothing on other platforms. This property is only
  *   important if you want to start programs that does non-standard command-line
- *   processing, and in most cases using `prop.process.CREATE_ARGS_POINTER` is
+ *   processing, and in most cases using `prop.Process.Create.ARGS_POINTER` is
  *   sufficient.
  *
  * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
@@ -602,82 +602,65 @@ inline Process CreateProcessWithProperties(PropertiesRef props)
 }
 
 /**
- * Properties for processes.
- *
- * Properties prefixed by `CREATE_` can be used in the properties passed to
- * CreateProcessWithProperties() to specify details about how the process should
- * be created, and properties without that prefix can be used to query
- * information about a process after it's created.
+ * Properties for process creation.
  *
  * @sa CreateProcessWithProperties
- * @sa Process.GetProperties
  */
-namespace prop::process {
+namespace prop::Process::Create {
 
-constexpr auto CREATE_ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
+constexpr auto ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
 
-constexpr auto CREATE_ENVIRONMENT_POINTER =
+constexpr auto ENVIRONMENT_POINTER =
   SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_WORKING_DIRECTORY_STRING =
+constexpr auto WORKING_DIRECTORY_STRING =
   SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_STDIN_NUMBER = SDL_PROP_PROCESS_CREATE_STDIN_NUMBER;
+constexpr auto STDIN_NUMBER = SDL_PROP_PROCESS_CREATE_STDIN_NUMBER;
 
-constexpr auto CREATE_STDIN_POINTER = SDL_PROP_PROCESS_CREATE_STDIN_POINTER;
+constexpr auto STDIN_POINTER = SDL_PROP_PROCESS_CREATE_STDIN_POINTER;
 
-constexpr auto CREATE_STDOUT_NUMBER = SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER;
+constexpr auto STDOUT_NUMBER = SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER;
 
-constexpr auto CREATE_STDOUT_POINTER = SDL_PROP_PROCESS_CREATE_STDOUT_POINTER;
+constexpr auto STDOUT_POINTER = SDL_PROP_PROCESS_CREATE_STDOUT_POINTER;
 
-constexpr auto CREATE_STDERR_NUMBER = SDL_PROP_PROCESS_CREATE_STDERR_NUMBER;
+constexpr auto STDERR_NUMBER = SDL_PROP_PROCESS_CREATE_STDERR_NUMBER;
 
-constexpr auto CREATE_STDERR_POINTER = SDL_PROP_PROCESS_CREATE_STDERR_POINTER;
+constexpr auto STDERR_POINTER = SDL_PROP_PROCESS_CREATE_STDERR_POINTER;
 
-constexpr auto CREATE_STDERR_TO_STDOUT_BOOLEAN =
+constexpr auto STDERR_TO_STDOUT_BOOLEAN =
   SDL_PROP_PROCESS_CREATE_STDERR_TO_STDOUT_BOOLEAN;
 
-constexpr auto CREATE_BACKGROUND_BOOLEAN =
-  SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN;
+constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_CMDLINE_STRING = SDL_PROP_PROCESS_CREATE_CMDLINE_STRING;
+constexpr auto CMDLINE_STRING = SDL_PROP_PROCESS_CREATE_CMDLINE_STRING;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER;
-
-constexpr auto STDIN_POINTER = SDL_PROP_PROCESS_STDIN_POINTER;
-
-constexpr auto STDOUT_POINTER = SDL_PROP_PROCESS_STDOUT_POINTER;
-
-constexpr auto STDERR_POINTER = SDL_PROP_PROCESS_STDERR_POINTER;
-
-constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
-
-} // namespace prop::process
+} // namespace prop::Process::Create
 
 /**
  * Get the properties associated with a process.
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop.process.PID_NUMBER`: the process ID of the process.
- * - `prop.process.STDIN_POINTER`: an IOStream that can be used to write input
- *   to the process, if it was created with `prop.process.CREATE_STDIN_NUMBER`
+ * - `prop.Process.PID_NUMBER`: the process ID of the process.
+ * - `prop.Process.STDIN_POINTER`: an IOStream that can be used to write input
+ *   to the process, if it was created with `prop.Process.Create.STDIN_NUMBER`
  *   set to `PROCESS_STDIO_APP`.
- * - `prop.process.STDOUT_POINTER`: a non-blocking IOStream that can be used to
+ * - `prop.Process.STDOUT_POINTER`: a non-blocking IOStream that can be used to
  *   read output from the process, if it was created with
- *   `prop.process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
- * - `prop.process.STDERR_POINTER`: a non-blocking IOStream that can be used to
+ *   `prop.Process.Create.STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
+ * - `prop.Process.STDERR_POINTER`: a non-blocking IOStream that can be used to
  *   read error output from the process, if it was created with
- *   `prop.process.CREATE_STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
- * - `prop.process.BACKGROUND_BOOLEAN`: true if the process is running in the
+ *   `prop.Process.Create.STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
+ * - `prop.Process.BACKGROUND_BOOLEAN`: true if the process is running in the
  *   background.
  *
  * @param process the process to query.
@@ -700,6 +683,31 @@ inline PropertiesRef Process::GetProperties() const
 {
   return SDL::GetProcessProperties(get());
 }
+
+/**
+ * Properties for processes.
+ *
+ * Properties in subnamespaces `Create::` can be used in the properties passed
+ * to CreateProcessWithProperties() to specify details about how the process
+ * should be created, and properties without that prefix can be used to query
+ * information about a process after it's created.
+ *
+ * @sa CreateProcessWithProperties
+ * @sa Process.GetProperties
+ */
+namespace prop::Process {
+
+constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER;
+
+constexpr auto STDIN_POINTER = SDL_PROP_PROCESS_STDIN_POINTER;
+
+constexpr auto STDOUT_POINTER = SDL_PROP_PROCESS_STDOUT_POINTER;
+
+constexpr auto STDERR_POINTER = SDL_PROP_PROCESS_STDERR_POINTER;
+
+constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
+
+} // namespace prop::Process
 
 /**
  * Read all the output from a process.
@@ -745,7 +753,7 @@ inline StringResult Process::Read(int* exitcode)
  *
  * The process must have been created with CreateProcess() and pipe_stdio set to
  * true, or with CreateProcessWithProperties() and
- * `prop.process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
+ * `prop.Process.Create.STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
  *
  * Writing to this stream can return less data than expected if the process
  * hasn't read its input. It may be blocked waiting for its output to be read,
@@ -776,7 +784,7 @@ inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
  *
  * The process must have been created with CreateProcess() and pipe_stdio set to
  * true, or with CreateProcessWithProperties() and
- * `prop.process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
+ * `prop.Process.Create.STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
  *
  * Reading from this stream can return 0 with IOStream.GetStatus() returning
  * IO_STATUS_NOT_READY if no output is available yet.

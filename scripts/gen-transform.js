@@ -4074,7 +4074,8 @@ const transform = {
         },
       },
       namespacesMap: {
-        "SDL_PROP_PROCESS_": "prop::process"
+        "SDL_PROP_PROCESS_CREATE_": "prop::Process::Create",
+        "SDL_PROP_PROCESS_": "prop::Process"
       }
     },
     "SDL_properties.h": {

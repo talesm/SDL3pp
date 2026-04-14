@@ -65,25 +65,19 @@
    }
  
    /**
-@@ -576,6 +601,17 @@
+@@ -576,6 +601,11 @@
    return Process(props);
  }
  
 +/**
-+ * Properties for processes.
-+ *
-+ * Properties prefixed by `CREATE_` can be used in the properties passed to
-+ * CreateProcessWithProperties() to specify details about how the process should
-+ * be created, and properties without that prefix can be used to query
-+ * information about a process after it's created.
++ * Properties for process creation.
 + *
 + * @sa CreateProcessWithProperties
-+ * @sa Process.GetProperties
 + */
- namespace prop::process {
+ namespace prop::Process::Create {
  
- constexpr auto CREATE_ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
-@@ -657,7 +693,7 @@
+ constexpr auto ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
+@@ -646,7 +676,7 @@
   */
  inline PropertiesRef GetProcessProperties(ProcessRef process)
  {
@@ -92,7 +86,25 @@
  }
  
  inline PropertiesRef Process::GetProperties() const
-@@ -679,8 +715,6 @@
+@@ -654,6 +684,17 @@
+   return SDL::GetProcessProperties(get());
+ }
+ 
++/**
++ * Properties for processes.
++ *
++ * Properties in subnamespaces `Create::` can be used in the properties passed
++ * to CreateProcessWithProperties() to specify details about how the process
++ * should be created, and properties without that prefix can be used to query
++ * information about a process after it's created.
++ *
++ * @sa CreateProcessWithProperties
++ * @sa Process.GetProperties
++ */
+ namespace prop::Process {
+ 
+ constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER;
+@@ -682,8 +723,6 @@
   * The data should be freed with free().
   *
   * @param process The process to read.
@@ -101,7 +113,7 @@
   * @param exitcode a pointer filled in with the process exit code if the process
   *                 has exited, may be nullptr.
   * @returns the data or nullptr on failure; call GetError() for more
-@@ -696,7 +730,9 @@
+@@ -699,7 +738,9 @@
   */
  inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
  {
@@ -112,7 +124,7 @@
  }
  
  inline StringResult Process::Read(int* exitcode)
-@@ -730,7 +766,7 @@
+@@ -733,7 +774,7 @@
   */
  inline IOStreamRef GetProcessInput(ProcessRef process)
  {
@@ -121,7 +133,7 @@
  }
  
  inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
-@@ -759,7 +795,7 @@
+@@ -762,7 +803,7 @@
   */
  inline IOStreamRef GetProcessOutput(ProcessRef process)
  {
