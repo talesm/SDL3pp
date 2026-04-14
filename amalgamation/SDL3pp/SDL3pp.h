@@ -46787,9 +46787,9 @@ struct Thread : ResourceBase<ThreadRaw>
    * This is a convenience function, equivalent to calling
    * CreateThreadWithProperties with the following properties set:
    *
-   * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
-   * - `prop.thread.CREATE_NAME_STRING`: `name`
-   * - `prop.thread.CREATE_USERDATA_POINTER`: `data`
+   * - `prop.Thread.Create.ENTRY_FUNCTION_POINTER`: `fn`
+   * - `prop.Thread.Create.NAME_STRING`: `name`
+   * - `prop.Thread.Create.USERDATA_POINTER`: `data`
    *
    * Note that this "function" is actually a macro that calls an internal
    * function with two extra parameters not listed here; they are hidden through
@@ -46821,9 +46821,9 @@ struct Thread : ResourceBase<ThreadRaw>
    * This is a convenience function, equivalent to calling
    * CreateThreadWithProperties with the following properties set:
    *
-   * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
-   * - `prop.thread.CREATE_NAME_STRING`: `name`
-   * - `prop.thread.CREATE_USERDATA_POINTER`: `data`
+   * - `prop.Thread.Create.ENTRY_FUNCTION_POINTER`: `fn`
+   * - `prop.Thread.Create.NAME_STRING`: `name`
+   * - `prop.Thread.Create.USERDATA_POINTER`: `data`
    *
    * Note that this "function" is actually a macro that calls an internal
    * function with two extra parameters not listed here; they are hidden through
@@ -46853,17 +46853,17 @@ struct Thread : ResourceBase<ThreadRaw>
    *
    * These are the supported properties:
    *
-   * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction value that
+   * - `prop.Thread.Create.ENTRY_FUNCTION_POINTER`: an ThreadFunction value that
    *   will be called at the start of the new thread's life. Required.
-   * - `prop.thread.CREATE_NAME_STRING`: the name of the new thread, which might
+   * - `prop.Thread.Create.NAME_STRING`: the name of the new thread, which might
    *   be available to debuggers. Optional, defaults to nullptr.
-   * - `prop.thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined pointer,
+   * - `prop.Thread.Create.USERDATA_POINTER`: an arbitrary app-defined pointer,
    *   which is passed to the entry function on the new thread, as its only
    *   parameter. Optional, defaults to nullptr.
-   * - `prop.thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
+   * - `prop.Thread.Create.STACKSIZE_NUMBER`: the size, in bytes, of the new
    *   thread's stack. Optional, defaults to 0 (system-defined default).
    *
-   * SDL makes an attempt to report `prop.thread.CREATE_NAME_STRING` to the
+   * SDL makes an attempt to report `prop.Thread.Create.NAME_STRING` to the
    * system, so that debuggers can display it. Not all platforms support this.
    *
    * Thread naming is a little complicated: Most systems have very small limits
@@ -46881,7 +46881,7 @@ struct Thread : ResourceBase<ThreadRaw>
    * Thread.GetName().
    *
    * The size (in bytes) of the new stack can be specified with
-   * `prop.thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system default"
+   * `prop.Thread.Create.STACKSIZE_NUMBER`. Zero means "use the system default"
    * which might be wildly different between platforms. x86 Linux generally
    * defaults to eight megabytes, an embedded device might be a few kilobytes
    * instead. You generally need to specify a stack that is a multiple of the
@@ -47078,9 +47078,9 @@ using TLSID = AtomicInt;
  * This is a convenience function, equivalent to calling
  * CreateThreadWithProperties with the following properties set:
  *
- * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
- * - `prop.thread.CREATE_NAME_STRING`: `name`
- * - `prop.thread.CREATE_USERDATA_POINTER`: `data`
+ * - `prop.Thread.Create.ENTRY_FUNCTION_POINTER`: `fn`
+ * - `prop.Thread.Create.NAME_STRING`: `name`
+ * - `prop.Thread.Create.USERDATA_POINTER`: `data`
  *
  * Note that this "function" is actually a macro that calls an internal function
  * with two extra parameters not listed here; they are hidden through
@@ -47115,9 +47115,9 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  * This is a convenience function, equivalent to calling
  * CreateThreadWithProperties with the following properties set:
  *
- * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
- * - `prop.thread.CREATE_NAME_STRING`: `name`
- * - `prop.thread.CREATE_USERDATA_POINTER`: `data`
+ * - `prop.Thread.Create.ENTRY_FUNCTION_POINTER`: `fn`
+ * - `prop.Thread.Create.NAME_STRING`: `name`
+ * - `prop.Thread.Create.USERDATA_POINTER`: `data`
  *
  * Note that this "function" is actually a macro that calls an internal function
  * with two extra parameters not listed here; they are hidden through
@@ -47167,17 +47167,17 @@ inline Thread::Thread(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction value that
+ * - `prop.Thread.Create.ENTRY_FUNCTION_POINTER`: an ThreadFunction value that
  *   will be called at the start of the new thread's life. Required.
- * - `prop.thread.CREATE_NAME_STRING`: the name of the new thread, which might
+ * - `prop.Thread.Create.NAME_STRING`: the name of the new thread, which might
  *   be available to debuggers. Optional, defaults to nullptr.
- * - `prop.thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined pointer,
+ * - `prop.Thread.Create.USERDATA_POINTER`: an arbitrary app-defined pointer,
  *   which is passed to the entry function on the new thread, as its only
  *   parameter. Optional, defaults to nullptr.
- * - `prop.thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
+ * - `prop.Thread.Create.STACKSIZE_NUMBER`: the size, in bytes, of the new
  *   thread's stack. Optional, defaults to 0 (system-defined default).
  *
- * SDL makes an attempt to report `prop.thread.CREATE_NAME_STRING` to the
+ * SDL makes an attempt to report `prop.Thread.Create.NAME_STRING` to the
  * system, so that debuggers can display it. Not all platforms support this.
  *
  * Thread naming is a little complicated: Most systems have very small limits
@@ -47195,7 +47195,7 @@ inline Thread::Thread(PropertiesRef props)
  * Thread.GetName().
  *
  * The size (in bytes) of the new stack can be specified with
- * `prop.thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system default"
+ * `prop.Thread.Create.STACKSIZE_NUMBER`. Zero means "use the system default"
  * which might be wildly different between platforms. x86 Linux generally
  * defaults to eight megabytes, an embedded device might be a few kilobytes
  * instead. You generally need to specify a stack that is a multiple of the
@@ -47240,20 +47240,18 @@ inline Thread CreateThreadWithProperties(PropertiesRef props)
  *
  * @sa CreateThreadWithProperties
  */
-namespace prop::thread {
+namespace prop::Thread::Create {
 
-constexpr auto CREATE_ENTRY_FUNCTION_POINTER =
+constexpr auto ENTRY_FUNCTION_POINTER =
   SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER;
 
-constexpr auto CREATE_NAME_STRING = SDL_PROP_THREAD_CREATE_NAME_STRING;
+constexpr auto NAME_STRING = SDL_PROP_THREAD_CREATE_NAME_STRING;
 
-constexpr auto CREATE_USERDATA_POINTER =
-  SDL_PROP_THREAD_CREATE_USERDATA_POINTER;
+constexpr auto USERDATA_POINTER = SDL_PROP_THREAD_CREATE_USERDATA_POINTER;
 
-constexpr auto CREATE_STACKSIZE_NUMBER =
-  SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER;
+constexpr auto STACKSIZE_NUMBER = SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER;
 
-} // namespace prop::thread
+} // namespace prop::Thread::Create
 
 /**
  * Get the thread name as it was specified in CreateThread().

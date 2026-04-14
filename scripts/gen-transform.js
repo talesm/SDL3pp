@@ -7524,7 +7524,7 @@ const transform = {
         'SDL3pp_stdinc.h',
       ],
       namespacesMap: {
-        "SDL_PROP_THREAD_": "prop::thread"
+        "SDL_PROP_THREAD_CREATE_": "prop::Thread::Create"
       },
       ignoreEntries: [
         "SDL_CreateThreadRuntime",
