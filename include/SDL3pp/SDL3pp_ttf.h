@@ -428,30 +428,30 @@ struct Font : ResourceBase<FontRaw>
    *
    * These are the supported properties:
    *
-   * - `prop.Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
-   *   isn't being used. This is required if `prop.Font.CREATE_IOSTREAM_POINTER`
-   *   and `prop.Font.CREATE_EXISTING_FONT_POINTER` aren't set.
-   * - `prop.Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to
+   * - `prop.Font.Create.FILENAME_STRING`: the font file to open, if an IOStream
+   *   isn't being used. This is required if `prop.Font.Create.IOSTREAM_POINTER`
+   *   and `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
+   * - `prop.Font.Create.IOSTREAM_POINTER`: an IOStream containing the font to
    *   be opened. This should not be closed until the font is closed. This is
-   *   required if `prop.Font.CREATE_FILENAME_STRING` and
-   *   `prop.Font.CREATE_EXISTING_FONT_POINTER` aren't set.
-   * - `prop.Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
+   *   required if `prop.Font.Create.FILENAME_STRING` and
+   *   `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
+   * - `prop.Font.Create.IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
    *   the beginning of the font, defaults to 0.
-   * - `prop.Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
+   * - `prop.Font.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
    *   should also close the associated IOStream.
-   * - `prop.Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
+   * - `prop.Font.Create.SIZE_FLOAT`: the point size of the font. Some .fon
    *   fonts will have several sizes embedded in the file, so the point size
    *   becomes the index of choosing which size. If the value is too high, the
    *   last indexed size will be the default.
-   * - `prop.Font.CREATE_FACE_NUMBER`: the face index of the font, if the font
+   * - `prop.Font.Create.FACE_NUMBER`: the face index of the font, if the font
    *   contains multiple font faces.
-   * - `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
-   *   font rendering, defaults to `prop.Font.CREATE_VERTICAL_DPI_NUMBER` if
+   * - `prop.Font.Create.HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
+   *   font rendering, defaults to `prop.Font.Create.VERTICAL_DPI_NUMBER` if
    *   set, or 72 otherwise.
-   * - `prop.Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
-   *   rendering, defaults to `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER` if set,
+   * - `prop.Font.Create.VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
+   *   rendering, defaults to `prop.Font.Create.HORIZONTAL_DPI_NUMBER` if set,
    *   or 72 otherwise.
-   * - `prop.Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,
+   * - `prop.Font.Create.EXISTING_FONT_POINTER`: an optional Font that, if set,
    *   will be used as the font data source and the initial size and style of
    *   the new font.
    *
@@ -1870,30 +1870,30 @@ inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
  *
  * These are the supported properties:
  *
- * - `prop.Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
- *   isn't being used. This is required if `prop.Font.CREATE_IOSTREAM_POINTER`
- *   and `prop.Font.CREATE_EXISTING_FONT_POINTER` aren't set.
- * - `prop.Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to be
+ * - `prop.Font.Create.FILENAME_STRING`: the font file to open, if an IOStream
+ *   isn't being used. This is required if `prop.Font.Create.IOSTREAM_POINTER`
+ *   and `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
+ * - `prop.Font.Create.IOSTREAM_POINTER`: an IOStream containing the font to be
  *   opened. This should not be closed until the font is closed. This is
- *   required if `prop.Font.CREATE_FILENAME_STRING` and
- *   `prop.Font.CREATE_EXISTING_FONT_POINTER` aren't set.
- * - `prop.Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
+ *   required if `prop.Font.Create.FILENAME_STRING` and
+ *   `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
+ * - `prop.Font.Create.IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
  *   the beginning of the font, defaults to 0.
- * - `prop.Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
+ * - `prop.Font.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
  *   should also close the associated IOStream.
- * - `prop.Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon fonts
+ * - `prop.Font.Create.SIZE_FLOAT`: the point size of the font. Some .fon fonts
  *   will have several sizes embedded in the file, so the point size becomes the
  *   index of choosing which size. If the value is too high, the last indexed
  *   size will be the default.
- * - `prop.Font.CREATE_FACE_NUMBER`: the face index of the font, if the font
+ * - `prop.Font.Create.FACE_NUMBER`: the face index of the font, if the font
  *   contains multiple font faces.
- * - `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
- *   font rendering, defaults to `prop.Font.CREATE_VERTICAL_DPI_NUMBER` if set,
+ * - `prop.Font.Create.HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
+ *   font rendering, defaults to `prop.Font.Create.VERTICAL_DPI_NUMBER` if set,
  *   or 72 otherwise.
- * - `prop.Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
- *   rendering, defaults to `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER` if set, or
+ * - `prop.Font.Create.VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
+ *   rendering, defaults to `prop.Font.Create.HORIZONTAL_DPI_NUMBER` if set, or
  *   72 otherwise.
- * - `prop.Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,
+ * - `prop.Font.Create.EXISTING_FONT_POINTER`: an optional Font that, if set,
  *   will be used as the font data source and the initial size and style of the
  *   new font.
  *
@@ -1910,53 +1910,38 @@ inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
 inline Font OpenFontWithProperties(PropertiesRef props) { return Font(props); }
 
 /**
- * Properties for Font.
- *
- * Properties prefixed with CREATE_ are used when creating a font with
- * OpenFontWithProperties(). Poperties without the prefix can retrieved by using
- * Font.GetProperties() on an existing font.
+ * Properties for Font creation.
  *
  * @sa OpenFontWithProperties
- * @sa Font.GetProperties
  */
-namespace prop::Font {
+namespace prop::Font::Create {
 
-constexpr auto CREATE_FILENAME_STRING = TTF_PROP_FONT_CREATE_FILENAME_STRING;
+constexpr auto FILENAME_STRING = TTF_PROP_FONT_CREATE_FILENAME_STRING;
 
-constexpr auto CREATE_IOSTREAM_POINTER = TTF_PROP_FONT_CREATE_IOSTREAM_POINTER;
+constexpr auto IOSTREAM_POINTER = TTF_PROP_FONT_CREATE_IOSTREAM_POINTER;
 
-constexpr auto CREATE_IOSTREAM_OFFSET_NUMBER =
+constexpr auto IOSTREAM_OFFSET_NUMBER =
   TTF_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER;
 
-constexpr auto CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN =
+constexpr auto IOSTREAM_AUTOCLOSE_BOOLEAN =
   TTF_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
 
-constexpr auto CREATE_SIZE_FLOAT = TTF_PROP_FONT_CREATE_SIZE_FLOAT;
+constexpr auto SIZE_FLOAT = TTF_PROP_FONT_CREATE_SIZE_FLOAT;
 
-constexpr auto CREATE_FACE_NUMBER = TTF_PROP_FONT_CREATE_FACE_NUMBER;
+constexpr auto FACE_NUMBER = TTF_PROP_FONT_CREATE_FACE_NUMBER;
 
-constexpr auto CREATE_HORIZONTAL_DPI_NUMBER =
+constexpr auto HORIZONTAL_DPI_NUMBER =
   TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER;
 
-constexpr auto CREATE_VERTICAL_DPI_NUMBER =
-  TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER;
+constexpr auto VERTICAL_DPI_NUMBER = TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER;
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto CREATE_EXISTING_FONT_POINTER =
-  TTF_PROP_FONT_CREATE_EXISTING_FONT;
+constexpr auto EXISTING_FONT_POINTER = TTF_PROP_FONT_CREATE_EXISTING_FONT;
 
 #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto OUTLINE_LINE_CAP_NUMBER = TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER;
-
-constexpr auto OUTLINE_LINE_JOIN_NUMBER =
-  TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER;
-
-constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
-  TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER;
-
-} // namespace prop::Font
+} // namespace prop::Font::Create
 
 /**
  * Create a copy of an existing font.
@@ -2013,6 +1998,28 @@ inline PropertiesRef Font::GetProperties()
 {
   return SDL::GetFontProperties(get());
 }
+
+/**
+ * Properties for Font.
+ *
+ * Properties within subnamespace Create are used when creating a font with
+ * OpenFontWithProperties(). Poperties without the prefix can retrieved by using
+ * Font.GetProperties() on an existing font.
+ *
+ * @sa OpenFontWithProperties
+ * @sa Font.GetProperties
+ */
+namespace prop::Font {
+
+constexpr auto OUTLINE_LINE_CAP_NUMBER = TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER;
+
+constexpr auto OUTLINE_LINE_JOIN_NUMBER =
+  TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER;
+
+constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
+  TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER;
+
+} // namespace prop::Font
 
 /**
  * Get the font generation.

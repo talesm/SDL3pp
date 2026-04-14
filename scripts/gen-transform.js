@@ -8854,6 +8854,12 @@ const transform = {
         "SDL3pp_version.h",
         "SDL3pp_video.h",
       ],
+      namespacesMap: {
+        "TTF_PROP_FONT_CREATE_": "prop::Font::Create",
+        "TTF_PROP_FONT_": "prop::Font",
+        "TTF_PROP_RENDERER_TEXT_ENGINE_": "prop::RendererTextEngine",
+        "TTF_PROP_GPU_TEXT_ENGINE_": "prop::GpuTextEngine"
+      },
       transform: {
         "SDL_TTF_MAJOR_VERSION": {
           value: ""
@@ -8886,7 +8892,7 @@ const transform = {
         },
         "TTF_PROP_FONT_CREATE_EXISTING_FONT": {
           since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 },
-          name: "CREATE_EXISTING_FONT_POINTER"
+          name: "EXISTING_FONT_POINTER"
         },
         "TTF_Font": {
           resource: true,
@@ -9756,11 +9762,6 @@ const transform = {
         "TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": { name: "ATLAS_TEXTURE_SIZE_NUMBER" },
         "TTF_PROP_GPU_TEXT_ENGINE_DEVICE": { name: "DEVICE_POINTER" },
         "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": { name: "ATLAS_TEXTURE_SIZE_NUMBER" },
-      },
-      namespacesMap: {
-        "TTF_PROP_FONT_": "prop::Font",
-        "TTF_PROP_RENDERER_TEXT_ENGINE_": "prop::RendererTextEngine",
-        "TTF_PROP_GPU_TEXT_ENGINE_": "prop::GpuTextEngine"
       },
     },
   }
