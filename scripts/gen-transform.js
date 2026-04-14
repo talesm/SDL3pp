@@ -9750,7 +9750,11 @@ const transform = {
         "TTF_Version": { name: "TTF.Version" },
         "TTF_Init": { name: "TTF.Init" },
         "TTF_Quit": { name: "TTF.Quit" },
-        "TTF_WasInit": { name: "TTF.WasInit" }
+        "TTF_WasInit": { name: "TTF.WasInit" },
+        "TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER": { name: "RENDERER_POINTER" },
+        "TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": { name: "ATLAS_TEXTURE_SIZE_NUMBER" },
+        "TTF_PROP_GPU_TEXT_ENGINE_DEVICE": { name: "DEVICE_POINTER" },
+        "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": { name: "ATLAS_TEXTURE_SIZE_NUMBER" },
       },
       namespacesMap: {
         "TTF_PROP_FONT_": "prop::Font",

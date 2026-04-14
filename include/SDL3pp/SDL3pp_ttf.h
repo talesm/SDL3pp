@@ -430,11 +430,11 @@ struct Font : ResourceBase<FontRaw>
    *
    * - `prop.Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
    *   isn't being used. This is required if `prop.Font.CREATE_IOSTREAM_POINTER`
-   *   and `prop.Font.CREATE_EXISTING_FONT` aren't set.
+   *   and `prop.Font.CREATE_EXISTING_FONT_POINTER` aren't set.
    * - `prop.Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to
    *   be opened. This should not be closed until the font is closed. This is
    *   required if `prop.Font.CREATE_FILENAME_STRING` and
-   *   `prop.Font.CREATE_EXISTING_FONT` aren't set.
+   *   `prop.Font.CREATE_EXISTING_FONT_POINTER` aren't set.
    * - `prop.Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
    *   the beginning of the font, defaults to 0.
    * - `prop.Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
@@ -451,9 +451,9 @@ struct Font : ResourceBase<FontRaw>
    * - `prop.Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
    *   rendering, defaults to `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER` if set,
    *   or 72 otherwise.
-   * - `prop.Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
-   *   used as the font data source and the initial size and style of the new
-   *   font.
+   * - `prop.Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,
+   *   will be used as the font data source and the initial size and style of
+   *   the new font.
    *
    * @param props the properties to use.
    * @post a valid Font on success.
@@ -1872,11 +1872,11 @@ inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
  *
  * - `prop.Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
  *   isn't being used. This is required if `prop.Font.CREATE_IOSTREAM_POINTER`
- *   and `prop.Font.CREATE_EXISTING_FONT` aren't set.
+ *   and `prop.Font.CREATE_EXISTING_FONT_POINTER` aren't set.
  * - `prop.Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to be
  *   opened. This should not be closed until the font is closed. This is
  *   required if `prop.Font.CREATE_FILENAME_STRING` and
- *   `prop.Font.CREATE_EXISTING_FONT` aren't set.
+ *   `prop.Font.CREATE_EXISTING_FONT_POINTER` aren't set.
  * - `prop.Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
  *   the beginning of the font, defaults to 0.
  * - `prop.Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
@@ -1893,9 +1893,9 @@ inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
  * - `prop.Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
  *   rendering, defaults to `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER` if set, or
  *   72 otherwise.
- * - `prop.Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
- *   used as the font data source and the initial size and style of the new
- *   font.
+ * - `prop.Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,
+ *   will be used as the font data source and the initial size and style of the
+ *   new font.
  *
  * @param props the properties to use.
  * @returns a valid Font on success.
@@ -1943,7 +1943,8 @@ constexpr auto CREATE_VERTICAL_DPI_NUMBER =
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto CREATE_EXISTING_FONT = TTF_PROP_FONT_CREATE_EXISTING_FONT;
+constexpr auto CREATE_EXISTING_FONT_POINTER =
+  TTF_PROP_FONT_CREATE_EXISTING_FONT;
 
 #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 

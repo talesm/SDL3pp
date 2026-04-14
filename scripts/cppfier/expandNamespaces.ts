@@ -16,7 +16,7 @@ export function expandNamespaces(
     );
     for (const [key, entry] of sourceEntriesListed) {
       const entryDelta = file.transform[key] || {};
-      const localName = entry.name.slice(prefix.length);
+      const localName = entryDelta.name || entry.name.slice(prefix.length);
       file.transform[key] = entryDelta;
       entryDelta.name = nsName + "." + localName;
 
