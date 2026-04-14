@@ -80473,47 +80473,47 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * These are the supported properties:
    *
-   * - `prop.Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
+   * - `prop.Renderer.Create.NAME_STRING`: the name of the rendering driver to
    *   use, if a specific one is desired
-   * - `prop.Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
+   * - `prop.Renderer.Create.WINDOW_POINTER`: the window where rendering is
    *   displayed, required if this isn't a software renderer using a surface
-   * - `prop.Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
+   * - `prop.Renderer.Create.SURFACE_POINTER`: the surface where rendering is
    *   displayed, if you want a software renderer without a window
-   * - `prop.Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
+   * - `prop.Renderer.Create.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
    *   describing the colorspace for output to the display, defaults to
    *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support
    *   COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR
    *   output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB
    *   colorspace, but values can go beyond 1.0 and float (linear) format
    *   textures can be used for HDR content.
-   * - `prop.Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want present
+   * - `prop.Renderer.Create.PRESENT_VSYNC_NUMBER`: non-zero if you want present
    *   synchronized with the refresh rate. This property can take any value that
    *   is supported by Renderer.SetVSync() for the renderer.
    *
    * With the SDL GPU renderer (since SDL 3.4.0):
    *
-   * - `prop.Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
+   * - `prop.Renderer.Create.GPU_DEVICE_POINTER`: the device to use with the
    *   renderer, optional.
-   * - `prop.Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+   * - `prop.Renderer.Create.GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
    *   provide SPIR-V shaders to GPURenderState, optional.
-   * - `prop.Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
+   * - `prop.Renderer.Create.GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
    *   provide DXIL shaders to GPURenderState, optional.
-   * - `prop.Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to
+   * - `prop.Renderer.Create.GPU_SHADERS_MSL_BOOLEAN`: the app is able to
    *   provide MSL shaders to GPURenderState, optional.
    *
    * With the vulkan renderer:
    *
-   * - `prop.Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
+   * - `prop.Renderer.Create.VULKAN_INSTANCE_POINTER`: the VkInstance to use
    *   with the renderer, optional.
-   * - `prop.Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
+   * - `prop.Renderer.Create.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
    *   with the renderer, optional.
-   * - `prop.Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
+   * - `prop.Renderer.Create.VULKAN_PHYSICAL_DEVICE_POINTER`: the
    *   VkPhysicalDevice to use with the renderer, optional.
-   * - `prop.Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with
+   * - `prop.Renderer.Create.VULKAN_DEVICE_POINTER`: the VkDevice to use with
    *   the renderer, optional.
-   * - `prop.Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
+   * - `prop.Renderer.Create.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for rendering.
-   * - `prop.Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
+   * - `prop.Renderer.Create.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for presentation.
    *
    * @param props the properties to use.
@@ -80845,97 +80845,97 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * These are the supported properties:
    *
-   * - `prop.Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
+   * - `prop.Texture.Create.COLORSPACE_NUMBER`: an Colorspace value describing
    *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
    *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
    *   other RGB textures and COLORSPACE_JPEG for YUV textures.
-   * - `prop.Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.Create.FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop.Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.Create.ACCESS_NUMBER`: one of the enumerated values in
    *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop.Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+   * - `prop.Texture.Create.WIDTH_NUMBER`: the width of the texture in pixels,
    *   required
-   * - `prop.Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
+   * - `prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels,
    *   required
-   * - `prop.Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   * - `prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized
    *   texture formats. This can be set later with Texture.SetPalette()
-   * - `prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   * - `prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
    *   textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop.Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   * - `prop.Texture.Create.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
    *   textures, this defines the maximum dynamic range used by the content, in
    *   terms of the SDR white point. This would be equivalent to maxCLL /
-   *   prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+   *   prop.Texture.Create.SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
    *   defined, any values outside the range supported by the display will be
    *   scaled into the available HDR headroom, otherwise they are clipped.
    *
    * With the direct3d11 renderer:
    *
-   * - `prop.Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.Create.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.Create.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.Create.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the direct3d12 renderer:
    *
-   * - `prop.Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   * - `prop.Texture.Create.D3D12_TEXTURE_POINTER`: the ID3D12Resource
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   * - `prop.Texture.Create.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   * - `prop.Texture.Create.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the metal renderer:
    *
-   * - `prop.Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   * - `prop.Texture.Create.METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
    *   associated with the texture, if you want to create a texture from an
    *   existing pixel buffer.
    *
    * With the opengl renderer:
    *
-   * - `prop.Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGL_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the opengles2 renderer:
    *
-   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the vulkan renderer:
    *
-   * - `prop.Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   * - `prop.Texture.Create.VULKAN_TEXTURE_NUMBER`: the VkImage associated with
    *   the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   * - `prop.Texture.Create.VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
    *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
    *
    * With the GPU renderer:
    *
-   * - `prop.Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+   * - `prop.Texture.Create.GPU_TEXTURE_POINTER`: the GPUTexture associated with
    *   the texture, if you want to wrap an existing texture.
    * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
@@ -82520,97 +82520,97 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * These are the supported properties:
    *
-   * - `prop.Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
+   * - `prop.Texture.Create.COLORSPACE_NUMBER`: an Colorspace value describing
    *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
    *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
    *   other RGB textures and COLORSPACE_JPEG for YUV textures.
-   * - `prop.Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.Create.FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop.Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.Create.ACCESS_NUMBER`: one of the enumerated values in
    *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop.Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+   * - `prop.Texture.Create.WIDTH_NUMBER`: the width of the texture in pixels,
    *   required
-   * - `prop.Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
+   * - `prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels,
    *   required
-   * - `prop.Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   * - `prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized
    *   texture formats. This can be set later with Texture.SetPalette()
-   * - `prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   * - `prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
    *   textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop.Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   * - `prop.Texture.Create.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
    *   textures, this defines the maximum dynamic range used by the content, in
    *   terms of the SDR white point. This would be equivalent to maxCLL /
-   *   prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+   *   prop.Texture.Create.SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
    *   defined, any values outside the range supported by the display will be
    *   scaled into the available HDR headroom, otherwise they are clipped.
    *
    * With the direct3d11 renderer:
    *
-   * - `prop.Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.Create.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.Create.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.Create.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the direct3d12 renderer:
    *
-   * - `prop.Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   * - `prop.Texture.Create.D3D12_TEXTURE_POINTER`: the ID3D12Resource
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   * - `prop.Texture.Create.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   * - `prop.Texture.Create.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the metal renderer:
    *
-   * - `prop.Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   * - `prop.Texture.Create.METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
    *   associated with the texture, if you want to create a texture from an
    *   existing pixel buffer.
    *
    * With the opengl renderer:
    *
-   * - `prop.Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGL_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the opengles2 renderer:
    *
-   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the vulkan renderer:
    *
-   * - `prop.Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   * - `prop.Texture.Create.VULKAN_TEXTURE_NUMBER`: the VkImage associated with
    *   the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   * - `prop.Texture.Create.VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
    *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
    *
    * With the GPU renderer:
    *
-   * - `prop.Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+   * - `prop.Texture.Create.GPU_TEXTURE_POINTER`: the GPUTexture associated with
    *   the texture, if you want to wrap an existing texture.
    * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
@@ -83970,47 +83970,47 @@ inline Renderer::Renderer(SurfaceRef surface)
  *
  * These are the supported properties:
  *
- * - `prop.Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
+ * - `prop.Renderer.Create.NAME_STRING`: the name of the rendering driver to
  *   use, if a specific one is desired
- * - `prop.Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
+ * - `prop.Renderer.Create.WINDOW_POINTER`: the window where rendering is
  *   displayed, required if this isn't a software renderer using a surface
- * - `prop.Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
+ * - `prop.Renderer.Create.SURFACE_POINTER`: the surface where rendering is
  *   displayed, if you want a software renderer without a window
- * - `prop.Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
+ * - `prop.Renderer.Create.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
  *   describing the colorspace for output to the display, defaults to
  *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support
  *   COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR
  *   output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB
  *   colorspace, but values can go beyond 1.0 and float (linear) format textures
  *   can be used for HDR content.
- * - `prop.Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want present
+ * - `prop.Renderer.Create.PRESENT_VSYNC_NUMBER`: non-zero if you want present
  *   synchronized with the refresh rate. This property can take any value that
  *   is supported by Renderer.SetVSync() for the renderer.
  *
  * With the SDL GPU renderer (since SDL 3.4.0):
  *
- * - `prop.Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
+ * - `prop.Renderer.Create.GPU_DEVICE_POINTER`: the device to use with the
  *   renderer, optional.
- * - `prop.Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+ * - `prop.Renderer.Create.GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
  *   provide SPIR-V shaders to GPURenderState, optional.
- * - `prop.Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to provide
+ * - `prop.Renderer.Create.GPU_SHADERS_DXIL_BOOLEAN`: the app is able to provide
  *   DXIL shaders to GPURenderState, optional.
- * - `prop.Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide
+ * - `prop.Renderer.Create.GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide
  *   MSL shaders to GPURenderState, optional.
  *
  * With the vulkan renderer:
  *
- * - `prop.Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use with
+ * - `prop.Renderer.Create.VULKAN_INSTANCE_POINTER`: the VkInstance to use with
  *   the renderer, optional.
- * - `prop.Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use with
+ * - `prop.Renderer.Create.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use with
  *   the renderer, optional.
- * - `prop.Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
+ * - `prop.Renderer.Create.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
  *   to use with the renderer, optional.
- * - `prop.Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with the
+ * - `prop.Renderer.Create.VULKAN_DEVICE_POINTER`: the VkDevice to use with the
  *   renderer, optional.
- * - `prop.Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+ * - `prop.Renderer.Create.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
  *   family index used for rendering.
- * - `prop.Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+ * - `prop.Renderer.Create.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
  *   family index used for presentation.
  *
  * @param props the properties to use.
@@ -84033,131 +84033,58 @@ inline Renderer CreateRendererWithProperties(PropertiesRef props)
 }
 
 /**
- * Properties for Renderer.
- *
- * Properties prefixed with `CREATE_` can be used when creating a renderer with
- * CreateRendererWithProperties, and properties without that prefix can be used
- * to query information about an existing renderer with Renderer.GetProperties.
+ * Properties for Renderer creation.
  *
  * @sa CreateRendererWithProperties
- * @sa Renderer.GetProperties
  */
-namespace prop::Renderer {
+namespace prop::Renderer::Create {
 
-constexpr auto CREATE_NAME_STRING = SDL_PROP_RENDERER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING = SDL_PROP_RENDERER_CREATE_NAME_STRING;
 
-constexpr auto CREATE_WINDOW_POINTER = SDL_PROP_RENDERER_CREATE_WINDOW_POINTER;
+constexpr auto WINDOW_POINTER = SDL_PROP_RENDERER_CREATE_WINDOW_POINTER;
 
-constexpr auto CREATE_SURFACE_POINTER =
-  SDL_PROP_RENDERER_CREATE_SURFACE_POINTER;
+constexpr auto SURFACE_POINTER = SDL_PROP_RENDERER_CREATE_SURFACE_POINTER;
 
-constexpr auto CREATE_OUTPUT_COLORSPACE_NUMBER =
+constexpr auto OUTPUT_COLORSPACE_NUMBER =
   SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER;
 
-constexpr auto CREATE_PRESENT_VSYNC_NUMBER =
+constexpr auto PRESENT_VSYNC_NUMBER =
   SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_GPU_DEVICE_POINTER =
-  SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER;
+constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER;
 
-constexpr auto CREATE_GPU_SHADERS_SPIRV_BOOLEAN =
+constexpr auto GPU_SHADERS_SPIRV_BOOLEAN =
   SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN;
 
-constexpr auto CREATE_GPU_SHADERS_DXIL_BOOLEAN =
+constexpr auto GPU_SHADERS_DXIL_BOOLEAN =
   SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN;
 
-constexpr auto CREATE_GPU_SHADERS_MSL_BOOLEAN =
+constexpr auto GPU_SHADERS_MSL_BOOLEAN =
   SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_VULKAN_INSTANCE_POINTER =
+constexpr auto VULKAN_INSTANCE_POINTER =
   SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER;
 
-constexpr auto CREATE_VULKAN_SURFACE_NUMBER =
+constexpr auto VULKAN_SURFACE_NUMBER =
   SDL_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER;
 
-constexpr auto CREATE_VULKAN_PHYSICAL_DEVICE_POINTER =
+constexpr auto VULKAN_PHYSICAL_DEVICE_POINTER =
   SDL_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER;
 
-constexpr auto CREATE_VULKAN_DEVICE_POINTER =
+constexpr auto VULKAN_DEVICE_POINTER =
   SDL_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER;
 
-constexpr auto CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER =
+constexpr auto VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER =
   SDL_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER;
 
-constexpr auto CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER =
+constexpr auto VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER =
   SDL_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER;
 
-constexpr auto NAME_STRING = SDL_PROP_RENDERER_NAME_STRING;
-
-constexpr auto WINDOW_POINTER = SDL_PROP_RENDERER_WINDOW_POINTER;
-
-constexpr auto SURFACE_POINTER = SDL_PROP_RENDERER_SURFACE_POINTER;
-
-constexpr auto VSYNC_NUMBER = SDL_PROP_RENDERER_VSYNC_NUMBER;
-
-constexpr auto MAX_TEXTURE_SIZE_NUMBER =
-  SDL_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER;
-
-constexpr auto TEXTURE_FORMATS_POINTER =
-  SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER;
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-constexpr auto TEXTURE_WRAPPING_BOOLEAN =
-  SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-constexpr auto OUTPUT_COLORSPACE_NUMBER =
-  SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER;
-
-constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_RENDERER_HDR_ENABLED_BOOLEAN;
-
-constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_RENDERER_SDR_WHITE_POINT_FLOAT;
-
-constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_RENDERER_HDR_HEADROOM_FLOAT;
-
-constexpr auto D3D9_DEVICE_POINTER = SDL_PROP_RENDERER_D3D9_DEVICE_POINTER;
-
-constexpr auto D3D11_DEVICE_POINTER = SDL_PROP_RENDERER_D3D11_DEVICE_POINTER;
-
-constexpr auto D3D11_SWAPCHAIN_POINTER =
-  SDL_PROP_RENDERER_D3D11_SWAPCHAIN_POINTER;
-
-constexpr auto D3D12_DEVICE_POINTER = SDL_PROP_RENDERER_D3D12_DEVICE_POINTER;
-
-constexpr auto D3D12_SWAPCHAIN_POINTER =
-  SDL_PROP_RENDERER_D3D12_SWAPCHAIN_POINTER;
-
-constexpr auto D3D12_COMMAND_QUEUE_POINTER =
-  SDL_PROP_RENDERER_D3D12_COMMAND_QUEUE_POINTER;
-
-constexpr auto VULKAN_INSTANCE_POINTER =
-  SDL_PROP_RENDERER_VULKAN_INSTANCE_POINTER;
-
-constexpr auto VULKAN_SURFACE_NUMBER = SDL_PROP_RENDERER_VULKAN_SURFACE_NUMBER;
-
-constexpr auto VULKAN_PHYSICAL_DEVICE_POINTER =
-  SDL_PROP_RENDERER_VULKAN_PHYSICAL_DEVICE_POINTER;
-
-constexpr auto VULKAN_DEVICE_POINTER = SDL_PROP_RENDERER_VULKAN_DEVICE_POINTER;
-
-constexpr auto VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER =
-  SDL_PROP_RENDERER_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER;
-
-constexpr auto VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER =
-  SDL_PROP_RENDERER_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER;
-
-constexpr auto VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER =
-  SDL_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER;
-
-constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
-
-} // namespace prop::Renderer
+} // namespace prop::Renderer::Create
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -84388,6 +84315,86 @@ inline PropertiesRef Renderer::GetProperties() const
 }
 
 /**
+ * Properties for Renderer.
+ *
+ * Properties within `Create` sub-namespace can be used when creating a renderer
+ * with CreateRendererWithProperties. The other properties can be used to query
+ * information about an existing renderer with Renderer.GetProperties.
+ *
+ * @sa CreateRendererWithProperties
+ * @sa Renderer.GetProperties
+ */
+namespace prop::Renderer {
+
+constexpr auto NAME_STRING = SDL_PROP_RENDERER_NAME_STRING;
+
+constexpr auto WINDOW_POINTER = SDL_PROP_RENDERER_WINDOW_POINTER;
+
+constexpr auto SURFACE_POINTER = SDL_PROP_RENDERER_SURFACE_POINTER;
+
+constexpr auto VSYNC_NUMBER = SDL_PROP_RENDERER_VSYNC_NUMBER;
+
+constexpr auto MAX_TEXTURE_SIZE_NUMBER =
+  SDL_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER;
+
+constexpr auto TEXTURE_FORMATS_POINTER =
+  SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER;
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto TEXTURE_WRAPPING_BOOLEAN =
+  SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto OUTPUT_COLORSPACE_NUMBER =
+  SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER;
+
+constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_RENDERER_HDR_ENABLED_BOOLEAN;
+
+constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_RENDERER_SDR_WHITE_POINT_FLOAT;
+
+constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_RENDERER_HDR_HEADROOM_FLOAT;
+
+constexpr auto D3D9_DEVICE_POINTER = SDL_PROP_RENDERER_D3D9_DEVICE_POINTER;
+
+constexpr auto D3D11_DEVICE_POINTER = SDL_PROP_RENDERER_D3D11_DEVICE_POINTER;
+
+constexpr auto D3D11_SWAPCHAIN_POINTER =
+  SDL_PROP_RENDERER_D3D11_SWAPCHAIN_POINTER;
+
+constexpr auto D3D12_DEVICE_POINTER = SDL_PROP_RENDERER_D3D12_DEVICE_POINTER;
+
+constexpr auto D3D12_SWAPCHAIN_POINTER =
+  SDL_PROP_RENDERER_D3D12_SWAPCHAIN_POINTER;
+
+constexpr auto D3D12_COMMAND_QUEUE_POINTER =
+  SDL_PROP_RENDERER_D3D12_COMMAND_QUEUE_POINTER;
+
+constexpr auto VULKAN_INSTANCE_POINTER =
+  SDL_PROP_RENDERER_VULKAN_INSTANCE_POINTER;
+
+constexpr auto VULKAN_SURFACE_NUMBER = SDL_PROP_RENDERER_VULKAN_SURFACE_NUMBER;
+
+constexpr auto VULKAN_PHYSICAL_DEVICE_POINTER =
+  SDL_PROP_RENDERER_VULKAN_PHYSICAL_DEVICE_POINTER;
+
+constexpr auto VULKAN_DEVICE_POINTER = SDL_PROP_RENDERER_VULKAN_DEVICE_POINTER;
+
+constexpr auto VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER =
+  SDL_PROP_RENDERER_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER;
+
+constexpr auto VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER =
+  SDL_PROP_RENDERER_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER;
+
+constexpr auto VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER =
+  SDL_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER;
+
+constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
+
+} // namespace prop::Renderer
+
+/**
  * Get the output size in pixels of a rendering context.
  *
  * This returns the true output size in pixels, ignoring any render targets or
@@ -84605,97 +84612,97 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
  *
  * These are the supported properties:
  *
- * - `prop.Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing the
+ * - `prop.Texture.Create.COLORSPACE_NUMBER`: an Colorspace value describing the
  *   texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating point
  *   textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for other
  *   RGB textures and COLORSPACE_JPEG for YUV textures.
- * - `prop.Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+ * - `prop.Texture.Create.FORMAT_NUMBER`: one of the enumerated values in
  *   PixelFormat, defaults to the best RGBA format for the renderer
- * - `prop.Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+ * - `prop.Texture.Create.ACCESS_NUMBER`: one of the enumerated values in
  *   TextureAccess, defaults to TEXTUREACCESS_STATIC
- * - `prop.Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+ * - `prop.Texture.Create.WIDTH_NUMBER`: the width of the texture in pixels,
  *   required
- * - `prop.Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
+ * - `prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels,
  *   required
- * - `prop.Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+ * - `prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized
  *   texture formats. This can be set later with Texture.SetPalette()
- * - `prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+ * - `prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
  *   textures, this defines the value of 100% diffuse white, with higher values
  *   being displayed in the High Dynamic Range headroom. This defaults to 100
  *   for HDR10 textures and 1.0 for floating point textures.
- * - `prop.Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+ * - `prop.Texture.Create.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
  *   textures, this defines the maximum dynamic range used by the content, in
  *   terms of the SDR white point. This would be equivalent to maxCLL /
- *   prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+ *   prop.Texture.Create.SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
  *   defined, any values outside the range supported by the display will be
  *   scaled into the available HDR headroom, otherwise they are clipped.
  *
  * With the direct3d11 renderer:
  *
- * - `prop.Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated
+ * - `prop.Texture.Create.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated
  *   with the texture, if you want to wrap an existing texture.
- * - `prop.Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+ * - `prop.Texture.Create.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop.Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+ * - `prop.Texture.Create.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the direct3d12 renderer:
  *
- * - `prop.Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource associated
+ * - `prop.Texture.Create.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated
  *   with the texture, if you want to wrap an existing texture.
- * - `prop.Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+ * - `prop.Texture.Create.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop.Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+ * - `prop.Texture.Create.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the metal renderer:
  *
- * - `prop.Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+ * - `prop.Texture.Create.METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
  *   associated with the texture, if you want to create a texture from an
  *   existing pixel buffer.
  *
  * With the opengl renderer:
  *
- * - `prop.Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture associated
+ * - `prop.Texture.Create.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated
  *   with the texture, if you want to wrap an existing texture.
- * - `prop.Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+ * - `prop.Texture.Create.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
  *   associated with the UV plane of an NV12 texture, if you want to wrap an
  *   existing texture.
- * - `prop.Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+ * - `prop.Texture.Create.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop.Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+ * - `prop.Texture.Create.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the opengles2 renderer:
  *
- * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+ * - `prop.Texture.Create.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
  *   associated with the texture, if you want to wrap an existing texture.
- * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+ * - `prop.Texture.Create.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
  *   associated with the UV plane of an NV12 texture, if you want to wrap an
  *   existing texture.
- * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+ * - `prop.Texture.Create.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+ * - `prop.Texture.Create.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the vulkan renderer:
  *
- * - `prop.Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+ * - `prop.Texture.Create.VULKAN_TEXTURE_NUMBER`: the VkImage associated with
  *   the texture, if you want to wrap an existing texture.
- * - `prop.Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+ * - `prop.Texture.Create.VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
  *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
  *
  * With the GPU renderer:
  *
- * - `prop.Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+ * - `prop.Texture.Create.GPU_TEXTURE_POINTER`: the GPUTexture associated with
  *   the texture, if you want to wrap an existing texture.
  * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture associated
  *   with the UV plane of an NV12 texture, if you want to wrap an existing
@@ -84733,185 +84740,101 @@ inline Texture Renderer::CreateTextureWithProperties(PropertiesRef props)
 }
 
 /**
- * Properties for Texture.
- *
- * Properties prefixed with `CREATE_` can be used when creating a texture with
- * CreateTextureWithProperties, and properties without that prefix can be used
- * to query information about an existing texture with Texture.GetProperties.
+ * Properties for Texture creation.
  *
  * @sa CreateTextureWithProperties
- * @sa Texture.GetProperties
  */
-namespace prop::Texture {
+namespace prop::Texture::Create {
 
-constexpr auto CREATE_COLORSPACE_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER;
+constexpr auto COLORSPACE_NUMBER = SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER;
 
-constexpr auto CREATE_FORMAT_NUMBER = SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER;
+constexpr auto FORMAT_NUMBER = SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER;
 
-constexpr auto CREATE_ACCESS_NUMBER = SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER;
+constexpr auto ACCESS_NUMBER = SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER;
 
-constexpr auto CREATE_WIDTH_NUMBER = SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER;
+constexpr auto WIDTH_NUMBER = SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER;
 
-constexpr auto CREATE_HEIGHT_NUMBER = SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER;
+constexpr auto HEIGHT_NUMBER = SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_PALETTE_POINTER = SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER;
+constexpr auto PALETTE_POINTER = SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_SDR_WHITE_POINT_FLOAT =
+constexpr auto SDR_WHITE_POINT_FLOAT =
   SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT;
 
-constexpr auto CREATE_HDR_HEADROOM_FLOAT =
-  SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT;
+constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT;
 
-constexpr auto CREATE_D3D11_TEXTURE_POINTER =
+constexpr auto D3D11_TEXTURE_POINTER =
   SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER;
 
-constexpr auto CREATE_D3D11_TEXTURE_U_POINTER =
+constexpr auto D3D11_TEXTURE_U_POINTER =
   SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER;
 
-constexpr auto CREATE_D3D11_TEXTURE_V_POINTER =
+constexpr auto D3D11_TEXTURE_V_POINTER =
   SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER;
 
-constexpr auto CREATE_D3D12_TEXTURE_POINTER =
+constexpr auto D3D12_TEXTURE_POINTER =
   SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER;
 
-constexpr auto CREATE_D3D12_TEXTURE_U_POINTER =
+constexpr auto D3D12_TEXTURE_U_POINTER =
   SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER;
 
-constexpr auto CREATE_D3D12_TEXTURE_V_POINTER =
+constexpr auto D3D12_TEXTURE_V_POINTER =
   SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER;
 
-constexpr auto CREATE_METAL_PIXELBUFFER_POINTER =
+constexpr auto METAL_PIXELBUFFER_POINTER =
   SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER;
 
-constexpr auto CREATE_OPENGL_TEXTURE_NUMBER =
+constexpr auto OPENGL_TEXTURE_NUMBER =
   SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER;
 
-constexpr auto CREATE_OPENGL_TEXTURE_UV_NUMBER =
+constexpr auto OPENGL_TEXTURE_UV_NUMBER =
   SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER;
 
-constexpr auto CREATE_OPENGL_TEXTURE_U_NUMBER =
+constexpr auto OPENGL_TEXTURE_U_NUMBER =
   SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER;
 
-constexpr auto CREATE_OPENGL_TEXTURE_V_NUMBER =
+constexpr auto OPENGL_TEXTURE_V_NUMBER =
   SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER;
 
-constexpr auto CREATE_OPENGLES2_TEXTURE_NUMBER =
+constexpr auto OPENGLES2_TEXTURE_NUMBER =
   SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER;
 
-constexpr auto CREATE_OPENGLES2_TEXTURE_UV_NUMBER =
+constexpr auto OPENGLES2_TEXTURE_UV_NUMBER =
   SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER;
 
-constexpr auto CREATE_OPENGLES2_TEXTURE_U_NUMBER =
+constexpr auto OPENGLES2_TEXTURE_U_NUMBER =
   SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER;
 
-constexpr auto CREATE_OPENGLES2_TEXTURE_V_NUMBER =
+constexpr auto OPENGLES2_TEXTURE_V_NUMBER =
   SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER;
 
-constexpr auto CREATE_VULKAN_TEXTURE_NUMBER =
+constexpr auto VULKAN_TEXTURE_NUMBER =
   SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_VULKAN_LAYOUT_NUMBER =
+constexpr auto VULKAN_LAYOUT_NUMBER =
   SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER;
 
-constexpr auto CREATE_GPU_TEXTURE_POINTER =
+constexpr auto GPU_TEXTURE_POINTER =
   SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER;
 
-constexpr auto CREATE_GPU_TEXTURE_UV_POINTER =
+constexpr auto GPU_TEXTURE_UV_POINTER =
   SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER;
 
-constexpr auto CREATE_GPU_TEXTURE_U_POINTER =
+constexpr auto GPU_TEXTURE_U_POINTER =
   SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER;
 
-constexpr auto CREATE_GPU_TEXTURE_V_POINTER =
+constexpr auto GPU_TEXTURE_V_POINTER =
   SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto COLORSPACE_NUMBER = SDL_PROP_TEXTURE_COLORSPACE_NUMBER;
-
-constexpr auto FORMAT_NUMBER = SDL_PROP_TEXTURE_FORMAT_NUMBER;
-
-constexpr auto ACCESS_NUMBER = SDL_PROP_TEXTURE_ACCESS_NUMBER;
-
-constexpr auto WIDTH_NUMBER = SDL_PROP_TEXTURE_WIDTH_NUMBER;
-
-constexpr auto HEIGHT_NUMBER = SDL_PROP_TEXTURE_HEIGHT_NUMBER;
-
-constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT;
-
-constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT;
-
-constexpr auto D3D11_TEXTURE_POINTER = SDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER;
-
-constexpr auto D3D11_TEXTURE_U_POINTER =
-  SDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER;
-
-constexpr auto D3D11_TEXTURE_V_POINTER =
-  SDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER;
-
-constexpr auto D3D12_TEXTURE_POINTER = SDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER;
-
-constexpr auto D3D12_TEXTURE_U_POINTER =
-  SDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER;
-
-constexpr auto D3D12_TEXTURE_V_POINTER =
-  SDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER;
-
-constexpr auto OPENGL_TEXTURE_NUMBER = SDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER;
-
-constexpr auto OPENGL_TEXTURE_UV_NUMBER =
-  SDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER;
-
-constexpr auto OPENGL_TEXTURE_U_NUMBER =
-  SDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER;
-
-constexpr auto OPENGL_TEXTURE_V_NUMBER =
-  SDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER;
-
-constexpr auto OPENGL_TEXTURE_TARGET_NUMBER =
-  SDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER;
-
-constexpr auto OPENGL_TEX_W_FLOAT = SDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT;
-
-constexpr auto OPENGL_TEX_H_FLOAT = SDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT;
-
-constexpr auto OPENGLES2_TEXTURE_NUMBER =
-  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER;
-
-constexpr auto OPENGLES2_TEXTURE_UV_NUMBER =
-  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER;
-
-constexpr auto OPENGLES2_TEXTURE_U_NUMBER =
-  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER;
-
-constexpr auto OPENGLES2_TEXTURE_V_NUMBER =
-  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER;
-
-constexpr auto OPENGLES2_TEXTURE_TARGET_NUMBER =
-  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER;
-
-constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-constexpr auto GPU_TEXTURE_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER;
-
-constexpr auto GPU_TEXTURE_UV_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER;
-
-constexpr auto GPU_TEXTURE_U_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER;
-
-constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-} // namespace prop::Texture
+} // namespace prop::Texture::Create
 
 /**
  * Get the properties associated with a texture.
@@ -85017,6 +84940,97 @@ inline PropertiesRef Texture::GetProperties() const
 {
   return SDL::GetTextureProperties(get());
 }
+
+/**
+ * Properties for Texture.
+ *
+ * Properties within `Create` sub-namespace can be used when creating a texture
+ * with CreateTextureWithProperties. The other properties used to query
+ * information about an existing texture with Texture.GetProperties.
+ *
+ * @sa CreateTextureWithProperties
+ * @sa Texture.GetProperties
+ */
+namespace prop::Texture {
+
+constexpr auto COLORSPACE_NUMBER = SDL_PROP_TEXTURE_COLORSPACE_NUMBER;
+
+constexpr auto FORMAT_NUMBER = SDL_PROP_TEXTURE_FORMAT_NUMBER;
+
+constexpr auto ACCESS_NUMBER = SDL_PROP_TEXTURE_ACCESS_NUMBER;
+
+constexpr auto WIDTH_NUMBER = SDL_PROP_TEXTURE_WIDTH_NUMBER;
+
+constexpr auto HEIGHT_NUMBER = SDL_PROP_TEXTURE_HEIGHT_NUMBER;
+
+constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT;
+
+constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT;
+
+constexpr auto D3D11_TEXTURE_POINTER = SDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER;
+
+constexpr auto D3D11_TEXTURE_U_POINTER =
+  SDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER;
+
+constexpr auto D3D11_TEXTURE_V_POINTER =
+  SDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER;
+
+constexpr auto D3D12_TEXTURE_POINTER = SDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER;
+
+constexpr auto D3D12_TEXTURE_U_POINTER =
+  SDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER;
+
+constexpr auto D3D12_TEXTURE_V_POINTER =
+  SDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER;
+
+constexpr auto OPENGL_TEXTURE_NUMBER = SDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER;
+
+constexpr auto OPENGL_TEXTURE_UV_NUMBER =
+  SDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER;
+
+constexpr auto OPENGL_TEXTURE_U_NUMBER =
+  SDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER;
+
+constexpr auto OPENGL_TEXTURE_V_NUMBER =
+  SDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER;
+
+constexpr auto OPENGL_TEXTURE_TARGET_NUMBER =
+  SDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER;
+
+constexpr auto OPENGL_TEX_W_FLOAT = SDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT;
+
+constexpr auto OPENGL_TEX_H_FLOAT = SDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT;
+
+constexpr auto OPENGLES2_TEXTURE_NUMBER =
+  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER;
+
+constexpr auto OPENGLES2_TEXTURE_UV_NUMBER =
+  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER;
+
+constexpr auto OPENGLES2_TEXTURE_U_NUMBER =
+  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER;
+
+constexpr auto OPENGLES2_TEXTURE_V_NUMBER =
+  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER;
+
+constexpr auto OPENGLES2_TEXTURE_TARGET_NUMBER =
+  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER;
+
+constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto GPU_TEXTURE_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER;
+
+constexpr auto GPU_TEXTURE_UV_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER;
+
+constexpr auto GPU_TEXTURE_U_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER;
+
+constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+} // namespace prop::Texture
 
 /**
  * Get the renderer that created an Texture.

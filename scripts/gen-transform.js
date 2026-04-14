@@ -4733,7 +4733,9 @@ const transform = {
     "SDL_render.h": {
       localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_events.h", "SDL3pp_gpu.h", "SDL3pp_pixels.h", "SDL3pp_video.h"],
       namespacesMap: {
+        "SDL_PROP_RENDERER_CREATE_": "prop::Renderer::Create",
         "SDL_PROP_RENDERER_": "prop::Renderer",
+        "SDL_PROP_TEXTURE_CREATE_": "prop::Texture::Create",
         "SDL_PROP_TEXTURE_": "prop::Texture"
       },
       transform: {
