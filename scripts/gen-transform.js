@@ -8346,7 +8346,7 @@ const transform = {
       namespacesMap: {
         "IMG_PROP_ANIMATION_ENCODER_CREATE_": "prop::AnimationEncoder::Create",
         "IMG_PROP_ANIMATION_DECODER_CREATE_": "prop::AnimationDecoder::Create",
-        "IMG_PROP_METADATA_": "prop::Metadata",
+        "IMG_PROP_METADATA_": "prop::AnimationDecoder::Metadata",
       },
       transform: {
         "IMG": {
@@ -8684,6 +8684,7 @@ const transform = {
         },
         "prop::AnimationEncoder::Create": { since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 } },
         "prop::AnimationDecoder::Create": { since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 } },
+        "prop::AnimationDecoder::Metadata": { since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 } },
       }
     },
     "SDL_mixer.h": {

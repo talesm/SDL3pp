@@ -1412,28 +1412,20 @@
  namespace prop::AnimationDecoder::Create {
  
  constexpr auto FILENAME_STRING =
-@@ -4478,8 +4491,12 @@
+@@ -4478,6 +4491,12 @@
    return SDL::GetAnimationDecoderProperties(get());
  }
  
--#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
 +/**
 + * Animation metadata properties.
 + *
 + * @since These properties are available since SDL_image 3.4.0.
 + * @sa AnimationDecoder.GetProperties
 + */
- namespace prop::Metadata {
+ namespace prop::AnimationDecoder::Metadata {
  
  constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
-@@ -4500,28 +4517,18 @@
- 
- } // namespace prop::Metadata
- 
--#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
- /**
+@@ -4502,22 +4521,14 @@
   * Get the next frame in an animation decoder.
   *
   * This function decodes the next frame in the animation decoder, returning it
@@ -1458,7 +1450,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -4536,7 +4543,9 @@
+@@ -4532,7 +4543,9 @@
  inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                          Uint64* duration)
  {
@@ -1469,7 +1461,7 @@
  }
  
  inline Surface AnimationDecoder::GetFrame(Uint64* duration)
-@@ -4611,10 +4620,7 @@
+@@ -4607,10 +4620,7 @@
    CheckError(IMG_CloseAnimationDecoder(decoder));
  }
  
@@ -1481,7 +1473,7 @@
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
  
-@@ -4622,4 +4628,32 @@
+@@ -4618,4 +4628,32 @@
  
  } // namespace SDL
  

@@ -101965,7 +101965,7 @@ inline PropertiesRef AnimationDecoder::GetProperties()
  * @since These properties are available since SDL_image 3.4.0.
  * @sa AnimationDecoder.GetProperties
  */
-namespace prop::Metadata {
+namespace prop::AnimationDecoder::Metadata {
 
 constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
 
@@ -101983,7 +101983,7 @@ constexpr auto FRAME_COUNT_NUMBER = IMG_PROP_METADATA_FRAME_COUNT_NUMBER;
 
 constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
 
-} // namespace prop::Metadata
+} // namespace prop::AnimationDecoder::Metadata
 
 /**
  * Get the next frame in an animation decoder.

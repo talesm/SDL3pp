@@ -1,7 +1,7 @@
 Todo for next version
 =====================
 
-- [ ] Move Properties prefixed by _CREATE to their own sub-namespace:
+- [x] Move Properties prefixed by _CREATE to their own sub-namespace:
   - [x] SDL3pp_gpu.h;
   - [x] SDL3pp_image.h;
   - [x] SDL3pp_process.h;
@@ -11,8 +11,7 @@ Todo for next version
   - [x] SDL3pp_video.h;
 - [x] Rename prop::process to prop::Process;
 - [x] Rename prop::thread to prop::Thread;
-- [ ] (SDL3pp_image) Rename prop::Metadata to prop::Animation or something
-  similar? Or even under AnimationDecoder;
+- [x] (SDL3pp_image) Rename prop::Metadata to prop::AnimationDecoder::Metadata;
 - [ ] (SDL3pp_mixer) Rename prop::MixMetadata to prop::Audio or something
   similar? Or even under Audio;
 
