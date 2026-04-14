@@ -7935,6 +7935,7 @@ const transform = {
       namespacesMap: {
         "SDL_PROP_GLOBAL_": "prop::Global",
         "SDL_PROP_DISPLAY_": "prop::Display",
+        "SDL_PROP_WINDOW_CREATE_": "prop::Window::Create",
         "SDL_PROP_WINDOW_": "prop::Window"
       },
       transform: {
