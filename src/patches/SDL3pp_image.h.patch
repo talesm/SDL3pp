@@ -1129,6 +1129,15 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
+@@ -3456,7 +3491,7 @@
+                                  int quality,
+                                  bool closeio = false)
+ {
+-  CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, quality, closeio));
++  CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, closeio, quality));
+ }
+ 
+ inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
 @@ -3505,12 +3540,12 @@
   *
   * @param anim the animation to save.
@@ -1144,6 +1153,15 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
+@@ -3527,7 +3562,7 @@
+                                  int quality,
+                                  bool closeio = false)
+ {
+-  CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, quality, closeio));
++  CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, closeio, quality));
+ }
+ 
+ inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
 @@ -3539,8 +3574,7 @@
   * Create an animated cursor from an animation.
   *

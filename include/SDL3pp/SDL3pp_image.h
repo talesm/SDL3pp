@@ -3491,7 +3491,7 @@ inline void SaveAVIFAnimation_IO(AnimationRef anim,
                                  int quality,
                                  bool closeio = false)
 {
-  CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, quality, closeio));
+  CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, closeio, quality));
 }
 
 inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
@@ -3562,7 +3562,7 @@ inline void SaveWEBPAnimation_IO(AnimationRef anim,
                                  int quality,
                                  bool closeio = false)
 {
-  CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, quality, closeio));
+  CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, closeio, quality));
 }
 
 inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
