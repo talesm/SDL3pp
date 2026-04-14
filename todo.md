@@ -12,8 +12,7 @@ Todo for next version
 - [x] Rename prop::process to prop::Process;
 - [x] Rename prop::thread to prop::Thread;
 - [x] (SDL3pp_image) Rename prop::Metadata to prop::AnimationDecoder::Metadata;
-- [ ] (SDL3pp_mixer) Rename prop::MixMetadata to prop::Audio or something
-  similar? Or even under Audio;
+- [x] (SDL3pp_mixer) Rename prop::MixMetadata to prop::Audio::Metadata;
 
 Backlog
 -------

@@ -8695,7 +8695,7 @@ const transform = {
       namespacesMap: {
         "MIX_PROP_MIXER_": "prop::Mixer",
         "MIX_PROP_AUDIO_": "prop::Audio",
-        "MIX_PROP_METADATA_": "prop::MixMetadata",
+        "MIX_PROP_METADATA_": "prop::Audio::Metadata",
         "MIX_PROP_PLAY_": "prop::Play",
       },
       transform: {
