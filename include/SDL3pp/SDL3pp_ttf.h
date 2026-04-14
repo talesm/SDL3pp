@@ -428,31 +428,30 @@ struct Font : ResourceBase<FontRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
-   *   IOStream isn't being used. This is required if
-   *   `prop::Font.CREATE_IOSTREAM_POINTER` and
-   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
-   * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to
+   * - `prop.Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
+   *   isn't being used. This is required if `prop.Font.CREATE_IOSTREAM_POINTER`
+   *   and `prop.Font.CREATE_EXISTING_FONT` aren't set.
+   * - `prop.Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to
    *   be opened. This should not be closed until the font is closed. This is
-   *   required if `prop::Font.CREATE_FILENAME_STRING` and
-   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
-   * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
-   *   for the beginning of the font, defaults to 0.
-   * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
+   *   required if `prop.Font.CREATE_FILENAME_STRING` and
+   *   `prop.Font.CREATE_EXISTING_FONT` aren't set.
+   * - `prop.Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
+   *   the beginning of the font, defaults to 0.
+   * - `prop.Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
    *   should also close the associated IOStream.
-   * - `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
+   * - `prop.Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
    *   fonts will have several sizes embedded in the file, so the point size
    *   becomes the index of choosing which size. If the value is too high, the
    *   last indexed size will be the default.
-   * - `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the font
+   * - `prop.Font.CREATE_FACE_NUMBER`: the face index of the font, if the font
    *   contains multiple font faces.
-   * - `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
-   *   font rendering, defaults to `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if
+   * - `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
+   *   font rendering, defaults to `prop.Font.CREATE_VERTICAL_DPI_NUMBER` if
    *   set, or 72 otherwise.
-   * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
-   *   rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER` if set,
+   * - `prop.Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
+   *   rendering, defaults to `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER` if set,
    *   or 72 otherwise.
-   * - `prop::Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
+   * - `prop.Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
    *   used as the font data source and the initial size and style of the new
    *   font.
    *
@@ -526,11 +525,11 @@ struct Font : ResourceBase<FontRaw>
    *
    * The following read-write properties are provided by SDL:
    *
-   * - `prop::Font.OUTLINE_LINE_CAP_NUMBER`: The FT_Stroker_LineCap value used
+   * - `prop.Font.OUTLINE_LINE_CAP_NUMBER`: The FT_Stroker_LineCap value used
    *   when setting the font outline, defaults to `FT_STROKER_LINECAP_ROUND`.
-   * - `prop::Font.OUTLINE_LINE_JOIN_NUMBER`: The FT_Stroker_LineJoin value used
+   * - `prop.Font.OUTLINE_LINE_JOIN_NUMBER`: The FT_Stroker_LineJoin value used
    *   when setting the font outline, defaults to `FT_STROKER_LINEJOIN_ROUND`.
-   * - `prop::Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used
+   * - `prop.Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used
    *   when setting the font outline, defaults to 0.
    *
    * @returns a valid property ID on success.
@@ -733,9 +732,9 @@ struct Font : ResourceBase<FontRaw>
   /**
    * Set a font's current outline.
    *
-   * This uses the font properties `prop::Font.OUTLINE_LINE_CAP_NUMBER`,
-   * `prop::Font.OUTLINE_LINE_JOIN_NUMBER`, and
-   * `prop::Font.OUTLINE_MITER_LIMIT_NUMBER` when setting the font outline.
+   * This uses the font properties `prop.Font.OUTLINE_LINE_CAP_NUMBER`,
+   * `prop.Font.OUTLINE_LINE_JOIN_NUMBER`, and
+   * `prop.Font.OUTLINE_MITER_LIMIT_NUMBER` when setting the font outline.
    *
    * This updates any Text objects using this font, and clears already-generated
    * glyphs, if any, from the cache.
@@ -1871,30 +1870,30 @@ inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
  *
  * These are the supported properties:
  *
- * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
- *   isn't being used. This is required if `prop::Font.CREATE_IOSTREAM_POINTER`
- *   and `prop::Font.CREATE_EXISTING_FONT` aren't set.
- * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to be
+ * - `prop.Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
+ *   isn't being used. This is required if `prop.Font.CREATE_IOSTREAM_POINTER`
+ *   and `prop.Font.CREATE_EXISTING_FONT` aren't set.
+ * - `prop.Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to be
  *   opened. This should not be closed until the font is closed. This is
- *   required if `prop::Font.CREATE_FILENAME_STRING` and
- *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
- * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
+ *   required if `prop.Font.CREATE_FILENAME_STRING` and
+ *   `prop.Font.CREATE_EXISTING_FONT` aren't set.
+ * - `prop.Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
  *   the beginning of the font, defaults to 0.
- * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
+ * - `prop.Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
  *   should also close the associated IOStream.
- * - `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon fonts
+ * - `prop.Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon fonts
  *   will have several sizes embedded in the file, so the point size becomes the
  *   index of choosing which size. If the value is too high, the last indexed
  *   size will be the default.
- * - `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the font
+ * - `prop.Font.CREATE_FACE_NUMBER`: the face index of the font, if the font
  *   contains multiple font faces.
- * - `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
- *   font rendering, defaults to `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set,
+ * - `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
+ *   font rendering, defaults to `prop.Font.CREATE_VERTICAL_DPI_NUMBER` if set,
  *   or 72 otherwise.
- * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
- *   rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER` if set, or
+ * - `prop.Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
+ *   rendering, defaults to `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER` if set, or
  *   72 otherwise.
- * - `prop::Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
+ * - `prop.Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
  *   used as the font data source and the initial size and style of the new
  *   font.
  *
@@ -1989,11 +1988,11 @@ inline Font Font::Copy() const { return SDL::CopyFont(get()); }
  *
  * The following read-write properties are provided by SDL:
  *
- * - `prop::Font.OUTLINE_LINE_CAP_NUMBER`: The FT_Stroker_LineCap value used
- *   when setting the font outline, defaults to `FT_STROKER_LINECAP_ROUND`.
- * - `prop::Font.OUTLINE_LINE_JOIN_NUMBER`: The FT_Stroker_LineJoin value used
+ * - `prop.Font.OUTLINE_LINE_CAP_NUMBER`: The FT_Stroker_LineCap value used when
+ *   setting the font outline, defaults to `FT_STROKER_LINECAP_ROUND`.
+ * - `prop.Font.OUTLINE_LINE_JOIN_NUMBER`: The FT_Stroker_LineJoin value used
  *   when setting the font outline, defaults to `FT_STROKER_LINEJOIN_ROUND`.
- * - `prop::Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used when
+ * - `prop.Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used when
  *   setting the font outline, defaults to 0.
  *
  * @param font the font to query.
@@ -2281,9 +2280,9 @@ inline FontStyleFlags Font::GetStyle() const
 /**
  * Set a font's current outline.
  *
- * This uses the font properties `prop::Font.OUTLINE_LINE_CAP_NUMBER`,
- * `prop::Font.OUTLINE_LINE_JOIN_NUMBER`, and
- * `prop::Font.OUTLINE_MITER_LIMIT_NUMBER` when setting the font outline.
+ * This uses the font properties `prop.Font.OUTLINE_LINE_CAP_NUMBER`,
+ * `prop.Font.OUTLINE_LINE_JOIN_NUMBER`, and
+ * `prop.Font.OUTLINE_MITER_LIMIT_NUMBER` when setting the font outline.
  *
  * This updates any Text objects using this font, and clears already-generated
  * glyphs, if any, from the cache.
@@ -3952,9 +3951,9 @@ struct RendererTextEngine : TextEngine
    *
    * These are the supported properties:
    *
-   * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
+   * - `prop.RendererTextEngine.RENDERER_POINTER`: the renderer to use for
    *   creating textures and drawing text
-   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
+   * - `prop.RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
    *   texture atlas
    *
    * @param props the properties to use.
@@ -4021,9 +4020,9 @@ struct GPUTextEngine : TextEngine
    *
    * These are the supported properties:
    *
-   * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
+   * - `prop.GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
    *   textures and drawing text.
-   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
+   * - `prop.GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
    *   atlas
    *
    * @param props the properties to use.
@@ -5179,9 +5178,9 @@ inline RendererTextEngine::RendererTextEngine(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
+ * - `prop.RendererTextEngine.RENDERER_POINTER`: the renderer to use for
  *   creating textures and drawing text
- * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
+ * - `prop.RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
  *   texture atlas
  *
  * @param props the properties to use.
@@ -5312,9 +5311,9 @@ inline GPUTextEngine::GPUTextEngine(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
+ * - `prop.GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
  *   textures and drawing text.
- * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
+ * - `prop.GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
  *   atlas
  *
  * @param props the properties to use.

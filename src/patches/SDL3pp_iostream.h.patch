@@ -56,7 +56,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
 @@ -329,8 +327,8 @@
-    * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+    * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
     *   multiples of this size, defaulting to 1024.
     *
 -   * @returns a pointer to a new IOStream structure or nullptr on failure; call

@@ -3202,7 +3202,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * together, as well as match applications with associated desktop settings and
  * icons.
  *
- * This will override prop::appMetaData.IDENTIFIER_STRING, if set by the
+ * This will override prop.appMetaData.IDENTIFIER_STRING, if set by the
  * application.
  *
  * This hint should be set before SDL is initialized.
@@ -3220,7 +3220,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * You should use a string that describes your program ("My Game 2: The
  * Revenge")
  *
- * This will override prop::appMetaData.NAME_STRING, if set by the application.
+ * This will override prop.appMetaData.NAME_STRING, if set by the application.
  *
  * This hint should be set before SDL is initialized.
  *
@@ -6457,7 +6457,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * A variable to control whether the return key on the soft keyboard should hide
  * the soft keyboard on Android and iOS.
  *
- * This hint sets the default value of prop::TextInput.MULTILINE_BOOLEAN.
+ * This hint sets the default value of prop.TextInput.MULTILINE_BOOLEAN.
  *
  * The variable can be set to the following values:
  *
@@ -21012,7 +21012,7 @@ struct HidDevice : ResourceBase<HidDeviceRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+   * - `prop.Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
    *   associated with the device, if it was opened using libusb.
    *
    * @returns a valid property ID on success.
@@ -21396,7 +21396,7 @@ inline HidDevice hid_open_path(StringParam path)
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+ * - `prop.Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
  *   associated with the device, if it was opened using libusb.
  *
  * @param dev a device handle returned from hid_open().
@@ -21975,21 +21975,21 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * The following properties may be set at creation time by SDL:
    *
-   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
+   * - `prop.IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
    *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
    *   the program isn't running on Windows, or SDL used some other method to
    *   access the filesystem, this property will not be set.
-   * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
+   * - `prop.IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
    *   stdio `FILE *`, that this IOStream is using to access the filesystem. If
    *   SDL used some other method to access the filesystem, this property will
    *   not be set. PLEASE NOTE that if SDL is using a different C runtime than
    *   your app, trying to use this pointer will almost certainly result in a
    *   crash! This is mostly a problem on Windows; make sure you build SDL and
    *   your app with the same compiler and settings to avoid it.
-   * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+   * - `prop.IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
    *   IOStream is using to access the filesystem.
-   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to
-   *   an Android NDK `AAsset *`, that this IOStream is using to access the
+   * - `prop.IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
+   *   Android NDK `AAsset *`, that this IOStream is using to access the
    *   filesystem. If SDL used some other method to access the filesystem, this
    *   property will not be set.
    *
@@ -22028,14 +22028,14 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * The following properties will be set at creation time by SDL:
    *
-   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
-   *   was passed to this function.
-   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+   *   passed to this function.
+   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
    *   that was passed to this function.
    *
    * Additionally, the following properties are recognized:
    *
-   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
    *   non-nullptr value it will be interpreted as a function of free_func type
    *   and called with the passed `mem` pointer when closing the stream. By
    *   default it is unset, i.e., the memory will not be freed.
@@ -22076,14 +22076,14 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * The following properties will be set at creation time by SDL:
    *
-   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
-   *   was passed to this function.
-   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+   *   passed to this function.
+   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
    *   that was passed to this function.
    *
    * Additionally, the following properties are recognized:
    *
-   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
    *   non-nullptr value it will be interpreted as a function of free_func type
    *   and called with the passed `mem` pointer when closing the stream. By
    *   default it is unset, i.e., the memory will not be freed.
@@ -22111,11 +22111,11 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * This supports the following properties to provide access to the memory and
    * control over allocations:
    *
-   * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
+   * - `prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
    *   of the stream. This can be set to nullptr to transfer ownership of the
    *   memory to the application, which should free the memory with free(). If
    *   this is done, the next operation on the stream must be IOStream.Close().
-   * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+   * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
    *   multiples of this size, defaulting to 1024.
    *
    * @returns a valid IOStream on success.
@@ -23436,20 +23436,20 @@ struct IOStream : ResourceBase<IOStreamRaw>
  *
  * The following properties may be set at creation time by SDL:
  *
- * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
+ * - `prop.IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
  *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
  *   the program isn't running on Windows, or SDL used some other method to
  *   access the filesystem, this property will not be set.
- * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a stdio
+ * - `prop.IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a stdio
  *   `FILE *`, that this IOStream is using to access the filesystem. If SDL used
  *   some other method to access the filesystem, this property will not be set.
  *   PLEASE NOTE that if SDL is using a different C runtime than your app,
  *   trying to use this pointer will almost certainly result in a crash! This is
  *   mostly a problem on Windows; make sure you build SDL and your app with the
  *   same compiler and settings to avoid it.
- * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+ * - `prop.IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
  *   IOStream is using to access the filesystem.
- * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
+ * - `prop.IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
  *   Android NDK `AAsset *`, that this IOStream is using to access the
  *   filesystem. If SDL used some other method to access the filesystem, this
  *   property will not be set.
@@ -23542,14 +23542,14 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  *
  * The following properties will be set at creation time by SDL:
  *
- * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+ * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
  *   passed to this function.
- * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
+ * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
  *   was passed to this function.
  *
  * Additionally, the following properties are recognized:
  *
- * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+ * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
  *   non-nullptr value it will be interpreted as a function of free_func type
  *   and called with the passed `mem` pointer when closing the stream. By
  *   default it is unset, i.e., the memory will not be freed.
@@ -23597,14 +23597,14 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  *
  * The following properties will be set at creation time by SDL:
  *
- * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+ * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
  *   passed to this function.
- * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
+ * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
  *   was passed to this function.
  *
  * Additionally, the following properties are recognized:
  *
- * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+ * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
  *   non-nullptr value it will be interpreted as a function of free_func type
  *   and called with the passed `mem` pointer when closing the stream. By
  *   default it is unset, i.e., the memory will not be freed.
@@ -23640,11 +23640,11 @@ inline IOStream IOStream::FromConstMem(SourceBytes mem)
  * This supports the following properties to provide access to the memory and
  * control over allocations:
  *
- * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
- *   of the stream. This can be set to nullptr to transfer ownership of the
- *   memory to the application, which should free the memory with free(). If
- *   this is done, the next operation on the stream must be IOStream.Close().
- * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+ * - `prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory of
+ *   the stream. This can be set to nullptr to transfer ownership of the memory
+ *   to the application, which should free the memory with free(). If this is
+ *   done, the next operation on the stream must be IOStream.Close().
+ * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
  *   multiples of this size, defaulting to 1024.
  *
  * @returns a pointer to a new IOStream structure or nullptr on failure; call
@@ -34946,7 +34946,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * The application can hang any data it wants here, but the following
    * properties are understood by SDL:
    *
-   * - `prop::AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the
+   * - `prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the
    *   stream be automatically cleaned up when the audio subsystem quits. If set
    *   to false, the streams will persist beyond that. This property is ignored
    *   for streams created through AudioDevice.OpenStream(), and will always be
@@ -36870,7 +36870,7 @@ inline AudioStream::AudioStream(AudioDeviceRef devid,
  * The application can hang any data it wants here, but the following properties
  * are understood by SDL:
  *
- * - `prop::AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream
+ * - `prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream
  *   be automatically cleaned up when the audio subsystem quits. If set to
  *   false, the streams will persist beyond that. This property is ignored for
  *   streams created through AudioDevice.OpenStream(), and will always be
@@ -39587,23 +39587,22 @@ using ProcessRef = ResourceRef<Process>;
  *
  * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected to a
  * new IOStream that is available to the application. Standard input will be
- * available as `prop::process.STDIN_POINTER` and allows Process.GetInput(),
- * standard output will be available as `prop::process.STDOUT_POINTER` and
- * allows Process.Read() and Process.GetOutput(), and standard error will be
- * available as `prop::process.STDERR_POINTER` in the properties for the created
- * process.
+ * available as `prop.process.STDIN_POINTER` and allows Process.GetInput(),
+ * standard output will be available as `prop.process.STDOUT_POINTER` and allows
+ * Process.Read() and Process.GetOutput(), and standard error will be available
+ * as `prop.process.STDERR_POINTER` in the properties for the created process.
  *
  * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is connected to
  * an existing IOStream provided by the application. Standard input is provided
- * using `prop::process.CREATE_STDIN_POINTER`, standard output is provided using
- * `prop::process.CREATE_STDOUT_POINTER`, and standard error is provided using
- * `prop::process.CREATE_STDERR_POINTER` in the creation properties. These
+ * using `prop.process.CREATE_STDIN_POINTER`, standard output is provided using
+ * `prop.process.CREATE_STDOUT_POINTER`, and standard error is provided using
+ * `prop.process.CREATE_STDERR_POINTER` in the creation properties. These
  * existing streams should be closed by the application once the new process is
  * created.
  *
  * In order to use an IOStream with PROCESS_STDIO_REDIRECT, it must have
- * `prop::IOStream.WINDOWS_HANDLE_POINTER` or
- * `prop::IOStream.FILE_DESCRIPTOR_NUMBER` set. This is true for streams
+ * `prop.IOStream.WINDOWS_HANDLE_POINTER` or
+ * `prop.IOStream.FILE_DESCRIPTOR_NUMBER` set. This is true for streams
  * representing files and process I/O.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -39682,9 +39681,9 @@ struct Process : ResourceBase<ProcessRaw>
    * ```
    *
    * Setting pipe_stdio to true is equivalent to setting
-   * `prop::process.CREATE_STDIN_NUMBER` and
-   * `prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and will allow
-   * the use of Process.Read() or Process.GetInput() and Process.GetOutput().
+   * `prop.process.CREATE_STDIN_NUMBER` and `prop.process.CREATE_STDOUT_NUMBER`
+   * to `PROCESS_STDIO_APP`, and will allow the use of Process.Read() or
+   * Process.GetInput() and Process.GetOutput().
    *
    * See CreateProcessWithProperties() for more details.
    *
@@ -39716,48 +39715,48 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::process.CREATE_ARGS_POINTER`: an array of strings containing the
+   * - `prop.process.CREATE_ARGS_POINTER`: an array of strings containing the
    *   program to run, any arguments, and a nullptr pointer, e.g. const char
    *   *args[] = { "myprogram", "argument", nullptr }. This is a required
    *   property.
-   * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If
+   * - `prop.process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If
    *   this property is set, it will be the entire environment for the process,
    *   otherwise the current environment is used.
-   * - `prop::process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+   * - `prop.process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
    *   representing the working directory for the process, defaults to the
    *   current working directory.
-   * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
+   * - `prop.process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
    *   standard input for the process comes from, defaults to
    *   `SDL_PROCESS_STDIO_nullptr`.
-   * - `prop::process.CREATE_STDIN_POINTER`: an IOStream pointer used for
-   *   standard input when `prop::process.CREATE_STDIN_NUMBER` is set to
+   * - `prop.process.CREATE_STDIN_POINTER`: an IOStream pointer used for
+   *   standard input when `prop.process.CREATE_STDIN_NUMBER` is set to
    *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value describing where
+   * - `prop.process.CREATE_STDOUT_NUMBER`: an ProcessIO value describing where
    *   standard output for the process goes to, defaults to
    *   `PROCESS_STDIO_INHERITED`.
-   * - `prop::process.CREATE_STDOUT_POINTER`: an IOStream pointer used for
-   *   standard output when `prop::process.CREATE_STDOUT_NUMBER` is set to
+   * - `prop.process.CREATE_STDOUT_POINTER`: an IOStream pointer used for
+   *   standard output when `prop.process.CREATE_STDOUT_NUMBER` is set to
    *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value describing where
+   * - `prop.process.CREATE_STDERR_NUMBER`: an ProcessIO value describing where
    *   standard error for the process goes to, defaults to
    *   `PROCESS_STDIO_INHERITED`.
-   * - `prop::process.CREATE_STDERR_POINTER`: an IOStream pointer used for
-   *   standard error when `prop::process.CREATE_STDERR_NUMBER` is set to
+   * - `prop.process.CREATE_STDERR_POINTER`: an IOStream pointer used for
+   *   standard error when `prop.process.CREATE_STDERR_NUMBER` is set to
    *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error output
+   * - `prop.process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error output
    *   of the process should be redirected into the standard output of the
    *   process. This property has no effect if
-   *   `prop::process.CREATE_STDERR_NUMBER` is set.
-   * - `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should run
+   *   `prop.process.CREATE_STDERR_NUMBER` is set.
+   * - `prop.process.CREATE_BACKGROUND_BOOLEAN`: true if the process should run
    *   in the background. In this case the default input and output is
    *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
    *   available, and will always be 0.
-   * - `prop::process.CREATE_CMDLINE_STRING`: a string containing the program to
+   * - `prop.process.CREATE_CMDLINE_STRING`: a string containing the program to
    *   run and any parameters. This string is passed directly to `CreateProcess`
    *   on Windows, and does nothing on other platforms. This property is only
    *   important if you want to start programs that does non-standard
    *   command-line processing, and in most cases using
-   *   `prop::process.CREATE_ARGS_POINTER` is sufficient.
+   *   `prop.process.CREATE_ARGS_POINTER` is sufficient.
    *
    * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
    * SIGCHLD should not be ignored or handled because those would prevent SDL
@@ -39817,17 +39816,17 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::process.PID_NUMBER`: the process ID of the process.
-   * - `prop::process.STDIN_POINTER`: an IOStream that can be used to write
-   *   input to the process, if it was created with
-   *   `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
-   * - `prop::process.STDOUT_POINTER`: a non-blocking IOStream that can be used
+   * - `prop.process.PID_NUMBER`: the process ID of the process.
+   * - `prop.process.STDIN_POINTER`: an IOStream that can be used to write input
+   *   to the process, if it was created with `prop.process.CREATE_STDIN_NUMBER`
+   *   set to `PROCESS_STDIO_APP`.
+   * - `prop.process.STDOUT_POINTER`: a non-blocking IOStream that can be used
    *   to read output from the process, if it was created with
-   *   `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
-   * - `prop::process.STDERR_POINTER`: a non-blocking IOStream that can be used
+   *   `prop.process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
+   * - `prop.process.STDERR_POINTER`: a non-blocking IOStream that can be used
    *   to read error output from the process, if it was created with
-   *   `prop::process.CREATE_STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
-   * - `prop::process.BACKGROUND_BOOLEAN`: true if the process is running in the
+   *   `prop.process.CREATE_STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
+   * - `prop.process.BACKGROUND_BOOLEAN`: true if the process is running in the
    *   background.
    *
    * @returns a valid property ID on success.
@@ -39908,7 +39907,7 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * The process must have been created with CreateProcess() and pipe_stdio set
    * to true, or with CreateProcessWithProperties() and
-   * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
+   * `prop.process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Writing to this stream can return less data than expected if the process
    * hasn't read its input. It may be blocked waiting for its output to be read,
@@ -39933,7 +39932,7 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * The process must have been created with CreateProcess() and pipe_stdio set
    * to true, or with CreateProcessWithProperties() and
-   * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
+   * `prop.process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
    *
    * Reading from this stream can return 0 with IOStream.GetStatus() returning
    * IO_STATUS_NOT_READY if no output is available yet.
@@ -40017,8 +40016,8 @@ struct Process : ResourceBase<ProcessRaw>
  * ```
  *
  * Setting pipe_stdio to true is equivalent to setting
- * `prop::process.CREATE_STDIN_NUMBER` and `prop::process.CREATE_STDOUT_NUMBER`
- * to `PROCESS_STDIO_APP`, and will allow the use of Process.Read() or
+ * `prop.process.CREATE_STDIN_NUMBER` and `prop.process.CREATE_STDOUT_NUMBER` to
+ * `PROCESS_STDIO_APP`, and will allow the use of Process.Read() or
  * Process.GetInput() and Process.GetOutput().
  *
  * See CreateProcessWithProperties() for more details.
@@ -40064,47 +40063,46 @@ inline Process::Process(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop::process.CREATE_ARGS_POINTER`: an array of strings containing the
+ * - `prop.process.CREATE_ARGS_POINTER`: an array of strings containing the
  *   program to run, any arguments, and a nullptr pointer, e.g. const char
  *   *args[] = { "myprogram", "argument", nullptr }. This is a required
  *   property.
- * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If this
+ * - `prop.process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If this
  *   property is set, it will be the entire environment for the process,
  *   otherwise the current environment is used.
- * - `prop::process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+ * - `prop.process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
  *   representing the working directory for the process, defaults to the current
  *   working directory.
- * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
+ * - `prop.process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
  *   standard input for the process comes from, defaults to
  *   `SDL_PROCESS_STDIO_nullptr`.
- * - `prop::process.CREATE_STDIN_POINTER`: an IOStream pointer used for standard
- *   input when `prop::process.CREATE_STDIN_NUMBER` is set to
+ * - `prop.process.CREATE_STDIN_POINTER`: an IOStream pointer used for standard
+ *   input when `prop.process.CREATE_STDIN_NUMBER` is set to
  *   `PROCESS_STDIO_REDIRECT`.
- * - `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value describing where
+ * - `prop.process.CREATE_STDOUT_NUMBER`: an ProcessIO value describing where
  *   standard output for the process goes to, defaults to
  *   `PROCESS_STDIO_INHERITED`.
- * - `prop::process.CREATE_STDOUT_POINTER`: an IOStream pointer used for
- *   standard output when `prop::process.CREATE_STDOUT_NUMBER` is set to
+ * - `prop.process.CREATE_STDOUT_POINTER`: an IOStream pointer used for standard
+ *   output when `prop.process.CREATE_STDOUT_NUMBER` is set to
  *   `PROCESS_STDIO_REDIRECT`.
- * - `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value describing where
+ * - `prop.process.CREATE_STDERR_NUMBER`: an ProcessIO value describing where
  *   standard error for the process goes to, defaults to
  *   `PROCESS_STDIO_INHERITED`.
- * - `prop::process.CREATE_STDERR_POINTER`: an IOStream pointer used for
- *   standard error when `prop::process.CREATE_STDERR_NUMBER` is set to
+ * - `prop.process.CREATE_STDERR_POINTER`: an IOStream pointer used for standard
+ *   error when `prop.process.CREATE_STDERR_NUMBER` is set to
  *   `PROCESS_STDIO_REDIRECT`.
- * - `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error output
- *   of the process should be redirected into the standard output of the
- *   process. This property has no effect if
- *   `prop::process.CREATE_STDERR_NUMBER` is set.
- * - `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should run
- *   in the background. In this case the default input and output is
+ * - `prop.process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error output of
+ *   the process should be redirected into the standard output of the process.
+ *   This property has no effect if `prop.process.CREATE_STDERR_NUMBER` is set.
+ * - `prop.process.CREATE_BACKGROUND_BOOLEAN`: true if the process should run in
+ *   the background. In this case the default input and output is
  *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
  *   available, and will always be 0.
- * - `prop::process.CREATE_CMDLINE_STRING`: a string containing the program to
+ * - `prop.process.CREATE_CMDLINE_STRING`: a string containing the program to
  *   run and any parameters. This string is passed directly to `CreateProcess`
  *   on Windows, and does nothing on other platforms. This property is only
  *   important if you want to start programs that does non-standard command-line
- *   processing, and in most cases using `prop::process.CREATE_ARGS_POINTER` is
+ *   processing, and in most cases using `prop.process.CREATE_ARGS_POINTER` is
  *   sufficient.
  *
  * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
@@ -40200,17 +40198,17 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::process.PID_NUMBER`: the process ID of the process.
- * - `prop::process.STDIN_POINTER`: an IOStream that can be used to write input
- *   to the process, if it was created with `prop::process.CREATE_STDIN_NUMBER`
+ * - `prop.process.PID_NUMBER`: the process ID of the process.
+ * - `prop.process.STDIN_POINTER`: an IOStream that can be used to write input
+ *   to the process, if it was created with `prop.process.CREATE_STDIN_NUMBER`
  *   set to `PROCESS_STDIO_APP`.
- * - `prop::process.STDOUT_POINTER`: a non-blocking IOStream that can be used to
+ * - `prop.process.STDOUT_POINTER`: a non-blocking IOStream that can be used to
  *   read output from the process, if it was created with
- *   `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
- * - `prop::process.STDERR_POINTER`: a non-blocking IOStream that can be used to
+ *   `prop.process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
+ * - `prop.process.STDERR_POINTER`: a non-blocking IOStream that can be used to
  *   read error output from the process, if it was created with
- *   `prop::process.CREATE_STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
- * - `prop::process.BACKGROUND_BOOLEAN`: true if the process is running in the
+ *   `prop.process.CREATE_STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
+ * - `prop.process.BACKGROUND_BOOLEAN`: true if the process is running in the
  *   background.
  *
  * @param process the process to query.
@@ -40278,7 +40276,7 @@ inline StringResult Process::Read(int* exitcode)
  *
  * The process must have been created with CreateProcess() and pipe_stdio set to
  * true, or with CreateProcessWithProperties() and
- * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
+ * `prop.process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
  *
  * Writing to this stream can return less data than expected if the process
  * hasn't read its input. It may be blocked waiting for its output to be read,
@@ -40309,7 +40307,7 @@ inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
  *
  * The process must have been created with CreateProcess() and pipe_stdio set to
  * true, or with CreateProcessWithProperties() and
- * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
+ * `prop.process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
  *
  * Reading from this stream can return 0 with IOStream.GetStatus() returning
  * IO_STATUS_NOT_READY if no output is available yet.
@@ -42153,25 +42151,24 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
    *
    * The following properties are understood by SDL:
    *
-   * - `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   * - `prop.Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
    *   surfaces, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 203 for HDR10 surfaces and 1.0 for floating point surfaces.
-   * - `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
-   *   surfaces, this defines the maximum dynamic range used by the content, in
-   *   terms of the SDR white point. This defaults to 0.0, which disables tone
-   *   mapping.
-   * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator used
+   * - `prop.Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point surfaces,
+   *   this defines the maximum dynamic range used by the content, in terms of
+   *   the SDR white point. This defaults to 0.0, which disables tone mapping.
+   * - `prop.Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator used
    *   when compressing from a surface with high dynamic range to another with
    *   lower dynamic range. Currently this supports "chrome", which uses the
    *   same tone mapping that Chrome uses for HDR content, the form "*=N", where
    *   N is a floating point scale factor applied in linear space, and "none",
    *   which disables tone mapping. This defaults to "chrome".
-   * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the left
+   * - `prop.Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the left
    *   edge of the image, if this surface is being used as a cursor.
-   * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
+   * - `prop.Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
    *   edge of the image, if this surface is being used as a cursor.
-   * - `prop::Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
+   * - `prop.Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
    *   meant to be rotated clockwise to make the image right-side up. Default 0.
    *   This is used by the camera API, if a mobile device is oriented
    *   differently than what its camera provides (i.e. - the camera always
@@ -42802,7 +42799,7 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
    * larger than the original, with the background filled in with the colorkey,
    * if available, or RGBA 255/255/255/0 if not.
    *
-   * If `surface` has the prop::Surface.ROTATION_FLOAT property set on it, the
+   * If `surface` has the prop.Surface.ROTATION_FLOAT property set on it, the
    * new copy will have the adjusted value set: if the rotation property is 90
    * and `angle` was 30, the new surface will have a property value of 60 (that
    * is: to be upright vs gravity, this surface needs to rotate 60 more
@@ -43975,24 +43972,24 @@ inline void Surface::Destroy() { DestroySurface(release()); }
  *
  * The following properties are understood by SDL:
  *
- * - `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+ * - `prop.Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
  *   surfaces, this defines the value of 100% diffuse white, with higher values
  *   being displayed in the High Dynamic Range headroom. This defaults to 203
  *   for HDR10 surfaces and 1.0 for floating point surfaces.
- * - `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point surfaces,
+ * - `prop.Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point surfaces,
  *   this defines the maximum dynamic range used by the content, in terms of the
  *   SDR white point. This defaults to 0.0, which disables tone mapping.
- * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator used
- *   when compressing from a surface with high dynamic range to another with
- *   lower dynamic range. Currently this supports "chrome", which uses the same
- *   tone mapping that Chrome uses for HDR content, the form "*=N", where N is a
+ * - `prop.Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator used when
+ *   compressing from a surface with high dynamic range to another with lower
+ *   dynamic range. Currently this supports "chrome", which uses the same tone
+ *   mapping that Chrome uses for HDR content, the form "*=N", where N is a
  *   floating point scale factor applied in linear space, and "none", which
  *   disables tone mapping. This defaults to "chrome".
- * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the left
+ * - `prop.Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the left
  *   edge of the image, if this surface is being used as a cursor.
- * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
- *   edge of the image, if this surface is being used as a cursor.
- * - `prop::Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
+ * - `prop.Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top edge
+ *   of the image, if this surface is being used as a cursor.
+ * - `prop.Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
  *   meant to be rotated clockwise to make the image right-side up. Default 0.
  *   This is used by the camera API, if a mobile device is oriented differently
  *   than what its camera provides (i.e. - the camera always provides portrait
@@ -45145,7 +45142,7 @@ inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(get(), flip); }
  * larger than the original, with the background filled in with the colorkey, if
  * available, or RGBA 255/255/255/0 if not.
  *
- * If `surface` has the prop::Surface.ROTATION_FLOAT property set on it, the new
+ * If `surface` has the prop.Surface.ROTATION_FLOAT property set on it, the new
  * copy will have the adjusted value set: if the rotation property is 90 and
  * `angle` was 30, the new surface will have a property value of 60 (that is: to
  * be upright vs gravity, this surface needs to rotate 60 more degrees).
@@ -46782,9 +46779,9 @@ struct Thread : ResourceBase<ThreadRaw>
    * This is a convenience function, equivalent to calling
    * CreateThreadWithProperties with the following properties set:
    *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
-   * - `prop::thread.CREATE_NAME_STRING`: `name`
-   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+   * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+   * - `prop.thread.CREATE_NAME_STRING`: `name`
+   * - `prop.thread.CREATE_USERDATA_POINTER`: `data`
    *
    * Note that this "function" is actually a macro that calls an internal
    * function with two extra parameters not listed here; they are hidden through
@@ -46816,9 +46813,9 @@ struct Thread : ResourceBase<ThreadRaw>
    * This is a convenience function, equivalent to calling
    * CreateThreadWithProperties with the following properties set:
    *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
-   * - `prop::thread.CREATE_NAME_STRING`: `name`
-   * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+   * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+   * - `prop.thread.CREATE_NAME_STRING`: `name`
+   * - `prop.thread.CREATE_USERDATA_POINTER`: `data`
    *
    * Note that this "function" is actually a macro that calls an internal
    * function with two extra parameters not listed here; they are hidden through
@@ -46848,17 +46845,17 @@ struct Thread : ResourceBase<ThreadRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction value
-   *   that will be called at the start of the new thread's life. Required.
-   * - `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which
-   *   might be available to debuggers. Optional, defaults to nullptr.
-   * - `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined pointer,
+   * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction value that
+   *   will be called at the start of the new thread's life. Required.
+   * - `prop.thread.CREATE_NAME_STRING`: the name of the new thread, which might
+   *   be available to debuggers. Optional, defaults to nullptr.
+   * - `prop.thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined pointer,
    *   which is passed to the entry function on the new thread, as its only
    *   parameter. Optional, defaults to nullptr.
-   * - `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
+   * - `prop.thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
    *   thread's stack. Optional, defaults to 0 (system-defined default).
    *
-   * SDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the
+   * SDL makes an attempt to report `prop.thread.CREATE_NAME_STRING` to the
    * system, so that debuggers can display it. Not all platforms support this.
    *
    * Thread naming is a little complicated: Most systems have very small limits
@@ -46876,7 +46873,7 @@ struct Thread : ResourceBase<ThreadRaw>
    * Thread.GetName().
    *
    * The size (in bytes) of the new stack can be specified with
-   * `prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system default"
+   * `prop.thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system default"
    * which might be wildly different between platforms. x86 Linux generally
    * defaults to eight megabytes, an embedded device might be a few kilobytes
    * instead. You generally need to specify a stack that is a multiple of the
@@ -47073,9 +47070,9 @@ using TLSID = AtomicInt;
  * This is a convenience function, equivalent to calling
  * CreateThreadWithProperties with the following properties set:
  *
- * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
- * - `prop::thread.CREATE_NAME_STRING`: `name`
- * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+ * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+ * - `prop.thread.CREATE_NAME_STRING`: `name`
+ * - `prop.thread.CREATE_USERDATA_POINTER`: `data`
  *
  * Note that this "function" is actually a macro that calls an internal function
  * with two extra parameters not listed here; they are hidden through
@@ -47110,9 +47107,9 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  * This is a convenience function, equivalent to calling
  * CreateThreadWithProperties with the following properties set:
  *
- * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
- * - `prop::thread.CREATE_NAME_STRING`: `name`
- * - `prop::thread.CREATE_USERDATA_POINTER`: `data`
+ * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: `fn`
+ * - `prop.thread.CREATE_NAME_STRING`: `name`
+ * - `prop.thread.CREATE_USERDATA_POINTER`: `data`
  *
  * Note that this "function" is actually a macro that calls an internal function
  * with two extra parameters not listed here; they are hidden through
@@ -47162,17 +47159,17 @@ inline Thread::Thread(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop::thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction value that
+ * - `prop.thread.CREATE_ENTRY_FUNCTION_POINTER`: an ThreadFunction value that
  *   will be called at the start of the new thread's life. Required.
- * - `prop::thread.CREATE_NAME_STRING`: the name of the new thread, which might
+ * - `prop.thread.CREATE_NAME_STRING`: the name of the new thread, which might
  *   be available to debuggers. Optional, defaults to nullptr.
- * - `prop::thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined pointer,
+ * - `prop.thread.CREATE_USERDATA_POINTER`: an arbitrary app-defined pointer,
  *   which is passed to the entry function on the new thread, as its only
  *   parameter. Optional, defaults to nullptr.
- * - `prop::thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
+ * - `prop.thread.CREATE_STACKSIZE_NUMBER`: the size, in bytes, of the new
  *   thread's stack. Optional, defaults to 0 (system-defined default).
  *
- * SDL makes an attempt to report `prop::thread.CREATE_NAME_STRING` to the
+ * SDL makes an attempt to report `prop.thread.CREATE_NAME_STRING` to the
  * system, so that debuggers can display it. Not all platforms support this.
  *
  * Thread naming is a little complicated: Most systems have very small limits
@@ -47190,7 +47187,7 @@ inline Thread::Thread(PropertiesRef props)
  * Thread.GetName().
  *
  * The size (in bytes) of the new stack can be specified with
- * `prop::thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system default"
+ * `prop.thread.CREATE_STACKSIZE_NUMBER`. Zero means "use the system default"
  * which might be wildly different between platforms. x86 Linux generally
  * defaults to eight megabytes, an embedded device might be a few kilobytes
  * instead. You generally need to specify a stack that is a multiple of the
@@ -51851,14 +51848,14 @@ public:
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR headroom
+   * - `prop.Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR headroom
    *   above the SDR white point. This is for informational and diagnostic
    *   purposes only, as not all platforms provide this information at the
    *   display level.
    *
    * On KMS/DRM:
    *
-   * - `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel orientation"
+   * - `prop.Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel orientation"
    *   property for the display in degrees of clockwise rotation. Note that this
    *   is provided only as a hint, and the application is responsible for any
    *   coordinate transformations needed to conform to the requested display
@@ -51866,12 +51863,12 @@ public:
    *
    * On Wayland:
    *
-   * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
+   * - `prop.Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
    *   the display
    *
    * On Windows:
    *
-   * - `prop::Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
+   * - `prop.Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
    *   associated with the display
    *
    * @returns a valid property ID on success.
@@ -52572,12 +52569,12 @@ struct Window : ResourceBase<WindowRaw>
    *
    * By default, popup window positions will automatically be constrained to
    * keep the entire window within display bounds. This can be overridden with
-   * the `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
+   * the `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
    *
    * By default, popup menus will automatically grab keyboard focus from the
    * parent when shown. This behavior can be overridden by setting the
    * `WINDOW_NOT_FOCUSABLE` flag, setting the
-   * `prop::Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
+   * `prop.Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
    * after creation via the `Window.SetFocusable()` function.
    *
    * If a parent window is hidden or destroyed, any child popup windows will be
@@ -52616,108 +52613,108 @@ struct Window : ResourceBase<WindowRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
+   * - `prop.Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
    *   always on top
-   * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no
-   *   window decoration
-   * - `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+   * - `prop.Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no window
+   *   decoration
+   * - `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
    *   "menu" window types should be automatically constrained to be entirely
    *   within display bounds (default), false if no constraints on the position
    *   are desired.
-   * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
+   * - `prop.Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
    *   window will be used with an externally managed graphics context.
-   * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
+   * - `prop.Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
    *   keyboard input (defaults true)
-   * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start
+   * - `prop.Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start
    *   in fullscreen mode at desktop resolution
-   * - `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window
-   * - `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
+   * - `prop.Window.CREATE_HEIGHT_NUMBER`: the height of the window
+   * - `prop.Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
    *   hidden
-   * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
+   * - `prop.Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
    *   a high pixel density buffer if possible
-   * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
+   * - `prop.Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
    *   maximized
-   * - `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
-   * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
+   * - `prop.Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
+   * - `prop.Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
    *   Metal rendering
-   * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
+   * - `prop.Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
    *   minimized
-   * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
+   * - `prop.Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
    *   parent
-   * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
+   * - `prop.Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
    *   with grabbed mouse focus
-   * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used
-   *   with OpenGL rendering
-   * - `prop::Window.CREATE_PARENT_POINTER`: an Window that will be the parent
-   *   of this window, required for windows with the "tooltip", "menu", and
-   *   "modal" properties
-   * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
+   * - `prop.Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used with
+   *   OpenGL rendering
+   * - `prop.Window.CREATE_PARENT_POINTER`: an Window that will be the parent of
+   *   this window, required for windows with the "tooltip", "menu", and "modal"
+   *   properties
+   * - `prop.Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
    *   resizable
-   * - `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
+   * - `prop.Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
    *   encoding
-   * - `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
+   * - `prop.Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
    *   transparent in the areas with alpha of 0
-   * - `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
-   * - `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
+   * - `prop.Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
+   * - `prop.Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
    *   window, not showing in the task bar and window list
-   * - `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used
-   *   with Vulkan rendering
-   * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
-   * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
+   * - `prop.Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used with
+   *   Vulkan rendering
+   * - `prop.Window.CREATE_WIDTH_NUMBER`: the width of the window
+   * - `prop.Window.CREATE_X_NUMBER`: the x position of the window, or
    *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
    *   to the parent for windows with the "tooltip" or "menu" property set.
-   * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
+   * - `prop.Window.CREATE_Y_NUMBER`: the y position of the window, or
    *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
    *   to the parent for windows with the "tooltip" or "menu" property set.
    *
    * These are additional supported properties on macOS:
    *
-   * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+   * - `prop.Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
    *   NSWindow associated with the window, if you want to wrap an existing
    *   window.
-   * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
+   * - `prop.Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
    *   NSView associated with the window, defaults to `[window contentView]`
    *
    * These are additional supported properties on iOS, tvOS, and visionOS:
    *
-   * - `prop::Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+   * - `prop.Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
    *   UIWindowScene associated with the window, defaults to the active window
    *   scene.
    *
    * These are additional supported properties on Wayland:
    *
-   * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
+   * - `prop.Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
    *   application wants to use the Wayland surface for a custom role and does
    *   not want it attached to an XDG toplevel window. See
    *   [README-wayland](README-wayland) for more information on using custom
    *   surfaces.
-   * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+   * - `prop.Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
    *   application wants an associated `wl_egl_window` object to be created and
    *   attached to the window, even if the window does not have the OpenGL
    *   property or `WINDOW_OPENGL` flag set.
-   * - `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
+   * - `prop.Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
    *   associated with the window, if you want to wrap an existing window. See
    *   [README-wayland](README-wayland) for more information.
    *
    * These are additional supported properties on Windows:
    *
-   * - `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
+   * - `prop.Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
    *   window, if you want to wrap an existing window.
-   * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
+   * - `prop.Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
    *   window to share pixel format with, useful for OpenGL windows
    *
    * These are additional supported properties with X11:
    *
-   * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with
+   * - `prop.Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with
    *   the window, if you want to wrap an existing window.
    *
    * The window is implicitly shown if the "hidden" property is not set.
    *
    * These are additional supported properties with Emscripten:
    *
-   * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
+   * - `prop.Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
    *   canvas element. This should start with a '#' sign
-   * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
+   * - `prop.Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
    *   binding element for keyboard inputs for this canvas. The variable can be
    *   one of:
    * - "#window": the javascript window object (default)
@@ -52731,12 +52728,12 @@ struct Window : ResourceBase<WindowRaw>
    *   CreatePopupWindow().
    *
    * If this window is being created to be used with an Renderer, you should not
-   * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
+   * add a graphics API specific property (`prop.Window.CREATE_OPENGL_BOOLEAN`,
    * etc), as SDL will handle that internally when it chooses a renderer.
    * However, SDL might need to recreate your window at that point, which may
    * cause the window to appear briefly, and then flicker as it is recreated.
    * The correct approach to this is to create the window with the
-   * `prop::Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
+   * `prop.Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
    * renderer, then show the window with Window.Show().
    *
    * @param props the properties to use.
@@ -52983,76 +52980,75 @@ struct Window : ResourceBase<WindowRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Window.SHAPE_POINTER`: the surface associated with a shaped window
-   * - `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR headroom
+   * - `prop.Window.SHAPE_POINTER`: the surface associated with a shaped window
+   * - `prop.Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR headroom
    *   above the SDR white point. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
-   * - `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
+   * - `prop.Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
    *   COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the SDR
    *   white level in scRGB colorspace, and on Apple platforms this is always
    *   1.0 for EDR content. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
-   * - `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
+   * - `prop.Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
    *   can be displayed, in terms of the SDR white point. When HDR is not
    *   enabled, this will be 1.0. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
    *
    * On Android:
    *
-   * - `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated with
+   * - `prop.Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated with
    *   the window
-   * - `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with
-   *   the window
+   * - `prop.Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with the
+   *   window
    *
    * On iOS:
    *
-   * - `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)` UIWindow
+   * - `prop.Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)` UIWindow
    *   associated with the window
-   * - `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+   * - `prop.Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
    *   with metal views on the window
-   * - `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
+   * - `prop.Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
    *   framebuffer object. It must be bound when rendering to the screen using
    *   OpenGL.
-   * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
+   * - `prop.Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
    *   renderbuffer object. It must be bound when Window.GL_Swap is called.
-   * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
+   * - `prop.Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
    *   resolve framebuffer, when MSAA is used.
    *
    * On KMS/DRM:
    *
-   * - `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated
+   * - `prop.Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated
    *   with the window (e.g. the X in /dev/dri/cardX)
-   * - `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the
-   *   window
-   * - `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated with
+   * - `prop.Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the window
+   * - `prop.Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated with
    *   the window
    *
    * On macOS:
    *
-   * - `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow
+   * - `prop.Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow
    *   associated with the window
-   * - `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+   * - `prop.Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
    *   with metal views on the window
    *
    * On OpenVR:
    *
-   * - `prop::Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
+   * - `prop.Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
    *   the associated overlay window.
    *
    * On Vivante:
    *
-   * - `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType
+   * - `prop.Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType
    *   associated with the window
-   * - `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType associated
+   * - `prop.Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType associated
    *   with the window
-   * - `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with
-   *   the window
+   * - `prop.Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with the
+   *   window
    *
    * On Windows:
    *
-   * - `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window
-   * - `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window
-   * - `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with the
+   * - `prop.Window.WIN32_HWND_POINTER`: the HWND associated with the window
+   * - `prop.Window.WIN32_HDC_POINTER`: the HDC associated with the window
+   * - `prop.Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with the
    *   window
    *
    * On Wayland:
@@ -53061,39 +53057,39 @@ struct Window : ResourceBase<WindowRaw>
    * show/hide calls. They will be null if the window is hidden and must be
    * queried each time it is shown.
    *
-   * - `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with
+   * - `prop.Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with the
+   *   window
+   * - `prop.Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with the
+   *   window
+   * - `prop.Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated with
    *   the window
-   * - `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with
-   *   the window
-   * - `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated with
-   *   the window
-   * - `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window associated
+   * - `prop.Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window associated
    *   with the window
-   * - `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated
+   * - `prop.Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated
    *   with the window
-   * - `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
+   * - `prop.Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
    *   associated with the window
-   * - 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export
+   * - 'prop.Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export
    *   handle associated with the window
-   * - `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role associated
+   * - `prop.Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role associated
    *   with the window
-   * - `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner
+   * - `prop.Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner
    *   associated with the window, in popup mode
    *
    * On X11:
    *
-   * - `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with the
+   * - `prop.Window.X11_DISPLAY_POINTER`: the X11 Display associated with the
    *   window
-   * - `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with the
+   * - `prop.Window.X11_SCREEN_NUMBER`: the screen number associated with the
    *   window
-   * - `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the
+   * - `prop.Window.X11_WINDOW_NUMBER`: the X11 Window associated with the
    *   window
    *
    * On Emscripten:
    *
-   * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element
-   *   will have
-   * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
+   * - `prop.Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element will
+   *   have
+   * - `prop.Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
    *   that associates keyboard events to this window
    *
    * @returns a valid property ID on success.
@@ -54525,23 +54521,23 @@ struct Window : ResourceBase<WindowRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that describes
-   *   text being input, defaults to TEXTINPUT_TYPE_TEXT.
-   * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that
+   * - `prop.TextInput.TYPE_NUMBER` - an TextInputType value that describes text
+   *   being input, defaults to TEXTINPUT_TYPE_TEXT.
+   * - `prop.TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that
    *   describes how text should be capitalized, defaults to
    *   CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for
    *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail addresses,
    *   usernames, and passwords.
-   * - `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion
-   *   and auto correction, defaults to true.
-   * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are
+   * - `prop.TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion and
+   *   auto correction, defaults to true.
+   * - `prop.TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are
    *   allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is "0" or
    *   is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME is
    *   "1".
    *
    * On Android you can directly specify the input type:
    *
-   * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use,
+   * - `prop.TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use,
    *   overriding other properties. This is documented at
    *   https://developer.android.com/reference/android/text/InputType
    *
@@ -55346,14 +55342,14 @@ inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR headroom
+ * - `prop.Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR headroom
  *   above the SDR white point. This is for informational and diagnostic
  *   purposes only, as not all platforms provide this information at the display
  *   level.
  *
  * On KMS/DRM:
  *
- * - `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel orientation"
+ * - `prop.Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel orientation"
  *   property for the display in degrees of clockwise rotation. Note that this
  *   is provided only as a hint, and the application is responsible for any
  *   coordinate transformations needed to conform to the requested display
@@ -55361,12 +55357,12 @@ inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
  *
  * On Wayland:
  *
- * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
- *   the display
+ * - `prop.Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with the
+ *   display
  *
  * On Windows:
  *
- * - `prop::Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
+ * - `prop.Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
  *   associated with the display
  *
  * @param displayID the instance ID of the display to query.
@@ -56132,12 +56128,12 @@ inline Window::Window(PropertiesRef props)
  *
  * By default, popup window positions will automatically be constrained to keep
  * the entire window within display bounds. This can be overridden with the
- * `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
+ * `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
  *
  * By default, popup menus will automatically grab keyboard focus from the
  * parent when shown. This behavior can be overridden by setting the
  * `WINDOW_NOT_FOCUSABLE` flag, setting the
- * `prop::Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
+ * `prop.Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
  * after creation via the `Window.SetFocusable()` function.
  *
  * If a parent window is hidden or destroyed, any child popup windows will be
@@ -56179,108 +56175,107 @@ inline Window CreatePopupWindow(WindowRef parent,
  *
  * These are the supported properties:
  *
- * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
+ * - `prop.Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
  *   always on top
- * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no window
+ * - `prop.Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no window
  *   decoration
- * - `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+ * - `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
  *   "menu" window types should be automatically constrained to be entirely
  *   within display bounds (default), false if no constraints on the position
  *   are desired.
- * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window
+ * - `prop.Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window
  *   will be used with an externally managed graphics context.
- * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
+ * - `prop.Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
  *   keyboard input (defaults true)
- * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start
- *   in fullscreen mode at desktop resolution
- * - `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window
- * - `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
- *   hidden
- * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a
+ * - `prop.Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start in
+ *   fullscreen mode at desktop resolution
+ * - `prop.Window.CREATE_HEIGHT_NUMBER`: the height of the window
+ * - `prop.Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start hidden
+ * - `prop.Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a
  *   high pixel density buffer if possible
- * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
+ * - `prop.Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
  *   maximized
- * - `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
- * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
+ * - `prop.Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
+ * - `prop.Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
  *   Metal rendering
- * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
+ * - `prop.Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
  *   minimized
- * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
+ * - `prop.Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
  *   parent
- * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts with
+ * - `prop.Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts with
  *   grabbed mouse focus
- * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used with
+ * - `prop.Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used with
  *   OpenGL rendering
- * - `prop::Window.CREATE_PARENT_POINTER`: an Window that will be the parent of
+ * - `prop.Window.CREATE_PARENT_POINTER`: an Window that will be the parent of
  *   this window, required for windows with the "tooltip", "menu", and "modal"
  *   properties
- * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
+ * - `prop.Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
  *   resizable
- * - `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
+ * - `prop.Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
  *   encoding
- * - `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
+ * - `prop.Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
  *   transparent in the areas with alpha of 0
- * - `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
- * - `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
+ * - `prop.Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
+ * - `prop.Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
  *   window, not showing in the task bar and window list
- * - `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used with
+ * - `prop.Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used with
  *   Vulkan rendering
- * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
- * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
+ * - `prop.Window.CREATE_WIDTH_NUMBER`: the width of the window
+ * - `prop.Window.CREATE_X_NUMBER`: the x position of the window, or
  *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
  *   to the parent for windows with the "tooltip" or "menu" property set.
- * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
+ * - `prop.Window.CREATE_Y_NUMBER`: the y position of the window, or
  *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
  *   to the parent for windows with the "tooltip" or "menu" property set.
  *
  * These are additional supported properties on macOS:
  *
- * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+ * - `prop.Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
  *   NSWindow associated with the window, if you want to wrap an existing
  *   window.
- * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
- *   NSView associated with the window, defaults to `[window contentView]`
+ * - `prop.Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)` NSView
+ *   associated with the window, defaults to `[window contentView]`
  *
  * These are additional supported properties on iOS, tvOS, and visionOS:
  *
- * - `prop::Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+ * - `prop.Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
  *   UIWindowScene associated with the window, defaults to the active window
  *   scene.
  *
  * These are additional supported properties on Wayland:
  *
- * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
+ * - `prop.Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
  *   application wants to use the Wayland surface for a custom role and does not
  *   want it attached to an XDG toplevel window. See
  *   [README-wayland](README-wayland) for more information on using custom
  *   surfaces.
- * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+ * - `prop.Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
  *   application wants an associated `wl_egl_window` object to be created and
  *   attached to the window, even if the window does not have the OpenGL
  *   property or `WINDOW_OPENGL` flag set.
- * - `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
- *   associated with the window, if you want to wrap an existing window. See
+ * - `prop.Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface associated
+ *   with the window, if you want to wrap an existing window. See
  *   [README-wayland](README-wayland) for more information.
  *
  * These are additional supported properties on Windows:
  *
- * - `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
+ * - `prop.Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
  *   window, if you want to wrap an existing window.
- * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
+ * - `prop.Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
  *   window to share pixel format with, useful for OpenGL windows
  *
  * These are additional supported properties with X11:
  *
- * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with the
+ * - `prop.Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with the
  *   window, if you want to wrap an existing window.
  *
  * The window is implicitly shown if the "hidden" property is not set.
  *
  * These are additional supported properties with Emscripten:
  *
- * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
+ * - `prop.Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
  *   canvas element. This should start with a '#' sign
- * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
+ * - `prop.Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
  *   binding element for keyboard inputs for this canvas. The variable can be
  *   one of:
  * - "#window": the javascript window object (default)
@@ -56294,12 +56289,12 @@ inline Window CreatePopupWindow(WindowRef parent,
  *   CreatePopupWindow().
  *
  * If this window is being created to be used with an Renderer, you should not
- * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
+ * add a graphics API specific property (`prop.Window.CREATE_OPENGL_BOOLEAN`,
  * etc), as SDL will handle that internally when it chooses a renderer. However,
  * SDL might need to recreate your window at that point, which may cause the
  * window to appear briefly, and then flicker as it is recreated. The correct
  * approach to this is to create the window with the
- * `prop::Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
+ * `prop.Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
  * renderer, then show the window with Window.Show().
  *
  * @param props the properties to use.
@@ -56630,75 +56625,75 @@ inline WindowRef Window::GetParent() const
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Window.SHAPE_POINTER`: the surface associated with a shaped window
- * - `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR headroom
+ * - `prop.Window.SHAPE_POINTER`: the surface associated with a shaped window
+ * - `prop.Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR headroom
  *   above the SDR white point. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
+ * - `prop.Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
  *   COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the SDR
  *   white level in scRGB colorspace, and on Apple platforms this is always 1.0
  *   for EDR content. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
+ * - `prop.Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
  *   can be displayed, in terms of the SDR white point. When HDR is not enabled,
  *   this will be 1.0. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
  *
  * On Android:
  *
- * - `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated with
- *   the window
- * - `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with the
+ * - `prop.Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated with the
+ *   window
+ * - `prop.Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with the
  *   window
  *
  * On iOS:
  *
- * - `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)` UIWindow
+ * - `prop.Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)` UIWindow
  *   associated with the window
- * - `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+ * - `prop.Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
  *   with metal views on the window
- * - `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
+ * - `prop.Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
  *   framebuffer object. It must be bound when rendering to the screen using
  *   OpenGL.
- * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
+ * - `prop.Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
  *   renderbuffer object. It must be bound when Window.GL_Swap is called.
- * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
+ * - `prop.Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
  *   resolve framebuffer, when MSAA is used.
  *
  * On KMS/DRM:
  *
- * - `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated with
+ * - `prop.Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated with
  *   the window (e.g. the X in /dev/dri/cardX)
- * - `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the window
- * - `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated with
- *   the window
+ * - `prop.Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the window
+ * - `prop.Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated with the
+ *   window
  *
  * On macOS:
  *
- * - `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow
+ * - `prop.Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow
  *   associated with the window
- * - `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+ * - `prop.Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
  *   with metal views on the window
  *
  * On OpenVR:
  *
- * - `prop::Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
+ * - `prop.Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
  *   the associated overlay window.
  *
  * On Vivante:
  *
- * - `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType associated
+ * - `prop.Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType associated
  *   with the window
- * - `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType associated
+ * - `prop.Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType associated
  *   with the window
- * - `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with the
+ * - `prop.Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with the
  *   window
  *
  * On Windows:
  *
- * - `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window
- * - `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window
- * - `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with the
+ * - `prop.Window.WIN32_HWND_POINTER`: the HWND associated with the window
+ * - `prop.Window.WIN32_HDC_POINTER`: the HDC associated with the window
+ * - `prop.Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with the
  *   window
  *
  * On Wayland:
@@ -56707,39 +56702,39 @@ inline WindowRef Window::GetParent() const
  * show/hide calls. They will be null if the window is hidden and must be
  * queried each time it is shown.
  *
- * - `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with the
+ * - `prop.Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with the
  *   window
- * - `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with the
+ * - `prop.Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with the
  *   window
- * - `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated with
+ * - `prop.Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated with the
+ *   window
+ * - `prop.Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window associated with
  *   the window
- * - `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window associated
- *   with the window
- * - `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated with
+ * - `prop.Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated with
  *   the window
- * - `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
+ * - `prop.Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
  *   associated with the window
- * - 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export handle
+ * - 'prop.Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export handle
  *   associated with the window
- * - `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role associated
- *   with the window
- * - `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner
- *   associated with the window, in popup mode
+ * - `prop.Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role associated with
+ *   the window
+ * - `prop.Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner associated
+ *   with the window, in popup mode
  *
  * On X11:
  *
- * - `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with the
+ * - `prop.Window.X11_DISPLAY_POINTER`: the X11 Display associated with the
  *   window
- * - `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with the
+ * - `prop.Window.X11_SCREEN_NUMBER`: the screen number associated with the
  *   window
- * - `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the window
+ * - `prop.Window.X11_WINDOW_NUMBER`: the X11 Window associated with the window
  *
  * On Emscripten:
  *
- * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element will
+ * - `prop.Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element will
  *   have
- * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
- *   that associates keyboard events to this window
+ * - `prop.Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element that
+ *   associates keyboard events to this window
  *
  * @param window the window to query.
  * @returns a valid property ID on success.
@@ -59639,22 +59634,22 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
  *
  * These are the supported properties:
  *
- * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
+ * - `prop.FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
  *   structs, which will be used as filters for file-based selections. Ignored
  *   if the dialog is an "Open Folder" dialog. If non-nullptr, the array of
  *   filters must remain valid at least until the callback is invoked.
- * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
+ * - `prop.FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
  *   filters, if it exists.
- * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should be
+ * - `prop.FileDialog.WINDOW_POINTER`: the window that the dialog should be
  *   modal for.
- * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to start the
+ * - `prop.FileDialog.LOCATION_STRING`: the default folder or file to start the
  *   dialog at.
- * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
+ * - `prop.FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
  *   one entry.
- * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
- * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button should
+ * - `prop.FileDialog.TITLE_STRING`: the title for the dialog.
+ * - `prop.FileDialog.ACCEPT_STRING`: the label that the accept button should
  *   have.
- * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button should
+ * - `prop.FileDialog.CANCEL_STRING`: the label that the cancel button should
  *   have.
  *
  * Note that each platform may or may not support any of the properties.
@@ -59692,22 +59687,22 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
  *
  * These are the supported properties:
  *
- * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
+ * - `prop.FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
  *   structs, which will be used as filters for file-based selections. Ignored
  *   if the dialog is an "Open Folder" dialog. If non-nullptr, the array of
  *   filters must remain valid at least until the callback is invoked.
- * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
+ * - `prop.FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
  *   filters, if it exists.
- * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should be
+ * - `prop.FileDialog.WINDOW_POINTER`: the window that the dialog should be
  *   modal for.
- * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to start the
+ * - `prop.FileDialog.LOCATION_STRING`: the default folder or file to start the
  *   dialog at.
- * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
+ * - `prop.FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
  *   one entry.
- * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
- * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button should
+ * - `prop.FileDialog.TITLE_STRING`: the title for the dialog.
+ * - `prop.FileDialog.ACCEPT_STRING`: the label that the accept button should
  *   have.
- * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button should
+ * - `prop.FileDialog.CANCEL_STRING`: the label that the cancel button should
  *   have.
  *
  * Note that each platform may or may not support any of the properties.
@@ -61808,7 +61803,7 @@ inline std::string GetEventDescription(const Event& event)
  * ### Vulkan
  *
  * SDL driver name: "vulkan" (for use in CreateGPUDevice() and
- * prop::GPUDevice.CREATE_NAME_STRING)
+ * prop.GPUDevice.CREATE_NAME_STRING)
  *
  * Supported on Windows, Linux, Nintendo Switch, and certain Android devices.
  * Requires Vulkan 1.0 with the following extensions and device features:
@@ -61826,10 +61821,10 @@ inline std::string GetEventDescription(const Event& event)
  * Android devices by using these properties when creating the GPU device with
  * CreateGPUDeviceWithProperties():
  *
- * - prop::GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
- * - prop::GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
- * - prop::GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
- * - prop::GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN
+ * - prop.GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
+ * - prop.GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
+ * - prop.GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
+ * - prop.GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN
  *
  * ### D3D12
  *
@@ -61843,7 +61838,7 @@ inline std::string GetEventDescription(const Event& event)
  * Haswell and Broadwell GPUs by using this property when creating the GPU
  * device with CreateGPUDeviceWithProperties():
  *
- * - prop::GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
+ * - prop.GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
  *
  * ### Metal
  *
@@ -62124,7 +62119,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param device a GPU Context.
@@ -62208,8 +62203,8 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be
-   *   displayed in debugging tools.
+   * - `prop.GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be displayed
+   *   in debugging tools.
    *
    * @param device a GPU Context.
    * @param createinfo a struct describing the state of the transfer buffer to
@@ -62306,25 +62301,25 @@ public:
    * There are optional properties that can be provided through
    * GPUTextureCreateInfo's `props`. These are the supported properties:
    *
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this red intensity. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this green intensity. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this blue intensity. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this alpha intensity. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if
    *   the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
    *   texture to a depth of this value. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only)
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only)
    *   if the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
    *   texture to a stencil of this Uint8 value. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUTexture.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param device a GPU Context.
@@ -62405,7 +62400,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUSampler.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUSampler.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param device a GPU Context.
@@ -62518,13 +62513,13 @@ public:
    * language, your vertex semantics should start at TEXCOORD0 and increment
    * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
    * prefix to something other than TEXCOORD you can use
-   * prop::GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
+   * prop.GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
    * CreateGPUDeviceWithProperties().
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param device a GPU Context.
@@ -62615,7 +62610,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUComputePipeline.CREATE_NAME_STRING`: a name that can be
+   * - `prop.GPUComputePipeline.CREATE_NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param device a GPU Context.
@@ -62692,7 +62687,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be
+   * - `prop.GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param device a GPU Context.
@@ -64715,31 +64710,31 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::GPUDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode properties
+   * - `prop.GPUDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode properties
    *   and validations, defaults to true.
-   * - `prop::GPUDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
+   * - `prop.GPUDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
    *   efficiency over maximum GPU performance, defaults to false.
-   * - `prop::GPUDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
+   * - `prop.GPUDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
    *   useful debug information on device creation, defaults to true.
-   * - `prop::GPUDevice.CREATE_NAME_STRING`: the name of the GPU driver to use,
+   * - `prop.GPUDevice.CREATE_NAME_STRING`: the name of the GPU driver to use,
    *   if a specific one is desired.
-   * - `prop::GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
+   * - `prop.GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
    *   device feature shaderClipDistance. If disabled, clip distances are not
    *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
    *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
    *   Metal. Disabling optional features allows the application to run on some
    *   older Android devices. Defaults to true.
-   * - `prop::GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+   * - `prop.GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
    *   device feature depthClamp. If disabled, there is no depth clamp support
    *   and enable_depth_clip in GPURasterizerState must always be set to true.
    *   Disabling optional features allows the application to run on some older
    *   Android devices. Defaults to true.
-   * - `prop::GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+   * - `prop.GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
    *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
    *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
    *   Disabling optional features allows the application to run on some older
    *   Android devices. Defaults to true.
-   * - `prop::GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+   * - `prop.GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
    *   feature samplerAnisotropy. If disabled, enable_anisotropy of
    *   GPUSamplerCreateInfo must be set to false. Disabling optional features
    *   allows the application to run on some older Android devices. Defaults to
@@ -64747,24 +64742,24 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * These are the current shader format properties:
    *
-   * - `prop::GPUDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
+   * - `prop.GPUDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
    *   provide shaders for an NDA platform.
-   * - `prop::GPUDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to
-   *   provide SPIR-V shaders if applicable.
-   * - `prop::GPUDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to provide
+   * - `prop.GPUDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to provide
+   *   SPIR-V shaders if applicable.
+   * - `prop.GPUDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to provide
    *   DXBC shaders if applicable
-   * - `prop::GPUDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to provide
+   * - `prop.GPUDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to provide
    *   DXIL shaders if applicable.
-   * - `prop::GPUDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to provide
+   * - `prop.GPUDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to provide
    *   MSL shaders if applicable.
-   * - `prop::GPUDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
+   * - `prop.GPUDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
    *   provide Metal shader libraries if applicable.
    *
    * With the D3D12 backend:
    *
-   * - `prop::GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use
-   *   for all vertex semantics, default is "TEXCOORD".
-   * - `prop::GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+   * - `prop.GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
+   *   all vertex semantics, default is "TEXCOORD".
+   * - `prop.GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
    *   default, Resourcing Binding Tier 2 is required for D3D12 support.
    *   However, an application can set this property to true to enable Tier 1
    *   support, if (and only if) the application uses 8 or fewer storage
@@ -64772,15 +64767,15 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
    *   either supports Tier 2 Resource Binding or does not support D3D12 in any
    *   capacity. Defaults to false.
-   * - `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain
-   *   feature checks are only possible on Windows 11 by default. By setting
-   *   this alongside `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+   * - `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
+   *   checks are only possible on Windows 11 by default. By setting this
+   *   alongside `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
    *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
    *   feature checks possible on older platforms. The version you provide must
    *   match the one given in the DLL.
-   * - `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+   * - `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
    *   checks are only possible on Windows 11 by default. By setting this
-   *   alongside `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+   *   alongside `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
    *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
    *   feature checks possible on older platforms. The path you provide must be
    *   relative to the executable path of your app. Be sure not to put the DLL
@@ -64789,20 +64784,20 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * With the Vulkan backend:
    *
-   * - `prop::GPUDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+   * - `prop.GPUDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
    *   default, Vulkan device enumeration includes drivers of all types,
    *   including software renderers (for example, the Lavapipe Mesa driver).
    *   This can be useful if your application _requires_ SDL_GPU, but if you can
    *   provide your own fallback renderer (for example, an OpenGL renderer) this
    *   property can be set to true. Defaults to false.
-   * - `prop::GPUDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+   * - `prop.GPUDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
    *   GPUVulkanOptions structure to be processed during device creation. This
    *   allows configuring a variety of Vulkan-specific options such as
    *   increasing the API version and opting into extensions aside from the
    *   minimal set SDL requires.
    *
    * With the Metal backend: -
-   * `prop::GPUDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+   * `prop.GPUDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
    * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
    * However, an application can set this property to true to enable support for
    * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not
@@ -64874,9 +64869,9 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * The following properties are provided by SDL:
    *
-   * `prop::GPUDevice.NAME_STRING`: Contains the name of the underlying device
-   * as reported by the system driver. This string has no standardized format,
-   * is highly inconsistent between hardware devices and drivers, and is able to
+   * `prop.GPUDevice.NAME_STRING`: Contains the name of the underlying device as
+   * reported by the system driver. This string has no standardized format, is
+   * highly inconsistent between hardware devices and drivers, and is able to
    * change at any time. Do not attempt to parse this string as it is bound to
    * fail at some point in the future when system drivers are updated, new
    * hardware devices are introduced, or when SDL adds new GPU backends or
@@ -64910,8 +64905,8 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * of a translation interface, the device may be emulated in software, or the
    * string may contain generic text that does not identify the device at all.
    *
-   * `prop::GPUDevice.DRIVER_NAME_STRING`: Contains the self-reported name of
-   * the underlying system driver.
+   * `prop.GPUDevice.DRIVER_NAME_STRING`: Contains the self-reported name of the
+   * underlying system driver.
    *
    * Strings that have been found in the wild include:
    *
@@ -64922,12 +64917,12 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * - Mali-G715
    * - venus
    *
-   * `prop::GPUDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
+   * `prop.GPUDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
    * of the underlying system driver. This is a relatively short version string
-   * in an unspecified format. If prop::GPUDevice.DRIVER_INFO_STRING is
-   * available then that property should be preferred over this one as it may
-   * contain additional information that is useful for identifying the exact
-   * driver version used.
+   * in an unspecified format. If prop.GPUDevice.DRIVER_INFO_STRING is available
+   * then that property should be preferred over this one as it may contain
+   * additional information that is useful for identifying the exact driver
+   * version used.
    *
    * Strings that have been found in the wild include:
    *
@@ -64935,11 +64930,11 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * - 0.405.2463
    * - 32.0.15.6614
    *
-   * `prop::GPUDevice.DRIVER_INFO_STRING`: Contains the detailed version
+   * `prop.GPUDevice.DRIVER_INFO_STRING`: Contains the detailed version
    * information of the underlying system driver as reported by the driver. This
    * is an arbitrary string with no standardized format and it may contain
    * newlines. This property should be preferred over
-   * prop::GPUDevice.DRIVER_VERSION_STRING if it is available as it usually
+   * prop.GPUDevice.DRIVER_VERSION_STRING if it is available as it usually
    * contains the same information but in a format that is easier to read.
    *
    * Strings that have been found in the wild include:
@@ -65002,7 +64997,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUComputePipeline.CREATE_NAME_STRING`: a name that can be
+   * - `prop.GPUComputePipeline.CREATE_NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param createinfo a struct describing the state of the compute pipeline to
@@ -65024,7 +65019,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be
+   * - `prop.GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param createinfo a struct describing the state of the graphics pipeline to
@@ -65048,7 +65043,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUSampler.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUSampler.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param createinfo a struct describing the state of the sampler to create.
@@ -65117,13 +65112,13 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * language, your vertex semantics should start at TEXCOORD0 and increment
    * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
    * prefix to something other than TEXCOORD you can use
-   * prop::GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
+   * prop.GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
    * CreateGPUDeviceWithProperties().
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param createinfo a struct describing the state of the shader to create.
@@ -65154,25 +65149,25 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through
    * GPUTextureCreateInfo's `props`. These are the supported properties:
    *
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this red intensity. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this green intensity. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this blue intensity. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this alpha intensity. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if
    *   the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
    *   texture to a depth of this value. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only)
+   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only)
    *   if the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
    *   texture to a stencil of this Uint8 value. Defaults to zero.
-   * - `prop::GPUTexture.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUTexture.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param createinfo a struct describing the state of the texture to create.
@@ -65216,7 +65211,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param createinfo a struct describing the state of the buffer to create.
@@ -65250,8 +65245,8 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop::GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be
-   *   displayed in debugging tools.
+   * - `prop.GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be displayed
+   *   in debugging tools.
    *
    * @param createinfo a struct describing the state of the transfer buffer to
    *                   create.
@@ -65272,7 +65267,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
   /**
    * Sets an arbitrary string constant to label a buffer.
    *
-   * You should use prop::GPUBuffer.CREATE_NAME_STRING with
+   * You should use prop.GPUBuffer.CREATE_NAME_STRING with
    * GPUDevice.CreateBuffer instead of this function to avoid thread safety
    * issues.
    *
@@ -65291,7 +65286,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
   /**
    * Sets an arbitrary string constant to label a texture.
    *
-   * You should use prop::GPUTexture.CREATE_NAME_STRING with
+   * You should use prop.GPUTexture.CREATE_NAME_STRING with
    * GPUDevice.CreateTexture instead of this function to avoid thread safety
    * issues.
    *
@@ -66558,31 +66553,31 @@ inline GPUDevice::GPUDevice(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop::GPUDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode properties
- *   and validations, defaults to true.
- * - `prop::GPUDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
+ * - `prop.GPUDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode properties and
+ *   validations, defaults to true.
+ * - `prop.GPUDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
  *   efficiency over maximum GPU performance, defaults to false.
- * - `prop::GPUDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
- *   useful debug information on device creation, defaults to true.
- * - `prop::GPUDevice.CREATE_NAME_STRING`: the name of the GPU driver to use, if
+ * - `prop.GPUDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log useful
+ *   debug information on device creation, defaults to true.
+ * - `prop.GPUDevice.CREATE_NAME_STRING`: the name of the GPU driver to use, if
  *   a specific one is desired.
- * - `prop::GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
- *   device feature shaderClipDistance. If disabled, clip distances are not
- *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
- *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
- *   Metal. Disabling optional features allows the application to run on some
- *   older Android devices. Defaults to true.
- * - `prop::GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+ * - `prop.GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan device
+ *   feature shaderClipDistance. If disabled, clip distances are not supported
+ *   in shader code: gl_ClipDistance[] built-ins of GLSL, SV_ClipDistance0/1
+ *   semantics of HLSL and [[clip_distance]] attribute of Metal. Disabling
+ *   optional features allows the application to run on some older Android
+ *   devices. Defaults to true.
+ * - `prop.GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
  *   device feature depthClamp. If disabled, there is no depth clamp support and
  *   enable_depth_clip in GPURasterizerState must always be set to true.
  *   Disabling optional features allows the application to run on some older
  *   Android devices. Defaults to true.
- * - `prop::GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+ * - `prop.GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
  *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
  *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
  *   Disabling optional features allows the application to run on some older
  *   Android devices. Defaults to true.
- * - `prop::GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+ * - `prop.GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
  *   feature samplerAnisotropy. If disabled, enable_anisotropy of
  *   GPUSamplerCreateInfo must be set to false. Disabling optional features
  *   allows the application to run on some older Android devices. Defaults to
@@ -66590,39 +66585,39 @@ inline GPUDevice::GPUDevice(PropertiesRef props)
  *
  * These are the current shader format properties:
  *
- * - `prop::GPUDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
- *   provide shaders for an NDA platform.
- * - `prop::GPUDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to provide
+ * - `prop.GPUDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to provide
+ *   shaders for an NDA platform.
+ * - `prop.GPUDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to provide
  *   SPIR-V shaders if applicable.
- * - `prop::GPUDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to provide
+ * - `prop.GPUDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to provide
  *   DXBC shaders if applicable
- * - `prop::GPUDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to provide
+ * - `prop.GPUDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to provide
  *   DXIL shaders if applicable.
- * - `prop::GPUDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to provide
- *   MSL shaders if applicable.
- * - `prop::GPUDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
+ * - `prop.GPUDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to provide MSL
+ *   shaders if applicable.
+ * - `prop.GPUDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
  *   provide Metal shader libraries if applicable.
  *
  * With the D3D12 backend:
  *
- * - `prop::GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
+ * - `prop.GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
  *   all vertex semantics, default is "TEXCOORD".
- * - `prop::GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+ * - `prop.GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
  *   default, Resourcing Binding Tier 2 is required for D3D12 support. However,
  *   an application can set this property to true to enable Tier 1 support, if
  *   (and only if) the application uses 8 or fewer storage resources across all
  *   shader stages. As of writing, this property is useful for targeting Intel
  *   Haswell and Broadwell GPUs; other hardware either supports Tier 2 Resource
  *   Binding or does not support D3D12 in any capacity. Defaults to false.
- * - `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
+ * - `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
  *   checks are only possible on Windows 11 by default. By setting this
- *   alongside `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+ *   alongside `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
  *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
  *   feature checks possible on older platforms. The version you provide must
  *   match the one given in the DLL.
- * - `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+ * - `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
  *   checks are only possible on Windows 11 by default. By setting this
- *   alongside `prop::GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+ *   alongside `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
  *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
  *   feature checks possible on older platforms. The path you provide must be
  *   relative to the executable path of your app. Be sure not to put the DLL in
@@ -66630,20 +66625,20 @@ inline GPUDevice::GPUDevice(PropertiesRef props)
  *
  * With the Vulkan backend:
  *
- * - `prop::GPUDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+ * - `prop.GPUDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
  *   default, Vulkan device enumeration includes drivers of all types, including
  *   software renderers (for example, the Lavapipe Mesa driver). This can be
  *   useful if your application _requires_ SDL_GPU, but if you can provide your
  *   own fallback renderer (for example, an OpenGL renderer) this property can
  *   be set to true. Defaults to false.
- * - `prop::GPUDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+ * - `prop.GPUDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
  *   GPUVulkanOptions structure to be processed during device creation. This
  *   allows configuring a variety of Vulkan-specific options such as increasing
  *   the API version and opting into extensions aside from the minimal set SDL
  *   requires.
  *
  * With the Metal backend: -
- * `prop::GPUDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+ * `prop.GPUDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
  * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
  * However, an application can set this property to true to enable support for
  * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not write
@@ -66896,7 +66891,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  *
  * The following properties are provided by SDL:
  *
- * `prop::GPUDevice.NAME_STRING`: Contains the name of the underlying device as
+ * `prop.GPUDevice.NAME_STRING`: Contains the name of the underlying device as
  * reported by the system driver. This string has no standardized format, is
  * highly inconsistent between hardware devices and drivers, and is able to
  * change at any time. Do not attempt to parse this string as it is bound to
@@ -66932,7 +66927,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  * translation interface, the device may be emulated in software, or the string
  * may contain generic text that does not identify the device at all.
  *
- * `prop::GPUDevice.DRIVER_NAME_STRING`: Contains the self-reported name of the
+ * `prop.GPUDevice.DRIVER_NAME_STRING`: Contains the self-reported name of the
  * underlying system driver.
  *
  * Strings that have been found in the wild include:
@@ -66944,12 +66939,11 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  * - Mali-G715
  * - venus
  *
- * `prop::GPUDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
- * of the underlying system driver. This is a relatively short version string in
- * an unspecified format. If prop::GPUDevice.DRIVER_INFO_STRING is available
- * then that property should be preferred over this one as it may contain
- * additional information that is useful for identifying the exact driver
- * version used.
+ * `prop.GPUDevice.DRIVER_VERSION_STRING`: Contains the self-reported version of
+ * the underlying system driver. This is a relatively short version string in an
+ * unspecified format. If prop.GPUDevice.DRIVER_INFO_STRING is available then
+ * that property should be preferred over this one as it may contain additional
+ * information that is useful for identifying the exact driver version used.
  *
  * Strings that have been found in the wild include:
  *
@@ -66957,11 +66951,11 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
  * - 0.405.2463
  * - 32.0.15.6614
  *
- * `prop::GPUDevice.DRIVER_INFO_STRING`: Contains the detailed version
+ * `prop.GPUDevice.DRIVER_INFO_STRING`: Contains the detailed version
  * information of the underlying system driver as reported by the driver. This
  * is an arbitrary string with no standardized format and it may contain
  * newlines. This property should be preferred over
- * prop::GPUDevice.DRIVER_VERSION_STRING if it is available as it usually
+ * prop.GPUDevice.DRIVER_VERSION_STRING if it is available as it usually
  * contains the same information but in a format that is easier to read.
  *
  * Strings that have been found in the wild include:
@@ -67033,7 +67027,7 @@ inline PropertiesRef GPUDevice::GetProperties()
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop::GPUComputePipeline.CREATE_NAME_STRING`: a name that can be displayed
+ * - `prop.GPUComputePipeline.CREATE_NAME_STRING`: a name that can be displayed
  *   in debugging tools.
  *
  * @param device a GPU Context.
@@ -67086,8 +67080,8 @@ constexpr auto CREATE_NAME_STRING =
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop::GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be
- *   displayed in debugging tools.
+ * - `prop.GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be displayed
+ *   in debugging tools.
  *
  * @param device a GPU Context.
  * @param createinfo a struct describing the state of the graphics pipeline to
@@ -67141,7 +67135,7 @@ constexpr auto CREATE_NAME_STRING =
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop::GPUSampler.CREATE_NAME_STRING`: a name that can be displayed in
+ * - `prop.GPUSampler.CREATE_NAME_STRING`: a name that can be displayed in
  *   debugging tools.
  *
  * @param device a GPU Context.
@@ -67236,13 +67230,13 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
  * language, your vertex semantics should start at TEXCOORD0 and increment like
  * so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic prefix to
  * something other than TEXCOORD you can use
- * prop::GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
+ * prop.GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
  * CreateGPUDeviceWithProperties().
  *
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop::GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
+ * - `prop.GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
  *   debugging tools.
  *
  * @param device a GPU Context.
@@ -67300,25 +67294,25 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
  * There are optional properties that can be provided through
  * GPUTextureCreateInfo's `props`. These are the supported properties:
  *
- * - `prop::GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
+ * - `prop.GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
  *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
  *   color with this red intensity. Defaults to zero.
- * - `prop::GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
+ * - `prop.GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
  *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
  *   color with this green intensity. Defaults to zero.
- * - `prop::GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
+ * - `prop.GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
  *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
  *   color with this blue intensity. Defaults to zero.
- * - `prop::GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
+ * - `prop.GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
  *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
  *   color with this alpha intensity. Defaults to zero.
- * - `prop::GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if
- *   the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
- *   texture to a depth of this value. Defaults to zero.
- * - `prop::GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only) if
+ * - `prop.GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if the
+ *   texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the texture
+ *   to a depth of this value. Defaults to zero.
+ * - `prop.GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only) if
  *   the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
  *   texture to a stencil of this Uint8 value. Defaults to zero.
- * - `prop::GPUTexture.CREATE_NAME_STRING`: a name that can be displayed in
+ * - `prop.GPUTexture.CREATE_NAME_STRING`: a name that can be displayed in
  *   debugging tools.
  *
  * @param device a GPU Context.
@@ -67412,7 +67406,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop::GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
+ * - `prop.GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
  *   debugging tools.
  *
  * @param device a GPU Context.
@@ -67473,7 +67467,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop::GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be displayed
+ * - `prop.GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be displayed
  *   in debugging tools.
  *
  * @param device a GPU Context.
@@ -67526,7 +67520,7 @@ constexpr auto CREATE_NAME_STRING =
 /**
  * Sets an arbitrary string constant to label a buffer.
  *
- * You should use prop::GPUBuffer.CREATE_NAME_STRING with GPUDevice.CreateBuffer
+ * You should use prop.GPUBuffer.CREATE_NAME_STRING with GPUDevice.CreateBuffer
  * instead of this function to avoid thread safety issues.
  *
  * @param device a GPU Context.
@@ -67555,7 +67549,7 @@ inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
 /**
  * Sets an arbitrary string constant to label a texture.
  *
- * You should use prop::GPUTexture.CREATE_NAME_STRING with
+ * You should use prop.GPUTexture.CREATE_NAME_STRING with
  * GPUDevice.CreateTexture instead of this function to avoid thread safety
  * issues.
  *
@@ -70453,15 +70447,15 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an LED
+   * - `prop.JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an LED
    *   that has adjustable brightness
-   * - `prop::JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED
-   *   that has adjustable color
-   * - `prop::JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a
-   *   player LED
-   * - `prop::JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has left/right
+   * - `prop.JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED that
+   *   has adjustable color
+   * - `prop.JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a player
+   *   LED
+   * - `prop.JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has left/right
    *   rumble
-   * - `prop::JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has
+   * - `prop.JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has
    *   simple trigger rumble
    *
    * @returns a valid property ID on success.
@@ -71747,16 +71741,16 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an LED that
+ * - `prop.JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an LED that
  *   has adjustable brightness
- * - `prop::JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED that
+ * - `prop.JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED that
  *   has adjustable color
- * - `prop::JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a player
+ * - `prop.JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a player
  *   LED
- * - `prop::JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has left/right
+ * - `prop.JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has left/right
  *   rumble
- * - `prop::JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has
- *   simple trigger rumble
+ * - `prop.JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has simple
+ *   trigger rumble
  *
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns a valid property ID on success.
@@ -72826,8 +72820,8 @@ inline void Window::StartTextInput(PropertiesRef props)
 /**
  * Text input type.
  *
- * These are the valid values for prop::TextInput.TYPE_NUMBER. Not every value
- * is valid on every platform, but where a value isn't supported, a reasonable
+ * These are the valid values for prop.TextInput.TYPE_NUMBER. Not every value is
+ * valid on every platform, but where a value isn't supported, a reasonable
  * fallback will be used.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -72870,7 +72864,7 @@ constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
 /**
  * Auto capitalization type.
  *
- * These are the valid values for prop::TextInput.CAPITALIZATION_NUMBER. Not
+ * These are the valid values for prop.TextInput.CAPITALIZATION_NUMBER. Not
  * every value is valid on every platform, but where a value isn't supported, a
  * reasonable fallback will be used.
  *
@@ -75167,16 +75161,16 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED that
+   * - `prop.GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED that
    *   has adjustable brightness
-   * - `prop::GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED that
+   * - `prop.GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED that
    *   has adjustable color
-   * - `prop::GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a player
+   * - `prop.GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a player
    *   LED
-   * - `prop::GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has left/right
+   * - `prop.GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has left/right
    *   rumble
-   * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has
-   *   simple trigger rumble
+   * - `prop.GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has simple
+   *   trigger rumble
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -76343,15 +76337,14 @@ inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED that
+ * - `prop.GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED that
  *   has adjustable brightness
- * - `prop::GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED that
- *   has adjustable color
- * - `prop::GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a player
- *   LED
- * - `prop::GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has left/right
+ * - `prop.GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED that has
+ *   adjustable color
+ * - `prop.GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a player LED
+ * - `prop.GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has left/right
  *   rumble
- * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has simple
+ * - `prop.GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has simple
  *   trigger rumble
  *
  * @param gamepad a gamepad identifier previously returned by OpenGamepad().
@@ -79886,31 +79879,30 @@ inline void SetAppMetadata(StringParam appname,
  *
  * These are the supported properties:
  *
- * - `prop::appMetaData.NAME_STRING`: The human-readable name of the
- *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
- *   anywhere the OS shows the name of the application separately from window
- *   titles, such as volume control applets, etc. This defaults to "SDL
- *   Application".
- * - `prop::appMetaData.VERSION_STRING`: The version of the app that is running;
+ * - `prop.appMetaData.NAME_STRING`: The human-readable name of the application,
+ *   like "My Game 2: Bad Guy's Revenge!". This will show up anywhere the OS
+ *   shows the name of the application separately from window titles, such as
+ *   volume control applets, etc. This defaults to "SDL Application".
+ * - `prop.appMetaData.VERSION_STRING`: The version of the app that is running;
  *   there are no rules on format, so "1.0.3beta2" and "April 22nd, 2024" and a
  *   git hash are all valid options. This has no default.
- * - `prop::appMetaData.IDENTIFIER_STRING`: A unique string that identifies this
+ * - `prop.appMetaData.IDENTIFIER_STRING`: A unique string that identifies this
  *   app. This must be in reverse-domain format, like "com.example.mygame2".
  *   This string is used by desktop compositors to identify and group windows
  *   together, as well as match applications with associated desktop settings
  *   and icons. If you plan to package your application in a container such as
  *   Flatpak, the app ID should match the name of your Flatpak container as
  *   well. This has no default.
- * - `prop::appMetaData.CREATOR_STRING`: The human-readable name of the
+ * - `prop.appMetaData.CREATOR_STRING`: The human-readable name of the
  *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
- * - `prop::appMetaData.COPYRIGHT_STRING`: The human-readable copyright notice,
+ * - `prop.appMetaData.COPYRIGHT_STRING`: The human-readable copyright notice,
  *   like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this to one
  *   line, don't paste a copy of a whole software license in here. This has no
  *   default.
- * - `prop::appMetaData.URL_STRING`: A URL to the app on the web. Maybe a
- *   product page, or a storefront, or even a GitHub repository, for user's
- *   further information This has no default.
- * - `prop::appMetaData.TYPE_STRING`: The type of application this is. Currently
+ * - `prop.appMetaData.URL_STRING`: A URL to the app on the web. Maybe a product
+ *   page, or a storefront, or even a GitHub repository, for user's further
+ *   information This has no default.
+ * - `prop.appMetaData.TYPE_STRING`: The type of application this is. Currently
  *   this string can be "game" for a video game, "mediaplayer" for a media
  *   player, or generically "application" if nothing else applies. Future
  *   versions of SDL might add new types. This defaults to "application".
@@ -80323,7 +80315,7 @@ constexpr TextureAccess TEXTUREACCESS_TARGET =
  * This affects how texture coordinates are interpreted outside of [0, 1]
  *
  * Texture wrapping is always supported for power of two texture sizes, and is
- * supported for other texture sizes if prop::Renderer.TEXTURE_WRAPPING_BOOLEAN
+ * supported for other texture sizes if prop.Renderer.TEXTURE_WRAPPING_BOOLEAN
  * is set to true.
  *
  * @since This enum is available since SDL 3.4.0.
@@ -80470,47 +80462,47 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
+   * - `prop.Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
    *   use, if a specific one is desired
-   * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
+   * - `prop.Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
    *   displayed, required if this isn't a software renderer using a surface
-   * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
+   * - `prop.Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
    *   displayed, if you want a software renderer without a window
-   * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
+   * - `prop.Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
    *   describing the colorspace for output to the display, defaults to
    *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support
    *   COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR
    *   output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB
    *   colorspace, but values can go beyond 1.0 and float (linear) format
    *   textures can be used for HDR content.
-   * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
-   *   present synchronized with the refresh rate. This property can take any
-   *   value that is supported by Renderer.SetVSync() for the renderer.
+   * - `prop.Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want present
+   *   synchronized with the refresh rate. This property can take any value that
+   *   is supported by Renderer.SetVSync() for the renderer.
    *
    * With the SDL GPU renderer (since SDL 3.4.0):
    *
-   * - `prop::Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
+   * - `prop.Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
    *   renderer, optional.
-   * - `prop::Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+   * - `prop.Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
    *   provide SPIR-V shaders to GPURenderState, optional.
-   * - `prop::Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
+   * - `prop.Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
    *   provide DXIL shaders to GPURenderState, optional.
-   * - `prop::Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to
+   * - `prop.Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to
    *   provide MSL shaders to GPURenderState, optional.
    *
    * With the vulkan renderer:
    *
-   * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
+   * - `prop.Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
    *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
+   * - `prop.Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
    *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
+   * - `prop.Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
    *   VkPhysicalDevice to use with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with
+   * - `prop.Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with
    *   the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
+   * - `prop.Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for rendering.
-   * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
+   * - `prop.Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for presentation.
    *
    * @param props the properties to use.
@@ -80623,76 +80615,76 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Renderer.NAME_STRING`: the name of the rendering driver
-   * - `prop::Renderer.WINDOW_POINTER`: the window where rendering is displayed,
+   * - `prop.Renderer.NAME_STRING`: the name of the rendering driver
+   * - `prop.Renderer.WINDOW_POINTER`: the window where rendering is displayed,
    *   if any
-   * - `prop::Renderer.SURFACE_POINTER`: the surface where rendering is
+   * - `prop.Renderer.SURFACE_POINTER`: the surface where rendering is
    *   displayed, if this is a software renderer without a window
-   * - `prop::Renderer.VSYNC_NUMBER`: the current vsync setting
-   * - `prop::Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width and
+   * - `prop.Renderer.VSYNC_NUMBER`: the current vsync setting
+   * - `prop.Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width and
    *   height
-   * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array
-   *   of pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
+   * - `prop.Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array of
+   *   pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
    *   available texture formats for this renderer.
-   * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
+   * - `prop.Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
    *   TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
-   * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
+   * - `prop.Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
    *   the colorspace for output to the display, defaults to COLORSPACE_SRGB.
-   * - `prop::Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
+   * - `prop.Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
    *   COLORSPACE_SRGB_LINEAR and the renderer is showing on a display with HDR
    *   enabled. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
-   * - `prop::Renderer.SDR_WHITE_POINT_FLOAT`: the value of SDR white in the
+   * - `prop.Renderer.SDR_WHITE_POINT_FLOAT`: the value of SDR white in the
    *   COLORSPACE_SRGB_LINEAR colorspace. When HDR is enabled, this value is
    *   automatically multiplied into the color scale. This property can change
    *   dynamically when EVENT_WINDOW_HDR_STATE_CHANGED is sent.
-   * - `prop::Renderer.HDR_HEADROOM_FLOAT`: the additional high dynamic range
+   * - `prop.Renderer.HDR_HEADROOM_FLOAT`: the additional high dynamic range
    *   that can be displayed, in terms of the SDR white point. When HDR is not
    *   enabled, this will be 1.0. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
    *
    * With the direct3d renderer:
    *
-   * - `prop::Renderer.D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated
-   *   with the renderer
+   * - `prop.Renderer.D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated with
+   *   the renderer
    *
    * With the direct3d11 renderer:
    *
-   * - `prop::Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated with
+   * - `prop.Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated with
    *   the renderer
-   * - `prop::Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1 associated
+   * - `prop.Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1 associated
    *   with the renderer. This may change when the window is resized.
    *
    * With the direct3d12 renderer:
    *
-   * - `prop::Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated with
+   * - `prop.Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated with
    *   the renderer
-   * - `prop::Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4 associated
+   * - `prop.Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4 associated
    *   with the renderer.
-   * - `prop::Renderer.D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue
+   * - `prop.Renderer.D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue
    *   associated with the renderer
    *
    * With the vulkan renderer:
    *
-   * - `prop::Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated with
+   * - `prop.Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated with
    *   the renderer
-   * - `prop::Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated with
+   * - `prop.Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated with
    *   the renderer
-   * - `prop::Renderer.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
+   * - `prop.Renderer.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
    *   associated with the renderer
-   * - `prop::Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with the
+   * - `prop.Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with the
    *   renderer
-   * - `prop::Renderer.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+   * - `prop.Renderer.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
    *   family index used for rendering
-   * - `prop::Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+   * - `prop.Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
    *   family index used for presentation
-   * - `prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER`: the number of
+   * - `prop.Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER`: the number of
    *   swapchain images, or potential frames in flight, used by the Vulkan
    *   renderer
    *
    * With the gpu renderer:
    *
-   * - `prop::Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with the
+   * - `prop.Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with the
    *   renderer
    *
    * @returns a valid property ID on success.
@@ -80820,7 +80812,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * The pixel format of the created texture may be different from the pixel
    * format of the surface, and can be queried using the
-   * prop::Texture.FORMAT_NUMBER property.
+   * prop.Texture.FORMAT_NUMBER property.
    *
    * @param surface the Surface structure containing pixel data used to fill the
    *                texture.
@@ -80842,98 +80834,98 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
+   * - `prop.Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
    *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
    *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
    *   other RGB textures and COLORSPACE_JPEG for YUV textures.
-   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
    *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+   * - `prop.Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
    *   required
-   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   * - `prop.Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
+   *   required
+   * - `prop.Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
    *   texture formats. This can be set later with Texture.SetPalette()
-   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the value of 100% diffuse white, with higher
+   * - `prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   *   textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   * - `prop.Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
    *   textures, this defines the maximum dynamic range used by the content, in
    *   terms of the SDR white point. This would be equivalent to maxCLL /
-   *   prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+   *   prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
    *   defined, any values outside the range supported by the display will be
    *   scaled into the available HDR headroom, otherwise they are clipped.
    *
    * With the direct3d11 renderer:
    *
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the direct3d12 renderer:
    *
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the metal renderer:
    *
-   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   * - `prop.Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
    *   associated with the texture, if you want to create a texture from an
    *   existing pixel buffer.
    *
    * With the opengl renderer:
    *
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the opengles2 renderer:
    *
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the vulkan renderer:
    *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   * - `prop.Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
    *   the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   * - `prop.Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
    *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
    *
    * With the GPU renderer:
    *
-   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated
-   *   with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+   *   the texture, if you want to wrap an existing texture.
    * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
@@ -82220,8 +82212,8 @@ struct Renderer : ResourceBase<RendererRaw>
    * This should be called each frame that you want semaphore synchronization.
    * The Vulkan renderer may have multiple frames in flight on the GPU, so you
    * should have multiple semaphores that are used for synchronization. Querying
-   * prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the
-   * maximum number of semaphores you'll need.
+   * prop.Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the maximum
+   * number of semaphores you'll need.
    *
    * @param wait_stage_mask the VkPipelineStageFlags for the wait.
    * @param wait_semaphore a VkSempahore to wait on before rendering the current
@@ -82495,7 +82487,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * The pixel format of the created texture may be different from the pixel
    * format of the surface, and can be queried using the
-   * prop::Texture.FORMAT_NUMBER property.
+   * prop.Texture.FORMAT_NUMBER property.
    *
    * @param renderer the rendering context.
    * @param surface the Surface structure containing pixel data used to fill the
@@ -82517,98 +82509,98 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * These are the supported properties:
    *
-   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
+   * - `prop.Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
    *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
    *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
    *   other RGB textures and COLORSPACE_JPEG for YUV textures.
-   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
    *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+   * - `prop.Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
    *   required
-   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   * - `prop.Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
+   *   required
+   * - `prop.Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
    *   texture formats. This can be set later with Texture.SetPalette()
-   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the value of 100% diffuse white, with higher
+   * - `prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   *   textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   * - `prop.Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
    *   textures, this defines the maximum dynamic range used by the content, in
    *   terms of the SDR white point. This would be equivalent to maxCLL /
-   *   prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+   *   prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
    *   defined, any values outside the range supported by the display will be
    *   scaled into the available HDR headroom, otherwise they are clipped.
    *
    * With the direct3d11 renderer:
    *
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the direct3d12 renderer:
    *
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the metal renderer:
    *
-   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   * - `prop.Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
    *   associated with the texture, if you want to create a texture from an
    *   existing pixel buffer.
    *
    * With the opengl renderer:
    *
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the opengles2 renderer:
    *
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the vulkan renderer:
    *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   * - `prop.Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
    *   the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   * - `prop.Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
    *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
    *
    * With the GPU renderer:
    *
-   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated
-   *   with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+   *   the texture, if you want to wrap an existing texture.
    * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
@@ -82768,88 +82760,87 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Texture.COLORSPACE_NUMBER`: an Colorspace value describing the
+   * - `prop.Texture.COLORSPACE_NUMBER`: an Colorspace value describing the
    *   texture colorspace.
-   * - `prop::Texture.FORMAT_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat.
-   * - `prop::Texture.ACCESS_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.ACCESS_NUMBER`: one of the enumerated values in
    *   TextureAccess.
-   * - `prop::Texture.WIDTH_NUMBER`: the width of the texture in pixels.
-   * - `prop::Texture.HEIGHT_NUMBER`: the height of the texture in pixels.
-   * - `prop::Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   * - `prop.Texture.WIDTH_NUMBER`: the width of the texture in pixels.
+   * - `prop.Texture.HEIGHT_NUMBER`: the height of the texture in pixels.
+   * - `prop.Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
    *   textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for other textures.
-   * - `prop::Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
-   *   textures, this defines the maximum dynamic range used by the content, in
-   *   terms of the SDR white point. If this is defined, any values outside the
-   *   range supported by the display will be scaled into the available HDR
-   *   headroom, otherwise they are clipped. This defaults to 1.0 for SDR
-   *   textures, 4.0 for HDR10 textures, and no default for floating point
-   *   textures.
+   * - `prop.Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point textures,
+   *   this defines the maximum dynamic range used by the content, in terms of
+   *   the SDR white point. If this is defined, any values outside the range
+   *   supported by the display will be scaled into the available HDR headroom,
+   *   otherwise they are clipped. This defaults to 1.0 for SDR textures, 4.0
+   *   for HDR10 textures, and no default for floating point textures.
    *
    * With the direct3d11 renderer:
    *
-   * - `prop::Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated
-   *   with the texture
-   * - `prop::Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated
+   * - `prop.Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated with
+   *   the texture
+   * - `prop.Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated
    *   with the U plane of a YUV texture
-   * - `prop::Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated
+   * - `prop.Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated
    *   with the V plane of a YUV texture
    *
    * With the direct3d12 renderer:
    *
-   * - `prop::Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with
+   * - `prop.Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with
    *   the texture
-   * - `prop::Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated
+   * - `prop.Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated
    *   with the U plane of a YUV texture
-   * - `prop::Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated
+   * - `prop.Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated
    *   with the V plane of a YUV texture
    *
    * With the vulkan renderer:
    *
-   * - `prop::Texture.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the
+   * - `prop.Texture.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the
    *   texture
    *
    * With the opengl renderer:
    *
-   * - `prop::Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with
+   * - `prop.Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with
    *   the texture
-   * - `prop::Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated
    *   with the UV plane of an NV12 texture
-   * - `prop::Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated
    *   with the U plane of a YUV texture
-   * - `prop::Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated
    *   with the V plane of a YUV texture
-   * - `prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
+   * - `prop.Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
    *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)
-   * - `prop::Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of the
+   * - `prop.Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of the
    *   texture (0.0 - 1.0)
-   * - `prop::Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of the
+   * - `prop.Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of the
    *   texture (0.0 - 1.0)
    *
    * With the opengles2 renderer:
    *
-   * - `prop::Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated
    *   with the texture
-   * - `prop::Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture
-   * - `prop::Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture associated
+   *   with the UV plane of an NV12 texture
+   * - `prop.Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated
    *   with the U plane of a YUV texture
-   * - `prop::Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated
    *   with the V plane of a YUV texture
-   * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
+   * - `prop.Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
    *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
    *
    * With the gpu renderer:
    *
-   * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
+   * - `prop.Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
    *   texture
-   * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with
-   *   the UV plane of an NV12 texture
-   * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the
+   * - `prop.Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with the
+   *   UV plane of an NV12 texture
+   * - `prop.Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the
    *   U plane of a YUV texture
-   * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the
+   * - `prop.Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the
    *   V plane of a YUV texture
    *
    * @returns a valid property ID on success.
@@ -83256,7 +83247,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * Update the given texture rectangle with new pixel data.
    *
    * The pixel data must be in the pixel format of the texture, which can be
-   * queried using the prop::Texture.FORMAT_NUMBER property.
+   * queried using the prop.Texture.FORMAT_NUMBER property.
    *
    * This is a fairly slow function, intended for use with static textures that
    * do not change often.
@@ -83288,7 +83279,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * Update the given texture rectangle with new pixel data.
    *
    * The pixel data must be in the pixel format of the texture, which can be
-   * queried using the prop::Texture.FORMAT_NUMBER property.
+   * queried using the prop.Texture.FORMAT_NUMBER property.
    *
    * This is a fairly slow function, intended for use with static textures that
    * do not change often.
@@ -83968,47 +83959,47 @@ inline Renderer::Renderer(SurfaceRef surface)
  *
  * These are the supported properties:
  *
- * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
+ * - `prop.Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
  *   use, if a specific one is desired
- * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
+ * - `prop.Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
  *   displayed, required if this isn't a software renderer using a surface
- * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
+ * - `prop.Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
  *   displayed, if you want a software renderer without a window
- * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
+ * - `prop.Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
  *   describing the colorspace for output to the display, defaults to
  *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support
  *   COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR
  *   output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB
  *   colorspace, but values can go beyond 1.0 and float (linear) format textures
  *   can be used for HDR content.
- * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want present
+ * - `prop.Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want present
  *   synchronized with the refresh rate. This property can take any value that
  *   is supported by Renderer.SetVSync() for the renderer.
  *
  * With the SDL GPU renderer (since SDL 3.4.0):
  *
- * - `prop::Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
+ * - `prop.Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
  *   renderer, optional.
- * - `prop::Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+ * - `prop.Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
  *   provide SPIR-V shaders to GPURenderState, optional.
- * - `prop::Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
- *   provide DXIL shaders to GPURenderState, optional.
- * - `prop::Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide
+ * - `prop.Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to provide
+ *   DXIL shaders to GPURenderState, optional.
+ * - `prop.Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide
  *   MSL shaders to GPURenderState, optional.
  *
  * With the vulkan renderer:
  *
- * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use with
+ * - `prop.Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use with
  *   the renderer, optional.
- * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use with
+ * - `prop.Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use with
  *   the renderer, optional.
- * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
- *   VkPhysicalDevice to use with the renderer, optional.
- * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with the
+ * - `prop.Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
+ *   to use with the renderer, optional.
+ * - `prop.Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with the
  *   renderer, optional.
- * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
- *   queue family index used for rendering.
- * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+ * - `prop.Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+ *   family index used for rendering.
+ * - `prop.Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
  *   family index used for presentation.
  *
  * @param props the properties to use.
@@ -84295,76 +84286,76 @@ inline const char* Renderer::GetName() const
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Renderer.NAME_STRING`: the name of the rendering driver
- * - `prop::Renderer.WINDOW_POINTER`: the window where rendering is displayed,
- *   if any
- * - `prop::Renderer.SURFACE_POINTER`: the surface where rendering is displayed,
+ * - `prop.Renderer.NAME_STRING`: the name of the rendering driver
+ * - `prop.Renderer.WINDOW_POINTER`: the window where rendering is displayed, if
+ *   any
+ * - `prop.Renderer.SURFACE_POINTER`: the surface where rendering is displayed,
  *   if this is a software renderer without a window
- * - `prop::Renderer.VSYNC_NUMBER`: the current vsync setting
- * - `prop::Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width and
+ * - `prop.Renderer.VSYNC_NUMBER`: the current vsync setting
+ * - `prop.Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width and
  *   height
- * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array of
+ * - `prop.Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array of
  *   pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
  *   available texture formats for this renderer.
- * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
+ * - `prop.Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
  *   TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
- * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
+ * - `prop.Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
  *   the colorspace for output to the display, defaults to COLORSPACE_SRGB.
- * - `prop::Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
+ * - `prop.Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
  *   COLORSPACE_SRGB_LINEAR and the renderer is showing on a display with HDR
  *   enabled. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Renderer.SDR_WHITE_POINT_FLOAT`: the value of SDR white in the
+ * - `prop.Renderer.SDR_WHITE_POINT_FLOAT`: the value of SDR white in the
  *   COLORSPACE_SRGB_LINEAR colorspace. When HDR is enabled, this value is
  *   automatically multiplied into the color scale. This property can change
  *   dynamically when EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Renderer.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
+ * - `prop.Renderer.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
  *   can be displayed, in terms of the SDR white point. When HDR is not enabled,
  *   this will be 1.0. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
  *
  * With the direct3d renderer:
  *
- * - `prop::Renderer.D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated with
+ * - `prop.Renderer.D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated with
  *   the renderer
  *
  * With the direct3d11 renderer:
  *
- * - `prop::Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated with the
+ * - `prop.Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated with the
  *   renderer
- * - `prop::Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1 associated
+ * - `prop.Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1 associated
  *   with the renderer. This may change when the window is resized.
  *
  * With the direct3d12 renderer:
  *
- * - `prop::Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated with the
+ * - `prop.Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated with the
  *   renderer
- * - `prop::Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4 associated
+ * - `prop.Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4 associated
  *   with the renderer.
- * - `prop::Renderer.D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue
+ * - `prop.Renderer.D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue
  *   associated with the renderer
  *
  * With the vulkan renderer:
  *
- * - `prop::Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated with
- *   the renderer
- * - `prop::Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated with
- *   the renderer
- * - `prop::Renderer.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
- *   associated with the renderer
- * - `prop::Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with the
+ * - `prop.Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated with the
  *   renderer
- * - `prop::Renderer.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
- *   family index used for rendering
- * - `prop::Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue family
+ * - `prop.Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated with the
+ *   renderer
+ * - `prop.Renderer.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
+ *   associated with the renderer
+ * - `prop.Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with the
+ *   renderer
+ * - `prop.Renderer.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue family
+ *   index used for rendering
+ * - `prop.Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue family
  *   index used for presentation
- * - `prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER`: the number of
+ * - `prop.Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER`: the number of
  *   swapchain images, or potential frames in flight, used by the Vulkan
  *   renderer
  *
  * With the gpu renderer:
  *
- * - `prop::Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with the
+ * - `prop.Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with the
  *   renderer
  *
  * @param renderer the rendering context.
@@ -84571,7 +84562,7 @@ inline Texture::Texture(RendererRef renderer, PropertiesRef props)
  *
  * The pixel format of the created texture may be different from the pixel
  * format of the surface, and can be queried using the
- * prop::Texture.FORMAT_NUMBER property.
+ * prop.Texture.FORMAT_NUMBER property.
  *
  * @param renderer the rendering context.
  * @param surface the Surface structure containing pixel data used to fill the
@@ -84603,97 +84594,97 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
  *
  * These are the supported properties:
  *
- * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
- *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
- *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
- *   other RGB textures and COLORSPACE_JPEG for YUV textures.
- * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+ * - `prop.Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing the
+ *   texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating point
+ *   textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for other
+ *   RGB textures and COLORSPACE_JPEG for YUV textures.
+ * - `prop.Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
  *   PixelFormat, defaults to the best RGBA format for the renderer
- * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+ * - `prop.Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
  *   TextureAccess, defaults to TEXTUREACCESS_STATIC
- * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+ * - `prop.Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
  *   required
- * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
+ * - `prop.Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
  *   required
- * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+ * - `prop.Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
  *   texture formats. This can be set later with Texture.SetPalette()
- * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+ * - `prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
  *   textures, this defines the value of 100% diffuse white, with higher values
  *   being displayed in the High Dynamic Range headroom. This defaults to 100
  *   for HDR10 textures and 1.0 for floating point textures.
- * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+ * - `prop.Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
  *   textures, this defines the maximum dynamic range used by the content, in
  *   terms of the SDR white point. This would be equivalent to maxCLL /
- *   prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+ *   prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
  *   defined, any values outside the range supported by the display will be
  *   scaled into the available HDR headroom, otherwise they are clipped.
  *
  * With the direct3d11 renderer:
  *
- * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
- *   associated with the texture, if you want to wrap an existing texture.
- * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+ * - `prop.Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated
+ *   with the texture, if you want to wrap an existing texture.
+ * - `prop.Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+ * - `prop.Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the direct3d12 renderer:
  *
- * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource associated
+ * - `prop.Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource associated
  *   with the texture, if you want to wrap an existing texture.
- * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+ * - `prop.Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+ * - `prop.Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the metal renderer:
  *
- * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+ * - `prop.Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
  *   associated with the texture, if you want to create a texture from an
  *   existing pixel buffer.
  *
  * With the opengl renderer:
  *
- * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture associated
+ * - `prop.Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture associated
  *   with the texture, if you want to wrap an existing texture.
- * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
  *   associated with the UV plane of an NV12 texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the opengles2 renderer:
  *
- * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
  *   associated with the texture, if you want to wrap an existing texture.
- * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
  *   associated with the UV plane of an NV12 texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the vulkan renderer:
  *
- * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+ * - `prop.Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
  *   the texture, if you want to wrap an existing texture.
- * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+ * - `prop.Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
  *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
  *
  * With the GPU renderer:
  *
- * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+ * - `prop.Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
  *   the texture, if you want to wrap an existing texture.
  * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture associated
  *   with the UV plane of an NV12 texture, if you want to wrap an existing
@@ -84916,18 +84907,18 @@ constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Texture.COLORSPACE_NUMBER`: an Colorspace value describing the
+ * - `prop.Texture.COLORSPACE_NUMBER`: an Colorspace value describing the
  *   texture colorspace.
- * - `prop::Texture.FORMAT_NUMBER`: one of the enumerated values in PixelFormat.
- * - `prop::Texture.ACCESS_NUMBER`: one of the enumerated values in
+ * - `prop.Texture.FORMAT_NUMBER`: one of the enumerated values in PixelFormat.
+ * - `prop.Texture.ACCESS_NUMBER`: one of the enumerated values in
  *   TextureAccess.
- * - `prop::Texture.WIDTH_NUMBER`: the width of the texture in pixels.
- * - `prop::Texture.HEIGHT_NUMBER`: the height of the texture in pixels.
- * - `prop::Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+ * - `prop.Texture.WIDTH_NUMBER`: the width of the texture in pixels.
+ * - `prop.Texture.HEIGHT_NUMBER`: the height of the texture in pixels.
+ * - `prop.Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
  *   textures, this defines the value of 100% diffuse white, with higher values
  *   being displayed in the High Dynamic Range headroom. This defaults to 100
  *   for HDR10 textures and 1.0 for other textures.
- * - `prop::Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point textures,
+ * - `prop.Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point textures,
  *   this defines the maximum dynamic range used by the content, in terms of the
  *   SDR white point. If this is defined, any values outside the range supported
  *   by the display will be scaled into the available HDR headroom, otherwise
@@ -84936,66 +84927,66 @@ constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
  *
  * With the direct3d11 renderer:
  *
- * - `prop::Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated with
+ * - `prop.Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated with
  *   the texture
- * - `prop::Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated
- *   with the U plane of a YUV texture
- * - `prop::Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated
- *   with the V plane of a YUV texture
+ * - `prop.Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated with
+ *   the U plane of a YUV texture
+ * - `prop.Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated with
+ *   the V plane of a YUV texture
  *
  * With the direct3d12 renderer:
  *
- * - `prop::Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with
+ * - `prop.Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with
  *   the texture
- * - `prop::Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated with
+ * - `prop.Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated with
  *   the U plane of a YUV texture
- * - `prop::Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated with
+ * - `prop.Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated with
  *   the V plane of a YUV texture
  *
  * With the vulkan renderer:
  *
- * - `prop::Texture.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the
+ * - `prop.Texture.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the
  *   texture
  *
  * With the opengl renderer:
  *
- * - `prop::Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with
+ * - `prop.Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with
  *   the texture
- * - `prop::Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated
- *   with the UV plane of an NV12 texture
- * - `prop::Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated with
+ * - `prop.Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated with
+ *   the UV plane of an NV12 texture
+ * - `prop.Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated with
  *   the U plane of a YUV texture
- * - `prop::Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated with
+ * - `prop.Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated with
  *   the V plane of a YUV texture
- * - `prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
+ * - `prop.Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
  *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)
- * - `prop::Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of the
+ * - `prop.Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of the
  *   texture (0.0 - 1.0)
- * - `prop::Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of the
+ * - `prop.Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of the
  *   texture (0.0 - 1.0)
  *
  * With the opengles2 renderer:
  *
- * - `prop::Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated
- *   with the texture
- * - `prop::Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture associated
+ * - `prop.Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated with
+ *   the texture
+ * - `prop.Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture associated
  *   with the UV plane of an NV12 texture
- * - `prop::Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated
+ * - `prop.Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated
  *   with the U plane of a YUV texture
- * - `prop::Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated
+ * - `prop.Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated
  *   with the V plane of a YUV texture
- * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
+ * - `prop.Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
  *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
  *
  * With the gpu renderer:
  *
- * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
+ * - `prop.Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
  *   texture
- * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with the
+ * - `prop.Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with the
  *   UV plane of an NV12 texture
- * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the U
+ * - `prop.Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the U
  *   plane of a YUV texture
- * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the V
+ * - `prop.Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the V
  *   plane of a YUV texture
  *
  * @param texture the texture to query.
@@ -85634,7 +85625,7 @@ inline ScaleMode Texture::GetScaleMode() const
  * Update the given texture rectangle with new pixel data.
  *
  * The pixel data must be in the pixel format of the texture, which can be
- * queried using the prop::Texture.FORMAT_NUMBER property.
+ * queried using the prop.Texture.FORMAT_NUMBER property.
  *
  * This is a fairly slow function, intended for use with static textures that do
  * not change often.
@@ -85673,7 +85664,7 @@ inline void UpdateTexture(TextureRef texture,
  * Update the given texture rectangle with new pixel data.
  *
  * The pixel data must be in the pixel format of the texture, which can be
- * queried using the prop::Texture.FORMAT_NUMBER property.
+ * queried using the prop.Texture.FORMAT_NUMBER property.
  *
  * This is a fairly slow function, intended for use with static textures that do
  * not change often.
@@ -87915,7 +87906,7 @@ inline void* Renderer::GetRenderMetalCommandEncoder()
  * This should be called each frame that you want semaphore synchronization. The
  * Vulkan renderer may have multiple frames in flight on the GPU, so you should
  * have multiple semaphores that are used for synchronization. Querying
- * prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the maximum
+ * prop.Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the maximum
  * number of semaphores you'll need.
  *
  * @param renderer the rendering context.
@@ -90215,7 +90206,7 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * The following read-only properties are provided by SDL_mixer:
    *
-   * - `prop::Mixer.DEVICE_NUMBER`: the AudioDevice that this mixer has opened
+   * - `prop.Mixer.DEVICE_NUMBER`: the AudioDevice that this mixer has opened
    *   for playback. This will be zero (no device) if the mixer was created with
    *   Mix_CreateMixer() instead of Mix_CreateMixerDevice().
    *
@@ -91450,20 +91441,20 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::Audio.LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used
+   * - `prop.Audio.LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used
    *   to load audio data. Required. This stream must be able to seek!
-   * - `prop::Audio.LOAD_CLOSEIO_BOOLEAN`: true if SDL_mixer should close the
+   * - `prop.Audio.LOAD_CLOSEIO_BOOLEAN`: true if SDL_mixer should close the
    *   IOStream before returning (success or failure).
-   * - `prop::Audio.LOAD_PREDECODE_BOOLEAN`: true if SDL_mixer should fully
+   * - `prop.Audio.LOAD_PREDECODE_BOOLEAN`: true if SDL_mixer should fully
    *   decode and decompress the data before returning. Otherwise it will be
    *   stored in its original state and decompressed on demand.
-   * - `prop::Audio.LOAD_PREFERRED_MIXER_POINTER`: a pointer to a Mixer, in case
+   * - `prop.Audio.LOAD_PREFERRED_MIXER_POINTER`: a pointer to a Mixer, in case
    *   steps can be made to match its format when decoding. Optional.
-   * - `prop::Audio.LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing
+   * - `prop.Audio.LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing
    *   metadata tags, like ID3 and APE tags. This can be used to speed up
    *   loading _if the data definitely doesn't have these tags_. Some decoders
    *   will fail if these tags are present when this property is true.
-   * - `prop::Audio.DECODER_STRING`: the name of the decoder to use for this
+   * - `prop.Audio.DECODER_STRING`: the name of the decoder to use for this
    *   data. Optional. If not specified, SDL_mixer will examine the data and
    *   choose the best decoder. These names are the same returned from
    *   GetAudioDecoder().
@@ -91605,21 +91596,21 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * The following read-only properties are provided by SDL_mixer:
    *
-   * - `prop::MixMetadata.TITLE_STRING`: the audio's title ("Smells Like Teen
+   * - `prop.MixMetadata.TITLE_STRING`: the audio's title ("Smells Like Teen
    *   Spirit").
-   * - `prop::MixMetadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
-   * - `prop::MixMetadata.ALBUM_STRING`: the audio's album name ("Nevermind").
-   * - `prop::MixMetadata.COPYRIGHT_STRING`: the audio's copyright info
+   * - `prop.MixMetadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
+   * - `prop.MixMetadata.ALBUM_STRING`: the audio's album name ("Nevermind").
+   * - `prop.MixMetadata.COPYRIGHT_STRING`: the audio's copyright info
    *   ("Copyright (c) 1991")
-   * - `prop::MixMetadata.TRACK_NUMBER`: the audio's track number on the album
+   * - `prop.MixMetadata.TRACK_NUMBER`: the audio's track number on the album
    *   (1)
-   * - `prop::MixMetadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album
+   * - `prop.MixMetadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album
    *   (13)
-   * - `prop::MixMetadata.YEAR_NUMBER`: the year the audio was released (1991)
-   * - `prop::MixMetadata.DURATION_FRAMES_NUMBER`: The sample frames worth of
-   *   PCM data that comprise this audio. It might be off by a little if the
-   *   decoder only knows the duration as a unit of time.
-   * - `prop::MixMetadata.DURATION_INFINITE_BOOLEAN`: if true, audio never runs
+   * - `prop.MixMetadata.YEAR_NUMBER`: the year the audio was released (1991)
+   * - `prop.MixMetadata.DURATION_FRAMES_NUMBER`: The sample frames worth of PCM
+   *   data that comprise this audio. It might be off by a little if the decoder
+   *   only knows the duration as a unit of time.
+   * - `prop.MixMetadata.DURATION_INFINITE_BOOLEAN`: if true, audio never runs
    *   out of sound to generate. This isn't necessarily always known to
    *   SDL_mixer, though.
    *
@@ -91644,8 +91635,8 @@ struct Audio : ResourceBase<AudioRaw>
    * Get the length of a Audio's playback in sample frames.
    *
    * This information is also available via the
-   * prop::MixMetadata.DURATION_FRAMES_NUMBER property, but it's common enough
-   * to provide a simple accessor function.
+   * prop.MixMetadata.DURATION_FRAMES_NUMBER property, but it's common enough to
+   * provide a simple accessor function.
    *
    * This reports the length of the data in _sample frames_, so sample-perfect
    * mixing can be possible. Sample frames are only meaningful as a measure of
@@ -91902,13 +91893,7 @@ using TrackMixCB = MakeFrontCallback<
  * and other attributes that alter the produced sound; many can be altered
  * during playback.
  *
-<<<<<<<
  * @since This datatype is available since SDL_mixer 3.0.0.
-=======
- * This callback is fired for different parts of the mixing pipeline, and gives
- * the app visibility into the audio data that is being generated at various
- * stages.
->>>>>>>
  *
  * @cat resource
  */
@@ -92396,7 +92381,7 @@ struct Track : ResourceBase<TrackRaw>
    * This has no effect on a track that is stopped, or rather, starting a
    * stopped track later will set a new loop count, replacing this value.
    * Stopped tracks can specify a loop count while starting via
-   * prop::Play.LOOPS_NUMBER. This function is intended to alter that count in
+   * prop.Play.LOOPS_NUMBER. This function is intended to alter that count in
    * the middle of playback.
    *
    * @param num_loops new number of times to loop. Zero to disable looping, -1
@@ -92552,51 +92537,51 @@ struct Track : ResourceBase<TrackRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::Play.LOOPS_NUMBER`: The number of times to loop the track when it
+   * - `prop.Play.LOOPS_NUMBER`: The number of times to loop the track when it
    *   reaches the end. A value of 1 will loop to the start one time. Zero will
    *   not loop at all. A value of -1 requests infinite loops. If the input is
    *   not seekable and this value isn't zero, this function will report success
    *   but the track will stop at the point it should loop. Default 0.
-   * - `prop::Play.MAX_FRAME_NUMBER`: Mix at most to this sample frame position
+   * - `prop.Play.MAX_FRAME_NUMBER`: Mix at most to this sample frame position
    *   in the track. This will be treated as if the input reach EOF at this
    *   point in the audio file. If -1, mix all available audio without a limit.
    *   Default -1.
-   * - `prop::Play.MAX_MILLISECONDS_NUMBER`: The same as using the
-   *   prop::Play.MAX_FRAME_NUMBER property, but the value is specified in
+   * - `prop.Play.MAX_MILLISECONDS_NUMBER`: The same as using the
+   *   prop.Play.MAX_FRAME_NUMBER property, but the value is specified in
    *   milliseconds instead of sample frames. If both properties are specified,
    *   the sample frames value is favored. Default -1.
-   * - `prop::Play.START_FRAME_NUMBER`: Start mixing from this sample frame
+   * - `prop.Play.START_FRAME_NUMBER`: Start mixing from this sample frame
    *   position in the track's input. A value <= 0 will begin from the start of
    *   the track's input. If the input is not seekable and this value is > 0,
    *   this function will report failure. Default 0.
-   * - `prop::Play.START_MILLISECOND_NUMBER`: The same as using the
-   *   prop::Play.START_FRAME_NUMBER property, but the value is specified in
+   * - `prop.Play.START_MILLISECOND_NUMBER`: The same as using the
+   *   prop.Play.START_FRAME_NUMBER property, but the value is specified in
    *   milliseconds instead of sample frames. If both properties are specified,
    *   the sample frames value is favored. Default 0.
-   * - `prop::Play.LOOP_START_FRAME_NUMBER`: If the track is looping, this is
-   *   the sample frame position that the track will loop back to; this lets one
+   * - `prop.Play.LOOP_START_FRAME_NUMBER`: If the track is looping, this is the
+   *   sample frame position that the track will loop back to; this lets one
    *   play an intro at the start of a track on the first iteration, but have a
    *   loop point somewhere in the middle thereafter. A value <= 0 will begin
    *   the loop from the start of the track's input. Default 0.
-   * - `prop::Play.LOOP_START_MILLISECOND_NUMBER`: The same as using the
-   *   prop::Play.LOOP_START_FRAME_NUMBER property, but the value is specified
-   *   in milliseconds instead of sample frames. If both properties are
-   *   specified, the sample frames value is favored. Default 0.
-   * - `prop::Play.FADE_IN_FRAMES_NUMBER`: The number of sample frames over
-   *   which to fade in the newly-started track. The track will begin mixing
-   *   silence and reach full volume smoothly over this many sample frames. If
-   *   the track loops before the fade-in is complete, it will continue to fade
-   *   correctly from the loop point. A value <= 0 will disable fade-in, so the
-   *   track starts mixing at full volume. Default 0.
-   * - `prop::Play.FADE_IN_MILLISECONDS_NUMBER`: The same as using the
-   *   prop::Play.FADE_IN_FRAMES_NUMBER property, but the value is specified in
+   * - `prop.Play.LOOP_START_MILLISECOND_NUMBER`: The same as using the
+   *   prop.Play.LOOP_START_FRAME_NUMBER property, but the value is specified in
    *   milliseconds instead of sample frames. If both properties are specified,
    *   the sample frames value is favored. Default 0.
-   * - `prop::Play.FADE_IN_START_GAIN_FLOAT`: If fading in, start fading from
+   * - `prop.Play.FADE_IN_FRAMES_NUMBER`: The number of sample frames over which
+   *   to fade in the newly-started track. The track will begin mixing silence
+   *   and reach full volume smoothly over this many sample frames. If the track
+   *   loops before the fade-in is complete, it will continue to fade correctly
+   *   from the loop point. A value <= 0 will disable fade-in, so the track
+   *   starts mixing at full volume. Default 0.
+   * - `prop.Play.FADE_IN_MILLISECONDS_NUMBER`: The same as using the
+   *   prop.Play.FADE_IN_FRAMES_NUMBER property, but the value is specified in
+   *   milliseconds instead of sample frames. If both properties are specified,
+   *   the sample frames value is favored. Default 0.
+   * - `prop.Play.FADE_IN_START_GAIN_FLOAT`: If fading in, start fading from
    *   this volume level. 0.0f is silence and 1.0f is full volume, every in
    *   between is a linear change in gain. The specified value will be clamped
    *   between 0.0f and 1.0f. Default 0.0f.
-   * - `prop::Play.APPEND_SILENCE_FRAMES_NUMBER`: At the end of mixing this
+   * - `prop.Play.APPEND_SILENCE_FRAMES_NUMBER`: At the end of mixing this
    *   track, after all loops are complete, append this many sample frames of
    *   silence as if it were part of the audio file. This allows for apps to
    *   implement effects in callbacks, like reverb, that need to generate
@@ -92604,11 +92589,11 @@ struct Track : ResourceBase<TrackRaw>
    *   before starting a new sound on the track without having to manage it
    *   directly. A value <= 0 generates no silence before stopping the track.
    *   Default 0.
-   * - `prop::Play.APPEND_SILENCE_MILLISECONDS_NUMBER`: The same as using the
-   *   prop::Play.APPEND_SILENCE_FRAMES_NUMBER property, but the value is
+   * - `prop.Play.APPEND_SILENCE_MILLISECONDS_NUMBER`: The same as using the
+   *   prop.Play.APPEND_SILENCE_FRAMES_NUMBER property, but the value is
    *   specified in milliseconds instead of sample frames. If both properties
    *   are specified, the sample frames value is favored. Default 0.
-   * - `prop::Play.HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is
+   * - `prop.Play.HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is
    *   completely consumed for the track, the mixer will mark the track as
    *   stopped (and call any appropriate TrackStoppedCallback, etc); to play
    *   more, the track will need to be restarted. If false, the track will just
@@ -93752,7 +93737,7 @@ inline void Mixer::Destroy() { DestroyMixer(release()); }
  *
  * The following read-only properties are provided by SDL_mixer:
  *
- * - `prop::Mixer.DEVICE_NUMBER`: the AudioDevice that this mixer has opened for
+ * - `prop.Mixer.DEVICE_NUMBER`: the AudioDevice that this mixer has opened for
  *   playback. This will be zero (no device) if the mixer was created with
  *   Mix_CreateMixer() instead of Mix_CreateMixerDevice().
  *
@@ -94133,20 +94118,20 @@ inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
  *
  * These are the supported properties:
  *
- * - `prop::Audio.LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used to
+ * - `prop.Audio.LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used to
  *   load audio data. Required. This stream must be able to seek!
- * - `prop::Audio.LOAD_CLOSEIO_BOOLEAN`: true if SDL_mixer should close the
+ * - `prop.Audio.LOAD_CLOSEIO_BOOLEAN`: true if SDL_mixer should close the
  *   IOStream before returning (success or failure).
- * - `prop::Audio.LOAD_PREDECODE_BOOLEAN`: true if SDL_mixer should fully decode
+ * - `prop.Audio.LOAD_PREDECODE_BOOLEAN`: true if SDL_mixer should fully decode
  *   and decompress the data before returning. Otherwise it will be stored in
  *   its original state and decompressed on demand.
- * - `prop::Audio.LOAD_PREFERRED_MIXER_POINTER`: a pointer to a Mixer, in case
+ * - `prop.Audio.LOAD_PREFERRED_MIXER_POINTER`: a pointer to a Mixer, in case
  *   steps can be made to match its format when decoding. Optional.
- * - `prop::Audio.LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing
- *   metadata tags, like ID3 and APE tags. This can be used to speed up loading
- *   _if the data definitely doesn't have these tags_. Some decoders will fail
- *   if these tags are present when this property is true.
- * - `prop::Audio.DECODER_STRING`: the name of the decoder to use for this data.
+ * - `prop.Audio.LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing metadata
+ *   tags, like ID3 and APE tags. This can be used to speed up loading _if the
+ *   data definitely doesn't have these tags_. Some decoders will fail if these
+ *   tags are present when this property is true.
+ * - `prop.Audio.DECODER_STRING`: the name of the decoder to use for this data.
  *   Optional. If not specified, SDL_mixer will examine the data and choose the
  *   best decoder. These names are the same returned from GetAudioDecoder().
  *
@@ -94406,20 +94391,20 @@ inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
  *
  * The following read-only properties are provided by SDL_mixer:
  *
- * - `prop::MixMetadata.TITLE_STRING`: the audio's title ("Smells Like Teen
+ * - `prop.MixMetadata.TITLE_STRING`: the audio's title ("Smells Like Teen
  *   Spirit").
- * - `prop::MixMetadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
- * - `prop::MixMetadata.ALBUM_STRING`: the audio's album name ("Nevermind").
- * - `prop::MixMetadata.COPYRIGHT_STRING`: the audio's copyright info
- *   ("Copyright (c) 1991")
- * - `prop::MixMetadata.TRACK_NUMBER`: the audio's track number on the album (1)
- * - `prop::MixMetadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album (13)
- * - `prop::MixMetadata.YEAR_NUMBER`: the year the audio was released (1991)
- * - `prop::MixMetadata.DURATION_FRAMES_NUMBER`: The sample frames worth of PCM
+ * - `prop.MixMetadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
+ * - `prop.MixMetadata.ALBUM_STRING`: the audio's album name ("Nevermind").
+ * - `prop.MixMetadata.COPYRIGHT_STRING`: the audio's copyright info ("Copyright
+ *   (c) 1991")
+ * - `prop.MixMetadata.TRACK_NUMBER`: the audio's track number on the album (1)
+ * - `prop.MixMetadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album (13)
+ * - `prop.MixMetadata.YEAR_NUMBER`: the year the audio was released (1991)
+ * - `prop.MixMetadata.DURATION_FRAMES_NUMBER`: The sample frames worth of PCM
  *   data that comprise this audio. It might be off by a little if the decoder
  *   only knows the duration as a unit of time.
- * - `prop::MixMetadata.DURATION_INFINITE_BOOLEAN`: if true, audio never runs
- *   out of sound to generate. This isn't necessarily always known to SDL_mixer,
+ * - `prop.MixMetadata.DURATION_INFINITE_BOOLEAN`: if true, audio never runs out
+ *   of sound to generate. This isn't necessarily always known to SDL_mixer,
  *   though.
  *
  * Other properties, documented with LoadAudioWithProperties(), may also be
@@ -94481,7 +94466,7 @@ constexpr auto DURATION_INFINITE_BOOLEAN =
  * Get the length of a Audio's playback in sample frames.
  *
  * This information is also available via the
- * prop::MixMetadata.DURATION_FRAMES_NUMBER property, but it's common enough to
+ * prop.MixMetadata.DURATION_FRAMES_NUMBER property, but it's common enough to
  * provide a simple accessor function.
  *
  * This reports the length of the data in _sample frames_, so sample-perfect
@@ -95154,7 +95139,7 @@ inline int Track::GetLoops() { return SDL::GetTrackLoops(get()); }
  *
  * This has no effect on a track that is stopped, or rather, starting a stopped
  * track later will set a new loop count, replacing this value. Stopped tracks
- * can specify a loop count while starting via prop::Play.LOOPS_NUMBER. This
+ * can specify a loop count while starting via prop.Play.LOOPS_NUMBER. This
  * function is intended to alter that count in the middle of playback.
  *
  * @param track the track to configure.
@@ -95463,61 +95448,61 @@ inline Milliseconds FramesToMS(int sample_rate, Sint64 frames)
  *
  * These are the supported properties:
  *
- * - `prop::Play.LOOPS_NUMBER`: The number of times to loop the track when it
+ * - `prop.Play.LOOPS_NUMBER`: The number of times to loop the track when it
  *   reaches the end. A value of 1 will loop to the start one time. Zero will
  *   not loop at all. A value of -1 requests infinite loops. If the input is not
  *   seekable and this value isn't zero, this function will report success but
  *   the track will stop at the point it should loop. Default 0.
- * - `prop::Play.MAX_FRAME_NUMBER`: Mix at most to this sample frame position in
+ * - `prop.Play.MAX_FRAME_NUMBER`: Mix at most to this sample frame position in
  *   the track. This will be treated as if the input reach EOF at this point in
  *   the audio file. If -1, mix all available audio without a limit. Default -1.
- * - `prop::Play.MAX_MILLISECONDS_NUMBER`: The same as using the
- *   prop::Play.MAX_FRAME_NUMBER property, but the value is specified in
+ * - `prop.Play.MAX_MILLISECONDS_NUMBER`: The same as using the
+ *   prop.Play.MAX_FRAME_NUMBER property, but the value is specified in
  *   milliseconds instead of sample frames. If both properties are specified,
  *   the sample frames value is favored. Default -1.
- * - `prop::Play.START_FRAME_NUMBER`: Start mixing from this sample frame
+ * - `prop.Play.START_FRAME_NUMBER`: Start mixing from this sample frame
  *   position in the track's input. A value <= 0 will begin from the start of
  *   the track's input. If the input is not seekable and this value is > 0, this
  *   function will report failure. Default 0.
- * - `prop::Play.START_MILLISECOND_NUMBER`: The same as using the
- *   prop::Play.START_FRAME_NUMBER property, but the value is specified in
+ * - `prop.Play.START_MILLISECOND_NUMBER`: The same as using the
+ *   prop.Play.START_FRAME_NUMBER property, but the value is specified in
  *   milliseconds instead of sample frames. If both properties are specified,
  *   the sample frames value is favored. Default 0.
- * - `prop::Play.LOOP_START_FRAME_NUMBER`: If the track is looping, this is the
+ * - `prop.Play.LOOP_START_FRAME_NUMBER`: If the track is looping, this is the
  *   sample frame position that the track will loop back to; this lets one play
  *   an intro at the start of a track on the first iteration, but have a loop
  *   point somewhere in the middle thereafter. A value <= 0 will begin the loop
  *   from the start of the track's input. Default 0.
- * - `prop::Play.LOOP_START_MILLISECOND_NUMBER`: The same as using the
- *   prop::Play.LOOP_START_FRAME_NUMBER property, but the value is specified in
+ * - `prop.Play.LOOP_START_MILLISECOND_NUMBER`: The same as using the
+ *   prop.Play.LOOP_START_FRAME_NUMBER property, but the value is specified in
  *   milliseconds instead of sample frames. If both properties are specified,
  *   the sample frames value is favored. Default 0.
- * - `prop::Play.FADE_IN_FRAMES_NUMBER`: The number of sample frames over which
+ * - `prop.Play.FADE_IN_FRAMES_NUMBER`: The number of sample frames over which
  *   to fade in the newly-started track. The track will begin mixing silence and
  *   reach full volume smoothly over this many sample frames. If the track loops
  *   before the fade-in is complete, it will continue to fade correctly from the
  *   loop point. A value <= 0 will disable fade-in, so the track starts mixing
  *   at full volume. Default 0.
- * - `prop::Play.FADE_IN_MILLISECONDS_NUMBER`: The same as using the
- *   prop::Play.FADE_IN_FRAMES_NUMBER property, but the value is specified in
+ * - `prop.Play.FADE_IN_MILLISECONDS_NUMBER`: The same as using the
+ *   prop.Play.FADE_IN_FRAMES_NUMBER property, but the value is specified in
  *   milliseconds instead of sample frames. If both properties are specified,
  *   the sample frames value is favored. Default 0.
- * - `prop::Play.FADE_IN_START_GAIN_FLOAT`: If fading in, start fading from this
+ * - `prop.Play.FADE_IN_START_GAIN_FLOAT`: If fading in, start fading from this
  *   volume level. 0.0f is silence and 1.0f is full volume, every in between is
  *   a linear change in gain. The specified value will be clamped between 0.0f
  *   and 1.0f. Default 0.0f.
- * - `prop::Play.APPEND_SILENCE_FRAMES_NUMBER`: At the end of mixing this track,
+ * - `prop.Play.APPEND_SILENCE_FRAMES_NUMBER`: At the end of mixing this track,
  *   after all loops are complete, append this many sample frames of silence as
  *   if it were part of the audio file. This allows for apps to implement
  *   effects in callbacks, like reverb, that need to generate samples past the
  *   end of the stream's audio, or perhaps introduce a delay before starting a
  *   new sound on the track without having to manage it directly. A value <= 0
  *   generates no silence before stopping the track. Default 0.
- * - `prop::Play.APPEND_SILENCE_MILLISECONDS_NUMBER`: The same as using the
- *   prop::Play.APPEND_SILENCE_FRAMES_NUMBER property, but the value is
- *   specified in milliseconds instead of sample frames. If both properties are
- *   specified, the sample frames value is favored. Default 0.
- * - `prop::Play.HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is completely
+ * - `prop.Play.APPEND_SILENCE_MILLISECONDS_NUMBER`: The same as using the
+ *   prop.Play.APPEND_SILENCE_FRAMES_NUMBER property, but the value is specified
+ *   in milliseconds instead of sample frames. If both properties are specified,
+ *   the sample frames value is favored. Default 0.
+ * - `prop.Play.HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is completely
  *   consumed for the track, the mixer will mark the track as stopped (and call
  *   any appropriate TrackStoppedCallback, etc); to play more, the track will
  *   need to be restarted. If false, the track will just not contribute to the
@@ -101188,26 +101173,26 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
+   * - `prop.AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
    *   IOStream isn't being used. This is required if
-   *   `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
-   * - `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will
-   *   be used to save the stream. This should not be closed until the animation
+   *   `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
+   * - `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will be
+   *   used to save the stream. This should not be closed until the animation
    *   encoder is closed. This is required if
-   *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
-   * - `prop::AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
+   *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
+   * - `prop.AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
    *   closing the animation encoder should also close the associated IOStream.
-   * - `prop::AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
+   * - `prop.AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
    *   "webp", defaults to the file extension if
-   *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` is set.
-   * - `prop::AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality,
+   *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` is set.
+   * - `prop.AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality,
    *   in the range of 0 to 100. The higher the number, the higher the quality
    *   and file size. This defaults to a balanced value for compression and
    *   quality.
-   * - `prop::AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator
+   * - `prop.AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator
    *   of the fraction used to multiply the pts to convert it to seconds. This
    *   defaults to 1.
-   * - `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
+   * - `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
    *   denominator of the fraction used to multiply the pts to convert it to
    *   seconds. This defaults to 1000.
    *
@@ -101259,7 +101244,7 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    * @param surface the surface to add as the next frame in the animation.
    * @param duration the duration of the frame, usually in milliseconds but can
    *                 be other units if the
-   *                 `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+   *                 `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
    *                 property is set when creating the encoder.
    * @throws Error on failure.
    *
@@ -101369,27 +101354,27 @@ inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
  *
  * These are the supported properties:
  *
- * - `prop::AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
+ * - `prop.AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
  *   IOStream isn't being used. This is required if
- *   `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
- * - `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will be
+ *   `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
+ * - `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will be
  *   used to save the stream. This should not be closed until the animation
  *   encoder is closed. This is required if
- *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
- * - `prop::AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
+ *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
+ * - `prop.AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
  *   the animation encoder should also close the associated IOStream.
- * - `prop::AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
+ * - `prop.AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
  *   "webp", defaults to the file extension if
- *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` is set.
- * - `prop::AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality, in
+ *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` is set.
+ * - `prop.AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality, in
  *   the range of 0 to 100. The higher the number, the higher the quality and
  *   file size. This defaults to a balanced value for compression and quality.
- * - `prop::AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator of
+ * - `prop.AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator of
  *   the fraction used to multiply the pts to convert it to seconds. This
  *   defaults to 1.
- * - `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
- *   denominator of the fraction used to multiply the pts to convert it to
- *   seconds. This defaults to 1000.
+ * - `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the denominator
+ *   of the fraction used to multiply the pts to convert it to seconds. This
+ *   defaults to 1000.
  *
  * @param props the properties of the animation encoder.
  * @returns a new AnimationEncoder on success.
@@ -101454,7 +101439,7 @@ constexpr auto CREATE_GIF_USE_LUT_BOOLEAN =
  * @param surface the surface to add as the next frame in the animation.
  * @param duration the duration of the frame, usually in milliseconds but can be
  *                 other units if the
- *                 `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+ *                 `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
  *                 property is set when creating the encoder.
  * @throws Error on failure.
  *
@@ -101626,18 +101611,18 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
+   * - `prop.AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
    *   IOStream isn't being used. This is required if
-   *   `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
-   * - `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing
-   *   a series of images. This should not be closed until the animation decoder
+   *   `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
+   * - `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing a
+   *   series of images. This should not be closed until the animation decoder
    *   is closed. This is required if
-   *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` isn't set.
-   * - `prop::AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
+   *   `prop.AnimationDecoder.CREATE_FILENAME_STRING` isn't set.
+   * - `prop.AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
    *   closing the animation decoder should also close the associated IOStream.
-   * - `prop::AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
+   * - `prop.AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
    *   "webp", defaults to the file extension if
-   *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` is set.
+   *   `prop.AnimationDecoder.CREATE_FILENAME_STRING` is set.
    *
    * @param props the properties of the animation decoder.
    * @post a new AnimationDecoder on success.
@@ -101709,7 +101694,7 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    *
    * @param duration the duration of the frame, usually in milliseconds but can
    *                 be other units if the
-   *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+   *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
    *                 property is set when creating the decoder.
    * @returns the Surface for the next frame in the animation.
    * @throws Error on failure.
@@ -101855,18 +101840,18 @@ inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
  *
  * These are the supported properties:
  *
- * - `prop::AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
+ * - `prop.AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
  *   IOStream isn't being used. This is required if
- *   `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
- * - `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing a
+ *   `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
+ * - `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing a
  *   series of images. This should not be closed until the animation decoder is
- *   closed. This is required if `prop::AnimationDecoder.CREATE_FILENAME_STRING`
+ *   closed. This is required if `prop.AnimationDecoder.CREATE_FILENAME_STRING`
  *   isn't set.
- * - `prop::AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
+ * - `prop.AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
  *   the animation decoder should also close the associated IOStream.
- * - `prop::AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
+ * - `prop.AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
  *   "webp", defaults to the file extension if
- *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` is set.
+ *   `prop.AnimationDecoder.CREATE_FILENAME_STRING` is set.
  *
  * @param props the properties of the animation decoder.
  * @returns a new AnimationDecoder on success.
@@ -101990,7 +101975,7 @@ constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
  * @param decoder the animation decoder.
  * @param duration the duration of the frame, usually in milliseconds but can be
  *                 other units if the
- *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+ *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
  *                 property is set when creating the decoder.
  * @returns the Surface for the next frame in the animation.
  * @throws Error on failure.
@@ -102541,31 +102526,30 @@ struct Font : ResourceBase<FontRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
-   *   IOStream isn't being used. This is required if
-   *   `prop::Font.CREATE_IOSTREAM_POINTER` and
-   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
-   * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to
+   * - `prop.Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
+   *   isn't being used. This is required if `prop.Font.CREATE_IOSTREAM_POINTER`
+   *   and `prop.Font.CREATE_EXISTING_FONT` aren't set.
+   * - `prop.Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to
    *   be opened. This should not be closed until the font is closed. This is
-   *   required if `prop::Font.CREATE_FILENAME_STRING` and
-   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
-   * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
-   *   for the beginning of the font, defaults to 0.
-   * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
+   *   required if `prop.Font.CREATE_FILENAME_STRING` and
+   *   `prop.Font.CREATE_EXISTING_FONT` aren't set.
+   * - `prop.Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
+   *   the beginning of the font, defaults to 0.
+   * - `prop.Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
    *   should also close the associated IOStream.
-   * - `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
+   * - `prop.Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
    *   fonts will have several sizes embedded in the file, so the point size
    *   becomes the index of choosing which size. If the value is too high, the
    *   last indexed size will be the default.
-   * - `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the font
+   * - `prop.Font.CREATE_FACE_NUMBER`: the face index of the font, if the font
    *   contains multiple font faces.
-   * - `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
-   *   font rendering, defaults to `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if
+   * - `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
+   *   font rendering, defaults to `prop.Font.CREATE_VERTICAL_DPI_NUMBER` if
    *   set, or 72 otherwise.
-   * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
-   *   rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER` if set,
+   * - `prop.Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
+   *   rendering, defaults to `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER` if set,
    *   or 72 otherwise.
-   * - `prop::Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
+   * - `prop.Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
    *   used as the font data source and the initial size and style of the new
    *   font.
    *
@@ -102639,11 +102623,11 @@ struct Font : ResourceBase<FontRaw>
    *
    * The following read-write properties are provided by SDL:
    *
-   * - `prop::Font.OUTLINE_LINE_CAP_NUMBER`: The FT_Stroker_LineCap value used
+   * - `prop.Font.OUTLINE_LINE_CAP_NUMBER`: The FT_Stroker_LineCap value used
    *   when setting the font outline, defaults to `FT_STROKER_LINECAP_ROUND`.
-   * - `prop::Font.OUTLINE_LINE_JOIN_NUMBER`: The FT_Stroker_LineJoin value used
+   * - `prop.Font.OUTLINE_LINE_JOIN_NUMBER`: The FT_Stroker_LineJoin value used
    *   when setting the font outline, defaults to `FT_STROKER_LINEJOIN_ROUND`.
-   * - `prop::Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used
+   * - `prop.Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used
    *   when setting the font outline, defaults to 0.
    *
    * @returns a valid property ID on success.
@@ -102846,9 +102830,9 @@ struct Font : ResourceBase<FontRaw>
   /**
    * Set a font's current outline.
    *
-   * This uses the font properties `prop::Font.OUTLINE_LINE_CAP_NUMBER`,
-   * `prop::Font.OUTLINE_LINE_JOIN_NUMBER`, and
-   * `prop::Font.OUTLINE_MITER_LIMIT_NUMBER` when setting the font outline.
+   * This uses the font properties `prop.Font.OUTLINE_LINE_CAP_NUMBER`,
+   * `prop.Font.OUTLINE_LINE_JOIN_NUMBER`, and
+   * `prop.Font.OUTLINE_MITER_LIMIT_NUMBER` when setting the font outline.
    *
    * This updates any Text objects using this font, and clears already-generated
    * glyphs, if any, from the cache.
@@ -103984,30 +103968,30 @@ inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
  *
  * These are the supported properties:
  *
- * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
- *   isn't being used. This is required if `prop::Font.CREATE_IOSTREAM_POINTER`
- *   and `prop::Font.CREATE_EXISTING_FONT` aren't set.
- * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to be
+ * - `prop.Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
+ *   isn't being used. This is required if `prop.Font.CREATE_IOSTREAM_POINTER`
+ *   and `prop.Font.CREATE_EXISTING_FONT` aren't set.
+ * - `prop.Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to be
  *   opened. This should not be closed until the font is closed. This is
- *   required if `prop::Font.CREATE_FILENAME_STRING` and
- *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
- * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
+ *   required if `prop.Font.CREATE_FILENAME_STRING` and
+ *   `prop.Font.CREATE_EXISTING_FONT` aren't set.
+ * - `prop.Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
  *   the beginning of the font, defaults to 0.
- * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
+ * - `prop.Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
  *   should also close the associated IOStream.
- * - `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon fonts
+ * - `prop.Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon fonts
  *   will have several sizes embedded in the file, so the point size becomes the
  *   index of choosing which size. If the value is too high, the last indexed
  *   size will be the default.
- * - `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the font
+ * - `prop.Font.CREATE_FACE_NUMBER`: the face index of the font, if the font
  *   contains multiple font faces.
- * - `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
- *   font rendering, defaults to `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set,
+ * - `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
+ *   font rendering, defaults to `prop.Font.CREATE_VERTICAL_DPI_NUMBER` if set,
  *   or 72 otherwise.
- * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
- *   rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER` if set, or
+ * - `prop.Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
+ *   rendering, defaults to `prop.Font.CREATE_HORIZONTAL_DPI_NUMBER` if set, or
  *   72 otherwise.
- * - `prop::Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
+ * - `prop.Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
  *   used as the font data source and the initial size and style of the new
  *   font.
  *
@@ -104102,11 +104086,11 @@ inline Font Font::Copy() const { return SDL::CopyFont(get()); }
  *
  * The following read-write properties are provided by SDL:
  *
- * - `prop::Font.OUTLINE_LINE_CAP_NUMBER`: The FT_Stroker_LineCap value used
- *   when setting the font outline, defaults to `FT_STROKER_LINECAP_ROUND`.
- * - `prop::Font.OUTLINE_LINE_JOIN_NUMBER`: The FT_Stroker_LineJoin value used
+ * - `prop.Font.OUTLINE_LINE_CAP_NUMBER`: The FT_Stroker_LineCap value used when
+ *   setting the font outline, defaults to `FT_STROKER_LINECAP_ROUND`.
+ * - `prop.Font.OUTLINE_LINE_JOIN_NUMBER`: The FT_Stroker_LineJoin value used
  *   when setting the font outline, defaults to `FT_STROKER_LINEJOIN_ROUND`.
- * - `prop::Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used when
+ * - `prop.Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used when
  *   setting the font outline, defaults to 0.
  *
  * @param font the font to query.
@@ -104394,9 +104378,9 @@ inline FontStyleFlags Font::GetStyle() const
 /**
  * Set a font's current outline.
  *
- * This uses the font properties `prop::Font.OUTLINE_LINE_CAP_NUMBER`,
- * `prop::Font.OUTLINE_LINE_JOIN_NUMBER`, and
- * `prop::Font.OUTLINE_MITER_LIMIT_NUMBER` when setting the font outline.
+ * This uses the font properties `prop.Font.OUTLINE_LINE_CAP_NUMBER`,
+ * `prop.Font.OUTLINE_LINE_JOIN_NUMBER`, and
+ * `prop.Font.OUTLINE_MITER_LIMIT_NUMBER` when setting the font outline.
  *
  * This updates any Text objects using this font, and clears already-generated
  * glyphs, if any, from the cache.
@@ -106065,9 +106049,9 @@ struct RendererTextEngine : TextEngine
    *
    * These are the supported properties:
    *
-   * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
+   * - `prop.RendererTextEngine.RENDERER_POINTER`: the renderer to use for
    *   creating textures and drawing text
-   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
+   * - `prop.RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
    *   texture atlas
    *
    * @param props the properties to use.
@@ -106134,9 +106118,9 @@ struct GPUTextEngine : TextEngine
    *
    * These are the supported properties:
    *
-   * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
+   * - `prop.GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
    *   textures and drawing text.
-   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
+   * - `prop.GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
    *   atlas
    *
    * @param props the properties to use.
@@ -107292,9 +107276,9 @@ inline RendererTextEngine::RendererTextEngine(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
+ * - `prop.RendererTextEngine.RENDERER_POINTER`: the renderer to use for
  *   creating textures and drawing text
- * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
+ * - `prop.RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
  *   texture atlas
  *
  * @param props the properties to use.
@@ -107425,9 +107409,9 @@ inline GPUTextEngine::GPUTextEngine(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
+ * - `prop.GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
  *   textures and drawing text.
- * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
+ * - `prop.GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
  *   atlas
  *
  * @param props the properties to use.

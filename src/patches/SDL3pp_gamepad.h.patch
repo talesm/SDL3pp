@@ -135,7 +135,7 @@
  }
  
  /**
-@@ -1686,7 +1683,7 @@
+@@ -1685,7 +1682,7 @@
   */
  inline PropertiesRef GetGamepadProperties(GamepadRef gamepad)
  {
@@ -144,7 +144,7 @@
  }
  
  inline PropertiesRef Gamepad::GetProperties()
-@@ -1694,6 +1691,16 @@
+@@ -1693,6 +1690,16 @@
    return SDL::GetGamepadProperties(get());
  }
  
@@ -161,7 +161,7 @@
  namespace prop::GamepadCap {
  
  constexpr auto MONO_LED_BOOLEAN = SDL_PROP_GAMEPAD_CAP_MONO_LED_BOOLEAN;
-@@ -2124,11 +2131,8 @@
+@@ -2123,11 +2130,8 @@
   * Get the SDL joystick layer bindings for a gamepad.
   *
   * @param gamepad a gamepad.
@@ -174,7 +174,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2136,7 +2140,9 @@
+@@ -2135,7 +2139,9 @@
   */
  inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadRef gamepad)
  {

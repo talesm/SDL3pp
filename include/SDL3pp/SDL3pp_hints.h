@@ -128,7 +128,7 @@ namespace SDL {
  * together, as well as match applications with associated desktop settings and
  * icons.
  *
- * This will override prop::appMetaData.IDENTIFIER_STRING, if set by the
+ * This will override prop.appMetaData.IDENTIFIER_STRING, if set by the
  * application.
  *
  * This hint should be set before SDL is initialized.
@@ -146,7 +146,7 @@ namespace SDL {
  * You should use a string that describes your program ("My Game 2: The
  * Revenge")
  *
- * This will override prop::appMetaData.NAME_STRING, if set by the application.
+ * This will override prop.appMetaData.NAME_STRING, if set by the application.
  *
  * This hint should be set before SDL is initialized.
  *
@@ -3383,7 +3383,7 @@ namespace SDL {
  * A variable to control whether the return key on the soft keyboard should hide
  * the soft keyboard on Android and iOS.
  *
- * This hint sets the default value of prop::TextInput.MULTILINE_BOOLEAN.
+ * This hint sets the default value of prop.TextInput.MULTILINE_BOOLEAN.
  *
  * The variable can be set to the following values:
  *

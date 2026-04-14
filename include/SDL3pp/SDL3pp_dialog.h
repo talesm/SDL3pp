@@ -504,22 +504,22 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
  *
  * These are the supported properties:
  *
- * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
+ * - `prop.FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
  *   structs, which will be used as filters for file-based selections. Ignored
  *   if the dialog is an "Open Folder" dialog. If non-nullptr, the array of
  *   filters must remain valid at least until the callback is invoked.
- * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
+ * - `prop.FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
  *   filters, if it exists.
- * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should be
+ * - `prop.FileDialog.WINDOW_POINTER`: the window that the dialog should be
  *   modal for.
- * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to start the
+ * - `prop.FileDialog.LOCATION_STRING`: the default folder or file to start the
  *   dialog at.
- * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
+ * - `prop.FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
  *   one entry.
- * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
- * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button should
+ * - `prop.FileDialog.TITLE_STRING`: the title for the dialog.
+ * - `prop.FileDialog.ACCEPT_STRING`: the label that the accept button should
  *   have.
- * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button should
+ * - `prop.FileDialog.CANCEL_STRING`: the label that the cancel button should
  *   have.
  *
  * Note that each platform may or may not support any of the properties.
@@ -557,22 +557,22 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
  *
  * These are the supported properties:
  *
- * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
+ * - `prop.FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
  *   structs, which will be used as filters for file-based selections. Ignored
  *   if the dialog is an "Open Folder" dialog. If non-nullptr, the array of
  *   filters must remain valid at least until the callback is invoked.
- * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
+ * - `prop.FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
  *   filters, if it exists.
- * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should be
+ * - `prop.FileDialog.WINDOW_POINTER`: the window that the dialog should be
  *   modal for.
- * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to start the
+ * - `prop.FileDialog.LOCATION_STRING`: the default folder or file to start the
  *   dialog at.
- * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
+ * - `prop.FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
  *   one entry.
- * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
- * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button should
+ * - `prop.FileDialog.TITLE_STRING`: the title for the dialog.
+ * - `prop.FileDialog.ACCEPT_STRING`: the label that the accept button should
  *   have.
- * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button should
+ * - `prop.FileDialog.CANCEL_STRING`: the label that the cancel button should
  *   have.
  *
  * Note that each platform may or may not support any of the properties.

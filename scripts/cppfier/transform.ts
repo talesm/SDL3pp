@@ -267,7 +267,8 @@ export class ApiContext {
   }
 
   addName(originalType: string, targetType: string) {
-    if (!this.nameMap[originalType]) this.nameMap[originalType] = targetType;
+    if (!this.nameMap[originalType])
+      this.nameMap[originalType] = targetType.replaceAll("::", ".");
   }
 
   getName(nameCandidate: string) {

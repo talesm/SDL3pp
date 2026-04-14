@@ -395,25 +395,24 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
    *
    * The following properties are understood by SDL:
    *
-   * - `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   * - `prop.Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
    *   surfaces, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 203 for HDR10 surfaces and 1.0 for floating point surfaces.
-   * - `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
-   *   surfaces, this defines the maximum dynamic range used by the content, in
-   *   terms of the SDR white point. This defaults to 0.0, which disables tone
-   *   mapping.
-   * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator used
+   * - `prop.Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point surfaces,
+   *   this defines the maximum dynamic range used by the content, in terms of
+   *   the SDR white point. This defaults to 0.0, which disables tone mapping.
+   * - `prop.Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator used
    *   when compressing from a surface with high dynamic range to another with
    *   lower dynamic range. Currently this supports "chrome", which uses the
    *   same tone mapping that Chrome uses for HDR content, the form "*=N", where
    *   N is a floating point scale factor applied in linear space, and "none",
    *   which disables tone mapping. This defaults to "chrome".
-   * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the left
+   * - `prop.Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the left
    *   edge of the image, if this surface is being used as a cursor.
-   * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
+   * - `prop.Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
    *   edge of the image, if this surface is being used as a cursor.
-   * - `prop::Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
+   * - `prop.Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
    *   meant to be rotated clockwise to make the image right-side up. Default 0.
    *   This is used by the camera API, if a mobile device is oriented
    *   differently than what its camera provides (i.e. - the camera always
@@ -1044,7 +1043,7 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
    * larger than the original, with the background filled in with the colorkey,
    * if available, or RGBA 255/255/255/0 if not.
    *
-   * If `surface` has the prop::Surface.ROTATION_FLOAT property set on it, the
+   * If `surface` has the prop.Surface.ROTATION_FLOAT property set on it, the
    * new copy will have the adjusted value set: if the rotation property is 90
    * and `angle` was 30, the new surface will have a property value of 60 (that
    * is: to be upright vs gravity, this surface needs to rotate 60 more
@@ -2217,24 +2216,24 @@ inline void Surface::Destroy() { DestroySurface(release()); }
  *
  * The following properties are understood by SDL:
  *
- * - `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+ * - `prop.Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
  *   surfaces, this defines the value of 100% diffuse white, with higher values
  *   being displayed in the High Dynamic Range headroom. This defaults to 203
  *   for HDR10 surfaces and 1.0 for floating point surfaces.
- * - `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point surfaces,
+ * - `prop.Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point surfaces,
  *   this defines the maximum dynamic range used by the content, in terms of the
  *   SDR white point. This defaults to 0.0, which disables tone mapping.
- * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator used
- *   when compressing from a surface with high dynamic range to another with
- *   lower dynamic range. Currently this supports "chrome", which uses the same
- *   tone mapping that Chrome uses for HDR content, the form "*=N", where N is a
+ * - `prop.Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator used when
+ *   compressing from a surface with high dynamic range to another with lower
+ *   dynamic range. Currently this supports "chrome", which uses the same tone
+ *   mapping that Chrome uses for HDR content, the form "*=N", where N is a
  *   floating point scale factor applied in linear space, and "none", which
  *   disables tone mapping. This defaults to "chrome".
- * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the left
+ * - `prop.Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the left
  *   edge of the image, if this surface is being used as a cursor.
- * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
- *   edge of the image, if this surface is being used as a cursor.
- * - `prop::Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
+ * - `prop.Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top edge
+ *   of the image, if this surface is being used as a cursor.
+ * - `prop.Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
  *   meant to be rotated clockwise to make the image right-side up. Default 0.
  *   This is used by the camera API, if a mobile device is oriented differently
  *   than what its camera provides (i.e. - the camera always provides portrait
@@ -3387,7 +3386,7 @@ inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(get(), flip); }
  * larger than the original, with the background filled in with the colorkey, if
  * available, or RGBA 255/255/255/0 if not.
  *
- * If `surface` has the prop::Surface.ROTATION_FLOAT property set on it, the new
+ * If `surface` has the prop.Surface.ROTATION_FLOAT property set on it, the new
  * copy will have the adjusted value set: if the rotation property is 90 and
  * `angle` was 30, the new surface will have a property value of 60 (that is: to
  * be upright vs gravity, this surface needs to rotate 60 more degrees).

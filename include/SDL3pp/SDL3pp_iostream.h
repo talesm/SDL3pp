@@ -184,21 +184,21 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * The following properties may be set at creation time by SDL:
    *
-   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
+   * - `prop.IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
    *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
    *   the program isn't running on Windows, or SDL used some other method to
    *   access the filesystem, this property will not be set.
-   * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
+   * - `prop.IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
    *   stdio `FILE *`, that this IOStream is using to access the filesystem. If
    *   SDL used some other method to access the filesystem, this property will
    *   not be set. PLEASE NOTE that if SDL is using a different C runtime than
    *   your app, trying to use this pointer will almost certainly result in a
    *   crash! This is mostly a problem on Windows; make sure you build SDL and
    *   your app with the same compiler and settings to avoid it.
-   * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+   * - `prop.IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
    *   IOStream is using to access the filesystem.
-   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to
-   *   an Android NDK `AAsset *`, that this IOStream is using to access the
+   * - `prop.IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
+   *   Android NDK `AAsset *`, that this IOStream is using to access the
    *   filesystem. If SDL used some other method to access the filesystem, this
    *   property will not be set.
    *
@@ -237,14 +237,14 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * The following properties will be set at creation time by SDL:
    *
-   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
-   *   was passed to this function.
-   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+   *   passed to this function.
+   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
    *   that was passed to this function.
    *
    * Additionally, the following properties are recognized:
    *
-   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
    *   non-nullptr value it will be interpreted as a function of free_func type
    *   and called with the passed `mem` pointer when closing the stream. By
    *   default it is unset, i.e., the memory will not be freed.
@@ -285,14 +285,14 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * The following properties will be set at creation time by SDL:
    *
-   * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
-   *   was passed to this function.
-   * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+   *   passed to this function.
+   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
    *   that was passed to this function.
    *
    * Additionally, the following properties are recognized:
    *
-   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
    *   non-nullptr value it will be interpreted as a function of free_func type
    *   and called with the passed `mem` pointer when closing the stream. By
    *   default it is unset, i.e., the memory will not be freed.
@@ -320,11 +320,11 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * This supports the following properties to provide access to the memory and
    * control over allocations:
    *
-   * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
+   * - `prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
    *   of the stream. This can be set to nullptr to transfer ownership of the
    *   memory to the application, which should free the memory with free(). If
    *   this is done, the next operation on the stream must be IOStream.Close().
-   * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+   * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
    *   multiples of this size, defaulting to 1024.
    *
    * @returns a valid IOStream on success.
@@ -1645,20 +1645,20 @@ struct IOStream : ResourceBase<IOStreamRaw>
  *
  * The following properties may be set at creation time by SDL:
  *
- * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
+ * - `prop.IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
  *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
  *   the program isn't running on Windows, or SDL used some other method to
  *   access the filesystem, this property will not be set.
- * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a stdio
+ * - `prop.IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a stdio
  *   `FILE *`, that this IOStream is using to access the filesystem. If SDL used
  *   some other method to access the filesystem, this property will not be set.
  *   PLEASE NOTE that if SDL is using a different C runtime than your app,
  *   trying to use this pointer will almost certainly result in a crash! This is
  *   mostly a problem on Windows; make sure you build SDL and your app with the
  *   same compiler and settings to avoid it.
- * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+ * - `prop.IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
  *   IOStream is using to access the filesystem.
- * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
+ * - `prop.IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
  *   Android NDK `AAsset *`, that this IOStream is using to access the
  *   filesystem. If SDL used some other method to access the filesystem, this
  *   property will not be set.
@@ -1751,14 +1751,14 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  *
  * The following properties will be set at creation time by SDL:
  *
- * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+ * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
  *   passed to this function.
- * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
+ * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
  *   was passed to this function.
  *
  * Additionally, the following properties are recognized:
  *
- * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+ * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
  *   non-nullptr value it will be interpreted as a function of free_func type
  *   and called with the passed `mem` pointer when closing the stream. By
  *   default it is unset, i.e., the memory will not be freed.
@@ -1806,14 +1806,14 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  *
  * The following properties will be set at creation time by SDL:
  *
- * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+ * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
  *   passed to this function.
- * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
+ * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
  *   was passed to this function.
  *
  * Additionally, the following properties are recognized:
  *
- * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+ * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
  *   non-nullptr value it will be interpreted as a function of free_func type
  *   and called with the passed `mem` pointer when closing the stream. By
  *   default it is unset, i.e., the memory will not be freed.
@@ -1849,11 +1849,11 @@ inline IOStream IOStream::FromConstMem(SourceBytes mem)
  * This supports the following properties to provide access to the memory and
  * control over allocations:
  *
- * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
- *   of the stream. This can be set to nullptr to transfer ownership of the
- *   memory to the application, which should free the memory with free(). If
- *   this is done, the next operation on the stream must be IOStream.Close().
- * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+ * - `prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory of
+ *   the stream. This can be set to nullptr to transfer ownership of the memory
+ *   to the application, which should free the memory with free(). If this is
+ *   done, the next operation on the stream must be IOStream.Close().
+ * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
  *   multiples of this size, defaulting to 1024.
  *
  * @returns a pointer to a new IOStream structure or nullptr on failure; call

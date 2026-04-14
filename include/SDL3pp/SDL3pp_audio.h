@@ -1791,7 +1791,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * The application can hang any data it wants here, but the following
    * properties are understood by SDL:
    *
-   * - `prop::AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the
+   * - `prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the
    *   stream be automatically cleaned up when the audio subsystem quits. If set
    *   to false, the streams will persist beyond that. This property is ignored
    *   for streams created through AudioDevice.OpenStream(), and will always be
@@ -3715,7 +3715,7 @@ inline AudioStream::AudioStream(AudioDeviceRef devid,
  * The application can hang any data it wants here, but the following properties
  * are understood by SDL:
  *
- * - `prop::AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream
+ * - `prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream
  *   be automatically cleaned up when the audio subsystem quits. If set to
  *   false, the streams will persist beyond that. This property is ignored for
  *   streams created through AudioDevice.OpenStream(), and will always be

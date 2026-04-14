@@ -3726,26 +3726,26 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
+   * - `prop.AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
    *   IOStream isn't being used. This is required if
-   *   `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
-   * - `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will
-   *   be used to save the stream. This should not be closed until the animation
+   *   `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
+   * - `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will be
+   *   used to save the stream. This should not be closed until the animation
    *   encoder is closed. This is required if
-   *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
-   * - `prop::AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
+   *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
+   * - `prop.AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
    *   closing the animation encoder should also close the associated IOStream.
-   * - `prop::AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
+   * - `prop.AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
    *   "webp", defaults to the file extension if
-   *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` is set.
-   * - `prop::AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality,
+   *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` is set.
+   * - `prop.AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality,
    *   in the range of 0 to 100. The higher the number, the higher the quality
    *   and file size. This defaults to a balanced value for compression and
    *   quality.
-   * - `prop::AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator
+   * - `prop.AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator
    *   of the fraction used to multiply the pts to convert it to seconds. This
    *   defaults to 1.
-   * - `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
+   * - `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
    *   denominator of the fraction used to multiply the pts to convert it to
    *   seconds. This defaults to 1000.
    *
@@ -3797,7 +3797,7 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    * @param surface the surface to add as the next frame in the animation.
    * @param duration the duration of the frame, usually in milliseconds but can
    *                 be other units if the
-   *                 `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+   *                 `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
    *                 property is set when creating the encoder.
    * @throws Error on failure.
    *
@@ -3907,27 +3907,27 @@ inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
  *
  * These are the supported properties:
  *
- * - `prop::AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
+ * - `prop.AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
  *   IOStream isn't being used. This is required if
- *   `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
- * - `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will be
+ *   `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
+ * - `prop.AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will be
  *   used to save the stream. This should not be closed until the animation
  *   encoder is closed. This is required if
- *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
- * - `prop::AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
+ *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
+ * - `prop.AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
  *   the animation encoder should also close the associated IOStream.
- * - `prop::AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
+ * - `prop.AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
  *   "webp", defaults to the file extension if
- *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` is set.
- * - `prop::AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality, in
+ *   `prop.AnimationEncoder.CREATE_FILENAME_STRING` is set.
+ * - `prop.AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality, in
  *   the range of 0 to 100. The higher the number, the higher the quality and
  *   file size. This defaults to a balanced value for compression and quality.
- * - `prop::AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator of
+ * - `prop.AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator of
  *   the fraction used to multiply the pts to convert it to seconds. This
  *   defaults to 1.
- * - `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
- *   denominator of the fraction used to multiply the pts to convert it to
- *   seconds. This defaults to 1000.
+ * - `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the denominator
+ *   of the fraction used to multiply the pts to convert it to seconds. This
+ *   defaults to 1000.
  *
  * @param props the properties of the animation encoder.
  * @returns a new AnimationEncoder on success.
@@ -3992,7 +3992,7 @@ constexpr auto CREATE_GIF_USE_LUT_BOOLEAN =
  * @param surface the surface to add as the next frame in the animation.
  * @param duration the duration of the frame, usually in milliseconds but can be
  *                 other units if the
- *                 `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+ *                 `prop.AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
  *                 property is set when creating the encoder.
  * @throws Error on failure.
  *
@@ -4164,18 +4164,18 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
+   * - `prop.AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
    *   IOStream isn't being used. This is required if
-   *   `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
-   * - `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing
-   *   a series of images. This should not be closed until the animation decoder
+   *   `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
+   * - `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing a
+   *   series of images. This should not be closed until the animation decoder
    *   is closed. This is required if
-   *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` isn't set.
-   * - `prop::AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
+   *   `prop.AnimationDecoder.CREATE_FILENAME_STRING` isn't set.
+   * - `prop.AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
    *   closing the animation decoder should also close the associated IOStream.
-   * - `prop::AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
+   * - `prop.AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
    *   "webp", defaults to the file extension if
-   *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` is set.
+   *   `prop.AnimationDecoder.CREATE_FILENAME_STRING` is set.
    *
    * @param props the properties of the animation decoder.
    * @post a new AnimationDecoder on success.
@@ -4247,7 +4247,7 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    *
    * @param duration the duration of the frame, usually in milliseconds but can
    *                 be other units if the
-   *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+   *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
    *                 property is set when creating the decoder.
    * @returns the Surface for the next frame in the animation.
    * @throws Error on failure.
@@ -4393,18 +4393,18 @@ inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
  *
  * These are the supported properties:
  *
- * - `prop::AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
+ * - `prop.AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
  *   IOStream isn't being used. This is required if
- *   `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
- * - `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing a
+ *   `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
+ * - `prop.AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing a
  *   series of images. This should not be closed until the animation decoder is
- *   closed. This is required if `prop::AnimationDecoder.CREATE_FILENAME_STRING`
+ *   closed. This is required if `prop.AnimationDecoder.CREATE_FILENAME_STRING`
  *   isn't set.
- * - `prop::AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
+ * - `prop.AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
  *   the animation decoder should also close the associated IOStream.
- * - `prop::AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
+ * - `prop.AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
  *   "webp", defaults to the file extension if
- *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` is set.
+ *   `prop.AnimationDecoder.CREATE_FILENAME_STRING` is set.
  *
  * @param props the properties of the animation decoder.
  * @returns a new AnimationDecoder on success.
@@ -4528,7 +4528,7 @@ constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
  * @param decoder the animation decoder.
  * @param duration the duration of the frame, usually in milliseconds but can be
  *                 other units if the
- *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+ *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
  *                 property is set when creating the decoder.
  * @returns the Surface for the next frame in the animation.
  * @throws Error on failure.

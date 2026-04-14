@@ -646,15 +646,15 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an LED
+   * - `prop.JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an LED
    *   that has adjustable brightness
-   * - `prop::JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED
-   *   that has adjustable color
-   * - `prop::JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a
-   *   player LED
-   * - `prop::JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has left/right
+   * - `prop.JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED that
+   *   has adjustable color
+   * - `prop.JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a player
+   *   LED
+   * - `prop.JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has left/right
    *   rumble
-   * - `prop::JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has
+   * - `prop.JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has
    *   simple trigger rumble
    *
    * @returns a valid property ID on success.
@@ -1940,16 +1940,16 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an LED that
+ * - `prop.JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an LED that
  *   has adjustable brightness
- * - `prop::JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED that
+ * - `prop.JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED that
  *   has adjustable color
- * - `prop::JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a player
+ * - `prop.JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a player
  *   LED
- * - `prop::JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has left/right
+ * - `prop.JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has left/right
  *   rumble
- * - `prop::JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has
- *   simple trigger rumble
+ * - `prop.JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has simple
+ *   trigger rumble
  *
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns a valid property ID on success.

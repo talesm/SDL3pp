@@ -137,7 +137,7 @@ constexpr TextureAccess TEXTUREACCESS_TARGET =
  * This affects how texture coordinates are interpreted outside of [0, 1]
  *
  * Texture wrapping is always supported for power of two texture sizes, and is
- * supported for other texture sizes if prop::Renderer.TEXTURE_WRAPPING_BOOLEAN
+ * supported for other texture sizes if prop.Renderer.TEXTURE_WRAPPING_BOOLEAN
  * is set to true.
  *
  * @since This enum is available since SDL 3.4.0.
@@ -284,47 +284,47 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
+   * - `prop.Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
    *   use, if a specific one is desired
-   * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
+   * - `prop.Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
    *   displayed, required if this isn't a software renderer using a surface
-   * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
+   * - `prop.Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
    *   displayed, if you want a software renderer without a window
-   * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
+   * - `prop.Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
    *   describing the colorspace for output to the display, defaults to
    *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support
    *   COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR
    *   output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB
    *   colorspace, but values can go beyond 1.0 and float (linear) format
    *   textures can be used for HDR content.
-   * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
-   *   present synchronized with the refresh rate. This property can take any
-   *   value that is supported by Renderer.SetVSync() for the renderer.
+   * - `prop.Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want present
+   *   synchronized with the refresh rate. This property can take any value that
+   *   is supported by Renderer.SetVSync() for the renderer.
    *
    * With the SDL GPU renderer (since SDL 3.4.0):
    *
-   * - `prop::Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
+   * - `prop.Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
    *   renderer, optional.
-   * - `prop::Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+   * - `prop.Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
    *   provide SPIR-V shaders to GPURenderState, optional.
-   * - `prop::Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
+   * - `prop.Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
    *   provide DXIL shaders to GPURenderState, optional.
-   * - `prop::Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to
+   * - `prop.Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to
    *   provide MSL shaders to GPURenderState, optional.
    *
    * With the vulkan renderer:
    *
-   * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
+   * - `prop.Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
    *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
+   * - `prop.Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
    *   with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
+   * - `prop.Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
    *   VkPhysicalDevice to use with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with
+   * - `prop.Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with
    *   the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
+   * - `prop.Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for rendering.
-   * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
+   * - `prop.Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for presentation.
    *
    * @param props the properties to use.
@@ -437,76 +437,76 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Renderer.NAME_STRING`: the name of the rendering driver
-   * - `prop::Renderer.WINDOW_POINTER`: the window where rendering is displayed,
+   * - `prop.Renderer.NAME_STRING`: the name of the rendering driver
+   * - `prop.Renderer.WINDOW_POINTER`: the window where rendering is displayed,
    *   if any
-   * - `prop::Renderer.SURFACE_POINTER`: the surface where rendering is
+   * - `prop.Renderer.SURFACE_POINTER`: the surface where rendering is
    *   displayed, if this is a software renderer without a window
-   * - `prop::Renderer.VSYNC_NUMBER`: the current vsync setting
-   * - `prop::Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width and
+   * - `prop.Renderer.VSYNC_NUMBER`: the current vsync setting
+   * - `prop.Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width and
    *   height
-   * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array
-   *   of pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
+   * - `prop.Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array of
+   *   pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
    *   available texture formats for this renderer.
-   * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
+   * - `prop.Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
    *   TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
-   * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
+   * - `prop.Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
    *   the colorspace for output to the display, defaults to COLORSPACE_SRGB.
-   * - `prop::Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
+   * - `prop.Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
    *   COLORSPACE_SRGB_LINEAR and the renderer is showing on a display with HDR
    *   enabled. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
-   * - `prop::Renderer.SDR_WHITE_POINT_FLOAT`: the value of SDR white in the
+   * - `prop.Renderer.SDR_WHITE_POINT_FLOAT`: the value of SDR white in the
    *   COLORSPACE_SRGB_LINEAR colorspace. When HDR is enabled, this value is
    *   automatically multiplied into the color scale. This property can change
    *   dynamically when EVENT_WINDOW_HDR_STATE_CHANGED is sent.
-   * - `prop::Renderer.HDR_HEADROOM_FLOAT`: the additional high dynamic range
+   * - `prop.Renderer.HDR_HEADROOM_FLOAT`: the additional high dynamic range
    *   that can be displayed, in terms of the SDR white point. When HDR is not
    *   enabled, this will be 1.0. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
    *
    * With the direct3d renderer:
    *
-   * - `prop::Renderer.D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated
-   *   with the renderer
+   * - `prop.Renderer.D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated with
+   *   the renderer
    *
    * With the direct3d11 renderer:
    *
-   * - `prop::Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated with
+   * - `prop.Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated with
    *   the renderer
-   * - `prop::Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1 associated
+   * - `prop.Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1 associated
    *   with the renderer. This may change when the window is resized.
    *
    * With the direct3d12 renderer:
    *
-   * - `prop::Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated with
+   * - `prop.Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated with
    *   the renderer
-   * - `prop::Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4 associated
+   * - `prop.Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4 associated
    *   with the renderer.
-   * - `prop::Renderer.D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue
+   * - `prop.Renderer.D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue
    *   associated with the renderer
    *
    * With the vulkan renderer:
    *
-   * - `prop::Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated with
+   * - `prop.Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated with
    *   the renderer
-   * - `prop::Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated with
+   * - `prop.Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated with
    *   the renderer
-   * - `prop::Renderer.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
+   * - `prop.Renderer.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
    *   associated with the renderer
-   * - `prop::Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with the
+   * - `prop.Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with the
    *   renderer
-   * - `prop::Renderer.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+   * - `prop.Renderer.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
    *   family index used for rendering
-   * - `prop::Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+   * - `prop.Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
    *   family index used for presentation
-   * - `prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER`: the number of
+   * - `prop.Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER`: the number of
    *   swapchain images, or potential frames in flight, used by the Vulkan
    *   renderer
    *
    * With the gpu renderer:
    *
-   * - `prop::Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with the
+   * - `prop.Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with the
    *   renderer
    *
    * @returns a valid property ID on success.
@@ -634,7 +634,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * The pixel format of the created texture may be different from the pixel
    * format of the surface, and can be queried using the
-   * prop::Texture.FORMAT_NUMBER property.
+   * prop.Texture.FORMAT_NUMBER property.
    *
    * @param surface the Surface structure containing pixel data used to fill the
    *                texture.
@@ -656,98 +656,98 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
+   * - `prop.Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
    *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
    *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
    *   other RGB textures and COLORSPACE_JPEG for YUV textures.
-   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
    *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+   * - `prop.Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
    *   required
-   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   * - `prop.Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
+   *   required
+   * - `prop.Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
    *   texture formats. This can be set later with Texture.SetPalette()
-   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the value of 100% diffuse white, with higher
+   * - `prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   *   textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   * - `prop.Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
    *   textures, this defines the maximum dynamic range used by the content, in
    *   terms of the SDR white point. This would be equivalent to maxCLL /
-   *   prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+   *   prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
    *   defined, any values outside the range supported by the display will be
    *   scaled into the available HDR headroom, otherwise they are clipped.
    *
    * With the direct3d11 renderer:
    *
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the direct3d12 renderer:
    *
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the metal renderer:
    *
-   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   * - `prop.Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
    *   associated with the texture, if you want to create a texture from an
    *   existing pixel buffer.
    *
    * With the opengl renderer:
    *
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the opengles2 renderer:
    *
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the vulkan renderer:
    *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   * - `prop.Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
    *   the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   * - `prop.Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
    *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
    *
    * With the GPU renderer:
    *
-   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated
-   *   with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+   *   the texture, if you want to wrap an existing texture.
    * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
@@ -2034,8 +2034,8 @@ struct Renderer : ResourceBase<RendererRaw>
    * This should be called each frame that you want semaphore synchronization.
    * The Vulkan renderer may have multiple frames in flight on the GPU, so you
    * should have multiple semaphores that are used for synchronization. Querying
-   * prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the
-   * maximum number of semaphores you'll need.
+   * prop.Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the maximum
+   * number of semaphores you'll need.
    *
    * @param wait_stage_mask the VkPipelineStageFlags for the wait.
    * @param wait_semaphore a VkSempahore to wait on before rendering the current
@@ -2309,7 +2309,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * The pixel format of the created texture may be different from the pixel
    * format of the surface, and can be queried using the
-   * prop::Texture.FORMAT_NUMBER property.
+   * prop.Texture.FORMAT_NUMBER property.
    *
    * @param renderer the rendering context.
    * @param surface the Surface structure containing pixel data used to fill the
@@ -2331,98 +2331,98 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * These are the supported properties:
    *
-   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
+   * - `prop.Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
    *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
    *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
    *   other RGB textures and COLORSPACE_JPEG for YUV textures.
-   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
    *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+   * - `prop.Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
    *   required
-   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   * - `prop.Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
+   *   required
+   * - `prop.Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
    *   texture formats. This can be set later with Texture.SetPalette()
-   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the value of 100% diffuse white, with higher
+   * - `prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   *   textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   * - `prop.Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
    *   textures, this defines the maximum dynamic range used by the content, in
    *   terms of the SDR white point. This would be equivalent to maxCLL /
-   *   prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+   *   prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
    *   defined, any values outside the range supported by the display will be
    *   scaled into the available HDR headroom, otherwise they are clipped.
    *
    * With the direct3d11 renderer:
    *
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   * - `prop.Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the direct3d12 renderer:
    *
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   * - `prop.Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the metal renderer:
    *
-   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   * - `prop.Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
    *   associated with the texture, if you want to create a texture from an
    *   existing pixel buffer.
    *
    * With the opengl renderer:
    *
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the opengles2 renderer:
    *
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
    *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
    *   associated with the U plane of a YUV texture, if you want to wrap an
    *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
    *   associated with the V plane of a YUV texture, if you want to wrap an
    *   existing texture.
    *
    * With the vulkan renderer:
    *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   * - `prop.Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
    *   the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   * - `prop.Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
    *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
    *
    * With the GPU renderer:
    *
-   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated
-   *   with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+   *   the texture, if you want to wrap an existing texture.
    * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
@@ -2582,88 +2582,87 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Texture.COLORSPACE_NUMBER`: an Colorspace value describing the
+   * - `prop.Texture.COLORSPACE_NUMBER`: an Colorspace value describing the
    *   texture colorspace.
-   * - `prop::Texture.FORMAT_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat.
-   * - `prop::Texture.ACCESS_NUMBER`: one of the enumerated values in
+   * - `prop.Texture.ACCESS_NUMBER`: one of the enumerated values in
    *   TextureAccess.
-   * - `prop::Texture.WIDTH_NUMBER`: the width of the texture in pixels.
-   * - `prop::Texture.HEIGHT_NUMBER`: the height of the texture in pixels.
-   * - `prop::Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   * - `prop.Texture.WIDTH_NUMBER`: the width of the texture in pixels.
+   * - `prop.Texture.HEIGHT_NUMBER`: the height of the texture in pixels.
+   * - `prop.Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
    *   textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for other textures.
-   * - `prop::Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
-   *   textures, this defines the maximum dynamic range used by the content, in
-   *   terms of the SDR white point. If this is defined, any values outside the
-   *   range supported by the display will be scaled into the available HDR
-   *   headroom, otherwise they are clipped. This defaults to 1.0 for SDR
-   *   textures, 4.0 for HDR10 textures, and no default for floating point
-   *   textures.
+   * - `prop.Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point textures,
+   *   this defines the maximum dynamic range used by the content, in terms of
+   *   the SDR white point. If this is defined, any values outside the range
+   *   supported by the display will be scaled into the available HDR headroom,
+   *   otherwise they are clipped. This defaults to 1.0 for SDR textures, 4.0
+   *   for HDR10 textures, and no default for floating point textures.
    *
    * With the direct3d11 renderer:
    *
-   * - `prop::Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated
-   *   with the texture
-   * - `prop::Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated
+   * - `prop.Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated with
+   *   the texture
+   * - `prop.Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated
    *   with the U plane of a YUV texture
-   * - `prop::Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated
+   * - `prop.Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated
    *   with the V plane of a YUV texture
    *
    * With the direct3d12 renderer:
    *
-   * - `prop::Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with
+   * - `prop.Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with
    *   the texture
-   * - `prop::Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated
+   * - `prop.Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated
    *   with the U plane of a YUV texture
-   * - `prop::Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated
+   * - `prop.Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated
    *   with the V plane of a YUV texture
    *
    * With the vulkan renderer:
    *
-   * - `prop::Texture.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the
+   * - `prop.Texture.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the
    *   texture
    *
    * With the opengl renderer:
    *
-   * - `prop::Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with
+   * - `prop.Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with
    *   the texture
-   * - `prop::Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated
    *   with the UV plane of an NV12 texture
-   * - `prop::Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated
    *   with the U plane of a YUV texture
-   * - `prop::Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated
    *   with the V plane of a YUV texture
-   * - `prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
+   * - `prop.Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
    *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)
-   * - `prop::Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of the
+   * - `prop.Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of the
    *   texture (0.0 - 1.0)
-   * - `prop::Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of the
+   * - `prop.Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of the
    *   texture (0.0 - 1.0)
    *
    * With the opengles2 renderer:
    *
-   * - `prop::Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated
    *   with the texture
-   * - `prop::Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture
-   * - `prop::Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture associated
+   *   with the UV plane of an NV12 texture
+   * - `prop.Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated
    *   with the U plane of a YUV texture
-   * - `prop::Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated
+   * - `prop.Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated
    *   with the V plane of a YUV texture
-   * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
+   * - `prop.Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
    *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
    *
    * With the gpu renderer:
    *
-   * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
+   * - `prop.Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
    *   texture
-   * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with
-   *   the UV plane of an NV12 texture
-   * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the
+   * - `prop.Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with the
+   *   UV plane of an NV12 texture
+   * - `prop.Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the
    *   U plane of a YUV texture
-   * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the
+   * - `prop.Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the
    *   V plane of a YUV texture
    *
    * @returns a valid property ID on success.
@@ -3070,7 +3069,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * Update the given texture rectangle with new pixel data.
    *
    * The pixel data must be in the pixel format of the texture, which can be
-   * queried using the prop::Texture.FORMAT_NUMBER property.
+   * queried using the prop.Texture.FORMAT_NUMBER property.
    *
    * This is a fairly slow function, intended for use with static textures that
    * do not change often.
@@ -3102,7 +3101,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * Update the given texture rectangle with new pixel data.
    *
    * The pixel data must be in the pixel format of the texture, which can be
-   * queried using the prop::Texture.FORMAT_NUMBER property.
+   * queried using the prop.Texture.FORMAT_NUMBER property.
    *
    * This is a fairly slow function, intended for use with static textures that
    * do not change often.
@@ -3782,47 +3781,47 @@ inline Renderer::Renderer(SurfaceRef surface)
  *
  * These are the supported properties:
  *
- * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
+ * - `prop.Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
  *   use, if a specific one is desired
- * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
+ * - `prop.Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
  *   displayed, required if this isn't a software renderer using a surface
- * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
+ * - `prop.Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
  *   displayed, if you want a software renderer without a window
- * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
+ * - `prop.Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
  *   describing the colorspace for output to the display, defaults to
  *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support
  *   COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR
  *   output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB
  *   colorspace, but values can go beyond 1.0 and float (linear) format textures
  *   can be used for HDR content.
- * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want present
+ * - `prop.Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want present
  *   synchronized with the refresh rate. This property can take any value that
  *   is supported by Renderer.SetVSync() for the renderer.
  *
  * With the SDL GPU renderer (since SDL 3.4.0):
  *
- * - `prop::Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
+ * - `prop.Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
  *   renderer, optional.
- * - `prop::Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+ * - `prop.Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
  *   provide SPIR-V shaders to GPURenderState, optional.
- * - `prop::Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
- *   provide DXIL shaders to GPURenderState, optional.
- * - `prop::Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide
+ * - `prop.Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to provide
+ *   DXIL shaders to GPURenderState, optional.
+ * - `prop.Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide
  *   MSL shaders to GPURenderState, optional.
  *
  * With the vulkan renderer:
  *
- * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use with
+ * - `prop.Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use with
  *   the renderer, optional.
- * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use with
+ * - `prop.Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use with
  *   the renderer, optional.
- * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
- *   VkPhysicalDevice to use with the renderer, optional.
- * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with the
+ * - `prop.Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
+ *   to use with the renderer, optional.
+ * - `prop.Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with the
  *   renderer, optional.
- * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
- *   queue family index used for rendering.
- * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+ * - `prop.Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+ *   family index used for rendering.
+ * - `prop.Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
  *   family index used for presentation.
  *
  * @param props the properties to use.
@@ -4109,76 +4108,76 @@ inline const char* Renderer::GetName() const
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Renderer.NAME_STRING`: the name of the rendering driver
- * - `prop::Renderer.WINDOW_POINTER`: the window where rendering is displayed,
- *   if any
- * - `prop::Renderer.SURFACE_POINTER`: the surface where rendering is displayed,
+ * - `prop.Renderer.NAME_STRING`: the name of the rendering driver
+ * - `prop.Renderer.WINDOW_POINTER`: the window where rendering is displayed, if
+ *   any
+ * - `prop.Renderer.SURFACE_POINTER`: the surface where rendering is displayed,
  *   if this is a software renderer without a window
- * - `prop::Renderer.VSYNC_NUMBER`: the current vsync setting
- * - `prop::Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width and
+ * - `prop.Renderer.VSYNC_NUMBER`: the current vsync setting
+ * - `prop.Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width and
  *   height
- * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array of
+ * - `prop.Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array of
  *   pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
  *   available texture formats for this renderer.
- * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
+ * - `prop.Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
  *   TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
- * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
+ * - `prop.Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
  *   the colorspace for output to the display, defaults to COLORSPACE_SRGB.
- * - `prop::Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
+ * - `prop.Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
  *   COLORSPACE_SRGB_LINEAR and the renderer is showing on a display with HDR
  *   enabled. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Renderer.SDR_WHITE_POINT_FLOAT`: the value of SDR white in the
+ * - `prop.Renderer.SDR_WHITE_POINT_FLOAT`: the value of SDR white in the
  *   COLORSPACE_SRGB_LINEAR colorspace. When HDR is enabled, this value is
  *   automatically multiplied into the color scale. This property can change
  *   dynamically when EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Renderer.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
+ * - `prop.Renderer.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
  *   can be displayed, in terms of the SDR white point. When HDR is not enabled,
  *   this will be 1.0. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
  *
  * With the direct3d renderer:
  *
- * - `prop::Renderer.D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated with
+ * - `prop.Renderer.D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated with
  *   the renderer
  *
  * With the direct3d11 renderer:
  *
- * - `prop::Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated with the
+ * - `prop.Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated with the
  *   renderer
- * - `prop::Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1 associated
+ * - `prop.Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1 associated
  *   with the renderer. This may change when the window is resized.
  *
  * With the direct3d12 renderer:
  *
- * - `prop::Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated with the
+ * - `prop.Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated with the
  *   renderer
- * - `prop::Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4 associated
+ * - `prop.Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4 associated
  *   with the renderer.
- * - `prop::Renderer.D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue
+ * - `prop.Renderer.D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue
  *   associated with the renderer
  *
  * With the vulkan renderer:
  *
- * - `prop::Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated with
- *   the renderer
- * - `prop::Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated with
- *   the renderer
- * - `prop::Renderer.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
- *   associated with the renderer
- * - `prop::Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with the
+ * - `prop.Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated with the
  *   renderer
- * - `prop::Renderer.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
- *   family index used for rendering
- * - `prop::Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue family
+ * - `prop.Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated with the
+ *   renderer
+ * - `prop.Renderer.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
+ *   associated with the renderer
+ * - `prop.Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with the
+ *   renderer
+ * - `prop.Renderer.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue family
+ *   index used for rendering
+ * - `prop.Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue family
  *   index used for presentation
- * - `prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER`: the number of
+ * - `prop.Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER`: the number of
  *   swapchain images, or potential frames in flight, used by the Vulkan
  *   renderer
  *
  * With the gpu renderer:
  *
- * - `prop::Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with the
+ * - `prop.Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with the
  *   renderer
  *
  * @param renderer the rendering context.
@@ -4385,7 +4384,7 @@ inline Texture::Texture(RendererRef renderer, PropertiesRef props)
  *
  * The pixel format of the created texture may be different from the pixel
  * format of the surface, and can be queried using the
- * prop::Texture.FORMAT_NUMBER property.
+ * prop.Texture.FORMAT_NUMBER property.
  *
  * @param renderer the rendering context.
  * @param surface the Surface structure containing pixel data used to fill the
@@ -4417,97 +4416,97 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
  *
  * These are the supported properties:
  *
- * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
- *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
- *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
- *   other RGB textures and COLORSPACE_JPEG for YUV textures.
- * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+ * - `prop.Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing the
+ *   texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating point
+ *   textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for other
+ *   RGB textures and COLORSPACE_JPEG for YUV textures.
+ * - `prop.Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
  *   PixelFormat, defaults to the best RGBA format for the renderer
- * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+ * - `prop.Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
  *   TextureAccess, defaults to TEXTUREACCESS_STATIC
- * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+ * - `prop.Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
  *   required
- * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
+ * - `prop.Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
  *   required
- * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+ * - `prop.Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
  *   texture formats. This can be set later with Texture.SetPalette()
- * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+ * - `prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
  *   textures, this defines the value of 100% diffuse white, with higher values
  *   being displayed in the High Dynamic Range headroom. This defaults to 100
  *   for HDR10 textures and 1.0 for floating point textures.
- * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+ * - `prop.Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
  *   textures, this defines the maximum dynamic range used by the content, in
  *   terms of the SDR white point. This would be equivalent to maxCLL /
- *   prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+ *   prop.Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
  *   defined, any values outside the range supported by the display will be
  *   scaled into the available HDR headroom, otherwise they are clipped.
  *
  * With the direct3d11 renderer:
  *
- * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
- *   associated with the texture, if you want to wrap an existing texture.
- * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+ * - `prop.Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated
+ *   with the texture, if you want to wrap an existing texture.
+ * - `prop.Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+ * - `prop.Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the direct3d12 renderer:
  *
- * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource associated
+ * - `prop.Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource associated
  *   with the texture, if you want to wrap an existing texture.
- * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+ * - `prop.Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+ * - `prop.Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the metal renderer:
  *
- * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+ * - `prop.Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
  *   associated with the texture, if you want to create a texture from an
  *   existing pixel buffer.
  *
  * With the opengl renderer:
  *
- * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture associated
+ * - `prop.Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture associated
  *   with the texture, if you want to wrap an existing texture.
- * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
  *   associated with the UV plane of an NV12 texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the opengles2 renderer:
  *
- * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
  *   associated with the texture, if you want to wrap an existing texture.
- * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
  *   associated with the UV plane of an NV12 texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
- * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+ * - `prop.Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
  *   associated with the V plane of a YUV texture, if you want to wrap an
  *   existing texture.
  *
  * With the vulkan renderer:
  *
- * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+ * - `prop.Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
  *   the texture, if you want to wrap an existing texture.
- * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+ * - `prop.Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
  *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
  *
  * With the GPU renderer:
  *
- * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+ * - `prop.Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
  *   the texture, if you want to wrap an existing texture.
  * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture associated
  *   with the UV plane of an NV12 texture, if you want to wrap an existing
@@ -4730,18 +4729,18 @@ constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Texture.COLORSPACE_NUMBER`: an Colorspace value describing the
+ * - `prop.Texture.COLORSPACE_NUMBER`: an Colorspace value describing the
  *   texture colorspace.
- * - `prop::Texture.FORMAT_NUMBER`: one of the enumerated values in PixelFormat.
- * - `prop::Texture.ACCESS_NUMBER`: one of the enumerated values in
+ * - `prop.Texture.FORMAT_NUMBER`: one of the enumerated values in PixelFormat.
+ * - `prop.Texture.ACCESS_NUMBER`: one of the enumerated values in
  *   TextureAccess.
- * - `prop::Texture.WIDTH_NUMBER`: the width of the texture in pixels.
- * - `prop::Texture.HEIGHT_NUMBER`: the height of the texture in pixels.
- * - `prop::Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+ * - `prop.Texture.WIDTH_NUMBER`: the width of the texture in pixels.
+ * - `prop.Texture.HEIGHT_NUMBER`: the height of the texture in pixels.
+ * - `prop.Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
  *   textures, this defines the value of 100% diffuse white, with higher values
  *   being displayed in the High Dynamic Range headroom. This defaults to 100
  *   for HDR10 textures and 1.0 for other textures.
- * - `prop::Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point textures,
+ * - `prop.Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point textures,
  *   this defines the maximum dynamic range used by the content, in terms of the
  *   SDR white point. If this is defined, any values outside the range supported
  *   by the display will be scaled into the available HDR headroom, otherwise
@@ -4750,66 +4749,66 @@ constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
  *
  * With the direct3d11 renderer:
  *
- * - `prop::Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated with
+ * - `prop.Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated with
  *   the texture
- * - `prop::Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated
- *   with the U plane of a YUV texture
- * - `prop::Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated
- *   with the V plane of a YUV texture
+ * - `prop.Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated with
+ *   the U plane of a YUV texture
+ * - `prop.Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated with
+ *   the V plane of a YUV texture
  *
  * With the direct3d12 renderer:
  *
- * - `prop::Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with
+ * - `prop.Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with
  *   the texture
- * - `prop::Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated with
+ * - `prop.Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated with
  *   the U plane of a YUV texture
- * - `prop::Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated with
+ * - `prop.Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated with
  *   the V plane of a YUV texture
  *
  * With the vulkan renderer:
  *
- * - `prop::Texture.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the
+ * - `prop.Texture.VULKAN_TEXTURE_NUMBER`: the VkImage associated with the
  *   texture
  *
  * With the opengl renderer:
  *
- * - `prop::Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with
+ * - `prop.Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with
  *   the texture
- * - `prop::Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated
- *   with the UV plane of an NV12 texture
- * - `prop::Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated with
+ * - `prop.Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated with
+ *   the UV plane of an NV12 texture
+ * - `prop.Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated with
  *   the U plane of a YUV texture
- * - `prop::Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated with
+ * - `prop.Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated with
  *   the V plane of a YUV texture
- * - `prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
+ * - `prop.Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
  *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)
- * - `prop::Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of the
+ * - `prop.Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of the
  *   texture (0.0 - 1.0)
- * - `prop::Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of the
+ * - `prop.Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of the
  *   texture (0.0 - 1.0)
  *
  * With the opengles2 renderer:
  *
- * - `prop::Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated
- *   with the texture
- * - `prop::Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture associated
+ * - `prop.Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated with
+ *   the texture
+ * - `prop.Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture associated
  *   with the UV plane of an NV12 texture
- * - `prop::Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated
+ * - `prop.Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated
  *   with the U plane of a YUV texture
- * - `prop::Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated
+ * - `prop.Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated
  *   with the V plane of a YUV texture
- * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
+ * - `prop.Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
  *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
  *
  * With the gpu renderer:
  *
- * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
+ * - `prop.Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
  *   texture
- * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with the
+ * - `prop.Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with the
  *   UV plane of an NV12 texture
- * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the U
+ * - `prop.Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the U
  *   plane of a YUV texture
- * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the V
+ * - `prop.Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the V
  *   plane of a YUV texture
  *
  * @param texture the texture to query.
@@ -5448,7 +5447,7 @@ inline ScaleMode Texture::GetScaleMode() const
  * Update the given texture rectangle with new pixel data.
  *
  * The pixel data must be in the pixel format of the texture, which can be
- * queried using the prop::Texture.FORMAT_NUMBER property.
+ * queried using the prop.Texture.FORMAT_NUMBER property.
  *
  * This is a fairly slow function, intended for use with static textures that do
  * not change often.
@@ -5487,7 +5486,7 @@ inline void UpdateTexture(TextureRef texture,
  * Update the given texture rectangle with new pixel data.
  *
  * The pixel data must be in the pixel format of the texture, which can be
- * queried using the prop::Texture.FORMAT_NUMBER property.
+ * queried using the prop.Texture.FORMAT_NUMBER property.
  *
  * This is a fairly slow function, intended for use with static textures that do
  * not change often.
@@ -7729,7 +7728,7 @@ inline void* Renderer::GetRenderMetalCommandEncoder()
  * This should be called each frame that you want semaphore synchronization. The
  * Vulkan renderer may have multiple frames in flight on the GPU, so you should
  * have multiple semaphores that are used for synchronization. Querying
- * prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the maximum
+ * prop.Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the maximum
  * number of semaphores you'll need.
  *
  * @param renderer the rendering context.

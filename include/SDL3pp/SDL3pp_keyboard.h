@@ -233,8 +233,8 @@ inline void Window::StartTextInput(PropertiesRef props)
 /**
  * Text input type.
  *
- * These are the valid values for prop::TextInput.TYPE_NUMBER. Not every value
- * is valid on every platform, but where a value isn't supported, a reasonable
+ * These are the valid values for prop.TextInput.TYPE_NUMBER. Not every value is
+ * valid on every platform, but where a value isn't supported, a reasonable
  * fallback will be used.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -277,7 +277,7 @@ constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
 /**
  * Auto capitalization type.
  *
- * These are the valid values for prop::TextInput.CAPITALIZATION_NUMBER. Not
+ * These are the valid values for prop.TextInput.CAPITALIZATION_NUMBER. Not
  * every value is valid on every platform, but where a value isn't supported, a
  * reasonable fallback will be used.
  *

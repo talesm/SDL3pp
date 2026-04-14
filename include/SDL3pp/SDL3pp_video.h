@@ -202,14 +202,14 @@ public:
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR headroom
+   * - `prop.Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR headroom
    *   above the SDR white point. This is for informational and diagnostic
    *   purposes only, as not all platforms provide this information at the
    *   display level.
    *
    * On KMS/DRM:
    *
-   * - `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel orientation"
+   * - `prop.Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel orientation"
    *   property for the display in degrees of clockwise rotation. Note that this
    *   is provided only as a hint, and the application is responsible for any
    *   coordinate transformations needed to conform to the requested display
@@ -217,12 +217,12 @@ public:
    *
    * On Wayland:
    *
-   * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
+   * - `prop.Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
    *   the display
    *
    * On Windows:
    *
-   * - `prop::Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
+   * - `prop.Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
    *   associated with the display
    *
    * @returns a valid property ID on success.
@@ -923,12 +923,12 @@ struct Window : ResourceBase<WindowRaw>
    *
    * By default, popup window positions will automatically be constrained to
    * keep the entire window within display bounds. This can be overridden with
-   * the `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
+   * the `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
    *
    * By default, popup menus will automatically grab keyboard focus from the
    * parent when shown. This behavior can be overridden by setting the
    * `WINDOW_NOT_FOCUSABLE` flag, setting the
-   * `prop::Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
+   * `prop.Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
    * after creation via the `Window.SetFocusable()` function.
    *
    * If a parent window is hidden or destroyed, any child popup windows will be
@@ -967,108 +967,108 @@ struct Window : ResourceBase<WindowRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
+   * - `prop.Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
    *   always on top
-   * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no
-   *   window decoration
-   * - `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+   * - `prop.Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no window
+   *   decoration
+   * - `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
    *   "menu" window types should be automatically constrained to be entirely
    *   within display bounds (default), false if no constraints on the position
    *   are desired.
-   * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
+   * - `prop.Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
    *   window will be used with an externally managed graphics context.
-   * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
+   * - `prop.Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
    *   keyboard input (defaults true)
-   * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start
+   * - `prop.Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start
    *   in fullscreen mode at desktop resolution
-   * - `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window
-   * - `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
+   * - `prop.Window.CREATE_HEIGHT_NUMBER`: the height of the window
+   * - `prop.Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
    *   hidden
-   * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
+   * - `prop.Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
    *   a high pixel density buffer if possible
-   * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
+   * - `prop.Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
    *   maximized
-   * - `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
-   * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
+   * - `prop.Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
+   * - `prop.Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
    *   Metal rendering
-   * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
+   * - `prop.Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
    *   minimized
-   * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
+   * - `prop.Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
    *   parent
-   * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
+   * - `prop.Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
    *   with grabbed mouse focus
-   * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used
-   *   with OpenGL rendering
-   * - `prop::Window.CREATE_PARENT_POINTER`: an Window that will be the parent
-   *   of this window, required for windows with the "tooltip", "menu", and
-   *   "modal" properties
-   * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
+   * - `prop.Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used with
+   *   OpenGL rendering
+   * - `prop.Window.CREATE_PARENT_POINTER`: an Window that will be the parent of
+   *   this window, required for windows with the "tooltip", "menu", and "modal"
+   *   properties
+   * - `prop.Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
    *   resizable
-   * - `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
+   * - `prop.Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
    *   encoding
-   * - `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
+   * - `prop.Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
    *   transparent in the areas with alpha of 0
-   * - `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
-   * - `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
+   * - `prop.Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
+   * - `prop.Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
    *   window, not showing in the task bar and window list
-   * - `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used
-   *   with Vulkan rendering
-   * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
-   * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
+   * - `prop.Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used with
+   *   Vulkan rendering
+   * - `prop.Window.CREATE_WIDTH_NUMBER`: the width of the window
+   * - `prop.Window.CREATE_X_NUMBER`: the x position of the window, or
    *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
    *   to the parent for windows with the "tooltip" or "menu" property set.
-   * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
+   * - `prop.Window.CREATE_Y_NUMBER`: the y position of the window, or
    *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
    *   to the parent for windows with the "tooltip" or "menu" property set.
    *
    * These are additional supported properties on macOS:
    *
-   * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+   * - `prop.Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
    *   NSWindow associated with the window, if you want to wrap an existing
    *   window.
-   * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
+   * - `prop.Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
    *   NSView associated with the window, defaults to `[window contentView]`
    *
    * These are additional supported properties on iOS, tvOS, and visionOS:
    *
-   * - `prop::Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+   * - `prop.Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
    *   UIWindowScene associated with the window, defaults to the active window
    *   scene.
    *
    * These are additional supported properties on Wayland:
    *
-   * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
+   * - `prop.Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
    *   application wants to use the Wayland surface for a custom role and does
    *   not want it attached to an XDG toplevel window. See
    *   [README-wayland](README-wayland) for more information on using custom
    *   surfaces.
-   * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+   * - `prop.Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
    *   application wants an associated `wl_egl_window` object to be created and
    *   attached to the window, even if the window does not have the OpenGL
    *   property or `WINDOW_OPENGL` flag set.
-   * - `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
+   * - `prop.Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
    *   associated with the window, if you want to wrap an existing window. See
    *   [README-wayland](README-wayland) for more information.
    *
    * These are additional supported properties on Windows:
    *
-   * - `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
+   * - `prop.Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
    *   window, if you want to wrap an existing window.
-   * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
+   * - `prop.Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
    *   window to share pixel format with, useful for OpenGL windows
    *
    * These are additional supported properties with X11:
    *
-   * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with
+   * - `prop.Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with
    *   the window, if you want to wrap an existing window.
    *
    * The window is implicitly shown if the "hidden" property is not set.
    *
    * These are additional supported properties with Emscripten:
    *
-   * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
+   * - `prop.Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
    *   canvas element. This should start with a '#' sign
-   * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
+   * - `prop.Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
    *   binding element for keyboard inputs for this canvas. The variable can be
    *   one of:
    * - "#window": the javascript window object (default)
@@ -1082,12 +1082,12 @@ struct Window : ResourceBase<WindowRaw>
    *   CreatePopupWindow().
    *
    * If this window is being created to be used with an Renderer, you should not
-   * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
+   * add a graphics API specific property (`prop.Window.CREATE_OPENGL_BOOLEAN`,
    * etc), as SDL will handle that internally when it chooses a renderer.
    * However, SDL might need to recreate your window at that point, which may
    * cause the window to appear briefly, and then flicker as it is recreated.
    * The correct approach to this is to create the window with the
-   * `prop::Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
+   * `prop.Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
    * renderer, then show the window with Window.Show().
    *
    * @param props the properties to use.
@@ -1334,76 +1334,75 @@ struct Window : ResourceBase<WindowRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Window.SHAPE_POINTER`: the surface associated with a shaped window
-   * - `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR headroom
+   * - `prop.Window.SHAPE_POINTER`: the surface associated with a shaped window
+   * - `prop.Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR headroom
    *   above the SDR white point. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
-   * - `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
+   * - `prop.Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
    *   COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the SDR
    *   white level in scRGB colorspace, and on Apple platforms this is always
    *   1.0 for EDR content. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
-   * - `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
+   * - `prop.Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
    *   can be displayed, in terms of the SDR white point. When HDR is not
    *   enabled, this will be 1.0. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
    *
    * On Android:
    *
-   * - `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated with
+   * - `prop.Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated with
    *   the window
-   * - `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with
-   *   the window
+   * - `prop.Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with the
+   *   window
    *
    * On iOS:
    *
-   * - `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)` UIWindow
+   * - `prop.Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)` UIWindow
    *   associated with the window
-   * - `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+   * - `prop.Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
    *   with metal views on the window
-   * - `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
+   * - `prop.Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
    *   framebuffer object. It must be bound when rendering to the screen using
    *   OpenGL.
-   * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
+   * - `prop.Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
    *   renderbuffer object. It must be bound when Window.GL_Swap is called.
-   * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
+   * - `prop.Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
    *   resolve framebuffer, when MSAA is used.
    *
    * On KMS/DRM:
    *
-   * - `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated
+   * - `prop.Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated
    *   with the window (e.g. the X in /dev/dri/cardX)
-   * - `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the
-   *   window
-   * - `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated with
+   * - `prop.Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the window
+   * - `prop.Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated with
    *   the window
    *
    * On macOS:
    *
-   * - `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow
+   * - `prop.Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow
    *   associated with the window
-   * - `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+   * - `prop.Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
    *   with metal views on the window
    *
    * On OpenVR:
    *
-   * - `prop::Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
+   * - `prop.Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
    *   the associated overlay window.
    *
    * On Vivante:
    *
-   * - `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType
+   * - `prop.Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType
    *   associated with the window
-   * - `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType associated
+   * - `prop.Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType associated
    *   with the window
-   * - `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with
-   *   the window
+   * - `prop.Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with the
+   *   window
    *
    * On Windows:
    *
-   * - `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window
-   * - `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window
-   * - `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with the
+   * - `prop.Window.WIN32_HWND_POINTER`: the HWND associated with the window
+   * - `prop.Window.WIN32_HDC_POINTER`: the HDC associated with the window
+   * - `prop.Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with the
    *   window
    *
    * On Wayland:
@@ -1412,39 +1411,39 @@ struct Window : ResourceBase<WindowRaw>
    * show/hide calls. They will be null if the window is hidden and must be
    * queried each time it is shown.
    *
-   * - `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with
+   * - `prop.Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with the
+   *   window
+   * - `prop.Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with the
+   *   window
+   * - `prop.Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated with
    *   the window
-   * - `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with
-   *   the window
-   * - `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated with
-   *   the window
-   * - `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window associated
+   * - `prop.Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window associated
    *   with the window
-   * - `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated
+   * - `prop.Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated
    *   with the window
-   * - `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
+   * - `prop.Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
    *   associated with the window
-   * - 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export
+   * - 'prop.Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export
    *   handle associated with the window
-   * - `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role associated
+   * - `prop.Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role associated
    *   with the window
-   * - `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner
+   * - `prop.Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner
    *   associated with the window, in popup mode
    *
    * On X11:
    *
-   * - `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with the
+   * - `prop.Window.X11_DISPLAY_POINTER`: the X11 Display associated with the
    *   window
-   * - `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with the
+   * - `prop.Window.X11_SCREEN_NUMBER`: the screen number associated with the
    *   window
-   * - `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the
+   * - `prop.Window.X11_WINDOW_NUMBER`: the X11 Window associated with the
    *   window
    *
    * On Emscripten:
    *
-   * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element
-   *   will have
-   * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
+   * - `prop.Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element will
+   *   have
+   * - `prop.Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
    *   that associates keyboard events to this window
    *
    * @returns a valid property ID on success.
@@ -2876,23 +2875,23 @@ struct Window : ResourceBase<WindowRaw>
    *
    * These are the supported properties:
    *
-   * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that describes
-   *   text being input, defaults to TEXTINPUT_TYPE_TEXT.
-   * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that
+   * - `prop.TextInput.TYPE_NUMBER` - an TextInputType value that describes text
+   *   being input, defaults to TEXTINPUT_TYPE_TEXT.
+   * - `prop.TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that
    *   describes how text should be capitalized, defaults to
    *   CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for
    *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail addresses,
    *   usernames, and passwords.
-   * - `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion
-   *   and auto correction, defaults to true.
-   * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are
+   * - `prop.TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion and
+   *   auto correction, defaults to true.
+   * - `prop.TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are
    *   allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is "0" or
    *   is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME is
    *   "1".
    *
    * On Android you can directly specify the input type:
    *
-   * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use,
+   * - `prop.TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use,
    *   overriding other properties. This is documented at
    *   https://developer.android.com/reference/android/text/InputType
    *
@@ -3697,14 +3696,14 @@ inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR headroom
+ * - `prop.Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR headroom
  *   above the SDR white point. This is for informational and diagnostic
  *   purposes only, as not all platforms provide this information at the display
  *   level.
  *
  * On KMS/DRM:
  *
- * - `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel orientation"
+ * - `prop.Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel orientation"
  *   property for the display in degrees of clockwise rotation. Note that this
  *   is provided only as a hint, and the application is responsible for any
  *   coordinate transformations needed to conform to the requested display
@@ -3712,12 +3711,12 @@ inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
  *
  * On Wayland:
  *
- * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
- *   the display
+ * - `prop.Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with the
+ *   display
  *
  * On Windows:
  *
- * - `prop::Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
+ * - `prop.Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
  *   associated with the display
  *
  * @param displayID the instance ID of the display to query.
@@ -4483,12 +4482,12 @@ inline Window::Window(PropertiesRef props)
  *
  * By default, popup window positions will automatically be constrained to keep
  * the entire window within display bounds. This can be overridden with the
- * `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
+ * `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
  *
  * By default, popup menus will automatically grab keyboard focus from the
  * parent when shown. This behavior can be overridden by setting the
  * `WINDOW_NOT_FOCUSABLE` flag, setting the
- * `prop::Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
+ * `prop.Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
  * after creation via the `Window.SetFocusable()` function.
  *
  * If a parent window is hidden or destroyed, any child popup windows will be
@@ -4530,108 +4529,107 @@ inline Window CreatePopupWindow(WindowRef parent,
  *
  * These are the supported properties:
  *
- * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
+ * - `prop.Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
  *   always on top
- * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no window
+ * - `prop.Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no window
  *   decoration
- * - `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+ * - `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
  *   "menu" window types should be automatically constrained to be entirely
  *   within display bounds (default), false if no constraints on the position
  *   are desired.
- * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window
+ * - `prop.Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window
  *   will be used with an externally managed graphics context.
- * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
+ * - `prop.Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
  *   keyboard input (defaults true)
- * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start
- *   in fullscreen mode at desktop resolution
- * - `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window
- * - `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
- *   hidden
- * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a
+ * - `prop.Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start in
+ *   fullscreen mode at desktop resolution
+ * - `prop.Window.CREATE_HEIGHT_NUMBER`: the height of the window
+ * - `prop.Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start hidden
+ * - `prop.Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a
  *   high pixel density buffer if possible
- * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
+ * - `prop.Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
  *   maximized
- * - `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
- * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
+ * - `prop.Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
+ * - `prop.Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
  *   Metal rendering
- * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
+ * - `prop.Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
  *   minimized
- * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
+ * - `prop.Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
  *   parent
- * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts with
+ * - `prop.Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts with
  *   grabbed mouse focus
- * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used with
+ * - `prop.Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used with
  *   OpenGL rendering
- * - `prop::Window.CREATE_PARENT_POINTER`: an Window that will be the parent of
+ * - `prop.Window.CREATE_PARENT_POINTER`: an Window that will be the parent of
  *   this window, required for windows with the "tooltip", "menu", and "modal"
  *   properties
- * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
+ * - `prop.Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
  *   resizable
- * - `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
+ * - `prop.Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
  *   encoding
- * - `prop::Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
+ * - `prop.Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
  *   transparent in the areas with alpha of 0
- * - `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
- * - `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
+ * - `prop.Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
+ * - `prop.Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
  *   window, not showing in the task bar and window list
- * - `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used with
+ * - `prop.Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used with
  *   Vulkan rendering
- * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
- * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
+ * - `prop.Window.CREATE_WIDTH_NUMBER`: the width of the window
+ * - `prop.Window.CREATE_X_NUMBER`: the x position of the window, or
  *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
  *   to the parent for windows with the "tooltip" or "menu" property set.
- * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
+ * - `prop.Window.CREATE_Y_NUMBER`: the y position of the window, or
  *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
  *   to the parent for windows with the "tooltip" or "menu" property set.
  *
  * These are additional supported properties on macOS:
  *
- * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+ * - `prop.Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
  *   NSWindow associated with the window, if you want to wrap an existing
  *   window.
- * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
- *   NSView associated with the window, defaults to `[window contentView]`
+ * - `prop.Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)` NSView
+ *   associated with the window, defaults to `[window contentView]`
  *
  * These are additional supported properties on iOS, tvOS, and visionOS:
  *
- * - `prop::Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+ * - `prop.Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
  *   UIWindowScene associated with the window, defaults to the active window
  *   scene.
  *
  * These are additional supported properties on Wayland:
  *
- * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
+ * - `prop.Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
  *   application wants to use the Wayland surface for a custom role and does not
  *   want it attached to an XDG toplevel window. See
  *   [README-wayland](README-wayland) for more information on using custom
  *   surfaces.
- * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+ * - `prop.Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
  *   application wants an associated `wl_egl_window` object to be created and
  *   attached to the window, even if the window does not have the OpenGL
  *   property or `WINDOW_OPENGL` flag set.
- * - `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
- *   associated with the window, if you want to wrap an existing window. See
+ * - `prop.Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface associated
+ *   with the window, if you want to wrap an existing window. See
  *   [README-wayland](README-wayland) for more information.
  *
  * These are additional supported properties on Windows:
  *
- * - `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
+ * - `prop.Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
  *   window, if you want to wrap an existing window.
- * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
+ * - `prop.Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
  *   window to share pixel format with, useful for OpenGL windows
  *
  * These are additional supported properties with X11:
  *
- * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with the
+ * - `prop.Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with the
  *   window, if you want to wrap an existing window.
  *
  * The window is implicitly shown if the "hidden" property is not set.
  *
  * These are additional supported properties with Emscripten:
  *
- * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
+ * - `prop.Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
  *   canvas element. This should start with a '#' sign
- * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
+ * - `prop.Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
  *   binding element for keyboard inputs for this canvas. The variable can be
  *   one of:
  * - "#window": the javascript window object (default)
@@ -4645,12 +4643,12 @@ inline Window CreatePopupWindow(WindowRef parent,
  *   CreatePopupWindow().
  *
  * If this window is being created to be used with an Renderer, you should not
- * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
+ * add a graphics API specific property (`prop.Window.CREATE_OPENGL_BOOLEAN`,
  * etc), as SDL will handle that internally when it chooses a renderer. However,
  * SDL might need to recreate your window at that point, which may cause the
  * window to appear briefly, and then flicker as it is recreated. The correct
  * approach to this is to create the window with the
- * `prop::Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
+ * `prop.Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
  * renderer, then show the window with Window.Show().
  *
  * @param props the properties to use.
@@ -4981,75 +4979,75 @@ inline WindowRef Window::GetParent() const
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Window.SHAPE_POINTER`: the surface associated with a shaped window
- * - `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR headroom
+ * - `prop.Window.SHAPE_POINTER`: the surface associated with a shaped window
+ * - `prop.Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR headroom
  *   above the SDR white point. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
+ * - `prop.Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
  *   COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the SDR
  *   white level in scRGB colorspace, and on Apple platforms this is always 1.0
  *   for EDR content. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
+ * - `prop.Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
  *   can be displayed, in terms of the SDR white point. When HDR is not enabled,
  *   this will be 1.0. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
  *
  * On Android:
  *
- * - `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated with
- *   the window
- * - `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with the
+ * - `prop.Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated with the
+ *   window
+ * - `prop.Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with the
  *   window
  *
  * On iOS:
  *
- * - `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)` UIWindow
+ * - `prop.Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)` UIWindow
  *   associated with the window
- * - `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+ * - `prop.Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
  *   with metal views on the window
- * - `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
+ * - `prop.Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
  *   framebuffer object. It must be bound when rendering to the screen using
  *   OpenGL.
- * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
+ * - `prop.Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
  *   renderbuffer object. It must be bound when Window.GL_Swap is called.
- * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
+ * - `prop.Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
  *   resolve framebuffer, when MSAA is used.
  *
  * On KMS/DRM:
  *
- * - `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated with
+ * - `prop.Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated with
  *   the window (e.g. the X in /dev/dri/cardX)
- * - `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the window
- * - `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated with
- *   the window
+ * - `prop.Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the window
+ * - `prop.Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated with the
+ *   window
  *
  * On macOS:
  *
- * - `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow
+ * - `prop.Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow
  *   associated with the window
- * - `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+ * - `prop.Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
  *   with metal views on the window
  *
  * On OpenVR:
  *
- * - `prop::Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
+ * - `prop.Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
  *   the associated overlay window.
  *
  * On Vivante:
  *
- * - `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType associated
+ * - `prop.Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType associated
  *   with the window
- * - `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType associated
+ * - `prop.Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType associated
  *   with the window
- * - `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with the
+ * - `prop.Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with the
  *   window
  *
  * On Windows:
  *
- * - `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window
- * - `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window
- * - `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with the
+ * - `prop.Window.WIN32_HWND_POINTER`: the HWND associated with the window
+ * - `prop.Window.WIN32_HDC_POINTER`: the HDC associated with the window
+ * - `prop.Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with the
  *   window
  *
  * On Wayland:
@@ -5058,39 +5056,39 @@ inline WindowRef Window::GetParent() const
  * show/hide calls. They will be null if the window is hidden and must be
  * queried each time it is shown.
  *
- * - `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with the
+ * - `prop.Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with the
  *   window
- * - `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with the
+ * - `prop.Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with the
  *   window
- * - `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated with
+ * - `prop.Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated with the
+ *   window
+ * - `prop.Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window associated with
  *   the window
- * - `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window associated
- *   with the window
- * - `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated with
+ * - `prop.Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated with
  *   the window
- * - `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
+ * - `prop.Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
  *   associated with the window
- * - 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export handle
+ * - 'prop.Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export handle
  *   associated with the window
- * - `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role associated
- *   with the window
- * - `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner
- *   associated with the window, in popup mode
+ * - `prop.Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role associated with
+ *   the window
+ * - `prop.Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner associated
+ *   with the window, in popup mode
  *
  * On X11:
  *
- * - `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with the
+ * - `prop.Window.X11_DISPLAY_POINTER`: the X11 Display associated with the
  *   window
- * - `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with the
+ * - `prop.Window.X11_SCREEN_NUMBER`: the screen number associated with the
  *   window
- * - `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the window
+ * - `prop.Window.X11_WINDOW_NUMBER`: the X11 Window associated with the window
  *
  * On Emscripten:
  *
- * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element will
+ * - `prop.Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element will
  *   have
- * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
- *   that associates keyboard events to this window
+ * - `prop.Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element that
+ *   associates keyboard events to this window
  *
  * @param window the window to query.
  * @returns a valid property ID on success.

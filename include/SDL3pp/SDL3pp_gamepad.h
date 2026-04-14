@@ -486,16 +486,16 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED that
+   * - `prop.GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED that
    *   has adjustable brightness
-   * - `prop::GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED that
+   * - `prop.GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED that
    *   has adjustable color
-   * - `prop::GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a player
+   * - `prop.GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a player
    *   LED
-   * - `prop::GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has left/right
+   * - `prop.GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has left/right
    *   rumble
-   * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has
-   *   simple trigger rumble
+   * - `prop.GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has simple
+   *   trigger rumble
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -1662,15 +1662,14 @@ inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED that
+ * - `prop.GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED that
  *   has adjustable brightness
- * - `prop::GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED that
- *   has adjustable color
- * - `prop::GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a player
- *   LED
- * - `prop::GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has left/right
+ * - `prop.GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED that has
+ *   adjustable color
+ * - `prop.GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a player LED
+ * - `prop.GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has left/right
  *   rumble
- * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has simple
+ * - `prop.GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has simple
  *   trigger rumble
  *
  * @param gamepad a gamepad identifier previously returned by OpenGamepad().

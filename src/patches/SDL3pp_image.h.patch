@@ -1364,7 +1364,7 @@
 -   *              animation.
     * @param duration the duration of the frame, usually in milliseconds but can
     *                 be other units if the
-    *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+    *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
     *                 property is set when creating the decoder.
 +   * @returns the Surface for the next frame in the animation.
     * @throws Error on failure.
@@ -1455,7 +1455,7 @@
 - *              animation.
   * @param duration the duration of the frame, usually in milliseconds but can be
   *                 other units if the
-  *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+  *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
   *                 property is set when creating the decoder.
 + * @returns the Surface for the next frame in the animation.
   * @throws Error on failure.

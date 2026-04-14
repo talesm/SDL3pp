@@ -195,7 +195,7 @@ struct HidDevice : ResourceBase<HidDeviceRaw>
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+   * - `prop.Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
    *   associated with the device, if it was opened using libusb.
    *
    * @returns a valid property ID on success.
@@ -579,7 +579,7 @@ inline HidDevice hid_open_path(StringParam path)
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+ * - `prop.Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
  *   associated with the device, if it was opened using libusb.
  *
  * @param dev a device handle returned from hid_open().
