@@ -10,8 +10,9 @@ export function expandNamespaces(
   const namespacesMap = file.namespacesMap ?? {};
   for (const [prefix, nsName] of Object.entries(namespacesMap)) {
     const nsEntries: Dict<ApiEntryTransform> = {};
-    const sourceEntriesListed = Object.entries(sourceEntries).filter(([key]) =>
-      key.startsWith(prefix),
+    const sourceEntriesListed = Object.entries(sourceEntries).filter(
+      ([key]) =>
+        key.startsWith(prefix) && !file.transform[key]?.name?.includes("."),
     );
     for (const [key, entry] of sourceEntriesListed) {
       const entryDelta = file.transform[key] || {};
@@ -19,11 +20,7 @@ export function expandNamespaces(
       file.transform[key] = entryDelta;
       entryDelta.name = nsName + "." + localName;
 
-      if (entry.kind === "def" && !entryDelta.kind) {
-        entryDelta.kind = "var";
-        entryDelta.type = "auto";
-        entryDelta.constexpr = true;
-      }
+      fixDefToConstexpr(entry, entryDelta);
       context.addName(key, `${nsName}.${localName}`);
     }
     if (sourceEntriesListed.length) {
@@ -39,5 +36,13 @@ export function expandNamespaces(
       }
       context.includeBefore(nsEntry, sourceEntriesListed[0][0]);
     }
+  }
+}
+
+function fixDefToConstexpr(entry: ApiEntry, entryDelta: ApiEntryTransform) {
+  if (entry.kind === "def" && !entryDelta.kind) {
+    entryDelta.kind = "var";
+    entryDelta.type = "auto";
+    entryDelta.constexpr = true;
   }
 }

@@ -1,7 +1,8 @@
 Todo for next version
 =====================
 
-- [ ] Properties prefixed by CREATE should their own subnamespace;
+- [ ] Move Properties prefixed by CREATE to their own subnamespace:
+  - [x] SDL3pp_gup.h
 - [ ] (SDL3pp_image) Rename prop::Metadata to prop::Animation or something
   similar? Or even under AnimationDecoder;
 - [ ] (SDL3pp_mixer) Rename prop::MixMetadata to prop::Audio or something

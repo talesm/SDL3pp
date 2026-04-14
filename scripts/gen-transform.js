@@ -1708,14 +1708,15 @@ const transform = {
         "SDL3pp_video.h",
       ],
       namespacesMap: {
+        "SDL_PROP_GPU_DEVICE_CREATE_": "prop::GPUDevice::Create",
         "SDL_PROP_GPU_DEVICE_": "prop::GPUDevice",
-        "SDL_PROP_GPU_COMPUTEPIPELINE_": "prop::GPUComputePipeline",
-        "SDL_PROP_GPU_GRAPHICSPIPELINE_": "prop::GPUGraphicsPipeline",
-        "SDL_PROP_GPU_SAMPLER_": "prop::GPUSampler",
-        "SDL_PROP_GPU_SHADER_": "prop::GPUShader",
-        "SDL_PROP_GPU_TEXTURE_": "prop::GPUTexture",
-        "SDL_PROP_GPU_BUFFER_": "prop::GPUBuffer",
-        "SDL_PROP_GPU_TRANSFERBUFFER_": "prop::GPUTransferBuffer",
+        "SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_": "prop::GPUComputePipeline::Create",
+        "SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_": "prop::GPUGraphicsPipeline::Create",
+        "SDL_PROP_GPU_SAMPLER_CREATE_": "prop::GPUSampler::Create",
+        "SDL_PROP_GPU_SHADER_CREATE_": "prop::GPUShader::Create",
+        "SDL_PROP_GPU_TEXTURE_CREATE_": "prop::GPUTexture::Create",
+        "SDL_PROP_GPU_BUFFER_CREATE_": "prop::GPUBuffer::Create",
+        "SDL_PROP_GPU_TRANSFERBUFFER_CREATE_": "prop::GPUTransferBuffer::Create",
       },
       transform: {
         "SDL_GPUBufferCreateInfo": { before: "GPUBuffer" },
@@ -1962,7 +1963,8 @@ const transform = {
         },
         "SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER": {
           since: { tag: "SDL", major: 3, minor: 2, patch: 12 }
-        }
+        },
+        "prop::GPUDevice": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },
       }
     },
     "SDL_guid.h": {
