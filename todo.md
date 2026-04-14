@@ -1,62 +1,19 @@
 Todo for next version
 =====================
 
-- [x] Add missing tray free functions when previously had only methods:
-  - [x] SetTrayEntryCallback with TrayCB callback;
-  - [x] AppendTrayEntry;
-- [x] Add TrayEntry constructor;
-- [x] Remove `Renderer(Window)` constructor, make second parameter of
-  `Renderer(Window, StringParam)` nullptr instead;
-- [x] Docs improvements:
-  - [x] Add namespace tab;
-  - [x] Document namespace `prop`;
-  - [x] Document namespace `prop::AudioStream`;
-  - [x] Document namespace `prop::Display`;
-  - [x] Document namespace `prop::FileDialog`;
-  - [x] Document namespace `prop::GamepadCap`;
-  - [x] Document namespace `prop::GPU*`;
-  - [x] Document namespace `prop::Hidapi`;
-  - [x] Document namespace `prop::IOStream`;
-  - [x] Document namespace `prop::JoystickCap`;
-  - [x] Document namespace `prop::Process`;
-  - [x] Document namespace `prop::Renderer`;
-  - [x] Document namespace `prop::Renderer`;
-  - [x] Document namespace `prop::Surface`;
-  - [x] Document namespace `prop::TextInput`;
-  - [x] Document namespace `prop::Thread`;
-  - [x] Document namespace `prop::AnimationEncoder`;
-  - [x] Document namespace `prop::AnimationDecoder`;
-  - [x] Document namespace `prop::Metadata`;
-  - [x] Document namespace `prop::Audio`;
-  - [x] Document namespace `prop::Mixer`;
-  - [x] Document namespace `prop::MixMetadata`;
-  - [x] Document namespace `prop::Play`;
-  - [x] Document namespace `prop::Font`;
-  - [x] Document namespace `prop::GpuFontEngine`;
-  - [x] Document namespace `prop::RendererTextEngine`;
-- [x] Resource improvements:
-  - [x] Create template base class for non-owning (Like TrayEntry);
-  - [x] Create template base class for unique owning (Like Window);
-  - [x] Create template base class for shared owning (Like Surface);
-  - [x] Make ResourceRef template class for all \*Ref;
-
-Backlog
--------
-
 - [ ] Properties prefixed by CREATE should their own subnamespace;
 - [ ] (SDL3pp_image) Rename prop::Metadata to prop::Animation or something
   similar? Or even under AnimationDecoder;
 - [ ] (SDL3pp_mixer) Rename prop::MixMetadata to prop::Audio or something
   similar? Or even under Audio;
+
+Backlog
+-------
+
 - [ ] Add a constructor to Properties similar to std::map initializer list;
 - [ ] Revamp README, with examples and clearer instructions to integrate to
   project and everything else moved to other files;
-- [ ] Simplify class callbacks:
-  - [ ] Use inheritance;
-  - [ ] Have base class with common methods;
-  - [ ] Document it;
 - [ ] Docs improvements:
-  - [ ] Update [./docs/DesignNotes.dox](resources) to remove ResourceParam info;
   - [ ] Update [./docs/transformation.md](transformation);
   - [ ] Update [./docs/callback.md](callback);
 - [ ] Create ReadPixelRaw/WritePixelRaw on surface;
