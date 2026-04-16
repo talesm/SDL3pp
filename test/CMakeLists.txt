@@ -7,7 +7,7 @@ target_link_libraries(test_main PUBLIC SDL3pp)
 enable_testing()
 
 # Unit tests
-file(GLOB unitTestSources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/SDL3pp_*.cpp)
+file(GLOB unitTestSources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/unit/SDL3pp_*.cpp)
 add_executable(SDL3pp_unitTests ${unitTestSources})
 target_link_libraries(SDL3pp_unitTests PRIVATE test_main)
 add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
