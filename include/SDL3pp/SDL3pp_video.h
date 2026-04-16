@@ -923,12 +923,12 @@ struct Window : ResourceBase<WindowRaw>
    *
    * By default, popup window positions will automatically be constrained to
    * keep the entire window within display bounds. This can be overridden with
-   * the `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
+   * the `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN` property.
    *
    * By default, popup menus will automatically grab keyboard focus from the
    * parent when shown. This behavior can be overridden by setting the
    * `WINDOW_NOT_FOCUSABLE` flag, setting the
-   * `prop.Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
+   * `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it
    * after creation via the `Window.SetFocusable()` function.
    *
    * If a parent window is hidden or destroyed, any child popup windows will be
@@ -967,108 +967,108 @@ struct Window : ResourceBase<WindowRaw>
    *
    * These are the supported properties:
    *
-   * - `prop.Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
+   * - `prop.Window.Create.ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
    *   always on top
-   * - `prop.Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no window
+   * - `prop.Window.Create.BORDERLESS_BOOLEAN`: true if the window has no window
    *   decoration
-   * - `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+   * - `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
    *   "menu" window types should be automatically constrained to be entirely
    *   within display bounds (default), false if no constraints on the position
    *   are desired.
-   * - `prop.Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
+   * - `prop.Window.Create.EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
    *   window will be used with an externally managed graphics context.
-   * - `prop.Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
+   * - `prop.Window.Create.FOCUSABLE_BOOLEAN`: true if the window should accept
    *   keyboard input (defaults true)
-   * - `prop.Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start
+   * - `prop.Window.Create.FULLSCREEN_BOOLEAN`: true if the window should start
    *   in fullscreen mode at desktop resolution
-   * - `prop.Window.CREATE_HEIGHT_NUMBER`: the height of the window
-   * - `prop.Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
+   * - `prop.Window.Create.HEIGHT_NUMBER`: the height of the window
+   * - `prop.Window.Create.HIDDEN_BOOLEAN`: true if the window should start
    *   hidden
-   * - `prop.Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
+   * - `prop.Window.Create.HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
    *   a high pixel density buffer if possible
-   * - `prop.Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
+   * - `prop.Window.Create.MAXIMIZED_BOOLEAN`: true if the window should start
    *   maximized
-   * - `prop.Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
-   * - `prop.Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
+   * - `prop.Window.Create.MENU_BOOLEAN`: true if the window is a popup menu
+   * - `prop.Window.Create.METAL_BOOLEAN`: true if the window will be used with
    *   Metal rendering
-   * - `prop.Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
+   * - `prop.Window.Create.MINIMIZED_BOOLEAN`: true if the window should start
    *   minimized
-   * - `prop.Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
+   * - `prop.Window.Create.MODAL_BOOLEAN`: true if the window is modal to its
    *   parent
-   * - `prop.Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
+   * - `prop.Window.Create.MOUSE_GRABBED_BOOLEAN`: true if the window starts
    *   with grabbed mouse focus
-   * - `prop.Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used with
+   * - `prop.Window.Create.OPENGL_BOOLEAN`: true if the window will be used with
    *   OpenGL rendering
-   * - `prop.Window.CREATE_PARENT_POINTER`: an Window that will be the parent of
+   * - `prop.Window.Create.PARENT_POINTER`: an Window that will be the parent of
    *   this window, required for windows with the "tooltip", "menu", and "modal"
    *   properties
-   * - `prop.Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
+   * - `prop.Window.Create.RESIZABLE_BOOLEAN`: true if the window should be
    *   resizable
-   * - `prop.Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
+   * - `prop.Window.Create.TITLE_STRING`: the title of the window, in UTF-8
    *   encoding
-   * - `prop.Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
+   * - `prop.Window.Create.TRANSPARENT_BOOLEAN`: true if the window show
    *   transparent in the areas with alpha of 0
-   * - `prop.Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
-   * - `prop.Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
+   * - `prop.Window.Create.TOOLTIP_BOOLEAN`: true if the window is a tooltip
+   * - `prop.Window.Create.UTILITY_BOOLEAN`: true if the window is a utility
    *   window, not showing in the task bar and window list
-   * - `prop.Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used with
+   * - `prop.Window.Create.VULKAN_BOOLEAN`: true if the window will be used with
    *   Vulkan rendering
-   * - `prop.Window.CREATE_WIDTH_NUMBER`: the width of the window
-   * - `prop.Window.CREATE_X_NUMBER`: the x position of the window, or
+   * - `prop.Window.Create.WIDTH_NUMBER`: the width of the window
+   * - `prop.Window.Create.X_NUMBER`: the x position of the window, or
    *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
    *   to the parent for windows with the "tooltip" or "menu" property set.
-   * - `prop.Window.CREATE_Y_NUMBER`: the y position of the window, or
+   * - `prop.Window.Create.Y_NUMBER`: the y position of the window, or
    *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
    *   to the parent for windows with the "tooltip" or "menu" property set.
    *
    * These are additional supported properties on macOS:
    *
-   * - `prop.Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+   * - `prop.Window.Create.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
    *   NSWindow associated with the window, if you want to wrap an existing
    *   window.
-   * - `prop.Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
+   * - `prop.Window.Create.COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
    *   NSView associated with the window, defaults to `[window contentView]`
    *
    * These are additional supported properties on iOS, tvOS, and visionOS:
    *
-   * - `prop.Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+   * - `prop.Window.Create.WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
    *   UIWindowScene associated with the window, defaults to the active window
    *   scene.
    *
    * These are additional supported properties on Wayland:
    *
-   * - `prop.Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
+   * - `prop.Window.Create.WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
    *   application wants to use the Wayland surface for a custom role and does
    *   not want it attached to an XDG toplevel window. See
    *   [README-wayland](README-wayland) for more information on using custom
    *   surfaces.
-   * - `prop.Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+   * - `prop.Window.Create.WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
    *   application wants an associated `wl_egl_window` object to be created and
    *   attached to the window, even if the window does not have the OpenGL
    *   property or `WINDOW_OPENGL` flag set.
-   * - `prop.Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
+   * - `prop.Window.Create.WAYLAND_WL_SURFACE_POINTER` - the wl_surface
    *   associated with the window, if you want to wrap an existing window. See
    *   [README-wayland](README-wayland) for more information.
    *
    * These are additional supported properties on Windows:
    *
-   * - `prop.Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
+   * - `prop.Window.Create.WIN32_HWND_POINTER`: the HWND associated with the
    *   window, if you want to wrap an existing window.
-   * - `prop.Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
+   * - `prop.Window.Create.WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
    *   window to share pixel format with, useful for OpenGL windows
    *
    * These are additional supported properties with X11:
    *
-   * - `prop.Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with
+   * - `prop.Window.Create.X11_WINDOW_NUMBER`: the X11 Window associated with
    *   the window, if you want to wrap an existing window.
    *
    * The window is implicitly shown if the "hidden" property is not set.
    *
    * These are additional supported properties with Emscripten:
    *
-   * - `prop.Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
+   * - `prop.Window.Create.EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
    *   canvas element. This should start with a '#' sign
-   * - `prop.Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
+   * - `prop.Window.Create.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
    *   binding element for keyboard inputs for this canvas. The variable can be
    *   one of:
    * - "#window": the javascript window object (default)
@@ -1082,12 +1082,12 @@ struct Window : ResourceBase<WindowRaw>
    *   CreatePopupWindow().
    *
    * If this window is being created to be used with an Renderer, you should not
-   * add a graphics API specific property (`prop.Window.CREATE_OPENGL_BOOLEAN`,
+   * add a graphics API specific property (`prop.Window.Create.OPENGL_BOOLEAN`,
    * etc), as SDL will handle that internally when it chooses a renderer.
    * However, SDL might need to recreate your window at that point, which may
    * cause the window to appear briefly, and then flicker as it is recreated.
    * The correct approach to this is to create the window with the
-   * `prop.Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
+   * `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the
    * renderer, then show the window with Window.Show().
    *
    * @param props the properties to use.
@@ -4482,12 +4482,12 @@ inline Window::Window(PropertiesRef props)
  *
  * By default, popup window positions will automatically be constrained to keep
  * the entire window within display bounds. This can be overridden with the
- * `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
+ * `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN` property.
  *
  * By default, popup menus will automatically grab keyboard focus from the
  * parent when shown. This behavior can be overridden by setting the
  * `WINDOW_NOT_FOCUSABLE` flag, setting the
- * `prop.Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
+ * `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it
  * after creation via the `Window.SetFocusable()` function.
  *
  * If a parent window is hidden or destroyed, any child popup windows will be
@@ -4529,107 +4529,107 @@ inline Window CreatePopupWindow(WindowRef parent,
  *
  * These are the supported properties:
  *
- * - `prop.Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
+ * - `prop.Window.Create.ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
  *   always on top
- * - `prop.Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no window
+ * - `prop.Window.Create.BORDERLESS_BOOLEAN`: true if the window has no window
  *   decoration
- * - `prop.Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+ * - `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
  *   "menu" window types should be automatically constrained to be entirely
  *   within display bounds (default), false if no constraints on the position
  *   are desired.
- * - `prop.Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window
+ * - `prop.Window.Create.EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window
  *   will be used with an externally managed graphics context.
- * - `prop.Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
+ * - `prop.Window.Create.FOCUSABLE_BOOLEAN`: true if the window should accept
  *   keyboard input (defaults true)
- * - `prop.Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start in
+ * - `prop.Window.Create.FULLSCREEN_BOOLEAN`: true if the window should start in
  *   fullscreen mode at desktop resolution
- * - `prop.Window.CREATE_HEIGHT_NUMBER`: the height of the window
- * - `prop.Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start hidden
- * - `prop.Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a
+ * - `prop.Window.Create.HEIGHT_NUMBER`: the height of the window
+ * - `prop.Window.Create.HIDDEN_BOOLEAN`: true if the window should start hidden
+ * - `prop.Window.Create.HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a
  *   high pixel density buffer if possible
- * - `prop.Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
+ * - `prop.Window.Create.MAXIMIZED_BOOLEAN`: true if the window should start
  *   maximized
- * - `prop.Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
- * - `prop.Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
+ * - `prop.Window.Create.MENU_BOOLEAN`: true if the window is a popup menu
+ * - `prop.Window.Create.METAL_BOOLEAN`: true if the window will be used with
  *   Metal rendering
- * - `prop.Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
+ * - `prop.Window.Create.MINIMIZED_BOOLEAN`: true if the window should start
  *   minimized
- * - `prop.Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
+ * - `prop.Window.Create.MODAL_BOOLEAN`: true if the window is modal to its
  *   parent
- * - `prop.Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts with
+ * - `prop.Window.Create.MOUSE_GRABBED_BOOLEAN`: true if the window starts with
  *   grabbed mouse focus
- * - `prop.Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used with
+ * - `prop.Window.Create.OPENGL_BOOLEAN`: true if the window will be used with
  *   OpenGL rendering
- * - `prop.Window.CREATE_PARENT_POINTER`: an Window that will be the parent of
+ * - `prop.Window.Create.PARENT_POINTER`: an Window that will be the parent of
  *   this window, required for windows with the "tooltip", "menu", and "modal"
  *   properties
- * - `prop.Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
+ * - `prop.Window.Create.RESIZABLE_BOOLEAN`: true if the window should be
  *   resizable
- * - `prop.Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
+ * - `prop.Window.Create.TITLE_STRING`: the title of the window, in UTF-8
  *   encoding
- * - `prop.Window.CREATE_TRANSPARENT_BOOLEAN`: true if the window show
+ * - `prop.Window.Create.TRANSPARENT_BOOLEAN`: true if the window show
  *   transparent in the areas with alpha of 0
- * - `prop.Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
- * - `prop.Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
+ * - `prop.Window.Create.TOOLTIP_BOOLEAN`: true if the window is a tooltip
+ * - `prop.Window.Create.UTILITY_BOOLEAN`: true if the window is a utility
  *   window, not showing in the task bar and window list
- * - `prop.Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used with
+ * - `prop.Window.Create.VULKAN_BOOLEAN`: true if the window will be used with
  *   Vulkan rendering
- * - `prop.Window.CREATE_WIDTH_NUMBER`: the width of the window
- * - `prop.Window.CREATE_X_NUMBER`: the x position of the window, or
+ * - `prop.Window.Create.WIDTH_NUMBER`: the width of the window
+ * - `prop.Window.Create.X_NUMBER`: the x position of the window, or
  *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
  *   to the parent for windows with the "tooltip" or "menu" property set.
- * - `prop.Window.CREATE_Y_NUMBER`: the y position of the window, or
+ * - `prop.Window.Create.Y_NUMBER`: the y position of the window, or
  *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
  *   to the parent for windows with the "tooltip" or "menu" property set.
  *
  * These are additional supported properties on macOS:
  *
- * - `prop.Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+ * - `prop.Window.Create.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
  *   NSWindow associated with the window, if you want to wrap an existing
  *   window.
- * - `prop.Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)` NSView
+ * - `prop.Window.Create.COCOA_VIEW_POINTER`: the `(__unsafe_unretained)` NSView
  *   associated with the window, defaults to `[window contentView]`
  *
  * These are additional supported properties on iOS, tvOS, and visionOS:
  *
- * - `prop.Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+ * - `prop.Window.Create.WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
  *   UIWindowScene associated with the window, defaults to the active window
  *   scene.
  *
  * These are additional supported properties on Wayland:
  *
- * - `prop.Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
+ * - `prop.Window.Create.WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
  *   application wants to use the Wayland surface for a custom role and does not
  *   want it attached to an XDG toplevel window. See
  *   [README-wayland](README-wayland) for more information on using custom
  *   surfaces.
- * - `prop.Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+ * - `prop.Window.Create.WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
  *   application wants an associated `wl_egl_window` object to be created and
  *   attached to the window, even if the window does not have the OpenGL
  *   property or `WINDOW_OPENGL` flag set.
- * - `prop.Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface associated
+ * - `prop.Window.Create.WAYLAND_WL_SURFACE_POINTER` - the wl_surface associated
  *   with the window, if you want to wrap an existing window. See
  *   [README-wayland](README-wayland) for more information.
  *
  * These are additional supported properties on Windows:
  *
- * - `prop.Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
+ * - `prop.Window.Create.WIN32_HWND_POINTER`: the HWND associated with the
  *   window, if you want to wrap an existing window.
- * - `prop.Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
+ * - `prop.Window.Create.WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
  *   window to share pixel format with, useful for OpenGL windows
  *
  * These are additional supported properties with X11:
  *
- * - `prop.Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with the
+ * - `prop.Window.Create.X11_WINDOW_NUMBER`: the X11 Window associated with the
  *   window, if you want to wrap an existing window.
  *
  * The window is implicitly shown if the "hidden" property is not set.
  *
  * These are additional supported properties with Emscripten:
  *
- * - `prop.Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
+ * - `prop.Window.Create.EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
  *   canvas element. This should start with a '#' sign
- * - `prop.Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
+ * - `prop.Window.Create.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
  *   binding element for keyboard inputs for this canvas. The variable can be
  *   one of:
  * - "#window": the javascript window object (default)
@@ -4643,12 +4643,12 @@ inline Window CreatePopupWindow(WindowRef parent,
  *   CreatePopupWindow().
  *
  * If this window is being created to be used with an Renderer, you should not
- * add a graphics API specific property (`prop.Window.CREATE_OPENGL_BOOLEAN`,
+ * add a graphics API specific property (`prop.Window.Create.OPENGL_BOOLEAN`,
  * etc), as SDL will handle that internally when it chooses a renderer. However,
  * SDL might need to recreate your window at that point, which may cause the
  * window to appear briefly, and then flicker as it is recreated. The correct
  * approach to this is to create the window with the
- * `prop.Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
+ * `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the
  * renderer, then show the window with Window.Show().
  *
  * @param props the properties to use.
@@ -4669,238 +4669,113 @@ inline Window CreateWindowWithProperties(PropertiesRef props)
 }
 
 /**
- * Properties for Window
- *
- * Properties prefixed with `CREATE_` can be used in
- * CreateWindowWithProperties() to specify window creation parameters. can be
- * used to query information about an existing Window with
- * Window.GetProperties()
+ * Properties for Window creation.
  *
  * @sa CreateWindowWithProperties
- * @sa Window.GetProperties
  */
-namespace prop::Window {
+namespace prop::Window::Create {
 
-constexpr auto CREATE_ALWAYS_ON_TOP_BOOLEAN =
+constexpr auto ALWAYS_ON_TOP_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN;
 
-constexpr auto CREATE_BORDERLESS_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN;
+constexpr auto BORDERLESS_BOOLEAN = SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN;
 
 #if SDL_VERSION_ATLEAST(3, 2, 18)
 
-constexpr auto CREATE_CONSTRAIN_POPUP_BOOLEAN =
+constexpr auto CONSTRAIN_POPUP_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN;
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 18)
 
-constexpr auto CREATE_FOCUSABLE_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN;
+constexpr auto FOCUSABLE_BOOLEAN = SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN;
 
-constexpr auto CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN =
+constexpr auto EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN;
 
-constexpr auto CREATE_FLAGS_NUMBER = SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER;
+constexpr auto FLAGS_NUMBER = SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER;
 
-constexpr auto CREATE_FULLSCREEN_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN;
+constexpr auto FULLSCREEN_BOOLEAN = SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN;
 
-constexpr auto CREATE_HEIGHT_NUMBER = SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER;
+constexpr auto HEIGHT_NUMBER = SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER;
 
-constexpr auto CREATE_HIDDEN_BOOLEAN = SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN;
+constexpr auto HIDDEN_BOOLEAN = SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN;
 
-constexpr auto CREATE_HIGH_PIXEL_DENSITY_BOOLEAN =
+constexpr auto HIGH_PIXEL_DENSITY_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN;
 
-constexpr auto CREATE_MAXIMIZED_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN;
+constexpr auto MAXIMIZED_BOOLEAN = SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN;
 
-constexpr auto CREATE_MENU_BOOLEAN = SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN;
+constexpr auto MENU_BOOLEAN = SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN;
 
-constexpr auto CREATE_METAL_BOOLEAN = SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN;
+constexpr auto METAL_BOOLEAN = SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN;
 
-constexpr auto CREATE_MINIMIZED_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN;
+constexpr auto MINIMIZED_BOOLEAN = SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN;
 
-constexpr auto CREATE_MODAL_BOOLEAN = SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN;
+constexpr auto MODAL_BOOLEAN = SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN;
 
-constexpr auto CREATE_MOUSE_GRABBED_BOOLEAN =
+constexpr auto MOUSE_GRABBED_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN;
 
-constexpr auto CREATE_OPENGL_BOOLEAN = SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN;
+constexpr auto OPENGL_BOOLEAN = SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN;
 
-constexpr auto CREATE_PARENT_POINTER = SDL_PROP_WINDOW_CREATE_PARENT_POINTER;
+constexpr auto PARENT_POINTER = SDL_PROP_WINDOW_CREATE_PARENT_POINTER;
 
-constexpr auto CREATE_RESIZABLE_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN;
+constexpr auto RESIZABLE_BOOLEAN = SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN;
 
-constexpr auto CREATE_TITLE_STRING = SDL_PROP_WINDOW_CREATE_TITLE_STRING;
+constexpr auto TITLE_STRING = SDL_PROP_WINDOW_CREATE_TITLE_STRING;
 
-constexpr auto CREATE_TRANSPARENT_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN;
+constexpr auto TRANSPARENT_BOOLEAN = SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN;
 
-constexpr auto CREATE_TOOLTIP_BOOLEAN = SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN;
+constexpr auto TOOLTIP_BOOLEAN = SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN;
 
-constexpr auto CREATE_UTILITY_BOOLEAN = SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN;
+constexpr auto UTILITY_BOOLEAN = SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN;
 
-constexpr auto CREATE_VULKAN_BOOLEAN = SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN;
+constexpr auto VULKAN_BOOLEAN = SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN;
 
-constexpr auto CREATE_WIDTH_NUMBER = SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER;
+constexpr auto WIDTH_NUMBER = SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER;
 
-constexpr auto CREATE_X_NUMBER = SDL_PROP_WINDOW_CREATE_X_NUMBER;
+constexpr auto X_NUMBER = SDL_PROP_WINDOW_CREATE_X_NUMBER;
 
-constexpr auto CREATE_Y_NUMBER = SDL_PROP_WINDOW_CREATE_Y_NUMBER;
+constexpr auto Y_NUMBER = SDL_PROP_WINDOW_CREATE_Y_NUMBER;
 
-constexpr auto CREATE_COCOA_WINDOW_POINTER =
+constexpr auto COCOA_WINDOW_POINTER =
   SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER;
 
-constexpr auto CREATE_COCOA_VIEW_POINTER =
-  SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER;
+constexpr auto COCOA_VIEW_POINTER = SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_WINDOWSCENE_POINTER =
-  SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER;
+constexpr auto WINDOWSCENE_POINTER = SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN =
+constexpr auto WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN;
 
-constexpr auto CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN =
+constexpr auto WAYLAND_CREATE_EGL_WINDOW_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN;
 
-constexpr auto CREATE_WAYLAND_WL_SURFACE_POINTER =
+constexpr auto WAYLAND_WL_SURFACE_POINTER =
   SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER;
 
-constexpr auto CREATE_WIN32_HWND_POINTER =
-  SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER;
+constexpr auto WIN32_HWND_POINTER = SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER;
 
-constexpr auto CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER =
+constexpr auto WIN32_PIXEL_FORMAT_HWND_POINTER =
   SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER;
 
-constexpr auto CREATE_X11_WINDOW_NUMBER =
-  SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER;
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-constexpr auto CREATE_EMSCRIPTEN_CANVAS_ID_STRING =
-  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING;
-
-constexpr auto CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
-  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-constexpr auto SHAPE_POINTER = SDL_PROP_WINDOW_SHAPE_POINTER;
-
-constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN;
-
-constexpr auto SDR_WHITE_LEVEL_FLOAT = SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT;
-
-constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT;
-
-constexpr auto ANDROID_WINDOW_POINTER = SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER;
-
-constexpr auto ANDROID_SURFACE_POINTER =
-  SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER;
-
-constexpr auto UIKIT_WINDOW_POINTER = SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER;
-
-constexpr auto UIKIT_METAL_VIEW_TAG_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER;
-
-constexpr auto UIKIT_OPENGL_FRAMEBUFFER_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER;
-
-constexpr auto UIKIT_OPENGL_RENDERBUFFER_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER;
-
-constexpr auto UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER;
-
-constexpr auto KMSDRM_DEVICE_INDEX_NUMBER =
-  SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER;
-
-constexpr auto KMSDRM_DRM_FD_NUMBER = SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER;
-
-constexpr auto KMSDRM_GBM_DEVICE_POINTER =
-  SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER;
-
-constexpr auto COCOA_WINDOW_POINTER = SDL_PROP_WINDOW_COCOA_WINDOW_POINTER;
-
-constexpr auto COCOA_METAL_VIEW_TAG_NUMBER =
-  SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER;
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-constexpr auto OPENVR_OVERLAY_ID_NUMBER =
-  SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER;
-
-#else
-
-constexpr auto OPENVR_OVERLAY_ID_NUMBER = SDL_PROP_WINDOW_OPENVR_OVERLAY_ID;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-constexpr auto VIVANTE_DISPLAY_POINTER =
-  SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER;
-
-constexpr auto VIVANTE_WINDOW_POINTER = SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER;
-
-constexpr auto VIVANTE_SURFACE_POINTER =
-  SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER;
-
-constexpr auto WIN32_HWND_POINTER = SDL_PROP_WINDOW_WIN32_HWND_POINTER;
-
-constexpr auto WIN32_HDC_POINTER = SDL_PROP_WINDOW_WIN32_HDC_POINTER;
-
-constexpr auto WIN32_INSTANCE_POINTER = SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER;
-
-constexpr auto WAYLAND_DISPLAY_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER;
-
-constexpr auto WAYLAND_SURFACE_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER;
-
-constexpr auto WAYLAND_VIEWPORT_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER;
-
-constexpr auto WAYLAND_EGL_WINDOW_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER;
-
-constexpr auto WAYLAND_XDG_SURFACE_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER;
-
-constexpr auto WAYLAND_XDG_TOPLEVEL_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER;
-
-constexpr auto WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING =
-  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING;
-
-constexpr auto WAYLAND_XDG_POPUP_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER;
-
-constexpr auto WAYLAND_XDG_POSITIONER_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER;
-
-constexpr auto X11_DISPLAY_POINTER = SDL_PROP_WINDOW_X11_DISPLAY_POINTER;
-
-constexpr auto X11_SCREEN_NUMBER = SDL_PROP_WINDOW_X11_SCREEN_NUMBER;
-
-constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
+constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
-  SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING;
+  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING;
 
 constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
-  SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
+  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-} // namespace prop::Window
+} // namespace prop::Window::Create
 
 /**
  * Get the numeric ID of a window.
@@ -4943,7 +4818,7 @@ inline WindowID Window::GetID() const { return SDL::GetWindowID(get()); }
  */
 inline WindowRef GetWindowFromID(WindowID id)
 {
-  return {SDL_GetWindowFromID(id)};
+  return SDL_GetWindowFromID(id);
 }
 
 inline WindowRef Window::FromID(WindowID id)
@@ -5100,13 +4975,136 @@ inline WindowRef Window::GetParent() const
  */
 inline PropertiesRef GetWindowProperties(WindowRef window)
 {
-  return {CheckError(SDL_GetWindowProperties(window))};
+  return CheckError(SDL_GetWindowProperties(window));
 }
 
 inline PropertiesRef Window::GetProperties() const
 {
   return SDL::GetWindowProperties(get());
 }
+
+/**
+ * Properties for Window
+ *
+ * Properties within `Create` sub=namespace can be used in
+ * CreateWindowWithProperties() to specify window creation parameters. can be
+ * used to query information about an existing Window with
+ * Window.GetProperties()
+ *
+ * @sa CreateWindowWithProperties
+ * @sa Window.GetProperties
+ */
+namespace prop::Window {
+
+constexpr auto SHAPE_POINTER = SDL_PROP_WINDOW_SHAPE_POINTER;
+
+constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN;
+
+constexpr auto SDR_WHITE_LEVEL_FLOAT = SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT;
+
+constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT;
+
+constexpr auto ANDROID_WINDOW_POINTER = SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER;
+
+constexpr auto ANDROID_SURFACE_POINTER =
+  SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER;
+
+constexpr auto UIKIT_WINDOW_POINTER = SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER;
+
+constexpr auto UIKIT_METAL_VIEW_TAG_NUMBER =
+  SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER;
+
+constexpr auto UIKIT_OPENGL_FRAMEBUFFER_NUMBER =
+  SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER;
+
+constexpr auto UIKIT_OPENGL_RENDERBUFFER_NUMBER =
+  SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER;
+
+constexpr auto UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER =
+  SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER;
+
+constexpr auto KMSDRM_DEVICE_INDEX_NUMBER =
+  SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER;
+
+constexpr auto KMSDRM_DRM_FD_NUMBER = SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER;
+
+constexpr auto KMSDRM_GBM_DEVICE_POINTER =
+  SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER;
+
+constexpr auto COCOA_WINDOW_POINTER = SDL_PROP_WINDOW_COCOA_WINDOW_POINTER;
+
+constexpr auto COCOA_METAL_VIEW_TAG_NUMBER =
+  SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto OPENVR_OVERLAY_ID_NUMBER =
+  SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER;
+
+#else
+
+constexpr auto OPENVR_OVERLAY_ID_NUMBER = SDL_PROP_WINDOW_OPENVR_OVERLAY_ID;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto VIVANTE_DISPLAY_POINTER =
+  SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER;
+
+constexpr auto VIVANTE_WINDOW_POINTER = SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER;
+
+constexpr auto VIVANTE_SURFACE_POINTER =
+  SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER;
+
+constexpr auto WIN32_HWND_POINTER = SDL_PROP_WINDOW_WIN32_HWND_POINTER;
+
+constexpr auto WIN32_HDC_POINTER = SDL_PROP_WINDOW_WIN32_HDC_POINTER;
+
+constexpr auto WIN32_INSTANCE_POINTER = SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER;
+
+constexpr auto WAYLAND_DISPLAY_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER;
+
+constexpr auto WAYLAND_SURFACE_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER;
+
+constexpr auto WAYLAND_VIEWPORT_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER;
+
+constexpr auto WAYLAND_EGL_WINDOW_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER;
+
+constexpr auto WAYLAND_XDG_SURFACE_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER;
+
+constexpr auto WAYLAND_XDG_TOPLEVEL_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER;
+
+constexpr auto WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING =
+  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING;
+
+constexpr auto WAYLAND_XDG_POPUP_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER;
+
+constexpr auto WAYLAND_XDG_POSITIONER_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER;
+
+constexpr auto X11_DISPLAY_POINTER = SDL_PROP_WINDOW_X11_DISPLAY_POINTER;
+
+constexpr auto X11_SCREEN_NUMBER = SDL_PROP_WINDOW_X11_SCREEN_NUMBER;
+
+constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
+  SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING;
+
+constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
+  SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+} // namespace prop::Window
 
 /**
  * Get the window flags.
@@ -6465,7 +6463,7 @@ inline bool Window::GetMouseGrab() const
  * @sa Window.SetMouseGrab
  * @sa Window.SetKeyboardGrab
  */
-inline WindowRef GetGrabbedWindow() { return {SDL_GetGrabbedWindow()}; }
+inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 
 inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
 

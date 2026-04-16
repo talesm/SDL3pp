@@ -204,7 +204,7 @@ namespace SDL {
  * ### Vulkan
  *
  * SDL driver name: "vulkan" (for use in CreateGPUDevice() and
- * prop.GPUDevice.CREATE_NAME_STRING)
+ * prop.GPUDevice.Create.NAME_STRING)
  *
  * Supported on Windows, Linux, Nintendo Switch, and certain Android devices.
  * Requires Vulkan 1.0 with the following extensions and device features:
@@ -222,10 +222,10 @@ namespace SDL {
  * Android devices by using these properties when creating the GPU device with
  * CreateGPUDeviceWithProperties():
  *
- * - prop.GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
- * - prop.GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
- * - prop.GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
- * - prop.GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN
+ * - prop.GPUDevice.Create.FEATURE_CLIP_DISTANCE_BOOLEAN
+ * - prop.GPUDevice.Create.FEATURE_DEPTH_CLAMPING_BOOLEAN
+ * - prop.GPUDevice.Create.FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
+ * - prop.GPUDevice.Create.FEATURE_ANISOTROPY_BOOLEAN
  *
  * ### D3D12
  *
@@ -239,7 +239,7 @@ namespace SDL {
  * Haswell and Broadwell GPUs by using this property when creating the GPU
  * device with CreateGPUDeviceWithProperties():
  *
- * - prop.GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
+ * - prop.GPUDevice.Create.D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
  *
  * ### Metal
  *
@@ -520,7 +520,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUBuffer.Create.NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param device a GPU Context.
@@ -604,7 +604,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be displayed
+   * - `prop.GPUTransferBuffer.Create.NAME_STRING`: a name that can be displayed
    *   in debugging tools.
    *
    * @param device a GPU Context.
@@ -702,25 +702,25 @@ public:
    * There are optional properties that can be provided through
    * GPUTextureCreateInfo's `props`. These are the supported properties:
    *
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this red intensity. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this green intensity. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this blue intensity. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this alpha intensity. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if
    *   the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
    *   texture to a depth of this value. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only)
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only)
    *   if the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
    *   texture to a stencil of this Uint8 value. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUTexture.Create.NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param device a GPU Context.
@@ -801,7 +801,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUSampler.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUSampler.Create.NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param device a GPU Context.
@@ -914,13 +914,13 @@ public:
    * language, your vertex semantics should start at TEXCOORD0 and increment
    * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
    * prefix to something other than TEXCOORD you can use
-   * prop.GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
+   * prop.GPUDevice.Create.D3D12_SEMANTIC_NAME_STRING with
    * CreateGPUDeviceWithProperties().
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUShader.Create.NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param device a GPU Context.
@@ -1011,7 +1011,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUComputePipeline.CREATE_NAME_STRING`: a name that can be
+   * - `prop.GPUComputePipeline.Create.NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param device a GPU Context.
@@ -1088,7 +1088,7 @@ public:
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be
+   * - `prop.GPUGraphicsPipeline.Create.NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param device a GPU Context.
@@ -3111,31 +3111,31 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * These are the supported properties:
    *
-   * - `prop.GPUDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode properties
+   * - `prop.GPUDevice.Create.DEBUGMODE_BOOLEAN`: enable debug mode properties
    *   and validations, defaults to true.
-   * - `prop.GPUDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
+   * - `prop.GPUDevice.Create.PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
    *   efficiency over maximum GPU performance, defaults to false.
-   * - `prop.GPUDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
+   * - `prop.GPUDevice.Create.VERBOSE_BOOLEAN`: enable to automatically log
    *   useful debug information on device creation, defaults to true.
-   * - `prop.GPUDevice.CREATE_NAME_STRING`: the name of the GPU driver to use,
+   * - `prop.GPUDevice.Create.NAME_STRING`: the name of the GPU driver to use,
    *   if a specific one is desired.
-   * - `prop.GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
+   * - `prop.GPUDevice.Create.FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
    *   device feature shaderClipDistance. If disabled, clip distances are not
    *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
    *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
    *   Metal. Disabling optional features allows the application to run on some
    *   older Android devices. Defaults to true.
-   * - `prop.GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+   * - `prop.GPUDevice.Create.FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
    *   device feature depthClamp. If disabled, there is no depth clamp support
    *   and enable_depth_clip in GPURasterizerState must always be set to true.
    *   Disabling optional features allows the application to run on some older
    *   Android devices. Defaults to true.
-   * - `prop.GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+   * - `prop.GPUDevice.Create.FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
    *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
    *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
    *   Disabling optional features allows the application to run on some older
    *   Android devices. Defaults to true.
-   * - `prop.GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+   * - `prop.GPUDevice.Create.FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
    *   feature samplerAnisotropy. If disabled, enable_anisotropy of
    *   GPUSamplerCreateInfo must be set to false. Disabling optional features
    *   allows the application to run on some older Android devices. Defaults to
@@ -3143,24 +3143,24 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * These are the current shader format properties:
    *
-   * - `prop.GPUDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to
+   * - `prop.GPUDevice.Create.SHADERS_PRIVATE_BOOLEAN`: The app is able to
    *   provide shaders for an NDA platform.
-   * - `prop.GPUDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to provide
+   * - `prop.GPUDevice.Create.SHADERS_SPIRV_BOOLEAN`: The app is able to provide
    *   SPIR-V shaders if applicable.
-   * - `prop.GPUDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to provide
+   * - `prop.GPUDevice.Create.SHADERS_DXBC_BOOLEAN`: The app is able to provide
    *   DXBC shaders if applicable
-   * - `prop.GPUDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to provide
+   * - `prop.GPUDevice.Create.SHADERS_DXIL_BOOLEAN`: The app is able to provide
    *   DXIL shaders if applicable.
-   * - `prop.GPUDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to provide
+   * - `prop.GPUDevice.Create.SHADERS_MSL_BOOLEAN`: The app is able to provide
    *   MSL shaders if applicable.
-   * - `prop.GPUDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
+   * - `prop.GPUDevice.Create.SHADERS_METALLIB_BOOLEAN`: The app is able to
    *   provide Metal shader libraries if applicable.
    *
    * With the D3D12 backend:
    *
-   * - `prop.GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
+   * - `prop.GPUDevice.Create.D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
    *   all vertex semantics, default is "TEXCOORD".
-   * - `prop.GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+   * - `prop.GPUDevice.Create.D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
    *   default, Resourcing Binding Tier 2 is required for D3D12 support.
    *   However, an application can set this property to true to enable Tier 1
    *   support, if (and only if) the application uses 8 or fewer storage
@@ -3168,15 +3168,15 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
    *   either supports Tier 2 Resource Binding or does not support D3D12 in any
    *   capacity. Defaults to false.
-   * - `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
+   * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
    *   checks are only possible on Windows 11 by default. By setting this
-   *   alongside `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+   *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING` and
    *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
    *   feature checks possible on older platforms. The version you provide must
    *   match the one given in the DLL.
-   * - `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+   * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
    *   checks are only possible on Windows 11 by default. By setting this
-   *   alongside `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+   *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER` and
    *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
    *   feature checks possible on older platforms. The path you provide must be
    *   relative to the executable path of your app. Be sure not to put the DLL
@@ -3185,20 +3185,20 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * With the Vulkan backend:
    *
-   * - `prop.GPUDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+   * - `prop.GPUDevice.Create.VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
    *   default, Vulkan device enumeration includes drivers of all types,
    *   including software renderers (for example, the Lavapipe Mesa driver).
    *   This can be useful if your application _requires_ SDL_GPU, but if you can
    *   provide your own fallback renderer (for example, an OpenGL renderer) this
    *   property can be set to true. Defaults to false.
-   * - `prop.GPUDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+   * - `prop.GPUDevice.Create.VULKAN_OPTIONS_POINTER`: a pointer to an
    *   GPUVulkanOptions structure to be processed during device creation. This
    *   allows configuring a variety of Vulkan-specific options such as
    *   increasing the API version and opting into extensions aside from the
    *   minimal set SDL requires.
    *
    * With the Metal backend: -
-   * `prop.GPUDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+   * `prop.GPUDevice.Create.METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
    * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
    * However, an application can set this property to true to enable support for
    * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not
@@ -3398,7 +3398,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUComputePipeline.CREATE_NAME_STRING`: a name that can be
+   * - `prop.GPUComputePipeline.Create.NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param createinfo a struct describing the state of the compute pipeline to
@@ -3420,7 +3420,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be
+   * - `prop.GPUGraphicsPipeline.Create.NAME_STRING`: a name that can be
    *   displayed in debugging tools.
    *
    * @param createinfo a struct describing the state of the graphics pipeline to
@@ -3444,7 +3444,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUSampler.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUSampler.Create.NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param createinfo a struct describing the state of the sampler to create.
@@ -3513,13 +3513,13 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * language, your vertex semantics should start at TEXCOORD0 and increment
    * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
    * prefix to something other than TEXCOORD you can use
-   * prop.GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
+   * prop.GPUDevice.Create.D3D12_SEMANTIC_NAME_STRING with
    * CreateGPUDeviceWithProperties().
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUShader.Create.NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param createinfo a struct describing the state of the shader to create.
@@ -3550,25 +3550,25 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through
    * GPUTextureCreateInfo's `props`. These are the supported properties:
    *
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this red intensity. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this green intensity. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this blue intensity. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
    *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
    *   color with this alpha intensity. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if
    *   the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
    *   texture to a depth of this value. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only)
+   * - `prop.GPUTexture.Create.D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only)
    *   if the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
    *   texture to a stencil of this Uint8 value. Defaults to zero.
-   * - `prop.GPUTexture.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUTexture.Create.NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param createinfo a struct describing the state of the texture to create.
@@ -3612,7 +3612,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
+   * - `prop.GPUBuffer.Create.NAME_STRING`: a name that can be displayed in
    *   debugging tools.
    *
    * @param createinfo a struct describing the state of the buffer to create.
@@ -3646,7 +3646,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
    *
-   * - `prop.GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be displayed
+   * - `prop.GPUTransferBuffer.Create.NAME_STRING`: a name that can be displayed
    *   in debugging tools.
    *
    * @param createinfo a struct describing the state of the transfer buffer to
@@ -3668,7 +3668,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
   /**
    * Sets an arbitrary string constant to label a buffer.
    *
-   * You should use prop.GPUBuffer.CREATE_NAME_STRING with
+   * You should use prop.GPUBuffer.Create.NAME_STRING with
    * GPUDevice.CreateBuffer instead of this function to avoid thread safety
    * issues.
    *
@@ -3687,7 +3687,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
   /**
    * Sets an arbitrary string constant to label a texture.
    *
-   * You should use prop.GPUTexture.CREATE_NAME_STRING with
+   * You should use prop.GPUTexture.Create.NAME_STRING with
    * GPUDevice.CreateTexture instead of this function to avoid thread safety
    * issues.
    *
@@ -4954,31 +4954,31 @@ inline GPUDevice::GPUDevice(PropertiesRef props)
  *
  * These are the supported properties:
  *
- * - `prop.GPUDevice.CREATE_DEBUGMODE_BOOLEAN`: enable debug mode properties and
+ * - `prop.GPUDevice.Create.DEBUGMODE_BOOLEAN`: enable debug mode properties and
  *   validations, defaults to true.
- * - `prop.GPUDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
+ * - `prop.GPUDevice.Create.PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
  *   efficiency over maximum GPU performance, defaults to false.
- * - `prop.GPUDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log useful
+ * - `prop.GPUDevice.Create.VERBOSE_BOOLEAN`: enable to automatically log useful
  *   debug information on device creation, defaults to true.
- * - `prop.GPUDevice.CREATE_NAME_STRING`: the name of the GPU driver to use, if
+ * - `prop.GPUDevice.Create.NAME_STRING`: the name of the GPU driver to use, if
  *   a specific one is desired.
- * - `prop.GPUDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan device
+ * - `prop.GPUDevice.Create.FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan device
  *   feature shaderClipDistance. If disabled, clip distances are not supported
  *   in shader code: gl_ClipDistance[] built-ins of GLSL, SV_ClipDistance0/1
  *   semantics of HLSL and [[clip_distance]] attribute of Metal. Disabling
  *   optional features allows the application to run on some older Android
  *   devices. Defaults to true.
- * - `prop.GPUDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+ * - `prop.GPUDevice.Create.FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
  *   device feature depthClamp. If disabled, there is no depth clamp support and
  *   enable_depth_clip in GPURasterizerState must always be set to true.
  *   Disabling optional features allows the application to run on some older
  *   Android devices. Defaults to true.
- * - `prop.GPUDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+ * - `prop.GPUDevice.Create.FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
  *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
  *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
  *   Disabling optional features allows the application to run on some older
  *   Android devices. Defaults to true.
- * - `prop.GPUDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+ * - `prop.GPUDevice.Create.FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
  *   feature samplerAnisotropy. If disabled, enable_anisotropy of
  *   GPUSamplerCreateInfo must be set to false. Disabling optional features
  *   allows the application to run on some older Android devices. Defaults to
@@ -4986,39 +4986,39 @@ inline GPUDevice::GPUDevice(PropertiesRef props)
  *
  * These are the current shader format properties:
  *
- * - `prop.GPUDevice.CREATE_SHADERS_PRIVATE_BOOLEAN`: The app is able to provide
+ * - `prop.GPUDevice.Create.SHADERS_PRIVATE_BOOLEAN`: The app is able to provide
  *   shaders for an NDA platform.
- * - `prop.GPUDevice.CREATE_SHADERS_SPIRV_BOOLEAN`: The app is able to provide
+ * - `prop.GPUDevice.Create.SHADERS_SPIRV_BOOLEAN`: The app is able to provide
  *   SPIR-V shaders if applicable.
- * - `prop.GPUDevice.CREATE_SHADERS_DXBC_BOOLEAN`: The app is able to provide
+ * - `prop.GPUDevice.Create.SHADERS_DXBC_BOOLEAN`: The app is able to provide
  *   DXBC shaders if applicable
- * - `prop.GPUDevice.CREATE_SHADERS_DXIL_BOOLEAN`: The app is able to provide
+ * - `prop.GPUDevice.Create.SHADERS_DXIL_BOOLEAN`: The app is able to provide
  *   DXIL shaders if applicable.
- * - `prop.GPUDevice.CREATE_SHADERS_MSL_BOOLEAN`: The app is able to provide MSL
+ * - `prop.GPUDevice.Create.SHADERS_MSL_BOOLEAN`: The app is able to provide MSL
  *   shaders if applicable.
- * - `prop.GPUDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
+ * - `prop.GPUDevice.Create.SHADERS_METALLIB_BOOLEAN`: The app is able to
  *   provide Metal shader libraries if applicable.
  *
  * With the D3D12 backend:
  *
- * - `prop.GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
+ * - `prop.GPUDevice.Create.D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
  *   all vertex semantics, default is "TEXCOORD".
- * - `prop.GPUDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+ * - `prop.GPUDevice.Create.D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
  *   default, Resourcing Binding Tier 2 is required for D3D12 support. However,
  *   an application can set this property to true to enable Tier 1 support, if
  *   (and only if) the application uses 8 or fewer storage resources across all
  *   shader stages. As of writing, this property is useful for targeting Intel
  *   Haswell and Broadwell GPUs; other hardware either supports Tier 2 Resource
  *   Binding or does not support D3D12 in any capacity. Defaults to false.
- * - `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
+ * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
  *   checks are only possible on Windows 11 by default. By setting this
- *   alongside `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+ *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING` and
  *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
  *   feature checks possible on older platforms. The version you provide must
  *   match the one given in the DLL.
- * - `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+ * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
  *   checks are only possible on Windows 11 by default. By setting this
- *   alongside `prop.GPUDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+ *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER` and
  *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
  *   feature checks possible on older platforms. The path you provide must be
  *   relative to the executable path of your app. Be sure not to put the DLL in
@@ -5026,20 +5026,20 @@ inline GPUDevice::GPUDevice(PropertiesRef props)
  *
  * With the Vulkan backend:
  *
- * - `prop.GPUDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+ * - `prop.GPUDevice.Create.VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
  *   default, Vulkan device enumeration includes drivers of all types, including
  *   software renderers (for example, the Lavapipe Mesa driver). This can be
  *   useful if your application _requires_ SDL_GPU, but if you can provide your
  *   own fallback renderer (for example, an OpenGL renderer) this property can
  *   be set to true. Defaults to false.
- * - `prop.GPUDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+ * - `prop.GPUDevice.Create.VULKAN_OPTIONS_POINTER`: a pointer to an
  *   GPUVulkanOptions structure to be processed during device creation. This
  *   allows configuring a variety of Vulkan-specific options such as increasing
  *   the API version and opting into extensions aside from the minimal set SDL
  *   requires.
  *
  * With the Metal backend: -
- * `prop.GPUDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+ * `prop.GPUDevice.Create.METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
  * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
  * However, an application can set this property to true to enable support for
  * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not write
@@ -5064,118 +5064,99 @@ inline GPUDevice CreateGPUDeviceWithProperties(PropertiesRef props)
 }
 
 /**
- * Properties for GPUDevice creation and information.
- *
- * The properties prefixed with `CREATE_` can be used in the properties object
- * passed to CreateGPUDeviceWithProperties to specify the desired GPU device and
- * driver features, while the remainder can be queried from an existing GPU
- * device via GPUDevice.GetProperties.
+ * Properties for GPUDevice creation.
  *
  * @sa CreateGPUDeviceWithProperties
  * @sa GPUDevice.GetProperties
+ * @sa prop::GPUDevice
  */
-namespace prop::GPUDevice {
+namespace prop::GPUDevice::Create {
 
-constexpr auto CREATE_DEBUGMODE_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN;
+constexpr auto DEBUGMODE_BOOLEAN = SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN;
 
-constexpr auto CREATE_PREFERLOWPOWER_BOOLEAN =
+constexpr auto PREFERLOWPOWER_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_VERBOSE_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN;
+constexpr auto VERBOSE_BOOLEAN = SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN =
+constexpr auto FEATURE_CLIP_DISTANCE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN;
 
-constexpr auto CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN =
+constexpr auto FEATURE_DEPTH_CLAMPING_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN;
 
-constexpr auto CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN =
+constexpr auto FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN;
 
-constexpr auto CREATE_FEATURE_ANISOTROPY_BOOLEAN =
+constexpr auto FEATURE_ANISOTROPY_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_SHADERS_PRIVATE_BOOLEAN =
+constexpr auto SHADERS_PRIVATE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN;
 
-constexpr auto CREATE_SHADERS_SPIRV_BOOLEAN =
+constexpr auto SHADERS_SPIRV_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN;
 
-constexpr auto CREATE_SHADERS_DXBC_BOOLEAN =
+constexpr auto SHADERS_DXBC_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN;
 
-constexpr auto CREATE_SHADERS_DXIL_BOOLEAN =
+constexpr auto SHADERS_DXIL_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN;
 
-constexpr auto CREATE_SHADERS_MSL_BOOLEAN =
+constexpr auto SHADERS_MSL_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN;
 
-constexpr auto CREATE_SHADERS_METALLIB_BOOLEAN =
+constexpr auto SHADERS_METALLIB_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
+constexpr auto D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_D3D12_SEMANTIC_NAME_STRING =
+constexpr auto D3D12_SEMANTIC_NAME_STRING =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
 
 #if SDL_VERSION_ATLEAST(3, 4, 2)
 
-constexpr auto CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER =
+constexpr auto D3D12_AGILITY_SDK_VERSION_NUMBER =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER;
 
-constexpr auto CREATE_D3D12_AGILITY_SDK_PATH_STRING =
+constexpr auto D3D12_AGILITY_SDK_PATH_STRING =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 2)
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
+constexpr auto VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN;
 
-constexpr auto CREATE_VULKAN_OPTIONS_POINTER =
+constexpr auto VULKAN_OPTIONS_POINTER =
   SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 #if SDL_VERSION_ATLEAST(3, 4, 2)
 
-constexpr auto CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN =
+constexpr auto METAL_ALLOW_MACFAMILY1_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 2)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
-
-constexpr auto DRIVER_NAME_STRING = SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING;
-
-constexpr auto DRIVER_VERSION_STRING =
-  SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING;
-
-constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-} // namespace prop::GPUDevice
+} // namespace prop::GPUDevice::Create
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -5395,6 +5376,31 @@ inline PropertiesRef GPUDevice::GetProperties()
   return SDL::GetGPUDeviceProperties(get());
 }
 
+/**
+ * Properties for GPUDevice creation and information.
+ *
+ * The properties in namespace `Create::` can be used in the properties object
+ * passed to CreateGPUDeviceWithProperties to specify the desired GPU device and
+ * driver features, while the remainder can be queried from an existing GPU
+ * device via GPUDevice.GetProperties.
+ *
+ * @sa CreateGPUDeviceWithProperties
+ * @sa GPUDevice.GetProperties
+ * @sa prop::GPUDevice::Create
+ */
+namespace prop::GPUDevice {
+
+constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
+
+constexpr auto DRIVER_NAME_STRING = SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING;
+
+constexpr auto DRIVER_VERSION_STRING =
+  SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING;
+
+constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
+
+} // namespace prop::GPUDevice
+
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
@@ -5428,7 +5434,7 @@ inline PropertiesRef GPUDevice::GetProperties()
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop.GPUComputePipeline.CREATE_NAME_STRING`: a name that can be displayed
+ * - `prop.GPUComputePipeline.Create.NAME_STRING`: a name that can be displayed
  *   in debugging tools.
  *
  * @param device a GPU Context.
@@ -5468,12 +5474,11 @@ inline GPUComputePipeline::GPUComputePipeline(
  *
  * @sa GPUComputePipeline.CreateComputePipeline
  */
-namespace prop::GPUComputePipeline {
+namespace prop::GPUComputePipeline::Create {
 
-constexpr auto CREATE_NAME_STRING =
-  SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING = SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING;
 
-} // namespace prop::GPUComputePipeline
+} // namespace prop::GPUComputePipeline::Create
 
 /**
  * Creates a pipeline object to be used in a graphics workflow.
@@ -5481,7 +5486,7 @@ constexpr auto CREATE_NAME_STRING =
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop.GPUGraphicsPipeline.CREATE_NAME_STRING`: a name that can be displayed
+ * - `prop.GPUGraphicsPipeline.Create.NAME_STRING`: a name that can be displayed
  *   in debugging tools.
  *
  * @param device a GPU Context.
@@ -5522,12 +5527,11 @@ inline GPUGraphicsPipeline::GPUGraphicsPipeline(
  *
  * @sa GPUGraphicsPipeline.CreateGraphicsPipeline
  */
-namespace prop::GPUGraphicsPipeline {
+namespace prop::GPUGraphicsPipeline::Create {
 
-constexpr auto CREATE_NAME_STRING =
-  SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING = SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING;
 
-} // namespace prop::GPUGraphicsPipeline
+} // namespace prop::GPUGraphicsPipeline::Create
 
 /**
  * Creates a sampler object to be used when binding textures in a graphics
@@ -5536,7 +5540,7 @@ constexpr auto CREATE_NAME_STRING =
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop.GPUSampler.CREATE_NAME_STRING`: a name that can be displayed in
+ * - `prop.GPUSampler.Create.NAME_STRING`: a name that can be displayed in
  *   debugging tools.
  *
  * @param device a GPU Context.
@@ -5573,11 +5577,11 @@ inline GPUSampler::GPUSampler(GPUDeviceRef device,
  *
  * @sa GPUDevice.CreateSampler
  */
-namespace prop::GPUSampler {
+namespace prop::GPUSampler::Create {
 
-constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
 
-} // namespace prop::GPUSampler
+} // namespace prop::GPUSampler::Create
 
 /**
  * Creates a shader to be used when creating a graphics pipeline.
@@ -5631,13 +5635,13 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
  * language, your vertex semantics should start at TEXCOORD0 and increment like
  * so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic prefix to
  * something other than TEXCOORD you can use
- * prop.GPUDevice.CREATE_D3D12_SEMANTIC_NAME_STRING with
+ * prop.GPUDevice.Create.D3D12_SEMANTIC_NAME_STRING with
  * CreateGPUDeviceWithProperties().
  *
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop.GPUShader.CREATE_NAME_STRING`: a name that can be displayed in
+ * - `prop.GPUShader.Create.NAME_STRING`: a name that can be displayed in
  *   debugging tools.
  *
  * @param device a GPU Context.
@@ -5672,11 +5676,11 @@ inline GPUShader::GPUShader(GPUDeviceRef device,
  *
  * @sa GPUDevice.CreateShader
  */
-namespace prop::GPUShader {
+namespace prop::GPUShader::Create {
 
-constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
 
-} // namespace prop::GPUShader
+} // namespace prop::GPUShader::Create
 
 /**
  * Creates a texture object to be used in graphics or compute workflows.
@@ -5695,25 +5699,25 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
  * There are optional properties that can be provided through
  * GPUTextureCreateInfo's `props`. These are the supported properties:
  *
- * - `prop.GPUTexture.CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
+ * - `prop.GPUTexture.Create.D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if the
  *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
  *   color with this red intensity. Defaults to zero.
- * - `prop.GPUTexture.CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
+ * - `prop.GPUTexture.Create.D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if the
  *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
  *   color with this green intensity. Defaults to zero.
- * - `prop.GPUTexture.CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
+ * - `prop.GPUTexture.Create.D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if the
  *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
  *   color with this blue intensity. Defaults to zero.
- * - `prop.GPUTexture.CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
+ * - `prop.GPUTexture.Create.D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if the
  *   texture usage is GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture to a
  *   color with this alpha intensity. Defaults to zero.
- * - `prop.GPUTexture.CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if the
+ * - `prop.GPUTexture.Create.D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only) if the
  *   texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the texture
  *   to a depth of this value. Defaults to zero.
- * - `prop.GPUTexture.CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only) if
+ * - `prop.GPUTexture.Create.D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12 only) if
  *   the texture usage is GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear the
  *   texture to a stencil of this Uint8 value. Defaults to zero.
- * - `prop.GPUTexture.CREATE_NAME_STRING`: a name that can be displayed in
+ * - `prop.GPUTexture.Create.NAME_STRING`: a name that can be displayed in
  *   debugging tools.
  *
  * @param device a GPU Context.
@@ -5759,33 +5763,33 @@ inline GPUTexture::GPUTexture(GPUDeviceRef device,
  *
  * @sa GPUDevice.CreateTexture
  */
-namespace prop::GPUTexture {
+namespace prop::GPUTexture::Create {
 
-constexpr auto CREATE_D3D12_CLEAR_R_FLOAT =
+constexpr auto D3D12_CLEAR_R_FLOAT =
   SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT;
 
-constexpr auto CREATE_D3D12_CLEAR_G_FLOAT =
+constexpr auto D3D12_CLEAR_G_FLOAT =
   SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT;
 
-constexpr auto CREATE_D3D12_CLEAR_B_FLOAT =
+constexpr auto D3D12_CLEAR_B_FLOAT =
   SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT;
 
-constexpr auto CREATE_D3D12_CLEAR_A_FLOAT =
+constexpr auto D3D12_CLEAR_A_FLOAT =
   SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT;
 
-constexpr auto CREATE_D3D12_CLEAR_DEPTH_FLOAT =
+constexpr auto D3D12_CLEAR_DEPTH_FLOAT =
   SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT;
 
 #if SDL_VERSION_ATLEAST(3, 2, 12)
 
-constexpr auto CREATE_D3D12_CLEAR_STENCIL_NUMBER =
+constexpr auto D3D12_CLEAR_STENCIL_NUMBER =
   SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER;
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 12)
 
-constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
 
-} // namespace prop::GPUTexture
+} // namespace prop::GPUTexture::Create
 
 /**
  * Creates a buffer object to be used in graphics or compute workflows.
@@ -5807,7 +5811,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop.GPUBuffer.CREATE_NAME_STRING`: a name that can be displayed in
+ * - `prop.GPUBuffer.Create.NAME_STRING`: a name that can be displayed in
  *   debugging tools.
  *
  * @param device a GPU Context.
@@ -5852,11 +5856,11 @@ inline GPUBuffer::GPUBuffer(GPUDeviceRef device,
  *
  * @sa GPUDevice.CreateBuffer
  */
-namespace prop::GPUBuffer {
+namespace prop::GPUBuffer::Create {
 
-constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
 
-} // namespace prop::GPUBuffer
+} // namespace prop::GPUBuffer::Create
 
 /**
  * Creates a transfer buffer to be used when uploading to or downloading from
@@ -5868,7 +5872,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
  * There are optional properties that can be provided through `props`. These are
  * the supported properties:
  *
- * - `prop.GPUTransferBuffer.CREATE_NAME_STRING`: a name that can be displayed
+ * - `prop.GPUTransferBuffer.Create.NAME_STRING`: a name that can be displayed
  *   in debugging tools.
  *
  * @param device a GPU Context.
@@ -5911,17 +5915,16 @@ inline GPUTransferBuffer::GPUTransferBuffer(
  *
  * @sa GPUDevice.CreateTransferBuffer
  */
-namespace prop::GPUTransferBuffer {
+namespace prop::GPUTransferBuffer::Create {
 
-constexpr auto CREATE_NAME_STRING =
-  SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING = SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING;
 
-} // namespace prop::GPUTransferBuffer
+} // namespace prop::GPUTransferBuffer::Create
 
 /**
  * Sets an arbitrary string constant to label a buffer.
  *
- * You should use prop.GPUBuffer.CREATE_NAME_STRING with GPUDevice.CreateBuffer
+ * You should use prop.GPUBuffer.Create.NAME_STRING with GPUDevice.CreateBuffer
  * instead of this function to avoid thread safety issues.
  *
  * @param device a GPU Context.
@@ -5950,7 +5953,7 @@ inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
 /**
  * Sets an arbitrary string constant to label a texture.
  *
- * You should use prop.GPUTexture.CREATE_NAME_STRING with
+ * You should use prop.GPUTexture.Create.NAME_STRING with
  * GPUDevice.CreateTexture instead of this function to avoid thread safety
  * issues.
  *

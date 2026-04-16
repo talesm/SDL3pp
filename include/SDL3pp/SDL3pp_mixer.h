@@ -1801,22 +1801,22 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * The following read-only properties are provided by SDL_mixer:
    *
-   * - `prop.MixMetadata.TITLE_STRING`: the audio's title ("Smells Like Teen
+   * - `prop.Audio.Metadata.TITLE_STRING`: the audio's title ("Smells Like Teen
    *   Spirit").
-   * - `prop.MixMetadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
-   * - `prop.MixMetadata.ALBUM_STRING`: the audio's album name ("Nevermind").
-   * - `prop.MixMetadata.COPYRIGHT_STRING`: the audio's copyright info
+   * - `prop.Audio.Metadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
+   * - `prop.Audio.Metadata.ALBUM_STRING`: the audio's album name ("Nevermind").
+   * - `prop.Audio.Metadata.COPYRIGHT_STRING`: the audio's copyright info
    *   ("Copyright (c) 1991")
-   * - `prop.MixMetadata.TRACK_NUMBER`: the audio's track number on the album
+   * - `prop.Audio.Metadata.TRACK_NUMBER`: the audio's track number on the album
    *   (1)
-   * - `prop.MixMetadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album
+   * - `prop.Audio.Metadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album
    *   (13)
-   * - `prop.MixMetadata.YEAR_NUMBER`: the year the audio was released (1991)
-   * - `prop.MixMetadata.DURATION_FRAMES_NUMBER`: The sample frames worth of PCM
-   *   data that comprise this audio. It might be off by a little if the decoder
-   *   only knows the duration as a unit of time.
-   * - `prop.MixMetadata.DURATION_INFINITE_BOOLEAN`: if true, audio never runs
-   *   out of sound to generate. This isn't necessarily always known to
+   * - `prop.Audio.Metadata.YEAR_NUMBER`: the year the audio was released (1991)
+   * - `prop.Audio.Metadata.DURATION_FRAMES_NUMBER`: The sample frames worth of
+   *   PCM data that comprise this audio. It might be off by a little if the
+   *   decoder only knows the duration as a unit of time.
+   * - `prop.Audio.Metadata.DURATION_INFINITE_BOOLEAN`: if true, audio never
+   *   runs out of sound to generate. This isn't necessarily always known to
    *   SDL_mixer, though.
    *
    * Other properties, documented with LoadAudioWithProperties(), may also be
@@ -1840,8 +1840,8 @@ struct Audio : ResourceBase<AudioRaw>
    * Get the length of a Audio's playback in sample frames.
    *
    * This information is also available via the
-   * prop.MixMetadata.DURATION_FRAMES_NUMBER property, but it's common enough to
-   * provide a simple accessor function.
+   * prop.Audio.Metadata.DURATION_FRAMES_NUMBER property, but it's common enough
+   * to provide a simple accessor function.
    *
    * This reports the length of the data in _sample frames_, so sample-perfect
    * mixing can be possible. Sample frames are only meaningful as a measure of
@@ -4596,20 +4596,22 @@ inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
  *
  * The following read-only properties are provided by SDL_mixer:
  *
- * - `prop.MixMetadata.TITLE_STRING`: the audio's title ("Smells Like Teen
+ * - `prop.Audio.Metadata.TITLE_STRING`: the audio's title ("Smells Like Teen
  *   Spirit").
- * - `prop.MixMetadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
- * - `prop.MixMetadata.ALBUM_STRING`: the audio's album name ("Nevermind").
- * - `prop.MixMetadata.COPYRIGHT_STRING`: the audio's copyright info ("Copyright
- *   (c) 1991")
- * - `prop.MixMetadata.TRACK_NUMBER`: the audio's track number on the album (1)
- * - `prop.MixMetadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album (13)
- * - `prop.MixMetadata.YEAR_NUMBER`: the year the audio was released (1991)
- * - `prop.MixMetadata.DURATION_FRAMES_NUMBER`: The sample frames worth of PCM
- *   data that comprise this audio. It might be off by a little if the decoder
- *   only knows the duration as a unit of time.
- * - `prop.MixMetadata.DURATION_INFINITE_BOOLEAN`: if true, audio never runs out
- *   of sound to generate. This isn't necessarily always known to SDL_mixer,
+ * - `prop.Audio.Metadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
+ * - `prop.Audio.Metadata.ALBUM_STRING`: the audio's album name ("Nevermind").
+ * - `prop.Audio.Metadata.COPYRIGHT_STRING`: the audio's copyright info
+ *   ("Copyright (c) 1991")
+ * - `prop.Audio.Metadata.TRACK_NUMBER`: the audio's track number on the album
+ *   (1)
+ * - `prop.Audio.Metadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album
+ *   (13)
+ * - `prop.Audio.Metadata.YEAR_NUMBER`: the year the audio was released (1991)
+ * - `prop.Audio.Metadata.DURATION_FRAMES_NUMBER`: The sample frames worth of
+ *   PCM data that comprise this audio. It might be off by a little if the
+ *   decoder only knows the duration as a unit of time.
+ * - `prop.Audio.Metadata.DURATION_INFINITE_BOOLEAN`: if true, audio never runs
+ *   out of sound to generate. This isn't necessarily always known to SDL_mixer,
  *   though.
  *
  * Other properties, documented with LoadAudioWithProperties(), may also be
@@ -4643,7 +4645,7 @@ inline PropertiesRef Audio::GetProperties()
  *
  * @sa Audio.GetProperties
  */
-namespace prop::MixMetadata {
+namespace prop::Audio::Metadata {
 
 constexpr auto TITLE_STRING = MIX_PROP_METADATA_TITLE_STRING;
 
@@ -4665,14 +4667,14 @@ constexpr auto DURATION_FRAMES_NUMBER =
 constexpr auto DURATION_INFINITE_BOOLEAN =
   MIX_PROP_METADATA_DURATION_INFINITE_BOOLEAN;
 
-} // namespace prop::MixMetadata
+} // namespace prop::Audio::Metadata
 
 /**
  * Get the length of a Audio's playback in sample frames.
  *
  * This information is also available via the
- * prop.MixMetadata.DURATION_FRAMES_NUMBER property, but it's common enough to
- * provide a simple accessor function.
+ * prop.Audio.Metadata.DURATION_FRAMES_NUMBER property, but it's common enough
+ * to provide a simple accessor function.
  *
  * This reports the length of the data in _sample frames_, so sample-perfect
  * mixing can be possible. Sample frames are only meaningful as a measure of

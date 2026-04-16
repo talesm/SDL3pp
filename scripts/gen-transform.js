@@ -1708,14 +1708,15 @@ const transform = {
         "SDL3pp_video.h",
       ],
       namespacesMap: {
+        "SDL_PROP_GPU_DEVICE_CREATE_": "prop::GPUDevice::Create",
         "SDL_PROP_GPU_DEVICE_": "prop::GPUDevice",
-        "SDL_PROP_GPU_COMPUTEPIPELINE_": "prop::GPUComputePipeline",
-        "SDL_PROP_GPU_GRAPHICSPIPELINE_": "prop::GPUGraphicsPipeline",
-        "SDL_PROP_GPU_SAMPLER_": "prop::GPUSampler",
-        "SDL_PROP_GPU_SHADER_": "prop::GPUShader",
-        "SDL_PROP_GPU_TEXTURE_": "prop::GPUTexture",
-        "SDL_PROP_GPU_BUFFER_": "prop::GPUBuffer",
-        "SDL_PROP_GPU_TRANSFERBUFFER_": "prop::GPUTransferBuffer",
+        "SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_": "prop::GPUComputePipeline::Create",
+        "SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_": "prop::GPUGraphicsPipeline::Create",
+        "SDL_PROP_GPU_SAMPLER_CREATE_": "prop::GPUSampler::Create",
+        "SDL_PROP_GPU_SHADER_CREATE_": "prop::GPUShader::Create",
+        "SDL_PROP_GPU_TEXTURE_CREATE_": "prop::GPUTexture::Create",
+        "SDL_PROP_GPU_BUFFER_CREATE_": "prop::GPUBuffer::Create",
+        "SDL_PROP_GPU_TRANSFERBUFFER_CREATE_": "prop::GPUTransferBuffer::Create",
       },
       transform: {
         "SDL_GPUBufferCreateInfo": { before: "GPUBuffer" },
@@ -1962,7 +1963,8 @@ const transform = {
         },
         "SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER": {
           since: { tag: "SDL", major: 3, minor: 2, patch: 12 }
-        }
+        },
+        "prop::GPUDevice": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },
       }
     },
     "SDL_guid.h": {
@@ -4072,7 +4074,8 @@ const transform = {
         },
       },
       namespacesMap: {
-        "SDL_PROP_PROCESS_": "prop::process"
+        "SDL_PROP_PROCESS_CREATE_": "prop::Process::Create",
+        "SDL_PROP_PROCESS_": "prop::Process"
       }
     },
     "SDL_properties.h": {
@@ -4730,7 +4733,9 @@ const transform = {
     "SDL_render.h": {
       localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_events.h", "SDL3pp_gpu.h", "SDL3pp_pixels.h", "SDL3pp_video.h"],
       namespacesMap: {
+        "SDL_PROP_RENDERER_CREATE_": "prop::Renderer::Create",
         "SDL_PROP_RENDERER_": "prop::Renderer",
+        "SDL_PROP_TEXTURE_CREATE_": "prop::Texture::Create",
         "SDL_PROP_TEXTURE_": "prop::Texture"
       },
       transform: {
@@ -7519,7 +7524,7 @@ const transform = {
         'SDL3pp_stdinc.h',
       ],
       namespacesMap: {
-        "SDL_PROP_THREAD_": "prop::thread"
+        "SDL_PROP_THREAD_CREATE_": "prop::Thread::Create"
       },
       ignoreEntries: [
         "SDL_CreateThreadRuntime",
@@ -7930,6 +7935,7 @@ const transform = {
       namespacesMap: {
         "SDL_PROP_GLOBAL_": "prop::Global",
         "SDL_PROP_DISPLAY_": "prop::Display",
+        "SDL_PROP_WINDOW_CREATE_": "prop::Window::Create",
         "SDL_PROP_WINDOW_": "prop::Window"
       },
       transform: {
@@ -8338,9 +8344,9 @@ const transform = {
         "SDL3pp_video.h",
       ],
       namespacesMap: {
-        "IMG_PROP_ANIMATION_ENCODER_": "prop::AnimationEncoder",
-        "IMG_PROP_ANIMATION_DECODER_": "prop::AnimationDecoder",
-        "IMG_PROP_METADATA_": "prop::Metadata",
+        "IMG_PROP_ANIMATION_ENCODER_CREATE_": "prop::AnimationEncoder::Create",
+        "IMG_PROP_ANIMATION_DECODER_CREATE_": "prop::AnimationDecoder::Create",
+        "IMG_PROP_METADATA_": "prop::AnimationDecoder::Metadata",
       },
       transform: {
         "IMG": {
@@ -8675,7 +8681,10 @@ const transform = {
         "IMG_GetAnimationDecoderFrame": {
           type: "Surface",
           parameters: [{}, { type: "Uint64 *", name: "duration" }],
-        }
+        },
+        "prop::AnimationEncoder::Create": { since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 } },
+        "prop::AnimationDecoder::Create": { since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 } },
+        "prop::AnimationDecoder::Metadata": { since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 } },
       }
     },
     "SDL_mixer.h": {
@@ -8686,7 +8695,7 @@ const transform = {
       namespacesMap: {
         "MIX_PROP_MIXER_": "prop::Mixer",
         "MIX_PROP_AUDIO_": "prop::Audio",
-        "MIX_PROP_METADATA_": "prop::MixMetadata",
+        "MIX_PROP_METADATA_": "prop::Audio::Metadata",
         "MIX_PROP_PLAY_": "prop::Play",
       },
       transform: {
@@ -8851,6 +8860,12 @@ const transform = {
         "SDL3pp_version.h",
         "SDL3pp_video.h",
       ],
+      namespacesMap: {
+        "TTF_PROP_FONT_CREATE_": "prop::Font::Create",
+        "TTF_PROP_FONT_": "prop::Font",
+        "TTF_PROP_RENDERER_TEXT_ENGINE_": "prop::RendererTextEngine",
+        "TTF_PROP_GPU_TEXT_ENGINE_": "prop::GpuTextEngine"
+      },
       transform: {
         "SDL_TTF_MAJOR_VERSION": {
           value: ""
@@ -8883,7 +8898,7 @@ const transform = {
         },
         "TTF_PROP_FONT_CREATE_EXISTING_FONT": {
           since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 },
-          name: "CREATE_EXISTING_FONT_POINTER"
+          name: "EXISTING_FONT_POINTER"
         },
         "TTF_Font": {
           resource: true,
@@ -9748,12 +9763,11 @@ const transform = {
         "TTF_Version": { name: "TTF.Version" },
         "TTF_Init": { name: "TTF.Init" },
         "TTF_Quit": { name: "TTF.Quit" },
-        "TTF_WasInit": { name: "TTF.WasInit" }
-      },
-      namespacesMap: {
-        "TTF_PROP_FONT_": "prop::Font",
-        "TTF_PROP_RENDERER_TEXT_ENGINE_": "prop::RendererTextEngine",
-        "TTF_PROP_GPU_TEXT_ENGINE_": "prop::GpuTextEngine"
+        "TTF_WasInit": { name: "TTF.WasInit" },
+        "TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER": { name: "RENDERER_POINTER" },
+        "TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": { name: "ATLAS_TEXTURE_SIZE_NUMBER" },
+        "TTF_PROP_GPU_TEXT_ENGINE_DEVICE": { name: "DEVICE_POINTER" },
+        "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": { name: "ATLAS_TEXTURE_SIZE_NUMBER" },
       },
     },
   }

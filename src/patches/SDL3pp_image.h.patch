@@ -1279,30 +1279,19 @@
   * @returns a new AnimationEncoder on success.
   * @throws Error on failure.
   *
-@@ -3920,8 +3946,11 @@
+@@ -3920,6 +3946,11 @@
    return AnimationEncoder(props);
  }
  
--#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
 +/**
 + * Supported properties for creating an animation encoder.
 + *
 + * @sa CreateAnimationEncoderWithProperties
 + */
- namespace prop::AnimationEncoder {
+ namespace prop::AnimationEncoder::Create {
  
- constexpr auto CREATE_FILENAME_STRING =
-@@ -3956,8 +3985,6 @@
- 
- } // namespace prop::AnimationEncoder
- 
--#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
- /**
-  * Add a frame to an animation encoder.
-  *
-@@ -4008,10 +4035,7 @@
+ constexpr auto FILENAME_STRING =
+@@ -4003,10 +4034,7 @@
    CheckError(IMG_CloseAnimationEncoder(encoder));
  }
  
@@ -1314,7 +1303,7 @@
  
  /**
   * An enum representing the status of an animation decoder.
-@@ -4020,8 +4044,6 @@
+@@ -4015,8 +4043,6 @@
   */
  using AnimationDecoderStatus = IMG_AnimationDecoderStatus;
  
@@ -1323,7 +1312,7 @@
  constexpr AnimationDecoderStatus DECODER_STATUS_INVALID =
    IMG_DECODER_STATUS_INVALID; ///< The decoder is invalid
  
-@@ -4069,8 +4091,6 @@
+@@ -4064,8 +4090,6 @@
  
    constexpr AnimationDecoder(AnimationDecoderRef&& other) = delete;
  
@@ -1332,7 +1321,7 @@
    /**
     * Create a decoder to read a series of images from a file.
     *
-@@ -4171,8 +4191,6 @@
+@@ -4166,8 +4190,6 @@
     */
    AnimationDecoder(PropertiesRef props);
  
@@ -1341,7 +1330,7 @@
    /// Destructor
    ~AnimationDecoder() { IMG_CloseAnimationDecoder(get()); }
  
-@@ -4186,16 +4204,13 @@
+@@ -4181,16 +4203,13 @@
    /// Assignment operator.
    AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
  
@@ -1359,7 +1348,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -4203,7 +4218,7 @@
+@@ -4198,7 +4217,7 @@
     * @sa CreateAnimationDecoder_IO
     * @sa CreateAnimationDecoderWithProperties
     */
@@ -1368,7 +1357,7 @@
  
    /**
     * Get the properties of an animation decoder.
-@@ -4230,18 +4245,11 @@
+@@ -4225,18 +4244,11 @@
     * as an Surface. The returned surface should be freed with SDL_FreeSurface()
     * when no longer needed.
     *
@@ -1382,13 +1371,14 @@
 -   *              animation.
     * @param duration the duration of the frame, usually in milliseconds but can
     *                 be other units if the
-    *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+-   *                 `prop.AnimationDecoder.Create.TIMEBASE_DENOMINATOR_NUMBER`
++   *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
     *                 property is set when creating the decoder.
 +   * @returns the Surface for the next frame in the animation.
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -4285,12 +4293,8 @@
+@@ -4280,12 +4292,8 @@
     * @sa AnimationDecoder.Close
     */
    void Reset();
@@ -1401,7 +1391,7 @@
  /**
   * Create a decoder to read a series of images from a file.
   *
-@@ -4331,7 +4335,7 @@
+@@ -4326,7 +4334,7 @@
                                            StringParam type,
                                            bool closeio)
    : AnimationDecoder(
@@ -1410,51 +1400,32 @@
  {
  }
  
-@@ -4420,8 +4424,11 @@
+@@ -4415,6 +4423,11 @@
    return AnimationDecoder(props);
  }
  
--#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
 +/**
 + * Supported properties for creating an animation decoder.
 + *
 + * @sa CreateAnimationDecoderWithProperties
 + */
- namespace prop::AnimationDecoder {
+ namespace prop::AnimationDecoder::Create {
  
- constexpr auto CREATE_FILENAME_STRING =
-@@ -4459,8 +4466,6 @@
- 
- } // namespace prop::AnimationDecoder
- 
--#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
- /**
-  * Get the properties of an animation decoder.
-  *
-@@ -4488,8 +4493,12 @@
+ constexpr auto FILENAME_STRING =
+@@ -4478,6 +4491,12 @@
    return SDL::GetAnimationDecoderProperties(get());
  }
  
--#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
 +/**
 + * Animation metadata properties.
 + *
 + * @since These properties are available since SDL_image 3.4.0.
 + * @sa AnimationDecoder.GetProperties
 + */
- namespace prop::Metadata {
+ namespace prop::AnimationDecoder::Metadata {
  
  constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
-@@ -4510,28 +4519,18 @@
- 
- } // namespace prop::Metadata
- 
--#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
- /**
+@@ -4502,22 +4521,14 @@
   * Get the next frame in an animation decoder.
   *
   * This function decodes the next frame in the animation decoder, returning it
@@ -1473,13 +1444,13 @@
 - *              animation.
   * @param duration the duration of the frame, usually in milliseconds but can be
   *                 other units if the
-  *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+  *                 `prop.AnimationDecoder.Create.TIMEBASE_DENOMINATOR_NUMBER`
   *                 property is set when creating the decoder.
 + * @returns the Surface for the next frame in the animation.
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -4546,7 +4545,9 @@
+@@ -4532,7 +4543,9 @@
  inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                          Uint64* duration)
  {
@@ -1490,7 +1461,7 @@
  }
  
  inline Surface AnimationDecoder::GetFrame(Uint64* duration)
-@@ -4621,10 +4622,7 @@
+@@ -4607,10 +4620,7 @@
    CheckError(IMG_CloseAnimationDecoder(decoder));
  }
  
@@ -1502,7 +1473,7 @@
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
  
-@@ -4632,4 +4630,32 @@
+@@ -4618,4 +4628,32 @@
  
  } // namespace SDL
  
