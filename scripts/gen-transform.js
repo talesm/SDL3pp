@@ -8696,6 +8696,9 @@ const transform = {
             unlockFunc: "MIX_UnlockMixer",
           },
         },
+        "MIX_CreateMixerDevice": {
+          parameters: [{}, { type: "OptionalRef<const AudioSpec>", default: "std::nullopt" }],
+        },
         "MIX_Audio": {
           resource: { free: "MIX_DestroyAudio" },
           entries: {
