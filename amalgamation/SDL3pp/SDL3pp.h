@@ -90123,7 +90123,8 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @param devid the device to open for playback, or
    *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
-   * @param spec the audio format to request from the device. May be nullptr.
+   * @param spec the audio format to request from the device. May be
+   *             std::nullopt.
    * @post a mixer that can be used to play audio on success.
    * @throws Error on failure.
    *
@@ -90134,7 +90135,7 @@ struct Mixer : ResourceBase<MixerRaw>
    * @sa CreateMixer
    * @sa Mixer.Destroy
    */
-  Mixer(AudioDeviceRef devid, const AudioSpec& spec);
+  Mixer(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec = std::nullopt);
 
   /**
    * Create a mixer that generates audio to a memory buffer.
@@ -93650,7 +93651,7 @@ inline const char* GetAudioDecoder(int index)
  *
  * @param devid the device to open for playback, or
  *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
- * @param spec the audio format to request from the device. May be nullptr.
+ * @param spec the audio format to request from the device. May be std::nullopt.
  * @returns a mixer that can be used to play audio on success.
  * @throws Error on failure.
  *
@@ -93661,13 +93662,14 @@ inline const char* GetAudioDecoder(int index)
  * @sa CreateMixer
  * @sa Mixer.Destroy
  */
-inline Mixer CreateMixerDevice(AudioDeviceRef devid, const AudioSpec& spec)
+inline Mixer CreateMixerDevice(AudioDeviceRef devid,
+                               OptionalRef<const AudioSpec> spec = std::nullopt)
 {
   return Mixer(devid, spec);
 }
 
-inline Mixer::Mixer(AudioDeviceRef devid, const AudioSpec& spec)
-  : Mixer(CheckError(MIX_CreateMixerDevice(devid, &spec)))
+inline Mixer::Mixer(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec)
+  : Mixer(CheckError(MIX_CreateMixerDevice(devid, spec)))
 {
 }
 
