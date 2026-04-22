@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.9.3
+
+Minor bugfix for CreateMixerDevice signature.
+
 ## Version 0.9.2
 
 Minor addition of missing functions and grouping common resource functionality
