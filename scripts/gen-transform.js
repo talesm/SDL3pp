@@ -5,7 +5,7 @@ import baseVersions from "./base.json" with { type: 'json' };
  * @import {ApiTransform} from "./cppfier/types"
  */
 
-const currentVersion = ["0", "9", "2"]; // major, minor, patch
+const currentVersion = ["0", "9", "3"]; // major, minor, patch
 
 /** @type {ApiTransform} */
 const transform = {
@@ -8704,6 +8704,9 @@ const transform = {
             lockFunc: "MIX_LockMixer",
             unlockFunc: "MIX_UnlockMixer",
           },
+        },
+        "MIX_CreateMixerDevice": {
+          parameters: [{}, { type: "OptionalRef<const AudioSpec>", default: "std::nullopt" }],
         },
         "MIX_Audio": {
           resource: { free: "MIX_DestroyAudio" },
