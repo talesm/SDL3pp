@@ -608,38 +608,49 @@ inline Process CreateProcessWithProperties(PropertiesRef props)
  */
 namespace prop::Process::Create {
 
-constexpr auto ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
+constexpr auto ARGS_POINTER =
+  SDL_PROP_PROCESS_CREATE_ARGS_POINTER; ///< Pointer to args.
 
 constexpr auto ENVIRONMENT_POINTER =
-  SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER;
+  SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER; ///< Pointer to environment.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto WORKING_DIRECTORY_STRING =
-  SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING;
+  SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING; ///< String for working
+                                                    ///< directory.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto STDIN_NUMBER = SDL_PROP_PROCESS_CREATE_STDIN_NUMBER;
+constexpr auto STDIN_NUMBER =
+  SDL_PROP_PROCESS_CREATE_STDIN_NUMBER; ///< Stdin number.
 
-constexpr auto STDIN_POINTER = SDL_PROP_PROCESS_CREATE_STDIN_POINTER;
+constexpr auto STDIN_POINTER =
+  SDL_PROP_PROCESS_CREATE_STDIN_POINTER; ///< Pointer to stdin.
 
-constexpr auto STDOUT_NUMBER = SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER;
+constexpr auto STDOUT_NUMBER =
+  SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER; ///< Stdout number.
 
-constexpr auto STDOUT_POINTER = SDL_PROP_PROCESS_CREATE_STDOUT_POINTER;
+constexpr auto STDOUT_POINTER =
+  SDL_PROP_PROCESS_CREATE_STDOUT_POINTER; ///< Pointer to stdout.
 
-constexpr auto STDERR_NUMBER = SDL_PROP_PROCESS_CREATE_STDERR_NUMBER;
+constexpr auto STDERR_NUMBER =
+  SDL_PROP_PROCESS_CREATE_STDERR_NUMBER; ///< Stderr number.
 
-constexpr auto STDERR_POINTER = SDL_PROP_PROCESS_CREATE_STDERR_POINTER;
+constexpr auto STDERR_POINTER =
+  SDL_PROP_PROCESS_CREATE_STDERR_POINTER; ///< Pointer to stderr.
 
 constexpr auto STDERR_TO_STDOUT_BOOLEAN =
-  SDL_PROP_PROCESS_CREATE_STDERR_TO_STDOUT_BOOLEAN;
+  SDL_PROP_PROCESS_CREATE_STDERR_TO_STDOUT_BOOLEAN; ///< Enable stderr to
+                                                    ///< stdout.
 
-constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN;
+constexpr auto BACKGROUND_BOOLEAN =
+  SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN; ///< Enable background.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CMDLINE_STRING = SDL_PROP_PROCESS_CREATE_CMDLINE_STRING;
+constexpr auto CMDLINE_STRING =
+  SDL_PROP_PROCESS_CREATE_CMDLINE_STRING; ///< String for cmdline.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -697,15 +708,19 @@ inline PropertiesRef Process::GetProperties() const
  */
 namespace prop::Process {
 
-constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER;
+constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER; ///< Pid number.
 
-constexpr auto STDIN_POINTER = SDL_PROP_PROCESS_STDIN_POINTER;
+constexpr auto STDIN_POINTER =
+  SDL_PROP_PROCESS_STDIN_POINTER; ///< Pointer to stdin.
 
-constexpr auto STDOUT_POINTER = SDL_PROP_PROCESS_STDOUT_POINTER;
+constexpr auto STDOUT_POINTER =
+  SDL_PROP_PROCESS_STDOUT_POINTER; ///< Pointer to stdout.
 
-constexpr auto STDERR_POINTER = SDL_PROP_PROCESS_STDERR_POINTER;
+constexpr auto STDERR_POINTER =
+  SDL_PROP_PROCESS_STDERR_POINTER; ///< Pointer to stderr.
 
-constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
+constexpr auto BACKGROUND_BOOLEAN =
+  SDL_PROP_PROCESS_BACKGROUND_BOOLEAN; ///< Background enabled.
 
 } // namespace prop::Process
 

@@ -125,8 +125,8 @@
 + */
  namespace prop::appMetaData {
  
- constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
-@@ -550,6 +594,219 @@
+ constexpr auto NAME_STRING =
+@@ -557,6 +601,219 @@
    return SDL_GetAppMetadataProperty(name);
  }
  

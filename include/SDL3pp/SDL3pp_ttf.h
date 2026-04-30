@@ -1916,28 +1916,35 @@ inline Font OpenFontWithProperties(PropertiesRef props) { return Font(props); }
  */
 namespace prop::Font::Create {
 
-constexpr auto FILENAME_STRING = TTF_PROP_FONT_CREATE_FILENAME_STRING;
+constexpr auto FILENAME_STRING =
+  TTF_PROP_FONT_CREATE_FILENAME_STRING; ///< String for filename.
 
-constexpr auto IOSTREAM_POINTER = TTF_PROP_FONT_CREATE_IOSTREAM_POINTER;
+constexpr auto IOSTREAM_POINTER =
+  TTF_PROP_FONT_CREATE_IOSTREAM_POINTER; ///< Pointer to iostream.
 
 constexpr auto IOSTREAM_OFFSET_NUMBER =
-  TTF_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER;
+  TTF_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER; ///< Number for iostream offset.
 
 constexpr auto IOSTREAM_AUTOCLOSE_BOOLEAN =
-  TTF_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
+  TTF_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN; ///< Enable iostream
+                                                   ///< autoclose.
 
-constexpr auto SIZE_FLOAT = TTF_PROP_FONT_CREATE_SIZE_FLOAT;
+constexpr auto SIZE_FLOAT =
+  TTF_PROP_FONT_CREATE_SIZE_FLOAT; ///< Float for size.
 
-constexpr auto FACE_NUMBER = TTF_PROP_FONT_CREATE_FACE_NUMBER;
+constexpr auto FACE_NUMBER =
+  TTF_PROP_FONT_CREATE_FACE_NUMBER; ///< Number for face.
 
 constexpr auto HORIZONTAL_DPI_NUMBER =
-  TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER;
+  TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER; ///< Number for horizontal dpi.
 
-constexpr auto VERTICAL_DPI_NUMBER = TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER;
+constexpr auto VERTICAL_DPI_NUMBER =
+  TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER; ///< Number for vertical dpi.
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto EXISTING_FONT_POINTER = TTF_PROP_FONT_CREATE_EXISTING_FONT;
+constexpr auto EXISTING_FONT_POINTER =
+  TTF_PROP_FONT_CREATE_EXISTING_FONT; ///< Pointer to existing font.
 
 #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
@@ -2011,13 +2018,14 @@ inline PropertiesRef Font::GetProperties()
  */
 namespace prop::Font {
 
-constexpr auto OUTLINE_LINE_CAP_NUMBER = TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER;
+constexpr auto OUTLINE_LINE_CAP_NUMBER =
+  TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER; ///< Number for outline line cap.
 
 constexpr auto OUTLINE_LINE_JOIN_NUMBER =
-  TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER;
+  TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER; ///< Number for outline line join.
 
 constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
-  TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER;
+  TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER; ///< Number for outline miter limit.
 
 } // namespace prop::Font
 
@@ -5220,10 +5228,12 @@ inline RendererTextEngine CreateRendererTextEngineWithProperties(
  */
 namespace prop::RendererTextEngine {
 
-constexpr auto RENDERER_POINTER = TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER;
+constexpr auto RENDERER_POINTER =
+  TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER; ///< Pointer to renderer.
 
 constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
-  TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
+  TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE; ///< Number for atlas
+                                                    ///< texture size.
 
 } // namespace prop::RendererTextEngine
 
@@ -5352,10 +5362,12 @@ inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
  */
 namespace prop::GpuTextEngine {
 
-constexpr auto DEVICE_POINTER = TTF_PROP_GPU_TEXT_ENGINE_DEVICE;
+constexpr auto DEVICE_POINTER =
+  TTF_PROP_GPU_TEXT_ENGINE_DEVICE; ///< Pointer to device.
 
 constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
-  TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
+  TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE; ///< Number for atlas texture
+                                               ///< size.
 
 } // namespace prop::GpuTextEngine
 

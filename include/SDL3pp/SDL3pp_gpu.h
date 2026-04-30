@@ -5072,87 +5072,110 @@ inline GPUDevice CreateGPUDeviceWithProperties(PropertiesRef props)
  */
 namespace prop::GPUDevice::Create {
 
-constexpr auto DEBUGMODE_BOOLEAN = SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN;
+constexpr auto DEBUGMODE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN; ///< Enable debugmode.
 
 constexpr auto PREFERLOWPOWER_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN; ///< Enable preferlowpower.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto VERBOSE_BOOLEAN = SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN;
+constexpr auto VERBOSE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN; ///< Enable verbose.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING; ///< String for name.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto FEATURE_CLIP_DISTANCE_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN; ///< Enable feature
+                                                            ///< clip distance.
 
 constexpr auto FEATURE_DEPTH_CLAMPING_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN; ///< Enable feature
+                                                             ///< depth
+                                                             ///< clamping.
 
 constexpr auto FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN; ///< Enable feature indirect draw first instance.
 
 constexpr auto FEATURE_ANISOTROPY_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN; ///< Enable feature
+                                                         ///< anisotropy.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto SHADERS_PRIVATE_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN; ///< Enable shaders
+                                                      ///< private.
 
 constexpr auto SHADERS_SPIRV_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN; ///< Enable shaders spirv.
 
 constexpr auto SHADERS_DXBC_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN; ///< Enable shaders dxbc.
 
 constexpr auto SHADERS_DXIL_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN; ///< Enable shaders dxil.
 
 constexpr auto SHADERS_MSL_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN; ///< Enable shaders msl.
 
 constexpr auto SHADERS_METALLIB_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN; ///< Enable shaders
+                                                       ///< metallib.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN; ///< Enable
+                                                                       ///< d3d12
+                                                                       ///< allow
+                                                                       ///< fewer
+                                                                       ///< resource
+                                                                       ///< slots.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto D3D12_SEMANTIC_NAME_STRING =
-  SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING; ///< String for d3d12
+                                                         ///< semantic name.
 
 #if SDL_VERSION_ATLEAST(3, 4, 2)
 
 constexpr auto D3D12_AGILITY_SDK_VERSION_NUMBER =
-  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER;
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER; ///< Number for
+                                                               ///< d3d12
+                                                               ///< agility sdk
+                                                               ///< version.
 
 constexpr auto D3D12_AGILITY_SDK_PATH_STRING =
-  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING;
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING; ///< String for
+                                                            ///< d3d12 agility
+                                                            ///< sdk path.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 2)
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN; ///< Enable vulkan require hardware acceleration.
 
 constexpr auto VULKAN_OPTIONS_POINTER =
-  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER; ///< Pointer to vulkan
+                                                     ///< options.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 #if SDL_VERSION_ATLEAST(3, 4, 2)
 
 constexpr auto METAL_ALLOW_MACFAMILY1_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN; ///< Enable metal
+                                                             ///< allow
+                                                             ///< macfamily1.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 2)
 
@@ -5390,14 +5413,17 @@ inline PropertiesRef GPUDevice::GetProperties()
  */
 namespace prop::GPUDevice {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_DEVICE_NAME_STRING; ///< String for name.
 
-constexpr auto DRIVER_NAME_STRING = SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING;
+constexpr auto DRIVER_NAME_STRING =
+  SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING; ///< String for driver name.
 
 constexpr auto DRIVER_VERSION_STRING =
-  SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING;
+  SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING; ///< String for driver version.
 
-constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
+constexpr auto DRIVER_INFO_STRING =
+  SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING; ///< String for driver info.
 
 } // namespace prop::GPUDevice
 
@@ -5476,7 +5502,8 @@ inline GPUComputePipeline::GPUComputePipeline(
  */
 namespace prop::GPUComputePipeline::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUComputePipeline::Create
 
@@ -5529,7 +5556,8 @@ inline GPUGraphicsPipeline::GPUGraphicsPipeline(
  */
 namespace prop::GPUGraphicsPipeline::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUGraphicsPipeline::Create
 
@@ -5579,7 +5607,8 @@ inline GPUSampler::GPUSampler(GPUDeviceRef device,
  */
 namespace prop::GPUSampler::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUSampler::Create
 
@@ -5678,7 +5707,8 @@ inline GPUShader::GPUShader(GPUDeviceRef device,
  */
 namespace prop::GPUShader::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_SHADER_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUShader::Create
 
@@ -5766,28 +5796,31 @@ inline GPUTexture::GPUTexture(GPUDeviceRef device,
 namespace prop::GPUTexture::Create {
 
 constexpr auto D3D12_CLEAR_R_FLOAT =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT; ///< Float for d3d12 clear r.
 
 constexpr auto D3D12_CLEAR_G_FLOAT =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT; ///< Float for d3d12 clear g.
 
 constexpr auto D3D12_CLEAR_B_FLOAT =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT; ///< Float for d3d12 clear b.
 
 constexpr auto D3D12_CLEAR_A_FLOAT =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT; ///< Float for d3d12 clear a.
 
 constexpr auto D3D12_CLEAR_DEPTH_FLOAT =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT; ///< Float for d3d12
+                                                       ///< clear depth.
 
 #if SDL_VERSION_ATLEAST(3, 2, 12)
 
 constexpr auto D3D12_CLEAR_STENCIL_NUMBER =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER; ///< Number for d3d12
+                                                          ///< clear stencil.
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 12)
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUTexture::Create
 
@@ -5858,7 +5891,8 @@ inline GPUBuffer::GPUBuffer(GPUDeviceRef device,
  */
 namespace prop::GPUBuffer::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUBuffer::Create
 
@@ -5917,7 +5951,8 @@ inline GPUTransferBuffer::GPUTransferBuffer(
  */
 namespace prop::GPUTransferBuffer::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUTransferBuffer::Create
 

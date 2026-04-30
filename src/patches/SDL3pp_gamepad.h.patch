@@ -160,8 +160,8 @@
 + */
  namespace prop::GamepadCap {
  
- constexpr auto MONO_LED_BOOLEAN = SDL_PROP_GAMEPAD_CAP_MONO_LED_BOOLEAN;
-@@ -2123,11 +2130,8 @@
+ constexpr auto MONO_LED_BOOLEAN =
+@@ -2127,11 +2134,8 @@
   * Get the SDL joystick layer bindings for a gamepad.
   *
   * @param gamepad a gamepad.
@@ -174,7 +174,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2135,7 +2139,9 @@
+@@ -2139,7 +2143,9 @@
   */
  inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadRef gamepad)
  {

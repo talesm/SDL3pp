@@ -3954,33 +3954,46 @@ inline AnimationEncoder CreateAnimationEncoderWithProperties(
 namespace prop::AnimationEncoder::Create {
 
 constexpr auto FILENAME_STRING =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING; ///< String for filename.
 
 constexpr auto IOSTREAM_POINTER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER; ///< Pointer to iostream.
 
 constexpr auto IOSTREAM_AUTOCLOSE_BOOLEAN =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN; ///< Enable
+                                                                ///< iostream
+                                                                ///< autoclose.
 
-constexpr auto TYPE_STRING = IMG_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING;
+constexpr auto TYPE_STRING =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING; ///< String for type.
 
 constexpr auto QUALITY_NUMBER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_QUALITY_NUMBER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_QUALITY_NUMBER; ///< Number for quality.
 
 constexpr auto TIMEBASE_NUMERATOR_NUMBER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_NUMERATOR_NUMBER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_NUMERATOR_NUMBER; ///< Number for
+                                                               ///< timebase
+                                                               ///< numerator.
 
 constexpr auto TIMEBASE_DENOMINATOR_NUMBER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER; ///< Number for
+                                                                 ///< timebase
+                                                                 ///< denominator.
 
 constexpr auto AVIF_MAX_THREADS_NUMBER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_MAX_THREADS_NUMBER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_MAX_THREADS_NUMBER; ///< Number for
+                                                             ///< avif max
+                                                             ///< threads.
 
 constexpr auto AVIF_KEYFRAME_INTERVAL_NUMBER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_KEYFRAME_INTERVAL_NUMBER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_KEYFRAME_INTERVAL_NUMBER; ///< Number
+                                                                   ///< for avif
+                                                                   ///< keyframe
+                                                                   ///< interval.
 
 constexpr auto GIF_USE_LUT_BOOLEAN =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_GIF_USE_LUT_BOOLEAN;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_GIF_USE_LUT_BOOLEAN; ///< Enable gif use
+                                                         ///< lut.
 
 } // namespace prop::AnimationEncoder::Create
 
@@ -4431,36 +4444,57 @@ inline AnimationDecoder CreateAnimationDecoderWithProperties(
 namespace prop::AnimationDecoder::Create {
 
 constexpr auto FILENAME_STRING =
-  IMG_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING;
+  IMG_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING; ///< String for filename.
 
 constexpr auto IOSTREAM_POINTER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER; ///< Pointer to iostream.
 
 constexpr auto IOSTREAM_AUTOCLOSE_BOOLEAN =
-  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
+  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN; ///< Enable
+                                                                ///< iostream
+                                                                ///< autoclose.
 
-constexpr auto TYPE_STRING = IMG_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING;
+constexpr auto TYPE_STRING =
+  IMG_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING; ///< String for type.
 
 constexpr auto TIMEBASE_NUMERATOR_NUMBER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_NUMERATOR_NUMBER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_NUMERATOR_NUMBER; ///< Number for
+                                                               ///< timebase
+                                                               ///< numerator.
 
 constexpr auto TIMEBASE_DENOMINATOR_NUMBER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER; ///< Number for
+                                                                 ///< timebase
+                                                                 ///< denominator.
 
 constexpr auto AVIF_MAX_THREADS_NUMBER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_MAX_THREADS_NUMBER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_MAX_THREADS_NUMBER; ///< Number for
+                                                             ///< avif max
+                                                             ///< threads.
 
 constexpr auto AVIF_ALLOW_INCREMENTAL_BOOLEAN =
-  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_INCREMENTAL_BOOLEAN;
+  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_INCREMENTAL_BOOLEAN; ///< Enable
+                                                                    ///< avif
+                                                                    ///< allow
+                                                                    ///< incremental.
 
 constexpr auto AVIF_ALLOW_PROGRESSIVE_BOOLEAN =
-  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_PROGRESSIVE_BOOLEAN;
+  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_PROGRESSIVE_BOOLEAN; ///< Enable
+                                                                    ///< avif
+                                                                    ///< allow
+                                                                    ///< progressive.
 
 constexpr auto GIF_TRANSPARENT_COLOR_INDEX_NUMBER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_TRANSPARENT_COLOR_INDEX_NUMBER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_TRANSPARENT_COLOR_INDEX_NUMBER; ///< Number
+                                                                        ///< for
+                                                                        ///< gif
+                                                                        ///< transparent
+                                                                        ///< color
+                                                                        ///< index.
 
 constexpr auto GIF_NUM_COLORS_NUMBER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_NUM_COLORS_NUMBER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_NUM_COLORS_NUMBER; ///< Number for gif
+                                                           ///< num colors.
 
 } // namespace prop::AnimationDecoder::Create
 
@@ -4499,21 +4533,29 @@ inline PropertiesRef AnimationDecoder::GetProperties()
  */
 namespace prop::AnimationDecoder::Metadata {
 
-constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
+constexpr auto IGNORE_PROPS_BOOLEAN =
+  IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN; ///< Enable ignore props.
 
-constexpr auto DESCRIPTION_STRING = IMG_PROP_METADATA_DESCRIPTION_STRING;
+constexpr auto DESCRIPTION_STRING =
+  IMG_PROP_METADATA_DESCRIPTION_STRING; ///< String for description.
 
-constexpr auto COPYRIGHT_STRING = IMG_PROP_METADATA_COPYRIGHT_STRING;
+constexpr auto COPYRIGHT_STRING =
+  IMG_PROP_METADATA_COPYRIGHT_STRING; ///< String for copyright.
 
-constexpr auto TITLE_STRING = IMG_PROP_METADATA_TITLE_STRING;
+constexpr auto TITLE_STRING =
+  IMG_PROP_METADATA_TITLE_STRING; ///< String for title.
 
-constexpr auto AUTHOR_STRING = IMG_PROP_METADATA_AUTHOR_STRING;
+constexpr auto AUTHOR_STRING =
+  IMG_PROP_METADATA_AUTHOR_STRING; ///< String for author.
 
-constexpr auto CREATION_TIME_STRING = IMG_PROP_METADATA_CREATION_TIME_STRING;
+constexpr auto CREATION_TIME_STRING =
+  IMG_PROP_METADATA_CREATION_TIME_STRING; ///< String for creation time.
 
-constexpr auto FRAME_COUNT_NUMBER = IMG_PROP_METADATA_FRAME_COUNT_NUMBER;
+constexpr auto FRAME_COUNT_NUMBER =
+  IMG_PROP_METADATA_FRAME_COUNT_NUMBER; ///< Frame count.
 
-constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
+constexpr auto LOOP_COUNT_NUMBER =
+  IMG_PROP_METADATA_LOOP_COUNT_NUMBER; ///< Loop count.
 
 } // namespace prop::AnimationDecoder::Metadata
 

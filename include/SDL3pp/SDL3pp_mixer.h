@@ -3973,7 +3973,7 @@ inline PropertiesRef Mixer::GetProperties()
  */
 namespace prop::Mixer {
 
-constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER;
+constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER; /// Device number.
 
 } // namespace prop::Mixer
 
@@ -4371,19 +4371,25 @@ inline Audio LoadAudioWithProperties(PropertiesRef props)
  */
 namespace prop::Audio {
 
-constexpr auto LOAD_IOSTREAM_POINTER = MIX_PROP_AUDIO_LOAD_IOSTREAM_POINTER;
+constexpr auto LOAD_IOSTREAM_POINTER =
+  MIX_PROP_AUDIO_LOAD_IOSTREAM_POINTER; ///< Pointer to load iostream.
 
-constexpr auto LOAD_CLOSEIO_BOOLEAN = MIX_PROP_AUDIO_LOAD_CLOSEIO_BOOLEAN;
+constexpr auto LOAD_CLOSEIO_BOOLEAN =
+  MIX_PROP_AUDIO_LOAD_CLOSEIO_BOOLEAN; ///< Load closeio enabled.
 
-constexpr auto LOAD_PREDECODE_BOOLEAN = MIX_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN;
+constexpr auto LOAD_PREDECODE_BOOLEAN =
+  MIX_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN; ///< Load predecode enabled.
 
 constexpr auto LOAD_PREFERRED_MIXER_POINTER =
-  MIX_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER;
+  MIX_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER; ///< Pointer to load preferred
+                                               ///< mixer.
 
 constexpr auto LOAD_SKIP_METADATA_TAGS_BOOLEAN =
-  MIX_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN;
+  MIX_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN; ///< Enable load skip metadata
+                                                  ///< tags.
 
-constexpr auto DECODER_STRING = MIX_PROP_AUDIO_DECODER_STRING;
+constexpr auto DECODER_STRING =
+  MIX_PROP_AUDIO_DECODER_STRING; ///< String for decoder.
 
 } // namespace prop::Audio
 
@@ -4649,25 +4655,32 @@ inline PropertiesRef Audio::GetProperties()
  */
 namespace prop::Audio::Metadata {
 
-constexpr auto TITLE_STRING = MIX_PROP_METADATA_TITLE_STRING;
+constexpr auto TITLE_STRING =
+  MIX_PROP_METADATA_TITLE_STRING; ///< String for title.
 
-constexpr auto ARTIST_STRING = MIX_PROP_METADATA_ARTIST_STRING;
+constexpr auto ARTIST_STRING =
+  MIX_PROP_METADATA_ARTIST_STRING; ///< String for artist.
 
-constexpr auto ALBUM_STRING = MIX_PROP_METADATA_ALBUM_STRING;
+constexpr auto ALBUM_STRING =
+  MIX_PROP_METADATA_ALBUM_STRING; ///< String for album.
 
-constexpr auto COPYRIGHT_STRING = MIX_PROP_METADATA_COPYRIGHT_STRING;
+constexpr auto COPYRIGHT_STRING =
+  MIX_PROP_METADATA_COPYRIGHT_STRING; ///< String for copyright.
 
-constexpr auto TRACK_NUMBER = MIX_PROP_METADATA_TRACK_NUMBER;
+constexpr auto TRACK_NUMBER =
+  MIX_PROP_METADATA_TRACK_NUMBER; ///< Number for track.
 
-constexpr auto TOTAL_TRACKS_NUMBER = MIX_PROP_METADATA_TOTAL_TRACKS_NUMBER;
+constexpr auto TOTAL_TRACKS_NUMBER =
+  MIX_PROP_METADATA_TOTAL_TRACKS_NUMBER; ///< Number for total tracks.
 
-constexpr auto YEAR_NUMBER = MIX_PROP_METADATA_YEAR_NUMBER;
+constexpr auto YEAR_NUMBER =
+  MIX_PROP_METADATA_YEAR_NUMBER; ///< Number for year.
 
 constexpr auto DURATION_FRAMES_NUMBER =
-  MIX_PROP_METADATA_DURATION_FRAMES_NUMBER;
+  MIX_PROP_METADATA_DURATION_FRAMES_NUMBER; ///< Number for duration frames.
 
 constexpr auto DURATION_INFINITE_BOOLEAN =
-  MIX_PROP_METADATA_DURATION_INFINITE_BOOLEAN;
+  MIX_PROP_METADATA_DURATION_INFINITE_BOOLEAN; ///< Enable duration infinite.
 
 } // namespace prop::Audio::Metadata
 
@@ -5764,38 +5777,47 @@ inline void Track::Play(PropertiesRef options)
  */
 namespace prop::Play {
 
-constexpr auto LOOPS_NUMBER = MIX_PROP_PLAY_LOOPS_NUMBER;
+constexpr auto LOOPS_NUMBER = MIX_PROP_PLAY_LOOPS_NUMBER; ///< Number for loops.
 
-constexpr auto MAX_FRAME_NUMBER = MIX_PROP_PLAY_MAX_FRAME_NUMBER;
+constexpr auto MAX_FRAME_NUMBER =
+  MIX_PROP_PLAY_MAX_FRAME_NUMBER; ///< Number for max frame.
 
-constexpr auto MAX_MILLISECONDS_NUMBER = MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER;
+constexpr auto MAX_MILLISECONDS_NUMBER =
+  MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER; ///< Number for max milliseconds.
 
-constexpr auto START_FRAME_NUMBER = MIX_PROP_PLAY_START_FRAME_NUMBER;
+constexpr auto START_FRAME_NUMBER =
+  MIX_PROP_PLAY_START_FRAME_NUMBER; ///< Number for start frame.
 
 constexpr auto START_MILLISECOND_NUMBER =
-  MIX_PROP_PLAY_START_MILLISECOND_NUMBER;
+  MIX_PROP_PLAY_START_MILLISECOND_NUMBER; ///< Number for start millisecond.
 
-constexpr auto LOOP_START_FRAME_NUMBER = MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER;
+constexpr auto LOOP_START_FRAME_NUMBER =
+  MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER; ///< Number for loop start frame.
 
 constexpr auto LOOP_START_MILLISECOND_NUMBER =
-  MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER;
+  MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER; ///< Number for loop start
+                                               ///< millisecond.
 
-constexpr auto FADE_IN_FRAMES_NUMBER = MIX_PROP_PLAY_FADE_IN_FRAMES_NUMBER;
+constexpr auto FADE_IN_FRAMES_NUMBER =
+  MIX_PROP_PLAY_FADE_IN_FRAMES_NUMBER; ///< Number for fade in frames.
 
 constexpr auto FADE_IN_MILLISECONDS_NUMBER =
-  MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER;
+  MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER; ///< Number for fade in
+                                             ///< milliseconds.
 
 constexpr auto FADE_IN_START_GAIN_FLOAT =
-  MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT;
+  MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT; ///< Float for fade in start gain.
 
 constexpr auto APPEND_SILENCE_FRAMES_NUMBER =
-  MIX_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER;
+  MIX_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER; ///< Number for append silence
+                                              ///< frames.
 
 constexpr auto APPEND_SILENCE_MILLISECONDS_NUMBER =
-  MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER;
+  MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER; ///< Number for append
+                                                    ///< silence milliseconds.
 
 constexpr auto HALT_WHEN_EXHAUSTED_BOOLEAN =
-  MIX_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN;
+  MIX_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN; ///< Halt when exhausted enabled.
 
 } // namespace prop::Play
 

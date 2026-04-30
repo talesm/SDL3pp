@@ -3744,18 +3744,20 @@ inline PropertiesRef Display::GetProperties() const
  */
 namespace prop::Display {
 
-constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN;
+constexpr auto HDR_ENABLED_BOOLEAN =
+  SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN; ///< Hdr enabled enabled.
 
 constexpr auto KMSDRM_PANEL_ORIENTATION_NUMBER =
-  SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER;
+  SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER; ///< Number for kmsdrm panel
+                                                    ///< orientation.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto WAYLAND_WL_OUTPUT_POINTER =
-  SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER;
+  SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER; ///< Pointer to wayland wl output.
 
 constexpr auto WINDOWS_HMONITOR_POINTER =
-  SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER;
+  SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER; ///< Pointer to windows hmonitor.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -4676,102 +4678,141 @@ inline Window CreateWindowWithProperties(PropertiesRef props)
 namespace prop::Window::Create {
 
 constexpr auto ALWAYS_ON_TOP_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN; ///< Enable always on top.
 
-constexpr auto BORDERLESS_BOOLEAN = SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN;
+constexpr auto BORDERLESS_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN; ///< Enable borderless.
 
 #if SDL_VERSION_ATLEAST(3, 2, 18)
 
 constexpr auto CONSTRAIN_POPUP_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN; ///< Enable constrain popup.
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 18)
 
-constexpr auto FOCUSABLE_BOOLEAN = SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN;
+constexpr auto FOCUSABLE_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN; ///< Enable focusable.
 
 constexpr auto EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN; ///< Enable external
+                                                            ///< graphics
+                                                            ///< context.
 
-constexpr auto FLAGS_NUMBER = SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER;
+constexpr auto FLAGS_NUMBER =
+  SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER; ///< Number for flags.
 
-constexpr auto FULLSCREEN_BOOLEAN = SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN;
+constexpr auto FULLSCREEN_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN; ///< Enable fullscreen.
 
-constexpr auto HEIGHT_NUMBER = SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER;
+constexpr auto HEIGHT_NUMBER =
+  SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER; ///< Number for height.
 
-constexpr auto HIDDEN_BOOLEAN = SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN;
+constexpr auto HIDDEN_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN; ///< Enable hidden.
 
 constexpr auto HIGH_PIXEL_DENSITY_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN; ///< Enable high pixel
+                                                     ///< density.
 
-constexpr auto MAXIMIZED_BOOLEAN = SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN;
+constexpr auto MAXIMIZED_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN; ///< Enable maximized.
 
-constexpr auto MENU_BOOLEAN = SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN;
+constexpr auto MENU_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN; ///< Enable menu.
 
-constexpr auto METAL_BOOLEAN = SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN;
+constexpr auto METAL_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN; ///< Enable metal.
 
-constexpr auto MINIMIZED_BOOLEAN = SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN;
+constexpr auto MINIMIZED_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN; ///< Enable minimized.
 
-constexpr auto MODAL_BOOLEAN = SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN;
+constexpr auto MODAL_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN; ///< Enable modal.
 
 constexpr auto MOUSE_GRABBED_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN; ///< Enable mouse grabbed.
 
-constexpr auto OPENGL_BOOLEAN = SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN;
+constexpr auto OPENGL_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN; ///< Enable opengl.
 
-constexpr auto PARENT_POINTER = SDL_PROP_WINDOW_CREATE_PARENT_POINTER;
+constexpr auto PARENT_POINTER =
+  SDL_PROP_WINDOW_CREATE_PARENT_POINTER; ///< Pointer to parent.
 
-constexpr auto RESIZABLE_BOOLEAN = SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN;
+constexpr auto RESIZABLE_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN; ///< Enable resizable.
 
-constexpr auto TITLE_STRING = SDL_PROP_WINDOW_CREATE_TITLE_STRING;
+constexpr auto TITLE_STRING =
+  SDL_PROP_WINDOW_CREATE_TITLE_STRING; ///< String for title.
 
-constexpr auto TRANSPARENT_BOOLEAN = SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN;
+constexpr auto TRANSPARENT_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN; ///< Enable transparent.
 
-constexpr auto TOOLTIP_BOOLEAN = SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN;
+constexpr auto TOOLTIP_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN; ///< Enable tooltip.
 
-constexpr auto UTILITY_BOOLEAN = SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN;
+constexpr auto UTILITY_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN; ///< Enable utility.
 
-constexpr auto VULKAN_BOOLEAN = SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN;
+constexpr auto VULKAN_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN; ///< Enable vulkan.
 
-constexpr auto WIDTH_NUMBER = SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER;
+constexpr auto WIDTH_NUMBER =
+  SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER; ///< Number for width.
 
-constexpr auto X_NUMBER = SDL_PROP_WINDOW_CREATE_X_NUMBER;
+constexpr auto X_NUMBER = SDL_PROP_WINDOW_CREATE_X_NUMBER; ///< Number for x.
 
-constexpr auto Y_NUMBER = SDL_PROP_WINDOW_CREATE_Y_NUMBER;
+constexpr auto Y_NUMBER = SDL_PROP_WINDOW_CREATE_Y_NUMBER; ///< Number for y.
 
 constexpr auto COCOA_WINDOW_POINTER =
-  SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER;
+  SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER; ///< Pointer to cocoa window.
 
-constexpr auto COCOA_VIEW_POINTER = SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER;
+constexpr auto COCOA_VIEW_POINTER =
+  SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER; ///< Pointer to cocoa view.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto WINDOWSCENE_POINTER = SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER;
+constexpr auto WINDOWSCENE_POINTER =
+  SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER; ///< Pointer to windowscene.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN; ///< Enable
+                                                              ///< wayland
+                                                              ///< surface role
+                                                              ///< custom.
 
 constexpr auto WAYLAND_CREATE_EGL_WINDOW_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN; ///< Enable wayland
+                                                            ///< create egl
+                                                            ///< window.
 
 constexpr auto WAYLAND_WL_SURFACE_POINTER =
-  SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER;
+  SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER; ///< Pointer to wayland wl
+                                                     ///< surface.
 
-constexpr auto WIN32_HWND_POINTER = SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER;
+constexpr auto WIN32_HWND_POINTER =
+  SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER; ///< Pointer to win32 hwnd.
 
 constexpr auto WIN32_PIXEL_FORMAT_HWND_POINTER =
-  SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER;
+  SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER; ///< Pointer to win32
+                                                          ///< pixel format
+                                                          ///< hwnd.
 
-constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER;
+constexpr auto X11_WINDOW_NUMBER =
+  SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER; ///< Number for x11 window.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
-  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING;
+  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING; ///< String for emscripten
+                                                      ///< canvas id.
 
 constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
-  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
+  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING; ///< String for
+                                                             ///< emscripten
+                                                             ///< keyboard
+                                                             ///< element.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -4996,50 +5037,65 @@ inline PropertiesRef Window::GetProperties() const
  */
 namespace prop::Window {
 
-constexpr auto SHAPE_POINTER = SDL_PROP_WINDOW_SHAPE_POINTER;
+constexpr auto SHAPE_POINTER =
+  SDL_PROP_WINDOW_SHAPE_POINTER; ///< Pointer to shape.
 
-constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN;
+constexpr auto HDR_ENABLED_BOOLEAN =
+  SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN; ///< Hdr enabled enabled.
 
-constexpr auto SDR_WHITE_LEVEL_FLOAT = SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT;
+constexpr auto SDR_WHITE_LEVEL_FLOAT =
+  SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT; ///< Float for sdr white level.
 
-constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT;
+constexpr auto HDR_HEADROOM_FLOAT =
+  SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT; ///< Float for hdr headroom.
 
-constexpr auto ANDROID_WINDOW_POINTER = SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER;
+constexpr auto ANDROID_WINDOW_POINTER =
+  SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER; ///< Pointer to android window.
 
 constexpr auto ANDROID_SURFACE_POINTER =
-  SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER;
+  SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER; ///< Pointer to android surface.
 
-constexpr auto UIKIT_WINDOW_POINTER = SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER;
+constexpr auto UIKIT_WINDOW_POINTER =
+  SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER; ///< Pointer to uikit window.
 
 constexpr auto UIKIT_METAL_VIEW_TAG_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER;
+  SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER; ///< Number for uikit metal view
+                                               ///< tag.
 
 constexpr auto UIKIT_OPENGL_FRAMEBUFFER_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER;
+  SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER; ///< Number for uikit opengl
+                                                   ///< framebuffer.
 
 constexpr auto UIKIT_OPENGL_RENDERBUFFER_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER;
+  SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER; ///< Number for uikit opengl
+                                                    ///< renderbuffer.
 
 constexpr auto UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER;
+  SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER; ///< Number for uikit
+                                                           ///< opengl resolve
+                                                           ///< framebuffer.
 
 constexpr auto KMSDRM_DEVICE_INDEX_NUMBER =
-  SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER;
+  SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER; ///< Number for kmsdrm device
+                                              ///< index.
 
-constexpr auto KMSDRM_DRM_FD_NUMBER = SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER;
+constexpr auto KMSDRM_DRM_FD_NUMBER =
+  SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER; ///< Number for kmsdrm drm fd.
 
 constexpr auto KMSDRM_GBM_DEVICE_POINTER =
-  SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER;
+  SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER; ///< Pointer to kmsdrm gbm device.
 
-constexpr auto COCOA_WINDOW_POINTER = SDL_PROP_WINDOW_COCOA_WINDOW_POINTER;
+constexpr auto COCOA_WINDOW_POINTER =
+  SDL_PROP_WINDOW_COCOA_WINDOW_POINTER; ///< Pointer to cocoa window.
 
 constexpr auto COCOA_METAL_VIEW_TAG_NUMBER =
-  SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER;
+  SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER; ///< Number for cocoa metal view
+                                               ///< tag.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto OPENVR_OVERLAY_ID_NUMBER =
-  SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER;
+  SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER; ///< Number for openvr overlay id.
 
 #else
 
@@ -5048,59 +5104,75 @@ constexpr auto OPENVR_OVERLAY_ID_NUMBER = SDL_PROP_WINDOW_OPENVR_OVERLAY_ID;
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto VIVANTE_DISPLAY_POINTER =
-  SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER;
+  SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER; ///< Pointer to vivante display.
 
-constexpr auto VIVANTE_WINDOW_POINTER = SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER;
+constexpr auto VIVANTE_WINDOW_POINTER =
+  SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER; ///< Pointer to vivante window.
 
 constexpr auto VIVANTE_SURFACE_POINTER =
-  SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER;
+  SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER; ///< Pointer to vivante surface.
 
-constexpr auto WIN32_HWND_POINTER = SDL_PROP_WINDOW_WIN32_HWND_POINTER;
+constexpr auto WIN32_HWND_POINTER =
+  SDL_PROP_WINDOW_WIN32_HWND_POINTER; ///< Pointer to win32 hwnd.
 
-constexpr auto WIN32_HDC_POINTER = SDL_PROP_WINDOW_WIN32_HDC_POINTER;
+constexpr auto WIN32_HDC_POINTER =
+  SDL_PROP_WINDOW_WIN32_HDC_POINTER; ///< Pointer to win32 hdc.
 
-constexpr auto WIN32_INSTANCE_POINTER = SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER;
+constexpr auto WIN32_INSTANCE_POINTER =
+  SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER; ///< Pointer to win32 instance.
 
 constexpr auto WAYLAND_DISPLAY_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER; ///< Pointer to wayland display.
 
 constexpr auto WAYLAND_SURFACE_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER; ///< Pointer to wayland surface.
 
 constexpr auto WAYLAND_VIEWPORT_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER; ///< Pointer to wayland viewport.
 
 constexpr auto WAYLAND_EGL_WINDOW_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER; ///< Pointer to wayland egl
+                                              ///< window.
 
 constexpr auto WAYLAND_XDG_SURFACE_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER; ///< Pointer to wayland xdg
+                                               ///< surface.
 
 constexpr auto WAYLAND_XDG_TOPLEVEL_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER; ///< Pointer to wayland xdg
+                                                ///< toplevel.
 
 constexpr auto WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING =
-  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING;
+  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING; ///< String for
+                                                             ///< wayland xdg
+                                                             ///< toplevel
+                                                             ///< export handle.
 
 constexpr auto WAYLAND_XDG_POPUP_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER; ///< Pointer to wayland xdg popup.
 
 constexpr auto WAYLAND_XDG_POSITIONER_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER; ///< Pointer to wayland xdg
+                                                  ///< positioner.
 
-constexpr auto X11_DISPLAY_POINTER = SDL_PROP_WINDOW_X11_DISPLAY_POINTER;
+constexpr auto X11_DISPLAY_POINTER =
+  SDL_PROP_WINDOW_X11_DISPLAY_POINTER; ///< Pointer to x11 display.
 
-constexpr auto X11_SCREEN_NUMBER = SDL_PROP_WINDOW_X11_SCREEN_NUMBER;
+constexpr auto X11_SCREEN_NUMBER =
+  SDL_PROP_WINDOW_X11_SCREEN_NUMBER; ///< Number for x11 screen.
 
-constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
+constexpr auto X11_WINDOW_NUMBER =
+  SDL_PROP_WINDOW_X11_WINDOW_NUMBER; ///< Number for x11 window.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
-  SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING;
+  SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING; ///< String for emscripten canvas
+                                               ///< id.
 
 constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
-  SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
+  SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING; ///< String for emscripten
+                                                      ///< keyboard element.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 

@@ -552,19 +552,26 @@ inline void SetAppMetadataProperty(StringParam name, StringParam value)
  */
 namespace prop::appMetaData {
 
-constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_APP_METADATA_NAME_STRING; ///< String for name.
 
-constexpr auto VERSION_STRING = SDL_PROP_APP_METADATA_VERSION_STRING;
+constexpr auto VERSION_STRING =
+  SDL_PROP_APP_METADATA_VERSION_STRING; ///< String for version.
 
-constexpr auto IDENTIFIER_STRING = SDL_PROP_APP_METADATA_IDENTIFIER_STRING;
+constexpr auto IDENTIFIER_STRING =
+  SDL_PROP_APP_METADATA_IDENTIFIER_STRING; ///< String for identifier.
 
-constexpr auto CREATOR_STRING = SDL_PROP_APP_METADATA_CREATOR_STRING;
+constexpr auto CREATOR_STRING =
+  SDL_PROP_APP_METADATA_CREATOR_STRING; ///< String for creator.
 
-constexpr auto COPYRIGHT_STRING = SDL_PROP_APP_METADATA_COPYRIGHT_STRING;
+constexpr auto COPYRIGHT_STRING =
+  SDL_PROP_APP_METADATA_COPYRIGHT_STRING; ///< String for copyright.
 
-constexpr auto URL_STRING = SDL_PROP_APP_METADATA_URL_STRING;
+constexpr auto URL_STRING =
+  SDL_PROP_APP_METADATA_URL_STRING; ///< String for url.
 
-constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
+constexpr auto TYPE_STRING =
+  SDL_PROP_APP_METADATA_TYPE_STRING; ///< String for type.
 
 } // namespace prop::appMetaData
 

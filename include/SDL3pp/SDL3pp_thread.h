@@ -640,13 +640,16 @@ inline Thread CreateThreadWithProperties(PropertiesRef props)
 namespace prop::Thread::Create {
 
 constexpr auto ENTRY_FUNCTION_POINTER =
-  SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER;
+  SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER; ///< Pointer to entry function.
 
-constexpr auto NAME_STRING = SDL_PROP_THREAD_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_THREAD_CREATE_NAME_STRING; ///< String for name.
 
-constexpr auto USERDATA_POINTER = SDL_PROP_THREAD_CREATE_USERDATA_POINTER;
+constexpr auto USERDATA_POINTER =
+  SDL_PROP_THREAD_CREATE_USERDATA_POINTER; ///< Pointer to userdata.
 
-constexpr auto STACKSIZE_NUMBER = SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER;
+constexpr auto STACKSIZE_NUMBER =
+  SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER; ///< Number for stacksize.
 
 } // namespace prop::Thread::Create
 

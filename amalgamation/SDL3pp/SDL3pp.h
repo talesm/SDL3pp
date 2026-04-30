@@ -21425,7 +21425,8 @@ inline PropertiesRef HidDevice::hid_get_properties()
 namespace prop::Hidapi {
 
 constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
-  SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER;
+  SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER; ///< Pointer to libusb device
+                                                ///< handle.
 
 } // namespace prop::Hidapi
 
@@ -23498,32 +23499,35 @@ inline IOStream IOStream::FromFile(StringParam file, StringParam mode)
 namespace prop::IOStream {
 
 constexpr auto WINDOWS_HANDLE_POINTER =
-  SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER;
+  SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER; ///< Pointer to windows handle.
 
-constexpr auto STDIO_FILE_POINTER = SDL_PROP_IOSTREAM_STDIO_FILE_POINTER;
+constexpr auto STDIO_FILE_POINTER =
+  SDL_PROP_IOSTREAM_STDIO_FILE_POINTER; ///< Pointer to stdio file.
 
 constexpr auto FILE_DESCRIPTOR_NUMBER =
-  SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER;
+  SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER; ///< Number for file descriptor.
 
 constexpr auto ANDROID_AASSET_POINTER =
-  SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER;
+  SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER; ///< Pointer to android aasset.
 
-constexpr auto MEMORY_POINTER = SDL_PROP_IOSTREAM_MEMORY_POINTER;
+constexpr auto MEMORY_POINTER =
+  SDL_PROP_IOSTREAM_MEMORY_POINTER; ///< Pointer to memory.
 
-constexpr auto MEMORY_SIZE_NUMBER = SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER;
+constexpr auto MEMORY_SIZE_NUMBER =
+  SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER; ///< Number for memory size.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto MEMORY_FREE_FUNC_POINTER =
-  SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER;
+  SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER; ///< Pointer to memory free func.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto DYNAMIC_MEMORY_POINTER =
-  SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER;
+  SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER; ///< Pointer to dynamic memory.
 
 constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
-  SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER;
+  SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER; ///< Number for dynamic chunksize.
 
 } // namespace prop::IOStream
 
@@ -36912,7 +36916,8 @@ inline PropertiesRef AudioStream::GetProperties() const
  */
 namespace prop::AudioStream {
 
-constexpr auto AUTO_CLEANUP_BOOLEAN = SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN;
+constexpr auto AUTO_CLEANUP_BOOLEAN =
+  SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN; ///< Auto cleanup enabled.
 
 } // namespace prop::AudioStream
 
@@ -40139,38 +40144,49 @@ inline Process CreateProcessWithProperties(PropertiesRef props)
  */
 namespace prop::Process::Create {
 
-constexpr auto ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
+constexpr auto ARGS_POINTER =
+  SDL_PROP_PROCESS_CREATE_ARGS_POINTER; ///< Pointer to args.
 
 constexpr auto ENVIRONMENT_POINTER =
-  SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER;
+  SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER; ///< Pointer to environment.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto WORKING_DIRECTORY_STRING =
-  SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING;
+  SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING; ///< String for working
+                                                    ///< directory.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto STDIN_NUMBER = SDL_PROP_PROCESS_CREATE_STDIN_NUMBER;
+constexpr auto STDIN_NUMBER =
+  SDL_PROP_PROCESS_CREATE_STDIN_NUMBER; ///< Stdin number.
 
-constexpr auto STDIN_POINTER = SDL_PROP_PROCESS_CREATE_STDIN_POINTER;
+constexpr auto STDIN_POINTER =
+  SDL_PROP_PROCESS_CREATE_STDIN_POINTER; ///< Pointer to stdin.
 
-constexpr auto STDOUT_NUMBER = SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER;
+constexpr auto STDOUT_NUMBER =
+  SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER; ///< Stdout number.
 
-constexpr auto STDOUT_POINTER = SDL_PROP_PROCESS_CREATE_STDOUT_POINTER;
+constexpr auto STDOUT_POINTER =
+  SDL_PROP_PROCESS_CREATE_STDOUT_POINTER; ///< Pointer to stdout.
 
-constexpr auto STDERR_NUMBER = SDL_PROP_PROCESS_CREATE_STDERR_NUMBER;
+constexpr auto STDERR_NUMBER =
+  SDL_PROP_PROCESS_CREATE_STDERR_NUMBER; ///< Stderr number.
 
-constexpr auto STDERR_POINTER = SDL_PROP_PROCESS_CREATE_STDERR_POINTER;
+constexpr auto STDERR_POINTER =
+  SDL_PROP_PROCESS_CREATE_STDERR_POINTER; ///< Pointer to stderr.
 
 constexpr auto STDERR_TO_STDOUT_BOOLEAN =
-  SDL_PROP_PROCESS_CREATE_STDERR_TO_STDOUT_BOOLEAN;
+  SDL_PROP_PROCESS_CREATE_STDERR_TO_STDOUT_BOOLEAN; ///< Enable stderr to
+                                                    ///< stdout.
 
-constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN;
+constexpr auto BACKGROUND_BOOLEAN =
+  SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN; ///< Enable background.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto CMDLINE_STRING = SDL_PROP_PROCESS_CREATE_CMDLINE_STRING;
+constexpr auto CMDLINE_STRING =
+  SDL_PROP_PROCESS_CREATE_CMDLINE_STRING; ///< String for cmdline.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -40228,15 +40244,19 @@ inline PropertiesRef Process::GetProperties() const
  */
 namespace prop::Process {
 
-constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER;
+constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER; ///< Pid number.
 
-constexpr auto STDIN_POINTER = SDL_PROP_PROCESS_STDIN_POINTER;
+constexpr auto STDIN_POINTER =
+  SDL_PROP_PROCESS_STDIN_POINTER; ///< Pointer to stdin.
 
-constexpr auto STDOUT_POINTER = SDL_PROP_PROCESS_STDOUT_POINTER;
+constexpr auto STDOUT_POINTER =
+  SDL_PROP_PROCESS_STDOUT_POINTER; ///< Pointer to stdout.
 
-constexpr auto STDERR_POINTER = SDL_PROP_PROCESS_STDERR_POINTER;
+constexpr auto STDERR_POINTER =
+  SDL_PROP_PROCESS_STDERR_POINTER; ///< Pointer to stderr.
 
-constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
+constexpr auto BACKGROUND_BOOLEAN =
+  SDL_PROP_PROCESS_BACKGROUND_BOOLEAN; ///< Background enabled.
 
 } // namespace prop::Process
 
@@ -44036,24 +44056,29 @@ inline PropertiesRef Surface::GetProperties() const
  */
 namespace prop::Surface {
 
-constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT;
+constexpr auto SDR_WHITE_POINT_FLOAT =
+  SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT; ///< Float for sdr white point.
 
-constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT;
+constexpr auto HDR_HEADROOM_FLOAT =
+  SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT; ///< Float for hdr headroom.
 
 constexpr auto TONEMAP_OPERATOR_STRING =
-  SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING;
+  SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING; ///< String for tonemap operator.
 
 #if SDL_VERSION_ATLEAST(3, 2, 6)
 
-constexpr auto HOTSPOT_X_NUMBER = SDL_PROP_SURFACE_HOTSPOT_X_NUMBER;
+constexpr auto HOTSPOT_X_NUMBER =
+  SDL_PROP_SURFACE_HOTSPOT_X_NUMBER; ///< Number for hotspot x.
 
-constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
+constexpr auto HOTSPOT_Y_NUMBER =
+  SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER; ///< Number for hotspot y.
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto ROTATION_FLOAT = SDL_PROP_SURFACE_ROTATION_FLOAT;
+constexpr auto ROTATION_FLOAT =
+  SDL_PROP_SURFACE_ROTATION_FLOAT; ///< Float for rotation.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -47243,13 +47268,16 @@ inline Thread CreateThreadWithProperties(PropertiesRef props)
 namespace prop::Thread::Create {
 
 constexpr auto ENTRY_FUNCTION_POINTER =
-  SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER;
+  SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER; ///< Pointer to entry function.
 
-constexpr auto NAME_STRING = SDL_PROP_THREAD_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_THREAD_CREATE_NAME_STRING; ///< String for name.
 
-constexpr auto USERDATA_POINTER = SDL_PROP_THREAD_CREATE_USERDATA_POINTER;
+constexpr auto USERDATA_POINTER =
+  SDL_PROP_THREAD_CREATE_USERDATA_POINTER; ///< Pointer to userdata.
 
-constexpr auto STACKSIZE_NUMBER = SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER;
+constexpr auto STACKSIZE_NUMBER =
+  SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER; ///< Number for stacksize.
 
 } // namespace prop::Thread::Create
 
@@ -55396,18 +55424,20 @@ inline PropertiesRef Display::GetProperties() const
  */
 namespace prop::Display {
 
-constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN;
+constexpr auto HDR_ENABLED_BOOLEAN =
+  SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN; ///< Hdr enabled enabled.
 
 constexpr auto KMSDRM_PANEL_ORIENTATION_NUMBER =
-  SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER;
+  SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER; ///< Number for kmsdrm panel
+                                                    ///< orientation.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto WAYLAND_WL_OUTPUT_POINTER =
-  SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER;
+  SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER; ///< Pointer to wayland wl output.
 
 constexpr auto WINDOWS_HMONITOR_POINTER =
-  SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER;
+  SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER; ///< Pointer to windows hmonitor.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -56328,102 +56358,141 @@ inline Window CreateWindowWithProperties(PropertiesRef props)
 namespace prop::Window::Create {
 
 constexpr auto ALWAYS_ON_TOP_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN; ///< Enable always on top.
 
-constexpr auto BORDERLESS_BOOLEAN = SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN;
+constexpr auto BORDERLESS_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN; ///< Enable borderless.
 
 #if SDL_VERSION_ATLEAST(3, 2, 18)
 
 constexpr auto CONSTRAIN_POPUP_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN; ///< Enable constrain popup.
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 18)
 
-constexpr auto FOCUSABLE_BOOLEAN = SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN;
+constexpr auto FOCUSABLE_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN; ///< Enable focusable.
 
 constexpr auto EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN; ///< Enable external
+                                                            ///< graphics
+                                                            ///< context.
 
-constexpr auto FLAGS_NUMBER = SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER;
+constexpr auto FLAGS_NUMBER =
+  SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER; ///< Number for flags.
 
-constexpr auto FULLSCREEN_BOOLEAN = SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN;
+constexpr auto FULLSCREEN_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN; ///< Enable fullscreen.
 
-constexpr auto HEIGHT_NUMBER = SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER;
+constexpr auto HEIGHT_NUMBER =
+  SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER; ///< Number for height.
 
-constexpr auto HIDDEN_BOOLEAN = SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN;
+constexpr auto HIDDEN_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN; ///< Enable hidden.
 
 constexpr auto HIGH_PIXEL_DENSITY_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN; ///< Enable high pixel
+                                                     ///< density.
 
-constexpr auto MAXIMIZED_BOOLEAN = SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN;
+constexpr auto MAXIMIZED_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN; ///< Enable maximized.
 
-constexpr auto MENU_BOOLEAN = SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN;
+constexpr auto MENU_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN; ///< Enable menu.
 
-constexpr auto METAL_BOOLEAN = SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN;
+constexpr auto METAL_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN; ///< Enable metal.
 
-constexpr auto MINIMIZED_BOOLEAN = SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN;
+constexpr auto MINIMIZED_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN; ///< Enable minimized.
 
-constexpr auto MODAL_BOOLEAN = SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN;
+constexpr auto MODAL_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN; ///< Enable modal.
 
 constexpr auto MOUSE_GRABBED_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN; ///< Enable mouse grabbed.
 
-constexpr auto OPENGL_BOOLEAN = SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN;
+constexpr auto OPENGL_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN; ///< Enable opengl.
 
-constexpr auto PARENT_POINTER = SDL_PROP_WINDOW_CREATE_PARENT_POINTER;
+constexpr auto PARENT_POINTER =
+  SDL_PROP_WINDOW_CREATE_PARENT_POINTER; ///< Pointer to parent.
 
-constexpr auto RESIZABLE_BOOLEAN = SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN;
+constexpr auto RESIZABLE_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN; ///< Enable resizable.
 
-constexpr auto TITLE_STRING = SDL_PROP_WINDOW_CREATE_TITLE_STRING;
+constexpr auto TITLE_STRING =
+  SDL_PROP_WINDOW_CREATE_TITLE_STRING; ///< String for title.
 
-constexpr auto TRANSPARENT_BOOLEAN = SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN;
+constexpr auto TRANSPARENT_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN; ///< Enable transparent.
 
-constexpr auto TOOLTIP_BOOLEAN = SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN;
+constexpr auto TOOLTIP_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN; ///< Enable tooltip.
 
-constexpr auto UTILITY_BOOLEAN = SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN;
+constexpr auto UTILITY_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN; ///< Enable utility.
 
-constexpr auto VULKAN_BOOLEAN = SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN;
+constexpr auto VULKAN_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN; ///< Enable vulkan.
 
-constexpr auto WIDTH_NUMBER = SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER;
+constexpr auto WIDTH_NUMBER =
+  SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER; ///< Number for width.
 
-constexpr auto X_NUMBER = SDL_PROP_WINDOW_CREATE_X_NUMBER;
+constexpr auto X_NUMBER = SDL_PROP_WINDOW_CREATE_X_NUMBER; ///< Number for x.
 
-constexpr auto Y_NUMBER = SDL_PROP_WINDOW_CREATE_Y_NUMBER;
+constexpr auto Y_NUMBER = SDL_PROP_WINDOW_CREATE_Y_NUMBER; ///< Number for y.
 
 constexpr auto COCOA_WINDOW_POINTER =
-  SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER;
+  SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER; ///< Pointer to cocoa window.
 
-constexpr auto COCOA_VIEW_POINTER = SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER;
+constexpr auto COCOA_VIEW_POINTER =
+  SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER; ///< Pointer to cocoa view.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto WINDOWSCENE_POINTER = SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER;
+constexpr auto WINDOWSCENE_POINTER =
+  SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER; ///< Pointer to windowscene.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN; ///< Enable
+                                                              ///< wayland
+                                                              ///< surface role
+                                                              ///< custom.
 
 constexpr auto WAYLAND_CREATE_EGL_WINDOW_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN;
+  SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN; ///< Enable wayland
+                                                            ///< create egl
+                                                            ///< window.
 
 constexpr auto WAYLAND_WL_SURFACE_POINTER =
-  SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER;
+  SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER; ///< Pointer to wayland wl
+                                                     ///< surface.
 
-constexpr auto WIN32_HWND_POINTER = SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER;
+constexpr auto WIN32_HWND_POINTER =
+  SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER; ///< Pointer to win32 hwnd.
 
 constexpr auto WIN32_PIXEL_FORMAT_HWND_POINTER =
-  SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER;
+  SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER; ///< Pointer to win32
+                                                          ///< pixel format
+                                                          ///< hwnd.
 
-constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER;
+constexpr auto X11_WINDOW_NUMBER =
+  SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER; ///< Number for x11 window.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
-  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING;
+  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING; ///< String for emscripten
+                                                      ///< canvas id.
 
 constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
-  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
+  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING; ///< String for
+                                                             ///< emscripten
+                                                             ///< keyboard
+                                                             ///< element.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -56648,50 +56717,65 @@ inline PropertiesRef Window::GetProperties() const
  */
 namespace prop::Window {
 
-constexpr auto SHAPE_POINTER = SDL_PROP_WINDOW_SHAPE_POINTER;
+constexpr auto SHAPE_POINTER =
+  SDL_PROP_WINDOW_SHAPE_POINTER; ///< Pointer to shape.
 
-constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN;
+constexpr auto HDR_ENABLED_BOOLEAN =
+  SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN; ///< Hdr enabled enabled.
 
-constexpr auto SDR_WHITE_LEVEL_FLOAT = SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT;
+constexpr auto SDR_WHITE_LEVEL_FLOAT =
+  SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT; ///< Float for sdr white level.
 
-constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT;
+constexpr auto HDR_HEADROOM_FLOAT =
+  SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT; ///< Float for hdr headroom.
 
-constexpr auto ANDROID_WINDOW_POINTER = SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER;
+constexpr auto ANDROID_WINDOW_POINTER =
+  SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER; ///< Pointer to android window.
 
 constexpr auto ANDROID_SURFACE_POINTER =
-  SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER;
+  SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER; ///< Pointer to android surface.
 
-constexpr auto UIKIT_WINDOW_POINTER = SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER;
+constexpr auto UIKIT_WINDOW_POINTER =
+  SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER; ///< Pointer to uikit window.
 
 constexpr auto UIKIT_METAL_VIEW_TAG_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER;
+  SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER; ///< Number for uikit metal view
+                                               ///< tag.
 
 constexpr auto UIKIT_OPENGL_FRAMEBUFFER_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER;
+  SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER; ///< Number for uikit opengl
+                                                   ///< framebuffer.
 
 constexpr auto UIKIT_OPENGL_RENDERBUFFER_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER;
+  SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER; ///< Number for uikit opengl
+                                                    ///< renderbuffer.
 
 constexpr auto UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER =
-  SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER;
+  SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER; ///< Number for uikit
+                                                           ///< opengl resolve
+                                                           ///< framebuffer.
 
 constexpr auto KMSDRM_DEVICE_INDEX_NUMBER =
-  SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER;
+  SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER; ///< Number for kmsdrm device
+                                              ///< index.
 
-constexpr auto KMSDRM_DRM_FD_NUMBER = SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER;
+constexpr auto KMSDRM_DRM_FD_NUMBER =
+  SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER; ///< Number for kmsdrm drm fd.
 
 constexpr auto KMSDRM_GBM_DEVICE_POINTER =
-  SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER;
+  SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER; ///< Pointer to kmsdrm gbm device.
 
-constexpr auto COCOA_WINDOW_POINTER = SDL_PROP_WINDOW_COCOA_WINDOW_POINTER;
+constexpr auto COCOA_WINDOW_POINTER =
+  SDL_PROP_WINDOW_COCOA_WINDOW_POINTER; ///< Pointer to cocoa window.
 
 constexpr auto COCOA_METAL_VIEW_TAG_NUMBER =
-  SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER;
+  SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER; ///< Number for cocoa metal view
+                                               ///< tag.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto OPENVR_OVERLAY_ID_NUMBER =
-  SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER;
+  SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER; ///< Number for openvr overlay id.
 
 #else
 
@@ -56700,59 +56784,75 @@ constexpr auto OPENVR_OVERLAY_ID_NUMBER = SDL_PROP_WINDOW_OPENVR_OVERLAY_ID;
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto VIVANTE_DISPLAY_POINTER =
-  SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER;
+  SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER; ///< Pointer to vivante display.
 
-constexpr auto VIVANTE_WINDOW_POINTER = SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER;
+constexpr auto VIVANTE_WINDOW_POINTER =
+  SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER; ///< Pointer to vivante window.
 
 constexpr auto VIVANTE_SURFACE_POINTER =
-  SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER;
+  SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER; ///< Pointer to vivante surface.
 
-constexpr auto WIN32_HWND_POINTER = SDL_PROP_WINDOW_WIN32_HWND_POINTER;
+constexpr auto WIN32_HWND_POINTER =
+  SDL_PROP_WINDOW_WIN32_HWND_POINTER; ///< Pointer to win32 hwnd.
 
-constexpr auto WIN32_HDC_POINTER = SDL_PROP_WINDOW_WIN32_HDC_POINTER;
+constexpr auto WIN32_HDC_POINTER =
+  SDL_PROP_WINDOW_WIN32_HDC_POINTER; ///< Pointer to win32 hdc.
 
-constexpr auto WIN32_INSTANCE_POINTER = SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER;
+constexpr auto WIN32_INSTANCE_POINTER =
+  SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER; ///< Pointer to win32 instance.
 
 constexpr auto WAYLAND_DISPLAY_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER; ///< Pointer to wayland display.
 
 constexpr auto WAYLAND_SURFACE_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER; ///< Pointer to wayland surface.
 
 constexpr auto WAYLAND_VIEWPORT_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER; ///< Pointer to wayland viewport.
 
 constexpr auto WAYLAND_EGL_WINDOW_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER; ///< Pointer to wayland egl
+                                              ///< window.
 
 constexpr auto WAYLAND_XDG_SURFACE_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER; ///< Pointer to wayland xdg
+                                               ///< surface.
 
 constexpr auto WAYLAND_XDG_TOPLEVEL_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER; ///< Pointer to wayland xdg
+                                                ///< toplevel.
 
 constexpr auto WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING =
-  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING;
+  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING; ///< String for
+                                                             ///< wayland xdg
+                                                             ///< toplevel
+                                                             ///< export handle.
 
 constexpr auto WAYLAND_XDG_POPUP_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER; ///< Pointer to wayland xdg popup.
 
 constexpr auto WAYLAND_XDG_POSITIONER_POINTER =
-  SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER;
+  SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER; ///< Pointer to wayland xdg
+                                                  ///< positioner.
 
-constexpr auto X11_DISPLAY_POINTER = SDL_PROP_WINDOW_X11_DISPLAY_POINTER;
+constexpr auto X11_DISPLAY_POINTER =
+  SDL_PROP_WINDOW_X11_DISPLAY_POINTER; ///< Pointer to x11 display.
 
-constexpr auto X11_SCREEN_NUMBER = SDL_PROP_WINDOW_X11_SCREEN_NUMBER;
+constexpr auto X11_SCREEN_NUMBER =
+  SDL_PROP_WINDOW_X11_SCREEN_NUMBER; ///< Number for x11 screen.
 
-constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
+constexpr auto X11_WINDOW_NUMBER =
+  SDL_PROP_WINDOW_X11_WINDOW_NUMBER; ///< Number for x11 window.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
-  SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING;
+  SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING; ///< String for emscripten canvas
+                                               ///< id.
 
 constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
-  SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
+  SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING; ///< String for emscripten
+                                                      ///< keyboard element.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -59748,21 +59848,29 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
  */
 namespace prop::FileDialog {
 
-constexpr auto FILTERS_POINTER = SDL_PROP_FILE_DIALOG_FILTERS_POINTER;
+constexpr auto FILTERS_POINTER =
+  SDL_PROP_FILE_DIALOG_FILTERS_POINTER; ///< Pointer to filters.
 
-constexpr auto NFILTERS_NUMBER = SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER;
+constexpr auto NFILTERS_NUMBER =
+  SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER; ///< Number of filters.
 
-constexpr auto WINDOW_POINTER = SDL_PROP_FILE_DIALOG_WINDOW_POINTER;
+constexpr auto WINDOW_POINTER =
+  SDL_PROP_FILE_DIALOG_WINDOW_POINTER; ///< Pointer to window.
 
-constexpr auto LOCATION_STRING = SDL_PROP_FILE_DIALOG_LOCATION_STRING;
+constexpr auto LOCATION_STRING =
+  SDL_PROP_FILE_DIALOG_LOCATION_STRING; ///< String for location.
 
-constexpr auto MANY_BOOLEAN = SDL_PROP_FILE_DIALOG_MANY_BOOLEAN;
+constexpr auto MANY_BOOLEAN =
+  SDL_PROP_FILE_DIALOG_MANY_BOOLEAN; ///< Many enabled.
 
-constexpr auto TITLE_STRING = SDL_PROP_FILE_DIALOG_TITLE_STRING;
+constexpr auto TITLE_STRING =
+  SDL_PROP_FILE_DIALOG_TITLE_STRING; ///< String for title.
 
-constexpr auto ACCEPT_STRING = SDL_PROP_FILE_DIALOG_ACCEPT_STRING;
+constexpr auto ACCEPT_STRING =
+  SDL_PROP_FILE_DIALOG_ACCEPT_STRING; ///< String for accept.
 
-constexpr auto CANCEL_STRING = SDL_PROP_FILE_DIALOG_CANCEL_STRING;
+constexpr auto CANCEL_STRING =
+  SDL_PROP_FILE_DIALOG_CANCEL_STRING; ///< String for cancel.
 
 } // namespace prop::FileDialog
 
@@ -66675,87 +66783,110 @@ inline GPUDevice CreateGPUDeviceWithProperties(PropertiesRef props)
  */
 namespace prop::GPUDevice::Create {
 
-constexpr auto DEBUGMODE_BOOLEAN = SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN;
+constexpr auto DEBUGMODE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN; ///< Enable debugmode.
 
 constexpr auto PREFERLOWPOWER_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN; ///< Enable preferlowpower.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto VERBOSE_BOOLEAN = SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN;
+constexpr auto VERBOSE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN; ///< Enable verbose.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING; ///< String for name.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto FEATURE_CLIP_DISTANCE_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN; ///< Enable feature
+                                                            ///< clip distance.
 
 constexpr auto FEATURE_DEPTH_CLAMPING_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN; ///< Enable feature
+                                                             ///< depth
+                                                             ///< clamping.
 
 constexpr auto FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN; ///< Enable feature indirect draw first instance.
 
 constexpr auto FEATURE_ANISOTROPY_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN; ///< Enable feature
+                                                         ///< anisotropy.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto SHADERS_PRIVATE_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN; ///< Enable shaders
+                                                      ///< private.
 
 constexpr auto SHADERS_SPIRV_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN; ///< Enable shaders spirv.
 
 constexpr auto SHADERS_DXBC_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN; ///< Enable shaders dxbc.
 
 constexpr auto SHADERS_DXIL_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN; ///< Enable shaders dxil.
 
 constexpr auto SHADERS_MSL_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN; ///< Enable shaders msl.
 
 constexpr auto SHADERS_METALLIB_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN; ///< Enable shaders
+                                                       ///< metallib.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN; ///< Enable
+                                                                       ///< d3d12
+                                                                       ///< allow
+                                                                       ///< fewer
+                                                                       ///< resource
+                                                                       ///< slots.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto D3D12_SEMANTIC_NAME_STRING =
-  SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING; ///< String for d3d12
+                                                         ///< semantic name.
 
 #if SDL_VERSION_ATLEAST(3, 4, 2)
 
 constexpr auto D3D12_AGILITY_SDK_VERSION_NUMBER =
-  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER;
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER; ///< Number for
+                                                               ///< d3d12
+                                                               ///< agility sdk
+                                                               ///< version.
 
 constexpr auto D3D12_AGILITY_SDK_PATH_STRING =
-  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING;
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING; ///< String for
+                                                            ///< d3d12 agility
+                                                            ///< sdk path.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 2)
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN; ///< Enable vulkan require hardware acceleration.
 
 constexpr auto VULKAN_OPTIONS_POINTER =
-  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER; ///< Pointer to vulkan
+                                                     ///< options.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 #if SDL_VERSION_ATLEAST(3, 4, 2)
 
 constexpr auto METAL_ALLOW_MACFAMILY1_BOOLEAN =
-  SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN;
+  SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN; ///< Enable metal
+                                                             ///< allow
+                                                             ///< macfamily1.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 2)
 
@@ -66993,14 +67124,17 @@ inline PropertiesRef GPUDevice::GetProperties()
  */
 namespace prop::GPUDevice {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_DEVICE_NAME_STRING; ///< String for name.
 
-constexpr auto DRIVER_NAME_STRING = SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING;
+constexpr auto DRIVER_NAME_STRING =
+  SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING; ///< String for driver name.
 
 constexpr auto DRIVER_VERSION_STRING =
-  SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING;
+  SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING; ///< String for driver version.
 
-constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
+constexpr auto DRIVER_INFO_STRING =
+  SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING; ///< String for driver info.
 
 } // namespace prop::GPUDevice
 
@@ -67079,7 +67213,8 @@ inline GPUComputePipeline::GPUComputePipeline(
  */
 namespace prop::GPUComputePipeline::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUComputePipeline::Create
 
@@ -67132,7 +67267,8 @@ inline GPUGraphicsPipeline::GPUGraphicsPipeline(
  */
 namespace prop::GPUGraphicsPipeline::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUGraphicsPipeline::Create
 
@@ -67182,7 +67318,8 @@ inline GPUSampler::GPUSampler(GPUDeviceRef device,
  */
 namespace prop::GPUSampler::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUSampler::Create
 
@@ -67281,7 +67418,8 @@ inline GPUShader::GPUShader(GPUDeviceRef device,
  */
 namespace prop::GPUShader::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_SHADER_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUShader::Create
 
@@ -67369,28 +67507,31 @@ inline GPUTexture::GPUTexture(GPUDeviceRef device,
 namespace prop::GPUTexture::Create {
 
 constexpr auto D3D12_CLEAR_R_FLOAT =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT; ///< Float for d3d12 clear r.
 
 constexpr auto D3D12_CLEAR_G_FLOAT =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT; ///< Float for d3d12 clear g.
 
 constexpr auto D3D12_CLEAR_B_FLOAT =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT; ///< Float for d3d12 clear b.
 
 constexpr auto D3D12_CLEAR_A_FLOAT =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT; ///< Float for d3d12 clear a.
 
 constexpr auto D3D12_CLEAR_DEPTH_FLOAT =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT; ///< Float for d3d12
+                                                       ///< clear depth.
 
 #if SDL_VERSION_ATLEAST(3, 2, 12)
 
 constexpr auto D3D12_CLEAR_STENCIL_NUMBER =
-  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER;
+  SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER; ///< Number for d3d12
+                                                          ///< clear stencil.
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 12)
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUTexture::Create
 
@@ -67461,7 +67602,8 @@ inline GPUBuffer::GPUBuffer(GPUDeviceRef device,
  */
 namespace prop::GPUBuffer::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUBuffer::Create
 
@@ -67520,7 +67662,8 @@ inline GPUTransferBuffer::GPUTransferBuffer(
  */
 namespace prop::GPUTransferBuffer::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING; ///< String for name.
 
 } // namespace prop::GPUTransferBuffer::Create
 
@@ -71789,16 +71932,20 @@ inline PropertiesRef Joystick::GetProperties()
  */
 namespace prop::JoystickCap {
 
-constexpr auto MONO_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_MONO_LED_BOOLEAN;
+constexpr auto MONO_LED_BOOLEAN =
+  SDL_PROP_JOYSTICK_CAP_MONO_LED_BOOLEAN; ///< Mono led enabled.
 
-constexpr auto RGB_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_RGB_LED_BOOLEAN;
+constexpr auto RGB_LED_BOOLEAN =
+  SDL_PROP_JOYSTICK_CAP_RGB_LED_BOOLEAN; ///< Rgb led enabled.
 
-constexpr auto PLAYER_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_PLAYER_LED_BOOLEAN;
+constexpr auto PLAYER_LED_BOOLEAN =
+  SDL_PROP_JOYSTICK_CAP_PLAYER_LED_BOOLEAN; ///< Player led enabled.
 
-constexpr auto RUMBLE_BOOLEAN = SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN;
+constexpr auto RUMBLE_BOOLEAN =
+  SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN; ///< Rumble enabled.
 
 constexpr auto TRIGGER_RUMBLE_BOOLEAN =
-  SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN;
+  SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN; ///< Trigger rumble enabled.
 
 } // namespace prop::JoystickCap
 
@@ -72915,12 +73062,15 @@ constexpr auto TYPE_NUMBER = SDL_PROP_TEXTINPUT_TYPE_NUMBER;
  */
 constexpr auto CAPITALIZATION_NUMBER = SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER;
 
-constexpr auto AUTOCORRECT_BOOLEAN = SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN;
+constexpr auto AUTOCORRECT_BOOLEAN =
+  SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN; ///< Autocorrect enabled.
 
-constexpr auto MULTILINE_BOOLEAN = SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN;
+constexpr auto MULTILINE_BOOLEAN =
+  SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN; ///< Multiline enabled.
 
 constexpr auto ANDROID_INPUTTYPE_NUMBER =
-  SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER;
+  SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER; ///< Number for android
+                                               ///< inputtype.
 
 } // namespace prop::TextInput
 
@@ -76384,16 +76534,20 @@ inline PropertiesRef Gamepad::GetProperties()
  */
 namespace prop::GamepadCap {
 
-constexpr auto MONO_LED_BOOLEAN = SDL_PROP_GAMEPAD_CAP_MONO_LED_BOOLEAN;
+constexpr auto MONO_LED_BOOLEAN =
+  SDL_PROP_GAMEPAD_CAP_MONO_LED_BOOLEAN; ///< Mono led enabled.
 
-constexpr auto RGB_LED_BOOLEAN = SDL_PROP_GAMEPAD_CAP_RGB_LED_BOOLEAN;
+constexpr auto RGB_LED_BOOLEAN =
+  SDL_PROP_GAMEPAD_CAP_RGB_LED_BOOLEAN; ///< Rgb led enabled.
 
-constexpr auto PLAYER_LED_BOOLEAN = SDL_PROP_GAMEPAD_CAP_PLAYER_LED_BOOLEAN;
+constexpr auto PLAYER_LED_BOOLEAN =
+  SDL_PROP_GAMEPAD_CAP_PLAYER_LED_BOOLEAN; ///< Player led enabled.
 
-constexpr auto RUMBLE_BOOLEAN = SDL_PROP_GAMEPAD_CAP_RUMBLE_BOOLEAN;
+constexpr auto RUMBLE_BOOLEAN =
+  SDL_PROP_GAMEPAD_CAP_RUMBLE_BOOLEAN; ///< Rumble enabled.
 
 constexpr auto TRIGGER_RUMBLE_BOOLEAN =
-  SDL_PROP_GAMEPAD_CAP_TRIGGER_RUMBLE_BOOLEAN;
+  SDL_PROP_GAMEPAD_CAP_TRIGGER_RUMBLE_BOOLEAN; ///< Trigger rumble enabled.
 
 } // namespace prop::GamepadCap
 
@@ -79938,19 +80092,26 @@ inline void SetAppMetadataProperty(StringParam name, StringParam value)
  */
 namespace prop::appMetaData {
 
-constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_APP_METADATA_NAME_STRING; ///< String for name.
 
-constexpr auto VERSION_STRING = SDL_PROP_APP_METADATA_VERSION_STRING;
+constexpr auto VERSION_STRING =
+  SDL_PROP_APP_METADATA_VERSION_STRING; ///< String for version.
 
-constexpr auto IDENTIFIER_STRING = SDL_PROP_APP_METADATA_IDENTIFIER_STRING;
+constexpr auto IDENTIFIER_STRING =
+  SDL_PROP_APP_METADATA_IDENTIFIER_STRING; ///< String for identifier.
 
-constexpr auto CREATOR_STRING = SDL_PROP_APP_METADATA_CREATOR_STRING;
+constexpr auto CREATOR_STRING =
+  SDL_PROP_APP_METADATA_CREATOR_STRING; ///< String for creator.
 
-constexpr auto COPYRIGHT_STRING = SDL_PROP_APP_METADATA_COPYRIGHT_STRING;
+constexpr auto COPYRIGHT_STRING =
+  SDL_PROP_APP_METADATA_COPYRIGHT_STRING; ///< String for copyright.
 
-constexpr auto URL_STRING = SDL_PROP_APP_METADATA_URL_STRING;
+constexpr auto URL_STRING =
+  SDL_PROP_APP_METADATA_URL_STRING; ///< String for url.
 
-constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
+constexpr auto TYPE_STRING =
+  SDL_PROP_APP_METADATA_TYPE_STRING; ///< String for type.
 
 } // namespace prop::appMetaData
 
@@ -84035,50 +84196,70 @@ inline Renderer CreateRendererWithProperties(PropertiesRef props)
  */
 namespace prop::Renderer::Create {
 
-constexpr auto NAME_STRING = SDL_PROP_RENDERER_CREATE_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_RENDERER_CREATE_NAME_STRING; ///< String for name.
 
-constexpr auto WINDOW_POINTER = SDL_PROP_RENDERER_CREATE_WINDOW_POINTER;
+constexpr auto WINDOW_POINTER =
+  SDL_PROP_RENDERER_CREATE_WINDOW_POINTER; ///< Pointer to window.
 
-constexpr auto SURFACE_POINTER = SDL_PROP_RENDERER_CREATE_SURFACE_POINTER;
+constexpr auto SURFACE_POINTER =
+  SDL_PROP_RENDERER_CREATE_SURFACE_POINTER; ///< Pointer to surface.
 
 constexpr auto OUTPUT_COLORSPACE_NUMBER =
-  SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER;
+  SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER; ///< Number for output
+                                                     ///< colorspace.
 
 constexpr auto PRESENT_VSYNC_NUMBER =
-  SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER;
+  SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER; ///< Number for present vsync.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER;
+constexpr auto GPU_DEVICE_POINTER =
+  SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER; ///< Pointer to gpu device.
 
 constexpr auto GPU_SHADERS_SPIRV_BOOLEAN =
-  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN;
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN; ///< Enable gpu shaders
+                                                      ///< spirv.
 
 constexpr auto GPU_SHADERS_DXIL_BOOLEAN =
-  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN;
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN; ///< Enable gpu shaders
+                                                     ///< dxil.
 
 constexpr auto GPU_SHADERS_MSL_BOOLEAN =
-  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN;
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN; ///< Enable gpu shaders msl.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto VULKAN_INSTANCE_POINTER =
-  SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER;
+  SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER; ///< Pointer to vulkan
+                                                    ///< instance.
 
 constexpr auto VULKAN_SURFACE_NUMBER =
-  SDL_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER;
+  SDL_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER; ///< Vulkan surface number.
 
 constexpr auto VULKAN_PHYSICAL_DEVICE_POINTER =
-  SDL_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER;
+  SDL_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER; ///< Pointer to
+                                                           ///< vulkan physical
+                                                           ///< device.
 
 constexpr auto VULKAN_DEVICE_POINTER =
-  SDL_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER;
+  SDL_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER; ///< Pointer to vulkan device.
 
 constexpr auto VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER =
-  SDL_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER;
+  SDL_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER; ///< Vulkan
+                                                                      ///< graphics
+                                                                      ///< queue
+                                                                      ///< family
+                                                                      ///< index
+                                                                      ///< number.
 
 constexpr auto VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER =
-  SDL_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER;
+  SDL_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER; ///< Vulkan
+                                                                     ///< present
+                                                                     ///< queue
+                                                                     ///< family
+                                                                     ///< index
+                                                                     ///< number.
 
 } // namespace prop::Renderer::Create
 
@@ -84322,71 +84503,94 @@ inline PropertiesRef Renderer::GetProperties() const
  */
 namespace prop::Renderer {
 
-constexpr auto NAME_STRING = SDL_PROP_RENDERER_NAME_STRING;
+constexpr auto NAME_STRING =
+  SDL_PROP_RENDERER_NAME_STRING; ///< String for name.
 
-constexpr auto WINDOW_POINTER = SDL_PROP_RENDERER_WINDOW_POINTER;
+constexpr auto WINDOW_POINTER =
+  SDL_PROP_RENDERER_WINDOW_POINTER; ///< Pointer to window.
 
-constexpr auto SURFACE_POINTER = SDL_PROP_RENDERER_SURFACE_POINTER;
+constexpr auto SURFACE_POINTER =
+  SDL_PROP_RENDERER_SURFACE_POINTER; ///< Pointer to surface.
 
-constexpr auto VSYNC_NUMBER = SDL_PROP_RENDERER_VSYNC_NUMBER;
+constexpr auto VSYNC_NUMBER =
+  SDL_PROP_RENDERER_VSYNC_NUMBER; ///< Number for vsync.
 
 constexpr auto MAX_TEXTURE_SIZE_NUMBER =
-  SDL_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER;
+  SDL_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER; ///< Number for max texture size.
 
 constexpr auto TEXTURE_FORMATS_POINTER =
-  SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER;
+  SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER; ///< Pointer to texture formats.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto TEXTURE_WRAPPING_BOOLEAN =
-  SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN;
+  SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN; ///< Texture wrapping enabled.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto OUTPUT_COLORSPACE_NUMBER =
-  SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER;
+  SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER; ///< Number for output colorspace.
 
-constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_RENDERER_HDR_ENABLED_BOOLEAN;
+constexpr auto HDR_ENABLED_BOOLEAN =
+  SDL_PROP_RENDERER_HDR_ENABLED_BOOLEAN; ///< Hdr enabled enabled.
 
-constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_RENDERER_SDR_WHITE_POINT_FLOAT;
+constexpr auto SDR_WHITE_POINT_FLOAT =
+  SDL_PROP_RENDERER_SDR_WHITE_POINT_FLOAT; ///< Float for sdr white point.
 
-constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_RENDERER_HDR_HEADROOM_FLOAT;
+constexpr auto HDR_HEADROOM_FLOAT =
+  SDL_PROP_RENDERER_HDR_HEADROOM_FLOAT; ///< Float for hdr headroom.
 
-constexpr auto D3D9_DEVICE_POINTER = SDL_PROP_RENDERER_D3D9_DEVICE_POINTER;
+constexpr auto D3D9_DEVICE_POINTER =
+  SDL_PROP_RENDERER_D3D9_DEVICE_POINTER; ///< Pointer to d3d9 device.
 
-constexpr auto D3D11_DEVICE_POINTER = SDL_PROP_RENDERER_D3D11_DEVICE_POINTER;
+constexpr auto D3D11_DEVICE_POINTER =
+  SDL_PROP_RENDERER_D3D11_DEVICE_POINTER; ///< Pointer to d3d11 device.
 
 constexpr auto D3D11_SWAPCHAIN_POINTER =
-  SDL_PROP_RENDERER_D3D11_SWAPCHAIN_POINTER;
+  SDL_PROP_RENDERER_D3D11_SWAPCHAIN_POINTER; ///< Pointer to d3d11 swapchain.
 
-constexpr auto D3D12_DEVICE_POINTER = SDL_PROP_RENDERER_D3D12_DEVICE_POINTER;
+constexpr auto D3D12_DEVICE_POINTER =
+  SDL_PROP_RENDERER_D3D12_DEVICE_POINTER; ///< Pointer to d3d12 device.
 
 constexpr auto D3D12_SWAPCHAIN_POINTER =
-  SDL_PROP_RENDERER_D3D12_SWAPCHAIN_POINTER;
+  SDL_PROP_RENDERER_D3D12_SWAPCHAIN_POINTER; ///< Pointer to d3d12 swapchain.
 
 constexpr auto D3D12_COMMAND_QUEUE_POINTER =
-  SDL_PROP_RENDERER_D3D12_COMMAND_QUEUE_POINTER;
+  SDL_PROP_RENDERER_D3D12_COMMAND_QUEUE_POINTER; ///< Pointer to d3d12 command
+                                                 ///< queue.
 
 constexpr auto VULKAN_INSTANCE_POINTER =
-  SDL_PROP_RENDERER_VULKAN_INSTANCE_POINTER;
+  SDL_PROP_RENDERER_VULKAN_INSTANCE_POINTER; ///< Pointer to vulkan instance.
 
-constexpr auto VULKAN_SURFACE_NUMBER = SDL_PROP_RENDERER_VULKAN_SURFACE_NUMBER;
+constexpr auto VULKAN_SURFACE_NUMBER =
+  SDL_PROP_RENDERER_VULKAN_SURFACE_NUMBER; ///< Vulkan surface number.
 
 constexpr auto VULKAN_PHYSICAL_DEVICE_POINTER =
-  SDL_PROP_RENDERER_VULKAN_PHYSICAL_DEVICE_POINTER;
+  SDL_PROP_RENDERER_VULKAN_PHYSICAL_DEVICE_POINTER; ///< Pointer to vulkan
+                                                    ///< physical device.
 
-constexpr auto VULKAN_DEVICE_POINTER = SDL_PROP_RENDERER_VULKAN_DEVICE_POINTER;
+constexpr auto VULKAN_DEVICE_POINTER =
+  SDL_PROP_RENDERER_VULKAN_DEVICE_POINTER; ///< Pointer to vulkan device.
 
 constexpr auto VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER =
-  SDL_PROP_RENDERER_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER;
+  SDL_PROP_RENDERER_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER; ///< Number for
+                                                               ///< vulkan
+                                                               ///< graphics
+                                                               ///< queue family
+                                                               ///< index.
 
 constexpr auto VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER =
-  SDL_PROP_RENDERER_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER;
+  SDL_PROP_RENDERER_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER; ///< Number for
+                                                              ///< vulkan
+                                                              ///< present queue
+                                                              ///< family index.
 
 constexpr auto VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER =
-  SDL_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER;
+  SDL_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER; ///< Vulkan swapchain
+                                                         ///< image count.
 
-constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
+constexpr auto GPU_DEVICE_POINTER =
+  SDL_PROP_RENDERER_GPU_DEVICE_POINTER; ///< Pointer to gpu device.
 
 } // namespace prop::Renderer
 
@@ -84742,91 +84946,112 @@ inline Texture Renderer::CreateTextureWithProperties(PropertiesRef props)
  */
 namespace prop::Texture::Create {
 
-constexpr auto COLORSPACE_NUMBER = SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER;
+constexpr auto COLORSPACE_NUMBER =
+  SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER; ///< Number for colorspace.
 
-constexpr auto FORMAT_NUMBER = SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER;
+constexpr auto FORMAT_NUMBER =
+  SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER; ///< Number for format.
 
-constexpr auto ACCESS_NUMBER = SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER;
+constexpr auto ACCESS_NUMBER =
+  SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER; ///< Number for access.
 
-constexpr auto WIDTH_NUMBER = SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER;
+constexpr auto WIDTH_NUMBER =
+  SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER; ///< Number for width.
 
-constexpr auto HEIGHT_NUMBER = SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER;
+constexpr auto HEIGHT_NUMBER =
+  SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER; ///< Number for height.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto PALETTE_POINTER = SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER;
+constexpr auto PALETTE_POINTER =
+  SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER; ///< Pointer to palette.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto SDR_WHITE_POINT_FLOAT =
-  SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT;
+  SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT; ///< Float for sdr white point.
 
-constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT;
+constexpr auto HDR_HEADROOM_FLOAT =
+  SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT; ///< Float for hdr headroom.
 
 constexpr auto D3D11_TEXTURE_POINTER =
-  SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER;
+  SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER; ///< Pointer to d3d11 texture.
 
 constexpr auto D3D11_TEXTURE_U_POINTER =
-  SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER;
+  SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER; ///< Pointer to d3d11 texture
+                                                   ///< u.
 
 constexpr auto D3D11_TEXTURE_V_POINTER =
-  SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER;
+  SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER; ///< Pointer to d3d11 texture
+                                                   ///< v.
 
 constexpr auto D3D12_TEXTURE_POINTER =
-  SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER;
+  SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER; ///< Pointer to d3d12 texture.
 
 constexpr auto D3D12_TEXTURE_U_POINTER =
-  SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER;
+  SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER; ///< Pointer to d3d12 texture
+                                                   ///< u.
 
 constexpr auto D3D12_TEXTURE_V_POINTER =
-  SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER;
+  SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER; ///< Pointer to d3d12 texture
+                                                   ///< v.
 
 constexpr auto METAL_PIXELBUFFER_POINTER =
-  SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER;
+  SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER; ///< Pointer to metal
+                                                     ///< pixelbuffer.
 
 constexpr auto OPENGL_TEXTURE_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER;
+  SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER; ///< Opengl texture number.
 
 constexpr auto OPENGL_TEXTURE_UV_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER;
+  SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER; ///< Opengl
+                                                    ///< texture uv number.
 
 constexpr auto OPENGL_TEXTURE_U_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER;
+  SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER; ///< Opengl
+                                                   ///< texture u number.
 
 constexpr auto OPENGL_TEXTURE_V_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER;
+  SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER; ///< Opengl
+                                                   ///< texture v number.
 
 constexpr auto OPENGLES2_TEXTURE_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER;
+  SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER; ///< Opengles2
+                                                    ///< texture number.
 
 constexpr auto OPENGLES2_TEXTURE_UV_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER;
+  SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER; ///< Opengles2
+                                                       ///< texture uv number.
 
 constexpr auto OPENGLES2_TEXTURE_U_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER;
+  SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER; ///< Opengles2
+                                                      ///< texture u number.
 
 constexpr auto OPENGLES2_TEXTURE_V_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER;
+  SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER; ///< Opengles2
+                                                      ///< texture v number.
 
 constexpr auto VULKAN_TEXTURE_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER;
+  SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER; ///< Vulkans
+                                                 ///< texture number.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto VULKAN_LAYOUT_NUMBER =
-  SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER;
+  SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER; ///< Number for vulkan layout.
 
 constexpr auto GPU_TEXTURE_POINTER =
-  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER;
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER; ///< Pointer to gpu texture.
 
 constexpr auto GPU_TEXTURE_UV_POINTER =
-  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER;
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER; ///< Pointer to gpu texture
+                                                  ///< uv.
 
 constexpr auto GPU_TEXTURE_U_POINTER =
-  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER;
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER; ///< Pointer to gpu texture u.
 
 constexpr auto GPU_TEXTURE_V_POINTER =
-  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER;
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER; ///< Pointer to gpu texture v.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -84949,80 +85174,102 @@ inline PropertiesRef Texture::GetProperties() const
  */
 namespace prop::Texture {
 
-constexpr auto COLORSPACE_NUMBER = SDL_PROP_TEXTURE_COLORSPACE_NUMBER;
+constexpr auto COLORSPACE_NUMBER =
+  SDL_PROP_TEXTURE_COLORSPACE_NUMBER; ///< Number for colorspace.
 
-constexpr auto FORMAT_NUMBER = SDL_PROP_TEXTURE_FORMAT_NUMBER;
+constexpr auto FORMAT_NUMBER =
+  SDL_PROP_TEXTURE_FORMAT_NUMBER; ///< Number for format.
 
-constexpr auto ACCESS_NUMBER = SDL_PROP_TEXTURE_ACCESS_NUMBER;
+constexpr auto ACCESS_NUMBER =
+  SDL_PROP_TEXTURE_ACCESS_NUMBER; ///< Number for access.
 
-constexpr auto WIDTH_NUMBER = SDL_PROP_TEXTURE_WIDTH_NUMBER;
+constexpr auto WIDTH_NUMBER =
+  SDL_PROP_TEXTURE_WIDTH_NUMBER; ///< Number for width.
 
-constexpr auto HEIGHT_NUMBER = SDL_PROP_TEXTURE_HEIGHT_NUMBER;
+constexpr auto HEIGHT_NUMBER =
+  SDL_PROP_TEXTURE_HEIGHT_NUMBER; ///< Number for height.
 
-constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT;
+constexpr auto SDR_WHITE_POINT_FLOAT =
+  SDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT; ///< Float for sdr white point.
 
-constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT;
+constexpr auto HDR_HEADROOM_FLOAT =
+  SDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT; ///< Float for hdr headroom.
 
-constexpr auto D3D11_TEXTURE_POINTER = SDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER;
+constexpr auto D3D11_TEXTURE_POINTER =
+  SDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER; ///< Pointer to d3d11 texture.
 
 constexpr auto D3D11_TEXTURE_U_POINTER =
-  SDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER;
+  SDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER; ///< Pointer to d3d11 texture u.
 
 constexpr auto D3D11_TEXTURE_V_POINTER =
-  SDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER;
+  SDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER; ///< Pointer to d3d11 texture v.
 
-constexpr auto D3D12_TEXTURE_POINTER = SDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER;
+constexpr auto D3D12_TEXTURE_POINTER =
+  SDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER; ///< Pointer to d3d12 texture.
 
 constexpr auto D3D12_TEXTURE_U_POINTER =
-  SDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER;
+  SDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER; ///< Pointer to d3d12 texture u.
 
 constexpr auto D3D12_TEXTURE_V_POINTER =
-  SDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER;
+  SDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER; ///< Pointer to d3d12 texture v.
 
-constexpr auto OPENGL_TEXTURE_NUMBER = SDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER;
+constexpr auto OPENGL_TEXTURE_NUMBER =
+  SDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER; ///< Opengl texture number.
 
 constexpr auto OPENGL_TEXTURE_UV_NUMBER =
-  SDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER;
+  SDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER; ///< Opengl texture uv number.
 
 constexpr auto OPENGL_TEXTURE_U_NUMBER =
-  SDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER;
+  SDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER; ///< Opengl texture u number.
 
 constexpr auto OPENGL_TEXTURE_V_NUMBER =
-  SDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER;
+  SDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER; ///< Opengl texture v number.
 
 constexpr auto OPENGL_TEXTURE_TARGET_NUMBER =
-  SDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER;
+  SDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER; ///< Opengl texture
+                                                 ///< target number.
 
-constexpr auto OPENGL_TEX_W_FLOAT = SDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT;
+constexpr auto OPENGL_TEX_W_FLOAT =
+  SDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT; ///< Float for opengl tex w.
 
-constexpr auto OPENGL_TEX_H_FLOAT = SDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT;
+constexpr auto OPENGL_TEX_H_FLOAT =
+  SDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT; ///< Float for opengl tex h.
 
 constexpr auto OPENGLES2_TEXTURE_NUMBER =
-  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER;
+  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER; ///< Opengles2 texture number.
 
 constexpr auto OPENGLES2_TEXTURE_UV_NUMBER =
-  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER;
+  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER; ///< Opengles2
+                                                ///< texture uv number.
 
 constexpr auto OPENGLES2_TEXTURE_U_NUMBER =
-  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER;
+  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER; ///< Opengles2 texture
+                                               ///< u number.
 
 constexpr auto OPENGLES2_TEXTURE_V_NUMBER =
-  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER;
+  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER; ///< Opengles2 texture
+                                               ///< v number.
 
 constexpr auto OPENGLES2_TEXTURE_TARGET_NUMBER =
-  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER;
+  SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER; ///< Opengles2
+                                                    ///< texture target number.
 
-constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
+constexpr auto VULKAN_TEXTURE_NUMBER =
+  SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER; ///< Vulkan texture number.
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto GPU_TEXTURE_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER;
+constexpr auto GPU_TEXTURE_POINTER =
+  SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER; ///< Pointer to gpu texture.
 
-constexpr auto GPU_TEXTURE_UV_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER;
+constexpr auto GPU_TEXTURE_UV_POINTER =
+  SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER; ///< Pointer to gpu texture uv.
 
-constexpr auto GPU_TEXTURE_U_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER;
+constexpr auto GPU_TEXTURE_U_POINTER =
+  SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER; ///< Pointer to gpu texture u.
 
-constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
+constexpr auto GPU_TEXTURE_V_POINTER =
+  SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER; ///< Pointer to gpu texture v.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -93789,7 +94036,7 @@ inline PropertiesRef Mixer::GetProperties()
  */
 namespace prop::Mixer {
 
-constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER;
+constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER; /// Device number.
 
 } // namespace prop::Mixer
 
@@ -94187,19 +94434,25 @@ inline Audio LoadAudioWithProperties(PropertiesRef props)
  */
 namespace prop::Audio {
 
-constexpr auto LOAD_IOSTREAM_POINTER = MIX_PROP_AUDIO_LOAD_IOSTREAM_POINTER;
+constexpr auto LOAD_IOSTREAM_POINTER =
+  MIX_PROP_AUDIO_LOAD_IOSTREAM_POINTER; ///< Pointer to load iostream.
 
-constexpr auto LOAD_CLOSEIO_BOOLEAN = MIX_PROP_AUDIO_LOAD_CLOSEIO_BOOLEAN;
+constexpr auto LOAD_CLOSEIO_BOOLEAN =
+  MIX_PROP_AUDIO_LOAD_CLOSEIO_BOOLEAN; ///< Load closeio enabled.
 
-constexpr auto LOAD_PREDECODE_BOOLEAN = MIX_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN;
+constexpr auto LOAD_PREDECODE_BOOLEAN =
+  MIX_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN; ///< Load predecode enabled.
 
 constexpr auto LOAD_PREFERRED_MIXER_POINTER =
-  MIX_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER;
+  MIX_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER; ///< Pointer to load preferred
+                                               ///< mixer.
 
 constexpr auto LOAD_SKIP_METADATA_TAGS_BOOLEAN =
-  MIX_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN;
+  MIX_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN; ///< Enable load skip metadata
+                                                  ///< tags.
 
-constexpr auto DECODER_STRING = MIX_PROP_AUDIO_DECODER_STRING;
+constexpr auto DECODER_STRING =
+  MIX_PROP_AUDIO_DECODER_STRING; ///< String for decoder.
 
 } // namespace prop::Audio
 
@@ -94465,25 +94718,32 @@ inline PropertiesRef Audio::GetProperties()
  */
 namespace prop::Audio::Metadata {
 
-constexpr auto TITLE_STRING = MIX_PROP_METADATA_TITLE_STRING;
+constexpr auto TITLE_STRING =
+  MIX_PROP_METADATA_TITLE_STRING; ///< String for title.
 
-constexpr auto ARTIST_STRING = MIX_PROP_METADATA_ARTIST_STRING;
+constexpr auto ARTIST_STRING =
+  MIX_PROP_METADATA_ARTIST_STRING; ///< String for artist.
 
-constexpr auto ALBUM_STRING = MIX_PROP_METADATA_ALBUM_STRING;
+constexpr auto ALBUM_STRING =
+  MIX_PROP_METADATA_ALBUM_STRING; ///< String for album.
 
-constexpr auto COPYRIGHT_STRING = MIX_PROP_METADATA_COPYRIGHT_STRING;
+constexpr auto COPYRIGHT_STRING =
+  MIX_PROP_METADATA_COPYRIGHT_STRING; ///< String for copyright.
 
-constexpr auto TRACK_NUMBER = MIX_PROP_METADATA_TRACK_NUMBER;
+constexpr auto TRACK_NUMBER =
+  MIX_PROP_METADATA_TRACK_NUMBER; ///< Number for track.
 
-constexpr auto TOTAL_TRACKS_NUMBER = MIX_PROP_METADATA_TOTAL_TRACKS_NUMBER;
+constexpr auto TOTAL_TRACKS_NUMBER =
+  MIX_PROP_METADATA_TOTAL_TRACKS_NUMBER; ///< Number for total tracks.
 
-constexpr auto YEAR_NUMBER = MIX_PROP_METADATA_YEAR_NUMBER;
+constexpr auto YEAR_NUMBER =
+  MIX_PROP_METADATA_YEAR_NUMBER; ///< Number for year.
 
 constexpr auto DURATION_FRAMES_NUMBER =
-  MIX_PROP_METADATA_DURATION_FRAMES_NUMBER;
+  MIX_PROP_METADATA_DURATION_FRAMES_NUMBER; ///< Number for duration frames.
 
 constexpr auto DURATION_INFINITE_BOOLEAN =
-  MIX_PROP_METADATA_DURATION_INFINITE_BOOLEAN;
+  MIX_PROP_METADATA_DURATION_INFINITE_BOOLEAN; ///< Enable duration infinite.
 
 } // namespace prop::Audio::Metadata
 
@@ -95580,38 +95840,47 @@ inline void Track::Play(PropertiesRef options)
  */
 namespace prop::Play {
 
-constexpr auto LOOPS_NUMBER = MIX_PROP_PLAY_LOOPS_NUMBER;
+constexpr auto LOOPS_NUMBER = MIX_PROP_PLAY_LOOPS_NUMBER; ///< Number for loops.
 
-constexpr auto MAX_FRAME_NUMBER = MIX_PROP_PLAY_MAX_FRAME_NUMBER;
+constexpr auto MAX_FRAME_NUMBER =
+  MIX_PROP_PLAY_MAX_FRAME_NUMBER; ///< Number for max frame.
 
-constexpr auto MAX_MILLISECONDS_NUMBER = MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER;
+constexpr auto MAX_MILLISECONDS_NUMBER =
+  MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER; ///< Number for max milliseconds.
 
-constexpr auto START_FRAME_NUMBER = MIX_PROP_PLAY_START_FRAME_NUMBER;
+constexpr auto START_FRAME_NUMBER =
+  MIX_PROP_PLAY_START_FRAME_NUMBER; ///< Number for start frame.
 
 constexpr auto START_MILLISECOND_NUMBER =
-  MIX_PROP_PLAY_START_MILLISECOND_NUMBER;
+  MIX_PROP_PLAY_START_MILLISECOND_NUMBER; ///< Number for start millisecond.
 
-constexpr auto LOOP_START_FRAME_NUMBER = MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER;
+constexpr auto LOOP_START_FRAME_NUMBER =
+  MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER; ///< Number for loop start frame.
 
 constexpr auto LOOP_START_MILLISECOND_NUMBER =
-  MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER;
+  MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER; ///< Number for loop start
+                                               ///< millisecond.
 
-constexpr auto FADE_IN_FRAMES_NUMBER = MIX_PROP_PLAY_FADE_IN_FRAMES_NUMBER;
+constexpr auto FADE_IN_FRAMES_NUMBER =
+  MIX_PROP_PLAY_FADE_IN_FRAMES_NUMBER; ///< Number for fade in frames.
 
 constexpr auto FADE_IN_MILLISECONDS_NUMBER =
-  MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER;
+  MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER; ///< Number for fade in
+                                             ///< milliseconds.
 
 constexpr auto FADE_IN_START_GAIN_FLOAT =
-  MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT;
+  MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT; ///< Float for fade in start gain.
 
 constexpr auto APPEND_SILENCE_FRAMES_NUMBER =
-  MIX_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER;
+  MIX_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER; ///< Number for append silence
+                                              ///< frames.
 
 constexpr auto APPEND_SILENCE_MILLISECONDS_NUMBER =
-  MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER;
+  MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER; ///< Number for append
+                                                    ///< silence milliseconds.
 
 constexpr auto HALT_WHEN_EXHAUSTED_BOOLEAN =
-  MIX_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN;
+  MIX_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN; ///< Halt when exhausted enabled.
 
 } // namespace prop::Play
 
@@ -101426,33 +101695,46 @@ inline AnimationEncoder CreateAnimationEncoderWithProperties(
 namespace prop::AnimationEncoder::Create {
 
 constexpr auto FILENAME_STRING =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING; ///< String for filename.
 
 constexpr auto IOSTREAM_POINTER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER; ///< Pointer to iostream.
 
 constexpr auto IOSTREAM_AUTOCLOSE_BOOLEAN =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN; ///< Enable
+                                                                ///< iostream
+                                                                ///< autoclose.
 
-constexpr auto TYPE_STRING = IMG_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING;
+constexpr auto TYPE_STRING =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING; ///< String for type.
 
 constexpr auto QUALITY_NUMBER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_QUALITY_NUMBER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_QUALITY_NUMBER; ///< Number for quality.
 
 constexpr auto TIMEBASE_NUMERATOR_NUMBER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_NUMERATOR_NUMBER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_NUMERATOR_NUMBER; ///< Number for
+                                                               ///< timebase
+                                                               ///< numerator.
 
 constexpr auto TIMEBASE_DENOMINATOR_NUMBER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER; ///< Number for
+                                                                 ///< timebase
+                                                                 ///< denominator.
 
 constexpr auto AVIF_MAX_THREADS_NUMBER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_MAX_THREADS_NUMBER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_MAX_THREADS_NUMBER; ///< Number for
+                                                             ///< avif max
+                                                             ///< threads.
 
 constexpr auto AVIF_KEYFRAME_INTERVAL_NUMBER =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_KEYFRAME_INTERVAL_NUMBER;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_KEYFRAME_INTERVAL_NUMBER; ///< Number
+                                                                   ///< for avif
+                                                                   ///< keyframe
+                                                                   ///< interval.
 
 constexpr auto GIF_USE_LUT_BOOLEAN =
-  IMG_PROP_ANIMATION_ENCODER_CREATE_GIF_USE_LUT_BOOLEAN;
+  IMG_PROP_ANIMATION_ENCODER_CREATE_GIF_USE_LUT_BOOLEAN; ///< Enable gif use
+                                                         ///< lut.
 
 } // namespace prop::AnimationEncoder::Create
 
@@ -101903,36 +102185,57 @@ inline AnimationDecoder CreateAnimationDecoderWithProperties(
 namespace prop::AnimationDecoder::Create {
 
 constexpr auto FILENAME_STRING =
-  IMG_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING;
+  IMG_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING; ///< String for filename.
 
 constexpr auto IOSTREAM_POINTER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER; ///< Pointer to iostream.
 
 constexpr auto IOSTREAM_AUTOCLOSE_BOOLEAN =
-  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
+  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN; ///< Enable
+                                                                ///< iostream
+                                                                ///< autoclose.
 
-constexpr auto TYPE_STRING = IMG_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING;
+constexpr auto TYPE_STRING =
+  IMG_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING; ///< String for type.
 
 constexpr auto TIMEBASE_NUMERATOR_NUMBER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_NUMERATOR_NUMBER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_NUMERATOR_NUMBER; ///< Number for
+                                                               ///< timebase
+                                                               ///< numerator.
 
 constexpr auto TIMEBASE_DENOMINATOR_NUMBER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER; ///< Number for
+                                                                 ///< timebase
+                                                                 ///< denominator.
 
 constexpr auto AVIF_MAX_THREADS_NUMBER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_MAX_THREADS_NUMBER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_MAX_THREADS_NUMBER; ///< Number for
+                                                             ///< avif max
+                                                             ///< threads.
 
 constexpr auto AVIF_ALLOW_INCREMENTAL_BOOLEAN =
-  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_INCREMENTAL_BOOLEAN;
+  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_INCREMENTAL_BOOLEAN; ///< Enable
+                                                                    ///< avif
+                                                                    ///< allow
+                                                                    ///< incremental.
 
 constexpr auto AVIF_ALLOW_PROGRESSIVE_BOOLEAN =
-  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_PROGRESSIVE_BOOLEAN;
+  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_PROGRESSIVE_BOOLEAN; ///< Enable
+                                                                    ///< avif
+                                                                    ///< allow
+                                                                    ///< progressive.
 
 constexpr auto GIF_TRANSPARENT_COLOR_INDEX_NUMBER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_TRANSPARENT_COLOR_INDEX_NUMBER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_TRANSPARENT_COLOR_INDEX_NUMBER; ///< Number
+                                                                        ///< for
+                                                                        ///< gif
+                                                                        ///< transparent
+                                                                        ///< color
+                                                                        ///< index.
 
 constexpr auto GIF_NUM_COLORS_NUMBER =
-  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_NUM_COLORS_NUMBER;
+  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_NUM_COLORS_NUMBER; ///< Number for gif
+                                                           ///< num colors.
 
 } // namespace prop::AnimationDecoder::Create
 
@@ -101971,21 +102274,29 @@ inline PropertiesRef AnimationDecoder::GetProperties()
  */
 namespace prop::AnimationDecoder::Metadata {
 
-constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
+constexpr auto IGNORE_PROPS_BOOLEAN =
+  IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN; ///< Enable ignore props.
 
-constexpr auto DESCRIPTION_STRING = IMG_PROP_METADATA_DESCRIPTION_STRING;
+constexpr auto DESCRIPTION_STRING =
+  IMG_PROP_METADATA_DESCRIPTION_STRING; ///< String for description.
 
-constexpr auto COPYRIGHT_STRING = IMG_PROP_METADATA_COPYRIGHT_STRING;
+constexpr auto COPYRIGHT_STRING =
+  IMG_PROP_METADATA_COPYRIGHT_STRING; ///< String for copyright.
 
-constexpr auto TITLE_STRING = IMG_PROP_METADATA_TITLE_STRING;
+constexpr auto TITLE_STRING =
+  IMG_PROP_METADATA_TITLE_STRING; ///< String for title.
 
-constexpr auto AUTHOR_STRING = IMG_PROP_METADATA_AUTHOR_STRING;
+constexpr auto AUTHOR_STRING =
+  IMG_PROP_METADATA_AUTHOR_STRING; ///< String for author.
 
-constexpr auto CREATION_TIME_STRING = IMG_PROP_METADATA_CREATION_TIME_STRING;
+constexpr auto CREATION_TIME_STRING =
+  IMG_PROP_METADATA_CREATION_TIME_STRING; ///< String for creation time.
 
-constexpr auto FRAME_COUNT_NUMBER = IMG_PROP_METADATA_FRAME_COUNT_NUMBER;
+constexpr auto FRAME_COUNT_NUMBER =
+  IMG_PROP_METADATA_FRAME_COUNT_NUMBER; ///< Frame count.
 
-constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
+constexpr auto LOOP_COUNT_NUMBER =
+  IMG_PROP_METADATA_LOOP_COUNT_NUMBER; ///< Loop count.
 
 } // namespace prop::AnimationDecoder::Metadata
 
@@ -104037,28 +104348,35 @@ inline Font OpenFontWithProperties(PropertiesRef props) { return Font(props); }
  */
 namespace prop::Font::Create {
 
-constexpr auto FILENAME_STRING = TTF_PROP_FONT_CREATE_FILENAME_STRING;
+constexpr auto FILENAME_STRING =
+  TTF_PROP_FONT_CREATE_FILENAME_STRING; ///< String for filename.
 
-constexpr auto IOSTREAM_POINTER = TTF_PROP_FONT_CREATE_IOSTREAM_POINTER;
+constexpr auto IOSTREAM_POINTER =
+  TTF_PROP_FONT_CREATE_IOSTREAM_POINTER; ///< Pointer to iostream.
 
 constexpr auto IOSTREAM_OFFSET_NUMBER =
-  TTF_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER;
+  TTF_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER; ///< Number for iostream offset.
 
 constexpr auto IOSTREAM_AUTOCLOSE_BOOLEAN =
-  TTF_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
+  TTF_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN; ///< Enable iostream
+                                                   ///< autoclose.
 
-constexpr auto SIZE_FLOAT = TTF_PROP_FONT_CREATE_SIZE_FLOAT;
+constexpr auto SIZE_FLOAT =
+  TTF_PROP_FONT_CREATE_SIZE_FLOAT; ///< Float for size.
 
-constexpr auto FACE_NUMBER = TTF_PROP_FONT_CREATE_FACE_NUMBER;
+constexpr auto FACE_NUMBER =
+  TTF_PROP_FONT_CREATE_FACE_NUMBER; ///< Number for face.
 
 constexpr auto HORIZONTAL_DPI_NUMBER =
-  TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER;
+  TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER; ///< Number for horizontal dpi.
 
-constexpr auto VERTICAL_DPI_NUMBER = TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER;
+constexpr auto VERTICAL_DPI_NUMBER =
+  TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER; ///< Number for vertical dpi.
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto EXISTING_FONT_POINTER = TTF_PROP_FONT_CREATE_EXISTING_FONT;
+constexpr auto EXISTING_FONT_POINTER =
+  TTF_PROP_FONT_CREATE_EXISTING_FONT; ///< Pointer to existing font.
 
 #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
@@ -104132,13 +104450,14 @@ inline PropertiesRef Font::GetProperties()
  */
 namespace prop::Font {
 
-constexpr auto OUTLINE_LINE_CAP_NUMBER = TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER;
+constexpr auto OUTLINE_LINE_CAP_NUMBER =
+  TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER; ///< Number for outline line cap.
 
 constexpr auto OUTLINE_LINE_JOIN_NUMBER =
-  TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER;
+  TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER; ///< Number for outline line join.
 
 constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
-  TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER;
+  TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER; ///< Number for outline miter limit.
 
 } // namespace prop::Font
 
@@ -107341,10 +107660,12 @@ inline RendererTextEngine CreateRendererTextEngineWithProperties(
  */
 namespace prop::RendererTextEngine {
 
-constexpr auto RENDERER_POINTER = TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER;
+constexpr auto RENDERER_POINTER =
+  TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER; ///< Pointer to renderer.
 
 constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
-  TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
+  TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE; ///< Number for atlas
+                                                    ///< texture size.
 
 } // namespace prop::RendererTextEngine
 
@@ -107473,10 +107794,12 @@ inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
  */
 namespace prop::GpuTextEngine {
 
-constexpr auto DEVICE_POINTER = TTF_PROP_GPU_TEXT_ENGINE_DEVICE;
+constexpr auto DEVICE_POINTER =
+  TTF_PROP_GPU_TEXT_ENGINE_DEVICE; ///< Pointer to device.
 
 constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
-  TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
+  TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE; ///< Number for atlas texture
+                                               ///< size.
 
 } // namespace prop::GpuTextEngine
 

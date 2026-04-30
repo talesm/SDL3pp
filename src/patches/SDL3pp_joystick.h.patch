@@ -190,4 +190,4 @@
 + */
  namespace prop::JoystickCap {
  
- constexpr auto MONO_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_MONO_LED_BOOLEAN;
+ constexpr auto MONO_LED_BOOLEAN =

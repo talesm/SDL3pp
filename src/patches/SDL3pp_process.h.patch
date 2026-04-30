@@ -76,8 +76,31 @@
 + */
  namespace prop::Process::Create {
  
- constexpr auto ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
-@@ -646,7 +676,7 @@
+ constexpr auto ARGS_POINTER =
+@@ -593,19 +623,19 @@
+ #endif // SDL_VERSION_ATLEAST(3, 4, 0)
+ 
+ constexpr auto STDIN_NUMBER =
+-  SDL_PROP_PROCESS_CREATE_STDIN_NUMBER; ///< Number for stdin.
++  SDL_PROP_PROCESS_CREATE_STDIN_NUMBER; ///< Stdin number.
+ 
+ constexpr auto STDIN_POINTER =
+   SDL_PROP_PROCESS_CREATE_STDIN_POINTER; ///< Pointer to stdin.
+ 
+ constexpr auto STDOUT_NUMBER =
+-  SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER; ///< Number for stdout.
++  SDL_PROP_PROCESS_CREATE_STDOUT_NUMBER; ///< Stdout number.
+ 
+ constexpr auto STDOUT_POINTER =
+   SDL_PROP_PROCESS_CREATE_STDOUT_POINTER; ///< Pointer to stdout.
+ 
+ constexpr auto STDERR_NUMBER =
+-  SDL_PROP_PROCESS_CREATE_STDERR_NUMBER; ///< Number for stderr.
++  SDL_PROP_PROCESS_CREATE_STDERR_NUMBER; ///< Stderr number.
+ 
+ constexpr auto STDERR_POINTER =
+   SDL_PROP_PROCESS_CREATE_STDERR_POINTER; ///< Pointer to stderr.
+@@ -657,7 +687,7 @@
   */
  inline PropertiesRef GetProcessProperties(ProcessRef process)
  {
@@ -86,7 +109,7 @@
  }
  
  inline PropertiesRef Process::GetProperties() const
-@@ -654,6 +684,17 @@
+@@ -665,9 +695,20 @@
    return SDL::GetProcessProperties(get());
  }
  
@@ -103,8 +126,12 @@
 + */
  namespace prop::Process {
  
- constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER;
-@@ -682,8 +723,6 @@
+-constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER; ///< Number for pid.
++constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER; ///< Pid number.
+ 
+ constexpr auto STDIN_POINTER =
+   SDL_PROP_PROCESS_STDIN_POINTER; ///< Pointer to stdin.
+@@ -697,8 +738,6 @@
   * The data should be freed with free().
   *
   * @param process The process to read.
@@ -113,7 +140,7 @@
   * @param exitcode a pointer filled in with the process exit code if the process
   *                 has exited, may be nullptr.
   * @returns the data or nullptr on failure; call GetError() for more
-@@ -699,7 +738,9 @@
+@@ -714,7 +753,9 @@
   */
  inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
  {
@@ -124,7 +151,7 @@
  }
  
  inline StringResult Process::Read(int* exitcode)
-@@ -733,7 +774,7 @@
+@@ -748,7 +789,7 @@
   */
  inline IOStreamRef GetProcessInput(ProcessRef process)
  {
@@ -133,7 +160,7 @@
  }
  
  inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
-@@ -762,7 +803,7 @@
+@@ -777,7 +818,7 @@
   */
  inline IOStreamRef GetProcessOutput(ProcessRef process)
  {
