@@ -28,7 +28,7 @@ export function expandNamespaces(
       file.transform[key] = entryDelta;
       entryDelta.name = nsName + "." + localName;
 
-      fixDefToConstexpr(context, entry, entryDelta, localName);
+      fixDefToConstexpr(entry, entryDelta, localName);
       context.addName(key, `${nsName}.${localName}`);
     }
     if (sourceEntriesListed.length) {
@@ -49,7 +49,6 @@ export function expandNamespaces(
 }
 
 function fixDefToConstexpr(
-  context: ApiContext,
   entry: ApiEntry,
   entryDelta: ApiEntryTransform,
   localName: string,
@@ -58,15 +57,11 @@ function fixDefToConstexpr(
     entryDelta.kind = "var";
     entryDelta.type = "auto";
     entryDelta.constexpr = true;
-    entryDelta.doc ??= entry.doc || makeDefDoc(context, entry.name, localName);
+    entryDelta.doc ??= entry.doc || makeDefDoc(entry.name, localName);
   }
 }
 
-function makeDefDoc(
-  context: ApiContext,
-  srcName: string,
-  localName: string,
-): ParsedDoc {
+function makeDefDoc(srcName: string, localName: string): ParsedDoc {
   const nameParts = srcName.split("_").slice(1);
   const localNameParts = localName.split("_");
   if (nameParts[0] === "PROP") {
