@@ -13,10 +13,12 @@ Todo for next version
 - [x] Rename prop::thread to prop::Thread;
 - [x] (SDL3pp_image) Rename prop::Metadata to prop::AnimationDecoder::Metadata;
 - [x] (SDL3pp_mixer) Rename prop::MixMetadata to prop::Audio::Metadata;
+- [ ] Bump SDL_image to 3.4.4;
 
 Backlog
 -------
 
+- [ ] Rewrite class entry point to simplify it and make it inheritance based;
 - [ ] Add a constructor to Properties similar to std::map initializer list;
 - [ ] Revamp README, with examples and clearer instructions to integrate to
   project and everything else moved to other files;
