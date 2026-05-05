@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.9.4
+
+Bump SDL3 version to 3.4.8.
+
 ## Version 0.9.3
 
 Minor bugfix for CreateMixerDevice signature.

@@ -1757,7 +1757,7 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #define SDL3PP_MINOR_VERSION 9
 
 /// The current patch version of SDL3pp wrapper.
-#define SDL3PP_PATCH_VERSION 3
+#define SDL3PP_PATCH_VERSION 4
 
 /// This is the version number macro for the current SDL3pp wrapper version.
 #define SDL3PP_VERSION                                                         \
@@ -5875,7 +5875,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *   (default)
  * - "1": Cursors will automatically match the display content scale (e.g. a 2x
  *   sized cursor will be used when the window is on a monitor with 200% scale).
- *   This is currently implemented on Windows and Wayland.
+ *   This is currently implemented on Windows.
  *
  * This hint needs to be set before creating cursors.
  *
