@@ -4239,6 +4239,10 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    * information about the underlying image such as description, copyright text
    * and loop count.
    *
+   * `prop.AnimationDecoder.Metadata.LOOP_COUNT_NUMBER`, if present, specifies
+   * the number of times to play the animation, with 0 meaning loop
+   * continuously.
+   *
    * @returns the properties ID of the animation decoder, or 0 if there are no
    *          properties; call GetError() for more information.
    *
@@ -4504,6 +4508,9 @@ constexpr auto GIF_NUM_COLORS_NUMBER =
  * This function returns the properties of the animation decoder, which holds
  * information about the underlying image such as description, copyright text
  * and loop count.
+ *
+ * `prop.AnimationDecoder.Metadata.LOOP_COUNT_NUMBER`, if present, specifies the
+ * number of times to play the animation, with 0 meaning loop continuously.
  *
  * @param decoder the animation decoder.
  * @returns the properties ID of the animation decoder, or 0 if there are no

@@ -1,5 +1,23 @@
 # Changelog
 
+## Version 0.10.0
+
+Reorganize properties wrapping.
+
+- Move Properties prefixed by _CREATE to their own sub-namespace:
+  - SDL3pp_gpu.h;
+  - SDL3pp_image.h;
+  - SDL3pp_process.h;
+  - SDL3pp_render.h;
+  - SDL3pp_thread.h;
+  - SDL3pp_ttf.h;
+  - SDL3pp_video.h;
+- Rename prop::process to prop::Process;
+- Rename prop::thread to prop::Thread;
+- (SDL3pp_image) Rename prop::Metadata to prop::AnimationDecoder::Metadata;
+- (SDL3pp_mixer) Rename prop::MixMetadata to prop::Audio::Metadata;
+- Bump SDL_image to 3.4.4;
+
 ## Version 0.9.4
 
 Bump SDL3 version to 3.4.8.
