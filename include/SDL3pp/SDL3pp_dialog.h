@@ -614,21 +614,29 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
  */
 namespace prop::FileDialog {
 
-constexpr auto FILTERS_POINTER = SDL_PROP_FILE_DIALOG_FILTERS_POINTER;
+constexpr auto FILTERS_POINTER =
+  SDL_PROP_FILE_DIALOG_FILTERS_POINTER; ///< Pointer to filters.
 
-constexpr auto NFILTERS_NUMBER = SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER;
+constexpr auto NFILTERS_NUMBER =
+  SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER; ///< Number of filters.
 
-constexpr auto WINDOW_POINTER = SDL_PROP_FILE_DIALOG_WINDOW_POINTER;
+constexpr auto WINDOW_POINTER =
+  SDL_PROP_FILE_DIALOG_WINDOW_POINTER; ///< Pointer to window.
 
-constexpr auto LOCATION_STRING = SDL_PROP_FILE_DIALOG_LOCATION_STRING;
+constexpr auto LOCATION_STRING =
+  SDL_PROP_FILE_DIALOG_LOCATION_STRING; ///< String for location.
 
-constexpr auto MANY_BOOLEAN = SDL_PROP_FILE_DIALOG_MANY_BOOLEAN;
+constexpr auto MANY_BOOLEAN =
+  SDL_PROP_FILE_DIALOG_MANY_BOOLEAN; ///< Many enabled.
 
-constexpr auto TITLE_STRING = SDL_PROP_FILE_DIALOG_TITLE_STRING;
+constexpr auto TITLE_STRING =
+  SDL_PROP_FILE_DIALOG_TITLE_STRING; ///< String for title.
 
-constexpr auto ACCEPT_STRING = SDL_PROP_FILE_DIALOG_ACCEPT_STRING;
+constexpr auto ACCEPT_STRING =
+  SDL_PROP_FILE_DIALOG_ACCEPT_STRING; ///< String for accept.
 
-constexpr auto CANCEL_STRING = SDL_PROP_FILE_DIALOG_CANCEL_STRING;
+constexpr auto CANCEL_STRING =
+  SDL_PROP_FILE_DIALOG_CANCEL_STRING; ///< String for cancel.
 
 } // namespace prop::FileDialog
 

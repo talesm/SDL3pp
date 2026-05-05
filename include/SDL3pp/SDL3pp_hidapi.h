@@ -608,7 +608,8 @@ inline PropertiesRef HidDevice::hid_get_properties()
 namespace prop::Hidapi {
 
 constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
-  SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER;
+  SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER; ///< Pointer to libusb device
+                                                ///< handle.
 
 } // namespace prop::Hidapi
 

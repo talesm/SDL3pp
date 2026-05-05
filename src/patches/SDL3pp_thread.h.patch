@@ -78,6 +78,6 @@
 + *
 + * @sa CreateThreadWithProperties
 + */
- namespace prop::thread {
+ namespace prop::Thread::Create {
  
- constexpr auto CREATE_ENTRY_FUNCTION_POINTER =
+ constexpr auto ENTRY_FUNCTION_POINTER =

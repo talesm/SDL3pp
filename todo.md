@@ -1,11 +1,18 @@
 Todo for next version
 =====================
 
-- [ ] Properties prefixed by CREATE should their own subnamespace;
-- [ ] (SDL3pp_image) Rename prop::Metadata to prop::Animation or something
-  similar? Or even under AnimationDecoder;
-- [ ] (SDL3pp_mixer) Rename prop::MixMetadata to prop::Audio or something
-  similar? Or even under Audio;
+- [x] Move Properties prefixed by _CREATE to their own sub-namespace:
+  - [x] SDL3pp_gpu.h;
+  - [x] SDL3pp_image.h;
+  - [x] SDL3pp_process.h;
+  - [x] SDL3pp_render.h;
+  - [x] SDL3pp_thread.h;
+  - [x] SDL3pp_ttf.h;
+  - [x] SDL3pp_video.h;
+- [x] Rename prop::process to prop::Process;
+- [x] Rename prop::thread to prop::Thread;
+- [x] (SDL3pp_image) Rename prop::Metadata to prop::AnimationDecoder::Metadata;
+- [x] (SDL3pp_mixer) Rename prop::MixMetadata to prop::Audio::Metadata;
 
 Backlog
 -------

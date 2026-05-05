@@ -1981,16 +1981,20 @@ inline PropertiesRef Joystick::GetProperties()
  */
 namespace prop::JoystickCap {
 
-constexpr auto MONO_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_MONO_LED_BOOLEAN;
+constexpr auto MONO_LED_BOOLEAN =
+  SDL_PROP_JOYSTICK_CAP_MONO_LED_BOOLEAN; ///< Mono led enabled.
 
-constexpr auto RGB_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_RGB_LED_BOOLEAN;
+constexpr auto RGB_LED_BOOLEAN =
+  SDL_PROP_JOYSTICK_CAP_RGB_LED_BOOLEAN; ///< Rgb led enabled.
 
-constexpr auto PLAYER_LED_BOOLEAN = SDL_PROP_JOYSTICK_CAP_PLAYER_LED_BOOLEAN;
+constexpr auto PLAYER_LED_BOOLEAN =
+  SDL_PROP_JOYSTICK_CAP_PLAYER_LED_BOOLEAN; ///< Player led enabled.
 
-constexpr auto RUMBLE_BOOLEAN = SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN;
+constexpr auto RUMBLE_BOOLEAN =
+  SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN; ///< Rumble enabled.
 
 constexpr auto TRIGGER_RUMBLE_BOOLEAN =
-  SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN;
+  SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN; ///< Trigger rumble enabled.
 
 } // namespace prop::JoystickCap
 

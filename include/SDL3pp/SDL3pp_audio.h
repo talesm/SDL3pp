@@ -3757,7 +3757,8 @@ inline PropertiesRef AudioStream::GetProperties() const
  */
 namespace prop::AudioStream {
 
-constexpr auto AUTO_CLEANUP_BOOLEAN = SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN;
+constexpr auto AUTO_CLEANUP_BOOLEAN =
+  SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN; ///< Auto cleanup enabled.
 
 } // namespace prop::AudioStream
 

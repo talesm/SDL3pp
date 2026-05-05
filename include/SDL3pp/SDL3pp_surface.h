@@ -2272,24 +2272,29 @@ inline PropertiesRef Surface::GetProperties() const
  */
 namespace prop::Surface {
 
-constexpr auto SDR_WHITE_POINT_FLOAT = SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT;
+constexpr auto SDR_WHITE_POINT_FLOAT =
+  SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT; ///< Float for sdr white point.
 
-constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT;
+constexpr auto HDR_HEADROOM_FLOAT =
+  SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT; ///< Float for hdr headroom.
 
 constexpr auto TONEMAP_OPERATOR_STRING =
-  SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING;
+  SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING; ///< String for tonemap operator.
 
 #if SDL_VERSION_ATLEAST(3, 2, 6)
 
-constexpr auto HOTSPOT_X_NUMBER = SDL_PROP_SURFACE_HOTSPOT_X_NUMBER;
+constexpr auto HOTSPOT_X_NUMBER =
+  SDL_PROP_SURFACE_HOTSPOT_X_NUMBER; ///< Number for hotspot x.
 
-constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
+constexpr auto HOTSPOT_Y_NUMBER =
+  SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER; ///< Number for hotspot y.
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
-constexpr auto ROTATION_FLOAT = SDL_PROP_SURFACE_ROTATION_FLOAT;
+constexpr auto ROTATION_FLOAT =
+  SDL_PROP_SURFACE_ROTATION_FLOAT; ///< Float for rotation.
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 

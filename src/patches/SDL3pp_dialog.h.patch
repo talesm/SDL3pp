@@ -219,4 +219,4 @@
 + */
  namespace prop::FileDialog {
  
- constexpr auto FILTERS_POINTER = SDL_PROP_FILE_DIALOG_FILTERS_POINTER;
+ constexpr auto FILTERS_POINTER =
