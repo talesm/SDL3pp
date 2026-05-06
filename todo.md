@@ -7,12 +7,12 @@ Todo for next version
 - [ ] Docs improvements:
   - [ ] Update [./docs/transformation.md](transformation);
   - [ ] Update [./docs/callback.md](callback);
-- [ ] Create ReadPixelRaw/WritePixelRaw on surface;
+- [x] Rewrite class entry point to simplify it and make it inheritance based;
 
 Backlog
 -------
 
-- [ ] Rewrite class entry point to simplify it and make it inheritance based;
+- [ ] Create ReadPixelRaw/WritePixelRaw on surface;
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;
   - [ ] CameraID;

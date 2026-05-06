@@ -1,6 +1,6 @@
 --- build/generated/SDL3pp_main.h
 +++ include/SDL3pp/SDL3pp_main.h
-@@ -1,22 +1,30 @@
+@@ -1,22 +1,34 @@
  #ifndef SDL3PP_MAIN_H_
  #define SDL3PP_MAIN_H_
  
@@ -11,6 +11,10 @@
 +#ifdef SDL3PP_MAIN_USE_CALLBACKS
 +#define SDL_MAIN_USE_CALLBACKS
 +#endif // SDL3PP_MAIN_USE_CALLBACKS
++
++#ifdef SDL3PP_MAIN_USE_CLASS_CALLBACKS
++#define SDL_MAIN_USE_CALLBACKS
++#endif // SDL3PP_MAIN_USE_CLASS_CALLBACKS
 +
  #include <SDL3/SDL_main.h>
  #include "SDL3pp.h"
@@ -35,7 +39,7 @@
   *
   * int main(int argc, char *argv[])
   * {
-@@ -39,6 +47,8 @@
+@@ -39,6 +51,8 @@
   * @{
   */
  
@@ -44,16 +48,33 @@
  /**
   * Inform SDL that the app is providing an entry point instead of SDL.
   *
-@@ -77,6 +87,8 @@
-  */
+@@ -78,6 +92,25 @@
  #define SDL3PP_MAIN_USE_CALLBACKS SDL_MAIN_USE_CALLBACKS
  
+ /**
++ * Inform SDL to use the main class callbacks instead of main.
++ *
++ * SDL does not define this macro, but will check if it is defined when
++ * including `SDL_main.h`. If defined, SDL will expect the app to provide
++ * a function: SDL_AppCreate. The app should not provide a `main` function in
++ * this case, and doing so will likely cause the build to fail.
++ *
++ * @todo
++ *
++ * @since This macro is used by the headers since SDLpp 0.11.0.
++ *
++ * @sa SDL_AppCreate
++ * @sa SDL3PP_MAIN_USE_CALLBACKS
++ */
++#define SDL3PP_MAIN_USE_CLASS_CALLBACKS 1
++
 +#endif // SDL3PP_DOC
 +
- /**
++/**
   * The prototype for the application's main() function
   *
-@@ -140,7 +152,7 @@
+  * @param argc an ANSI-C style main function's argc.
+@@ -140,7 +173,7 @@
                    main_func mainFunction,
                    void* reserved)
  {
@@ -62,7 +83,7 @@
  }
  
  /**
-@@ -176,9 +188,11 @@
+@@ -176,9 +209,11 @@
                                   AppQuit_func appquit)
  {
    return SDL_EnterAppMainCallbacks(
@@ -75,7 +96,7 @@
  /**
   * Register a win32 window class for SDL's use.
   *
-@@ -191,12 +205,11 @@
+@@ -191,12 +226,11 @@
   * Most applications do not need to, and should not, call this directly; SDL
   * will call it when initializing the video subsystem.
   *
@@ -91,7 +112,7 @@
   * @param hInst the HINSTANCE to use in WNDCLASSEX::hInstance. If zero, SDL will
   *              use `GetModuleHandle(nullptr)` instead.
   * @returns true on success or false on failure; call GetError() for more
-@@ -230,6 +243,8 @@
+@@ -230,6 +264,8 @@
   */
  inline void UnregisterApp() { SDL_UnregisterApp(); }
  
@@ -100,10 +121,98 @@
  /**
   * Callback from the application to let the suspend continue.
   *
-@@ -257,6 +272,30 @@
+@@ -257,6 +293,118 @@
   */
  inline void GDKSuspendComplete() { SDL_GDKSuspendComplete(); }
  
++struct AppInterface
++{
++  virtual ~AppInterface() = default;
++
++  virtual SDL::AppResult Init() { return SDL::APP_CONTINUE; }
++
++  virtual SDL::AppResult Iterate() { return SDL::APP_CONTINUE; }
++
++  virtual SDL::AppResult Event(const SDL::Event& ev)
++  {
++    return ev.type == SDL_EVENT_QUIT ? SDL::APP_SUCCESS : SDL::APP_CONTINUE;
++  }
++
++  virtual void quit(SDL::AppResult) {}
++};
++
++extern "C" SDLMAIN_DECLSPEC AppInterface* SDLCALL SDL_AppCreate(int argc,
++                                                                char* argv[]);
++
++#ifdef SDL3PP_MAIN_USE_CLASS_CALLBACKS
++
++extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppInit(void** appstate,
++                                                       int argc,
++                                                       char* argv[])
++{
++  try {
++    auto app = SDL_AppCreate(argc, argv);
++    if (!app) return APP_SUCCESS;
++    *appstate = app;
++    app->Init();
++    return APP_CONTINUE;
++  } catch (std::exception& e) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
++                                            e.what());
++  } catch (...) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(
++      SDL3PP_APPCLASS_LOG_PRIORITY, "Critical error during app initialization");
++  }
++  return APP_FAILURE;
++}
++
++extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppIterate(void* appstate)
++{
++  try {
++    return static_cast<AppInterface*>(appstate)->Iterate();
++  } catch (std::exception& e) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
++                                            e.what());
++  } catch (...) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(
++      SDL3PP_APPCLASS_LOG_PRIORITY, "Critical error during app iteration");
++  }
++  return APP_FAILURE;
++}
++
++extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppEvent(void* appstate,
++                                                        SDL::Event* event)
++{
++  try {
++    return static_cast<AppInterface*>(appstate)->Event(*event);
++  } catch (std::exception& e) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
++                                            e.what());
++  } catch (...) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(
++      SDL3PP_APPCLASS_LOG_PRIORITY, "Critical error during app event handling");
++  }
++  return APP_FAILURE;
++}
++
++extern "C" SDLMAIN_DECLSPEC void SDL_AppQuit(void* appstate,
++                                             SDL::AppResult result)
++{
++  try {
++    auto app = static_cast<AppInterface*>(appstate);
++    if (!app) return;
++    app->quit(result);
++    delete app;
++  } catch (std::exception& e) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
++                                            e.what());
++  } catch (...) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
++                                            "Critical error during app exit");
++  }
++}
++#endif // SDL3PP_MAIN_USE_CLASS_CALLBACKS
++
 +/**
 + * Use this to define the callbacks for given class
 + * @param CLASS The class to wrap in callbacks.
