@@ -1357,7 +1357,7 @@
  
    /**
     * Get the properties of an animation decoder.
-@@ -4238,18 +4257,11 @@
+@@ -4242,18 +4261,11 @@
     * as an Surface. The returned surface should be freed with SDL_FreeSurface()
     * when no longer needed.
     *
@@ -1378,7 +1378,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -4293,12 +4305,8 @@
+@@ -4297,12 +4309,8 @@
     * @sa AnimationDecoder.Close
     */
    void Reset();
@@ -1391,7 +1391,7 @@
  /**
   * Create a decoder to read a series of images from a file.
   *
-@@ -4339,7 +4347,7 @@
+@@ -4343,7 +4351,7 @@
                                            StringParam type,
                                            bool closeio)
    : AnimationDecoder(
@@ -1400,7 +1400,7 @@
  {
  }
  
-@@ -4428,6 +4436,11 @@
+@@ -4432,6 +4440,11 @@
    return AnimationDecoder(props);
  }
  
@@ -1412,7 +1412,7 @@
  namespace prop::AnimationDecoder::Create {
  
  constexpr auto FILENAME_STRING =
-@@ -4512,6 +4525,12 @@
+@@ -4519,6 +4532,12 @@
    return SDL::GetAnimationDecoderProperties(get());
  }
  
@@ -1425,7 +1425,7 @@
  namespace prop::AnimationDecoder::Metadata {
  
  constexpr auto IGNORE_PROPS_BOOLEAN =
-@@ -4544,22 +4563,14 @@
+@@ -4551,22 +4570,14 @@
   * Get the next frame in an animation decoder.
   *
   * This function decodes the next frame in the animation decoder, returning it
@@ -1450,7 +1450,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -4574,7 +4585,9 @@
+@@ -4581,7 +4592,9 @@
  inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                          Uint64* duration)
  {
@@ -1461,7 +1461,7 @@
  }
  
  inline Surface AnimationDecoder::GetFrame(Uint64* duration)
-@@ -4649,10 +4662,7 @@
+@@ -4656,10 +4669,7 @@
    CheckError(IMG_CloseAnimationDecoder(decoder));
  }
  
@@ -1473,7 +1473,7 @@
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
  
-@@ -4660,4 +4670,32 @@
+@@ -4667,4 +4677,32 @@
  
  } // namespace SDL
  

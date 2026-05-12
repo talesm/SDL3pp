@@ -9,6 +9,10 @@
 #define SDL_MAIN_USE_CALLBACKS
 #endif // SDL3PP_MAIN_USE_CALLBACKS
 
+#ifdef SDL3PP_MAIN_USE_CLASS_CALLBACKS
+#define SDL_MAIN_USE_CALLBACKS
+#endif // SDL3PP_MAIN_USE_CLASS_CALLBACKS
+
 #include <SDL3/SDL_main.h>
 #include "SDL3pp.h"
 
@@ -86,6 +90,23 @@ namespace SDL {
  * @sa SDL_AppQuit
  */
 #define SDL3PP_MAIN_USE_CALLBACKS SDL_MAIN_USE_CALLBACKS
+
+/**
+ * Inform SDL to use the main class callbacks instead of main.
+ *
+ * SDL does not define this macro, but will check if it is defined when
+ * including `SDL_main.h`. If defined, SDL will expect the app to provide
+ * a function: SDL_AppCreate. The app should not provide a `main` function in
+ * this case, and doing so will likely cause the build to fail.
+ *
+ * @todo
+ *
+ * @since This macro is used by the headers since SDLpp 0.11.0.
+ *
+ * @sa SDL_AppCreate
+ * @sa SDL3PP_MAIN_USE_CALLBACKS
+ */
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS 1
 
 #endif // SDL3PP_DOC
 
@@ -271,6 +292,94 @@ inline void UnregisterApp() { SDL_UnregisterApp(); }
  * @sa AddEventWatch
  */
 inline void GDKSuspendComplete() { SDL_GDKSuspendComplete(); }
+
+struct AppInterface
+{
+  virtual ~AppInterface() = default;
+
+  virtual SDL::AppResult Init() { return SDL::APP_CONTINUE; }
+
+  virtual SDL::AppResult Iterate() { return SDL::APP_CONTINUE; }
+
+  virtual SDL::AppResult Event(const SDL::Event& ev)
+  {
+    return ev.type == SDL_EVENT_QUIT ? SDL::APP_SUCCESS : SDL::APP_CONTINUE;
+  }
+
+  virtual void quit(SDL::AppResult) {}
+};
+
+extern "C" SDLMAIN_DECLSPEC AppInterface* SDLCALL SDL_AppCreate(int argc,
+                                                                char* argv[]);
+
+#ifdef SDL3PP_MAIN_USE_CLASS_CALLBACKS
+
+extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppInit(void** appstate,
+                                                       int argc,
+                                                       char* argv[])
+{
+  try {
+    auto app = SDL_AppCreate(argc, argv);
+    if (!app) return APP_SUCCESS;
+    *appstate = app;
+    app->Init();
+    return APP_CONTINUE;
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(
+      SDL3PP_APPCLASS_LOG_PRIORITY, "Critical error during app initialization");
+  }
+  return APP_FAILURE;
+}
+
+extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppIterate(void* appstate)
+{
+  try {
+    return static_cast<AppInterface*>(appstate)->Iterate();
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(
+      SDL3PP_APPCLASS_LOG_PRIORITY, "Critical error during app iteration");
+  }
+  return APP_FAILURE;
+}
+
+extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppEvent(void* appstate,
+                                                        SDL::Event* event)
+{
+  try {
+    return static_cast<AppInterface*>(appstate)->Event(*event);
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(
+      SDL3PP_APPCLASS_LOG_PRIORITY, "Critical error during app event handling");
+  }
+  return APP_FAILURE;
+}
+
+extern "C" SDLMAIN_DECLSPEC void SDL_AppQuit(void* appstate,
+                                             SDL::AppResult result)
+{
+  try {
+    auto app = static_cast<AppInterface*>(appstate);
+    if (!app) return;
+    app->quit(result);
+    delete app;
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            "Critical error during app exit");
+  }
+}
+#endif // SDL3PP_MAIN_USE_CLASS_CALLBACKS
 
 /**
  * Use this to define the callbacks for given class
