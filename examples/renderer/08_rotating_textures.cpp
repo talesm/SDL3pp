@@ -8,23 +8,12 @@
  */
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_CALLBACKS
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
-
-  // Init library
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Renderer Rotating Textures",
-                        "1.0",
-                        "com.example.renderer-rotating-textures");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
 
   SDL::Window window{"examples/renderer/rotating-textures", windowSz};
   SDL::Renderer renderer{window};
@@ -36,7 +25,7 @@ struct Main
     SDL::Texture(renderer,
                  std::format("{}../assets/sample.png", SDL::GetBasePath()))};
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     const float now = SDL::ToSeconds(SDL::GetTicks());
     // we'll have a texture rotate around over 2 seconds (2000 milliseconds).
@@ -61,4 +50,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Renderer Rotating Textures",
+                              "1.0",
+                              "com.example.renderer-rotating-textures")
