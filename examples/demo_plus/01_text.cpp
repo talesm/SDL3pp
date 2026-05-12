@@ -1,4 +1,4 @@
-#define SDL3PP_MAIN_USE_CALLBACKS 1
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp.h>
 #include <SDL3pp/SDL3pp_main.h>
 
@@ -208,16 +208,8 @@ public:
   constexpr std::string getRow(int row) const { return getRowAfter({0, row}); }
 };
 
-struct Main
+struct Main : SDL::AppInterface
 {
-  SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata(
-      "Example Demo text edit", "1.0", "com.example.demo.plus.text-edit");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
   SDL::Window window{"examples/demo/textedit", windowSz};
   SDL::Renderer renderer{window};
   Text text;
@@ -226,7 +218,7 @@ struct Main
 
   Main() { window.StartTextInput(); }
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     renderer.SetDrawColorFloat(SDL::FColor{.75f, .75f, .75f, 1.f});
     renderer.RenderClear();
@@ -246,7 +238,7 @@ struct Main
     return SDL::APP_CONTINUE;
   }
 
-  SDL::AppResult Event(const SDL::Event& event)
+  SDL::AppResult Event(const SDL::Event& event) final
   {
     switch (event.type) {
     case SDL::EVENT_QUIT: return SDL::APP_SUCCESS;
@@ -317,4 +309,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Demo text edit",
+                              "1.0",
+                              "com.example.demo.plus.text-edit")

@@ -4,7 +4,7 @@
  * A left panel with the hexadecimal representation and the ascii on the right.
  *
  */
-#define SDL3PP_MAIN_USE_CALLBACKS 1
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp.h>
 #include <SDL3pp/SDL3pp_main.h>
 
@@ -40,16 +40,8 @@ enum class ClickMode
 
 constexpr SDL::Nanoseconds cursorHalfPeriod = 500ms;
 
-struct Main
+struct Main : SDL::AppInterface
 {
-  SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Template", "1.0", "com.example.template");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main(args);
-    return SDL::APP_CONTINUE;
-  }
-
   SDL::Point windowSz = {1024, 800};
   SDL::Window window{"examples/demo/template", windowSz};
   SDL::Renderer renderer{window};
@@ -81,12 +73,12 @@ struct Main
   bool cursorOnRight = false;
   bool cursorShown = true;
 
-  Main(SDL::AppArgs args)
+  Main(int argc, char** argv)
   {
-    if (args.size() > 1) loadFile(args.back());
+    if (argc > 1) loadFile(argv[argc - 1]);
   }
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     setupFrame();
 
@@ -101,7 +93,7 @@ struct Main
     return SDL::APP_CONTINUE;
   }
 
-  SDL::AppResult Event(const SDL::Event& event)
+  SDL::AppResult Event(const SDL::Event& event) final
   {
     switch (event.type) {
     case SDL::EVENT_QUIT: return SDL::APP_SUCCESS;
@@ -598,4 +590,11 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+extern "C" SDLMAIN_DECLSPEC SDL::AppInterface* SDLCALL
+SDL_AppCreate(int argc, char** argv)
+{
+  SDL::SetAppMetadata(
+    "Example Demo hex edit", "1.0", "com.example.demo.plus.hex-edit");
+  SDL::Init(SDL::INIT_VIDEO);
+  return new Main(argc, argv);
+}
