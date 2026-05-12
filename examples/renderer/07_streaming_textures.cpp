@@ -57,11 +57,11 @@ struct Main
     if (auto surface = texture.LockToSurface()) {
       surface.Fill(0);
       SDL::Rect r{0,
-                  int(((float)(textureSz.y * 0.9f)) * ((scale + 1.0f) / 2.0f)),
+                  int((textureSz.y * 0.9f) * ((scale + 1.0f) / 2.0f)),
                   textureSz.x,
                   textureSz.y / 10};
       /* make a strip of the surface green */
-      auto color = surface.MapRGBA({0, 255, 0});
+      auto color = surface.MapRGBA({0, 255, 0, 255});
       surface.FillRect(r, color);
     }
 

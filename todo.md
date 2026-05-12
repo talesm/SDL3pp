@@ -2,6 +2,7 @@ Todo for next version
 =====================
 
 - [x] Upgrade SDL_mixer to 3.2.2;
+- [x] Fix leak on TextureSurfaceLock::reset()
 - [x] Create new class entry point to simplify it and make it inheritance based;
 - [x] Create macro to make easier to migrate to new inheritance based class
   entry;
