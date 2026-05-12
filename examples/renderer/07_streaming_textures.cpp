@@ -9,25 +9,14 @@
 
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_CALLBACKS
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   // Window size
   static constexpr SDL::Point windowSz = {640, 480};
   static constexpr SDL::Point textureSz = {150, 150};
-
-  // Init library
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Renderer Streaming Textures",
-                        "1.0",
-                        "com.example.renderer-streaming-textures");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
 
   // We will use this renderer to draw into this window every frame.
   SDL::Window window{"examples/renderer/streaming-textures", windowSz};
@@ -37,7 +26,7 @@ struct Main
                                     SDL::TEXTUREACCESS_STREAMING,
                                     textureSz)};
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     const float now = SDL::ToSeconds(SDL::GetTicks());
 
@@ -80,4 +69,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Renderer Streaming Textures",
+                              "1.0",
+                              "com.example.renderer-streaming-textures")

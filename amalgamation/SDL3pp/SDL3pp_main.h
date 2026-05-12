@@ -391,6 +391,24 @@ extern "C" SDLMAIN_DECLSPEC void SDL_AppQuit(void* appstate,
     return new CLASS();                                                        \
   }
 
+/**
+ * Use this to define the callbacks for given class, with app metadata.
+ * @param CLASS The class to wrap in callbacks.
+ * @param INIT_FLAGS The flags to pass to SDL::Init when initializing the app.
+ * @param APPNAME The application name to set in SDL_SetAppMetadata.
+ * @param APPVERSION The application version to set in SDL_SetAppMetadata.
+ * @param APPIDENTIFIER The application identifier to set in SDL_SetAppMetadata.
+ */
+#define SDL3PP_DEFINE_CLASS_CALLBACKS(                                         \
+  CLASS, INIT_FLAGS, APPNAME, APPVERSION, APPIDENTIFIER)                       \
+  extern "C" SDLMAIN_DECLSPEC SDL::AppInterface* SDLCALL SDL_AppCreate(        \
+    int, char*[])                                                              \
+  {                                                                            \
+    SDL::SetAppMetadata(APPNAME, APPVERSION, APPIDENTIFIER);                   \
+    SDL::Init(SDL::INIT_VIDEO);                                                \
+    return new CLASS();                                                        \
+  }
+
 #else // SDL3PP_MAIN_USE_CLASS_CALLBACKS
 
 /**

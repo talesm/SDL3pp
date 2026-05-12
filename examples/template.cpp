@@ -24,10 +24,8 @@ struct Main : SDL::AppInterface
   }
 };
 
-extern "C" SDLMAIN_DECLSPEC SDL::AppInterface* SDLCALL SDL_AppCreate(int,
-                                                                     char*[])
-{
-  SDL::SetAppMetadata("Example Template", "1.0", "com.example.template");
-  SDL::Init(SDL::INIT_VIDEO);
-  return new Main();
-}
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Template",
+                              "1.0",
+                              "com.example.template")
