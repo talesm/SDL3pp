@@ -1,22 +1,12 @@
-#define SDL3PP_MAIN_USE_CALLBACKS 1
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp.h>
 #include <SDL3pp/SDL3pp_main.h>
 
 using namespace std::literals;
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
-
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Asyncio load bitmaps",
-                        "1.0",
-                        "com.example.asyncio-load-bitmaps");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
 
   SDL::Window window{"examples/asyncio/load-bitmaps", windowSz};
   SDL::Renderer renderer{window};
@@ -44,7 +34,7 @@ struct Main
     }
   }
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     if (auto outcome = queue.GetResult()) {
       if (outcome->result == SDL::ASYNCIO_COMPLETE) {
@@ -55,9 +45,6 @@ struct Main
           // the renderer is not multithreaded, so create the texture here once
           // the data loads
           textures[i] = SDL::CreateTextureFromSurface(renderer, surface);
-          if (auto palette = surface.GetPalette()) {
-            textures[i].SetPalette(palette);
-          }
         }
       }
       SDL::free(outcome->buffer);
@@ -76,4 +63,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Asyncio load bitmaps",
+                              "1.0",
+                              "com.example.asyncio-load-bitmaps")
