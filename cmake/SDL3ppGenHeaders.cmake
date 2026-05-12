@@ -16,7 +16,7 @@ ExternalProject_Add(SDL3ImageBase
 )
 ExternalProject_Add(SDL3MixerBase
   PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/base/
-  URL               https://github.com/libsdl-org/SDL_mixer/releases/download/release-3.2.0/SDL3_mixer-3.2.0.tar.gz
+  URL               https://github.com/libsdl-org/SDL_mixer/releases/download/release-3.2.2/SDL3_mixer-3.2.2.tar.gz
   CONFIGURE_COMMAND ""
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""

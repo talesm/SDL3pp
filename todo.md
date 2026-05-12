@@ -1,17 +1,22 @@
 Todo for next version
 =====================
 
+- [x] Upgrade SDL_mixer to 3.2.2;
+- [x] Create new class entry point to simplify it and make it inheritance based;
+- [ ] Create macro to make easier to migrate to new inheritance based class
+  entry;
+- [ ] Migrate examples to new class entry point;
+
+Backlog
+-------
+
+- [ ] Remove old entry point;
 - [ ] Add a constructor to Properties similar to std::map initializer list;
 - [ ] Revamp README, with examples and clearer instructions to integrate to
   project and everything else moved to other files;
 - [ ] Docs improvements:
   - [ ] Update [./docs/transformation.md](transformation);
   - [ ] Update [./docs/callback.md](callback);
-- [x] Rewrite class entry point to simplify it and make it inheritance based;
-
-Backlog
--------
-
 - [ ] Create ReadPixelRaw/WritePixelRaw on surface;
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;
