@@ -86214,7 +86214,6 @@ inline void TextureSurfaceLock::reset()
   if (!m_lock) return;
   UnlockTexture(m_lock);
   m_lock = {};
-  Surface::release();
 }
 
 inline void TextureLock::reset()
