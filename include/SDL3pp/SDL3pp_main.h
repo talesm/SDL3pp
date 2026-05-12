@@ -379,7 +379,19 @@ extern "C" SDLMAIN_DECLSPEC void SDL_AppQuit(void* appstate,
                                             "Critical error during app exit");
   }
 }
-#endif // SDL3PP_MAIN_USE_CLASS_CALLBACKS
+
+/**
+ * Use this to define the callbacks for given class
+ * @param CLASS The class to wrap in callbacks.
+ */
+#define SDL3PP_DEFINE_CALLBACKS(CLASS)                                         \
+  extern "C" SDLMAIN_DECLSPEC SDL::AppInterface* SDLCALL SDL_AppCreate(        \
+    int, char*[])                                                              \
+  {                                                                            \
+    return new CLASS();                                                        \
+  }
+
+#else // SDL3PP_MAIN_USE_CLASS_CALLBACKS
 
 /**
  * Use this to define the callbacks for given class
@@ -404,6 +416,8 @@ extern "C" SDLMAIN_DECLSPEC void SDL_AppQuit(void* appstate,
   {                                                                            \
     SDL::QuitClass(static_cast<CLASS*>(appstate), result);                     \
   }
+
+#endif // SDL3PP_MAIN_USE_CLASS_CALLBACKS
 
 /// @}
 

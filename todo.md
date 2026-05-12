@@ -3,7 +3,7 @@ Todo for next version
 
 - [x] Upgrade SDL_mixer to 3.2.2;
 - [x] Create new class entry point to simplify it and make it inheritance based;
-- [ ] Create macro to make easier to migrate to new inheritance based class
+- [x] Create macro to make easier to migrate to new inheritance based class
   entry;
 - [ ] Migrate examples to new class entry point;
 
