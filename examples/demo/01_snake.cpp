@@ -7,7 +7,7 @@
  * Based on SDL's demo snake.c
  */
 
-#define SDL3PP_MAIN_USE_CALLBACKS 1
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp.h>
 #include <SDL3pp/SDL3pp_main.h>
 
@@ -151,22 +151,14 @@ struct SnakeContext
   }
 };
 
-struct Main
+struct Main : SDL::AppInterface
 {
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Snake game", "1.0", "com.example.Snake");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
-
   SDL::Window window{"examples/demo/snake", windowSz};
   SDL::Renderer renderer{window};
   SnakeContext snake_ctx;
   SDL::Nanoseconds lastStep = SDL::GetTicks();
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     SDL::Nanoseconds now = SDL::GetTicks();
 
@@ -215,7 +207,7 @@ struct Main
     return SDL::APP_CONTINUE;
   }
 
-  SDL::AppResult Event(const SDL::Event& event)
+  SDL::AppResult Event(const SDL::Event& event) final
   {
     switch (event.type) {
     case SDL::EVENT_QUIT: return SDL::APP_SUCCESS;
@@ -226,4 +218,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Snake game",
+                              "1.0",
+                              "com.example.Snake")
