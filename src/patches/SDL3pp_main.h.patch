@@ -237,7 +237,7 @@
 +    int, char*[])                                                              \
 +  {                                                                            \
 +    SDL::SetAppMetadata(APPNAME, APPVERSION, APPIDENTIFIER);                   \
-+    SDL::Init(SDL::INIT_VIDEO);                                                \
++    SDL::Init(INIT_FLAGS);                                                     \
 +    return new CLASS();                                                        \
 +  }
 +

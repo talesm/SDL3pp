@@ -405,7 +405,7 @@ extern "C" SDLMAIN_DECLSPEC void SDL_AppQuit(void* appstate,
     int, char*[])                                                              \
   {                                                                            \
     SDL::SetAppMetadata(APPNAME, APPVERSION, APPIDENTIFIER);                   \
-    SDL::Init(SDL::INIT_VIDEO);                                                \
+    SDL::Init(INIT_FLAGS);                                                     \
     return new CLASS();                                                        \
   }
 

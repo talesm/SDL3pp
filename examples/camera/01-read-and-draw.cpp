@@ -1,40 +1,30 @@
-#define SDL3PP_MAIN_USE_CALLBACKS 1
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp.h>
 #include <SDL3pp/SDL3pp_main.h>
 
 using namespace std::literals;
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
-
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Camera Read and Draw",
-                        "1.0",
-                        "com.example.camera-read-and-draw");
-    SDL::Init(SDL::INIT_VIDEO | SDL::INIT_CAMERA);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
 
   SDL::Window window{"examples/camera/read-and-draw", windowSz};
   SDL::Renderer renderer{window};
 
-  SDL::OwnArray<SDL::CameraID> devices = SDL::GetCameras();
   SDL::Camera camera;
   SDL::Texture texture;
 
   Main()
   {
-    if (devices.size() == 0) {
+    SDL::OwnArray<SDL::CameraID> devices = SDL::GetCameras();
+    if (devices.empty()) {
       throw std::runtime_error{"Couldn't find any camera devices! Please "
                                "connect a camera and try again."};
     }
     camera = SDL::OpenCamera(devices[0]);
   }
 
-  SDL::AppResult Event(const SDL::Event& event)
+  SDL::AppResult Event(const SDL::Event& event) final
   {
     if (event.type == SDL::EVENT_QUIT) {
       return SDL::APP_SUCCESS; // end the program, reporting success to the OS.
@@ -47,7 +37,7 @@ struct Main
     return SDL::APP_CONTINUE;
   }
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     Uint64 timestampNS = 0;
     if (auto frame = camera.AcquireFrame(&timestampNS)) {
@@ -79,4 +69,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO | SDL::INIT_CAMERA,
+                              "Example Camera Read and Draw",
+                              "1.0",
+                              "com.example.camera-read-and-draw")
