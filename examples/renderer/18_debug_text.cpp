@@ -8,26 +8,17 @@
  */
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_CALLBACKS
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
-
-  // Init library
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Debug Text", "1.0", "com.example.debug-text");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
 
   SDL::Window window{"examples/renderer/debug-text", windowSz};
   SDL::Renderer renderer{window};
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     constexpr int charsize = SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE;
 
@@ -60,4 +51,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Debug Text",
+                              "1.0",
+                              "com.example.debug-text")

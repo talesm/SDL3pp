@@ -8,25 +8,14 @@
  */
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_CALLBACKS
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
   static constexpr int cliprect_size = 250;
   static constexpr float cliprect_speed = 200; // pixels per second
-
-  // Init library
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Renderer Clipping Rectangle",
-                        "1.0",
-                        "com.example.renderer-cliprect");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
 
   SDL::Window window{"examples/renderer/cliprect", windowSz};
   SDL::Renderer renderer{window};
@@ -43,7 +32,7 @@ struct Main
   SDL::Nanoseconds last_time = SDL::GetTicks();
 
   // This function runs once per frame, and is the heart of the program.
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     const SDL::Rect cliprect{SDL::Point(cliprect_position),
                              SDL::Point{cliprect_size, cliprect_size}};
@@ -87,4 +76,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Renderer Clipping Rectangle",
+                              "1.0",
+                              "com.example.renderer-cliprect")

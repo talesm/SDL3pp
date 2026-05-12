@@ -8,22 +8,12 @@
  */
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_CALLBACKS
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
-
-  // Init library
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata(
-      "Example Renderer Color Mods", "1.0", "com.example.renderer-color-mods");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
 
   SDL::Window window{"examples/renderer/color-mods", windowSz};
   SDL::Renderer renderer{window};
@@ -35,14 +25,14 @@ struct Main
     renderer,
     std::format("{}../assets/sample.png", SDL::GetBasePath())};
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     const float now = SDL::ToSeconds(SDL::GetTicks());
     // choose the modulation values for the center texture. The sine wave trick
     // makes it fade between colors smoothly.
-    const float red = 0.5 + 0.5 * SDL::sin(now);
-    const float green = 0.5 + 0.5 * SDL::sin(now + SDL_PI_F * 2 / 3);
-    const float blue = 0.5 + 0.5 * SDL::sin(now + SDL_PI_F * 4 / 3);
+    const auto red = float(0.5 + 0.5 * SDL::sin(now));
+    const auto green = float(0.5 + 0.5 * SDL::sin(now + SDL_PI_F * 2 / 3));
+    const auto blue = float(0.5 + 0.5 * SDL::sin(now + SDL_PI_F * 4 / 3));
 
     // as you can see, rendering draws over what was drawn before it.
     renderer.SetDrawColor(SDL::Color{0, 0, 0}); // black
@@ -57,19 +47,19 @@ struct Main
 
     // top left; let's make this one blue!
     SDL::FRect dst_rect{{0, 0}, texture.GetSize()};
-    texture.SetColorMod(0.f, 0.f, 1.f);
+    texture.SetColorModFloat(0.f, 0.f, 1.f);
     renderer.RenderTexture(texture, {}, dst_rect);
 
     // center this one, and have it cycle through red/green/blue modulations.
     dst_rect.x = (windowSz.x - dst_rect.w) / 2.f;
     dst_rect.y = (windowSz.y - dst_rect.h) / 2.f;
-    texture.SetColorMod(red, green, blue);
+    texture.SetColorModFloat(red, green, blue);
     renderer.RenderTexture(texture, {}, dst_rect);
 
     // bottom right; let's make this one red!
     dst_rect.x = windowSz.x - dst_rect.w;
     dst_rect.y = windowSz.y - dst_rect.h;
-    texture.SetColorMod(1.f, 0.f, 0.f);
+    texture.SetColorModFloat(1.f, 0.f, 0.f);
     renderer.RenderTexture(texture, {}, dst_rect);
 
     renderer.Present();       // put it all on the screen!
@@ -77,4 +67,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Renderer Color Mods",
+                              "1.0",
+                              "com.example.renderer-color-mods")

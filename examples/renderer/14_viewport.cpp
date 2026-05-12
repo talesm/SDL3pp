@@ -8,22 +8,12 @@
  */
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_CALLBACKS
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
-
-  // Init library
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata(
-      "Example Renderer Viewport", "1.0", "com.example.renderer-viewport");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
 
   SDL::Window window{"examples/renderer/viewport", windowSz};
   SDL::Renderer renderer{window};
@@ -35,7 +25,7 @@ struct Main
     renderer,
     std::format("{}../assets/sample.png", SDL::GetBasePath())};
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     /* Setting a viewport has the effect of limiting the area that rendering
        can happen, and making coordinate (0, 0) live somewhere else in the
@@ -70,4 +60,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Renderer Viewport",
+                              "1.0",
+                              "com.example.renderer-viewport")

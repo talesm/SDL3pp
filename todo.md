@@ -7,6 +7,7 @@ Todo for next version
 - [x] Create macro to make easier to migrate to new inheritance based class
   entry;
 - [ ] Migrate examples to new class entry point;
+  - [x] renderer examples;
 
 Backlog
 -------

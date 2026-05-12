@@ -14,22 +14,12 @@
  */
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_CALLBACKS
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
-
-  // Init library
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata(
-      "Example Read Pixels", "1.0", "com.example.renderer-read-pixels");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
 
   SDL::Window window{"examples/renderer/read-pixels", windowSz};
   SDL::Renderer renderer{window};
@@ -44,7 +34,7 @@ struct Main
   SDL::Texture converted_texture;
   SDL::Point converted_textureSz;
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     const float now = SDL::ToSeconds(SDL::GetTicks());
     // we'll have a texture rotate around over 2 seconds (2000 milliseconds).
@@ -88,11 +78,11 @@ struct Main
          but it works here. In real life, something like Floyd-Steinberg
          dithering might work better:
          https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering*/
-      for (int y = 0; y < surface.GetHeight(); y++) {
-        Uint32* pixels =
+      for (int y = 0; y < surface->h; y++) {
+        auto* pixels =
           (Uint32*)(((Uint8*)surface.GetPixels()) + (y * surface.GetPitch()));
-        for (int x = 0; x < surface.GetWidth(); x++) {
-          Uint8* p = (Uint8*)(&pixels[x]);
+        for (int x = 0; x < surface->w; x++) {
+          auto* p = (Uint8*)(&pixels[x]);
           const Uint32 average =
             (((Uint32)p[1]) + ((Uint32)p[2]) + ((Uint32)p[3])) / 3;
           if (average == 0) {
@@ -119,4 +109,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example Renderer Read Pixels",
+                              "1.0",
+                              "com.example.renderer-read-pixels")
