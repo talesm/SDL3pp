@@ -10,24 +10,14 @@
  *
  * Originally taken from SDL's example simple-playback-callback.c
  */
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp.h>
-
-#define SDL3PP_MAIN_USE_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
 
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Simple Audio Playback Callback",
-                        "1.0",
-                        "com.example.audio-simple-playback-callback");
-    SDL::Init(SDL::INIT_VIDEO | SDL::INIT_AUDIO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
   SDL::Window window = {"examples/audio/simple-playback-callback", windowSz};
   SDL::Renderer renderer{window};
   SDL::AudioStream stream{
@@ -77,7 +67,7 @@ struct Main
     }
   }
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     // we're not doing anything with the renderer, so just blank it out.
     renderer.RenderClear();
@@ -87,4 +77,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO | SDL::INIT_AUDIO,
+                              "Example Simple Audio Playback Callback",
+                              "1.0",
+                              "com.example.audio-simple-playback-callback")

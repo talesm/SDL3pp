@@ -7,9 +7,8 @@
  *
  * Originally taken from SDL's example multiple-streams.c
  */
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp.h>
-
-#define SDL3PP_MAIN_USE_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
 struct Sound
@@ -30,25 +29,16 @@ struct Sound
   }
 };
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
 
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Audio Multiple Streams",
-                        "1.0",
-                        "com.example.audio-multiple-streams");
-    SDL::Init(SDL::INIT_VIDEO | SDL::INIT_AUDIO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
   SDL::Window window{"examples/audio/multiple-streams", windowSz};
   SDL::Renderer renderer{window};
   SDL::AudioDevice audio_device{SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK, {}};
   Sound sounds[2] = {{audio_device, "sample.wav"}, {audio_device, "sword.wav"}};
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     for (auto& sound : sounds) {
       if (sound.stream.GetQueued() < int(sound.wav_data.size())) {
@@ -64,4 +54,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO | SDL::INIT_AUDIO,
+                              "Example Audio Multiple Streams",
+                              "1.0",
+                              "com.example.audio-multiple-streams")

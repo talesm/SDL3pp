@@ -7,24 +7,14 @@
  *
  * Originally taken from SDL's example simple-playback.c
  */
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp.h>
-
-#define SDL3PP_MAIN_USE_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
 
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata("Example Simple Audio Simple Playback",
-                        "1.0",
-                        "com.example.audio-simple-playback");
-    SDL::Init(SDL::INIT_VIDEO | SDL::INIT_AUDIO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
   SDL::Window window{"examples/audio/simple-playback", windowSz};
   SDL::Renderer renderer{window};
   SDL::AudioStream stream{
@@ -34,7 +24,7 @@ struct Main
 
   Main() { stream.ResumeDevice(); }
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     /* see if we need to feed the audio stream more data yet.
       We're being lazy here, but if there's less than half a second queued,
@@ -71,4 +61,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO | SDL::INIT_AUDIO,
+                              "Example Simple Audio Simple Playback",
+                              "1.0",
+                              "com.example.audio-simple-playback")

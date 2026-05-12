@@ -6,10 +6,15 @@ Todo for next version
 - [x] Create new class entry point to simplify it and make it inheritance based;
 - [x] Create macro to make easier to migrate to new inheritance based class
   entry;
-- [ ] Migrate examples to new class entry point;
-  - [x] renderer examples;
+- [x] Migrate examples to new class entry point;
+  - [x] asyncio examples;
+  - [x] audio examples;
+  - [x] camera examples;
+  - [x] demo examples;
+  - [x] demo_plus examples;
   - [x] misc examples;
-  - [x] font examples;
+  - [x] renderer examples;
+  - [x] ttf examples;
 
 Backlog
 -------
