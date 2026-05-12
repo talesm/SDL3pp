@@ -9,10 +9,10 @@
 
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_CALLBACKS
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   // Window size
   static constexpr SDL::Point windowSz = {640, 480};
@@ -31,7 +31,7 @@ struct Main
   SDL::Window window{InitAndCreateWindow()};
   SDL::RendererRef renderer{window.GetRenderer()};
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     std::array<SDL::FRect, 16> rects;
     const float now = SDL::ToSeconds(SDL::GetTicks());
