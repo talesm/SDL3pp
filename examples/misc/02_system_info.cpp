@@ -2,10 +2,10 @@
 #include <vector>
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_CALLBACKS
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point LOG_SZ = {600, 400};
 
@@ -103,15 +103,6 @@ struct Main
     }
   }
 
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata(
-      "Example System info", "1.0", "com.example.system-info");
-    SDL::Init(SDL::INIT_VIDEO);
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
-
   SDL::Window window;
   SDL::Renderer renderer;
   static constexpr SDL::Point WINDOW_SZ = LOG_SZ * 2;
@@ -123,7 +114,7 @@ struct Main
     renderer.SetScale({2.f, 2.f});
   }
 
-  SDL::AppResult Iterate()
+  SDL::AppResult Iterate() final
   {
     renderer.SetDrawColorFloat(SDL::FColor{.75f, .75f, .75f, 1.f});
     renderer.RenderClear();
@@ -135,4 +126,8 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example System info",
+                              "1.0",
+                              "com.example.system-info")

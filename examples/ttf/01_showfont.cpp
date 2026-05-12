@@ -1,21 +1,11 @@
 #include <SDL3pp/SDL3pp.h>
 
-#define SDL3PP_MAIN_USE_CALLBACKS
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
 #include <SDL3pp/SDL3pp_main.h>
 
-struct Main
+struct Main : SDL::AppInterface
 {
   static constexpr SDL::Point windowSz = {640, 480};
-
-  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
-  {
-    SDL::SetAppMetadata(
-      "Example TTF Showfont", "1.0", "com.example.ttf-showfont");
-    SDL::Init(SDL::INIT_VIDEO);
-    SDL::TTF::Init();
-    *m = new Main();
-    return SDL::APP_CONTINUE;
-  }
 
   SDL::Window window{"Test", windowSz};
   SDL::Renderer renderer{window};
@@ -25,12 +15,14 @@ struct Main
                            "0123456789!@#$%&*(){}[]\"'";
   SDL::Texture testTexture;
   SDL::FRect testRect;
-  int ptSize = 20;
+  float ptSize = 20;
   int testQuality = 1;
   static constexpr int testQualityCount = 2;
   SDL::Color testColor{0, 0, 0};
 
-  SDL::AppResult Iterate()
+  Main() { SDL::TTF::Init(); }
+
+  SDL::AppResult Iterate() final
   {
     renderer.SetDrawColorFloat(SDL::FColor{.75f, .75f, .75f, 1.f});
     renderer.RenderClear();
@@ -41,7 +33,7 @@ struct Main
     return SDL::APP_CONTINUE;
   }
 
-  SDL::AppResult Event(const SDL::Event& ev)
+  SDL::AppResult Event(const SDL::Event& ev) final
   {
     switch (ev.type) {
     case SDL::EVENT_QUIT: return SDL::APP_SUCCESS;
@@ -94,9 +86,13 @@ struct Main
     default: break;
     }
     testTexture = SDL::Texture(renderer, surface);
-    testRect.w = testTexture.GetWidth();
-    testRect.h = testTexture.GetHeight();
+    testRect.w = float(testTexture->w);
+    testRect.h = float(testTexture->h);
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main)
+SDL3PP_DEFINE_CLASS_CALLBACKS(Main,
+                              SDL::INIT_VIDEO,
+                              "Example TTF Showfont",
+                              "1.0",
+                              "com.example.ttf-showfont")

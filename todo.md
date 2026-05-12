@@ -8,6 +8,8 @@ Todo for next version
   entry;
 - [ ] Migrate examples to new class entry point;
   - [x] renderer examples;
+  - [x] misc examples;
+  - [x] font examples;
 
 Backlog
 -------
