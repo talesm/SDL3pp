@@ -353,6 +353,12 @@ struct AppInterface
   virtual void quit(SDL::AppResult result) {}
 };
 
+} // namespace SDL
+
+/**
+ * @addtogroup CategoryMain
+ * @{
+ */
 /**
  * Prototype for the application's main class creation function.
  *
@@ -376,9 +382,14 @@ struct AppInterface
  *          indicate early exit with APP_SUCCESS.
  * @throws any exception, which will be caught and logged by SDL, and cause
  *         the app to exit with APP_FAILURE.
+ *
+ * @since This function is available since SDL3pp 0.10.1.
  */
-extern "C" SDLMAIN_DECLSPEC AppInterface* SDLCALL SDL_AppCreate(int argc,
-                                                                char* argv[]);
+extern "C" SDLMAIN_DECLSPEC SDL::AppInterface* SDLCALL
+SDL_AppCreate(int argc, char* argv[]);
+
+/// @}
+namespace SDL {
 
 #ifdef SDL3PP_MAIN_USE_CLASS_CALLBACKS
 
