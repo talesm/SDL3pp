@@ -1,5 +1,42 @@
 # Changelog
 
+## Version 0.10.1
+
+This release have the new SDL3PP_MAIN_USE_CLASS_CALLBACKS entry point mechanism.
+
+You have to define it before include `SDL3pp_main.h` in order to work, then
+define the
+[SDL_AppCreate()](https://talesm.github.io/SDL3pp/group__CategoryMain.html#gad95d47a69e69c5f110f0c3d6d79d0e9f)
+callback, returning a
+[AppInterface](https://talesm.github.io/SDL3pp/structSDL_1_1AppInterface.html)
+pointer. You should create a class derived from AppInterface and add your
+desired behavior there. An example would be:
+
+```cpp
+#define SDL3PP_MAIN_USE_CLASS_CALLBACKS
+#include <SDL3pp/SDL3pp_main.h>
+#include <SDL3pp/SDL3pp.h>
+
+class Main: public SDL::AppInterface {
+  /// Game logic
+}
+
+SDL::AppInterface *SDL_AppCreate(int argc, char *argv[]) {
+  return new Main(/* ... */);
+}
+```
+
+- Create new SDL3PP_MAIN_USE_CLASS_CALLBACKS class entry point system that is
+  inheritance based;
+- Create macros to make easier to migrate to new inheritance based class entry:
+  - If SDL3PP_MAIN_USE_CLASS_CALLBACKS is defined, SDL3PP_DEFINE_CALLBACKS() now
+    defines SDL_AppCreate() for you;
+  - Alternatively, SDL3PP_DEFINE_CLASS_CALLBACKS() defines the SDL_AppCreate(),
+    sets up meta-data and calls SDL::Init() for you;
+- Migrate examples to new class entry point;
+- Upgrade SDL_mixer to 3.2.2;
+- Fix leak on TextureSurfaceLock::reset()
+
 ## Version 0.10.0
 
 Reorganize properties wrapping.

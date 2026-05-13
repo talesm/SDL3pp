@@ -376,6 +376,20 @@ struct AppInterface
  * SDL3PP_DEFINE_CLASS_CALLBACKS to define this function for you, if your main
  * class is compatible with the default implementations of the main callbacks.
  *
+ * ```cpp
+ * #define SDL3PP_MAIN_USE_CLASS_CALLBACKS
+ * #include <SDL3pp/SDL3pp_main.h>
+ * #include <SDL3pp/SDL3pp.h>
+ *
+ * class Main: public SDL::AppInterface {
+ *   /// Game logic
+ * }
+ *
+ * SDL::AppInterface *SDL_AppCreate(int argc, char *argv[]) {
+ *   return new Main();
+ * }
+ * ```
+ *
  * @param argc an ANSI-C style main function's argc.
  * @param argv an ANSI-C style main function's argv.
  * @returns a pointer to the application's main class instance, or nullptr to
@@ -384,6 +398,8 @@ struct AppInterface
  *         the app to exit with APP_FAILURE.
  *
  * @since This function is available since SDL3pp 0.10.1.
+ * @sa SDL3PP_DEFINE_CALLBACKS
+ * @sa SDL3PP_DEFINE_CLASS_CALLBACKS
  */
 extern "C" SDLMAIN_DECLSPEC SDL::AppInterface* SDLCALL
 SDL_AppCreate(int argc, char* argv[]);
