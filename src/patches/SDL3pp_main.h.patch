@@ -121,31 +121,100 @@
  /**
   * Callback from the application to let the suspend continue.
   *
-@@ -257,6 +293,150 @@
+@@ -257,6 +293,222 @@
   */
  inline void GDKSuspendComplete() { SDL_GDKSuspendComplete(); }
  
++/**
++ * Base class for SDL3PP_MAIN_USE_CLASS_CALLBACKS main callback classes.
++ *
++ * This is an alternative that already includes exception handling and logging,
++ * so you have sensible behavior for C++.
++ *
++ * Also, you can just override the functions you need, and rely on the default
++ * behavior of the others, which is to continue iterating until a quit event is
++ * received, at which point it will exit with success.
++ */
 +struct AppInterface
 +{
 +  virtual ~AppInterface() = default;
 +
++  /**
++   * Called to initialize the app. This is called once at startup.
++   *
++   * @return SDL::APP_CONTINUE to continue running the app, otherwise
++   * SDL::APP_SUCCESS to exit with success and SDL::APP_FAILURE to exit with
++   * failure.
++   */
 +  virtual SDL::AppResult Init() { return SDL::APP_CONTINUE; }
 +
++  /**
++   * Called to iterate the app.
++   *
++   * This is called repeatedly until it returns something other than
++   * SDL::APP_CONTINUE.
++   *
++   * @return SDL::APP_CONTINUE to continue running the app, otherwise
++   * SDL::APP_SUCCESS to exit with success and SDL::APP_FAILURE to exit with
++   * failure.
++   */
 +  virtual SDL::AppResult Iterate() { return SDL::APP_CONTINUE; }
 +
++  /**
++   * Called to handle an event.
++   *
++   * This is called when an event is received.
++   *
++   * @param ev The event to handle.
++   * @return SDL::APP_CONTINUE to continue running the app, otherwise
++   * SDL::APP_SUCCESS to exit with success and SDL::APP_FAILURE to exit with
++   * failure.
++   */
 +  virtual SDL::AppResult Event(const SDL::Event& ev)
 +  {
 +    return ev.type == SDL_EVENT_QUIT ? SDL::APP_SUCCESS : SDL::APP_CONTINUE;
 +  }
 +
-+  virtual void quit(SDL::AppResult) {}
++  /**
++   * Called to quit the app.
++   *
++   * This is called when the app is quitting.
++   *
++   * @param result The result of the app.
++   */
++  virtual void quit(SDL::AppResult result) {}
 +};
 +
++/**
++ * Prototype for the application's main class creation function.
++ *
++ * You need to implement this function if you want to use
++ * SDL3PP_MAIN_USE_CLASS_CALLBACKS. It should return a pointer to an instance of
++ * your main class, which should be a subclass of AppInterface. This function is
++ * called by SDL to create the main class instance, and then SDL will call the
++ * appropriate functions on that instance for initialization, iteration, event
++ * handling, and quitting.
++ *
++ * You should not call this function directly; it is called by SDL3pp
++ * internally.
++ *
++ * You may also use the macros SDL3PP_DEFINE_CALLBACKS or
++ * SDL3PP_DEFINE_CLASS_CALLBACKS to define this function for you, if your main
++ * class is compatible with the default implementations of the main callbacks.
++ *
++ * @param argc an ANSI-C style main function's argc.
++ * @param argv an ANSI-C style main function's argv.
++ * @returns a pointer to the application's main class instance, or nullptr to
++ *          indicate early exit with APP_SUCCESS.
++ * @throws any exception, which will be caught and logged by SDL, and cause
++ *         the app to exit with APP_FAILURE.
++ */
 +extern "C" SDLMAIN_DECLSPEC AppInterface* SDLCALL SDL_AppCreate(int argc,
 +                                                                char* argv[]);
 +
 +#ifdef SDL3PP_MAIN_USE_CLASS_CALLBACKS
 +
++/// @private
 +extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppInit(void** appstate,
 +                                                       int argc,
 +                                                       char* argv[])
@@ -166,6 +235,7 @@
 +  return APP_FAILURE;
 +}
 +
++/// @private
 +extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppIterate(void* appstate)
 +{
 +  try {
@@ -180,6 +250,7 @@
 +  return APP_FAILURE;
 +}
 +
++/// @private
 +extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppEvent(void* appstate,
 +                                                        SDL::Event* event)
 +{
@@ -195,6 +266,7 @@
 +  return APP_FAILURE;
 +}
 +
++/// @private
 +extern "C" SDLMAIN_DECLSPEC void SDL_AppQuit(void* appstate,
 +                                             SDL::AppResult result)
 +{
