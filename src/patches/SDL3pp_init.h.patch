@@ -126,7 +126,7 @@
  namespace prop::appMetaData {
  
  constexpr auto NAME_STRING =
-@@ -557,6 +601,219 @@
+@@ -557,6 +601,229 @@
    return SDL_GetAppMetadataProperty(name);
  }
  
@@ -134,7 +134,7 @@
 +/**
 + * The default log priority for app class.
 + */
-+#define SDL3PP_APPCLASS_LOG_PRIORITY LOG_PRIORITY_CRITICAL
++#define SDL3PP_APPCLASS_LOG_PRIORITY SDL::LOG_PRIORITY_CRITICAL
 +#endif // SDL3PP_APPCLASS_LOG_PRIORITY
 +
 +/**
@@ -200,6 +200,8 @@
 +    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
 +                                            e.what());
 +  } catch (...) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(
++      SDL3PP_APPCLASS_LOG_PRIORITY, "Unknown error during app initialization");
 +  }
 +  return APP_FAILURE;
 +}
@@ -216,6 +218,8 @@
 +    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
 +                                            e.what());
 +  } catch (...) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(
++      SDL3PP_APPCLASS_LOG_PRIORITY, "Unknown error during app initialization");
 +  }
 +  return APP_FAILURE;
 +}
@@ -241,6 +245,8 @@
 +    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
 +                                            e.what());
 +  } catch (...) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(
++      SDL3PP_APPCLASS_LOG_PRIORITY, "Unknown error during app iteration");
 +  }
 +  return APP_FAILURE;
 +}
@@ -282,6 +288,8 @@
 +    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
 +                                            e.what());
 +  } catch (...) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(
++      SDL3PP_APPCLASS_LOG_PRIORITY, "Unknown error during app event handling");
 +  }
 +  return APP_FAILURE;
 +}
@@ -295,6 +303,8 @@
 +    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
 +                                            e.what());
 +  } catch (...) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(
++      SDL3PP_APPCLASS_LOG_PRIORITY, "Unknown error during app event handling");
 +  }
 +  return APP_FAILURE;
 +}

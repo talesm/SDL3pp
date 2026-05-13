@@ -353,6 +353,8 @@ struct AppInterface
   virtual void quit(SDL::AppResult result) {}
 };
 
+} // namespace SDL
+
 /**
  * Prototype for the application's main class creation function.
  *
@@ -377,8 +379,8 @@ struct AppInterface
  * @throws any exception, which will be caught and logged by SDL, and cause
  *         the app to exit with APP_FAILURE.
  */
-extern "C" SDLMAIN_DECLSPEC AppInterface* SDLCALL SDL_AppCreate(int argc,
-                                                                char* argv[]);
+extern "C" SDLMAIN_DECLSPEC SDL::AppInterface* SDLCALL
+SDL_AppCreate(int argc, char* argv[]);
 
 #ifdef SDL3PP_MAIN_USE_CLASS_CALLBACKS
 
@@ -389,33 +391,33 @@ extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppInit(void** appstate,
 {
   try {
     auto app = SDL_AppCreate(argc, argv);
-    if (!app) return APP_SUCCESS;
+    if (!app) return SDL::APP_SUCCESS;
     *appstate = app;
     app->Init();
-    return APP_CONTINUE;
+    return SDL::APP_CONTINUE;
   } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
+    SDL::LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                                 e.what());
   } catch (...) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(
+    SDL::LOG_CATEGORY_APPLICATION.LogUnformatted(
       SDL3PP_APPCLASS_LOG_PRIORITY, "Critical error during app initialization");
   }
-  return APP_FAILURE;
+  return SDL::APP_FAILURE;
 }
 
 /// @private
 extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppIterate(void* appstate)
 {
   try {
-    return static_cast<AppInterface*>(appstate)->Iterate();
+    return static_cast<SDL::AppInterface*>(appstate)->Iterate();
   } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
+    SDL::LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                                 e.what());
   } catch (...) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(
+    SDL::LOG_CATEGORY_APPLICATION.LogUnformatted(
       SDL3PP_APPCLASS_LOG_PRIORITY, "Critical error during app iteration");
   }
-  return APP_FAILURE;
+  return SDL::APP_FAILURE;
 }
 
 /// @private
@@ -423,15 +425,15 @@ extern "C" SDLMAIN_DECLSPEC SDL::AppResult SDL_AppEvent(void* appstate,
                                                         SDL::Event* event)
 {
   try {
-    return static_cast<AppInterface*>(appstate)->Event(*event);
+    return static_cast<SDL::AppInterface*>(appstate)->Event(*event);
   } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
+    SDL::LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                                 e.what());
   } catch (...) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(
+    SDL::LOG_CATEGORY_APPLICATION.LogUnformatted(
       SDL3PP_APPCLASS_LOG_PRIORITY, "Critical error during app event handling");
   }
-  return APP_FAILURE;
+  return SDL::APP_FAILURE;
 }
 
 /// @private
@@ -439,16 +441,16 @@ extern "C" SDLMAIN_DECLSPEC void SDL_AppQuit(void* appstate,
                                              SDL::AppResult result)
 {
   try {
-    auto app = static_cast<AppInterface*>(appstate);
+    auto app = static_cast<SDL::AppInterface*>(appstate);
     if (!app) return;
     app->quit(result);
     delete app;
   } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
+    SDL::LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                                 e.what());
   } catch (...) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            "Critical error during app exit");
+    SDL::LOG_CATEGORY_APPLICATION.LogUnformatted(
+      SDL3PP_APPCLASS_LOG_PRIORITY, "Critical error during app exit");
   }
 }
 
@@ -510,7 +512,5 @@ extern "C" SDLMAIN_DECLSPEC void SDL_AppQuit(void* appstate,
 #endif // SDL3PP_MAIN_USE_CLASS_CALLBACKS
 
 /// @}
-
-} // namespace SDL
 
 #endif /* SDL3PP_MAIN_H_ */

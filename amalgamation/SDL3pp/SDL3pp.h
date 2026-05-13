@@ -80145,7 +80145,7 @@ inline const char* GetAppMetadataProperty(StringParam name)
 /**
  * The default log priority for app class.
  */
-#define SDL3PP_APPCLASS_LOG_PRIORITY LOG_PRIORITY_CRITICAL
+#define SDL3PP_APPCLASS_LOG_PRIORITY SDL::LOG_PRIORITY_CRITICAL
 #endif // SDL3PP_APPCLASS_LOG_PRIORITY
 
 /**
@@ -80211,6 +80211,8 @@ inline AppResult InitClass(T** state, AppArgs args)
     LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
                                             e.what());
   } catch (...) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(
+      SDL3PP_APPCLASS_LOG_PRIORITY, "Unknown error during app initialization");
   }
   return APP_FAILURE;
 }
@@ -80227,6 +80229,8 @@ inline AppResult InitClass(T** state, AppArgs args)
     LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
                                             e.what());
   } catch (...) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(
+      SDL3PP_APPCLASS_LOG_PRIORITY, "Unknown error during app initialization");
   }
   return APP_FAILURE;
 }
@@ -80252,6 +80256,8 @@ inline AppResult IterateClass(T* state)
     LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
                                             e.what());
   } catch (...) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(
+      SDL3PP_APPCLASS_LOG_PRIORITY, "Unknown error during app iteration");
   }
   return APP_FAILURE;
 }
@@ -80293,6 +80299,8 @@ inline AppResult EventClass(T* state, const SDL_Event& event)
     LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
                                             e.what());
   } catch (...) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(
+      SDL3PP_APPCLASS_LOG_PRIORITY, "Unknown error during app event handling");
   }
   return APP_FAILURE;
 }
@@ -80306,6 +80314,8 @@ inline AppResult EventClass(T* state, const SDL_Event& event)
     LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
                                             e.what());
   } catch (...) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(
+      SDL3PP_APPCLASS_LOG_PRIORITY, "Unknown error during app event handling");
   }
   return APP_FAILURE;
 }
