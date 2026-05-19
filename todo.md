@@ -1,20 +1,9 @@
 Todo for next version
 =====================
 
-- [x] Upgrade SDL_mixer to 3.2.2;
-- [x] Fix leak on TextureSurfaceLock::reset()
-- [x] Create new class entry point to simplify it and make it inheritance based;
-- [x] Create macro to make easier to migrate to new inheritance based class
-  entry;
-- [x] Migrate examples to new class entry point;
-  - [x] asyncio examples;
-  - [x] audio examples;
-  - [x] camera examples;
-  - [x] demo examples;
-  - [x] demo_plus examples;
-  - [x] misc examples;
-  - [x] renderer examples;
-  - [x] ttf examples;
+- [x] Add missing wrapper for MIX_PROP_PLAY_START_ORDER_NUMBER (this was added
+  on SDL_mixer 3.2.2);
+- [ ] Add experimental support for SDL3_net;
 
 Backlog
 -------
