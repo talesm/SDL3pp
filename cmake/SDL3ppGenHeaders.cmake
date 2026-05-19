@@ -57,6 +57,7 @@ add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
   COMMAND ${PROJECT_SOURCE_DIR}/scripts/parse.sh
   DEPENDS SDL3Base
           SDL3ImageBase
+          SDL3MixerBase
           SDL3TTFBase
           ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
           ${CPPFIER_SOURCES}

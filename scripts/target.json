@@ -214998,7 +214998,7 @@
                   }
                 ],
                 "Each call to this function must be paired with a call to Mixer.Unlock from the same thread. It is safe to lock a mixer multiple times; it remains locked until the final matching unlock call.",
-                "Do not lock the mixer for significant amounts of time, or it can cause audio dropouts. Just do simply things quickly and unlock again.",
+                "Do not lock the mixer for significant amounts of time, or it can cause audio dropouts. Just do simple things quickly and unlock again.",
                 "Locking a nullptr mixer is a safe no-op.",
                 {
                   "tag": "@threadsafety",
@@ -215839,7 +215839,8 @@
                 "Halt all currently-playing tracks, possibly fading out over time.",
                 "If `fade_out_ms` is > 0, the tracks do not stop mixing immediately, but rather fades to silence over that many milliseconds before stopping. Note that this is different than Track.Stop(), which wants sample frames; this function takes milliseconds because different tracks might have different sample rates.",
                 "If a track ends normally while the fade-out is still in progress, the audio stops there; the fade is not adjusted to be shorter if it will last longer than the audio remaining.",
-                "Once a track has completed any fadeout and come to a stop, it will call its TrackStoppedCallback, if any. It is legal to assign the track a new input and/or restart it during this callback. This function does not prevent new play requests from being made.",
+                "Once a track has completed any fadeout and come to a stop, it will call its TrackStoppedCallback, if any. It is legal to assign the track a new input and/or restart it during this callback.",
+                "This function does not prevent new play requests from being made; it’s legal to use this function to begin fading all playing tracks but then start other tracks playing normally while those fade-outs are still in progress.",
                 [
                   {
                     "tag": "@param fade_out_ms",
@@ -216639,7 +216640,7 @@
                   }
                 ],
                 "Each call to this function must be paired with a call to Mixer.Unlock from the same thread. It is safe to lock a mixer multiple times; it remains locked until the final matching unlock call.",
-                "Do not lock the mixer for significant amounts of time, or it can cause audio dropouts. Just do simply things quickly and unlock again.",
+                "Do not lock the mixer for significant amounts of time, or it can cause audio dropouts. Just do simple things quickly and unlock again.",
                 "Locking a nullptr mixer is a safe no-op.",
                 {
                   "tag": "@param mixer",
@@ -216851,7 +216852,7 @@
               }
             ],
             "Each call to this function must be paired with a call to Mixer.Unlock from the same thread. It is safe to lock a mixer multiple times; it remains locked until the final matching unlock call.",
-            "Do not lock the mixer for significant amounts of time, or it can cause audio dropouts. Just do simply things quickly and unlock again.",
+            "Do not lock the mixer for significant amounts of time, or it can cause audio dropouts. Just do simple things quickly and unlock again.",
             "Locking a nullptr mixer is a safe no-op.",
             {
               "tag": "@param mixer",
@@ -218158,7 +218159,7 @@
               "doc": [
                 "Destroy the specified track.",
                 "If the track is currently playing, it will be stopped immediately, without any fadeout. If there is a callback set through Track.SetStoppedCallback(), it will _not_ be called.",
-                "If the mixer is currently mixing in another thread, this will block until it finishes.",
+                "If the mixer is currently mixing in another thread, this will block until it finishes. Destroying a track from the mixer thread itself (during a callback) will cause it to be destroyed as soon as this iteration of the mixer thread is not using it; in this scenario, destroying a track and then making futher changes to it is considered undefined behavior.",
                 "Destroying a nullptr Track is a legal no-op.",
                 {
                   "tag": "@threadsafety",
@@ -219030,6 +219031,10 @@
                   {
                     "tag": "-",
                     "content": "`prop.Play.HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is completely consumed for the track, the mixer will mark the track as stopped (and call any appropriate TrackStoppedCallback, etc); to play more, the track will need to be restarted. If false, the track will just not contribute to the mix, but it will not be marked as stopped. There may be clever logic tricks this exposes generally, but this property is specifically useful when the track's input is an AudioStream assigned via Track.SetAudioStream(). Setting this property to true can be useful when pushing a complete piece of audio to the stream that has a definite ending, as the track will operate like any other audio was applied. Setting to false means as new data is added to the stream, the mixer will start using it as soon as possible, which is useful when audio should play immediately as it drips in: new VoIP packets, etc. Note that in this situation, if the audio runs out when needed, there _will_ be gaps in the mixed output, so try to buffer enough data to avoid this when possible. Note that a track is not consider exhausted until all its loops and appended silence have been mixed (and also, that loops don't mean anything when the input is an AudioStream). Default true."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "`prop.Play.START_ORDER_NUMBER`: This is a special-case property that most apps can ignore. For mod file formats, start mixing from a specific \"order\" index instead of the start of the file. A value < 0 will cause this property to be ignored. If the decoder doesn't support this property, it will also be ignored. If this property is _not_ ignored, the prop.Play.START_FRAME_NUMBER and prop.Play.START_MILLISECOND_NUMBER properties will be ignored instead. Default -1. Since SDL_mixer 3.2.2."
                   }
                 ],
                 "If this function fails, mixing of this track will not start (or restart, if it was already started).",
@@ -221136,7 +221141,7 @@
               }
             ],
             "Each call to this function must be paired with a call to Mixer.Unlock from the same thread. It is safe to lock a mixer multiple times; it remains locked until the final matching unlock call.",
-            "Do not lock the mixer for significant amounts of time, or it can cause audio dropouts. Just do simply things quickly and unlock again.",
+            "Do not lock the mixer for significant amounts of time, or it can cause audio dropouts. Just do simple things quickly and unlock again.",
             "Locking a nullptr mixer is a safe no-op.",
             {
               "tag": "@param mixer",
@@ -222783,7 +222788,7 @@
           "doc": [
             "Destroy the specified track.",
             "If the track is currently playing, it will be stopped immediately, without any fadeout. If there is a callback set through Track.SetStoppedCallback(), it will _not_ be called.",
-            "If the mixer is currently mixing in another thread, this will block until it finishes.",
+            "If the mixer is currently mixing in another thread, this will block until it finishes. Destroying a track from the mixer thread itself (during a callback) will cause it to be destroyed as soon as this iteration of the mixer thread is not using it; in this scenario, destroying a track and then making futher changes to it is considered undefined behavior.",
             "Destroying a nullptr Track is a legal no-op.",
             {
               "tag": "@param track",
@@ -224374,6 +224379,10 @@
               {
                 "tag": "-",
                 "content": "`prop.Play.HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is completely consumed for the track, the mixer will mark the track as stopped (and call any appropriate TrackStoppedCallback, etc); to play more, the track will need to be restarted. If false, the track will just not contribute to the mix, but it will not be marked as stopped. There may be clever logic tricks this exposes generally, but this property is specifically useful when the track's input is an AudioStream assigned via Track.SetAudioStream(). Setting this property to true can be useful when pushing a complete piece of audio to the stream that has a definite ending, as the track will operate like any other audio was applied. Setting to false means as new data is added to the stream, the mixer will start using it as soon as possible, which is useful when audio should play immediately as it drips in: new VoIP packets, etc. Note that in this situation, if the audio runs out when needed, there _will_ be gaps in the mixed output, so try to buffer enough data to avoid this when possible. Note that a track is not consider exhausted until all its loops and appended silence have been mixed (and also, that loops don't mean anything when the input is an AudioStream). Default true."
+              },
+              {
+                "tag": "-",
+                "content": "`prop.Play.START_ORDER_NUMBER`: This is a special-case property that most apps can ignore. For mod file formats, start mixing from a specific \"order\" index instead of the start of the file. A value < 0 will cause this property to be ignored. If the decoder doesn't support this property, it will also be ignored. If this property is _not_ ignored, the prop.Play.START_FRAME_NUMBER and prop.Play.START_MILLISECOND_NUMBER properties will be ignored instead. Default -1. Since SDL_mixer 3.2.2."
               }
             ],
             "If this function fails, mixing of this track will not start (or restart, if it was already started).",
@@ -224516,6 +224525,23 @@
               "constexpr": true,
               "doc": [
                 "Number for start millisecond."
+              ]
+            },
+            "START_ORDER_NUMBER": {
+              "name": "START_ORDER_NUMBER",
+              "kind": "var",
+              "value": "\"SDL_mixer.play.start_order\"",
+              "sourceName": "MIX_PROP_PLAY_START_ORDER_NUMBER",
+              "since": {
+                "tag": "SDL_MIXER",
+                "major": 3,
+                "minor": 2,
+                "patch": 2
+              },
+              "type": "auto",
+              "constexpr": true,
+              "doc": [
+                "Number for start order."
               ]
             },
             "LOOP_START_FRAME_NUMBER": {
@@ -224850,7 +224876,8 @@
             "Halt all currently-playing tracks, possibly fading out over time.",
             "If `fade_out_ms` is > 0, the tracks do not stop mixing immediately, but rather fades to silence over that many milliseconds before stopping. Note that this is different than Track.Stop(), which wants sample frames; this function takes milliseconds because different tracks might have different sample rates.",
             "If a track ends normally while the fade-out is still in progress, the audio stops there; the fade is not adjusted to be shorter if it will last longer than the audio remaining.",
-            "Once a track has completed any fadeout and come to a stop, it will call its TrackStoppedCallback, if any. It is legal to assign the track a new input and/or restart it during this callback. This function does not prevent new play requests from being made.",
+            "Once a track has completed any fadeout and come to a stop, it will call its TrackStoppedCallback, if any. It is legal to assign the track a new input and/or restart it during this callback.",
+            "This function does not prevent new play requests from being made; it’s legal to use this function to begin fading all playing tracks but then start other tracks playing normally while those fade-outs are still in progress.",
             [
               {
                 "tag": "@param mixer",

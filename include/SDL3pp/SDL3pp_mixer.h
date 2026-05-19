@@ -485,7 +485,7 @@ struct Mixer : ResourceBase<MixerRaw>
    * locked until the final matching unlock call.
    *
    * Do not lock the mixer for significant amounts of time, or it can cause
-   * audio dropouts. Just do simply things quickly and unlock again.
+   * audio dropouts. Just do simple things quickly and unlock again.
    *
    * Locking a nullptr mixer is a safe no-op.
    *
@@ -937,8 +937,12 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * Once a track has completed any fadeout and come to a stop, it will call its
    * TrackStoppedCallback, if any. It is legal to assign the track a new input
-   * and/or restart it during this callback. This function does not prevent new
-   * play requests from being made.
+   * and/or restart it during this callback.
+   *
+   * This function does not prevent new play requests from being made; it’s
+   * legal to use this function to begin fading all playing tracks but then
+   * start other tracks playing normally while those fade-outs are still in
+   * progress.
    *
    * @param fade_out_ms the number of milliseconds to spend fading out to
    *                    silence before halting. 0 to stop immediately.
@@ -1368,7 +1372,7 @@ struct Mixer : ResourceBase<MixerRaw>
  * until the final matching unlock call.
  *
  * Do not lock the mixer for significant amounts of time, or it can cause audio
- * dropouts. Just do simply things quickly and unlock again.
+ * dropouts. Just do simple things quickly and unlock again.
  *
  * Locking a nullptr mixer is a safe no-op.
  *
@@ -1414,7 +1418,7 @@ public:
    * locked until the final matching unlock call.
    *
    * Do not lock the mixer for significant amounts of time, or it can cause
-   * audio dropouts. Just do simply things quickly and unlock again.
+   * audio dropouts. Just do simple things quickly and unlock again.
    *
    * Locking a nullptr mixer is a safe no-op.
    *
@@ -2012,7 +2016,7 @@ using TrackStoppedCB = MakeFrontCallback<void(TrackRaw track)>;
  * A callback that fires when a Track is mixing at various stages.
  *
  * This callback is fired for different parts of the mixing pipeline, and gives
- * the app visbility into the audio data that is being generated at various
+ * the app visibility into the audio data that is being generated at various
  * stages.
  *
  * The audio data passed through here is _not_ const data; the app is permitted
@@ -2179,7 +2183,10 @@ struct Track : ResourceBase<TrackRaw>
    * it will _not_ be called.
    *
    * If the mixer is currently mixing in another thread, this will block until
-   * it finishes.
+   * it finishes. Destroying a track from the mixer thread itself (during a
+   * callback) will cause it to be destroyed as soon as this iteration of the
+   * mixer thread is not using it; in this scenario, destroying a track and then
+   * making further changes to it is considered undefined behavior.
    *
    * Destroying a nullptr Track is a legal no-op.
    *
@@ -2817,6 +2824,13 @@ struct Track : ResourceBase<TrackRaw>
    *   Note that a track is not consider exhausted until all its loops and
    *   appended silence have been mixed (and also, that loops don't mean
    *   anything when the input is an AudioStream). Default true.
+   * - `prop.Play.START_ORDER_NUMBER`: This is a special-case property that most
+   *   apps can ignore. For mod file formats, start mixing from a specific
+   *   "order" index instead of the start of the file. A value < 0 will cause
+   *   this property to be ignored. If the decoder doesn't support this
+   *   property, it will also be ignored. If this property is _not_ ignored, the
+   *   prop.Play.START_FRAME_NUMBER and prop.Play.START_MILLISECOND_NUMBER
+   *   properties will be ignored instead. Default -1. Since SDL_mixer 3.2.2.
    *
    * If this function fails, mixing of this track will not start (or restart, if
    * it was already started).
@@ -4046,7 +4060,7 @@ inline void Mixer::GetFormat(AudioSpec* spec)
  * until the final matching unlock call.
  *
  * Do not lock the mixer for significant amounts of time, or it can cause audio
- * dropouts. Just do simply things quickly and unlock again.
+ * dropouts. Just do simple things quickly and unlock again.
  *
  * Locking a nullptr mixer is a safe no-op.
  *
@@ -4818,7 +4832,10 @@ inline Track::Track(MixerRef mixer)
  * it will _not_ be called.
  *
  * If the mixer is currently mixing in another thread, this will block until it
- * finishes.
+ * finishes. Destroying a track from the mixer thread itself (during a callback)
+ * will cause it to be destroyed as soon as this iteration of the mixer thread
+ * is not using it; in this scenario, destroying a track and then making further
+ * changes to it is considered undefined behavior.
  *
  * Destroying a nullptr Track is a legal no-op.
  *
@@ -5742,6 +5759,13 @@ inline Milliseconds FramesToMS(int sample_rate, Sint64 frames)
  *   exhausted until all its loops and appended silence have been mixed (and
  *   also, that loops don't mean anything when the input is an AudioStream).
  *   Default true.
+ * - `prop.Play.START_ORDER_NUMBER`: This is a special-case property that most
+ *   apps can ignore. For mod file formats, start mixing from a specific "order"
+ *   index instead of the start of the file. A value < 0 will cause this
+ *   property to be ignored. If the decoder doesn't support this property, it
+ *   will also be ignored. If this property is _not_ ignored, the
+ *   prop.Play.START_FRAME_NUMBER and prop.Play.START_MILLISECOND_NUMBER
+ *   properties will be ignored instead. Default -1. Since SDL_mixer 3.2.2.
  *
  * If this function fails, mixing of this track will not start (or restart, if
  * it was already started).
@@ -5790,6 +5814,13 @@ constexpr auto START_FRAME_NUMBER =
 
 constexpr auto START_MILLISECOND_NUMBER =
   MIX_PROP_PLAY_START_MILLISECOND_NUMBER; ///< Number for start millisecond.
+
+#if SDL_MIXER_VERSION_ATLEAST(3, 2, 2)
+
+constexpr auto START_ORDER_NUMBER =
+  MIX_PROP_PLAY_START_ORDER_NUMBER; ///< Number for start order.
+
+#endif // SDL_MIXER_VERSION_ATLEAST(3, 2, 2)
 
 constexpr auto LOOP_START_FRAME_NUMBER =
   MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER; ///< Number for loop start frame.
@@ -5963,8 +5994,11 @@ inline bool Track::Stop(Sint64 fade_out_frames)
  *
  * Once a track has completed any fadeout and come to a stop, it will call its
  * TrackStoppedCallback, if any. It is legal to assign the track a new input
- * and/or restart it during this callback. This function does not prevent new
- * play requests from being made.
+ * and/or restart it during this callback.
+ *
+ * This function does not prevent new play requests from being made; it’s legal
+ * to use this function to begin fading all playing tracks but then start other
+ * tracks playing normally while those fade-outs are still in progress.
  *
  * @param mixer the mixer on which to stop all tracks.
  * @param fade_out_ms the number of milliseconds to spend fading out to silence

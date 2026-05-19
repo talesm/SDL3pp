@@ -8853,6 +8853,7 @@ const transform = {
         "MIX_Version": { name: "MIX.Version" },
         "MIX_Init": { name: "MIX.Init" },
         "MIX_Quit": { name: "MIX.Quit" },
+        "MIX_PROP_PLAY_START_ORDER_NUMBER": { since: { tag: "SDL_MIXER", major: 3, minor: 2, patch: 2 } },
       }
     },
     "SDL_ttf.h": {
