@@ -39,10 +39,10 @@ using OwnPtr = std::unique_ptr<T, PtrDeleter>;
  *
  * @cat resource
  */
-template<class T>
+template<class T, class DELETER = PtrDeleter>
 class OwnArray
 {
-  OwnPtr<T> m_ptr;
+  std::unique_ptr<T, DELETER> m_ptr;
   size_t m_size = 0;
 
 public:

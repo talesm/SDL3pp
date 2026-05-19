@@ -872,10 +872,10 @@ using OwnPtr = std::unique_ptr<T, PtrDeleter>;
  *
  * @cat resource
  */
-template<class T>
+template<class T, class DELETER = PtrDeleter>
 class OwnArray
 {
-  OwnPtr<T> m_ptr;
+  std::unique_ptr<T, DELETER> m_ptr;
   size_t m_size = 0;
 
 public:
@@ -91202,6 +91202,18 @@ inline auto Address::operator<=>(AddressRef other) const
   return Compare(other) <=> 0;
 }
 
+/// @private
+struct LocalAddressesArrayDeleter
+{
+  static void operator()(AddressRef* addresses);
+};
+
+/**
+ * Array of addresses returned by GetLocalAddresses. The array is freed
+ * automatically when it goes out of scope.
+ */
+using LocalAddressesArray = OwnArray<AddressRef, LocalAddressesArrayDeleter>;
+
 /**
  * Obtain a list of local addresses on the system.
  *
@@ -91222,10 +91234,6 @@ inline auto Address::operator<=>(AddressRef other) const
  * nullptr-terminated. You can also pass a pointer to an int, which will return
  * the final count, not counting the nullptr at the end of the array.
  *
- * Pass the returned array to FreeLocalAddresses when you are done with it. It
- * is safe to keep any addresses you want from this array even after calling
- * that function, as long as you called RefAddress() on them.
- *
  * @param num_addresses on exit, will be set to the number of addresses
  *                      returned. Can be nullptr.
  * @returns  one for each bindable address on the system on success.
@@ -91235,9 +91243,11 @@ inline auto Address::operator<=>(AddressRef other) const
  *
  * @since This function is available since SDL_net 3.0.0.
  */
-inline NET_Address** GetLocalAddresses(int* num_addresses)
+inline LocalAddressesArray GetLocalAddresses()
 {
-  return CheckError(NET_GetLocalAddresses(num_addresses));
+  int count;
+  auto* addrs = CheckError(NET_GetLocalAddresses(&count));
+  return LocalAddressesArray(reinterpret_cast<AddressRef*>(addrs), count);
 }
 
 /**
@@ -91251,15 +91261,24 @@ inline NET_Address** GetLocalAddresses(int* num_addresses)
  *
  * It is safe to pass a nullptr in here, it will be ignored.
  *
+ * You most likely don't need to call this function directly, as the
+ * LocalAddressesArray type will call it for you when the array goes out of
+ * scope.
+ *
  * @param addresses A pointer returned by GetLocalAddresses().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL_net 3.0.0.
  */
-inline void FreeLocalAddresses(NET_Address** addresses)
+inline void FreeLocalAddresses(AddressRef* addresses)
 {
-  NET_FreeLocalAddresses(addresses);
+  NET_FreeLocalAddresses(reinterpret_cast<AddressRaw*>(addresses));
+}
+
+inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
+{
+  FreeLocalAddresses(addresses);
 }
 
 /**

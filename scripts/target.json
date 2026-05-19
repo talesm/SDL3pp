@@ -214356,6 +214356,40 @@
             "super": "Address"
           }
         },
+        "LocalAddressesArrayDeleter": {
+          "kind": "struct",
+          "doc": [
+            "@private"
+          ],
+          "name": "LocalAddressesArrayDeleter",
+          "entries": {
+            "operator()": {
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "type": "AddressRef *",
+                  "name": "addresses"
+                }
+              ],
+              "hints": {
+                "delegate": "FreeLocalAddresses",
+                "static": true
+              },
+              "name": "operator()",
+              "static": true,
+              "proto": true
+            }
+          }
+        },
+        "LocalAddressesArray": {
+          "kind": "alias",
+          "type": "OwnArray<AddressRef, LocalAddressesArrayDeleter>",
+          "doc": [
+            "Array of addresses returned by GetLocalAddresses. The array is freed automatically when it goes out of scope."
+          ],
+          "name": "LocalAddressesArray"
+        },
         "GetLocalAddresses": {
           "doc": [
             "Obtain a list of local addresses on the system.",
@@ -214389,16 +214423,12 @@
           ],
           "name": "GetLocalAddresses",
           "kind": "function",
-          "type": "NET_Address **",
-          "parameters": [
-            {
-              "name": "num_addresses",
-              "type": "int *"
-            }
-          ],
+          "type": "LocalAddressesArray",
+          "parameters": [],
           "sourceName": "NET_GetLocalAddresses",
           "hints": {
-            "mayFail": true
+            "mayFail": true,
+            "body": "int count;\nauto *addrs = CheckError(NET_GetLocalAddresses(&count));\nreturn LocalAddressesArray(reinterpret_cast<AddressRef *>(addrs), count);"
           }
         },
         "FreeLocalAddresses": {
@@ -214430,6 +214460,21 @@
             }
           ],
           "sourceName": "NET_FreeLocalAddresses"
+        },
+        "LocalAddressesArrayDeleter::operator()": {
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "AddressRef *",
+              "name": "addresses"
+            }
+          ],
+          "hints": {
+            "delegate": "FreeLocalAddresses",
+            "static": true
+          },
+          "name": "LocalAddressesArrayDeleter::operator()"
         },
         "StreamSocket": {
           "doc": [

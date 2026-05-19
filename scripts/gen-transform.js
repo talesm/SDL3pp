@@ -8904,6 +8904,29 @@ const transform = {
           parameters: [{ type: "AddressRef", name: "other" }],
           doc: ["Compares two addresses. Returns std::strong_ordering::less if this address is less than the other, std::strong_ordering::greater if this address is greater than the other, and std::strong_ordering::equal if they are equal."]
         },
+        "LocalAddressesArrayDeleter": {
+          before: "NET_GetLocalAddresses",
+          kind: "struct",
+          doc: ["@private"],
+        },
+        "LocalAddressesArray": {
+          before: "NET_GetLocalAddresses",
+          kind: "alias",
+          type: "OwnArray<AddressRef, LocalAddressesArrayDeleter>",
+          doc: ["Array of addresses returned by GetLocalAddresses. The array is freed automatically when it goes out of scope."],
+        },
+        "NET_GetLocalAddresses": {
+          type: "LocalAddressesArray",
+          parameters: [],
+          hints: { body: "int count;\nauto *addrs = CheckError(NET_GetLocalAddresses(&count));\nreturn LocalAddressesArray(reinterpret_cast<AddressRef *>(addrs), count);" },
+        },
+        "NET_FreeLocalAddresses": {},
+        "LocalAddressesArrayDeleter::operator()": {
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "AddressRef *", name: "addresses" }],
+          hints: { delegate: "FreeLocalAddresses" },
+        },
         "NET_CreateClient": { type: "StreamSocket" },
         "NET_CreateServer": { type: "Server" },
         "NET_CreateDatagramSocket": { type: "DatagramSocket" },
