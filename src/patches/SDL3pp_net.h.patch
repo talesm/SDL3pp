@@ -1,0 +1,23 @@
+--- build/generated/SDL3pp_net.h
++++ include/SDL3pp/SDL3pp_net.h
+@@ -1,9 +1,12 @@
+ #ifndef SDL3PP_NET_H_
+ #define SDL3PP_NET_H_
+ 
+-#include <SDL3/SDL_net.h>
+ #include "SDL3pp_version.h"
+ 
++#ifdef SDL3PP_ENABLE_NET
++
++#include <SDL3_net/SDL_net.h>
++
+ namespace SDL {
+ 
+ /**
+@@ -3335,4 +3338,6 @@
+ 
+ } // namespace SDL
+ 
++#endif /* SDL3PP_ENABLE_NET */
++
+ #endif /* SDL3PP_NET_H_ */

@@ -1768,19 +1768,25 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 
 // Check if SDL_image is available
 #if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
-  __has_include(<SDL3_image/SDL_image.h>)
+  (__has_include(<SDL3_image/SDL_image.h>) || defined(SDL3PP_DOC))
 #define SDL3PP_ENABLE_IMAGE
 #endif
 
 // Check if SDL_mixer is available
 #if !defined(SDL3PP_DISABLE_MIXER) && !defined(SDL3PP_ENABLE_MIXER) &&         \
-  __has_include(<SDL3_mixer/SDL_mixer.h>)
+  (__has_include(<SDL3_mixer/SDL_mixer.h>) || defined(SDL3PP_DOC))
 #define SDL3PP_ENABLE_MIXER
+#endif
+
+// Check if SDL_net is available
+#if !defined(SDL3PP_DISABLE_NET) && !defined(SDL3PP_ENABLE_NET) &&             \
+  __has_include(<SDL3_net/SDL_net.h>)
+#define SDL3PP_ENABLE_NET
 #endif
 
 // Check if SDL_ttf is available
 #if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
-  __has_include(<SDL3_ttf/SDL_ttf.h>)
+  (__has_include(<SDL3_ttf/SDL_ttf.h>) || defined(SDL3PP_DOC))
 #define SDL3PP_ENABLE_TTF
 #endif
 
@@ -90076,7 +90082,7 @@ inline PenDeviceType GetPenDeviceType(PenID instance_id)
 /// @}
 
 } // namespace SDL
-#if defined(SDL3PP_ENABLE_MIXER) || defined(SDL3PP_DOC)
+#ifdef SDL3PP_ENABLE_MIXER
 
 #include <SDL3_mixer/SDL_mixer.h>
 
@@ -97791,7 +97797,7 @@ inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
 
 } // namespace SDL
 
-#endif /* defined(SDL3PP_ENABLE_MIXER) || defined(SDL3PP_DOC) */
+#endif /* SDL3PP_ENABLE_MIXER */
 
 #if defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
