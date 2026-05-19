@@ -8861,6 +8861,10 @@ const transform = {
         "SDL3pp_properties.h",
         "SDL3pp_version.h",
       ],
+      namespacesMap: {
+        "NET_PROP_DATAGRAM_SOCKET_": "prop::DatagramSocket",
+        "NET_PROP_SERVER_": "prop::Server",
+      },
       transform: {
         "SDL_NET_MAJOR_VERSION": { value: "" },
         "SDL_NET_MINOR_VERSION": { value: "" },

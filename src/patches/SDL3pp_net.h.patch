@@ -65,7 +65,7 @@
        return Address(resource);
      }
      return {};
-@@ -869,8 +869,8 @@
+@@ -868,8 +868,8 @@
  {
  }
  
@@ -76,7 +76,7 @@
  {
  }
  
-@@ -1117,12 +1117,12 @@
+@@ -1116,12 +1116,12 @@
  
  inline bool Address::operator==(AddressRef other) const
  {
@@ -91,7 +91,7 @@
  }
  
  /**
-@@ -2113,7 +2113,7 @@
+@@ -2117,7 +2117,7 @@
   */
  inline Address GetStreamSocketAddress(StreamSocketRef sock)
  {
@@ -100,7 +100,7 @@
  }
  
  inline Address StreamSocket::GetAddress()
-@@ -2745,7 +2745,7 @@
+@@ -2748,7 +2748,7 @@
     * should assume it is no longer usable and should destroy it with
     * SDL_DestroyDatagramSocket().
     *
@@ -109,7 +109,7 @@
     * @returns true if data sent or queued for transmission, false on failure;
     *          call GetError() for details.
     *
-@@ -2792,9 +2792,8 @@
+@@ -2795,9 +2795,8 @@
     * should assume it is no longer usable and should destroy it with
     * SDL_DestroyDatagramSocket().
     *
@@ -121,7 +121,7 @@
     *
     * @threadsafety You should not operate on the same socket from multiple
     *               threads at the same time without supplying a serialization
-@@ -2948,7 +2947,6 @@
+@@ -2951,7 +2950,6 @@
     * SDL_DestroyDatagramSocket().
     *
     * @param sock the datagram socket to send data through.
@@ -129,7 +129,7 @@
     * @returns true if data sent or queued for transmission, false on failure;
     *          call GetError() for details.
     *
-@@ -3252,9 +3250,8 @@
+@@ -3260,9 +3258,8 @@
   * is no longer usable and should destroy it with SDL_DestroyDatagramSocket().
   *
   * @param sock the datagram socket to send data through.
@@ -141,7 +141,7 @@
   *
   * @threadsafety You should not operate on the same socket from multiple threads
   *               at the same time without supplying a serialization mechanism.
-@@ -3275,17 +3272,20 @@
+@@ -3283,17 +3280,20 @@
  
  inline bool DatagramSocket::ReceiveDatagram(Datagram& dgram)
  {
@@ -165,7 +165,7 @@
  }
  
  /**
-@@ -3445,4 +3445,6 @@
+@@ -3453,4 +3453,6 @@
  
  } // namespace SDL
  

@@ -90789,7 +90789,7 @@ struct Address : ResourceBase<AddressRaw>
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_SERVER_REUSEADDR_BOOLEAN`: true if the server should be created
+   * - `prop.Server.REUSEADDR_BOOLEAN`: true if the server should be created
    *   even if a previous server has recently used this address. For various
    *   reasons, networks prefer that there be some delay between apps reusing
    *   the same address, but this can be problematic when iterating quickly, for
@@ -90863,8 +90863,8 @@ struct Address : ResourceBase<AddressRaw>
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_DATAGRAM_SOCKET_REUSEADDR_BOOLEAN`: true if the socket should
-   *   be created even if a previous socket has recently used this address. For
+   * - `prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be
+   *   created even if a previous socket has recently used this address. For
    *   various reasons, networks prefer that there be some delay between apps
    *   reusing the same address, but this can be problematic when iterating
    *   quickly, for software development purposes or just restarting a crashed
@@ -90872,18 +90872,17 @@ struct Address : ResourceBase<AddressRaw>
    *   that, at the operating system level, this defaults to false!). If this
    *   property is false and the OS feels that not enough time has elapsed,
    *   socket creation will fail and this function will report an error.
-   * - `SDL_PROP_DATAGRAM_SOCKET_ALLOW_BROADCAST_BOOLEAN`: true if the socket
-   *   should allow broadcasting. At the lower level, this will set
-   *   `SO_BROADCAST` for IPv4 sockets, to allow sending to the subnet's
-   *   broadcast address at the OS level. For IPv6, it'll join the all-nodes
-   *   link-local multicast group, ff02::1, allowing sending and receiving
-   *   there, more or less simulating the usual IPv4 broadcast semantics. Other
-   *   protocols take similar approaches. If you do not intend to send or
-   *   receive broadcast packets on this socket, set this property to false, or
-   *   omit it, as it defaults to false. Note: IPv4 will still be able to
-   *   receive broadcast packets without this option, but IPv6 will not. Also
-   *   see notes about sending to a broadcast address in
-   *   DatagramSocket.SendDatagram().
+   * - `prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should
+   *   allow broadcasting. At the lower level, this will set `SO_BROADCAST` for
+   *   IPv4 sockets, to allow sending to the subnet's broadcast address at the
+   *   OS level. For IPv6, it'll join the all-nodes link-local multicast group,
+   *   ff02::1, allowing sending and receiving there, more or less simulating
+   *   the usual IPv4 broadcast semantics. Other protocols take similar
+   *   approaches. If you do not intend to send or receive broadcast packets on
+   *   this socket, set this property to false, or omit it, as it defaults to
+   *   false. Note: IPv4 will still be able to receive broadcast packets without
+   *   this option, but IPv6 will not. Also see notes about sending to a
+   *   broadcast address in DatagramSocket.SendDatagram().
    *
    * @param port the port on the local address to listen for connections on, or
    *             zero for the system to decide.
@@ -91921,7 +91920,7 @@ struct Server : ResourceBase<ServerRaw>
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_SERVER_REUSEADDR_BOOLEAN`: true if the server should be created
+   * - `prop.Server.REUSEADDR_BOOLEAN`: true if the server should be created
    *   even if a previous server has recently used this address. For various
    *   reasons, networks prefer that there be some delay between apps reusing
    *   the same address, but this can be problematic when iterating quickly, for
@@ -92059,15 +92058,15 @@ struct Server : ResourceBase<ServerRaw>
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_SERVER_REUSEADDR_BOOLEAN`: true if the server should be created
- *   even if a previous server has recently used this address. For various
- *   reasons, networks prefer that there be some delay between apps reusing the
- *   same address, but this can be problematic when iterating quickly, for
- *   software development purposes or just restarting a crashed service. This
- *   property defaults to true (although it should be noted that, at the
- *   operating system level, this defaults to false!). If this property is false
- *   and the OS feels that not enough time has elapsed, server creation will
- *   fail and this function will report an error.
+ * - `prop.Server.REUSEADDR_BOOLEAN`: true if the server should be created even
+ *   if a previous server has recently used this address. For various reasons,
+ *   networks prefer that there be some delay between apps reusing the same
+ *   address, but this can be problematic when iterating quickly, for software
+ *   development purposes or just restarting a crashed service. This property
+ *   defaults to true (although it should be noted that, at the operating system
+ *   level, this defaults to false!). If this property is false and the OS feels
+ *   that not enough time has elapsed, server creation will fail and this
+ *   function will report an error.
  *
  * @param addr the _local_ address to listen for connections on, or nullptr.
  * @param port the port on the local address to listen for connections on.
@@ -92098,7 +92097,12 @@ inline Server::Server(AddressRef addr, Uint16 port, PropertiesRef props)
 {
 }
 
-#define SDL_PROP_SERVER_REUSEADDR_BOOLEAN NET_PROP_SERVER_REUSEADDR_BOOLEAN
+namespace prop::Server {
+
+constexpr auto REUSEADDR_BOOLEAN =
+  NET_PROP_SERVER_REUSEADDR_BOOLEAN; ///< Reuseaddr enabled.
+
+} // namespace prop::Server
 
 /**
  * Create a stream socket for the next pending client connection.
@@ -92631,8 +92635,8 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_DATAGRAM_SOCKET_REUSEADDR_BOOLEAN`: true if the socket should
-   *   be created even if a previous socket has recently used this address. For
+   * - `prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be
+   *   created even if a previous socket has recently used this address. For
    *   various reasons, networks prefer that there be some delay between apps
    *   reusing the same address, but this can be problematic when iterating
    *   quickly, for software development purposes or just restarting a crashed
@@ -92640,18 +92644,17 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    *   that, at the operating system level, this defaults to false!). If this
    *   property is false and the OS feels that not enough time has elapsed,
    *   socket creation will fail and this function will report an error.
-   * - `SDL_PROP_DATAGRAM_SOCKET_ALLOW_BROADCAST_BOOLEAN`: true if the socket
-   *   should allow broadcasting. At the lower level, this will set
-   *   `SO_BROADCAST` for IPv4 sockets, to allow sending to the subnet's
-   *   broadcast address at the OS level. For IPv6, it'll join the all-nodes
-   *   link-local multicast group, ff02::1, allowing sending and receiving
-   *   there, more or less simulating the usual IPv4 broadcast semantics. Other
-   *   protocols take similar approaches. If you do not intend to send or
-   *   receive broadcast packets on this socket, set this property to false, or
-   *   omit it, as it defaults to false. Note: IPv4 will still be able to
-   *   receive broadcast packets without this option, but IPv6 will not. Also
-   *   see notes about sending to a broadcast address in
-   *   DatagramSocket.SendDatagram().
+   * - `prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should
+   *   allow broadcasting. At the lower level, this will set `SO_BROADCAST` for
+   *   IPv4 sockets, to allow sending to the subnet's broadcast address at the
+   *   OS level. For IPv6, it'll join the all-nodes link-local multicast group,
+   *   ff02::1, allowing sending and receiving there, more or less simulating
+   *   the usual IPv4 broadcast semantics. Other protocols take similar
+   *   approaches. If you do not intend to send or receive broadcast packets on
+   *   this socket, set this property to false, or omit it, as it defaults to
+   *   false. Note: IPv4 will still be able to receive broadcast packets without
+   *   this option, but IPv6 will not. Also see notes about sending to a
+   *   broadcast address in DatagramSocket.SendDatagram().
    *
    * @param addr the local address to listen for connections on, or nullptr to
    *             listen on all available local addresses.
@@ -93090,7 +93093,7 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_DATAGRAM_SOCKET_REUSEADDR_BOOLEAN`: true if the socket should be
+ * - `prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be
  *   created even if a previous socket has recently used this address. For
  *   various reasons, networks prefer that there be some delay between apps
  *   reusing the same address, but this can be problematic when iterating
@@ -93099,10 +93102,10 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
  *   at the operating system level, this defaults to false!). If this property
  *   is false and the OS feels that not enough time has elapsed, socket creation
  *   will fail and this function will report an error.
- * - `SDL_PROP_DATAGRAM_SOCKET_ALLOW_BROADCAST_BOOLEAN`: true if the socket
- *   should allow broadcasting. At the lower level, this will set `SO_BROADCAST`
- *   for IPv4 sockets, to allow sending to the subnet's broadcast address at the
- *   OS level. For IPv6, it'll join the all-nodes link-local multicast group,
+ * - `prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should
+ *   allow broadcasting. At the lower level, this will set `SO_BROADCAST` for
+ *   IPv4 sockets, to allow sending to the subnet's broadcast address at the OS
+ *   level. For IPv6, it'll join the all-nodes link-local multicast group,
  *   ff02::1, allowing sending and receiving there, more or less simulating the
  *   usual IPv4 broadcast semantics. Other protocols take similar approaches. If
  *   you do not intend to send or receive broadcast packets on this socket, set
@@ -93146,11 +93149,16 @@ inline DatagramSocket::DatagramSocket(AddressRef addr,
 {
 }
 
-#define SDL_PROP_DATAGRAM_SOCKET_REUSEADDR_BOOLEAN                             \
-  NET_PROP_DATAGRAM_SOCKET_REUSEADDR_BOOLEAN
+namespace prop::DatagramSocket {
 
-#define SDL_PROP_DATAGRAM_SOCKET_ALLOW_BROADCAST_BOOLEAN                       \
-  NET_PROP_DATAGRAM_SOCKET_ALLOW_BROADCAST_BOOLEAN
+constexpr auto REUSEADDR_BOOLEAN =
+  NET_PROP_DATAGRAM_SOCKET_REUSEADDR_BOOLEAN; ///< Reuseaddr enabled.
+
+constexpr auto ALLOW_BROADCAST_BOOLEAN =
+  NET_PROP_DATAGRAM_SOCKET_ALLOW_BROADCAST_BOOLEAN; ///< Allow broadcast
+                                                    ///< enabled.
+
+} // namespace prop::DatagramSocket
 
 /**
  * Send a new packet over a datagram socket to a remote system.
