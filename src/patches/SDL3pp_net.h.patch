@@ -154,7 +154,23 @@
     *
     * @threadsafety You should not operate on the same socket from multiple
     *               threads at the same time without supplying a serialization
-@@ -2970,7 +2969,6 @@
+@@ -2931,12 +2930,11 @@
+    * "connection" to fail at this level, but may report failure for
+    * unrecoverable system-level conditions; once a datagram socket fails, you
+    * should assume it is no longer usable and should destroy it with
+-   * SDL_DestroyDatagramSocket().
++   * DestroyDatagramSocket().
+    *
+    * @param sock the datagram socket to send data through.
+-   * @param dgram a pointer to the datagram packet pointer.
+-   * @post true if data sent or queued for transmission, false on failure; call
+-   *       GetError() for details.
++   * @post a valid Datagram object if data sent or queued for transmission,
++   *       nullptr on failure; call GetError() for details.
+    *
+    * @threadsafety You should not operate on the same socket from multiple
+    *               threads at the same time without supplying a serialization
+@@ -3018,7 +3016,6 @@
     * SDL_DestroyDatagramSocket().
     *
     * @param sock the datagram socket to send data through.
@@ -162,7 +178,7 @@
     * @returns true if data sent or queued for transmission, false on failure;
     *          call GetError() for details.
     *
-@@ -3279,9 +3277,8 @@
+@@ -3327,9 +3324,8 @@
   * is no longer usable and should destroy it with SDL_DestroyDatagramSocket().
   *
   * @param sock the datagram socket to send data through.
@@ -174,7 +190,7 @@
   *
   * @threadsafety You should not operate on the same socket from multiple threads
   *               at the same time without supplying a serialization mechanism.
-@@ -3302,17 +3299,20 @@
+@@ -3350,7 +3346,7 @@
  
  inline bool DatagramSocket::ReceiveDatagram(Datagram& dgram)
  {
@@ -183,10 +199,15 @@
  }
  
  inline Datagram DatagramSocket::ReceiveDatagram()
- {
--  return SDL::ReceiveDatagram(get());
-+  return SDL::ReceiveDatagram(*this);
+@@ -3358,11 +3354,17 @@
+   return SDL::ReceiveDatagram(get());
  }
+ 
+-inline Datagram::Datagram(DatagramSocketRef sock) {}
++inline Datagram::Datagram(DatagramSocketRef sock)
++  : Datagram(sock.ReceiveDatagram())
++{
++}
  
  inline bool Datagram::Receive(DatagramSocketRef sock)
  {
@@ -198,7 +219,7 @@
  }
  
  /**
-@@ -3472,4 +3472,6 @@
+@@ -3522,4 +3524,6 @@
  
  } // namespace SDL
  

@@ -8937,18 +8937,24 @@ const transform = {
           parameters: [{}, { type: "Datagram &", name: "dgram" }],
           hints: { body: "return dgram.Receive(sock);" },
         },
+        "ReceiveDatagram": {
+          kind: "function",
+          type: "Datagram",
+          parameters: [{ type: "DatagramSocketRef", name: "sock" }],
+          hints: { body: "Datagram dgram;\ndgram.Receive(sock);\nreturn dgram;" },
+        },
+        "Datagram::Datagram": {
+          kind: "function",
+          type: "",
+          parameters: [{ type: "DatagramSocketRef", name: "sock" }],
+          hints: { copyDoc: "NET_ReceiveDatagram" },
+        },
         "Datagram::Receive": {
           kind: "function",
           type: "bool",
           static: false,
           parameters: [{ type: "DatagramSocketRef", name: "sock" }],
           hints: { copyDoc: "NET_ReceiveDatagram" },
-        },
-        "ReceiveDatagram": {
-          kind: "function",
-          type: "Datagram",
-          parameters: [{ type: "DatagramSocketRef", name: "sock" }],
-          hints: { body: "Datagram dgram;\ndgram.Receive(sock);\nreturn dgram;" },
         },
       }
     },
