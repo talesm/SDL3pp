@@ -8858,6 +8858,7 @@ const transform = {
     },
     "SDL_net.h": {
       localIncludes: [
+        "SDL3pp_properties.h",
         "SDL3pp_version.h",
       ],
       transform: {
@@ -8870,6 +8871,58 @@ const transform = {
           entries: {}
         },
         "NET_Version": { name: "NET.Version" },
+        "NET_Init": { name: "NET.Init" },
+        "NET_Quit": { name: "NET.Quit" },
+        "NET_Address": {
+          resource: {
+            free: "NET_UnrefAddress",
+            shared: "NET_RefAddress",
+          },
+          entries: {
+            "NET_ResolveHostname": "ctor",
+            "NET_RefAddress": "ctor",
+          }
+        },
+        "NET_CompareAddresses": { hints: { methodName: "Compare" } },
+        "Address::operator==": {
+          kind: "function",
+          static: false,
+          immutable: true,
+          type: "bool",
+          parameters: [{ type: "AddressRef", name: "other" }],
+          doc: ["Compares two addresses for equality. Returns true if they are the same, false otherwise."]
+        },
+        "Address::operator<=>": {
+          kind: "function",
+          static: false,
+          immutable: true,
+          type: "auto",
+          parameters: [{ type: "AddressRef", name: "other" }],
+          doc: ["Compares two addresses. Returns std::strong_ordering::less if this address is less than the other, std::strong_ordering::greater if this address is greater than the other, and std::strong_ordering::equal if they are equal."]
+        },
+        "NET_CreateClient": { type: "StreamSocket" },
+        "NET_CreateServer": { type: "Server" },
+        "NET_CreateDatagramSocket": { type: "DatagramSocket" },
+        "NET_Datagram": {
+          resource: { free: "NET_DestroyDatagram" },
+        },
+        "NET_ReceiveDatagram": {
+          parameters: [{}, { type: "Datagram &", name: "dgram" }],
+          hints: { body: "return dgram.Receive(sock);" },
+        },
+        "Datagram::Receive": {
+          kind: "function",
+          type: "bool",
+          static: false,
+          parameters: [{ type: "DatagramSocketRef", name: "sock" }],
+          hints: { copyDoc: "NET_ReceiveDatagram" },
+        },
+        "ReceiveDatagram": {
+          kind: "function",
+          type: "Datagram",
+          parameters: [{ type: "DatagramSocketRef", name: "sock" }],
+          hints: { body: "Datagram dgram;\ndgram.Receive(sock);\nreturn dgram;" },
+        },
       }
     },
     "SDL_ttf.h": {

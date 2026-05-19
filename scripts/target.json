@@ -212727,12 +212727,12 @@
           }
         ],
         "There are several pieces to this library, and most apps won't use them all, but rather choose the portion that's relevant to their needs.",
-        "All apps will call Init() on startup and Quit() on shutdown.",
+        "All apps will call NET.Init() on startup and NET.Quit() on shutdown.",
         "The cornerstone of the library is the Address object. This is what manages the details of how to reach another computer on the network, and what network protocol to use to get there. You'll need a Address to talk over the network. If you need to convert a hostname (such as \"google.com\" or \"libsdl.org\") into a Address, you can call ResolveHostname(), which will do the appropriate DNS queries on a background thread. Once these are ready, you can use the Address to connect to these hosts over the Internet.",
         "Something that initiates a connection to a remote system is called a \"client,\" connecting to a \"server.\" To establish a connection, use the Address you resolved with Address.CreateClient(). Once the connection is established (a non-blocking operation), you'll have a StreamSocket object that can send and receive data over the connection, using StreamSocket.WriteTo() and StreamSocket.ReadFrom().",
         "To instead be a server, that clients connect to, call Address.CreateServer() to get a Server object. All a Server does is allow you to accept connections from clients, turning them into NET_StreamSockets, where you can read and write from the opposite side of the connection from a given client.",
         "These things are, underneath this API, TCP connections, which means you can use a client or server to talk to something that _isn't_ using SDL_net at all.",
-        "Clients and servers deal with \"stream sockets,\" a reliable stream of bytes. There are tradeoffs to using these, especially in poor network conditions. Another option is to use \"datagram sockets,\" which map to UDP packet transmission. With datagrams, everyone involved can send small packets of data that may arrive in any order, or not at all, but transmission can carry on if a packet is lost, each packet is clearly separated from every other, and communication can happen in a peer-to-peer model instead of client-server: while datagrams can be more complex, these _are_ useful properties not avaiable to stream sockets. DatagramSocket.DatagramSocket() is used to prepare for datagram communication, then DatagramSocket.SendDatagram() and DatagramSocket.ReceiveDatagram() transmit packets.",
+        "Clients and servers deal with \"stream sockets,\" a reliable stream of bytes. There are tradeoffs to using these, especially in poor network conditions. Another option is to use \"datagram sockets,\" which map to UDP packet transmission. With datagrams, everyone involved can send small packets of data that may arrive in any order, or not at all, but transmission can carry on if a packet is lost, each packet is clearly separated from every other, and communication can happen in a peer-to-peer model instead of client-server: while datagrams can be more complex, these _are_ useful properties not avaiable to stream sockets. Address.CreateDatagramSocket() is used to prepare for datagram communication, then DatagramSocket.SendDatagram() and DatagramSocket.ReceiveDatagram() transmit packets.",
         "As previously mentioned, SDL_net's API is \"non-blocking\" (asynchronous). Any network operation might take time, but SDL_net's APIs will not wait until they complete. Any operation will return immediately, with options to check if the operation has completed later. Generally this is what a video game needs, but there are times where it makes sense to pause until an operation completes; in a background thread this might make sense, as it could simplify the code dramatically.",
         "The functions that block until an operation completes:",
         [
@@ -213002,6 +213002,62 @@
               "type": "int",
               "parameters": [],
               "sourceName": "NET_Version"
+            },
+            "Init": {
+              "doc": [
+                "Initialize the SDL_net library.",
+                "This must be successfully called once before (almost) any other SDL_net function can be used.",
+                "It is safe to call this multiple times; the library will only initialize once, and won't deinitialize until NET.Quit() has been called a matching number of times. Extra attempts to init report success.",
+                {
+                  "tag": "@throws",
+                  "content": "Error on failure."
+                },
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL_net 3.0.0."
+                },
+                {
+                  "tag": "@sa",
+                  "content": "NET.Quit"
+                }
+              ],
+              "name": "Init",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "NET_Init",
+              "hints": {
+                "mayFail": true
+              }
+            },
+            "Quit": {
+              "doc": [
+                "Deinitialize the SDL_net library.",
+                "This must be called when done with the library, probably at the end of your program.",
+                "It is safe to call this multiple times; the library will only deinitialize once, when this function is called the same number of times as NET.Init was successfully called.",
+                "Once you have successfully deinitialized the library, it is safe to call NET.Init to reinitialize it for further use.",
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL_net 3.0.0."
+                },
+                {
+                  "tag": "@sa",
+                  "content": "NET.Init"
+                }
+              ],
+              "name": "Quit",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "NET_Quit"
             }
           },
           "name": "NET"
@@ -213052,62 +213108,6 @@
           ],
           "sourceName": "NET_SUCCESS"
         },
-        "Init": {
-          "doc": [
-            "Initialize the SDL_net library.",
-            "This must be successfully called once before (almost) any other SDL_net function can be used.",
-            "It is safe to call this multiple times; the library will only initialize once, and won't deinitialize until Quit() has been called a matching number of times. Extra attempts to init report success.",
-            {
-              "tag": "@throws",
-              "content": "Error on failure."
-            },
-            {
-              "tag": "@threadsafety",
-              "content": "It is safe to call this function from any thread."
-            },
-            {
-              "tag": "@since",
-              "content": "This function is available since SDL_net 3.0.0."
-            },
-            {
-              "tag": "@sa",
-              "content": "Quit"
-            }
-          ],
-          "name": "Init",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "NET_Init",
-          "hints": {
-            "mayFail": true
-          }
-        },
-        "Quit": {
-          "doc": [
-            "Deinitialize the SDL_net library.",
-            "This must be called when done with the library, probably at the end of your program.",
-            "It is safe to call this multiple times; the library will only deinitialize once, when this function is called the same number of times as Init was successfully called.",
-            "Once you have successfully deinitialized the library, it is safe to call Init to reinitialize it for further use.",
-            {
-              "tag": "@threadsafety",
-              "content": "It is safe to call this function from any thread."
-            },
-            {
-              "tag": "@since",
-              "content": "This function is available since SDL_net 3.0.0."
-            },
-            {
-              "tag": "@sa",
-              "content": "Init"
-            }
-          ],
-          "name": "Quit",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "NET_Quit"
-        },
         "Address": {
           "doc": [
             "Opaque representation of a computer-readable network address.",
@@ -213129,7 +213129,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Address.Comparees"
+                "content": "Address.Compare"
               }
             ],
             "@cat resource"
@@ -213180,7 +213180,10 @@
                   }
                 ],
                 "hints": {
-                  "delete": true
+                  "init": [
+                    "Address(other.get())"
+                  ],
+                  "body": "if (auto res = get()) ++res->NET_RefAddress;"
                 },
                 "doc": [
                   "Copy constructor"
@@ -213207,39 +213210,136 @@
                   ],
                   "name": "Address",
                   "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const AddressRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Address",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
+                    "doc": [
+                      "Resolve a human-readable hostname.",
+                      "SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org` but on computer-readable addresses. This function converts from one to the other. This process is known as \"resolving\" an address.",
+                      "You can also use this to turn IP address strings (like \"159.203.69.7\") into Address objects.",
+                      "Note that resolving an address is an asynchronous operation, since the library will need to ask a server on the internet to get the information it needs, and this can take time (and possibly fail later). This function will not block. It either returns nullptr (catastrophic failure) or an unresolved Address. Until the address resolves, it can't be used.",
+                      "If you want to block until the resolution is finished, you can call Address.WaitUntilResolved(). Otherwise, you can do a non-blocking check with Address.GetStatus().",
+                      "When you are done with the returned Address, call Address.Unref() to dispose of it. You need to do this even if resolution later fails asynchronously.",
+                      [
                         {
-                          "name": "other",
-                          "type": "AddressRef &&"
+                          "tag": "@param host",
+                          "content": "The hostname to resolve."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "A new Address on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
                         }
                       ],
-                      "hints": {
-                        "delete": true
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
                       },
-                      "name": "Address"
-                    }
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_net 3.0.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "Address.WaitUntilResolved"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "Address.GetStatus"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "RefAddress"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "Address.Unref"
+                        }
+                      ]
+                    ],
+                    "name": "Address",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "host",
+                        "type": "StringParam"
+                      }
+                    ],
+                    "sourceName": "NET_ResolveHostname",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Add a reference to an Address.",
+                        "Since several pieces of the library might share a single Address, including a background thread that's working on resolving, these objects are referenced counted. This allows everything that's using it to declare they still want it, and drop their reference to the address when they are done with it. The object's resources are freed when the last reference is dropped.",
+                        "This function adds a reference to an Address, increasing its reference count by one.",
+                        "The documentation will tell you when the app has to explicitly unref an address. For example, ResolveHostname() creates addresses that are already referenced, so the caller needs to unref it when done.",
+                        "Generally you only have to explicit ref an address when you have different parts of your own app that will be sharing an address. In normal usage, you only have to unref things you've created once (like you might free() something), but you are free to add extra refs if it makes sense.",
+                        "This returns the same address passed as a parameter, which makes it easy to ref and assign in one step:",
+                        {
+                          "content": "```c\nmyAddr = RefAddress(yourAddr);\n```"
+                        },
+                        [
+                          {
+                            "tag": "@param address",
+                            "content": "The Address to add a reference to."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "the same address that was passed as a parameter."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "It is safe to call this function from any thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL_net 3.0.0."
+                        }
+                      ],
+                      "name": "Address",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "address",
+                          "type": "AddressRef"
+                        }
+                      ],
+                      "sourceName": "NET_RefAddress",
+                      "proto": true
+                    },
+                    "proto": true
                   }
                 }
               }
+            },
+            "Borrow": {
+              "kind": "function",
+              "static": true,
+              "type": "Address",
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AddressRaw"
+                }
+              ],
+              "hints": {
+                "body": "if (resource) {\n  ++resource->NET_RefAddress;\n  return Address(resource);}\nreturn {};"
+              },
+              "doc": [
+                "Safely borrows the from AddressRaw.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AddressRaw."
+                },
+                "This does not takes ownership!"
+              ],
+              "name": "Borrow"
             },
             "~Address": {
               "kind": "function",
@@ -213249,7 +213349,7 @@
               "type": "",
               "parameters": [],
               "hints": {
-                "body": "NET_FreeLocalAddresses(get());"
+                "body": "NET_UnrefAddress(get());"
               },
               "name": "~Address"
             },
@@ -213281,7 +213381,8 @@
                   }
                 ],
                 "hints": {
-                  "delete": true
+                  "delete": false,
+                  "body": "if (get() != other.get()) {\n  Address tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;"
                 },
                 "doc": [
                   "Assignment operator."
@@ -213289,12 +213390,12 @@
                 "name": "operator="
               }
             },
-            "FreeLocales": {
+            "Unref": {
               "doc": [
-                "Free the results from GetLocalAddresses.",
-                "This will unref all addresses in the array and free the array itself.",
-                "Since addresses are reference counted, it is safe to keep any addresses you want from this array even after calling this function, as long as you called Address.Ref() on them first.",
-                "It is safe to pass a nullptr in here, it will be ignored.",
+                "Drop a reference to an Address.",
+                "Since several pieces of the library might share a single Address, including a background thread that's working on resolving, these objects are referenced counted. This allows everything that's using it to declare they still want it, and drop their reference to the address when they are done with it. The object's resources are freed when the last reference is dropped.",
+                "This function drops a reference to an Address, decreasing its reference count by one.",
+                "The documentation will tell you when the app has to explicitly unref an address. For example, ResolveHostname() creates addresses that are already referenced, so the caller needs to unref it when done.",
                 {
                   "tag": "@threadsafety",
                   "content": "It is safe to call this function from any thread."
@@ -213304,14 +213405,14 @@
                   "content": "This function is available since SDL_net 3.0.0."
                 }
               ],
-              "name": "FreeLocales",
+              "name": "Unref",
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "sourceName": "NET_FreeLocalAddresses",
+              "sourceName": "NET_UnrefAddress",
               "hints": {
-                "body": "FreeLocalAddresses(release());",
-                "delegate": "SDL::FreeLocalAddresses"
+                "body": "UnrefAddress(release());",
+                "delegate": "SDL::UnrefAddress"
               },
               "proto": true
             },
@@ -213444,68 +213545,7 @@
               },
               "proto": true
             },
-            "Ref": {
-              "doc": [
-                "Add a reference to an Address.",
-                "Since several pieces of the library might share a single Address, including a background thread that's working on resolving, these objects are referenced counted. This allows everything that's using it to declare they still want it, and drop their reference to the address when they are done with it. The object's resources are freed when the last reference is dropped.",
-                "This function adds a reference to an Address, increasing its reference count by one.",
-                "The documentation will tell you when the app has to explicitly unref an address. For example, ResolveHostname() creates addresses that are already referenced, so the caller needs to unref it when done.",
-                "Generally you only have to explicit ref an address when you have different parts of your own app that will be sharing an address. In normal usage, you only have to unref things you've created once (like you might free() something), but you are free to add extra refs if it makes sense.",
-                "This returns the same address passed as a parameter, which makes it easy to ref and assign in one step:",
-                {
-                  "content": "```c\nmyAddr = Address.Ref(yourAddr);\n```"
-                },
-                [
-                  {
-                    "tag": "@returns",
-                    "content": "the same address that was passed as a parameter."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL_net 3.0.0."
-                }
-              ],
-              "name": "Ref",
-              "kind": "function",
-              "type": "AddressRef",
-              "parameters": [],
-              "sourceName": "NET_RefAddress",
-              "hints": {
-                "delegate": "SDL::RefAddress"
-              },
-              "proto": true
-            },
-            "Unref": {
-              "doc": [
-                "Drop a reference to an Address.",
-                "Since several pieces of the library might share a single Address, including a background thread that's working on resolving, these objects are referenced counted. This allows everything that's using it to declare they still want it, and drop their reference to the address when they are done with it. The object's resources are freed when the last reference is dropped.",
-                "This function drops a reference to an Address, decreasing its reference count by one.",
-                "The documentation will tell you when the app has to explicitly unref an address. For example, ResolveHostname() creates addresses that are already referenced, so the caller needs to unref it when done.",
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL_net 3.0.0."
-                }
-              ],
-              "name": "Unref",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "NET_UnrefAddress",
-              "hints": {
-                "delegate": "SDL::UnrefAddress"
-              },
-              "proto": true
-            },
-            "Comparees": {
+            "Compare": {
               "doc": [
                 "Compare two Address objects.",
                 "This compares two addresses, returning a value that is useful for qsort (or qsort).",
@@ -213528,7 +213568,7 @@
                   "content": "This function is available since SDL_net 3.0.0."
                 }
               ],
-              "name": "Comparees",
+              "name": "Compare",
               "kind": "function",
               "type": "int",
               "parameters": [
@@ -213538,10 +213578,45 @@
                 }
               ],
               "sourceName": "NET_CompareAddresses",
-              "immutable": true,
               "hints": {
+                "methodName": "Compare",
                 "delegate": "SDL::CompareAddresses"
               },
+              "immutable": true,
+              "proto": true
+            },
+            "operator==": {
+              "kind": "function",
+              "static": false,
+              "immutable": true,
+              "type": "bool",
+              "parameters": [
+                {
+                  "type": "AddressRef",
+                  "name": "other"
+                }
+              ],
+              "doc": [
+                "Compares two addresses for equality. Returns true if they are the same, false otherwise."
+              ],
+              "name": "operator==",
+              "proto": true
+            },
+            "operator<=>": {
+              "kind": "function",
+              "static": false,
+              "immutable": true,
+              "type": "auto",
+              "parameters": [
+                {
+                  "type": "AddressRef",
+                  "name": "other"
+                }
+              ],
+              "doc": [
+                "Compares two addresses. Returns std::strong_ordering::less if this address is less than the other, std::strong_ordering::greater if this address is greater than the other, and std::strong_ordering::equal if they are equal."
+              ],
+              "name": "operator<=>",
               "proto": true
             },
             "CreateClient": {
@@ -213598,7 +213673,7 @@
               ],
               "name": "CreateClient",
               "kind": "function",
-              "type": "StreamSocketRef",
+              "type": "StreamSocket",
               "parameters": [
                 {
                   "name": "port",
@@ -213676,7 +213751,7 @@
               ],
               "name": "CreateServer",
               "kind": "function",
-              "type": "ServerRef",
+              "type": "Server",
               "parameters": [
                 {
                   "name": "port",
@@ -213750,13 +213825,13 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Datagram.DestroySocket"
+                    "content": "DatagramSocket.Destroy"
                   }
                 ]
               ],
               "name": "CreateDatagramSocket",
               "kind": "function",
-              "type": "DatagramSocketRef",
+              "type": "DatagramSocket",
               "parameters": [
                 {
                   "name": "port",
@@ -213770,7 +213845,7 @@
               "sourceName": "NET_CreateDatagramSocket",
               "hints": {
                 "mayFail": true,
-                "delegate": "Datagram"
+                "delegate": "DatagramSocket"
               },
               "proto": true
             }
@@ -213821,7 +213896,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Address.Ref"
+                "content": "RefAddress"
               },
               {
                 "tag": "@sa",
@@ -213831,7 +213906,7 @@
           ],
           "name": "ResolveHostname",
           "kind": "function",
-          "type": "AddressRef",
+          "type": "Address",
           "parameters": [
             {
               "name": "host",
@@ -213840,7 +213915,42 @@
           ],
           "sourceName": "NET_ResolveHostname",
           "hints": {
+            "mayFail": true,
+            "wrapSelf": true,
+            "delegate": "Address"
+          }
+        },
+        "Address::Address": {
+          "name": "Address::Address",
+          "kind": "function",
+          "type": "",
+          "parameters": [
+            {
+              "name": "host",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "NET_ResolveHostname",
+          "hints": {
+            "self": "get()",
+            "super": "Address",
             "mayFail": true
+          },
+          "overload": {
+            "name": "Address::Address",
+            "kind": "function",
+            "type": "",
+            "parameters": [
+              {
+                "name": "address",
+                "type": "AddressRef"
+              }
+            ],
+            "sourceName": "NET_RefAddress",
+            "hints": {
+              "self": "get()",
+              "super": "Address"
+            }
           }
         },
         "WaitUntilResolved": {
@@ -214039,7 +214149,7 @@
             "Generally you only have to explicit ref an address when you have different parts of your own app that will be sharing an address. In normal usage, you only have to unref things you've created once (like you might free() something), but you are free to add extra refs if it makes sense.",
             "This returns the same address passed as a parameter, which makes it easy to ref and assign in one step:",
             {
-              "content": "```c\nmyAddr = Address.Ref(yourAddr);\n```"
+              "content": "```c\nmyAddr = RefAddress(yourAddr);\n```"
             },
             [
               {
@@ -214062,25 +214172,17 @@
           ],
           "name": "RefAddress",
           "kind": "function",
-          "type": "AddressRef",
+          "type": "Address",
           "parameters": [
             {
               "name": "address",
               "type": "AddressRef"
             }
           ],
-          "sourceName": "NET_RefAddress"
-        },
-        "Address::Ref": {
-          "name": "Address::Ref",
-          "kind": "function",
-          "type": "AddressRef",
-          "parameters": [],
           "sourceName": "NET_RefAddress",
           "hints": {
-            "self": "get()",
-            "super": "Address",
-            "delegate": "SDL::RefAddress"
+            "wrapSelf": true,
+            "delegate": "Address"
           }
         },
         "UnrefAddress": {
@@ -214108,7 +214210,7 @@
           "parameters": [
             {
               "name": "address",
-              "type": "AddressRef"
+              "type": "AddressRaw"
             }
           ],
           "sourceName": "NET_UnrefAddress"
@@ -214122,6 +214224,7 @@
           "hints": {
             "self": "get()",
             "super": "Address",
+            "body": "UnrefAddress(release());",
             "delegate": "SDL::UnrefAddress"
           }
         },
@@ -214197,10 +214300,13 @@
               "type": "AddressRef"
             }
           ],
-          "sourceName": "NET_CompareAddresses"
+          "sourceName": "NET_CompareAddresses",
+          "hints": {
+            "methodName": "Compare"
+          }
         },
-        "Address::Comparees": {
-          "name": "Address::Comparees",
+        "Address::Compare": {
+          "name": "Address::Compare",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -214210,11 +214316,44 @@
             }
           ],
           "sourceName": "NET_CompareAddresses",
-          "immutable": true,
           "hints": {
             "self": "get()",
             "super": "Address",
+            "methodName": "Compare",
             "delegate": "SDL::CompareAddresses"
+          },
+          "immutable": true
+        },
+        "Address::operator==": {
+          "kind": "function",
+          "immutable": true,
+          "type": "bool",
+          "parameters": [
+            {
+              "type": "AddressRef",
+              "name": "other"
+            }
+          ],
+          "name": "Address::operator==",
+          "hints": {
+            "self": "get()",
+            "super": "Address"
+          }
+        },
+        "Address::operator<=>": {
+          "kind": "function",
+          "immutable": true,
+          "type": "auto",
+          "parameters": [
+            {
+              "type": "AddressRef",
+              "name": "other"
+            }
+          ],
+          "name": "Address::operator<=>",
+          "hints": {
+            "self": "get()",
+            "super": "Address"
           }
         },
         "GetLocalAddresses": {
@@ -214222,9 +214361,9 @@
             "Obtain a list of local addresses on the system.",
             "This returns addresses that you can theoretically bind a socket to, to accept connections from other machines at that address.",
             "You almost never need this function; first, it's hard to tell _what_ is a good address to bind to, without asking the user (who will likely find it equally hard to decide). Second, most machines will have lots of _private_ addresses that are accessible on the same LAN, but not public ones that are accessible from the outside Internet.",
-            "Usually it's better to use Address.CreateServer() or DatagramSocket.DatagramSocket() with a nullptr address, to say \"bind to all interfaces.\"",
+            "Usually it's better to use Address.CreateServer() or Address.CreateDatagramSocket() with a nullptr address, to say \"bind to all interfaces.\"",
             "The array of addresses returned from this is guaranteed to be nullptr-terminated. You can also pass a pointer to an int, which will return the final count, not counting the nullptr at the end of the array.",
-            "Pass the returned array to Address.FreeLocales when you are done with it. It is safe to keep any addresses you want from this array even after calling that function, as long as you called Address.Ref() on them.",
+            "Pass the returned array to FreeLocalAddresses when you are done with it. It is safe to keep any addresses you want from this array even after calling that function, as long as you called RefAddress() on them.",
             [
               {
                 "tag": "@param num_addresses",
@@ -214266,7 +214405,7 @@
           "doc": [
             "Free the results from GetLocalAddresses.",
             "This will unref all addresses in the array and free the array itself.",
-            "Since addresses are reference counted, it is safe to keep any addresses you want from this array even after calling this function, as long as you called Address.Ref() on them first.",
+            "Since addresses are reference counted, it is safe to keep any addresses you want from this array even after calling this function, as long as you called RefAddress() on them first.",
             "It is safe to pass a nullptr in here, it will be ignored.",
             {
               "tag": "@param addresses",
@@ -214287,23 +214426,10 @@
           "parameters": [
             {
               "name": "addresses",
-              "type": "AddressRaw"
+              "type": "NET_Address **"
             }
           ],
           "sourceName": "NET_FreeLocalAddresses"
-        },
-        "Address::FreeLocales": {
-          "name": "Address::FreeLocales",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "NET_FreeLocalAddresses",
-          "hints": {
-            "self": "get()",
-            "super": "Address",
-            "body": "FreeLocalAddresses(release());",
-            "delegate": "SDL::FreeLocalAddresses"
-          }
         },
         "StreamSocket": {
           "doc": [
@@ -214680,7 +214806,7 @@
               ],
               "name": "GetAddress",
               "kind": "function",
-              "type": "AddressRef",
+              "type": "Address",
               "parameters": [],
               "sourceName": "NET_GetStreamSocketAddress",
               "hints": {
@@ -215057,14 +215183,13 @@
           "sourceName": "NET_CreateClient",
           "hints": {
             "mayFail": true,
-            "wrapSelf": true,
             "delegate": "StreamSocket"
           }
         },
         "Address::CreateClient": {
           "name": "Address::CreateClient",
           "kind": "function",
-          "type": "StreamSocketRef",
+          "type": "StreamSocket",
           "parameters": [
             {
               "name": "port",
@@ -215600,14 +215725,13 @@
           "sourceName": "NET_CreateServer",
           "hints": {
             "mayFail": true,
-            "wrapSelf": true,
             "delegate": "Server"
           }
         },
         "Address::CreateServer": {
           "name": "Address::CreateServer",
           "kind": "function",
-          "type": "ServerRef",
+          "type": "Server",
           "parameters": [
             {
               "name": "port",
@@ -215809,7 +215933,7 @@
           ],
           "name": "GetStreamSocketAddress",
           "kind": "function",
-          "type": "AddressRef",
+          "type": "Address",
           "parameters": [
             {
               "name": "sock",
@@ -215824,7 +215948,7 @@
         "StreamSocket::GetAddress": {
           "name": "StreamSocket::GetAddress",
           "kind": "function",
-          "type": "AddressRef",
+          "type": "Address",
           "parameters": [],
           "sourceName": "NET_GetStreamSocketAddress",
           "hints": {
@@ -216319,7 +216443,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "DatagramSocket.DatagramSocket"
+                "content": "Address.CreateDatagramSocket"
               },
               {
                 "tag": "@sa",
@@ -216494,7 +216618,7 @@
                             },
                             {
                               "tag": "@sa",
-                              "content": "Datagram.DestroySocket"
+                              "content": "DatagramSocket.Destroy"
                             }
                           ]
                         ],
@@ -216517,8 +216641,7 @@
                         ],
                         "sourceName": "NET_CreateDatagramSocket",
                         "hints": {
-                          "mayFail": true,
-                          "delegate": "Datagram"
+                          "mayFail": true
                         },
                         "proto": true
                       }
@@ -216591,7 +216714,7 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "DatagramSocket.DatagramSocket"
+                    "content": "Address.CreateDatagramSocket"
                   },
                   {
                     "tag": "@sa",
@@ -216695,7 +216818,7 @@
                 "Datagram sockets send packets of data. They either arrive as complete packets or they don't arrive at all, so you'll never receive half a packet.",
                 "This call never blocks; if no new data is available at the time of the call, it returns true immediately. The caller can try again later.",
                 "On a successful call to this function, it returns true, even if no new packets are available, so you should check for a successful return and a non-nullptr value in `*dgram` to decide if a new packet is available.",
-                "You must pass received packets to Datagram.Destroy when you are done with them. If you want to save the sender's address past this time, it is safe to call Address.Ref() on the address and hold onto the pointer, so long as you call Address.Unref() on it when you are done with it.",
+                "You must pass received packets to Datagram.Destroy when you are done with them. If you want to save the sender's address past this time, it is safe to call RefAddress() on the address and hold onto the pointer, so long as you call Address.Unref() on it when you are done with it.",
                 "Since datagrams can arrive from any address or port on the network without prior warning, this information is available in the Datagram object that is provided by this function, and this is the only way to know who to reply to. Even if you aren't acting as a \"server,\" packets can still arrive at your socket if someone sends one.",
                 "If there's a fatal error, this function will return false. Datagram sockets generally won't report failures, because there is no state like a \"connection\" to fail at this level, but may report failure for unrecoverable system-level conditions; once a datagram socket fails, you should assume it is no longer usable and should destroy it with SDL_DestroyDatagramSocket().",
                 [
@@ -216733,12 +216856,61 @@
               "parameters": [
                 {
                   "name": "dgram",
-                  "type": "NET_Datagram **"
+                  "type": "Datagram &"
                 }
               ],
               "sourceName": "NET_ReceiveDatagram",
               "hints": {
+                "body": "return dgram.Receive(sock);",
                 "delegate": "SDL::ReceiveDatagram"
+              },
+              "overload": {
+                "kind": "function",
+                "type": "Datagram",
+                "parameters": [],
+                "hints": {
+                  "delegate": "SDL::ReceiveDatagram"
+                },
+                "name": "ReceiveDatagram",
+                "static": false,
+                "doc": [
+                  "Receive a new packet that a remote system sent to a datagram socket.",
+                  "Datagram sockets send packets of data. They either arrive as complete packets or they don't arrive at all, so you'll never receive half a packet.",
+                  "This call never blocks; if no new data is available at the time of the call, it returns true immediately. The caller can try again later.",
+                  "On a successful call to this function, it returns true, even if no new packets are available, so you should check for a successful return and a non-nullptr value in `*dgram` to decide if a new packet is available.",
+                  "You must pass received packets to Datagram.Destroy when you are done with them. If you want to save the sender's address past this time, it is safe to call RefAddress() on the address and hold onto the pointer, so long as you call Address.Unref() on it when you are done with it.",
+                  "Since datagrams can arrive from any address or port on the network without prior warning, this information is available in the Datagram object that is provided by this function, and this is the only way to know who to reply to. Even if you aren't acting as a \"server,\" packets can still arrive at your socket if someone sends one.",
+                  "If there's a fatal error, this function will return false. Datagram sockets generally won't report failures, because there is no state like a \"connection\" to fail at this level, but may report failure for unrecoverable system-level conditions; once a datagram socket fails, you should assume it is no longer usable and should destroy it with SDL_DestroyDatagramSocket().",
+                  [
+                    {
+                      "tag": "@param dgram",
+                      "content": "a pointer to the datagram packet pointer."
+                    },
+                    {
+                      "tag": "@returns",
+                      "content": "true if data sent or queued for transmission, false on failure; call GetError() for details."
+                    }
+                  ],
+                  {
+                    "tag": "@threadsafety",
+                    "content": "You should not operate on the same socket from multiple threads at the same time without supplying a serialization mechanism. However, different threads may access different sockets at the same time without problems."
+                  },
+                  {
+                    "tag": "@since",
+                    "content": "This function is available since SDL_net 3.0.0."
+                  },
+                  [
+                    {
+                      "tag": "@sa",
+                      "content": "DatagramSocket.SendDatagram"
+                    },
+                    {
+                      "tag": "@sa",
+                      "content": "Datagram.Destroy"
+                    }
+                  ]
+                ],
+                "proto": true
               },
               "proto": true
             },
@@ -216904,94 +217076,7 @@
                       "hints": {
                         "delete": true
                       },
-                      "name": "Datagram",
-                      "overload": {
-                        "doc": [
-                          "Create and bind a new datagram socket.",
-                          "Datagram sockets follow different rules than stream sockets. They are not a reliable stream of bytes but rather packets, they are not limited to talking to a single other remote system, they do not maintain a single \"connection\" that can be dropped, and they are more nimble about network failures at the expense of being more complex to use. What makes sense for your app depends entirely on what your app is trying to accomplish.",
-                          "Generally the idea of a datagram socket is that you send data one chunk (\"packet\") at a time to any address you want, and it arrives whenever it gets there, even if later packets get there first, and maybe it doesn't get there at all, and you don't know when anything of this happens by default.",
-                          "This function creates a new datagram socket.",
-                          "This function does not block, and is not asynchronous, as the system can decide immediately if it can create a socket or not. If this returns success, you can immediately start talking to the network.",
-                          "You can specify an address to listen for connections on; this address must be local to the system, and probably one returned by GetLocalAddresses(), but almost always you just want to specify nullptr here, to listen on any address available to the app.",
-                          "If you need to bind to a specific port (like a server), you should specify it in the `port` argument; datagram servers should do this, so they can be reached at a well-known port. If you only plan to initiate communications (like a client), you should specify 0 and let the system pick an unused port. Only one process can bind to a specific port at a time, so if you aren't acting as a server, you should choose 0. Datagram sockets can send individual packets to any port, so this just declares where data will arrive for your socket.",
-                          "Datagram sockets don't employ any protocol (above the UDP level), so they can talk to apps that aren't using SDL_net, but if you want to speak any protocol beyond arbitrary packets of bytes, such as WebRTC, you'll have to implement that yourself on top of the stream socket.",
-                          "Unlike BSD sockets or WinSock, you specify the port as a normal integer; you do not have to byteswap it into \"network order,\" as the library will handle that for you.",
-                          "The caller may supply properties to customize behavior. This is optional, and a value of zero for `props` will request defaults for all properties.",
-                          "These are the supported properties:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`SDL_PROP_DATAGRAM_SOCKET_REUSEADDR_BOOLEAN`: true if the socket should be created even if a previous socket has recently used this address. For various reasons, networks prefer that there be some delay between apps reusing the same address, but this can be problematic when iterating quickly, for software development purposes or just restarting a crashed service. This property defaults to true (although it should be noted that, at the operating system level, this defaults to false!). If this property is false and the OS feels that not enough time has elapsed, socket creation will fail and this function will report an error."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`SDL_PROP_DATAGRAM_SOCKET_ALLOW_BROADCAST_BOOLEAN`: true if the socket should allow broadcasting. At the lower level, this will set `SO_BROADCAST` for IPv4 sockets, to allow sending to the subnet's broadcast address at the OS level. For IPv6, it'll join the all-nodes link-local multicast group, ff02::1, allowing sending and receiving there, more or less simulating the usual IPv4 broadcast semantics. Other protocols take similar approaches. If you do not intend to send or receive broadcast packets on this socket, set this property to false, or omit it, as it defaults to false. Note: IPv4 will still be able to receive broadcast packets without this option, but IPv6 will not. Also see notes about sending to a broadcast address in DatagramSocket.SendDatagram()."
-                            }
-                          ],
-                          [
-                            {
-                              "tag": "@param addr",
-                              "content": "the local address to listen for connections on, or nullptr to listen on all available local addresses."
-                            },
-                            {
-                              "tag": "@param port",
-                              "content": "the port on the local address to listen for connections on, or zero for the system to decide."
-                            },
-                            {
-                              "tag": "@param props",
-                              "content": "properties of the new socket. Specify zero for defaults."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new DatagramSocket on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_net 3.0.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "GetLocalAddresses"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "Datagram.DestroySocket"
-                            }
-                          ]
-                        ],
-                        "name": "Datagram",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "addr",
-                            "type": "AddressRef"
-                          },
-                          {
-                            "name": "port",
-                            "type": "Uint16"
-                          },
-                          {
-                            "name": "props",
-                            "type": "PropertiesRef"
-                          }
-                        ],
-                        "sourceName": "NET_CreateDatagramSocket",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "proto": true
-                      }
+                      "name": "Datagram"
                     }
                   }
                 }
@@ -217020,7 +217105,7 @@
               "type": "",
               "parameters": [],
               "hints": {
-                "body": "NET_DestroyDatagramSocket(get());"
+                "body": "NET_DestroyDatagram(get());"
               },
               "name": "~Datagram"
             },
@@ -217060,50 +217145,11 @@
                 "name": "operator="
               }
             },
-            "DestroySocket": {
-              "doc": [
-                "Dispose of a previously-created datagram socket.",
-                "This will _abandon_ any data queued for sending that hasn't made it to the socket. If you need this data to arrive, you should wait for confirmation from the remote computer in some form that you devise yourself. Queued data is not guaranteed to arrive even if the library made efforts to transmit it here.",
-                "Any data that has arrived from the remote end of the connection that hasn't been read yet is lost.",
-                {
-                  "tag": "@threadsafety",
-                  "content": "You should not operate on the same socket from multiple threads at the same time without supplying a serialization mechanism. However, different threads may access different sockets at the same time without problems."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL_net 3.0.0."
-                },
-                [
-                  {
-                    "tag": "@sa",
-                    "content": "DatagramSocket.DatagramSocket"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "DatagramSocket.SendDatagram"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "DatagramSocket.ReceiveDatagram"
-                  }
-                ]
-              ],
-              "name": "DestroySocket",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "NET_DestroyDatagramSocket",
-              "hints": {
-                "body": "DestroyDatagramSocket(release());",
-                "delegate": "SDL::DatagramSocket::Destroy"
-              },
-              "proto": true
-            },
             "Destroy": {
               "doc": [
                 "Dispose of a datagram packet previously received.",
                 "You must pass packets received through DatagramSocket.ReceiveDatagram to this function when you are done with them. This will free resources used by this packet and unref its Address.",
-                "If you want to save the sender's address from the packet past this time, it is safe to call Address.Ref() on the address and hold onto its pointer, so long as you call Address.Unref() on it when you are done with it.",
+                "If you want to save the sender's address from the packet past this time, it is safe to call RefAddress() on the address and hold onto its pointer, so long as you call Address.Unref() on it when you are done with it.",
                 "Once you call this function, the datagram pointer becomes invalid and should not be used again by the app.",
                 {
                   "tag": "@threadsafety",
@@ -217120,8 +217166,64 @@
               "parameters": [],
               "sourceName": "NET_DestroyDatagram",
               "hints": {
+                "body": "DestroyDatagram(release());",
                 "delegate": "SDL::DestroyDatagram"
               },
+              "proto": true
+            },
+            "Receive": {
+              "kind": "function",
+              "type": "bool",
+              "static": false,
+              "parameters": [
+                {
+                  "type": "DatagramSocketRef",
+                  "name": "sock"
+                }
+              ],
+              "hints": {},
+              "name": "Receive",
+              "doc": [
+                "Receive a new packet that a remote system sent to a datagram socket.",
+                "Datagram sockets send packets of data. They either arrive as complete packets or they don't arrive at all, so you'll never receive half a packet.",
+                "This call never blocks; if no new data is available at the time of the call, it returns true immediately. The caller can try again later.",
+                "On a successful call to this function, it returns true, even if no new packets are available, so you should check for a successful return and a non-nullptr value in `*dgram` to decide if a new packet is available.",
+                "You must pass received packets to Datagram.Destroy when you are done with them. If you want to save the sender's address past this time, it is safe to call RefAddress() on the address and hold onto the pointer, so long as you call Address.Unref() on it when you are done with it.",
+                "Since datagrams can arrive from any address or port on the network without prior warning, this information is available in the Datagram object that is provided by this function, and this is the only way to know who to reply to. Even if you aren't acting as a \"server,\" packets can still arrive at your socket if someone sends one.",
+                "If there's a fatal error, this function will return false. Datagram sockets generally won't report failures, because there is no state like a \"connection\" to fail at this level, but may report failure for unrecoverable system-level conditions; once a datagram socket fails, you should assume it is no longer usable and should destroy it with SDL_DestroyDatagramSocket().",
+                [
+                  {
+                    "tag": "@param sock",
+                    "content": "the datagram socket to send data through."
+                  },
+                  {
+                    "tag": "@param dgram",
+                    "content": "a pointer to the datagram packet pointer."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "true if data sent or queued for transmission, false on failure; call GetError() for details."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "You should not operate on the same socket from multiple threads at the same time without supplying a serialization mechanism. However, different threads may access different sockets at the same time without problems."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL_net 3.0.0."
+                },
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "DatagramSocket.SendDatagram"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "Datagram.Destroy"
+                  }
+                ]
+              ],
               "proto": true
             }
           },
@@ -217191,7 +217293,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Datagram.DestroySocket"
+                "content": "DatagramSocket.Destroy"
               }
             ]
           ],
@@ -217215,14 +217317,13 @@
           "sourceName": "NET_CreateDatagramSocket",
           "hints": {
             "mayFail": true,
-            "wrapSelf": true,
-            "delegate": "Datagram"
+            "delegate": "DatagramSocket"
           }
         },
         "Address::CreateDatagramSocket": {
           "name": "Address::CreateDatagramSocket",
           "kind": "function",
-          "type": "DatagramSocketRef",
+          "type": "DatagramSocket",
           "parameters": [
             {
               "name": "port",
@@ -217238,7 +217339,7 @@
             "self": "get()",
             "super": "Address",
             "mayFail": true,
-            "delegate": "Datagram"
+            "delegate": "DatagramSocket"
           }
         },
         "DatagramSocket::DatagramSocket": {
@@ -217263,32 +217364,6 @@
           "hints": {
             "self": "get()",
             "super": "DatagramSocket",
-            "mayFail": true,
-            "delegate": "Datagram"
-          }
-        },
-        "Datagram::Datagram": {
-          "name": "Datagram::Datagram",
-          "kind": "function",
-          "type": "",
-          "parameters": [
-            {
-              "name": "addr",
-              "type": "AddressRef"
-            },
-            {
-              "name": "port",
-              "type": "Uint16"
-            },
-            {
-              "name": "props",
-              "type": "PropertiesRef"
-            }
-          ],
-          "sourceName": "NET_CreateDatagramSocket",
-          "hints": {
-            "self": "get()",
-            "super": "Datagram",
             "mayFail": true
           }
         },
@@ -217418,7 +217493,7 @@
             "Datagram sockets send packets of data. They either arrive as complete packets or they don't arrive at all, so you'll never receive half a packet.",
             "This call never blocks; if no new data is available at the time of the call, it returns true immediately. The caller can try again later.",
             "On a successful call to this function, it returns true, even if no new packets are available, so you should check for a successful return and a non-nullptr value in `*dgram` to decide if a new packet is available.",
-            "You must pass received packets to Datagram.Destroy when you are done with them. If you want to save the sender's address past this time, it is safe to call Address.Ref() on the address and hold onto the pointer, so long as you call Address.Unref() on it when you are done with it.",
+            "You must pass received packets to Datagram.Destroy when you are done with them. If you want to save the sender's address past this time, it is safe to call RefAddress() on the address and hold onto the pointer, so long as you call Address.Unref() on it when you are done with it.",
             "Since datagrams can arrive from any address or port on the network without prior warning, this information is available in the Datagram object that is provided by this function, and this is the only way to know who to reply to. Even if you aren't acting as a \"server,\" packets can still arrive at your socket if someone sends one.",
             "If there's a fatal error, this function will return false. Datagram sockets generally won't report failures, because there is no state like a \"connection\" to fail at this level, but may report failure for unrecoverable system-level conditions; once a datagram socket fails, you should assume it is no longer usable and should destroy it with SDL_DestroyDatagramSocket().",
             [
@@ -217464,10 +217539,68 @@
             },
             {
               "name": "dgram",
-              "type": "NET_Datagram **"
+              "type": "Datagram &"
             }
           ],
-          "sourceName": "NET_ReceiveDatagram"
+          "sourceName": "NET_ReceiveDatagram",
+          "hints": {
+            "body": "return dgram.Receive(sock);"
+          },
+          "overload": {
+            "kind": "function",
+            "type": "Datagram",
+            "parameters": [
+              {
+                "type": "DatagramSocketRef",
+                "name": "sock"
+              }
+            ],
+            "hints": {
+              "body": "Datagram dgram;\ndgram.Receive(sock);\nreturn dgram;"
+            },
+            "name": "ReceiveDatagram",
+            "doc": [
+              "Receive a new packet that a remote system sent to a datagram socket.",
+              "Datagram sockets send packets of data. They either arrive as complete packets or they don't arrive at all, so you'll never receive half a packet.",
+              "This call never blocks; if no new data is available at the time of the call, it returns true immediately. The caller can try again later.",
+              "On a successful call to this function, it returns true, even if no new packets are available, so you should check for a successful return and a non-nullptr value in `*dgram` to decide if a new packet is available.",
+              "You must pass received packets to Datagram.Destroy when you are done with them. If you want to save the sender's address past this time, it is safe to call RefAddress() on the address and hold onto the pointer, so long as you call Address.Unref() on it when you are done with it.",
+              "Since datagrams can arrive from any address or port on the network without prior warning, this information is available in the Datagram object that is provided by this function, and this is the only way to know who to reply to. Even if you aren't acting as a \"server,\" packets can still arrive at your socket if someone sends one.",
+              "If there's a fatal error, this function will return false. Datagram sockets generally won't report failures, because there is no state like a \"connection\" to fail at this level, but may report failure for unrecoverable system-level conditions; once a datagram socket fails, you should assume it is no longer usable and should destroy it with SDL_DestroyDatagramSocket().",
+              [
+                {
+                  "tag": "@param sock",
+                  "content": "the datagram socket to send data through."
+                },
+                {
+                  "tag": "@param dgram",
+                  "content": "a pointer to the datagram packet pointer."
+                },
+                {
+                  "tag": "@returns",
+                  "content": "true if data sent or queued for transmission, false on failure; call GetError() for details."
+                }
+              ],
+              {
+                "tag": "@threadsafety",
+                "content": "You should not operate on the same socket from multiple threads at the same time without supplying a serialization mechanism. However, different threads may access different sockets at the same time without problems."
+              },
+              {
+                "tag": "@since",
+                "content": "This function is available since SDL_net 3.0.0."
+              },
+              [
+                {
+                  "tag": "@sa",
+                  "content": "DatagramSocket.SendDatagram"
+                },
+                {
+                  "tag": "@sa",
+                  "content": "Datagram.Destroy"
+                }
+              ]
+            ]
+          }
         },
         "DatagramSocket::ReceiveDatagram": {
           "name": "DatagramSocket::ReceiveDatagram",
@@ -217476,21 +217609,48 @@
           "parameters": [
             {
               "name": "dgram",
-              "type": "NET_Datagram **"
+              "type": "Datagram &"
             }
           ],
           "sourceName": "NET_ReceiveDatagram",
           "hints": {
             "self": "get()",
             "super": "DatagramSocket",
+            "body": "return dgram.Receive(sock);",
             "delegate": "SDL::ReceiveDatagram"
+          },
+          "overload": {
+            "kind": "function",
+            "type": "Datagram",
+            "parameters": [],
+            "hints": {
+              "self": "get()",
+              "super": "DatagramSocket",
+              "delegate": "SDL::ReceiveDatagram"
+            },
+            "name": "DatagramSocket::ReceiveDatagram"
           }
+        },
+        "Datagram::Receive": {
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "type": "DatagramSocketRef",
+              "name": "sock"
+            }
+          ],
+          "hints": {
+            "self": "get()",
+            "super": "Datagram"
+          },
+          "name": "Datagram::Receive"
         },
         "DestroyDatagram": {
           "doc": [
             "Dispose of a datagram packet previously received.",
             "You must pass packets received through DatagramSocket.ReceiveDatagram to this function when you are done with them. This will free resources used by this packet and unref its Address.",
-            "If you want to save the sender's address from the packet past this time, it is safe to call Address.Ref() on the address and hold onto its pointer, so long as you call Address.Unref() on it when you are done with it.",
+            "If you want to save the sender's address from the packet past this time, it is safe to call RefAddress() on the address and hold onto its pointer, so long as you call Address.Unref() on it when you are done with it.",
             "Once you call this function, the datagram pointer becomes invalid and should not be used again by the app.",
             {
               "tag": "@param dgram",
@@ -217511,7 +217671,7 @@
           "parameters": [
             {
               "name": "dgram",
-              "type": "DatagramRef"
+              "type": "DatagramRaw"
             }
           ],
           "sourceName": "NET_DestroyDatagram"
@@ -217525,6 +217685,7 @@
           "hints": {
             "self": "get()",
             "super": "Datagram",
+            "body": "DestroyDatagram(release());",
             "delegate": "SDL::DestroyDatagram"
           }
         },
@@ -217606,7 +217767,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "DatagramSocket.DatagramSocket"
+                "content": "Address.CreateDatagramSocket"
               },
               {
                 "tag": "@sa",
@@ -217640,19 +217801,6 @@
             "super": "DatagramSocket",
             "body": "DestroyDatagramSocket(release());",
             "delegate": "SDL::DestroyDatagramSocket"
-          }
-        },
-        "Datagram::DestroySocket": {
-          "name": "Datagram::DestroySocket",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "NET_DestroyDatagramSocket",
-          "hints": {
-            "self": "get()",
-            "super": "Datagram",
-            "body": "DestroyDatagramSocket(release());",
-            "delegate": "SDL::DatagramSocket::Destroy"
           }
         },
         "WaitUntilInputAvailable": {
@@ -217706,7 +217854,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "DatagramSocket.DatagramSocket"
+                "content": "Address.CreateDatagramSocket"
               },
               {
                 "tag": "@sa",
@@ -217742,6 +217890,7 @@
         "SDL3/SDL_net.h"
       ],
       "localIncludes": [
+        "SDL3pp_properties.h",
         "SDL3pp_version.h"
       ]
     },
@@ -233534,7 +233683,6 @@
     "const TimerID &": "&$",
     "const MSTimerCallback &": "&$",
     "const NSTimerCallback &": "&$",
-    "const Status &": "&$",
     "const AsyncIOTaskType &": "&$",
     "const AsyncIOResult &": "&$",
     "const AsyncIOOutcome &": "&$",
@@ -233578,6 +233726,7 @@
     "const ThreadState &": "&$",
     "const ThreadFunction &": "&$",
     "const TLSDestructorCallback &": "&$",
+    "const Status &": "&$",
     "const hid_bus_type &": "&$",
     "const hid_device_info &": "&$",
     "const IOStatus &": "&$",
