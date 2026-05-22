@@ -4,7 +4,7 @@
 #include "SDL3pp_audio.h"
 #include "SDL3pp_version.h"
 
-#if defined(SDL3PP_ENABLE_MIXER) || defined(SDL3PP_DOC)
+#ifdef SDL3PP_ENABLE_MIXER
 
 #include <SDL3_mixer/SDL_mixer.h>
 
@@ -7719,6 +7719,6 @@ inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
 
 } // namespace SDL
 
-#endif /* defined(SDL3PP_ENABLE_MIXER) || defined(SDL3PP_DOC) */
+#endif /* SDL3PP_ENABLE_MIXER */
 
 #endif /* SDL3PP_MIXER_H_ */

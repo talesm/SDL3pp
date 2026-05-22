@@ -9,7 +9,7 @@ const currentVersion = ["0", "10", "1"]; // major, minor, patch
 
 /** @type {ApiTransform} */
 const transform = {
-  prefixes: ["SDL_", "IMG_", "TTF_", "MIX_"],
+  prefixes: ["SDL_", "IMG_", "NET_", "MIX_", "TTF_"],
   definitionPrefix: "SDL_",
   sourceIncludePrefix: 'SDL3/',
   namespace: "SDL",
@@ -8854,6 +8854,108 @@ const transform = {
         "MIX_Init": { name: "MIX.Init" },
         "MIX_Quit": { name: "MIX.Quit" },
         "MIX_PROP_PLAY_START_ORDER_NUMBER": { since: { tag: "SDL_MIXER", major: 3, minor: 2, patch: 2 } },
+      }
+    },
+    "SDL_net.h": {
+      localIncludes: [
+        "SDL3pp_properties.h",
+        "SDL3pp_version.h",
+      ],
+      namespacesMap: {
+        "NET_PROP_DATAGRAM_SOCKET_": "prop::DatagramSocket",
+        "NET_PROP_SERVER_": "prop::Server",
+      },
+      transform: {
+        "SDL_NET_MAJOR_VERSION": { value: "" },
+        "SDL_NET_MINOR_VERSION": { value: "" },
+        "SDL_NET_MICRO_VERSION": { value: "" },
+        "NET": {
+          kind: "ns",
+          before: "NET_Version",
+          entries: {}
+        },
+        "NET_Version": { name: "NET.Version" },
+        "NET_Init": { name: "NET.Init" },
+        "NET_Quit": { name: "NET.Quit" },
+        "NET_Address": {
+          resource: {
+            free: "NET_UnrefAddress",
+            shared: "NET_RefAddress",
+          },
+          entries: {
+            "NET_ResolveHostname": "ctor",
+            "NET_RefAddress": "ctor",
+          }
+        },
+        "NET_CompareAddresses": { hints: { methodName: "Compare" } },
+        "Address::operator==": {
+          kind: "function",
+          static: false,
+          immutable: true,
+          type: "bool",
+          parameters: [{ type: "AddressRef", name: "other" }],
+          doc: ["Compares two addresses for equality. Returns true if they are the same, false otherwise."]
+        },
+        "Address::operator<=>": {
+          kind: "function",
+          static: false,
+          immutable: true,
+          type: "auto",
+          parameters: [{ type: "AddressRef", name: "other" }],
+          doc: ["Compares two addresses. Returns std::strong_ordering::less if this address is less than the other, std::strong_ordering::greater if this address is greater than the other, and std::strong_ordering::equal if they are equal."]
+        },
+        "LocalAddressesArrayDeleter": {
+          before: "NET_GetLocalAddresses",
+          kind: "struct",
+          doc: ["@private"],
+        },
+        "LocalAddressesArray": {
+          before: "NET_GetLocalAddresses",
+          kind: "alias",
+          type: "OwnArray<AddressRef, LocalAddressesArrayDeleter>",
+          doc: ["Array of addresses returned by GetLocalAddresses. The array is freed automatically when it goes out of scope."],
+        },
+        "NET_GetLocalAddresses": {
+          type: "LocalAddressesArray",
+          parameters: [],
+          hints: { body: "int count;\nauto *addrs = CheckError(NET_GetLocalAddresses(&count));\nreturn LocalAddressesArray(reinterpret_cast<AddressRef *>(addrs), count);" },
+        },
+        "NET_FreeLocalAddresses": {},
+        "LocalAddressesArrayDeleter::operator()": {
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "AddressRef *", name: "addresses" }],
+          hints: { delegate: "FreeLocalAddresses" },
+        },
+        "NET_CreateClient": { type: "StreamSocket" },
+        "NET_CreateServer": { type: "Server" },
+        "NET_CreateDatagramSocket": { type: "DatagramSocket" },
+        "NET_Datagram": {
+          resource: { free: "NET_DestroyDatagram" },
+        },
+        "NET_ReceiveDatagram": {
+          parameters: [{}, { type: "Datagram &", name: "dgram" }],
+          hints: { body: "return dgram.Receive(sock);" },
+        },
+        "ReceiveDatagram": {
+          kind: "function",
+          type: "Datagram",
+          parameters: [{ type: "DatagramSocketRef", name: "sock" }],
+          hints: { body: "Datagram dgram;\ndgram.Receive(sock);\nreturn dgram;" },
+        },
+        "Datagram::Datagram": {
+          kind: "function",
+          type: "",
+          parameters: [{ type: "DatagramSocketRef", name: "sock" }],
+          hints: { copyDoc: "NET_ReceiveDatagram" },
+        },
+        "Datagram::Receive": {
+          kind: "function",
+          type: "bool",
+          static: false,
+          parameters: [{ type: "DatagramSocketRef", name: "sock" }],
+          hints: { copyDoc: "NET_ReceiveDatagram" },
+        },
       }
     },
     "SDL_ttf.h": {

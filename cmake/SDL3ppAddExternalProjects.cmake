@@ -79,6 +79,33 @@ if (SDL3PP_ENABLE_MIXER)
   endif()
 endif (SDL3PP_ENABLE_MIXER)
 
+if (SDL3PP_ENABLE_NET)
+  set(SDLNET_INSTALL ON) # passed to external/SDL
+  set(SDL3PP_USE_SDL3NET_URL OFF CACHE STRING "Bundle SDL3_net with this named tag/branch")
+  set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_net::SDL3_net)
+  if(SDL3PP_USE_SDL3NET_URL)
+    set(SDL3NET_URL ${SDL3PP_USE_SDL3NET_URL})
+  elseif (WIN32)
+    if (MSVC)
+      set(SDL3NET_URL https://github.com/libsdl-org/SDL_net/releases/download/prerelease-3.1.0/SDL3_net-devel-3.1.0-VC.zip)
+    else ()
+      set(SDL3NET_URL https://github.com/libsdl-org/SDL_net/releases/download/prerelease-3.1.0/SDL3_net-devel-3.1.0-mingw.tar.gz)
+    endif ()
+  else ()
+    set(SDL3NET_URL https://github.com/libsdl-org/SDL_net/releases/download/prerelease-3.1.0/SDL3_net-3.1.0.tar.gz)
+  endif ()
+  FetchContent_Declare(SDL3NETExternal
+    URL ${SDL3NET_URL}
+    OVERRIDE_FIND_PACKAGE
+  )
+  FetchContent_MakeAvailable(SDL3NETExternal)
+  if (NOT TARGET SDL3_net::SDL3_net)
+    FetchContent_GetProperties(SDL3NETExternal SOURCE_DIR SDL3NETExternal_SOURCE_DIR)
+    set(SDL3_net_DIR ${SDL3NETExternal_SOURCE_DIR}/cmake CACHE PATH "Path to SDL3_net source directory" FORCE)
+    find_package(SDL3_net REQUIRED)
+  endif()
+endif (SDL3PP_ENABLE_NET)
+
 if (SDL3PP_ENABLE_TTF)
   set(SDLTTF_INSTALL ON) # passed to external/SDL
   set(SDL3PP_USE_SDL3TTF_URL OFF CACHE STRING "Bundle SDL3_ttf with this named tag/branch")

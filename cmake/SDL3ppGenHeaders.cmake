@@ -21,6 +21,13 @@ ExternalProject_Add(SDL3MixerBase
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""
 )
+ExternalProject_Add(SDL3NetBase
+  PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/base/
+  URL               https://github.com/libsdl-org/SDL_net/releases/download/prerelease-3.1.0/SDL3_net-3.1.0.tar.gz
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND     ""
+  INSTALL_COMMAND   ""
+)
 ExternalProject_Add(SDL3TTFBase
   PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/base/
   URL               https://github.com/libsdl-org/SDL_ttf/releases/download/release-3.2.2/SDL3_ttf-3.2.2.tar.gz
@@ -58,6 +65,7 @@ add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
   DEPENDS SDL3Base
           SDL3ImageBase
           SDL3MixerBase
+          SDL3NetBase
           SDL3TTFBase
           ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
           ${CPPFIER_SOURCES}
