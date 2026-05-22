@@ -728,6 +728,16 @@ struct Rect : RectRaw
   }
 
   /**
+   * Wraps FRect.
+   *
+   * @param r the value to be wrapped
+   */
+  constexpr explicit Rect(const FRectRaw& r)
+    : SDL_Rect{int(r.x), int(r.y), int(r.w), int(r.h)}
+  {
+  }
+
+  /**
    * Construct from offset and size
    *
    * @param corner the top-left corner

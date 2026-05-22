@@ -9,8 +9,8 @@ Todo for next version
   - [ ] Fix (F)Rect constructor from 2 (F)Points;
   - [x] Multiply, Module, Division between 2 Point;
   - [x] Multiply, Division between 2 FPoint;
-  - [ ] Implicit convert Point to FPoint;
-  - [ ] Explicit convert FPoint to Point and FRect to Rect;
+  - [x] Implicit convert Point to FPoint;
+  - [x] Explicit convert FPoint to Point and FRect to Rect;
   - [ ] (F)Rect have \[GS]etPosition and SetSize;
 - [ ] Fix ObjectRef(nullptr).
 
