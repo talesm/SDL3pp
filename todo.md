@@ -6,7 +6,7 @@ Todo for next version
 - [x] Add experimental support for SDL3_net;
 - [ ] Improve SDL3pp_rect.h:
   - [x] Single argument constructor for both (F)Point;
-  - [ ] Fix (F)Rect constructor from 2 (F)Points;
+  - [x] Fix (F)Rect constructor from 2 (F)Points;
   - [x] Multiply, Module, Division between 2 Point;
   - [x] Multiply, Division between 2 FPoint;
   - [x] Implicit convert Point to FPoint;

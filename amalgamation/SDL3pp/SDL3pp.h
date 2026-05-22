@@ -29117,7 +29117,7 @@ struct Rect : RectRaw
    * @param r the value to be wrapped
    */
   constexpr explicit Rect(const FRectRaw& r)
-    : SDL_Rect{int(r.x), int(r.y), int(r.w), int(r.h)}
+    : RectRaw{int(r.x), int(r.y), int(r.w), int(r.h)}
   {
   }
 
@@ -29127,8 +29127,8 @@ struct Rect : RectRaw
    * @param corner the top-left corner
    * @param size the size
    */
-  constexpr Rect(const PointRaw& corner, const PointRaw& size)
-    : Rect{corner.x, corner.y, size.x, size.y}
+  constexpr Rect(const Point& corner, const Point& size)
+    : RectRaw{corner.x, corner.y, size.x, size.y}
   {
   }
 
@@ -29713,7 +29713,7 @@ struct FRect : FRectRaw
   /**
    * Constructs from top-left corner plus size
    */
-  constexpr FRect(const FPointRaw& corner, const FPointRaw& size)
+  constexpr FRect(const FPoint& corner, const FPoint& size)
     : FRect{corner.x, corner.y, size.x, size.y}
   {
   }
