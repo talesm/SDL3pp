@@ -748,15 +748,6 @@ struct Rect : RectRaw
   {
   }
 
-  /// Compares with the underlying type
-  bool operator==(const RectRaw& other) const { return Equal(other); }
-
-  /// Compares with the underlying type
-  bool operator==(const Rect& other) const
-  {
-    return *this == (const RectRaw&)(other);
-  }
-
   /// @sa Empty()
   explicit operator bool() const { return !Empty(); }
 
