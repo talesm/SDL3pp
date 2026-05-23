@@ -751,6 +751,18 @@ struct Rect : RectRaw
   /// @sa Empty()
   explicit operator bool() const { return !Empty(); }
 
+  /// @sa GetPosition()
+  const Point& position() const { return reinterpret_cast<const Point&>(x); }
+
+  /// @sa GetPosition()
+  Point& position() { return reinterpret_cast<Point&>(x); }
+
+  /// @sa GetSize()
+  const Point& size() const { return reinterpret_cast<const Point&>(w); }
+
+  /// @sa GetSize()
+  Point& size() { return reinterpret_cast<Point&>(w); }
+
   /**
    * Get left x coordinate.
    *
@@ -1370,6 +1382,18 @@ struct FRect : FRectRaw
 
   /// @sa Empty()
   operator bool() const { return !Empty(); }
+
+  /// @sa GetPosition()
+  const FPoint& position() const { return reinterpret_cast<const FPoint&>(x); }
+
+  /// @sa GetPosition()
+  FPoint& position() { return reinterpret_cast<FPoint&>(x); }
+
+  /// @sa GetSize()
+  const FPoint& size() const { return reinterpret_cast<const FPoint&>(w); }
+
+  /// @sa GetSize()
+  FPoint& size() { return reinterpret_cast<FPoint&>(w); }
 
   /**
    * Get left x coordinate.

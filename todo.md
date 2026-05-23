@@ -12,7 +12,7 @@ Todo for next version
   - [x] Implicit convert Point to FPoint;
   - [x] Explicit convert FPoint to Point and FRect to Rect;
   - [x] (F)Rect have \[GS]etPosition and SetSize;
-  - [ ] (F)Rect have position() and size(), that returns reference.
+  - [x] (F)Rect have position() and size(), that returns reference.
 - [ ] Fix ObjectRef(nullptr).
 
 Backlog
