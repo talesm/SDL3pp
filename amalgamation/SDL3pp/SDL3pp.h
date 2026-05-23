@@ -29366,12 +29366,46 @@ struct Rect : RectRaw
   constexpr Point GetBottomRight() const { return Point(GetX2(), GetY2()); }
 
   /**
+   * Get the Position of the rect, which is the same as its top left corner
+   *
+   * @return Top left corner of the rect
+   */
+  constexpr Point GetPosition() const { return GetTopLeft(); }
+
+  /**
+   * Set the Position object
+   *
+   * @param position the new position of the rect, which is the same as its top
+   * left corner
+   * @returns Reference to self
+   */
+  constexpr Rect& SetPosition(const Point& position)
+  {
+    x = position.x;
+    y = position.y;
+    return *this;
+  }
+
+  /**
    * Get size of the rect
    *
    * @returns Size of the rect
    *
    */
   constexpr Point GetSize() const { return Point(w, h); }
+
+  /**
+   * Set the size of the rect
+   *
+   * @param size the new size
+   * @returns Reference to self
+   */
+  constexpr Rect& SetSize(const Point& size)
+  {
+    w = size.x;
+    h = size.y;
+    return *this;
+  }
 
   /**
    * Get centroid of the rect
@@ -29953,12 +29987,46 @@ struct FRect : FRectRaw
   constexpr FPoint GetBottomRight() const { return FPoint(GetX2(), GetY2()); }
 
   /**
+   * Get the Position of the rect, which is the same as its top left corner
+   *
+   * @return Top left corner of the rect
+   */
+  constexpr FPoint GetPosition() const { return GetTopLeft(); }
+
+  /**
+   * Set the Position object
+   *
+   * @param position the new position of the rect, which is the same as its top
+   * left corner
+   * @returns Reference to self
+   */
+  constexpr FRect& SetPosition(const FPoint& position)
+  {
+    x = position.x;
+    y = position.y;
+    return *this;
+  }
+
+  /**
    * Get size of the rect
    *
    * @returns Size of the rect
    *
    */
   constexpr FPoint GetSize() const { return FPoint(w, h); }
+
+  /**
+   * Set the size of the rect
+   *
+   * @param size the new size
+   * @returns Reference to self
+   */
+  constexpr FRect& SetSize(const FPoint& size)
+  {
+    w = size.x;
+    h = size.y;
+    return *this;
+  }
 
   /**
    * Get centroid of the rect
