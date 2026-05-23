@@ -117,6 +117,16 @@ struct Point : PointRaw
   }
 
   /**
+   * Constructs from its fields.
+   *
+   * @param v the value for x and y.
+   */
+  constexpr Point(int v) noexcept
+    : PointRaw{v, v}
+  {
+  }
+
+  /**
    * Wraps Point.
    *
    * @param p the value to be wrapped
@@ -205,143 +215,6 @@ struct Point : PointRaw
   constexpr Point operator-() const { return Point(-x, -y); }
 
   /**
-   * Get point's memberwise addition with another point
-   *
-   * @param[in] other Point to add
-   *
-   * @returns New Point representing memberwise addition with another point
-   *
-   */
-  constexpr Point operator+(const Point& other) const
-  {
-    return Point(x + other.x, y + other.y);
-  }
-
-  /**
-   * Get point's memberwise subtraction with another point
-   *
-   * @param[in] other Point to subtract
-   *
-   * @returns New Point representing memberwise subtraction of another point
-   *
-   */
-  constexpr Point operator-(const Point& other) const
-  {
-    return Point(x - other.x, y - other.y);
-  }
-
-  /**
-   * Get point's memberwise division by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by an integer
-   *
-   */
-  constexpr Point operator/(int value) const
-  {
-    return Point(x / value, y / value);
-  }
-
-  /**
-   * Get point's memberwise division by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by an integer
-   *
-   */
-  constexpr FPoint operator/(float value) const;
-
-  /**
-   * Get point's memberwise division by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by another point
-   *
-   */
-  constexpr Point operator/(const Point& other) const
-  {
-    return Point(x / other.x, y / other.y);
-  }
-
-  /**
-   * Get point's memberwise remainder from division
-   *        by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns New Point representing memberwise remainder
-   *          from division by an integer
-   *
-   */
-  constexpr Point operator%(int value) const
-  {
-    return Point(x % value, y % value);
-  }
-
-  /**
-   * Get point's memberwise remainder from division
-   *        by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns New Point representing memberwise remainder
-   *          from division by another point
-   *
-   */
-  constexpr Point operator%(const Point& other) const
-  {
-    return Point(x % other.x, y % other.y);
-  }
-
-  /**
-   * Get point's memberwise multiplication by an
-   *        integer
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by an integer
-   *
-   */
-  constexpr Point operator*(int value) const
-  {
-    return Point(x * value, y * value);
-  }
-
-  /**
-   * Get point's memberwise multiplication by an
-   *        integer
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by an integer
-   *
-   */
-  constexpr FPoint operator*(float value) const;
-
-  /**
-   * Get point's memberwise multiplication by another
-   *        point
-   *
-   * @param[in] other Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by another point
-   *
-   */
-  constexpr Point operator*(const Point& other) const
-  {
-    return Point(x * other.x, y * other.y);
-  }
-
-  /**
    * Memberwise add another point
    *
    * @param[in] other Point to add to the current one
@@ -372,21 +245,6 @@ struct Point : PointRaw
   }
 
   /**
-   * Memberwise divide by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator/=(int value)
-  {
-    x /= value;
-    y /= value;
-    return *this;
-  }
-
-  /**
    * Memberwise divide by another point
    *
    * @param[in] other Divisor
@@ -398,21 +256,6 @@ struct Point : PointRaw
   {
     x /= other.x;
     y /= other.y;
-    return *this;
-  }
-
-  /**
-   * Memberwise remainder from division by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator%=(int value)
-  {
-    x %= value;
-    y %= value;
     return *this;
   }
 
@@ -429,21 +272,6 @@ struct Point : PointRaw
   {
     x %= other.x;
     y %= other.y;
-    return *this;
-  }
-
-  /**
-   * Memberwise multiply by an integer
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator*=(int value)
-  {
-    x *= value;
-    y *= value;
     return *this;
   }
 
@@ -513,6 +341,74 @@ struct Point : PointRaw
 };
 
 /**
+ * Get point's memberwise addition with another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side point
+ *
+ * @returns New Point representing memberwise addition with another point
+ *
+ */
+constexpr Point operator+(const Point& lhs, const Point& rhs)
+{
+  return Point(lhs.x + rhs.x, lhs.y + rhs.y);
+}
+
+/**
+ * Get point's memberwise subtraction with another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side point
+ *
+ * @returns New Point representing memberwise subtraction with another point
+ *
+ */
+constexpr Point operator-(const Point& lhs, const Point& rhs)
+{
+  return Point(lhs.x - rhs.x, lhs.y - rhs.y);
+}
+
+/**
+ * Get point's memberwise division by another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side point
+ *
+ * @return New Point representing memberwise division of point by another point
+ */
+constexpr Point operator/(const Point& lhs, const Point& rhs)
+{
+  return Point(lhs.x / rhs.x, lhs.y / rhs.y);
+}
+
+/**
+ * Get point's memberwise remainder from division by another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side point
+ *
+ * @return New Point representing memberwise remainder of point by another point
+ */
+constexpr Point operator%(const Point& lhs, const Point& rhs)
+{
+  return Point(lhs.x % rhs.x, lhs.y % rhs.y);
+}
+
+/**
+ * Get point's memberwise multiplication with another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side point
+ *
+ * @return New Point representing memberwise multiplication of point by another
+ * point
+ */
+constexpr Point operator*(const Point& lhs, const Point& rhs)
+{
+  return Point(lhs.x * rhs.x, lhs.y * rhs.y);
+}
+
+/**
  * The structure that defines a point (using floating point values).
  *
  * @since This struct is available since SDL 3.2.0.
@@ -542,6 +438,16 @@ struct FPoint : FPointRaw
    */
   constexpr FPoint(float x, float y) noexcept
     : FPointRaw{x, y}
+  {
+  }
+
+  /**
+   * Constructs from its fields.
+   *
+   * @param v the value for x and y.
+   */
+  constexpr FPoint(float v) noexcept
+    : FPointRaw{v, v}
   {
   }
 
@@ -624,90 +530,6 @@ struct FPoint : FPointRaw
   constexpr FPoint operator-() const { return FPoint(-x, -y); }
 
   /**
-   * Get point's memberwise addition with another point
-   *
-   * @param[in] other Point to add
-   *
-   * @returns New Point representing memberwise addition with another point
-   *
-   */
-  constexpr FPoint operator+(const FPoint& other) const
-  {
-    return FPoint(x + other.x, y + other.y);
-  }
-
-  /**
-   * Get point's memberwise subtraction with another point
-   *
-   * @param[in] other Point to subtract
-   *
-   * @returns New Point representing memberwise subtraction of another point
-   *
-   */
-  constexpr FPoint operator-(const FPoint& other) const
-  {
-    return FPoint(x - other.x, y - other.y);
-  }
-
-  /**
-   * Get point's memberwise division by an float
-   *
-   * @param[in] value Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by an float
-   *
-   */
-  constexpr FPoint operator/(float value) const
-  {
-    return FPoint(x / value, y / value);
-  }
-
-  /**
-   * Get point's memberwise division by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by another point
-   *
-   */
-  constexpr FPoint operator/(const FPoint& other) const
-  {
-    return FPoint(x / other.x, y / other.y);
-  }
-
-  /**
-   * Get point's memberwise multiplication by an
-   *        float
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by an float
-   *
-   */
-  constexpr FPoint operator*(float value) const
-  {
-    return FPoint(x * value, y * value);
-  }
-
-  /**
-   * Get point's memberwise multiplication by another
-   *        point
-   *
-   * @param[in] other Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by another point
-   *
-   */
-  constexpr FPoint operator*(const FPoint& other) const
-  {
-    return FPoint(x * other.x, y * other.y);
-  }
-
-  /**
    * Memberwise add another point
    *
    * @param[in] other Point to add to the current one
@@ -738,21 +560,6 @@ struct FPoint : FPointRaw
   }
 
   /**
-   * Memberwise divide by an float
-   *
-   * @param[in] value Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator/=(float value)
-  {
-    x /= value;
-    y /= value;
-    return *this;
-  }
-
-  /**
    * Memberwise divide by another point
    *
    * @param[in] other Divisor
@@ -764,21 +571,6 @@ struct FPoint : FPointRaw
   {
     x /= other.x;
     y /= other.y;
-    return *this;
-  }
-
-  /**
-   * Memberwise multiply by an float
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator*=(float value)
-  {
-    x *= value;
-    y *= value;
     return *this;
   }
 
@@ -841,6 +633,61 @@ struct FPoint : FPointRaw
 };
 
 /**
+ * Get point's memberwise addition with another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side point
+ *
+ * @returns New FPoint representing memberwise addition with another point
+ *
+ */
+constexpr FPoint operator+(const FPoint& lhs, const FPoint& rhs)
+{
+  return FPoint(lhs.x + rhs.x, lhs.y + rhs.y);
+}
+
+/**
+ * Get point's memberwise subtraction with another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side point
+ *
+ * @returns New FPoint representing memberwise subtraction with another point
+ *
+ */
+constexpr FPoint operator-(const FPoint& lhs, const FPoint& rhs)
+{
+  return FPoint(lhs.x - rhs.x, lhs.y - rhs.y);
+}
+
+/**
+ * Get point's memberwise division by another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side point
+ *
+ * @return New FPoint representing memberwise division of point by another point
+ */
+constexpr FPoint operator/(const FPoint& lhs, const FPoint& rhs)
+{
+  return FPoint(lhs.x / rhs.x, lhs.y / rhs.y);
+}
+
+/**
+ * Get point's memberwise multiplication with another point
+ *
+ * @param lhs Left-hand side point
+ * @param rhs Right-hand side point
+ *
+ * @return New FPoint representing memberwise multiplication of point by another
+ * point
+ */
+constexpr FPoint operator*(const FPoint& lhs, const FPoint& rhs)
+{
+  return FPoint(lhs.x * rhs.x, lhs.y * rhs.y);
+}
+
+/**
  * A rectangle, with the origin at the upper left (using integers).
  *
  * @since This struct is available since SDL 3.2.0.
@@ -881,27 +728,40 @@ struct Rect : RectRaw
   }
 
   /**
+   * Wraps FRect.
+   *
+   * @param r the value to be wrapped
+   */
+  constexpr explicit Rect(const FRectRaw& r)
+    : RectRaw{int(r.x), int(r.y), int(r.w), int(r.h)}
+  {
+  }
+
+  /**
    * Construct from offset and size
    *
    * @param corner the top-left corner
    * @param size the size
    */
-  constexpr Rect(const PointRaw& corner, const PointRaw& size)
-    : Rect{corner.x, corner.y, size.x, size.y}
+  constexpr Rect(const Point& corner, const Point& size)
+    : RectRaw{corner.x, corner.y, size.x, size.y}
   {
-  }
-
-  /// Compares with the underlying type
-  bool operator==(const RectRaw& other) const { return Equal(other); }
-
-  /// Compares with the underlying type
-  bool operator==(const Rect& other) const
-  {
-    return *this == (const RectRaw&)(other);
   }
 
   /// @sa Empty()
   explicit operator bool() const { return !Empty(); }
+
+  /// @sa GetPosition()
+  const Point& position() const { return reinterpret_cast<const Point&>(x); }
+
+  /// @sa GetPosition()
+  Point& position() { return reinterpret_cast<Point&>(x); }
+
+  /// @sa GetSize()
+  const Point& size() const { return reinterpret_cast<const Point&>(w); }
+
+  /// @sa GetSize()
+  Point& size() { return reinterpret_cast<Point&>(w); }
 
   /**
    * Get left x coordinate.
@@ -1134,12 +994,46 @@ struct Rect : RectRaw
   constexpr Point GetBottomRight() const { return Point(GetX2(), GetY2()); }
 
   /**
+   * Get the Position of the rect, which is the same as its top left corner
+   *
+   * @return Top left corner of the rect
+   */
+  constexpr Point GetPosition() const { return GetTopLeft(); }
+
+  /**
+   * Set the Position object
+   *
+   * @param position the new position of the rect, which is the same as its top
+   * left corner
+   * @returns Reference to self
+   */
+  constexpr Rect& SetPosition(const Point& position)
+  {
+    x = position.x;
+    y = position.y;
+    return *this;
+  }
+
+  /**
    * Get size of the rect
    *
    * @returns Size of the rect
    *
    */
   constexpr Point GetSize() const { return Point(w, h); }
+
+  /**
+   * Set the size of the rect
+   *
+   * @param size the new size
+   * @returns Reference to self
+   */
+  constexpr Rect& SetSize(const Point& size)
+  {
+    w = size.x;
+    h = size.y;
+    return *this;
+  }
 
   /**
    * Get centroid of the rect
@@ -1481,13 +1375,25 @@ struct FRect : FRectRaw
   /**
    * Constructs from top-left corner plus size
    */
-  constexpr FRect(const FPointRaw& corner, const FPointRaw& size)
+  constexpr FRect(const FPoint& corner, const FPoint& size)
     : FRect{corner.x, corner.y, size.x, size.y}
   {
   }
 
   /// @sa Empty()
   operator bool() const { return !Empty(); }
+
+  /// @sa GetPosition()
+  const FPoint& position() const { return reinterpret_cast<const FPoint&>(x); }
+
+  /// @sa GetPosition()
+  FPoint& position() { return reinterpret_cast<FPoint&>(x); }
+
+  /// @sa GetSize()
+  const FPoint& size() const { return reinterpret_cast<const FPoint&>(w); }
+
+  /// @sa GetSize()
+  FPoint& size() { return reinterpret_cast<FPoint&>(w); }
 
   /**
    * Get left x coordinate.
@@ -1721,12 +1627,46 @@ struct FRect : FRectRaw
   constexpr FPoint GetBottomRight() const { return FPoint(GetX2(), GetY2()); }
 
   /**
+   * Get the Position of the rect, which is the same as its top left corner
+   *
+   * @return Top left corner of the rect
+   */
+  constexpr FPoint GetPosition() const { return GetTopLeft(); }
+
+  /**
+   * Set the Position object
+   *
+   * @param position the new position of the rect, which is the same as its top
+   * left corner
+   * @returns Reference to self
+   */
+  constexpr FRect& SetPosition(const FPoint& position)
+  {
+    x = position.x;
+    y = position.y;
+    return *this;
+  }
+
+  /**
    * Get size of the rect
    *
    * @returns Size of the rect
    *
    */
   constexpr FPoint GetSize() const { return FPoint(w, h); }
+
+  /**
+   * Set the size of the rect
+   *
+   * @param size the new size
+   * @returns Reference to self
+   */
+  constexpr FRect& SetSize(const FPoint& size)
+  {
+    w = size.x;
+    h = size.y;
+    return *this;
+  }
 
   /**
    * Get centroid of the rect
@@ -2564,15 +2504,6 @@ inline bool FRect::GetLineIntersection(float* X1,
 /// @}
 
 constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
-
-constexpr FPoint Point::operator/(float value) const
-{
-  return FPoint(*this) / value;
-}
-constexpr FPoint Point::operator*(float value) const
-{
-  return FPoint(*this) * value;
-}
 
 constexpr Point Point::GetClamped(const Rect& rect) const
 {
