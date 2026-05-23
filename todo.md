@@ -1,8 +1,15 @@
 Todo for next version
 =====================
 
+- [ ] Refactor resource to become less hack-y (probably breaking compat):
+  - [ ] Create new ResourceRef and make ResourceOwned derive from it;
+    - It has the raw resource, which is protected;
+    - It has the constructors to nullptr (default) and constructor from Raw;
+    - Everything is trivial;
+  - [ ] Move all methods to ResourceBase, except constructors;
+  - [ ] Create ResourceBaseT absorbs common functionality from new ResourceRef
 - [ ] Fix ObjectRef(nullptr).
-- [ ] Remove old entry point;
+- [ ] Remove old entry point (break compat);
 
 Backlog
 -------
