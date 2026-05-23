@@ -2,6 +2,7 @@
 #define SDL3PP_RESOURCE_H_
 
 #include <cstdlib>
+#include <utility>
 
 namespace SDL {
 
@@ -13,6 +14,65 @@ namespace SDL {
  *
  * @{
  */
+
+/// Base class for resources.
+template<typename RAW_POINTER, typename RAW_CONST_POINTER = RAW_POINTER>
+class ResourceBaseT
+{
+public:
+  /// The underlying raw pointer type.
+  using RawPointer = RAW_POINTER;
+
+  /// The underlying const raw pointer type.
+  using RawConstPointer = RAW_CONST_POINTER;
+
+  /// Constructs from resource pointer.
+  constexpr ResourceBaseT(RawPointer resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr ResourceBaseT(std::nullptr_t = nullptr)
+    : m_resource{}
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Comparison
+  constexpr auto operator<=>(const ResourceBaseT& other) const = default;
+
+  /// member access to underlying resource pointer.
+  constexpr RawConstPointer operator->() const noexcept { return m_resource; }
+
+  /// member access to underlying resource pointer.
+  constexpr RawPointer operator->() noexcept { return m_resource; }
+
+  /// Retrieves underlying resource pointer.
+  constexpr RawPointer get() const noexcept { return m_resource; }
+
+  /// Retrieves underlying resource pointer and clear this.
+  constexpr RawPointer release() noexcept
+  {
+    auto r = m_resource;
+    m_resource = {};
+    return r;
+  }
+
+  friend constexpr void swap(ResourceBaseT& lhs, ResourceBaseT& rhs) noexcept
+  {
+    std::swap(lhs.m_resource, rhs.m_resource);
+  }
+
+protected:
+  /// Destructor
+  ~ResourceBaseT() = default;
+
+private:
+  RawPointer m_resource; ///< parameter's RawPointer
+};
 
 /// Base class for resources.
 template<typename RAW_POINTER, typename RAW_CONST_POINTER = RAW_POINTER>
