@@ -1,5 +1,23 @@
 # Changelog
 
+## Version 0.10.2
+
+Improve ergonomics on SDL::Rect and related structs. Also add experimental
+SDL3_net support.
+
+- Add missing wrapper for MIX_PROP_PLAY_START_ORDER_NUMBER (this was added on
+  SDL_mixer 3.2.2);
+- Add experimental support for SDL3_net;
+- Improve SDL3pp_rect.h:
+  - Single argument constructor for both (F)Point;
+  - Fix (F)Rect constructor from 2 (F)Points;
+  - Multiply, Module, Division between 2 Point;
+  - Multiply, Division between 2 FPoint;
+  - Implicit convert Point to FPoint;
+  - Explicit convert FPoint to Point and FRect to Rect;
+  - (F)Rect have \[GS]etPosition and SetSize;
+  - (F)Rect have position() and size(), that returns reference.
+
 ## Version 0.10.1
 
 This release have the new SDL3PP_MAIN_USE_CLASS_CALLBACKS entry point mechanism.

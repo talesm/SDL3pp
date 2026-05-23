@@ -1,24 +1,12 @@
 Todo for next version
 =====================
 
-- [x] Add missing wrapper for MIX_PROP_PLAY_START_ORDER_NUMBER (this was added
-  on SDL_mixer 3.2.2);
-- [x] Add experimental support for SDL3_net;
-- [x] Improve SDL3pp_rect.h:
-  - [x] Single argument constructor for both (F)Point;
-  - [x] Fix (F)Rect constructor from 2 (F)Points;
-  - [x] Multiply, Module, Division between 2 Point;
-  - [x] Multiply, Division between 2 FPoint;
-  - [x] Implicit convert Point to FPoint;
-  - [x] Explicit convert FPoint to Point and FRect to Rect;
-  - [x] (F)Rect have \[GS]etPosition and SetSize;
-  - [x] (F)Rect have position() and size(), that returns reference.
 - [ ] Fix ObjectRef(nullptr).
+- [ ] Remove old entry point;
 
 Backlog
 -------
 
-- [ ] Remove old entry point;
 - [ ] Add a constructor to Properties similar to std::map initializer list;
 - [ ] Revamp README, with examples and clearer instructions to integrate to
   project and everything else moved to other files;

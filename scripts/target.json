@@ -169498,7 +169498,7 @@
         },
         "SDL3PP_PATCH_VERSION": {
           "kind": "def",
-          "value": "1",
+          "value": "2",
           "doc": [
             "The current patch version of SDL3pp wrapper."
           ],
