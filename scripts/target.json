@@ -193537,7 +193537,7 @@
               ],
               "hints": {
                 "init": [
-                  "ResourceBase(resource)"
+                  "AnimationBase(resource)"
                 ],
                 "noexcept": true
               },
@@ -212702,10 +212702,10 @@
         "There are several pieces to this library, and most apps won't use them all, but rather choose the portion that's relevant to their needs.",
         "All apps will call NET.Init() on startup and NET.Quit() on shutdown.",
         "The cornerstone of the library is the Address object. This is what manages the details of how to reach another computer on the network, and what network protocol to use to get there. You'll need a Address to talk over the network. If you need to convert a hostname (such as \"google.com\" or \"libsdl.org\") into a Address, you can call ResolveHostname(), which will do the appropriate DNS queries on a background thread. Once these are ready, you can use the Address to connect to these hosts over the Internet.",
-        "Something that initiates a connection to a remote system is called a \"client,\" connecting to a \"server.\" To establish a connection, use the Address you resolved with Address.CreateClient(). Once the connection is established (a non-blocking operation), you'll have a StreamSocket object that can send and receive data over the connection, using WriteToStreamSocket() and ReadFromStreamSocket().",
-        "To instead be a server, that clients connect to, call Address.CreateServer() to get a Server object. All a Server does is allow you to accept connections from clients, turning them into NET_StreamSockets, where you can read and write from the opposite side of the connection from a given client.",
+        "Something that initiates a connection to a remote system is called a \"client,\" connecting to a \"server.\" To establish a connection, use the Address you resolved with AddressBase.CreateClient(). Once the connection is established (a non-blocking operation), you'll have a StreamSocket object that can send and receive data over the connection, using WriteToStreamSocket() and ReadFromStreamSocket().",
+        "To instead be a server, that clients connect to, call AddressBase.CreateServer() to get a Server object. All a Server does is allow you to accept connections from clients, turning them into NET_StreamSockets, where you can read and write from the opposite side of the connection from a given client.",
         "These things are, underneath this API, TCP connections, which means you can use a client or server to talk to something that _isn't_ using SDL_net at all.",
-        "Clients and servers deal with \"stream sockets,\" a reliable stream of bytes. There are tradeoffs to using these, especially in poor network conditions. Another option is to use \"datagram sockets,\" which map to UDP packet transmission. With datagrams, everyone involved can send small packets of data that may arrive in any order, or not at all, but transmission can carry on if a packet is lost, each packet is clearly separated from every other, and communication can happen in a peer-to-peer model instead of client-server: while datagrams can be more complex, these _are_ useful properties not avaiable to stream sockets. Address.CreateDatagramSocket() is used to prepare for datagram communication, then SendDatagram() and ReceiveDatagram() transmit packets.",
+        "Clients and servers deal with \"stream sockets,\" a reliable stream of bytes. There are tradeoffs to using these, especially in poor network conditions. Another option is to use \"datagram sockets,\" which map to UDP packet transmission. With datagrams, everyone involved can send small packets of data that may arrive in any order, or not at all, but transmission can carry on if a packet is lost, each packet is clearly separated from every other, and communication can happen in a peer-to-peer model instead of client-server: while datagrams can be more complex, these _are_ useful properties not avaiable to stream sockets. AddressBase.CreateDatagramSocket() is used to prepare for datagram communication, then SendDatagram() and ReceiveDatagram() transmit packets.",
         "As previously mentioned, SDL_net's API is \"non-blocking\" (asynchronous). Any network operation might take time, but SDL_net's APIs will not wait until they complete. Any operation will return immediately, with options to check if the operation has completed later. Generally this is what a video game needs, but there are times where it makes sense to pause until an operation completes; in a background thread this might make sense, as it could simplify the code dramatically.",
         "The functions that block until an operation completes:",
         [
@@ -212744,6 +212744,10 @@
         ]
       ],
       "entries": {
+        "AddressBase-forward": {
+          "name": "AddressBase",
+          "kind": "forward"
+        },
         "Address-forward": {
           "name": "Address",
           "kind": "forward"
@@ -212763,7 +212767,7 @@
             "Reference for Address.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Address>"
+          "type": "ResourceRefT<AddressBase>"
         },
         "StreamSocket-forward": {
           "name": "StreamSocket",
@@ -213081,287 +213085,21 @@
           ],
           "sourceName": "NET_SUCCESS"
         },
-        "Address": {
-          "doc": [
-            "Opaque representation of a computer-readable network address.",
-            "This is an opaque datatype, to be treated by the app as a handle.",
-            "SDL_net uses these to identify other servers; you use them to connect to a remote machine, and you use them to find out who connected to you. They are also used to decide what network interface to use when creating a server.",
-            "These are intended to be protocol-independent; a given address might be for IPv4, IPv6, or something more esoteric. SDL_net attempts to hide the differences.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL_net 3.0.0."
-            },
-            [
-              {
-                "tag": "@sa",
-                "content": "ResolveHostname"
-              },
-              {
-                "tag": "@sa",
-                "content": "GetLocalAddresses"
-              },
-              {
-                "tag": "@sa",
-                "content": "CompareAddresses"
-              }
-            ],
-            "@cat resource"
-          ],
-          "name": "Address",
+        "AddressBase": {
+          "name": "AddressBase",
           "kind": "struct",
-          "type": "ResourceBase<AddressRaw>",
-          "sourceName": "NET_Address",
+          "type": "ResourceBaseT<AddressRaw>",
+          "doc": [
+            "Base class to Address.",
+            {
+              "tag": "@see",
+              "content": "Address"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Address": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AddressRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Address.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AddressRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Address",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Address &"
-                  }
-                ],
-                "hints": {
-                  "init": [
-                    "Address(other.get())"
-                  ],
-                  "body": "if (auto res = get()) ++res->NET_RefAddress;"
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Address",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Address &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Address(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Address",
-                  "overload": {
-                    "doc": [
-                      "Resolve a human-readable hostname.",
-                      "SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org` but on computer-readable addresses. This function converts from one to the other. This process is known as \"resolving\" an address.",
-                      "You can also use this to turn IP address strings (like \"159.203.69.7\") into Address objects.",
-                      "Note that resolving an address is an asynchronous operation, since the library will need to ask a server on the internet to get the information it needs, and this can take time (and possibly fail later). This function will not block. It either returns nullptr (catastrophic failure) or an unresolved Address. Until the address resolves, it can't be used.",
-                      "If you want to block until the resolution is finished, you can call WaitUntilResolved(). Otherwise, you can do a non-blocking check with GetAddressStatus().",
-                      "When you are done with the returned Address, call UnrefAddress() to dispose of it. You need to do this even if resolution later fails asynchronously.",
-                      [
-                        {
-                          "tag": "@param host",
-                          "content": "The hostname to resolve."
-                        },
-                        {
-                          "tag": "@post",
-                          "content": "A new Address on success."
-                        },
-                        {
-                          "tag": "@throws",
-                          "content": "Error on failure."
-                        }
-                      ],
-                      {
-                        "tag": "@threadsafety",
-                        "content": "It is safe to call this function from any thread."
-                      },
-                      {
-                        "tag": "@since",
-                        "content": "This function is available since SDL_net 3.0.0."
-                      },
-                      [
-                        {
-                          "tag": "@sa",
-                          "content": "WaitUntilResolved"
-                        },
-                        {
-                          "tag": "@sa",
-                          "content": "GetAddressStatus"
-                        },
-                        {
-                          "tag": "@sa",
-                          "content": "RefAddress"
-                        },
-                        {
-                          "tag": "@sa",
-                          "content": "UnrefAddress"
-                        }
-                      ]
-                    ],
-                    "name": "Address",
-                    "kind": "function",
-                    "type": "",
-                    "parameters": [
-                      {
-                        "name": "host",
-                        "type": "StringParam"
-                      }
-                    ],
-                    "sourceName": "NET_ResolveHostname",
-                    "hints": {
-                      "mayFail": true
-                    },
-                    "overload": {
-                      "doc": [
-                        "Add a reference to an Address.",
-                        "Since several pieces of the library might share a single Address, including a background thread that's working on resolving, these objects are referenced counted. This allows everything that's using it to declare they still want it, and drop their reference to the address when they are done with it. The object's resources are freed when the last reference is dropped.",
-                        "This function adds a reference to an Address, increasing its reference count by one.",
-                        "The documentation will tell you when the app has to explicitly unref an address. For example, ResolveHostname() creates addresses that are already referenced, so the caller needs to unref it when done.",
-                        "Generally you only have to explicit ref an address when you have different parts of your own app that will be sharing an address. In normal usage, you only have to unref things you've created once (like you might free() something), but you are free to add extra refs if it makes sense.",
-                        "This returns the same address passed as a parameter, which makes it easy to ref and assign in one step:",
-                        {
-                          "content": "```c\nmyAddr = RefAddress(yourAddr);\n```"
-                        },
-                        [
-                          {
-                            "tag": "@param address",
-                            "content": "The Address to add a reference to."
-                          },
-                          {
-                            "tag": "@post",
-                            "content": "the same address that was passed as a parameter."
-                          }
-                        ],
-                        {
-                          "tag": "@threadsafety",
-                          "content": "It is safe to call this function from any thread."
-                        },
-                        {
-                          "tag": "@since",
-                          "content": "This function is available since SDL_net 3.0.0."
-                        }
-                      ],
-                      "name": "Address",
-                      "kind": "function",
-                      "type": "",
-                      "parameters": [
-                        {
-                          "name": "address",
-                          "type": "AddressRef"
-                        }
-                      ],
-                      "sourceName": "NET_RefAddress",
-                      "proto": true
-                    },
-                    "proto": true
-                  }
-                }
-              }
-            },
-            "Borrow": {
-              "kind": "function",
-              "static": true,
-              "type": "Address",
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AddressRaw"
-                }
-              ],
-              "hints": {
-                "body": "if (resource) {\n  ++resource->NET_RefAddress;\n  return Address(resource);}\nreturn {};"
-              },
-              "doc": [
-                "Safely borrows the from AddressRaw.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AddressRaw."
-                },
-                "This does not takes ownership!"
-              ],
-              "name": "Borrow"
-            },
-            "~Address": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "NET_UnrefAddress(get());"
-              },
-              "name": "~Address"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Address &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Address &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Address &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Address &"
-                  }
-                ],
-                "hints": {
-                  "delete": false,
-                  "body": "if (get() != other.get()) {\n  Address tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;"
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Unref": {
               "doc": [
@@ -213565,7 +213303,7 @@
               "type": "bool",
               "parameters": [
                 {
-                  "type": "AddressRef",
+                  "type": "const AddressBase &",
                   "name": "other"
                 }
               ],
@@ -213582,7 +213320,7 @@
               "type": "auto",
               "parameters": [
                 {
-                  "type": "AddressRef",
+                  "type": "const AddressBase &",
                   "name": "other"
                 }
               ],
@@ -213824,6 +213562,293 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "Address": {
+          "doc": [
+            "Opaque representation of a computer-readable network address.",
+            "This is an opaque datatype, to be treated by the app as a handle.",
+            "SDL_net uses these to identify other servers; you use them to connect to a remote machine, and you use them to find out who connected to you. They are also used to decide what network interface to use when creating a server.",
+            "These are intended to be protocol-independent; a given address might be for IPv4, IPv6, or something more esoteric. SDL_net attempts to hide the differences.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL_net 3.0.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "ResolveHostname"
+              },
+              {
+                "tag": "@sa",
+                "content": "GetLocalAddresses"
+              },
+              {
+                "tag": "@sa",
+                "content": "CompareAddresses"
+              }
+            ],
+            "@cat resource"
+          ],
+          "name": "Address",
+          "kind": "struct",
+          "type": "AddressBase",
+          "sourceName": "NET_Address",
+          "entries": {
+            "AddressBase::AddressBase": {
+              "kind": "alias",
+              "name": "AddressBase::AddressBase"
+            },
+            "Address": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AddressRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "AddressBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Address.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AddressRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Address",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Address &"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Address(other.get())"
+                  ],
+                  "body": "if (auto res = get()) ++res->NET_RefAddress;"
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Address",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Address &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Address(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Address",
+                  "overload": {
+                    "doc": [
+                      "Resolve a human-readable hostname.",
+                      "SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org` but on computer-readable addresses. This function converts from one to the other. This process is known as \"resolving\" an address.",
+                      "You can also use this to turn IP address strings (like \"159.203.69.7\") into Address objects.",
+                      "Note that resolving an address is an asynchronous operation, since the library will need to ask a server on the internet to get the information it needs, and this can take time (and possibly fail later). This function will not block. It either returns nullptr (catastrophic failure) or an unresolved Address. Until the address resolves, it can't be used.",
+                      "If you want to block until the resolution is finished, you can call WaitUntilResolved(). Otherwise, you can do a non-blocking check with GetAddressStatus().",
+                      "When you are done with the returned Address, call UnrefAddress() to dispose of it. You need to do this even if resolution later fails asynchronously.",
+                      [
+                        {
+                          "tag": "@param host",
+                          "content": "The hostname to resolve."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "A new Address on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_net 3.0.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "WaitUntilResolved"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetAddressStatus"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "RefAddress"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "UnrefAddress"
+                        }
+                      ]
+                    ],
+                    "name": "Address",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "host",
+                        "type": "StringParam"
+                      }
+                    ],
+                    "sourceName": "NET_ResolveHostname",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Add a reference to an Address.",
+                        "Since several pieces of the library might share a single Address, including a background thread that's working on resolving, these objects are referenced counted. This allows everything that's using it to declare they still want it, and drop their reference to the address when they are done with it. The object's resources are freed when the last reference is dropped.",
+                        "This function adds a reference to an Address, increasing its reference count by one.",
+                        "The documentation will tell you when the app has to explicitly unref an address. For example, ResolveHostname() creates addresses that are already referenced, so the caller needs to unref it when done.",
+                        "Generally you only have to explicit ref an address when you have different parts of your own app that will be sharing an address. In normal usage, you only have to unref things you've created once (like you might free() something), but you are free to add extra refs if it makes sense.",
+                        "This returns the same address passed as a parameter, which makes it easy to ref and assign in one step:",
+                        {
+                          "content": "```c\nmyAddr = RefAddress(yourAddr);\n```"
+                        },
+                        [
+                          {
+                            "tag": "@param address",
+                            "content": "The Address to add a reference to."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "the same address that was passed as a parameter."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "It is safe to call this function from any thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL_net 3.0.0."
+                        }
+                      ],
+                      "name": "Address",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "address",
+                          "type": "AddressRef"
+                        }
+                      ],
+                      "sourceName": "NET_RefAddress",
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "Borrow": {
+              "kind": "function",
+              "static": true,
+              "type": "Address",
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AddressRaw"
+                }
+              ],
+              "hints": {
+                "body": "if (resource) {\n  ++resource->NET_RefAddress;\n  return Address(resource);}\nreturn {};"
+              },
+              "doc": [
+                "Safely borrows the from AddressRaw.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AddressRaw."
+                },
+                "This does not takes ownership!"
+              ],
+              "name": "Borrow"
+            },
+            "~Address": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "NET_UnrefAddress(get());"
+              },
+              "name": "~Address"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Address &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Address &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Address &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Address &"
+                  }
+                ],
+                "hints": {
+                  "delete": false,
+                  "body": "if (get() != other.get()) {\n  Address tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;"
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "Address"
           }
@@ -213977,8 +214002,8 @@
           ],
           "sourceName": "NET_WaitUntilResolved"
         },
-        "Address::WaitUntilResolved": {
-          "name": "Address::WaitUntilResolved",
+        "AddressBase::WaitUntilResolved": {
+          "name": "AddressBase::WaitUntilResolved",
           "kind": "function",
           "type": "Status",
           "parameters": [
@@ -213990,7 +214015,6 @@
           "sourceName": "NET_WaitUntilResolved",
           "hints": {
             "self": "get()",
-            "super": "Address",
             "delegate": "SDL::WaitUntilResolved"
           }
         },
@@ -214035,15 +214059,14 @@
           ],
           "sourceName": "NET_GetAddressStatus"
         },
-        "Address::GetStatus": {
-          "name": "Address::GetStatus",
+        "AddressBase::GetStatus": {
+          "name": "AddressBase::GetStatus",
           "kind": "function",
           "type": "Status",
           "parameters": [],
           "sourceName": "NET_GetAddressStatus",
           "hints": {
             "self": "get()",
-            "super": "Address",
             "delegate": "SDL::GetAddressStatus"
           }
         },
@@ -214100,15 +214123,14 @@
             "mayFail": true
           }
         },
-        "Address::GetString": {
-          "name": "Address::GetString",
+        "AddressBase::GetString": {
+          "name": "AddressBase::GetString",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
           "sourceName": "NET_GetAddressString",
           "hints": {
             "self": "get()",
-            "super": "Address",
             "mayFail": true,
             "delegate": "SDL::GetAddressString"
           }
@@ -214188,15 +214210,14 @@
           ],
           "sourceName": "NET_UnrefAddress"
         },
-        "Address::Unref": {
-          "name": "Address::Unref",
+        "AddressBase::Unref": {
+          "name": "AddressBase::Unref",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "NET_UnrefAddress",
           "hints": {
             "self": "get()",
-            "super": "Address",
             "body": "UnrefAddress(release());",
             "delegate": "SDL::UnrefAddress"
           }
@@ -214278,8 +214299,8 @@
             "methodName": "Compare"
           }
         },
-        "Address::Compare": {
-          "name": "Address::Compare",
+        "AddressBase::Compare": {
+          "name": "AddressBase::Compare",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -214291,42 +214312,39 @@
           "sourceName": "NET_CompareAddresses",
           "hints": {
             "self": "get()",
-            "super": "Address",
             "methodName": "Compare",
             "delegate": "SDL::CompareAddresses"
           },
           "immutable": true
         },
-        "Address::operator==": {
+        "AddressBase::operator==": {
           "kind": "function",
           "immutable": true,
           "type": "bool",
           "parameters": [
             {
-              "type": "AddressRef",
+              "type": "const AddressBase &",
               "name": "other"
             }
           ],
-          "name": "Address::operator==",
+          "name": "AddressBase::operator==",
           "hints": {
-            "self": "get()",
-            "super": "Address"
+            "self": "get()"
           }
         },
-        "Address::operator<=>": {
+        "AddressBase::operator<=>": {
           "kind": "function",
           "immutable": true,
           "type": "auto",
           "parameters": [
             {
-              "type": "AddressRef",
+              "type": "const AddressBase &",
               "name": "other"
             }
           ],
-          "name": "Address::operator<=>",
+          "name": "AddressBase::operator<=>",
           "hints": {
-            "self": "get()",
-            "super": "Address"
+            "self": "get()"
           }
         },
         "LocalAddressesArrayDeleter": {
@@ -214368,7 +214386,7 @@
             "Obtain a list of local addresses on the system.",
             "This returns addresses that you can theoretically bind a socket to, to accept connections from other machines at that address.",
             "You almost never need this function; first, it's hard to tell _what_ is a good address to bind to, without asking the user (who will likely find it equally hard to decide). Second, most machines will have lots of _private_ addresses that are accessible on the same LAN, but not public ones that are accessible from the outside Internet.",
-            "Usually it's better to use Address.CreateServer() or Address.CreateDatagramSocket() with a nullptr address, to say \"bind to all interfaces.\"",
+            "Usually it's better to use AddressBase.CreateServer() or AddressBase.CreateDatagramSocket() with a nullptr address, to say \"bind to all interfaces.\"",
             "The array of addresses returned from this is guaranteed to be nullptr-terminated. You can also pass a pointer to an int, which will return the final count, not counting the nullptr at the end of the array.",
             "Pass the returned array to FreeLocalAddresses when you are done with it. It is safe to keep any addresses you want from this array even after calling that function, as long as you called RefAddress() on them.",
             [
@@ -214461,7 +214479,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Address.CreateClient"
+                "content": "AddressBase.CreateClient"
               },
               {
                 "tag": "@sa",
@@ -214724,7 +214742,7 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Address.CreateClient"
+                    "content": "AddressBase.CreateClient"
                   },
                   {
                     "tag": "@sa",
@@ -214754,7 +214772,7 @@
             "WaitUntilConnected": {
               "doc": [
                 "Block until a stream socket has connected to a server.",
-                "The StreamSocket objects returned by Address.CreateClient take time to do their work, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
+                "The StreamSocket objects returned by AddressBase.CreateClient take time to do their work, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
                 "However, if you want your program to sleep until the connection is complete, you can call this function.",
                 "This function takes a timeout value, represented in milliseconds, of how long to wait for resolution to complete. Specifying a timeout of -1 instructs the library to wait indefinitely, and a timeout of 0 just checks the current status and returns immediately (and is functionally equivalent to calling GetConnectionStatus).",
                 "Connections can fail after some time (server took awhile to respond at all, and then refused the connection outright), so be sure to check the result of this function instead of assuming it worked!",
@@ -214836,7 +214854,7 @@
             "GetConnectionStatus": {
               "doc": [
                 "Check if a stream socket is connected, without blocking.",
-                "The StreamSocket objects returned by Address.CreateClient take time to do negotiate a connection to a server, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
+                "The StreamSocket objects returned by AddressBase.CreateClient take time to do negotiate a connection to a server, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
                 "This function allows you to check the progress of that work without blocking.",
                 "Connection can fail after some time (server took a while to respond, and then rejected the connection), so be sure to check the result of this function instead of assuming it worked because it's non-zero!",
                 "Once a connection is successfully made, the stream socket can be used to send and receive data with the server.",
@@ -215204,8 +215222,8 @@
             "delegate": "StreamSocket"
           }
         },
-        "Address::CreateClient": {
-          "name": "Address::CreateClient",
+        "AddressBase::CreateClient": {
+          "name": "AddressBase::CreateClient",
           "kind": "function",
           "type": "StreamSocket",
           "parameters": [
@@ -215221,7 +215239,6 @@
           "sourceName": "NET_CreateClient",
           "hints": {
             "self": "get()",
-            "super": "Address",
             "mayFail": true,
             "delegate": "StreamSocket"
           }
@@ -215254,7 +215271,7 @@
         "WaitUntilConnected": {
           "doc": [
             "Block until a stream socket has connected to a server.",
-            "The StreamSocket objects returned by Address.CreateClient take time to do their work, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
+            "The StreamSocket objects returned by AddressBase.CreateClient take time to do their work, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
             "However, if you want your program to sleep until the connection is complete, you can call this function.",
             "This function takes a timeout value, represented in milliseconds, of how long to wait for resolution to complete. Specifying a timeout of -1 instructs the library to wait indefinitely, and a timeout of 0 just checks the current status and returns immediately (and is functionally equivalent to calling GetConnectionStatus).",
             "Connections can fail after some time (server took awhile to respond at all, and then refused the connection outright), so be sure to check the result of this function instead of assuming it worked!",
@@ -215330,7 +215347,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Address.CreateServer"
+              "content": "AddressBase.CreateServer"
             },
             "@cat resource"
           ],
@@ -215588,7 +215605,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Address.CreateServer"
+                  "content": "AddressBase.CreateServer"
                 }
               ],
               "name": "Destroy",
@@ -215606,7 +215623,7 @@
               "doc": [
                 "Create a stream socket for the next pending client connection.",
                 "When a client connects to a server, their connection will be pending until the server _accepts_ the connection. Once accepted, the server will be given a stream socket to communicate with the client, and they can send data to, and receive data from, each other.",
-                "Unlike Address.CreateClient, stream sockets returned from this function are already connected and do not have to wait for the connection to complete, as server acceptance is the final step of connecting.",
+                "Unlike AddressBase.CreateClient, stream sockets returned from this function are already connected and do not have to wait for the connection to complete, as server acceptance is the final step of connecting.",
                 "This function does not block. If there are no new connections pending, this function will return true (for success, but `*client_stream` will be set to nullptr. This is not an error and a common condition the app should expect. In fact, this function should be called in a loop until this condition occurs, so all pending connections are accepted in a single batch.",
                 "If you want the server to sleep until there's a new connection, you can use WaitUntilInputAvailable().",
                 "When done with the newly-accepted client, you can disconnect and dispose of the stream socket by calling DestroyStreamSocket().",
@@ -215746,8 +215763,8 @@
             "delegate": "Server"
           }
         },
-        "Address::CreateServer": {
-          "name": "Address::CreateServer",
+        "AddressBase::CreateServer": {
+          "name": "AddressBase::CreateServer",
           "kind": "function",
           "type": "Server",
           "parameters": [
@@ -215763,7 +215780,6 @@
           "sourceName": "NET_CreateServer",
           "hints": {
             "self": "get()",
-            "super": "Address",
             "mayFail": true,
             "delegate": "Server"
           }
@@ -215814,7 +215830,7 @@
           "doc": [
             "Create a stream socket for the next pending client connection.",
             "When a client connects to a server, their connection will be pending until the server _accepts_ the connection. Once accepted, the server will be given a stream socket to communicate with the client, and they can send data to, and receive data from, each other.",
-            "Unlike Address.CreateClient, stream sockets returned from this function are already connected and do not have to wait for the connection to complete, as server acceptance is the final step of connecting.",
+            "Unlike AddressBase.CreateClient, stream sockets returned from this function are already connected and do not have to wait for the connection to complete, as server acceptance is the final step of connecting.",
             "This function does not block. If there are no new connections pending, this function will return true (for success, but `*client_stream` will be set to nullptr. This is not an error and a common condition the app should expect. In fact, this function should be called in a loop until this condition occurs, so all pending connections are accepted in a single batch.",
             "If you want the server to sleep until there's a new connection, you can use WaitUntilInputAvailable().",
             "When done with the newly-accepted client, you can disconnect and dispose of the stream socket by calling DestroyStreamSocket().",
@@ -215905,7 +215921,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Address.CreateServer"
+              "content": "AddressBase.CreateServer"
             }
           ],
           "name": "DestroyServer",
@@ -215990,7 +216006,7 @@
         "GetConnectionStatus": {
           "doc": [
             "Check if a stream socket is connected, without blocking.",
-            "The StreamSocket objects returned by Address.CreateClient take time to do negotiate a connection to a server, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
+            "The StreamSocket objects returned by AddressBase.CreateClient take time to do negotiate a connection to a server, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
             "This function allows you to check the progress of that work without blocking.",
             "Connection can fail after some time (server took a while to respond, and then rejected the connection), so be sure to check the result of this function instead of assuming it worked because it's non-zero!",
             "Once a connection is successfully made, the stream socket can be used to send and receive data with the server.",
@@ -216419,7 +216435,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Address.CreateClient"
+                "content": "AddressBase.CreateClient"
               },
               {
                 "tag": "@sa",
@@ -216472,7 +216488,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Address.CreateDatagramSocket"
+                "content": "AddressBase.CreateDatagramSocket"
               },
               {
                 "tag": "@sa",
@@ -216743,7 +216759,7 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Address.CreateDatagramSocket"
+                    "content": "AddressBase.CreateDatagramSocket"
                   },
                   {
                     "tag": "@sa",
@@ -217403,8 +217419,8 @@
             "delegate": "DatagramSocket"
           }
         },
-        "Address::CreateDatagramSocket": {
-          "name": "Address::CreateDatagramSocket",
+        "AddressBase::CreateDatagramSocket": {
+          "name": "AddressBase::CreateDatagramSocket",
           "kind": "function",
           "type": "DatagramSocket",
           "parameters": [
@@ -217420,7 +217436,6 @@
           "sourceName": "NET_CreateDatagramSocket",
           "hints": {
             "self": "get()",
-            "super": "Address",
             "mayFail": true,
             "delegate": "DatagramSocket"
           }
@@ -217881,7 +217896,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Address.CreateDatagramSocket"
+                "content": "AddressBase.CreateDatagramSocket"
               },
               {
                 "tag": "@sa",
@@ -217968,7 +217983,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Address.CreateDatagramSocket"
+                "content": "AddressBase.CreateDatagramSocket"
               },
               {
                 "tag": "@sa",

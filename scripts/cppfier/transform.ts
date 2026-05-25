@@ -572,7 +572,6 @@ export function detectMethods(
       if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(methodName);
       else placeAfter.set(lastKey, [methodName]);
       const name = `${baseType ?? targetType}::${methodName}`;
-      if (sourceName === "GetAnimationWidth") system.log("AHHHAAA " + name);
       insertOrLink(
         transformMap,
         {

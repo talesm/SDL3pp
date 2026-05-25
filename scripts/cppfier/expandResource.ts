@@ -59,7 +59,7 @@ export function expandResource(
   const pointerType = isStruct ? `${type} *` : type;
   const constPointerType = `const ${pointerType}`;
   const title = targetName[0].toLowerCase() + targetName.slice(1);
-  const isNew = sourceName < "IMG_AnimationD";
+  const isNew = targetName < "AnimationD";
   const baseType = enableConstParam
     ? `ResourceBaseT<${rawName}, ${constRawName}>`
     : `ResourceBaseT<${rawName}>`;
@@ -343,7 +343,7 @@ function createBaselineCtors(
       explicit: true,
       parameters: [{ name: "resource", type: rawName }],
       hints: {
-        init: [`ResourceBase(resource)`],
+        init: [`${isNew ? targetName + "Base" : "ResourceBase"}(resource)`],
         noexcept: true,
       },
       doc: [

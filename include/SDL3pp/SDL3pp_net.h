@@ -42,15 +42,16 @@ namespace SDL {
  *
  * Something that initiates a connection to a remote system is called a
  * "client," connecting to a "server." To establish a connection, use the
- * Address you resolved with Address.CreateClient(). Once the connection is
+ * Address you resolved with AddressBase.CreateClient(). Once the connection is
  * established (a non-blocking operation), you'll have a StreamSocket object
  * that can send and receive data over the connection, using
  * WriteToStreamSocket() and ReadFromStreamSocket().
  *
- * To instead be a server, that clients connect to, call Address.CreateServer()
- * to get a Server object. All a Server does is allow you to accept connections
- * from clients, turning them into NET_StreamSockets, where you can read and
- * write from the opposite side of the connection from a given client.
+ * To instead be a server, that clients connect to, call
+ * AddressBase.CreateServer() to get a Server object. All a Server does is allow
+ * you to accept connections from clients, turning them into NET_StreamSockets,
+ * where you can read and write from the opposite side of the connection from a
+ * given client.
  *
  * These things are, underneath this API, TCP connections, which means you can
  * use a client or server to talk to something that _isn't_ using SDL_net at
@@ -64,8 +65,8 @@ namespace SDL {
  * on if a packet is lost, each packet is clearly separated from every other,
  * and communication can happen in a peer-to-peer model instead of
  * client-server: while datagrams can be more complex, these _are_ useful
- * properties not avaiable to stream sockets. Address.CreateDatagramSocket() is
- * used to prepare for datagram communication, then SendDatagram() and
+ * properties not avaiable to stream sockets. AddressBase.CreateDatagramSocket()
+ * is used to prepare for datagram communication, then SendDatagram() and
  * ReceiveDatagram() transmit packets.
  *
  * As previously mentioned, SDL_net's API is "non-blocking" (asynchronous). Any
@@ -99,6 +100,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct AddressBase;
+
+// Forward decl
 struct Address;
 
 /// Alias to raw representation for Address.
@@ -109,7 +113,7 @@ using AddressRaw = NET_Address*;
  *
  * This does not take ownership!
  */
-using AddressRef = ResourceRef<Address>;
+using AddressRef = ResourceRefT<AddressBase>;
 
 // Forward decl
 struct StreamSocket;
@@ -308,159 +312,13 @@ constexpr Status SUCCESS =
   NET_SUCCESS; ///< Async operation complete, result was success.
 
 /**
- * Opaque representation of a computer-readable network address.
+ * Base class to Address.
  *
- * This is an opaque datatype, to be treated by the app as a handle.
- *
- * SDL_net uses these to identify other servers; you use them to connect to a
- * remote machine, and you use them to find out who connected to you. They are
- * also used to decide what network interface to use when creating a server.
- *
- * These are intended to be protocol-independent; a given address might be for
- * IPv4, IPv6, or something more esoteric. SDL_net attempts to hide the
- * differences.
- *
- * @since This datatype is available since SDL_net 3.0.0.
- *
- * @sa ResolveHostname
- * @sa GetLocalAddresses
- * @sa CompareAddresses
- *
- * @cat resource
+ * @see Address
  */
-struct Address : ResourceBase<AddressRaw>
+struct AddressBase : ResourceBaseT<AddressRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Address.
-   *
-   * @param resource a AddressRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Address(AddressRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr Address(Address&& other) noexcept
-    : Address(other.release())
-  {
-  }
-
-  /**
-   * Resolve a human-readable hostname.
-   *
-   * SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org`
-   * but on computer-readable addresses. This function converts from one to the
-   * other. This process is known as "resolving" an address.
-   *
-   * You can also use this to turn IP address strings (like "159.203.69.7") into
-   * Address objects.
-   *
-   * Note that resolving an address is an asynchronous operation, since the
-   * library will need to ask a server on the internet to get the information it
-   * needs, and this can take time (and possibly fail later). This function will
-   * not block. It either returns nullptr (catastrophic failure) or an
-   * unresolved Address. Until the address resolves, it can't be used.
-   *
-   * If you want to block until the resolution is finished, you can call
-   * WaitUntilResolved(). Otherwise, you can do a non-blocking check with
-   * GetAddressStatus().
-   *
-   * When you are done with the returned Address, call UnrefAddress() to dispose
-   * of it. You need to do this even if resolution later fails asynchronously.
-   *
-   * @param host The hostname to resolve.
-   * @post A new Address on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa WaitUntilResolved
-   * @sa GetAddressStatus
-   * @sa RefAddress
-   * @sa UnrefAddress
-   */
-  Address(StringParam host);
-
-  /**
-   * Add a reference to an Address.
-   *
-   * Since several pieces of the library might share a single Address, including
-   * a background thread that's working on resolving, these objects are
-   * referenced counted. This allows everything that's using it to declare they
-   * still want it, and drop their reference to the address when they are done
-   * with it. The object's resources are freed when the last reference is
-   * dropped.
-   *
-   * This function adds a reference to an Address, increasing its reference
-   * count by one.
-   *
-   * The documentation will tell you when the app has to explicitly unref an
-   * address. For example, ResolveHostname() creates addresses that are already
-   * referenced, so the caller needs to unref it when done.
-   *
-   * Generally you only have to explicit ref an address when you have different
-   * parts of your own app that will be sharing an address. In normal usage, you
-   * only have to unref things you've created once (like you might free()
-   * something), but you are free to add extra refs if it makes sense.
-   *
-   * This returns the same address passed as a parameter, which makes it easy to
-   * ref and assign in one step:
-   *
-   * ```c
-   * myAddr = RefAddress(yourAddr);
-   * ```
-   *
-   * @param address The Address to add a reference to.
-   * @post the same address that was passed as a parameter.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   */
-  Address(const Address& address);
-
-  /**
-   * Safely borrows the from AddressRaw.
-   *
-   * @param resource a AddressRaw.
-   *
-   * This does not takes ownership!
-   */
-  static Address Borrow(AddressRaw resource)
-  {
-    if (resource) {
-      NET_RefAddress(resource);
-      return Address(resource);
-    }
-    return {};
-  }
-
-  /// Destructor
-  ~Address() { NET_UnrefAddress(get()); }
-
-  /// Assignment operator.
-  constexpr Address& operator=(Address&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Address& operator=(const Address& other)
-  {
-    if (get() != other.get()) {
-      Address tmp(other);
-      swap(*this, tmp);
-    }
-    return *this;
-  }
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Drop a reference to an Address.
@@ -604,14 +462,14 @@ struct Address : ResourceBase<AddressRaw>
    * Compares two addresses for equality. Returns true if they are the same,
    * false otherwise.
    */
-  bool operator==(AddressRef other) const;
+  bool operator==(const AddressBase& other) const;
 
   /**
    * Compares two addresses. Returns std::strong_ordering::less if this address
    * is less than the other, std::strong_ordering::greater if this address is
    * greater than the other, and std::strong_ordering::equal if they are equal.
    */
-  auto operator<=>(AddressRef other) const;
+  auto operator<=>(const AddressBase& other) const;
 
   /**
    * Begin connecting a socket as a client to a remote server.
@@ -820,6 +678,162 @@ struct Address : ResourceBase<AddressRaw>
 };
 
 /**
+ * Opaque representation of a computer-readable network address.
+ *
+ * This is an opaque datatype, to be treated by the app as a handle.
+ *
+ * SDL_net uses these to identify other servers; you use them to connect to a
+ * remote machine, and you use them to find out who connected to you. They are
+ * also used to decide what network interface to use when creating a server.
+ *
+ * These are intended to be protocol-independent; a given address might be for
+ * IPv4, IPv6, or something more esoteric. SDL_net attempts to hide the
+ * differences.
+ *
+ * @since This datatype is available since SDL_net 3.0.0.
+ *
+ * @sa ResolveHostname
+ * @sa GetLocalAddresses
+ * @sa CompareAddresses
+ *
+ * @cat resource
+ */
+struct Address : AddressBase
+{
+  using AddressBase::AddressBase;
+
+  /**
+   * Constructs from raw Address.
+   *
+   * @param resource a AddressRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Address(AddressRaw resource) noexcept
+    : AddressBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Address(Address&& other) noexcept
+    : Address(other.release())
+  {
+  }
+
+  /**
+   * Resolve a human-readable hostname.
+   *
+   * SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org`
+   * but on computer-readable addresses. This function converts from one to the
+   * other. This process is known as "resolving" an address.
+   *
+   * You can also use this to turn IP address strings (like "159.203.69.7") into
+   * Address objects.
+   *
+   * Note that resolving an address is an asynchronous operation, since the
+   * library will need to ask a server on the internet to get the information it
+   * needs, and this can take time (and possibly fail later). This function will
+   * not block. It either returns nullptr (catastrophic failure) or an
+   * unresolved Address. Until the address resolves, it can't be used.
+   *
+   * If you want to block until the resolution is finished, you can call
+   * WaitUntilResolved(). Otherwise, you can do a non-blocking check with
+   * GetAddressStatus().
+   *
+   * When you are done with the returned Address, call UnrefAddress() to dispose
+   * of it. You need to do this even if resolution later fails asynchronously.
+   *
+   * @param host The hostname to resolve.
+   * @post A new Address on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa WaitUntilResolved
+   * @sa GetAddressStatus
+   * @sa RefAddress
+   * @sa UnrefAddress
+   */
+  Address(StringParam host);
+
+  /**
+   * Add a reference to an Address.
+   *
+   * Since several pieces of the library might share a single Address, including
+   * a background thread that's working on resolving, these objects are
+   * referenced counted. This allows everything that's using it to declare they
+   * still want it, and drop their reference to the address when they are done
+   * with it. The object's resources are freed when the last reference is
+   * dropped.
+   *
+   * This function adds a reference to an Address, increasing its reference
+   * count by one.
+   *
+   * The documentation will tell you when the app has to explicitly unref an
+   * address. For example, ResolveHostname() creates addresses that are already
+   * referenced, so the caller needs to unref it when done.
+   *
+   * Generally you only have to explicit ref an address when you have different
+   * parts of your own app that will be sharing an address. In normal usage, you
+   * only have to unref things you've created once (like you might free()
+   * something), but you are free to add extra refs if it makes sense.
+   *
+   * This returns the same address passed as a parameter, which makes it easy to
+   * ref and assign in one step:
+   *
+   * ```c
+   * myAddr = RefAddress(yourAddr);
+   * ```
+   *
+   * @param address The Address to add a reference to.
+   * @post the same address that was passed as a parameter.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   */
+  Address(const Address& address);
+
+  /**
+   * Safely borrows the from AddressRaw.
+   *
+   * @param resource a AddressRaw.
+   *
+   * This does not takes ownership!
+   */
+  static Address Borrow(AddressRaw resource)
+  {
+    if (resource) {
+      NET_RefAddress(resource);
+      return Address(resource);
+    }
+    return {};
+  }
+
+  /// Destructor
+  ~Address() { NET_UnrefAddress(get()); }
+
+  /// Assignment operator.
+  constexpr Address& operator=(Address&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Address& operator=(const Address& other)
+  {
+    if (get() != other.get()) {
+      Address tmp(other);
+      swap(*this, tmp);
+    }
+    return *this;
+  }
+};
+
+/**
  * Resolve a human-readable hostname.
  *
  * SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org`
@@ -915,7 +929,7 @@ inline Status WaitUntilResolved(AddressRef address, Sint32 timeout)
   return NET_WaitUntilResolved(address, timeout);
 }
 
-inline Status Address::WaitUntilResolved(Sint32 timeout)
+inline Status AddressBase::WaitUntilResolved(Sint32 timeout)
 {
   return SDL::WaitUntilResolved(get(), timeout);
 }
@@ -952,7 +966,7 @@ inline Status GetAddressStatus(AddressRef address)
   return NET_GetAddressStatus(address);
 }
 
-inline Status Address::GetStatus() { return SDL::GetAddressStatus(get()); }
+inline Status AddressBase::GetStatus() { return SDL::GetAddressStatus(get()); }
 
 /**
  * Get a human-readable string from a resolved address.
@@ -987,7 +1001,10 @@ inline const char* GetAddressString(AddressRef address)
   return CheckError(NET_GetAddressString(address));
 }
 
-inline const char* Address::GetString() { return SDL::GetAddressString(get()); }
+inline const char* AddressBase::GetString()
+{
+  return SDL::GetAddressString(get());
+}
 
 /**
  * Add a reference to an Address.
@@ -1050,7 +1067,7 @@ inline Address RefAddress(AddressRef address) { return Address(address); }
  */
 inline void UnrefAddress(AddressRaw address) { NET_UnrefAddress(address); }
 
-inline void Address::Unref() { UnrefAddress(release()); }
+inline void AddressBase::Unref() { UnrefAddress(release()); }
 
 /**
  * Enable simulated address resolution failures.
@@ -1106,17 +1123,17 @@ inline int CompareAddresses(AddressRef a, AddressRef b)
   return NET_CompareAddresses(a, b);
 }
 
-inline int Address::Compare(AddressRef b) const
+inline int AddressBase::Compare(AddressRef b) const
 {
   return SDL::CompareAddresses(get(), b);
 }
 
-inline bool Address::operator==(AddressRef other) const
+inline bool AddressBase::operator==(const AddressBase& other) const
 {
   return Compare(other) == 0;
 }
 
-inline auto Address::operator<=>(AddressRef other) const
+inline auto AddressBase::operator<=>(const AddressBase& other) const
 {
   return Compare(other) <=> 0;
 }
@@ -1145,9 +1162,9 @@ using LocalAddressesArray = OwnArray<AddressRef, LocalAddressesArrayDeleter>;
  * addresses that are accessible on the same LAN, but not public ones that are
  * accessible from the outside Internet.
  *
- * Usually it's better to use Address.CreateServer() or
- * Address.CreateDatagramSocket() with a nullptr address, to say "bind to all
- * interfaces."
+ * Usually it's better to use AddressBase.CreateServer() or
+ * AddressBase.CreateDatagramSocket() with a nullptr address, to say "bind to
+ * all interfaces."
  *
  * The array of addresses returned from this is guaranteed to be
  * nullptr-terminated. You can also pass a pointer to an int, which will return
@@ -1212,7 +1229,7 @@ inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
  *
  * @since This datatype is available since SDL_net 3.0.0.
  *
- * @sa Address.CreateClient
+ * @sa AddressBase.CreateClient
  * @sa WriteToStreamSocket
  * @sa ReadFromStreamSocket
  *
@@ -1338,7 +1355,7 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa Address.CreateClient
+   * @sa AddressBase.CreateClient
    * @sa AcceptClient
    * @sa GetStreamSocketPendingWrites
    * @sa WaitUntilStreamSocketDrained
@@ -1348,9 +1365,9 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
   /**
    * Block until a stream socket has connected to a server.
    *
-   * The StreamSocket objects returned by Address.CreateClient take time to do
-   * their work, so it does so _asynchronously_ instead of making your program
-   * wait an indefinite amount of time.
+   * The StreamSocket objects returned by AddressBase.CreateClient take time to
+   * do their work, so it does so _asynchronously_ instead of making your
+   * program wait an indefinite amount of time.
    *
    * However, if you want your program to sleep until the connection is
    * complete, you can call this function.
@@ -1409,9 +1426,9 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
   /**
    * Check if a stream socket is connected, without blocking.
    *
-   * The StreamSocket objects returned by Address.CreateClient take time to do
-   * negotiate a connection to a server, so it does so _asynchronously_ instead
-   * of making your program wait an indefinite amount of time.
+   * The StreamSocket objects returned by AddressBase.CreateClient take time to
+   * do negotiate a connection to a server, so it does so _asynchronously_
+   * instead of making your program wait an indefinite amount of time.
    *
    * This function allows you to check the progress of that work without
    * blocking.
@@ -1708,7 +1725,7 @@ inline StreamSocket CreateClient(AddressRef address,
   return StreamSocket(address, port, props);
 }
 
-inline StreamSocket Address::CreateClient(Uint16 port, PropertiesRef props)
+inline StreamSocket AddressBase::CreateClient(Uint16 port, PropertiesRef props)
 {
   return StreamSocket(get(), port, props);
 }
@@ -1723,7 +1740,7 @@ inline StreamSocket::StreamSocket(AddressRef address,
 /**
  * Block until a stream socket has connected to a server.
  *
- * The StreamSocket objects returned by Address.CreateClient take time to do
+ * The StreamSocket objects returned by AddressBase.CreateClient take time to do
  * their work, so it does so _asynchronously_ instead of making your program
  * wait an indefinite amount of time.
  *
@@ -1784,7 +1801,7 @@ inline Status StreamSocket::WaitUntilConnected(Sint32 timeout)
  *
  * @since This datatype is available since SDL_net 3.0.0.
  *
- * @sa Address.CreateServer
+ * @sa AddressBase.CreateServer
  *
  * @cat resource
  */
@@ -1910,7 +1927,7 @@ struct Server : ResourceBase<ServerRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa Address.CreateServer
+   * @sa AddressBase.CreateServer
    */
   void Destroy();
 
@@ -1922,9 +1939,9 @@ struct Server : ResourceBase<ServerRaw>
    * given a stream socket to communicate with the client, and they can send
    * data to, and receive data from, each other.
    *
-   * Unlike Address.CreateClient, stream sockets returned from this function are
-   * already connected and do not have to wait for the connection to complete,
-   * as server acceptance is the final step of connecting.
+   * Unlike AddressBase.CreateClient, stream sockets returned from this function
+   * are already connected and do not have to wait for the connection to
+   * complete, as server acceptance is the final step of connecting.
    *
    * This function does not block. If there are no new connections pending, this
    * function will return true (for success, but `*client_stream` will be set to
@@ -2022,7 +2039,7 @@ inline Server CreateServer(AddressRef addr, Uint16 port, PropertiesRef props)
   return Server(addr, port, props);
 }
 
-inline Server Address::CreateServer(Uint16 port, PropertiesRef props)
+inline Server AddressBase::CreateServer(Uint16 port, PropertiesRef props)
 {
   return Server(get(), port, props);
 }
@@ -2047,9 +2064,9 @@ constexpr auto REUSEADDR_BOOLEAN =
  * a stream socket to communicate with the client, and they can send data to,
  * and receive data from, each other.
  *
- * Unlike Address.CreateClient, stream sockets returned from this function are
- * already connected and do not have to wait for the connection to complete, as
- * server acceptance is the final step of connecting.
+ * Unlike AddressBase.CreateClient, stream sockets returned from this function
+ * are already connected and do not have to wait for the connection to complete,
+ * as server acceptance is the final step of connecting.
  *
  * This function does not block. If there are no new connections pending, this
  * function will return true (for success, but `*client_stream` will be set to
@@ -2105,7 +2122,7 @@ inline void Server::AcceptClient(NET_StreamSocket** client_stream)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa Address.CreateServer
+ * @sa AddressBase.CreateServer
  */
 inline void DestroyServer(ServerRaw server) { NET_DestroyServer(server); }
 
@@ -2141,7 +2158,7 @@ inline Address StreamSocket::GetAddress()
 /**
  * Check if a stream socket is connected, without blocking.
  *
- * The StreamSocket objects returned by Address.CreateClient take time to do
+ * The StreamSocket objects returned by AddressBase.CreateClient take time to do
  * negotiate a connection to a server, so it does so _asynchronously_ instead of
  * making your program wait an indefinite amount of time.
  *
@@ -2455,7 +2472,7 @@ inline void StreamSocket::SimulateStreamPacketLoss(int percent_loss)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa Address.CreateClient
+ * @sa AddressBase.CreateClient
  * @sa AcceptClient
  * @sa GetStreamSocketPendingWrites
  * @sa WaitUntilStreamSocketDrained
@@ -2486,7 +2503,7 @@ inline void StreamSocket::Destroy() { DestroyStreamSocket(release()); }
  *
  * @since This datatype is available since SDL_net 3.0.0.
  *
- * @sa Address.CreateDatagramSocket
+ * @sa AddressBase.CreateDatagramSocket
  * @sa SendDatagram
  * @sa ReceiveDatagram
  *
@@ -2640,7 +2657,7 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa Address.CreateDatagramSocket
+   * @sa AddressBase.CreateDatagramSocket
    * @sa SendDatagram
    * @sa ReceiveDatagram
    */
@@ -3117,8 +3134,8 @@ inline DatagramSocket CreateDatagramSocket(AddressRef addr,
   return DatagramSocket(addr, port, props);
 }
 
-inline DatagramSocket Address::CreateDatagramSocket(Uint16 port,
-                                                    PropertiesRef props)
+inline DatagramSocket AddressBase::CreateDatagramSocket(Uint16 port,
+                                                        PropertiesRef props)
 {
   return DatagramSocket(get(), port, props);
 }
@@ -3445,7 +3462,7 @@ inline void DatagramSocket::SimulateDatagramPacketLoss(int percent_loss)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa Address.CreateDatagramSocket
+ * @sa AddressBase.CreateDatagramSocket
  * @sa SendDatagram
  * @sa ReceiveDatagram
  */
@@ -3502,7 +3519,7 @@ inline void DatagramSocket::Destroy() { DestroyDatagramSocket(release()); }
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa Address.CreateDatagramSocket
+ * @sa AddressBase.CreateDatagramSocket
  * @sa SendDatagram
  * @sa ReceiveDatagram
  */

@@ -8885,20 +8885,20 @@ const transform = {
           }
         },
         "NET_CompareAddresses": { hints: { methodName: "Compare" } },
-        "Address::operator==": {
+        "AddressBase::operator==": {
           kind: "function",
           static: false,
           immutable: true,
           type: "bool",
-          parameters: [{ type: "AddressRef", name: "other" }],
+          parameters: [{ type: "const AddressBase &", name: "other" }],
           doc: ["Compares two addresses for equality. Returns true if they are the same, false otherwise."]
         },
-        "Address::operator<=>": {
+        "AddressBase::operator<=>": {
           kind: "function",
           static: false,
           immutable: true,
           type: "auto",
-          parameters: [{ type: "AddressRef", name: "other" }],
+          parameters: [{ type: "const AddressBase &", name: "other" }],
           doc: ["Compares two addresses. Returns std::strong_ordering::less if this address is less than the other, std::strong_ordering::greater if this address is greater than the other, and std::strong_ordering::equal if they are equal."]
         },
         "LocalAddressesArrayDeleter": {
