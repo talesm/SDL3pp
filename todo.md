@@ -1,15 +1,27 @@
 Todo for next version
 =====================
 
+
+Breaking changes:
+
+- [ ] Remove old entry point (break compat);
+- [x] Properties::Create is now a constructor;
 - [ ] Refactor resource to become less hack-y (probably breaking compat):
-  - [x] Create new ResourceRef and make ResourceOwned derive from it;
+  - [x] Create new ResourceBase and make ResourceOwned derive from it;
     - It has the constructors to nullptr (default) and constructor from Raw;
     - Everything is trivial;
+    - Dtor is trivial, but protected
   - [ ] Move all methods to ResourceBase, except constructors;
-  - [x] Create ResourceBaseT absorbs common functionality from new ResourceRef
+  - [x] Create ResourceBaseT absorbs common functionality from new ResourceBase
+  - [x] New ResourceRef is derived explicitly from ResourceBase:
+    - Can be also constructed from Any const ResourceBase &;
+    - Can be converted to raw resource;
+  - [x] New ResourceRefT becomes template to new ResourceRef
+
+Non-breaking changes
+
+- [x] Document refers to free functions instead of method versions;
 - [ ] Fix ObjectRef(nullptr).
-- [ ] Remove old entry point (break compat);
-- [ ] Properties::Create is now a constructor;
 
 Backlog
 -------

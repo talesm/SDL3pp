@@ -1361,10 +1361,38 @@ public:
 
 protected:
   /// Destructor
-  ~ResourceBaseT() = default;
+  constexpr ~ResourceBaseT() = default;
+
+  constexpr ResourceBaseT(const ResourceBaseT&) = default;
+  constexpr ResourceBaseT(ResourceBaseT&&) noexcept = default;
+
+  constexpr ResourceBaseT& operator=(const ResourceBaseT&) = default;
+  constexpr ResourceBaseT& operator=(ResourceBaseT&&) noexcept = default;
 
 private:
   RawPointer m_resource; ///< parameter's RawPointer
+};
+
+/// A non-owning reference wrapper for a given resource
+template<typename BASE>
+struct ResourceRefT : BASE
+{
+  using BASE::BASE;
+
+  /// The underlying raw pointer type.
+  using RawPointer = BASE::RawPointer;
+
+  /// The underlying const raw pointer type.
+  using RawConstPointer = BASE::RawConstPointer;
+
+  /// Constructs from resource.
+  constexpr ResourceRefT(const BASE& resource) noexcept
+    : BASE(resource.get())
+  {
+  }
+
+  /// Converts to raw pointer.
+  constexpr operator RawPointer() const noexcept { return this->get(); }
 };
 
 /// Base class for resources.

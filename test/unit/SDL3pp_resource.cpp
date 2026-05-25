@@ -13,31 +13,33 @@ void DestroyDummyResource(DummyResourceRaw* resource)
   if (resource) resource->count--;
 }
 
-struct DummyResourceRef : ResourceBaseT<DummyResourceRaw*>
+struct DummyResourceBase : ResourceBaseT<DummyResourceRaw*>
 {
   using ResourceBaseT::ResourceBaseT;
 
   void Destroy() { DestroyDummyResource(release()); }
 };
 
-struct DummyResource : DummyResourceRef
+using DummyResourceRef = ResourceRefT<DummyResourceBase>;
+
+struct DummyResource : DummyResourceBase
 {
-  using DummyResourceRef::DummyResourceRef;
+  using DummyResourceBase::DummyResourceBase;
 
   explicit DummyResource(DummyResourceRaw* resource)
-    : DummyResourceRef(resource)
+    : DummyResourceBase(resource)
   {
   }
 
   /// Move ctor
   DummyResource(DummyResource&& other) noexcept
-    : DummyResourceRef(other.release())
+    : DummyResourceBase(other.release())
   {
   }
 
   DummyResource& operator=(DummyResource&& other) noexcept
   {
-    if (this != &other) { DummyResourceRef::operator=(other.release()); }
+    if (this != &other) { DummyResourceBase::operator=(other.release()); }
     return *this;
   }
 
@@ -67,10 +69,10 @@ TEST_CASE("ResourceBaseT")
       CHECK(raw.count == 1);
     }
     CHECK(raw.count == 0);
-    ResourceBase<DummyResourceRaw*> res1;
+    DummyResource res1;
     CHECK(!res1);
     CHECK(res1.get() == nullptr);
-    ResourceBase<DummyResourceRaw*> res2(nullptr);
+    DummyResource res2(nullptr);
     CHECK(!res2);
     CHECK(res2.get() == nullptr);
   }
@@ -81,20 +83,29 @@ TEST_CASE("ResourceBaseT")
       CHECK(res);
       CHECK(res.get() == &raw);
 
-      DummyResourceRef res2(res);
-      CHECK(res2);
-      CHECK(res2.get() == &raw);
+      DummyResourceRef ref(res);
+      CHECK(ref);
+      CHECK(ref.get() == &raw);
       CHECK(raw.count == 1);
+
+      DummyResourceRaw* rawPtr = ref;
+      CHECK(rawPtr == &raw);
     }
     CHECK(raw.count == 0);
+    DummyResourceRef ref1;
+    CHECK(!ref1);
+    CHECK(ref1.get() == nullptr);
+    DummyResourceRef ref2(nullptr);
+    CHECK(!ref2);
+    CHECK(ref2.get() == nullptr);
   }
   SUBCASE("Create into reference wrapper")
   {
-    DummyResourceRef res = CreateDummyResource(&raw).release();
-    CHECK(res);
-    CHECK(res.get() == &raw);
+    DummyResourceRef ref = CreateDummyResource(&raw).release();
+    CHECK(ref);
+    CHECK(ref.get() == &raw);
     CHECK(raw.count == 1);
-    DestroyDummyResource(res.release());
+    DestroyDummyResource(ref.release());
     CHECK(raw.count == 0);
   }
 }
