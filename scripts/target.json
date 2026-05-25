@@ -851,6 +851,10 @@
         "Written data is not guaranteed to make it to physical media by the time a closing task is completed, unless CloseAsyncIO is called with its `flush` parameter set to true, which is to say that a successful result here can still result in lost data during an unfortunately-timed power outage if not flushed. However, flushing will take longer and may be unnecessary, depending on the app's needs."
       ],
       "entries": {
+        "AsyncIOBase-forward": {
+          "name": "AsyncIOBase",
+          "kind": "forward"
+        },
         "AsyncIO-forward": {
           "name": "AsyncIO",
           "kind": "forward"
@@ -870,7 +874,11 @@
             "Reference for AsyncIO.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<AsyncIO>"
+          "type": "ResourceRefT<AsyncIOBase>"
+        },
+        "AsyncIOQueueBase-forward": {
+          "name": "AsyncIOQueueBase",
+          "kind": "forward"
         },
         "AsyncIOQueue-forward": {
           "name": "AsyncIOQueue",
@@ -891,254 +899,23 @@
             "Reference for AsyncIOQueue.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<AsyncIOQueue>"
+          "type": "ResourceRefT<AsyncIOQueueBase>"
         },
-        "AsyncIO": {
-          "doc": [
-            "The asynchronous I/O operation structure.",
-            "This operates as an opaque handle. One can then request read or write operations on it.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            {
-              "tag": "@sa",
-              "content": "AsyncIOFromFile"
-            },
-            "@cat resource"
-          ],
-          "name": "AsyncIO",
+        "AsyncIOBase": {
+          "name": "AsyncIOBase",
           "kind": "struct",
-          "type": "ResourceBase<AsyncIORaw>",
-          "sourceName": "SDL_AsyncIO",
+          "type": "ResourceBaseT<AsyncIORaw>",
+          "doc": [
+            "Base class to AsyncIO.",
+            {
+              "tag": "@see",
+              "content": "AsyncIO"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "AsyncIO": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AsyncIORaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw AsyncIO.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AsyncIORaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "AsyncIO",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AsyncIO &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "AsyncIO",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "AsyncIO &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "AsyncIO(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "AsyncIO",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const AsyncIORef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "AsyncIO",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "AsyncIORef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "AsyncIO",
-                      "overload": {
-                        "doc": [
-                          "Use this function to create a new AsyncIO object for reading from and/or writing to a named file.",
-                          "The `mode` string understands the following values:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "\"r\": Open a file for reading only. It must exist."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "\"w\": Open a file for writing only. It will create missing files or truncate existing ones."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "\"r+\": Open a file for update both reading and writing. The file must exist."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "\"w+\": Create an empty file for both reading and writing. If a file with the same name already exists its content is erased and the file is treated as a new empty file."
-                            }
-                          ],
-                          "There is no \"b\" mode, as there is only \"binary\" style I/O, and no \"a\" mode for appending, since you specify the position when starting a task.",
-                          "This function supports Unicode filenames, but they must be encoded in UTF-8 format, regardless of the underlying operating system.",
-                          "This call is _not_ asynchronous; it will open the file before returning, under the assumption that doing so is generally a fast operation. Future reads and writes to the opened file will be async, however.",
-                          [
-                            {
-                              "tag": "@param file",
-                              "content": "a UTF-8 string representing the filename to open."
-                            },
-                            {
-                              "tag": "@param mode",
-                              "content": "an ASCII string representing the mode to be used for opening the file."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a pointer to the AsyncIO structure that is created or nullptr on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CloseAsyncIO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "ReadAsyncIO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "WriteAsyncIO"
-                            }
-                          ]
-                        ],
-                        "name": "AsyncIO",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "file",
-                            "type": "StringParam"
-                          },
-                          {
-                            "name": "mode",
-                            "type": "StringParam"
-                          }
-                        ],
-                        "sourceName": "SDL_AsyncIOFromFile",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~AsyncIO": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_CloseAsyncIO(get());"
-              },
-              "name": "~AsyncIO"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "AsyncIO &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "AsyncIO &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "AsyncIO &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AsyncIO &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Close": {
               "doc": [
@@ -1405,6 +1182,226 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "AsyncIO": {
+          "doc": [
+            "The asynchronous I/O operation structure.",
+            "This operates as an opaque handle. One can then request read or write operations on it.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "AsyncIOFromFile"
+            },
+            "@cat resource"
+          ],
+          "name": "AsyncIO",
+          "kind": "struct",
+          "type": "AsyncIOBase",
+          "sourceName": "SDL_AsyncIO",
+          "entries": {
+            "AsyncIOBase::AsyncIOBase": {
+              "kind": "alias",
+              "name": "AsyncIOBase::AsyncIOBase"
+            },
+            "AsyncIO": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AsyncIORaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "AsyncIOBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw AsyncIO.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AsyncIORaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "AsyncIO",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AsyncIO &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "AsyncIO",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "AsyncIO &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "AsyncIO(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "AsyncIO",
+                  "overload": {
+                    "doc": [
+                      "Use this function to create a new AsyncIO object for reading from and/or writing to a named file.",
+                      "The `mode` string understands the following values:",
+                      [
+                        {
+                          "tag": "-",
+                          "content": "\"r\": Open a file for reading only. It must exist."
+                        },
+                        {
+                          "tag": "-",
+                          "content": "\"w\": Open a file for writing only. It will create missing files or truncate existing ones."
+                        },
+                        {
+                          "tag": "-",
+                          "content": "\"r+\": Open a file for update both reading and writing. The file must exist."
+                        },
+                        {
+                          "tag": "-",
+                          "content": "\"w+\": Create an empty file for both reading and writing. If a file with the same name already exists its content is erased and the file is treated as a new empty file."
+                        }
+                      ],
+                      "There is no \"b\" mode, as there is only \"binary\" style I/O, and no \"a\" mode for appending, since you specify the position when starting a task.",
+                      "This function supports Unicode filenames, but they must be encoded in UTF-8 format, regardless of the underlying operating system.",
+                      "This call is _not_ asynchronous; it will open the file before returning, under the assumption that doing so is generally a fast operation. Future reads and writes to the opened file will be async, however.",
+                      [
+                        {
+                          "tag": "@param file",
+                          "content": "a UTF-8 string representing the filename to open."
+                        },
+                        {
+                          "tag": "@param mode",
+                          "content": "an ASCII string representing the mode to be used for opening the file."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a pointer to the AsyncIO structure that is created or nullptr on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CloseAsyncIO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "ReadAsyncIO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "WriteAsyncIO"
+                        }
+                      ]
+                    ],
+                    "name": "AsyncIO",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "file",
+                        "type": "StringParam"
+                      },
+                      {
+                        "name": "mode",
+                        "type": "StringParam"
+                      }
+                    ],
+                    "sourceName": "SDL_AsyncIOFromFile",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~AsyncIO": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_CloseAsyncIO(get());"
+              },
+              "name": "~AsyncIO"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "AsyncIO &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "AsyncIO &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "AsyncIO &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AsyncIO &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "AsyncIO"
           }
@@ -1508,230 +1505,21 @@
           "sourceName": "SDL_AsyncIOOutcome",
           "type": "SDL_AsyncIOOutcome"
         },
-        "AsyncIOQueue": {
-          "doc": [
-            "A queue of completed asynchronous I/O tasks.",
-            "When starting an asynchronous operation, you specify a queue for the new task. A queue can be asked later if any tasks in it have completed, allowing an app to manage multiple pending tasks in one place, in whatever order they complete.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            [
-              {
-                "tag": "@sa",
-                "content": "CreateAsyncIOQueue"
-              },
-              {
-                "tag": "@sa",
-                "content": "ReadAsyncIO"
-              },
-              {
-                "tag": "@sa",
-                "content": "WriteAsyncIO"
-              },
-              {
-                "tag": "@sa",
-                "content": "GetAsyncIOResult"
-              },
-              {
-                "tag": "@sa",
-                "content": "WaitAsyncIOResult"
-              }
-            ],
-            "@cat resource"
-          ],
-          "name": "AsyncIOQueue",
+        "AsyncIOQueueBase": {
+          "name": "AsyncIOQueueBase",
           "kind": "struct",
-          "type": "ResourceBase<AsyncIOQueueRaw>",
-          "sourceName": "SDL_AsyncIOQueue",
+          "type": "ResourceBaseT<AsyncIOQueueRaw>",
+          "doc": [
+            "Base class to AsyncIOQueue.",
+            {
+              "tag": "@see",
+              "content": "AsyncIOQueue"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "AsyncIOQueue": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AsyncIOQueueRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw AsyncIOQueue.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AsyncIOQueueRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "AsyncIOQueue",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AsyncIOQueue &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "AsyncIOQueue",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "AsyncIOQueue &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "AsyncIOQueue(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "AsyncIOQueue",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const AsyncIOQueueRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "AsyncIOQueue",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "AsyncIOQueueRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "AsyncIOQueue",
-                      "overload": {
-                        "doc": [
-                          "Create a task queue for tracking multiple I/O operations.",
-                          "Async I/O operations are assigned to a queue when started. The queue can be checked for completed tasks thereafter.",
-                          {
-                            "tag": "@post",
-                            "content": "a new task queue object or nullptr if there was an error; call GetError() for more information."
-                          },
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyAsyncIOQueue"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetAsyncIOResult"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "WaitAsyncIOResult"
-                            }
-                          ]
-                        ],
-                        "name": "AsyncIOQueue",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [],
-                        "sourceName": "SDL_CreateAsyncIOQueue",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~AsyncIOQueue": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyAsyncIOQueue(get());"
-              },
-              "name": "~AsyncIOQueue"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "AsyncIOQueue &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "AsyncIOQueue &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "AsyncIOQueue &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AsyncIOQueue &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -1930,6 +1718,204 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "AsyncIOQueue": {
+          "doc": [
+            "A queue of completed asynchronous I/O tasks.",
+            "When starting an asynchronous operation, you specify a queue for the new task. A queue can be asked later if any tasks in it have completed, allowing an app to manage multiple pending tasks in one place, in whatever order they complete.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "CreateAsyncIOQueue"
+              },
+              {
+                "tag": "@sa",
+                "content": "ReadAsyncIO"
+              },
+              {
+                "tag": "@sa",
+                "content": "WriteAsyncIO"
+              },
+              {
+                "tag": "@sa",
+                "content": "GetAsyncIOResult"
+              },
+              {
+                "tag": "@sa",
+                "content": "WaitAsyncIOResult"
+              }
+            ],
+            "@cat resource"
+          ],
+          "name": "AsyncIOQueue",
+          "kind": "struct",
+          "type": "AsyncIOQueueBase",
+          "sourceName": "SDL_AsyncIOQueue",
+          "entries": {
+            "AsyncIOQueueBase::AsyncIOQueueBase": {
+              "kind": "alias",
+              "name": "AsyncIOQueueBase::AsyncIOQueueBase"
+            },
+            "AsyncIOQueue": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AsyncIOQueueRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "AsyncIOQueueBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw AsyncIOQueue.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AsyncIOQueueRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "AsyncIOQueue",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AsyncIOQueue &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "AsyncIOQueue",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "AsyncIOQueue &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "AsyncIOQueue(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "AsyncIOQueue",
+                  "overload": {
+                    "doc": [
+                      "Create a task queue for tracking multiple I/O operations.",
+                      "Async I/O operations are assigned to a queue when started. The queue can be checked for completed tasks thereafter.",
+                      {
+                        "tag": "@post",
+                        "content": "a new task queue object or nullptr if there was an error; call GetError() for more information."
+                      },
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyAsyncIOQueue"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetAsyncIOResult"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "WaitAsyncIOResult"
+                        }
+                      ]
+                    ],
+                    "name": "AsyncIOQueue",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [],
+                    "sourceName": "SDL_CreateAsyncIOQueue",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~AsyncIOQueue": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyAsyncIOQueue(get());"
+              },
+              "name": "~AsyncIOQueue"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "AsyncIOQueue &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "AsyncIOQueue &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "AsyncIOQueue &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AsyncIOQueue &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "AsyncIOQueue"
           }
@@ -2076,15 +2062,14 @@
             "mayFail": true
           }
         },
-        "AsyncIO::GetSize": {
-          "name": "AsyncIO::GetSize",
+        "AsyncIOBase::GetSize": {
+          "name": "AsyncIOBase::GetSize",
           "kind": "function",
           "type": "Sint64",
           "parameters": [],
           "sourceName": "SDL_GetAsyncIOSize",
           "hints": {
             "self": "get()",
-            "super": "AsyncIO",
             "mayFail": true,
             "delegate": "SDL::GetAsyncIOSize"
           }
@@ -2179,8 +2164,8 @@
             "mayFail": true
           }
         },
-        "AsyncIO::Read": {
-          "name": "AsyncIO::Read",
+        "AsyncIOBase::Read": {
+          "name": "AsyncIOBase::Read",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -2208,7 +2193,6 @@
           "sourceName": "SDL_ReadAsyncIO",
           "hints": {
             "self": "get()",
-            "super": "AsyncIO",
             "mayFail": true,
             "delegate": "SDL::ReadAsyncIO"
           }
@@ -2303,8 +2287,8 @@
             "mayFail": true
           }
         },
-        "AsyncIO::Write": {
-          "name": "AsyncIO::Write",
+        "AsyncIOBase::Write": {
+          "name": "AsyncIOBase::Write",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -2332,7 +2316,6 @@
           "sourceName": "SDL_WriteAsyncIO",
           "hints": {
             "self": "get()",
-            "super": "AsyncIO",
             "mayFail": true,
             "delegate": "SDL::WriteAsyncIO"
           }
@@ -2403,8 +2386,8 @@
             "mayFail": true
           }
         },
-        "AsyncIO::Close": {
-          "name": "AsyncIO::Close",
+        "AsyncIOBase::Close": {
+          "name": "AsyncIOBase::Close",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -2424,7 +2407,6 @@
           "sourceName": "SDL_CloseAsyncIO",
           "hints": {
             "self": "get()",
-            "super": "AsyncIO",
             "mayFail": true,
             "body": "return CloseAsyncIO(release());",
             "delegate": "SDL::CloseAsyncIO"
@@ -2513,15 +2495,14 @@
           ],
           "sourceName": "SDL_DestroyAsyncIOQueue"
         },
-        "AsyncIOQueue::Destroy": {
-          "name": "AsyncIOQueue::Destroy",
+        "AsyncIOQueueBase::Destroy": {
+          "name": "AsyncIOQueueBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyAsyncIOQueue",
           "hints": {
             "self": "get()",
-            "super": "AsyncIOQueue",
             "body": "DestroyAsyncIOQueue(release());",
             "delegate": "SDL::DestroyAsyncIOQueue"
           }
@@ -2573,15 +2554,14 @@
             "methodName": "GetResult"
           }
         },
-        "AsyncIOQueue::GetResult": {
-          "name": "AsyncIOQueue::GetResult",
+        "AsyncIOQueueBase::GetResult": {
+          "name": "AsyncIOQueueBase::GetResult",
           "kind": "function",
           "type": "std::optional<AsyncIOOutcome>",
           "parameters": [],
           "sourceName": "SDL_GetAsyncIOResult",
           "hints": {
             "self": "get()",
-            "super": "AsyncIOQueue",
             "methodName": "GetResult",
             "delegate": "SDL::GetAsyncIOResult"
           }
@@ -2699,8 +2679,8 @@
             ]
           }
         },
-        "AsyncIOQueue::WaitResult": {
-          "name": "AsyncIOQueue::WaitResult",
+        "AsyncIOQueueBase::WaitResult": {
+          "name": "AsyncIOQueueBase::WaitResult",
           "kind": "function",
           "type": "std::optional<AsyncIOOutcome>",
           "parameters": [
@@ -2712,7 +2692,6 @@
           "sourceName": "SDL_WaitAsyncIOResult",
           "hints": {
             "self": "get()",
-            "super": "AsyncIOQueue",
             "methodName": "WaitResult",
             "delegate": "SDL::WaitAsyncIOResult"
           },
@@ -2722,10 +2701,9 @@
             "parameters": [],
             "hints": {
               "self": "get()",
-              "super": "AsyncIOQueue",
               "delegate": "SDL::WaitAsyncIOResult"
             },
-            "name": "AsyncIOQueue::WaitResult"
+            "name": "AsyncIOQueueBase::WaitResult"
           }
         },
         "SignalAsyncIOQueue": {
@@ -2761,15 +2739,14 @@
           ],
           "sourceName": "SDL_SignalAsyncIOQueue"
         },
-        "AsyncIOQueue::Signal": {
-          "name": "AsyncIOQueue::Signal",
+        "AsyncIOQueueBase::Signal": {
+          "name": "AsyncIOQueueBase::Signal",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_SignalAsyncIOQueue",
           "hints": {
             "self": "get()",
-            "super": "AsyncIOQueue",
             "delegate": "SDL::SignalAsyncIOQueue"
           }
         },
