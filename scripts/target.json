@@ -186380,6 +186380,10 @@
           ],
           "type": "ResourceConstRef<AnimationRaw, AnimationRawConst>"
         },
+        "AnimationEncoderBase-forward": {
+          "name": "AnimationEncoderBase",
+          "kind": "forward"
+        },
         "AnimationEncoder-forward": {
           "name": "AnimationEncoder",
           "kind": "forward"
@@ -186399,7 +186403,11 @@
             "Reference for AnimationEncoder.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<AnimationEncoder>"
+          "type": "ResourceRefT<AnimationEncoderBase>"
+        },
+        "AnimationDecoderBase-forward": {
+          "name": "AnimationDecoderBase",
+          "kind": "forward"
         },
         "AnimationDecoder-forward": {
           "name": "AnimationDecoder",
@@ -186420,7 +186428,7 @@
             "Reference for AnimationDecoder.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<AnimationDecoder>"
+          "type": "ResourceRefT<AnimationDecoderBase>"
         },
         "SDL_IMAGE_MAJOR_VERSION": {
           "doc": [
@@ -195578,467 +195586,27 @@
             "delegate": "SDL::FreeAnimation"
           }
         },
-        "AnimationEncoder": {
-          "doc": [
-            "An object representing the encoder context.",
-            "@cat resource"
-          ],
-          "name": "AnimationEncoder",
+        "AnimationEncoderBase": {
+          "name": "AnimationEncoderBase",
           "kind": "struct",
-          "type": "ResourceBase<AnimationEncoderRaw>",
-          "sourceName": "IMG_AnimationEncoder",
+          "type": "ResourceBaseT<AnimationEncoderRaw>",
+          "since": {
+            "tag": "SDL_IMAGE",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
+          "doc": [
+            "Base class to AnimationEncoder.",
+            {
+              "tag": "@see",
+              "content": "AnimationEncoder"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "AnimationEncoder": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AnimationEncoderRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw AnimationEncoder.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AnimationEncoderRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "AnimationEncoder",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AnimationEncoder &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "AnimationEncoder",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "AnimationEncoder &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "AnimationEncoder(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "AnimationEncoder",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const AnimationEncoderRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "AnimationEncoder",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "AnimationEncoderRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "AnimationEncoder",
-                      "overload": {
-                        "doc": [
-                          "Create an encoder to save a series of images to a file.",
-                          "These animation types are currently supported:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "ANI"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "APNG"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "AVIFS"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "GIF"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "WEBP"
-                            }
-                          ],
-                          "The file type is determined from the file extension, e.g. \"file.webp\" will be encoded using WEBP.",
-                          [
-                            {
-                              "tag": "@param file",
-                              "content": "the file where the animation will be saved."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new AnimationEncoder on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_image 3.4.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateAnimationEncoder_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CreateAnimationEncoderWithProperties"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "AddAnimationEncoderFrame"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CloseAnimationEncoder"
-                            }
-                          ]
-                        ],
-                        "name": "AnimationEncoder",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "file",
-                            "type": "StringParam"
-                          }
-                        ],
-                        "sourceName": "IMG_CreateAnimationEncoder",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "overload": {
-                          "doc": [
-                            "Create an encoder to save a series of images to an IOStream.",
-                            "These animation types are currently supported:",
-                            [
-                              {
-                                "tag": "-",
-                                "content": "ANI"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "APNG"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "AVIFS"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "GIF"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "WEBP"
-                              }
-                            ],
-                            "If `closeio` is true, `dst` will be closed before returning if this function fails, or when the animation encoder is closed if this function succeeds.",
-                            [
-                              {
-                                "tag": "@param dst",
-                                "content": "an IOStream that will be used to save the stream."
-                              },
-                              {
-                                "tag": "@param closeio",
-                                "content": "true to close the IOStream when done, false to leave it open."
-                              },
-                              {
-                                "tag": "@param type",
-                                "content": "a filename extension that represent this data (\"WEBP\", etc)."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "a new AnimationEncoder on success."
-                              },
-                              {
-                                "tag": "@throws",
-                                "content": "Error on failure."
-                              }
-                            ],
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL_image 3.4.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "CreateAnimationEncoder"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CreateAnimationEncoderWithProperties"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "AddAnimationEncoderFrame"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CloseAnimationEncoder"
-                              }
-                            ]
-                          ],
-                          "name": "AnimationEncoder",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "dst",
-                              "type": "IOStreamRef"
-                            },
-                            {
-                              "name": "type",
-                              "type": "StringParam"
-                            },
-                            {
-                              "name": "closeio",
-                              "type": "bool",
-                              "default": "false"
-                            }
-                          ],
-                          "sourceName": "IMG_CreateAnimationEncoder_IO",
-                          "hints": {
-                            "mayFail": true
-                          },
-                          "overload": {
-                            "doc": [
-                              "Create an animation encoder with the specified properties.",
-                              "These animation types are currently supported:",
-                              [
-                                {
-                                  "tag": "-",
-                                  "content": "ANI"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "APNG"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "AVIFS"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "GIF"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "WEBP"
-                                }
-                              ],
-                              "These are the supported properties:",
-                              [
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationEncoder.Create.FILENAME_STRING`: the file to save, if an IOStream isn't being used. This is required if `prop.AnimationEncoder.Create.IOSTREAM_POINTER` isn't set."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationEncoder.Create.IOSTREAM_POINTER`: an IOStream that will be used to save the stream. This should not be closed until the animation encoder is closed. This is required if `prop.AnimationEncoder.Create.FILENAME_STRING` isn't set."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationEncoder.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the animation encoder should also close the associated IOStream."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationEncoder.Create.TYPE_STRING`: the output file type, e.g. \"webp\", defaults to the file extension if `prop.AnimationEncoder.Create.FILENAME_STRING` is set."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationEncoder.Create.QUALITY_NUMBER`: the compression quality, in the range of 0 to 100. The higher the number, the higher the quality and file size. This defaults to a balanced value for compression and quality."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationEncoder.Create.TIMEBASE_NUMERATOR_NUMBER`: the numerator of the fraction used to multiply the pts to convert it to seconds. This defaults to 1."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationEncoder.Create.TIMEBASE_DENOMINATOR_NUMBER`: the denominator of the fraction used to multiply the pts to convert it to seconds. This defaults to 1000."
-                                }
-                              ],
-                              [
-                                {
-                                  "tag": "@param props",
-                                  "content": "the properties of the animation encoder."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "a new AnimationEncoder on success."
-                                },
-                                {
-                                  "tag": "@throws",
-                                  "content": "Error on failure."
-                                }
-                              ],
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL_image 3.4.0."
-                              },
-                              [
-                                {
-                                  "tag": "@sa",
-                                  "content": "CreateAnimationEncoder"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "CreateAnimationEncoder_IO"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "AddAnimationEncoderFrame"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "CloseAnimationEncoder"
-                                }
-                              ]
-                            ],
-                            "name": "AnimationEncoder",
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "props",
-                                "type": "PropertiesRef"
-                              }
-                            ],
-                            "sourceName": "IMG_CreateAnimationEncoderWithProperties",
-                            "hints": {
-                              "mayFail": true
-                            },
-                            "proto": true,
-                            "since": {
-                              "tag": "SDL_IMAGE",
-                              "major": 3,
-                              "minor": 4,
-                              "patch": 0
-                            }
-                          },
-                          "proto": true,
-                          "since": {
-                            "tag": "SDL_IMAGE",
-                            "major": 3,
-                            "minor": 4,
-                            "patch": 0
-                          }
-                        },
-                        "proto": true,
-                        "since": {
-                          "tag": "SDL_IMAGE",
-                          "major": 3,
-                          "minor": 4,
-                          "patch": 0
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~AnimationEncoder": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "IMG_CloseAnimationEncoder(get());"
-              },
-              "name": "~AnimationEncoder"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "AnimationEncoder &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "AnimationEncoder &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "AnimationEncoder &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AnimationEncoder &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Close": {
               "doc": [
@@ -196151,6 +195719,441 @@
                 "major": 3,
                 "minor": 4,
                 "patch": 0
+              }
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "AnimationEncoder": {
+          "doc": [
+            "An object representing the encoder context.",
+            "@cat resource"
+          ],
+          "name": "AnimationEncoder",
+          "kind": "struct",
+          "type": "AnimationEncoderBase",
+          "sourceName": "IMG_AnimationEncoder",
+          "entries": {
+            "AnimationEncoderBase::AnimationEncoderBase": {
+              "kind": "alias",
+              "name": "AnimationEncoderBase::AnimationEncoderBase"
+            },
+            "AnimationEncoder": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AnimationEncoderRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "AnimationEncoderBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw AnimationEncoder.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AnimationEncoderRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "AnimationEncoder",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AnimationEncoder &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "AnimationEncoder",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "AnimationEncoder &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "AnimationEncoder(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "AnimationEncoder",
+                  "overload": {
+                    "doc": [
+                      "Create an encoder to save a series of images to a file.",
+                      "These animation types are currently supported:",
+                      [
+                        {
+                          "tag": "-",
+                          "content": "ANI"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "APNG"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "AVIFS"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "GIF"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "WEBP"
+                        }
+                      ],
+                      "The file type is determined from the file extension, e.g. \"file.webp\" will be encoded using WEBP.",
+                      [
+                        {
+                          "tag": "@param file",
+                          "content": "the file where the animation will be saved."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a new AnimationEncoder on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_image 3.4.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateAnimationEncoder_IO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "CreateAnimationEncoderWithProperties"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "AddAnimationEncoderFrame"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "CloseAnimationEncoder"
+                        }
+                      ]
+                    ],
+                    "name": "AnimationEncoder",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "file",
+                        "type": "StringParam"
+                      }
+                    ],
+                    "sourceName": "IMG_CreateAnimationEncoder",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Create an encoder to save a series of images to an IOStream.",
+                        "These animation types are currently supported:",
+                        [
+                          {
+                            "tag": "-",
+                            "content": "ANI"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "APNG"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "AVIFS"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "GIF"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "WEBP"
+                          }
+                        ],
+                        "If `closeio` is true, `dst` will be closed before returning if this function fails, or when the animation encoder is closed if this function succeeds.",
+                        [
+                          {
+                            "tag": "@param dst",
+                            "content": "an IOStream that will be used to save the stream."
+                          },
+                          {
+                            "tag": "@param closeio",
+                            "content": "true to close the IOStream when done, false to leave it open."
+                          },
+                          {
+                            "tag": "@param type",
+                            "content": "a filename extension that represent this data (\"WEBP\", etc)."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "a new AnimationEncoder on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          }
+                        ],
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL_image 3.4.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateAnimationEncoder"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CreateAnimationEncoderWithProperties"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "AddAnimationEncoderFrame"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CloseAnimationEncoder"
+                          }
+                        ]
+                      ],
+                      "name": "AnimationEncoder",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "dst",
+                          "type": "IOStreamRef"
+                        },
+                        {
+                          "name": "type",
+                          "type": "StringParam"
+                        },
+                        {
+                          "name": "closeio",
+                          "type": "bool",
+                          "default": "false"
+                        }
+                      ],
+                      "sourceName": "IMG_CreateAnimationEncoder_IO",
+                      "hints": {
+                        "mayFail": true
+                      },
+                      "overload": {
+                        "doc": [
+                          "Create an animation encoder with the specified properties.",
+                          "These animation types are currently supported:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "ANI"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "APNG"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "AVIFS"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "GIF"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "WEBP"
+                            }
+                          ],
+                          "These are the supported properties:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationEncoder.Create.FILENAME_STRING`: the file to save, if an IOStream isn't being used. This is required if `prop.AnimationEncoder.Create.IOSTREAM_POINTER` isn't set."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationEncoder.Create.IOSTREAM_POINTER`: an IOStream that will be used to save the stream. This should not be closed until the animation encoder is closed. This is required if `prop.AnimationEncoder.Create.FILENAME_STRING` isn't set."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationEncoder.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the animation encoder should also close the associated IOStream."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationEncoder.Create.TYPE_STRING`: the output file type, e.g. \"webp\", defaults to the file extension if `prop.AnimationEncoder.Create.FILENAME_STRING` is set."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationEncoder.Create.QUALITY_NUMBER`: the compression quality, in the range of 0 to 100. The higher the number, the higher the quality and file size. This defaults to a balanced value for compression and quality."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationEncoder.Create.TIMEBASE_NUMERATOR_NUMBER`: the numerator of the fraction used to multiply the pts to convert it to seconds. This defaults to 1."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationEncoder.Create.TIMEBASE_DENOMINATOR_NUMBER`: the denominator of the fraction used to multiply the pts to convert it to seconds. This defaults to 1000."
+                            }
+                          ],
+                          [
+                            {
+                              "tag": "@param props",
+                              "content": "the properties of the animation encoder."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "a new AnimationEncoder on success."
+                            },
+                            {
+                              "tag": "@throws",
+                              "content": "Error on failure."
+                            }
+                          ],
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL_image 3.4.0."
+                          },
+                          [
+                            {
+                              "tag": "@sa",
+                              "content": "CreateAnimationEncoder"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "CreateAnimationEncoder_IO"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "AddAnimationEncoderFrame"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "CloseAnimationEncoder"
+                            }
+                          ]
+                        ],
+                        "name": "AnimationEncoder",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "props",
+                            "type": "PropertiesRef"
+                          }
+                        ],
+                        "sourceName": "IMG_CreateAnimationEncoderWithProperties",
+                        "hints": {
+                          "mayFail": true
+                        },
+                        "proto": true,
+                        "since": {
+                          "tag": "SDL_IMAGE",
+                          "major": 3,
+                          "minor": 4,
+                          "patch": 0
+                        }
+                      },
+                      "proto": true,
+                      "since": {
+                        "tag": "SDL_IMAGE",
+                        "major": 3,
+                        "minor": 4,
+                        "patch": 0
+                      }
+                    },
+                    "proto": true,
+                    "since": {
+                      "tag": "SDL_IMAGE",
+                      "major": 3,
+                      "minor": 4,
+                      "patch": 0
+                    }
+                  }
+                }
+              }
+            },
+            "~AnimationEncoder": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "IMG_CloseAnimationEncoder(get());"
+              },
+              "name": "~AnimationEncoder"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "AnimationEncoder &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "AnimationEncoder &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "AnimationEncoder &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AnimationEncoder &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
               }
             }
           },
@@ -196741,8 +196744,8 @@
             "patch": 0
           }
         },
-        "AnimationEncoder::AddFrame": {
-          "name": "AnimationEncoder::AddFrame",
+        "AnimationEncoderBase::AddFrame": {
+          "name": "AnimationEncoderBase::AddFrame",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -196758,7 +196761,6 @@
           "sourceName": "IMG_AddAnimationEncoderFrame",
           "hints": {
             "self": "get()",
-            "super": "AnimationEncoder",
             "mayFail": true,
             "delegate": "SDL::AddAnimationEncoderFrame"
           },
@@ -196822,15 +196824,14 @@
             "patch": 0
           }
         },
-        "AnimationEncoder::Close": {
-          "name": "AnimationEncoder::Close",
+        "AnimationEncoderBase::Close": {
+          "name": "AnimationEncoderBase::Close",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "IMG_CloseAnimationEncoder",
           "hints": {
             "self": "get()",
-            "super": "AnimationEncoder",
             "mayFail": true,
             "body": "return CloseAnimationEncoder(release());",
             "delegate": "SDL::CloseAnimationEncoder"
@@ -196925,467 +196926,27 @@
           ],
           "sourceName": "IMG_DECODER_STATUS_COMPLETE"
         },
-        "AnimationDecoder": {
-          "doc": [
-            "An object representing animation decoder.",
-            "@cat resource"
-          ],
-          "name": "AnimationDecoder",
+        "AnimationDecoderBase": {
+          "name": "AnimationDecoderBase",
           "kind": "struct",
-          "type": "ResourceBase<AnimationDecoderRaw>",
-          "sourceName": "IMG_AnimationDecoder",
+          "type": "ResourceBaseT<AnimationDecoderRaw>",
+          "since": {
+            "tag": "SDL_IMAGE",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
+          "doc": [
+            "Base class to AnimationDecoder.",
+            {
+              "tag": "@see",
+              "content": "AnimationDecoder"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "AnimationDecoder": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AnimationDecoderRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw AnimationDecoder.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AnimationDecoderRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "AnimationDecoder",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AnimationDecoder &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "AnimationDecoder",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "AnimationDecoder &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "AnimationDecoder(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "AnimationDecoder",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const AnimationDecoderRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "AnimationDecoder",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "AnimationDecoderRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "AnimationDecoder",
-                      "overload": {
-                        "doc": [
-                          "Create a decoder to read a series of images from a file.",
-                          "These animation types are currently supported:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "ANI"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "APNG"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "AVIFS"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "GIF"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "WEBP"
-                            }
-                          ],
-                          "The file type is determined from the file extension, e.g. \"file.webp\" will be decoded using WEBP.",
-                          [
-                            {
-                              "tag": "@param file",
-                              "content": "the file containing a series of images."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new AnimationDecoder on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_image 3.4.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateAnimationDecoder_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CreateAnimationDecoderWithProperties"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetAnimationDecoderFrame"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "ResetAnimationDecoder"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CloseAnimationDecoder"
-                            }
-                          ]
-                        ],
-                        "name": "AnimationDecoder",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "file",
-                            "type": "StringParam"
-                          }
-                        ],
-                        "sourceName": "IMG_CreateAnimationDecoder",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "overload": {
-                          "doc": [
-                            "Create a decoder to read a series of images from an IOStream.",
-                            "These animation types are currently supported:",
-                            [
-                              {
-                                "tag": "-",
-                                "content": "ANI"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "APNG"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "AVIFS"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "GIF"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "WEBP"
-                              }
-                            ],
-                            "If `closeio` is true, `src` will be closed before returning if this function fails, or when the animation decoder is closed if this function succeeds.",
-                            [
-                              {
-                                "tag": "@param src",
-                                "content": "an IOStream containing a series of images."
-                              },
-                              {
-                                "tag": "@param closeio",
-                                "content": "true to close the IOStream when done, false to leave it open."
-                              },
-                              {
-                                "tag": "@param type",
-                                "content": "a filename extension that represent this data (\"WEBP\", etc)."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "a new AnimationDecoder on success."
-                              },
-                              {
-                                "tag": "@throws",
-                                "content": "Error on failure."
-                              }
-                            ],
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL_image 3.4.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "CreateAnimationDecoder"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CreateAnimationDecoderWithProperties"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "GetAnimationDecoderFrame"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "ResetAnimationDecoder"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CloseAnimationDecoder"
-                              }
-                            ]
-                          ],
-                          "name": "AnimationDecoder",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "src",
-                              "type": "IOStreamRef"
-                            },
-                            {
-                              "name": "type",
-                              "type": "StringParam"
-                            },
-                            {
-                              "name": "closeio",
-                              "type": "bool",
-                              "default": "false"
-                            }
-                          ],
-                          "sourceName": "IMG_CreateAnimationDecoder_IO",
-                          "hints": {
-                            "mayFail": true
-                          },
-                          "overload": {
-                            "doc": [
-                              "Create an animation decoder with the specified properties.",
-                              "These animation types are currently supported:",
-                              [
-                                {
-                                  "tag": "-",
-                                  "content": "ANI"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "APNG"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "AVIFS"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "GIF"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "WEBP"
-                                }
-                              ],
-                              "These are the supported properties:",
-                              [
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationDecoder.Create.FILENAME_STRING`: the file to load, if an IOStream isn't being used. This is required if `prop.AnimationDecoder.Create.IOSTREAM_POINTER` isn't set."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationDecoder.Create.IOSTREAM_POINTER`: an IOStream containing a series of images. This should not be closed until the animation decoder is closed. This is required if `prop.AnimationDecoder.Create.FILENAME_STRING` isn't set."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationDecoder.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the animation decoder should also close the associated IOStream."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.AnimationDecoder.Create.TYPE_STRING`: the input file type, e.g. \"webp\", defaults to the file extension if `prop.AnimationDecoder.Create.FILENAME_STRING` is set."
-                                }
-                              ],
-                              [
-                                {
-                                  "tag": "@param props",
-                                  "content": "the properties of the animation decoder."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "a new AnimationDecoder on success."
-                                },
-                                {
-                                  "tag": "@throws",
-                                  "content": "Error on failure."
-                                }
-                              ],
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL_image 3.4.0."
-                              },
-                              [
-                                {
-                                  "tag": "@sa",
-                                  "content": "CreateAnimationDecoder"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "CreateAnimationDecoder_IO"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "GetAnimationDecoderFrame"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "ResetAnimationDecoder"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "CloseAnimationDecoder"
-                                }
-                              ]
-                            ],
-                            "name": "AnimationDecoder",
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "props",
-                                "type": "PropertiesRef"
-                              }
-                            ],
-                            "sourceName": "IMG_CreateAnimationDecoderWithProperties",
-                            "hints": {
-                              "mayFail": true
-                            },
-                            "proto": true,
-                            "since": {
-                              "tag": "SDL_IMAGE",
-                              "major": 3,
-                              "minor": 4,
-                              "patch": 0
-                            }
-                          },
-                          "proto": true,
-                          "since": {
-                            "tag": "SDL_IMAGE",
-                            "major": 3,
-                            "minor": 4,
-                            "patch": 0
-                          }
-                        },
-                        "proto": true,
-                        "since": {
-                          "tag": "SDL_IMAGE",
-                          "major": 3,
-                          "minor": 4,
-                          "patch": 0
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~AnimationDecoder": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "IMG_CloseAnimationDecoder(get());"
-              },
-              "name": "~AnimationDecoder"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "AnimationDecoder &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "AnimationDecoder &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "AnimationDecoder &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AnimationDecoder &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Close": {
               "doc": [
@@ -197638,6 +197199,441 @@
                 "major": 3,
                 "minor": 4,
                 "patch": 0
+              }
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "AnimationDecoder": {
+          "doc": [
+            "An object representing animation decoder.",
+            "@cat resource"
+          ],
+          "name": "AnimationDecoder",
+          "kind": "struct",
+          "type": "AnimationDecoderBase",
+          "sourceName": "IMG_AnimationDecoder",
+          "entries": {
+            "AnimationDecoderBase::AnimationDecoderBase": {
+              "kind": "alias",
+              "name": "AnimationDecoderBase::AnimationDecoderBase"
+            },
+            "AnimationDecoder": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AnimationDecoderRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "AnimationDecoderBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw AnimationDecoder.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AnimationDecoderRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "AnimationDecoder",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AnimationDecoder &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "AnimationDecoder",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "AnimationDecoder &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "AnimationDecoder(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "AnimationDecoder",
+                  "overload": {
+                    "doc": [
+                      "Create a decoder to read a series of images from a file.",
+                      "These animation types are currently supported:",
+                      [
+                        {
+                          "tag": "-",
+                          "content": "ANI"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "APNG"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "AVIFS"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "GIF"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "WEBP"
+                        }
+                      ],
+                      "The file type is determined from the file extension, e.g. \"file.webp\" will be decoded using WEBP.",
+                      [
+                        {
+                          "tag": "@param file",
+                          "content": "the file containing a series of images."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a new AnimationDecoder on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_image 3.4.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateAnimationDecoder_IO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "CreateAnimationDecoderWithProperties"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetAnimationDecoderFrame"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "ResetAnimationDecoder"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "CloseAnimationDecoder"
+                        }
+                      ]
+                    ],
+                    "name": "AnimationDecoder",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "file",
+                        "type": "StringParam"
+                      }
+                    ],
+                    "sourceName": "IMG_CreateAnimationDecoder",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Create a decoder to read a series of images from an IOStream.",
+                        "These animation types are currently supported:",
+                        [
+                          {
+                            "tag": "-",
+                            "content": "ANI"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "APNG"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "AVIFS"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "GIF"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "WEBP"
+                          }
+                        ],
+                        "If `closeio` is true, `src` will be closed before returning if this function fails, or when the animation decoder is closed if this function succeeds.",
+                        [
+                          {
+                            "tag": "@param src",
+                            "content": "an IOStream containing a series of images."
+                          },
+                          {
+                            "tag": "@param closeio",
+                            "content": "true to close the IOStream when done, false to leave it open."
+                          },
+                          {
+                            "tag": "@param type",
+                            "content": "a filename extension that represent this data (\"WEBP\", etc)."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "a new AnimationDecoder on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          }
+                        ],
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL_image 3.4.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateAnimationDecoder"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CreateAnimationDecoderWithProperties"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "GetAnimationDecoderFrame"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "ResetAnimationDecoder"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CloseAnimationDecoder"
+                          }
+                        ]
+                      ],
+                      "name": "AnimationDecoder",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "src",
+                          "type": "IOStreamRef"
+                        },
+                        {
+                          "name": "type",
+                          "type": "StringParam"
+                        },
+                        {
+                          "name": "closeio",
+                          "type": "bool",
+                          "default": "false"
+                        }
+                      ],
+                      "sourceName": "IMG_CreateAnimationDecoder_IO",
+                      "hints": {
+                        "mayFail": true
+                      },
+                      "overload": {
+                        "doc": [
+                          "Create an animation decoder with the specified properties.",
+                          "These animation types are currently supported:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "ANI"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "APNG"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "AVIFS"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "GIF"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "WEBP"
+                            }
+                          ],
+                          "These are the supported properties:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationDecoder.Create.FILENAME_STRING`: the file to load, if an IOStream isn't being used. This is required if `prop.AnimationDecoder.Create.IOSTREAM_POINTER` isn't set."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationDecoder.Create.IOSTREAM_POINTER`: an IOStream containing a series of images. This should not be closed until the animation decoder is closed. This is required if `prop.AnimationDecoder.Create.FILENAME_STRING` isn't set."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationDecoder.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the animation decoder should also close the associated IOStream."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.AnimationDecoder.Create.TYPE_STRING`: the input file type, e.g. \"webp\", defaults to the file extension if `prop.AnimationDecoder.Create.FILENAME_STRING` is set."
+                            }
+                          ],
+                          [
+                            {
+                              "tag": "@param props",
+                              "content": "the properties of the animation decoder."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "a new AnimationDecoder on success."
+                            },
+                            {
+                              "tag": "@throws",
+                              "content": "Error on failure."
+                            }
+                          ],
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL_image 3.4.0."
+                          },
+                          [
+                            {
+                              "tag": "@sa",
+                              "content": "CreateAnimationDecoder"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "CreateAnimationDecoder_IO"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "GetAnimationDecoderFrame"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "ResetAnimationDecoder"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "CloseAnimationDecoder"
+                            }
+                          ]
+                        ],
+                        "name": "AnimationDecoder",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "props",
+                            "type": "PropertiesRef"
+                          }
+                        ],
+                        "sourceName": "IMG_CreateAnimationDecoderWithProperties",
+                        "hints": {
+                          "mayFail": true
+                        },
+                        "proto": true,
+                        "since": {
+                          "tag": "SDL_IMAGE",
+                          "major": 3,
+                          "minor": 4,
+                          "patch": 0
+                        }
+                      },
+                      "proto": true,
+                      "since": {
+                        "tag": "SDL_IMAGE",
+                        "major": 3,
+                        "minor": 4,
+                        "patch": 0
+                      }
+                    },
+                    "proto": true,
+                    "since": {
+                      "tag": "SDL_IMAGE",
+                      "major": 3,
+                      "minor": 4,
+                      "patch": 0
+                    }
+                  }
+                }
+              }
+            },
+            "~AnimationDecoder": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "IMG_CloseAnimationDecoder(get());"
+              },
+              "name": "~AnimationDecoder"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "AnimationDecoder &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "AnimationDecoder &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "AnimationDecoder &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AnimationDecoder &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
               }
             }
           },
@@ -198218,15 +198214,14 @@
             "patch": 0
           }
         },
-        "AnimationDecoder::GetProperties": {
-          "name": "AnimationDecoder::GetProperties",
+        "AnimationDecoderBase::GetProperties": {
+          "name": "AnimationDecoderBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "IMG_GetAnimationDecoderProperties",
           "hints": {
             "self": "get()",
-            "super": "AnimationDecoder",
             "delegate": "SDL::GetAnimationDecoderProperties"
           },
           "since": {
@@ -198414,8 +198409,8 @@
             "patch": 0
           }
         },
-        "AnimationDecoder::GetFrame": {
-          "name": "AnimationDecoder::GetFrame",
+        "AnimationDecoderBase::GetFrame": {
+          "name": "AnimationDecoderBase::GetFrame",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -198427,7 +198422,6 @@
           "sourceName": "IMG_GetAnimationDecoderFrame",
           "hints": {
             "self": "get()",
-            "super": "AnimationDecoder",
             "mayFail": true,
             "delegate": "SDL::GetAnimationDecoderFrame"
           },
@@ -198477,15 +198471,14 @@
             "patch": 0
           }
         },
-        "AnimationDecoder::GetStatus": {
-          "name": "AnimationDecoder::GetStatus",
+        "AnimationDecoderBase::GetStatus": {
+          "name": "AnimationDecoderBase::GetStatus",
           "kind": "function",
           "type": "AnimationDecoderStatus",
           "parameters": [],
           "sourceName": "IMG_GetAnimationDecoderStatus",
           "hints": {
             "self": "get()",
-            "super": "AnimationDecoder",
             "delegate": "SDL::GetAnimationDecoderStatus"
           },
           "since": {
@@ -198556,15 +198549,14 @@
             "patch": 0
           }
         },
-        "AnimationDecoder::Reset": {
-          "name": "AnimationDecoder::Reset",
+        "AnimationDecoderBase::Reset": {
+          "name": "AnimationDecoderBase::Reset",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "IMG_ResetAnimationDecoder",
           "hints": {
             "self": "get()",
-            "super": "AnimationDecoder",
             "mayFail": true,
             "delegate": "SDL::ResetAnimationDecoder"
           },
@@ -198628,15 +198620,14 @@
             "patch": 0
           }
         },
-        "AnimationDecoder::Close": {
-          "name": "AnimationDecoder::Close",
+        "AnimationDecoderBase::Close": {
+          "name": "AnimationDecoderBase::Close",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "IMG_CloseAnimationDecoder",
           "hints": {
             "self": "get()",
-            "super": "AnimationDecoder",
             "mayFail": true,
             "body": "return CloseAnimationDecoder(release());",
             "delegate": "SDL::CloseAnimationDecoder"

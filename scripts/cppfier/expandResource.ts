@@ -7,6 +7,7 @@ import {
   insertTransform,
   makeNaturalName,
   mirrorMethods,
+  resolveVersionDoc,
   scanFreeFunction,
   transformDoc,
   transformEntry,
@@ -23,6 +24,7 @@ import {
   Dict,
   LockDefinition,
   ResourceDefinition,
+  VersionTag,
 } from "./types";
 import { combineObject, system } from "./utils";
 
@@ -59,10 +61,12 @@ export function expandResource(
   const pointerType = isStruct ? `${type} *` : type;
   const constPointerType = `const ${pointerType}`;
   const title = targetName[0].toLowerCase() + targetName.slice(1);
-  const isNew = targetName < "AnimationD";
+  const isNew = targetName < "Async";
   const baseType = enableConstParam
     ? `ResourceBaseT<${rawName}, ${constRawName}>`
     : `ResourceBaseT<${rawName}>`;
+  const since =
+    targetEntry.since ?? resolveVersionDoc(sourceEntry.doc, context);
   if (isNew) {
     system.log(
       `Expanding resource ${sourceName} to ${targetName} in new format...`,
@@ -236,6 +240,7 @@ export function expandResource(
         destroyFunction,
         subEntries,
         enableConstParam ? constParamType : undefined,
+        since,
       ),
       targetName,
     );
@@ -606,6 +611,7 @@ function createBaseEntry(
   freeFunction: ApiEntry,
   subEntries: ApiEntryTransformMap,
   constParamType: string,
+  since: VersionTag,
 ): ApiEntryTransform {
   const extraEntries: ApiEntryTransformMap = {};
   if (constParamType) {
@@ -623,6 +629,7 @@ function createBaseEntry(
     name: baseName,
     kind: "struct",
     type: baseType,
+    since,
     doc: [`Base class to ${targetName}.`, { tag: "@see", content: targetName }],
     entries: {
       "ResourceBaseT::ResourceBaseT": "alias",

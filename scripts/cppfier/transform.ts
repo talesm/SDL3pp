@@ -1282,8 +1282,6 @@ function expandTypes(
     const since =
       transform.since ?? resolveVersionDoc(sourceEntry.doc, context);
 
-    if (targetName === "AnimationDecoderStatus") system.log(sourceEntry);
-
     for (const value of values) {
       const valueSource = sourceEntries[value];
       const valueTransform = file.transform[value];

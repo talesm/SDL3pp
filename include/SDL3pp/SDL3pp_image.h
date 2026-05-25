@@ -50,6 +50,9 @@ using AnimationConstRef = ResourceConstRef<AnimationRaw, AnimationRawConst>;
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 // Forward decl
+struct AnimationEncoderBase;
+
+// Forward decl
 struct AnimationEncoder;
 
 /// Alias to raw representation for AnimationEncoder.
@@ -60,7 +63,10 @@ using AnimationEncoderRaw = IMG_AnimationEncoder*;
  *
  * This does not take ownership!
  */
-using AnimationEncoderRef = ResourceRef<AnimationEncoder>;
+using AnimationEncoderRef = ResourceRefT<AnimationEncoderBase>;
+
+// Forward decl
+struct AnimationDecoderBase;
 
 // Forward decl
 struct AnimationDecoder;
@@ -73,7 +79,7 @@ using AnimationDecoderRaw = IMG_AnimationDecoder*;
  *
  * This does not take ownership!
  */
-using AnimationDecoderRef = ResourceRef<AnimationDecoder>;
+using AnimationDecoderRef = ResourceRefT<AnimationDecoderBase>;
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3613,13 +3619,59 @@ inline void AnimationBase::Free() { FreeAnimation(release()); }
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 /**
+ * Base class to AnimationEncoder.
+ *
+ * @see AnimationEncoder
+ */
+struct AnimationEncoderBase : ResourceBaseT<AnimationEncoderRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Close an animation encoder, finishing any encoding.
+   *
+   * Calling this function frees the animation encoder, and returns the final
+   * status of the encoding process.
+   *
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoder_IO
+   * @sa CreateAnimationEncoderWithProperties
+   */
+  void Close();
+
+  /**
+   * Add a frame to an animation encoder.
+   *
+   * @param surface the surface to add as the next frame in the animation.
+   * @param duration the duration of the frame, usually in milliseconds but can
+   *                 be other units if the
+   *                 `prop.AnimationEncoder.Create.TIMEBASE_DENOMINATOR_NUMBER`
+   *                 property is set when creating the encoder.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoder_IO
+   * @sa CreateAnimationEncoderWithProperties
+   * @sa CloseAnimationEncoder
+   */
+  void AddFrame(SurfaceRef surface, Uint64 duration);
+};
+
+/**
  * An object representing the encoder context.
  *
  * @cat resource
  */
-struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
+struct AnimationEncoder : AnimationEncoderBase
 {
-  using ResourceBase::ResourceBase;
+  using AnimationEncoderBase::AnimationEncoderBase;
 
   /**
    * Constructs from raw AnimationEncoder.
@@ -3629,7 +3681,7 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AnimationEncoder(AnimationEncoderRaw resource) noexcept
-    : ResourceBase(resource)
+    : AnimationEncoderBase(resource)
   {
   }
 
@@ -3641,10 +3693,6 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
     : AnimationEncoder(other.release())
   {
   }
-
-  constexpr AnimationEncoder(const AnimationEncoderRef& other) = delete;
-
-  constexpr AnimationEncoder(AnimationEncoderRef&& other) = delete;
 
   /**
    * Create an encoder to save a series of images to a file.
@@ -3765,41 +3813,6 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
 
   /// Assignment operator.
   AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
-
-  /**
-   * Close an animation encoder, finishing any encoding.
-   *
-   * Calling this function frees the animation encoder, and returns the final
-   * status of the encoding process.
-   *
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationEncoder
-   * @sa CreateAnimationEncoder_IO
-   * @sa CreateAnimationEncoderWithProperties
-   */
-  void Close();
-
-  /**
-   * Add a frame to an animation encoder.
-   *
-   * @param surface the surface to add as the next frame in the animation.
-   * @param duration the duration of the frame, usually in milliseconds but can
-   *                 be other units if the
-   *                 `prop.AnimationEncoder.Create.TIMEBASE_DENOMINATOR_NUMBER`
-   *                 property is set when creating the encoder.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationEncoder
-   * @sa CreateAnimationEncoder_IO
-   * @sa CreateAnimationEncoderWithProperties
-   * @sa CloseAnimationEncoder
-   */
-  void AddFrame(SurfaceRef surface, Uint64 duration);
 };
 
 /**
@@ -4013,7 +4026,7 @@ inline void AddAnimationEncoderFrame(AnimationEncoderRef encoder,
   CheckError(IMG_AddAnimationEncoderFrame(encoder, surface, duration));
 }
 
-inline void AnimationEncoder::AddFrame(SurfaceRef surface, Uint64 duration)
+inline void AnimationEncoderBase::AddFrame(SurfaceRef surface, Uint64 duration)
 {
   SDL::AddAnimationEncoderFrame(get(), surface, duration);
 }
@@ -4038,7 +4051,7 @@ inline void CloseAnimationEncoder(AnimationEncoderRaw encoder)
   CheckError(IMG_CloseAnimationEncoder(encoder));
 }
 
-inline void AnimationEncoder::Close() { CloseAnimationEncoder(release()); }
+inline void AnimationEncoderBase::Close() { CloseAnimationEncoder(release()); }
 
 /**
  * An enum representing the status of an animation decoder.
@@ -4061,13 +4074,117 @@ constexpr AnimationDecoderStatus DECODER_STATUS_COMPLETE =
   IMG_DECODER_STATUS_COMPLETE; ///< No more frames available
 
 /**
+ * Base class to AnimationDecoder.
+ *
+ * @see AnimationDecoder
+ */
+struct AnimationDecoderBase : ResourceBaseT<AnimationDecoderRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Close an animation decoder, finishing any decoding.
+   *
+   * Calling this function frees the animation decoder, and returns the final
+   * status of the decoding process.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
+   */
+  void Close();
+
+  /**
+   * Get the properties of an animation decoder.
+   *
+   * This function returns the properties of the animation decoder, which holds
+   * information about the underlying image such as description, copyright text
+   * and loop count.
+   *
+   * `prop.AnimationDecoder.Metadata.LOOP_COUNT_NUMBER`, if present, specifies
+   * the number of times to play the animation, with 0 meaning loop
+   * continuously.
+   *
+   * @returns the properties ID of the animation decoder, or 0 if there are no
+   *          properties; call GetError() for more information.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
+   */
+  PropertiesRef GetProperties();
+
+  /**
+   * Get the next frame in an animation decoder.
+   *
+   * This function decodes the next frame in the animation decoder, returning it
+   * as an Surface. The returned surface should be freed with SDL_FreeSurface()
+   * when no longer needed.
+   *
+   * @param duration the duration of the frame, usually in milliseconds but can
+   *                 be other units if the
+   *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+   *                 property is set when creating the decoder.
+   * @returns the Surface for the next frame in the animation.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
+   * @sa GetAnimationDecoderStatus
+   * @sa ResetAnimationDecoder
+   * @sa CloseAnimationDecoder
+   */
+  Surface GetFrame(Uint64* duration);
+
+  /**
+   * Get the decoder status indicating the current state of the decoder.
+   *
+   * @returns the status of the underlying decoder, or DECODER_STATUS_INVALID if
+   *          the given decoder is invalid.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa GetAnimationDecoderFrame
+   */
+  AnimationDecoderStatus GetStatus();
+
+  /**
+   * Reset an animation decoder.
+   *
+   * Calling this function resets the animation decoder, allowing it to start
+   * from the beginning again. This is useful if you want to decode the frame
+   * sequence again without creating a new decoder.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
+   * @sa GetAnimationDecoderFrame
+   * @sa CloseAnimationDecoder
+   */
+  void Reset();
+};
+
+/**
  * An object representing animation decoder.
  *
  * @cat resource
  */
-struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
+struct AnimationDecoder : AnimationDecoderBase
 {
-  using ResourceBase::ResourceBase;
+  using AnimationDecoderBase::AnimationDecoderBase;
 
   /**
    * Constructs from raw AnimationDecoder.
@@ -4077,7 +4194,7 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AnimationDecoder(AnimationDecoderRaw resource) noexcept
-    : ResourceBase(resource)
+    : AnimationDecoderBase(resource)
   {
   }
 
@@ -4089,10 +4206,6 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
     : AnimationDecoder(other.release())
   {
   }
-
-  constexpr AnimationDecoder(const AnimationDecoderRef& other) = delete;
-
-  constexpr AnimationDecoder(AnimationDecoderRef&& other) = delete;
 
   /**
    * Create a decoder to read a series of images from a file.
@@ -4206,100 +4319,6 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
 
   /// Assignment operator.
   AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
-
-  /**
-   * Close an animation decoder, finishing any decoding.
-   *
-   * Calling this function frees the animation decoder, and returns the final
-   * status of the decoding process.
-   *
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationDecoder
-   * @sa CreateAnimationDecoder_IO
-   * @sa CreateAnimationDecoderWithProperties
-   */
-  void Close();
-
-  /**
-   * Get the properties of an animation decoder.
-   *
-   * This function returns the properties of the animation decoder, which holds
-   * information about the underlying image such as description, copyright text
-   * and loop count.
-   *
-   * `prop.AnimationDecoder.Metadata.LOOP_COUNT_NUMBER`, if present, specifies
-   * the number of times to play the animation, with 0 meaning loop
-   * continuously.
-   *
-   * @returns the properties ID of the animation decoder, or 0 if there are no
-   *          properties; call GetError() for more information.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationDecoder
-   * @sa CreateAnimationDecoder_IO
-   * @sa CreateAnimationDecoderWithProperties
-   */
-  PropertiesRef GetProperties();
-
-  /**
-   * Get the next frame in an animation decoder.
-   *
-   * This function decodes the next frame in the animation decoder, returning it
-   * as an Surface. The returned surface should be freed with SDL_FreeSurface()
-   * when no longer needed.
-   *
-   * @param duration the duration of the frame, usually in milliseconds but can
-   *                 be other units if the
-   *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
-   *                 property is set when creating the decoder.
-   * @returns the Surface for the next frame in the animation.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationDecoder
-   * @sa CreateAnimationDecoder_IO
-   * @sa CreateAnimationDecoderWithProperties
-   * @sa GetAnimationDecoderStatus
-   * @sa ResetAnimationDecoder
-   * @sa CloseAnimationDecoder
-   */
-  Surface GetFrame(Uint64* duration);
-
-  /**
-   * Get the decoder status indicating the current state of the decoder.
-   *
-   * @returns the status of the underlying decoder, or DECODER_STATUS_INVALID if
-   *          the given decoder is invalid.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa GetAnimationDecoderFrame
-   */
-  AnimationDecoderStatus GetStatus();
-
-  /**
-   * Reset an animation decoder.
-   *
-   * Calling this function resets the animation decoder, allowing it to start
-   * from the beginning again. This is useful if you want to decode the frame
-   * sequence again without creating a new decoder.
-   *
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationDecoder
-   * @sa CreateAnimationDecoder_IO
-   * @sa CreateAnimationDecoderWithProperties
-   * @sa GetAnimationDecoderFrame
-   * @sa CloseAnimationDecoder
-   */
-  void Reset();
 };
 
 /**
@@ -4518,7 +4537,7 @@ inline PropertiesRef GetAnimationDecoderProperties(AnimationDecoderRef decoder)
   return IMG_GetAnimationDecoderProperties(decoder);
 }
 
-inline PropertiesRef AnimationDecoder::GetProperties()
+inline PropertiesRef AnimationDecoderBase::GetProperties()
 {
   return SDL::GetAnimationDecoderProperties(get());
 }
@@ -4588,7 +4607,7 @@ inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
   return Surface::Borrow(frame);
 }
 
-inline Surface AnimationDecoder::GetFrame(Uint64* duration)
+inline Surface AnimationDecoderBase::GetFrame(Uint64* duration)
 {
   return SDL::GetAnimationDecoderFrame(get(), duration);
 }
@@ -4610,7 +4629,7 @@ inline AnimationDecoderStatus GetAnimationDecoderStatus(
   return IMG_GetAnimationDecoderStatus(decoder);
 }
 
-inline AnimationDecoderStatus AnimationDecoder::GetStatus()
+inline AnimationDecoderStatus AnimationDecoderBase::GetStatus()
 {
   return SDL::GetAnimationDecoderStatus(get());
 }
@@ -4638,7 +4657,7 @@ inline void ResetAnimationDecoder(AnimationDecoderRef decoder)
   CheckError(IMG_ResetAnimationDecoder(decoder));
 }
 
-inline void AnimationDecoder::Reset() { SDL::ResetAnimationDecoder(get()); }
+inline void AnimationDecoderBase::Reset() { SDL::ResetAnimationDecoder(get()); }
 
 /**
  * Close an animation decoder, finishing any decoding.
@@ -4660,7 +4679,7 @@ inline void CloseAnimationDecoder(AnimationDecoderRaw decoder)
   CheckError(IMG_CloseAnimationDecoder(decoder));
 }
 
-inline void AnimationDecoder::Close() { CloseAnimationDecoder(release()); }
+inline void AnimationDecoderBase::Close() { CloseAnimationDecoder(release()); }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
