@@ -68,6 +68,9 @@ using TextureConstRef = ResourceConstRef<TextureRaw, TextureRawConst>;
 #if SDL_VERSION_ATLEAST(3, 3, 6)
 
 // Forward decl
+struct GPURenderStateBase;
+
+// Forward decl
 struct GPURenderState;
 
 /// Alias to raw representation for GPURenderState.
@@ -78,7 +81,7 @@ using GPURenderStateRaw = SDL_GPURenderState*;
  *
  * This does not take ownership!
  */
-using GPURenderStateRef = ResourceRef<GPURenderState>;
+using GPURenderStateRef = ResourceRefT<GPURenderStateBase>;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
@@ -3944,7 +3947,7 @@ constexpr auto VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER =
  *
  * @sa CreateRendererWithProperties
  * @sa GetGPURendererDevice
- * @sa GPUDevice.CreateShader
+ * @sa GPUDeviceBase.CreateShader
  * @sa Renderer.CreateGPURenderState
  * @sa SetGPURenderState
  */
@@ -8070,6 +8073,47 @@ inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
 }
 
 /**
+ * Base class to GPURenderState.
+ *
+ * @see GPURenderState
+ */
+struct GPURenderStateBase : ResourceBaseT<GPURenderStateRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Destroy custom GPU render state.
+   *
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.CreateGPURenderState
+   */
+  void Destroy();
+
+  /**
+   * Set fragment shader uniform variables in a custom GPU render state.
+   *
+   * The data is copied and will be pushed using PushGPUFragmentUniformData()
+   * during draw call execution.
+   *
+   * @param slot_index the fragment uniform slot to push data to.
+   * @param data client data to write.
+   * @param length the length of the data to write.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
+};
+
+/**
  * A custom GPU render state.
  *
  * @since This struct is available since SDL 3.4.0.
@@ -8081,9 +8125,9 @@ inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
  *
  * @cat resource
  */
-struct GPURenderState : ResourceBase<GPURenderStateRaw>
+struct GPURenderState : GPURenderStateBase
 {
-  using ResourceBase::ResourceBase;
+  using GPURenderStateBase::GPURenderStateBase;
 
   /**
    * Constructs from raw GPURenderState.
@@ -8093,7 +8137,7 @@ struct GPURenderState : ResourceBase<GPURenderStateRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit GPURenderState(GPURenderStateRaw resource) noexcept
-    : ResourceBase(resource)
+    : GPURenderStateBase(resource)
   {
   }
 
@@ -8105,10 +8149,6 @@ struct GPURenderState : ResourceBase<GPURenderStateRaw>
     : GPURenderState(other.release())
   {
   }
-
-  constexpr GPURenderState(const GPURenderStateRef& other) = delete;
-
-  constexpr GPURenderState(GPURenderStateRef&& other) = delete;
 
   /**
    * Create custom GPU render state.
@@ -8142,37 +8182,6 @@ struct GPURenderState : ResourceBase<GPURenderStateRaw>
 
   /// Assignment operator.
   GPURenderState& operator=(const GPURenderState& other) = delete;
-
-  /**
-   * Destroy custom GPU render state.
-   *
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               renderer.
-   *
-   * @since This function is available since SDL 3.4.0.
-   *
-   * @sa Renderer.CreateGPURenderState
-   */
-  void Destroy();
-
-  /**
-   * Set fragment shader uniform variables in a custom GPU render state.
-   *
-   * The data is copied and will be pushed using PushGPUFragmentUniformData()
-   * during draw call execution.
-   *
-   * @param slot_index the fragment uniform slot to push data to.
-   * @param data client data to write.
-   * @param length the length of the data to write.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               renderer.
-   *
-   * @since This function is available since SDL 3.4.0.
-   */
-  void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
 };
 
 /**
@@ -8238,9 +8247,9 @@ inline void SetGPURenderStateFragmentUniforms(GPURenderStateRef state,
     SDL_SetGPURenderStateFragmentUniforms(state, slot_index, data, length));
 }
 
-inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
-                                                const void* data,
-                                                Uint32 length)
+inline void GPURenderStateBase::SetFragmentUniforms(Uint32 slot_index,
+                                                    const void* data,
+                                                    Uint32 length)
 {
   SDL::SetGPURenderStateFragmentUniforms(get(), slot_index, data, length);
 }
@@ -8288,7 +8297,7 @@ inline void DestroyGPURenderState(GPURenderStateRaw state)
   SDL_DestroyGPURenderState(state);
 }
 
-inline void GPURenderState::Destroy() { DestroyGPURenderState(release()); }
+inline void GPURenderStateBase::Destroy() { DestroyGPURenderState(release()); }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 

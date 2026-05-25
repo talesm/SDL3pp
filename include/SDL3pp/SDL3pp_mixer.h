@@ -148,6 +148,9 @@ using TrackRaw = MIX_Track*;
 using TrackRef = ResourceRef<Track>;
 
 // Forward decl
+struct GroupBase;
+
+// Forward decl
 struct Group;
 
 /// Alias to raw representation for Group.
@@ -158,7 +161,7 @@ using GroupRaw = MIX_Group*;
  *
  * This does not take ownership!
  */
-using GroupRef = ResourceRef<Group>;
+using GroupRef = ResourceRefT<GroupBase>;
 
 // Forward decl
 struct AudioDecoderBase;
@@ -3495,95 +3498,13 @@ using GroupMixCB = MakeFrontCallback<
   void(GroupRaw group, const AudioSpec* spec, float* pcm, int samples)>;
 
 /**
- * An opaque object that represents a grouping of tracks.
+ * Base class to Group.
  *
- * SDL_mixer offers callbacks at various stages of the mixing pipeline to allow
- * apps to view and manipulate data as it is transformed. Sometimes it is useful
- * to hook in at a point where several tracks--but not all tracks-- have been
- * mixed. For example, when a game is in some options menu, perhaps adjusting
- * game audio but not UI sounds could be useful.
- *
- * SDL_mixer allows you to assign several tracks to a group, and receive a
- * callback when that group has finished mixing, with a buffer of just that
- * group's mixed audio, before it mixes into the final output.
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @cat resource
+ * @see Group
  */
-struct Group : ResourceBase<GroupRaw>
+struct GroupBase : ResourceBaseT<GroupRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Group.
-   *
-   * @param resource a GroupRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Group(GroupRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Group(const Group& other) = delete;
-
-  /// Move constructor
-  constexpr Group(Group&& other) noexcept
-    : Group(other.release())
-  {
-  }
-
-  constexpr Group(const GroupRef& other) = delete;
-
-  constexpr Group(GroupRef&& other) = delete;
-
-  /**
-   * Create a mixing group.
-   *
-   * Tracks are assigned to a mixing group (or if unassigned, they live in a
-   * mixer's internal default group). All tracks in a group are mixed together
-   * and the app can access this mixed data before it is mixed with all other
-   * groups to produce the final output.
-   *
-   * This can be a useful feature, but is completely optional; apps can ignore
-   * mixing groups entirely and still have a full experience with SDL_mixer.
-   *
-   * After creating a group, assign tracks to it with SetTrackGroup(). Use
-   * SetGroupPostMixCallback() to access the group's mixed data.
-   *
-   * A mixing group can be destroyed with DestroyGroup() when no longer needed.
-   * Destroying the mixer will also destroy all its still-existing mixing
-   * groups.
-   *
-   * @param mixer the mixer on which to create a mixing group.
-   * @post a newly-created mixing group on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa DestroyGroup
-   * @sa SetTrackGroup
-   * @sa SetGroupPostMixCallback
-   */
-  Group(MixerRef mixer);
-
-  /// Destructor
-  ~Group() { MIX_DestroyGroup(get()); }
-
-  /// Assignment operator.
-  constexpr Group& operator=(Group&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Group& operator=(const Group& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a mixing group.
@@ -3657,6 +3578,94 @@ struct Group : ResourceBase<GroupRaw>
    * @sa GroupMixCallback
    */
   void SetPostMixCallback(GroupMixCallback cb, void* userdata);
+};
+
+/**
+ * An opaque object that represents a grouping of tracks.
+ *
+ * SDL_mixer offers callbacks at various stages of the mixing pipeline to allow
+ * apps to view and manipulate data as it is transformed. Sometimes it is useful
+ * to hook in at a point where several tracks--but not all tracks-- have been
+ * mixed. For example, when a game is in some options menu, perhaps adjusting
+ * game audio but not UI sounds could be useful.
+ *
+ * SDL_mixer allows you to assign several tracks to a group, and receive a
+ * callback when that group has finished mixing, with a buffer of just that
+ * group's mixed audio, before it mixes into the final output.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @cat resource
+ */
+struct Group : GroupBase
+{
+  using GroupBase::GroupBase;
+
+  /**
+   * Constructs from raw Group.
+   *
+   * @param resource a GroupRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Group(GroupRaw resource) noexcept
+    : GroupBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Group(const Group& other) = delete;
+
+  /// Move constructor
+  constexpr Group(Group&& other) noexcept
+    : Group(other.release())
+  {
+  }
+
+  /**
+   * Create a mixing group.
+   *
+   * Tracks are assigned to a mixing group (or if unassigned, they live in a
+   * mixer's internal default group). All tracks in a group are mixed together
+   * and the app can access this mixed data before it is mixed with all other
+   * groups to produce the final output.
+   *
+   * This can be a useful feature, but is completely optional; apps can ignore
+   * mixing groups entirely and still have a full experience with SDL_mixer.
+   *
+   * After creating a group, assign tracks to it with SetTrackGroup(). Use
+   * SetGroupPostMixCallback() to access the group's mixed data.
+   *
+   * A mixing group can be destroyed with DestroyGroup() when no longer needed.
+   * Destroying the mixer will also destroy all its still-existing mixing
+   * groups.
+   *
+   * @param mixer the mixer on which to create a mixing group.
+   * @post a newly-created mixing group on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa DestroyGroup
+   * @sa SetTrackGroup
+   * @sa SetGroupPostMixCallback
+   */
+  Group(MixerRef mixer);
+
+  /// Destructor
+  ~Group() { MIX_DestroyGroup(get()); }
+
+  /// Assignment operator.
+  constexpr Group& operator=(Group&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Group& operator=(const Group& other) = delete;
 };
 
 #ifdef SDL3PP_DOC
@@ -6796,7 +6805,7 @@ inline Group::Group(MixerRef mixer)
  */
 inline void DestroyGroup(GroupRaw group) { MIX_DestroyGroup(group); }
 
-inline void Group::Destroy() { DestroyGroup(release()); }
+inline void GroupBase::Destroy() { DestroyGroup(release()); }
 
 /**
  * Get the properties associated with a group.
@@ -6820,7 +6829,7 @@ inline PropertiesRef GetGroupProperties(GroupRef group)
   return CheckError(MIX_GetGroupProperties(group));
 }
 
-inline PropertiesRef Group::GetProperties()
+inline PropertiesRef GroupBase::GetProperties()
 {
   return SDL::GetGroupProperties(get());
 }
@@ -6843,7 +6852,7 @@ inline MixerRef GetGroupMixer(GroupRef group)
   return CheckError(MIX_GetGroupMixer(group));
 }
 
-inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(get()); }
+inline MixerRef GroupBase::GetMixer() { return SDL::GetGroupMixer(get()); }
 
 /**
  * Assign a track to a mixing group.
@@ -7178,7 +7187,7 @@ inline void SetGroupPostMixCallback(GroupRef group, GroupMixCB cb)
   SetGroupPostMixCallback(group, cb.wrapper, cb.data);
 }
 
-inline void Group::SetPostMixCallback(GroupMixCallback cb, void* userdata)
+inline void GroupBase::SetPostMixCallback(GroupMixCallback cb, void* userdata)
 {
   SDL::SetGroupPostMixCallback(get(), cb, userdata);
 }
