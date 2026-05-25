@@ -1282,6 +1282,8 @@ function expandTypes(
     const since =
       transform.since ?? resolveVersionDoc(sourceEntry.doc, context);
 
+    if (targetName === "AnimationDecoderStatus") system.log(sourceEntry);
+
     for (const value of values) {
       const valueSource = sourceEntries[value];
       const valueTransform = file.transform[value];
@@ -2472,7 +2474,8 @@ function transformEntriesDocRefs(entries: ApiEntries, context: ApiContext) {
 }
 
 export function resolveVersionDoc(doc: ParsedDoc, context: ApiContext) {
-  const sinceTag = getTagInGroup(doc, "@since");
+  const sinceTag =
+    getTagInGroup(doc, "@since") ?? getTagInGroup(doc, "\\since");
   if (!sinceTag) return;
   const m = /\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(sinceTag.content);
   if (!m) return undefined;

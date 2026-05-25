@@ -8655,6 +8655,9 @@ const transform = {
           parameters: [{}, { type: "const PointRaw &", name: "hotspot" }],
           hints: { methodName: "CreateCursor" },
         },
+        "IMG_AnimationEncoder": {
+          since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
+        },
         "IMG_CreateAnimationEncoder_IO": {
           parameters: [{}, {
             type: "StringParam",
@@ -8664,6 +8667,9 @@ const transform = {
             type: "bool",
             default: "false"
           }],
+        },
+        "IMG_AnimationDecoder": {
+          since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
         },
         "IMG_CreateAnimationDecoder_IO": {
           parameters: [{}, {

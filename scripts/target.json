@@ -93259,6 +93259,12 @@
           "name": "PEN_DEVICE_TYPE_INVALID",
           "constexpr": true,
           "type": "PenDeviceType",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "Not a valid pen device."
           ],
@@ -93269,6 +93275,12 @@
           "name": "PEN_DEVICE_TYPE_UNKNOWN",
           "constexpr": true,
           "type": "PenDeviceType",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "Don't know specifics of this pen."
           ],
@@ -93279,6 +93291,12 @@
           "name": "PEN_DEVICE_TYPE_DIRECT",
           "constexpr": true,
           "type": "PenDeviceType",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "Pen touches display."
           ],
@@ -93289,6 +93307,12 @@
           "name": "PEN_DEVICE_TYPE_INDIRECT",
           "constexpr": true,
           "type": "PenDeviceType",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "Pen touches something that isn't the display."
           ],
@@ -110395,6 +110419,12 @@
           "name": "TEXTURE_ADDRESS_INVALID",
           "constexpr": true,
           "type": "TextureAddressMode",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "TEXTURE_ADDRESS_INVALID"
           ],
@@ -110405,6 +110435,12 @@
           "name": "TEXTURE_ADDRESS_AUTO",
           "constexpr": true,
           "type": "TextureAddressMode",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "Wrapping is enabled if texture coordinates are outside [0, 1], this is the default"
           ],
@@ -110415,6 +110451,12 @@
           "name": "TEXTURE_ADDRESS_CLAMP",
           "constexpr": true,
           "type": "TextureAddressMode",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "Texture coordinates are clamped to the [0, 1] range"
           ],
@@ -110425,6 +110467,12 @@
           "name": "TEXTURE_ADDRESS_WRAP",
           "constexpr": true,
           "type": "TextureAddressMode",
+          "since": {
+            "tag": "SDL",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "The texture is repeated (tiled)"
           ],
@@ -196106,6 +196154,12 @@
               }
             }
           },
+          "since": {
+            "tag": "SDL_IMAGE",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "hints": {
             "self": "get()",
             "super": "AnimationEncoder"
@@ -196812,6 +196866,12 @@
           "name": "DECODER_STATUS_INVALID",
           "constexpr": true,
           "type": "AnimationDecoderStatus",
+          "since": {
+            "tag": "SDL_IMAGE",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "The decoder is invalid"
           ],
@@ -196822,6 +196882,12 @@
           "name": "DECODER_STATUS_OK",
           "constexpr": true,
           "type": "AnimationDecoderStatus",
+          "since": {
+            "tag": "SDL_IMAGE",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "The decoder is ready to decode the next frame"
           ],
@@ -196832,6 +196898,12 @@
           "name": "DECODER_STATUS_FAILED",
           "constexpr": true,
           "type": "AnimationDecoderStatus",
+          "since": {
+            "tag": "SDL_IMAGE",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "The decoder failed to decode a frame, call GetError() for more information."
           ],
@@ -196842,6 +196914,12 @@
           "name": "DECODER_STATUS_COMPLETE",
           "constexpr": true,
           "type": "AnimationDecoderStatus",
+          "since": {
+            "tag": "SDL_IMAGE",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
+          },
           "doc": [
             "No more frames available"
           ],
@@ -197562,6 +197640,12 @@
                 "patch": 0
               }
             }
+          },
+          "since": {
+            "tag": "SDL_IMAGE",
+            "major": 3,
+            "minor": 4,
+            "patch": 0
           },
           "hints": {
             "self": "get()",

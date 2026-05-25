@@ -41,24 +41,6 @@
  // Forward decl
  struct TextureSurfaceLock;
  
-@@ -147,8 +144,6 @@
-  */
- using TextureAddressMode = SDL_TextureAddressMode;
- 
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
--
- constexpr TextureAddressMode TEXTURE_ADDRESS_INVALID =
-   SDL_TEXTURE_ADDRESS_INVALID; ///< TEXTURE_ADDRESS_INVALID
- 
-@@ -164,6 +159,8 @@
- constexpr TextureAddressMode TEXTURE_ADDRESS_WRAP =
-   SDL_TEXTURE_ADDRESS_WRAP; ///< The texture is repeated (tiled)
- 
-+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-+
- /**
-  * How the logical size is mapped to the output.
-  *
 @@ -267,8 +264,7 @@
     * @param window the window where rendering is displayed.
     * @param name the name of the rendering driver to initialize, or nullptr to

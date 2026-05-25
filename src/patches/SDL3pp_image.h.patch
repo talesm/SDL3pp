@@ -1271,24 +1271,6 @@
  }
  
  inline Cursor AnimationBase::CreateCursor(const PointRaw& hotspot)
-@@ -3606,6 +3610,8 @@
- 
- inline void AnimationBase::Free() { FreeAnimation(release()); }
- 
-+#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-+
- /**
-  * An object representing the encoder context.
-  *
-@@ -3640,8 +3646,6 @@
- 
-   constexpr AnimationEncoder(AnimationEncoderRef&& other) = delete;
- 
--#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
-   /**
-    * Create an encoder to save a series of images to a file.
-    *
 @@ -3685,9 +3689,9 @@
     * succeeds.
     *
@@ -1300,24 +1282,7 @@
     * @post a new AnimationEncoder on success.
     * @throws Error on failure.
     *
-@@ -3749,8 +3753,6 @@
-    */
-   AnimationEncoder(PropertiesRef props);
- 
--#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
-   /// Destructor
-   ~AnimationEncoder() { IMG_CloseAnimationEncoder(get()); }
- 
-@@ -3764,16 +3766,13 @@
-   /// Assignment operator.
-   AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
- 
--#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
-   /**
-    * Close an animation encoder, finishing any encoding.
-    *
+@@ -3768,8 +3772,7 @@
     * Calling this function frees the animation encoder, and returns the final
     * status of the encoding process.
     *
@@ -1327,7 +1292,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -3781,7 +3780,7 @@
+@@ -3777,7 +3780,7 @@
     * @sa CreateAnimationEncoder_IO
     * @sa CreateAnimationEncoderWithProperties
     */
@@ -1336,20 +1301,7 @@
  
    /**
     * Add a frame to an animation encoder.
-@@ -3801,12 +3800,8 @@
-    * @sa CloseAnimationEncoder
-    */
-   void AddFrame(SurfaceRef surface, Uint64 duration);
--
--#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
- };
- 
--#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
- /**
-  * Create an encoder to save a series of images to a file.
-  *
-@@ -3846,7 +3841,7 @@
+@@ -3838,7 +3841,7 @@
                                            StringParam type,
                                            bool closeio)
    : AnimationEncoder(
@@ -1358,7 +1310,7 @@
  {
  }
  
-@@ -3871,8 +3866,8 @@
+@@ -3863,8 +3866,8 @@
   * fails, or when the animation encoder is closed if this function succeeds.
   *
   * @param dst an IOStream that will be used to save the stream.
@@ -1368,7 +1320,7 @@
   * @returns a new AnimationEncoder on success.
   * @throws Error on failure.
   *
-@@ -3942,6 +3937,11 @@
+@@ -3934,6 +3937,11 @@
    return AnimationEncoder(props);
  }
  
@@ -1380,7 +1332,7 @@
  namespace prop::AnimationEncoder::Create {
  
  constexpr auto FILENAME_STRING =
-@@ -4038,10 +4038,7 @@
+@@ -4030,10 +4038,7 @@
    CheckError(IMG_CloseAnimationEncoder(encoder));
  }
  
@@ -1392,42 +1344,7 @@
  
  /**
   * An enum representing the status of an animation decoder.
-@@ -4050,8 +4047,6 @@
-  */
- using AnimationDecoderStatus = IMG_AnimationDecoderStatus;
- 
--#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
- constexpr AnimationDecoderStatus DECODER_STATUS_INVALID =
-   IMG_DECODER_STATUS_INVALID; ///< The decoder is invalid
- 
-@@ -4099,8 +4094,6 @@
- 
-   constexpr AnimationDecoder(AnimationDecoderRef&& other) = delete;
- 
--#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
-   /**
-    * Create a decoder to read a series of images from a file.
-    *
-@@ -4201,8 +4194,6 @@
-    */
-   AnimationDecoder(PropertiesRef props);
- 
--#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
-   /// Destructor
-   ~AnimationDecoder() { IMG_CloseAnimationDecoder(get()); }
- 
-@@ -4216,16 +4207,13 @@
-   /// Assignment operator.
-   AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
- 
--#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
-   /**
-    * Close an animation decoder, finishing any decoding.
-    *
+@@ -4208,8 +4213,7 @@
     * Calling this function frees the animation decoder, and returns the final
     * status of the decoding process.
     *
@@ -1437,7 +1354,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -4233,7 +4221,7 @@
+@@ -4217,7 +4221,7 @@
     * @sa CreateAnimationDecoder_IO
     * @sa CreateAnimationDecoderWithProperties
     */
@@ -1446,7 +1363,7 @@
  
    /**
     * Get the properties of an animation decoder.
-@@ -4264,18 +4252,11 @@
+@@ -4248,18 +4252,11 @@
     * as an Surface. The returned surface should be freed with SDL_FreeSurface()
     * when no longer needed.
     *
@@ -1467,20 +1384,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -4319,12 +4300,8 @@
-    * @sa CloseAnimationDecoder
-    */
-   void Reset();
--
--#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
- };
- 
--#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
--
- /**
-  * Create a decoder to read a series of images from a file.
-  *
-@@ -4365,7 +4342,7 @@
+@@ -4345,7 +4342,7 @@
                                            StringParam type,
                                            bool closeio)
    : AnimationDecoder(
@@ -1489,7 +1393,7 @@
  {
  }
  
-@@ -4454,6 +4431,11 @@
+@@ -4434,6 +4431,11 @@
    return AnimationDecoder(props);
  }
  
@@ -1501,7 +1405,7 @@
  namespace prop::AnimationDecoder::Create {
  
  constexpr auto FILENAME_STRING =
-@@ -4541,6 +4523,12 @@
+@@ -4521,6 +4523,12 @@
    return SDL::GetAnimationDecoderProperties(get());
  }
  
@@ -1514,7 +1418,7 @@
  namespace prop::AnimationDecoder::Metadata {
  
  constexpr auto IGNORE_PROPS_BOOLEAN =
-@@ -4573,22 +4561,14 @@
+@@ -4553,22 +4561,14 @@
   * Get the next frame in an animation decoder.
   *
   * This function decodes the next frame in the animation decoder, returning it
@@ -1539,7 +1443,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -4603,7 +4583,9 @@
+@@ -4583,7 +4583,9 @@
  inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                          Uint64* duration)
  {
@@ -1550,7 +1454,7 @@
  }
  
  inline Surface AnimationDecoder::GetFrame(Uint64* duration)
-@@ -4678,10 +4660,7 @@
+@@ -4658,10 +4660,7 @@
    CheckError(IMG_CloseAnimationDecoder(decoder));
  }
  
@@ -1562,7 +1466,7 @@
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
  
-@@ -4689,4 +4668,32 @@
+@@ -4669,4 +4668,32 @@
  
  } // namespace SDL
  
