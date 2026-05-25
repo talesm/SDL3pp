@@ -176484,12 +176484,12 @@
           ],
           "name": "GLContext",
           "kind": "struct",
-          "type": "ResourceBase<GLContextRaw>",
+          "type": "ResourceBaseT<GLContextRaw>",
           "sourceName": "SDL_GLContext",
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "GLContext": {
               "doc": [

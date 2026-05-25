@@ -54936,9 +54936,9 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @cat resource
  */
-struct GLContext : ResourceBase<GLContextRaw>
+struct GLContext : ResourceBaseT<GLContextRaw>
 {
-  using ResourceBase::ResourceBase;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.

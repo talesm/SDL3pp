@@ -61,7 +61,7 @@ export function expandResource(
   const pointerType = isStruct ? `${type} *` : type;
   const constPointerType = `const ${pointerType}`;
   const title = targetName[0].toLowerCase() + targetName.slice(1);
-  const isNew = targetName < "G";
+  const isNew = targetName < "GP";
   const baseType = enableConstParam
     ? `ResourceBaseT<${rawName}, ${constRawName}>`
     : `ResourceBaseT<${rawName}>`;
@@ -71,7 +71,7 @@ export function expandResource(
     system.log(
       `Expanding resource ${sourceName} to ${targetName} in new format...`,
     );
-    targetEntry.type = baseName;
+    targetEntry.type = hasRef ? baseName : baseType;
   } else if (!targetEntry.type) {
     targetEntry.type = enableConstParam
       ? `ResourceBase<${rawName}, ${constRawName}>`
@@ -81,7 +81,8 @@ export function expandResource(
   context.addCallbackType(isStruct ? `${sourceName} *` : sourceName, rawName);
 
   const referenceAliases: ApiEntryTransform[] = [];
-  if (isNew) referenceAliases.push({ name: baseName, kind: "forward" });
+  if (isNew && hasRef)
+    referenceAliases.push({ name: baseName, kind: "forward" });
   referenceAliases.push(
     { name: targetName, kind: "forward" },
     {
@@ -675,8 +676,9 @@ function populateTargetEntry(
     };
   }
   const baseName = isNew ? targetEntry.type : "ResourceBase";
+  const parentAlias = `${baseName}::${baseName}`.replaceAll(/<[^>]*>/g, "");
   const entries: ApiEntryTransformMap = {
-    [`${baseName}::${baseName}`]: "alias",
+    [parentAlias]: "alias",
     ...ctors,
     [`~${targetName}`]: {
       kind: "function",
@@ -715,7 +717,7 @@ function populateTargetEntry(
     [freeFunction.name]: "plc",
     ...subEntries,
   };
-  if (isNew) delete entries[freeFunction.name];
+  if (isNew && !hasScoped) delete entries[freeFunction.name];
   if (hasScoped) {
     delete entries[`~${targetName}`];
     delete entries["operator="];
