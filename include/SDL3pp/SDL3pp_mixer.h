@@ -119,6 +119,9 @@ using MixerRaw = MIX_Mixer*;
 using MixerRef = ResourceRef<Mixer>;
 
 // Forward decl
+struct AudioBase;
+
+// Forward decl
 struct Audio;
 
 /// Alias to raw representation for Audio.
@@ -129,7 +132,7 @@ using AudioRaw = MIX_Audio*;
  *
  * This does not take ownership!
  */
-using AudioRef = ResourceRef<Audio>;
+using AudioRef = ResourceRefT<AudioBase>;
 
 // Forward decl
 struct Track;
@@ -158,6 +161,9 @@ using GroupRaw = MIX_Group*;
 using GroupRef = ResourceRef<Group>;
 
 // Forward decl
+struct AudioDecoderBase;
+
+// Forward decl
 struct AudioDecoder;
 
 /// Alias to raw representation for AudioDecoder.
@@ -168,7 +174,7 @@ using AudioDecoderRaw = MIX_AudioDecoder*;
  *
  * This does not take ownership!
  */
-using AudioDecoderRef = ResourceRef<AudioDecoder>;
+using AudioDecoderRef = ResourceRefT<AudioDecoderBase>;
 
 // Forward decl
 struct MixerLock;
@@ -1504,6 +1510,175 @@ public:
 };
 
 /**
+ * Base class to Audio.
+ *
+ * @see Audio
+ */
+struct AudioBase : ResourceBaseT<AudioRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Destroy the specified audio.
+   *
+   * Audio is reference-counted internally, so this function only unrefs it. If
+   * doing so causes the reference count to drop to zero, the Audio will be
+   * deallocated. This allows the system to safely operate if the audio is still
+   * assigned to a Track at the time of destruction. The actual destroying will
+   * happen when the track stops using it.
+   *
+   * But from the caller's perspective, once this function is called, it should
+   * assume the `audio` pointer has become invalid.
+   *
+   * Destroying a nullptr Audio is a legal no-op.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  void Destroy();
+
+  /**
+   * Get the properties associated with a Audio.
+   *
+   * SDL_mixer offers some properties of its own, but this can also be a
+   * convenient place to store app-specific data.
+   *
+   * A Properties is created the first time this function is called for a given
+   * Audio, if necessary.
+   *
+   * The following read-only properties are provided by SDL_mixer:
+   *
+   * - `prop.Audio.Metadata.TITLE_STRING`: the audio's title ("Smells Like Teen
+   *   Spirit").
+   * - `prop.Audio.Metadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
+   * - `prop.Audio.Metadata.ALBUM_STRING`: the audio's album name ("Nevermind").
+   * - `prop.Audio.Metadata.COPYRIGHT_STRING`: the audio's copyright info
+   *   ("Copyright (c) 1991")
+   * - `prop.Audio.Metadata.TRACK_NUMBER`: the audio's track number on the album
+   *   (1)
+   * - `prop.Audio.Metadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album
+   *   (13)
+   * - `prop.Audio.Metadata.YEAR_NUMBER`: the year the audio was released (1991)
+   * - `prop.Audio.Metadata.DURATION_FRAMES_NUMBER`: The sample frames worth of
+   *   PCM data that comprise this audio. It might be off by a little if the
+   *   decoder only knows the duration as a unit of time.
+   * - `prop.Audio.Metadata.DURATION_INFINITE_BOOLEAN`: if true, audio never
+   *   runs out of sound to generate. This isn't necessarily always known to
+   *   SDL_mixer, though.
+   *
+   * Other properties, documented with LoadAudioWithProperties(), may also be
+   * present.
+   *
+   * Note that the metadata properties are whatever SDL_mixer finds in things
+   * like ID3 tags, and they often have very little standardized formatting, may
+   * be missing, and can be completely wrong if the original data is
+   * untrustworthy (like an MP3 from a P2P file sharing service).
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  PropertiesRef GetProperties();
+
+  /**
+   * Get the length of a Audio's playback in sample frames.
+   *
+   * This information is also available via the
+   * prop.Audio.Metadata.DURATION_FRAMES_NUMBER property, but it's common enough
+   * to provide a simple accessor function.
+   *
+   * This reports the length of the data in _sample frames_, so sample-perfect
+   * mixing can be possible. Sample frames are only meaningful as a measure of
+   * time if the sample rate (frequency) is also known. To convert from sample
+   * frames to milliseconds, use AudioFramesToMS().
+   *
+   * Not all audio file formats can report the complete length of the data they
+   * will produce through decoding: some can't calculate it, some might produce
+   * infinite audio.
+   *
+   * Also, some file formats can only report duration as a unit of time, which
+   * means SDL_mixer might have to estimate sample frames from that information.
+   * With less precision, the reported duration might be off by a few sample
+   * frames in either direction.
+   *
+   * This will return a value >= 0 if a duration is known. It might also return
+   * DURATION_UNKNOWN or DURATION_INFINITE.
+   *
+   * @returns the length of the audio in sample frames, or DURATION_UNKNOWN or
+   *          DURATION_INFINITE.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  Sint64 GetDuration();
+
+  /**
+   * Query the initial audio format of a Audio.
+   *
+   * Note that some audio files can change format in the middle; some explicitly
+   * support this, but a more common example is two MP3 files concatenated
+   * together. In many cases, SDL_mixer will correctly handle these sort of
+   * files, but this function will only report the initial format a file uses.
+   *
+   * @param spec on success, audio format details will be stored here.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  void GetFormat(AudioSpec* spec);
+
+  /**
+   * Convert milliseconds to sample frames for a Audio's format.
+   *
+   * This calculates time based on the audio's initial format, even if the
+   * format would change mid-stream.
+   *
+   * If `ms` is < 0, this returns -1.
+   *
+   * @param ms the milliseconds to convert to audio-specific sample frames.
+   * @returns Converted number of sample frames, or -1 for errors/no input; call
+   *          GetError() for details.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa AudioFramesToMS
+   */
+  Sint64 MSToFrames(Milliseconds ms);
+
+  /**
+   * Convert sample frames for a Audio's format to milliseconds.
+   *
+   * This calculates time based on the audio's initial format, even if the
+   * format would change mid-stream.
+   *
+   * Sample frames are more precise than milliseconds, so out of necessity, this
+   * function will approximate by rounding down to the closest full millisecond.
+   *
+   * If `frames` is < 0, this returns -1.
+   *
+   * @param frames the audio-specific sample frames to convert to milliseconds.
+   * @returns Converted number of milliseconds, or -1 for errors/no input; call
+   *          GetError() for details.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa AudioMSToFrames
+   */
+  Milliseconds FramesToMS(Sint64 frames);
+};
+
+/**
  * An opaque object that represents audio data.
  *
  * Generally you load audio data (in whatever file format) into SDL_mixer with
@@ -1519,9 +1694,9 @@ public:
  *
  * @cat resource
  */
-struct Audio : ResourceBase<AudioRaw>
+struct Audio : AudioBase
 {
-  using ResourceBase::ResourceBase;
+  using AudioBase::AudioBase;
 
   /**
    * Constructs from raw Audio.
@@ -1531,7 +1706,7 @@ struct Audio : ResourceBase<AudioRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Audio(AudioRaw resource) noexcept
-    : ResourceBase(resource)
+    : AudioBase(resource)
   {
   }
 
@@ -1543,10 +1718,6 @@ struct Audio : ResourceBase<AudioRaw>
     : Audio(other.release())
   {
   }
-
-  constexpr Audio(const AudioRef& other) = delete;
-
-  constexpr Audio(AudioRef&& other) = delete;
 
   /**
    * Load audio for playback from an IOStream.
@@ -1773,165 +1944,6 @@ struct Audio : ResourceBase<AudioRaw>
 
   /// Assignment operator.
   Audio& operator=(const Audio& other) = delete;
-
-  /**
-   * Destroy the specified audio.
-   *
-   * Audio is reference-counted internally, so this function only unrefs it. If
-   * doing so causes the reference count to drop to zero, the Audio will be
-   * deallocated. This allows the system to safely operate if the audio is still
-   * assigned to a Track at the time of destruction. The actual destroying will
-   * happen when the track stops using it.
-   *
-   * But from the caller's perspective, once this function is called, it should
-   * assume the `audio` pointer has become invalid.
-   *
-   * Destroying a nullptr Audio is a legal no-op.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  void Destroy();
-
-  /**
-   * Get the properties associated with a Audio.
-   *
-   * SDL_mixer offers some properties of its own, but this can also be a
-   * convenient place to store app-specific data.
-   *
-   * A Properties is created the first time this function is called for a given
-   * Audio, if necessary.
-   *
-   * The following read-only properties are provided by SDL_mixer:
-   *
-   * - `prop.Audio.Metadata.TITLE_STRING`: the audio's title ("Smells Like Teen
-   *   Spirit").
-   * - `prop.Audio.Metadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
-   * - `prop.Audio.Metadata.ALBUM_STRING`: the audio's album name ("Nevermind").
-   * - `prop.Audio.Metadata.COPYRIGHT_STRING`: the audio's copyright info
-   *   ("Copyright (c) 1991")
-   * - `prop.Audio.Metadata.TRACK_NUMBER`: the audio's track number on the album
-   *   (1)
-   * - `prop.Audio.Metadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album
-   *   (13)
-   * - `prop.Audio.Metadata.YEAR_NUMBER`: the year the audio was released (1991)
-   * - `prop.Audio.Metadata.DURATION_FRAMES_NUMBER`: The sample frames worth of
-   *   PCM data that comprise this audio. It might be off by a little if the
-   *   decoder only knows the duration as a unit of time.
-   * - `prop.Audio.Metadata.DURATION_INFINITE_BOOLEAN`: if true, audio never
-   *   runs out of sound to generate. This isn't necessarily always known to
-   *   SDL_mixer, though.
-   *
-   * Other properties, documented with LoadAudioWithProperties(), may also be
-   * present.
-   *
-   * Note that the metadata properties are whatever SDL_mixer finds in things
-   * like ID3 tags, and they often have very little standardized formatting, may
-   * be missing, and can be completely wrong if the original data is
-   * untrustworthy (like an MP3 from a P2P file sharing service).
-   *
-   * @returns a valid property ID on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  PropertiesRef GetProperties();
-
-  /**
-   * Get the length of a Audio's playback in sample frames.
-   *
-   * This information is also available via the
-   * prop.Audio.Metadata.DURATION_FRAMES_NUMBER property, but it's common enough
-   * to provide a simple accessor function.
-   *
-   * This reports the length of the data in _sample frames_, so sample-perfect
-   * mixing can be possible. Sample frames are only meaningful as a measure of
-   * time if the sample rate (frequency) is also known. To convert from sample
-   * frames to milliseconds, use AudioFramesToMS().
-   *
-   * Not all audio file formats can report the complete length of the data they
-   * will produce through decoding: some can't calculate it, some might produce
-   * infinite audio.
-   *
-   * Also, some file formats can only report duration as a unit of time, which
-   * means SDL_mixer might have to estimate sample frames from that information.
-   * With less precision, the reported duration might be off by a few sample
-   * frames in either direction.
-   *
-   * This will return a value >= 0 if a duration is known. It might also return
-   * DURATION_UNKNOWN or DURATION_INFINITE.
-   *
-   * @returns the length of the audio in sample frames, or DURATION_UNKNOWN or
-   *          DURATION_INFINITE.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  Sint64 GetDuration();
-
-  /**
-   * Query the initial audio format of a Audio.
-   *
-   * Note that some audio files can change format in the middle; some explicitly
-   * support this, but a more common example is two MP3 files concatenated
-   * together. In many cases, SDL_mixer will correctly handle these sort of
-   * files, but this function will only report the initial format a file uses.
-   *
-   * @param spec on success, audio format details will be stored here.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  void GetFormat(AudioSpec* spec);
-
-  /**
-   * Convert milliseconds to sample frames for a Audio's format.
-   *
-   * This calculates time based on the audio's initial format, even if the
-   * format would change mid-stream.
-   *
-   * If `ms` is < 0, this returns -1.
-   *
-   * @param ms the milliseconds to convert to audio-specific sample frames.
-   * @returns Converted number of sample frames, or -1 for errors/no input; call
-   *          GetError() for details.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa AudioFramesToMS
-   */
-  Sint64 MSToFrames(Milliseconds ms);
-
-  /**
-   * Convert sample frames for a Audio's format to milliseconds.
-   *
-   * This calculates time based on the audio's initial format, even if the
-   * format would change mid-stream.
-   *
-   * Sample frames are more precise than milliseconds, so out of necessity, this
-   * function will approximate by rounding down to the closest full millisecond.
-   *
-   * If `frames` is < 0, this returns -1.
-   *
-   * @param frames the audio-specific sample frames to convert to milliseconds.
-   * @returns Converted number of milliseconds, or -1 for errors/no input; call
-   *          GetError() for details.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa AudioMSToFrames
-   */
-  Milliseconds FramesToMS(Sint64 frames);
 };
 
 /**
@@ -4654,7 +4666,7 @@ inline PropertiesRef GetAudioProperties(AudioRef audio)
   return CheckError(MIX_GetAudioProperties(audio));
 }
 
-inline PropertiesRef Audio::GetProperties()
+inline PropertiesRef AudioBase::GetProperties()
 {
   return SDL::GetAudioProperties(get());
 }
@@ -4732,7 +4744,7 @@ inline Sint64 GetAudioDuration(AudioRef audio)
   return MIX_GetAudioDuration(audio);
 }
 
-inline Sint64 Audio::GetDuration() { return SDL::GetAudioDuration(get()); }
+inline Sint64 AudioBase::GetDuration() { return SDL::GetAudioDuration(get()); }
 
 /// Unknown duration, when the length of the audio can't be determined.
 constexpr Sint64 DURATION_UNKNOWN = MIX_DURATION_UNKNOWN;
@@ -4761,7 +4773,7 @@ inline void GetAudioFormat(AudioRef audio, AudioSpec* spec)
   CheckError(MIX_GetAudioFormat(audio, spec));
 }
 
-inline void Audio::GetFormat(AudioSpec* spec)
+inline void AudioBase::GetFormat(AudioSpec* spec)
 {
   SDL::GetAudioFormat(get(), spec);
 }
@@ -4788,7 +4800,7 @@ inline void Audio::GetFormat(AudioSpec* spec)
  */
 inline void DestroyAudio(AudioRaw audio) { MIX_DestroyAudio(audio); }
 
-inline void Audio::Destroy() { DestroyAudio(release()); }
+inline void AudioBase::Destroy() { DestroyAudio(release()); }
 
 /**
  * Create a new track on a mixer.
@@ -5580,7 +5592,7 @@ inline Sint64 AudioMSToFrames(AudioRef audio, Milliseconds ms)
   return MIX_AudioMSToFrames(audio, ms.count());
 }
 
-inline Sint64 Audio::MSToFrames(Milliseconds ms)
+inline Sint64 AudioBase::MSToFrames(Milliseconds ms)
 {
   return SDL::AudioMSToFrames(get(), ms);
 }
@@ -5612,7 +5624,7 @@ inline Milliseconds AudioFramesToMS(AudioRef audio, Sint64 frames)
   return Milliseconds(MIX_AudioFramesToMS(audio, frames));
 }
 
-inline Milliseconds Audio::FramesToMS(Sint64 frames)
+inline Milliseconds AudioBase::FramesToMS(Sint64 frames)
 {
   return SDL::AudioFramesToMS(get(), frames);
 }
@@ -7300,6 +7312,90 @@ inline int Mixer::Generate(TargetBytes buffer)
 }
 
 /**
+ * Base class to AudioDecoder.
+ *
+ * @see AudioDecoder
+ */
+struct AudioDecoderBase : ResourceBaseT<AudioDecoderRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Destroy the specified audio decoder.
+   *
+   * Destroying a nullptr AudioDecoder is a legal no-op.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  void Destroy();
+
+  /**
+   * Get the properties associated with a AudioDecoder.
+   *
+   * SDL_mixer offers some properties of its own, but this can also be a
+   * convenient place to store app-specific data.
+   *
+   * A Properties is created the first time this function is called for a given
+   * AudioDecoder, if necessary.
+   *
+   * The file-specific metadata exposed through this function is identical to
+   * those available through GetAudioProperties(). Please refer to that
+   * function's documentation for details.
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa GetAudioProperties
+   */
+  PropertiesRef GetProperties();
+
+  /**
+   * Query the initial audio format of a AudioDecoder.
+   *
+   * Note that some audio files can change format in the middle; some explicitly
+   * support this, but a more common example is two MP3 files concatenated
+   * together. In many cases, SDL_mixer will correctly handle these sort of
+   * files, but this function will only report the initial format a file uses.
+   *
+   * @param spec on success, audio format details will be stored here.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  void GetFormat(AudioSpec* spec);
+
+  /**
+   * Decode more audio from a AudioDecoder.
+   *
+   * Data is decoded on demand in whatever format is requested. The format is
+   * permitted to change between calls.
+   *
+   * This function will return the number of bytes decoded, which may be less
+   * than requested if there was an error or end-of-file. A return value of zero
+   * means the entire file was decoded, -1 means an unrecoverable error
+   * happened.
+   *
+   * @param buffer the memory buffer to store decoded audio.
+   * @param spec the format that audio data will be stored to `buffer`.
+   * @returns number of bytes decoded, or -1 on error; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  int DecodeAudio(TargetBytes buffer, const AudioSpec& spec);
+};
+
+/**
  * An opaque object that represents an audio decoder.
  *
  * Most apps won't need this, as SDL_mixer's usual interfaces will decode audio
@@ -7314,9 +7410,9 @@ inline int Mixer::Generate(TargetBytes buffer)
  *
  * @cat resource
  */
-struct AudioDecoder : ResourceBase<AudioDecoderRaw>
+struct AudioDecoder : AudioDecoderBase
 {
-  using ResourceBase::ResourceBase;
+  using AudioDecoderBase::AudioDecoderBase;
 
   /**
    * Constructs from raw AudioDecoder.
@@ -7326,7 +7422,7 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AudioDecoder(AudioDecoderRaw resource) noexcept
-    : ResourceBase(resource)
+    : AudioDecoderBase(resource)
   {
   }
 
@@ -7338,10 +7434,6 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
     : AudioDecoder(other.release())
   {
   }
-
-  constexpr AudioDecoder(const AudioDecoderRef& other) = delete;
-
-  constexpr AudioDecoder(AudioDecoderRef&& other) = delete;
 
   /**
    * Create a AudioDecoder from a path on the filesystem.
@@ -7429,80 +7521,6 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
 
   /// Assignment operator.
   AudioDecoder& operator=(const AudioDecoder& other) = delete;
-
-  /**
-   * Destroy the specified audio decoder.
-   *
-   * Destroying a nullptr AudioDecoder is a legal no-op.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  void Destroy();
-
-  /**
-   * Get the properties associated with a AudioDecoder.
-   *
-   * SDL_mixer offers some properties of its own, but this can also be a
-   * convenient place to store app-specific data.
-   *
-   * A Properties is created the first time this function is called for a given
-   * AudioDecoder, if necessary.
-   *
-   * The file-specific metadata exposed through this function is identical to
-   * those available through GetAudioProperties(). Please refer to that
-   * function's documentation for details.
-   *
-   * @returns a valid property ID on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa GetAudioProperties
-   */
-  PropertiesRef GetProperties();
-
-  /**
-   * Query the initial audio format of a AudioDecoder.
-   *
-   * Note that some audio files can change format in the middle; some explicitly
-   * support this, but a more common example is two MP3 files concatenated
-   * together. In many cases, SDL_mixer will correctly handle these sort of
-   * files, but this function will only report the initial format a file uses.
-   *
-   * @param spec on success, audio format details will be stored here.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  void GetFormat(AudioSpec* spec);
-
-  /**
-   * Decode more audio from a AudioDecoder.
-   *
-   * Data is decoded on demand in whatever format is requested. The format is
-   * permitted to change between calls.
-   *
-   * This function will return the number of bytes decoded, which may be less
-   * than requested if there was an error or end-of-file. A return value of zero
-   * means the entire file was decoded, -1 means an unrecoverable error
-   * happened.
-   *
-   * @param buffer the memory buffer to store decoded audio.
-   * @param spec the format that audio data will be stored to `buffer`.
-   * @returns number of bytes decoded on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  int DecodeAudio(TargetBytes buffer, const AudioSpec& spec);
 };
 
 /**
@@ -7614,7 +7632,7 @@ inline void DestroyAudioDecoder(AudioDecoderRaw audiodecoder)
   MIX_DestroyAudioDecoder(audiodecoder);
 }
 
-inline void AudioDecoder::Destroy() { DestroyAudioDecoder(release()); }
+inline void AudioDecoderBase::Destroy() { DestroyAudioDecoder(release()); }
 
 /**
  * Get the properties associated with a AudioDecoder.
@@ -7644,7 +7662,7 @@ inline PropertiesRef GetAudioDecoderProperties(AudioDecoderRef audiodecoder)
   return CheckError(MIX_GetAudioDecoderProperties(audiodecoder));
 }
 
-inline PropertiesRef AudioDecoder::GetProperties()
+inline PropertiesRef AudioDecoderBase::GetProperties()
 {
   return SDL::GetAudioDecoderProperties(get());
 }
@@ -7670,7 +7688,7 @@ inline void GetAudioDecoderFormat(AudioDecoderRef audiodecoder, AudioSpec* spec)
   CheckError(MIX_GetAudioDecoderFormat(audiodecoder, spec));
 }
 
-inline void AudioDecoder::GetFormat(AudioSpec* spec)
+inline void AudioDecoderBase::GetFormat(AudioSpec* spec)
 {
   SDL::GetAudioDecoderFormat(get(), spec);
 }
@@ -7705,7 +7723,8 @@ inline int DecodeAudio(AudioDecoderRef audiodecoder,
     -1);
 }
 
-inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
+inline int AudioDecoderBase::DecodeAudio(TargetBytes buffer,
+                                         const AudioSpec& spec)
 {
   return SDL::DecodeAudio(get(), std::move(buffer), spec);
 }

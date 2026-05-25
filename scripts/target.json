@@ -198675,6 +198675,10 @@
           ],
           "type": "ResourceRef<Mixer>"
         },
+        "AudioBase-forward": {
+          "name": "AudioBase",
+          "kind": "forward"
+        },
         "Audio-forward": {
           "name": "Audio",
           "kind": "forward"
@@ -198694,7 +198698,7 @@
             "Reference for Audio.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Audio>"
+          "type": "ResourceRefT<AudioBase>"
         },
         "Track-forward": {
           "name": "Track",
@@ -198738,6 +198742,10 @@
           ],
           "type": "ResourceRef<Group>"
         },
+        "AudioDecoderBase-forward": {
+          "name": "AudioDecoderBase",
+          "kind": "forward"
+        },
         "AudioDecoder-forward": {
           "name": "AudioDecoder",
           "kind": "forward"
@@ -198757,7 +198765,7 @@
             "Reference for AudioDecoder.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<AudioDecoder>"
+          "type": "ResourceRefT<AudioDecoderBase>"
         },
         "MixerLock-forward": {
           "kind": "forward",
@@ -201143,611 +201151,21 @@
             }
           ]
         },
-        "Audio": {
-          "doc": [
-            "An opaque object that represents audio data.",
-            "Generally you load audio data (in whatever file format) into SDL_mixer with Mixer.LoadAudio() or one of its several variants, producing a Audio object.",
-            "A Audio represents static audio data; it could be background music, or maybe a laser gun sound effect. It is loaded into RAM and can be played multiple times, possibly on different tracks at the same time.",
-            "Unlike most other objects, Audio objects can be shared between mixers.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL_mixer 3.0.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Audio",
+        "AudioBase": {
+          "name": "AudioBase",
           "kind": "struct",
-          "type": "ResourceBase<AudioRaw>",
-          "sourceName": "MIX_Audio",
+          "type": "ResourceBaseT<AudioRaw>",
+          "doc": [
+            "Base class to Audio.",
+            {
+              "tag": "@see",
+              "content": "Audio"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Audio": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AudioRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Audio.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AudioRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Audio",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Audio &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Audio",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Audio &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Audio(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Audio",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const AudioRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Audio",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "AudioRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Audio",
-                      "overload": {
-                        "doc": [
-                          "Load audio for playback from an IOStream.",
-                          "In normal usage, apps should load audio once, maybe at startup, then play it multiple times.",
-                          "When loading audio, it will be cached fully in RAM in its original data format. Each time it plays, the data will be decoded. For example, an MP3 will be stored in memory in MP3 format and be decompressed on the fly during playback. This is a tradeoff between i/o overhead and memory usage.",
-                          "If `predecode` is true, the data will be decompressed during load and stored as raw PCM data. This might dramatically increase loading time and memory usage, but there will be no need to decompress data during playback.",
-                          "(One could also use SetTrackIOStream() to bypass loading the data into RAM upfront at all, but this offers still different tradeoffs. The correct approach depends on the app's needs and employing different approaches in different situations can make sense.)",
-                          "Audio objects can be shared between mixers. This function takes a Mixer, to imply this is the most likely place it will be used and loading should try to match its audio format, but the resulting audio can be used elsewhere. If `mixer` is nullptr, SDL_mixer will set reasonable defaults.",
-                          "Once a Audio is created, it can be assigned to a Track with SetTrackAudio(), or played without any management with PlayAudio().",
-                          "When done with a Audio, it can be freed with DestroyAudio().",
-                          "This function loads data from an IOStream. There is also a version that loads from a path on the filesystem (Mixer.LoadAudio()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
-                          "The IOStream provided must be able to seek, or loading will fail. If the stream can't seek (data is coming from an HTTP connection, etc), consider caching the data to memory or disk first and creating a new stream to read from there.",
-                          [
-                            {
-                              "tag": "@param mixer",
-                              "content": "a mixer this audio is intended to be used with. May be nullptr."
-                            },
-                            {
-                              "tag": "@param io",
-                              "content": "the IOStream to load data from."
-                            },
-                            {
-                              "tag": "@param predecode",
-                              "content": "if true, data will be fully uncompressed before returning."
-                            },
-                            {
-                              "tag": "@param closeio",
-                              "content": "true if SDL_mixer should close `io` before returning (success or failure)."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "an audio object that can be used to make sound on a mixer on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_mixer 3.0.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyAudio"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "SetTrackAudio"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "Mixer.LoadAudio"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LoadAudioWithProperties"
-                            }
-                          ]
-                        ],
-                        "name": "Audio",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "mixer",
-                            "type": "MixerRef"
-                          },
-                          {
-                            "name": "io",
-                            "type": "IOStreamRef"
-                          },
-                          {
-                            "name": "predecode",
-                            "type": "bool"
-                          },
-                          {
-                            "name": "closeio",
-                            "type": "bool",
-                            "default": "false"
-                          }
-                        ],
-                        "sourceName": "MIX_LoadAudio_IO",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "overload": {
-                          "doc": [
-                            "Load audio for playback from a file.",
-                            "This is equivalent to calling:",
-                            {
-                              "content": "```c\nMixer.LoadAudio_IO(mixer, IOFromFile(path, \"rb\"), predecode, true);\n```"
-                            },
-                            "This function loads data from a path on the filesystem. There is also a version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
-                            [
-                              {
-                                "tag": "@param mixer",
-                                "content": "a mixer this audio is intended to be used with. May be nullptr."
-                              },
-                              {
-                                "tag": "@param path",
-                                "content": "the path on the filesystem to load data from."
-                              },
-                              {
-                                "tag": "@param predecode",
-                                "content": "if true, data will be fully uncompressed before returning."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "an audio object that can be used to make sound on a mixer on success."
-                              },
-                              {
-                                "tag": "@throws",
-                                "content": "Error on failure."
-                              }
-                            ],
-                            {
-                              "tag": "@threadsafety",
-                              "content": "It is safe to call this function from any thread."
-                            },
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL_mixer 3.0.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "DestroyAudio"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "SetTrackAudio"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "Mixer.LoadAudio_IO"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "LoadAudioWithProperties"
-                              }
-                            ]
-                          ],
-                          "name": "Audio",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "mixer",
-                              "type": "MixerRef"
-                            },
-                            {
-                              "name": "path",
-                              "type": "StringParam"
-                            },
-                            {
-                              "name": "predecode",
-                              "type": "bool"
-                            }
-                          ],
-                          "sourceName": "MIX_LoadAudio",
-                          "hints": {
-                            "mayFail": true
-                          },
-                          "overload": {
-                            "doc": [
-                              "Load audio for playback through a collection of properties.",
-                              "Please see Mixer.LoadAudio_IO() for a description of what the various LoadAudio functions do. This function uses properties to dictate how it operates, and exposes functionality the other functions don't provide.",
-                              "Properties are discussed in [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .",
-                              "These are the supported properties:",
-                              [
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Audio.LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used to load audio data. Required. This stream must be able to seek!"
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Audio.LOAD_CLOSEIO_BOOLEAN`: true if SDL_mixer should close the IOStream before returning (success or failure)."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Audio.LOAD_PREDECODE_BOOLEAN`: true if SDL_mixer should fully decode and decompress the data before returning. Otherwise it will be stored in its original state and decompressed on demand."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Audio.LOAD_PREFERRED_MIXER_POINTER`: a pointer to a Mixer, in case steps can be made to match its format when decoding. Optional."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Audio.LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing metadata tags, like ID3 and APE tags. This can be used to speed up loading _if the data definitely doesn't have these tags_. Some decoders will fail if these tags are present when this property is true."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Audio.DECODER_STRING`: the name of the decoder to use for this data. Optional. If not specified, SDL_mixer will examine the data and choose the best decoder. These names are the same returned from GetAudioDecoder()."
-                                }
-                              ],
-                              "Specific decoders might accept additional custom properties, such as where to find soundfonts for MIDI playback, etc.",
-                              [
-                                {
-                                  "tag": "@param props",
-                                  "content": "a set of properties on how to load audio."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "an audio object that can be used to make sound on a mixer on success."
-                                },
-                                {
-                                  "tag": "@throws",
-                                  "content": "Error on failure."
-                                }
-                              ],
-                              {
-                                "tag": "@threadsafety",
-                                "content": "It is safe to call this function from any thread."
-                              },
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL_mixer 3.0.0."
-                              },
-                              [
-                                {
-                                  "tag": "@sa",
-                                  "content": "DestroyAudio"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "SetTrackAudio"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "Mixer.LoadAudio"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "Mixer.LoadAudio_IO"
-                                }
-                              ]
-                            ],
-                            "name": "Audio",
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "props",
-                                "type": "PropertiesRef"
-                              }
-                            ],
-                            "sourceName": "MIX_LoadAudioWithProperties",
-                            "hints": {
-                              "mayFail": true
-                            },
-                            "overload": {
-                              "doc": [
-                                "Load raw PCM data from an IOStream.",
-                                "There are other options for _streaming_ raw PCM: an AudioStream can be connected to a track, as can an IOStream, and will read from those sources on-demand when it is time to mix the audio. This function is useful for loading static audio data that is meant to be played multiple times.",
-                                "This function will load the raw data in its entirety and cache it in RAM.",
-                                "Audio objects can be shared between multiple mixers. The `mixer` parameter just suggests the most likely mixer to use this audio, in case some optimization might be applied, but this is not required, and a nullptr mixer may be specified.",
-                                [
-                                  {
-                                    "tag": "@param mixer",
-                                    "content": "a mixer this audio is intended to be used with. May be nullptr."
-                                  },
-                                  {
-                                    "tag": "@param io",
-                                    "content": "the IOStream to load data from."
-                                  },
-                                  {
-                                    "tag": "@param spec",
-                                    "content": "what format the raw data is in."
-                                  },
-                                  {
-                                    "tag": "@param closeio",
-                                    "content": "true if SDL_mixer should close `io` before returning (success or failure)."
-                                  },
-                                  {
-                                    "tag": "@post",
-                                    "content": "an audio object that can be used to make sound on a mixer on success."
-                                  },
-                                  {
-                                    "tag": "@throws",
-                                    "content": "Error on failure."
-                                  }
-                                ],
-                                {
-                                  "tag": "@threadsafety",
-                                  "content": "It is safe to call this function from any thread."
-                                },
-                                {
-                                  "tag": "@since",
-                                  "content": "This function is available since SDL_mixer 3.0.0."
-                                },
-                                [
-                                  {
-                                    "tag": "@sa",
-                                    "content": "DestroyAudio"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "SetTrackAudio"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "Mixer.LoadRawAudio"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "LoadRawAudioNoCopy"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "Mixer.LoadAudio_IO"
-                                  }
-                                ]
-                              ],
-                              "name": "Audio",
-                              "kind": "function",
-                              "type": "",
-                              "parameters": [
-                                {
-                                  "name": "mixer",
-                                  "type": "MixerRef"
-                                },
-                                {
-                                  "name": "io",
-                                  "type": "IOStreamRef"
-                                },
-                                {
-                                  "name": "spec",
-                                  "type": "const AudioSpec &"
-                                },
-                                {
-                                  "name": "closeio",
-                                  "type": "bool",
-                                  "default": "false"
-                                }
-                              ],
-                              "sourceName": "MIX_LoadRawAudio_IO",
-                              "hints": {
-                                "mayFail": true
-                              },
-                              "overload": {
-                                "doc": [
-                                  "Load raw PCM data from a memory buffer.",
-                                  "There are other options for _streaming_ raw PCM: an AudioStream can be connected to a track, as can an IOStream, and will read from those sources on-demand when it is time to mix the audio. This function is useful for loading static audio data that is meant to be played multiple times.",
-                                  "This function will load the raw data in its entirety and cache it in RAM, allocating a copy. If the original data will outlive the created Audio, you can use LoadRawAudioNoCopy() to avoid extra allocations and copies.",
-                                  "Audio objects can be shared between multiple mixers. The `mixer` parameter just suggests the most likely mixer to use this audio, in case some optimization might be applied, but this is not required, and a nullptr mixer may be specified.",
-                                  [
-                                    {
-                                      "tag": "@param mixer",
-                                      "content": "a mixer this audio is intended to be used with. May be nullptr."
-                                    },
-                                    {
-                                      "tag": "@param data",
-                                      "content": "the raw PCM data to load."
-                                    },
-                                    {
-                                      "tag": "@param datalen",
-                                      "content": "the size, in bytes, of the raw PCM data."
-                                    },
-                                    {
-                                      "tag": "@param spec",
-                                      "content": "what format the raw data is in."
-                                    },
-                                    {
-                                      "tag": "@post",
-                                      "content": "an audio object that can be used to make sound on a mixer on success."
-                                    },
-                                    {
-                                      "tag": "@throws",
-                                      "content": "Error on failure."
-                                    }
-                                  ],
-                                  {
-                                    "tag": "@threadsafety",
-                                    "content": "It is safe to call this function from any thread."
-                                  },
-                                  {
-                                    "tag": "@since",
-                                    "content": "This function is available since SDL_mixer 3.0.0."
-                                  },
-                                  [
-                                    {
-                                      "tag": "@sa",
-                                      "content": "DestroyAudio"
-                                    },
-                                    {
-                                      "tag": "@sa",
-                                      "content": "SetTrackAudio"
-                                    },
-                                    {
-                                      "tag": "@sa",
-                                      "content": "Mixer.LoadRawAudio_IO"
-                                    },
-                                    {
-                                      "tag": "@sa",
-                                      "content": "LoadRawAudioNoCopy"
-                                    },
-                                    {
-                                      "tag": "@sa",
-                                      "content": "Mixer.LoadAudio_IO"
-                                    }
-                                  ]
-                                ],
-                                "name": "Audio",
-                                "kind": "function",
-                                "type": "",
-                                "parameters": [
-                                  {
-                                    "name": "mixer",
-                                    "type": "MixerRef"
-                                  },
-                                  {
-                                    "name": "data",
-                                    "type": "SourceBytes"
-                                  },
-                                  {
-                                    "name": "spec",
-                                    "type": "const AudioSpec &"
-                                  }
-                                ],
-                                "sourceName": "MIX_LoadRawAudio",
-                                "hints": {
-                                  "mayFail": true
-                                },
-                                "proto": true
-                              },
-                              "proto": true
-                            },
-                            "proto": true
-                          },
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Audio": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "MIX_DestroyAudio(get());"
-              },
-              "name": "~Audio"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Audio &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Audio &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Audio &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Audio &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -202009,6 +201427,585 @@
                 "delegate": "SDL::AudioFramesToMS"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Audio": {
+          "doc": [
+            "An opaque object that represents audio data.",
+            "Generally you load audio data (in whatever file format) into SDL_mixer with Mixer.LoadAudio() or one of its several variants, producing a Audio object.",
+            "A Audio represents static audio data; it could be background music, or maybe a laser gun sound effect. It is loaded into RAM and can be played multiple times, possibly on different tracks at the same time.",
+            "Unlike most other objects, Audio objects can be shared between mixers.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL_mixer 3.0.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Audio",
+          "kind": "struct",
+          "type": "AudioBase",
+          "sourceName": "MIX_Audio",
+          "entries": {
+            "AudioBase::AudioBase": {
+              "kind": "alias",
+              "name": "AudioBase::AudioBase"
+            },
+            "Audio": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AudioRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "AudioBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Audio.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AudioRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Audio",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Audio &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Audio",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Audio &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Audio(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Audio",
+                  "overload": {
+                    "doc": [
+                      "Load audio for playback from an IOStream.",
+                      "In normal usage, apps should load audio once, maybe at startup, then play it multiple times.",
+                      "When loading audio, it will be cached fully in RAM in its original data format. Each time it plays, the data will be decoded. For example, an MP3 will be stored in memory in MP3 format and be decompressed on the fly during playback. This is a tradeoff between i/o overhead and memory usage.",
+                      "If `predecode` is true, the data will be decompressed during load and stored as raw PCM data. This might dramatically increase loading time and memory usage, but there will be no need to decompress data during playback.",
+                      "(One could also use SetTrackIOStream() to bypass loading the data into RAM upfront at all, but this offers still different tradeoffs. The correct approach depends on the app's needs and employing different approaches in different situations can make sense.)",
+                      "Audio objects can be shared between mixers. This function takes a Mixer, to imply this is the most likely place it will be used and loading should try to match its audio format, but the resulting audio can be used elsewhere. If `mixer` is nullptr, SDL_mixer will set reasonable defaults.",
+                      "Once a Audio is created, it can be assigned to a Track with SetTrackAudio(), or played without any management with PlayAudio().",
+                      "When done with a Audio, it can be freed with DestroyAudio().",
+                      "This function loads data from an IOStream. There is also a version that loads from a path on the filesystem (Mixer.LoadAudio()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
+                      "The IOStream provided must be able to seek, or loading will fail. If the stream can't seek (data is coming from an HTTP connection, etc), consider caching the data to memory or disk first and creating a new stream to read from there.",
+                      [
+                        {
+                          "tag": "@param mixer",
+                          "content": "a mixer this audio is intended to be used with. May be nullptr."
+                        },
+                        {
+                          "tag": "@param io",
+                          "content": "the IOStream to load data from."
+                        },
+                        {
+                          "tag": "@param predecode",
+                          "content": "if true, data will be fully uncompressed before returning."
+                        },
+                        {
+                          "tag": "@param closeio",
+                          "content": "true if SDL_mixer should close `io` before returning (success or failure)."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "an audio object that can be used to make sound on a mixer on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_mixer 3.0.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyAudio"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "SetTrackAudio"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "Mixer.LoadAudio"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LoadAudioWithProperties"
+                        }
+                      ]
+                    ],
+                    "name": "Audio",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "mixer",
+                        "type": "MixerRef"
+                      },
+                      {
+                        "name": "io",
+                        "type": "IOStreamRef"
+                      },
+                      {
+                        "name": "predecode",
+                        "type": "bool"
+                      },
+                      {
+                        "name": "closeio",
+                        "type": "bool",
+                        "default": "false"
+                      }
+                    ],
+                    "sourceName": "MIX_LoadAudio_IO",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Load audio for playback from a file.",
+                        "This is equivalent to calling:",
+                        {
+                          "content": "```c\nMixer.LoadAudio_IO(mixer, IOFromFile(path, \"rb\"), predecode, true);\n```"
+                        },
+                        "This function loads data from a path on the filesystem. There is also a version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
+                        [
+                          {
+                            "tag": "@param mixer",
+                            "content": "a mixer this audio is intended to be used with. May be nullptr."
+                          },
+                          {
+                            "tag": "@param path",
+                            "content": "the path on the filesystem to load data from."
+                          },
+                          {
+                            "tag": "@param predecode",
+                            "content": "if true, data will be fully uncompressed before returning."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "an audio object that can be used to make sound on a mixer on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "It is safe to call this function from any thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL_mixer 3.0.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyAudio"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "SetTrackAudio"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "Mixer.LoadAudio_IO"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "LoadAudioWithProperties"
+                          }
+                        ]
+                      ],
+                      "name": "Audio",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "mixer",
+                          "type": "MixerRef"
+                        },
+                        {
+                          "name": "path",
+                          "type": "StringParam"
+                        },
+                        {
+                          "name": "predecode",
+                          "type": "bool"
+                        }
+                      ],
+                      "sourceName": "MIX_LoadAudio",
+                      "hints": {
+                        "mayFail": true
+                      },
+                      "overload": {
+                        "doc": [
+                          "Load audio for playback through a collection of properties.",
+                          "Please see Mixer.LoadAudio_IO() for a description of what the various LoadAudio functions do. This function uses properties to dictate how it operates, and exposes functionality the other functions don't provide.",
+                          "Properties are discussed in [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .",
+                          "These are the supported properties:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.Audio.LOAD_IOSTREAM_POINTER`: a pointer to an IOStream to be used to load audio data. Required. This stream must be able to seek!"
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Audio.LOAD_CLOSEIO_BOOLEAN`: true if SDL_mixer should close the IOStream before returning (success or failure)."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Audio.LOAD_PREDECODE_BOOLEAN`: true if SDL_mixer should fully decode and decompress the data before returning. Otherwise it will be stored in its original state and decompressed on demand."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Audio.LOAD_PREFERRED_MIXER_POINTER`: a pointer to a Mixer, in case steps can be made to match its format when decoding. Optional."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Audio.LOAD_SKIP_METADATA_TAGS_BOOLEAN`: true to skip parsing metadata tags, like ID3 and APE tags. This can be used to speed up loading _if the data definitely doesn't have these tags_. Some decoders will fail if these tags are present when this property is true."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Audio.DECODER_STRING`: the name of the decoder to use for this data. Optional. If not specified, SDL_mixer will examine the data and choose the best decoder. These names are the same returned from GetAudioDecoder()."
+                            }
+                          ],
+                          "Specific decoders might accept additional custom properties, such as where to find soundfonts for MIDI playback, etc.",
+                          [
+                            {
+                              "tag": "@param props",
+                              "content": "a set of properties on how to load audio."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "an audio object that can be used to make sound on a mixer on success."
+                            },
+                            {
+                              "tag": "@throws",
+                              "content": "Error on failure."
+                            }
+                          ],
+                          {
+                            "tag": "@threadsafety",
+                            "content": "It is safe to call this function from any thread."
+                          },
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL_mixer 3.0.0."
+                          },
+                          [
+                            {
+                              "tag": "@sa",
+                              "content": "DestroyAudio"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "SetTrackAudio"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "Mixer.LoadAudio"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "Mixer.LoadAudio_IO"
+                            }
+                          ]
+                        ],
+                        "name": "Audio",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "props",
+                            "type": "PropertiesRef"
+                          }
+                        ],
+                        "sourceName": "MIX_LoadAudioWithProperties",
+                        "hints": {
+                          "mayFail": true
+                        },
+                        "overload": {
+                          "doc": [
+                            "Load raw PCM data from an IOStream.",
+                            "There are other options for _streaming_ raw PCM: an AudioStream can be connected to a track, as can an IOStream, and will read from those sources on-demand when it is time to mix the audio. This function is useful for loading static audio data that is meant to be played multiple times.",
+                            "This function will load the raw data in its entirety and cache it in RAM.",
+                            "Audio objects can be shared between multiple mixers. The `mixer` parameter just suggests the most likely mixer to use this audio, in case some optimization might be applied, but this is not required, and a nullptr mixer may be specified.",
+                            [
+                              {
+                                "tag": "@param mixer",
+                                "content": "a mixer this audio is intended to be used with. May be nullptr."
+                              },
+                              {
+                                "tag": "@param io",
+                                "content": "the IOStream to load data from."
+                              },
+                              {
+                                "tag": "@param spec",
+                                "content": "what format the raw data is in."
+                              },
+                              {
+                                "tag": "@param closeio",
+                                "content": "true if SDL_mixer should close `io` before returning (success or failure)."
+                              },
+                              {
+                                "tag": "@post",
+                                "content": "an audio object that can be used to make sound on a mixer on success."
+                              },
+                              {
+                                "tag": "@throws",
+                                "content": "Error on failure."
+                              }
+                            ],
+                            {
+                              "tag": "@threadsafety",
+                              "content": "It is safe to call this function from any thread."
+                            },
+                            {
+                              "tag": "@since",
+                              "content": "This function is available since SDL_mixer 3.0.0."
+                            },
+                            [
+                              {
+                                "tag": "@sa",
+                                "content": "DestroyAudio"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "SetTrackAudio"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "Mixer.LoadRawAudio"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "LoadRawAudioNoCopy"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "Mixer.LoadAudio_IO"
+                              }
+                            ]
+                          ],
+                          "name": "Audio",
+                          "kind": "function",
+                          "type": "",
+                          "parameters": [
+                            {
+                              "name": "mixer",
+                              "type": "MixerRef"
+                            },
+                            {
+                              "name": "io",
+                              "type": "IOStreamRef"
+                            },
+                            {
+                              "name": "spec",
+                              "type": "const AudioSpec &"
+                            },
+                            {
+                              "name": "closeio",
+                              "type": "bool",
+                              "default": "false"
+                            }
+                          ],
+                          "sourceName": "MIX_LoadRawAudio_IO",
+                          "hints": {
+                            "mayFail": true
+                          },
+                          "overload": {
+                            "doc": [
+                              "Load raw PCM data from a memory buffer.",
+                              "There are other options for _streaming_ raw PCM: an AudioStream can be connected to a track, as can an IOStream, and will read from those sources on-demand when it is time to mix the audio. This function is useful for loading static audio data that is meant to be played multiple times.",
+                              "This function will load the raw data in its entirety and cache it in RAM, allocating a copy. If the original data will outlive the created Audio, you can use LoadRawAudioNoCopy() to avoid extra allocations and copies.",
+                              "Audio objects can be shared between multiple mixers. The `mixer` parameter just suggests the most likely mixer to use this audio, in case some optimization might be applied, but this is not required, and a nullptr mixer may be specified.",
+                              [
+                                {
+                                  "tag": "@param mixer",
+                                  "content": "a mixer this audio is intended to be used with. May be nullptr."
+                                },
+                                {
+                                  "tag": "@param data",
+                                  "content": "the raw PCM data to load."
+                                },
+                                {
+                                  "tag": "@param datalen",
+                                  "content": "the size, in bytes, of the raw PCM data."
+                                },
+                                {
+                                  "tag": "@param spec",
+                                  "content": "what format the raw data is in."
+                                },
+                                {
+                                  "tag": "@post",
+                                  "content": "an audio object that can be used to make sound on a mixer on success."
+                                },
+                                {
+                                  "tag": "@throws",
+                                  "content": "Error on failure."
+                                }
+                              ],
+                              {
+                                "tag": "@threadsafety",
+                                "content": "It is safe to call this function from any thread."
+                              },
+                              {
+                                "tag": "@since",
+                                "content": "This function is available since SDL_mixer 3.0.0."
+                              },
+                              [
+                                {
+                                  "tag": "@sa",
+                                  "content": "DestroyAudio"
+                                },
+                                {
+                                  "tag": "@sa",
+                                  "content": "SetTrackAudio"
+                                },
+                                {
+                                  "tag": "@sa",
+                                  "content": "Mixer.LoadRawAudio_IO"
+                                },
+                                {
+                                  "tag": "@sa",
+                                  "content": "LoadRawAudioNoCopy"
+                                },
+                                {
+                                  "tag": "@sa",
+                                  "content": "Mixer.LoadAudio_IO"
+                                }
+                              ]
+                            ],
+                            "name": "Audio",
+                            "kind": "function",
+                            "type": "",
+                            "parameters": [
+                              {
+                                "name": "mixer",
+                                "type": "MixerRef"
+                              },
+                              {
+                                "name": "data",
+                                "type": "SourceBytes"
+                              },
+                              {
+                                "name": "spec",
+                                "type": "const AudioSpec &"
+                              }
+                            ],
+                            "sourceName": "MIX_LoadRawAudio",
+                            "hints": {
+                              "mayFail": true
+                            },
+                            "proto": true
+                          },
+                          "proto": true
+                        },
+                        "proto": true
+                      },
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Audio": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "MIX_DestroyAudio(get());"
+              },
+              "name": "~Audio"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Audio &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Audio &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Audio &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Audio &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -206686,15 +206683,14 @@
             "mayFail": true
           }
         },
-        "Audio::GetProperties": {
-          "name": "Audio::GetProperties",
+        "AudioBase::GetProperties": {
+          "name": "AudioBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "MIX_GetAudioProperties",
           "hints": {
             "self": "get()",
-            "super": "Audio",
             "mayFail": true,
             "delegate": "SDL::GetAudioProperties"
           }
@@ -206842,15 +206838,14 @@
           ],
           "sourceName": "MIX_GetAudioDuration"
         },
-        "Audio::GetDuration": {
-          "name": "Audio::GetDuration",
+        "AudioBase::GetDuration": {
+          "name": "AudioBase::GetDuration",
           "kind": "function",
           "type": "Sint64",
           "parameters": [],
           "sourceName": "MIX_GetAudioDuration",
           "hints": {
             "self": "get()",
-            "super": "Audio",
             "delegate": "SDL::GetAudioDuration"
           }
         },
@@ -206915,8 +206910,8 @@
             "mayFail": true
           }
         },
-        "Audio::GetFormat": {
-          "name": "Audio::GetFormat",
+        "AudioBase::GetFormat": {
+          "name": "AudioBase::GetFormat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -206928,7 +206923,6 @@
           "sourceName": "MIX_GetAudioFormat",
           "hints": {
             "self": "get()",
-            "super": "Audio",
             "mayFail": true,
             "delegate": "SDL::GetAudioFormat"
           }
@@ -206963,15 +206957,14 @@
           ],
           "sourceName": "MIX_DestroyAudio"
         },
-        "Audio::Destroy": {
-          "name": "Audio::Destroy",
+        "AudioBase::Destroy": {
+          "name": "AudioBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "MIX_DestroyAudio",
           "hints": {
             "self": "get()",
-            "super": "Audio",
             "body": "DestroyAudio(release());",
             "delegate": "SDL::DestroyAudio"
           }
@@ -208411,8 +208404,8 @@
           ],
           "sourceName": "MIX_AudioMSToFrames"
         },
-        "Audio::MSToFrames": {
-          "name": "Audio::MSToFrames",
+        "AudioBase::MSToFrames": {
+          "name": "AudioBase::MSToFrames",
           "kind": "function",
           "type": "Sint64",
           "parameters": [
@@ -208424,7 +208417,6 @@
           "sourceName": "MIX_AudioMSToFrames",
           "hints": {
             "self": "get()",
-            "super": "Audio",
             "delegate": "SDL::AudioMSToFrames"
           }
         },
@@ -208476,8 +208468,8 @@
           ],
           "sourceName": "MIX_AudioFramesToMS"
         },
-        "Audio::FramesToMS": {
-          "name": "Audio::FramesToMS",
+        "AudioBase::FramesToMS": {
+          "name": "AudioBase::FramesToMS",
           "kind": "function",
           "type": "Milliseconds",
           "parameters": [
@@ -208489,7 +208481,6 @@
           "sourceName": "MIX_AudioFramesToMS",
           "hints": {
             "self": "get()",
-            "super": "Audio",
             "delegate": "SDL::AudioFramesToMS"
           }
         },
@@ -211836,304 +211827,21 @@
             "delegate": "SDL::Generate"
           }
         },
-        "AudioDecoder": {
-          "doc": [
-            "An opaque object that represents an audio decoder.",
-            "Most apps won't need this, as SDL_mixer's usual interfaces will decode audio as needed. However, if one wants to decode an audio file into a memory buffer without playing it, this interface offers that.",
-            "These objects are created with CreateAudioDecoder() or CreateAudioDecoder_IO(), and then can use DecodeAudio() to retrieve the raw PCM data.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL_mixer 3.0.0."
-            },
-            "@cat resource"
-          ],
-          "name": "AudioDecoder",
+        "AudioDecoderBase": {
+          "name": "AudioDecoderBase",
           "kind": "struct",
-          "type": "ResourceBase<AudioDecoderRaw>",
-          "sourceName": "MIX_AudioDecoder",
+          "type": "ResourceBaseT<AudioDecoderRaw>",
+          "doc": [
+            "Base class to AudioDecoder.",
+            {
+              "tag": "@see",
+              "content": "AudioDecoder"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "AudioDecoder": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AudioDecoderRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw AudioDecoder.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AudioDecoderRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "AudioDecoder",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AudioDecoder &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "AudioDecoder",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "AudioDecoder &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "AudioDecoder(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "AudioDecoder",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const AudioDecoderRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "AudioDecoder",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "AudioDecoderRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "AudioDecoder",
-                      "overload": {
-                        "doc": [
-                          "Create a AudioDecoder from a path on the filesystem.",
-                          "Most apps won't need this, as SDL_mixer's usual interfaces will decode audio as needed. However, if one wants to decode an audio file into a memory buffer without playing it, this interface offers that.",
-                          "This function allows properties to be specified. This is intended to supply file-specific settings, such as where to find SoundFonts for a MIDI file, etc. In most cases, the caller should pass a zero to specify no extra properties.",
-                          "Properties are discussed in [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .",
-                          "When done with the audio decoder, it can be destroyed with DestroyAudioDecoder().",
-                          "This function requires SDL_mixer to have been initialized with a successful call to MIX.Init(), but does not need an actual Mixer to have been created.",
-                          [
-                            {
-                              "tag": "@param path",
-                              "content": "the path on the filesystem from which to load data."
-                            },
-                            {
-                              "tag": "@param props",
-                              "content": "decoder-specific properties. May be zero."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "an audio decoder, ready to decode."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_mixer 3.0.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateAudioDecoder_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DecodeAudio"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyAudioDecoder"
-                            }
-                          ]
-                        ],
-                        "name": "AudioDecoder",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "path",
-                            "type": "StringParam"
-                          },
-                          {
-                            "name": "props",
-                            "type": "PropertiesRef",
-                            "default": "nullptr"
-                          }
-                        ],
-                        "sourceName": "MIX_CreateAudioDecoder",
-                        "overload": {
-                          "doc": [
-                            "Create a AudioDecoder from an IOStream.",
-                            "Most apps won't need this, as SDL_mixer's usual interfaces will decode audio as needed. However, if one wants to decode an audio file into a memory buffer without playing it, this interface offers that.",
-                            "This function allows properties to be specified. This is intended to supply file-specific settings, such as where to find SoundFonts for a MIDI file, etc. In most cases, the caller should pass a zero to specify no extra properties.",
-                            "If `closeio` is true, then `io` will be closed when this decoder is done with it. If this function fails and `closeio` is true, then `io` will be closed before this function returns.",
-                            "When done with the audio decoder, it can be destroyed with DestroyAudioDecoder().",
-                            "This function requires SDL_mixer to have been initialized with a successful call to MIX.Init(), but does not need an actual Mixer to have been created.",
-                            [
-                              {
-                                "tag": "@param io",
-                                "content": "the i/o stream from which to load data."
-                              },
-                              {
-                                "tag": "@param closeio",
-                                "content": "if true, close the i/o stream when done with it."
-                              },
-                              {
-                                "tag": "@param props",
-                                "content": "decoder-specific properties. May be zero."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "an audio decoder, ready to decode."
-                              }
-                            ],
-                            {
-                              "tag": "@threadsafety",
-                              "content": "It is safe to call this function from any thread."
-                            },
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL_mixer 3.0.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "CreateAudioDecoder_IO"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "DecodeAudio"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "DestroyAudioDecoder"
-                              }
-                            ]
-                          ],
-                          "name": "AudioDecoder",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "io",
-                              "type": "IOStreamRef"
-                            },
-                            {
-                              "name": "closeio",
-                              "type": "bool",
-                              "default": "false"
-                            },
-                            {
-                              "name": "props",
-                              "type": "PropertiesRef",
-                              "default": "nullptr"
-                            }
-                          ],
-                          "sourceName": "MIX_CreateAudioDecoder_IO",
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~AudioDecoder": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "MIX_DestroyAudioDecoder(get());"
-              },
-              "name": "~AudioDecoder"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "AudioDecoder &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "AudioDecoder &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "AudioDecoder &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AudioDecoder &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -212288,6 +211996,278 @@
                 "delegate": "SDL::DecodeAudio"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "AudioDecoder": {
+          "doc": [
+            "An opaque object that represents an audio decoder.",
+            "Most apps won't need this, as SDL_mixer's usual interfaces will decode audio as needed. However, if one wants to decode an audio file into a memory buffer without playing it, this interface offers that.",
+            "These objects are created with CreateAudioDecoder() or CreateAudioDecoder_IO(), and then can use DecodeAudio() to retrieve the raw PCM data.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL_mixer 3.0.0."
+            },
+            "@cat resource"
+          ],
+          "name": "AudioDecoder",
+          "kind": "struct",
+          "type": "AudioDecoderBase",
+          "sourceName": "MIX_AudioDecoder",
+          "entries": {
+            "AudioDecoderBase::AudioDecoderBase": {
+              "kind": "alias",
+              "name": "AudioDecoderBase::AudioDecoderBase"
+            },
+            "AudioDecoder": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AudioDecoderRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "AudioDecoderBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw AudioDecoder.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AudioDecoderRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "AudioDecoder",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AudioDecoder &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "AudioDecoder",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "AudioDecoder &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "AudioDecoder(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "AudioDecoder",
+                  "overload": {
+                    "doc": [
+                      "Create a AudioDecoder from a path on the filesystem.",
+                      "Most apps won't need this, as SDL_mixer's usual interfaces will decode audio as needed. However, if one wants to decode an audio file into a memory buffer without playing it, this interface offers that.",
+                      "This function allows properties to be specified. This is intended to supply file-specific settings, such as where to find SoundFonts for a MIDI file, etc. In most cases, the caller should pass a zero to specify no extra properties.",
+                      "Properties are discussed in [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .",
+                      "When done with the audio decoder, it can be destroyed with DestroyAudioDecoder().",
+                      "This function requires SDL_mixer to have been initialized with a successful call to MIX.Init(), but does not need an actual Mixer to have been created.",
+                      [
+                        {
+                          "tag": "@param path",
+                          "content": "the path on the filesystem from which to load data."
+                        },
+                        {
+                          "tag": "@param props",
+                          "content": "decoder-specific properties. May be zero."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "an audio decoder, ready to decode."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_mixer 3.0.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateAudioDecoder_IO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DecodeAudio"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyAudioDecoder"
+                        }
+                      ]
+                    ],
+                    "name": "AudioDecoder",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "path",
+                        "type": "StringParam"
+                      },
+                      {
+                        "name": "props",
+                        "type": "PropertiesRef",
+                        "default": "nullptr"
+                      }
+                    ],
+                    "sourceName": "MIX_CreateAudioDecoder",
+                    "overload": {
+                      "doc": [
+                        "Create a AudioDecoder from an IOStream.",
+                        "Most apps won't need this, as SDL_mixer's usual interfaces will decode audio as needed. However, if one wants to decode an audio file into a memory buffer without playing it, this interface offers that.",
+                        "This function allows properties to be specified. This is intended to supply file-specific settings, such as where to find SoundFonts for a MIDI file, etc. In most cases, the caller should pass a zero to specify no extra properties.",
+                        "If `closeio` is true, then `io` will be closed when this decoder is done with it. If this function fails and `closeio` is true, then `io` will be closed before this function returns.",
+                        "When done with the audio decoder, it can be destroyed with DestroyAudioDecoder().",
+                        "This function requires SDL_mixer to have been initialized with a successful call to MIX.Init(), but does not need an actual Mixer to have been created.",
+                        [
+                          {
+                            "tag": "@param io",
+                            "content": "the i/o stream from which to load data."
+                          },
+                          {
+                            "tag": "@param closeio",
+                            "content": "if true, close the i/o stream when done with it."
+                          },
+                          {
+                            "tag": "@param props",
+                            "content": "decoder-specific properties. May be zero."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "an audio decoder, ready to decode."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "It is safe to call this function from any thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL_mixer 3.0.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateAudioDecoder_IO"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DecodeAudio"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyAudioDecoder"
+                          }
+                        ]
+                      ],
+                      "name": "AudioDecoder",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "io",
+                          "type": "IOStreamRef"
+                        },
+                        {
+                          "name": "closeio",
+                          "type": "bool",
+                          "default": "false"
+                        },
+                        {
+                          "name": "props",
+                          "type": "PropertiesRef",
+                          "default": "nullptr"
+                        }
+                      ],
+                      "sourceName": "MIX_CreateAudioDecoder_IO",
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~AudioDecoder": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "MIX_DestroyAudioDecoder(get());"
+              },
+              "name": "~AudioDecoder"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "AudioDecoder &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "AudioDecoder &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "AudioDecoder &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AudioDecoder &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -212506,15 +212486,14 @@
           ],
           "sourceName": "MIX_DestroyAudioDecoder"
         },
-        "AudioDecoder::Destroy": {
-          "name": "AudioDecoder::Destroy",
+        "AudioDecoderBase::Destroy": {
+          "name": "AudioDecoderBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "MIX_DestroyAudioDecoder",
           "hints": {
             "self": "get()",
-            "super": "AudioDecoder",
             "body": "DestroyAudioDecoder(release());",
             "delegate": "SDL::DestroyAudioDecoder"
           }
@@ -212566,15 +212545,14 @@
             "mayFail": true
           }
         },
-        "AudioDecoder::GetProperties": {
-          "name": "AudioDecoder::GetProperties",
+        "AudioDecoderBase::GetProperties": {
+          "name": "AudioDecoderBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "MIX_GetAudioDecoderProperties",
           "hints": {
             "self": "get()",
-            "super": "AudioDecoder",
             "mayFail": true,
             "delegate": "SDL::GetAudioDecoderProperties"
           }
@@ -212624,8 +212602,8 @@
             "mayFail": true
           }
         },
-        "AudioDecoder::GetFormat": {
-          "name": "AudioDecoder::GetFormat",
+        "AudioDecoderBase::GetFormat": {
+          "name": "AudioDecoderBase::GetFormat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -212637,7 +212615,6 @@
           "sourceName": "MIX_GetAudioDecoderFormat",
           "hints": {
             "self": "get()",
-            "super": "AudioDecoder",
             "mayFail": true,
             "delegate": "SDL::GetAudioDecoderFormat"
           }
@@ -212697,8 +212674,8 @@
           ],
           "sourceName": "MIX_DecodeAudio"
         },
-        "AudioDecoder::DecodeAudio": {
-          "name": "AudioDecoder::DecodeAudio",
+        "AudioDecoderBase::DecodeAudio": {
+          "name": "AudioDecoderBase::DecodeAudio",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -212714,7 +212691,6 @@
           "sourceName": "MIX_DecodeAudio",
           "hints": {
             "self": "get()",
-            "super": "AudioDecoder",
             "delegate": "SDL::DecodeAudio"
           }
         }
