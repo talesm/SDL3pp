@@ -26,6 +26,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct AnimationBase;
+
+// Forward decl
 struct Animation;
 
 /// Alias to raw representation for Animation.
@@ -39,7 +42,7 @@ using AnimationRawConst = const IMG_Animation*;
  *
  * This does not take ownership!
  */
-using AnimationRef = ResourceRef<Animation>;
+using AnimationRef = ResourceRefT<AnimationBase>;
 
 /// Safely wrap Animation for non owning const parameters
 using AnimationConstRef = ResourceConstRef<AnimationRaw, AnimationRawConst>;
@@ -2672,100 +2675,16 @@ inline void SaveWEBP_IO(SurfaceRef surface,
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * Animated image support
+ * Base class to Animation.
  *
- * @cat resource
+ * @see Animation
  */
-struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
+struct AnimationBase : ResourceBaseT<AnimationRaw, AnimationRawConst>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Animation.
-   *
-   * @param resource a AnimationRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Animation(AnimationRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Animation(const Animation& other) = delete;
-
-  /// Move constructor
-  constexpr Animation(Animation&& other) noexcept
-    : Animation(other.release())
-  {
-  }
-
-  constexpr Animation(const AnimationRef& other) = delete;
-
-  constexpr Animation(AnimationRef&& other) = delete;
-
-  /**
-   * Load an animation from a file.
-   *
-   * @param file path on the filesystem containing an animated image.
-   * @post a new Animation, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa CreateAnimatedCursor
-   * @sa LoadAnimation_IO
-   * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation_IO
-   * @sa LoadAPNGAnimation_IO
-   * @sa LoadAVIFAnimation_IO
-   * @sa LoadGIFAnimation_IO
-   * @sa LoadWEBPAnimation_IO
-   * @sa FreeAnimation
-   */
-  Animation(StringParam file);
-
-  /**
-   * Load an animation from an IOStream.
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
-   * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
-   * @post a new Animation, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa CreateAnimatedCursor
-   * @sa LoadAnimation
-   * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation_IO
-   * @sa LoadAPNGAnimation_IO
-   * @sa LoadAVIFAnimation_IO
-   * @sa LoadGIFAnimation_IO
-   * @sa LoadWEBPAnimation_IO
-   * @sa FreeAnimation
-   */
-  Animation(IOStreamRef src, bool closeio = false);
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to AnimationConstRef
   constexpr operator AnimationConstRef() const noexcept { return get(); }
-
-  /// Destructor
-  ~Animation() { IMG_FreeAnimation(get()); }
-
-  /// Assignment operator.
-  constexpr Animation& operator=(Animation&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Animation& operator=(const Animation& other) = delete;
 
   /**
    * Dispose of an Animation and free its resources.
@@ -2994,15 +2913,107 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Get the width in pixels.
+/**
+ * Animated image support
+ *
+ * @cat resource
+ */
+struct Animation : AnimationBase
+{
+  using AnimationBase::AnimationBase;
+
+  /**
+   * Constructs from raw Animation.
+   *
+   * @param resource a AnimationRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Animation(AnimationRaw resource) noexcept
+    : AnimationBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Animation(const Animation& other) = delete;
+
+  /// Move constructor
+  constexpr Animation(Animation&& other) noexcept
+    : Animation(other.release())
+  {
+  }
+
+  /**
+   * Load an animation from a file.
+   *
+   * @param file path on the filesystem containing an animated image.
+   * @post a new Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa CreateAnimatedCursor
+   * @sa LoadAnimation_IO
+   * @sa LoadAnimationTyped_IO
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
+   * @sa FreeAnimation
+   */
+  Animation(StringParam file);
+
+  /**
+   * Load an animation from an IOStream.
+   *
+   * If `closeio` is true, `src` will be closed before returning, whether this
+   * function succeeds or not. SDL_image reads everything it needs from `src`
+   * during this call in any case.
+   *
+   * @param src an IOStream that data will be read from.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
+   * @post a new Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa CreateAnimatedCursor
+   * @sa LoadAnimation
+   * @sa LoadAnimationTyped_IO
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
+   * @sa FreeAnimation
+   */
+  Animation(IOStreamRef src, bool closeio = false);
+
+  /// Destructor
+  ~Animation() { IMG_FreeAnimation(get()); }
+
+  /// Assignment operator.
+  constexpr Animation& operator=(Animation&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Animation& operator=(const Animation& other) = delete;
+};
+
 inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
 
-inline int Animation::GetWidth() const { return SDL::GetAnimationWidth(get()); }
+inline int AnimationBase::GetWidth() const
+{
+  return SDL::GetAnimationWidth(get());
+}
 
 /// Get the height in pixels.
 inline int GetAnimationHeight(AnimationConstRef anim) { return anim->h; }
 
-inline int Animation::GetHeight() const
+inline int AnimationBase::GetHeight() const
 {
   return SDL::GetAnimationHeight(get());
 }
@@ -3013,12 +3024,18 @@ inline Point GetAnimationSize(AnimationConstRef anim)
   return {anim->w, anim->h};
 }
 
-inline Point Animation::GetSize() const { return SDL::GetAnimationSize(get()); }
+inline Point AnimationBase::GetSize() const
+{
+  return SDL::GetAnimationSize(get());
+}
 
 /// Return the number of frames.
 inline int GetAnimationCount(AnimationConstRef anim) { return anim->count; }
 
-inline int Animation::GetCount() const { return SDL::GetAnimationCount(get()); }
+inline int AnimationBase::GetCount() const
+{
+  return SDL::GetAnimationCount(get());
+}
 
 /**
  * Return the frame image under given index.
@@ -3031,7 +3048,7 @@ inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
   return Surface::Borrow(anim->frames[index]);
 }
 
-inline Surface Animation::GetFrame(int index) const
+inline Surface AnimationBase::GetFrame(int index) const
 {
   return SDL::GetAnimationFrame(get(), index);
 }
@@ -3047,7 +3064,7 @@ inline int GetAnimationDelay(AnimationConstRef anim, int index)
   return anim->delays[index];
 }
 
-inline int Animation::GetDelay(int index) const
+inline int AnimationBase::GetDelay(int index) const
 {
   return SDL::GetAnimationDelay(get(), index);
 }
@@ -3321,7 +3338,7 @@ inline void SaveAnimation(AnimationRef anim, StringParam file)
   CheckError(IMG_SaveAnimation(anim, file));
 }
 
-inline void Animation::Save(StringParam file)
+inline void AnimationBase::Save(StringParam file)
 {
   SDL::SaveAnimation(get(), std::move(file));
 }
@@ -3360,9 +3377,9 @@ inline void SaveAnimationTyped_IO(AnimationRef anim,
   CheckError(IMG_SaveAnimationTyped_IO(anim, dst, closeio, type));
 }
 
-inline void Animation::SaveTyped_IO(IOStreamRef dst,
-                                    StringParam type,
-                                    bool closeio)
+inline void AnimationBase::SaveTyped_IO(IOStreamRef dst,
+                                        StringParam type,
+                                        bool closeio)
 {
   SDL::SaveAnimationTyped_IO(get(), dst, std::move(type), closeio);
 }
@@ -3395,7 +3412,7 @@ inline void SaveANIAnimation_IO(AnimationRef anim,
   CheckError(IMG_SaveANIAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveANI_IO(IOStreamRef dst, bool closeio)
+inline void AnimationBase::SaveANI_IO(IOStreamRef dst, bool closeio)
 {
   SDL::SaveANIAnimation_IO(get(), dst, closeio);
 }
@@ -3428,7 +3445,7 @@ inline void SaveAPNGAnimation_IO(AnimationRef anim,
   CheckError(IMG_SaveAPNGAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveAPNG_IO(IOStreamRef dst, bool closeio)
+inline void AnimationBase::SaveAPNG_IO(IOStreamRef dst, bool closeio)
 {
   SDL::SaveAPNGAnimation_IO(get(), dst, closeio);
 }
@@ -3464,7 +3481,9 @@ inline void SaveAVIFAnimation_IO(AnimationRef anim,
   CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, closeio, quality));
 }
 
-inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
+inline void AnimationBase::SaveAVIF_IO(IOStreamRef dst,
+                                       int quality,
+                                       bool closeio)
 {
   SDL::SaveAVIFAnimation_IO(get(), dst, quality, closeio);
 }
@@ -3497,7 +3516,7 @@ inline void SaveGIFAnimation_IO(AnimationRef anim,
   CheckError(IMG_SaveGIFAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveGIF_IO(IOStreamRef dst, bool closeio)
+inline void AnimationBase::SaveGIF_IO(IOStreamRef dst, bool closeio)
 {
   SDL::SaveGIFAnimation_IO(get(), dst, closeio);
 }
@@ -3535,7 +3554,9 @@ inline void SaveWEBPAnimation_IO(AnimationRef anim,
   CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, closeio, quality));
 }
 
-inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
+inline void AnimationBase::SaveWEBP_IO(IOStreamRef dst,
+                                       int quality,
+                                       bool closeio)
 {
   SDL::SaveWEBPAnimation_IO(get(), dst, quality, closeio);
 }
@@ -3556,11 +3577,11 @@ inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
  */
 inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
 {
-  return Cursor{
-    CheckError(IMG_CreateAnimatedCursor(anim, hotspot.x, hotspot.y))};
+  return Cursor(
+    CheckError(IMG_CreateAnimatedCursor(anim, hotspot.x, hotspot.y)));
 }
 
-inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
+inline Cursor AnimationBase::CreateCursor(const PointRaw& hotspot)
 {
   return SDL::CreateAnimatedCursor(get(), hotspot);
 }
@@ -3587,7 +3608,7 @@ inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
  */
 inline void FreeAnimation(AnimationRaw anim) { IMG_FreeAnimation(anim); }
 
-inline void Animation::Free() { FreeAnimation(release()); }
+inline void AnimationBase::Free() { FreeAnimation(release()); }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 

@@ -186291,6 +186291,10 @@
         "A simple library to load images of various formats as SDL surfaces"
       ],
       "entries": {
+        "AnimationBase-forward": {
+          "name": "AnimationBase",
+          "kind": "forward"
+        },
         "Animation-forward": {
           "name": "Animation",
           "kind": "forward"
@@ -186318,7 +186322,7 @@
             "Reference for Animation.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Animation>"
+          "type": "ResourceRefT<AnimationBase>"
         },
         "AnimationConstRef": {
           "name": "AnimationConstRef",
@@ -192723,264 +192727,21 @@
             "patch": 0
           }
         },
-        "Animation": {
-          "doc": [
-            "Animated image support",
-            "@cat resource"
-          ],
-          "name": "Animation",
+        "AnimationBase": {
+          "name": "AnimationBase",
           "kind": "struct",
-          "sourceName": "IMG_Animation",
+          "type": "ResourceBaseT<AnimationRaw, AnimationRawConst>",
+          "doc": [
+            "Base class to Animation.",
+            {
+              "tag": "@see",
+              "content": "Animation"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Animation": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AnimationRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Animation.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AnimationRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Animation",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Animation &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Animation",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Animation &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Animation(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Animation",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const AnimationRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Animation",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "AnimationRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Animation",
-                      "overload": {
-                        "doc": [
-                          "Load an animation from a file.",
-                          "When done with the returned animation, the app should dispose of it with a call to FreeAnimation().",
-                          [
-                            {
-                              "tag": "@param file",
-                              "content": "path on the filesystem containing an animated image."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new Animation, or nullptr on error."
-                            }
-                          ],
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_image 3.0.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateAnimatedCursor"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LoadAnimation_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LoadAnimationTyped_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LoadANIAnimation_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LoadAPNGAnimation_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LoadAVIFAnimation_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LoadGIFAnimation_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LoadWEBPAnimation_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "FreeAnimation"
-                            }
-                          ]
-                        ],
-                        "name": "Animation",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "file",
-                            "type": "StringParam"
-                          }
-                        ],
-                        "sourceName": "IMG_LoadAnimation",
-                        "overload": {
-                          "doc": [
-                            "Load an animation from an IOStream.",
-                            "If `closeio` is true, `src` will be closed before returning, whether this function succeeds or not. SDL_image reads everything it needs from `src` during this call in any case.",
-                            "When done with the returned animation, the app should dispose of it with a call to FreeAnimation().",
-                            [
-                              {
-                                "tag": "@param src",
-                                "content": "an IOStream that data will be read from."
-                              },
-                              {
-                                "tag": "@param closeio",
-                                "content": "true to close/free the IOStream before returning, false to leave it open."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "a new Animation, or nullptr on error."
-                              }
-                            ],
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL_image 3.0.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "CreateAnimatedCursor"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "LoadAnimation"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "LoadAnimationTyped_IO"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "LoadANIAnimation_IO"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "LoadAPNGAnimation_IO"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "LoadAVIFAnimation_IO"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "LoadGIFAnimation_IO"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "LoadWEBPAnimation_IO"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "FreeAnimation"
-                              }
-                            ]
-                          ],
-                          "name": "Animation",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "src",
-                              "type": "IOStreamRef"
-                            },
-                            {
-                              "name": "closeio",
-                              "type": "bool",
-                              "default": "false"
-                            }
-                          ],
-                          "sourceName": "IMG_LoadAnimation_IO",
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "operator AnimationConstRef": {
               "kind": "function",
@@ -192996,54 +192757,6 @@
                 "Converts to AnimationConstRef"
               ],
               "name": "operator AnimationConstRef"
-            },
-            "~Animation": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "IMG_FreeAnimation(get());"
-              },
-              "name": "~Animation"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Animation &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Animation &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Animation &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Animation &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
             },
             "Free": {
               "doc": [
@@ -193794,7 +193507,287 @@
               }
             }
           },
-          "type": "ResourceBase<AnimationRaw, AnimationRawConst>",
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Animation": {
+          "doc": [
+            "Animated image support",
+            "@cat resource"
+          ],
+          "name": "Animation",
+          "kind": "struct",
+          "sourceName": "IMG_Animation",
+          "entries": {
+            "AnimationBase::AnimationBase": {
+              "kind": "alias",
+              "name": "AnimationBase::AnimationBase"
+            },
+            "Animation": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AnimationRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "ResourceBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Animation.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AnimationRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Animation",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Animation &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Animation",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Animation &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Animation(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Animation",
+                  "overload": {
+                    "doc": [
+                      "Load an animation from a file.",
+                      "When done with the returned animation, the app should dispose of it with a call to FreeAnimation().",
+                      [
+                        {
+                          "tag": "@param file",
+                          "content": "path on the filesystem containing an animated image."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a new Animation, or nullptr on error."
+                        }
+                      ],
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_image 3.0.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateAnimatedCursor"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LoadAnimation_IO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LoadAnimationTyped_IO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LoadANIAnimation_IO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LoadAPNGAnimation_IO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LoadAVIFAnimation_IO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LoadGIFAnimation_IO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LoadWEBPAnimation_IO"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "FreeAnimation"
+                        }
+                      ]
+                    ],
+                    "name": "Animation",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "file",
+                        "type": "StringParam"
+                      }
+                    ],
+                    "sourceName": "IMG_LoadAnimation",
+                    "overload": {
+                      "doc": [
+                        "Load an animation from an IOStream.",
+                        "If `closeio` is true, `src` will be closed before returning, whether this function succeeds or not. SDL_image reads everything it needs from `src` during this call in any case.",
+                        "When done with the returned animation, the app should dispose of it with a call to FreeAnimation().",
+                        [
+                          {
+                            "tag": "@param src",
+                            "content": "an IOStream that data will be read from."
+                          },
+                          {
+                            "tag": "@param closeio",
+                            "content": "true to close/free the IOStream before returning, false to leave it open."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "a new Animation, or nullptr on error."
+                          }
+                        ],
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL_image 3.0.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateAnimatedCursor"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "LoadAnimation"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "LoadAnimationTyped_IO"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "LoadANIAnimation_IO"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "LoadAPNGAnimation_IO"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "LoadAVIFAnimation_IO"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "LoadGIFAnimation_IO"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "LoadWEBPAnimation_IO"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "FreeAnimation"
+                          }
+                        ]
+                      ],
+                      "name": "Animation",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "src",
+                          "type": "IOStreamRef"
+                        },
+                        {
+                          "name": "closeio",
+                          "type": "bool",
+                          "default": "false"
+                        }
+                      ],
+                      "sourceName": "IMG_LoadAnimation_IO",
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Animation": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "IMG_FreeAnimation(get());"
+              },
+              "name": "~Animation"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Animation &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Animation &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Animation &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Animation &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "type": "AnimationBase",
           "hints": {
             "self": "get()",
             "super": "Animation"
@@ -193811,15 +193804,14 @@
           ],
           "name": "GetAnimationWidth"
         },
-        "Animation::GetWidth": {
+        "AnimationBase::GetWidth": {
           "kind": "function",
           "immutable": true,
           "type": "int",
           "parameters": [],
-          "name": "Animation::GetWidth",
+          "name": "AnimationBase::GetWidth",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "delegate": "SDL::GetAnimationWidth"
           }
         },
@@ -193834,15 +193826,14 @@
           ],
           "name": "GetAnimationHeight"
         },
-        "Animation::GetHeight": {
+        "AnimationBase::GetHeight": {
           "kind": "function",
           "immutable": true,
           "type": "int",
           "parameters": [],
-          "name": "Animation::GetHeight",
+          "name": "AnimationBase::GetHeight",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "delegate": "SDL::GetAnimationHeight"
           }
         },
@@ -193857,15 +193848,14 @@
           ],
           "name": "GetAnimationSize"
         },
-        "Animation::GetSize": {
+        "AnimationBase::GetSize": {
           "kind": "function",
           "immutable": true,
           "type": "Point",
           "parameters": [],
-          "name": "Animation::GetSize",
+          "name": "AnimationBase::GetSize",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "delegate": "SDL::GetAnimationSize"
           }
         },
@@ -193880,15 +193870,14 @@
           ],
           "name": "GetAnimationCount"
         },
-        "Animation::GetCount": {
+        "AnimationBase::GetCount": {
           "kind": "function",
           "immutable": true,
           "type": "int",
           "parameters": [],
-          "name": "Animation::GetCount",
+          "name": "AnimationBase::GetCount",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "delegate": "SDL::GetAnimationCount"
           }
         },
@@ -193907,7 +193896,7 @@
           ],
           "name": "GetAnimationFrame"
         },
-        "Animation::GetFrame": {
+        "AnimationBase::GetFrame": {
           "kind": "function",
           "type": "Surface",
           "immutable": true,
@@ -193917,10 +193906,9 @@
               "name": "index"
             }
           ],
-          "name": "Animation::GetFrame",
+          "name": "AnimationBase::GetFrame",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "delegate": "SDL::GetAnimationFrame"
           }
         },
@@ -193939,7 +193927,7 @@
           ],
           "name": "GetAnimationDelay"
         },
-        "Animation::GetDelay": {
+        "AnimationBase::GetDelay": {
           "kind": "function",
           "type": "int",
           "immutable": true,
@@ -193949,10 +193937,9 @@
               "name": "index"
             }
           ],
-          "name": "Animation::GetDelay",
+          "name": "AnimationBase::GetDelay",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "delegate": "SDL::GetAnimationDelay"
           }
         },
@@ -194665,8 +194652,8 @@
             "patch": 0
           }
         },
-        "Animation::Save": {
-          "name": "Animation::Save",
+        "AnimationBase::Save": {
+          "name": "AnimationBase::Save",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -194678,7 +194665,6 @@
           "sourceName": "IMG_SaveAnimation",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "mayFail": true,
             "delegate": "SDL::SaveAnimation"
           },
@@ -194781,8 +194767,8 @@
             "patch": 0
           }
         },
-        "Animation::SaveTyped_IO": {
-          "name": "Animation::SaveTyped_IO",
+        "AnimationBase::SaveTyped_IO": {
+          "name": "AnimationBase::SaveTyped_IO",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -194802,7 +194788,6 @@
           "sourceName": "IMG_SaveAnimationTyped_IO",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "mayFail": true,
             "delegate": "SDL::SaveAnimationTyped_IO"
           },
@@ -194895,8 +194880,8 @@
             "patch": 0
           }
         },
-        "Animation::SaveANI_IO": {
-          "name": "Animation::SaveANI_IO",
+        "AnimationBase::SaveANI_IO": {
+          "name": "AnimationBase::SaveANI_IO",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -194912,7 +194897,6 @@
           "sourceName": "IMG_SaveANIAnimation_IO",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "mayFail": true,
             "delegate": "SDL::SaveANIAnimation_IO"
           },
@@ -195005,8 +194989,8 @@
             "patch": 0
           }
         },
-        "Animation::SaveAPNG_IO": {
-          "name": "Animation::SaveAPNG_IO",
+        "AnimationBase::SaveAPNG_IO": {
+          "name": "AnimationBase::SaveAPNG_IO",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -195022,7 +195006,6 @@
           "sourceName": "IMG_SaveAPNGAnimation_IO",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "mayFail": true,
             "delegate": "SDL::SaveAPNGAnimation_IO"
           },
@@ -195123,8 +195106,8 @@
             "patch": 0
           }
         },
-        "Animation::SaveAVIF_IO": {
-          "name": "Animation::SaveAVIF_IO",
+        "AnimationBase::SaveAVIF_IO": {
+          "name": "AnimationBase::SaveAVIF_IO",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -195144,7 +195127,6 @@
           "sourceName": "IMG_SaveAVIFAnimation_IO",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "mayFail": true,
             "delegate": "SDL::SaveAVIFAnimation_IO"
           },
@@ -195237,8 +195219,8 @@
             "patch": 0
           }
         },
-        "Animation::SaveGIF_IO": {
-          "name": "Animation::SaveGIF_IO",
+        "AnimationBase::SaveGIF_IO": {
+          "name": "AnimationBase::SaveGIF_IO",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -195254,7 +195236,6 @@
           "sourceName": "IMG_SaveGIFAnimation_IO",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "mayFail": true,
             "delegate": "SDL::SaveGIFAnimation_IO"
           },
@@ -195355,8 +195336,8 @@
             "patch": 0
           }
         },
-        "Animation::SaveWEBP_IO": {
-          "name": "Animation::SaveWEBP_IO",
+        "AnimationBase::SaveWEBP_IO": {
+          "name": "AnimationBase::SaveWEBP_IO",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -195376,7 +195357,6 @@
           "sourceName": "IMG_SaveWEBPAnimation_IO",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "mayFail": true,
             "delegate": "SDL::SaveWEBPAnimation_IO"
           },
@@ -195456,8 +195436,8 @@
             "patch": 0
           }
         },
-        "Animation::CreateCursor": {
-          "name": "Animation::CreateCursor",
+        "AnimationBase::CreateCursor": {
+          "name": "AnimationBase::CreateCursor",
           "kind": "function",
           "type": "Cursor",
           "parameters": [
@@ -195469,7 +195449,6 @@
           "sourceName": "IMG_CreateAnimatedCursor",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "mayFail": true,
             "methodName": "CreateCursor",
             "delegate": "SDL::CreateAnimatedCursor"
@@ -195539,15 +195518,14 @@
           ],
           "sourceName": "IMG_FreeAnimation"
         },
-        "Animation::Free": {
-          "name": "Animation::Free",
+        "AnimationBase::Free": {
+          "name": "AnimationBase::Free",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "IMG_FreeAnimation",
           "hints": {
             "self": "get()",
-            "super": "Animation",
             "body": "FreeAnimation(release());",
             "delegate": "SDL::FreeAnimation"
           }
