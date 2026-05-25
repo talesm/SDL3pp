@@ -9496,7 +9496,7 @@ struct Properties : ResourceBase<PropertiesID>
    *
    * All properties are automatically destroyed when Quit() is called.
    *
-   * @returns an ID for a new group of properties on success.
+   * @post an ID for a new group of properties on success.
    *
    * @throws Error on failure.
    *
@@ -9506,7 +9506,7 @@ struct Properties : ResourceBase<PropertiesID>
    *
    * @sa DestroyProperties
    */
-  static Properties Create();
+  Properties();
 
   /// Destructor
   ~Properties() { SDL_DestroyProperties(get()); }
@@ -10097,12 +10097,12 @@ inline PropertiesRef GetGlobalProperties()
  *
  * @sa DestroyProperties
  */
-inline Properties CreateProperties()
-{
-  return Properties(CheckError(SDL_CreateProperties()));
-}
+inline Properties CreateProperties() { return Properties(); }
 
-inline Properties Properties::Create() { return SDL::CreateProperties(); }
+inline Properties::Properties()
+  : Properties(CheckError(SDL_CreateProperties()))
+{
+}
 
 /**
  * Copy a group of properties.

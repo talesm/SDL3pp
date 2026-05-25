@@ -4088,14 +4088,11 @@ const transform = {
             unlockFunc: "SDL_UnlockProperties",
           },
           resource: {
-            ctors: ["SDL_CreateProperties"],
             free: "SDL_DestroyProperties",
             rawName: "PropertiesID",
           },
           entries: {
-            "SDL_CreateProperties": {
-              name: "Create",
-            },
+            "SDL_CreateProperties": "ctor",
           },
         },
         "SDL_PROP_NAME_STRING": { kind: "var" },

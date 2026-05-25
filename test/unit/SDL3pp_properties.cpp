@@ -3,7 +3,7 @@
 
 TEST_CASE("Properties")
 {
-  SDL::Properties props = SDL::Properties::Create();
+  SDL::Properties props;
   CHECK(SDL::CountProperties(props) == 0);
   CHECK(SDL::HasProperty(props, "potato") == false);
   CHECK(SDL::GetPropertyType(props, "potato") == SDL::PROPERTY_TYPE_INVALID);

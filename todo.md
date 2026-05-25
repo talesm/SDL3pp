@@ -9,6 +9,7 @@ Todo for next version
   - [x] Create ResourceBaseT absorbs common functionality from new ResourceRef
 - [ ] Fix ObjectRef(nullptr).
 - [ ] Remove old entry point (break compat);
+- [ ] Properties::Create is now a constructor;
 
 Backlog
 -------

@@ -103183,49 +103183,46 @@
                       "hints": {
                         "delete": true
                       },
-                      "name": "Properties"
+                      "name": "Properties",
+                      "overload": {
+                        "doc": [
+                          "Create a group of properties.",
+                          "All properties are automatically destroyed when Quit() is called.",
+                          {
+                            "tag": "@post",
+                            "content": "an ID for a new group of properties on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          },
+                          {
+                            "tag": "@threadsafety",
+                            "content": "It is safe to call this function from any thread."
+                          },
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL 3.2.0."
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyProperties"
+                          }
+                        ],
+                        "name": "Properties",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [],
+                        "sourceName": "SDL_CreateProperties",
+                        "hints": {
+                          "mayFail": true
+                        },
+                        "proto": true
+                      }
                     }
                   }
                 }
               }
-            },
-            "Create": {
-              "doc": [
-                "Create a group of properties.",
-                "All properties are automatically destroyed when Quit() is called.",
-                {
-                  "tag": "@returns",
-                  "content": "an ID for a new group of properties on success."
-                },
-                {
-                  "tag": "@throws",
-                  "content": "Error on failure."
-                },
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                {
-                  "tag": "@sa",
-                  "content": "DestroyProperties"
-                }
-              ],
-              "name": "Create",
-              "kind": "function",
-              "type": "Properties",
-              "parameters": [],
-              "sourceName": "SDL_CreateProperties",
-              "hints": {
-                "mayFail": true,
-                "wrapSelf": true,
-                "delegate": "SDL::CreateProperties"
-              },
-              "static": true,
-              "proto": true
             },
             "~Properties": {
               "kind": "function",
@@ -104718,22 +104715,20 @@
           "sourceName": "SDL_CreateProperties",
           "hints": {
             "mayFail": true,
-            "wrapSelf": true
+            "wrapSelf": true,
+            "delegate": "Properties"
           }
         },
-        "Properties::Create": {
-          "name": "Properties::Create",
+        "Properties::Properties": {
+          "name": "Properties::Properties",
           "kind": "function",
-          "type": "Properties",
+          "type": "",
           "parameters": [],
           "sourceName": "SDL_CreateProperties",
           "hints": {
             "self": "get()",
             "super": "Properties",
-            "mayFail": true,
-            "wrapSelf": true,
-            "delegate": "SDL::CreateProperties",
-            "static": true
+            "mayFail": true
           }
         },
         "CopyProperties": {
