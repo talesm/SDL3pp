@@ -218149,6 +218149,10 @@
         "This library is a wrapper around the excellent FreeType 2.0 library, available at: https://www.freetype.org/"
       ],
       "entries": {
+        "FontBase-forward": {
+          "name": "FontBase",
+          "kind": "forward"
+        },
         "Font-forward": {
           "name": "Font",
           "kind": "forward"
@@ -218168,7 +218172,7 @@
             "Reference for Font.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Font>"
+          "type": "ResourceRefT<FontBase>"
         },
         "TextEngine-forward": {
           "name": "TextEngine",
@@ -218831,370 +218835,21 @@
           ],
           "sourceName": "TTF_IMAGE_SDF"
         },
-        "Font": {
-          "doc": [
-            "The internal structure containing font information.",
-            "Opaque data!",
-            "@cat resource"
-          ],
-          "name": "Font",
+        "FontBase": {
+          "name": "FontBase",
           "kind": "struct",
-          "type": "ResourceBase<FontRaw>",
-          "sourceName": "TTF_Font",
+          "type": "ResourceBaseT<FontRaw>",
+          "doc": [
+            "Base class to Font.",
+            {
+              "tag": "@see",
+              "content": "Font"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Font": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "FontRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Font.",
-                {
-                  "tag": "@param resource",
-                  "content": "a FontRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Font",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Font &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Font",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Font &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Font(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Font",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const FontRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Font",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "FontRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Font",
-                      "overload": {
-                        "doc": [
-                          "Create a font from a file, using a specified point size.",
-                          "Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.",
-                          "When done with the returned Font, use CloseFont() to dispose of it.",
-                          [
-                            {
-                              "tag": "@param file",
-                              "content": "path to font file."
-                            },
-                            {
-                              "tag": "@param ptsize",
-                              "content": "point size to use for the newly-opened font."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a valid Font on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_ttf 3.0.0."
-                          },
-                          {
-                            "tag": "@sa",
-                            "content": "CloseFont"
-                          }
-                        ],
-                        "name": "Font",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "file",
-                            "type": "StringParam"
-                          },
-                          {
-                            "name": "ptsize",
-                            "type": "float"
-                          }
-                        ],
-                        "sourceName": "TTF_OpenFont",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "overload": {
-                          "doc": [
-                            "Create a font from an IOStream, using a specified point size.",
-                            "Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.",
-                            "If `closeio` is true, `src` will be automatically closed once the font is closed. Otherwise you should close `src` yourself after closing the font.",
-                            "When done with the returned Font, use CloseFont() to dispose of it.",
-                            [
-                              {
-                                "tag": "@param src",
-                                "content": "an IOStream to provide a font file's data."
-                              },
-                              {
-                                "tag": "@param closeio",
-                                "content": "true to close `src` when the font is closed, false to leave it open."
-                              },
-                              {
-                                "tag": "@param ptsize",
-                                "content": "point size to use for the newly-opened font."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "a valid Font on success."
-                              },
-                              {
-                                "tag": "@throws",
-                                "content": "Error on failure."
-                              }
-                            ],
-                            {
-                              "tag": "@threadsafety",
-                              "content": "It is safe to call this function from any thread."
-                            },
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL_ttf 3.0.0."
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CloseFont"
-                            }
-                          ],
-                          "name": "Font",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "src",
-                              "type": "IOStreamRef"
-                            },
-                            {
-                              "name": "ptsize",
-                              "type": "float"
-                            },
-                            {
-                              "name": "closeio",
-                              "type": "bool",
-                              "default": "false"
-                            }
-                          ],
-                          "sourceName": "TTF_OpenFontIO",
-                          "hints": {
-                            "mayFail": true
-                          },
-                          "overload": {
-                            "doc": [
-                              "Create a font with the specified properties.",
-                              "These are the supported properties:",
-                              [
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Font.Create.FILENAME_STRING`: the font file to open, if an IOStream isn't being used. This is required if `prop.Font.Create.IOSTREAM_POINTER` and `prop.Font.Create.EXISTING_FONT_POINTER` aren't set."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Font.Create.IOSTREAM_POINTER`: an IOStream containing the font to be opened. This should not be closed until the font is closed. This is required if `prop.Font.Create.FILENAME_STRING` and `prop.Font.Create.EXISTING_FONT_POINTER` aren't set."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Font.Create.IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for the beginning of the font, defaults to 0."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Font.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font should also close the associated IOStream."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Font.Create.SIZE_FLOAT`: the point size of the font. Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Font.Create.FACE_NUMBER`: the face index of the font, if the font contains multiple font faces."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Font.Create.HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for font rendering, defaults to `prop.Font.Create.VERTICAL_DPI_NUMBER` if set, or 72 otherwise."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Font.Create.VERTICAL_DPI_NUMBER`: the vertical DPI to use for font rendering, defaults to `prop.Font.Create.HORIZONTAL_DPI_NUMBER` if set, or 72 otherwise."
-                                },
-                                {
-                                  "tag": "-",
-                                  "content": "`prop.Font.Create.EXISTING_FONT_POINTER`: an optional Font that, if set, will be used as the font data source and the initial size and style of the new font."
-                                }
-                              ],
-                              [
-                                {
-                                  "tag": "@param props",
-                                  "content": "the properties to use."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "a valid Font on success."
-                                },
-                                {
-                                  "tag": "@throws",
-                                  "content": "Error on failure."
-                                }
-                              ],
-                              {
-                                "tag": "@threadsafety",
-                                "content": "It is safe to call this function from any thread."
-                              },
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL_ttf 3.0.0."
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CloseFont"
-                              }
-                            ],
-                            "name": "Font",
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "props",
-                                "type": "PropertiesRef"
-                              }
-                            ],
-                            "sourceName": "TTF_OpenFontWithProperties",
-                            "hints": {
-                              "mayFail": true
-                            },
-                            "proto": true
-                          },
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Font": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "TTF_CloseFont(get());"
-              },
-              "name": "~Font"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Font &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Font &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Font &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Font &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Close": {
               "doc": [
@@ -222264,6 +221919,344 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "Font": {
+          "doc": [
+            "The internal structure containing font information.",
+            "Opaque data!",
+            "@cat resource"
+          ],
+          "name": "Font",
+          "kind": "struct",
+          "type": "FontBase",
+          "sourceName": "TTF_Font",
+          "entries": {
+            "FontBase::FontBase": {
+              "kind": "alias",
+              "name": "FontBase::FontBase"
+            },
+            "Font": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "FontRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "FontBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Font.",
+                {
+                  "tag": "@param resource",
+                  "content": "a FontRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Font",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Font &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Font",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Font &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Font(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Font",
+                  "overload": {
+                    "doc": [
+                      "Create a font from a file, using a specified point size.",
+                      "Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.",
+                      "When done with the returned Font, use CloseFont() to dispose of it.",
+                      [
+                        {
+                          "tag": "@param file",
+                          "content": "path to font file."
+                        },
+                        {
+                          "tag": "@param ptsize",
+                          "content": "point size to use for the newly-opened font."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a valid Font on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_ttf 3.0.0."
+                      },
+                      {
+                        "tag": "@sa",
+                        "content": "CloseFont"
+                      }
+                    ],
+                    "name": "Font",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "file",
+                        "type": "StringParam"
+                      },
+                      {
+                        "name": "ptsize",
+                        "type": "float"
+                      }
+                    ],
+                    "sourceName": "TTF_OpenFont",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Create a font from an IOStream, using a specified point size.",
+                        "Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.",
+                        "If `closeio` is true, `src` will be automatically closed once the font is closed. Otherwise you should close `src` yourself after closing the font.",
+                        "When done with the returned Font, use CloseFont() to dispose of it.",
+                        [
+                          {
+                            "tag": "@param src",
+                            "content": "an IOStream to provide a font file's data."
+                          },
+                          {
+                            "tag": "@param closeio",
+                            "content": "true to close `src` when the font is closed, false to leave it open."
+                          },
+                          {
+                            "tag": "@param ptsize",
+                            "content": "point size to use for the newly-opened font."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "a valid Font on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "It is safe to call this function from any thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL_ttf 3.0.0."
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "CloseFont"
+                        }
+                      ],
+                      "name": "Font",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "src",
+                          "type": "IOStreamRef"
+                        },
+                        {
+                          "name": "ptsize",
+                          "type": "float"
+                        },
+                        {
+                          "name": "closeio",
+                          "type": "bool",
+                          "default": "false"
+                        }
+                      ],
+                      "sourceName": "TTF_OpenFontIO",
+                      "hints": {
+                        "mayFail": true
+                      },
+                      "overload": {
+                        "doc": [
+                          "Create a font with the specified properties.",
+                          "These are the supported properties:",
+                          [
+                            {
+                              "tag": "-",
+                              "content": "`prop.Font.Create.FILENAME_STRING`: the font file to open, if an IOStream isn't being used. This is required if `prop.Font.Create.IOSTREAM_POINTER` and `prop.Font.Create.EXISTING_FONT_POINTER` aren't set."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Font.Create.IOSTREAM_POINTER`: an IOStream containing the font to be opened. This should not be closed until the font is closed. This is required if `prop.Font.Create.FILENAME_STRING` and `prop.Font.Create.EXISTING_FONT_POINTER` aren't set."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Font.Create.IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for the beginning of the font, defaults to 0."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Font.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font should also close the associated IOStream."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Font.Create.SIZE_FLOAT`: the point size of the font. Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Font.Create.FACE_NUMBER`: the face index of the font, if the font contains multiple font faces."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Font.Create.HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for font rendering, defaults to `prop.Font.Create.VERTICAL_DPI_NUMBER` if set, or 72 otherwise."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Font.Create.VERTICAL_DPI_NUMBER`: the vertical DPI to use for font rendering, defaults to `prop.Font.Create.HORIZONTAL_DPI_NUMBER` if set, or 72 otherwise."
+                            },
+                            {
+                              "tag": "-",
+                              "content": "`prop.Font.Create.EXISTING_FONT_POINTER`: an optional Font that, if set, will be used as the font data source and the initial size and style of the new font."
+                            }
+                          ],
+                          [
+                            {
+                              "tag": "@param props",
+                              "content": "the properties to use."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "a valid Font on success."
+                            },
+                            {
+                              "tag": "@throws",
+                              "content": "Error on failure."
+                            }
+                          ],
+                          {
+                            "tag": "@threadsafety",
+                            "content": "It is safe to call this function from any thread."
+                          },
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL_ttf 3.0.0."
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CloseFont"
+                          }
+                        ],
+                        "name": "Font",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "props",
+                            "type": "PropertiesRef"
+                          }
+                        ],
+                        "sourceName": "TTF_OpenFontWithProperties",
+                        "hints": {
+                          "mayFail": true
+                        },
+                        "proto": true
+                      },
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Font": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "TTF_CloseFont(get());"
+              },
+              "name": "~Font"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Font &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Font &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Font &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Font &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "Font"
           }
@@ -222695,15 +222688,14 @@
             "mayFail": true
           }
         },
-        "Font::Copy": {
-          "name": "Font::Copy",
+        "FontBase::Copy": {
+          "name": "FontBase::Copy",
           "kind": "function",
           "type": "Font",
           "parameters": [],
           "sourceName": "TTF_CopyFont",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::CopyFont"
           },
@@ -222764,15 +222756,14 @@
             "mayFail": true
           }
         },
-        "Font::GetProperties": {
-          "name": "Font::GetProperties",
+        "FontBase::GetProperties": {
+          "name": "FontBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "TTF_GetFontProperties",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::GetFontProperties"
           }
@@ -222850,8 +222841,8 @@
           ],
           "sourceName": "TTF_GetFontGeneration"
         },
-        "Font::GetGeneration": {
-          "name": "Font::GetGeneration",
+        "FontBase::GetGeneration": {
+          "name": "FontBase::GetGeneration",
           "kind": "function",
           "type": "Uint32",
           "parameters": [],
@@ -222859,7 +222850,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontGeneration"
           }
         },
@@ -222920,8 +222910,8 @@
             "mayFail": true
           }
         },
-        "Font::AddFallback": {
-          "name": "Font::AddFallback",
+        "FontBase::AddFallback": {
+          "name": "FontBase::AddFallback",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -222933,7 +222923,6 @@
           "sourceName": "TTF_AddFallbackFont",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::AddFallbackFont"
           }
@@ -222986,8 +222975,8 @@
           ],
           "sourceName": "TTF_RemoveFallbackFont"
         },
-        "Font::RemoveFallback": {
-          "name": "Font::RemoveFallback",
+        "FontBase::RemoveFallback": {
+          "name": "FontBase::RemoveFallback",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -222999,7 +222988,6 @@
           "sourceName": "TTF_RemoveFallbackFont",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RemoveFallbackFont"
           }
         },
@@ -223041,15 +223029,14 @@
           ],
           "sourceName": "TTF_ClearFallbackFonts"
         },
-        "Font::ClearFallbacks": {
-          "name": "Font::ClearFallbacks",
+        "FontBase::ClearFallbacks": {
+          "name": "FontBase::ClearFallbacks",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "TTF_ClearFallbackFonts",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::ClearFallbackFonts"
           }
         },
@@ -223102,8 +223089,8 @@
             "mayFail": true
           }
         },
-        "Font::SetSize": {
-          "name": "Font::SetSize",
+        "FontBase::SetSize": {
+          "name": "FontBase::SetSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -223115,7 +223102,6 @@
           "sourceName": "TTF_SetFontSize",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::SetFontSize"
           }
@@ -223191,8 +223177,8 @@
             "mayFail": true
           }
         },
-        "Font::SetSizeDPI": {
-          "name": "Font::SetSizeDPI",
+        "FontBase::SetSizeDPI": {
+          "name": "FontBase::SetSizeDPI",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -223212,7 +223198,6 @@
           "sourceName": "TTF_SetFontSizeDPI",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::SetFontSizeDPI"
           }
@@ -223260,8 +223245,8 @@
           ],
           "sourceName": "TTF_GetFontSize"
         },
-        "Font::GetSize": {
-          "name": "Font::GetSize",
+        "FontBase::GetSize": {
+          "name": "FontBase::GetSize",
           "kind": "function",
           "type": "float",
           "parameters": [],
@@ -223269,7 +223254,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontSize"
           }
         },
@@ -223329,8 +223313,8 @@
             "mayFail": true
           }
         },
-        "Font::GetDPI": {
-          "name": "Font::GetDPI",
+        "FontBase::GetDPI": {
+          "name": "FontBase::GetDPI",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -223346,7 +223330,6 @@
           "sourceName": "TTF_GetFontDPI",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::GetFontDPI"
           },
@@ -223417,8 +223400,8 @@
           ],
           "sourceName": "TTF_SetFontStyle"
         },
-        "Font::SetStyle": {
-          "name": "Font::SetStyle",
+        "FontBase::SetStyle": {
+          "name": "FontBase::SetStyle",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -223430,7 +223413,6 @@
           "sourceName": "TTF_SetFontStyle",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::SetFontStyle"
           }
         },
@@ -223494,8 +223476,8 @@
           ],
           "sourceName": "TTF_GetFontStyle"
         },
-        "Font::GetStyle": {
-          "name": "Font::GetStyle",
+        "FontBase::GetStyle": {
+          "name": "FontBase::GetStyle",
           "kind": "function",
           "type": "FontStyleFlags",
           "parameters": [],
@@ -223503,7 +223485,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontStyle"
           }
         },
@@ -223557,8 +223538,8 @@
             "mayFail": true
           }
         },
-        "Font::SetOutline": {
-          "name": "Font::SetOutline",
+        "FontBase::SetOutline": {
+          "name": "FontBase::SetOutline",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -223570,7 +223551,6 @@
           "sourceName": "TTF_SetFontOutline",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::SetFontOutline"
           }
@@ -223612,8 +223592,8 @@
           ],
           "sourceName": "TTF_GetFontOutline"
         },
-        "Font::GetOutline": {
-          "name": "Font::GetOutline",
+        "FontBase::GetOutline": {
+          "name": "FontBase::GetOutline",
           "kind": "function",
           "type": "int",
           "parameters": [],
@@ -223621,7 +223601,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontOutline"
           }
         },
@@ -223690,8 +223669,8 @@
           ],
           "sourceName": "TTF_SetFontHinting"
         },
-        "Font::SetHinting": {
-          "name": "Font::SetHinting",
+        "FontBase::SetHinting": {
+          "name": "FontBase::SetHinting",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -223703,7 +223682,6 @@
           "sourceName": "TTF_SetFontHinting",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::SetFontHinting"
           }
         },
@@ -223740,8 +223718,8 @@
           ],
           "sourceName": "TTF_GetNumFontFaces"
         },
-        "Font::GetNumFaces": {
-          "name": "Font::GetNumFaces",
+        "FontBase::GetNumFaces": {
+          "name": "FontBase::GetNumFaces",
           "kind": "function",
           "type": "int",
           "parameters": [],
@@ -223749,7 +223727,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetNumFontFaces"
           }
         },
@@ -223813,8 +223790,8 @@
           ],
           "sourceName": "TTF_GetFontHinting"
         },
-        "Font::GetHinting": {
-          "name": "Font::GetHinting",
+        "FontBase::GetHinting": {
+          "name": "FontBase::GetHinting",
           "kind": "function",
           "type": "HintingFlags",
           "parameters": [],
@@ -223822,7 +223799,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontHinting"
           }
         },
@@ -223877,8 +223853,8 @@
             "mayFail": true
           }
         },
-        "Font::SetSDF": {
-          "name": "Font::SetSDF",
+        "FontBase::SetSDF": {
+          "name": "FontBase::SetSDF",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -223890,7 +223866,6 @@
           "sourceName": "TTF_SetFontSDF",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::SetFontSDF"
           }
@@ -223932,8 +223907,8 @@
           ],
           "sourceName": "TTF_GetFontSDF"
         },
-        "Font::GetSDF": {
-          "name": "Font::GetSDF",
+        "FontBase::GetSDF": {
+          "name": "FontBase::GetSDF",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -223941,7 +223916,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontSDF"
           }
         },
@@ -223984,8 +223958,8 @@
             "patch": 2
           }
         },
-        "Font::GetWeight": {
-          "name": "Font::GetWeight",
+        "FontBase::GetWeight": {
+          "name": "FontBase::GetWeight",
           "kind": "function",
           "type": "int",
           "parameters": [],
@@ -223999,7 +223973,6 @@
           },
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontWeight"
           }
         },
@@ -224215,8 +224188,8 @@
           ],
           "sourceName": "TTF_SetFontWrapAlignment"
         },
-        "Font::SetWrapAlignment": {
-          "name": "Font::SetWrapAlignment",
+        "FontBase::SetWrapAlignment": {
+          "name": "FontBase::SetWrapAlignment",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -224228,7 +224201,6 @@
           "sourceName": "TTF_SetFontWrapAlignment",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::SetFontWrapAlignment"
           }
         },
@@ -224269,8 +224241,8 @@
           ],
           "sourceName": "TTF_GetFontWrapAlignment"
         },
-        "Font::GetWrapAlignment": {
-          "name": "Font::GetWrapAlignment",
+        "FontBase::GetWrapAlignment": {
+          "name": "FontBase::GetWrapAlignment",
           "kind": "function",
           "type": "HorizontalAlignment",
           "parameters": [],
@@ -224278,7 +224250,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontWrapAlignment"
           }
         },
@@ -224316,8 +224287,8 @@
           ],
           "sourceName": "TTF_GetFontHeight"
         },
-        "Font::GetHeight": {
-          "name": "Font::GetHeight",
+        "FontBase::GetHeight": {
+          "name": "FontBase::GetHeight",
           "kind": "function",
           "type": "int",
           "parameters": [],
@@ -224325,7 +224296,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontHeight"
           }
         },
@@ -224363,8 +224333,8 @@
           ],
           "sourceName": "TTF_GetFontAscent"
         },
-        "Font::GetAscent": {
-          "name": "Font::GetAscent",
+        "FontBase::GetAscent": {
+          "name": "FontBase::GetAscent",
           "kind": "function",
           "type": "int",
           "parameters": [],
@@ -224372,7 +224342,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontAscent"
           }
         },
@@ -224410,8 +224379,8 @@
           ],
           "sourceName": "TTF_GetFontDescent"
         },
-        "Font::GetDescent": {
-          "name": "Font::GetDescent",
+        "FontBase::GetDescent": {
+          "name": "FontBase::GetDescent",
           "kind": "function",
           "type": "int",
           "parameters": [],
@@ -224419,7 +224388,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontDescent"
           }
         },
@@ -224465,8 +224433,8 @@
           ],
           "sourceName": "TTF_SetFontLineSkip"
         },
-        "Font::SetLineSkip": {
-          "name": "Font::SetLineSkip",
+        "FontBase::SetLineSkip": {
+          "name": "FontBase::SetLineSkip",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -224478,7 +224446,6 @@
           "sourceName": "TTF_SetFontLineSkip",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::SetFontLineSkip"
           }
         },
@@ -224519,8 +224486,8 @@
           ],
           "sourceName": "TTF_GetFontLineSkip"
         },
-        "Font::GetLineSkip": {
-          "name": "Font::GetLineSkip",
+        "FontBase::GetLineSkip": {
+          "name": "FontBase::GetLineSkip",
           "kind": "function",
           "type": "int",
           "parameters": [],
@@ -224528,7 +224495,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontLineSkip"
           }
         },
@@ -224575,8 +224541,8 @@
           ],
           "sourceName": "TTF_SetFontKerning"
         },
-        "Font::SetKerning": {
-          "name": "Font::SetKerning",
+        "FontBase::SetKerning": {
+          "name": "FontBase::SetKerning",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -224588,7 +224554,6 @@
           "sourceName": "TTF_SetFontKerning",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::SetFontKerning"
           }
         },
@@ -224629,8 +224594,8 @@
           ],
           "sourceName": "TTF_GetFontKerning"
         },
-        "Font::GetKerning": {
-          "name": "Font::GetKerning",
+        "FontBase::GetKerning": {
+          "name": "FontBase::GetKerning",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -224638,7 +224603,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontKerning"
           }
         },
@@ -224676,8 +224640,8 @@
           ],
           "sourceName": "TTF_FontIsFixedWidth"
         },
-        "Font::IsFixedWidth": {
-          "name": "Font::IsFixedWidth",
+        "FontBase::IsFixedWidth": {
+          "name": "FontBase::IsFixedWidth",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -224685,7 +224649,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::FontIsFixedWidth"
           }
         },
@@ -224727,8 +224690,8 @@
           ],
           "sourceName": "TTF_FontIsScalable"
         },
-        "Font::IsScalable": {
-          "name": "Font::IsScalable",
+        "FontBase::IsScalable": {
+          "name": "FontBase::IsScalable",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -224736,7 +224699,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::FontIsScalable"
           }
         },
@@ -224775,8 +224737,8 @@
           ],
           "sourceName": "TTF_GetFontFamilyName"
         },
-        "Font::GetFamilyName": {
-          "name": "Font::GetFamilyName",
+        "FontBase::GetFamilyName": {
+          "name": "FontBase::GetFamilyName",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
@@ -224784,7 +224746,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontFamilyName"
           }
         },
@@ -224823,8 +224784,8 @@
           ],
           "sourceName": "TTF_GetFontStyleName"
         },
-        "Font::GetStyleName": {
-          "name": "Font::GetStyleName",
+        "FontBase::GetStyleName": {
+          "name": "FontBase::GetStyleName",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
@@ -224832,7 +224793,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontStyleName"
           }
         },
@@ -224882,8 +224842,8 @@
             "mayFail": true
           }
         },
-        "Font::SetDirection": {
-          "name": "Font::SetDirection",
+        "FontBase::SetDirection": {
+          "name": "FontBase::SetDirection",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -224895,7 +224855,6 @@
           "sourceName": "TTF_SetFontDirection",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::SetFontDirection"
           }
@@ -224934,8 +224893,8 @@
           ],
           "sourceName": "TTF_GetFontDirection"
         },
-        "Font::GetDirection": {
-          "name": "Font::GetDirection",
+        "FontBase::GetDirection": {
+          "name": "FontBase::GetDirection",
           "kind": "function",
           "type": "Direction",
           "parameters": [],
@@ -224943,7 +224902,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontDirection"
           }
         },
@@ -225083,8 +225041,8 @@
             "mayFail": true
           }
         },
-        "Font::SetScript": {
-          "name": "Font::SetScript",
+        "FontBase::SetScript": {
+          "name": "FontBase::SetScript",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -225096,7 +225054,6 @@
           "sourceName": "TTF_SetFontScript",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::SetFontScript"
           }
@@ -225138,8 +225095,8 @@
           ],
           "sourceName": "TTF_GetFontScript"
         },
-        "Font::GetScript": {
-          "name": "Font::GetScript",
+        "FontBase::GetScript": {
+          "name": "FontBase::GetScript",
           "kind": "function",
           "type": "Uint32",
           "parameters": [],
@@ -225147,7 +225104,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::GetFontScript"
           }
         },
@@ -225195,8 +225151,8 @@
             "mayFail": true
           }
         },
-        "Font::GetGlyphScript": {
-          "name": "Font::GetGlyphScript",
+        "FontBase::GetGlyphScript": {
+          "name": "FontBase::GetGlyphScript",
           "kind": "function",
           "type": "Uint32",
           "parameters": [
@@ -225208,7 +225164,6 @@
           "sourceName": "TTF_GetGlyphScript",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::GetGlyphScript",
             "static": true
@@ -225260,8 +225215,8 @@
             "mayFail": true
           }
         },
-        "Font::SetLanguage": {
-          "name": "Font::SetLanguage",
+        "FontBase::SetLanguage": {
+          "name": "FontBase::SetLanguage",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -225273,7 +225228,6 @@
           "sourceName": "TTF_SetFontLanguage",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::SetFontLanguage"
           }
@@ -225319,8 +225273,8 @@
           ],
           "sourceName": "TTF_FontHasGlyph"
         },
-        "Font::HasGlyph": {
-          "name": "Font::HasGlyph",
+        "FontBase::HasGlyph": {
+          "name": "FontBase::HasGlyph",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -225333,7 +225287,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::FontHasGlyph"
           }
         },
@@ -225393,8 +225346,8 @@
             "mayFail": true
           }
         },
-        "Font::GetGlyphImage": {
-          "name": "Font::GetGlyphImage",
+        "FontBase::GetGlyphImage": {
+          "name": "FontBase::GetGlyphImage",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -225410,7 +225363,6 @@
           "sourceName": "TTF_GetGlyphImage",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::GetGlyphImage"
           },
@@ -225473,8 +225425,8 @@
             "mayFail": true
           }
         },
-        "Font::GetGlyphImageForIndex": {
-          "name": "Font::GetGlyphImageForIndex",
+        "FontBase::GetGlyphImageForIndex": {
+          "name": "FontBase::GetGlyphImageForIndex",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -225490,7 +225442,6 @@
           "sourceName": "TTF_GetGlyphImageForIndex",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::GetGlyphImageForIndex"
           },
@@ -225582,8 +225533,8 @@
             "mayFail": true
           }
         },
-        "Font::GetGlyphMetrics": {
-          "name": "Font::GetGlyphMetrics",
+        "FontBase::GetGlyphMetrics": {
+          "name": "FontBase::GetGlyphMetrics",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -225615,7 +225566,6 @@
           "sourceName": "TTF_GetGlyphMetrics",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::GetGlyphMetrics"
           },
@@ -225677,8 +225627,8 @@
             "mayFail": true
           }
         },
-        "Font::GetGlyphKerning": {
-          "name": "Font::GetGlyphKerning",
+        "FontBase::GetGlyphKerning": {
+          "name": "FontBase::GetGlyphKerning",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -225694,7 +225644,6 @@
           "sourceName": "TTF_GetGlyphKerning",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::GetGlyphKerning"
           },
@@ -225765,8 +225714,8 @@
             "mayFail": true
           }
         },
-        "Font::GetStringSize": {
-          "name": "Font::GetStringSize",
+        "FontBase::GetStringSize": {
+          "name": "FontBase::GetStringSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -225786,7 +225735,6 @@
           "sourceName": "TTF_GetStringSize",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::GetStringSize"
           },
@@ -225867,8 +225815,8 @@
             "mayFail": true
           }
         },
-        "Font::GetStringSizeWrapped": {
-          "name": "Font::GetStringSizeWrapped",
+        "FontBase::GetStringSizeWrapped": {
+          "name": "FontBase::GetStringSizeWrapped",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -225892,7 +225840,6 @@
           "sourceName": "TTF_GetStringSizeWrapped",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::GetStringSizeWrapped"
           },
@@ -225972,8 +225919,8 @@
             "mayFail": true
           }
         },
-        "Font::MeasureString": {
-          "name": "Font::MeasureString",
+        "FontBase::MeasureString": {
+          "name": "FontBase::MeasureString",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -225997,7 +225944,6 @@
           "sourceName": "TTF_MeasureString",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "mayFail": true,
             "delegate": "SDL::MeasureString"
           },
@@ -226082,8 +226028,8 @@
           ],
           "sourceName": "TTF_RenderText_Solid"
         },
-        "Font::RenderText_Solid": {
-          "name": "Font::RenderText_Solid",
+        "FontBase::RenderText_Solid": {
+          "name": "FontBase::RenderText_Solid",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -226100,7 +226046,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderText_Solid"
           }
         },
@@ -226187,8 +226132,8 @@
           ],
           "sourceName": "TTF_RenderText_Solid_Wrapped"
         },
-        "Font::RenderText_Solid_Wrapped": {
-          "name": "Font::RenderText_Solid_Wrapped",
+        "FontBase::RenderText_Solid_Wrapped": {
+          "name": "FontBase::RenderText_Solid_Wrapped",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -226209,7 +226154,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderText_Solid_Wrapped"
           }
         },
@@ -226279,8 +226223,8 @@
           ],
           "sourceName": "TTF_RenderGlyph_Solid"
         },
-        "Font::RenderGlyph_Solid": {
-          "name": "Font::RenderGlyph_Solid",
+        "FontBase::RenderGlyph_Solid": {
+          "name": "FontBase::RenderGlyph_Solid",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -226297,7 +226241,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderGlyph_Solid"
           }
         },
@@ -226384,8 +226327,8 @@
           ],
           "sourceName": "TTF_RenderText_Shaded"
         },
-        "Font::RenderText_Shaded": {
-          "name": "Font::RenderText_Shaded",
+        "FontBase::RenderText_Shaded": {
+          "name": "FontBase::RenderText_Shaded",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -226406,7 +226349,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderText_Shaded"
           }
         },
@@ -226501,8 +226443,8 @@
           ],
           "sourceName": "TTF_RenderText_Shaded_Wrapped"
         },
-        "Font::RenderText_Shaded_Wrapped": {
-          "name": "Font::RenderText_Shaded_Wrapped",
+        "FontBase::RenderText_Shaded_Wrapped": {
+          "name": "FontBase::RenderText_Shaded_Wrapped",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -226527,7 +226469,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderText_Shaded_Wrapped"
           }
         },
@@ -226605,8 +226546,8 @@
           ],
           "sourceName": "TTF_RenderGlyph_Shaded"
         },
-        "Font::RenderGlyph_Shaded": {
-          "name": "Font::RenderGlyph_Shaded",
+        "FontBase::RenderGlyph_Shaded": {
+          "name": "FontBase::RenderGlyph_Shaded",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -226627,7 +226568,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderGlyph_Shaded"
           }
         },
@@ -226706,8 +226646,8 @@
           ],
           "sourceName": "TTF_RenderText_Blended"
         },
-        "Font::RenderText_Blended": {
-          "name": "Font::RenderText_Blended",
+        "FontBase::RenderText_Blended": {
+          "name": "FontBase::RenderText_Blended",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -226724,7 +226664,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderText_Blended"
           }
         },
@@ -226811,8 +226750,8 @@
           ],
           "sourceName": "TTF_RenderText_Blended_Wrapped"
         },
-        "Font::RenderText_Blended_Wrapped": {
-          "name": "Font::RenderText_Blended_Wrapped",
+        "FontBase::RenderText_Blended_Wrapped": {
+          "name": "FontBase::RenderText_Blended_Wrapped",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -226833,7 +226772,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderText_Blended_Wrapped"
           }
         },
@@ -226903,8 +226841,8 @@
           ],
           "sourceName": "TTF_RenderGlyph_Blended"
         },
-        "Font::RenderGlyph_Blended": {
-          "name": "Font::RenderGlyph_Blended",
+        "FontBase::RenderGlyph_Blended": {
+          "name": "FontBase::RenderGlyph_Blended",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -226921,7 +226859,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderGlyph_Blended"
           }
         },
@@ -227008,8 +226945,8 @@
           ],
           "sourceName": "TTF_RenderText_LCD"
         },
-        "Font::RenderText_LCD": {
-          "name": "Font::RenderText_LCD",
+        "FontBase::RenderText_LCD": {
+          "name": "FontBase::RenderText_LCD",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -227030,7 +226967,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderText_LCD"
           }
         },
@@ -227125,8 +227061,8 @@
           ],
           "sourceName": "TTF_RenderText_LCD_Wrapped"
         },
-        "Font::RenderText_LCD_Wrapped": {
-          "name": "Font::RenderText_LCD_Wrapped",
+        "FontBase::RenderText_LCD_Wrapped": {
+          "name": "FontBase::RenderText_LCD_Wrapped",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -227151,7 +227087,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderText_LCD_Wrapped"
           }
         },
@@ -227229,8 +227164,8 @@
           ],
           "sourceName": "TTF_RenderGlyph_LCD"
         },
-        "Font::RenderGlyph_LCD": {
-          "name": "Font::RenderGlyph_LCD",
+        "FontBase::RenderGlyph_LCD": {
+          "name": "FontBase::RenderGlyph_LCD",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -227251,7 +227186,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Font",
             "delegate": "SDL::RenderGlyph_LCD"
           }
         },
@@ -233867,15 +233801,14 @@
           ],
           "sourceName": "TTF_CloseFont"
         },
-        "Font::Close": {
-          "name": "Font::Close",
+        "FontBase::Close": {
+          "name": "FontBase::Close",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "TTF_CloseFont",
           "hints": {
             "self": "get()",
-            "super": "Font",
             "body": "CloseFont(release());",
             "delegate": "SDL::CloseFont"
           }

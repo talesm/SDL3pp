@@ -106134,6 +106134,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct FontBase;
+
+// Forward decl
 struct Font;
 
 /// Alias to raw representation for Font.
@@ -106144,7 +106147,7 @@ using FontRaw = TTF_Font*;
  *
  * This does not take ownership!
  */
-using FontRef = ResourceRef<Font>;
+using FontRef = ResourceRefT<FontBase>;
 
 // Forward decl
 struct TextEngine;
@@ -106452,142 +106455,13 @@ constexpr ImageType IMAGE_COLOR =
 constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
 
 /**
- * The internal structure containing font information.
+ * Base class to Font.
  *
- * Opaque data!
- *
- * @cat resource
+ * @see Font
  */
-struct Font : ResourceBase<FontRaw>
+struct FontBase : ResourceBaseT<FontRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Font.
-   *
-   * @param resource a FontRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Font(FontRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Font(const Font& other) = delete;
-
-  /// Move constructor
-  constexpr Font(Font&& other) noexcept
-    : Font(other.release())
-  {
-  }
-
-  constexpr Font(const FontRef& other) = delete;
-
-  constexpr Font(FontRef&& other) = delete;
-
-  /**
-   * Create a font from a file, using a specified point size.
-   *
-   * Some .fon fonts will have several sizes embedded in the file, so the point
-   * size becomes the index of choosing which size. If the value is too high,
-   * the last indexed size will be the default.
-   *
-   * @param file path to font file.
-   * @param ptsize point size to use for the newly-opened font.
-   * @post a valid Font on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa CloseFont
-   */
-  Font(StringParam file, float ptsize);
-
-  /**
-   * Create a font from an IOStream, using a specified point size.
-   *
-   * Some .fon fonts will have several sizes embedded in the file, so the point
-   * size becomes the index of choosing which size. If the value is too high,
-   * the last indexed size will be the default.
-   *
-   * If `closeio` is true, `src` will be automatically closed once the font is
-   * closed. Otherwise you should keep `src` open until the font is closed.
-   *
-   * @param src an IOStream to provide a font file's data.
-   * @param ptsize point size to use for the newly-opened font.
-   * @param closeio true to close `src` when the font is closed, false to leave
-   *                it open.
-   * @post a valid Font on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa CloseFont
-   */
-  Font(IOStreamRef src, float ptsize, bool closeio = false);
-
-  /**
-   * Create a font with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.Font.Create.FILENAME_STRING`: the font file to open, if an IOStream
-   *   isn't being used. This is required if `prop.Font.Create.IOSTREAM_POINTER`
-   *   and `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
-   * - `prop.Font.Create.IOSTREAM_POINTER`: an IOStream containing the font to
-   *   be opened. This should not be closed until the font is closed. This is
-   *   required if `prop.Font.Create.FILENAME_STRING` and
-   *   `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
-   * - `prop.Font.Create.IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
-   *   the beginning of the font, defaults to 0.
-   * - `prop.Font.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
-   *   should also close the associated IOStream.
-   * - `prop.Font.Create.SIZE_FLOAT`: the point size of the font. Some .fon
-   *   fonts will have several sizes embedded in the file, so the point size
-   *   becomes the index of choosing which size. If the value is too high, the
-   *   last indexed size will be the default.
-   * - `prop.Font.Create.FACE_NUMBER`: the face index of the font, if the font
-   *   contains multiple font faces.
-   * - `prop.Font.Create.HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
-   *   font rendering, defaults to `prop.Font.Create.VERTICAL_DPI_NUMBER` if
-   *   set, or 72 otherwise.
-   * - `prop.Font.Create.VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
-   *   rendering, defaults to `prop.Font.Create.HORIZONTAL_DPI_NUMBER` if set,
-   *   or 72 otherwise.
-   * - `prop.Font.Create.EXISTING_FONT_POINTER`: an optional Font that, if set,
-   *   will be used as the font data source and the initial size and style of
-   *   the new font.
-   *
-   * @param props the properties to use.
-   * @post a valid Font on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa CloseFont
-   */
-  Font(PropertiesRef props);
-
-  /// Destructor
-  ~Font() { TTF_CloseFont(get()); }
-
-  /// Assignment operator.
-  constexpr Font& operator=(Font&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Font& operator=(const Font& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Dispose of a previously-created font.
@@ -107905,6 +107779,141 @@ struct Font : ResourceBase<FontRaw>
 };
 
 /**
+ * The internal structure containing font information.
+ *
+ * Opaque data!
+ *
+ * @cat resource
+ */
+struct Font : FontBase
+{
+  using FontBase::FontBase;
+
+  /**
+   * Constructs from raw Font.
+   *
+   * @param resource a FontRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Font(FontRaw resource) noexcept
+    : FontBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Font(const Font& other) = delete;
+
+  /// Move constructor
+  constexpr Font(Font&& other) noexcept
+    : Font(other.release())
+  {
+  }
+
+  /**
+   * Create a font from a file, using a specified point size.
+   *
+   * Some .fon fonts will have several sizes embedded in the file, so the point
+   * size becomes the index of choosing which size. If the value is too high,
+   * the last indexed size will be the default.
+   *
+   * @param file path to font file.
+   * @param ptsize point size to use for the newly-opened font.
+   * @post a valid Font on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa CloseFont
+   */
+  Font(StringParam file, float ptsize);
+
+  /**
+   * Create a font from an IOStream, using a specified point size.
+   *
+   * Some .fon fonts will have several sizes embedded in the file, so the point
+   * size becomes the index of choosing which size. If the value is too high,
+   * the last indexed size will be the default.
+   *
+   * If `closeio` is true, `src` will be automatically closed once the font is
+   * closed. Otherwise you should keep `src` open until the font is closed.
+   *
+   * @param src an IOStream to provide a font file's data.
+   * @param ptsize point size to use for the newly-opened font.
+   * @param closeio true to close `src` when the font is closed, false to leave
+   *                it open.
+   * @post a valid Font on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa CloseFont
+   */
+  Font(IOStreamRef src, float ptsize, bool closeio = false);
+
+  /**
+   * Create a font with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.Font.Create.FILENAME_STRING`: the font file to open, if an IOStream
+   *   isn't being used. This is required if `prop.Font.Create.IOSTREAM_POINTER`
+   *   and `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
+   * - `prop.Font.Create.IOSTREAM_POINTER`: an IOStream containing the font to
+   *   be opened. This should not be closed until the font is closed. This is
+   *   required if `prop.Font.Create.FILENAME_STRING` and
+   *   `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
+   * - `prop.Font.Create.IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
+   *   the beginning of the font, defaults to 0.
+   * - `prop.Font.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
+   *   should also close the associated IOStream.
+   * - `prop.Font.Create.SIZE_FLOAT`: the point size of the font. Some .fon
+   *   fonts will have several sizes embedded in the file, so the point size
+   *   becomes the index of choosing which size. If the value is too high, the
+   *   last indexed size will be the default.
+   * - `prop.Font.Create.FACE_NUMBER`: the face index of the font, if the font
+   *   contains multiple font faces.
+   * - `prop.Font.Create.HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
+   *   font rendering, defaults to `prop.Font.Create.VERTICAL_DPI_NUMBER` if
+   *   set, or 72 otherwise.
+   * - `prop.Font.Create.VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
+   *   rendering, defaults to `prop.Font.Create.HORIZONTAL_DPI_NUMBER` if set,
+   *   or 72 otherwise.
+   * - `prop.Font.Create.EXISTING_FONT_POINTER`: an optional Font that, if set,
+   *   will be used as the font data source and the initial size and style of
+   *   the new font.
+   *
+   * @param props the properties to use.
+   * @post a valid Font on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa CloseFont
+   */
+  Font(PropertiesRef props);
+
+  /// Destructor
+  ~Font() { TTF_CloseFont(get()); }
+
+  /// Assignment operator.
+  constexpr Font& operator=(Font&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Font& operator=(const Font& other) = delete;
+};
+
+/**
  * Create a font from a file, using a specified point size.
  *
  * Some .fon fonts will have several sizes embedded in the file, so the point
@@ -108083,7 +108092,7 @@ inline Font CopyFont(FontRef existing_font)
   return Font(CheckError(TTF_CopyFont(existing_font)));
 }
 
-inline Font Font::Copy() const { return SDL::CopyFont(get()); }
+inline Font FontBase::Copy() const { return SDL::CopyFont(get()); }
 
 /**
  * Get the properties associated with a font.
@@ -108110,7 +108119,7 @@ inline PropertiesRef GetFontProperties(FontRef font)
   return CheckError(TTF_GetFontProperties(font));
 }
 
-inline PropertiesRef Font::GetProperties()
+inline PropertiesRef FontBase::GetProperties()
 {
   return SDL::GetFontProperties(get());
 }
@@ -108158,7 +108167,7 @@ inline Uint32 GetFontGeneration(FontRef font)
   return TTF_GetFontGeneration(font);
 }
 
-inline Uint32 Font::GetGeneration() const
+inline Uint32 FontBase::GetGeneration() const
 {
   return SDL::GetFontGeneration(get());
 }
@@ -108190,7 +108199,7 @@ inline void AddFallbackFont(FontRef font, FontRef fallback)
   CheckError(TTF_AddFallbackFont(font, fallback));
 }
 
-inline void Font::AddFallback(FontRef fallback)
+inline void FontBase::AddFallback(FontRef fallback)
 {
   SDL::AddFallbackFont(get(), fallback);
 }
@@ -108216,7 +108225,7 @@ inline void RemoveFallbackFont(FontRef font, FontRef fallback)
   TTF_RemoveFallbackFont(font, fallback);
 }
 
-inline void Font::RemoveFallback(FontRef fallback)
+inline void FontBase::RemoveFallback(FontRef fallback)
 {
   SDL::RemoveFallbackFont(get(), fallback);
 }
@@ -108238,7 +108247,7 @@ inline void Font::RemoveFallback(FontRef fallback)
  */
 inline void ClearFallbackFonts(FontRef font) { TTF_ClearFallbackFonts(font); }
 
-inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(get()); }
+inline void FontBase::ClearFallbacks() { SDL::ClearFallbackFonts(get()); }
 
 /**
  * Set a font's size dynamically.
@@ -108262,7 +108271,7 @@ inline void SetFontSize(FontRef font, float ptsize)
   CheckError(TTF_SetFontSize(font, ptsize));
 }
 
-inline void Font::SetSize(float ptsize) { SDL::SetFontSize(get(), ptsize); }
+inline void FontBase::SetSize(float ptsize) { SDL::SetFontSize(get(), ptsize); }
 
 /**
  * Set font size dynamically with target resolutions, in dots per inch.
@@ -108289,7 +108298,7 @@ inline void SetFontSizeDPI(FontRef font, float ptsize, int hdpi, int vdpi)
   CheckError(TTF_SetFontSizeDPI(font, ptsize, hdpi, vdpi));
 }
 
-inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
+inline void FontBase::SetSizeDPI(float ptsize, int hdpi, int vdpi)
 {
   SDL::SetFontSizeDPI(get(), ptsize, hdpi, vdpi);
 }
@@ -108311,7 +108320,7 @@ inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
  */
 inline float GetFontSize(FontRef font) { return TTF_GetFontSize(font); }
 
-inline float Font::GetSize() const { return SDL::GetFontSize(get()); }
+inline float FontBase::GetSize() const { return SDL::GetFontSize(get()); }
 
 /**
  * Get font target resolutions, in dots per inch.
@@ -108333,7 +108342,7 @@ inline void GetFontDPI(FontRef font, int* hdpi, int* vdpi)
   CheckError(TTF_GetFontDPI(font, hdpi, vdpi));
 }
 
-inline void Font::GetDPI(int* hdpi, int* vdpi) const
+inline void FontBase::GetDPI(int* hdpi, int* vdpi) const
 {
   SDL::GetFontDPI(get(), hdpi, vdpi);
 }
@@ -108367,7 +108376,7 @@ inline void SetFontStyle(FontRef font, FontStyleFlags style)
   TTF_SetFontStyle(font, style);
 }
 
-inline void Font::SetStyle(FontStyleFlags style)
+inline void FontBase::SetStyle(FontStyleFlags style)
 {
   SDL::SetFontStyle(get(), style);
 }
@@ -108397,7 +108406,7 @@ inline FontStyleFlags GetFontStyle(FontRef font)
   return TTF_GetFontStyle(font);
 }
 
-inline FontStyleFlags Font::GetStyle() const
+inline FontStyleFlags FontBase::GetStyle() const
 {
   return SDL::GetFontStyle(get());
 }
@@ -108428,7 +108437,7 @@ inline void SetFontOutline(FontRef font, int outline)
   CheckError(TTF_SetFontOutline(font, outline));
 }
 
-inline void Font::SetOutline(int outline)
+inline void FontBase::SetOutline(int outline)
 {
   SDL::SetFontOutline(get(), outline);
 }
@@ -108447,7 +108456,7 @@ inline void Font::SetOutline(int outline)
  */
 inline int GetFontOutline(FontRef font) { return TTF_GetFontOutline(font); }
 
-inline int Font::GetOutline() const { return SDL::GetFontOutline(get()); }
+inline int FontBase::GetOutline() const { return SDL::GetFontOutline(get()); }
 
 /**
  * Set a font's current hinter setting.
@@ -108478,7 +108487,7 @@ inline void SetFontHinting(FontRef font, HintingFlags hinting)
   TTF_SetFontHinting(font, hinting);
 }
 
-inline void Font::SetHinting(HintingFlags hinting)
+inline void FontBase::SetHinting(HintingFlags hinting)
 {
   SDL::SetFontHinting(get(), hinting);
 }
@@ -108495,7 +108504,7 @@ inline void Font::SetHinting(HintingFlags hinting)
  */
 inline int GetNumFontFaces(FontRef font) { return TTF_GetNumFontFaces(font); }
 
-inline int Font::GetNumFaces() const { return SDL::GetNumFontFaces(get()); }
+inline int FontBase::GetNumFaces() const { return SDL::GetNumFontFaces(get()); }
 
 /**
  * Query a font's current FreeType hinter setting.
@@ -108523,7 +108532,7 @@ inline HintingFlags GetFontHinting(FontRef font)
   return TTF_GetFontHinting(font);
 }
 
-inline HintingFlags Font::GetHinting() const
+inline HintingFlags FontBase::GetHinting() const
 {
   return SDL::GetFontHinting(get());
 }
@@ -108556,7 +108565,7 @@ inline void SetFontSDF(FontRef font, bool enabled)
   CheckError(TTF_SetFontSDF(font, enabled));
 }
 
-inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(get(), enabled); }
+inline void FontBase::SetSDF(bool enabled) { SDL::SetFontSDF(get(), enabled); }
 
 /**
  * Query whether Signed Distance Field rendering is enabled for a font.
@@ -108572,7 +108581,7 @@ inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(get(), enabled); }
  */
 inline bool GetFontSDF(FontRef font) { return TTF_GetFontSDF(font); }
 
-inline bool Font::GetSDF() const { return SDL::GetFontSDF(get()); }
+inline bool FontBase::GetSDF() const { return SDL::GetFontSDF(get()); }
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
@@ -108589,7 +108598,7 @@ inline bool Font::GetSDF() const { return SDL::GetFontSDF(get()); }
  */
 inline int GetFontWeight(FontRef font) { return TTF_GetFontWeight(font); }
 
-inline int Font::GetWeight() const { return SDL::GetFontWeight(get()); }
+inline int FontBase::GetWeight() const { return SDL::GetFontWeight(get()); }
 
 constexpr int FONT_WEIGHT_THIN =
   TTF_FONT_WEIGHT_THIN; ///< Thin (100) named font weight value
@@ -108643,7 +108652,7 @@ inline void SetFontWrapAlignment(FontRef font, HorizontalAlignment align)
   TTF_SetFontWrapAlignment(font, align);
 }
 
-inline void Font::SetWrapAlignment(HorizontalAlignment align)
+inline void FontBase::SetWrapAlignment(HorizontalAlignment align)
 {
   SDL::SetFontWrapAlignment(get(), align);
 }
@@ -108665,7 +108674,7 @@ inline HorizontalAlignment GetFontWrapAlignment(FontRef font)
   return TTF_GetFontWrapAlignment(font);
 }
 
-inline HorizontalAlignment Font::GetWrapAlignment() const
+inline HorizontalAlignment FontBase::GetWrapAlignment() const
 {
   return SDL::GetFontWrapAlignment(get());
 }
@@ -108684,7 +108693,7 @@ inline HorizontalAlignment Font::GetWrapAlignment() const
  */
 inline int GetFontHeight(FontRef font) { return TTF_GetFontHeight(font); }
 
-inline int Font::GetHeight() const { return SDL::GetFontHeight(get()); }
+inline int FontBase::GetHeight() const { return SDL::GetFontHeight(get()); }
 
 /**
  * Query the offset from the baseline to the top of a font.
@@ -108700,7 +108709,7 @@ inline int Font::GetHeight() const { return SDL::GetFontHeight(get()); }
  */
 inline int GetFontAscent(FontRef font) { return TTF_GetFontAscent(font); }
 
-inline int Font::GetAscent() const { return SDL::GetFontAscent(get()); }
+inline int FontBase::GetAscent() const { return SDL::GetFontAscent(get()); }
 
 /**
  * Query the offset from the baseline to the bottom of a font.
@@ -108716,7 +108725,7 @@ inline int Font::GetAscent() const { return SDL::GetFontAscent(get()); }
  */
 inline int GetFontDescent(FontRef font) { return TTF_GetFontDescent(font); }
 
-inline int Font::GetDescent() const { return SDL::GetFontDescent(get()); }
+inline int FontBase::GetDescent() const { return SDL::GetFontDescent(get()); }
 
 /**
  * Set the spacing between lines of text for a font.
@@ -108738,7 +108747,7 @@ inline void SetFontLineSkip(FontRef font, int lineskip)
   TTF_SetFontLineSkip(font, lineskip);
 }
 
-inline void Font::SetLineSkip(int lineskip)
+inline void FontBase::SetLineSkip(int lineskip)
 {
   SDL::SetFontLineSkip(get(), lineskip);
 }
@@ -108757,7 +108766,7 @@ inline void Font::SetLineSkip(int lineskip)
  */
 inline int GetFontLineSkip(FontRef font) { return TTF_GetFontLineSkip(font); }
 
-inline int Font::GetLineSkip() const { return SDL::GetFontLineSkip(get()); }
+inline int FontBase::GetLineSkip() const { return SDL::GetFontLineSkip(get()); }
 
 /**
  * Set if kerning is enabled for a font.
@@ -108784,7 +108793,7 @@ inline void SetFontKerning(FontRef font, bool enabled)
   TTF_SetFontKerning(font, enabled);
 }
 
-inline void Font::SetKerning(bool enabled)
+inline void FontBase::SetKerning(bool enabled)
 {
   SDL::SetFontKerning(get(), enabled);
 }
@@ -108803,7 +108812,7 @@ inline void Font::SetKerning(bool enabled)
  */
 inline bool GetFontKerning(FontRef font) { return TTF_GetFontKerning(font); }
 
-inline bool Font::GetKerning() const { return SDL::GetFontKerning(get()); }
+inline bool FontBase::GetKerning() const { return SDL::GetFontKerning(get()); }
 
 /**
  * Query whether a font is fixed-width.
@@ -108826,7 +108835,10 @@ inline bool FontIsFixedWidth(FontRef font)
   return TTF_FontIsFixedWidth(font);
 }
 
-inline bool Font::IsFixedWidth() const { return SDL::FontIsFixedWidth(get()); }
+inline bool FontBase::IsFixedWidth() const
+{
+  return SDL::FontIsFixedWidth(get());
+}
 
 /**
  * Query whether a font is scalable or not.
@@ -108844,7 +108856,7 @@ inline bool Font::IsFixedWidth() const { return SDL::FontIsFixedWidth(get()); }
  */
 inline bool FontIsScalable(FontRef font) { return TTF_FontIsScalable(font); }
 
-inline bool Font::IsScalable() const { return SDL::FontIsScalable(get()); }
+inline bool FontBase::IsScalable() const { return SDL::FontIsScalable(get()); }
 
 /**
  * Query a font's family name.
@@ -108867,7 +108879,7 @@ inline const char* GetFontFamilyName(FontRef font)
   return TTF_GetFontFamilyName(font);
 }
 
-inline const char* Font::GetFamilyName() const
+inline const char* FontBase::GetFamilyName() const
 {
   return SDL::GetFontFamilyName(get());
 }
@@ -108893,7 +108905,7 @@ inline const char* GetFontStyleName(FontRef font)
   return TTF_GetFontStyleName(font);
 }
 
-inline const char* Font::GetStyleName() const
+inline const char* FontBase::GetStyleName() const
 {
   return SDL::GetFontStyleName(get());
 }
@@ -108920,7 +108932,7 @@ inline void SetFontDirection(FontRef font, Direction direction)
   CheckError(TTF_SetFontDirection(font, direction));
 }
 
-inline void Font::SetDirection(Direction direction)
+inline void FontBase::SetDirection(Direction direction)
 {
   SDL::SetFontDirection(get(), direction);
 }
@@ -108943,7 +108955,7 @@ inline Direction GetFontDirection(FontRef font)
   return TTF_GetFontDirection(font);
 }
 
-inline Direction Font::GetDirection() const
+inline Direction FontBase::GetDirection() const
 {
   return SDL::GetFontDirection(get());
 }
@@ -109009,7 +109021,7 @@ inline void SetFontScript(FontRef font, Uint32 script)
   CheckError(TTF_SetFontScript(font, script));
 }
 
-inline void Font::SetScript(Uint32 script)
+inline void FontBase::SetScript(Uint32 script)
 {
   SDL::SetFontScript(get(), script);
 }
@@ -109031,7 +109043,7 @@ inline void Font::SetScript(Uint32 script)
  */
 inline Uint32 GetFontScript(FontRef font) { return TTF_GetFontScript(font); }
 
-inline Uint32 Font::GetScript() const { return SDL::GetFontScript(get()); }
+inline Uint32 FontBase::GetScript() const { return SDL::GetFontScript(get()); }
 
 /**
  * Get the script used by a 32-bit codepoint.
@@ -109052,7 +109064,7 @@ inline Uint32 GetGlyphScript(Uint32 ch)
   return CheckError(TTF_GetGlyphScript(ch));
 }
 
-inline Uint32 Font::GetGlyphScript(Uint32 ch)
+inline Uint32 FontBase::GetGlyphScript(Uint32 ch)
 {
   return SDL::GetGlyphScript(ch);
 }
@@ -109079,7 +109091,7 @@ inline void SetFontLanguage(FontRef font, StringParam language_bcp47)
   CheckError(TTF_SetFontLanguage(font, language_bcp47));
 }
 
-inline void Font::SetLanguage(StringParam language_bcp47)
+inline void FontBase::SetLanguage(StringParam language_bcp47)
 {
   SDL::SetFontLanguage(get(), std::move(language_bcp47));
 }
@@ -109101,7 +109113,7 @@ inline bool FontHasGlyph(FontRef font, Uint32 ch)
   return TTF_FontHasGlyph(font, ch);
 }
 
-inline bool Font::HasGlyph(Uint32 ch) const
+inline bool FontBase::HasGlyph(Uint32 ch) const
 {
   return SDL::FontHasGlyph(get(), ch);
 }
@@ -109126,7 +109138,7 @@ inline Surface GetGlyphImage(FontRef font, Uint32 ch, ImageType* image_type)
   return Surface{CheckError(TTF_GetGlyphImage(font, ch, image_type))};
 }
 
-inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
+inline Surface FontBase::GetGlyphImage(Uint32 ch, ImageType* image_type) const
 {
   return SDL::GetGlyphImage(get(), ch, image_type);
 }
@@ -109157,8 +109169,8 @@ inline Surface GetGlyphImageForIndex(FontRef font,
     CheckError(TTF_GetGlyphImageForIndex(font, glyph_index, image_type)));
 }
 
-inline Surface Font::GetGlyphImageForIndex(Uint32 glyph_index,
-                                           ImageType* image_type) const
+inline Surface FontBase::GetGlyphImageForIndex(Uint32 glyph_index,
+                                               ImageType* image_type) const
 {
   return SDL::GetGlyphImageForIndex(get(), glyph_index, image_type);
 }
@@ -109202,12 +109214,12 @@ inline void GetGlyphMetrics(FontRef font,
   CheckError(TTF_GetGlyphMetrics(font, ch, minx, maxx, miny, maxy, advance));
 }
 
-inline void Font::GetGlyphMetrics(Uint32 ch,
-                                  int* minx,
-                                  int* maxx,
-                                  int* miny,
-                                  int* maxy,
-                                  int* advance) const
+inline void FontBase::GetGlyphMetrics(Uint32 ch,
+                                      int* minx,
+                                      int* maxx,
+                                      int* miny,
+                                      int* maxy,
+                                      int* advance) const
 {
   SDL::GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance);
 }
@@ -109232,7 +109244,7 @@ inline int GetGlyphKerning(FontRef font, Uint32 previous_ch, Uint32 ch)
   throw Error();
 }
 
-inline int Font::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
+inline int FontBase::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
 {
   return SDL::GetGlyphKerning(get(), previous_ch, ch);
 }
@@ -109259,7 +109271,7 @@ inline void GetStringSize(FontRef font, std::string_view text, int* w, int* h)
   CheckError(TTF_GetStringSize(font, text.data(), text.size(), w, h));
 }
 
-inline void Font::GetStringSize(std::string_view text, int* w, int* h) const
+inline void FontBase::GetStringSize(std::string_view text, int* w, int* h) const
 {
   SDL::GetStringSize(get(), text, w, h);
 }
@@ -109297,10 +109309,10 @@ inline void GetStringSizeWrapped(FontRef font,
     TTF_GetStringSizeWrapped(font, text.data(), text.size(), wrap_width, w, h));
 }
 
-inline void Font::GetStringSizeWrapped(std::string_view text,
-                                       int wrap_width,
-                                       int* w,
-                                       int* h) const
+inline void FontBase::GetStringSizeWrapped(std::string_view text,
+                                           int wrap_width,
+                                           int* w,
+                                           int* h) const
 {
   SDL::GetStringSizeWrapped(get(), text, wrap_width, w, h);
 }
@@ -109342,10 +109354,10 @@ inline void MeasureString(FontRef font,
                                measured_length));
 }
 
-inline void Font::MeasureString(std::string_view text,
-                                int max_width,
-                                int* measured_width,
-                                size_t* measured_length) const
+inline void FontBase::MeasureString(std::string_view text,
+                                    int max_width,
+                                    int* measured_width,
+                                    size_t* measured_length) const
 {
   SDL::MeasureString(get(), text, max_width, measured_width, measured_length);
 }
@@ -109388,7 +109400,7 @@ inline Surface RenderText_Solid(FontRef font, std::string_view text, Color fg)
   return Surface{TTF_RenderText_Solid(font, text.data(), text.size(), fg)};
 }
 
-inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
+inline Surface FontBase::RenderText_Solid(std::string_view text, Color fg) const
 {
   return SDL::RenderText_Solid(get(), text, fg);
 }
@@ -109434,9 +109446,9 @@ inline Surface RenderText_Solid_Wrapped(FontRef font,
     font, text.data(), text.size(), fg, wrapLength));
 }
 
-inline Surface Font::RenderText_Solid_Wrapped(std::string_view text,
-                                              Color fg,
-                                              int wrapLength) const
+inline Surface FontBase::RenderText_Solid_Wrapped(std::string_view text,
+                                                  Color fg,
+                                                  int wrapLength) const
 {
   return SDL::RenderText_Solid_Wrapped(get(), text, fg, wrapLength);
 }
@@ -109473,7 +109485,7 @@ inline Surface RenderGlyph_Solid(FontRef font, Uint32 ch, ColorRaw fg)
   return Surface(TTF_RenderGlyph_Solid(font, ch, fg));
 }
 
-inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
+inline Surface FontBase::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
 {
   return SDL::RenderGlyph_Solid(get(), ch, fg);
 }
@@ -109520,9 +109532,9 @@ inline Surface RenderText_Shaded(FontRef font,
   return Surface(TTF_RenderText_Shaded(font, text.data(), text.size(), fg, bg));
 }
 
-inline Surface Font::RenderText_Shaded(std::string_view text,
-                                       Color fg,
-                                       Color bg) const
+inline Surface FontBase::RenderText_Shaded(std::string_view text,
+                                           Color fg,
+                                           Color bg) const
 {
   return SDL::RenderText_Shaded(get(), text, fg, bg);
 }
@@ -109571,10 +109583,10 @@ inline Surface RenderText_Shaded_Wrapped(FontRef font,
     font, text.data(), text.size(), fg, bg, wrap_width));
 }
 
-inline Surface Font::RenderText_Shaded_Wrapped(std::string_view text,
-                                               Color fg,
-                                               Color bg,
-                                               int wrap_width) const
+inline Surface FontBase::RenderText_Shaded_Wrapped(std::string_view text,
+                                                   Color fg,
+                                                   Color bg,
+                                                   int wrap_width) const
 {
   return SDL::RenderText_Shaded_Wrapped(get(), text, fg, bg, wrap_width);
 }
@@ -109616,9 +109628,9 @@ inline Surface RenderGlyph_Shaded(FontRef font,
   return Surface(TTF_RenderGlyph_Shaded(font, ch, fg, bg));
 }
 
-inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
-                                        ColorRaw fg,
-                                        ColorRaw bg) const
+inline Surface FontBase::RenderGlyph_Shaded(Uint32 ch,
+                                            ColorRaw fg,
+                                            ColorRaw bg) const
 {
   return SDL::RenderGlyph_Shaded(get(), ch, fg, bg);
 }
@@ -109660,7 +109672,8 @@ inline Surface RenderText_Blended(FontRef font, std::string_view text, Color fg)
   return Surface(TTF_RenderText_Blended(font, text.data(), text.size(), fg));
 }
 
-inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
+inline Surface FontBase::RenderText_Blended(std::string_view text,
+                                            Color fg) const
 {
   return SDL::RenderText_Blended(get(), text, fg);
 }
@@ -109706,9 +109719,9 @@ inline Surface RenderText_Blended_Wrapped(FontRef font,
     font, text.data(), text.size(), fg, wrap_width));
 }
 
-inline Surface Font::RenderText_Blended_Wrapped(std::string_view text,
-                                                Color fg,
-                                                int wrap_width) const
+inline Surface FontBase::RenderText_Blended_Wrapped(std::string_view text,
+                                                    Color fg,
+                                                    int wrap_width) const
 {
   return SDL::RenderText_Blended_Wrapped(get(), text, fg, wrap_width);
 }
@@ -109745,7 +109758,7 @@ inline Surface RenderGlyph_Blended(FontRef font, Uint32 ch, ColorRaw fg)
   return Surface(TTF_RenderGlyph_Blended(font, ch, fg));
 }
 
-inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
+inline Surface FontBase::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
 {
   return SDL::RenderGlyph_Blended(get(), ch, fg);
 }
@@ -109790,9 +109803,9 @@ inline Surface RenderText_LCD(FontRef font,
   return Surface(TTF_RenderText_LCD(font, text.data(), text.size(), fg, bg));
 }
 
-inline Surface Font::RenderText_LCD(std::string_view text,
-                                    Color fg,
-                                    Color bg) const
+inline Surface FontBase::RenderText_LCD(std::string_view text,
+                                        Color fg,
+                                        Color bg) const
 {
   return SDL::RenderText_LCD(get(), text, fg, bg);
 }
@@ -109840,10 +109853,10 @@ inline Surface RenderText_LCD_Wrapped(FontRef font,
     font, text.data(), text.size(), fg, bg, wrap_width));
 }
 
-inline Surface Font::RenderText_LCD_Wrapped(std::string_view text,
-                                            Color fg,
-                                            Color bg,
-                                            int wrap_width) const
+inline Surface FontBase::RenderText_LCD_Wrapped(std::string_view text,
+                                                Color fg,
+                                                Color bg,
+                                                int wrap_width) const
 {
   return SDL::RenderText_LCD_Wrapped(get(), text, fg, bg, wrap_width);
 }
@@ -109885,7 +109898,9 @@ inline Surface RenderGlyph_LCD(FontRef font,
   return Surface(TTF_RenderGlyph_LCD(font, ch, fg, bg));
 }
 
-inline Surface Font::RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const
+inline Surface FontBase::RenderGlyph_LCD(Uint32 ch,
+                                         ColorRaw fg,
+                                         ColorRaw bg) const
 {
   return SDL::RenderGlyph_LCD(get(), ch, fg, bg);
 }
@@ -112612,7 +112627,7 @@ inline void Text::Destroy() { DestroyText(release()); }
  */
 inline void CloseFont(FontRaw font) { TTF_CloseFont(font); }
 
-inline void Font::Close() { CloseFont(release()); }
+inline void FontBase::Close() { CloseFont(release()); }
 
 /// @}
 
