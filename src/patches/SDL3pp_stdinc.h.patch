@@ -375,11 +375,11 @@
 -constexpr Time MAX_TIME = SDL_MAX_TIME;
 +/// Max allowed time representation
 +constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
-+
-+/// Min allowed time representation
-+constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  
 -constexpr Time MIN_TIME = SDL_MIN_TIME;
++/// Min allowed time representation
++constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
++
 +#ifndef FLT_EPSILON
  
  /**
@@ -421,24 +421,6 @@
   * IOStreamInterface iface = {
   *     .version = sizeof(iface),
   *     .seek = ...
-@@ -898,6 +912,8 @@
-  *
-  * @since This struct is available since SDL 3.2.0.
-  *
-+ * @cat resource
-+ *
-  * @sa GetEnvironment
-  * @sa CreateEnvironment
-  * @sa Environment.GetVariable
-@@ -905,8 +921,6 @@
-  * @sa Environment.SetVariable
-  * @sa Environment.UnsetVariable
-  * @sa Environment.Destroy
-- *
-- * @cat resource
-  */
- struct Environment : ResourceBase<EnvironmentRaw>
- {
 @@ -1007,9 +1021,10 @@
     * Get all variables in the environment.
     *
@@ -948,7 +930,7 @@
     *
     * @param tocode The target character encoding, must not be nullptr.
     * @param fromcode The source character encoding, must not be nullptr.
--   * @post a handle that must be freed with IConv.close, or ICONV_ERROR on
+-   * @post a handle that must be freed with iconv_close, or ICONV_ERROR on
 -   *       failure.
 +   * @post a valid handle or falsy on failure.
     *
@@ -1020,7 +1002,7 @@
   * @threadsafety Do not use the same IConv from two threads at once.
   *
 @@ -5856,19 +6049,19 @@
-  * @sa IConv.close
+  * @sa iconv_close
   * @sa iconv_string
   */
 -inline size_t iconv(IConv cd,

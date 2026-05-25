@@ -145,7 +145,7 @@ inline void Init() { CheckError(TTF_Init()); }
  * Please note that this does not automatically close any fonts that are still
  * open at the time of deinitialization, and it is possibly not safe to close
  * them afterwards, as parts of the library will no longer be initialized to
- * deal with it. A well-written program should call Font.Close() on any open
+ * deal with it. A well-written program should call CloseFont() on any open
  * fonts before calling this function!
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -223,12 +223,12 @@ inline void GetHarfBuzzVersion(int* major, int* minor, int* patch)
  *
  * These are the flags which can be used to set the style of a font in SDL_ttf.
  * A combination of these flags can be used with functions that set or query
- * font style, such as Font.SetStyle or Font.GetStyle.
+ * font style, such as SetFontStyle or GetFontStyle.
  *
  * @since This datatype is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetStyle
- * @sa Font.GetStyle
+ * @sa SetFontStyle
+ * @sa GetFontStyle
  */
 using FontStyleFlags = Uint32;
 
@@ -253,8 +253,8 @@ constexpr FontStyleFlags STYLE_STRIKETHROUGH =
  *
  * @since This enum is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetHinting
- * @sa Font.GetHinting
+ * @sa SetFontHinting
+ * @sa GetFontHinting
  */
 using HintingFlags = TTF_HintingFlags;
 
@@ -310,7 +310,7 @@ constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
  *
  * @since This enum is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetDirection
+ * @sa SetFontDirection
  */
 using Direction = TTF_Direction;
 
@@ -394,7 +394,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.Close
+   * @sa CloseFont
    */
   Font(StringParam file, float ptsize);
 
@@ -419,7 +419,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.Close
+   * @sa CloseFont
    */
   Font(IOStreamRef src, float ptsize, bool closeio = false);
 
@@ -463,7 +463,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.Close
+   * @sa CloseFont
    */
   Font(PropertiesRef props);
 
@@ -489,8 +489,8 @@ struct Font : ResourceBase<FontRaw>
    *
    * The font is not valid after being passed to this function. String pointers
    * from functions that return information on this font, such as
-   * Font.GetFamilyName() and Font.GetStyleName(), are no longer valid after
-   * this call, as well.
+   * GetFontFamilyName() and GetFontStyleName(), are no longer valid after this
+   * call, as well.
    *
    * @threadsafety This function should not be called while any other thread is
    *               using the font.
@@ -516,7 +516,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.Close
+   * @sa CloseFont
    */
   Font Copy() const;
 
@@ -575,8 +575,8 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.ClearFallbacks
-   * @sa Font.RemoveFallback
+   * @sa ClearFallbackFonts
+   * @sa RemoveFallbackFont
    */
   void AddFallback(FontRef fallback);
 
@@ -592,8 +592,8 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.AddFallback
-   * @sa Font.ClearFallbacks
+   * @sa AddFallbackFont
+   * @sa ClearFallbackFonts
    */
   void RemoveFallback(FontRef fallback);
 
@@ -607,8 +607,8 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.AddFallback
-   * @sa Font.RemoveFallback
+   * @sa AddFallbackFont
+   * @sa RemoveFallbackFont
    */
   void ClearFallbacks();
 
@@ -626,7 +626,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.GetSize
+   * @sa GetFontSize
    */
   void SetSize(float ptsize);
 
@@ -646,7 +646,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.GetSize
+   * @sa GetFontSize
    * @sa TTF_GetFontSizeDPI
    */
   void SetSizeDPI(float ptsize, int hdpi, int vdpi);
@@ -662,8 +662,8 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.SetSize
-   * @sa Font.SetSizeDPI
+   * @sa SetFontSize
+   * @sa SetFontSizeDPI
    */
   float GetSize() const;
 
@@ -679,7 +679,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.SetSizeDPI
+   * @sa SetFontSizeDPI
    */
   void GetDPI(int* hdpi, int* vdpi) const;
 
@@ -704,7 +704,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.GetStyle
+   * @sa GetFontStyle
    */
   void SetStyle(FontStyleFlags style);
 
@@ -725,7 +725,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.SetStyle
+   * @sa SetFontStyle
    */
   FontStyleFlags GetStyle() const;
 
@@ -747,7 +747,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.GetOutline
+   * @sa GetFontOutline
    */
   void SetOutline(int outline);
 
@@ -760,7 +760,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.SetOutline
+   * @sa SetFontOutline
    */
   int GetOutline() const;
 
@@ -785,7 +785,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.GetHinting
+   * @sa GetFontHinting
    */
   void SetHinting(HintingFlags hinting);
 
@@ -818,7 +818,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.SetHinting
+   * @sa SetFontHinting
    */
   HintingFlags GetHinting() const;
 
@@ -842,7 +842,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.GetSDF
+   * @sa GetFontSDF
    */
   void SetSDF(bool enabled);
 
@@ -855,7 +855,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.SetSDF
+   * @sa SetFontSDF
    */
   bool GetSDF() const;
 
@@ -887,7 +887,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.GetWrapAlignment
+   * @sa GetFontWrapAlignment
    */
   void SetWrapAlignment(HorizontalAlignment align);
 
@@ -900,7 +900,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.SetWrapAlignment
+   * @sa SetFontWrapAlignment
    */
   HorizontalAlignment GetWrapAlignment() const;
 
@@ -955,7 +955,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.GetLineSkip
+   * @sa GetFontLineSkip
    */
   void SetLineSkip(int lineskip);
 
@@ -968,7 +968,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.SetLineSkip
+   * @sa SetFontLineSkip
    */
   int GetLineSkip() const;
 
@@ -989,7 +989,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.GetKerning
+   * @sa GetFontKerning
    */
   void SetKerning(bool enabled);
 
@@ -1002,7 +1002,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.SetKerning
+   * @sa SetFontKerning
    */
   bool GetKerning() const;
 
@@ -1034,7 +1034,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.SetSDF
+   * @sa SetFontSDF
    */
   bool IsScalable() const;
 
@@ -1045,7 +1045,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * Note that the returned string is to internal storage, and should not be
    * modified or free'd by the caller. The string becomes invalid, with the rest
-   * of the font, when `font` is handed to Font.Close().
+   * of the font, when `font` is handed to CloseFont().
    *
    * @returns the font's family name.
    *
@@ -1062,7 +1062,7 @@ struct Font : ResourceBase<FontRaw>
    *
    * Note that the returned string is to internal storage, and should not be
    * modified or free'd by the caller. The string becomes invalid, with the rest
-   * of the font, when `font` is handed to Font.Close().
+   * of the font, when `font` is handed to CloseFont().
    *
    * @returns the font's style name.
    *
@@ -1405,13 +1405,13 @@ struct Font : ResourceBase<FontRaw>
    *
    * This will not word-wrap the string; you'll get a surface with a single line
    * of text, as long as the string requires. You can use
-   * Font.RenderText_Solid_Wrapped() instead if you need to wrap the output to
+   * RenderText_Solid_Wrapped() instead if you need to wrap the output to
    * multiple lines.
    *
    * This will not wrap on newline characters.
    *
-   * You can render at other quality levels with Font.RenderText_Shaded,
-   * Font.RenderText_Blended, and Font.RenderText_LCD.
+   * You can render at other quality levels with RenderText_Shaded,
+   * RenderText_Blended, and RenderText_LCD.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
@@ -1422,11 +1422,11 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderText_Blended
-   * @sa Font.RenderText_LCD
-   * @sa Font.RenderText_Shaded
-   * @sa Font.RenderText_Solid
-   * @sa Font.RenderText_Solid_Wrapped
+   * @sa RenderText_Blended
+   * @sa RenderText_LCD
+   * @sa RenderText_Shaded
+   * @sa RenderText_Solid
+   * @sa RenderText_Solid_Wrapped
    */
   Surface RenderText_Solid(std::string_view text, Color fg) const;
 
@@ -1442,8 +1442,8 @@ struct Font : ResourceBase<FontRaw>
    *
    * If wrapLength is 0, this function will only wrap on newline characters.
    *
-   * You can render at other quality levels with Font.RenderText_Shaded_Wrapped,
-   * Font.RenderText_Blended_Wrapped, and Font.RenderText_LCD_Wrapped.
+   * You can render at other quality levels with RenderText_Shaded_Wrapped,
+   * RenderText_Blended_Wrapped, and RenderText_LCD_Wrapped.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
@@ -1456,10 +1456,10 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderText_Blended_Wrapped
-   * @sa Font.RenderText_LCD_Wrapped
-   * @sa Font.RenderText_Shaded_Wrapped
-   * @sa Font.RenderText_Solid
+   * @sa RenderText_Blended_Wrapped
+   * @sa RenderText_LCD_Wrapped
+   * @sa RenderText_Shaded_Wrapped
+   * @sa RenderText_Solid
    */
   Surface RenderText_Solid_Wrapped(std::string_view text,
                                    Color fg,
@@ -1475,8 +1475,8 @@ struct Font : ResourceBase<FontRaw>
    * The glyph is rendered without any padding or centering in the X direction,
    * and aligned normally in the Y direction.
    *
-   * You can render at other quality levels with Font.RenderGlyph_Shaded,
-   * Font.RenderGlyph_Blended, and Font.RenderGlyph_LCD.
+   * You can render at other quality levels with RenderGlyph_Shaded,
+   * RenderGlyph_Blended, and RenderGlyph_LCD.
    *
    * @param ch the character to render.
    * @param fg the foreground color for the text.
@@ -1487,9 +1487,9 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderGlyph_Blended
-   * @sa Font.RenderGlyph_LCD
-   * @sa Font.RenderGlyph_Shaded
+   * @sa RenderGlyph_Blended
+   * @sa RenderGlyph_LCD
+   * @sa RenderGlyph_Shaded
    */
   Surface RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const;
 
@@ -1503,13 +1503,13 @@ struct Font : ResourceBase<FontRaw>
    *
    * This will not word-wrap the string; you'll get a surface with a single line
    * of text, as long as the string requires. You can use
-   * Font.RenderText_Shaded_Wrapped() instead if you need to wrap the output to
+   * RenderText_Shaded_Wrapped() instead if you need to wrap the output to
    * multiple lines.
    *
    * This will not wrap on newline characters.
    *
-   * You can render at other quality levels with Font.RenderText_Solid,
-   * Font.RenderText_Blended, and Font.RenderText_LCD.
+   * You can render at other quality levels with RenderText_Solid,
+   * RenderText_Blended, and RenderText_LCD.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
@@ -1521,10 +1521,10 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderText_Blended
-   * @sa Font.RenderText_LCD
-   * @sa Font.RenderText_Shaded_Wrapped
-   * @sa Font.RenderText_Solid
+   * @sa RenderText_Blended
+   * @sa RenderText_LCD
+   * @sa RenderText_Shaded_Wrapped
+   * @sa RenderText_Solid
    */
   Surface RenderText_Shaded(std::string_view text, Color fg, Color bg) const;
 
@@ -1541,8 +1541,8 @@ struct Font : ResourceBase<FontRaw>
    *
    * If wrap_width is 0, this function will only wrap on newline characters.
    *
-   * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
-   * Font.RenderText_Blended_Wrapped, and Font.RenderText_LCD_Wrapped.
+   * You can render at other quality levels with RenderText_Solid_Wrapped,
+   * RenderText_Blended_Wrapped, and RenderText_LCD_Wrapped.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
@@ -1556,10 +1556,10 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderText_Blended_Wrapped
-   * @sa Font.RenderText_LCD_Wrapped
-   * @sa Font.RenderText_Shaded
-   * @sa Font.RenderText_Solid_Wrapped
+   * @sa RenderText_Blended_Wrapped
+   * @sa RenderText_LCD_Wrapped
+   * @sa RenderText_Shaded
+   * @sa RenderText_Solid_Wrapped
    */
   Surface RenderText_Shaded_Wrapped(std::string_view text,
                                     Color fg,
@@ -1577,8 +1577,8 @@ struct Font : ResourceBase<FontRaw>
    * The glyph is rendered without any padding or centering in the X direction,
    * and aligned normally in the Y direction.
    *
-   * You can render at other quality levels with Font.RenderGlyph_Solid,
-   * Font.RenderGlyph_Blended, and Font.RenderGlyph_LCD.
+   * You can render at other quality levels with RenderGlyph_Solid,
+   * RenderGlyph_Blended, and RenderGlyph_LCD.
    *
    * @param ch the codepoint to render.
    * @param fg the foreground color for the text.
@@ -1590,9 +1590,9 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderGlyph_Blended
-   * @sa Font.RenderGlyph_LCD
-   * @sa Font.RenderGlyph_Solid
+   * @sa RenderGlyph_Blended
+   * @sa RenderGlyph_LCD
+   * @sa RenderGlyph_Solid
    */
   Surface RenderGlyph_Shaded(Uint32 ch, ColorRaw fg, ColorRaw bg) const;
 
@@ -1605,13 +1605,13 @@ struct Font : ResourceBase<FontRaw>
    *
    * This will not word-wrap the string; you'll get a surface with a single line
    * of text, as long as the string requires. You can use
-   * Font.RenderText_Blended_Wrapped() instead if you need to wrap the output to
+   * RenderText_Blended_Wrapped() instead if you need to wrap the output to
    * multiple lines.
    *
    * This will not wrap on newline characters.
    *
-   * You can render at other quality levels with Font.RenderText_Solid,
-   * Font.RenderText_Shaded, and Font.RenderText_LCD.
+   * You can render at other quality levels with RenderText_Solid,
+   * RenderText_Shaded, and RenderText_LCD.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
@@ -1622,10 +1622,10 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderText_Blended_Wrapped
-   * @sa Font.RenderText_LCD
-   * @sa Font.RenderText_Shaded
-   * @sa Font.RenderText_Solid
+   * @sa RenderText_Blended_Wrapped
+   * @sa RenderText_LCD
+   * @sa RenderText_Shaded
+   * @sa RenderText_Solid
    */
   Surface RenderText_Blended(std::string_view text, Color fg) const;
 
@@ -1641,8 +1641,8 @@ struct Font : ResourceBase<FontRaw>
    *
    * If wrap_width is 0, this function will only wrap on newline characters.
    *
-   * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
-   * Font.RenderText_Shaded_Wrapped, and Font.RenderText_LCD_Wrapped.
+   * You can render at other quality levels with RenderText_Solid_Wrapped,
+   * RenderText_Shaded_Wrapped, and RenderText_LCD_Wrapped.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
@@ -1655,10 +1655,10 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderText_Blended
-   * @sa Font.RenderText_LCD_Wrapped
-   * @sa Font.RenderText_Shaded_Wrapped
-   * @sa Font.RenderText_Solid_Wrapped
+   * @sa RenderText_Blended
+   * @sa RenderText_LCD_Wrapped
+   * @sa RenderText_Shaded_Wrapped
+   * @sa RenderText_Solid_Wrapped
    */
   Surface RenderText_Blended_Wrapped(std::string_view text,
                                      Color fg,
@@ -1674,8 +1674,8 @@ struct Font : ResourceBase<FontRaw>
    * The glyph is rendered without any padding or centering in the X direction,
    * and aligned normally in the Y direction.
    *
-   * You can render at other quality levels with Font.RenderGlyph_Solid,
-   * Font.RenderGlyph_Shaded, and Font.RenderGlyph_LCD.
+   * You can render at other quality levels with RenderGlyph_Solid,
+   * RenderGlyph_Shaded, and RenderGlyph_LCD.
    *
    * @param ch the codepoint to render.
    * @param fg the foreground color for the text.
@@ -1686,9 +1686,9 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderGlyph_LCD
-   * @sa Font.RenderGlyph_Shaded
-   * @sa Font.RenderGlyph_Solid
+   * @sa RenderGlyph_LCD
+   * @sa RenderGlyph_Shaded
+   * @sa RenderGlyph_Solid
    */
   Surface RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const;
 
@@ -1701,13 +1701,13 @@ struct Font : ResourceBase<FontRaw>
    *
    * This will not word-wrap the string; you'll get a surface with a single line
    * of text, as long as the string requires. You can use
-   * Font.RenderText_LCD_Wrapped() instead if you need to wrap the output to
-   * multiple lines.
+   * RenderText_LCD_Wrapped() instead if you need to wrap the output to multiple
+   * lines.
    *
    * This will not wrap on newline characters.
    *
-   * You can render at other quality levels with Font.RenderText_Solid,
-   * Font.RenderText_Shaded, and Font.RenderText_Blended.
+   * You can render at other quality levels with RenderText_Solid,
+   * RenderText_Shaded, and RenderText_Blended.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
@@ -1719,10 +1719,10 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderText_Blended
-   * @sa Font.RenderText_LCD_Wrapped
-   * @sa Font.RenderText_Shaded
-   * @sa Font.RenderText_Solid
+   * @sa RenderText_Blended
+   * @sa RenderText_LCD_Wrapped
+   * @sa RenderText_Shaded
+   * @sa RenderText_Solid
    */
   Surface RenderText_LCD(std::string_view text, Color fg, Color bg) const;
 
@@ -1739,8 +1739,8 @@ struct Font : ResourceBase<FontRaw>
    *
    * If wrap_width is 0, this function will only wrap on newline characters.
    *
-   * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
-   * Font.RenderText_Shaded_Wrapped, and Font.RenderText_Blended_Wrapped.
+   * You can render at other quality levels with RenderText_Solid_Wrapped,
+   * RenderText_Shaded_Wrapped, and RenderText_Blended_Wrapped.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
@@ -1754,10 +1754,10 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderText_Blended_Wrapped
-   * @sa Font.RenderText_LCD
-   * @sa Font.RenderText_Shaded_Wrapped
-   * @sa Font.RenderText_Solid_Wrapped
+   * @sa RenderText_Blended_Wrapped
+   * @sa RenderText_LCD
+   * @sa RenderText_Shaded_Wrapped
+   * @sa RenderText_Solid_Wrapped
    */
   Surface RenderText_LCD_Wrapped(std::string_view text,
                                  Color fg,
@@ -1775,8 +1775,8 @@ struct Font : ResourceBase<FontRaw>
    * The glyph is rendered without any padding or centering in the X direction,
    * and aligned normally in the Y direction.
    *
-   * You can render at other quality levels with Font.RenderGlyph_Solid,
-   * Font.RenderGlyph_Shaded, and Font.RenderGlyph_Blended.
+   * You can render at other quality levels with RenderGlyph_Solid,
+   * RenderGlyph_Shaded, and RenderGlyph_Blended.
    *
    * @param ch the codepoint to render.
    * @param fg the foreground color for the text.
@@ -1788,9 +1788,9 @@ struct Font : ResourceBase<FontRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Font.RenderGlyph_Blended
-   * @sa Font.RenderGlyph_Shaded
-   * @sa Font.RenderGlyph_Solid
+   * @sa RenderGlyph_Blended
+   * @sa RenderGlyph_Shaded
+   * @sa RenderGlyph_Solid
    */
   Surface RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const;
 };
@@ -1802,7 +1802,7 @@ struct Font : ResourceBase<FontRaw>
  * size becomes the index of choosing which size. If the value is too high, the
  * last indexed size will be the default.
  *
- * When done with the returned Font, use Font.Close() to dispose of it.
+ * When done with the returned Font, use CloseFont() to dispose of it.
  *
  * @param file path to font file.
  * @param ptsize point size to use for the newly-opened font.
@@ -1813,7 +1813,7 @@ struct Font : ResourceBase<FontRaw>
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.Close
+ * @sa CloseFont
  */
 inline Font OpenFont(StringParam file, float ptsize)
 {
@@ -1845,7 +1845,7 @@ inline Font::Font(PropertiesRef props)
  * If `closeio` is true, `src` will be automatically closed once the font is
  * closed. Otherwise you should keep `src` open until the font is closed.
  *
- * When done with the returned Font, use Font.Close() to dispose of it.
+ * When done with the returned Font, use CloseFont() to dispose of it.
  *
  * @param src an IOStream to provide a font file's data.
  * @param ptsize point size to use for the newly-opened font.
@@ -1858,7 +1858,7 @@ inline Font::Font(PropertiesRef props)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.Close
+ * @sa CloseFont
  */
 inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
 {
@@ -1905,7 +1905,7 @@ inline Font OpenFontIO(IOStreamRef src, float ptsize, bool closeio = false)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.Close
+ * @sa CloseFont
  */
 inline Font OpenFontWithProperties(PropertiesRef props) { return Font(props); }
 
@@ -1956,7 +1956,7 @@ constexpr auto EXISTING_FONT_POINTER =
  * The copy will be distinct from the original, but will share the font file and
  * have the same size and style as the original.
  *
- * When done with the returned Font, use Font.Close() to dispose of it.
+ * When done with the returned Font, use CloseFont() to dispose of it.
  *
  * @param existing_font the font to copy.
  * @returns a valid Font on success.
@@ -1967,7 +1967,7 @@ constexpr auto EXISTING_FONT_POINTER =
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.Close
+ * @sa CloseFont
  */
 inline Font CopyFont(FontRef existing_font)
 {
@@ -2073,8 +2073,8 @@ inline Uint32 Font::GetGeneration() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.ClearFallbacks
- * @sa Font.RemoveFallback
+ * @sa ClearFallbackFonts
+ * @sa RemoveFallbackFont
  */
 inline void AddFallbackFont(FontRef font, FontRef fallback)
 {
@@ -2099,8 +2099,8 @@ inline void Font::AddFallback(FontRef fallback)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.AddFallback
- * @sa Font.ClearFallbacks
+ * @sa AddFallbackFont
+ * @sa ClearFallbackFonts
  */
 inline void RemoveFallbackFont(FontRef font, FontRef fallback)
 {
@@ -2124,8 +2124,8 @@ inline void Font::RemoveFallback(FontRef fallback)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.AddFallback
- * @sa Font.RemoveFallback
+ * @sa AddFallbackFont
+ * @sa RemoveFallbackFont
  */
 inline void ClearFallbackFonts(FontRef font) { TTF_ClearFallbackFonts(font); }
 
@@ -2146,7 +2146,7 @@ inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.GetSize
+ * @sa GetFontSize
  */
 inline void SetFontSize(FontRef font, float ptsize)
 {
@@ -2172,7 +2172,7 @@ inline void Font::SetSize(float ptsize) { SDL::SetFontSize(get(), ptsize); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.GetSize
+ * @sa GetFontSize
  * @sa TTF_GetFontSizeDPI
  */
 inline void SetFontSizeDPI(FontRef font, float ptsize, int hdpi, int vdpi)
@@ -2197,8 +2197,8 @@ inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetSize
- * @sa Font.SetSizeDPI
+ * @sa SetFontSize
+ * @sa SetFontSizeDPI
  */
 inline float GetFontSize(FontRef font) { return TTF_GetFontSize(font); }
 
@@ -2217,7 +2217,7 @@ inline float Font::GetSize() const { return SDL::GetFontSize(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetSizeDPI
+ * @sa SetFontSizeDPI
  */
 inline void GetFontDPI(FontRef font, int* hdpi, int* vdpi)
 {
@@ -2251,7 +2251,7 @@ inline void Font::GetDPI(int* hdpi, int* vdpi) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.GetStyle
+ * @sa GetFontStyle
  */
 inline void SetFontStyle(FontRef font, FontStyleFlags style)
 {
@@ -2281,7 +2281,7 @@ inline void Font::SetStyle(FontStyleFlags style)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetStyle
+ * @sa SetFontStyle
  */
 inline FontStyleFlags GetFontStyle(FontRef font)
 {
@@ -2312,7 +2312,7 @@ inline FontStyleFlags Font::GetStyle() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.GetOutline
+ * @sa GetFontOutline
  */
 inline void SetFontOutline(FontRef font, int outline)
 {
@@ -2334,7 +2334,7 @@ inline void Font::SetOutline(int outline)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetOutline
+ * @sa SetFontOutline
  */
 inline int GetFontOutline(FontRef font) { return TTF_GetFontOutline(font); }
 
@@ -2362,7 +2362,7 @@ inline int Font::GetOutline() const { return SDL::GetFontOutline(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.GetHinting
+ * @sa GetFontHinting
  */
 inline void SetFontHinting(FontRef font, HintingFlags hinting)
 {
@@ -2407,7 +2407,7 @@ inline int Font::GetNumFaces() const { return SDL::GetNumFontFaces(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetHinting
+ * @sa SetFontHinting
  */
 inline HintingFlags GetFontHinting(FontRef font)
 {
@@ -2440,7 +2440,7 @@ inline HintingFlags Font::GetHinting() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.GetSDF
+ * @sa GetFontSDF
  */
 inline void SetFontSDF(FontRef font, bool enabled)
 {
@@ -2459,7 +2459,7 @@ inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(get(), enabled); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetSDF
+ * @sa SetFontSDF
  */
 inline bool GetFontSDF(FontRef font) { return TTF_GetFontSDF(font); }
 
@@ -2527,7 +2527,7 @@ constexpr int FONT_WEIGHT_EXTRA_BLACK =
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.GetWrapAlignment
+ * @sa GetFontWrapAlignment
  */
 inline void SetFontWrapAlignment(FontRef font, HorizontalAlignment align)
 {
@@ -2549,7 +2549,7 @@ inline void Font::SetWrapAlignment(HorizontalAlignment align)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetWrapAlignment
+ * @sa SetFontWrapAlignment
  */
 inline HorizontalAlignment GetFontWrapAlignment(FontRef font)
 {
@@ -2622,7 +2622,7 @@ inline int Font::GetDescent() const { return SDL::GetFontDescent(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.GetLineSkip
+ * @sa GetFontLineSkip
  */
 inline void SetFontLineSkip(FontRef font, int lineskip)
 {
@@ -2644,7 +2644,7 @@ inline void Font::SetLineSkip(int lineskip)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetLineSkip
+ * @sa SetFontLineSkip
  */
 inline int GetFontLineSkip(FontRef font) { return TTF_GetFontLineSkip(font); }
 
@@ -2668,7 +2668,7 @@ inline int Font::GetLineSkip() const { return SDL::GetFontLineSkip(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.GetKerning
+ * @sa GetFontKerning
  */
 inline void SetFontKerning(FontRef font, bool enabled)
 {
@@ -2690,7 +2690,7 @@ inline void Font::SetKerning(bool enabled)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetKerning
+ * @sa SetFontKerning
  */
 inline bool GetFontKerning(FontRef font) { return TTF_GetFontKerning(font); }
 
@@ -2731,7 +2731,7 @@ inline bool Font::IsFixedWidth() const { return SDL::FontIsFixedWidth(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.SetSDF
+ * @sa SetFontSDF
  */
 inline bool FontIsScalable(FontRef font) { return TTF_FontIsScalable(font); }
 
@@ -2744,7 +2744,7 @@ inline bool Font::IsScalable() const { return SDL::FontIsScalable(get()); }
  *
  * Note that the returned string is to internal storage, and should not be
  * modified or free'd by the caller. The string becomes invalid, with the rest
- * of the font, when `font` is handed to Font.Close().
+ * of the font, when `font` is handed to CloseFont().
  *
  * @param font the font to query.
  * @returns the font's family name.
@@ -2770,7 +2770,7 @@ inline const char* Font::GetFamilyName() const
  *
  * Note that the returned string is to internal storage, and should not be
  * modified or free'd by the caller. The string becomes invalid, with the rest
- * of the font, when `font` is handed to Font.Close().
+ * of the font, when `font` is handed to CloseFont().
  *
  * @param font the font to query.
  * @returns the font's style name.
@@ -3250,13 +3250,13 @@ inline void Font::MeasureString(std::string_view text,
  *
  * This will not word-wrap the string; you'll get a surface with a single line
  * of text, as long as the string requires. You can use
- * Font.RenderText_Solid_Wrapped() instead if you need to wrap the output to
- * multiple lines.
+ * RenderText_Solid_Wrapped() instead if you need to wrap the output to multiple
+ * lines.
  *
  * This will not wrap on newline characters.
  *
- * You can render at other quality levels with Font.RenderText_Shaded,
- * Font.RenderText_Blended, and Font.RenderText_LCD.
+ * You can render at other quality levels with RenderText_Shaded,
+ * RenderText_Blended, and RenderText_LCD.
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
@@ -3268,11 +3268,11 @@ inline void Font::MeasureString(std::string_view text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderText_Blended
- * @sa Font.RenderText_LCD
- * @sa Font.RenderText_Shaded
- * @sa Font.RenderText_Solid
- * @sa Font.RenderText_Solid_Wrapped
+ * @sa RenderText_Blended
+ * @sa RenderText_LCD
+ * @sa RenderText_Shaded
+ * @sa RenderText_Solid
+ * @sa RenderText_Solid_Wrapped
  */
 inline Surface RenderText_Solid(FontRef font, std::string_view text, Color fg)
 {
@@ -3296,8 +3296,8 @@ inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
  *
  * If wrapLength is 0, this function will only wrap on newline characters.
  *
- * You can render at other quality levels with Font.RenderText_Shaded_Wrapped,
- * Font.RenderText_Blended_Wrapped, and Font.RenderText_LCD_Wrapped.
+ * You can render at other quality levels with RenderText_Shaded_Wrapped,
+ * RenderText_Blended_Wrapped, and RenderText_LCD_Wrapped.
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
@@ -3311,10 +3311,10 @@ inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderText_Blended_Wrapped
- * @sa Font.RenderText_LCD_Wrapped
- * @sa Font.RenderText_Shaded_Wrapped
- * @sa Font.RenderText_Solid
+ * @sa RenderText_Blended_Wrapped
+ * @sa RenderText_LCD_Wrapped
+ * @sa RenderText_Shaded_Wrapped
+ * @sa RenderText_Solid
  */
 inline Surface RenderText_Solid_Wrapped(FontRef font,
                                         std::string_view text,
@@ -3342,8 +3342,8 @@ inline Surface Font::RenderText_Solid_Wrapped(std::string_view text,
  * The glyph is rendered without any padding or centering in the X direction,
  * and aligned normally in the Y direction.
  *
- * You can render at other quality levels with Font.RenderGlyph_Shaded,
- * Font.RenderGlyph_Blended, and Font.RenderGlyph_LCD.
+ * You can render at other quality levels with RenderGlyph_Shaded,
+ * RenderGlyph_Blended, and RenderGlyph_LCD.
  *
  * @param font the font to render with.
  * @param ch the character to render.
@@ -3355,9 +3355,9 @@ inline Surface Font::RenderText_Solid_Wrapped(std::string_view text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderGlyph_Blended
- * @sa Font.RenderGlyph_LCD
- * @sa Font.RenderGlyph_Shaded
+ * @sa RenderGlyph_Blended
+ * @sa RenderGlyph_LCD
+ * @sa RenderGlyph_Shaded
  */
 inline Surface RenderGlyph_Solid(FontRef font, Uint32 ch, ColorRaw fg)
 {
@@ -3379,13 +3379,13 @@ inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
  *
  * This will not word-wrap the string; you'll get a surface with a single line
  * of text, as long as the string requires. You can use
- * Font.RenderText_Shaded_Wrapped() instead if you need to wrap the output to
+ * RenderText_Shaded_Wrapped() instead if you need to wrap the output to
  * multiple lines.
  *
  * This will not wrap on newline characters.
  *
- * You can render at other quality levels with Font.RenderText_Solid,
- * Font.RenderText_Blended, and Font.RenderText_LCD.
+ * You can render at other quality levels with RenderText_Solid,
+ * RenderText_Blended, and RenderText_LCD.
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
@@ -3398,10 +3398,10 @@ inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderText_Blended
- * @sa Font.RenderText_LCD
- * @sa Font.RenderText_Shaded_Wrapped
- * @sa Font.RenderText_Solid
+ * @sa RenderText_Blended
+ * @sa RenderText_LCD
+ * @sa RenderText_Shaded_Wrapped
+ * @sa RenderText_Solid
  */
 inline Surface RenderText_Shaded(FontRef font,
                                  std::string_view text,
@@ -3431,8 +3431,8 @@ inline Surface Font::RenderText_Shaded(std::string_view text,
  *
  * If wrap_width is 0, this function will only wrap on newline characters.
  *
- * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
- * Font.RenderText_Blended_Wrapped, and Font.RenderText_LCD_Wrapped.
+ * You can render at other quality levels with RenderText_Solid_Wrapped,
+ * RenderText_Blended_Wrapped, and RenderText_LCD_Wrapped.
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
@@ -3447,10 +3447,10 @@ inline Surface Font::RenderText_Shaded(std::string_view text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderText_Blended_Wrapped
- * @sa Font.RenderText_LCD_Wrapped
- * @sa Font.RenderText_Shaded
- * @sa Font.RenderText_Solid_Wrapped
+ * @sa RenderText_Blended_Wrapped
+ * @sa RenderText_LCD_Wrapped
+ * @sa RenderText_Shaded
+ * @sa RenderText_Solid_Wrapped
  */
 inline Surface RenderText_Shaded_Wrapped(FontRef font,
                                          std::string_view text,
@@ -3481,8 +3481,8 @@ inline Surface Font::RenderText_Shaded_Wrapped(std::string_view text,
  * The glyph is rendered without any padding or centering in the X direction,
  * and aligned normally in the Y direction.
  *
- * You can render at other quality levels with Font.RenderGlyph_Solid,
- * Font.RenderGlyph_Blended, and Font.RenderGlyph_LCD.
+ * You can render at other quality levels with RenderGlyph_Solid,
+ * RenderGlyph_Blended, and RenderGlyph_LCD.
  *
  * @param font the font to render with.
  * @param ch the codepoint to render.
@@ -3495,9 +3495,9 @@ inline Surface Font::RenderText_Shaded_Wrapped(std::string_view text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderGlyph_Blended
- * @sa Font.RenderGlyph_LCD
- * @sa Font.RenderGlyph_Solid
+ * @sa RenderGlyph_Blended
+ * @sa RenderGlyph_LCD
+ * @sa RenderGlyph_Solid
  */
 inline Surface RenderGlyph_Shaded(FontRef font,
                                   Uint32 ch,
@@ -3523,13 +3523,13 @@ inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
  *
  * This will not word-wrap the string; you'll get a surface with a single line
  * of text, as long as the string requires. You can use
- * Font.RenderText_Blended_Wrapped() instead if you need to wrap the output to
+ * RenderText_Blended_Wrapped() instead if you need to wrap the output to
  * multiple lines.
  *
  * This will not wrap on newline characters.
  *
- * You can render at other quality levels with Font.RenderText_Solid,
- * Font.RenderText_Shaded, and Font.RenderText_LCD.
+ * You can render at other quality levels with RenderText_Solid,
+ * RenderText_Shaded, and RenderText_LCD.
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
@@ -3541,10 +3541,10 @@ inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderText_Blended_Wrapped
- * @sa Font.RenderText_LCD
- * @sa Font.RenderText_Shaded
- * @sa Font.RenderText_Solid
+ * @sa RenderText_Blended_Wrapped
+ * @sa RenderText_LCD
+ * @sa RenderText_Shaded
+ * @sa RenderText_Solid
  */
 inline Surface RenderText_Blended(FontRef font, std::string_view text, Color fg)
 {
@@ -3568,8 +3568,8 @@ inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
  *
  * If wrap_width is 0, this function will only wrap on newline characters.
  *
- * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
- * Font.RenderText_Shaded_Wrapped, and Font.RenderText_LCD_Wrapped.
+ * You can render at other quality levels with RenderText_Solid_Wrapped,
+ * RenderText_Shaded_Wrapped, and RenderText_LCD_Wrapped.
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
@@ -3583,10 +3583,10 @@ inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderText_Blended
- * @sa Font.RenderText_LCD_Wrapped
- * @sa Font.RenderText_Shaded_Wrapped
- * @sa Font.RenderText_Solid_Wrapped
+ * @sa RenderText_Blended
+ * @sa RenderText_LCD_Wrapped
+ * @sa RenderText_Shaded_Wrapped
+ * @sa RenderText_Solid_Wrapped
  */
 inline Surface RenderText_Blended_Wrapped(FontRef font,
                                           std::string_view text,
@@ -3614,8 +3614,8 @@ inline Surface Font::RenderText_Blended_Wrapped(std::string_view text,
  * The glyph is rendered without any padding or centering in the X direction,
  * and aligned normally in the Y direction.
  *
- * You can render at other quality levels with Font.RenderGlyph_Solid,
- * Font.RenderGlyph_Shaded, and Font.RenderGlyph_LCD.
+ * You can render at other quality levels with RenderGlyph_Solid,
+ * RenderGlyph_Shaded, and RenderGlyph_LCD.
  *
  * @param font the font to render with.
  * @param ch the codepoint to render.
@@ -3627,9 +3627,9 @@ inline Surface Font::RenderText_Blended_Wrapped(std::string_view text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderGlyph_LCD
- * @sa Font.RenderGlyph_Shaded
- * @sa Font.RenderGlyph_Solid
+ * @sa RenderGlyph_LCD
+ * @sa RenderGlyph_Shaded
+ * @sa RenderGlyph_Solid
  */
 inline Surface RenderGlyph_Blended(FontRef font, Uint32 ch, ColorRaw fg)
 {
@@ -3649,14 +3649,13 @@ inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
  * returns the new surface, or nullptr if there was an error.
  *
  * This will not word-wrap the string; you'll get a surface with a single line
- * of text, as long as the string requires. You can use
- * Font.RenderText_LCD_Wrapped() instead if you need to wrap the output to
- * multiple lines.
+ * of text, as long as the string requires. You can use RenderText_LCD_Wrapped()
+ * instead if you need to wrap the output to multiple lines.
  *
  * This will not wrap on newline characters.
  *
- * You can render at other quality levels with Font.RenderText_Solid,
- * Font.RenderText_Shaded, and Font.RenderText_Blended.
+ * You can render at other quality levels with RenderText_Solid,
+ * RenderText_Shaded, and RenderText_Blended.
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
@@ -3669,10 +3668,10 @@ inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderText_Blended
- * @sa Font.RenderText_LCD_Wrapped
- * @sa Font.RenderText_Shaded
- * @sa Font.RenderText_Solid
+ * @sa RenderText_Blended
+ * @sa RenderText_LCD_Wrapped
+ * @sa RenderText_Shaded
+ * @sa RenderText_Solid
  */
 inline Surface RenderText_LCD(FontRef font,
                               std::string_view text,
@@ -3701,8 +3700,8 @@ inline Surface Font::RenderText_LCD(std::string_view text,
  *
  * If wrap_width is 0, this function will only wrap on newline characters.
  *
- * You can render at other quality levels with Font.RenderText_Solid_Wrapped,
- * Font.RenderText_Shaded_Wrapped, and Font.RenderText_Blended_Wrapped.
+ * You can render at other quality levels with RenderText_Solid_Wrapped,
+ * RenderText_Shaded_Wrapped, and RenderText_Blended_Wrapped.
  *
  * @param font the font to render with.
  * @param text text to render, in UTF-8 encoding.
@@ -3717,10 +3716,10 @@ inline Surface Font::RenderText_LCD(std::string_view text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderText_Blended_Wrapped
- * @sa Font.RenderText_LCD
- * @sa Font.RenderText_Shaded_Wrapped
- * @sa Font.RenderText_Solid_Wrapped
+ * @sa RenderText_Blended_Wrapped
+ * @sa RenderText_LCD
+ * @sa RenderText_Shaded_Wrapped
+ * @sa RenderText_Solid_Wrapped
  */
 inline Surface RenderText_LCD_Wrapped(FontRef font,
                                       std::string_view text,
@@ -3751,8 +3750,8 @@ inline Surface Font::RenderText_LCD_Wrapped(std::string_view text,
  * The glyph is rendered without any padding or centering in the X direction,
  * and aligned normally in the Y direction.
  *
- * You can render at other quality levels with Font.RenderGlyph_Solid,
- * Font.RenderGlyph_Shaded, and Font.RenderGlyph_Blended.
+ * You can render at other quality levels with RenderGlyph_Solid,
+ * RenderGlyph_Shaded, and RenderGlyph_Blended.
  *
  * @param font the font to render with.
  * @param ch the codepoint to render.
@@ -3765,9 +3764,9 @@ inline Surface Font::RenderText_LCD_Wrapped(std::string_view text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Font.RenderGlyph_Blended
- * @sa Font.RenderGlyph_Shaded
- * @sa Font.RenderGlyph_Solid
+ * @sa RenderGlyph_Blended
+ * @sa RenderGlyph_Shaded
+ * @sa RenderGlyph_Solid
  */
 inline Surface RenderGlyph_LCD(FontRef font,
                                Uint32 ch,
@@ -3809,7 +3808,7 @@ constexpr SubStringFlags SUBSTRING_TEXT_END =
   TTF_SUBSTRING_TEXT_END; ///< This substring contains the end of the text
 
 /**
- * The winding order of the vertices returned by Text.GetGPUDrawData
+ * The winding order of the vertices returned by GetGPUTextDrawData
  *
  * @since This enum is available since SDL_ttf 3.0.0.
  */
@@ -3895,7 +3894,7 @@ struct TextEngine : ResourceBase<TextEngineRaw>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.Destroy
+   * @sa DestroyText
    */
   Text CreateText(FontRef font, std::string_view text);
 };
@@ -3913,8 +3912,8 @@ struct SurfaceTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa SurfaceTextEngine.Destroy
-   * @sa Text.DrawSurface
+   * @sa DestroySurfaceTextEngine
+   * @sa DrawSurfaceText
    */
   SurfaceTextEngine();
 
@@ -3955,8 +3954,8 @@ struct RendererTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa RendererTextEngine.Destroy
-   * @sa Text.DrawRenderer
+   * @sa DestroyRendererTextEngine
+   * @sa DrawRendererText
    * @sa CreateRendererTextEngineWithProperties
    */
   RendererTextEngine(RendererRef renderer);
@@ -3982,8 +3981,8 @@ struct RendererTextEngine : TextEngine
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateRendererTextEngine
-   * @sa RendererTextEngine.Destroy
-   * @sa Text.DrawRenderer
+   * @sa DestroyRendererTextEngine
+   * @sa DrawRendererText
    */
   RendererTextEngine(PropertiesRef props);
 
@@ -4025,8 +4024,8 @@ struct GPUTextEngine : TextEngine
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateGPUTextEngineWithProperties
-   * @sa GPUTextEngine.Destroy
-   * @sa Text.GetGPUDrawData
+   * @sa DestroyGPUTextEngine
+   * @sa GetGPUTextDrawData
    */
   GPUTextEngine(GPUDeviceRef device);
 
@@ -4051,8 +4050,8 @@ struct GPUTextEngine : TextEngine
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateGPUTextEngine
-   * @sa GPUTextEngine.Destroy
-   * @sa Text.GetGPUDrawData
+   * @sa DestroyGPUTextEngine
+   * @sa GetGPUTextDrawData
    */
   GPUTextEngine(PropertiesRef props);
 
@@ -4063,8 +4062,8 @@ struct GPUTextEngine : TextEngine
   ~GPUTextEngine() final { Destroy(); }
 
   /**
-   * Sets the winding order of the vertices returned by Text.GetGPUDrawData for
-   * a particular GPU text engine.
+   * Sets the winding order of the vertices returned by GetGPUTextDrawData for a
+   * particular GPU text engine.
    *
    * @param winding the new winding order option.
    *
@@ -4078,7 +4077,7 @@ struct GPUTextEngine : TextEngine
   void SetGPUWinding(GPUTextEngineWinding winding);
 
   /**
-   * Get the winding order of the vertices returned by Text.GetGPUDrawData for a
+   * Get the winding order of the vertices returned by GetGPUTextDrawData for a
    * particular GPU text engine
    *
    * @returns the winding order used by the GPU text engine or
@@ -4110,11 +4109,11 @@ struct GPUTextEngine : TextEngine
 };
 
 /**
- * Draw sequence returned by Text.GetGPUDrawData
+ * Draw sequence returned by GetGPUTextDrawData
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetGPUDrawData
+ * @sa GetGPUTextDrawData
  */
 using GPUAtlasDrawSequence = TTF_GPUAtlasDrawSequence;
 
@@ -4123,12 +4122,12 @@ using GPUAtlasDrawSequence = TTF_GPUAtlasDrawSequence;
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetNextSubString
- * @sa Text.GetPreviousSubString
- * @sa Text.GetSubString
- * @sa Text.GetSubStringForLine
- * @sa Text.GetSubStringForPoint
- * @sa Text.GetSubStringsForRange
+ * @sa GetNextTextSubString
+ * @sa GetPreviousTextSubString
+ * @sa GetTextSubString
+ * @sa GetTextSubStringForLine
+ * @sa GetTextSubStringForPoint
+ * @sa GetTextSubStringsForRange
  */
 using SubString = TTF_SubString;
 
@@ -4148,8 +4147,8 @@ using TextData = TTF_TextData;
  * @since This struct is available since SDL_ttf 3.0.0.
  *
  * @sa TextEngine.CreateText
- * @sa Text.GetProperties
- * @sa Text.Destroy
+ * @sa GetTextProperties
+ * @sa DestroyText
  *
  * @cat resource
  */
@@ -4197,7 +4196,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.Destroy
+   * @sa DestroyText
    */
   Text(TextEngineRef engine, FontRef font, std::string_view text);
 
@@ -4325,7 +4324,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.GetEngine
+   * @sa GetTextEngine
    */
   void SetEngine(TextEngineRef engine);
 
@@ -4340,7 +4339,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.SetEngine
+   * @sa SetTextEngine
    */
   TextEngineRef GetEngine() const;
 
@@ -4362,7 +4361,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.GetFont
+   * @sa GetTextFont
    */
   bool SetFont(FontRef font);
 
@@ -4377,7 +4376,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.SetFont
+   * @sa SetTextFont
    */
   FontRef GetFont() const;
 
@@ -4460,8 +4459,8 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.GetColor
-   * @sa Text.SetColorFloat
+   * @sa GetTextColor
+   * @sa SetTextColorFloat
    */
   void SetColor(Color c);
 
@@ -4478,8 +4477,8 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.GetColorFloat
-   * @sa Text.SetColor
+   * @sa GetTextColorFloat
+   * @sa SetTextColor
    */
   void SetColorFloat(FColor c);
 
@@ -4501,8 +4500,8 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.GetColorFloat
-   * @sa Text.SetColor
+   * @sa GetTextColorFloat
+   * @sa SetTextColor
    */
   void GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const;
 
@@ -4517,8 +4516,8 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.GetColorFloat
-   * @sa Text.SetColor
+   * @sa GetTextColorFloat
+   * @sa SetTextColor
    */
   Color GetColor() const;
 
@@ -4540,8 +4539,8 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.GetColor
-   * @sa Text.SetColorFloat
+   * @sa GetTextColor
+   * @sa SetTextColorFloat
    */
   void GetColorFloat(float* r, float* g, float* b, float* a) const;
 
@@ -4556,8 +4555,8 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.GetColor
-   * @sa Text.SetColorFloat
+   * @sa GetTextColor
+   * @sa SetTextColorFloat
    */
   FColor GetColorFloat() const;
 
@@ -4577,7 +4576,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.GetPosition
+   * @sa GetTextPosition
    */
   void SetPosition(const PointRaw& p);
 
@@ -4595,7 +4594,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.SetPosition
+   * @sa SetTextPosition
    */
   void GetPosition(int* x, int* y) const;
 
@@ -4611,7 +4610,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.SetPosition
+   * @sa SetTextPosition
    */
   Point GetPosition() const;
 
@@ -4629,7 +4628,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.GetWrapWidth
+   * @sa GetTextWrapWidth
    */
   void SetWrapWidth(int wrap_width);
 
@@ -4645,7 +4644,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.SetWrapWidth
+   * @sa SetTextWrapWidth
    */
   int GetWrapWidth() const;
 
@@ -4668,7 +4667,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.IsWrapWhitespaceVisible
+   * @sa TextWrapWhitespaceVisible
    */
   void SetWrapWhitespaceVisible(bool visible);
 
@@ -4683,7 +4682,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.SetWrapWhitespaceVisible
+   * @sa SetTextWrapWhitespaceVisible
    */
   bool IsWrapWhitespaceVisible() const;
 
@@ -4700,9 +4699,9 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.AppendString
-   * @sa Text.DeleteString
-   * @sa Text.InsertString
+   * @sa AppendTextString
+   * @sa DeleteTextString
+   * @sa InsertTextString
    */
   void SetString(std::string_view string);
 
@@ -4723,9 +4722,9 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.AppendString
-   * @sa Text.DeleteString
-   * @sa Text.SetString
+   * @sa AppendTextString
+   * @sa DeleteTextString
+   * @sa SetTextString
    */
   void InsertString(int offset, std::string_view string);
 
@@ -4742,9 +4741,9 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.DeleteString
-   * @sa Text.InsertString
-   * @sa Text.SetString
+   * @sa DeleteTextString
+   * @sa InsertTextString
+   * @sa SetTextString
    */
   void AppendString(std::string_view string);
 
@@ -4766,9 +4765,9 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa Text.AppendString
-   * @sa Text.InsertString
-   * @sa Text.SetString
+   * @sa AppendTextString
+   * @sa InsertTextString
+   * @sa SetTextString
    */
   void DeleteString(int offset, int length);
 
@@ -5089,8 +5088,8 @@ public:
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa SurfaceTextEngine.Destroy
- * @sa Text.DrawSurface
+ * @sa DestroySurfaceTextEngine
+ * @sa DrawSurfaceText
  */
 inline SurfaceTextEngine CreateSurfaceTextEngine()
 {
@@ -5169,8 +5168,8 @@ inline void SurfaceTextEngine::Destroy()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa RendererTextEngine.Destroy
- * @sa Text.DrawRenderer
+ * @sa DestroyRendererTextEngine
+ * @sa DrawRendererText
  * @sa CreateRendererTextEngineWithProperties
  */
 inline RendererTextEngine CreateRendererTextEngine(RendererRef renderer)
@@ -5209,8 +5208,8 @@ inline RendererTextEngine::RendererTextEngine(PropertiesRef props)
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa CreateRendererTextEngine
- * @sa RendererTextEngine.Destroy
- * @sa Text.DrawRenderer
+ * @sa DestroyRendererTextEngine
+ * @sa DrawRendererText
  */
 inline RendererTextEngine CreateRendererTextEngineWithProperties(
   PropertiesRef props)
@@ -5305,8 +5304,8 @@ inline void RendererTextEngine::Destroy()
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa CreateGPUTextEngineWithProperties
- * @sa GPUTextEngine.Destroy
- * @sa Text.GetGPUDrawData
+ * @sa DestroyGPUTextEngine
+ * @sa GetGPUTextDrawData
  */
 inline GPUTextEngine CreateGPUTextEngine(GPUDeviceRef device)
 {
@@ -5344,8 +5343,8 @@ inline GPUTextEngine::GPUTextEngine(PropertiesRef props)
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa CreateGPUTextEngine
- * @sa GPUTextEngine.Destroy
- * @sa Text.GetGPUDrawData
+ * @sa DestroyGPUTextEngine
+ * @sa GetGPUTextDrawData
  */
 inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
 {
@@ -5495,7 +5494,7 @@ inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.Destroy
+ * @sa DestroyText
  */
 inline Text CreateText(TextEngineRef engine,
                        FontRef font,
@@ -5550,7 +5549,7 @@ inline PropertiesRef Text::GetProperties() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetEngine
+ * @sa GetTextEngine
  */
 inline void SetTextEngine(TextRef text, TextEngineRef engine)
 {
@@ -5574,7 +5573,7 @@ inline void Text::SetEngine(TextEngineRef engine)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.SetEngine
+ * @sa SetTextEngine
  */
 inline TextEngineRef GetTextEngine(TextConstRef text)
 {
@@ -5605,7 +5604,7 @@ inline TextEngineRef Text::GetEngine() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetFont
+ * @sa GetTextFont
  */
 inline bool SetTextFont(TextRef text, FontRef font)
 {
@@ -5629,7 +5628,7 @@ inline bool Text::SetFont(FontRef font)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.SetFont
+ * @sa SetTextFont
  */
 inline FontRef GetTextFont(TextConstRef text)
 {
@@ -5751,8 +5750,8 @@ inline Uint32 Text::GetScript() const { return SDL::GetTextScript(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetColor
- * @sa Text.SetColorFloat
+ * @sa GetTextColor
+ * @sa SetTextColorFloat
  */
 inline void SetTextColor(TextRef text, Color c)
 {
@@ -5775,8 +5774,8 @@ inline void Text::SetColor(Color c) { SDL::SetTextColor(get(), c); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetColorFloat
- * @sa Text.SetColor
+ * @sa GetTextColorFloat
+ * @sa SetTextColor
  */
 inline void SetTextColorFloat(TextRef text, FColor c)
 {
@@ -5804,8 +5803,8 @@ inline void Text::SetColorFloat(FColor c) { SDL::SetTextColorFloat(get(), c); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetColorFloat
- * @sa Text.SetColor
+ * @sa GetTextColorFloat
+ * @sa SetTextColor
  */
 inline void GetTextColor(TextConstRef text,
                          Uint8* r,
@@ -5828,8 +5827,8 @@ inline void GetTextColor(TextConstRef text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetColorFloat
- * @sa Text.SetColor
+ * @sa GetTextColorFloat
+ * @sa SetTextColor
  */
 inline Color GetTextColor(TextRef text)
 {
@@ -5864,8 +5863,8 @@ inline Color Text::GetColor() const { return SDL::GetTextColor(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetColor
- * @sa Text.SetColorFloat
+ * @sa GetTextColor
+ * @sa SetTextColorFloat
  */
 inline void GetTextColorFloat(TextConstRef text,
                               float* r,
@@ -5888,8 +5887,8 @@ inline void GetTextColorFloat(TextConstRef text,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetColor
- * @sa Text.SetColorFloat
+ * @sa GetTextColor
+ * @sa SetTextColorFloat
  */
 inline FColor GetTextColorFloat(TextRef text)
 {
@@ -5925,7 +5924,7 @@ inline FColor Text::GetColorFloat() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetPosition
+ * @sa GetTextPosition
  */
 inline void SetTextPosition(TextRef text, const PointRaw& p)
 {
@@ -5952,7 +5951,7 @@ inline void Text::SetPosition(const PointRaw& p)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.SetPosition
+ * @sa SetTextPosition
  */
 inline void GetTextPosition(TextConstRef text, int* x, int* y)
 {
@@ -5972,7 +5971,7 @@ inline void GetTextPosition(TextConstRef text, int* x, int* y)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.SetPosition
+ * @sa SetTextPosition
  */
 inline Point GetTextPosition(TextRef text)
 {
@@ -6003,7 +6002,7 @@ inline Point Text::GetPosition() const { return SDL::GetTextPosition(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.GetWrapWidth
+ * @sa GetTextWrapWidth
  */
 inline void SetTextWrapWidth(TextRef text, int wrap_width)
 {
@@ -6028,7 +6027,7 @@ inline void Text::SetWrapWidth(int wrap_width)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.SetWrapWidth
+ * @sa SetTextWrapWidth
  */
 inline int GetTextWrapWidth(TextConstRef text)
 {
@@ -6057,7 +6056,7 @@ inline int Text::GetWrapWidth() const { return SDL::GetTextWrapWidth(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.IsWrapWhitespaceVisible
+ * @sa TextWrapWhitespaceVisible
  */
 inline void SetTextWrapWhitespaceVisible(TextRef text, bool visible)
 {
@@ -6080,7 +6079,7 @@ inline void Text::SetWrapWhitespaceVisible(bool visible)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.SetWrapWhitespaceVisible
+ * @sa SetTextWrapWhitespaceVisible
  */
 inline bool TextWrapWhitespaceVisible(TextConstRef text)
 {
@@ -6106,9 +6105,9 @@ inline bool Text::IsWrapWhitespaceVisible() const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.AppendString
- * @sa Text.DeleteString
- * @sa Text.InsertString
+ * @sa AppendTextString
+ * @sa DeleteTextString
+ * @sa InsertTextString
  */
 inline void SetTextString(TextRef text, std::string_view string)
 {
@@ -6138,9 +6137,9 @@ inline void Text::SetString(std::string_view string)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.AppendString
- * @sa Text.DeleteString
- * @sa Text.SetString
+ * @sa AppendTextString
+ * @sa DeleteTextString
+ * @sa SetTextString
  */
 inline void InsertTextString(TextRef text, int offset, std::string_view string)
 {
@@ -6166,9 +6165,9 @@ inline void Text::InsertString(int offset, std::string_view string)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.DeleteString
- * @sa Text.InsertString
- * @sa Text.SetString
+ * @sa DeleteTextString
+ * @sa InsertTextString
+ * @sa SetTextString
  */
 inline void AppendTextString(TextRef text, std::string_view string)
 {
@@ -6199,9 +6198,9 @@ inline void Text::AppendString(std::string_view string)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa Text.AppendString
- * @sa Text.InsertString
- * @sa Text.SetString
+ * @sa AppendTextString
+ * @sa InsertTextString
+ * @sa SetTextString
  */
 inline void DeleteTextString(TextRef text, int offset, int length)
 {
@@ -6489,7 +6488,7 @@ inline void Text::Destroy() { DestroyText(release()); }
  *
  * The font is not valid after being passed to this function. String pointers
  * from functions that return information on this font, such as
- * Font.GetFamilyName() and Font.GetStyleName(), are no longer valid after this
+ * GetFontFamilyName() and GetFontStyleName(), are no longer valid after this
  * call, as well.
  *
  * @param font the font to dispose of.

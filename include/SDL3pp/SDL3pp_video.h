@@ -109,11 +109,11 @@ constexpr DisplayOrientation ORIENTATION_PORTRAIT_FLIPPED =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Display.GetFullscreenModes
- * @sa Display.GetDesktopMode
- * @sa Display.GetCurrentMode
- * @sa Window.SetFullscreenMode
- * @sa Window.GetFullscreenMode
+ * @sa GetFullscreenDisplayModes
+ * @sa GetDesktopDisplayMode
+ * @sa GetCurrentDisplayMode
+ * @sa SetWindowFullscreenMode
+ * @sa GetWindowFullscreenMode
  */
 using DisplayMode = SDL_DisplayMode;
 
@@ -175,7 +175,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetBounds
+   * @sa GetDisplayBounds
    * @sa GetDisplays
    */
   static Display GetForPoint(const PointRaw& point);
@@ -192,7 +192,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetBounds
+   * @sa GetDisplayBounds
    * @sa GetDisplays
    */
   static Display GetForRect(const RectRaw& rect);
@@ -261,7 +261,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetUsableBounds
+   * @sa GetDisplayUsableBounds
    * @sa GetDisplays
    */
   Rect GetBounds() const;
@@ -270,7 +270,7 @@ public:
    * Get the usable desktop area represented by a display, in screen
    * coordinates.
    *
-   * This is the same area as Display.GetBounds() reports, but with portions
+   * This is the same area as GetDisplayBounds() reports, but with portions
    * reserved by the system removed. For example, on Apple's macOS, this
    * subtracts the area occupied by the menu bar and dock.
    *
@@ -285,7 +285,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetBounds
+   * @sa GetDisplayBounds
    * @sa GetDisplays
    */
   Rect GetUsableBounds() const;
@@ -326,7 +326,7 @@ public:
    * display scale, which means that the user expects UI elements to be twice as
    * big on this display, to aid in readability.
    *
-   * After window creation, Window.GetDisplayScale() should be used to query the
+   * After window creation, GetWindowDisplayScale() should be used to query the
    * content scale factor for individual windows instead of querying the display
    * for a window and calling this function, as the per-window content scale
    * factor may differ from the base value of the display it is on, particularly
@@ -339,7 +339,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetDisplayScale
+   * @sa GetWindowDisplayScale
    * @sa GetDisplays
    */
   float GetContentScale() const;
@@ -390,7 +390,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetDisplays
-   * @sa Display.GetFullscreenModes
+   * @sa GetFullscreenDisplayModes
    */
   DisplayMode GetClosestFullscreenMode(const PointRaw& size,
                                        float refresh_rate,
@@ -399,8 +399,8 @@ public:
   /**
    * Get information about the desktop's display mode.
    *
-   * There's a difference between this function and Display.GetCurrentMode()
-   * when SDL runs fullscreen and has changed the resolution. In that case this
+   * There's a difference between this function and GetCurrentDisplayMode() when
+   * SDL runs fullscreen and has changed the resolution. In that case this
    * function will return the previous native display mode, and not the current
    * display mode.
    *
@@ -411,7 +411,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetCurrentMode
+   * @sa GetCurrentDisplayMode
    * @sa GetDisplays
    */
   const DisplayMode& GetDesktopMode() const;
@@ -419,8 +419,8 @@ public:
   /**
    * Get information about the current display mode.
    *
-   * There's a difference between this function and Display.GetDesktopMode()
-   * when SDL runs fullscreen and has changed the resolution. In that case this
+   * There's a difference between this function and GetDesktopDisplayMode() when
+   * SDL runs fullscreen and has changed the resolution. In that case this
    * function will return the current display mode, and not the previous native
    * display mode.
    *
@@ -431,7 +431,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetDesktopMode
+   * @sa GetDesktopDisplayMode
    * @sa GetDisplays
    */
   const DisplayMode& GetCurrentMode() const;
@@ -505,12 +505,12 @@ using DisplayModeData = SDL_DisplayModeData;
  * When creating windows with `WINDOW_RESIZABLE`, SDL will constrain resizable
  * windows to the dimensions recommended by the compositor to fit it within the
  * usable desktop space, although some compositors will do this automatically
- * without intervention as well. Use `Window.SetResizable` after creation
- * instead if you wish to create a window with a specific size.
+ * without intervention as well. Use `SetWindowResizable` after creation instead
+ * if you wish to create a window with a specific size.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa Window.GetFlags
+ * @sa GetWindowFlags
  */
 using WindowFlags = Uint64;
 
@@ -525,7 +525,7 @@ constexpr WindowFlags WINDOW_OCCLUDED =
 
 /**
  * window is neither mapped onto the desktop nor shown in the
- * taskbar/dock/window list; Window.Show() is required for it to become visible
+ * taskbar/dock/window list; ShowWindow() is required for it to become visible
  */
 constexpr WindowFlags WINDOW_HIDDEN = SDL_WINDOW_HIDDEN;
 
@@ -671,10 +671,10 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
  *
  * @param win the Window where hit-testing was set on.
  * @param area an Point which should be hit-tested.
- * @param data what was passed as `callback_data` to Window.SetHitTest().
+ * @param data what was passed as `callback_data` to SetWindowHitTest().
  * @returns an HitTestResult value.
  *
- * @sa Window.SetHitTest
+ * @sa SetWindowHitTest
  */
 using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
                                         const PointRaw* area,
@@ -689,7 +689,7 @@ using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
  *
  * @cat listener-callback
  *
- * @sa Window.SetHitTest
+ * @sa SetWindowHitTest
  * @sa HitTest
  */
 using HitTestCB =
@@ -834,22 +834,22 @@ struct Window : ResourceBase<WindowRaw>
    * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
    *
    * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation
-   * time, Window.Show() can be used to show it later.
+   * time, ShowWindow() can be used to show it later.
    *
    * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
    * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
    *
    * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use Window.GetSize() to query
-   * the client area's size in window coordinates, and Window.GetSizeInPixels()
-   * or Renderer.GetOutputSize() to query the drawable size in pixels. Note that
-   * the drawable size can vary after the window is created and should be
-   * queried again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
+   * window is on a high pixel density display. Use GetWindowSize() to query the
+   * client area's size in window coordinates, and GetWindowSizeInPixels() or
+   * GetRenderOutputSize() to query the drawable size in pixels. Note that the
+   * drawable size can vary after the window is created and should be queried
+   * again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
    *
    * If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN
    * flags, then the corresponding LoadLibrary function (GL_LoadLibrary or
    * Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function
-   * is called by Window.Destroy().
+   * is called by DestroyWindow().
    *
    * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
    * CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.
@@ -878,7 +878,7 @@ struct Window : ResourceBase<WindowRaw>
    * @sa CreateWindowAndRenderer
    * @sa CreatePopupWindow
    * @sa CreateWindowWithProperties
-   * @sa Window.Destroy
+   * @sa DestroyWindow
    */
   Window(StringParam title, const PointRaw& size, WindowFlags flags = 0);
 
@@ -929,7 +929,7 @@ struct Window : ResourceBase<WindowRaw>
    * parent when shown. This behavior can be overridden by setting the
    * `WINDOW_NOT_FOCUSABLE` flag, setting the
    * `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it
-   * after creation via the `Window.SetFocusable()` function.
+   * after creation via the `SetWindowFocusable()` function.
    *
    * If a parent window is hidden or destroyed, any child popup windows will be
    * recursively hidden or destroyed as well. Child popup windows not explicitly
@@ -950,8 +950,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @sa CreateWindow
    * @sa CreateWindowWithProperties
-   * @sa Window.Destroy
-   * @sa Window.GetParent
+   * @sa DestroyWindow
+   * @sa GetWindowParent
    */
   Window(WindowRef parent,
          const PointRaw& offset,
@@ -1088,7 +1088,7 @@ struct Window : ResourceBase<WindowRaw>
    * cause the window to appear briefly, and then flicker as it is recreated.
    * The correct approach to this is to create the window with the
    * `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the
-   * renderer, then show the window with Window.Show().
+   * renderer, then show the window with ShowWindow().
    *
    * @param props the properties to use.
    * @post the window that was created or nullptr on failure; call GetError()
@@ -1098,9 +1098,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Create
+   * @sa CreateProperties
    * @sa CreateWindow
-   * @sa Window.Destroy
+   * @sa DestroyWindow
    */
   Window(PropertiesRef props);
 
@@ -1151,7 +1151,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetID
+   * @sa GetWindowID
    */
   static WindowRef FromID(WindowID id);
 
@@ -1164,8 +1164,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetMouseGrab
-   * @sa Window.SetKeyboardGrab
+   * @sa SetWindowMouseGrab
+   * @sa SetWindowKeyboardGrab
    */
   static WindowRef GetGrabbed();
 
@@ -1180,7 +1180,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetBounds
+   * @sa GetDisplayBounds
    * @sa GetDisplays
    */
   Display GetDisplay() const;
@@ -1199,7 +1199,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetDisplayScale
+   * @sa GetWindowDisplayScale
    */
   float GetPixelDensity() const;
 
@@ -1231,13 +1231,13 @@ struct Window : ResourceBase<WindowRaw>
    *
    * This only affects the display mode used when the window is fullscreen. To
    * change the window size when the window is not fullscreen, use
-   * Window.SetSize().
+   * SetWindowSize().
    *
    * If the window is currently in the fullscreen state, this request is
    * asynchronous on some windowing systems and the new mode dimensions may not
    * be applied immediately upon the return of this function. If an immediate
-   * change is required, call Window.Sync() to block until the changes have
-   * taken effect.
+   * change is required, call SyncWindow() to block until the changes have taken
+   * effect.
    *
    * When the new mode takes effect, an EVENT_WINDOW_RESIZED and/or an
    * EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode
@@ -1245,7 +1245,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @param mode a pointer to the display mode to use, which can be nullptr for
    *             borderless fullscreen desktop mode, or one of the fullscreen
-   *             modes returned by Display.GetFullscreenModes() to set an
+   *             modes returned by GetFullscreenDisplayModes() to set an
    *             exclusive fullscreen mode.
    * @throws Error on failure.
    *
@@ -1253,9 +1253,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetFullscreenMode
-   * @sa Window.SetFullscreen
-   * @sa Window.Sync
+   * @sa GetWindowFullscreenMode
+   * @sa SetWindowFullscreen
+   * @sa SyncWindow
    */
   void SetFullscreenMode(OptionalRef<const DisplayMode> mode);
 
@@ -1269,8 +1269,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetFullscreenMode
-   * @sa Window.SetFullscreen
+   * @sa SetWindowFullscreenMode
+   * @sa SetWindowFullscreen
    */
   const DisplayMode& GetFullscreenMode() const;
 
@@ -1311,7 +1311,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.FromID
+   * @sa GetWindowFromID
    */
   WindowID GetID() const;
 
@@ -1365,7 +1365,7 @@ struct Window : ResourceBase<WindowRaw>
    *   framebuffer object. It must be bound when rendering to the screen using
    *   OpenGL.
    * - `prop.Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
-   *   renderbuffer object. It must be bound when Window.GL_Swap is called.
+   *   renderbuffer object. It must be bound when GL_SwapWindow is called.
    * - `prop.Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
    *   resolve framebuffer, when MSAA is used.
    *
@@ -1465,13 +1465,13 @@ struct Window : ResourceBase<WindowRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateWindow
-   * @sa Window.Hide
-   * @sa Window.Maximize
-   * @sa Window.Minimize
-   * @sa Window.SetFullscreen
-   * @sa Window.SetMouseGrab
-   * @sa Window.SetFillDocument
-   * @sa Window.Show
+   * @sa HideWindow
+   * @sa MaximizeWindow
+   * @sa MinimizeWindow
+   * @sa SetWindowFullscreen
+   * @sa SetWindowMouseGrab
+   * @sa SetWindowFillDocument
+   * @sa ShowWindow
    */
   WindowFlags GetFlags() const;
 
@@ -1487,7 +1487,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetTitle
+   * @sa GetWindowTitle
    */
   void SetTitle(StringParam title);
 
@@ -1501,7 +1501,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetTitle
+   * @sa SetWindowTitle
    */
   const char* GetTitle() const;
 
@@ -1509,7 +1509,7 @@ struct Window : ResourceBase<WindowRaw>
    * Set the icon for a window.
    *
    * If this function is passed a surface with alternate representations added
-   * using Surface.AddAlternateImage(), the surface will be interpreted as the
+   * using AddSurfaceAlternateImage(), the surface will be interpreted as the
    * content to be used for 100% display scale, and the alternate
    * representations will be used for high DPI situations. For example, if the
    * original surface is 32x32, then on a 2x macOS display or 200% display scale
@@ -1526,7 +1526,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.AddAlternateImage
+   * @sa AddSurfaceAlternateImage
    */
   void SetIcon(SurfaceRef icon);
 
@@ -1539,11 +1539,11 @@ struct Window : ResourceBase<WindowRaw>
    * This can be used to reposition fullscreen-desktop windows onto a different
    * display, however, as exclusive fullscreen windows are locked to a specific
    * display, they can only be repositioned programmatically via
-   * Window.SetFullscreenMode().
+   * SetWindowFullscreenMode().
    *
    * On some windowing systems this request is asynchronous and the new
    * coordinates may not have have been applied immediately upon the return of
-   * this function. If an immediate change is required, call Window.Sync() to
+   * this function. If an immediate change is required, call SyncWindow() to
    * block until the changes have taken effect.
    *
    * When the window position changes, an EVENT_WINDOW_MOVED event will be
@@ -1562,8 +1562,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetPosition
-   * @sa Window.Sync
+   * @sa GetWindowPosition
+   * @sa SyncWindow
    */
   void SetPosition(const PointRaw& p);
 
@@ -1586,7 +1586,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetPosition
+   * @sa SetWindowPosition
    */
   void GetPosition(int* x, int* y) const;
 
@@ -1606,8 +1606,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetPosition
-   * @sa SetPosition(int *, int *)
+   * @sa SetWindowPosition
    */
   Point GetPosition() const;
 
@@ -1618,11 +1617,11 @@ struct Window : ResourceBase<WindowRaw>
    * effect.
    *
    * To change the exclusive fullscreen mode of a window, use
-   * Window.SetFullscreenMode().
+   * SetWindowFullscreenMode().
    *
    * On some windowing systems, this request is asynchronous and the new window
    * size may not have have been applied immediately upon the return of this
-   * function. If an immediate change is required, call Window.Sync() to block
+   * function. If an immediate change is required, call SyncWindow() to block
    * until the changes have taken effect.
    *
    * When the window size changes, an EVENT_WINDOW_RESIZED event will be emitted
@@ -1639,9 +1638,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetSize
-   * @sa Window.SetFullscreenMode
-   * @sa Window.Sync
+   * @sa GetWindowSize
+   * @sa SetWindowFullscreenMode
+   * @sa SyncWindow
    */
   void SetSize(const PointRaw& size);
 
@@ -1649,8 +1648,8 @@ struct Window : ResourceBase<WindowRaw>
    * Get the size of a window's client area.
    *
    * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use Window.GetSizeInPixels() or
-   * Renderer.GetOutputSize() to get the real client area size in pixels.
+   * window is on a high pixel density display. Use GetWindowSizeInPixels() or
+   * GetRenderOutputSize() to get the real client area size in pixels.
    *
    * @param w a pointer filled in with the width of the window, may be nullptr.
    * @param h a pointer filled in with the height of the window, may be nullptr.
@@ -1660,9 +1659,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetOutputSize
-   * @sa Window.GetSizeInPixels
-   * @sa Window.SetSize
+   * @sa GetRenderOutputSize
+   * @sa GetWindowSizeInPixels
+   * @sa SetWindowSize
    * @sa EVENT_WINDOW_RESIZED
    */
   void GetSize(int* w, int* h) const;
@@ -1671,8 +1670,8 @@ struct Window : ResourceBase<WindowRaw>
    * Get the size of a window's client area.
    *
    * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use Window.GetSizeInPixels() or
-   * Renderer.GetOutputSize() to get the real client area size in pixels.
+   * window is on a high pixel density display. Use GetWindowSizeInPixels() or
+   * GetRenderOutputSize() to get the real client area size in pixels.
    *
    * @returns a point with width and height on success
    * @throws Error on failure.
@@ -1681,9 +1680,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetOutputSize
-   * @sa Window.GetSizeInPixels
-   * @sa Window.SetSize
+   * @sa GetRenderOutputSize
+   * @sa GetWindowSizeInPixels
+   * @sa SetWindowSize
    * @sa EVENT_WINDOW_RESIZED
    * @sa GetSize(int *, int *)
    */
@@ -1748,7 +1747,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * On some windowing systems, this request is asynchronous and the new window
    * aspect ratio may not have have been applied immediately upon the return of
-   * this function. If an immediate change is required, call Window.Sync() to
+   * this function. If an immediate change is required, call SyncWindow() to
    * block until the changes have taken effect.
    *
    * When the window size changes, an EVENT_WINDOW_RESIZED event will be emitted
@@ -1768,8 +1767,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetAspectRatio
-   * @sa Window.Sync
+   * @sa GetWindowAspectRatio
+   * @sa SyncWindow
    */
   void SetAspectRatio(float min_aspect, float max_aspect);
 
@@ -1786,7 +1785,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetAspectRatio
+   * @sa SetWindowAspectRatio
    */
   void GetAspectRatio(float* min_aspect, float* max_aspect) const;
 
@@ -1820,7 +1819,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetSize
+   * @sa GetWindowSize
    */
   void GetBordersSize(int* top, int* left, int* bottom, int* right) const;
 
@@ -1838,8 +1837,7 @@ struct Window : ResourceBase<WindowRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateWindow
-   * @sa Window.GetSize
-   * @sa GetSizeInPixels()
+   * @sa GetWindowSize
    */
   void GetSizeInPixels(int* w, int* h) const;
 
@@ -1855,8 +1853,7 @@ struct Window : ResourceBase<WindowRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateWindow
-   * @sa Window.GetSize
-   * @sa GetSizeInPixels(int*, int*)
+   * @sa GetWindowSize
    */
   Point GetSizeInPixels() const;
 
@@ -1870,8 +1867,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetMinimumSize
-   * @sa Window.SetMaximumSize
+   * @sa GetWindowMinimumSize
+   * @sa SetWindowMaximumSize
    */
   void SetMinimumSize(const PointRaw& p);
 
@@ -1888,8 +1885,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetMaximumSize
-   * @sa Window.SetMinimumSize
+   * @sa GetWindowMaximumSize
+   * @sa SetWindowMinimumSize
    */
   void GetMinimumSize(int* w, int* h) const;
 
@@ -1903,8 +1900,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetMaximumSize
-   * @sa Window.SetMinimumSize
+   * @sa GetWindowMaximumSize
+   * @sa SetWindowMinimumSize
    */
   void SetMaximumSize(const PointRaw& p);
 
@@ -1921,8 +1918,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetMinimumSize
-   * @sa Window.SetMaximumSize
+   * @sa GetWindowMinimumSize
+   * @sa SetWindowMaximumSize
    */
   void GetMaximumSize(int* w, int* h) const;
 
@@ -1942,7 +1939,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetFlags
+   * @sa GetWindowFlags
    */
   void SetBordered(bool bordered);
 
@@ -1962,7 +1959,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetFlags
+   * @sa GetWindowFlags
    */
   void SetResizable(bool resizable);
 
@@ -1979,7 +1976,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetFlags
+   * @sa GetWindowFlags
    */
   void SetAlwaysOnTop(bool on_top);
 
@@ -2010,7 +2007,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Window.GetFlags
+   * @sa GetWindowFlags
    */
   void SetFillDocument(bool fill);
 
@@ -2025,8 +2022,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Hide
-   * @sa Window.Raise
+   * @sa HideWindow
+   * @sa RaiseWindow
    */
   void Show();
 
@@ -2039,7 +2036,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Show
+   * @sa ShowWindow
    * @sa WINDOW_HIDDEN
    */
   void Hide();
@@ -2070,7 +2067,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * On some windowing systems this request is asynchronous and the new window
    * state may not have have been applied immediately upon the return of this
-   * function. If an immediate change is required, call Window.Sync() to block
+   * function. If an immediate change is required, call SyncWindow() to block
    * until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_MAXIMIZED event will be
@@ -2078,7 +2075,7 @@ struct Window : ResourceBase<WindowRaw>
    * deny the state change.
    *
    * When maximizing a window, whether the constraints set via
-   * Window.SetMaximumSize() are honored depends on the policy of the window
+   * SetWindowMaximumSize() are honored depends on the policy of the window
    * manager. Win32 and macOS enforce the constraints when maximizing, while X11
    * and Wayland window managers may vary.
    *
@@ -2088,9 +2085,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Minimize
-   * @sa Window.Restore
-   * @sa Window.Sync
+   * @sa MinimizeWindow
+   * @sa RestoreWindow
+   * @sa SyncWindow
    */
   void Maximize();
 
@@ -2102,7 +2099,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * On some windowing systems this request is asynchronous and the new window
    * state may not have been applied immediately upon the return of this
-   * function. If an immediate change is required, call Window.Sync() to block
+   * function. If an immediate change is required, call SyncWindow() to block
    * until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_MINIMIZED event will be
@@ -2115,9 +2112,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Maximize
-   * @sa Window.Restore
-   * @sa Window.Sync
+   * @sa MaximizeWindow
+   * @sa RestoreWindow
+   * @sa SyncWindow
    */
   void Minimize();
 
@@ -2130,7 +2127,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * On some windowing systems this request is asynchronous and the new window
    * state may not have have been applied immediately upon the return of this
-   * function. If an immediate change is required, call Window.Sync() to block
+   * function. If an immediate change is required, call SyncWindow() to block
    * until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_RESTORED event will be
@@ -2143,9 +2140,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.Maximize
-   * @sa Window.Minimize
-   * @sa Window.Sync
+   * @sa MaximizeWindow
+   * @sa MinimizeWindow
+   * @sa SyncWindow
    */
   void Restore();
 
@@ -2154,11 +2151,11 @@ struct Window : ResourceBase<WindowRaw>
    *
    * By default a window in fullscreen state uses borderless fullscreen desktop
    * mode, but a specific exclusive display mode can be set using
-   * Window.SetFullscreenMode().
+   * SetWindowFullscreenMode().
    *
    * On some windowing systems this request is asynchronous and the new
    * fullscreen state may not have have been applied immediately upon the return
-   * of this function. If an immediate change is required, call Window.Sync() to
+   * of this function. If an immediate change is required, call SyncWindow() to
    * block until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or
@@ -2172,9 +2169,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetFullscreenMode
-   * @sa Window.SetFullscreenMode
-   * @sa Window.Sync
+   * @sa GetWindowFullscreenMode
+   * @sa SetWindowFullscreenMode
+   * @sa SyncWindow
    * @sa WINDOW_FULLSCREEN
    */
   void SetFullscreen(bool fullscreen);
@@ -2198,12 +2195,12 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetSize
-   * @sa Window.SetPosition
-   * @sa Window.SetFullscreen
-   * @sa Window.Minimize
-   * @sa Window.Maximize
-   * @sa Window.Restore
+   * @sa SetWindowSize
+   * @sa SetWindowPosition
+   * @sa SetWindowFullscreen
+   * @sa MinimizeWindow
+   * @sa MaximizeWindow
+   * @sa RestoreWindow
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
   bool Sync();
@@ -2218,7 +2215,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetSurface
+   * @sa GetWindowSurface
    */
   bool HasSurface() const;
 
@@ -2243,10 +2240,10 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.DestroySurface
-   * @sa Window.HasSurface
-   * @sa Window.UpdateSurface
-   * @sa Window.UpdateSurfaceRects
+   * @sa DestroyWindowSurface
+   * @sa WindowHasSurface
+   * @sa UpdateWindowSurface
+   * @sa UpdateWindowSurfaceRects
    */
   Surface GetSurface();
 
@@ -2270,7 +2267,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetSurfaceVSync
+   * @sa GetWindowSurfaceVSync
    */
   void SetSurfaceVSync(int vsync);
 
@@ -2278,14 +2275,14 @@ struct Window : ResourceBase<WindowRaw>
    * Get VSync for the window surface.
    *
    * @returns the current vertical refresh sync interval. See
-   *          Window.SetSurfaceVSync() for the meaning of the value.
+   *          SetWindowSurfaceVSync() for the meaning of the value.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetSurfaceVSync
+   * @sa SetWindowSurfaceVSync
    */
   int GetSurfaceVSync() const;
 
@@ -2303,8 +2300,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetSurface
-   * @sa Window.UpdateSurfaceRects
+   * @sa GetWindowSurface
+   * @sa UpdateWindowSurfaceRects
    */
   void UpdateSurface();
 
@@ -2329,8 +2326,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetSurface
-   * @sa Window.UpdateSurface
+   * @sa GetWindowSurface
+   * @sa UpdateWindowSurface
    */
   void UpdateSurfaceRects(SpanRef<const RectRaw> rects);
 
@@ -2343,8 +2340,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetSurface
-   * @sa Window.HasSurface
+   * @sa GetWindowSurface
+   * @sa WindowHasSurface
    */
   void DestroySurface();
 
@@ -2374,8 +2371,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetKeyboardGrab
-   * @sa Window.SetMouseGrab
+   * @sa GetWindowKeyboardGrab
+   * @sa SetWindowMouseGrab
    */
   void SetKeyboardGrab(bool grabbed);
 
@@ -2391,9 +2388,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetMouseRect
-   * @sa Window.SetMouseRect
-   * @sa Window.SetKeyboardGrab
+   * @sa GetWindowMouseRect
+   * @sa SetWindowMouseRect
+   * @sa SetWindowKeyboardGrab
    */
   void SetMouseGrab(bool grabbed);
 
@@ -2406,7 +2403,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetKeyboardGrab
+   * @sa SetWindowKeyboardGrab
    */
   bool GetKeyboardGrab() const;
 
@@ -2419,10 +2416,10 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetMouseRect
-   * @sa Window.SetMouseRect
-   * @sa Window.SetMouseGrab
-   * @sa Window.SetKeyboardGrab
+   * @sa GetWindowMouseRect
+   * @sa SetWindowMouseRect
+   * @sa SetWindowMouseGrab
+   * @sa SetWindowKeyboardGrab
    */
   bool GetMouseGrab() const;
 
@@ -2440,9 +2437,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetMouseRect
-   * @sa Window.GetMouseGrab
-   * @sa Window.SetMouseGrab
+   * @sa GetWindowMouseRect
+   * @sa GetWindowMouseGrab
+   * @sa SetWindowMouseGrab
    */
   void SetMouseRect(const RectRaw& rect);
 
@@ -2456,9 +2453,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetMouseRect
-   * @sa Window.GetMouseGrab
-   * @sa Window.SetMouseGrab
+   * @sa SetWindowMouseRect
+   * @sa GetWindowMouseGrab
+   * @sa SetWindowMouseGrab
    */
   const RectRaw* GetMouseRect() const;
 
@@ -2477,7 +2474,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetOpacity
+   * @sa GetWindowOpacity
    */
   void SetOpacity(float opacity);
 
@@ -2494,7 +2491,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetOpacity
+   * @sa SetWindowOpacity
    */
   float GetOpacity() const;
 
@@ -2511,7 +2508,7 @@ struct Window : ResourceBase<WindowRaw>
    * the parent is shown.
    *
    * Attempting to set the parent of a window that is currently in the modal
-   * state will fail. Use Window.SetModal() to cancel the modal status before
+   * state will fail. Use SetWindowModal() to cancel the modal status before
    * attempting to change the parent.
    *
    * Popup windows cannot change parents and attempts to do so will fail.
@@ -2526,7 +2523,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetModal
+   * @sa SetWindowModal
    */
   void SetParent(WindowRef parent);
 
@@ -2543,7 +2540,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetParent
+   * @sa SetWindowParent
    * @sa WINDOW_MODAL
    */
   void SetModal(bool modal);
@@ -2676,7 +2673,7 @@ struct Window : ResourceBase<WindowRaw>
    * consistent cross-platform results.
    *
    * The shape is copied inside this function, so you can free it afterwards. If
-   * your shape surface changes, you should call Window.SetShape() again to
+   * your shape surface changes, you should call SetWindowShape() again to
    * update the window. This is an expensive operation, so should be done
    * sparingly.
    *
@@ -2782,8 +2779,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContext.Destroy
-   * @sa GLContext.MakeCurrent
+   * @sa GL_DestroyContext
+   * @sa Window.MakeCurrent
    */
   GLContext CreateGLContext();
 
@@ -3034,7 +3031,7 @@ struct Window : ResourceBase<WindowRaw>
    * the window.
    *
    * If you'd like to keep the mouse position fixed while in relative mode you
-   * can use Window.SetMouseRect(). If you'd like the cursor to be at a specific
+   * can use SetWindowMouseRect(). If you'd like the cursor to be at a specific
    * location when relative mode ends, you should use Window.WarpMouse() before
    * disabling relative mode.
    *
@@ -3085,7 +3082,7 @@ struct Window : ResourceBase<WindowRaw>
  *
  * @since This constant is available since SDL 3.2.0.
  *
- * @sa Window.SetPosition
+ * @sa SetWindowPosition
  */
 constexpr int WINDOWPOS_UNDEFINED_MASK = SDL_WINDOWPOS_UNDEFINED_MASK;
 
@@ -3099,7 +3096,7 @@ constexpr int WINDOWPOS_UNDEFINED_MASK = SDL_WINDOWPOS_UNDEFINED_MASK;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetPosition
+ * @sa SetWindowPosition
  */
 constexpr int WINDOWPOS_UNDEFINED_DISPLAY(int X)
 {
@@ -3113,7 +3110,7 @@ constexpr int WINDOWPOS_UNDEFINED_DISPLAY(int X)
  *
  * @since This constant is available since SDL 3.2.0.
  *
- * @sa Window.SetPosition
+ * @sa SetWindowPosition
  */
 constexpr int WINDOWPOS_UNDEFINED = SDL_WINDOWPOS_UNDEFINED;
 
@@ -3124,7 +3121,7 @@ constexpr int WINDOWPOS_UNDEFINED = SDL_WINDOWPOS_UNDEFINED;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetPosition
+ * @sa SetWindowPosition
  */
 constexpr bool WINDOWPOS_ISUNDEFINED(int X)
 {
@@ -3139,7 +3136,7 @@ constexpr bool WINDOWPOS_ISUNDEFINED(int X)
  *
  * @since This constant is available since SDL 3.2.0.
  *
- * @sa Window.SetPosition
+ * @sa SetWindowPosition
  */
 constexpr int WINDOWPOS_CENTERED_MASK = SDL_WINDOWPOS_CENTERED_MASK;
 
@@ -3153,7 +3150,7 @@ constexpr int WINDOWPOS_CENTERED_MASK = SDL_WINDOWPOS_CENTERED_MASK;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetPosition
+ * @sa SetWindowPosition
  */
 constexpr int WINDOWPOS_CENTERED_DISPLAY(int X)
 {
@@ -3167,7 +3164,7 @@ constexpr int WINDOWPOS_CENTERED_DISPLAY(int X)
  *
  * @since This constant is available since SDL 3.2.0.
  *
- * @sa Window.SetPosition
+ * @sa SetWindowPosition
  */
 constexpr int WINDOWPOS_CENTERED = SDL_WINDOWPOS_CENTERED;
 
@@ -3178,7 +3175,7 @@ constexpr int WINDOWPOS_CENTERED = SDL_WINDOWPOS_CENTERED;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetPosition
+ * @sa GetWindowPosition
  */
 constexpr bool WINDOWPOS_ISCENTERED(int X)
 {
@@ -3192,8 +3189,8 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @sa Window.CreateGLContext
  * @sa GL_SetAttribute
- * @sa GLContext.MakeCurrent
- * @sa GLContext.Destroy
+ * @sa Window.MakeCurrent
+ * @sa GL_DestroyContext
  *
  * @cat resource
  */
@@ -3226,8 +3223,8 @@ struct GLContext : ResourceBase<GLContextRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GLContext.Destroy
-   * @sa GLContext.MakeCurrent
+   * @sa GL_DestroyContext
+   * @sa Window.MakeCurrent
    */
   GLContext(WindowRef window);
 
@@ -3800,7 +3797,7 @@ inline const char* Display::GetName() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetUsableBounds
+ * @sa GetDisplayUsableBounds
  * @sa GetDisplays
  */
 inline Rect GetDisplayBounds(Display displayID)
@@ -3818,7 +3815,7 @@ inline Rect Display::GetBounds() const
 /**
  * Get the usable desktop area represented by a display, in screen coordinates.
  *
- * This is the same area as Display.GetBounds() reports, but with portions
+ * This is the same area as GetDisplayBounds() reports, but with portions
  * reserved by the system removed. For example, on Apple's macOS, this subtracts
  * the area occupied by the menu bar and dock.
  *
@@ -3834,7 +3831,7 @@ inline Rect Display::GetBounds() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetBounds
+ * @sa GetDisplayBounds
  * @sa GetDisplays
  */
 inline Rect GetDisplayUsableBounds(Display displayID)
@@ -3903,7 +3900,7 @@ inline DisplayOrientation Display::GetCurrentOrientation() const
  * scale, which means that the user expects UI elements to be twice as big on
  * this display, to aid in readability.
  *
- * After window creation, Window.GetDisplayScale() should be used to query the
+ * After window creation, GetWindowDisplayScale() should be used to query the
  * content scale factor for individual windows instead of querying the display
  * for a window and calling this function, as the per-window content scale
  * factor may differ from the base value of the display it is on, particularly
@@ -3917,7 +3914,7 @@ inline DisplayOrientation Display::GetCurrentOrientation() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetDisplayScale
+ * @sa GetWindowDisplayScale
  * @sa GetDisplays
  */
 inline float GetDisplayContentScale(DisplayID displayID)
@@ -3988,7 +3985,7 @@ inline OwnArray<DisplayMode*> Display::GetFullscreenModes() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetDisplays
- * @sa Display.GetFullscreenModes
+ * @sa GetFullscreenDisplayModes
  */
 inline DisplayMode GetClosestFullscreenDisplayMode(
   Display displayID,
@@ -4018,7 +4015,7 @@ inline DisplayMode Display::GetClosestFullscreenMode(
 /**
  * Get information about the desktop's display mode.
  *
- * There's a difference between this function and Display.GetCurrentMode() when
+ * There's a difference between this function and GetCurrentDisplayMode() when
  * SDL runs fullscreen and has changed the resolution. In that case this
  * function will return the previous native display mode, and not the current
  * display mode.
@@ -4031,7 +4028,7 @@ inline DisplayMode Display::GetClosestFullscreenMode(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetCurrentMode
+ * @sa GetCurrentDisplayMode
  * @sa GetDisplays
  */
 inline const DisplayMode& GetDesktopDisplayMode(DisplayID displayID)
@@ -4047,7 +4044,7 @@ inline const DisplayMode& Display::GetDesktopMode() const
 /**
  * Get information about the current display mode.
  *
- * There's a difference between this function and Display.GetDesktopMode() when
+ * There's a difference between this function and GetDesktopDisplayMode() when
  * SDL runs fullscreen and has changed the resolution. In that case this
  * function will return the current display mode, and not the previous native
  * display mode.
@@ -4060,7 +4057,7 @@ inline const DisplayMode& Display::GetDesktopMode() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetDesktopMode
+ * @sa GetDesktopDisplayMode
  * @sa GetDisplays
  */
 inline const DisplayMode& GetCurrentDisplayMode(DisplayID displayID)
@@ -4084,7 +4081,7 @@ inline const DisplayMode& Display::GetCurrentMode() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetBounds
+ * @sa GetDisplayBounds
  * @sa GetDisplays
  */
 inline Display GetDisplayForPoint(const PointRaw& point)
@@ -4109,7 +4106,7 @@ inline Display Display::GetForPoint(const PointRaw& point)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetBounds
+ * @sa GetDisplayBounds
  * @sa GetDisplays
  */
 inline Display GetDisplayForRect(const RectRaw& rect)
@@ -4134,7 +4131,7 @@ inline Display Display::GetForRect(const RectRaw& rect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetBounds
+ * @sa GetDisplayBounds
  * @sa GetDisplays
  */
 inline Display GetDisplayForWindow(WindowRef window)
@@ -4162,7 +4159,7 @@ inline Display Window::GetDisplay() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetDisplayScale
+ * @sa GetWindowDisplayScale
  */
 inline float GetWindowPixelDensity(WindowRef window)
 {
@@ -4210,12 +4207,12 @@ inline float Window::GetDisplayScale() const
  *
  * This only affects the display mode used when the window is fullscreen. To
  * change the window size when the window is not fullscreen, use
- * Window.SetSize().
+ * SetWindowSize().
  *
  * If the window is currently in the fullscreen state, this request is
  * asynchronous on some windowing systems and the new mode dimensions may not be
  * applied immediately upon the return of this function. If an immediate change
- * is required, call Window.Sync() to block until the changes have taken effect.
+ * is required, call SyncWindow() to block until the changes have taken effect.
  *
  * When the new mode takes effect, an EVENT_WINDOW_RESIZED and/or an
  * EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode
@@ -4224,17 +4221,17 @@ inline float Window::GetDisplayScale() const
  * @param window the window to affect.
  * @param mode a pointer to the display mode to use, which can be nullptr for
  *             borderless fullscreen desktop mode, or one of the fullscreen
- *             modes returned by Display.GetFullscreenModes() to set an
- *             exclusive fullscreen mode.
+ *             modes returned by GetFullscreenDisplayModes() to set an exclusive
+ *             fullscreen mode.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetFullscreenMode
- * @sa Window.SetFullscreen
- * @sa Window.Sync
+ * @sa GetWindowFullscreenMode
+ * @sa SetWindowFullscreen
+ * @sa SyncWindow
  */
 inline void SetWindowFullscreenMode(WindowRef window,
                                     OptionalRef<const DisplayMode> mode)
@@ -4258,8 +4255,8 @@ inline void Window::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetFullscreenMode
- * @sa Window.SetFullscreen
+ * @sa SetWindowFullscreenMode
+ * @sa SetWindowFullscreen
  */
 inline const DisplayMode& GetWindowFullscreenMode(WindowRef window)
 {
@@ -4369,23 +4366,23 @@ inline OwnArray<WindowRef> GetWindows()
  * - `WINDOW_TRANSPARENT`: window with transparent buffer
  * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
  *
- * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at
- * creation time, Window.Show() can be used to show it later.
+ * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation
+ * time, ShowWindow() can be used to show it later.
  *
  * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
  * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
  *
  * The window pixel size may differ from its window coordinate size if the
- * window is on a high pixel density display. Use Window.GetSize() to query the
- * client area's size in window coordinates, and Window.GetSizeInPixels() or
- * Renderer.GetOutputSize() to query the drawable size in pixels. Note that the
+ * window is on a high pixel density display. Use GetWindowSize() to query the
+ * client area's size in window coordinates, and GetWindowSizeInPixels() or
+ * GetRenderOutputSize() to query the drawable size in pixels. Note that the
  * drawable size can vary after the window is created and should be queried
  * again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
  *
  * If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN
  * flags, then the corresponding LoadLibrary function (GL_LoadLibrary or
  * Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is
- * called by Window.Destroy().
+ * called by DestroyWindow().
  *
  * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
  * CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.
@@ -4413,7 +4410,7 @@ inline OwnArray<WindowRef> GetWindows()
  * @sa CreateWindowAndRenderer
  * @sa CreatePopupWindow
  * @sa CreateWindowWithProperties
- * @sa Window.Destroy
+ * @sa DestroyWindow
  */
 inline Window CreateWindow(StringParam title,
                            const PointRaw& size,
@@ -4490,7 +4487,7 @@ inline Window::Window(PropertiesRef props)
  * parent when shown. This behavior can be overridden by setting the
  * `WINDOW_NOT_FOCUSABLE` flag, setting the
  * `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it
- * after creation via the `Window.SetFocusable()` function.
+ * after creation via the `SetWindowFocusable()` function.
  *
  * If a parent window is hidden or destroyed, any child popup windows will be
  * recursively hidden or destroyed as well. Child popup windows not explicitly
@@ -4511,8 +4508,8 @@ inline Window::Window(PropertiesRef props)
  *
  * @sa CreateWindow
  * @sa CreateWindowWithProperties
- * @sa Window.Destroy
- * @sa Window.GetParent
+ * @sa DestroyWindow
+ * @sa GetWindowParent
  */
 inline Window CreatePopupWindow(WindowRef parent,
                                 const PointRaw& offset,
@@ -4651,7 +4648,7 @@ inline Window CreatePopupWindow(WindowRef parent,
  * window to appear briefly, and then flicker as it is recreated. The correct
  * approach to this is to create the window with the
  * `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the
- * renderer, then show the window with Window.Show().
+ * renderer, then show the window with ShowWindow().
  *
  * @param props the properties to use.
  * @returns the window that was created or nullptr on failure; call GetError()
@@ -4661,9 +4658,9 @@ inline Window CreatePopupWindow(WindowRef parent,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Properties.Create
+ * @sa CreateProperties
  * @sa CreateWindow
- * @sa Window.Destroy
+ * @sa DestroyWindow
  */
 inline Window CreateWindowWithProperties(PropertiesRef props)
 {
@@ -4832,7 +4829,7 @@ constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.FromID
+ * @sa GetWindowFromID
  */
 inline WindowID GetWindowID(WindowRef window)
 {
@@ -4855,7 +4852,7 @@ inline WindowID Window::GetID() const { return SDL::GetWindowID(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetID
+ * @sa GetWindowID
  */
 inline WindowRef GetWindowFromID(WindowID id)
 {
@@ -4926,7 +4923,7 @@ inline WindowRef Window::GetParent() const
  *   framebuffer object. It must be bound when rendering to the screen using
  *   OpenGL.
  * - `prop.Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
- *   renderbuffer object. It must be bound when Window.GL_Swap is called.
+ *   renderbuffer object. It must be bound when GL_SwapWindow is called.
  * - `prop.Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
  *   resolve framebuffer, when MSAA is used.
  *
@@ -5189,13 +5186,13 @@ constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateWindow
- * @sa Window.Hide
- * @sa Window.Maximize
- * @sa Window.Minimize
- * @sa Window.SetFullscreen
- * @sa Window.SetMouseGrab
- * @sa Window.SetFillDocument
- * @sa Window.Show
+ * @sa HideWindow
+ * @sa MaximizeWindow
+ * @sa MinimizeWindow
+ * @sa SetWindowFullscreen
+ * @sa SetWindowMouseGrab
+ * @sa SetWindowFillDocument
+ * @sa ShowWindow
  */
 inline WindowFlags GetWindowFlags(WindowRef window)
 {
@@ -5220,7 +5217,7 @@ inline WindowFlags Window::GetFlags() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetTitle
+ * @sa GetWindowTitle
  */
 inline void SetWindowTitle(WindowRef window, StringParam title)
 {
@@ -5242,7 +5239,7 @@ inline void Window::SetTitle(StringParam title)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetTitle
+ * @sa SetWindowTitle
  */
 inline const char* GetWindowTitle(WindowRef window)
 {
@@ -5258,7 +5255,7 @@ inline const char* Window::GetTitle() const
  * Set the icon for a window.
  *
  * If this function is passed a surface with alternate representations added
- * using Surface.AddAlternateImage(), the surface will be interpreted as the
+ * using AddSurfaceAlternateImage(), the surface will be interpreted as the
  * content to be used for 100% display scale, and the alternate representations
  * will be used for high DPI situations. For example, if the original surface is
  * 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64
@@ -5275,7 +5272,7 @@ inline const char* Window::GetTitle() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.AddAlternateImage
+ * @sa AddSurfaceAlternateImage
  */
 inline void SetWindowIcon(WindowRef window, SurfaceRef icon)
 {
@@ -5296,12 +5293,12 @@ inline void Window::SetIcon(SurfaceRef icon)
  * This can be used to reposition fullscreen-desktop windows onto a different
  * display, however, as exclusive fullscreen windows are locked to a specific
  * display, they can only be repositioned programmatically via
- * Window.SetFullscreenMode().
+ * SetWindowFullscreenMode().
  *
  * On some windowing systems this request is asynchronous and the new
  * coordinates may not have have been applied immediately upon the return of
- * this function. If an immediate change is required, call Window.Sync() to
- * block until the changes have taken effect.
+ * this function. If an immediate change is required, call SyncWindow() to block
+ * until the changes have taken effect.
  *
  * When the window position changes, an EVENT_WINDOW_MOVED event will be emitted
  * with the window's new coordinates. Note that the new coordinates may not
@@ -5319,8 +5316,8 @@ inline void Window::SetIcon(SurfaceRef icon)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetPosition
- * @sa Window.Sync
+ * @sa GetWindowPosition
+ * @sa SyncWindow
  */
 inline void SetWindowPosition(WindowRef window, const PointRaw& p)
 {
@@ -5352,7 +5349,7 @@ inline void Window::SetPosition(const PointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetPosition
+ * @sa SetWindowPosition
  */
 inline void GetWindowPosition(WindowRef window, int* x, int* y)
 {
@@ -5376,7 +5373,7 @@ inline void GetWindowPosition(WindowRef window, int* x, int* y)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetPosition
+ * @sa SetWindowPosition
  */
 inline Point GetWindowPosition(WindowRef window)
 {
@@ -5402,11 +5399,11 @@ inline Point Window::GetPosition() const
  * effect.
  *
  * To change the exclusive fullscreen mode of a window, use
- * Window.SetFullscreenMode().
+ * SetWindowFullscreenMode().
  *
  * On some windowing systems, this request is asynchronous and the new window
  * size may not have have been applied immediately upon the return of this
- * function. If an immediate change is required, call Window.Sync() to block
+ * function. If an immediate change is required, call SyncWindow() to block
  * until the changes have taken effect.
  *
  * When the window size changes, an EVENT_WINDOW_RESIZED event will be emitted
@@ -5424,9 +5421,9 @@ inline Point Window::GetPosition() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetSize
- * @sa Window.SetFullscreenMode
- * @sa Window.Sync
+ * @sa GetWindowSize
+ * @sa SetWindowFullscreenMode
+ * @sa SyncWindow
  */
 inline void SetWindowSize(WindowRef window, const PointRaw& size)
 {
@@ -5442,8 +5439,8 @@ inline void Window::SetSize(const PointRaw& size)
  * Get the size of a window's client area.
  *
  * The window pixel size may differ from its window coordinate size if the
- * window is on a high pixel density display. Use Window.GetSizeInPixels() or
- * Renderer.GetOutputSize() to get the real client area size in pixels.
+ * window is on a high pixel density display. Use GetWindowSizeInPixels() or
+ * GetRenderOutputSize() to get the real client area size in pixels.
  *
  * @param window the window to query the width and height from.
  * @param w a pointer filled in with the width of the window, may be nullptr.
@@ -5454,9 +5451,9 @@ inline void Window::SetSize(const PointRaw& size)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetOutputSize
- * @sa Window.GetSizeInPixels
- * @sa Window.SetSize
+ * @sa GetRenderOutputSize
+ * @sa GetWindowSizeInPixels
+ * @sa SetWindowSize
  * @sa EVENT_WINDOW_RESIZED
  */
 inline void GetWindowSize(WindowRef window, int* w, int* h)
@@ -5468,8 +5465,8 @@ inline void GetWindowSize(WindowRef window, int* w, int* h)
  * Get the size of a window's client area.
  *
  * The window pixel size may differ from its window coordinate size if the
- * window is on a high pixel density display. Use Window.GetSizeInPixels() or
- * Renderer.GetOutputSize() to get the real client area size in pixels.
+ * window is on a high pixel density display. Use GetWindowSizeInPixels() or
+ * GetRenderOutputSize() to get the real client area size in pixels.
  *
  * @param window the window to query the width and height from.
  * @returns a point with width and height on success
@@ -5479,9 +5476,9 @@ inline void GetWindowSize(WindowRef window, int* w, int* h)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetOutputSize
- * @sa Window.GetSizeInPixels
- * @sa Window.SetSize
+ * @sa GetRenderOutputSize
+ * @sa GetWindowSizeInPixels
+ * @sa SetWindowSize
  * @sa EVENT_WINDOW_RESIZED
  */
 inline Point GetWindowSize(WindowRef window)
@@ -5581,8 +5578,8 @@ inline Rect Window::GetSafeArea() const
  *
  * On some windowing systems, this request is asynchronous and the new window
  * aspect ratio may not have have been applied immediately upon the return of
- * this function. If an immediate change is required, call Window.Sync() to
- * block until the changes have taken effect.
+ * this function. If an immediate change is required, call SyncWindow() to block
+ * until the changes have taken effect.
  *
  * When the window size changes, an EVENT_WINDOW_RESIZED event will be emitted
  * with the new window dimensions. Note that the new dimensions may not match
@@ -5602,8 +5599,8 @@ inline Rect Window::GetSafeArea() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetAspectRatio
- * @sa Window.Sync
+ * @sa GetWindowAspectRatio
+ * @sa SyncWindow
  */
 inline void SetWindowAspectRatio(WindowRef window,
                                  float min_aspect,
@@ -5631,7 +5628,7 @@ inline void Window::SetAspectRatio(float min_aspect, float max_aspect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetAspectRatio
+ * @sa SetWindowAspectRatio
  */
 inline void GetWindowAspectRatio(WindowRef window,
                                  float* min_aspect,
@@ -5676,7 +5673,7 @@ inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetSize
+ * @sa GetWindowSize
  */
 inline void GetWindowBordersSize(WindowRef window,
                                  int* top,
@@ -5710,7 +5707,7 @@ inline void Window::GetBordersSize(int* top,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateWindow
- * @sa Window.GetSize
+ * @sa GetWindowSize
  */
 inline void GetWindowSizeInPixels(WindowRef window, int* w, int* h)
 {
@@ -5730,7 +5727,7 @@ inline void GetWindowSizeInPixels(WindowRef window, int* w, int* h)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateWindow
- * @sa Window.GetSize
+ * @sa GetWindowSize
  */
 inline Point GetWindowSizeInPixels(WindowRef window)
 {
@@ -5760,8 +5757,8 @@ inline Point Window::GetSizeInPixels() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetMinimumSize
- * @sa Window.SetMaximumSize
+ * @sa GetWindowMinimumSize
+ * @sa SetWindowMaximumSize
  */
 inline void SetWindowMinimumSize(WindowRef window, const PointRaw& p)
 {
@@ -5787,8 +5784,8 @@ inline void Window::SetMinimumSize(const PointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetMaximumSize
- * @sa Window.SetMinimumSize
+ * @sa GetWindowMaximumSize
+ * @sa SetWindowMinimumSize
  */
 inline void GetWindowMinimumSize(WindowRef window, int* w, int* h)
 {
@@ -5811,8 +5808,8 @@ inline void Window::GetMinimumSize(int* w, int* h) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetMaximumSize
- * @sa Window.SetMinimumSize
+ * @sa GetWindowMaximumSize
+ * @sa SetWindowMinimumSize
  */
 inline void SetWindowMaximumSize(WindowRef window, const PointRaw& p)
 {
@@ -5838,8 +5835,8 @@ inline void Window::SetMaximumSize(const PointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetMinimumSize
- * @sa Window.SetMaximumSize
+ * @sa GetWindowMinimumSize
+ * @sa SetWindowMaximumSize
  */
 inline void GetWindowMaximumSize(WindowRef window, int* w, int* h)
 {
@@ -5868,7 +5865,7 @@ inline void Window::GetMaximumSize(int* w, int* h) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetFlags
+ * @sa GetWindowFlags
  */
 inline void SetWindowBordered(WindowRef window, bool bordered)
 {
@@ -5897,7 +5894,7 @@ inline void Window::SetBordered(bool bordered)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetFlags
+ * @sa GetWindowFlags
  */
 inline void SetWindowResizable(WindowRef window, bool resizable)
 {
@@ -5923,7 +5920,7 @@ inline void Window::SetResizable(bool resizable)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetFlags
+ * @sa GetWindowFlags
  */
 inline void SetWindowAlwaysOnTop(WindowRef window, bool on_top)
 {
@@ -5963,7 +5960,7 @@ inline void Window::SetAlwaysOnTop(bool on_top)
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Window.GetFlags
+ * @sa GetWindowFlags
  */
 inline void SetWindowFillDocument(WindowRef window, bool fill)
 {
@@ -5987,8 +5984,8 @@ inline void Window::SetFillDocument(bool fill)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Hide
- * @sa Window.Raise
+ * @sa HideWindow
+ * @sa RaiseWindow
  */
 inline void ShowWindow(WindowRef window) { CheckError(SDL_ShowWindow(window)); }
 
@@ -6004,7 +6001,7 @@ inline void Window::Show() { SDL::ShowWindow(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Show
+ * @sa ShowWindow
  * @sa WINDOW_HIDDEN
  */
 inline void HideWindow(WindowRef window) { CheckError(SDL_HideWindow(window)); }
@@ -6042,7 +6039,7 @@ inline void Window::Raise() { SDL::RaiseWindow(get()); }
  *
  * On some windowing systems this request is asynchronous and the new window
  * state may not have have been applied immediately upon the return of this
- * function. If an immediate change is required, call Window.Sync() to block
+ * function. If an immediate change is required, call SyncWindow() to block
  * until the changes have taken effect.
  *
  * When the window state changes, an EVENT_WINDOW_MAXIMIZED event will be
@@ -6050,7 +6047,7 @@ inline void Window::Raise() { SDL::RaiseWindow(get()); }
  * the state change.
  *
  * When maximizing a window, whether the constraints set via
- * Window.SetMaximumSize() are honored depends on the policy of the window
+ * SetWindowMaximumSize() are honored depends on the policy of the window
  * manager. Win32 and macOS enforce the constraints when maximizing, while X11
  * and Wayland window managers may vary.
  *
@@ -6061,9 +6058,9 @@ inline void Window::Raise() { SDL::RaiseWindow(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Minimize
- * @sa Window.Restore
- * @sa Window.Sync
+ * @sa MinimizeWindow
+ * @sa RestoreWindow
+ * @sa SyncWindow
  */
 inline void MaximizeWindow(WindowRef window)
 {
@@ -6080,7 +6077,7 @@ inline void Window::Maximize() { SDL::MaximizeWindow(get()); }
  *
  * On some windowing systems this request is asynchronous and the new window
  * state may not have been applied immediately upon the return of this function.
- * If an immediate change is required, call Window.Sync() to block until the
+ * If an immediate change is required, call SyncWindow() to block until the
  * changes have taken effect.
  *
  * When the window state changes, an EVENT_WINDOW_MINIMIZED event will be
@@ -6094,9 +6091,9 @@ inline void Window::Maximize() { SDL::MaximizeWindow(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Maximize
- * @sa Window.Restore
- * @sa Window.Sync
+ * @sa MaximizeWindow
+ * @sa RestoreWindow
+ * @sa SyncWindow
  */
 inline void MinimizeWindow(WindowRef window)
 {
@@ -6114,7 +6111,7 @@ inline void Window::Minimize() { SDL::MinimizeWindow(get()); }
  *
  * On some windowing systems this request is asynchronous and the new window
  * state may not have have been applied immediately upon the return of this
- * function. If an immediate change is required, call Window.Sync() to block
+ * function. If an immediate change is required, call SyncWindow() to block
  * until the changes have taken effect.
  *
  * When the window state changes, an EVENT_WINDOW_RESTORED event will be
@@ -6128,9 +6125,9 @@ inline void Window::Minimize() { SDL::MinimizeWindow(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.Maximize
- * @sa Window.Minimize
- * @sa Window.Sync
+ * @sa MaximizeWindow
+ * @sa MinimizeWindow
+ * @sa SyncWindow
  */
 inline void RestoreWindow(WindowRef window)
 {
@@ -6144,11 +6141,11 @@ inline void Window::Restore() { SDL::RestoreWindow(get()); }
  *
  * By default a window in fullscreen state uses borderless fullscreen desktop
  * mode, but a specific exclusive display mode can be set using
- * Window.SetFullscreenMode().
+ * SetWindowFullscreenMode().
  *
  * On some windowing systems this request is asynchronous and the new fullscreen
  * state may not have have been applied immediately upon the return of this
- * function. If an immediate change is required, call Window.Sync() to block
+ * function. If an immediate change is required, call SyncWindow() to block
  * until the changes have taken effect.
  *
  * When the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or
@@ -6163,9 +6160,9 @@ inline void Window::Restore() { SDL::RestoreWindow(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetFullscreenMode
- * @sa Window.SetFullscreenMode
- * @sa Window.Sync
+ * @sa GetWindowFullscreenMode
+ * @sa SetWindowFullscreenMode
+ * @sa SyncWindow
  * @sa WINDOW_FULLSCREEN
  */
 inline void SetWindowFullscreen(WindowRef window, bool fullscreen)
@@ -6199,12 +6196,12 @@ inline void Window::SetFullscreen(bool fullscreen)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetSize
- * @sa Window.SetPosition
- * @sa Window.SetFullscreen
- * @sa Window.Minimize
- * @sa Window.Maximize
- * @sa Window.Restore
+ * @sa SetWindowSize
+ * @sa SetWindowPosition
+ * @sa SetWindowFullscreen
+ * @sa MinimizeWindow
+ * @sa MaximizeWindow
+ * @sa RestoreWindow
  * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
  */
 inline bool SyncWindow(WindowRef window) { return SDL_SyncWindow(window); }
@@ -6222,7 +6219,7 @@ inline bool Window::Sync() { return SDL::SyncWindow(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetSurface
+ * @sa GetWindowSurface
  */
 inline bool WindowHasSurface(WindowRef window)
 {
@@ -6253,10 +6250,10 @@ inline bool Window::HasSurface() const { return SDL::WindowHasSurface(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.DestroySurface
- * @sa Window.HasSurface
- * @sa Window.UpdateSurface
- * @sa Window.UpdateSurfaceRects
+ * @sa DestroyWindowSurface
+ * @sa WindowHasSurface
+ * @sa UpdateWindowSurface
+ * @sa UpdateWindowSurfaceRects
  */
 inline Surface GetWindowSurface(WindowRef window)
 {
@@ -6286,7 +6283,7 @@ inline Surface Window::GetSurface() { return SDL::GetWindowSurface(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetSurfaceVSync
+ * @sa GetWindowSurfaceVSync
  */
 inline void SetWindowSurfaceVSync(WindowRef window, int vsync)
 {
@@ -6308,13 +6305,15 @@ constexpr int WINDOW_SURFACE_VSYNC_ADAPTIVE = SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE;
  * Get VSync for the window surface.
  *
  * @param window the window to query.
+ * @returns an int with the current vertical refresh sync interval. See
+ *          SetWindowSurfaceVSync() for the meaning of the value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetSurfaceVSync
+ * @sa SetWindowSurfaceVSync
  */
 inline int GetWindowSurfaceVSync(WindowRef window)
 {
@@ -6343,8 +6342,8 @@ inline int Window::GetSurfaceVSync() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetSurface
- * @sa Window.UpdateSurfaceRects
+ * @sa GetWindowSurface
+ * @sa UpdateWindowSurfaceRects
  */
 inline void UpdateWindowSurface(WindowRef window)
 {
@@ -6375,8 +6374,8 @@ inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetSurface
- * @sa Window.UpdateSurface
+ * @sa GetWindowSurface
+ * @sa UpdateWindowSurface
  */
 inline void UpdateWindowSurfaceRects(WindowRef window,
                                      SpanRef<const RectRaw> rects)
@@ -6400,8 +6399,8 @@ inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetSurface
- * @sa Window.HasSurface
+ * @sa GetWindowSurface
+ * @sa WindowHasSurface
  */
 inline void DestroyWindowSurface(WindowRef window)
 {
@@ -6436,8 +6435,8 @@ inline void Window::DestroySurface() { SDL::DestroyWindowSurface(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetKeyboardGrab
- * @sa Window.SetMouseGrab
+ * @sa GetWindowKeyboardGrab
+ * @sa SetWindowMouseGrab
  */
 inline void SetWindowKeyboardGrab(WindowRef window, bool grabbed)
 {
@@ -6462,9 +6461,9 @@ inline void Window::SetKeyboardGrab(bool grabbed)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetMouseRect
- * @sa Window.SetMouseRect
- * @sa Window.SetKeyboardGrab
+ * @sa GetWindowMouseRect
+ * @sa SetWindowMouseRect
+ * @sa SetWindowKeyboardGrab
  */
 inline void SetWindowMouseGrab(WindowRef window, bool grabbed)
 {
@@ -6486,7 +6485,7 @@ inline void Window::SetMouseGrab(bool grabbed)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetKeyboardGrab
+ * @sa SetWindowKeyboardGrab
  */
 inline bool GetWindowKeyboardGrab(WindowRef window)
 {
@@ -6508,10 +6507,10 @@ inline bool Window::GetKeyboardGrab() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetMouseRect
- * @sa Window.SetMouseRect
- * @sa Window.SetMouseGrab
- * @sa Window.SetKeyboardGrab
+ * @sa GetWindowMouseRect
+ * @sa SetWindowMouseRect
+ * @sa SetWindowMouseGrab
+ * @sa SetWindowKeyboardGrab
  */
 inline bool GetWindowMouseGrab(WindowRef window)
 {
@@ -6532,8 +6531,8 @@ inline bool Window::GetMouseGrab() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetMouseGrab
- * @sa Window.SetKeyboardGrab
+ * @sa SetWindowMouseGrab
+ * @sa SetWindowKeyboardGrab
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 
@@ -6554,9 +6553,9 @@ inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetMouseRect
- * @sa Window.GetMouseGrab
- * @sa Window.SetMouseGrab
+ * @sa GetWindowMouseRect
+ * @sa GetWindowMouseGrab
+ * @sa SetWindowMouseGrab
  */
 inline void SetWindowMouseRect(WindowRef window, const RectRaw& rect)
 {
@@ -6579,9 +6578,9 @@ inline void Window::SetMouseRect(const RectRaw& rect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetMouseRect
- * @sa Window.GetMouseGrab
- * @sa Window.SetMouseGrab
+ * @sa SetWindowMouseRect
+ * @sa GetWindowMouseGrab
+ * @sa SetWindowMouseGrab
  */
 inline const RectRaw* GetWindowMouseRect(WindowRef window)
 {
@@ -6609,7 +6608,7 @@ inline const RectRaw* Window::GetMouseRect() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.GetOpacity
+ * @sa GetWindowOpacity
  */
 inline void SetWindowOpacity(WindowRef window, float opacity)
 {
@@ -6635,7 +6634,7 @@ inline void Window::SetOpacity(float opacity)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetOpacity
+ * @sa SetWindowOpacity
  */
 inline float GetWindowOpacity(WindowRef window)
 {
@@ -6657,7 +6656,7 @@ inline float Window::GetOpacity() const { return SDL::GetWindowOpacity(get()); }
  * shown.
  *
  * Attempting to set the parent of a window that is currently in the modal state
- * will fail. Use Window.SetModal() to cancel the modal status before attempting
+ * will fail. Use SetWindowModal() to cancel the modal status before attempting
  * to change the parent.
  *
  * Popup windows cannot change parents and attempts to do so will fail.
@@ -6673,7 +6672,7 @@ inline float Window::GetOpacity() const { return SDL::GetWindowOpacity(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetModal
+ * @sa SetWindowModal
  */
 inline void SetWindowParent(WindowRef window, WindowRef parent)
 {
@@ -6699,7 +6698,7 @@ inline void Window::SetParent(WindowRef parent)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.SetParent
+ * @sa SetWindowParent
  * @sa WINDOW_MODAL
  */
 inline void SetWindowModal(WindowRef window, bool modal)
@@ -6873,7 +6872,7 @@ inline void Window::SetHitTest(HitTestCB callback)
  * cross-platform results.
  *
  * The shape is copied inside this function, so you can free it afterwards. If
- * your shape surface changes, you should call Window.SetShape() again to update
+ * your shape surface changes, you should call SetWindowShape() again to update
  * the window. This is an expensive operation, so should be done sparingly.
  *
  * The window must have been created with the WINDOW_TRANSPARENT flag.
@@ -7306,8 +7305,8 @@ inline void GL_GetAttribute(GLAttr attr, int* value)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GLContext.Destroy
- * @sa GLContext.MakeCurrent
+ * @sa GL_DestroyContext
+ * @sa Window.MakeCurrent
  */
 inline GLContext GL_CreateContext(WindowRef window)
 {
@@ -7377,7 +7376,7 @@ inline WindowRef GL_GetCurrentWindow()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GLContext.MakeCurrent
+ * @sa Window.MakeCurrent
  */
 inline GLContext GL_GetCurrentContext() { return SDL_GL_GetCurrentContext(); }
 

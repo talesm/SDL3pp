@@ -31,7 +31,7 @@ namespace SDL {
  *
  * When loading audio, SDL_mixer can parse out several metadata tag formats,
  * such as ID3 and APE tags, and exposes this information through the
- * Audio.GetProperties() function.
+ * GetAudioProperties() function.
  *
  * To play audio, you create a track with Mixer.CreateTrack(). You need one
  * track for each sound that will be played simultaneously; think of tracks as
@@ -44,10 +44,10 @@ namespace SDL {
  * load and decode on the fly, which might be more efficient for background
  * music that is only used once, etc.
  *
- * Assign input to a Track with Track.SetAudio(), Track.SetAudioStream(), or
- * Track.SetIOStream().
+ * Assign input to a Track with SetTrackAudio(), SetTrackAudioStream(), or
+ * SetTrackIOStream().
  *
- * Once a track has an input, start it playing with Track.Play(). There are many
+ * Once a track has an input, start it playing with PlayTrack(). There are many
  * options to this function to dictate mixing features: looping, fades, etc.
  *
  * Tracks can be tagged with arbitrary strings, like "music" or "ingame" or
@@ -86,21 +86,21 @@ namespace SDL {
  * time--you can produce audio faster than real-time, if desired. The problem,
  * though, is different pieces of audio at different _sample rates_ will produce
  * a different number of sample frames for the same length of time. To deal with
- * this, conversion routines are offered: Track.MSToFrames(),
- * Track.FramesToMS(), etc. Functions that operate on multiple tracks at once
- * will deal with time in milliseconds, so it can do these conversions
- * internally; be sure to read the documentation for these small quirks!
+ * this, conversion routines are offered: TrackMSToFrames(), TrackFramesToMS(),
+ * etc. Functions that operate on multiple tracks at once will deal with time in
+ * milliseconds, so it can do these conversions internally; be sure to read the
+ * documentation for these small quirks!
  *
  * SDL_mixer offers basic positional audio: a simple 3D positioning API through
- * Track.Set3DPosition() and Track.SetStereo(). The former will do simple
- * distance attenuation and spatialization--on a stereo setup, you will hear
- * sounds move from left to right--and on a surround-sound configuration,
- * individual tracks can move around the user. The latter, Track.SetStereo(),
- * will force a sound to the Front Left and Front Right speakers and let the app
- * pan it left and right as desired. Either effect can be useful for different
- * situations. SDL_mixer is not meant to be a full 3D audio engine, but rather
- * Good Enough for many purposes; if something more powerful in terms of 3D
- * audio is needed, consider a proper 3D library like OpenAL.
+ * SetTrack3DPosition() and SetTrackStereo(). The former will do simple distance
+ * attenuation and spatialization--on a stereo setup, you will hear sounds move
+ * from left to right--and on a surround-sound configuration, individual tracks
+ * can move around the user. The latter, SetTrackStereo(), will force a sound to
+ * the Front Left and Front Right speakers and let the app pan it left and right
+ * as desired. Either effect can be useful for different situations. SDL_mixer
+ * is not meant to be a full 3D audio engine, but rather Good Enough for many
+ * purposes; if something more powerful in terms of 3D audio is needed, consider
+ * a proper 3D library like OpenAL.
  *
  * @{
  */
@@ -180,7 +180,7 @@ struct MixerLock;
  * mixer was created with CreateMixerDevice(), the data provided by this
  * callback is what is being sent to the audio hardware, minus last conversions
  * for format requirements. If this mixer was created with CreateMixer(), this
- * is what is being output from Mixer.Generate(), after final conversions.
+ * is what is being output from Generate(), after final conversions.
  *
  * The audio data passed through here is _not_ const data; the app is permitted
  * to change it in any way it likes, and those changes will replace the final
@@ -204,7 +204,7 @@ struct MixerLock;
  *
  * @since This datatype is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.SetPostMixCallback
+ * @sa SetPostMixCallback
  */
 using PostMixCallback = void(SDLCALL*)(void* userdata,
                                        MixerRaw mixer,
@@ -219,7 +219,7 @@ using PostMixCallback = void(SDLCALL*)(void* userdata,
  * mixer was created with CreateMixerDevice(), the data provided by this
  * callback is what is being sent to the audio hardware, minus last conversions
  * for format requirements. If this mixer was created with CreateMixer(), this
- * is what is being output from Mixer.Generate(), after final conversions.
+ * is what is being output from Generate(), after final conversions.
  *
  * The audio data passed through here is _not_ const data; the app is permitted
  * to change it in any way it likes, and those changes will replace the final
@@ -242,7 +242,7 @@ using PostMixCallback = void(SDLCALL*)(void* userdata,
  *
  * @since This datatype is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.SetPostMixCallback
+ * @sa SetPostMixCallback
  *
  * @sa PostMixCallback
  */
@@ -318,13 +318,13 @@ struct Mixer : ResourceBase<MixerRaw>
    * to specify a format is because you know all your data is in that format and
    * it might save some unnecessary CPU time on conversion.
    *
-   * The actual device format chosen is available through Mixer.GetFormat().
+   * The actual device format chosen is available through GetMixerFormat().
    *
    * Once a mixer is created, next steps are usually to load audio (through
    * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
    * play that audio through that track.
    *
-   * When done with the mixer, it can be destroyed with Mixer.Destroy().
+   * When done with the mixer, it can be destroyed with DestroyMixer().
    *
    * @param devid the device to open for playback, or
    *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
@@ -338,7 +338,7 @@ struct Mixer : ResourceBase<MixerRaw>
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa CreateMixer
-   * @sa Mixer.Destroy
+   * @sa DestroyMixer
    */
   Mixer(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec = std::nullopt);
 
@@ -346,8 +346,8 @@ struct Mixer : ResourceBase<MixerRaw>
    * Create a mixer that generates audio to a memory buffer.
    *
    * Usually you want CreateMixerDevice() instead of this function. The mixer
-   * created here can be used with Mixer.Generate() to produce more data on
-   * demand, as fast as desired.
+   * created here can be used with Generate() to produce more data on demand, as
+   * fast as desired.
    *
    * An audio format must be specified. This is the format it will output in.
    * This cannot be nullptr.
@@ -356,7 +356,7 @@ struct Mixer : ResourceBase<MixerRaw>
    * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
    * play that audio through that track.
    *
-   * When done with the mixer, it can be destroyed with Mixer.Destroy().
+   * When done with the mixer, it can be destroyed with DestroyMixer().
    *
    * @param spec the audio format that mixer will generate.
    * @post a mixer that can be used to generate audio on success.
@@ -367,7 +367,7 @@ struct Mixer : ResourceBase<MixerRaw>
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa CreateMixerDevice
-   * @sa Mixer.Destroy
+   * @sa DestroyMixer
    */
   Mixer(const AudioSpec& spec);
 
@@ -437,9 +437,8 @@ struct Mixer : ResourceBase<MixerRaw>
    * audio device (and may change later if the device itself changes; SDL_mixer
    * will seamlessly handle this change internally, though).
    *
-   * For mixers created with CreateMixer(), this is the format that
-   * Mixer.Generate() will produce, as requested at create time, and does not
-   * change.
+   * For mixers created with CreateMixer(), this is the format that Generate()
+   * will produce, as requested at create time, and does not change.
    *
    * Note that internally, SDL_mixer will work in AUDIO_F32 format before
    * outputting the format specified here, so it would be more efficient to
@@ -461,7 +460,7 @@ struct Mixer : ResourceBase<MixerRaw>
    * internal state in another thread. Those other threads will block until the
    * mixer is unlocked again.
    *
-   * Under the hood, this function calls Mutex.Lock(), so all the same rules
+   * Under the hood, this function calls LockMutex(), so all the same rules
    * apply: the lock can be recursive, it must be unlocked the same number of
    * times from the same thread that locked it, etc.
    *
@@ -477,10 +476,10 @@ struct Mixer : ResourceBase<MixerRaw>
    *   lock can be used for this, but this is a conveniently-available lock.
    * - The app wants to make multiple, atomic changes to the mix. For example,
    *   to start several tracks at the exact same moment, one would lock the
-   *   mixer, call Track.Play multiple times, and then unlock again; all the
+   *   mixer, call PlayTrack multiple times, and then unlock again; all the
    *   tracks will start mixing on the same sample frame.
    *
-   * Each call to this function must be paired with a call to Mixer.Unlock from
+   * Each call to this function must be paired with a call to UnlockMixer from
    * the same thread. It is safe to lock a mixer multiple times; it remains
    * locked until the final matching unlock call.
    *
@@ -493,29 +492,29 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Unlock
+   * @sa UnlockMixer
    */
   MixerLock Lock();
 
   /**
-   * Unlock a mixer previously locked by a call to Mixer.Lock().
+   * Unlock a mixer previously locked by a call to LockMixer().
    *
    * While locked, the mixer will not be able to mix more audio or change its
    * internal state another thread. Those other threads will block until the
    * mixer is unlocked again.
    *
-   * Under the hood, this function calls Mutex.Lock(), so all the same rules
+   * Under the hood, this function calls LockMutex(), so all the same rules
    * apply: the lock can be recursive, it must be unlocked the same number of
    * times from the same thread that locked it, etc.
    *
    * Unlocking a nullptr mixer is a safe no-op.
    *
-   * @threadsafety This call must be paired with a previous Mixer.Lock call on
+   * @threadsafety This call must be paired with a previous LockMixer call on
    *               the same thread.
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Lock
+   * @sa LockMixer
    */
   void Unlock(MixerLock&& lock);
 
@@ -534,7 +533,7 @@ struct Mixer : ResourceBase<MixerRaw>
    * stored as raw PCM data. This might dramatically increase loading time and
    * memory usage, but there will be no need to decompress data during playback.
    *
-   * (One could also use Track.SetIOStream() to bypass loading the data into RAM
+   * (One could also use SetTrackIOStream() to bypass loading the data into RAM
    * upfront at all, but this offers still different tradeoffs. The correct
    * approach depends on the app's needs and employing different approaches in
    * different situations can make sense.)
@@ -545,9 +544,9 @@ struct Mixer : ResourceBase<MixerRaw>
    * If `mixer` is nullptr, SDL_mixer will set reasonable defaults.
    *
    * Once a Audio is created, it can be assigned to a Track with
-   * Track.SetAudio(), or played without any management with Mixer.PlayAudio().
+   * SetTrackAudio(), or played without any management with PlayAudio().
    *
-   * When done with a Audio, it can be freed with Audio.Destroy().
+   * When done with a Audio, it can be freed with DestroyAudio().
    *
    * This function loads data from an IOStream. There is also a version that
    * loads from a path on the filesystem (Mixer.LoadAudio()), and one that
@@ -569,8 +568,8 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadAudio
    * @sa LoadAudioWithProperties
    */
@@ -582,7 +581,7 @@ struct Mixer : ResourceBase<MixerRaw>
    * This is equivalent to calling:
    *
    * ```cpp
-   * mixer.LoadAudio_IO(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+   * mixer.LoadAudio_IO(mixer, IOFromFile(path, "rb"), predecode, true);
    * ```
    *
    * This function loads data from a path on the filesystem. There is also a
@@ -598,8 +597,8 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadAudio_IO
    * @sa LoadAudioWithProperties
    */
@@ -637,13 +636,13 @@ struct Mixer : ResourceBase<MixerRaw>
    * wants to avoid the extra copy.
    *
    * As audio format information is obtained from the file format metadata, this
-   * isn't useful for raw PCM data; in that case, use Mixer.LoadRawAudioNoCopy()
+   * isn't useful for raw PCM data; in that case, use LoadRawAudioNoCopy()
    * instead, which offers an AudioSpec.
    *
    * Once a Audio is created, it can be assigned to a Track with
-   * Track.SetAudio(), or played without any management with Mixer.PlayAudio().
+   * SetTrackAudio(), or played without any management with PlayAudio().
    *
-   * When done with a Audio, it can be freed with Audio.Destroy().
+   * When done with a Audio, it can be freed with DestroyAudio().
    *
    * @param data the buffer where the audio data lives.
    * @param free_when_done if true, `data` will be given to free() when the
@@ -656,9 +655,9 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
-   * @sa Mixer.LoadRawAudioNoCopy
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
+   * @sa LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
   Audio LoadAudioNoCopy(SourceBytes data, bool free_when_done);
@@ -690,10 +689,10 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadRawAudio
-   * @sa Mixer.LoadRawAudioNoCopy
+   * @sa LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
   Audio LoadRawAudio_IO(IOStreamRef io,
@@ -710,7 +709,7 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * This function will load the raw data in its entirety and cache it in RAM,
    * allocating a copy. If the original data will outlive the created Audio, you
-   * can use Mixer.LoadRawAudioNoCopy() to avoid extra allocations and copies.
+   * can use LoadRawAudioNoCopy() to avoid extra allocations and copies.
    *
    * Audio objects can be shared between multiple mixers. The `mixer` parameter
    * just suggests the most likely mixer to use this audio, in case some
@@ -727,10 +726,10 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadRawAudio_IO
-   * @sa Mixer.LoadRawAudioNoCopy
+   * @sa LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
   Audio LoadRawAudio(SourceBytes data, const AudioSpec& spec);
@@ -768,8 +767,8 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadRawAudio
    * @sa Mixer.LoadRawAudio_IO
    * @sa Mixer.LoadAudio_IO
@@ -809,8 +808,8 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadAudio_IO
    */
   Audio CreateSineWaveAudio(int hz, float amplitude, Sint64 ms);
@@ -836,7 +835,7 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Destroy
+   * @sa DestroyTrack
    */
   TrackRef CreateTrack();
 
@@ -858,10 +857,10 @@ struct Mixer : ResourceBase<MixerRaw>
   /**
    * Start (or restart) mixing all tracks with a specific tag for playback.
    *
-   * This function follows all the same rules as Track.Play(); please refer to
-   * its documentation for the details. Unlike that function, Mixer.PlayTag()
-   * operates on multiple tracks at once that have the specified tag applied,
-   * via Track.Tag().
+   * This function follows all the same rules as PlayTrack(); please refer to
+   * its documentation for the details. Unlike that function, PlayTag() operates
+   * on multiple tracks at once that have the specified tag applied, via
+   * TagTrack().
    *
    * If all of your tagged tracks have different sample rates, it would make
    * sense to use the `*_MILLISECONDS_NUMBER` properties in your `options`,
@@ -883,11 +882,11 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Play
-   * @sa Track.Tag
-   * @sa Track.Stop
-   * @sa Track.Pause
-   * @sa Track.Playing
+   * @sa PlayTrack
+   * @sa TagTrack
+   * @sa StopTrack
+   * @sa PauseTrack
+   * @sa TrackPlaying
    */
   void PlayTag(StringParam tag, PropertiesRef options);
 
@@ -897,7 +896,7 @@ struct Mixer : ResourceBase<MixerRaw>
    * This is what we term a "fire-and-forget" sound. Internally, SDL_mixer will
    * manage a temporary track to mix the specified Audio, cleaning it up when
    * complete. No options can be provided for how to do the mixing, like
-   * Track.Play() offers, and since the track is not available to the caller, no
+   * PlayTrack() offers, and since the track is not available to the caller, no
    * adjustments can be made to mixing over time.
    *
    * This is not the function to build an entire game of any complexity around,
@@ -917,7 +916,7 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Play
+   * @sa PlayTrack
    * @sa Mixer.LoadAudio
    */
   bool PlayAudio(AudioRef audio);
@@ -927,7 +926,7 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * If `fade_out_ms` is > 0, the tracks do not stop mixing immediately, but
    * rather fades to silence over that many milliseconds before stopping. Note
-   * that this is different than Track.Stop(), which wants sample frames; this
+   * that this is different than StopTrack(), which wants sample frames; this
    * function takes milliseconds because different tracks might have different
    * sample rates.
    *
@@ -952,7 +951,7 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Stop
+   * @sa StopTrack
    */
   void StopAllTracks(Sint64 fade_out_ms);
 
@@ -961,7 +960,7 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * If `fade_out_ms` is > 0, the tracks do not stop mixing immediately, but
    * rather fades to silence over that many milliseconds before stopping. Note
-   * that this is different than Track.Stop(), which wants sample frames; this
+   * that this is different than StopTrack(), which wants sample frames; this
    * function takes milliseconds because different tracks might have different
    * sample rates.
    *
@@ -983,8 +982,8 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Stop
-   * @sa Track.Tag
+   * @sa StopTrack
+   * @sa TagTrack
    */
   void StopTag(StringParam tag, Sint64 fade_out_ms);
 
@@ -1004,8 +1003,8 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Resume
-   * @sa Mixer.ResumeAllTracks
+   * @sa ResumeTrack
+   * @sa ResumeAllTracks
    */
   void PauseAllTracks();
 
@@ -1029,10 +1028,10 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Pause
-   * @sa Track.Resume
-   * @sa Mixer.ResumeTag
-   * @sa Track.Tag
+   * @sa PauseTrack
+   * @sa ResumeTrack
+   * @sa ResumeTag
+   * @sa TagTrack
    */
   void PauseTag(StringParam tag);
 
@@ -1052,8 +1051,8 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Pause
-   * @sa Mixer.PauseAllTracks
+   * @sa PauseTrack
+   * @sa PauseAllTracks
    */
   void ResumeAllTracks();
 
@@ -1077,10 +1076,10 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Resume
-   * @sa Track.Pause
-   * @sa Mixer.PauseTag
-   * @sa Track.Tag
+   * @sa ResumeTrack
+   * @sa PauseTrack
+   * @sa PauseTag
+   * @sa TagTrack
    */
   void ResumeTag(StringParam tag);
 
@@ -1105,16 +1104,16 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.GetGain
-   * @sa Track.SetGain
+   * @sa GetMixerGain
+   * @sa SetTrackGain
    */
   void SetGain(float gain);
 
   /**
    * Get a mixer's master gain control.
    *
-   * This returns the last value set through Mixer.SetGain(), or 1.0f if no
-   * value has ever been explicitly set.
+   * This returns the last value set through SetMixerGain(), or 1.0f if no value
+   * has ever been explicitly set.
    *
    * @returns the mixer's current master gain.
    *
@@ -1122,8 +1121,8 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.SetGain
-   * @sa Track.GetGain
+   * @sa SetMixerGain
+   * @sa GetTrackGain
    */
   float GetGain();
 
@@ -1155,10 +1154,10 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.GetGain
-   * @sa Track.SetGain
-   * @sa Mixer.SetGain
-   * @sa Track.Tag
+   * @sa GetTrackGain
+   * @sa SetTrackGain
+   * @sa SetMixerGain
+   * @sa TagTrack
    */
   void SetTagGain(StringParam tag, float gain);
 
@@ -1186,15 +1185,15 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.GetFrequencyRatio
-   * @sa Track.SetFrequencyRatio
+   * @sa GetMixerFrequencyRatio
+   * @sa SetTrackFrequencyRatio
    */
   void SetFrequencyRatio(float ratio);
 
   /**
    * Get a mixer's master frequency ratio.
    *
-   * This returns the last value set through Mixer.SetFrequencyRatio(), or 1.0f
+   * This returns the last value set through SetMixerFrequencyRatio(), or 1.0f
    * if no value has ever been explicitly set.
    *
    * @returns the mixer's current master frequency ratio.
@@ -1203,8 +1202,8 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.SetFrequencyRatio
-   * @sa Track.GetFrequencyRatio
+   * @sa SetMixerFrequencyRatio
+   * @sa GetTrackFrequencyRatio
    */
   float GetFrequencyRatio();
 
@@ -1219,10 +1218,10 @@ struct Mixer : ResourceBase<MixerRaw>
    * This can be a useful feature, but is completely optional; apps can ignore
    * mixing groups entirely and still have a full experience with SDL_mixer.
    *
-   * After creating a group, assign tracks to it with Track.SetGroup(). Use
-   * Group.SetPostMixCallback() to access the group's mixed data.
+   * After creating a group, assign tracks to it with SetTrackGroup(). Use
+   * SetGroupPostMixCallback() to access the group's mixed data.
    *
-   * A mixing group can be destroyed with Group.Destroy() when no longer needed.
+   * A mixing group can be destroyed with DestroyGroup() when no longer needed.
    * Destroying the mixer will also destroy all its still-existing mixing
    * groups.
    *
@@ -1233,9 +1232,9 @@ struct Mixer : ResourceBase<MixerRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Group.Destroy
-   * @sa Track.SetGroup
-   * @sa Group.SetPostMixCallback
+   * @sa DestroyGroup
+   * @sa SetTrackGroup
+   * @sa SetGroupPostMixCallback
    */
   GroupRef CreateGroup();
 
@@ -1348,9 +1347,9 @@ struct Mixer : ResourceBase<MixerRaw>
  * internal state in another thread. Those other threads will block until the
  * mixer is unlocked again.
  *
- * Under the hood, this function calls Mutex.Lock(), so all the same rules
- * apply: the lock can be recursive, it must be unlocked the same number of
- * times from the same thread that locked it, etc.
+ * Under the hood, this function calls LockMutex(), so all the same rules apply:
+ * the lock can be recursive, it must be unlocked the same number of times from
+ * the same thread that locked it, etc.
  *
  * Just about every SDL_mixer API _also_ locks the mixer while doing its work,
  * as does the SDL audio device thread while actual mixing is in progress, so
@@ -1364,11 +1363,11 @@ struct Mixer : ResourceBase<MixerRaw>
  *   used for this, but this is a conveniently-available lock.
  * - The app wants to make multiple, atomic changes to the mix. For example, to
  *   start several tracks at the exact same moment, one would lock the mixer,
- *   call Track.Play multiple times, and then unlock again; all the tracks will
+ *   call PlayTrack multiple times, and then unlock again; all the tracks will
  *   start mixing on the same sample frame.
  *
- * Each call to this function must be paired with a call to Mixer.Unlock from
- * the same thread. It is safe to lock a mixer multiple times; it remains locked
+ * Each call to this function must be paired with a call to UnlockMixer from the
+ * same thread. It is safe to lock a mixer multiple times; it remains locked
  * until the final matching unlock call.
  *
  * Do not lock the mixer for significant amounts of time, or it can cause audio
@@ -1380,7 +1379,7 @@ struct Mixer : ResourceBase<MixerRaw>
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Unlock
+ * @sa UnlockMixer
  */
 class MixerLock
 {
@@ -1394,7 +1393,7 @@ public:
    * internal state in another thread. Those other threads will block until the
    * mixer is unlocked again.
    *
-   * Under the hood, this function calls Mutex.Lock(), so all the same rules
+   * Under the hood, this function calls LockMutex(), so all the same rules
    * apply: the lock can be recursive, it must be unlocked the same number of
    * times from the same thread that locked it, etc.
    *
@@ -1410,10 +1409,10 @@ public:
    *   lock can be used for this, but this is a conveniently-available lock.
    * - The app wants to make multiple, atomic changes to the mix. For example,
    *   to start several tracks at the exact same moment, one would lock the
-   *   mixer, call Track.Play multiple times, and then unlock again; all the
+   *   mixer, call PlayTrack multiple times, and then unlock again; all the
    *   tracks will start mixing on the same sample frame.
    *
-   * Each call to this function must be paired with a call to Mixer.Unlock from
+   * Each call to this function must be paired with a call to UnlockMixer from
    * the same thread. It is safe to lock a mixer multiple times; it remains
    * locked until the final matching unlock call.
    *
@@ -1428,7 +1427,7 @@ public:
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Unlock
+   * @sa UnlockMixer
    */
   MixerLock(MixerRef resource);
 
@@ -1442,24 +1441,24 @@ public:
   }
 
   /**
-   * Unlock a mixer previously locked by a call to Mixer.Lock().
+   * Unlock a mixer previously locked by a call to LockMixer().
    *
    * While locked, the mixer will not be able to mix more audio or change its
    * internal state another thread. Those other threads will block until the
    * mixer is unlocked again.
    *
-   * Under the hood, this function calls Mutex.Lock(), so all the same rules
+   * Under the hood, this function calls LockMutex(), so all the same rules
    * apply: the lock can be recursive, it must be unlocked the same number of
    * times from the same thread that locked it, etc.
    *
    * Unlocking a nullptr mixer is a safe no-op.
    *
-   * @threadsafety This call must be paired with a previous Mixer.Lock call on
+   * @threadsafety This call must be paired with a previous LockMixer call on
    *               the same thread.
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Lock
+   * @sa LockMixer
    */
   ~MixerLock() { reset(); }
 
@@ -1476,24 +1475,24 @@ public:
   constexpr operator bool() const { return bool(m_lock); }
 
   /**
-   * Unlock a mixer previously locked by a call to Mixer.Lock().
+   * Unlock a mixer previously locked by a call to LockMixer().
    *
    * While locked, the mixer will not be able to mix more audio or change its
    * internal state another thread. Those other threads will block until the
    * mixer is unlocked again.
    *
-   * Under the hood, this function calls Mutex.Lock(), so all the same rules
+   * Under the hood, this function calls LockMutex(), so all the same rules
    * apply: the lock can be recursive, it must be unlocked the same number of
    * times from the same thread that locked it, etc.
    *
    * Unlocking a nullptr mixer is a safe no-op.
    *
-   * @threadsafety This call must be paired with a previous Mixer.Lock call on
+   * @threadsafety This call must be paired with a previous LockMixer call on
    *               the same thread.
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.Lock
+   * @sa LockMixer
    */
   void reset();
 
@@ -1564,7 +1563,7 @@ struct Audio : ResourceBase<AudioRaw>
    * stored as raw PCM data. This might dramatically increase loading time and
    * memory usage, but there will be no need to decompress data during playback.
    *
-   * (One could also use Track.SetIOStream() to bypass loading the data into RAM
+   * (One could also use SetTrackIOStream() to bypass loading the data into RAM
    * upfront at all, but this offers still different tradeoffs. The correct
    * approach depends on the app's needs and employing different approaches in
    * different situations can make sense.)
@@ -1575,9 +1574,9 @@ struct Audio : ResourceBase<AudioRaw>
    * If `mixer` is nullptr, SDL_mixer will set reasonable defaults.
    *
    * Once a Audio is created, it can be assigned to a Track with
-   * Track.SetAudio(), or played without any management with Mixer.PlayAudio().
+   * SetTrackAudio(), or played without any management with PlayAudio().
    *
-   * When done with a Audio, it can be freed with Audio.Destroy().
+   * When done with a Audio, it can be freed with DestroyAudio().
    *
    * This function loads data from an IOStream. There is also a version that
    * loads from a path on the filesystem (Mixer.LoadAudio()), and one that
@@ -1601,8 +1600,8 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadAudio
    * @sa LoadAudioWithProperties
    */
@@ -1614,7 +1613,7 @@ struct Audio : ResourceBase<AudioRaw>
    * This is equivalent to calling:
    *
    * ```c
-   * Mixer.LoadAudio_IO(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+   * Mixer.LoadAudio_IO(mixer, IOFromFile(path, "rb"), predecode, true);
    * ```
    *
    * This function loads data from a path on the filesystem. There is also a
@@ -1632,8 +1631,8 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadAudio_IO
    * @sa LoadAudioWithProperties
    */
@@ -1680,8 +1679,8 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadAudio
    * @sa Mixer.LoadAudio_IO
    */
@@ -1715,10 +1714,10 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadRawAudio
-   * @sa Mixer.LoadRawAudioNoCopy
+   * @sa LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
   Audio(MixerRef mixer,
@@ -1736,7 +1735,7 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * This function will load the raw data in its entirety and cache it in RAM,
    * allocating a copy. If the original data will outlive the created Audio, you
-   * can use Mixer.LoadRawAudioNoCopy() to avoid extra allocations and copies.
+   * can use LoadRawAudioNoCopy() to avoid extra allocations and copies.
    *
    * Audio objects can be shared between multiple mixers. The `mixer` parameter
    * just suggests the most likely mixer to use this audio, in case some
@@ -1754,10 +1753,10 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.Destroy
-   * @sa Track.SetAudio
+   * @sa DestroyAudio
+   * @sa SetTrackAudio
    * @sa Mixer.LoadRawAudio_IO
-   * @sa Mixer.LoadRawAudioNoCopy
+   * @sa LoadRawAudioNoCopy
    * @sa Mixer.LoadAudio_IO
    */
   Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec);
@@ -1851,7 +1850,7 @@ struct Audio : ResourceBase<AudioRaw>
    * This reports the length of the data in _sample frames_, so sample-perfect
    * mixing can be possible. Sample frames are only meaningful as a measure of
    * time if the sample rate (frequency) is also known. To convert from sample
-   * frames to milliseconds, use Audio.FramesToMS().
+   * frames to milliseconds, use AudioFramesToMS().
    *
    * Not all audio file formats can report the complete length of the data they
    * will produce through decoding: some can't calculate it, some might produce
@@ -1907,7 +1906,7 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.FramesToMS
+   * @sa AudioFramesToMS
    */
   Sint64 MSToFrames(Milliseconds ms);
 
@@ -1930,13 +1929,13 @@ struct Audio : ResourceBase<AudioRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.MSToFrames
+   * @sa AudioMSToFrames
    */
   Milliseconds FramesToMS(Sint64 frames);
 };
 
 /**
- * A set of per-channel gains for tracks using Track.SetStereo().
+ * A set of per-channel gains for tracks using SetTrackStereo().
  *
  * When forcing a track to stereo, the app can specify a per-channel gain, to
  * further adjust the left or right outputs.
@@ -1949,19 +1948,19 @@ struct Audio : ResourceBase<AudioRaw>
  *
  * @since This struct is available since SDL_mixer 3.0.0.
  *
- * @sa Track.SetStereo
+ * @sa SetTrackStereo
  */
 using StereoGains = MIX_StereoGains;
 
 /**
- * 3D coordinates for Track.Set3DPosition.
+ * 3D coordinates for SetTrack3DPosition.
  *
  * The coordinates use a "right-handed" coordinate system, like OpenGL and
  * OpenAL.
  *
  * @since This struct is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Set3DPosition
+ * @sa SetTrack3DPosition
  */
 using Point3D = MIX_Point3D;
 
@@ -1984,7 +1983,7 @@ using Point3D = MIX_Point3D;
  *
  * @since This datatype is available since SDL_mixer 3.0.0.
  *
- * @sa Track.SetStoppedCallback
+ * @sa SetTrackStoppedCallback
  */
 using TrackStoppedCallback = void(SDLCALL*)(void* userdata, TrackRaw track);
 
@@ -2006,7 +2005,7 @@ using TrackStoppedCallback = void(SDLCALL*)(void* userdata, TrackRaw track);
  *
  * @since This datatype is available since SDL_mixer 3.0.0.
  *
- * @sa Track.SetStoppedCallback
+ * @sa SetTrackStoppedCallback
  *
  * @sa TrackStoppedCallback
  */
@@ -2045,8 +2044,8 @@ using TrackStoppedCB = MakeFrontCallback<void(TrackRaw track)>;
  *
  * @since This datatype is available since SDL_mixer 3.0.0.
  *
- * @sa Track.SetRawCallback
- * @sa Track.SetCookedCallback
+ * @sa SetTrackRawCallback
+ * @sa SetTrackCookedCallback
  */
 using TrackMixCallback = void(SDLCALL*)(void* userdata,
                                         TrackRaw track,
@@ -2086,8 +2085,8 @@ using TrackMixCallback = void(SDLCALL*)(void* userdata,
  *
  * @since This datatype is available since SDL_mixer 3.0.0.
  *
- * @sa Track.SetRawCallback
- * @sa Track.SetCookedCallback
+ * @sa SetTrackRawCallback
+ * @sa SetTrackCookedCallback
  * @sa TrackMixCallback
  */
 using TrackMixCB = MakeFrontCallback<
@@ -2158,7 +2157,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Destroy
+   * @sa DestroyTrack
    */
   Track(MixerRef mixer);
 
@@ -2179,7 +2178,7 @@ struct Track : ResourceBase<TrackRaw>
    * Destroy the specified track.
    *
    * If the track is currently playing, it will be stopped immediately, without
-   * any fadeout. If there is a callback set through Track.SetStoppedCallback(),
+   * any fadeout. If there is a callback set through SetTrackStoppedCallback(),
    * it will _not_ be called.
    *
    * If the mixer is currently mixing in another thread, this will block until
@@ -2235,7 +2234,7 @@ struct Track : ResourceBase<TrackRaw>
    * One Audio can be assigned to multiple tracks at once.
    *
    * Once a track has a valid input, it can start mixing sound by calling
-   * Track.Play(), or possibly Mixer.PlayTag().
+   * PlayTrack(), or possibly PlayTag().
    *
    * Calling this function with a nullptr audio input is legal, and removes any
    * input from the track. If the track was currently playing, the next time the
@@ -2244,12 +2243,12 @@ struct Track : ResourceBase<TrackRaw>
    *
    * It is legal to change the input of a track while it's playing, however some
    * states, like loop points, may cease to make sense with the new audio. In
-   * such a case, one can call Track.Play again to adjust parameters.
+   * such a case, one can call PlayTrack again to adjust parameters.
    *
    * The track will hold a reference to the provided Audio, so it is safe to
-   * call Audio.Destroy() on it while the track is still using it. The track
-   * will drop its reference (and possibly free the resources) once it is no
-   * longer using the Audio.
+   * call DestroyAudio() on it while the track is still using it. The track will
+   * drop its reference (and possibly free the resources) once it is no longer
+   * using the Audio.
    *
    * @param audio the new audio input to set. May be nullptr.
    * @throws Error on failure.
@@ -2267,7 +2266,7 @@ struct Track : ResourceBase<TrackRaw>
    * in any format, possibly procedurally or on-demand, and mix in with all
    * other tracks.
    *
-   * When a track uses an audio stream, it will call AudioStream.GetData as it
+   * When a track uses an audio stream, it will call GetAudioStreamData as it
    * needs more audio to mix. The app can either buffer data to the stream ahead
    * of time, or set a callback on the stream to provide data as needed. Please
    * refer to SDL's documentation for details.
@@ -2278,7 +2277,7 @@ struct Track : ResourceBase<TrackRaw>
    * causing confusion and incorrect mixing.
    *
    * Once a track has a valid input, it can start mixing sound by calling
-   * Track.Play(), or possibly Mixer.PlayTag().
+   * PlayTrack(), or possibly PlayTag().
    *
    * Calling this function with a nullptr audio stream is legal, and removes any
    * input from the track. If the track was currently playing, the next time the
@@ -2287,7 +2286,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * It is legal to change the input of a track while it's playing, however some
    * states, like loop points, may cease to make sense with the new audio. In
-   * such a case, one can call Track.Play again to adjust parameters.
+   * such a case, one can call PlayTrack again to adjust parameters.
    *
    * The provided audio stream must remain valid until the track no longer needs
    * it (either by changing the track's input or destroying the track).
@@ -2307,7 +2306,7 @@ struct Track : ResourceBase<TrackRaw>
    * This is not the recommended way to set a track's input, but this can be
    * useful for a very specific scenario: a large file, to be played once, that
    * must be read from disk in small chunks as needed. In most cases, however,
-   * it is preferable to create a Audio ahead of time and use Track.SetAudio()
+   * it is preferable to create a Audio ahead of time and use SetTrackAudio()
    * instead.
    *
    * The stream supplied here should provide an audio file in a supported
@@ -2324,7 +2323,7 @@ struct Track : ResourceBase<TrackRaw>
    * causing confusion, incorrect mixing, or failure to decode.
    *
    * Once a track has a valid input, it can start mixing sound by calling
-   * Track.Play(), or possibly Mixer.PlayTag().
+   * PlayTrack(), or possibly PlayTag().
    *
    * Calling this function with a nullptr stream is legal, and removes any input
    * from the track. If the track was currently playing, the next time the mixer
@@ -2333,7 +2332,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * It is legal to change the input of a track while it's playing, however some
    * states, like loop points, may cease to make sense with the new audio. In
-   * such a case, one can call Track.Play again to adjust parameters.
+   * such a case, one can call PlayTrack again to adjust parameters.
    *
    * The provided stream must remain valid until the track no longer needs it
    * (either by changing the track's input or destroying the track).
@@ -2346,7 +2345,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.SetRawIOStream
+   * @sa SetTrackRawIOStream
    */
   void SetIOStream(IOStreamRef io, bool closeio = false);
 
@@ -2356,12 +2355,12 @@ struct Track : ResourceBase<TrackRaw>
    * This is not the recommended way to set a track's input, but this can be
    * useful for a very specific scenario: a large file, to be played once, that
    * must be read from disk in small chunks as needed. In most cases, however,
-   * it is preferable to create a Audio ahead of time and use Track.SetAudio()
+   * it is preferable to create a Audio ahead of time and use SetTrackAudio()
    * instead.
    *
-   * Also, an Track.SetAudioStream() can _also_ provide raw PCM audio to a
-   * track, via an AudioStream, which might be preferable unless the data is
-   * already coming directly from an IOStream.
+   * Also, an SetTrackAudioStream() can _also_ provide raw PCM audio to a track,
+   * via an AudioStream, which might be preferable unless the data is already
+   * coming directly from an IOStream.
    *
    * The stream supplied here should provide an audio in raw PCM format.
    *
@@ -2371,7 +2370,7 @@ struct Track : ResourceBase<TrackRaw>
    * causing confusion and incorrect mixing.
    *
    * Once a track has a valid input, it can start mixing sound by calling
-   * Track.Play(), or possibly Mixer.PlayTag().
+   * PlayTrack(), or possibly PlayTag().
    *
    * Calling this function with a nullptr stream is legal, and removes any input
    * from the track. If the track was currently playing, the next time the mixer
@@ -2380,7 +2379,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * It is legal to change the input of a track while it's playing, however some
    * states, like loop points, may cease to make sense with the new audio. In
-   * such a case, one can call Track.Play again to adjust parameters.
+   * such a case, one can call PlayTrack again to adjust parameters.
    *
    * The provided stream must remain valid until the track no longer needs it
    * (either by changing the track's input or destroying the track).
@@ -2394,8 +2393,8 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.SetAudioStream
-   * @sa Track.SetIOStream
+   * @sa SetTrackAudioStream
+   * @sa SetTrackIOStream
    */
   void SetRawIOStream(IOStreamRef io,
                       const AudioSpec& spec,
@@ -2416,7 +2415,7 @@ struct Track : ResourceBase<TrackRaw>
    * It's legal to add the same tag to a track more than once; the extra
    * attempts will report success but not change anything.
    *
-   * Tags can later be removed with Track.Untag().
+   * Tags can later be removed with UntagTrack().
    *
    * @param tag the tag to add.
    * @throws Error on failure.
@@ -2425,7 +2424,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Untag
+   * @sa UntagTrack
    */
   void Tag(StringParam tag);
 
@@ -2449,7 +2448,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Tag
+   * @sa TagTrack
    */
   void Untag(StringParam tag);
 
@@ -2470,7 +2469,7 @@ struct Track : ResourceBase<TrackRaw>
   /**
    * Seek a playing track to a new position in its input.
    *
-   * (Not to be confused with Track.Set3DPosition(), which is positioning of the
+   * (Not to be confused with SetTrack3DPosition(), which is positioning of the
    * track in 3D space, not the playback position of its audio data.)
    *
    * On a playing track, the next time the mixer runs, it will start mixing from
@@ -2478,18 +2477,18 @@ struct Track : ResourceBase<TrackRaw>
    *
    * Position is defined in _sample frames_ of decoded audio, not units of time,
    * so that sample-perfect mixing can be achieved. To instead operate in units
-   * of time, use Track.MSToFrames() to get the approximate sample frames for a
+   * of time, use TrackMSToFrames() to get the approximate sample frames for a
    * given tick.
    *
    * This function requires an input that can seek (so it can not be used if the
-   * input was set with Track.SetAudioStream()), and a audio file format that
+   * input was set with SetTrackAudioStream()), and a audio file format that
    * allows seeking. SDL_mixer's decoders for some file formats do not offer
    * seeking, or can only seek to times, not exact sample frames, in which case
    * the final position may be off by some amount of sample frames. Please check
    * your audio data and file bug reports if appropriate.
    *
    * It's legal to call this function on a track that is stopped, but a future
-   * call to Track.Play() will reset the start position anyhow. Paused tracks
+   * call to PlayTrack() will reset the start position anyhow. Paused tracks
    * will resume at the new input position.
    *
    * @param frames the sample frame position to seek to.
@@ -2499,20 +2498,19 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.GetPlaybackPosition
+   * @sa GetTrackPlaybackPosition
    */
   void SetPlaybackPosition(Sint64 frames);
 
   /**
    * Get the current input position of a playing track.
    *
-   * (Not to be confused with Track.Get3DPosition(), which is positioning of the
+   * (Not to be confused with GetTrack3DPosition(), which is positioning of the
    * track in 3D space, not the playback position of its audio data.)
    *
    * Position is defined in _sample frames_ of decoded audio, not units of time,
    * so that sample-perfect mixing can be achieved. To instead operate in units
-   * of time, use Track.FramesToMS() to convert the return value to
-   * milliseconds.
+   * of time, use TrackFramesToMS() to convert the return value to milliseconds.
    *
    * Stopped and paused tracks will report the position when they halted.
    * Playing tracks will report the current position, which will change over
@@ -2525,7 +2523,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.SetPlaybackPosition
+   * @sa SetTrackPlaybackPosition
    */
   Sint64 GetPlaybackPosition();
 
@@ -2605,7 +2603,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.GetLoops
+   * @sa GetTrackLoops
    */
   void SetLoops(int num_loops);
 
@@ -2613,7 +2611,7 @@ struct Track : ResourceBase<TrackRaw>
    * Query the Audio assigned to a track.
    *
    * This returns the Audio object currently assigned to `track` through a call
-   * to Track.SetAudio(). If there is none assigned, or the track has an input
+   * to SetTrackAudio(). If there is none assigned, or the track has an input
    * that isn't a Audio (such as an AudioStream or IOStream), this will return
    * nullptr.
    *
@@ -2627,7 +2625,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.GetAudioStream
+   * @sa GetTrackAudioStream
    */
   AudioRef GetAudio();
 
@@ -2635,7 +2633,7 @@ struct Track : ResourceBase<TrackRaw>
    * Query the AudioStream assigned to a track.
    *
    * This returns the AudioStream object currently assigned to `track` through a
-   * call to Track.SetAudioStream(). If there is none assigned, or the track has
+   * call to SetTrackAudioStream(). If there is none assigned, or the track has
    * an input that isn't an AudioStream (such as a Audio or IOStream), this will
    * return nullptr.
    *
@@ -2649,7 +2647,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.GetAudio
+   * @sa GetTrackAudio
    */
   AudioStreamRef GetAudioStream();
 
@@ -2662,7 +2660,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * Remaining audio is defined in _sample frames_ of decoded audio, not units
    * of time, so that sample-perfect mixing can be achieved. To instead operate
-   * in units of time, use Track.FramesToMS() to convert the return value to
+   * in units of time, use TrackFramesToMS() to convert the return value to
    * milliseconds.
    *
    * This function does not take into account fade-outs or looping, just the
@@ -2699,7 +2697,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.FramesToMS
+   * @sa TrackFramesToMS
    */
   Sint64 MSToFrames(Milliseconds ms);
 
@@ -2726,7 +2724,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.MSToFrames
+   * @sa TrackMSToFrames
    */
   Milliseconds FramesToMS(Sint64 frames);
 
@@ -2735,8 +2733,8 @@ struct Track : ResourceBase<TrackRaw>
    *
    * The track will use whatever input was last assigned to it when playing; an
    * input must be assigned to this track or this function will fail. Inputs are
-   * assigned with calls to Track.SetAudio(), Track.SetAudioStream(), or
-   * Track.SetIOStream().
+   * assigned with calls to SetTrackAudio(), SetTrackAudioStream(), or
+   * SetTrackIOStream().
    *
    * If the track is already playing, or paused, this will restart the track
    * with the newly-specified parameters.
@@ -2813,7 +2811,7 @@ struct Track : ResourceBase<TrackRaw>
    *   not contribute to the mix, but it will not be marked as stopped. There
    *   may be clever logic tricks this exposes generally, but this property is
    *   specifically useful when the track's input is an AudioStream assigned via
-   *   Track.SetAudioStream(). Setting this property to true can be useful when
+   *   SetTrackAudioStream(). Setting this property to true can be useful when
    *   pushing a complete piece of audio to the stream that has a definite
    *   ending, as the track will operate like any other audio was applied.
    *   Setting to false means as new data is added to the stream, the mixer will
@@ -2842,11 +2840,11 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Mixer.PlayTag
-   * @sa Mixer.PlayAudio
-   * @sa Track.Stop
-   * @sa Track.Pause
-   * @sa Track.Playing
+   * @sa PlayTag
+   * @sa PlayAudio
+   * @sa StopTrack
+   * @sa PauseTrack
+   * @sa TrackPlaying
    */
   void Play(PropertiesRef options = nullptr);
 
@@ -2856,7 +2854,7 @@ struct Track : ResourceBase<TrackRaw>
    * If `fade_out_frames` is > 0, the track does not stop mixing immediately,
    * but rather fades to silence over that many sample frames before stopping.
    * Sample frames are specific to the input assigned to the track, to allow for
-   * sample-perfect mixing. Track.MSToFrames() can be used to convert
+   * sample-perfect mixing. TrackMSToFrames() can be used to convert
    * milliseconds to an appropriate value here.
    *
    * If the track ends normally while the fade-out is still in progress, the
@@ -2879,7 +2877,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Play
+   * @sa PlayTrack
    */
   bool Stop(Sint64 fade_out_frames);
 
@@ -2902,7 +2900,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Resume
+   * @sa ResumeTrack
    */
   bool Pause();
 
@@ -2925,7 +2923,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Pause
+   * @sa PauseTrack
    */
   bool Resume();
 
@@ -2945,11 +2943,11 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Play
-   * @sa Track.Pause
-   * @sa Track.Resume
-   * @sa Track.Stop
-   * @sa Track.Paused
+   * @sa PlayTrack
+   * @sa PauseTrack
+   * @sa ResumeTrack
+   * @sa StopTrack
+   * @sa TrackPaused
    */
   bool Playing();
 
@@ -2970,11 +2968,11 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Play
-   * @sa Track.Pause
-   * @sa Track.Resume
-   * @sa Track.Stop
-   * @sa Track.Playing
+   * @sa PlayTrack
+   * @sa PauseTrack
+   * @sa ResumeTrack
+   * @sa StopTrack
+   * @sa TrackPlaying
    */
   bool Paused();
 
@@ -2999,16 +2997,16 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.GetGain
-   * @sa Mixer.SetGain
+   * @sa GetTrackGain
+   * @sa SetMixerGain
    */
   void SetGain(float gain);
 
   /**
    * Get a track's gain control.
    *
-   * This returns the last value set through Track.SetGain(), or 1.0f if no
-   * value has ever been explicitly set.
+   * This returns the last value set through SetTrackGain(), or 1.0f if no value
+   * has ever been explicitly set.
    *
    * @returns the track's current gain.
    *
@@ -3016,8 +3014,8 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.SetGain
-   * @sa Mixer.GetGain
+   * @sa SetTrackGain
+   * @sa GetMixerGain
    */
   float GetGain();
 
@@ -3041,7 +3039,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.GetFrequencyRatio
+   * @sa GetTrackFrequencyRatio
    */
   void SetFrequencyRatio(float ratio);
 
@@ -3067,7 +3065,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.GetFrequencyRatio
+   * @sa GetTrackFrequencyRatio
    */
   float GetFrequencyRatio();
 
@@ -3119,13 +3117,13 @@ struct Track : ResourceBase<TrackRaw>
    * If `gains` is not nullptr, this track will be switched into forced-stereo
    * mode. If `gains` is nullptr, this will disable spatialization (both the
    * forced-stereo mode of this function and full 3D spatialization of
-   * Track.Set3DPosition()).
+   * SetTrack3DPosition()).
    *
    * Negative gains are clamped to zero; there is no clamp for maximum, so one
    * could set the value > 1.0f to make a channel louder.
    *
-   * The track's 3D position, reported by Track.Get3DPosition(), will be reset
-   * to (0, 0, 0).
+   * The track's 3D position, reported by GetTrack3DPosition(), will be reset to
+   * (0, 0, 0).
    *
    * @param gains the per-channel gains, or nullptr to disable spatialization.
    * @throws Error on failure.
@@ -3134,7 +3132,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Set3DPosition
+   * @sa SetTrack3DPosition
    */
   void SetStereo(const StereoGains& gains);
 
@@ -3150,7 +3148,7 @@ struct Track : ResourceBase<TrackRaw>
    * If `position` is not nullptr, this track will be switched into 3D
    * positional mode. If `position` is nullptr, this will disable positional
    * mixing (both the full 3D spatialization of this function and forced-stereo
-   * mode of Track.SetStereo()).
+   * mode of SetTrackStereo()).
    *
    * In 3D positional mode, SDL_mixer will mix this track as if it were
    * positioned in 3D space, including distance attenuation (quieter as it gets
@@ -3177,8 +3175,8 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Get3DPosition
-   * @sa Track.SetStereo
+   * @sa GetTrack3DPosition
+   * @sa SetTrackStereo
    */
   void Set3DPosition(const Point3D& position);
 
@@ -3186,7 +3184,7 @@ struct Track : ResourceBase<TrackRaw>
    * Get a track's current position in 3D space.
    *
    * If 3D positioning isn't enabled for this track, through a call to
-   * Track.Set3DPosition(), this will return (0,0,0).
+   * SetTrack3DPosition(), this will return (0,0,0).
    *
    * @returns the he track's position on successful return.
    * @throws Error on failure.
@@ -3195,7 +3193,7 @@ struct Track : ResourceBase<TrackRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Track.Set3DPosition
+   * @sa SetTrack3DPosition
    */
   Point3D Get3DPosition();
 
@@ -3219,7 +3217,7 @@ struct Track : ResourceBase<TrackRaw>
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa Mixer.CreateGroup
-   * @sa Group.SetPostMixCallback
+   * @sa SetGroupPostMixCallback
    */
   void SetGroup(GroupRef group);
 
@@ -3310,7 +3308,7 @@ struct Track : ResourceBase<TrackRaw>
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa TrackMixCallback
-   * @sa Track.SetCookedCallback
+   * @sa SetTrackCookedCallback
    */
   void SetRawCallback(TrackMixCallback cb, void* userdata);
 
@@ -3339,7 +3337,7 @@ struct Track : ResourceBase<TrackRaw>
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa TrackMixCallback
-   * @sa Track.SetCookedCallback
+   * @sa SetTrackCookedCallback
    */
   void SetRawCallback(TrackMixCB cb);
 
@@ -3373,7 +3371,7 @@ struct Track : ResourceBase<TrackRaw>
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa TrackMixCallback
-   * @sa Track.SetRawCallback
+   * @sa SetTrackRawCallback
    */
   void SetCookedCallback(TrackMixCallback cb, void* userdata);
 
@@ -3405,7 +3403,7 @@ struct Track : ResourceBase<TrackRaw>
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa TrackMixCallback
-   * @sa Track.SetRawCallback
+   * @sa SetTrackRawCallback
    */
   void SetCookedCallback(TrackMixCB cb);
 };
@@ -3440,7 +3438,7 @@ struct Track : ResourceBase<TrackRaw>
  *
  * @since This datatype is available since SDL_mixer 3.0.0.
  *
- * @sa Group.SetPostMixCallback
+ * @sa SetGroupPostMixCallback
  */
 using GroupMixCallback = void(SDLCALL*)(void* userdata,
                                         GroupRaw group,
@@ -3477,7 +3475,7 @@ using GroupMixCallback = void(SDLCALL*)(void* userdata,
  *
  * @since This datatype is available since SDL_mixer 3.0.0.
  *
- * @sa Group.SetPostMixCallback
+ * @sa SetGroupPostMixCallback
  *
  * @sa GroupMixCallback
  */
@@ -3541,10 +3539,10 @@ struct Group : ResourceBase<GroupRaw>
    * This can be a useful feature, but is completely optional; apps can ignore
    * mixing groups entirely and still have a full experience with SDL_mixer.
    *
-   * After creating a group, assign tracks to it with Track.SetGroup(). Use
-   * Group.SetPostMixCallback() to access the group's mixed data.
+   * After creating a group, assign tracks to it with SetTrackGroup(). Use
+   * SetGroupPostMixCallback() to access the group's mixed data.
    *
-   * A mixing group can be destroyed with Group.Destroy() when no longer needed.
+   * A mixing group can be destroyed with DestroyGroup() when no longer needed.
    * Destroying the mixer will also destroy all its still-existing mixing
    * groups.
    *
@@ -3556,9 +3554,9 @@ struct Group : ResourceBase<GroupRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Group.Destroy
-   * @sa Track.SetGroup
-   * @sa Group.SetPostMixCallback
+   * @sa DestroyGroup
+   * @sa SetTrackGroup
+   * @sa SetGroupPostMixCallback
    */
   Group(MixerRef mixer);
 
@@ -3860,13 +3858,13 @@ inline const char* GetAudioDecoder(int index)
  * a format is because you know all your data is in that format and it might
  * save some unnecessary CPU time on conversion.
  *
- * The actual device format chosen is available through Mixer.GetFormat().
+ * The actual device format chosen is available through GetMixerFormat().
  *
  * Once a mixer is created, next steps are usually to load audio (through
  * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
  * play that audio through that track.
  *
- * When done with the mixer, it can be destroyed with Mixer.Destroy().
+ * When done with the mixer, it can be destroyed with DestroyMixer().
  *
  * @param devid the device to open for playback, or
  *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
@@ -3879,7 +3877,7 @@ inline const char* GetAudioDecoder(int index)
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa CreateMixer
- * @sa Mixer.Destroy
+ * @sa DestroyMixer
  */
 inline Mixer CreateMixerDevice(AudioDeviceRef devid,
                                OptionalRef<const AudioSpec> spec = std::nullopt)
@@ -3901,8 +3899,8 @@ inline Mixer::Mixer(const AudioSpec& spec)
  * Create a mixer that generates audio to a memory buffer.
  *
  * Usually you want CreateMixerDevice() instead of this function. The mixer
- * created here can be used with Mixer.Generate() to produce more data on
- * demand, as fast as desired.
+ * created here can be used with Generate() to produce more data on demand, as
+ * fast as desired.
  *
  * An audio format must be specified. This is the format it will output in. This
  * cannot be nullptr.
@@ -3911,7 +3909,7 @@ inline Mixer::Mixer(const AudioSpec& spec)
  * Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and
  * play that audio through that track.
  *
- * When done with the mixer, it can be destroyed with Mixer.Destroy().
+ * When done with the mixer, it can be destroyed with DestroyMixer().
  *
  * @param spec the audio format that mixer will generate.
  * @returns a mixer that can be used to generate audio on success.
@@ -3922,7 +3920,7 @@ inline Mixer::Mixer(const AudioSpec& spec)
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa CreateMixerDevice
- * @sa Mixer.Destroy
+ * @sa DestroyMixer
  */
 inline Mixer CreateMixer(const AudioSpec& spec) { return Mixer(spec); }
 
@@ -4003,9 +4001,8 @@ constexpr auto DEVICE_NUMBER = MIX_PROP_MIXER_DEVICE_NUMBER; /// Device number.
  * device (and may change later if the device itself changes; SDL_mixer will
  * seamlessly handle this change internally, though).
  *
- * For mixers created with CreateMixer(), this is the format that
- * Mixer.Generate() will produce, as requested at create time, and does not
- * change.
+ * For mixers created with CreateMixer(), this is the format that Generate()
+ * will produce, as requested at create time, and does not change.
  *
  * Note that internally, SDL_mixer will work in AUDIO_F32 format before
  * outputting the format specified here, so it would be more efficient to match
@@ -4036,9 +4033,9 @@ inline void Mixer::GetFormat(AudioSpec* spec)
  * internal state in another thread. Those other threads will block until the
  * mixer is unlocked again.
  *
- * Under the hood, this function calls Mutex.Lock(), so all the same rules
- * apply: the lock can be recursive, it must be unlocked the same number of
- * times from the same thread that locked it, etc.
+ * Under the hood, this function calls LockMutex(), so all the same rules apply:
+ * the lock can be recursive, it must be unlocked the same number of times from
+ * the same thread that locked it, etc.
  *
  * Just about every SDL_mixer API _also_ locks the mixer while doing its work,
  * as does the SDL audio device thread while actual mixing is in progress, so
@@ -4052,11 +4049,11 @@ inline void Mixer::GetFormat(AudioSpec* spec)
  *   used for this, but this is a conveniently-available lock.
  * - The app wants to make multiple, atomic changes to the mix. For example, to
  *   start several tracks at the exact same moment, one would lock the mixer,
- *   call Track.Play multiple times, and then unlock again; all the tracks will
+ *   call PlayTrack multiple times, and then unlock again; all the tracks will
  *   start mixing on the same sample frame.
  *
- * Each call to this function must be paired with a call to Mixer.Unlock from
- * the same thread. It is safe to lock a mixer multiple times; it remains locked
+ * Each call to this function must be paired with a call to UnlockMixer from the
+ * same thread. It is safe to lock a mixer multiple times; it remains locked
  * until the final matching unlock call.
  *
  * Do not lock the mixer for significant amounts of time, or it can cause audio
@@ -4070,7 +4067,7 @@ inline void Mixer::GetFormat(AudioSpec* spec)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Unlock
+ * @sa UnlockMixer
  */
 inline void LockMixer(MixerRef mixer) { MIX_LockMixer(mixer); }
 
@@ -4083,26 +4080,26 @@ inline MixerLock::MixerLock(MixerRef resource)
 }
 
 /**
- * Unlock a mixer previously locked by a call to Mixer.Lock().
+ * Unlock a mixer previously locked by a call to LockMixer().
  *
  * While locked, the mixer will not be able to mix more audio or change its
  * internal state another thread. Those other threads will block until the mixer
  * is unlocked again.
  *
- * Under the hood, this function calls Mutex.Lock(), so all the same rules
- * apply: the lock can be recursive, it must be unlocked the same number of
- * times from the same thread that locked it, etc.
+ * Under the hood, this function calls LockMutex(), so all the same rules apply:
+ * the lock can be recursive, it must be unlocked the same number of times from
+ * the same thread that locked it, etc.
  *
  * Unlocking a nullptr mixer is a safe no-op.
  *
  * @param mixer the mixer to unlock. May be nullptr.
  *
- * @threadsafety This call must be paired with a previous Mixer.Lock call on the
+ * @threadsafety This call must be paired with a previous LockMixer call on the
  *               same thread.
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.Lock
+ * @sa LockMixer
  */
 inline void UnlockMixer(MixerRef mixer) { MIX_UnlockMixer(mixer); }
 
@@ -4134,7 +4131,7 @@ inline void MixerLock::reset()
  * as raw PCM data. This might dramatically increase loading time and memory
  * usage, but there will be no need to decompress data during playback.
  *
- * (One could also use Track.SetIOStream() to bypass loading the data into RAM
+ * (One could also use SetTrackIOStream() to bypass loading the data into RAM
  * upfront at all, but this offers still different tradeoffs. The correct
  * approach depends on the app's needs and employing different approaches in
  * different situations can make sense.)
@@ -4144,10 +4141,10 @@ inline void MixerLock::reset()
  * match its audio format, but the resulting audio can be used elsewhere. If
  * `mixer` is nullptr, SDL_mixer will set reasonable defaults.
  *
- * Once a Audio is created, it can be assigned to a Track with Track.SetAudio(),
- * or played without any management with Mixer.PlayAudio().
+ * Once a Audio is created, it can be assigned to a Track with SetTrackAudio(),
+ * or played without any management with PlayAudio().
  *
- * When done with a Audio, it can be freed with Audio.Destroy().
+ * When done with a Audio, it can be freed with DestroyAudio().
  *
  * This function loads data from an IOStream. There is also a version that loads
  * from a path on the filesystem (Mixer.LoadAudio()), and one that accepts
@@ -4170,8 +4167,8 @@ inline void MixerLock::reset()
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.Destroy
- * @sa Track.SetAudio
+ * @sa DestroyAudio
+ * @sa SetTrackAudio
  * @sa Mixer.LoadAudio
  * @sa LoadAudioWithProperties
  */
@@ -4226,7 +4223,7 @@ inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
  * This is equivalent to calling:
  *
  * ```cpp
- * mixer.LoadAudio_IO(mixer, IOStream.FromFile(path, "rb"), predecode, true);
+ * mixer.LoadAudio_IO(mixer, IOFromFile(path, "rb"), predecode, true);
  * ```
  *
  * This function loads data from a path on the filesystem. There is also a
@@ -4243,8 +4240,8 @@ inline Audio::Audio(MixerRef mixer, SourceBytes data, const AudioSpec& spec)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.Destroy
- * @sa Track.SetAudio
+ * @sa DestroyAudio
+ * @sa SetTrackAudio
  * @sa Mixer.LoadAudio_IO
  * @sa LoadAudioWithProperties
  */
@@ -4289,13 +4286,13 @@ inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
  * wants to avoid the extra copy.
  *
  * As audio format information is obtained from the file format metadata, this
- * isn't useful for raw PCM data; in that case, use Mixer.LoadRawAudioNoCopy()
+ * isn't useful for raw PCM data; in that case, use LoadRawAudioNoCopy()
  * instead, which offers an AudioSpec.
  *
- * Once a Audio is created, it can be assigned to a Track with Track.SetAudio(),
- * or played without any management with Mixer.PlayAudio().
+ * Once a Audio is created, it can be assigned to a Track with SetTrackAudio(),
+ * or played without any management with PlayAudio().
  *
- * When done with a Audio, it can be freed with Audio.Destroy().
+ * When done with a Audio, it can be freed with DestroyAudio().
  *
  * @param mixer a mixer this audio is intended to be used with. May be nullptr.
  * @param data the buffer where the audio data lives.
@@ -4309,9 +4306,9 @@ inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.Destroy
- * @sa Track.SetAudio
- * @sa Mixer.LoadRawAudioNoCopy
+ * @sa DestroyAudio
+ * @sa SetTrackAudio
+ * @sa LoadRawAudioNoCopy
  * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadAudioNoCopy(MixerRef mixer,
@@ -4368,8 +4365,8 @@ inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.Destroy
- * @sa Track.SetAudio
+ * @sa DestroyAudio
+ * @sa SetTrackAudio
  * @sa Mixer.LoadAudio
  * @sa Mixer.LoadAudio_IO
  */
@@ -4435,10 +4432,10 @@ constexpr auto DECODER_STRING =
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.Destroy
- * @sa Track.SetAudio
+ * @sa DestroyAudio
+ * @sa SetTrackAudio
  * @sa Mixer.LoadRawAudio
- * @sa Mixer.LoadRawAudioNoCopy
+ * @sa LoadRawAudioNoCopy
  * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadRawAudio_IO(MixerRef mixer,
@@ -4466,7 +4463,7 @@ inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
  *
  * This function will load the raw data in its entirety and cache it in RAM,
  * allocating a copy. If the original data will outlive the created Audio, you
- * can use Mixer.LoadRawAudioNoCopy() to avoid extra allocations and copies.
+ * can use LoadRawAudioNoCopy() to avoid extra allocations and copies.
  *
  * Audio objects can be shared between multiple mixers. The `mixer` parameter
  * just suggests the most likely mixer to use this audio, in case some
@@ -4484,10 +4481,10 @@ inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.Destroy
- * @sa Track.SetAudio
+ * @sa DestroyAudio
+ * @sa SetTrackAudio
  * @sa Mixer.LoadRawAudio_IO
- * @sa Mixer.LoadRawAudioNoCopy
+ * @sa LoadRawAudioNoCopy
  * @sa Mixer.LoadAudio_IO
  */
 inline Audio LoadRawAudio(MixerRef mixer,
@@ -4536,8 +4533,8 @@ inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.Destroy
- * @sa Track.SetAudio
+ * @sa DestroyAudio
+ * @sa SetTrackAudio
  * @sa Mixer.LoadRawAudio
  * @sa Mixer.LoadRawAudio_IO
  * @sa Mixer.LoadAudio_IO
@@ -4590,8 +4587,8 @@ inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.Destroy
- * @sa Track.SetAudio
+ * @sa DestroyAudio
+ * @sa SetTrackAudio
  * @sa Mixer.LoadAudio_IO
  */
 inline Audio CreateSineWaveAudio(MixerRef mixer,
@@ -4708,7 +4705,7 @@ constexpr auto DURATION_INFINITE_BOOLEAN =
  * This reports the length of the data in _sample frames_, so sample-perfect
  * mixing can be possible. Sample frames are only meaningful as a measure of
  * time if the sample rate (frequency) is also known. To convert from sample
- * frames to milliseconds, use Audio.FramesToMS().
+ * frames to milliseconds, use AudioFramesToMS().
  *
  * Not all audio file formats can report the complete length of the data they
  * will produce through decoding: some can't calculate it, some might produce
@@ -4813,7 +4810,7 @@ inline void Audio::Destroy() { DestroyAudio(release()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Destroy
+ * @sa DestroyTrack
  */
 inline Track CreateTrack(MixerRef mixer) { return Track(mixer); }
 
@@ -4828,8 +4825,8 @@ inline Track::Track(MixerRef mixer)
  * Destroy the specified track.
  *
  * If the track is currently playing, it will be stopped immediately, without
- * any fadeout. If there is a callback set through Track.SetStoppedCallback(),
- * it will _not_ be called.
+ * any fadeout. If there is a callback set through SetTrackStoppedCallback(), it
+ * will _not_ be called.
  *
  * If the mixer is currently mixing in another thread, this will block until it
  * finishes. Destroying a track from the mixer thread itself (during a callback)
@@ -4903,7 +4900,7 @@ inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(get()); }
  * One Audio can be assigned to multiple tracks at once.
  *
  * Once a track has a valid input, it can start mixing sound by calling
- * Track.Play(), or possibly Mixer.PlayTag().
+ * PlayTrack(), or possibly PlayTag().
  *
  * Calling this function with a nullptr audio input is legal, and removes any
  * input from the track. If the track was currently playing, the next time the
@@ -4912,10 +4909,10 @@ inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(get()); }
  *
  * It is legal to change the input of a track while it's playing, however some
  * states, like loop points, may cease to make sense with the new audio. In such
- * a case, one can call Track.Play again to adjust parameters.
+ * a case, one can call PlayTrack again to adjust parameters.
  *
  * The track will hold a reference to the provided Audio, so it is safe to call
- * Audio.Destroy() on it while the track is still using it. The track will drop
+ * DestroyAudio() on it while the track is still using it. The track will drop
  * its reference (and possibly free the resources) once it is no longer using
  * the Audio.
  *
@@ -4944,7 +4941,7 @@ inline void Track::SetAudio(AudioRef audio)
  * in any format, possibly procedurally or on-demand, and mix in with all other
  * tracks.
  *
- * When a track uses an audio stream, it will call AudioStream.GetData as it
+ * When a track uses an audio stream, it will call GetAudioStreamData as it
  * needs more audio to mix. The app can either buffer data to the stream ahead
  * of time, or set a callback on the stream to provide data as needed. Please
  * refer to SDL's documentation for details.
@@ -4955,7 +4952,7 @@ inline void Track::SetAudio(AudioRef audio)
  * causing confusion and incorrect mixing.
  *
  * Once a track has a valid input, it can start mixing sound by calling
- * Track.Play(), or possibly Mixer.PlayTag().
+ * PlayTrack(), or possibly PlayTag().
  *
  * Calling this function with a nullptr audio stream is legal, and removes any
  * input from the track. If the track was currently playing, the next time the
@@ -4964,7 +4961,7 @@ inline void Track::SetAudio(AudioRef audio)
  *
  * It is legal to change the input of a track while it's playing, however some
  * states, like loop points, may cease to make sense with the new audio. In such
- * a case, one can call Track.Play again to adjust parameters.
+ * a case, one can call PlayTrack again to adjust parameters.
  *
  * The provided audio stream must remain valid until the track no longer needs
  * it (either by changing the track's input or destroying the track).
@@ -4993,7 +4990,7 @@ inline void Track::SetAudioStream(AudioStreamRef stream)
  * This is not the recommended way to set a track's input, but this can be
  * useful for a very specific scenario: a large file, to be played once, that
  * must be read from disk in small chunks as needed. In most cases, however, it
- * is preferable to create a Audio ahead of time and use Track.SetAudio()
+ * is preferable to create a Audio ahead of time and use SetTrackAudio()
  * instead.
  *
  * The stream supplied here should provide an audio file in a supported format.
@@ -5009,7 +5006,7 @@ inline void Track::SetAudioStream(AudioStreamRef stream)
  * incorrect mixing, or failure to decode.
  *
  * Once a track has a valid input, it can start mixing sound by calling
- * Track.Play(), or possibly Mixer.PlayTag().
+ * PlayTrack(), or possibly PlayTag().
  *
  * Calling this function with a nullptr stream is legal, and removes any input
  * from the track. If the track was currently playing, the next time the mixer
@@ -5018,7 +5015,7 @@ inline void Track::SetAudioStream(AudioStreamRef stream)
  *
  * It is legal to change the input of a track while it's playing, however some
  * states, like loop points, may cease to make sense with the new audio. In such
- * a case, one can call Track.Play again to adjust parameters.
+ * a case, one can call PlayTrack again to adjust parameters.
  *
  * The provided stream must remain valid until the track no longer needs it
  * (either by changing the track's input or destroying the track).
@@ -5032,7 +5029,7 @@ inline void Track::SetAudioStream(AudioStreamRef stream)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.SetRawIOStream
+ * @sa SetTrackRawIOStream
  */
 inline void SetTrackIOStream(TrackRef track,
                              IOStreamRef io,
@@ -5052,10 +5049,10 @@ inline void Track::SetIOStream(IOStreamRef io, bool closeio)
  * This is not the recommended way to set a track's input, but this can be
  * useful for a very specific scenario: a large file, to be played once, that
  * must be read from disk in small chunks as needed. In most cases, however, it
- * is preferable to create a Audio ahead of time and use Track.SetAudio()
+ * is preferable to create a Audio ahead of time and use SetTrackAudio()
  * instead.
  *
- * Also, an Track.SetAudioStream() can _also_ provide raw PCM audio to a track,
+ * Also, an SetTrackAudioStream() can _also_ provide raw PCM audio to a track,
  * via an AudioStream, which might be preferable unless the data is already
  * coming directly from an IOStream.
  *
@@ -5067,7 +5064,7 @@ inline void Track::SetIOStream(IOStreamRef io, bool closeio)
  * and incorrect mixing.
  *
  * Once a track has a valid input, it can start mixing sound by calling
- * Track.Play(), or possibly Mixer.PlayTag().
+ * PlayTrack(), or possibly PlayTag().
  *
  * Calling this function with a nullptr stream is legal, and removes any input
  * from the track. If the track was currently playing, the next time the mixer
@@ -5076,7 +5073,7 @@ inline void Track::SetIOStream(IOStreamRef io, bool closeio)
  *
  * It is legal to change the input of a track while it's playing, however some
  * states, like loop points, may cease to make sense with the new audio. In such
- * a case, one can call Track.Play again to adjust parameters.
+ * a case, one can call PlayTrack again to adjust parameters.
  *
  * The provided stream must remain valid until the track no longer needs it
  * (either by changing the track's input or destroying the track).
@@ -5091,8 +5088,8 @@ inline void Track::SetIOStream(IOStreamRef io, bool closeio)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.SetAudioStream
- * @sa Track.SetIOStream
+ * @sa SetTrackAudioStream
+ * @sa SetTrackIOStream
  */
 inline void SetTrackRawIOStream(TrackRef track,
                                 IOStreamRef io,
@@ -5124,7 +5121,7 @@ inline void Track::SetRawIOStream(IOStreamRef io,
  * It's legal to add the same tag to a track more than once; the extra attempts
  * will report success but not change anything.
  *
- * Tags can later be removed with Track.Untag().
+ * Tags can later be removed with UntagTrack().
  *
  * @param track the track to add a tag to.
  * @param tag the tag to add.
@@ -5134,7 +5131,7 @@ inline void Track::SetRawIOStream(IOStreamRef io,
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Untag
+ * @sa UntagTrack
  */
 inline void TagTrack(TrackRef track, StringParam tag)
 {
@@ -5167,7 +5164,7 @@ inline void Track::Tag(StringParam tag)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Tag
+ * @sa TagTrack
  */
 inline void UntagTrack(TrackRef track, StringParam tag)
 {
@@ -5230,7 +5227,7 @@ inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
 /**
  * Seek a playing track to a new position in its input.
  *
- * (Not to be confused with Track.Set3DPosition(), which is positioning of the
+ * (Not to be confused with SetTrack3DPosition(), which is positioning of the
  * track in 3D space, not the playback position of its audio data.)
  *
  * On a playing track, the next time the mixer runs, it will start mixing from
@@ -5238,18 +5235,18 @@ inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
  *
  * Position is defined in _sample frames_ of decoded audio, not units of time,
  * so that sample-perfect mixing can be achieved. To instead operate in units of
- * time, use Track.MSToFrames() to get the approximate sample frames for a given
+ * time, use TrackMSToFrames() to get the approximate sample frames for a given
  * tick.
  *
  * This function requires an input that can seek (so it can not be used if the
- * input was set with Track.SetAudioStream()), and a audio file format that
+ * input was set with SetTrackAudioStream()), and a audio file format that
  * allows seeking. SDL_mixer's decoders for some file formats do not offer
  * seeking, or can only seek to times, not exact sample frames, in which case
  * the final position may be off by some amount of sample frames. Please check
  * your audio data and file bug reports if appropriate.
  *
  * It's legal to call this function on a track that is stopped, but a future
- * call to Track.Play() will reset the start position anyhow. Paused tracks will
+ * call to PlayTrack() will reset the start position anyhow. Paused tracks will
  * resume at the new input position.
  *
  * @param track the track to change.
@@ -5260,7 +5257,7 @@ inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.GetPlaybackPosition
+ * @sa GetTrackPlaybackPosition
  */
 inline void SetTrackPlaybackPosition(TrackRef track, Sint64 frames)
 {
@@ -5275,12 +5272,12 @@ inline void Track::SetPlaybackPosition(Sint64 frames)
 /**
  * Get the current input position of a playing track.
  *
- * (Not to be confused with Track.Get3DPosition(), which is positioning of the
+ * (Not to be confused with GetTrack3DPosition(), which is positioning of the
  * track in 3D space, not the playback position of its audio data.)
  *
  * Position is defined in _sample frames_ of decoded audio, not units of time,
  * so that sample-perfect mixing can be achieved. To instead operate in units of
- * time, use Track.FramesToMS() to convert the return value to milliseconds.
+ * time, use TrackFramesToMS() to convert the return value to milliseconds.
  *
  * Stopped and paused tracks will report the position when they halted. Playing
  * tracks will report the current position, which will change over time.
@@ -5293,7 +5290,7 @@ inline void Track::SetPlaybackPosition(Sint64 frames)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.SetPlaybackPosition
+ * @sa SetTrackPlaybackPosition
  */
 inline Sint64 GetTrackPlaybackPosition(TrackRef track)
 {
@@ -5390,7 +5387,7 @@ inline int Track::GetLoops() { return SDL::GetTrackLoops(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.GetLoops
+ * @sa GetTrackLoops
  */
 inline void SetTrackLoops(TrackRef track, int num_loops)
 {
@@ -5406,7 +5403,7 @@ inline void Track::SetLoops(int num_loops)
  * Query the Audio assigned to a track.
  *
  * This returns the Audio object currently assigned to `track` through a call to
- * Track.SetAudio(). If there is none assigned, or the track has an input that
+ * SetTrackAudio(). If there is none assigned, or the track has an input that
  * isn't a Audio (such as an AudioStream or IOStream), this will return nullptr.
  *
  * On various errors (MIX.Init() was not called, the track is nullptr), this
@@ -5420,7 +5417,7 @@ inline void Track::SetLoops(int num_loops)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.GetAudioStream
+ * @sa GetTrackAudioStream
  */
 inline AudioRef GetTrackAudio(TrackRef track)
 {
@@ -5433,8 +5430,8 @@ inline AudioRef Track::GetAudio() { return SDL::GetTrackAudio(get()); }
  * Query the AudioStream assigned to a track.
  *
  * This returns the AudioStream object currently assigned to `track` through a
- * call to Track.SetAudioStream(). If there is none assigned, or the track has
- * an input that isn't an AudioStream (such as a Audio or IOStream), this will
+ * call to SetTrackAudioStream(). If there is none assigned, or the track has an
+ * input that isn't an AudioStream (such as a Audio or IOStream), this will
  * return nullptr.
  *
  * On various errors (MIX.Init() was not called, the track is nullptr), this
@@ -5448,7 +5445,7 @@ inline AudioRef Track::GetAudio() { return SDL::GetTrackAudio(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.GetAudio
+ * @sa GetTrackAudio
  */
 inline AudioStreamRef GetTrackAudioStream(TrackRef track)
 {
@@ -5469,7 +5466,7 @@ inline AudioStreamRef Track::GetAudioStream()
  *
  * Remaining audio is defined in _sample frames_ of decoded audio, not units of
  * time, so that sample-perfect mixing can be achieved. To instead operate in
- * units of time, use Track.FramesToMS() to convert the return value to
+ * units of time, use TrackFramesToMS() to convert the return value to
  * milliseconds.
  *
  * This function does not take into account fade-outs or looping, just the
@@ -5512,7 +5509,7 @@ inline Sint64 Track::GetRemaining() { return SDL::GetTrackRemaining(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.FramesToMS
+ * @sa TrackFramesToMS
  */
 inline Sint64 TrackMSToFrames(TrackRef track, Milliseconds ms)
 {
@@ -5547,7 +5544,7 @@ inline Sint64 Track::MSToFrames(Milliseconds ms)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.MSToFrames
+ * @sa TrackMSToFrames
  */
 inline Milliseconds TrackFramesToMS(TrackRef track, Sint64 frames)
 {
@@ -5576,7 +5573,7 @@ inline Milliseconds Track::FramesToMS(Sint64 frames)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.FramesToMS
+ * @sa AudioFramesToMS
  */
 inline Sint64 AudioMSToFrames(AudioRef audio, Milliseconds ms)
 {
@@ -5608,7 +5605,7 @@ inline Sint64 Audio::MSToFrames(Milliseconds ms)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.MSToFrames
+ * @sa AudioMSToFrames
  */
 inline Milliseconds AudioFramesToMS(AudioRef audio, Sint64 frames)
 {
@@ -5672,8 +5669,8 @@ inline Milliseconds FramesToMS(int sample_rate, Sint64 frames)
  *
  * The track will use whatever input was last assigned to it when playing; an
  * input must be assigned to this track or this function will fail. Inputs are
- * assigned with calls to Track.SetAudio(), Track.SetAudioStream(), or
- * Track.SetIOStream().
+ * assigned with calls to SetTrackAudio(), SetTrackAudioStream(), or
+ * SetTrackIOStream().
  *
  * If the track is already playing, or paused, this will restart the track with
  * the newly-specified parameters.
@@ -5747,18 +5744,17 @@ inline Milliseconds FramesToMS(int sample_rate, Sint64 frames)
  *   need to be restarted. If false, the track will just not contribute to the
  *   mix, but it will not be marked as stopped. There may be clever logic tricks
  *   this exposes generally, but this property is specifically useful when the
- *   track's input is an AudioStream assigned via Track.SetAudioStream().
- *   Setting this property to true can be useful when pushing a complete piece
- *   of audio to the stream that has a definite ending, as the track will
- *   operate like any other audio was applied. Setting to false means as new
- *   data is added to the stream, the mixer will start using it as soon as
- *   possible, which is useful when audio should play immediately as it drips
- *   in: new VoIP packets, etc. Note that in this situation, if the audio runs
- *   out when needed, there _will_ be gaps in the mixed output, so try to buffer
- *   enough data to avoid this when possible. Note that a track is not consider
- *   exhausted until all its loops and appended silence have been mixed (and
- *   also, that loops don't mean anything when the input is an AudioStream).
- *   Default true.
+ *   track's input is an AudioStream assigned via SetTrackAudioStream(). Setting
+ *   this property to true can be useful when pushing a complete piece of audio
+ *   to the stream that has a definite ending, as the track will operate like
+ *   any other audio was applied. Setting to false means as new data is added to
+ *   the stream, the mixer will start using it as soon as possible, which is
+ *   useful when audio should play immediately as it drips in: new VoIP packets,
+ *   etc. Note that in this situation, if the audio runs out when needed, there
+ *   _will_ be gaps in the mixed output, so try to buffer enough data to avoid
+ *   this when possible. Note that a track is not consider exhausted until all
+ *   its loops and appended silence have been mixed (and also, that loops don't
+ *   mean anything when the input is an AudioStream). Default true.
  * - `prop.Play.START_ORDER_NUMBER`: This is a special-case property that most
  *   apps can ignore. For mod file formats, start mixing from a specific "order"
  *   index instead of the start of the file. A value < 0 will cause this
@@ -5778,11 +5774,11 @@ inline Milliseconds FramesToMS(int sample_rate, Sint64 frames)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.PlayTag
- * @sa Mixer.PlayAudio
- * @sa Track.Stop
- * @sa Track.Pause
- * @sa Track.Playing
+ * @sa PlayTag
+ * @sa PlayAudio
+ * @sa StopTrack
+ * @sa PauseTrack
+ * @sa TrackPlaying
  */
 inline void PlayTrack(TrackRef track, PropertiesRef options = nullptr)
 {
@@ -5855,10 +5851,9 @@ constexpr auto HALT_WHEN_EXHAUSTED_BOOLEAN =
 /**
  * Start (or restart) mixing all tracks with a specific tag for playback.
  *
- * This function follows all the same rules as Track.Play(); please refer to its
- * documentation for the details. Unlike that function, Mixer.PlayTag() operates
- * on multiple tracks at once that have the specified tag applied, via
- * Track.Tag().
+ * This function follows all the same rules as PlayTrack(); please refer to its
+ * documentation for the details. Unlike that function, PlayTag() operates on
+ * multiple tracks at once that have the specified tag applied, via TagTrack().
  *
  * If all of your tagged tracks have different sample rates, it would make sense
  * to use the `*_MILLISECONDS_NUMBER` properties in your `options`, instead of
@@ -5881,11 +5876,11 @@ constexpr auto HALT_WHEN_EXHAUSTED_BOOLEAN =
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Play
- * @sa Track.Tag
- * @sa Track.Stop
- * @sa Track.Pause
- * @sa Track.Playing
+ * @sa PlayTrack
+ * @sa TagTrack
+ * @sa StopTrack
+ * @sa PauseTrack
+ * @sa TrackPlaying
  */
 inline void PlayTag(MixerRef mixer, StringParam tag, PropertiesRef options)
 {
@@ -5903,7 +5898,7 @@ inline void Mixer::PlayTag(StringParam tag, PropertiesRef options)
  * This is what we term a "fire-and-forget" sound. Internally, SDL_mixer will
  * manage a temporary track to mix the specified Audio, cleaning it up when
  * complete. No options can be provided for how to do the mixing, like
- * Track.Play() offers, and since the track is not available to the caller, no
+ * PlayTrack() offers, and since the track is not available to the caller, no
  * adjustments can be made to mixing over time.
  *
  * This is not the function to build an entire game of any complexity around,
@@ -5924,7 +5919,7 @@ inline void Mixer::PlayTag(StringParam tag, PropertiesRef options)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Play
+ * @sa PlayTrack
  * @sa Mixer.LoadAudio
  */
 inline bool PlayAudio(MixerRef mixer, AudioRef audio)
@@ -5943,7 +5938,7 @@ inline bool Mixer::PlayAudio(AudioRef audio)
  * If `fade_out_frames` is > 0, the track does not stop mixing immediately, but
  * rather fades to silence over that many sample frames before stopping. Sample
  * frames are specific to the input assigned to the track, to allow for
- * sample-perfect mixing. Track.MSToFrames() can be used to convert milliseconds
+ * sample-perfect mixing. TrackMSToFrames() can be used to convert milliseconds
  * to an appropriate value here.
  *
  * If the track ends normally while the fade-out is still in progress, the audio
@@ -5967,7 +5962,7 @@ inline bool Mixer::PlayAudio(AudioRef audio)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Play
+ * @sa PlayTrack
  */
 inline bool StopTrack(TrackRef track, Sint64 fade_out_frames)
 {
@@ -5984,7 +5979,7 @@ inline bool Track::Stop(Sint64 fade_out_frames)
  *
  * If `fade_out_ms` is > 0, the tracks do not stop mixing immediately, but
  * rather fades to silence over that many milliseconds before stopping. Note
- * that this is different than Track.Stop(), which wants sample frames; this
+ * that this is different than StopTrack(), which wants sample frames; this
  * function takes milliseconds because different tracks might have different
  * sample rates.
  *
@@ -6009,7 +6004,7 @@ inline bool Track::Stop(Sint64 fade_out_frames)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Stop
+ * @sa StopTrack
  */
 inline void StopAllTracks(MixerRef mixer, Sint64 fade_out_ms)
 {
@@ -6026,7 +6021,7 @@ inline void Mixer::StopAllTracks(Sint64 fade_out_ms)
  *
  * If `fade_out_ms` is > 0, the tracks do not stop mixing immediately, but
  * rather fades to silence over that many milliseconds before stopping. Note
- * that this is different than Track.Stop(), which wants sample frames; this
+ * that this is different than StopTrack(), which wants sample frames; this
  * function takes milliseconds because different tracks might have different
  * sample rates.
  *
@@ -6049,8 +6044,8 @@ inline void Mixer::StopAllTracks(Sint64 fade_out_ms)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Stop
- * @sa Track.Tag
+ * @sa StopTrack
+ * @sa TagTrack
  */
 inline void StopTag(MixerRef mixer, StringParam tag, Sint64 fade_out_ms)
 {
@@ -6082,7 +6077,7 @@ inline void Mixer::StopTag(StringParam tag, Sint64 fade_out_ms)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Resume
+ * @sa ResumeTrack
  */
 inline bool PauseTrack(TrackRef track) { return MIX_PauseTrack(track); }
 
@@ -6105,8 +6100,8 @@ inline bool Track::Pause() { return SDL::PauseTrack(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Resume
- * @sa Mixer.ResumeAllTracks
+ * @sa ResumeTrack
+ * @sa ResumeAllTracks
  */
 inline void PauseAllTracks(MixerRef mixer)
 {
@@ -6136,10 +6131,10 @@ inline void Mixer::PauseAllTracks() { SDL::PauseAllTracks(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Pause
- * @sa Track.Resume
- * @sa Mixer.ResumeTag
- * @sa Track.Tag
+ * @sa PauseTrack
+ * @sa ResumeTrack
+ * @sa ResumeTag
+ * @sa TagTrack
  */
 inline void PauseTag(MixerRef mixer, StringParam tag)
 {
@@ -6171,7 +6166,7 @@ inline void Mixer::PauseTag(StringParam tag)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Pause
+ * @sa PauseTrack
  */
 inline bool ResumeTrack(TrackRef track) { return MIX_ResumeTrack(track); }
 
@@ -6194,8 +6189,8 @@ inline bool Track::Resume() { return SDL::ResumeTrack(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Pause
- * @sa Mixer.PauseAllTracks
+ * @sa PauseTrack
+ * @sa PauseAllTracks
  */
 inline void ResumeAllTracks(MixerRef mixer)
 {
@@ -6224,10 +6219,10 @@ inline void Mixer::ResumeAllTracks() { SDL::ResumeAllTracks(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Resume
- * @sa Track.Pause
- * @sa Mixer.PauseTag
- * @sa Track.Tag
+ * @sa ResumeTrack
+ * @sa PauseTrack
+ * @sa PauseTag
+ * @sa TagTrack
  */
 inline void ResumeTag(MixerRef mixer, StringParam tag)
 {
@@ -6256,11 +6251,11 @@ inline void Mixer::ResumeTag(StringParam tag)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Play
- * @sa Track.Pause
- * @sa Track.Resume
- * @sa Track.Stop
- * @sa Track.Paused
+ * @sa PlayTrack
+ * @sa PauseTrack
+ * @sa ResumeTrack
+ * @sa StopTrack
+ * @sa TrackPaused
  */
 inline bool TrackPlaying(TrackRef track) { return MIX_TrackPlaying(track); }
 
@@ -6283,11 +6278,11 @@ inline bool Track::Playing() { return SDL::TrackPlaying(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Play
- * @sa Track.Pause
- * @sa Track.Resume
- * @sa Track.Stop
- * @sa Track.Playing
+ * @sa PlayTrack
+ * @sa PauseTrack
+ * @sa ResumeTrack
+ * @sa StopTrack
+ * @sa TrackPlaying
  */
 inline bool TrackPaused(TrackRef track) { return MIX_TrackPaused(track); }
 
@@ -6315,8 +6310,8 @@ inline bool Track::Paused() { return SDL::TrackPaused(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.GetGain
- * @sa Track.SetGain
+ * @sa GetMixerGain
+ * @sa SetTrackGain
  */
 inline void SetMixerGain(MixerRef mixer, float gain)
 {
@@ -6328,7 +6323,7 @@ inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
 /**
  * Get a mixer's master gain control.
  *
- * This returns the last value set through Mixer.SetGain(), or 1.0f if no value
+ * This returns the last value set through SetMixerGain(), or 1.0f if no value
  * has ever been explicitly set.
  *
  * @param mixer the mixer to query.
@@ -6338,8 +6333,8 @@ inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.SetGain
- * @sa Track.GetGain
+ * @sa SetMixerGain
+ * @sa GetTrackGain
  */
 inline float GetMixerGain(MixerRef mixer) { return MIX_GetMixerGain(mixer); }
 
@@ -6367,8 +6362,8 @@ inline float Mixer::GetGain() { return SDL::GetMixerGain(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.GetGain
- * @sa Mixer.SetGain
+ * @sa GetTrackGain
+ * @sa SetMixerGain
  */
 inline void SetTrackGain(TrackRef track, float gain)
 {
@@ -6380,7 +6375,7 @@ inline void Track::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
 /**
  * Get a track's gain control.
  *
- * This returns the last value set through Track.SetGain(), or 1.0f if no value
+ * This returns the last value set through SetTrackGain(), or 1.0f if no value
  * has ever been explicitly set.
  *
  * @param track the track to query.
@@ -6390,8 +6385,8 @@ inline void Track::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.SetGain
- * @sa Mixer.GetGain
+ * @sa SetTrackGain
+ * @sa GetMixerGain
  */
 inline float GetTrackGain(TrackRef track) { return MIX_GetTrackGain(track); }
 
@@ -6426,10 +6421,10 @@ inline float Track::GetGain() { return SDL::GetTrackGain(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.GetGain
- * @sa Track.SetGain
- * @sa Mixer.SetGain
- * @sa Track.Tag
+ * @sa GetTrackGain
+ * @sa SetTrackGain
+ * @sa SetMixerGain
+ * @sa TagTrack
  */
 inline void SetTagGain(MixerRef mixer, StringParam tag, float gain)
 {
@@ -6465,8 +6460,8 @@ inline void Mixer::SetTagGain(StringParam tag, float gain)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.GetFrequencyRatio
- * @sa Track.SetFrequencyRatio
+ * @sa GetMixerFrequencyRatio
+ * @sa SetTrackFrequencyRatio
  */
 inline void SetMixerFrequencyRatio(MixerRef mixer, float ratio)
 {
@@ -6481,7 +6476,7 @@ inline void Mixer::SetFrequencyRatio(float ratio)
 /**
  * Get a mixer's master frequency ratio.
  *
- * This returns the last value set through Mixer.SetFrequencyRatio(), or 1.0f if
+ * This returns the last value set through SetMixerFrequencyRatio(), or 1.0f if
  * no value has ever been explicitly set.
  *
  * @param mixer the mixer to query.
@@ -6491,8 +6486,8 @@ inline void Mixer::SetFrequencyRatio(float ratio)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Mixer.SetFrequencyRatio
- * @sa Track.GetFrequencyRatio
+ * @sa SetMixerFrequencyRatio
+ * @sa GetTrackFrequencyRatio
  */
 inline float GetMixerFrequencyRatio(MixerRef mixer)
 {
@@ -6525,7 +6520,7 @@ inline float Mixer::GetFrequencyRatio()
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.GetFrequencyRatio
+ * @sa GetTrackFrequencyRatio
  */
 inline void SetTrackFrequencyRatio(TrackRef track, float ratio)
 {
@@ -6560,7 +6555,7 @@ inline void Track::SetFrequencyRatio(float ratio)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.GetFrequencyRatio
+ * @sa GetTrackFrequencyRatio
  */
 inline float GetTrackFrequencyRatio(TrackRef track)
 {
@@ -6630,12 +6625,12 @@ inline void Track::SetOutputChannelMap(std::span<const int> chmap)
  * If `gains` is not nullptr, this track will be switched into forced-stereo
  * mode. If `gains` is nullptr, this will disable spatialization (both the
  * forced-stereo mode of this function and full 3D spatialization of
- * Track.Set3DPosition()).
+ * SetTrack3DPosition()).
  *
  * Negative gains are clamped to zero; there is no clamp for maximum, so one
  * could set the value > 1.0f to make a channel louder.
  *
- * The track's 3D position, reported by Track.Get3DPosition(), will be reset to
+ * The track's 3D position, reported by GetTrack3DPosition(), will be reset to
  * (0, 0, 0).
  *
  * @param track the track to adjust.
@@ -6646,7 +6641,7 @@ inline void Track::SetOutputChannelMap(std::span<const int> chmap)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Set3DPosition
+ * @sa SetTrack3DPosition
  */
 inline void SetTrackStereo(TrackRef track, const StereoGains& gains)
 {
@@ -6670,7 +6665,7 @@ inline void Track::SetStereo(const StereoGains& gains)
  * If `position` is not nullptr, this track will be switched into 3D positional
  * mode. If `position` is nullptr, this will disable positional mixing (both the
  * full 3D spatialization of this function and forced-stereo mode of
- * Track.SetStereo()).
+ * SetTrackStereo()).
  *
  * In 3D positional mode, SDL_mixer will mix this track as if it were positioned
  * in 3D space, including distance attenuation (quieter as it gets further from
@@ -6697,8 +6692,8 @@ inline void Track::SetStereo(const StereoGains& gains)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Get3DPosition
- * @sa Track.SetStereo
+ * @sa GetTrack3DPosition
+ * @sa SetTrackStereo
  */
 inline void SetTrack3DPosition(TrackRef track, const Point3D& position)
 {
@@ -6714,7 +6709,7 @@ inline void Track::Set3DPosition(const Point3D& position)
  * Get a track's current position in 3D space.
  *
  * If 3D positioning isn't enabled for this track, through a call to
- * Track.Set3DPosition(), this will return (0,0,0).
+ * SetTrack3DPosition(), this will return (0,0,0).
  *
  * @param track the track to query.
  * @returns the he track's position on successful return.
@@ -6724,7 +6719,7 @@ inline void Track::Set3DPosition(const Point3D& position)
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Track.Set3DPosition
+ * @sa SetTrack3DPosition
  */
 inline Point3D GetTrack3DPosition(TrackRef track)
 {
@@ -6746,10 +6741,10 @@ inline Point3D Track::Get3DPosition() { return SDL::GetTrack3DPosition(get()); }
  * This can be a useful feature, but is completely optional; apps can ignore
  * mixing groups entirely and still have a full experience with SDL_mixer.
  *
- * After creating a group, assign tracks to it with Track.SetGroup(). Use
- * Group.SetPostMixCallback() to access the group's mixed data.
+ * After creating a group, assign tracks to it with SetTrackGroup(). Use
+ * SetGroupPostMixCallback() to access the group's mixed data.
  *
- * A mixing group can be destroyed with Group.Destroy() when no longer needed.
+ * A mixing group can be destroyed with DestroyGroup() when no longer needed.
  * Destroying the mixer will also destroy all its still-existing mixing groups.
  *
  * @param mixer the mixer on which to create a mixing group.
@@ -6760,9 +6755,9 @@ inline Point3D Track::Get3DPosition() { return SDL::GetTrack3DPosition(get()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Group.Destroy
- * @sa Track.SetGroup
- * @sa Group.SetPostMixCallback
+ * @sa DestroyGroup
+ * @sa SetTrackGroup
+ * @sa SetGroupPostMixCallback
  */
 inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 
@@ -6859,7 +6854,7 @@ inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(get()); }
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa Mixer.CreateGroup
- * @sa Group.SetPostMixCallback
+ * @sa SetGroupPostMixCallback
  */
 inline void SetTrackGroup(TrackRef track, GroupRef group)
 {
@@ -6976,7 +6971,7 @@ inline void Track::SetStoppedCallback(TrackStoppedCB cb)
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa TrackMixCallback
- * @sa Track.SetCookedCallback
+ * @sa SetTrackCookedCallback
  */
 inline void SetTrackRawCallback(TrackRef track,
                                 TrackMixCallback cb,
@@ -7010,7 +7005,7 @@ inline void SetTrackRawCallback(TrackRef track,
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa TrackMixCallback
- * @sa Track.SetCookedCallback
+ * @sa SetTrackCookedCallback
  */
 inline void SetTrackRawCallback(TrackRef track, TrackMixCB cb)
 {
@@ -7057,7 +7052,7 @@ inline void Track::SetRawCallback(TrackMixCB cb)
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa TrackMixCallback
- * @sa Track.SetRawCallback
+ * @sa SetTrackRawCallback
  */
 inline void SetTrackCookedCallback(TrackRef track,
                                    TrackMixCallback cb,
@@ -7094,7 +7089,7 @@ inline void SetTrackCookedCallback(TrackRef track,
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa TrackMixCallback
- * @sa Track.SetRawCallback
+ * @sa SetTrackRawCallback
  */
 inline void SetTrackCookedCallback(TrackRef track, TrackMixCB cb)
 {
@@ -7312,8 +7307,8 @@ inline int Mixer::Generate(TargetBytes buffer)
  * without playing it, this interface offers that.
  *
  * These objects are created with CreateAudioDecoder() or
- * CreateAudioDecoder_IO(), and then can use AudioDecoder.DecodeAudio() to
- * retrieve the raw PCM data.
+ * CreateAudioDecoder_IO(), and then can use DecodeAudio() to retrieve the raw
+ * PCM data.
  *
  * @since This struct is available since SDL_mixer 3.0.0.
  *
@@ -7364,7 +7359,7 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
    * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .
    *
    * When done with the audio decoder, it can be destroyed with
-   * AudioDecoder.Destroy().
+   * DestroyAudioDecoder().
    *
    * This function requires SDL_mixer to have been initialized with a successful
    * call to MIX.Init(), but does not need an actual Mixer to have been created.
@@ -7378,8 +7373,8 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa CreateAudioDecoder_IO
-   * @sa AudioDecoder.DecodeAudio
-   * @sa AudioDecoder.Destroy
+   * @sa DecodeAudio
+   * @sa DestroyAudioDecoder
    */
   AudioDecoder(StringParam path, PropertiesRef props = nullptr);
 
@@ -7400,7 +7395,7 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
    * closed before this function returns.
    *
    * When done with the audio decoder, it can be destroyed with
-   * AudioDecoder.Destroy().
+   * DestroyAudioDecoder().
    *
    * This function requires SDL_mixer to have been initialized with a successful
    * call to MIX.Init(), but does not need an actual Mixer to have been created.
@@ -7415,8 +7410,8 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
    * @since This function is available since SDL_mixer 3.0.0.
    *
    * @sa CreateAudioDecoder_IO
-   * @sa AudioDecoder.DecodeAudio
-   * @sa AudioDecoder.Destroy
+   * @sa DecodeAudio
+   * @sa DestroyAudioDecoder
    */
   AudioDecoder(IOStreamRef io,
                bool closeio = false,
@@ -7456,7 +7451,7 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
    * AudioDecoder, if necessary.
    *
    * The file-specific metadata exposed through this function is identical to
-   * those available through Audio.GetProperties(). Please refer to that
+   * those available through GetAudioProperties(). Please refer to that
    * function's documentation for details.
    *
    * @returns a valid property ID on success.
@@ -7466,7 +7461,7 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
    *
    * @since This function is available since SDL_mixer 3.0.0.
    *
-   * @sa Audio.GetProperties
+   * @sa GetAudioProperties
    */
   PropertiesRef GetProperties();
 
@@ -7526,7 +7521,7 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
  * documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .
  *
  * When done with the audio decoder, it can be destroyed with
- * AudioDecoder.Destroy().
+ * DestroyAudioDecoder().
  *
  * This function requires SDL_mixer to have been initialized with a successful
  * call to MIX.Init(), but does not need an actual Mixer to have been created.
@@ -7540,8 +7535,8 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa CreateAudioDecoder_IO
- * @sa AudioDecoder.DecodeAudio
- * @sa AudioDecoder.Destroy
+ * @sa DecodeAudio
+ * @sa DestroyAudioDecoder
  */
 inline AudioDecoder CreateAudioDecoder(StringParam path,
                                        PropertiesRef props = nullptr)
@@ -7578,7 +7573,7 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  * before this function returns.
  *
  * When done with the audio decoder, it can be destroyed with
- * AudioDecoder.Destroy().
+ * DestroyAudioDecoder().
  *
  * This function requires SDL_mixer to have been initialized with a successful
  * call to MIX.Init(), but does not need an actual Mixer to have been created.
@@ -7593,8 +7588,8 @@ inline AudioDecoder::AudioDecoder(IOStreamRef io,
  * @since This function is available since SDL_mixer 3.0.0.
  *
  * @sa CreateAudioDecoder_IO
- * @sa AudioDecoder.DecodeAudio
- * @sa AudioDecoder.Destroy
+ * @sa DecodeAudio
+ * @sa DestroyAudioDecoder
  */
 inline AudioDecoder CreateAudioDecoder_IO(IOStreamRef io,
                                           bool closeio = false,
@@ -7631,8 +7626,8 @@ inline void AudioDecoder::Destroy() { DestroyAudioDecoder(release()); }
  * AudioDecoder, if necessary.
  *
  * The file-specific metadata exposed through this function is identical to
- * those available through Audio.GetProperties(). Please refer to that
- * function's documentation for details.
+ * those available through GetAudioProperties(). Please refer to that function's
+ * documentation for details.
  *
  * @param audiodecoder the audio decoder to query.
  * @returns a valid property ID on success.
@@ -7642,7 +7637,7 @@ inline void AudioDecoder::Destroy() { DestroyAudioDecoder(release()); }
  *
  * @since This function is available since SDL_mixer 3.0.0.
  *
- * @sa Audio.GetProperties
+ * @sa GetAudioProperties
  */
 inline PropertiesRef GetAudioDecoderProperties(AudioDecoderRef audiodecoder)
 {

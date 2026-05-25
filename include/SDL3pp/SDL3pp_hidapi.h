@@ -213,15 +213,15 @@ struct HidDevice : ResourceBase<HidDeviceRaw>
    * The first byte of `data` must contain the Report ID. For devices which only
    * support a single report, this must be set to 0x0. The remaining bytes
    * contain the report data. Since the Report ID is mandatory, calls to
-   * HidDevice.write() will always contain one more byte than the report
-   * contains. For example, if a hid report is 16 bytes long, 17 bytes must be
-   * passed to HidDevice.write(), the Report ID (or 0x0, for devices with a
-   * single report), followed by the report data (16 bytes). In this example,
-   * the length passed in would be 17.
+   * hid_write() will always contain one more byte than the report contains. For
+   * example, if a hid report is 16 bytes long, 17 bytes must be passed to
+   * hid_write(), the Report ID (or 0x0, for devices with a single report),
+   * followed by the report data (16 bytes). In this example, the length passed
+   * in would be 17.
    *
-   * HidDevice.write() will send the data on the first OUT endpoint, if one
-   * exists. If it does not, it will send the data through the Control Endpoint
-   * (Endpoint 0).
+   * hid_write() will send the data on the first OUT endpoint, if one exists. If
+   * it does not, it will send the data through the Control Endpoint (Endpoint
+   * 0).
    *
    * @param data the data to send, including the report number as the first
    *             byte.
@@ -268,10 +268,9 @@ struct HidDevice : ResourceBase<HidDeviceRaw>
   /**
    * Set the device handle to be non-blocking.
    *
-   * In non-blocking mode calls to HidDevice.read() will return immediately with
-   * a value of 0 if there is no data to be read. In blocking mode,
-   * HidDevice.read() will wait (block) until there is data to read before
-   * returning.
+   * In non-blocking mode calls to hid_read() will return immediately with a
+   * value of 0 if there is no data to be read. In blocking mode, hid_read()
+   * will wait (block) until there is data to read before returning.
    *
    * Nonblocking can be turned on and off at any time.
    *
@@ -290,11 +289,11 @@ struct HidDevice : ResourceBase<HidDeviceRaw>
    * transfer. The first byte of `data` must contain the Report ID. For devices
    * which only support a single report, this must be set to 0x0. The remaining
    * bytes contain the report data. Since the Report ID is mandatory, calls to
-   * HidDevice.send_feature_report() will always contain one more byte than the
-   * report contains. For example, if a hid report is 16 bytes long, 17 bytes
-   * must be passed to HidDevice.send_feature_report(): the Report ID (or 0x0,
-   * for devices which do not use numbered reports), followed by the report data
-   * (16 bytes). In this example, the length passed in would be 17.
+   * hid_send_feature_report() will always contain one more byte than the report
+   * contains. For example, if a hid report is 16 bytes long, 17 bytes must be
+   * passed to hid_send_feature_report(): the Report ID (or 0x0, for devices
+   * which do not use numbered reports), followed by the report data (16 bytes).
+   * In this example, the length passed in would be 17.
    *
    * @param data the data to send, including the report number as the first
    *             byte.
@@ -620,15 +619,14 @@ constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
  *
  * The first byte of `data` must contain the Report ID. For devices which only
  * support a single report, this must be set to 0x0. The remaining bytes contain
- * the report data. Since the Report ID is mandatory, calls to HidDevice.write()
- * will always contain one more byte than the report contains. For example, if a
- * hid report is 16 bytes long, 17 bytes must be passed to HidDevice.write(),
- * the Report ID (or 0x0, for devices with a single report), followed by the
- * report data (16 bytes). In this example, the length passed in would be 17.
+ * the report data. Since the Report ID is mandatory, calls to hid_write() will
+ * always contain one more byte than the report contains. For example, if a hid
+ * report is 16 bytes long, 17 bytes must be passed to hid_write(), the Report
+ * ID (or 0x0, for devices with a single report), followed by the report data
+ * (16 bytes). In this example, the length passed in would be 17.
  *
- * HidDevice.write() will send the data on the first OUT endpoint, if one
- * exists. If it does not, it will send the data through the Control Endpoint
- * (Endpoint 0).
+ * hid_write() will send the data on the first OUT endpoint, if one exists. If
+ * it does not, it will send the data through the Control Endpoint (Endpoint 0).
  *
  * @param dev a device handle returned from hid_open().
  * @param data the data to send, including the report number as the first byte.
@@ -704,9 +702,9 @@ inline int HidDevice::read(TargetBytes data)
 /**
  * Set the device handle to be non-blocking.
  *
- * In non-blocking mode calls to HidDevice.read() will return immediately with a
- * value of 0 if there is no data to be read. In blocking mode, HidDevice.read()
- * will wait (block) until there is data to read before returning.
+ * In non-blocking mode calls to hid_read() will return immediately with a value
+ * of 0 if there is no data to be read. In blocking mode, hid_read() will wait
+ * (block) until there is data to read before returning.
  *
  * Nonblocking can be turned on and off at any time.
  *
@@ -734,11 +732,11 @@ inline void HidDevice::set_nonblocking(bool nonblock)
  * The first byte of `data` must contain the Report ID. For devices which only
  * support a single report, this must be set to 0x0. The remaining bytes contain
  * the report data. Since the Report ID is mandatory, calls to
- * HidDevice.send_feature_report() will always contain one more byte than the
- * report contains. For example, if a hid report is 16 bytes long, 17 bytes must
- * be passed to HidDevice.send_feature_report(): the Report ID (or 0x0, for
- * devices which do not use numbered reports), followed by the report data (16
- * bytes). In this example, the length passed in would be 17.
+ * hid_send_feature_report() will always contain one more byte than the report
+ * contains. For example, if a hid report is 16 bytes long, 17 bytes must be
+ * passed to hid_send_feature_report(): the Report ID (or 0x0, for devices which
+ * do not use numbered reports), followed by the report data (16 bytes). In this
+ * example, the length passed in would be 17.
  *
  * @param dev a device handle returned from hid_open().
  * @param data the data to send, including the report number as the first byte.

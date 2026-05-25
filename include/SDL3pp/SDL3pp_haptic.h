@@ -20,10 +20,10 @@ namespace SDL {
  * - OpenHaptic() to open from index.
  * - OpenHapticFromJoystick() to open from an existing joystick.
  * - Create an effect (HapticEffect).
- * - Upload the effect with Haptic.CreateEffect().
- * - Run the effect with Haptic.RunEffect().
- * - (optional) Free the effect with Haptic.DestroyEffect().
- * - Close the haptic device with Haptic.Close().
+ * - Upload the effect with CreateHapticEffect().
+ * - Run the effect with RunHapticEffect().
+ * - (optional) Free the effect with DestroyHapticEffect().
+ * - Close the haptic device with CloseHaptic().
  *
  * Simple rumble example:
  *
@@ -40,16 +40,16 @@ namespace SDL {
  *       return;
  *
  *    // Initialize simple rumble
- *    if (!Haptic.InitRumble(haptic))
+ *    if (!InitHapticRumble(haptic))
  *       return;
  *
  *    // Play effect at 50% strength for 2 seconds
- *    if (!Haptic.PlayRumble(haptic, 0.5, 2000))
+ *    if (!PlayHapticRumble(haptic, 0.5, 2000))
  *       return;
  *    Delay(2000);
  *
  *    // Clean up
- *    Haptic.Close(haptic);
+ *    CloseHaptic(haptic);
  * ```
  *
  * Complete example:
@@ -66,8 +66,8 @@ namespace SDL {
  *    if (haptic == nullptr) return false; // Most likely joystick isn't haptic
  *
  *    // See if it can do sine waves
- *    if ((Haptic.GetFeatures(haptic) & HAPTIC_SINE)==0) {
- *       Haptic.Close(haptic); // No sine effect
+ *    if ((GetHapticFeatures(haptic) & HAPTIC_SINE)==0) {
+ *       CloseHaptic(haptic); // No sine effect
  *       return false;
  *    }
  *
@@ -83,17 +83,17 @@ namespace SDL {
  * strength effect.periodic.fade_length = 1000; // Takes 1 second to fade away
  *
  *    // Upload the effect
- *    effect_id = Haptic.CreateEffect(haptic, &effect);
+ *    effect_id = CreateHapticEffect(haptic, &effect);
  *
  *    // Test the effect
- *    Haptic.RunEffect(haptic, effect_id, 1);
+ *    RunHapticEffect(haptic, effect_id, 1);
  *    Delay(5000); // Wait for the effect to finish
  *
  *    // We destroy the effect, although closing the device also does this
- *    Haptic.DestroyEffect(haptic, effect_id);
+ *    DestroyHapticEffect(haptic, effect_id);
  *
  *    // Close the device
- *    Haptic.Close(haptic);
+ *    CloseHaptic(haptic);
  *
  *    return true; // Success
  * }
@@ -127,7 +127,7 @@ using HapticRef = ResourceRef<Haptic>;
  *
  * This is -1 if the ID is invalid.
  *
- * @sa Haptic.CreateEffect
+ * @sa CreateHapticEffect
  */
 using HapticEffectID = int;
 
@@ -307,7 +307,7 @@ constexpr HapticEffectType HAPTIC_CUSTOM = SDL_HAPTIC_CUSTOM;
  *
  * @since This constant is available since SDL 3.2.0.
  *
- * @sa Haptic.SetGain
+ * @sa SetHapticGain
  */
 constexpr HapticEffectType HAPTIC_GAIN = SDL_HAPTIC_GAIN;
 
@@ -318,7 +318,7 @@ constexpr HapticEffectType HAPTIC_GAIN = SDL_HAPTIC_GAIN;
  *
  * @since This constant is available since SDL 3.2.0.
  *
- * @sa Haptic.SetAutocenter
+ * @sa SetHapticAutocenter
  */
 constexpr HapticEffectType HAPTIC_AUTOCENTER = SDL_HAPTIC_AUTOCENTER;
 
@@ -329,7 +329,7 @@ constexpr HapticEffectType HAPTIC_AUTOCENTER = SDL_HAPTIC_AUTOCENTER;
  *
  * @since This constant is available since SDL 3.2.0.
  *
- * @sa Haptic.GetEffectStatus
+ * @sa GetHapticEffectStatus
  */
 constexpr HapticEffectType HAPTIC_STATUS = SDL_HAPTIC_STATUS;
 
@@ -340,8 +340,8 @@ constexpr HapticEffectType HAPTIC_STATUS = SDL_HAPTIC_STATUS;
  *
  * @since This constant is available since SDL 3.2.0.
  *
- * @sa Haptic.Pause
- * @sa Haptic.Resume
+ * @sa PauseHaptic
+ * @sa ResumeHaptic
  */
 constexpr HapticEffectType HAPTIC_PAUSE = SDL_HAPTIC_PAUSE;
 
@@ -401,7 +401,7 @@ constexpr HapticDirectionType HAPTIC_STEERING_AXIS = SDL_HAPTIC_STEERING_AXIS;
  *
  * @since This constant is available since SDL 3.2.0.
  *
- * @sa Haptic.RunEffect
+ * @sa RunHapticEffect
  */
 constexpr Uint32 HAPTIC_INFINITY = SDL_HAPTIC_INFINITY;
 
@@ -507,7 +507,7 @@ constexpr Uint32 HAPTIC_INFINITY = SDL_HAPTIC_INFINITY;
  * @sa HAPTIC_SPHERICAL
  * @sa HAPTIC_STEERING_AXIS
  * @sa HapticEffect
- * @sa Haptic.GetNumAxes
+ * @sa GetNumHapticAxes
  */
 using HapticDirection = SDL_HapticDirection;
 
@@ -763,7 +763,7 @@ using HapticID = SDL_HapticID;
  *
  * @sa OpenHaptic
  * @sa OpenHapticFromJoystick
- * @sa Haptic.Close
+ * @sa CloseHaptic
  *
  * @cat resource
  */
@@ -803,8 +803,8 @@ struct Haptic : ResourceBase<HapticRaw>
    * system.
    *
    * When opening a haptic device, its gain will be set to maximum and
-   * autocenter will be disabled. To modify these values use Haptic.SetGain()
-   * and Haptic.SetAutocenter().
+   * autocenter will be disabled. To modify these values use SetHapticGain() and
+   * SetHapticAutocenter().
    *
    * @param instance_id the haptic device instance ID.
    * @post the device identifier or nullptr on failure; call GetError() for more
@@ -812,12 +812,12 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.Close
+   * @sa CloseHaptic
    * @sa GetHaptics
    * @sa OpenHapticFromJoystick
-   * @sa Haptic.OpenFromMouse
-   * @sa Haptic.SetAutocenter
-   * @sa Haptic.SetGain
+   * @sa OpenHapticFromMouse
+   * @sa SetHapticAutocenter
+   * @sa SetHapticGain
    */
   Haptic(HapticID instance_id);
 
@@ -838,7 +838,7 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.Close
+   * @sa CloseHaptic
    * @sa IsJoystickHaptic
    */
   Haptic(JoystickRef joystick);
@@ -851,7 +851,7 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.Close
+   * @sa CloseHaptic
    * @sa IsMouseHaptic
    */
   static Haptic OpenFromMouse();
@@ -906,15 +906,15 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * On some platforms this isn't fully supported, and therefore is an
    * approximation. Always check to see if your created effect was actually
-   * created and do not rely solely on Haptic.GetMaxEffects().
+   * created and do not rely solely on GetMaxHapticEffects().
    *
    * @returns the number of effects the haptic device can store or a negative
    *          error code on failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.GetMaxEffectsPlaying
-   * @sa Haptic.GetFeatures
+   * @sa GetMaxHapticEffectsPlaying
+   * @sa GetHapticFeatures
    */
   int GetMaxEffects();
 
@@ -928,8 +928,8 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.GetMaxEffects
-   * @sa Haptic.GetFeatures
+   * @sa GetMaxHapticEffects
+   * @sa GetHapticFeatures
    */
   int GetMaxEffectsPlaying();
 
@@ -942,8 +942,8 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.EffectSupported
-   * @sa Haptic.GetMaxEffects
+   * @sa HapticEffectSupported
+   * @sa GetMaxHapticEffects
    */
   Uint32 GetFeatures();
 
@@ -968,8 +968,8 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.CreateEffect
-   * @sa Haptic.GetFeatures
+   * @sa CreateHapticEffect
+   * @sa GetHapticFeatures
    */
   bool EffectSupported(const HapticEffect& effect);
 
@@ -983,9 +983,9 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.DestroyEffect
-   * @sa Haptic.RunEffect
-   * @sa Haptic.UpdateEffect
+   * @sa DestroyHapticEffect
+   * @sa RunHapticEffect
+   * @sa UpdateHapticEffect
    */
   HapticEffectID CreateEffect(const HapticEffect& effect);
 
@@ -995,7 +995,7 @@ struct Haptic : ResourceBase<HapticRaw>
    * Can be used dynamically, although behavior when dynamically changing
    * direction may be strange. Specifically the effect may re-upload itself and
    * start playing from the start. You also cannot change the type either when
-   * running Haptic.UpdateEffect().
+   * running UpdateHapticEffect().
    *
    * @param effect the identifier of the effect to update.
    * @param data an HapticEffect structure containing the new effect properties
@@ -1004,8 +1004,8 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.CreateEffect
-   * @sa Haptic.RunEffect
+   * @sa CreateHapticEffect
+   * @sa RunHapticEffect
    */
   void UpdateEffect(HapticEffectID effect, const HapticEffect& data);
 
@@ -1024,9 +1024,9 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.GetEffectStatus
-   * @sa Haptic.StopEffect
-   * @sa Haptic.StopEffects
+   * @sa GetHapticEffectStatus
+   * @sa StopHapticEffect
+   * @sa StopHapticEffects
    */
   void RunEffect(HapticEffectID effect, Uint32 iterations);
 
@@ -1038,8 +1038,8 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.RunEffect
-   * @sa Haptic.StopEffects
+   * @sa RunHapticEffect
+   * @sa StopHapticEffects
    */
   void StopEffect(HapticEffectID effect);
 
@@ -1053,7 +1053,7 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.CreateEffect
+   * @sa CreateHapticEffect
    */
   void DestroyEffect(HapticEffectID effect);
 
@@ -1068,7 +1068,7 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.GetFeatures
+   * @sa GetHapticFeatures
    */
   bool GetEffectStatus(HapticEffectID effect);
 
@@ -1079,7 +1079,7 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * The user may specify the maximum gain by setting the environment variable
    * `SDL_HAPTIC_GAIN_MAX` which should be between 0 and 100. All calls to
-   * Haptic.SetGain() will scale linearly using `SDL_HAPTIC_GAIN_MAX` as the
+   * SetHapticGain() will scale linearly using `SDL_HAPTIC_GAIN_MAX` as the
    * maximum.
    *
    * @param gain value to set the gain to, should be between 0 and 100 (0 -
@@ -1088,7 +1088,7 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.GetFeatures
+   * @sa GetHapticFeatures
    */
   void SetGain(int gain);
 
@@ -1105,14 +1105,14 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.GetFeatures
+   * @sa GetHapticFeatures
    */
   void SetAutocenter(int autocenter);
 
   /**
    * Pause a haptic device.
    *
-   * Device must support the `HAPTIC_PAUSE` feature. Call Haptic.Resume() to
+   * Device must support the `HAPTIC_PAUSE` feature. Call ResumeHaptic() to
    * resume playback.
    *
    * Do not modify the effects nor add new ones while the device is paused. That
@@ -1122,20 +1122,20 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.Resume
+   * @sa ResumeHaptic
    */
   void Pause();
 
   /**
    * Resume a haptic device.
    *
-   * Call to unpause after Haptic.Pause().
+   * Call to unpause after PauseHaptic().
    *
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.Pause
+   * @sa PauseHaptic
    */
   void Resume();
 
@@ -1146,8 +1146,8 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.RunEffect
-   * @sa Haptic.StopEffect
+   * @sa RunHapticEffect
+   * @sa StopHapticEffect
    */
   void StopEffects();
 
@@ -1158,7 +1158,7 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.InitRumble
+   * @sa InitHapticRumble
    */
   bool RumbleSupported();
 
@@ -1169,9 +1169,9 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.PlayRumble
-   * @sa Haptic.StopRumble
-   * @sa Haptic.RumbleSupported
+   * @sa PlayHapticRumble
+   * @sa StopHapticRumble
+   * @sa HapticRumbleSupported
    */
   void InitRumble();
 
@@ -1184,8 +1184,8 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.InitRumble
-   * @sa Haptic.StopRumble
+   * @sa InitHapticRumble
+   * @sa StopHapticRumble
    */
   void PlayRumble(float strength, Uint32 length);
 
@@ -1196,7 +1196,7 @@ struct Haptic : ResourceBase<HapticRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Haptic.PlayRumble
+   * @sa PlayHapticRumble
    */
   void StopRumble();
 };
@@ -1229,7 +1229,7 @@ inline OwnArray<HapticID> GetHaptics()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.GetName
+ * @sa GetHapticName
  * @sa OpenHaptic
  */
 inline const char* GetHapticNameForID(HapticID instance_id)
@@ -1244,8 +1244,8 @@ inline const char* GetHapticNameForID(HapticID instance_id)
  * system.
  *
  * When opening a haptic device, its gain will be set to maximum and autocenter
- * will be disabled. To modify these values use Haptic.SetGain() and
- * Haptic.SetAutocenter().
+ * will be disabled. To modify these values use SetHapticGain() and
+ * SetHapticAutocenter().
  *
  * @param instance_id the haptic device instance ID.
  * @returns the device identifier or nullptr on failure; call GetError() for
@@ -1253,12 +1253,12 @@ inline const char* GetHapticNameForID(HapticID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Close
+ * @sa CloseHaptic
  * @sa GetHaptics
  * @sa OpenHapticFromJoystick
- * @sa Haptic.OpenFromMouse
- * @sa Haptic.SetAutocenter
- * @sa Haptic.SetGain
+ * @sa OpenHapticFromMouse
+ * @sa SetHapticAutocenter
+ * @sa SetHapticGain
  */
 inline Haptic OpenHaptic(HapticID instance_id) { return Haptic(instance_id); }
 
@@ -1305,7 +1305,7 @@ inline HapticID Haptic::GetID() { return SDL::GetHapticID(get()); }
 /**
  * Get the implementation dependent name of a haptic device.
  *
- * @param haptic the Haptic obtained from JoystickID.OpenJoystick().
+ * @param haptic the Haptic obtained from OpenHaptic().
  * @returns the name of the selected haptic device. If no name can be found,
  *          this function returns nullptr; call GetError() for more information.
  *
@@ -1327,7 +1327,7 @@ inline const char* Haptic::GetName() { return SDL::GetHapticName(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.OpenFromMouse
+ * @sa OpenHapticFromMouse
  */
 inline bool IsMouseHaptic() { return SDL_IsMouseHaptic(); }
 
@@ -1339,7 +1339,7 @@ inline bool IsMouseHaptic() { return SDL_IsMouseHaptic(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Close
+ * @sa CloseHaptic
  * @sa IsMouseHaptic
  */
 inline Haptic OpenHapticFromMouse()
@@ -1381,7 +1381,7 @@ inline bool IsJoystickHaptic(JoystickRef joystick)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Close
+ * @sa CloseHaptic
  * @sa IsJoystickHaptic
  */
 inline Haptic OpenHapticFromJoystick(JoystickRef joystick)
@@ -1407,7 +1407,7 @@ inline void Haptic::Close() { CloseHaptic(release()); }
  *
  * On some platforms this isn't fully supported, and therefore is an
  * approximation. Always check to see if your created effect was actually
- * created and do not rely solely on Haptic.GetMaxEffects().
+ * created and do not rely solely on GetMaxHapticEffects().
  *
  * @param haptic the Haptic device to query.
  * @returns the number of effects the haptic device can store or a negative
@@ -1415,8 +1415,8 @@ inline void Haptic::Close() { CloseHaptic(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.GetMaxEffectsPlaying
- * @sa Haptic.GetFeatures
+ * @sa GetMaxHapticEffectsPlaying
+ * @sa GetHapticFeatures
  */
 inline int GetMaxHapticEffects(HapticRef haptic)
 {
@@ -1436,8 +1436,8 @@ inline int Haptic::GetMaxEffects() { return SDL::GetMaxHapticEffects(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.GetMaxEffects
- * @sa Haptic.GetFeatures
+ * @sa GetMaxHapticEffects
+ * @sa GetHapticFeatures
  */
 inline int GetMaxHapticEffectsPlaying(HapticRef haptic)
 {
@@ -1459,8 +1459,8 @@ inline int Haptic::GetMaxEffectsPlaying()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.EffectSupported
- * @sa Haptic.GetMaxEffects
+ * @sa HapticEffectSupported
+ * @sa GetMaxHapticEffects
  */
 inline Uint32 GetHapticFeatures(HapticRef haptic)
 {
@@ -1497,8 +1497,8 @@ inline int Haptic::GetNumAxes() { return SDL::GetNumHapticAxes(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.CreateEffect
- * @sa Haptic.GetFeatures
+ * @sa CreateHapticEffect
+ * @sa GetHapticFeatures
  */
 inline bool HapticEffectSupported(HapticRef haptic, const HapticEffect& effect)
 {
@@ -1521,9 +1521,9 @@ inline bool Haptic::EffectSupported(const HapticEffect& effect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.DestroyEffect
- * @sa Haptic.RunEffect
- * @sa Haptic.UpdateEffect
+ * @sa DestroyHapticEffect
+ * @sa RunHapticEffect
+ * @sa UpdateHapticEffect
  */
 inline HapticEffectID CreateHapticEffect(HapticRef haptic,
                                          const HapticEffect& effect)
@@ -1542,7 +1542,7 @@ inline HapticEffectID Haptic::CreateEffect(const HapticEffect& effect)
  * Can be used dynamically, although behavior when dynamically changing
  * direction may be strange. Specifically the effect may re-upload itself and
  * start playing from the start. You also cannot change the type either when
- * running Haptic.UpdateEffect().
+ * running UpdateHapticEffect().
  *
  * @param haptic the Haptic device that has the effect.
  * @param effect the identifier of the effect to update.
@@ -1552,8 +1552,8 @@ inline HapticEffectID Haptic::CreateEffect(const HapticEffect& effect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.CreateEffect
- * @sa Haptic.RunEffect
+ * @sa CreateHapticEffect
+ * @sa RunHapticEffect
  */
 inline void UpdateHapticEffect(HapticRef haptic,
                                HapticEffectID effect,
@@ -1584,9 +1584,9 @@ inline void Haptic::UpdateEffect(HapticEffectID effect,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.GetEffectStatus
- * @sa Haptic.StopEffect
- * @sa Haptic.StopEffects
+ * @sa GetHapticEffectStatus
+ * @sa StopHapticEffect
+ * @sa StopHapticEffects
  */
 inline void RunHapticEffect(HapticRef haptic,
                             HapticEffectID effect,
@@ -1609,8 +1609,8 @@ inline void Haptic::RunEffect(HapticEffectID effect, Uint32 iterations)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.RunEffect
- * @sa Haptic.StopEffects
+ * @sa RunHapticEffect
+ * @sa StopHapticEffects
  */
 inline void StopHapticEffect(HapticRef haptic, HapticEffectID effect)
 {
@@ -1633,7 +1633,7 @@ inline void Haptic::StopEffect(HapticEffectID effect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.CreateEffect
+ * @sa CreateHapticEffect
  */
 inline void DestroyHapticEffect(HapticRef haptic, HapticEffectID effect)
 {
@@ -1657,7 +1657,7 @@ inline void Haptic::DestroyEffect(HapticEffectID effect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.GetFeatures
+ * @sa GetHapticFeatures
  */
 inline bool GetHapticEffectStatus(HapticRef haptic, HapticEffectID effect)
 {
@@ -1676,7 +1676,7 @@ inline bool Haptic::GetEffectStatus(HapticEffectID effect)
  *
  * The user may specify the maximum gain by setting the environment variable
  * `SDL_HAPTIC_GAIN_MAX` which should be between 0 and 100. All calls to
- * Haptic.SetGain() will scale linearly using `SDL_HAPTIC_GAIN_MAX` as the
+ * SetHapticGain() will scale linearly using `SDL_HAPTIC_GAIN_MAX` as the
  * maximum.
  *
  * @param haptic the Haptic device to set the gain on.
@@ -1685,7 +1685,7 @@ inline bool Haptic::GetEffectStatus(HapticEffectID effect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.GetFeatures
+ * @sa GetHapticFeatures
  */
 inline void SetHapticGain(HapticRef haptic, int gain)
 {
@@ -1708,7 +1708,7 @@ inline void Haptic::SetGain(int gain) { SDL::SetHapticGain(get(), gain); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.GetFeatures
+ * @sa GetHapticFeatures
  */
 inline void SetHapticAutocenter(HapticRef haptic, int autocenter)
 {
@@ -1723,8 +1723,8 @@ inline void Haptic::SetAutocenter(int autocenter)
 /**
  * Pause a haptic device.
  *
- * Device must support the `HAPTIC_PAUSE` feature. Call Haptic.Resume() to
- * resume playback.
+ * Device must support the `HAPTIC_PAUSE` feature. Call ResumeHaptic() to resume
+ * playback.
  *
  * Do not modify the effects nor add new ones while the device is paused. That
  * can cause all sorts of weird errors.
@@ -1734,7 +1734,7 @@ inline void Haptic::SetAutocenter(int autocenter)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Resume
+ * @sa ResumeHaptic
  */
 inline void PauseHaptic(HapticRef haptic)
 {
@@ -1746,14 +1746,14 @@ inline void Haptic::Pause() { SDL::PauseHaptic(get()); }
 /**
  * Resume a haptic device.
  *
- * Call to unpause after Haptic.Pause().
+ * Call to unpause after PauseHaptic().
  *
  * @param haptic the Haptic device to unpause.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.Pause
+ * @sa PauseHaptic
  */
 inline void ResumeHaptic(HapticRef haptic)
 {
@@ -1770,8 +1770,8 @@ inline void Haptic::Resume() { SDL::ResumeHaptic(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.RunEffect
- * @sa Haptic.StopEffect
+ * @sa RunHapticEffect
+ * @sa StopHapticEffect
  */
 inline void StopHapticEffects(HapticRef haptic)
 {
@@ -1788,7 +1788,7 @@ inline void Haptic::StopEffects() { SDL::StopHapticEffects(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.InitRumble
+ * @sa InitHapticRumble
  */
 inline bool HapticRumbleSupported(HapticRef haptic)
 {
@@ -1808,9 +1808,9 @@ inline bool Haptic::RumbleSupported()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.PlayRumble
- * @sa Haptic.StopRumble
- * @sa Haptic.RumbleSupported
+ * @sa PlayHapticRumble
+ * @sa StopHapticRumble
+ * @sa HapticRumbleSupported
  */
 inline void InitHapticRumble(HapticRef haptic)
 {
@@ -1829,8 +1829,8 @@ inline void Haptic::InitRumble() { SDL::InitHapticRumble(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.InitRumble
- * @sa Haptic.StopRumble
+ * @sa InitHapticRumble
+ * @sa StopHapticRumble
  */
 inline void PlayHapticRumble(HapticRef haptic, float strength, Uint32 length)
 {
@@ -1850,7 +1850,7 @@ inline void Haptic::PlayRumble(float strength, Uint32 length)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Haptic.PlayRumble
+ * @sa PlayHapticRumble
  */
 inline void StopHapticRumble(HapticRef haptic)
 {

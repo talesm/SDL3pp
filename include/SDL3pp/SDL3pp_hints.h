@@ -291,7 +291,7 @@ namespace SDL {
  * in a system control panel that lets the user adjust the volume on specific
  * audio streams instead of using one giant master volume slider. Note that this
  * is unrelated to the icon used by the windowing system, which may be set with
- * Window.SetIcon (or via desktop file on Wayland).
+ * SetWindowIcon (or via desktop file on Wayland).
  *
  * Setting this to "" or leaving it unset will have SDL use a reasonable
  * default, "applications-games", which is likely to be installed. See
@@ -690,10 +690,10 @@ namespace SDL {
 #define SDL_HINT_FILE_DIALOG_DRIVER "SDL_FILE_DIALOG_DRIVER"
 
 /**
- * Override for Display.GetUsableBounds().
+ * Override for GetDisplayUsableBounds().
  *
  * If set, this hint will override the expected results for
- * Display.GetUsableBounds() for display index 0. Generally you don't want to do
+ * GetDisplayUsableBounds() for display index 0. Generally you don't want to do
  * this, but this allows an embedded system to request that some of the screen
  * be reserved for other uses when paired with a well-behaved application.
  *
@@ -868,7 +868,7 @@ namespace SDL {
  * - "X": Enable 3D acceleration, using X where X is one of the valid rendering
  *   drivers. (e.g. "direct3d", "opengl", etc.)
  *
- * This hint should be set before calling Window.GetSurface()
+ * This hint should be set before calling GetWindowSurface()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3585,7 +3585,7 @@ namespace SDL {
  * - "0": default platform specific behaviour
  * - "1": Force THREAD_PRIORITY_TIME_CRITICAL to a realtime scheduling policy
  *
- * This hint should be set before calling Thread.SetCurrentPriority()
+ * This hint should be set before calling SetCurrentThreadPriority()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3594,9 +3594,9 @@ namespace SDL {
 
 /**
  * A string specifying additional information to use with
- * Thread.SetCurrentPriority.
+ * SetCurrentThreadPriority.
  *
- * By default Thread.SetCurrentPriority will make appropriate system changes in
+ * By default SetCurrentThreadPriority will make appropriate system changes in
  * order to apply a thread priority. For example on systems using pthreads the
  * scheduler policy is changed automatically to a policy that works well with a
  * given priority. Code which has specific requirements can override SDL's
@@ -3607,9 +3607,9 @@ namespace SDL {
  *
  * On Linux, the kernel may send SIGKILL to realtime tasks which exceed the
  * distro configured execution budget for rtkit. This budget can be queried
- * through RLIMIT_RTTIME after calling Thread.SetCurrentPriority().
+ * through RLIMIT_RTTIME after calling SetCurrentThreadPriority().
  *
- * This hint should be set before calling Thread.SetCurrentPriority()
+ * This hint should be set before calling SetCurrentThreadPriority()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3837,7 +3837,7 @@ namespace SDL {
  *   not accessible by moving the mouse to the top of the screen.
  * - "1": The menu will be accessible when the window is in a fullscreen space.
  * - "auto": The menu will be hidden if fullscreen mode was toggled on
- *   programmatically via `Window.SetFullscreen()`, and accessible if fullscreen
+ *   programmatically via `SetWindowFullscreen()`, and accessible if fullscreen
  *   was entered via the "fullscreen" button on the window title bar. (default)
  *
  * This hint can be set anytime.
@@ -3933,7 +3933,7 @@ namespace SDL {
  * operations that resize or move the window applied immediately upon the return
  * of the requesting function. Setting this hint will cause such operations to
  * block after every call until the pending operation has completed. Setting
- * this to '1' is the equivalent of calling Window.Sync() after every function
+ * this to '1' is the equivalent of calling SyncWindow() after every function
  * call.
  *
  * Be aware that amount of time spent blocking while waiting for window
@@ -4417,13 +4417,13 @@ namespace SDL {
 #define SDL_HINT_WAVE_TRUNCATION "SDL_WAVE_TRUNCATION"
 
 /**
- * A variable controlling whether the window is activated when the Window.Raise
+ * A variable controlling whether the window is activated when the RaiseWindow
  * function is called.
  *
  * The variable can be set to the following values:
  *
- * - "0": The window is not activated when the Window.Raise function is called.
- * - "1": The window is activated when the Window.Raise function is called.
+ * - "0": The window is not activated when the RaiseWindow function is called.
+ * - "1": The window is activated when the RaiseWindow function is called.
  *   (default)
  *
  * This hint can be set anytime.
@@ -4433,13 +4433,13 @@ namespace SDL {
 #define SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED "SDL_WINDOW_ACTIVATE_WHEN_RAISED"
 
 /**
- * A variable controlling whether the window is activated when the Window.Show
+ * A variable controlling whether the window is activated when the ShowWindow
  * function is called.
  *
  * The variable can be set to the following values:
  *
- * - "0": The window is not activated when the Window.Show function is called.
- * - "1": The window is activated when the Window.Show function is called.
+ * - "0": The window is not activated when the ShowWindow function is called.
+ * - "1": The window is activated when the ShowWindow function is called.
  *   (default)
  *
  * This hint can be set anytime.

@@ -308,10 +308,10 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Close
-   * @sa Storage.GetFileSize
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
    * @sa OpenUserStorage
-   * @sa Storage.ReadFile
+   * @sa ReadStorageFile
    */
   Storage(StringParam override, PropertiesRef props);
 
@@ -331,13 +331,13 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Close
-   * @sa Storage.GetFileSize
-   * @sa Storage.GetSpaceRemaining
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
    * @sa OpenTitleStorage
-   * @sa Storage.ReadFile
-   * @sa Storage.Ready
-   * @sa Storage.WriteFile
+   * @sa ReadStorageFile
+   * @sa StorageReady
+   * @sa WriteStorageFile
    */
   Storage(StringParam org, StringParam app, PropertiesRef props);
 
@@ -355,13 +355,13 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Close
-   * @sa Storage.GetFileSize
-   * @sa Storage.GetSpaceRemaining
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
    * @sa OpenTitleStorage
    * @sa OpenUserStorage
-   * @sa Storage.ReadFile
-   * @sa Storage.WriteFile
+   * @sa ReadStorageFile
+   * @sa WriteStorageFile
    */
   Storage(StringParam path);
 
@@ -384,13 +384,13 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Close
-   * @sa Storage.GetFileSize
-   * @sa Storage.GetSpaceRemaining
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
    * @sa InitInterface
-   * @sa Storage.ReadFile
-   * @sa Storage.Ready
-   * @sa Storage.WriteFile
+   * @sa ReadStorageFile
+   * @sa StorageReady
+   * @sa WriteStorageFile
    */
   Storage(const StorageInterface& iface, void* userdata);
 
@@ -447,8 +447,8 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.ReadFile
-   * @sa Storage.Ready
+   * @sa ReadStorageFile
+   * @sa StorageReady
    */
   std::optional<Uint64> GetFileSize(StringParam path);
 
@@ -457,7 +457,7 @@ struct Storage : ResourceBase<StorageRaw>
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * Storage.GetFileSize() to get this value. This behavior may be relaxed in a
+   * GetStorageFileSize() to get this value. This behavior may be relaxed in a
    * future release.
    *
    * @param path the relative path of the file to read.
@@ -467,9 +467,9 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.GetFileSize
-   * @sa Storage.Ready
-   * @sa Storage.WriteFile
+   * @sa GetStorageFileSize
+   * @sa StorageReady
+   * @sa WriteStorageFile
    */
   bool ReadFile(StringParam path, TargetBytes destination);
 
@@ -478,7 +478,7 @@ struct Storage : ResourceBase<StorageRaw>
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * Storage.GetFileSize() to get this value. This behavior may be relaxed in a
+   * GetStorageFileSize() to get this value. This behavior may be relaxed in a
    * future release.
    *
    * @param path the relative path of the file to read.
@@ -487,9 +487,9 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.GetFileSize
-   * @sa Storage.Ready
-   * @sa Storage.WriteFile
+   * @sa GetStorageFileSize
+   * @sa StorageReady
+   * @sa WriteStorageFile
    */
   std::string ReadFile(StringParam path);
 
@@ -523,9 +523,9 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.GetSpaceRemaining
-   * @sa Storage.ReadFile
-   * @sa Storage.Ready
+   * @sa GetStorageSpaceRemaining
+   * @sa ReadStorageFile
+   * @sa StorageReady
    */
   void WriteFile(StringParam path, SourceBytes source);
 
@@ -537,7 +537,7 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Ready
+   * @sa StorageReady
    */
   void CreateDirectory(StringParam path);
 
@@ -564,7 +564,7 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Ready
+   * @sa StorageReady
    */
   void EnumerateDirectory(StringParam path,
                           EnumerateDirectoryCallback callback,
@@ -592,7 +592,7 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Ready
+   * @sa StorageReady
    */
   std::vector<Path> EnumerateDirectory(StringParam path);
 
@@ -618,7 +618,7 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Ready
+   * @sa StorageReady
    */
   void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback);
 
@@ -630,7 +630,7 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Ready
+   * @sa StorageReady
    */
   void RemovePath(StringParam path);
 
@@ -643,7 +643,7 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Ready
+   * @sa StorageReady
    */
   void RenamePath(StringParam oldpath, StringParam newpath);
 
@@ -656,7 +656,7 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Ready
+   * @sa StorageReady
    */
   void CopyFile(StringParam oldpath, StringParam newpath);
 
@@ -669,7 +669,7 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Ready
+   * @sa StorageReady
    */
   PathInfo GetPathInfo(StringParam path);
 
@@ -680,8 +680,8 @@ struct Storage : ResourceBase<StorageRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Storage.Ready
-   * @sa Storage.WriteFile
+   * @sa StorageReady
+   * @sa WriteStorageFile
    */
   Uint64 GetSpaceRemaining();
 
@@ -737,10 +737,10 @@ struct Storage : ResourceBase<StorageRaw>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Close
- * @sa Storage.GetFileSize
+ * @sa CloseStorage
+ * @sa GetStorageFileSize
  * @sa OpenUserStorage
- * @sa Storage.ReadFile
+ * @sa ReadStorageFile
  */
 inline Storage OpenTitleStorage(StringParam override, PropertiesRef props)
 {
@@ -783,13 +783,13 @@ inline Storage::Storage(const StorageInterface& iface, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Close
- * @sa Storage.GetFileSize
- * @sa Storage.GetSpaceRemaining
+ * @sa CloseStorage
+ * @sa GetStorageFileSize
+ * @sa GetStorageSpaceRemaining
  * @sa OpenTitleStorage
- * @sa Storage.ReadFile
- * @sa Storage.Ready
- * @sa Storage.WriteFile
+ * @sa ReadStorageFile
+ * @sa StorageReady
+ * @sa WriteStorageFile
  */
 inline Storage OpenUserStorage(StringParam org,
                                StringParam app,
@@ -812,13 +812,13 @@ inline Storage OpenUserStorage(StringParam org,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Close
- * @sa Storage.GetFileSize
- * @sa Storage.GetSpaceRemaining
+ * @sa CloseStorage
+ * @sa GetStorageFileSize
+ * @sa GetStorageSpaceRemaining
  * @sa OpenTitleStorage
  * @sa OpenUserStorage
- * @sa Storage.ReadFile
- * @sa Storage.WriteFile
+ * @sa ReadStorageFile
+ * @sa WriteStorageFile
  */
 inline Storage OpenFileStorage(StringParam path)
 {
@@ -844,13 +844,13 @@ inline Storage OpenFileStorage(StringParam path)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Close
- * @sa Storage.GetFileSize
- * @sa Storage.GetSpaceRemaining
+ * @sa CloseStorage
+ * @sa GetStorageFileSize
+ * @sa GetStorageSpaceRemaining
  * @sa InitInterface
- * @sa Storage.ReadFile
- * @sa Storage.Ready
- * @sa Storage.WriteFile
+ * @sa ReadStorageFile
+ * @sa StorageReady
+ * @sa WriteStorageFile
  */
 inline Storage OpenStorage(const StorageInterface& iface, void* userdata)
 {
@@ -910,8 +910,8 @@ inline bool Storage::Ready() { return SDL::StorageReady(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.ReadFile
- * @sa Storage.Ready
+ * @sa ReadStorageFile
+ * @sa StorageReady
  */
 inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
                                                 StringParam path)
@@ -932,7 +932,7 @@ inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
  * buffer.
  *
  * The value of `destination.size()` must match the length of the file exactly;
- * call Storage.GetFileSize() to get this value. This behavior may be relaxed in
+ * call GetStorageFileSize() to get this value. This behavior may be relaxed in
  * a future release.
  *
  * @param storage a storage container to read from.
@@ -943,9 +943,9 @@ inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.GetFileSize
- * @sa Storage.Ready
- * @sa Storage.WriteFile
+ * @sa GetStorageFileSize
+ * @sa StorageReady
+ * @sa WriteStorageFile
  */
 inline bool ReadStorageFile(StorageRef storage,
                             StringParam path,
@@ -966,9 +966,9 @@ inline bool ReadStorageFile(StorageRef storage,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.GetFileSize
- * @sa Storage.Ready
- * @sa Storage.WriteFile
+ * @sa GetStorageFileSize
+ * @sa StorageReady
+ * @sa WriteStorageFile
  */
 inline std::string ReadStorageFile(StorageRef storage, StringParam path)
 {
@@ -1030,9 +1030,9 @@ inline std::vector<T> Storage::ReadFileAs(StringParam path)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.GetSpaceRemaining
- * @sa Storage.ReadFile
- * @sa Storage.Ready
+ * @sa GetStorageSpaceRemaining
+ * @sa ReadStorageFile
+ * @sa StorageReady
  */
 inline void WriteStorageFile(StorageRef storage,
                              StringParam path,
@@ -1056,7 +1056,7 @@ inline void Storage::WriteFile(StringParam path, SourceBytes source)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Ready
+ * @sa StorageReady
  */
 inline void CreateStorageDirectory(StorageRef storage, StringParam path)
 {
@@ -1090,7 +1090,7 @@ inline void Storage::CreateDirectory(StringParam path)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Ready
+ * @sa StorageReady
  */
 inline void EnumerateStorageDirectory(StorageRef storage,
                                       StringParam path,
@@ -1121,7 +1121,7 @@ inline void EnumerateStorageDirectory(StorageRef storage,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Ready
+ * @sa StorageReady
  */
 inline void EnumerateStorageDirectory(StorageRef storage,
                                       StringParam path,
@@ -1158,7 +1158,7 @@ inline void EnumerateStorageDirectory(StorageRef storage,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Ready
+ * @sa StorageReady
  */
 inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                    StringParam path)
@@ -1199,7 +1199,7 @@ inline void Storage::EnumerateDirectory(StringParam path,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Ready
+ * @sa StorageReady
  */
 inline void RemoveStoragePath(StorageRef storage, StringParam path)
 {
@@ -1221,7 +1221,7 @@ inline void Storage::RemovePath(StringParam path)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Ready
+ * @sa StorageReady
  */
 inline void RenameStoragePath(StorageRef storage,
                               StringParam oldpath,
@@ -1245,7 +1245,7 @@ inline void Storage::RenamePath(StringParam oldpath, StringParam newpath)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Ready
+ * @sa StorageReady
  */
 inline void CopyStorageFile(StorageRef storage,
                             StringParam oldpath,
@@ -1269,7 +1269,7 @@ inline void Storage::CopyFile(StringParam oldpath, StringParam newpath)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Ready
+ * @sa StorageReady
  */
 inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
 {
@@ -1292,8 +1292,8 @@ inline PathInfo Storage::GetPathInfo(StringParam path)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Storage.Ready
- * @sa Storage.WriteFile
+ * @sa StorageReady
+ * @sa WriteStorageFile
  */
 inline Uint64 GetStorageSpaceRemaining(StorageRef storage)
 {

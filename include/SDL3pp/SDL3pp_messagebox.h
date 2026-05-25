@@ -16,7 +16,7 @@ namespace SDL {
  *
  * These message boxes are native system dialogs where possible.
  *
- * There is both a customizable function (MessageBox.Show()) that offers lots of
+ * There is both a customizable function (ShowMessageBox()) that offers lots of
  * options for what to display and reports on what choice the user made, and
  * also a much-simplified version (ShowSimpleMessageBox()), merely takes a text
  * message and title, and waits until the user presses a single "OK" UI button.
@@ -406,8 +406,7 @@ inline void MessageBox::Show(int* buttonid) const
 /**
  * Display a simple modal message box.
  *
- * If your needs aren't complex, this function is preferred over
- * MessageBox.Show.
+ * If your needs aren't complex, this function is preferred over ShowMessageBox.
  *
  * `flags` may be any of the following:
  *
@@ -442,7 +441,7 @@ inline void MessageBox::Show(int* buttonid) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa MessageBox.Show
+ * @sa ShowMessageBox
  */
 inline void ShowSimpleMessageBox(MessageBoxFlags flags,
                                  StringParam title,

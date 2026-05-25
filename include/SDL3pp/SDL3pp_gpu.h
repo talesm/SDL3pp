@@ -21,7 +21,7 @@ namespace SDL {
  * A basic workflow might be something like this:
  *
  * The app creates a GPU device with CreateGPUDevice(), and assigns it to a
- * window with GPUDevice.ClaimWindow()--although strictly speaking you can
+ * window with ClaimWindowForGPUDevice()--although strictly speaking you can
  * render offscreen entirely, perhaps for image processing, and not use a window
  * at all.
  *
@@ -30,24 +30,23 @@ namespace SDL {
  *
  * - Shaders (programs that run on the GPU): use GPUDevice.CreateShader().
  * - Vertex buffers (arrays of geometry data) and other rendering data: use
- *   GPUDevice.CreateBuffer() and GPUCopyPass.UploadToBuffer().
- * - Textures (images): use GPUDevice.CreateTexture() and
- *   GPUCopyPass.UploadToTexture().
+ *   GPUDevice.CreateBuffer() and UploadToGPUBuffer().
+ * - Textures (images): use GPUDevice.CreateTexture() and UploadToGPUTexture().
  * - Samplers (how textures should be read from): use GPUDevice.CreateSampler().
  * - Render pipelines (precalculated rendering state): use
  *   GPUDevice.CreateGraphicsPipeline()
  *
  * To render, the app creates one or more command buffers, with
- * GPUDevice.AcquireCommandBuffer(). Command buffers collect rendering
- * instructions that will be submitted to the GPU in batch. Complex scenes can
- * use multiple command buffers, maybe configured across multiple threads in
- * parallel, as long as they are submitted in the correct order, but many apps
- * will just need one command buffer per frame.
+ * AcquireGPUCommandBuffer(). Command buffers collect rendering instructions
+ * that will be submitted to the GPU in batch. Complex scenes can use multiple
+ * command buffers, maybe configured across multiple threads in parallel, as
+ * long as they are submitted in the correct order, but many apps will just need
+ * one command buffer per frame.
  *
  * Rendering can happen to a texture (what other APIs call a "render target") or
  * it can happen to the swapchain texture (which is just a special texture that
  * represents a window's contents). The app can use
- * GPUCommandBuffer.WaitAndAcquireSwapchainTexture() to render to the window.
+ * WaitAndAcquireGPUSwapchainTexture() to render to the window.
  *
  * Rendering actually happens in a Render Pass, which is encoded into a command
  * buffer. One can encode multiple render passes (or alternate between render
@@ -57,53 +56,52 @@ namespace SDL {
  * the set of textures being rendered to needs to change, the Render Pass must
  * be ended and a new one must be begun.
  *
- * The app calls GPUCommandBuffer.BeginRenderPass(). Then it sets states it
- * needs for each draw:
+ * The app calls BeginGPURenderPass(). Then it sets states it needs for each
+ * draw:
  *
- * - GPURenderPass.BindPipeline()
- * - GPURenderPass.SetViewport()
- * - GPURenderPass.BindVertexBuffers()
- * - GPURenderPass.BindVertexSamplers()
+ * - BindGPUGraphicsPipeline()
+ * - SetGPUViewport()
+ * - BindGPUVertexBuffers()
+ * - BindGPUVertexSamplers()
  * - etc
  *
  * Then, make the actual draw commands with these states:
  *
- * - GPURenderPass.DrawPrimitives()
- * - GPURenderPass.DrawPrimitivesIndirect()
- * - GPURenderPass.DrawIndexedPrimitivesIndirect()
+ * - DrawGPUPrimitives()
+ * - DrawGPUPrimitivesIndirect()
+ * - DrawGPUIndexedPrimitivesIndirect()
  * - etc
  *
  * After all the drawing commands for a pass are complete, the app should call
- * GPURenderPass.End(). Once a render pass ends all render-related state is
+ * EndGPURenderPass(). Once a render pass ends all render-related state is
  * reset.
  *
  * The app can begin new Render Passes and make new draws in the same command
  * buffer until the entire scene is rendered.
  *
  * Once all of the render commands for the scene are complete, the app calls
- * GPUCommandBuffer.Submit() to send it to the GPU for processing.
+ * SubmitGPUCommandBuffer() to send it to the GPU for processing.
  *
  * If the app needs to read back data from texture or buffers, the API has an
  * efficient way of doing this, provided that the app is willing to tolerate
- * some latency. When the app uses GPUCopyPass.DownloadFromTexture() or
- * GPUCopyPass.DownloadFromBuffer(), submitting the command buffer with
- * GPUCommandBuffer.SubmitAndAcquireFence() will return a fence handle that the
+ * some latency. When the app uses DownloadFromGPUTexture() or
+ * DownloadFromGPUBuffer(), submitting the command buffer with
+ * SubmitGPUCommandBufferAndAcquireFence() will return a fence handle that the
  * app can poll or wait on in a thread. Once the fence indicates that the
  * command buffer is done processing, it is safe to read the downloaded data.
- * Make sure to call GPUDevice.ReleaseFence() when done with the fence.
+ * Make sure to call ReleaseGPUFence() when done with the fence.
  *
- * The API also has "compute" support. The app calls
- * GPUCommandBuffer.BeginComputePass() with compute-writeable textures and/or
- * buffers, which can be written to in a compute shader. Then it sets states it
- * needs for the compute dispatches:
+ * The API also has "compute" support. The app calls BeginGPUComputePass() with
+ * compute-writeable textures and/or buffers, which can be written to in a
+ * compute shader. Then it sets states it needs for the compute dispatches:
  *
- * - GPUComputePass.BindPipeline()
- * - GPUComputePass.BindStorageBuffers()
- * - GPUComputePass.BindStorageTextures()
+ * - BindGPUComputePipeline()
+ * - BindGPUComputeStorageBuffers()
+ * - BindGPUComputeStorageTextures()
  *
  * Then, dispatch compute work:
  *
- * - GPUComputePass.Dispatch()
+ * - DispatchGPUCompute()
  *
  * For advanced users, this opens up powerful GPU-driven workflows.
  *
@@ -314,11 +312,11 @@ namespace SDL {
  * worry about complex state tracking and synchronization as long as cycling is
  * correctly employed.
  *
- * For example: you can call GPUDevice.MapTransferBuffer(), write texture data,
- * GPUDevice.UnmapTransferBuffer(), and then GPUCopyPass.UploadToTexture(). The
- * next time you write texture data to the transfer buffer, if you set the cycle
- * param to true, you don't have to worry about overwriting any data that is not
- * yet uploaded.
+ * For example: you can call MapGPUTransferBuffer(), write texture data,
+ * UnmapGPUTransferBuffer(), and then UploadToGPUTexture(). The next time you
+ * write texture data to the transfer buffer, if you set the cycle param to
+ * true, you don't have to worry about overwriting any data that is not yet
+ * uploaded.
  *
  * Another example: If you are using a texture in a render pass every frame,
  * this can cause a data dependency between frames. If you set cycle to true in
@@ -472,18 +470,18 @@ using GPUBufferCreateInfo = SDL_GPUBufferCreateInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUDevice.CreateBuffer
- * @sa GPUCopyPass.UploadToBuffer
- * @sa GPUCopyPass.DownloadFromBuffer
- * @sa GPUCopyPass.CopyBufferToBuffer
- * @sa GPURenderPass.BindVertexBuffers
- * @sa GPURenderPass.BindIndexBuffer
- * @sa GPURenderPass.BindVertexStorageBuffers
- * @sa GPURenderPass.BindFragmentStorageBuffers
- * @sa GPURenderPass.DrawPrimitivesIndirect
- * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
- * @sa GPUComputePass.BindStorageBuffers
- * @sa GPUComputePass.DispatchIndirect
- * @sa GPUDevice.ReleaseBuffer
+ * @sa UploadToGPUBuffer
+ * @sa DownloadFromGPUBuffer
+ * @sa CopyGPUBufferToBuffer
+ * @sa BindGPUVertexBuffers
+ * @sa BindGPUIndexBuffer
+ * @sa BindGPUVertexStorageBuffers
+ * @sa BindGPUFragmentStorageBuffers
+ * @sa DrawGPUPrimitivesIndirect
+ * @sa DrawGPUIndexedPrimitivesIndirect
+ * @sa BindGPUComputeStorageBuffers
+ * @sa DispatchGPUComputeIndirect
+ * @sa ReleaseGPUBuffer
  */
 class GPUBuffer
 {
@@ -530,18 +528,18 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCopyPass.UploadToBuffer
-   * @sa GPUCopyPass.DownloadFromBuffer
-   * @sa GPUCopyPass.CopyBufferToBuffer
-   * @sa GPURenderPass.BindVertexBuffers
-   * @sa GPURenderPass.BindIndexBuffer
-   * @sa GPURenderPass.BindVertexStorageBuffers
-   * @sa GPURenderPass.BindFragmentStorageBuffers
-   * @sa GPURenderPass.DrawPrimitivesIndirect
-   * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
-   * @sa GPUComputePass.BindStorageBuffers
-   * @sa GPUComputePass.DispatchIndirect
-   * @sa GPUDevice.ReleaseBuffer
+   * @sa UploadToGPUBuffer
+   * @sa DownloadFromGPUBuffer
+   * @sa CopyGPUBufferToBuffer
+   * @sa BindGPUVertexBuffers
+   * @sa BindGPUIndexBuffer
+   * @sa BindGPUVertexStorageBuffers
+   * @sa BindGPUFragmentStorageBuffers
+   * @sa DrawGPUPrimitivesIndirect
+   * @sa DrawGPUIndexedPrimitivesIndirect
+   * @sa BindGPUComputeStorageBuffers
+   * @sa DispatchGPUComputeIndirect
+   * @sa ReleaseGPUBuffer
    */
   GPUBuffer(GPUDeviceRef device, const GPUBufferCreateInfo& createinfo);
 
@@ -570,13 +568,13 @@ using GPUTransferBufferCreateInfo = SDL_GPUTransferBufferCreateInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUDevice.CreateTransferBuffer
- * @sa GPUDevice.MapTransferBuffer
- * @sa GPUDevice.UnmapTransferBuffer
- * @sa GPUCopyPass.UploadToBuffer
- * @sa GPUCopyPass.UploadToTexture
- * @sa GPUCopyPass.DownloadFromBuffer
- * @sa GPUCopyPass.DownloadFromTexture
- * @sa GPUDevice.ReleaseTransferBuffer
+ * @sa MapGPUTransferBuffer
+ * @sa UnmapGPUTransferBuffer
+ * @sa UploadToGPUBuffer
+ * @sa UploadToGPUTexture
+ * @sa DownloadFromGPUBuffer
+ * @sa DownloadFromGPUTexture
+ * @sa ReleaseGPUTransferBuffer
  */
 class GPUTransferBuffer
 {
@@ -615,11 +613,11 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCopyPass.UploadToBuffer
-   * @sa GPUCopyPass.DownloadFromBuffer
-   * @sa GPUCopyPass.UploadToTexture
-   * @sa GPUCopyPass.DownloadFromTexture
-   * @sa GPUDevice.ReleaseTransferBuffer
+   * @sa UploadToGPUBuffer
+   * @sa DownloadFromGPUBuffer
+   * @sa UploadToGPUTexture
+   * @sa DownloadFromGPUTexture
+   * @sa ReleaseGPUTransferBuffer
    */
   GPUTransferBuffer(GPUDeviceRef device,
                     const GPUTransferBufferCreateInfo& createinfo);
@@ -658,17 +656,17 @@ using GPUTextureCreateInfo = SDL_GPUTextureCreateInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUDevice.CreateTexture
- * @sa GPUCopyPass.UploadToTexture
- * @sa GPUCopyPass.DownloadFromTexture
- * @sa GPUCopyPass.CopyTextureToTexture
- * @sa GPURenderPass.BindVertexSamplers
- * @sa GPURenderPass.BindVertexStorageTextures
- * @sa GPURenderPass.BindFragmentSamplers
- * @sa GPURenderPass.BindFragmentStorageTextures
- * @sa GPUComputePass.BindStorageTextures
- * @sa GPUCommandBuffer.GenerateMipmapsForTexture
- * @sa GPUCommandBuffer.BlitTexture
- * @sa GPUDevice.ReleaseTexture
+ * @sa UploadToGPUTexture
+ * @sa DownloadFromGPUTexture
+ * @sa CopyGPUTextureToTexture
+ * @sa BindGPUVertexSamplers
+ * @sa BindGPUVertexStorageTextures
+ * @sa BindGPUFragmentSamplers
+ * @sa BindGPUFragmentStorageTextures
+ * @sa BindGPUComputeStorageTextures
+ * @sa GenerateMipmapsForGPUTexture
+ * @sa BlitGPUTexture
+ * @sa ReleaseGPUTexture
  */
 class GPUTexture
 {
@@ -689,8 +687,8 @@ public:
    * Creates a texture object to be used in graphics or compute workflows.
    *
    * The contents of this texture are undefined until data is written to the
-   * texture, either via GPUCopyPass.UploadToTexture or by performing a render
-   * or compute pass with this texture as a target.
+   * texture, either via UploadToGPUTexture or by performing a render or compute
+   * pass with this texture as a target.
    *
    * Note that certain combinations of usage flags are invalid. For example, a
    * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
@@ -730,18 +728,18 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCopyPass.UploadToTexture
-   * @sa GPUCopyPass.DownloadFromTexture
-   * @sa GPUCommandBuffer.BeginRenderPass
-   * @sa GPUCommandBuffer.BeginComputePass
-   * @sa GPURenderPass.BindVertexSamplers
-   * @sa GPURenderPass.BindVertexStorageTextures
-   * @sa GPURenderPass.BindFragmentSamplers
-   * @sa GPURenderPass.BindFragmentStorageTextures
-   * @sa GPUComputePass.BindStorageTextures
-   * @sa GPUCommandBuffer.BlitTexture
-   * @sa GPUDevice.ReleaseTexture
-   * @sa GPUDevice.TextureSupportsFormat
+   * @sa UploadToGPUTexture
+   * @sa DownloadFromGPUTexture
+   * @sa BeginGPURenderPass
+   * @sa BeginGPUComputePass
+   * @sa BindGPUVertexSamplers
+   * @sa BindGPUVertexStorageTextures
+   * @sa BindGPUFragmentSamplers
+   * @sa BindGPUFragmentStorageTextures
+   * @sa BindGPUComputeStorageTextures
+   * @sa BlitGPUTexture
+   * @sa ReleaseGPUTexture
+   * @sa GPUTextureSupportsFormat
    */
   GPUTexture(GPUDeviceRef device, const GPUTextureCreateInfo& createinfo);
 
@@ -775,9 +773,9 @@ using GPUSamplerCreateInfo = SDL_GPUSamplerCreateInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUDevice.CreateSampler
- * @sa GPURenderPass.BindVertexSamplers
- * @sa GPURenderPass.BindFragmentSamplers
- * @sa GPUDevice.ReleaseSampler
+ * @sa BindGPUVertexSamplers
+ * @sa BindGPUFragmentSamplers
+ * @sa ReleaseGPUSampler
  */
 class GPUSampler
 {
@@ -811,9 +809,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPURenderPass.BindVertexSamplers
-   * @sa GPURenderPass.BindFragmentSamplers
-   * @sa GPUDevice.ReleaseSampler
+   * @sa BindGPUVertexSamplers
+   * @sa BindGPUFragmentSamplers
+   * @sa ReleaseGPUSampler
    */
   GPUSampler(GPUDeviceRef device, const GPUSamplerCreateInfo& createinfo);
 
@@ -843,7 +841,7 @@ using GPUShaderCreateInfo = SDL_GPUShaderCreateInfo;
  *
  * @sa GPUDevice.CreateShader
  * @sa GPUDevice.CreateGraphicsPipeline
- * @sa GPUDevice.ReleaseShader
+ * @sa ReleaseGPUShader
  */
 class GPUShader
 {
@@ -931,7 +929,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUDevice.CreateGraphicsPipeline
-   * @sa GPUDevice.ReleaseShader
+   * @sa ReleaseGPUShader
    */
   GPUShader(GPUDeviceRef device, const GPUShaderCreateInfo& createinfo);
 
@@ -961,8 +959,8 @@ using GPUComputePipelineCreateInfo = SDL_GPUComputePipelineCreateInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUDevice.CreateComputePipeline
- * @sa GPUComputePass.BindPipeline
- * @sa GPUDevice.ReleaseComputePipeline
+ * @sa BindGPUComputePipeline
+ * @sa ReleaseGPUComputePipeline
  */
 class GPUComputePipeline
 {
@@ -1022,8 +1020,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUComputePass.BindPipeline
-   * @sa GPUDevice.ReleaseComputePipeline
+   * @sa BindGPUComputePipeline
+   * @sa ReleaseGPUComputePipeline
    */
   GPUComputePipeline(GPUDeviceRef device,
                      const GPUComputePipelineCreateInfo& createinfo);
@@ -1063,8 +1061,8 @@ using GPUGraphicsPipelineCreateInfo = SDL_GPUGraphicsPipelineCreateInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUDevice.CreateGraphicsPipeline
- * @sa GPURenderPass.BindPipeline
- * @sa GPUDevice.ReleaseGraphicsPipeline
+ * @sa BindGPUGraphicsPipeline
+ * @sa ReleaseGPUGraphicsPipeline
  */
 class GPUGraphicsPipeline
 {
@@ -1100,8 +1098,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUDevice.CreateShader
-   * @sa GPURenderPass.BindPipeline
-   * @sa GPUDevice.ReleaseGraphicsPipeline
+   * @sa BindGPUGraphicsPipeline
+   * @sa ReleaseGPUGraphicsPipeline
    */
   GPUGraphicsPipeline(GPUDeviceRef device,
                       const GPUGraphicsPipelineCreateInfo& createinfo);
@@ -1122,7 +1120,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.SetViewport
+ * @sa SetGPUViewport
  */
 using GPUViewport = SDL_GPUViewport;
 
@@ -1131,8 +1129,8 @@ using GPUViewport = SDL_GPUViewport;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.BindVertexBuffers
- * @sa GPURenderPass.BindIndexBuffer
+ * @sa BindGPUVertexBuffers
+ * @sa BindGPUIndexBuffer
  */
 using GPUBufferBinding = SDL_GPUBufferBinding;
 
@@ -1156,8 +1154,8 @@ constexpr GPUIndexElementSize GPU_INDEXELEMENTSIZE_32BIT =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.BindVertexSamplers
- * @sa GPURenderPass.BindFragmentSamplers
+ * @sa BindGPUVertexSamplers
+ * @sa BindGPUFragmentSamplers
  * @sa GPUTexture
  * @sa GPUSampler
  */
@@ -1167,12 +1165,12 @@ using GPUTextureSamplerBinding = SDL_GPUTextureSamplerBinding;
  * An opaque handle representing a render pass.
  *
  * This handle is transient and should not be held or referenced after
- * GPURenderPass.End is called.
+ * EndGPURenderPass is called.
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginRenderPass
- * @sa GPURenderPass.End
+ * @sa BeginGPURenderPass
+ * @sa EndGPURenderPass
  */
 class GPURenderPass
 {
@@ -1497,12 +1495,12 @@ public:
  * An opaque handle representing a compute pass.
  *
  * This handle is transient and should not be held or referenced after
- * GPUComputePass.End is called.
+ * EndGPUComputePass is called.
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginComputePass
- * @sa GPUComputePass.End
+ * @sa BeginGPUComputePass
+ * @sa EndGPUComputePass
  */
 class GPUComputePass
 {
@@ -1653,8 +1651,8 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.UploadToBuffer
- * @sa GPUCopyPass.DownloadFromBuffer
+ * @sa UploadToGPUBuffer
+ * @sa DownloadFromGPUBuffer
  */
 using GPUBufferRegion = SDL_GPUBufferRegion;
 
@@ -1665,7 +1663,7 @@ using GPUBufferRegion = SDL_GPUBufferRegion;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.CopyTextureToTexture
+ * @sa CopyGPUTextureToTexture
  */
 using GPUTextureLocation = SDL_GPUTextureLocation;
 
@@ -1676,7 +1674,7 @@ using GPUTextureLocation = SDL_GPUTextureLocation;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.CopyBufferToBuffer
+ * @sa CopyGPUBufferToBuffer
  */
 using GPUBufferLocation = SDL_GPUBufferLocation;
 
@@ -1687,8 +1685,8 @@ using GPUBufferLocation = SDL_GPUBufferLocation;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.UploadToTexture
- * @sa GPUCopyPass.DownloadFromTexture
+ * @sa UploadToGPUTexture
+ * @sa DownloadFromGPUTexture
  * @sa GPUDevice.CreateTexture
  */
 using GPUTextureRegion = SDL_GPUTextureRegion;
@@ -1698,9 +1696,9 @@ using GPUTextureRegion = SDL_GPUTextureRegion;
  * texture.
  *
  * If either of `pixels_per_row` or `rows_per_layer` is zero, then width and
- * height of passed GPUTextureRegion to GPUCopyPass.UploadToTexture or
- * GPUCopyPass.DownloadFromTexture are used as default values respectively and
- * data is considered to be tightly packed.
+ * height of passed GPUTextureRegion to UploadToGPUTexture or
+ * DownloadFromGPUTexture are used as default values respectively and data is
+ * considered to be tightly packed.
  *
  * **WARNING**: On some older/integrated hardware, Direct3D 12 requires texture
  * data row pitch to be 256 byte aligned, and offsets to be aligned to 512
@@ -1711,8 +1709,8 @@ using GPUTextureRegion = SDL_GPUTextureRegion;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.UploadToTexture
- * @sa GPUCopyPass.DownloadFromTexture
+ * @sa UploadToGPUTexture
+ * @sa DownloadFromGPUTexture
  */
 using GPUTextureTransferInfo = SDL_GPUTextureTransferInfo;
 
@@ -1723,8 +1721,8 @@ using GPUTextureTransferInfo = SDL_GPUTextureTransferInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.UploadToBuffer
- * @sa GPUCopyPass.DownloadFromBuffer
+ * @sa UploadToGPUBuffer
+ * @sa DownloadFromGPUBuffer
  */
 using GPUTransferBufferLocation = SDL_GPUTransferBufferLocation;
 
@@ -1732,12 +1730,12 @@ using GPUTransferBufferLocation = SDL_GPUTransferBufferLocation;
  * An opaque handle representing a copy pass.
  *
  * This handle is transient and should not be held or referenced after
- * GPUCopyPass.End is called.
+ * EndGPUCopyPass is called.
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginCopyPass
- * @sa GPUCopyPass.End
+ * @sa BeginGPUCopyPass
+ * @sa EndGPUCopyPass
  */
 class GPUCopyPass
 {
@@ -1914,7 +1912,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginRenderPass
+ * @sa BeginGPURenderPass
  * @sa FColor
  */
 using GPUColorTargetInfo = SDL_GPUColorTargetInfo;
@@ -1964,7 +1962,7 @@ using GPUColorTargetInfo = SDL_GPUColorTargetInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginRenderPass
+ * @sa BeginGPURenderPass
  */
 using GPUDepthStencilTargetInfo = SDL_GPUDepthStencilTargetInfo;
 
@@ -1974,7 +1972,7 @@ using GPUDepthStencilTargetInfo = SDL_GPUDepthStencilTargetInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginComputePass
+ * @sa BeginGPUComputePass
  */
 using GPUStorageTextureReadWriteBinding = SDL_GPUStorageTextureReadWriteBinding;
 
@@ -1984,7 +1982,7 @@ using GPUStorageTextureReadWriteBinding = SDL_GPUStorageTextureReadWriteBinding;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginComputePass
+ * @sa BeginGPUComputePass
  */
 using GPUStorageBufferReadWriteBinding = SDL_GPUStorageBufferReadWriteBinding;
 
@@ -1993,7 +1991,7 @@ using GPUStorageBufferReadWriteBinding = SDL_GPUStorageBufferReadWriteBinding;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BlitTexture
+ * @sa BlitGPUTexture
  */
 using GPUBlitInfo = SDL_GPUBlitInfo;
 
@@ -2002,10 +2000,10 @@ using GPUBlitInfo = SDL_GPUBlitInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
- * @sa GPUDevice.QueryFence
- * @sa GPUDevice.WaitForFences
- * @sa GPUDevice.ReleaseFence
+ * @sa SubmitGPUCommandBufferAndAcquireFence
+ * @sa QueryGPUFence
+ * @sa WaitForGPUFences
+ * @sa ReleaseGPUFence
  */
 using GPUFence = SDL_GPUFence;
 
@@ -2015,7 +2013,7 @@ using GPUFence = SDL_GPUFence;
  * Most state is managed via command buffers. When setting state using a command
  * buffer, that state is local to the command buffer.
  *
- * Commands only begin execution on the GPU once GPUCommandBuffer.Submit is
+ * Commands only begin execution on the GPU once SubmitGPUCommandBuffer is
  * called. Once the command buffer is submitted, it is no longer valid to use
  * it.
  *
@@ -2028,9 +2026,9 @@ using GPUFence = SDL_GPUFence;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDevice.AcquireCommandBuffer
- * @sa GPUCommandBuffer.Submit
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
+ * @sa AcquireGPUCommandBuffer
+ * @sa SubmitGPUCommandBuffer
+ * @sa SubmitGPUCommandBufferAndAcquireFence
  */
 class GPUCommandBuffer
 {
@@ -2062,9 +2060,8 @@ public:
    *
    * Useful for debugging.
    *
-   * On Direct3D 12, using GPUCommandBuffer.InsertDebugLabel requires
-   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
-   * executable. See
+   * On Direct3D 12, using InsertGPUDebugLabel requires WinPixEventRuntime.dll
+   * to be in your PATH or in the same directory as your executable. See
    * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
    * instructions on how to obtain it.
    *
@@ -2080,12 +2077,11 @@ public:
    * Used for denoting groups of calls when viewing the command buffer
    * callstream in a graphics debugging tool.
    *
-   * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
-   * to GPUCommandBuffer.PopDebugGroup.
+   * Each call to PushGPUDebugGroup must have a corresponding call to
+   * PopGPUDebugGroup.
    *
-   * On Direct3D 12, using GPUCommandBuffer.PushDebugGroup requires
-   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
-   * executable. See
+   * On Direct3D 12, using PushGPUDebugGroup requires WinPixEventRuntime.dll to
+   * be in your PATH or in the same directory as your executable. See
    * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
    * instructions on how to obtain it.
    *
@@ -2098,22 +2094,21 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.PopDebugGroup
+   * @sa PopGPUDebugGroup
    */
   void PushDebugGroup(StringParam name);
 
   /**
    * Ends the most-recently pushed debug group.
    *
-   * On Direct3D 12, using GPUCommandBuffer.PopDebugGroup requires
-   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
-   * executable. See
+   * On Direct3D 12, using PopGPUDebugGroup requires WinPixEventRuntime.dll to
+   * be in your PATH or in the same directory as your executable. See
    * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
    * instructions on how to obtain it.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.PushDebugGroup
+   * @sa PushGPUDebugGroup
    */
   void PopDebugGroup();
 
@@ -2196,7 +2191,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPURenderPass.End
+   * @sa EndGPURenderPass
    */
   GPURenderPass BeginRenderPass(
     std::span<const GPUColorTargetInfo> color_target_infos,
@@ -2232,7 +2227,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUComputePass.End
+   * @sa EndGPUComputePass
    */
   GPUComputePass BeginComputePass(
     std::span<const GPUStorageTextureReadWriteBinding> storage_texture_bindings,
@@ -2249,7 +2244,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCopyPass.End
+   * @sa EndGPUCopyPass
    */
   GPUCopyPass BeginCopyPass();
 
@@ -2291,8 +2286,8 @@ public:
    * If you use this function, it is possible to create a situation where many
    * command buffers are allocated while the rendering context waits for the GPU
    * to catch up, which will cause memory usage to grow. You should use
-   * GPUCommandBuffer.WaitAndAcquireSwapchainTexture() unless you know what you
-   * are doing with timing.
+   * WaitAndAcquireGPUSwapchainTexture() unless you know what you are doing with
+   * timing.
    *
    * The swapchain texture is managed by the implementation and must not be
    * freed by the user. You MUST NOT call this function from any thread other
@@ -2311,14 +2306,14 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.ClaimWindow
-   * @sa GPUCommandBuffer.Submit
-   * @sa GPUCommandBuffer.SubmitAndAcquireFence
-   * @sa GPUCommandBuffer.Cancel
-   * @sa Window.GetSizeInPixels
-   * @sa GPUDevice.WaitForSwapchain
-   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
-   * @sa GPUDevice.SetAllowedFramesInFlight
+   * @sa ClaimWindowForGPUDevice
+   * @sa SubmitGPUCommandBuffer
+   * @sa SubmitGPUCommandBufferAndAcquireFence
+   * @sa CancelGPUCommandBuffer
+   * @sa GetWindowSizeInPixels
+   * @sa WaitForGPUSwapchain
+   * @sa WaitAndAcquireGPUSwapchainTexture
+   * @sa SetGPUAllowedFramesInFlight
    */
   GPUTexture AcquireSwapchainTexture(
     WindowRef window,
@@ -2332,7 +2327,7 @@ public:
    * When a swapchain texture is acquired on a command buffer, it will
    * automatically be submitted for presentation when the command buffer is
    * submitted. The swapchain texture should only be referenced by the command
-   * buffer used to acquire it. It is an error to call GPUCommandBuffer.Cancel()
+   * buffer used to acquire it. It is an error to call CancelGPUCommandBuffer()
    * after a swapchain texture is acquired.
    *
    * This function can fill the swapchain texture handle with nullptr in certain
@@ -2360,9 +2355,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.Submit
-   * @sa GPUCommandBuffer.SubmitAndAcquireFence
-   * @sa GPUCommandBuffer.AcquireSwapchainTexture
+   * @sa SubmitGPUCommandBuffer
+   * @sa SubmitGPUCommandBufferAndAcquireFence
+   * @sa AcquireGPUSwapchainTexture
    */
   GPUTexture WaitAndAcquireSwapchainTexture(
     WindowRef window,
@@ -2383,10 +2378,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.AcquireCommandBuffer
-   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
-   * @sa GPUCommandBuffer.AcquireSwapchainTexture
-   * @sa GPUCommandBuffer.SubmitAndAcquireFence
+   * @sa AcquireGPUCommandBuffer
+   * @sa WaitAndAcquireGPUSwapchainTexture
+   * @sa AcquireGPUSwapchainTexture
+   * @sa SubmitGPUCommandBufferAndAcquireFence
    */
   void Submit();
 
@@ -2407,11 +2402,11 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.AcquireCommandBuffer
-   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
-   * @sa GPUCommandBuffer.AcquireSwapchainTexture
-   * @sa GPUCommandBuffer.Submit
-   * @sa GPUDevice.ReleaseFence
+   * @sa AcquireGPUCommandBuffer
+   * @sa WaitAndAcquireGPUSwapchainTexture
+   * @sa AcquireGPUSwapchainTexture
+   * @sa SubmitGPUCommandBuffer
+   * @sa ReleaseGPUFence
    */
   GPUFence* SubmitAndAcquireFence();
 
@@ -2431,9 +2426,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
-   * @sa GPUDevice.AcquireCommandBuffer
-   * @sa GPUCommandBuffer.AcquireSwapchainTexture
+   * @sa WaitAndAcquireGPUSwapchainTexture
+   * @sa AcquireGPUCommandBuffer
+   * @sa AcquireGPUSwapchainTexture
    */
   void Cancel();
 };
@@ -2476,7 +2471,7 @@ constexpr GPUShaderFormat GPU_SHADERFORMAT_METALLIB =
  * SDR will always be supported. Other compositions may not be supported on
  * certain systems.
  *
- * It is recommended to query GPUDevice.WindowSupportsSwapchainComposition after
+ * It is recommended to query WindowSupportsGPUSwapchainComposition after
  * claiming the window if you wish to change the swapchain composition from SDR.
  *
  * - SDR: B8G8R8A8 or R8G8B8A8 swapchain. Pixel values are in sRGB encoding.
@@ -2491,9 +2486,9 @@ constexpr GPUShaderFormat GPU_SHADERFORMAT_METALLIB =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDevice.SetSwapchainParameters
- * @sa GPUDevice.WindowSupportsSwapchainComposition
- * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
+ * @sa SetGPUSwapchainParameters
+ * @sa WindowSupportsGPUSwapchainComposition
+ * @sa WaitAndAcquireGPUSwapchainTexture
  */
 using GPUSwapchainComposition = SDL_GPUSwapchainComposition;
 
@@ -2516,8 +2511,8 @@ constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084 =
  * VSYNC mode will always be supported. IMMEDIATE and MAILBOX modes may not be
  * supported on certain systems.
  *
- * It is recommended to query GPUDevice.WindowSupportsPresentMode after claiming
- * the window if you wish to change the present mode to IMMEDIATE or MAILBOX.
+ * It is recommended to query WindowSupportsGPUPresentMode after claiming the
+ * window if you wish to change the present mode to IMMEDIATE or MAILBOX.
  *
  * - VSYNC: Waits for vblank before presenting. No tearing is possible. If there
  *   is a pending image to present, the new image is enqueued for presentation.
@@ -2530,9 +2525,9 @@ constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084 =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDevice.SetSwapchainParameters
- * @sa GPUDevice.WindowSupportsPresentMode
- * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
+ * @sa SetGPUSwapchainParameters
+ * @sa WindowSupportsGPUPresentMode
+ * @sa WaitAndAcquireGPUSwapchainTexture
  */
 using GPUPresentMode = SDL_GPUPresentMode;
 
@@ -2549,9 +2544,8 @@ constexpr GPUPresentMode GPU_PRESENTMODE_MAILBOX =
  * Specifies the pixel format of a texture.
  *
  * Texture format support varies depending on driver, hardware, and usage flags.
- * In general, you should use GPUDevice.TextureSupportsFormat to query if a
- * format is supported before using it. However, there are a few guaranteed
- * formats.
+ * In general, you should use GPUTextureSupportsFormat to query if a format is
+ * supported before using it. However, there are a few guaranteed formats.
  *
  * For SAMPLER usage, the following formats are universally supported:
  *
@@ -2625,7 +2619,7 @@ constexpr GPUPresentMode GPU_PRESENTMODE_MAILBOX =
  * @since This enum is available since SDL 3.2.0.
  *
  * @sa GPUDevice.CreateTexture
- * @sa GPUDevice.TextureSupportsFormat
+ * @sa GPUTextureSupportsFormat
  */
 using GPUTextureFormat = SDL_GPUTextureFormat;
 
@@ -3029,7 +3023,7 @@ constexpr GPUTextureUsageFlags
  * @since This enum is available since SDL 3.2.0.
  *
  * @sa GPUDevice.CreateTexture
- * @sa GPUDevice.TextureSupportsSampleCount
+ * @sa GPUTextureSupportsSampleCount
  */
 using GPUSampleCount = SDL_GPUSampleCount;
 
@@ -3099,9 +3093,9 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateGPUDeviceWithProperties
-   * @sa GPUDevice.GetShaderFormats
-   * @sa GPUDevice.GetDriver
-   * @sa GPUDevice.Destroy
+   * @sa GetGPUShaderFormats
+   * @sa GetGPUDeviceDriver
+   * @sa DestroyGPUDevice
    * @sa GPUSupportsShaderFormats
    */
   GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name);
@@ -3212,9 +3206,9 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.GetShaderFormats
-   * @sa GPUDevice.GetDriver
-   * @sa GPUDevice.Destroy
+   * @sa GetGPUShaderFormats
+   * @sa GetGPUDeviceDriver
+   * @sa DestroyGPUDevice
    * @sa GPUSupportsProperties
    */
   GPUDevice(PropertiesRef props);
@@ -3408,8 +3402,8 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUComputePass.BindPipeline
-   * @sa GPUDevice.ReleaseComputePipeline
+   * @sa BindGPUComputePipeline
+   * @sa ReleaseGPUComputePipeline
    */
   GPUComputePipeline CreateComputePipeline(
     const GPUComputePipelineCreateInfo& createinfo);
@@ -3431,8 +3425,8 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUDevice.CreateShader
-   * @sa GPURenderPass.BindPipeline
-   * @sa GPUDevice.ReleaseGraphicsPipeline
+   * @sa BindGPUGraphicsPipeline
+   * @sa ReleaseGPUGraphicsPipeline
    */
   GPUGraphicsPipeline CreateGraphicsPipeline(
     const GPUGraphicsPipelineCreateInfo& createinfo);
@@ -3453,9 +3447,9 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPURenderPass.BindVertexSamplers
-   * @sa GPURenderPass.BindFragmentSamplers
-   * @sa GPUDevice.ReleaseSampler
+   * @sa BindGPUVertexSamplers
+   * @sa BindGPUFragmentSamplers
+   * @sa ReleaseGPUSampler
    */
   GPUSampler CreateSampler(const GPUSamplerCreateInfo& createinfo);
 
@@ -3529,7 +3523,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUDevice.CreateGraphicsPipeline
-   * @sa GPUDevice.ReleaseShader
+   * @sa ReleaseGPUShader
    */
   GPUShader CreateShader(const GPUShaderCreateInfo& createinfo);
 
@@ -3537,8 +3531,8 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    * Creates a texture object to be used in graphics or compute workflows.
    *
    * The contents of this texture are undefined until data is written to the
-   * texture, either via GPUCopyPass.UploadToTexture or by performing a render
-   * or compute pass with this texture as a target.
+   * texture, either via UploadToGPUTexture or by performing a render or compute
+   * pass with this texture as a target.
    *
    * Note that certain combinations of usage flags are invalid. For example, a
    * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
@@ -3577,18 +3571,18 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCopyPass.UploadToTexture
-   * @sa GPUCopyPass.DownloadFromTexture
-   * @sa GPUCommandBuffer.BeginRenderPass
-   * @sa GPUCommandBuffer.BeginComputePass
-   * @sa GPURenderPass.BindVertexSamplers
-   * @sa GPURenderPass.BindVertexStorageTextures
-   * @sa GPURenderPass.BindFragmentSamplers
-   * @sa GPURenderPass.BindFragmentStorageTextures
-   * @sa GPUComputePass.BindStorageTextures
-   * @sa GPUCommandBuffer.BlitTexture
-   * @sa GPUDevice.ReleaseTexture
-   * @sa GPUDevice.TextureSupportsFormat
+   * @sa UploadToGPUTexture
+   * @sa DownloadFromGPUTexture
+   * @sa BeginGPURenderPass
+   * @sa BeginGPUComputePass
+   * @sa BindGPUVertexSamplers
+   * @sa BindGPUVertexStorageTextures
+   * @sa BindGPUFragmentSamplers
+   * @sa BindGPUFragmentStorageTextures
+   * @sa BindGPUComputeStorageTextures
+   * @sa BlitGPUTexture
+   * @sa ReleaseGPUTexture
+   * @sa GPUTextureSupportsFormat
    */
   GPUTexture CreateTexture(const GPUTextureCreateInfo& createinfo);
 
@@ -3621,18 +3615,18 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCopyPass.UploadToBuffer
-   * @sa GPUCopyPass.DownloadFromBuffer
-   * @sa GPUCopyPass.CopyBufferToBuffer
-   * @sa GPURenderPass.BindVertexBuffers
-   * @sa GPURenderPass.BindIndexBuffer
-   * @sa GPURenderPass.BindVertexStorageBuffers
-   * @sa GPURenderPass.BindFragmentStorageBuffers
-   * @sa GPURenderPass.DrawPrimitivesIndirect
-   * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
-   * @sa GPUComputePass.BindStorageBuffers
-   * @sa GPUComputePass.DispatchIndirect
-   * @sa GPUDevice.ReleaseBuffer
+   * @sa UploadToGPUBuffer
+   * @sa DownloadFromGPUBuffer
+   * @sa CopyGPUBufferToBuffer
+   * @sa BindGPUVertexBuffers
+   * @sa BindGPUIndexBuffer
+   * @sa BindGPUVertexStorageBuffers
+   * @sa BindGPUFragmentStorageBuffers
+   * @sa DrawGPUPrimitivesIndirect
+   * @sa DrawGPUIndexedPrimitivesIndirect
+   * @sa BindGPUComputeStorageBuffers
+   * @sa DispatchGPUComputeIndirect
+   * @sa ReleaseGPUBuffer
    */
   GPUBuffer CreateBuffer(const GPUBufferCreateInfo& createinfo);
 
@@ -3656,11 +3650,11 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCopyPass.UploadToBuffer
-   * @sa GPUCopyPass.DownloadFromBuffer
-   * @sa GPUCopyPass.UploadToTexture
-   * @sa GPUCopyPass.DownloadFromTexture
-   * @sa GPUDevice.ReleaseTransferBuffer
+   * @sa UploadToGPUBuffer
+   * @sa DownloadFromGPUBuffer
+   * @sa UploadToGPUTexture
+   * @sa DownloadFromGPUTexture
+   * @sa ReleaseGPUTransferBuffer
    */
   GPUTransferBuffer CreateTransferBuffer(
     const GPUTransferBufferCreateInfo& createinfo);
@@ -3800,8 +3794,8 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.Submit
-   * @sa GPUCommandBuffer.SubmitAndAcquireFence
+   * @sa SubmitGPUCommandBuffer
+   * @sa SubmitGPUCommandBufferAndAcquireFence
    */
   GPUCommandBuffer AcquireCommandBuffer();
 
@@ -3841,7 +3835,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.ClaimWindow
+   * @sa ClaimWindowForGPUDevice
    */
   bool WindowSupportsSwapchainComposition(
     WindowRef window,
@@ -3858,20 +3852,20 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.ClaimWindow
+   * @sa ClaimWindowForGPUDevice
    */
   bool WindowSupportsPresentMode(WindowRef window, GPUPresentMode present_mode);
 
   /**
    * Claims a window, creating a swapchain structure for it.
    *
-   * This must be called before GPUCommandBuffer.AcquireSwapchainTexture is
-   * called using the window. You should only call this function from the thread
-   * that created the window.
+   * This must be called before AcquireGPUSwapchainTexture is called using the
+   * window. You should only call this function from the thread that created the
+   * window.
    *
    * The swapchain will be created with GPU_SWAPCHAINCOMPOSITION_SDR and
    * GPU_PRESENTMODE_VSYNC. If you want to have different swapchain parameters,
-   * you must call GPUDevice.SetSwapchainParameters after claiming the window.
+   * you must call SetGPUSwapchainParameters after claiming the window.
    *
    * @param window an Window.
    * @throws Error on failure.
@@ -3881,10 +3875,10 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
-   * @sa GPUDevice.ReleaseWindow
-   * @sa GPUDevice.WindowSupportsPresentMode
-   * @sa GPUDevice.WindowSupportsSwapchainComposition
+   * @sa WaitAndAcquireGPUSwapchainTexture
+   * @sa ReleaseWindowFromGPUDevice
+   * @sa WindowSupportsGPUPresentMode
+   * @sa WindowSupportsGPUSwapchainComposition
    */
   void ClaimWindow(WindowRef window);
 
@@ -3895,7 +3889,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.ClaimWindow
+   * @sa ClaimWindowForGPUDevice
    */
   void ReleaseWindow(WindowRef window);
 
@@ -3904,9 +3898,8 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * This function will fail if the requested present mode or swapchain
    * composition are unsupported by the device. Check if the parameters are
-   * supported via GPUDevice.WindowSupportsPresentMode /
-   * GPUDevice.WindowSupportsSwapchainComposition prior to calling this
-   * function.
+   * supported via WindowSupportsGPUPresentMode /
+   * WindowSupportsGPUSwapchainComposition prior to calling this function.
    *
    * GPU_PRESENTMODE_VSYNC with GPU_SWAPCHAINCOMPOSITION_SDR is always
    * supported.
@@ -3919,8 +3912,8 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.WindowSupportsPresentMode
-   * @sa GPUDevice.WindowSupportsSwapchainComposition
+   * @sa WindowSupportsGPUPresentMode
+   * @sa WindowSupportsGPUSwapchainComposition
    */
   bool SetSwapchainParameters(WindowRef window,
                               GPUSwapchainComposition swapchain_composition,
@@ -3931,9 +3924,9 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * The default value when the device is created is 2. This means that after
    * you have submitted 2 frames for presentation, if the GPU has not finished
-   * working on the first frame, GPUCommandBuffer.AcquireSwapchainTexture() will
-   * fill the swapchain texture pointer with nullptr, and
-   * GPUCommandBuffer.WaitAndAcquireSwapchainTexture() will block.
+   * working on the first frame, AcquireGPUSwapchainTexture() will fill the
+   * swapchain texture pointer with nullptr, and
+   * WaitAndAcquireGPUSwapchainTexture() will block.
    *
    * Higher values increase throughput at the expense of visual latency. Lower
    * values decrease visual latency at the expense of throughput.
@@ -3975,9 +3968,9 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.AcquireSwapchainTexture
-   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
-   * @sa GPUDevice.SetAllowedFramesInFlight
+   * @sa AcquireGPUSwapchainTexture
+   * @sa WaitAndAcquireGPUSwapchainTexture
+   * @sa SetGPUAllowedFramesInFlight
    */
   void WaitForSwapchain(WindowRef window);
 
@@ -3988,7 +3981,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.WaitForFences
+   * @sa WaitForGPUFences
    */
   void WaitForIdle();
 
@@ -4002,8 +3995,8 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.SubmitAndAcquireFence
-   * @sa GPUDevice.WaitForIdle
+   * @sa SubmitGPUCommandBufferAndAcquireFence
+   * @sa WaitForGPUIdle
    */
   void WaitForFences(bool wait_all, std::span<GPUFence* const> fences);
 
@@ -4015,12 +4008,12 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.SubmitAndAcquireFence
+   * @sa SubmitGPUCommandBufferAndAcquireFence
    */
   bool QueryFence(GPUFence* fence);
 
   /**
-   * Releases a fence obtained from GPUCommandBuffer.SubmitAndAcquireFence.
+   * Releases a fence obtained from SubmitGPUCommandBufferAndAcquireFence.
    *
    * You must not reference the fence after calling this function.
    *
@@ -4028,7 +4021,7 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.SubmitAndAcquireFence
+   * @sa SubmitGPUCommandBufferAndAcquireFence
    */
   void ReleaseFence(GPUFence* fence);
 
@@ -4133,7 +4126,7 @@ constexpr GPUPrimitiveType GPU_PRIMITIVETYPE_POINTLIST =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginRenderPass
+ * @sa BeginGPURenderPass
  */
 using GPULoadOp = SDL_GPULoadOp;
 
@@ -4155,7 +4148,7 @@ constexpr GPULoadOp GPU_LOADOP_DONT_CARE = SDL_GPU_LOADOP_DONT_CARE;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginRenderPass
+ * @sa BeginGPURenderPass
  */
 using GPUStoreOp = SDL_GPUStoreOp;
 
@@ -4698,7 +4691,7 @@ constexpr GPUSamplerAddressMode GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BlitTexture
+ * @sa BlitGPUTexture
  */
 using GPUBlitRegion = SDL_GPUBlitRegion;
 
@@ -4714,7 +4707,7 @@ using GPUBlitRegion = SDL_GPUBlitRegion;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.DrawPrimitivesIndirect
+ * @sa DrawGPUPrimitivesIndirect
  */
 using GPUIndirectDrawCommand = SDL_GPUIndirectDrawCommand;
 
@@ -4730,7 +4723,7 @@ using GPUIndirectDrawCommand = SDL_GPUIndirectDrawCommand;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
+ * @sa DrawGPUIndexedPrimitivesIndirect
  */
 using GPUIndexedIndirectDrawCommand = SDL_GPUIndexedIndirectDrawCommand;
 
@@ -4739,7 +4732,7 @@ using GPUIndexedIndirectDrawCommand = SDL_GPUIndexedIndirectDrawCommand;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUComputePass.DispatchIndirect
+ * @sa DispatchGPUComputeIndirect
  */
 using GPUIndirectDispatchCommand = SDL_GPUIndirectDispatchCommand;
 
@@ -4747,10 +4740,10 @@ using GPUIndirectDispatchCommand = SDL_GPUIndirectDispatchCommand;
  * A structure specifying the parameters of vertex buffers used in a graphics
  * pipeline.
  *
- * When you call GPURenderPass.BindVertexBuffers, you specify the binding slots
- * of the vertex buffers. For example if you called
- * GPURenderPass.BindVertexBuffers with a first_slot of 2 and num_bindings of 3,
- * the binding slots 2, 3, 4 would be used by the vertex buffers you pass in.
+ * When you call BindGPUVertexBuffers, you specify the binding slots of the
+ * vertex buffers. For example if you called BindGPUVertexBuffers with a
+ * first_slot of 2 and num_bindings of 3, the binding slots 2, 3, 4 would be
+ * used by the vertex buffers you pass in.
  *
  * Vertex attributes are linked to buffers via the buffer_slot field of
  * GPUVertexAttribute. For example, if an attribute has a buffer_slot of 0, then
@@ -4925,9 +4918,9 @@ inline bool GPUSupportsProperties(PropertiesRef props)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateGPUDeviceWithProperties
- * @sa GPUDevice.GetShaderFormats
- * @sa GPUDevice.GetDriver
- * @sa GPUDevice.Destroy
+ * @sa GetGPUShaderFormats
+ * @sa GetGPUDeviceDriver
+ * @sa DestroyGPUDevice
  * @sa GPUSupportsShaderFormats
  */
 inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
@@ -5053,9 +5046,9 @@ inline GPUDevice::GPUDevice(PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.GetShaderFormats
- * @sa GPUDevice.GetDriver
- * @sa GPUDevice.Destroy
+ * @sa GetGPUShaderFormats
+ * @sa GetGPUDeviceDriver
+ * @sa DestroyGPUDevice
  * @sa GPUSupportsProperties
  */
 inline GPUDevice CreateGPUDeviceWithProperties(PropertiesRef props)
@@ -5471,8 +5464,8 @@ constexpr auto DRIVER_INFO_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUComputePass.BindPipeline
- * @sa GPUDevice.ReleaseComputePipeline
+ * @sa BindGPUComputePipeline
+ * @sa ReleaseGPUComputePipeline
  */
 inline GPUComputePipeline CreateGPUComputePipeline(
   GPUDeviceRef device,
@@ -5525,8 +5518,8 @@ constexpr auto NAME_STRING =
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUDevice.CreateShader
- * @sa GPURenderPass.BindPipeline
- * @sa GPUDevice.ReleaseGraphicsPipeline
+ * @sa BindGPUGraphicsPipeline
+ * @sa ReleaseGPUGraphicsPipeline
  */
 inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
   GPUDeviceRef device,
@@ -5578,9 +5571,9 @@ constexpr auto NAME_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.BindVertexSamplers
- * @sa GPURenderPass.BindFragmentSamplers
- * @sa GPUDevice.ReleaseSampler
+ * @sa BindGPUVertexSamplers
+ * @sa BindGPUFragmentSamplers
+ * @sa ReleaseGPUSampler
  */
 inline GPUSampler CreateGPUSampler(GPUDeviceRef device,
                                    const GPUSamplerCreateInfo& createinfo)
@@ -5681,7 +5674,7 @@ constexpr auto NAME_STRING =
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUDevice.CreateGraphicsPipeline
- * @sa GPUDevice.ReleaseShader
+ * @sa ReleaseGPUShader
  */
 inline GPUShader CreateGPUShader(GPUDeviceRef device,
                                  const GPUShaderCreateInfo& createinfo)
@@ -5716,8 +5709,8 @@ constexpr auto NAME_STRING =
  * Creates a texture object to be used in graphics or compute workflows.
  *
  * The contents of this texture are undefined until data is written to the
- * texture, either via GPUCopyPass.UploadToTexture or by performing a render or
- * compute pass with this texture as a target.
+ * texture, either via UploadToGPUTexture or by performing a render or compute
+ * pass with this texture as a target.
  *
  * Note that certain combinations of usage flags are invalid. For example, a
  * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
@@ -5757,18 +5750,18 @@ constexpr auto NAME_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.UploadToTexture
- * @sa GPUCopyPass.DownloadFromTexture
- * @sa GPUCommandBuffer.BeginRenderPass
- * @sa GPUCommandBuffer.BeginComputePass
- * @sa GPURenderPass.BindVertexSamplers
- * @sa GPURenderPass.BindVertexStorageTextures
- * @sa GPURenderPass.BindFragmentSamplers
- * @sa GPURenderPass.BindFragmentStorageTextures
- * @sa GPUComputePass.BindStorageTextures
- * @sa GPUCommandBuffer.BlitTexture
- * @sa GPUDevice.ReleaseTexture
- * @sa GPUDevice.TextureSupportsFormat
+ * @sa UploadToGPUTexture
+ * @sa DownloadFromGPUTexture
+ * @sa BeginGPURenderPass
+ * @sa BeginGPUComputePass
+ * @sa BindGPUVertexSamplers
+ * @sa BindGPUVertexStorageTextures
+ * @sa BindGPUFragmentSamplers
+ * @sa BindGPUFragmentStorageTextures
+ * @sa BindGPUComputeStorageTextures
+ * @sa BlitGPUTexture
+ * @sa ReleaseGPUTexture
+ * @sa GPUTextureSupportsFormat
  */
 inline GPUTexture CreateGPUTexture(GPUDeviceRef device,
                                    const GPUTextureCreateInfo& createinfo)
@@ -5854,18 +5847,18 @@ constexpr auto NAME_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.UploadToBuffer
- * @sa GPUCopyPass.DownloadFromBuffer
- * @sa GPUCopyPass.CopyBufferToBuffer
- * @sa GPURenderPass.BindVertexBuffers
- * @sa GPURenderPass.BindIndexBuffer
- * @sa GPURenderPass.BindVertexStorageBuffers
- * @sa GPURenderPass.BindFragmentStorageBuffers
- * @sa GPURenderPass.DrawPrimitivesIndirect
- * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
- * @sa GPUComputePass.BindStorageBuffers
- * @sa GPUComputePass.DispatchIndirect
- * @sa GPUDevice.ReleaseBuffer
+ * @sa UploadToGPUBuffer
+ * @sa DownloadFromGPUBuffer
+ * @sa CopyGPUBufferToBuffer
+ * @sa BindGPUVertexBuffers
+ * @sa BindGPUIndexBuffer
+ * @sa BindGPUVertexStorageBuffers
+ * @sa BindGPUFragmentStorageBuffers
+ * @sa DrawGPUPrimitivesIndirect
+ * @sa DrawGPUIndexedPrimitivesIndirect
+ * @sa BindGPUComputeStorageBuffers
+ * @sa DispatchGPUComputeIndirect
+ * @sa ReleaseGPUBuffer
  */
 inline GPUBuffer CreateGPUBuffer(GPUDeviceRef device,
                                  const GPUBufferCreateInfo& createinfo)
@@ -5917,11 +5910,11 @@ constexpr auto NAME_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.UploadToBuffer
- * @sa GPUCopyPass.DownloadFromBuffer
- * @sa GPUCopyPass.UploadToTexture
- * @sa GPUCopyPass.DownloadFromTexture
- * @sa GPUDevice.ReleaseTransferBuffer
+ * @sa UploadToGPUBuffer
+ * @sa DownloadFromGPUBuffer
+ * @sa UploadToGPUTexture
+ * @sa DownloadFromGPUTexture
+ * @sa ReleaseGPUTransferBuffer
  */
 inline GPUTransferBuffer CreateGPUTransferBuffer(
   GPUDeviceRef device,
@@ -6020,9 +6013,8 @@ inline void GPUDevice::SetTextureName(GPUTexture texture, StringParam text)
  *
  * Useful for debugging.
  *
- * On Direct3D 12, using GPUCommandBuffer.InsertDebugLabel requires
- * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
- * executable. See
+ * On Direct3D 12, using InsertGPUDebugLabel requires WinPixEventRuntime.dll to
+ * be in your PATH or in the same directory as your executable. See
  * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
  * instructions on how to obtain it.
  *
@@ -6048,12 +6040,11 @@ inline void GPUCommandBuffer::InsertDebugLabel(StringParam text)
  * Used for denoting groups of calls when viewing the command buffer callstream
  * in a graphics debugging tool.
  *
- * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
- * to GPUCommandBuffer.PopDebugGroup.
+ * Each call to PushGPUDebugGroup must have a corresponding call to
+ * PopGPUDebugGroup.
  *
- * On Direct3D 12, using GPUCommandBuffer.PushDebugGroup requires
- * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
- * executable. See
+ * On Direct3D 12, using PushGPUDebugGroup requires WinPixEventRuntime.dll to be
+ * in your PATH or in the same directory as your executable. See
  * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
  * instructions on how to obtain it.
  *
@@ -6067,7 +6058,7 @@ inline void GPUCommandBuffer::InsertDebugLabel(StringParam text)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.PopDebugGroup
+ * @sa PopGPUDebugGroup
  */
 inline void PushGPUDebugGroup(GPUCommandBuffer command_buffer, StringParam name)
 {
@@ -6082,9 +6073,8 @@ inline void GPUCommandBuffer::PushDebugGroup(StringParam name)
 /**
  * Ends the most-recently pushed debug group.
  *
- * On Direct3D 12, using GPUCommandBuffer.PopDebugGroup requires
- * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
- * executable. See
+ * On Direct3D 12, using PopGPUDebugGroup requires WinPixEventRuntime.dll to be
+ * in your PATH or in the same directory as your executable. See
  * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
  * instructions on how to obtain it.
  *
@@ -6092,7 +6082,7 @@ inline void GPUCommandBuffer::PushDebugGroup(StringParam name)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.PushDebugGroup
+ * @sa PushGPUDebugGroup
  */
 inline void PopGPUDebugGroup(GPUCommandBuffer command_buffer)
 {
@@ -6270,8 +6260,8 @@ inline void GPUDevice::ReleaseGraphicsPipeline(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.Submit
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
+ * @sa SubmitGPUCommandBuffer
+ * @sa SubmitGPUCommandBufferAndAcquireFence
  */
 inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceRef device)
 {
@@ -6405,7 +6395,7 @@ inline void GPUCommandBuffer::PushComputeUniformData(Uint32 slot_index,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.End
+ * @sa EndGPURenderPass
  */
 inline GPURenderPass BeginGPURenderPass(
   GPUCommandBuffer command_buffer,
@@ -6989,7 +6979,7 @@ inline void GPURenderPass::End() { SDL::EndGPURenderPass(m_gPURenderPass); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUComputePass.End
+ * @sa EndGPUComputePass
  */
 inline GPUComputePass BeginGPUComputePass(
   GPUCommandBuffer command_buffer,
@@ -7279,7 +7269,7 @@ inline void GPUDevice::UnmapTransferBuffer(GPUTransferBuffer transfer_buffer)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.End
+ * @sa EndGPUCopyPass
  */
 inline GPUCopyPass BeginGPUCopyPass(GPUCommandBuffer command_buffer)
 {
@@ -7549,7 +7539,7 @@ inline void GPUCommandBuffer::BlitTexture(const GPUBlitInfo& info)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.ClaimWindow
+ * @sa ClaimWindowForGPUDevice
  */
 inline bool WindowSupportsGPUSwapchainComposition(
   GPUDeviceRef device,
@@ -7580,7 +7570,7 @@ inline bool GPUDevice::WindowSupportsSwapchainComposition(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.ClaimWindow
+ * @sa ClaimWindowForGPUDevice
  */
 inline bool WindowSupportsGPUPresentMode(GPUDeviceRef device,
                                          WindowRef window,
@@ -7598,13 +7588,13 @@ inline bool GPUDevice::WindowSupportsPresentMode(WindowRef window,
 /**
  * Claims a window, creating a swapchain structure for it.
  *
- * This must be called before GPUCommandBuffer.AcquireSwapchainTexture is called
- * using the window. You should only call this function from the thread that
- * created the window.
+ * This must be called before AcquireGPUSwapchainTexture is called using the
+ * window. You should only call this function from the thread that created the
+ * window.
  *
  * The swapchain will be created with GPU_SWAPCHAINCOMPOSITION_SDR and
  * GPU_PRESENTMODE_VSYNC. If you want to have different swapchain parameters,
- * you must call GPUDevice.SetSwapchainParameters after claiming the window.
+ * you must call SetGPUSwapchainParameters after claiming the window.
  *
  * @param device a GPU context.
  * @param window an Window.
@@ -7615,10 +7605,10 @@ inline bool GPUDevice::WindowSupportsPresentMode(WindowRef window,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
- * @sa GPUDevice.ReleaseWindow
- * @sa GPUDevice.WindowSupportsPresentMode
- * @sa GPUDevice.WindowSupportsSwapchainComposition
+ * @sa WaitAndAcquireGPUSwapchainTexture
+ * @sa ReleaseWindowFromGPUDevice
+ * @sa WindowSupportsGPUPresentMode
+ * @sa WindowSupportsGPUSwapchainComposition
  */
 inline void ClaimWindowForGPUDevice(GPUDeviceRef device, WindowRef window)
 {
@@ -7638,7 +7628,7 @@ inline void GPUDevice::ClaimWindow(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.ClaimWindow
+ * @sa ClaimWindowForGPUDevice
  */
 inline void ReleaseWindowFromGPUDevice(GPUDeviceRef device, WindowRef window)
 {
@@ -7655,8 +7645,8 @@ inline void GPUDevice::ReleaseWindow(WindowRef window)
  *
  * This function will fail if the requested present mode or swapchain
  * composition are unsupported by the device. Check if the parameters are
- * supported via GPUDevice.WindowSupportsPresentMode /
- * GPUDevice.WindowSupportsSwapchainComposition prior to calling this function.
+ * supported via WindowSupportsGPUPresentMode /
+ * WindowSupportsGPUSwapchainComposition prior to calling this function.
  *
  * GPU_PRESENTMODE_VSYNC with GPU_SWAPCHAINCOMPOSITION_SDR are always supported.
  *
@@ -7669,8 +7659,8 @@ inline void GPUDevice::ReleaseWindow(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.WindowSupportsPresentMode
- * @sa GPUDevice.WindowSupportsSwapchainComposition
+ * @sa WindowSupportsGPUPresentMode
+ * @sa WindowSupportsGPUSwapchainComposition
  */
 inline bool SetGPUSwapchainParameters(
   GPUDeviceRef device,
@@ -7696,9 +7686,9 @@ inline bool GPUDevice::SetSwapchainParameters(
  *
  * The default value when the device is created is 2. This means that after you
  * have submitted 2 frames for presentation, if the GPU has not finished working
- * on the first frame, GPUCommandBuffer.AcquireSwapchainTexture() will fill the
- * swapchain texture pointer with nullptr, and
- * GPUCommandBuffer.WaitAndAcquireSwapchainTexture() will block.
+ * on the first frame, AcquireGPUSwapchainTexture() will fill the swapchain
+ * texture pointer with nullptr, and WaitAndAcquireGPUSwapchainTexture() will
+ * block.
  *
  * Higher values increase throughput at the expense of visual latency. Lower
  * values decrease visual latency at the expense of throughput.
@@ -7765,8 +7755,8 @@ inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowRef window)
  * If you use this function, it is possible to create a situation where many
  * command buffers are allocated while the rendering context waits for the GPU
  * to catch up, which will cause memory usage to grow. You should use
- * GPUCommandBuffer.WaitAndAcquireSwapchainTexture() unless you know what you
- * are doing with timing.
+ * WaitAndAcquireGPUSwapchainTexture() unless you know what you are doing with
+ * timing.
  *
  * The swapchain texture is managed by the implementation and must not be freed
  * by the user. You MUST NOT call this function from any thread other than the
@@ -7786,14 +7776,14 @@ inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.ClaimWindow
- * @sa GPUCommandBuffer.Submit
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
- * @sa GPUCommandBuffer.Cancel
- * @sa Window.GetSizeInPixels
- * @sa GPUDevice.WaitForSwapchain
- * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
- * @sa GPUDevice.SetAllowedFramesInFlight
+ * @sa ClaimWindowForGPUDevice
+ * @sa SubmitGPUCommandBuffer
+ * @sa SubmitGPUCommandBufferAndAcquireFence
+ * @sa CancelGPUCommandBuffer
+ * @sa GetWindowSizeInPixels
+ * @sa WaitForGPUSwapchain
+ * @sa WaitAndAcquireGPUSwapchainTexture
+ * @sa SetGPUAllowedFramesInFlight
  */
 inline GPUTexture AcquireGPUSwapchainTexture(
   GPUCommandBuffer command_buffer,
@@ -7833,9 +7823,9 @@ inline GPUTexture GPUCommandBuffer::AcquireSwapchainTexture(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.AcquireSwapchainTexture
- * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
- * @sa GPUDevice.SetAllowedFramesInFlight
+ * @sa AcquireGPUSwapchainTexture
+ * @sa WaitAndAcquireGPUSwapchainTexture
+ * @sa SetGPUAllowedFramesInFlight
  */
 inline void WaitForGPUSwapchain(GPUDeviceRef device, WindowRef window)
 {
@@ -7854,7 +7844,7 @@ inline void GPUDevice::WaitForSwapchain(WindowRef window)
  * When a swapchain texture is acquired on a command buffer, it will
  * automatically be submitted for presentation when the command buffer is
  * submitted. The swapchain texture should only be referenced by the command
- * buffer used to acquire it. It is an error to call GPUCommandBuffer.Cancel()
+ * buffer used to acquire it. It is an error to call CancelGPUCommandBuffer()
  * after a swapchain texture is acquired.
  *
  * This function can fill the swapchain texture handle with nullptr in certain
@@ -7883,9 +7873,9 @@ inline void GPUDevice::WaitForSwapchain(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.Submit
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
- * @sa GPUCommandBuffer.AcquireSwapchainTexture
+ * @sa SubmitGPUCommandBuffer
+ * @sa SubmitGPUCommandBufferAndAcquireFence
+ * @sa AcquireGPUSwapchainTexture
  */
 inline GPUTexture WaitAndAcquireGPUSwapchainTexture(
   GPUCommandBuffer command_buffer,
@@ -7928,10 +7918,10 @@ inline GPUTexture GPUCommandBuffer::WaitAndAcquireSwapchainTexture(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.AcquireCommandBuffer
- * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
- * @sa GPUCommandBuffer.AcquireSwapchainTexture
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
+ * @sa AcquireGPUCommandBuffer
+ * @sa WaitAndAcquireGPUSwapchainTexture
+ * @sa AcquireGPUSwapchainTexture
+ * @sa SubmitGPUCommandBufferAndAcquireFence
  */
 inline void SubmitGPUCommandBuffer(GPUCommandBuffer command_buffer)
 {
@@ -7961,11 +7951,11 @@ inline void GPUCommandBuffer::Submit()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.AcquireCommandBuffer
- * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
- * @sa GPUCommandBuffer.AcquireSwapchainTexture
- * @sa GPUCommandBuffer.Submit
- * @sa GPUDevice.ReleaseFence
+ * @sa AcquireGPUCommandBuffer
+ * @sa WaitAndAcquireGPUSwapchainTexture
+ * @sa AcquireGPUSwapchainTexture
+ * @sa SubmitGPUCommandBuffer
+ * @sa ReleaseGPUFence
  */
 inline GPUFence* SubmitGPUCommandBufferAndAcquireFence(
   GPUCommandBuffer command_buffer)
@@ -7995,9 +7985,9 @@ inline GPUFence* GPUCommandBuffer::SubmitAndAcquireFence()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
- * @sa GPUDevice.AcquireCommandBuffer
- * @sa GPUCommandBuffer.AcquireSwapchainTexture
+ * @sa WaitAndAcquireGPUSwapchainTexture
+ * @sa AcquireGPUCommandBuffer
+ * @sa AcquireGPUSwapchainTexture
  */
 inline void CancelGPUCommandBuffer(GPUCommandBuffer command_buffer)
 {
@@ -8017,7 +8007,7 @@ inline void GPUCommandBuffer::Cancel()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.WaitForFences
+ * @sa WaitForGPUFences
  */
 inline void WaitForGPUIdle(GPUDeviceRef device)
 {
@@ -8037,8 +8027,8 @@ inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
- * @sa GPUDevice.WaitForIdle
+ * @sa SubmitGPUCommandBufferAndAcquireFence
+ * @sa WaitForGPUIdle
  */
 inline void WaitForGPUFences(GPUDeviceRef device,
                              bool wait_all,
@@ -8063,7 +8053,7 @@ inline void GPUDevice::WaitForFences(bool wait_all,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
+ * @sa SubmitGPUCommandBufferAndAcquireFence
  */
 inline bool QueryGPUFence(GPUDeviceRef device, GPUFence* fence)
 {
@@ -8076,7 +8066,7 @@ inline bool GPUDevice::QueryFence(GPUFence* fence)
 }
 
 /**
- * Releases a fence obtained from GPUCommandBuffer.SubmitAndAcquireFence.
+ * Releases a fence obtained from SubmitGPUCommandBufferAndAcquireFence.
  *
  * You must not reference the fence after calling this function.
  *
@@ -8085,7 +8075,7 @@ inline bool GPUDevice::QueryFence(GPUFence* fence)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
+ * @sa SubmitGPUCommandBufferAndAcquireFence
  */
 inline void ReleaseGPUFence(GPUDeviceRef device, GPUFence* fence)
 {
@@ -8105,7 +8095,7 @@ inline void GPUDevice::ReleaseFence(GPUFence* fence)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCopyPass.UploadToTexture
+ * @sa UploadToGPUTexture
  */
 inline Uint32 GPUTextureFormatTexelBlockSize(GPUTextureFormat format)
 {

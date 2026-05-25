@@ -9,7 +9,7 @@
   *
   * Simple log messages with priorities and categories. A message's LogPriority
   * signifies how important the message is. A message's LogCategory signifies
-@@ -66,6 +66,14 @@
+@@ -65,6 +65,14 @@
  struct LogCategory;
  
  /**
@@ -24,7 +24,7 @@
   * The predefined log priorities
   *
   * @since This enum is available since SDL 3.2.0.
-@@ -93,6 +101,16 @@
+@@ -92,6 +100,16 @@
  
  constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT; ///< COUNT
  
@@ -41,7 +41,7 @@
  /**
   * The predefined log categories
   *
-@@ -101,6 +119,10 @@
+@@ -100,6 +118,10 @@
   * VERBOSE level and all other categories are enabled at the ERROR level.
   *
   * @since This enum is available since SDL 3.2.0.
@@ -52,7 +52,7 @@
   */
  class LogCategory
  {
-@@ -112,7 +134,8 @@
+@@ -111,7 +133,8 @@
     *
     * @param category the value to be wrapped
     */
@@ -62,7 +62,7 @@
      : m_category(category)
    {
    }
-@@ -122,7 +145,10 @@
+@@ -121,7 +144,10 @@
     *
     * @param category the value to be wrapped
     */
@@ -74,7 +74,7 @@
  
    /**
     * Unwraps to the underlying LogCategory.
-@@ -134,7 +160,6 @@
+@@ -133,7 +159,6 @@
    /**
     * Set the priority of a particular log category.
     *
@@ -82,7 +82,7 @@
     * @param priority the LogPriority to assign.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -150,7 +175,6 @@
+@@ -149,7 +174,6 @@
    /**
     * Get the priority of a particular log category.
     *
@@ -90,7 +90,7 @@
     * @returns the LogPriority for the requested category.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -161,25 +185,47 @@
+@@ -160,24 +184,47 @@
     */
    LogPriority GetLogPriority() const;
  
@@ -139,13 +139,12 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
--   * @sa Log
 +   * @cat formatted-string
 +   *
-    * @sa LogCategory.LogCritical
-    * @sa LogCategory.LogDebug
-    * @sa LogCategory.LogError
-@@ -197,16 +243,17 @@
+    * @sa Log
+    * @sa LogCritical
+    * @sa LogDebug
+@@ -196,15 +243,17 @@
    /**
     * Log a message with LOG_PRIORITY_TRACE.
     *
@@ -163,13 +162,12 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
--   * @sa Log
 +   * @cat formatted-string
 +   *
-    * @sa LogCategory.LogCritical
-    * @sa LogCategory.LogDebug
-    * @sa LogCategory.LogError
-@@ -222,16 +269,18 @@
+    * @sa Log
+    * @sa LogCritical
+    * @sa LogDebug
+@@ -221,15 +270,18 @@
    /**
     * Log a message with LOG_PRIORITY_VERBOSE.
     *
@@ -187,13 +185,12 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
--   * @sa Log
 +   * @cat formatted-string
 +   *
-    * @sa LogCategory.LogCritical
-    * @sa LogCategory.LogDebug
-    * @sa LogCategory.LogError
-@@ -246,16 +295,18 @@
+    * @sa Log
+    * @sa LogCritical
+    * @sa LogDebug
+@@ -245,15 +297,18 @@
    /**
     * Log a message with LOG_PRIORITY_DEBUG.
     *
@@ -211,13 +208,12 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
--   * @sa Log
 +   * @cat formatted-string
 +   *
-    * @sa LogCategory.LogCritical
-    * @sa LogCategory.LogError
-    * @sa LogCategory.LogInfo
-@@ -271,16 +322,18 @@
+    * @sa Log
+    * @sa LogCritical
+    * @sa LogError
+@@ -270,15 +325,18 @@
    /**
     * Log a message with LOG_PRIORITY_INFO.
     *
@@ -235,13 +231,12 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
--   * @sa Log
 +   * @cat formatted-string
 +   *
-    * @sa LogCategory.LogCritical
-    * @sa LogCategory.LogDebug
-    * @sa LogCategory.LogError
-@@ -296,16 +349,18 @@
+    * @sa Log
+    * @sa LogCritical
+    * @sa LogDebug
+@@ -295,15 +353,18 @@
    /**
     * Log a message with LOG_PRIORITY_WARN.
     *
@@ -259,13 +254,12 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
--   * @sa Log
 +   * @cat formatted-string
 +   *
-    * @sa LogCategory.LogCritical
-    * @sa LogCategory.LogDebug
-    * @sa LogCategory.LogError
-@@ -321,16 +376,18 @@
+    * @sa Log
+    * @sa LogCritical
+    * @sa LogDebug
+@@ -320,15 +381,18 @@
    /**
     * Log a message with LOG_PRIORITY_ERROR.
     *
@@ -283,13 +277,12 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
--   * @sa Log
 +   * @cat formatted-string
 +   *
-    * @sa LogCategory.LogCritical
-    * @sa LogCategory.LogDebug
-    * @sa LogCategory.LogInfo
-@@ -346,23 +403,26 @@
+    * @sa Log
+    * @sa LogCritical
+    * @sa LogDebug
+@@ -345,15 +409,18 @@
    /**
     * Log a message with LOG_PRIORITY_CRITICAL.
     *
@@ -307,28 +300,12 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
--   * @sa Log
--   * @sa LogCategory.LogDebug
--   * @sa LogCategory.LogError
--   * @sa LogCategory.LogInfo
--   * @sa LogCategory.LogMessage
--   * @sa LogUnformatted
--   * @sa LogCategory.LogTrace
--   * @sa LogCategory.LogVerbose
 +   * @cat formatted-string
 +   *
-+   * @sa formatted-string
-+   * @sa LogCategory.LogDebug()
-+   * @sa LogCategory.LogError()
-+   * @sa LogCategory.LogInfo()
-+   * @sa LogUnformatted()
-+   * @sa LogCategory.LogUnformatted()
-+   * @sa LogCategory.LogTrace()
-+   * @sa LogCategory.LogVerbose()
-    * @sa LogCategory.LogWarn
-    */
-   template<class... ARGS>
-@@ -523,39 +583,39 @@
+    * @sa Log
+    * @sa LogDebug
+    * @sa LogError
+@@ -522,39 +589,39 @@
  }
  
  /**
@@ -348,15 +325,15 @@
   * @since This function is available since SDL 3.2.0.
   *
 + * @sa Log
-  * @sa LogCategory.LogCritical
-  * @sa LogCategory.LogDebug
-  * @sa LogCategory.LogError
-  * @sa LogCategory.LogInfo
-  * @sa LogCategory.LogMessage
+  * @sa LogCritical
+  * @sa LogDebug
+  * @sa LogError
+  * @sa LogInfo
+  * @sa LogMessage
 - * @sa LogUnformatted
-  * @sa LogCategory.LogTrace
-  * @sa LogCategory.LogVerbose
-  * @sa LogCategory.LogWarn
+  * @sa LogTrace
+  * @sa LogVerbose
+  * @sa LogWarn
   */
 -template<class... ARGS>
 -inline void Log(std::string_view fmt, ARGS&&... args)
@@ -381,13 +358,13 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -567,29 +627,55 @@
-  * @sa LogCategory.LogError
-  * @sa LogCategory.LogInfo
-  * @sa LogCategory.LogMessage
+@@ -566,29 +633,55 @@
+  * @sa LogError
+  * @sa LogInfo
+  * @sa LogMessage
 - * @sa LogUnformatted
-  * @sa LogCategory.LogVerbose
-  * @sa LogCategory.LogWarn
+  * @sa LogVerbose
+  * @sa LogWarn
   */
 -template<class... ARGS>
 -inline void LogTrace(LogCategory category, std::string_view fmt, ARGS&&... args)
@@ -446,15 +423,8 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -600,31 +686,36 @@
-  * @sa LogCategory.LogDebug
-  * @sa LogCategory.LogError
-  * @sa LogCategory.LogInfo
-- * @sa LogCategory.LogMessage
-  * @sa LogUnformatted
-+ * @sa LogCategory.LogTrace
-+ * @sa LogCategory.LogVerbose
-  * @sa LogCategory.LogWarn
+@@ -604,26 +697,30 @@
+  * @sa LogWarn
   */
  template<class... ARGS>
 -inline void LogVerbose(LogCategory category,
@@ -492,16 +462,8 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -632,6 +723,7 @@
-  *
-  * @sa Log
-  * @sa LogCategory.LogCritical
-+ * @sa LogCategory.LogDebug
-  * @sa LogCategory.LogError
-  * @sa LogCategory.LogInfo
-  * @sa LogCategory.LogMessage
-@@ -641,24 +733,24 @@
-  * @sa LogCategory.LogWarn
+@@ -640,24 +737,24 @@
+  * @sa LogWarn
   */
  template<class... ARGS>
 -inline void LogDebug(LogCategory category, std::string_view fmt, ARGS&&... args)
@@ -532,16 +494,8 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -668,31 +760,32 @@
-  * @sa LogCategory.LogCritical
-  * @sa LogCategory.LogDebug
-  * @sa LogCategory.LogError
-+ * @sa LogCategory.LogInfo
-  * @sa LogCategory.LogMessage
-  * @sa LogUnformatted
-- * @sa LogCategory.LogTrace
-- * @sa LogCategory.LogVerbose
-  * @sa LogCategory.LogWarn
+@@ -674,24 +771,26 @@
+  * @sa LogWarn
   */
  template<class... ARGS>
 -inline void LogInfo(LogCategory category, std::string_view fmt, ARGS&&... args)
@@ -574,18 +528,8 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -700,33 +793,33 @@
-  *
-  * @sa Log
-  * @sa LogCategory.LogCritical
-- * @sa LogCategory.LogDebug
-  * @sa LogCategory.LogError
-  * @sa LogCategory.LogInfo
-  * @sa LogCategory.LogMessage
-  * @sa LogUnformatted
-  * @sa LogCategory.LogTrace
-  * @sa LogCategory.LogVerbose
-+ * @sa LogCategory.LogWarn
+@@ -708,24 +807,24 @@
+  * @sa LogVerbose
   */
  template<class... ARGS>
 -inline void LogWarn(LogCategory category, std::string_view fmt, ARGS&&... args)
@@ -616,17 +560,8 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -735,7 +828,7 @@
-  * @sa Log
-  * @sa LogCategory.LogCritical
-  * @sa LogCategory.LogDebug
-- * @sa LogCategory.LogInfo
-+ * @sa LogCategory.LogError
-  * @sa LogCategory.LogMessage
-  * @sa LogUnformatted
-  * @sa LogCategory.LogTrace
-@@ -743,30 +836,31 @@
-  * @sa LogCategory.LogWarn
+@@ -742,24 +841,24 @@
+  * @sa LogWarn
   */
  template<class... ARGS>
 -inline void LogError(LogCategory category, std::string_view fmt, ARGS&&... args)
@@ -657,18 +592,8 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-  * @since This function is available since SDL 3.2.0.
-  *
-  * @sa Log
-+ * @sa LogCategory.LogCritical
-  * @sa LogCategory.LogDebug
-  * @sa LogCategory.LogError
-  * @sa LogCategory.LogInfo
-@@ -774,30 +868,26 @@
-  * @sa LogUnformatted
-  * @sa LogCategory.LogTrace
-  * @sa LogCategory.LogVerbose
-- * @sa LogCategory.LogWarn
+@@ -776,27 +875,24 @@
+  * @sa LogWarn
   */
  template<class... ARGS>
 -inline void LogCritical(LogCategory category,
@@ -702,17 +627,8 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -806,53 +896,60 @@
-  * @sa Log
-  * @sa LogCategory.LogCritical
-  * @sa LogCategory.LogDebug
-- * @sa LogCategory.LogError
-  * @sa LogCategory.LogInfo
-+ * @sa LogCategory.LogMessage
-  * @sa LogUnformatted
-  * @sa LogCategory.LogTrace
-  * @sa LogCategory.LogVerbose
-  * @sa LogCategory.LogWarn
+@@ -813,29 +909,24 @@
+  * @sa LogWarn
   */
  template<class... ARGS>
 -inline void LogMessage(LogCategory category,
@@ -748,18 +664,9 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-  * @since This function is available since SDL 3.2.0.
-  *
-  * @sa Log
-- * @sa LogCategory.LogCritical
-  * @sa LogCategory.LogDebug
-  * @sa LogCategory.LogError
-  * @sa LogCategory.LogInfo
-  * @sa LogCategory.LogMessage
-+ * @sa LogUnformatted
-  * @sa LogCategory.LogTrace
-  * @sa LogCategory.LogVerbose
-  * @sa LogCategory.LogWarn
+@@ -851,7 +942,19 @@
+  * @sa LogVerbose
+  * @sa LogWarn
   */
 -inline void LogUnformatted(StringParam message) { SDL_LogMessageV(message); }
 +template<class... ARGS>
@@ -778,7 +685,7 @@
  
  /**
   * The prototype for the log output callback function.
-@@ -886,6 +983,8 @@
+@@ -885,6 +988,8 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -787,7 +694,7 @@
   * @sa LogOutputFunction
   */
  using LogOutputCB = MakeFrontCallback<
-@@ -940,6 +1039,7 @@
+@@ -939,6 +1044,7 @@
   *
   * @sa GetDefaultLogOutputFunction
   * @sa GetLogOutputFunction
@@ -795,7 +702,7 @@
   */
  inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  {
-@@ -950,7 +1050,6 @@
+@@ -949,7 +1055,6 @@
   * Replace the default log output function with one of your own.
   *
   * @param callback an LogOutputFunction to call instead of the default.
@@ -803,7 +710,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -958,15 +1057,26 @@
+@@ -957,15 +1062,26 @@
   *
   * @sa GetDefaultLogOutputFunction
   * @sa GetLogOutputFunction

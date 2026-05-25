@@ -25,21 +25,20 @@ namespace SDL {
  *
  * - Create one or more AsyncIOQueue objects.
  * - Open files with AsyncIOFromFile.
- * - Start I/O tasks to the files with AsyncIO.Read or AsyncIO.Write, putting
+ * - Start I/O tasks to the files with ReadAsyncIO or WriteAsyncIO, putting
  *   those tasks into one of the queues.
- * - Later on, use AsyncIOQueue.GetResult on a queue to see if any task is
- *   finished without blocking. Tasks might finish in any order with success or
- *   failure.
- * - When all your tasks are done, close the file with AsyncIO.Close. This also
+ * - Later on, use GetAsyncIOResult on a queue to see if any task is finished
+ *   without blocking. Tasks might finish in any order with success or failure.
+ * - When all your tasks are done, close the file with CloseAsyncIO. This also
  *   generates a task, since it might flush data to disk!
  *
  * This all works, without blocking, in a single thread, but one can also wait
  * on a queue in a background thread, sleeping until new results have arrived:
  *
- * - Call AsyncIOQueue.WaitResult from one or more threads to efficiently block
- *   until new tasks complete.
- * - When shutting down, call AsyncIOQueue.Signal to unblock any sleeping
- *   threads despite there being no new tasks completed.
+ * - Call WaitAsyncIOResult from one or more threads to efficiently block until
+ *   new tasks complete.
+ * - When shutting down, call SignalAsyncIOQueue to unblock any sleeping threads
+ *   despite there being no new tasks completed.
  *
  * And, of course, to match the synchronous LoadFile, we offer LoadFileAsync as
  * a convenience function. This will handle allocating a buffer, slurping in the
@@ -55,9 +54,9 @@ namespace SDL {
  * Simple non-blocking I/O--for an app that just wants to pick up data whenever
  * it's ready without losing framerate waiting on disks to spin--can use
  * whatever pattern works well for the program. In this case, simply call
- * AsyncIO.Read, or maybe LoadFileAsync, as needed. Once a frame, call
- * AsyncIOQueue.GetResult to check for any completed tasks and deal with the
- * data as it arrives.
+ * ReadAsyncIO, or maybe LoadFileAsync, as needed. Once a frame, call
+ * GetAsyncIOResult to check for any completed tasks and deal with the data as
+ * it arrives.
  *
  * If two separate pieces of the same program need their own I/O, it is legal
  * for each to create their own queue. This will prevent either piece from
@@ -77,7 +76,7 @@ namespace SDL {
  * for access to the same queue.
  *
  * Written data is not guaranteed to make it to physical media by the time a
- * closing task is completed, unless AsyncIO.Close is called with its `flush`
+ * closing task is completed, unless CloseAsyncIO is called with its `flush`
  * parameter set to true, which is to say that a successful result here can
  * still result in lost data during an unfortunately-timed power outage if not
  * flushed. However, flushing will take longer and may be unnecessary, depending
@@ -188,9 +187,9 @@ struct AsyncIO : ResourceBase<AsyncIORaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AsyncIO.Close
-   * @sa AsyncIO.Read
-   * @sa AsyncIO.Write
+   * @sa CloseAsyncIO
+   * @sa ReadAsyncIO
+   * @sa WriteAsyncIO
    */
   AsyncIO(StringParam file, StringParam mode);
 
@@ -307,7 +306,7 @@ struct AsyncIO : ResourceBase<AsyncIORaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AsyncIO.Write
+   * @sa WriteAsyncIO
    * @sa CreateAsyncIOQueue
    */
   void Read(void* ptr,
@@ -346,7 +345,7 @@ struct AsyncIO : ResourceBase<AsyncIORaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AsyncIO.Read
+   * @sa ReadAsyncIO
    * @sa CreateAsyncIOQueue
    */
   void Write(void* ptr,
@@ -406,10 +405,10 @@ using AsyncIOOutcome = SDL_AsyncIOOutcome;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa CreateAsyncIOQueue
- * @sa AsyncIO.Read
- * @sa AsyncIO.Write
- * @sa AsyncIOQueue.GetResult
- * @sa AsyncIOQueue.WaitResult
+ * @sa ReadAsyncIO
+ * @sa WriteAsyncIO
+ * @sa GetAsyncIOResult
+ * @sa WaitAsyncIOResult
  *
  * @cat resource
  */
@@ -455,9 +454,9 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AsyncIOQueue.Destroy
-   * @sa AsyncIOQueue.GetResult
-   * @sa AsyncIOQueue.WaitResult
+   * @sa DestroyAsyncIOQueue
+   * @sa GetAsyncIOResult
+   * @sa WaitAsyncIOResult
    */
   AsyncIOQueue();
 
@@ -489,13 +488,13 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
    * is blocking on pending tasks.
    *
    * Do not destroy a queue that still has threads waiting on it through
-   * AsyncIOQueue.WaitResult(). You can call AsyncIOQueue.Signal() first to
-   * unblock those threads, and take measures (such as Thread.Wait()) to make
-   * sure they have finished their wait and won't wait on the queue again.
+   * WaitAsyncIOResult(). You can call SignalAsyncIOQueue() first to unblock
+   * those threads, and take measures (such as WaitThread()) to make sure they
+   * have finished their wait and won't wait on the queue again.
    *
    * @threadsafety It is safe to call this function from any thread, so long as
    *               no other thread is waiting on the queue with
-   *               AsyncIOQueue.WaitResult.
+   *               WaitAsyncIOResult.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -521,7 +520,7 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AsyncIOQueue.WaitResult
+   * @sa WaitAsyncIOResult
    */
   std::optional<AsyncIOOutcome> GetResult();
 
@@ -547,12 +546,12 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
    * sooner.
    *
    * This function may return false if there was a system error, the OS
-   * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was
-   * called to wake up all waiting threads without a finished task.
+   * inadvertently awoke multiple threads, or if SignalAsyncIOQueue() was called
+   * to wake up all waiting threads without a finished task.
    *
    * A timeout can be used to specify a maximum wait time, but rather than
    * polling, it is possible to have a timeout of -1 to wait forever, and use
-   * AsyncIOQueue.Signal() to wake up the waiting threads later.
+   * SignalAsyncIOQueue() to wake up the waiting threads later.
    *
    * @param timeout the maximum time to wait, in milliseconds.
    * @returns details of a finished task if a task has completed, std::nullopt
@@ -562,7 +561,7 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AsyncIOQueue.Signal
+   * @sa SignalAsyncIOQueue
    */
   std::optional<AsyncIOOutcome> WaitResult(Milliseconds timeout);
 
@@ -588,12 +587,12 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
    * sooner.
    *
    * This function may return false if there was a system error, the OS
-   * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was
-   * called to wake up all waiting threads without a finished task.
+   * inadvertently awoke multiple threads, or if SignalAsyncIOQueue() was called
+   * to wake up all waiting threads without a finished task.
    *
    * A timeout can be used to specify a maximum wait time, but rather than
    * polling, it is possible to have a timeout of -1 to wait forever, and use
-   * AsyncIOQueue.Signal() to wake up the waiting threads later.
+   * SignalAsyncIOQueue() to wake up the waiting threads later.
    *
    * @returns details of a finished task if a task has completed, std::nullopt
    *          otherwise.
@@ -602,29 +601,29 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AsyncIOQueue.Signal
+   * @sa SignalAsyncIOQueue
    */
   std::optional<AsyncIOOutcome> WaitResult();
 
   /**
-   * Wake up any threads that are blocking in AsyncIOQueue.WaitResult().
+   * Wake up any threads that are blocking in WaitAsyncIOResult().
    *
    * This will unblock any threads that are sleeping in a call to
-   * AsyncIOQueue.WaitResult for the specified queue, and cause them to return
-   * from that function.
+   * WaitAsyncIOResult for the specified queue, and cause them to return from
+   * that function.
    *
    * This can be useful when destroying a queue to make sure nothing is touching
    * it indefinitely. In this case, once this call completes, the caller should
    * take measures to make sure any previously-blocked threads have returned
    * from their wait and will not touch the queue again (perhaps by setting a
-   * flag to tell the threads to terminate and then using Thread.Wait() to make
+   * flag to tell the threads to terminate and then using WaitThread() to make
    * sure they've done so).
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AsyncIOQueue.WaitResult
+   * @sa WaitAsyncIOResult
    */
   void Signal();
 };
@@ -663,9 +662,9 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AsyncIO.Close
- * @sa AsyncIO.Read
- * @sa AsyncIO.Write
+ * @sa CloseAsyncIO
+ * @sa ReadAsyncIO
+ * @sa WriteAsyncIO
  */
 inline AsyncIO AsyncIOFromFile(StringParam file, StringParam mode)
 {
@@ -730,7 +729,7 @@ inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AsyncIO.Write
+ * @sa WriteAsyncIO
  * @sa CreateAsyncIOQueue
  */
 inline void ReadAsyncIO(AsyncIORef asyncio,
@@ -783,7 +782,7 @@ inline void AsyncIO::Read(void* ptr,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AsyncIO.Read
+ * @sa ReadAsyncIO
  * @sa CreateAsyncIOQueue
  */
 inline void WriteAsyncIO(AsyncIORef asyncio,
@@ -877,9 +876,9 @@ inline bool AsyncIO::Close(bool flush, AsyncIOQueueRef queue, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AsyncIOQueue.Destroy
- * @sa AsyncIOQueue.GetResult
- * @sa AsyncIOQueue.WaitResult
+ * @sa DestroyAsyncIOQueue
+ * @sa GetAsyncIOResult
+ * @sa WaitAsyncIOResult
  */
 inline AsyncIOQueue CreateAsyncIOQueue() { return AsyncIOQueue(); }
 
@@ -903,15 +902,14 @@ inline AsyncIOQueue::AsyncIOQueue()
  * blocking on pending tasks.
  *
  * Do not destroy a queue that still has threads waiting on it through
- * AsyncIOQueue.WaitResult(). You can call AsyncIOQueue.Signal() first to
- * unblock those threads, and take measures (such as Thread.Wait()) to make sure
- * they have finished their wait and won't wait on the queue again.
+ * WaitAsyncIOResult(). You can call SignalAsyncIOQueue() first to unblock those
+ * threads, and take measures (such as WaitThread()) to make sure they have
+ * finished their wait and won't wait on the queue again.
  *
  * @param queue the task queue to destroy.
  *
  * @threadsafety It is safe to call this function from any thread, so long as no
- *               other thread is waiting on the queue with
- *               AsyncIOQueue.WaitResult.
+ *               other thread is waiting on the queue with WaitAsyncIOResult.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -943,7 +941,7 @@ inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AsyncIOQueue.WaitResult
+ * @sa WaitAsyncIOResult
  */
 inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueRef queue)
 {
@@ -979,12 +977,12 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
  * is a _maximum_ wait time, and this function may return false sooner.
  *
  * This function may return false if there was a system error, the OS
- * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was called
+ * inadvertently awoke multiple threads, or if SignalAsyncIOQueue() was called
  * to wake up all waiting threads without a finished task.
  *
  * A timeout can be used to specify a maximum wait time, but rather than
  * polling, it is possible to have a timeout of -1 to wait forever, and use
- * AsyncIOQueue.Signal() to wake up the waiting threads later.
+ * SignalAsyncIOQueue() to wake up the waiting threads later.
  *
  * @param queue the async I/O task queue to wait on.
  * @param timeout the maximum time to wait, in milliseconds.
@@ -995,7 +993,7 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AsyncIOQueue.Signal
+ * @sa SignalAsyncIOQueue
  */
 inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue,
                                                        Milliseconds timeout)
@@ -1028,12 +1026,12 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue,
  * is a _maximum_ wait time, and this function may return false sooner.
  *
  * This function may return false if there was a system error, the OS
- * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was called
+ * inadvertently awoke multiple threads, or if SignalAsyncIOQueue() was called
  * to wake up all waiting threads without a finished task.
  *
  * A timeout can be used to specify a maximum wait time, but rather than
  * polling, it is possible to have a timeout of -1 to wait forever, and use
- * AsyncIOQueue.Signal() to wake up the waiting threads later.
+ * SignalAsyncIOQueue() to wake up the waiting threads later.
  *
  * @param queue the async I/O task queue to wait on.
  * @returns details of a finished task if a task has completed, std::nullopt
@@ -1043,7 +1041,7 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AsyncIOQueue.Signal
+ * @sa SignalAsyncIOQueue
  */
 inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue)
 {
@@ -1065,17 +1063,17 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
 }
 
 /**
- * Wake up any threads that are blocking in AsyncIOQueue.WaitResult().
+ * Wake up any threads that are blocking in WaitAsyncIOResult().
  *
  * This will unblock any threads that are sleeping in a call to
- * AsyncIOQueue.WaitResult for the specified queue, and cause them to return
- * from that function.
+ * WaitAsyncIOResult for the specified queue, and cause them to return from that
+ * function.
  *
  * This can be useful when destroying a queue to make sure nothing is touching
  * it indefinitely. In this case, once this call completes, the caller should
  * take measures to make sure any previously-blocked threads have returned from
  * their wait and will not touch the queue again (perhaps by setting a flag to
- * tell the threads to terminate and then using Thread.Wait() to make sure
+ * tell the threads to terminate and then using WaitThread() to make sure
  * they've done so).
  *
  * @param queue the async I/O task queue to signal.
@@ -1084,7 +1082,7 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AsyncIOQueue.WaitResult
+ * @sa WaitAsyncIOResult
  */
 inline void SignalAsyncIOQueue(AsyncIOQueueRef queue)
 {
@@ -1122,7 +1120,7 @@ inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.LoadFile
+ * @sa LoadFile_IO
  */
 inline void LoadFileAsync(StringParam file,
                           AsyncIOQueueRef queue,

@@ -25,7 +25,7 @@
   *     if (title == nullptr) {
   *         // Something bad happened!
   *     }
-- *     while (!Storage.Ready(title)) {
+- *     while (!StorageReady(title)) {
 + *     while (!title.Ready()) {
   *         Delay(1);
   *     }
@@ -35,9 +35,9 @@
 - *         Uint64 dstLen = 0;
 + *         Uint64 dstLen = title.GetSize(fileNames[i]);
   *
-- *         if (Storage.GetFileSize(title, fileNames[i], &dstLen) && dstLen > 0)
-- * { dst = malloc(dstLen); if (Storage.ReadFile(title, fileNames[i], dst,
-- * dstLen)) {
+- *         if (GetStorageFileSize(title, fileNames[i], &dstLen) && dstLen > 0) {
+- *             dst = malloc(dstLen);
+- *             if (ReadStorageFile(title, fileNames[i], dst, dstLen)) {
 + *         if (dstLen > 0) {
 + *           dst = malloc(dstLen);
 + *           if (title.ReadFile(fileNames[i], dst, dstLen)) {
@@ -49,7 +49,7 @@
   *         }
   *     }
 - *
-- *     Storage.Close(title);
+- *     CloseStorage(title);
   * }
   *
   * void ReadSave(void)
@@ -59,17 +59,17 @@
   *     if (user == nullptr) {
   *         // Something bad happened!
   *     }
-- *     while (!Storage.Ready(user)) {
+- *     while (!StorageReady(user)) {
 + *     while (!user.Ready()) {
   *         Delay(1);
   *     }
   *
 - *     Uint64 saveLen = 0;
-- *     if (Storage.GetFileSize(user, "save0.sav", &saveLen) && saveLen > 0) {
+- *     if (GetStorageFileSize(user, "save0.sav", &saveLen) && saveLen > 0) {
 + *     Uint64 saveLen = user.GetFileSize();
 + *     if (saveLen > 0) {
   *         void* dst = malloc(saveLen);
-- *         if (Storage.ReadFile(user, "save0.sav", dst, saveLen)) {
+- *         if (ReadStorageFile(user, "save0.sav", dst, saveLen)) {
 + *         if (user.ReadFile("save0.sav", dst, saveLen)) {
   *             // A bunch of stuff happens here
   *         } else {
@@ -79,7 +79,7 @@
   *         // Something bad happened!
   *     }
 - *
-- *     Storage.Close(user);
+- *     CloseStorage(user);
   * }
   *
   * void WriteSave(void)
@@ -89,19 +89,19 @@
   *     if (user == nullptr) {
   *         // Something bad happened!
   *     }
-- *     while (!Storage.Ready(user)) {
+- *     while (!StorageReady(user)) {
 + *     while (!user.Ready()) {
   *         Delay(1);
   *     }
   *
   *     extern void *saveData; // A bunch of stuff happened here...
   *     extern Uint64 saveLen;
-- *     if (!Storage.WriteFile(user, "save0.sav", saveData, saveLen)) {
+- *     if (!WriteStorageFile(user, "save0.sav", saveData, saveLen)) {
 + *     if (!user.WriteFile("save0.sav", saveData, saveLen)) {
   *         // Something bad happened!
   *     }
 - *
-- *     Storage.Close(user);
+- *     CloseStorage(user);
   * }
   * ```
   *
@@ -243,10 +243,10 @@
   * buffer.
   *
 - * The value of `length` must match the length of the file exactly; call
-- * Storage.GetFileSize() to get this value. This behavior may be relaxed in a
+- * GetStorageFileSize() to get this value. This behavior may be relaxed in a
 - * future release.
 + * The value of `destination.size()` must match the length of the file exactly;
-+ * call Storage.GetFileSize() to get this value. This behavior may be relaxed in
++ * call GetStorageFileSize() to get this value. This behavior may be relaxed in
 + * a future release.
   *
   * @param storage a storage container to read from.
@@ -261,7 +261,7 @@
   * buffer.
   *
 - * The value of `length` must match the length of the file exactly; call
-- * Storage.GetFileSize() to get this value. This behavior may be relaxed in a
+- * GetStorageFileSize() to get this value. This behavior may be relaxed in a
 - * future release.
 - *
   * @param storage a storage container to read from.

@@ -422,7 +422,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PixelFormat.GetMasks
+   * @sa GetMasksForPixelFormat
    */
   static PixelFormat ForMasks(int bpp,
                               Uint32 Rmask,
@@ -434,7 +434,7 @@ public:
    * Retrieve the flags of an PixelFormat.
    *
    * This function is generally not needed directly by an app, which should use
-   * specific tests, like PixelFormat.IsFourCC, instead.
+   * specific tests, like IsPixelFormatFourCC, instead.
    *
    * @returns the flags of `format`.
    *
@@ -495,7 +495,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetBytesPerPixel
+   * @sa PixelFormatBytesPerPixel
    */
   constexpr int GetBitsPerPixel() const;
 
@@ -514,7 +514,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetBitsPerPixel
+   * @sa PixelFormatBitsPerPixel
    */
   constexpr int GetBytesPerPixel() const;
 
@@ -623,7 +623,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PixelFormat.ForMasks
+   * @sa GetPixelFormatForMasks
    */
   void GetMasks(int* bpp,
                 Uint32* Rmask,
@@ -985,7 +985,7 @@ constexpr PixelFormat::PixelFormat(PixelType type,
  * Retrieve the flags of an PixelFormat.
  *
  * This function is generally not needed directly by an app, which should use
- * specific tests, like PixelFormat.IsFourCC, instead.
+ * specific tests, like IsPixelFormatFourCC, instead.
  *
  * @param format an PixelFormat to check.
  * @returns the flags of `format`.
@@ -1005,7 +1005,7 @@ constexpr Uint8 PixelFormat::GetFlags() const
 }
 
 /**
- * A macro to retrieve the type of an PixelFormat.
+ * A function to retrieve the type of an PixelFormat.
  *
  * This is usually a value from the PixelType enumeration.
  *
@@ -1027,7 +1027,7 @@ constexpr PixelType PixelFormat::GetType() const
 }
 
 /**
- * A macro to retrieve the order of an PixelFormat.
+ * A function to retrieve the order of an PixelFormat.
  *
  * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
  * enumerations, depending on the format type.
@@ -1050,7 +1050,7 @@ constexpr int PixelFormat::GetOrder() const
 }
 
 /**
- * A macro to retrieve the layout of an PixelFormat.
+ * A function to retrieve the layout of an PixelFormat.
  *
  * This is usually a value from the PackedLayout enumeration, or zero if a
  * layout doesn't make sense for the format type.
@@ -1073,10 +1073,7 @@ constexpr PackedLayout PixelFormat::GetLayout() const
 }
 
 /**
- * A macro to determine an PixelFormat's bits per pixel.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
+ * A function to determine an PixelFormat's bits per pixel.
  *
  * FourCC formats will report zero here, as it rarely makes sense to measure
  * them per-pixel.
@@ -1088,7 +1085,7 @@ constexpr PackedLayout PixelFormat::GetLayout() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetBytesPerPixel
+ * @sa PixelFormatBytesPerPixel
  */
 constexpr int PixelFormatBitsPerPixel(PixelFormatRaw format)
 {
@@ -1101,10 +1098,7 @@ constexpr int PixelFormat::GetBitsPerPixel() const
 }
 
 /**
- * A macro to determine an PixelFormat's bytes per pixel.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
+ * A function to determine an PixelFormat's bytes per pixel.
  *
  * FourCC formats do their best here, but many of them don't have a meaningful
  * measurement of bytes per pixel.
@@ -1116,7 +1110,7 @@ constexpr int PixelFormat::GetBitsPerPixel() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetBitsPerPixel
+ * @sa PixelFormatBitsPerPixel
  */
 constexpr int PixelFormatBytesPerPixel(PixelFormatRaw format)
 {
@@ -1129,10 +1123,7 @@ constexpr int PixelFormat::GetBytesPerPixel() const
 }
 
 /**
- * A macro to determine if an PixelFormat is an indexed format.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
+ * A function to determine if an PixelFormat is an indexed format.
  *
  * @param format an PixelFormat to check.
  * @returns true if the format is indexed, false otherwise.
@@ -1152,10 +1143,7 @@ constexpr bool PixelFormat::IsIndexed() const
 }
 
 /**
- * A macro to determine if an PixelFormat is a packed format.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
+ * A function to determine if an PixelFormat is a packed format.
  *
  * @param format an PixelFormat to check.
  * @returns true if the format is packed, false otherwise.
@@ -1175,10 +1163,7 @@ constexpr bool PixelFormat::IsPacked() const
 }
 
 /**
- * A macro to determine if an PixelFormat is an array format.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
+ * A function to determine if an PixelFormat is an array format.
  *
  * @param format an PixelFormat to check.
  * @returns true if the format is an array, false otherwise.
@@ -1198,10 +1183,7 @@ constexpr bool PixelFormat::IsArray() const
 }
 
 /**
- * A macro to determine if an PixelFormat is a 10-bit format.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
+ * A function to determine if an PixelFormat is a 10-bit format.
  *
  * @param format an PixelFormat to check.
  * @returns true if the format is 10-bit, false otherwise.
@@ -1221,10 +1203,7 @@ constexpr bool PixelFormat::Is10Bit() const
 }
 
 /**
- * A macro to determine if an PixelFormat is a floating point format.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
+ * A function to determine if an PixelFormat is a floating point format.
  *
  * @param format an PixelFormat to check.
  * @returns true if the format is a floating point, false otherwise.
@@ -1249,10 +1228,7 @@ constexpr bool PixelFormat::IsFloat() const
  */
 
 /**
- * A macro to determine if an PixelFormat has an alpha channel.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
+ * A function to determine if an PixelFormat has an alpha channel.
  *
  * @param format an PixelFormat to check.
  * @returns true if the format has alpha, false otherwise.
@@ -1272,12 +1248,9 @@ constexpr bool PixelFormat::IsAlpha() const
 }
 
 /**
- * A macro to determine if an PixelFormat is a "FourCC" format.
+ * A function to determine if an PixelFormat is a "FourCC" format.
  *
  * This covers custom and other unusual formats.
- *
- * Note that this macro double-evaluates its parameter, so do not use
- * expressions with side-effects here.
  *
  * @param format an PixelFormat to check.
  * @returns true if the format has alpha, false otherwise.
@@ -2455,7 +2428,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Palette.SetColors
+ * @sa SetPaletteColors
  *
  * @cat resource
  */
@@ -2501,9 +2474,9 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Palette.Destroy
-   * @sa Palette.SetColors
-   * @sa Surface.SetPalette
+   * @sa DestroyPalette
+   * @sa SetPaletteColors
+   * @sa SetSurfacePalette
    */
   Palette(int ncolors);
 
@@ -2629,7 +2602,7 @@ inline const char* PixelFormat::GetName() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.ForMasks
+ * @sa GetPixelFormatForMasks
  */
 inline void GetMasksForPixelFormat(PixelFormatRaw format,
                                    int* bpp,
@@ -2668,7 +2641,7 @@ inline void PixelFormat::GetMasks(int* bpp,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetMasks
+ * @sa GetMasksForPixelFormat
  */
 inline PixelFormat GetPixelFormatForMasks(int bpp,
                                           Uint32 Rmask,
@@ -2731,9 +2704,9 @@ inline PixelFormat::operator const PixelFormatDetails&() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Palette.Destroy
- * @sa Palette.SetColors
- * @sa Surface.SetPalette
+ * @sa DestroyPalette
+ * @sa SetPaletteColors
+ * @sa SetSurfacePalette
  */
 inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
 
@@ -2820,10 +2793,10 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails
+ * @sa GetPixelFormatDetails
  * @sa GetRGB
  * @sa MapColor
- * @sa Surface.MapRGB
+ * @sa MapSurfaceRGB
  */
 inline Uint32 MapRGB(const PixelFormatDetails& format,
                      PaletteConstRef palette,
@@ -2909,10 +2882,10 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails
+ * @sa GetPixelFormatDetails
  * @sa GetRGBA
  * @sa MapRGB
- * @sa Surface.MapRGBA
+ * @sa MapSurfaceRGBA
  */
 inline Uint32 MapColor(const PixelFormatDetails& format,
                        ColorRaw c,
@@ -2952,7 +2925,7 @@ inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstRef palette) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails
+ * @sa GetPixelFormatDetails
  * @sa GetRGBA
  * @sa MapRGB
  * @sa MapColor
@@ -2991,7 +2964,7 @@ inline void GetRGB(Uint32 pixelvalue,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails
+ * @sa GetPixelFormatDetails
  * @sa GetRGB
  * @sa MapRGB
  * @sa MapColor

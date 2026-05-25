@@ -22,7 +22,7 @@
   *
   * This is -1 if the ID is invalid.
   *
-  * @sa Haptic.CreateEffect
+  * @sa CreateHapticEffect
   */
 -using HapticEffectID = SDL_HapticEffectID;
 +using HapticEffectID = int;
@@ -93,3 +93,12 @@
  }
  
  /**
+@@ -1289,7 +1305,7 @@
+ /**
+  * Get the implementation dependent name of a haptic device.
+  *
+- * @param haptic the Haptic obtained from Joystick.Joystick().
++ * @param haptic the Haptic obtained from OpenHaptic().
+  * @returns the name of the selected haptic device. If no name can be found,
+  *          this function returns nullptr; call GetError() for more information.
+  *

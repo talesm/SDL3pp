@@ -47,7 +47,7 @@ using ThreadRef = ResourceRef<Thread>;
  *
  * SDL will make system changes as necessary in order to apply the thread
  * priority. Code which attempts to control thread state related to priority
- * should be aware that calling Thread.SetCurrentPriority may alter such state.
+ * should be aware that calling SetCurrentThreadPriority may alter such state.
  * SDL_HINT_THREAD_PRIORITY_POLICY can be used to control aspects of this
  * behavior.
  *
@@ -69,11 +69,11 @@ constexpr ThreadPriority THREAD_PRIORITY_TIME_CRITICAL =
 /**
  * The SDL thread state.
  *
- * The current state of a thread can be checked by calling Thread.GetState.
+ * The current state of a thread can be checked by calling GetThreadState.
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa Thread.GetState
+ * @sa GetThreadState
  */
 using ThreadState = SDL_ThreadState;
 
@@ -86,7 +86,7 @@ constexpr ThreadState THREAD_ALIVE =
 constexpr ThreadState THREAD_DETACHED =
   SDL_THREAD_DETACHED; ///< The thread is detached and can't be waited on
 
-/// The thread has finished and should be cleaned up with Thread.Wait()
+/// The thread has finished and should be cleaned up with WaitThread()
 constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
 
 /**
@@ -98,7 +98,7 @@ constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa Thread.GetID
+ * @sa GetThreadID
  * @sa GetCurrentThreadID
  */
 using ThreadID = SDL_ThreadID;
@@ -107,7 +107,7 @@ using ThreadID = SDL_ThreadID;
  * The function passed to CreateThread() as the new thread's entry point.
  *
  * @param data what was passed as `data` to CreateThread().
- * @returns a value that can be reported through Thread.Wait().
+ * @returns a value that can be reported through WaitThread().
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -116,7 +116,7 @@ using ThreadFunction = int(SDLCALL*)(void* data);
 /**
  * The function passed to CreateThread() as the new thread's entry point.
  *
- * @returns a value that can be reported through Thread.Wait().
+ * @returns a value that can be reported through WaitThread().
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -145,7 +145,7 @@ using TLSDestructorCallback = void(SDLCALL*)(void* value);
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa CreateThread
- * @sa Thread.Wait
+ * @sa WaitThread
  *
  * @cat resource
  */
@@ -208,7 +208,7 @@ struct Thread : ResourceBase<ThreadRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateThreadWithProperties
-   * @sa Thread.Wait
+   * @sa WaitThread
    */
   Thread(ThreadFunction fn, StringParam name, void* data);
 
@@ -241,7 +241,7 @@ struct Thread : ResourceBase<ThreadRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateThreadWithProperties
-   * @sa Thread.Wait
+   * @sa WaitThread
    */
   Thread(ThreadCB fn, StringParam name);
 
@@ -275,7 +275,7 @@ struct Thread : ResourceBase<ThreadRaw>
    *
    * If a system imposes requirements, SDL will try to munge the string for it
    * (truncate, etc), but the original string contents will be available from
-   * Thread.GetName().
+   * GetThreadName().
    *
    * The size (in bytes) of the new stack can be specified with
    * `prop.Thread.Create.STACKSIZE_NUMBER`. Zero means "use the system default"
@@ -307,7 +307,7 @@ struct Thread : ResourceBase<ThreadRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateThread
-   * @sa Thread.Wait
+   * @sa WaitThread
    */
   Thread(PropertiesRef props);
 
@@ -328,24 +328,24 @@ struct Thread : ResourceBase<ThreadRaw>
    * Let a thread clean up on exit without intervention.
    *
    * A thread may be "detached" to signify that it should not remain until
-   * another thread has called Thread.Wait() on it. Detaching a thread is useful
+   * another thread has called WaitThread() on it. Detaching a thread is useful
    * for long-running threads that nothing needs to synchronize with or further
    * manage. When a detached thread is done, it simply goes away.
    *
    * There is no way to recover the return code of a detached thread. If you
-   * need this, don't detach the thread and instead use Thread.Wait().
+   * need this, don't detach the thread and instead use WaitThread().
    *
    * Once a thread is detached, you should usually assume the Thread isn't safe
    * to reference again, as it will become invalid immediately upon the detached
-   * thread's exit, instead of remaining until someone has called Thread.Wait()
+   * thread's exit, instead of remaining until someone has called WaitThread()
    * to finally clean it up. As such, don't detach the same thread more than
    * once.
    *
-   * If a thread has already exited when passed to Thread.Detach(), it will stop
-   * waiting for a call to Thread.Wait() and clean up immediately. It is not
-   * safe to detach a thread that might be used with Thread.Wait().
+   * If a thread has already exited when passed to DetachThread(), it will stop
+   * waiting for a call to WaitThread() and clean up immediately. It is not safe
+   * to detach a thread that might be used with WaitThread().
    *
-   * You may not call Thread.Wait() on a thread that has been detached. Use
+   * You may not call WaitThread() on a thread that has been detached. Use
    * either that function or this one, but not both, or behavior is undefined.
    *
    * It is safe to pass nullptr to this function; it is a no-op.
@@ -355,7 +355,7 @@ struct Thread : ResourceBase<ThreadRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateThread
-   * @sa Thread.Wait
+   * @sa WaitThread
    */
   void Detach();
 
@@ -413,13 +413,13 @@ struct Thread : ResourceBase<ThreadRaw>
    *
    * Once a thread has been cleaned up through this function, the Thread that
    * references it becomes invalid and should not be referenced again. As such,
-   * only one thread may call Thread.Wait() on another.
+   * only one thread may call WaitThread() on another.
    *
    * The return code from the thread function is placed in the area pointed to
    * by `status`, if `status` is not nullptr.
    *
    * You may not wait on a thread that has been used in a call to
-   * Thread.Detach(). Use either that function or this one, but not both, or
+   * DetachThread(). Use either that function or this one, but not both, or
    * behavior is undefined.
    *
    * It is safe to pass a nullptr thread to this function; it is a no-op.
@@ -437,7 +437,7 @@ struct Thread : ResourceBase<ThreadRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateThread
-   * @sa Thread.Detach
+   * @sa DetachThread
    */
   void Wait(int* status);
 
@@ -499,7 +499,7 @@ using TLSID = AtomicInt;
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateThreadWithProperties
- * @sa Thread.Wait
+ * @sa WaitThread
  */
 inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
 {
@@ -535,7 +535,7 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateThreadWithProperties
- * @sa Thread.Wait
+ * @sa WaitThread
  */
 inline Thread CreateThread(ThreadCB fn, StringParam name)
 {
@@ -589,7 +589,7 @@ inline Thread::Thread(PropertiesRef props)
  *
  * If a system imposes requirements, SDL will try to munge the string for it
  * (truncate, etc), but the original string contents will be available from
- * Thread.GetName().
+ * GetThreadName().
  *
  * The size (in bytes) of the new stack can be specified with
  * `prop.Thread.Create.STACKSIZE_NUMBER`. Zero means "use the system default"
@@ -621,7 +621,7 @@ inline Thread::Thread(PropertiesRef props)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateThread
- * @sa Thread.Wait
+ * @sa WaitThread
  */
 inline Thread CreateThreadWithProperties(PropertiesRef props)
 {
@@ -687,7 +687,7 @@ inline const char* Thread::GetName() const { return SDL::GetThreadName(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Thread.GetID
+ * @sa GetThreadID
  */
 inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
 
@@ -747,12 +747,12 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  *
  * Once a thread has been cleaned up through this function, the Thread that
  * references it becomes invalid and should not be referenced again. As such,
- * only one thread may call Thread.Wait() on another.
+ * only one thread may call WaitThread() on another.
  *
  * The return code from the thread function is placed in the area pointed to by
  * `status`, if `status` is not nullptr.
  *
- * You may not wait on a thread that has been used in a call to Thread.Detach().
+ * You may not wait on a thread that has been used in a call to DetachThread().
  * Use either that function or this one, but not both, or behavior is undefined.
  *
  * It is safe to pass a nullptr thread to this function; it is a no-op.
@@ -772,7 +772,7 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateThread
- * @sa Thread.Detach
+ * @sa DetachThread
  */
 inline void WaitThread(ThreadRef thread, int* status)
 {
@@ -808,23 +808,23 @@ inline ThreadState Thread::GetState() const
  * Let a thread clean up on exit without intervention.
  *
  * A thread may be "detached" to signify that it should not remain until another
- * thread has called Thread.Wait() on it. Detaching a thread is useful for
+ * thread has called WaitThread() on it. Detaching a thread is useful for
  * long-running threads that nothing needs to synchronize with or further
  * manage. When a detached thread is done, it simply goes away.
  *
  * There is no way to recover the return code of a detached thread. If you need
- * this, don't detach the thread and instead use Thread.Wait().
+ * this, don't detach the thread and instead use WaitThread().
  *
  * Once a thread is detached, you should usually assume the Thread isn't safe to
  * reference again, as it will become invalid immediately upon the detached
- * thread's exit, instead of remaining until someone has called Thread.Wait() to
+ * thread's exit, instead of remaining until someone has called WaitThread() to
  * finally clean it up. As such, don't detach the same thread more than once.
  *
- * If a thread has already exited when passed to Thread.Detach(), it will stop
- * waiting for a call to Thread.Wait() and clean up immediately. It is not safe
- * to detach a thread that might be used with Thread.Wait().
+ * If a thread has already exited when passed to DetachThread(), it will stop
+ * waiting for a call to WaitThread() and clean up immediately. It is not safe
+ * to detach a thread that might be used with WaitThread().
  *
- * You may not call Thread.Wait() on a thread that has been detached. Use either
+ * You may not call WaitThread() on a thread that has been detached. Use either
  * that function or this one, but not both, or behavior is undefined.
  *
  * It is safe to pass nullptr to this function; it is a no-op.
@@ -837,7 +837,7 @@ inline ThreadState Thread::GetState() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateThread
- * @sa Thread.Wait
+ * @sa WaitThread
  */
 inline void DetachThread(ThreadRaw thread) { SDL_DetachThread(thread); }
 

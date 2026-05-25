@@ -45,7 +45,7 @@ namespace SDL {
  *
  * SDL can provide virtual joysticks as well: the app defines an imaginary
  * controller with AttachVirtualJoystick(), and then can provide inputs for it
- * via Joystick.SetVirtualAxis(), Joystick.SetVirtualButton(), etc. As this data
+ * via SetJoystickVirtualAxis(), SetJoystickVirtualButton(), etc. As this data
  * is supplied, it will look like a normal joystick to SDL, just not backed by a
  * hardware driver. This has been used to make unusual devices, like VR headset
  * controllers, look like normal joysticks, or provide recording/playback of
@@ -80,8 +80,8 @@ struct JoystickApiLock;
  * An enum of some common joystick types.
  *
  * In some cases, SDL can identify a low-level joystick as being a certain type
- * of device, and will report it through Joystick.GetType (or
- * JoystickID.GetJoystickTypeForID).
+ * of device, and will report it through GetJoystickType (or
+ * GetJoystickTypeForID).
  *
  * This is by no means a complete list of everything that can be plugged into a
  * computer.
@@ -171,7 +171,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetName
+   * @sa GetJoystickName
    * @sa GetJoysticks
    */
   const char* GetJoystickNameForID();
@@ -188,7 +188,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetPath
+   * @sa GetJoystickPath
    * @sa GetJoysticks
    */
   const char* GetJoystickPathForID();
@@ -204,7 +204,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetPlayerIndex
+   * @sa GetJoystickPlayerIndex
    * @sa GetJoysticks
    */
   int GetJoystickPlayerIndexForID();
@@ -221,8 +221,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetGUID
-   * @sa GUID.ToString
+   * @sa GetJoystickGUID
+   * @sa GUIDToString
    */
   GUID GetJoystickGUIDForID();
 
@@ -239,7 +239,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetVendor
+   * @sa GetJoystickVendor
    * @sa GetJoysticks
    */
   Uint16 GetJoystickVendorForID();
@@ -257,7 +257,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetProduct
+   * @sa GetJoystickProduct
    * @sa GetJoysticks
    */
   Uint16 GetJoystickProductForID();
@@ -275,7 +275,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetProductVersion
+   * @sa GetJoystickProductVersion
    * @sa GetJoysticks
    */
   Uint16 GetJoystickProductVersionForID();
@@ -293,7 +293,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetType
+   * @sa GetJoystickType
    * @sa GetJoysticks
    */
   JoystickType GetJoystickTypeForID();
@@ -311,7 +311,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.Close
+   * @sa CloseJoystick
    */
   Joystick OpenJoystick();
 
@@ -355,7 +355,7 @@ public:
 /**
  * Possible connection states for a joystick device.
  *
- * This is used by Joystick.GetConnectionState to report how a device is
+ * This is used by GetJoystickConnectionState to report how a device is
  * connected to the system.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -449,7 +449,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.Close
+   * @sa CloseJoystick
    */
   Joystick(JoystickID instance_id);
 
@@ -467,13 +467,13 @@ struct Joystick : ResourceBase<JoystickRaw>
   Joystick& operator=(const Joystick& other) = delete;
 
   /**
-   * Close a joystick previously opened with JoystickID.OpenJoystick().
+   * Close a joystick previously opened with OpenJoystick().
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa JoystickID.OpenJoystick
+   * @sa Joystick.Joystick
    */
   void Close();
 
@@ -497,10 +497,10 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.SetVirtualButton
-   * @sa Joystick.SetVirtualBall
-   * @sa Joystick.SetVirtualHat
-   * @sa Joystick.SetVirtualTouchpad
+   * @sa SetJoystickVirtualButton
+   * @sa SetJoystickVirtualBall
+   * @sa SetJoystickVirtualHat
+   * @sa SetJoystickVirtualTouchpad
    * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualAxis(int axis, Sint16 value);
@@ -522,10 +522,10 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.SetVirtualAxis
-   * @sa Joystick.SetVirtualButton
-   * @sa Joystick.SetVirtualHat
-   * @sa Joystick.SetVirtualTouchpad
+   * @sa SetJoystickVirtualAxis
+   * @sa SetJoystickVirtualButton
+   * @sa SetJoystickVirtualHat
+   * @sa SetJoystickVirtualTouchpad
    * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel);
@@ -546,10 +546,10 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.SetVirtualAxis
-   * @sa Joystick.SetVirtualBall
-   * @sa Joystick.SetVirtualHat
-   * @sa Joystick.SetVirtualTouchpad
+   * @sa SetJoystickVirtualAxis
+   * @sa SetJoystickVirtualBall
+   * @sa SetJoystickVirtualHat
+   * @sa SetJoystickVirtualTouchpad
    * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualButton(int button, bool down);
@@ -570,10 +570,10 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.SetVirtualAxis
-   * @sa Joystick.SetVirtualButton
-   * @sa Joystick.SetVirtualBall
-   * @sa Joystick.SetVirtualTouchpad
+   * @sa SetJoystickVirtualAxis
+   * @sa SetJoystickVirtualButton
+   * @sa SetJoystickVirtualBall
+   * @sa SetJoystickVirtualTouchpad
    * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualHat(int hat, Uint8 value);
@@ -599,10 +599,10 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.SetVirtualAxis
-   * @sa Joystick.SetVirtualButton
-   * @sa Joystick.SetVirtualBall
-   * @sa Joystick.SetVirtualHat
+   * @sa SetJoystickVirtualAxis
+   * @sa SetJoystickVirtualButton
+   * @sa SetJoystickVirtualBall
+   * @sa SetJoystickVirtualHat
    * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualTouchpad(int touchpad,
@@ -630,11 +630,11 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.SetVirtualAxis
-   * @sa Joystick.SetVirtualButton
-   * @sa Joystick.SetVirtualBall
-   * @sa Joystick.SetVirtualHat
-   * @sa Joystick.SetVirtualTouchpad
+   * @sa SetJoystickVirtualAxis
+   * @sa SetJoystickVirtualButton
+   * @sa SetJoystickVirtualBall
+   * @sa SetJoystickVirtualHat
+   * @sa SetJoystickVirtualTouchpad
    */
   void SendVirtualSensorData(SensorType type,
                              Uint64 sensor_timestamp,
@@ -676,7 +676,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa JoystickID.GetJoystickNameForID
+   * @sa GetJoystickNameForID
    */
   const char* GetName();
 
@@ -690,7 +690,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa JoystickID.GetJoystickPathForID
+   * @sa GetJoystickPathForID
    */
   const char* GetPath();
 
@@ -706,7 +706,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.SetPlayerIndex
+   * @sa SetJoystickPlayerIndex
    */
   int GetPlayerIndex();
 
@@ -721,7 +721,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetPlayerIndex
+   * @sa GetJoystickPlayerIndex
    */
   void SetPlayerIndex(int player_index);
 
@@ -738,8 +738,8 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa JoystickID.GetJoystickGUIDForID
-   * @sa GUID.ToString
+   * @sa GetJoystickGUIDForID
+   * @sa GUIDToString
    */
   GUID GetGUID();
 
@@ -754,7 +754,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa JoystickID.GetJoystickVendorForID
+   * @sa GetJoystickVendorForID
    */
   Uint16 GetVendor();
 
@@ -769,7 +769,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa JoystickID.GetJoystickProductForID
+   * @sa GetJoystickProductForID
    */
   Uint16 GetProduct();
 
@@ -784,7 +784,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa JoystickID.GetJoystickProductVersionForID
+   * @sa GetJoystickProductVersionForID
    */
   Uint16 GetProductVersion();
 
@@ -826,7 +826,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa JoystickID.GetJoystickTypeForID
+   * @sa GetJoystickTypeForID
    */
   JoystickType GetType();
 
@@ -868,10 +868,10 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetAxis
-   * @sa Joystick.GetNumBalls
-   * @sa Joystick.GetNumButtons
-   * @sa Joystick.GetNumHats
+   * @sa GetJoystickAxis
+   * @sa GetNumJoystickBalls
+   * @sa GetNumJoystickButtons
+   * @sa GetNumJoystickHats
    */
   int GetNumAxes();
 
@@ -890,10 +890,10 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetBall
-   * @sa Joystick.GetNumAxes
-   * @sa Joystick.GetNumButtons
-   * @sa Joystick.GetNumHats
+   * @sa GetJoystickBall
+   * @sa GetNumJoystickAxes
+   * @sa GetNumJoystickButtons
+   * @sa GetNumJoystickHats
    */
   int GetNumBalls();
 
@@ -907,10 +907,10 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetHat
-   * @sa Joystick.GetNumAxes
-   * @sa Joystick.GetNumBalls
-   * @sa Joystick.GetNumButtons
+   * @sa GetJoystickHat
+   * @sa GetNumJoystickAxes
+   * @sa GetNumJoystickBalls
+   * @sa GetNumJoystickButtons
    */
   int GetNumHats();
 
@@ -924,10 +924,10 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetButton
-   * @sa Joystick.GetNumAxes
-   * @sa Joystick.GetNumBalls
-   * @sa Joystick.GetNumHats
+   * @sa GetJoystickButton
+   * @sa GetNumJoystickAxes
+   * @sa GetNumJoystickBalls
+   * @sa GetNumJoystickHats
    */
   int GetNumButtons();
 
@@ -940,7 +940,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    * Game Controller API makes a great effort to apply order to this lower-level
    * interface, so you know that a specific axis is the "left thumb stick," etc.
    *
-   * The value returned by Joystick.GetAxis() is a signed integer (-32768 to
+   * The value returned by GetJoystickAxis() is a signed integer (-32768 to
    * 32767) representing the current position of the axis. It may be necessary
    * to impose certain tolerances on these values to account for jitter.
    *
@@ -952,7 +952,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetNumAxes
+   * @sa GetNumJoystickAxes
    */
   Sint16 GetAxis(int axis);
 
@@ -977,7 +977,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    * Get the ball axis change since the last poll.
    *
    * Trackballs can only return relative motion since the last call to
-   * Joystick.GetBall(), these motion deltas are placed into `dx` and `dy`.
+   * GetJoystickBall(), these motion deltas are placed into `dx` and `dy`.
    *
    * Most joysticks do not have trackballs.
    *
@@ -990,7 +990,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetNumBalls
+   * @sa GetNumJoystickBalls
    */
   void GetBall(int ball, int* dx, int* dy);
 
@@ -1006,7 +1006,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetNumHats
+   * @sa GetNumJoystickHats
    */
   Uint8 GetHat(int hat);
 
@@ -1021,7 +1021,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.GetNumButtons
+   * @sa GetNumJoystickButtons
    */
   bool GetButton(int button);
 
@@ -1057,7 +1057,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * Note that this is rumbling of the _triggers_ and not the game controller as
    * a whole. This is currently only supported on Xbox One controllers. If you
-   * want the (more common) whole-controller rumble, use Joystick.Rumble()
+   * want the (more common) whole-controller rumble, use RumbleJoystick()
    * instead.
    *
    * This function requires you to process SDL events or call UpdateJoysticks()
@@ -1074,7 +1074,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.Rumble
+   * @sa RumbleJoystick
    */
   void RumbleTriggers(Uint16 left_rumble,
                       Uint16 right_rumble,
@@ -1303,7 +1303,7 @@ inline bool HasJoystick() { return SDL_HasJoystick(); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa HasJoystick
- * @sa JoystickID.OpenJoystick
+ * @sa Joystick.Joystick
  */
 inline OwnArray<JoystickID> GetJoysticks()
 {
@@ -1325,7 +1325,7 @@ inline OwnArray<JoystickID> GetJoysticks()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetName
+ * @sa GetJoystickName
  * @sa GetJoysticks
  */
 inline const char* GetJoystickNameForID(JoystickID instance_id)
@@ -1351,7 +1351,7 @@ inline const char* JoystickID::GetJoystickNameForID()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetPath
+ * @sa GetJoystickPath
  * @sa GetJoysticks
  */
 inline const char* GetJoystickPathForID(JoystickID instance_id)
@@ -1376,7 +1376,7 @@ inline const char* JoystickID::GetJoystickPathForID()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetPlayerIndex
+ * @sa GetJoystickPlayerIndex
  * @sa GetJoysticks
  */
 inline int GetJoystickPlayerIndexForID(JoystickID instance_id)
@@ -1402,8 +1402,8 @@ inline int JoystickID::GetJoystickPlayerIndexForID()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetGUID
- * @sa GUID.ToString
+ * @sa GetJoystickGUID
+ * @sa GUIDToString
  */
 inline GUID GetJoystickGUIDForID(JoystickID instance_id)
 {
@@ -1429,7 +1429,7 @@ inline GUID JoystickID::GetJoystickGUIDForID()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetVendor
+ * @sa GetJoystickVendor
  * @sa GetJoysticks
  */
 inline Uint16 GetJoystickVendorForID(JoystickID instance_id)
@@ -1456,7 +1456,7 @@ inline Uint16 JoystickID::GetJoystickVendorForID()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetProduct
+ * @sa GetJoystickProduct
  * @sa GetJoysticks
  */
 inline Uint16 GetJoystickProductForID(JoystickID instance_id)
@@ -1483,7 +1483,7 @@ inline Uint16 JoystickID::GetJoystickProductForID()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetProductVersion
+ * @sa GetJoystickProductVersion
  * @sa GetJoysticks
  */
 inline Uint16 GetJoystickProductVersionForID(JoystickID instance_id)
@@ -1509,7 +1509,7 @@ inline Uint16 JoystickID::GetJoystickProductVersionForID()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetType
+ * @sa GetJoystickType
  * @sa GetJoysticks
  */
 inline JoystickType GetJoystickTypeForID(JoystickID instance_id)
@@ -1536,7 +1536,7 @@ inline JoystickType JoystickID::GetJoystickTypeForID()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.Close
+ * @sa CloseJoystick
  */
 inline Joystick OpenJoystick(JoystickID instance_id)
 {
@@ -1582,8 +1582,8 @@ inline JoystickRef JoystickID::GetJoystickFromID()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetPlayerIndex
- * @sa Joystick.SetPlayerIndex
+ * @sa GetJoystickPlayerIndex
+ * @sa SetJoystickPlayerIndex
  */
 inline JoystickRef GetJoystickFromPlayerIndex(int player_index)
 {
@@ -1632,7 +1632,7 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  * to make other things look like joysticks, or provide pre-recorded input, etc.
  *
  * Once attached, the app can send joystick inputs to the new virtual joystick
- * using Joystick.SetVirtualAxis(), etc.
+ * using SetJoystickVirtualAxis(), etc.
  *
  * When no longer needed, the virtual joystick can be removed by calling
  * DetachVirtualJoystick().
@@ -1646,11 +1646,11 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  * @since This function is available since SDL 3.2.0.
  *
  * @sa DetachVirtualJoystick
- * @sa Joystick.SetVirtualAxis
- * @sa Joystick.SetVirtualButton
- * @sa Joystick.SetVirtualBall
- * @sa Joystick.SetVirtualHat
- * @sa Joystick.SetVirtualTouchpad
+ * @sa SetJoystickVirtualAxis
+ * @sa SetJoystickVirtualButton
+ * @sa SetJoystickVirtualBall
+ * @sa SetJoystickVirtualHat
+ * @sa SetJoystickVirtualTouchpad
  * @sa SDL_SetJoystickVirtualSensorData
  */
 inline JoystickID AttachVirtualJoystick(const VirtualJoystickDesc& desc)
@@ -1722,10 +1722,10 @@ inline bool JoystickID::IsJoystickVirtual()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.SetVirtualButton
- * @sa Joystick.SetVirtualBall
- * @sa Joystick.SetVirtualHat
- * @sa Joystick.SetVirtualTouchpad
+ * @sa SetJoystickVirtualButton
+ * @sa SetJoystickVirtualBall
+ * @sa SetJoystickVirtualHat
+ * @sa SetJoystickVirtualTouchpad
  * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualAxis(JoystickRef joystick, int axis, Sint16 value)
@@ -1756,10 +1756,10 @@ inline void Joystick::SetVirtualAxis(int axis, Sint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.SetVirtualAxis
- * @sa Joystick.SetVirtualButton
- * @sa Joystick.SetVirtualHat
- * @sa Joystick.SetVirtualTouchpad
+ * @sa SetJoystickVirtualAxis
+ * @sa SetJoystickVirtualButton
+ * @sa SetJoystickVirtualHat
+ * @sa SetJoystickVirtualTouchpad
  * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualBall(JoystickRef joystick,
@@ -1792,10 +1792,10 @@ inline void Joystick::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.SetVirtualAxis
- * @sa Joystick.SetVirtualBall
- * @sa Joystick.SetVirtualHat
- * @sa Joystick.SetVirtualTouchpad
+ * @sa SetJoystickVirtualAxis
+ * @sa SetJoystickVirtualBall
+ * @sa SetJoystickVirtualHat
+ * @sa SetJoystickVirtualTouchpad
  * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualButton(JoystickRef joystick,
@@ -1827,10 +1827,10 @@ inline void Joystick::SetVirtualButton(int button, bool down)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.SetVirtualAxis
- * @sa Joystick.SetVirtualButton
- * @sa Joystick.SetVirtualBall
- * @sa Joystick.SetVirtualTouchpad
+ * @sa SetJoystickVirtualAxis
+ * @sa SetJoystickVirtualButton
+ * @sa SetJoystickVirtualBall
+ * @sa SetJoystickVirtualTouchpad
  * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualHat(JoystickRef joystick, int hat, Uint8 value)
@@ -1864,10 +1864,10 @@ inline void Joystick::SetVirtualHat(int hat, Uint8 value)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.SetVirtualAxis
- * @sa Joystick.SetVirtualButton
- * @sa Joystick.SetVirtualBall
- * @sa Joystick.SetVirtualHat
+ * @sa SetJoystickVirtualAxis
+ * @sa SetJoystickVirtualButton
+ * @sa SetJoystickVirtualBall
+ * @sa SetJoystickVirtualHat
  * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualTouchpad(JoystickRef joystick,
@@ -1910,11 +1910,11 @@ inline void Joystick::SetVirtualTouchpad(int touchpad,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.SetVirtualAxis
- * @sa Joystick.SetVirtualButton
- * @sa Joystick.SetVirtualBall
- * @sa Joystick.SetVirtualHat
- * @sa Joystick.SetVirtualTouchpad
+ * @sa SetJoystickVirtualAxis
+ * @sa SetJoystickVirtualButton
+ * @sa SetJoystickVirtualBall
+ * @sa SetJoystickVirtualHat
+ * @sa SetJoystickVirtualTouchpad
  */
 inline void SendJoystickVirtualSensorData(JoystickRef joystick,
                                           SensorType type,
@@ -1951,7 +1951,7 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
  * - `prop.JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has simple
  *   trigger rumble
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
@@ -2001,7 +2001,7 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
 /**
  * Get the implementation dependent name of a joystick.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns the name of the selected joystick. If no name can be found, this
  *          function returns nullptr; call GetError() for more information.
  *
@@ -2009,7 +2009,7 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.GetJoystickNameForID
+ * @sa GetJoystickNameForID
  */
 inline const char* GetJoystickName(JoystickRef joystick)
 {
@@ -2021,7 +2021,7 @@ inline const char* Joystick::GetName() { return SDL::GetJoystickName(get()); }
 /**
  * Get the implementation dependent path of a joystick.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns the path of the selected joystick. If no path can be found, this
  *          function returns nullptr; call GetError() for more information.
  *
@@ -2029,7 +2029,7 @@ inline const char* Joystick::GetName() { return SDL::GetJoystickName(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.GetJoystickPathForID
+ * @sa GetJoystickPathForID
  */
 inline const char* GetJoystickPath(JoystickRef joystick)
 {
@@ -2044,14 +2044,14 @@ inline const char* Joystick::GetPath() { return SDL::GetJoystickPath(get()); }
  * For XInput controllers this returns the XInput user index. Many joysticks
  * will not be able to supply this information.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns the player index, or -1 if it's not available.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.SetPlayerIndex
+ * @sa SetJoystickPlayerIndex
  */
 inline int GetJoystickPlayerIndex(JoystickRef joystick)
 {
@@ -2066,7 +2066,7 @@ inline int Joystick::GetPlayerIndex()
 /**
  * Set the player index of an opened joystick.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @param player_index player index to assign to this joystick, or -1 to clear
  *                     the player index and turn off player LEDs.
  * @throws Error on failure.
@@ -2075,7 +2075,7 @@ inline int Joystick::GetPlayerIndex()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetPlayerIndex
+ * @sa GetJoystickPlayerIndex
  */
 inline void SetJoystickPlayerIndex(JoystickRef joystick, int player_index)
 {
@@ -2092,7 +2092,7 @@ inline void Joystick::SetPlayerIndex(int player_index)
  *
  * This function requires an open joystick.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns the GUID of the given joystick. If called on an invalid index, this
  *          function returns a zero GUID; call GetError() for more information.
  *
@@ -2100,8 +2100,8 @@ inline void Joystick::SetPlayerIndex(int player_index)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.GetJoystickGUIDForID
- * @sa GUID.ToString
+ * @sa GetJoystickGUIDForID
+ * @sa GUIDToString
  */
 inline GUID GetJoystickGUID(JoystickRef joystick)
 {
@@ -2115,14 +2115,14 @@ inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(get()); }
  *
  * If the vendor ID isn't available this function returns 0.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns the USB vendor ID of the selected joystick, or 0 if unavailable.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.GetJoystickVendorForID
+ * @sa GetJoystickVendorForID
  */
 inline Uint16 GetJoystickVendor(JoystickRef joystick)
 {
@@ -2136,14 +2136,14 @@ inline Uint16 Joystick::GetVendor() { return SDL::GetJoystickVendor(get()); }
  *
  * If the product ID isn't available this function returns 0.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns the USB product ID of the selected joystick, or 0 if unavailable.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.GetJoystickProductForID
+ * @sa GetJoystickProductForID
  */
 inline Uint16 GetJoystickProduct(JoystickRef joystick)
 {
@@ -2157,14 +2157,14 @@ inline Uint16 Joystick::GetProduct() { return SDL::GetJoystickProduct(get()); }
  *
  * If the product version isn't available this function returns 0.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns the product version of the selected joystick, or 0 if unavailable.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.GetJoystickProductVersionForID
+ * @sa GetJoystickProductVersionForID
  */
 inline Uint16 GetJoystickProductVersion(JoystickRef joystick)
 {
@@ -2181,7 +2181,7 @@ inline Uint16 Joystick::GetProductVersion()
  *
  * If the firmware version isn't available this function returns 0.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns the firmware version of the selected joystick, or 0 if unavailable.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2203,7 +2203,7 @@ inline Uint16 Joystick::GetFirmwareVersion()
  *
  * Returns the serial number of the joystick, or nullptr if it is not available.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns the serial number of the selected joystick, or nullptr if
  *          unavailable.
  *
@@ -2224,14 +2224,14 @@ inline const char* Joystick::GetSerial()
 /**
  * Get the type of an opened joystick.
  *
- * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
+ * @param joystick the Joystick obtained from Joystick.Joystick().
  * @returns the JoystickType of the selected joystick.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.GetJoystickTypeForID
+ * @sa GetJoystickTypeForID
  */
 inline JoystickType GetJoystickType(JoystickRef joystick)
 {
@@ -2256,7 +2256,7 @@ inline JoystickType Joystick::GetType() { return SDL::GetJoystickType(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.GetJoystickGUIDForID
+ * @sa GetJoystickGUIDForID
  */
 inline void GetJoystickGUIDInfo(GUID guid,
                                 Uint16* vendor,
@@ -2318,10 +2318,10 @@ inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetAxis
- * @sa Joystick.GetNumBalls
- * @sa Joystick.GetNumButtons
- * @sa Joystick.GetNumHats
+ * @sa GetJoystickAxis
+ * @sa GetNumJoystickBalls
+ * @sa GetNumJoystickButtons
+ * @sa GetNumJoystickHats
  */
 inline int GetNumJoystickAxes(JoystickRef joystick)
 {
@@ -2346,10 +2346,10 @@ inline int Joystick::GetNumAxes() { return SDL::GetNumJoystickAxes(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetBall
- * @sa Joystick.GetNumAxes
- * @sa Joystick.GetNumButtons
- * @sa Joystick.GetNumHats
+ * @sa GetJoystickBall
+ * @sa GetNumJoystickAxes
+ * @sa GetNumJoystickButtons
+ * @sa GetNumJoystickHats
  */
 inline int GetNumJoystickBalls(JoystickRef joystick)
 {
@@ -2369,10 +2369,10 @@ inline int Joystick::GetNumBalls() { return SDL::GetNumJoystickBalls(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetHat
- * @sa Joystick.GetNumAxes
- * @sa Joystick.GetNumBalls
- * @sa Joystick.GetNumButtons
+ * @sa GetJoystickHat
+ * @sa GetNumJoystickAxes
+ * @sa GetNumJoystickBalls
+ * @sa GetNumJoystickButtons
  */
 inline int GetNumJoystickHats(JoystickRef joystick)
 {
@@ -2392,10 +2392,10 @@ inline int Joystick::GetNumHats() { return SDL::GetNumJoystickHats(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetButton
- * @sa Joystick.GetNumAxes
- * @sa Joystick.GetNumBalls
- * @sa Joystick.GetNumHats
+ * @sa GetJoystickButton
+ * @sa GetNumJoystickAxes
+ * @sa GetNumJoystickBalls
+ * @sa GetNumJoystickHats
  */
 inline int GetNumJoystickButtons(JoystickRef joystick)
 {
@@ -2464,9 +2464,9 @@ inline void UpdateJoysticks() { SDL_UpdateJoysticks(); }
  * Controller API makes a great effort to apply order to this lower-level
  * interface, so you know that a specific axis is the "left thumb stick," etc.
  *
- * The value returned by Joystick.GetAxis() is a signed integer (-32768 to
- * 32767) representing the current position of the axis. It may be necessary to
- * impose certain tolerances on these values to account for jitter.
+ * The value returned by GetJoystickAxis() is a signed integer (-32768 to 32767)
+ * representing the current position of the axis. It may be necessary to impose
+ * certain tolerances on these values to account for jitter.
  *
  * @param joystick an Joystick structure containing joystick information.
  * @param axis the axis to query; the axis indices start at index 0.
@@ -2477,7 +2477,7 @@ inline void UpdateJoysticks() { SDL_UpdateJoysticks(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetNumAxes
+ * @sa GetNumJoystickAxes
  */
 inline Sint16 GetJoystickAxis(JoystickRef joystick, int axis)
 {
@@ -2521,7 +2521,7 @@ inline bool Joystick::GetAxisInitialState(int axis, Sint16* state)
  * Get the ball axis change since the last poll.
  *
  * Trackballs can only return relative motion since the last call to
- * Joystick.GetBall(), these motion deltas are placed into `dx` and `dy`.
+ * GetJoystickBall(), these motion deltas are placed into `dx` and `dy`.
  *
  * Most joysticks do not have trackballs.
  *
@@ -2535,7 +2535,7 @@ inline bool Joystick::GetAxisInitialState(int axis, Sint16* state)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetNumBalls
+ * @sa GetNumJoystickBalls
  */
 inline void GetJoystickBall(JoystickRef joystick, int ball, int* dx, int* dy)
 {
@@ -2560,7 +2560,7 @@ inline void Joystick::GetBall(int ball, int* dx, int* dy)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetNumHats
+ * @sa GetNumJoystickHats
  */
 inline Uint8 GetJoystickHat(JoystickRef joystick, int hat)
 {
@@ -2584,7 +2584,7 @@ inline Uint8 Joystick::GetHat(int hat)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.GetNumButtons
+ * @sa GetNumJoystickButtons
  */
 inline bool GetJoystickButton(JoystickRef joystick, int button)
 {
@@ -2642,7 +2642,7 @@ inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
  *
  * Note that this is rumbling of the _triggers_ and not the game controller as a
  * whole. This is currently only supported on Xbox One controllers. If you want
- * the (more common) whole-controller rumble, use Joystick.Rumble() instead.
+ * the (more common) whole-controller rumble, use RumbleJoystick() instead.
  *
  * This function requires you to process SDL events or call UpdateJoysticks() to
  * update rumble state.
@@ -2659,7 +2659,7 @@ inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.Rumble
+ * @sa RumbleJoystick
  */
 inline void RumbleJoystickTriggers(JoystickRef joystick,
                                    Uint16 left_rumble,
@@ -2732,7 +2732,7 @@ inline void Joystick::SendEffect(const void* data, int size)
 }
 
 /**
- * Close a joystick previously opened with JoystickID.OpenJoystick().
+ * Close a joystick previously opened with Joystick.Joystick().
  *
  * @param joystick the joystick device to close.
  *
@@ -2740,7 +2740,7 @@ inline void Joystick::SendEffect(const void* data, int size)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.OpenJoystick
+ * @sa Joystick.Joystick
  */
 inline void CloseJoystick(JoystickRaw joystick) { SDL_CloseJoystick(joystick); }
 

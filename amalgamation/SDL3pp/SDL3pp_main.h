@@ -276,8 +276,7 @@ inline void UnregisterApp() { SDL_UnregisterApp(); }
  * `Renderer`; this allows the timing of the D3D12 command queue suspension to
  * execute in the correct order.
  *
- * When using SDL_GPU, this should be called after calling
- * GPUDevice.GDKSuspendGPU.
+ * When using SDL_GPU, this should be called after calling GDKSuspendGPU.
  *
  * If you're writing your own D3D12 renderer, this should be called after
  * calling `ID3D12CommandQueue::SuspendX`.

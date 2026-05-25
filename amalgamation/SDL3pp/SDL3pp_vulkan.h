@@ -22,7 +22,7 @@ namespace SDL {
  *
  * Unlike OpenGL, most of the details of "context" creation and window buffer
  * swapping are handled by the Vulkan API directly, so SDL doesn't provide
- * Vulkan equivalents of Window.GL_Swap(), etc; they aren't necessary.
+ * Vulkan equivalents of GL_SwapWindow(), etc; they aren't necessary.
  *
  * @{
  */
@@ -187,7 +187,7 @@ inline void Vulkan_CreateSurface(WindowRef window,
 /**
  * Destroy the Vulkan rendering surface of a window.
  *
- * This should be called before Window.Destroy, if Vulkan_CreateSurface was
+ * This should be called before DestroyWindow, if Vulkan_CreateSurface was
  * called after CreateWindow.
  *
  * The `instance` must have been created with extensions returned by

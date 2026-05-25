@@ -196,7 +196,7 @@
   *
 @@ -1007,7 +1005,7 @@
   *
-  * @sa Cursor.Set
+  * @sa SetCursor
   */
 -inline CursorRef GetCursor() { return SDL_GetCursor(); }
 +inline CursorRef GetCursor() { return {SDL_GetCursor()}; }

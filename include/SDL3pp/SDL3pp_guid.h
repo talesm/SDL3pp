@@ -66,7 +66,7 @@ struct GUID : GUIDRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GUID.ToString
+   * @sa GUIDToString
    */
   GUID(StringParam pchGUID);
 
@@ -119,7 +119,7 @@ inline std::string GUID::ToString() const { return SDL::GUIDToString(*this); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GUID.ToString
+ * @sa GUIDToString
  */
 inline GUID StringToGUID(StringParam pchGUID)
 {

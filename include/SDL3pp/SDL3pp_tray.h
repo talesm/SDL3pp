@@ -86,7 +86,7 @@ constexpr TrayEntryFlags TRAYENTRY_CHECKED = SDL_TRAYENTRY_CHECKED;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa TrayEntry.SetCallback
+ * @sa SetTrayEntryCallback
  */
 using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
 
@@ -97,7 +97,7 @@ using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa TrayEntry.SetCallback
+ * @sa SetTrayEntryCallback
  *
  * @sa TrayCallback
  */
@@ -158,9 +158,9 @@ struct Tray : ResourceBase<TrayRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.CreateMenu
-   * @sa Tray.GetMenu
-   * @sa Tray.Destroy
+   * @sa CreateTrayMenu
+   * @sa GetTrayMenu
+   * @sa DestroyTray
    */
   Tray(SurfaceRef icon, StringParam tooltip);
 
@@ -224,31 +224,7 @@ struct Tray : ResourceBase<TrayRaw>
    *
    * This should be called at most once per tray icon.
    *
-   * This function does the same thing as TrayEntry.CreateSubmenu(), except that
-   * it takes a Tray instead of a TrayEntry.
-   *
-   * A menu does not need to be destroyed; it will be destroyed with the tray.
-   *
-   * @returns the newly created menu.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               tray.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateTray
-   * @sa Tray.GetMenu
-   * @sa TrayMenu.GetParentTray
-   */
-  TrayMenu CreateMenu();
-
-  /**
-   * Gets a previously created tray menu.
-   *
-   * You should have called Tray.CreateMenu() on the tray object. This function
-   * allows you to fetch it again later.
-   *
-   * This function does the same thing as TrayEntry.GetSubmenu(), except that it
+   * This function does the same thing as CreateTraySubmenu(), except that it
    * takes a Tray instead of a TrayEntry.
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
@@ -261,7 +237,31 @@ struct Tray : ResourceBase<TrayRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateTray
-   * @sa Tray.CreateMenu
+   * @sa GetTrayMenu
+   * @sa GetTrayMenuParentTray
+   */
+  TrayMenu CreateMenu();
+
+  /**
+   * Gets a previously created tray menu.
+   *
+   * You should have called CreateTrayMenu() on the tray object. This function
+   * allows you to fetch it again later.
+   *
+   * This function does the same thing as GetTraySubmenu(), except that it takes
+   * a Tray instead of a TrayEntry.
+   *
+   * A menu does not need to be destroyed; it will be destroyed with the tray.
+   *
+   * @returns the newly created menu.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateTray
+   * @sa CreateTrayMenu
    */
   TrayMenu GetMenu() const;
 };
@@ -305,7 +305,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayEntry.Remove
+   * @sa RemoveTrayEntry
    * @sa TrayMenu.InsertEntry
    */
   std::span<TrayEntry> GetEntries();
@@ -331,9 +331,9 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa TrayEntryFlags
-   * @sa TrayMenu.GetEntries
-   * @sa TrayEntry.Remove
-   * @sa TrayEntry.GetParent
+   * @sa GetTrayEntries
+   * @sa RemoveTrayEntry
+   * @sa GetTrayEntryParent
    */
   TrayEntry InsertEntry(int pos, StringParam label, TrayEntryFlags flags);
 
@@ -367,8 +367,8 @@ public:
    * Gets the entry for which the menu is a submenu, if the current menu is a
    * submenu.
    *
-   * Either this function or TrayMenu.GetParentTray() will return non-nullptr
-   * for any given menu.
+   * Either this function or GetTrayMenuParentTray() will return non-nullptr for
+   * any given menu.
    *
    * @returns the parent entry, or nullptr if this menu is not a submenu.
    *
@@ -377,8 +377,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayEntry.CreateSubmenu
-   * @sa TrayMenu.GetParentTray
+   * @sa CreateTraySubmenu
+   * @sa GetTrayMenuParentTray
    */
   TrayEntry GetParentEntry() const;
 
@@ -386,7 +386,7 @@ public:
    * Gets the tray for which this menu is the first-level menu, if the current
    * menu isn't a submenu.
    *
-   * Either this function or TrayMenu.GetParentEntry() will return non-nullptr
+   * Either this function or GetTrayMenuParentEntry() will return non-nullptr
    * for any given menu.
    *
    * @returns the parent tray, or nullptr if this menu is a submenu.
@@ -396,8 +396,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Tray.CreateMenu
-   * @sa TrayMenu.GetParentEntry
+   * @sa CreateTrayMenu
+   * @sa GetTrayMenuParentEntry
    */
   TrayRef GetParentTray() const;
 };
@@ -435,9 +435,9 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa TrayEntryFlags
-   * @sa TrayMenu.GetEntries
-   * @sa TrayEntry.Remove
-   * @sa TrayEntry.GetParent
+   * @sa GetTrayEntries
+   * @sa RemoveTrayEntry
+   * @sa GetTrayEntryParent
    */
   TrayEntry(TrayMenu menu, int pos, StringParam label, TrayEntryFlags flags);
 
@@ -462,9 +462,9 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @sa TrayMenu.InsertEntry
    * @sa TrayEntryFlags
-   * @sa TrayMenu.GetEntries
-   * @sa TrayEntry.Remove
-   * @sa TrayEntry.GetParent
+   * @sa GetTrayEntries
+   * @sa RemoveTrayEntry
+   * @sa GetTrayEntryParent
    */
   TrayEntry(TrayMenuRaw menu, StringParam label, TrayEntryFlags flags);
 
@@ -479,7 +479,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.GetEntries
+   * @sa GetTrayEntries
    * @sa TrayMenu.InsertEntry
    */
   void Remove();
@@ -489,31 +489,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * This should be called at most once per tray entry.
    *
-   * This function does the same thing as Tray.CreateMenu, except that it takes
-   * a TrayEntry instead of a Tray.
-   *
-   * A menu does not need to be destroyed; it will be destroyed with the tray.
-   *
-   * @returns the newly created menu.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               tray.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa TrayMenu.InsertEntry
-   * @sa TrayEntry.GetSubmenu
-   * @sa TrayMenu.GetParentEntry
-   */
-  TrayMenu CreateSubmenu();
-
-  /**
-   * Gets a previously created tray entry submenu.
-   *
-   * You should have called TrayEntry.CreateSubmenu() on the entry object. This
-   * function allows you to fetch it again later.
-   *
-   * This function does the same thing as Tray.GetMenu(), except that it takes a
+   * This function does the same thing as CreateTrayMenu, except that it takes a
    * TrayEntry instead of a Tray.
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
@@ -526,7 +502,31 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntry.CreateSubmenu
+   * @sa GetTraySubmenu
+   * @sa GetTrayMenuParentEntry
+   */
+  TrayMenu CreateSubmenu();
+
+  /**
+   * Gets a previously created tray entry submenu.
+   *
+   * You should have called CreateTraySubmenu() on the entry object. This
+   * function allows you to fetch it again later.
+   *
+   * This function does the same thing as GetTrayMenu(), except that it takes a
+   * TrayEntry instead of a Tray.
+   *
+   * A menu does not need to be destroyed; it will be destroyed with the tray.
+   *
+   * @returns the newly created menu.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               tray.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TrayMenu.InsertEntry
+   * @sa CreateTraySubmenu
    */
   TrayMenu GetSubmenu();
 
@@ -545,9 +545,9 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.GetEntries
+   * @sa GetTrayEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntry.GetLabel
+   * @sa GetTrayEntryLabel
    */
   void SetLabel(StringParam label);
 
@@ -563,9 +563,9 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.GetEntries
+   * @sa GetTrayEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntry.SetLabel
+   * @sa SetTrayEntryLabel
    */
   const char* GetLabel() const;
 
@@ -581,9 +581,9 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.GetEntries
+   * @sa GetTrayEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntry.GetChecked
+   * @sa GetTrayEntryChecked
    */
   void SetChecked(bool checked);
 
@@ -599,9 +599,9 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.GetEntries
+   * @sa GetTrayEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntry.SetChecked
+   * @sa SetTrayEntryChecked
    */
   bool GetChecked() const;
 
@@ -615,9 +615,9 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.GetEntries
+   * @sa GetTrayEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntry.GetEnabled
+   * @sa GetTrayEntryEnabled
    */
   void SetEnabled(bool enabled);
 
@@ -631,9 +631,9 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.GetEntries
+   * @sa GetTrayEntries
    * @sa TrayMenu.InsertEntry
-   * @sa TrayEntry.SetEnabled
+   * @sa SetTrayEntryEnabled
    */
   bool GetEnabled() const;
 
@@ -649,7 +649,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.GetEntries
+   * @sa GetTrayEntries
    * @sa TrayMenu.InsertEntry
    */
   void SetCallback(TrayCallback callback, void* userdata);
@@ -664,7 +664,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.GetEntries
+   * @sa GetTrayEntries
    * @sa TrayMenu.InsertEntry
    */
   void SetCallback(TrayCB callback);
@@ -736,9 +736,9 @@ struct TrayEntryScoped : TrayEntry
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.CreateMenu
- * @sa Tray.GetMenu
- * @sa Tray.Destroy
+ * @sa CreateTrayMenu
+ * @sa GetTrayMenu
+ * @sa DestroyTray
  */
 inline Tray CreateTray(SurfaceRef icon, StringParam tooltip)
 {
@@ -798,8 +798,8 @@ inline void Tray::SetTooltip(StringParam tooltip)
  *
  * This should be called at most once per tray icon.
  *
- * This function does the same thing as TrayEntry.CreateSubmenu(), except that
- * it takes a Tray instead of a TrayEntry.
+ * This function does the same thing as CreateTraySubmenu(), except that it
+ * takes a Tray instead of a TrayEntry.
  *
  * A menu does not need to be destroyed; it will be destroyed with the tray.
  *
@@ -812,8 +812,8 @@ inline void Tray::SetTooltip(StringParam tooltip)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateTray
- * @sa Tray.GetMenu
- * @sa TrayMenu.GetParentTray
+ * @sa GetTrayMenu
+ * @sa GetTrayMenuParentTray
  */
 inline TrayMenu CreateTrayMenu(TrayRef tray)
 {
@@ -827,7 +827,7 @@ inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(get()); }
  *
  * This should be called at most once per tray entry.
  *
- * This function does the same thing as Tray.CreateMenu, except that it takes a
+ * This function does the same thing as CreateTrayMenu, except that it takes a
  * TrayEntry instead of a Tray.
  *
  * A menu does not need to be destroyed; it will be destroyed with the tray.
@@ -841,8 +841,8 @@ inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(get()); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa TrayMenu.InsertEntry
- * @sa TrayEntry.GetSubmenu
- * @sa TrayMenu.GetParentEntry
+ * @sa GetTraySubmenu
+ * @sa GetTrayMenuParentEntry
  */
 inline TrayMenu CreateTraySubmenu(TrayEntry entry)
 {
@@ -857,11 +857,11 @@ inline TrayMenu TrayEntry::CreateSubmenu()
 /**
  * Gets a previously created tray menu.
  *
- * You should have called Tray.CreateMenu() on the tray object. This function
+ * You should have called CreateTrayMenu() on the tray object. This function
  * allows you to fetch it again later.
  *
- * This function does the same thing as TrayEntry.GetSubmenu(), except that it
- * takes a Tray instead of a TrayEntry.
+ * This function does the same thing as GetTraySubmenu(), except that it takes a
+ * Tray instead of a TrayEntry.
  *
  * A menu does not need to be destroyed; it will be destroyed with the tray.
  *
@@ -874,7 +874,7 @@ inline TrayMenu TrayEntry::CreateSubmenu()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateTray
- * @sa Tray.CreateMenu
+ * @sa CreateTrayMenu
  */
 inline TrayMenu GetTrayMenu(TrayRef tray) { return SDL_GetTrayMenu(tray); }
 
@@ -883,10 +883,10 @@ inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(get()); }
 /**
  * Gets a previously created tray entry submenu.
  *
- * You should have called TrayEntry.CreateSubmenu() on the entry object. This
- * function allows you to fetch it again later.
+ * You should have called CreateTraySubmenu() on the entry object. This function
+ * allows you to fetch it again later.
  *
- * This function does the same thing as Tray.GetMenu(), except that it takes a
+ * This function does the same thing as GetTrayMenu(), except that it takes a
  * TrayEntry instead of a Tray.
  *
  * A menu does not need to be destroyed; it will be destroyed with the tray.
@@ -900,7 +900,7 @@ inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(get()); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa TrayMenu.InsertEntry
- * @sa TrayEntry.CreateSubmenu
+ * @sa CreateTraySubmenu
  */
 inline TrayMenu GetTraySubmenu(TrayEntry entry)
 {
@@ -922,7 +922,7 @@ inline TrayMenu TrayEntry::GetSubmenu() { return SDL::GetTraySubmenu(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayEntry.Remove
+ * @sa RemoveTrayEntry
  * @sa TrayMenu.InsertEntry
  */
 inline std::span<TrayEntry> GetTrayEntries(TrayMenu menu)
@@ -948,7 +948,7 @@ inline std::span<TrayEntry> TrayMenu::GetEntries()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.GetEntries
+ * @sa GetTrayEntries
  * @sa TrayMenu.InsertEntry
  */
 inline void RemoveTrayEntry(TrayEntryRaw entry) { SDL_RemoveTrayEntry(entry); }
@@ -977,9 +977,9 @@ inline void TrayEntry::Remove() { RemoveTrayEntry(release()); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa TrayEntryFlags
- * @sa TrayMenu.GetEntries
- * @sa TrayEntry.Remove
- * @sa TrayEntry.GetParent
+ * @sa GetTrayEntries
+ * @sa RemoveTrayEntry
+ * @sa GetTrayEntryParent
  */
 inline TrayEntry InsertTrayEntryAt(TrayMenu menu,
                                    int pos,
@@ -1032,9 +1032,9 @@ inline TrayEntry::TrayEntry(TrayMenuRaw menu,
  *
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntryFlags
- * @sa TrayMenu.GetEntries
- * @sa TrayEntry.Remove
- * @sa TrayEntry.GetParent
+ * @sa GetTrayEntries
+ * @sa RemoveTrayEntry
+ * @sa GetTrayEntryParent
  */
 inline TrayEntry AppendTrayEntry(TrayMenuRaw menu,
                                  StringParam label,
@@ -1064,9 +1064,9 @@ inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.GetEntries
+ * @sa GetTrayEntries
  * @sa TrayMenu.InsertEntry
- * @sa TrayEntry.GetLabel
+ * @sa GetTrayEntryLabel
  */
 inline void SetTrayEntryLabel(TrayEntry entry, StringParam label)
 {
@@ -1091,9 +1091,9 @@ inline void TrayEntry::SetLabel(StringParam label)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.GetEntries
+ * @sa GetTrayEntries
  * @sa TrayMenu.InsertEntry
- * @sa TrayEntry.SetLabel
+ * @sa SetTrayEntryLabel
  */
 inline const char* GetTrayEntryLabel(TrayEntryRef entry)
 {
@@ -1118,9 +1118,9 @@ inline const char* TrayEntry::GetLabel() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.GetEntries
+ * @sa GetTrayEntries
  * @sa TrayMenu.InsertEntry
- * @sa TrayEntry.GetChecked
+ * @sa GetTrayEntryChecked
  */
 inline void SetTrayEntryChecked(TrayEntry entry, bool checked)
 {
@@ -1145,9 +1145,9 @@ inline void TrayEntry::SetChecked(bool checked)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.GetEntries
+ * @sa GetTrayEntries
  * @sa TrayMenu.InsertEntry
- * @sa TrayEntry.SetChecked
+ * @sa SetTrayEntryChecked
  */
 inline bool GetTrayEntryChecked(TrayEntryRef entry)
 {
@@ -1170,9 +1170,9 @@ inline bool TrayEntry::GetChecked() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.GetEntries
+ * @sa GetTrayEntries
  * @sa TrayMenu.InsertEntry
- * @sa TrayEntry.GetEnabled
+ * @sa GetTrayEntryEnabled
  */
 inline void SetTrayEntryEnabled(TrayEntry entry, bool enabled)
 {
@@ -1195,9 +1195,9 @@ inline void TrayEntry::SetEnabled(bool enabled)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.GetEntries
+ * @sa GetTrayEntries
  * @sa TrayMenu.InsertEntry
- * @sa TrayEntry.SetEnabled
+ * @sa SetTrayEntryEnabled
  */
 inline bool GetTrayEntryEnabled(TrayEntryRef entry)
 {
@@ -1222,7 +1222,7 @@ inline bool TrayEntry::GetEnabled() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.GetEntries
+ * @sa GetTrayEntries
  * @sa TrayMenu.InsertEntry
  */
 inline void SetTrayEntryCallback(TrayEntry entry,
@@ -1243,7 +1243,7 @@ inline void SetTrayEntryCallback(TrayEntry entry,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.GetEntries
+ * @sa GetTrayEntries
  * @sa TrayMenu.InsertEntry
  */
 inline void SetTrayEntryCallback(TrayEntry entry, TrayCB callback)
@@ -1320,7 +1320,7 @@ inline TrayMenu TrayEntry::GetParent()
  * Gets the entry for which the menu is a submenu, if the current menu is a
  * submenu.
  *
- * Either this function or TrayMenu.GetParentTray() will return non-nullptr for
+ * Either this function or GetTrayMenuParentTray() will return non-nullptr for
  * any given menu.
  *
  * @param menu the menu for which to get the parent entry.
@@ -1331,8 +1331,8 @@ inline TrayMenu TrayEntry::GetParent()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayEntry.CreateSubmenu
- * @sa TrayMenu.GetParentTray
+ * @sa CreateTraySubmenu
+ * @sa GetTrayMenuParentTray
  */
 inline TrayEntry GetTrayMenuParentEntry(TrayMenuRaw menu)
 {
@@ -1348,7 +1348,7 @@ inline TrayEntry TrayMenu::GetParentEntry() const
  * Gets the tray for which this menu is the first-level menu, if the current
  * menu isn't a submenu.
  *
- * Either this function or TrayMenu.GetParentEntry() will return non-nullptr for
+ * Either this function or GetTrayMenuParentEntry() will return non-nullptr for
  * any given menu.
  *
  * @param menu the menu for which to get the parent enttrayry.
@@ -1359,8 +1359,8 @@ inline TrayEntry TrayMenu::GetParentEntry() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Tray.CreateMenu
- * @sa TrayMenu.GetParentEntry
+ * @sa CreateTrayMenu
+ * @sa GetTrayMenuParentEntry
  */
 inline TrayRef GetTrayMenuParentTray(TrayMenuRaw menu)
 {

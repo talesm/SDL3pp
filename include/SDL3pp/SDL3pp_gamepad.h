@@ -51,10 +51,10 @@ namespace SDL {
  * Gamepads support various optional features such as rumble, color LEDs,
  * touchpad, gyro, etc. The support for these features varies depending on the
  * controller and OS support available. You can check for LED and rumble
- * capabilities at runtime by calling Gamepad.GetProperties() and checking the
+ * capabilities at runtime by calling GetGamepadProperties() and checking the
  * various capability properties. You can check for touchpad by calling
- * Gamepad.GetNumTouchpads() and check for gyro and accelerometer by calling
- * Gamepad.HasSensor().
+ * GetNumGamepadTouchpads() and check for gyro and accelerometer by calling
+ * GamepadHasSensor().
  *
  * By default SDL will try to use the most capable driver available, but you can
  * tune which OS drivers to use with the various joystick hints in SDL_hints.h.
@@ -154,7 +154,7 @@ constexpr GamepadType GAMEPAD_TYPE_COUNT =
  * the east button, but in some regions this is reversed, so your game should
  * allow remapping actions based on user preferences.
  *
- * You can query the labels for the face buttons using Gamepad.GetButtonLabel()
+ * You can query the labels for the face buttons using GetGamepadButtonLabel()
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -312,8 +312,8 @@ constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_TRIANGLE =
  * or autodetect the dead zone, which varies between gamepads.
  *
  * Trigger axis values range from 0 (released) to JOYSTICK_AXIS_MAX (fully
- * pressed) when reported by Gamepad.GetAxis(). Note that this is not the same
- * range that will be reported by the lower-level Joystick.GetAxis().
+ * pressed) when reported by GetGamepadAxis(). Note that this is not the same
+ * range that will be reported by the lower-level GetJoystickAxis().
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -380,7 +380,7 @@ constexpr GamepadBindingType GAMEPAD_BINDTYPE_HAT =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetBindings
+ * @sa GetGamepadBindings
  */
 using GamepadBinding = SDL_GamepadBinding;
 
@@ -431,7 +431,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.Close
+   * @sa CloseGamepad
    * @sa IsGamepad
    */
   Gamepad(JoystickID instance_id);
@@ -583,7 +583,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.SetPlayerIndex
+   * @sa SetGamepadPlayerIndex
    */
   int GetPlayerIndex();
 
@@ -598,7 +598,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.GetPlayerIndex
+   * @sa GetGamepadPlayerIndex
    */
   void SetPlayerIndex(int player_index);
 
@@ -742,8 +742,8 @@ struct Gamepad : ResourceBase<GamepadRaw>
    * would produce an event, which would have the axis' value).
    *
    * The pointer returned is owned by the Gamepad. You should not call
-   * Joystick.Close() on it, for example, since doing so will likely cause SDL
-   * to crash.
+   * CloseJoystick() on it, for example, since doing so will likely cause SDL to
+   * crash.
    *
    * @returns an Joystick object on success.
    * @throws Error on failure.
@@ -780,8 +780,8 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.HasButton
-   * @sa Gamepad.GetAxis
+   * @sa GamepadHasButton
+   * @sa GetGamepadAxis
    */
   bool HasAxis(GamepadAxis axis);
 
@@ -795,7 +795,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * Triggers range from 0 when released to 32767 when fully pressed, and never
    * return a negative value. Note that this differs from the value reported by
-   * the lower-level Joystick.GetAxis(), which normally uses the full range.
+   * the lower-level GetJoystickAxis(), which normally uses the full range.
    *
    * Note that for invalid gamepads or axes, this will return 0. Zero is also a
    * valid value in normal operation; usually it means a centered axis.
@@ -807,8 +807,8 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.HasAxis
-   * @sa Gamepad.GetButton
+   * @sa GamepadHasAxis
+   * @sa GetGamepadButton
    */
   Sint16 GetAxis(GamepadAxis axis);
 
@@ -825,7 +825,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.HasAxis
+   * @sa GamepadHasAxis
    */
   bool HasButton(GamepadButton button);
 
@@ -839,8 +839,8 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.HasButton
-   * @sa Gamepad.GetAxis
+   * @sa GamepadHasButton
+   * @sa GetGamepadAxis
    */
   bool GetButton(GamepadButton button);
 
@@ -867,7 +867,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.GetNumTouchpadFingers
+   * @sa GetNumGamepadTouchpadFingers
    */
   int GetNumTouchpads();
 
@@ -882,8 +882,8 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.GetTouchpadFinger
-   * @sa Gamepad.GetNumTouchpads
+   * @sa GetGamepadTouchpadFinger
+   * @sa GetNumGamepadTouchpads
    */
   int GetNumTouchpadFingers(int touchpad);
 
@@ -905,7 +905,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.GetNumTouchpadFingers
+   * @sa GetNumGamepadTouchpadFingers
    */
   void GetTouchpadFinger(int touchpad,
                          int finger,
@@ -924,9 +924,9 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.GetSensorData
-   * @sa Gamepad.GetSensorDataRate
-   * @sa Gamepad.SetSensorEnabled
+   * @sa GetGamepadSensorData
+   * @sa GetGamepadSensorDataRate
+   * @sa SetGamepadSensorEnabled
    */
   bool HasSensor(SensorType type);
 
@@ -941,8 +941,8 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.HasSensor
-   * @sa Gamepad.SensorEnabled
+   * @sa GamepadHasSensor
+   * @sa GamepadSensorEnabled
    */
   void SetSensorEnabled(SensorType type, bool enabled);
 
@@ -956,7 +956,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.SetSensorEnabled
+   * @sa SetGamepadSensorEnabled
    */
   bool SensorEnabled(SensorType type);
 
@@ -1021,7 +1021,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * Note that this is rumbling of the _triggers_ and not the gamepad as a
    * whole. This is currently only supported on Xbox One gamepads. If you want
-   * the (more common) whole-gamepad rumble, use Gamepad.Rumble() instead.
+   * the (more common) whole-gamepad rumble, use RumbleGamepad() instead.
    *
    * This function requires you to process SDL events or call UpdateJoysticks()
    * to update rumble state.
@@ -1037,7 +1037,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.Rumble
+   * @sa RumbleGamepad
    */
   void RumbleTriggers(Uint16 left_rumble,
                       Uint16 right_rumble,
@@ -1087,7 +1087,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.GetAppleSFSymbolsNameForAxis
+   * @sa GetGamepadAppleSFSymbolsNameForAxis
    */
   const char* GetAppleSFSymbolsNameForButton(GamepadButton button);
 
@@ -1101,7 +1101,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Gamepad.GetAppleSFSymbolsNameForButton
+   * @sa GetGamepadAppleSFSymbolsNameForButton
    */
   const char* GetAppleSFSymbolsNameForAxis(GamepadAxis axis);
 };
@@ -1111,7 +1111,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
  * existing gamepad.
  *
  * The mapping string has the format "GUID,name,mapping", where GUID is the
- * string value from GUID.ToString(), name is the human readable string for the
+ * string value from GUIDToString(), name is the human readable string for the
  * device and mappings are gamepad mappings to joystick ones. Under Windows
  * there is a reserved GUID of "xinput" that covers all XInput devices. The
  * mapping format for joystick is:
@@ -1142,7 +1142,7 @@ struct Gamepad : ResourceBase<GamepadRaw>
  *
  * @sa AddGamepadMappingsFromFile
  * @sa AddGamepadMappingsFromIO
- * @sa Gamepad.GetMapping
+ * @sa GetGamepadMapping
  * @sa GetGamepadMappingForGUID
  * @sa SDL_HINT_GAMECONTROLLERCONFIG
  * @sa SDL_HINT_GAMECONTROLLERCONFIG_FILE
@@ -1174,8 +1174,8 @@ inline int AddGamepadMapping(StringParam mapping)
  * constrained environment.
  *
  * @param src the data stream for the mappings to be added.
- * @param closeio if true, calls IOStream.Close() on `src` before returning,
- *                even in the case of an error.
+ * @param closeio if true, calls CloseIO() on `src` before returning, even in
+ *                the case of an error.
  * @returns the number of mappings added or -1 on failure; call GetError() for
  *          more information.
  *
@@ -1185,7 +1185,7 @@ inline int AddGamepadMapping(StringParam mapping)
  *
  * @sa AddGamepadMapping
  * @sa AddGamepadMappingsFromFile
- * @sa Gamepad.GetMapping
+ * @sa GetGamepadMapping
  * @sa GetGamepadMappingForGUID
  * @sa SDL_HINT_GAMECONTROLLERCONFIG
  * @sa SDL_HINT_GAMECONTROLLERCONFIG_FILE
@@ -1222,7 +1222,7 @@ inline int AddGamepadMappingsFromIO(IOStreamRef src, bool closeio)
  *
  * @sa AddGamepadMapping
  * @sa AddGamepadMappingsFromIO
- * @sa Gamepad.GetMapping
+ * @sa GetGamepadMapping
  * @sa GetGamepadMappingForGUID
  * @sa SDL_HINT_GAMECONTROLLERCONFIG
  * @sa SDL_HINT_GAMECONTROLLERCONFIG_FILE
@@ -1274,8 +1274,8 @@ inline OwnArray<char*> GetGamepadMappings()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa JoystickID.GetJoystickGUIDForID
- * @sa Joystick.GetGUID
+ * @sa GetJoystickGUIDForID
+ * @sa GetJoystickGUID
  */
 inline StringResult GetGamepadMappingForGUID(GUID guid)
 {
@@ -1325,7 +1325,7 @@ inline StringResult Gamepad::GetMapping()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa AddGamepadMapping
- * @sa Gamepad.GetMapping
+ * @sa GetGamepadMapping
  */
 inline void SetGamepadMapping(JoystickID instance_id, StringParam mapping)
 {
@@ -1397,7 +1397,7 @@ inline bool IsGamepad(JoystickID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetName
+ * @sa GetGamepadName
  * @sa GetGamepads
  */
 inline const char* GetGamepadNameForID(JoystickID instance_id)
@@ -1418,7 +1418,7 @@ inline const char* GetGamepadNameForID(JoystickID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetPath
+ * @sa GetGamepadPath
  * @sa GetGamepads
  */
 inline const char* GetGamepadPathForID(JoystickID instance_id)
@@ -1438,7 +1438,7 @@ inline const char* GetGamepadPathForID(JoystickID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetPlayerIndex
+ * @sa GetGamepadPlayerIndex
  * @sa GetGamepads
  */
 inline int GetGamepadPlayerIndexForID(JoystickID instance_id)
@@ -1459,7 +1459,7 @@ inline int GetGamepadPlayerIndexForID(JoystickID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GUID.ToString
+ * @sa GUIDToString
  * @sa GetGamepads
  */
 inline GUID GetGamepadGUIDForID(JoystickID instance_id)
@@ -1481,7 +1481,7 @@ inline GUID GetGamepadGUIDForID(JoystickID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetVendor
+ * @sa GetGamepadVendor
  * @sa GetGamepads
  */
 inline Uint16 GetGamepadVendorForID(JoystickID instance_id)
@@ -1503,7 +1503,7 @@ inline Uint16 GetGamepadVendorForID(JoystickID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetProduct
+ * @sa GetGamepadProduct
  * @sa GetGamepads
  */
 inline Uint16 GetGamepadProductForID(JoystickID instance_id)
@@ -1525,7 +1525,7 @@ inline Uint16 GetGamepadProductForID(JoystickID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetProductVersion
+ * @sa GetGamepadProductVersion
  * @sa GetGamepads
  */
 inline Uint16 GetGamepadProductVersionForID(JoystickID instance_id)
@@ -1545,7 +1545,7 @@ inline Uint16 GetGamepadProductVersionForID(JoystickID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetType
+ * @sa GetGamepadType
  * @sa GetGamepads
  * @sa GetRealGamepadTypeForID
  */
@@ -1568,7 +1568,7 @@ inline GamepadType GetGamepadTypeForID(JoystickID instance_id)
  *
  * @sa GetGamepadTypeForID
  * @sa GetGamepads
- * @sa Gamepad.GetRealType
+ * @sa GetRealGamepadType
  */
 inline GamepadType GetRealGamepadTypeForID(JoystickID instance_id)
 {
@@ -1589,7 +1589,7 @@ inline GamepadType GetRealGamepadTypeForID(JoystickID instance_id)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetGamepads
- * @sa Gamepad.GetMapping
+ * @sa GetGamepadMapping
  */
 inline char* GetGamepadMappingForID(JoystickID instance_id)
 {
@@ -1607,7 +1607,7 @@ inline char* GetGamepadMappingForID(JoystickID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.Close
+ * @sa CloseGamepad
  * @sa IsGamepad
  */
 inline Gamepad OpenGamepad(JoystickID instance_id)
@@ -1647,8 +1647,8 @@ inline GamepadRef GetGamepadFromID(JoystickID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetPlayerIndex
- * @sa Gamepad.SetPlayerIndex
+ * @sa GetGamepadPlayerIndex
+ * @sa SetGamepadPlayerIndex
  */
 inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
 {
@@ -1830,7 +1830,7 @@ inline GamepadType Gamepad::GetRealType()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.SetPlayerIndex
+ * @sa SetGamepadPlayerIndex
  */
 inline int GetGamepadPlayerIndex(GamepadRef gamepad)
 {
@@ -1854,7 +1854,7 @@ inline int Gamepad::GetPlayerIndex()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetPlayerIndex
+ * @sa GetGamepadPlayerIndex
  */
 inline void SetGamepadPlayerIndex(GamepadRef gamepad, int player_index)
 {
@@ -2073,7 +2073,7 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(get()); }
  * would produce an event, which would have the axis' value).
  *
  * The pointer returned is owned by the Gamepad. You should not call
- * Joystick.Close() on it, for example, since doing so will likely cause SDL to
+ * CloseJoystick() on it, for example, since doing so will likely cause SDL to
  * crash.
  *
  * @param gamepad the gamepad object that you want to get a joystick from.
@@ -2267,8 +2267,8 @@ inline const char* GetGamepadStringForAxis(GamepadAxis axis)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.HasButton
- * @sa Gamepad.GetAxis
+ * @sa GamepadHasButton
+ * @sa GetGamepadAxis
  */
 inline bool GamepadHasAxis(GamepadRef gamepad, GamepadAxis axis)
 {
@@ -2290,7 +2290,7 @@ inline bool Gamepad::HasAxis(GamepadAxis axis)
  *
  * Triggers range from 0 when released to 32767 when fully pressed, and never
  * return a negative value. Note that this differs from the value reported by
- * the lower-level Joystick.GetAxis(), which normally uses the full range.
+ * the lower-level GetJoystickAxis(), which normally uses the full range.
  *
  * Note that for invalid gamepads or axes, this will return 0. Zero is also a
  * valid value in normal operation; usually it means a centered axis.
@@ -2303,8 +2303,8 @@ inline bool Gamepad::HasAxis(GamepadAxis axis)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.HasAxis
- * @sa Gamepad.GetButton
+ * @sa GamepadHasAxis
+ * @sa GetGamepadButton
  */
 inline Sint16 GetGamepadAxis(GamepadRef gamepad, GamepadAxis axis)
 {
@@ -2372,7 +2372,7 @@ inline const char* GetGamepadStringForButton(GamepadButton button)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.HasAxis
+ * @sa GamepadHasAxis
  */
 inline bool GamepadHasButton(GamepadRef gamepad, GamepadButton button)
 {
@@ -2395,8 +2395,8 @@ inline bool Gamepad::HasButton(GamepadButton button)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.HasButton
- * @sa Gamepad.GetAxis
+ * @sa GamepadHasButton
+ * @sa GetGamepadAxis
  */
 inline bool GetGamepadButton(GamepadRef gamepad, GamepadButton button)
 {
@@ -2419,7 +2419,7 @@ inline bool Gamepad::GetButton(GamepadButton button)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetButtonLabel
+ * @sa GetGamepadButtonLabel
  */
 inline GamepadButtonLabel GetGamepadButtonLabelForType(GamepadType type,
                                                        GamepadButton button)
@@ -2461,7 +2461,7 @@ inline GamepadButtonLabel Gamepad::GetButtonLabel(GamepadButton button)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetNumTouchpadFingers
+ * @sa GetNumGamepadTouchpadFingers
  */
 inline int GetNumGamepadTouchpads(GamepadRef gamepad)
 {
@@ -2485,8 +2485,8 @@ inline int Gamepad::GetNumTouchpads()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetTouchpadFinger
- * @sa Gamepad.GetNumTouchpads
+ * @sa GetGamepadTouchpadFinger
+ * @sa GetNumGamepadTouchpads
  */
 inline int GetNumGamepadTouchpadFingers(GamepadRef gamepad, int touchpad)
 {
@@ -2517,7 +2517,7 @@ inline int Gamepad::GetNumTouchpadFingers(int touchpad)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetNumTouchpadFingers
+ * @sa GetNumGamepadTouchpadFingers
  */
 inline void GetGamepadTouchpadFinger(GamepadRef gamepad,
                                      int touchpad,
@@ -2552,9 +2552,9 @@ inline void Gamepad::GetTouchpadFinger(int touchpad,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetSensorData
- * @sa Gamepad.GetSensorDataRate
- * @sa Gamepad.SetSensorEnabled
+ * @sa GetGamepadSensorData
+ * @sa GetGamepadSensorDataRate
+ * @sa SetGamepadSensorEnabled
  */
 inline bool GamepadHasSensor(GamepadRef gamepad, SensorType type)
 {
@@ -2578,8 +2578,8 @@ inline bool Gamepad::HasSensor(SensorType type)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.HasSensor
- * @sa Gamepad.SensorEnabled
+ * @sa GamepadHasSensor
+ * @sa GamepadSensorEnabled
  */
 inline void SetGamepadSensorEnabled(GamepadRef gamepad,
                                     SensorType type,
@@ -2604,7 +2604,7 @@ inline void Gamepad::SetSensorEnabled(SensorType type, bool enabled)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.SetSensorEnabled
+ * @sa SetGamepadSensorEnabled
  */
 inline bool GamepadSensorEnabled(GamepadRef gamepad, SensorType type)
 {
@@ -2712,7 +2712,7 @@ inline void Gamepad::Rumble(Uint16 low_frequency_rumble,
  *
  * Note that this is rumbling of the _triggers_ and not the gamepad as a whole.
  * This is currently only supported on Xbox One gamepads. If you want the (more
- * common) whole-gamepad rumble, use Gamepad.Rumble() instead.
+ * common) whole-gamepad rumble, use RumbleGamepad() instead.
  *
  * This function requires you to process SDL events or call UpdateJoysticks() to
  * update rumble state.
@@ -2729,7 +2729,7 @@ inline void Gamepad::Rumble(Uint16 low_frequency_rumble,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.Rumble
+ * @sa RumbleGamepad
  */
 inline void RumbleGamepadTriggers(GamepadRef gamepad,
                                   Uint16 left_rumble,
@@ -2827,7 +2827,7 @@ inline void Gamepad::Close() { CloseGamepad(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetAppleSFSymbolsNameForAxis
+ * @sa GetGamepadAppleSFSymbolsNameForAxis
  */
 inline const char* GetGamepadAppleSFSymbolsNameForButton(GamepadRef gamepad,
                                                          GamepadButton button)
@@ -2851,7 +2851,7 @@ inline const char* Gamepad::GetAppleSFSymbolsNameForButton(GamepadButton button)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Gamepad.GetAppleSFSymbolsNameForButton
+ * @sa GetGamepadAppleSFSymbolsNameForButton
  */
 inline const char* GetGamepadAppleSFSymbolsNameForAxis(GamepadRef gamepad,
                                                        GamepadAxis axis)

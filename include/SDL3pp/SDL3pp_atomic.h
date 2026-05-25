@@ -193,9 +193,9 @@ SDL_FORCE_INLINE void CPUPauseInstruction() { SDL_CPUPauseInstruction(); }
  * A type representing an atomic integer value.
  *
  * This can be used to manage a value that is synchronized across multiple CPUs
- * without a race condition; when an app sets a value with AtomicInt.Set all
+ * without a race condition; when an app sets a value with SetAtomicInt all
  * other threads, regardless of the CPU it is running on, will see that value
- * when retrieved with AtomicInt.Get, regardless of CPU caches, etc.
+ * when retrieved with GetAtomicInt, regardless of CPU caches, etc.
  *
  * This is also useful for atomic compare-and-swap operations: a thread can
  * change the value as long as its current value matches expectations. When done
@@ -209,10 +209,10 @@ SDL_FORCE_INLINE void CPUPauseInstruction() { SDL_CPUPauseInstruction(); }
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa AtomicInt.CompareAndSwap
- * @sa AtomicInt.Get
- * @sa AtomicInt.Set
- * @sa AtomicInt.Add
+ * @sa CompareAndSwapAtomicInt
+ * @sa GetAtomicInt
+ * @sa SetAtomicInt
+ * @sa AddAtomicInt
  */
 struct AtomicInt : AtomicIntRaw
 {
@@ -244,8 +244,8 @@ struct AtomicInt : AtomicIntRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AtomicInt.Get
-   * @sa AtomicInt.Set
+   * @sa GetAtomicInt
+   * @sa SetAtomicInt
    */
   bool CompareAndSwap(int oldval, int newval);
 
@@ -264,7 +264,7 @@ struct AtomicInt : AtomicIntRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AtomicInt.Get
+   * @sa GetAtomicInt
    */
   int Set(int v);
 
@@ -280,7 +280,7 @@ struct AtomicInt : AtomicIntRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AtomicInt.Set
+   * @sa SetAtomicInt
    */
   int Get();
 
@@ -299,8 +299,8 @@ struct AtomicInt : AtomicIntRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AtomicInt.AtomicDecRef
-   * @sa AtomicInt.AtomicIncRef
+   * @sa AtomicDecRef
+   * @sa AtomicIncRef
    */
   int Add(int v);
 
@@ -316,7 +316,7 @@ struct AtomicInt : AtomicIntRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AtomicInt.AtomicDecRef
+   * @sa AtomicDecRef
    */
   bool AtomicIncRef();
 
@@ -333,7 +333,7 @@ struct AtomicInt : AtomicIntRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AtomicInt.AtomicIncRef
+   * @sa AtomicIncRef
    */
   bool AtomicDecRef();
 };
@@ -353,8 +353,8 @@ struct AtomicInt : AtomicIntRaw
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AtomicInt.Get
- * @sa AtomicInt.Set
+ * @sa GetAtomicInt
+ * @sa SetAtomicInt
  */
 inline bool CompareAndSwapAtomicInt(AtomicIntRaw* a, int oldval, int newval)
 {
@@ -382,7 +382,7 @@ inline bool AtomicInt::CompareAndSwap(int oldval, int newval)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AtomicInt.Get
+ * @sa GetAtomicInt
  */
 inline int SetAtomicInt(AtomicIntRaw* a, int v)
 {
@@ -404,7 +404,7 @@ inline int AtomicInt::Set(int v) { return SDL::SetAtomicInt(this, v); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AtomicInt.Set
+ * @sa SetAtomicInt
  */
 inline int GetAtomicInt(AtomicIntRaw* a) { return SDL_GetAtomicInt(a); }
 
@@ -426,8 +426,8 @@ inline int AtomicInt::Get() { return SDL::GetAtomicInt(this); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AtomicInt.AtomicDecRef
- * @sa AtomicInt.AtomicIncRef
+ * @sa AtomicDecRef
+ * @sa AtomicIncRef
  */
 inline int AddAtomicInt(AtomicIntRaw* a, int v)
 {
@@ -449,7 +449,7 @@ inline int AtomicInt::Add(int v) { return SDL::AddAtomicInt(this, v); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AtomicInt.AtomicDecRef
+ * @sa AtomicDecRef
  */
 inline bool AtomicIncRef(AtomicIntRaw* a) { return SDL_AtomicIncRef(a); }
 
@@ -469,7 +469,7 @@ inline bool AtomicInt::AtomicIncRef() { return SDL::AtomicIncRef(this); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AtomicInt.AtomicIncRef
+ * @sa AtomicIncRef
  */
 inline bool AtomicDecRef(AtomicIntRaw* a) { return SDL_AtomicDecRef(a); }
 
@@ -479,9 +479,9 @@ inline bool AtomicInt::AtomicDecRef() { return SDL::AtomicDecRef(this); }
  * A type representing an atomic unsigned 32-bit value.
  *
  * This can be used to manage a value that is synchronized across multiple CPUs
- * without a race condition; when an app sets a value with AtomicU32.Set all
+ * without a race condition; when an app sets a value with SetAtomicU32 all
  * other threads, regardless of the CPU it is running on, will see that value
- * when retrieved with AtomicU32.Get, regardless of CPU caches, etc.
+ * when retrieved with GetAtomicU32, regardless of CPU caches, etc.
  *
  * This is also useful for atomic compare-and-swap operations: a thread can
  * change the value as long as its current value matches expectations. When done
@@ -495,9 +495,9 @@ inline bool AtomicInt::AtomicDecRef() { return SDL::AtomicDecRef(this); }
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa AtomicU32.CompareAndSwap
- * @sa AtomicU32.Get
- * @sa AtomicU32.Set
+ * @sa CompareAndSwapAtomicU32
+ * @sa GetAtomicU32
+ * @sa SetAtomicU32
  */
 struct AtomicU32 : AtomicU32Raw
 {
@@ -529,8 +529,8 @@ struct AtomicU32 : AtomicU32Raw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AtomicU32.Get
-   * @sa AtomicU32.Set
+   * @sa GetAtomicU32
+   * @sa SetAtomicU32
    */
   bool CompareAndSwap(Uint32 oldval, Uint32 newval);
 
@@ -549,7 +549,7 @@ struct AtomicU32 : AtomicU32Raw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AtomicU32.Get
+   * @sa GetAtomicU32
    */
   Uint32 Set(Uint32 v);
 
@@ -565,7 +565,7 @@ struct AtomicU32 : AtomicU32Raw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AtomicU32.Set
+   * @sa SetAtomicU32
    */
   Uint32 Get();
 
@@ -622,7 +622,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AtomicInt.CompareAndSwap
+   * @sa CompareAndSwapAtomicInt
    * @sa AtomicPointer.Get
    * @sa AtomicPointer.Set
    */
@@ -679,8 +679,8 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AtomicU32.Get
- * @sa AtomicU32.Set
+ * @sa GetAtomicU32
+ * @sa SetAtomicU32
  */
 inline bool CompareAndSwapAtomicU32(AtomicU32Raw* a,
                                     Uint32 oldval,
@@ -710,7 +710,7 @@ inline bool AtomicU32::CompareAndSwap(Uint32 oldval, Uint32 newval)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AtomicU32.Get
+ * @sa GetAtomicU32
  */
 inline Uint32 SetAtomicU32(AtomicU32Raw* a, Uint32 v)
 {
@@ -732,7 +732,7 @@ inline Uint32 AtomicU32::Set(Uint32 v) { return SDL::SetAtomicU32(this, v); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AtomicU32.Set
+ * @sa SetAtomicU32
  */
 inline Uint32 GetAtomicU32(AtomicU32Raw* a) { return SDL_GetAtomicU32(a); }
 

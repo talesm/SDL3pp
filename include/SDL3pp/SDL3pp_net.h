@@ -45,7 +45,7 @@ namespace SDL {
  * Address you resolved with Address.CreateClient(). Once the connection is
  * established (a non-blocking operation), you'll have a StreamSocket object
  * that can send and receive data over the connection, using
- * StreamSocket.WriteTo() and StreamSocket.ReadFrom().
+ * WriteToStreamSocket() and ReadFromStreamSocket().
  *
  * To instead be a server, that clients connect to, call Address.CreateServer()
  * to get a Server object. All a Server does is allow you to accept connections
@@ -65,9 +65,8 @@ namespace SDL {
  * and communication can happen in a peer-to-peer model instead of
  * client-server: while datagrams can be more complex, these _are_ useful
  * properties not avaiable to stream sockets. Address.CreateDatagramSocket() is
- * used to prepare for datagram communication, then
- * DatagramSocket.SendDatagram() and DatagramSocket.ReceiveDatagram() transmit
- * packets.
+ * used to prepare for datagram communication, then SendDatagram() and
+ * ReceiveDatagram() transmit packets.
  *
  * As previously mentioned, SDL_net's API is "non-blocking" (asynchronous). Any
  * network operation might take time, but SDL_net's APIs will not wait until
@@ -79,10 +78,10 @@ namespace SDL {
  *
  * The functions that block until an operation completes:
  *
- * - StreamSocket.WaitUntilConnected
+ * - WaitUntilConnected
  * - WaitUntilInputAvailable
- * - Address.WaitUntilResolved
- * - StreamSocket.WaitUntilDrained
+ * - WaitUntilResolved
+ * - WaitUntilStreamSocketDrained
  *
  * All of these functions offer a timeout, which allow for a maximum wait time,
  * an immediate non-blocking query, or an infinite wait.
@@ -93,8 +92,8 @@ namespace SDL {
  * running wired directly to a gigabit fiber line. The functions:
  *
  * - SimulateAddressResolutionLoss
- * - StreamSocket.SimulateStreamPacketLoss
- * - DatagramSocket.SimulateDatagramPacketLoss
+ * - SimulateStreamPacketLoss
+ * - SimulateDatagramPacketLoss
  *
  * @{
  */
@@ -325,7 +324,7 @@ constexpr Status SUCCESS =
  *
  * @sa ResolveHostname
  * @sa GetLocalAddresses
- * @sa Address.Compare
+ * @sa CompareAddresses
  *
  * @cat resource
  */
@@ -368,12 +367,11 @@ struct Address : ResourceBase<AddressRaw>
    * unresolved Address. Until the address resolves, it can't be used.
    *
    * If you want to block until the resolution is finished, you can call
-   * Address.WaitUntilResolved(). Otherwise, you can do a non-blocking check
-   * with Address.GetStatus().
+   * WaitUntilResolved(). Otherwise, you can do a non-blocking check with
+   * GetAddressStatus().
    *
-   * When you are done with the returned Address, call Address.Unref() to
-   * dispose of it. You need to do this even if resolution later fails
-   * asynchronously.
+   * When you are done with the returned Address, call UnrefAddress() to dispose
+   * of it. You need to do this even if resolution later fails asynchronously.
    *
    * @param host The hostname to resolve.
    * @post A new Address on success.
@@ -383,10 +381,10 @@ struct Address : ResourceBase<AddressRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa Address.WaitUntilResolved
-   * @sa Address.GetStatus
+   * @sa WaitUntilResolved
+   * @sa GetAddressStatus
    * @sa RefAddress
-   * @sa Address.Unref
+   * @sa UnrefAddress
    */
   Address(StringParam host);
 
@@ -501,7 +499,7 @@ struct Address : ResourceBase<AddressRaw>
    * long to wait for resolution to complete. Specifying a timeout of -1
    * instructs the library to wait indefinitely, and a timeout of 0 just checks
    * the current status and returns immediately (and is functionally equivalent
-   * to calling Address.GetStatus).
+   * to calling GetAddressStatus).
    *
    * Resolution can fail after some time (DNS server took awhile to reply that
    * the hostname isn't recognized, etc), so be sure to check the result of this
@@ -510,8 +508,8 @@ struct Address : ResourceBase<AddressRaw>
    * Once an address is successfully resolved, it can be used to connect to the
    * host represented by the address.
    *
-   * If you don't want your program to block, you can call Address.GetStatus
-   * from time to time until you get a non-zero result.
+   * If you don't want your program to block, you can call GetAddressStatus from
+   * time to time until you get a non-zero result.
    *
    * @param timeout Number of milliseconds to wait for resolution to complete.
    *                -1 to wait indefinitely, 0 to check once without waiting.
@@ -524,7 +522,7 @@ struct Address : ResourceBase<AddressRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa Address.GetStatus
+   * @sa GetAddressStatus
    */
   Status WaitUntilResolved(Sint32 timeout);
 
@@ -553,7 +551,7 @@ struct Address : ResourceBase<AddressRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa Address.WaitUntilResolved
+   * @sa WaitUntilResolved
    */
   Status GetStatus();
 
@@ -571,9 +569,8 @@ struct Address : ResourceBase<AddressRaw>
    * string.
    *
    * This will return nullptr if resolution is still in progress, or if
-   * resolution failed. You can use Address.GetStatus() or
-   * Address.WaitUntilResolved() to make sure resolution has successfully
-   * completed before calling this.
+   * resolution failed. You can use GetAddressStatus() or WaitUntilResolved() to
+   * make sure resolution has successfully completed before calling this.
    *
    * @returns a string on success.
    * @throws Error on failure.
@@ -582,8 +579,8 @@ struct Address : ResourceBase<AddressRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa Address.GetStatus
-   * @sa Address.WaitUntilResolved
+   * @sa GetAddressStatus
+   * @sa WaitUntilResolved
    */
   const char* GetString();
 
@@ -627,8 +624,8 @@ struct Address : ResourceBase<AddressRaw>
    *
    * Connecting is an asynchronous operation; this function does not block, and
    * will return before the connection is complete. One has to then use
-   * StreamSocket.WaitUntilConnected() or StreamSocket.GetConnectionStatus() to
-   * see when the operation has completed, and if it was successful.
+   * WaitUntilConnected() or GetConnectionStatus() to see when the operation has
+   * completed, and if it was successful.
    *
    * Once connected, you can read and write data to the returned socket. Stream
    * sockets are a mode of _reliable_ transmission, which means data will be
@@ -648,7 +645,7 @@ struct Address : ResourceBase<AddressRaw>
    * This function will fail if `address` is not finished resolving.
    *
    * When you are done with this connection (whether it failed to connect or
-   * not), you must dispose of it with StreamSocket.Destroy().
+   * not), you must dispose of it with DestroyStreamSocket().
    *
    * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
    * you do not have to byteswap it into "network order," as the library will
@@ -667,9 +664,9 @@ struct Address : ResourceBase<AddressRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa StreamSocket.WaitUntilConnected
-   * @sa StreamSocket.GetConnectionStatus
-   * @sa StreamSocket.Destroy
+   * @sa WaitUntilConnected
+   * @sa GetConnectionStatus
+   * @sa DestroyStreamSocket
    */
   StreamSocket CreateClient(Uint16 port, PropertiesRef props);
 
@@ -695,7 +692,7 @@ struct Address : ResourceBase<AddressRaw>
    * address available to the app.
    *
    * After creating a server, you get stream sockets to talk to incoming client
-   * connections by calling Server.AcceptClient().
+   * connections by calling AcceptClient().
    *
    * Stream sockets don't employ any protocol (above the TCP level), so they can
    * accept connections from clients that aren't using SDL_net, but if you want
@@ -731,8 +728,8 @@ struct Address : ResourceBase<AddressRaw>
    * @since This function is available since SDL_net 3.0.0.
    *
    * @sa GetLocalAddresses
-   * @sa Server.AcceptClient
-   * @sa Server.Destroy
+   * @sa AcceptClient
+   * @sa DestroyServer
    */
   Server CreateServer(Uint16 port, PropertiesRef props);
 
@@ -804,7 +801,7 @@ struct Address : ResourceBase<AddressRaw>
    *   this socket, set this property to false, or omit it, as it defaults to
    *   false. Note: IPv4 will still be able to receive broadcast packets without
    *   this option, but IPv6 will not. Also see notes about sending to a
-   *   broadcast address in DatagramSocket.SendDatagram().
+   *   broadcast address in SendDatagram().
    *
    * @param port the port on the local address to listen for connections on, or
    *             zero for the system to decide.
@@ -817,7 +814,7 @@ struct Address : ResourceBase<AddressRaw>
    * @since This function is available since SDL_net 3.0.0.
    *
    * @sa GetLocalAddresses
-   * @sa DatagramSocket.Destroy
+   * @sa DestroyDatagramSocket
    */
   DatagramSocket CreateDatagramSocket(Uint16 port, PropertiesRef props);
 };
@@ -839,10 +836,10 @@ struct Address : ResourceBase<AddressRaw>
  * Address. Until the address resolves, it can't be used.
  *
  * If you want to block until the resolution is finished, you can call
- * Address.WaitUntilResolved(). Otherwise, you can do a non-blocking check with
- * Address.GetStatus().
+ * WaitUntilResolved(). Otherwise, you can do a non-blocking check with
+ * GetAddressStatus().
  *
- * When you are done with the returned Address, call Address.Unref() to dispose
+ * When you are done with the returned Address, call UnrefAddress() to dispose
  * of it. You need to do this even if resolution later fails asynchronously.
  *
  * @param host The hostname to resolve.
@@ -853,10 +850,10 @@ struct Address : ResourceBase<AddressRaw>
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa Address.WaitUntilResolved
- * @sa Address.GetStatus
+ * @sa WaitUntilResolved
+ * @sa GetAddressStatus
  * @sa RefAddress
- * @sa Address.Unref
+ * @sa UnrefAddress
  */
 inline Address ResolveHostname(StringParam host)
 {
@@ -887,7 +884,7 @@ inline Address::Address(const Address& address)
  * to wait for resolution to complete. Specifying a timeout of -1 instructs the
  * library to wait indefinitely, and a timeout of 0 just checks the current
  * status and returns immediately (and is functionally equivalent to calling
- * Address.GetStatus).
+ * GetAddressStatus).
  *
  * Resolution can fail after some time (DNS server took awhile to reply that the
  * hostname isn't recognized, etc), so be sure to check the result of this
@@ -896,7 +893,7 @@ inline Address::Address(const Address& address)
  * Once an address is successfully resolved, it can be used to connect to the
  * host represented by the address.
  *
- * If you don't want your program to block, you can call Address.GetStatus from
+ * If you don't want your program to block, you can call GetAddressStatus from
  * time to time until you get a non-zero result.
  *
  * @param address The Address object to wait on.
@@ -911,7 +908,7 @@ inline Address::Address(const Address& address)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa Address.GetStatus
+ * @sa GetAddressStatus
  */
 inline Status WaitUntilResolved(AddressRef address, Sint32 timeout)
 {
@@ -948,7 +945,7 @@ inline Status Address::WaitUntilResolved(Sint32 timeout)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa Address.WaitUntilResolved
+ * @sa WaitUntilResolved
  */
 inline Status GetAddressStatus(AddressRef address)
 {
@@ -971,8 +968,8 @@ inline Status Address::GetStatus() { return SDL::GetAddressStatus(get()); }
  * string.
  *
  * This will return nullptr if resolution is still in progress, or if resolution
- * failed. You can use Address.GetStatus() or Address.WaitUntilResolved() to
- * make sure resolution has successfully completed before calling this.
+ * failed. You can use GetAddressStatus() or WaitUntilResolved() to make sure
+ * resolution has successfully completed before calling this.
  *
  * @param address The Address to query.
  * @returns a string on success.
@@ -982,8 +979,8 @@ inline Status Address::GetStatus() { return SDL::GetAddressStatus(get()); }
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa Address.GetStatus
- * @sa Address.WaitUntilResolved
+ * @sa GetAddressStatus
+ * @sa WaitUntilResolved
  */
 inline const char* GetAddressString(AddressRef address)
 {
@@ -1216,8 +1213,8 @@ inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
  * @since This datatype is available since SDL_net 3.0.0.
  *
  * @sa Address.CreateClient
- * @sa StreamSocket.WriteTo
- * @sa StreamSocket.ReadFrom
+ * @sa WriteToStreamSocket
+ * @sa ReadFromStreamSocket
  *
  * @cat resource
  */
@@ -1261,8 +1258,8 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * Connecting is an asynchronous operation; this function does not block, and
    * will return before the connection is complete. One has to then use
-   * StreamSocket.WaitUntilConnected() or StreamSocket.GetConnectionStatus() to
-   * see when the operation has completed, and if it was successful.
+   * WaitUntilConnected() or GetConnectionStatus() to see when the operation has
+   * completed, and if it was successful.
    *
    * Once connected, you can read and write data to the returned socket. Stream
    * sockets are a mode of _reliable_ transmission, which means data will be
@@ -1282,7 +1279,7 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    * This function will fail if `address` is not finished resolving.
    *
    * When you are done with this connection (whether it failed to connect or
-   * not), you must dispose of it with StreamSocket.Destroy().
+   * not), you must dispose of it with DestroyStreamSocket().
    *
    * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
    * you do not have to byteswap it into "network order," as the library will
@@ -1302,9 +1299,9 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa StreamSocket.WaitUntilConnected
-   * @sa StreamSocket.GetConnectionStatus
-   * @sa StreamSocket.Destroy
+   * @sa WaitUntilConnected
+   * @sa GetConnectionStatus
+   * @sa DestroyStreamSocket
    */
   StreamSocket(AddressRef address, Uint16 port, PropertiesRef props);
 
@@ -1330,8 +1327,8 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * This will _abandon_ any data queued for sending that hasn't made it to the
    * socket. If you need this data to arrive, you should wait for it to transmit
-   * before destroying the socket with StreamSocket.GetPendingWrites() or
-   * StreamSocket.WaitUntilDrained(). Any data that has arrived from the remote
+   * before destroying the socket with GetStreamSocketPendingWrites() or
+   * WaitUntilStreamSocketDrained(). Any data that has arrived from the remote
    * end of the connection that hasn't been read yet is lost.
    *
    * @threadsafety You should not operate on the same socket from multiple
@@ -1342,9 +1339,9 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    * @since This function is available since SDL_net 3.0.0.
    *
    * @sa Address.CreateClient
-   * @sa Server.AcceptClient
-   * @sa StreamSocket.GetPendingWrites
-   * @sa StreamSocket.WaitUntilDrained
+   * @sa AcceptClient
+   * @sa GetStreamSocketPendingWrites
+   * @sa WaitUntilStreamSocketDrained
    */
   void Destroy();
 
@@ -1362,7 +1359,7 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    * long to wait for resolution to complete. Specifying a timeout of -1
    * instructs the library to wait indefinitely, and a timeout of 0 just checks
    * the current status and returns immediately (and is functionally equivalent
-   * to calling StreamSocket.GetConnectionStatus).
+   * to calling GetConnectionStatus).
    *
    * Connections can fail after some time (server took awhile to respond at all,
    * and then refused the connection outright), so be sure to check the result
@@ -1371,9 +1368,8 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    * Once a connection is successfully made, the socket may read data from, or
    * write data to, the connected server.
    *
-   * If you don't want your program to block, you can call
-   * StreamSocket.GetConnectionStatus() from time to time until you get a
-   * non-zero result.
+   * If you don't want your program to block, you can call GetConnectionStatus()
+   * from time to time until you get a non-zero result.
    *
    * @param timeout Number of milliseconds to wait for resolution to complete.
    *                -1 to wait indefinitely, 0 to check once without waiting.
@@ -1388,7 +1384,7 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa StreamSocket.GetConnectionStatus
+   * @sa GetConnectionStatus
    */
   Status WaitUntilConnected(Sint32 timeout);
 
@@ -1398,8 +1394,8 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    * This reports the address of the remote side of a stream socket, which might
    * still be pending connnection.
    *
-   * This adds a reference to the address; the caller _must_ call
-   * Address.Unref() when done with it.
+   * This adds a reference to the address; the caller _must_ call UnrefAddress()
+   * when done with it.
    *
    * @returns the socket's remote address on success.
    * @throws Error on failure.
@@ -1443,7 +1439,7 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa StreamSocket.WaitUntilConnected
+   * @sa WaitUntilConnected
    */
   Status GetConnectionStatus();
 
@@ -1465,15 +1461,15 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * This call never blocks; if it can't send the data immediately, the library
    * will queue it for later transmission. You can use
-   * StreamSocket.GetPendingWrites() to see how much is still queued for later
-   * transmission, or StreamSocket.WaitUntilDrained() to block until all pending
+   * GetStreamSocketPendingWrites() to see how much is still queued for later
+   * transmission, or WaitUntilStreamSocketDrained() to block until all pending
    * data has been sent.
    *
    * If the connection has failed (remote side dropped us, or one of a million
    * other networking failures occurred), this function will report failure by
    * returning false. Stream sockets only report failure for unrecoverable
    * conditions; once a stream socket fails, you should assume it is no longer
-   * usable and should destroy it with StreamSocket.Destroy().
+   * usable and should destroy it with DestroyStreamSocket().
    *
    * @param buf a pointer to the data to send.
    * @param buflen the size of the data to send, in bytes.
@@ -1487,16 +1483,16 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa StreamSocket.GetPendingWrites
-   * @sa StreamSocket.WaitUntilDrained
-   * @sa StreamSocket.ReadFrom
+   * @sa GetStreamSocketPendingWrites
+   * @sa WaitUntilStreamSocketDrained
+   * @sa ReadFromStreamSocket
    */
   bool WriteTo(const void* buf, int buflen);
 
   /**
    * Query bytes still pending transmission on a stream socket.
    *
-   * If StreamSocket.WriteTo() couldn't send all its data immediately, it will
+   * If WriteToStreamSocket() couldn't send all its data immediately, it will
    * queue it to be sent later. This function lets the app see how much of that
    * queue is still pending to be sent.
    *
@@ -1507,7 +1503,7 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    * other networking failures occurred), this function will report failure by
    * returning -1. Stream sockets only report failure for unrecoverable
    * conditions; once a stream socket fails, you should assume it is no longer
-   * usable and should destroy it with StreamSocket.Destroy().
+   * usable and should destroy it with DestroyStreamSocket().
    *
    * @returns number of bytes still pending transmission, -1 on failure; call
    *          GetError() for details.
@@ -1519,15 +1515,15 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa StreamSocket.WriteTo
-   * @sa StreamSocket.WaitUntilDrained
+   * @sa WriteToStreamSocket
+   * @sa WaitUntilStreamSocketDrained
    */
   int GetPendingWrites();
 
   /**
    * Block until all of a stream socket's pending data is sent.
    *
-   * If StreamSocket.WriteTo() couldn't send all its data immediately, it will
+   * If WriteToStreamSocket() couldn't send all its data immediately, it will
    * queue it to be sent later. This function lets the app sleep until all the
    * data is transmitted.
    *
@@ -1535,17 +1531,16 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    * long to wait for transmission to complete. Specifying a timeout of -1
    * instructs the library to wait indefinitely, and a timeout of 0 just checks
    * the current status and returns immediately (and is functionally equivalent
-   * to calling StreamSocket.GetPendingWrites).
+   * to calling GetStreamSocketPendingWrites).
    *
    * If you don't want your program to block, you can call
-   * StreamSocket.GetPendingWrites from time to time until you get a result <=
-   * 0.
+   * GetStreamSocketPendingWrites from time to time until you get a result <= 0.
    *
    * If the connection has failed (remote side dropped us, or one of a million
    * other networking failures occurred), this function will report failure by
    * returning -1. Stream sockets only report failure for unrecoverable
    * conditions; once a stream socket fails, you should assume it is no longer
-   * usable and should destroy it with StreamSocket.Destroy().
+   * usable and should destroy it with DestroyStreamSocket().
    *
    * @param timeout Number of milliseconds to wait for draining to complete. -1
    *                to wait indefinitely, 0 to check once without waiting.
@@ -1559,8 +1554,8 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa StreamSocket.WriteTo
-   * @sa StreamSocket.GetPendingWrites
+   * @sa WriteToStreamSocket
+   * @sa GetStreamSocketPendingWrites
    */
   int WaitUntilDrained(Sint32 timeout);
 
@@ -1593,7 +1588,7 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    * other networking failures occurred), this function will report failure by
    * returning -1. Stream sockets only report failure for unrecoverable
    * conditions; once a stream socket fails, you should assume it is no longer
-   * usable and should destroy it with StreamSocket.Destroy().
+   * usable and should destroy it with DestroyStreamSocket().
    *
    * @param buf a pointer to a buffer where received data will be collected.
    * @param buflen the size of the buffer pointed to by `buf`, in bytes. This is
@@ -1609,7 +1604,7 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa StreamSocket.WriteTo
+   * @sa WriteToStreamSocket
    */
   int ReadFrom(void* buf, int buflen);
 
@@ -1662,8 +1657,8 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
  *
  * Connecting is an asynchronous operation; this function does not block, and
  * will return before the connection is complete. One has to then use
- * StreamSocket.WaitUntilConnected() or StreamSocket.GetConnectionStatus() to
- * see when the operation has completed, and if it was successful.
+ * WaitUntilConnected() or GetConnectionStatus() to see when the operation has
+ * completed, and if it was successful.
  *
  * Once connected, you can read and write data to the returned socket. Stream
  * sockets are a mode of _reliable_ transmission, which means data will be
@@ -1682,7 +1677,7 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
  * This function will fail if `address` is not finished resolving.
  *
  * When you are done with this connection (whether it failed to connect or not),
- * you must dispose of it with StreamSocket.Destroy().
+ * you must dispose of it with DestroyStreamSocket().
  *
  * Unlike BSD sockets or WinSock, you specify the port as a normal integer; you
  * do not have to byteswap it into "network order," as the library will handle
@@ -1702,9 +1697,9 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa StreamSocket.WaitUntilConnected
- * @sa StreamSocket.GetConnectionStatus
- * @sa StreamSocket.Destroy
+ * @sa WaitUntilConnected
+ * @sa GetConnectionStatus
+ * @sa DestroyStreamSocket
  */
 inline StreamSocket CreateClient(AddressRef address,
                                  Uint16 port,
@@ -1739,7 +1734,7 @@ inline StreamSocket::StreamSocket(AddressRef address,
  * to wait for resolution to complete. Specifying a timeout of -1 instructs the
  * library to wait indefinitely, and a timeout of 0 just checks the current
  * status and returns immediately (and is functionally equivalent to calling
- * StreamSocket.GetConnectionStatus).
+ * GetConnectionStatus).
  *
  * Connections can fail after some time (server took awhile to respond at all,
  * and then refused the connection outright), so be sure to check the result of
@@ -1748,9 +1743,8 @@ inline StreamSocket::StreamSocket(AddressRef address,
  * Once a connection is successfully made, the socket may read data from, or
  * write data to, the connected server.
  *
- * If you don't want your program to block, you can call
- * StreamSocket.GetConnectionStatus() from time to time until you get a non-zero
- * result.
+ * If you don't want your program to block, you can call GetConnectionStatus()
+ * from time to time until you get a non-zero result.
  *
  * @param sock The StreamSocket object to wait on.
  * @param timeout Number of milliseconds to wait for resolution to complete. -1
@@ -1766,7 +1760,7 @@ inline StreamSocket::StreamSocket(AddressRef address,
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa StreamSocket.GetConnectionStatus
+ * @sa GetConnectionStatus
  */
 inline Status WaitUntilConnected(StreamSocketRef sock, Sint32 timeout)
 {
@@ -1845,7 +1839,7 @@ struct Server : ResourceBase<ServerRaw>
    * address available to the app.
    *
    * After creating a server, you get stream sockets to talk to incoming client
-   * connections by calling Server.AcceptClient().
+   * connections by calling AcceptClient().
    *
    * Stream sockets don't employ any protocol (above the TCP level), so they can
    * accept connections from clients that aren't using SDL_net, but if you want
@@ -1882,8 +1876,8 @@ struct Server : ResourceBase<ServerRaw>
    * @since This function is available since SDL_net 3.0.0.
    *
    * @sa GetLocalAddresses
-   * @sa Server.AcceptClient
-   * @sa Server.Destroy
+   * @sa AcceptClient
+   * @sa DestroyServer
    */
   Server(AddressRef addr, Uint16 port, PropertiesRef props);
 
@@ -1942,7 +1936,7 @@ struct Server : ResourceBase<ServerRaw>
    * WaitUntilInputAvailable().
    *
    * When done with the newly-accepted client, you can disconnect and dispose of
-   * the stream socket by calling StreamSocket.Destroy().
+   * the stream socket by calling DestroyStreamSocket().
    *
    * @param client_stream Will be set to a new stream socket if a connection was
    *                      pending, nullptr otherwise.
@@ -1956,7 +1950,7 @@ struct Server : ResourceBase<ServerRaw>
    * @since This function is available since SDL_net 3.0.0.
    *
    * @sa WaitUntilInputAvailable
-   * @sa StreamSocket.Destroy
+   * @sa DestroyStreamSocket
    */
   void AcceptClient(NET_StreamSocket** client_stream);
 };
@@ -1983,7 +1977,7 @@ struct Server : ResourceBase<ServerRaw>
  * available to the app.
  *
  * After creating a server, you get stream sockets to talk to incoming client
- * connections by calling Server.AcceptClient().
+ * connections by calling AcceptClient().
  *
  * Stream sockets don't employ any protocol (above the TCP level), so they can
  * accept connections from clients that aren't using SDL_net, but if you want to
@@ -2020,8 +2014,8 @@ struct Server : ResourceBase<ServerRaw>
  * @since This function is available since SDL_net 3.0.0.
  *
  * @sa GetLocalAddresses
- * @sa Server.AcceptClient
- * @sa Server.Destroy
+ * @sa AcceptClient
+ * @sa DestroyServer
  */
 inline Server CreateServer(AddressRef addr, Uint16 port, PropertiesRef props)
 {
@@ -2067,7 +2061,7 @@ constexpr auto REUSEADDR_BOOLEAN =
  * WaitUntilInputAvailable().
  *
  * When done with the newly-accepted client, you can disconnect and dispose of
- * the stream socket by calling StreamSocket.Destroy().
+ * the stream socket by calling DestroyStreamSocket().
  *
  * @param server the server object to check for pending connections.
  * @param client_stream Will be set to a new stream socket if a connection was
@@ -2082,7 +2076,7 @@ constexpr auto REUSEADDR_BOOLEAN =
  * @since This function is available since SDL_net 3.0.0.
  *
  * @sa WaitUntilInputAvailable
- * @sa StreamSocket.Destroy
+ * @sa DestroyStreamSocket
  */
 inline void AcceptClient(ServerRef server, NET_StreamSocket** client_stream)
 {
@@ -2123,7 +2117,7 @@ inline void Server::Destroy() { DestroyServer(release()); }
  * This reports the address of the remote side of a stream socket, which might
  * still be pending connnection.
  *
- * This adds a reference to the address; the caller _must_ call Address.Unref()
+ * This adds a reference to the address; the caller _must_ call UnrefAddress()
  * when done with it.
  *
  * @param sock the stream socket to query.
@@ -2177,7 +2171,7 @@ inline Address StreamSocket::GetAddress()
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa StreamSocket.WaitUntilConnected
+ * @sa WaitUntilConnected
  */
 inline Status GetConnectionStatus(StreamSocketRef sock)
 {
@@ -2207,15 +2201,15 @@ inline Status StreamSocket::GetConnectionStatus()
  *
  * This call never blocks; if it can't send the data immediately, the library
  * will queue it for later transmission. You can use
- * StreamSocket.GetPendingWrites() to see how much is still queued for later
- * transmission, or StreamSocket.WaitUntilDrained() to block until all pending
+ * GetStreamSocketPendingWrites() to see how much is still queued for later
+ * transmission, or WaitUntilStreamSocketDrained() to block until all pending
  * data has been sent.
  *
  * If the connection has failed (remote side dropped us, or one of a million
  * other networking failures occurred), this function will report failure by
  * returning false. Stream sockets only report failure for unrecoverable
  * conditions; once a stream socket fails, you should assume it is no longer
- * usable and should destroy it with StreamSocket.Destroy().
+ * usable and should destroy it with DestroyStreamSocket().
  *
  * @param sock the stream socket to send data through.
  * @param buf a pointer to the data to send.
@@ -2230,9 +2224,9 @@ inline Status StreamSocket::GetConnectionStatus()
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa StreamSocket.GetPendingWrites
- * @sa StreamSocket.WaitUntilDrained
- * @sa StreamSocket.ReadFrom
+ * @sa GetStreamSocketPendingWrites
+ * @sa WaitUntilStreamSocketDrained
+ * @sa ReadFromStreamSocket
  */
 inline bool WriteToStreamSocket(StreamSocketRef sock,
                                 const void* buf,
@@ -2249,7 +2243,7 @@ inline bool StreamSocket::WriteTo(const void* buf, int buflen)
 /**
  * Query bytes still pending transmission on a stream socket.
  *
- * If StreamSocket.WriteTo() couldn't send all its data immediately, it will
+ * If WriteToStreamSocket() couldn't send all its data immediately, it will
  * queue it to be sent later. This function lets the app see how much of that
  * queue is still pending to be sent.
  *
@@ -2260,7 +2254,7 @@ inline bool StreamSocket::WriteTo(const void* buf, int buflen)
  * other networking failures occurred), this function will report failure by
  * returning -1. Stream sockets only report failure for unrecoverable
  * conditions; once a stream socket fails, you should assume it is no longer
- * usable and should destroy it with StreamSocket.Destroy().
+ * usable and should destroy it with DestroyStreamSocket().
  *
  * @param sock the stream socket to query.
  * @returns number of bytes still pending transmission, -1 on failure; call
@@ -2273,8 +2267,8 @@ inline bool StreamSocket::WriteTo(const void* buf, int buflen)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa StreamSocket.WriteTo
- * @sa StreamSocket.WaitUntilDrained
+ * @sa WriteToStreamSocket
+ * @sa WaitUntilStreamSocketDrained
  */
 inline int GetStreamSocketPendingWrites(StreamSocketRef sock)
 {
@@ -2289,7 +2283,7 @@ inline int StreamSocket::GetPendingWrites()
 /**
  * Block until all of a stream socket's pending data is sent.
  *
- * If StreamSocket.WriteTo() couldn't send all its data immediately, it will
+ * If WriteToStreamSocket() couldn't send all its data immediately, it will
  * queue it to be sent later. This function lets the app sleep until all the
  * data is transmitted.
  *
@@ -2297,16 +2291,16 @@ inline int StreamSocket::GetPendingWrites()
  * to wait for transmission to complete. Specifying a timeout of -1 instructs
  * the library to wait indefinitely, and a timeout of 0 just checks the current
  * status and returns immediately (and is functionally equivalent to calling
- * StreamSocket.GetPendingWrites).
+ * GetStreamSocketPendingWrites).
  *
  * If you don't want your program to block, you can call
- * StreamSocket.GetPendingWrites from time to time until you get a result <= 0.
+ * GetStreamSocketPendingWrites from time to time until you get a result <= 0.
  *
  * If the connection has failed (remote side dropped us, or one of a million
  * other networking failures occurred), this function will report failure by
  * returning -1. Stream sockets only report failure for unrecoverable
  * conditions; once a stream socket fails, you should assume it is no longer
- * usable and should destroy it with StreamSocket.Destroy().
+ * usable and should destroy it with DestroyStreamSocket().
  *
  * @param sock the stream socket to wait on.
  * @param timeout Number of milliseconds to wait for draining to complete. -1 to
@@ -2321,8 +2315,8 @@ inline int StreamSocket::GetPendingWrites()
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa StreamSocket.WriteTo
- * @sa StreamSocket.GetPendingWrites
+ * @sa WriteToStreamSocket
+ * @sa GetStreamSocketPendingWrites
  */
 inline int WaitUntilStreamSocketDrained(StreamSocketRef sock, Sint32 timeout)
 {
@@ -2363,7 +2357,7 @@ inline int StreamSocket::WaitUntilDrained(Sint32 timeout)
  * other networking failures occurred), this function will report failure by
  * returning -1. Stream sockets only report failure for unrecoverable
  * conditions; once a stream socket fails, you should assume it is no longer
- * usable and should destroy it with StreamSocket.Destroy().
+ * usable and should destroy it with DestroyStreamSocket().
  *
  * @param sock the stream socket to receive data from.
  * @param buf a pointer to a buffer where received data will be collected.
@@ -2380,7 +2374,7 @@ inline int StreamSocket::WaitUntilDrained(Sint32 timeout)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa StreamSocket.WriteTo
+ * @sa WriteToStreamSocket
  */
 inline int ReadFromStreamSocket(StreamSocketRef sock, void* buf, int buflen)
 {
@@ -2448,9 +2442,9 @@ inline void StreamSocket::SimulateStreamPacketLoss(int percent_loss)
  *
  * This will _abandon_ any data queued for sending that hasn't made it to the
  * socket. If you need this data to arrive, you should wait for it to transmit
- * before destroying the socket with StreamSocket.GetPendingWrites() or
- * StreamSocket.WaitUntilDrained(). Any data that has arrived from the remote
- * end of the connection that hasn't been read yet is lost.
+ * before destroying the socket with GetStreamSocketPendingWrites() or
+ * WaitUntilStreamSocketDrained(). Any data that has arrived from the remote end
+ * of the connection that hasn't been read yet is lost.
  *
  * @param sock stream socket to destroy.
  *
@@ -2462,9 +2456,9 @@ inline void StreamSocket::SimulateStreamPacketLoss(int percent_loss)
  * @since This function is available since SDL_net 3.0.0.
  *
  * @sa Address.CreateClient
- * @sa Server.AcceptClient
- * @sa StreamSocket.GetPendingWrites
- * @sa StreamSocket.WaitUntilDrained
+ * @sa AcceptClient
+ * @sa GetStreamSocketPendingWrites
+ * @sa WaitUntilStreamSocketDrained
  */
 inline void DestroyStreamSocket(StreamSocketRaw sock)
 {
@@ -2493,8 +2487,8 @@ inline void StreamSocket::Destroy() { DestroyStreamSocket(release()); }
  * @since This datatype is available since SDL_net 3.0.0.
  *
  * @sa Address.CreateDatagramSocket
- * @sa DatagramSocket.SendDatagram
- * @sa DatagramSocket.ReceiveDatagram
+ * @sa SendDatagram
+ * @sa ReceiveDatagram
  *
  * @cat resource
  */
@@ -2595,7 +2589,7 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    *   this socket, set this property to false, or omit it, as it defaults to
    *   false. Note: IPv4 will still be able to receive broadcast packets without
    *   this option, but IPv6 will not. Also see notes about sending to a
-   *   broadcast address in DatagramSocket.SendDatagram().
+   *   broadcast address in SendDatagram().
    *
    * @param addr the local address to listen for connections on, or nullptr to
    *             listen on all available local addresses.
@@ -2610,7 +2604,7 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    * @since This function is available since SDL_net 3.0.0.
    *
    * @sa GetLocalAddresses
-   * @sa DatagramSocket.Destroy
+   * @sa DestroyDatagramSocket
    */
   DatagramSocket(AddressRef addr, Uint16 port, PropertiesRef props);
 
@@ -2647,8 +2641,8 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    * @since This function is available since SDL_net 3.0.0.
    *
    * @sa Address.CreateDatagramSocket
-   * @sa DatagramSocket.SendDatagram
-   * @sa DatagramSocket.ReceiveDatagram
+   * @sa SendDatagram
+   * @sa ReceiveDatagram
    */
   void Destroy();
 
@@ -2729,7 +2723,7 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa DatagramSocket.ReceiveDatagram
+   * @sa ReceiveDatagram
    */
   bool SendDatagram(AddressRef address,
                     Uint16 port,
@@ -2749,10 +2743,10 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    * packets are available, so you should check for a successful return and a
    * non-nullptr value in `*dgram` to decide if a new packet is available.
    *
-   * You must pass received packets to Datagram.Destroy when you are done with
+   * You must pass received packets to DestroyDatagram when you are done with
    * them. If you want to save the sender's address past this time, it is safe
    * to call RefAddress() on the address and hold onto the pointer, so long as
-   * you call Address.Unref() on it when you are done with it.
+   * you call UnrefAddress() on it when you are done with it.
    *
    * Since datagrams can arrive from any address or port on the network without
    * prior warning, this information is available in the Datagram object that is
@@ -2778,8 +2772,8 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa DatagramSocket.SendDatagram
-   * @sa Datagram.Destroy
+   * @sa SendDatagram
+   * @sa DestroyDatagram
    */
   bool ReceiveDatagram(Datagram& dgram);
 
@@ -2796,10 +2790,10 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    * packets are available, so you should check for a successful return and a
    * non-nullptr value in `*dgram` to decide if a new packet is available.
    *
-   * You must pass received packets to Datagram.Destroy when you are done with
+   * You must pass received packets to DestroyDatagram when you are done with
    * them. If you want to save the sender's address past this time, it is safe
    * to call RefAddress() on the address and hold onto the pointer, so long as
-   * you call Address.Unref() on it when you are done with it.
+   * you call UnrefAddress() on it when you are done with it.
    *
    * Since datagrams can arrive from any address or port on the network without
    * prior warning, this information is available in the Datagram object that is
@@ -2824,8 +2818,8 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa DatagramSocket.SendDatagram
-   * @sa Datagram.Destroy
+   * @sa SendDatagram
+   * @sa DestroyDatagram
    */
   Datagram ReceiveDatagram();
 
@@ -2862,13 +2856,12 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
 };
 
 /**
- * The data provided for new incoming packets from
- * DatagramSocket.ReceiveDatagram().
+ * The data provided for new incoming packets from ReceiveDatagram().
  *
  * @since This datatype is available since SDL_net 3.0.0.
  *
- * @sa DatagramSocket.ReceiveDatagram
- * @sa Datagram.Destroy
+ * @sa ReceiveDatagram
+ * @sa DestroyDatagram
  *
  * @cat resource
  */
@@ -2914,10 +2907,10 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
    * packets are available, so you should check for a successful return and a
    * non-nullptr value in `*dgram` to decide if a new packet is available.
    *
-   * You must pass received packets to Datagram.Destroy when you are done with
+   * You must pass received packets to DestroyDatagram when you are done with
    * them. If you want to save the sender's address past this time, it is safe
    * to call RefAddress() on the address and hold onto the pointer, so long as
-   * you call Address.Unref() on it when you are done with it.
+   * you call UnrefAddress() on it when you are done with it.
    *
    * Since datagrams can arrive from any address or port on the network without
    * prior warning, this information is available in the Datagram object that is
@@ -2943,8 +2936,8 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa DatagramSocket.SendDatagram
-   * @sa Datagram.Destroy
+   * @sa SendDatagram
+   * @sa DestroyDatagram
    */
   Datagram(DatagramSocketRef sock);
 
@@ -2967,13 +2960,13 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
   /**
    * Dispose of a datagram packet previously received.
    *
-   * You must pass packets received through DatagramSocket.ReceiveDatagram to
-   * this function when you are done with them. This will free resources used by
-   * this packet and unref its Address.
+   * You must pass packets received through ReceiveDatagram to this function
+   * when you are done with them. This will free resources used by this packet
+   * and unref its Address.
    *
    * If you want to save the sender's address from the packet past this time, it
    * is safe to call RefAddress() on the address and hold onto its pointer, so
-   * long as you call Address.Unref() on it when you are done with it.
+   * long as you call UnrefAddress() on it when you are done with it.
    *
    * Once you call this function, the datagram pointer becomes invalid and
    * should not be used again by the app.
@@ -2997,10 +2990,10 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
    * packets are available, so you should check for a successful return and a
    * non-nullptr value in `*dgram` to decide if a new packet is available.
    *
-   * You must pass received packets to Datagram.Destroy when you are done with
+   * You must pass received packets to DestroyDatagram when you are done with
    * them. If you want to save the sender's address past this time, it is safe
    * to call RefAddress() on the address and hold onto the pointer, so long as
-   * you call Address.Unref() on it when you are done with it.
+   * you call UnrefAddress() on it when you are done with it.
    *
    * Since datagrams can arrive from any address or port on the network without
    * prior warning, this information is available in the Datagram object that is
@@ -3026,8 +3019,8 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa DatagramSocket.SendDatagram
-   * @sa Datagram.Destroy
+   * @sa SendDatagram
+   * @sa DestroyDatagram
    */
   bool Receive(DatagramSocketRef sock);
 };
@@ -3100,7 +3093,7 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
  *   this property to false, or omit it, as it defaults to false. Note: IPv4
  *   will still be able to receive broadcast packets without this option, but
  *   IPv6 will not. Also see notes about sending to a broadcast address in
- *   DatagramSocket.SendDatagram().
+ *   SendDatagram().
  *
  * @param addr the local address to listen for connections on, or nullptr to
  *             listen on all available local addresses.
@@ -3115,7 +3108,7 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
  * @since This function is available since SDL_net 3.0.0.
  *
  * @sa GetLocalAddresses
- * @sa DatagramSocket.Destroy
+ * @sa DestroyDatagramSocket
  */
 inline DatagramSocket CreateDatagramSocket(AddressRef addr,
                                            Uint16 port,
@@ -3224,7 +3217,7 @@ constexpr auto ALLOW_BROADCAST_BOOLEAN =
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa DatagramSocket.ReceiveDatagram
+ * @sa ReceiveDatagram
  */
 inline bool SendDatagram(DatagramSocketRef sock,
                          AddressRef address,
@@ -3256,10 +3249,10 @@ inline bool DatagramSocket::SendDatagram(AddressRef address,
  * packets are available, so you should check for a successful return and a
  * non-nullptr value in `*dgram` to decide if a new packet is available.
  *
- * You must pass received packets to Datagram.Destroy when you are done with
+ * You must pass received packets to DestroyDatagram when you are done with
  * them. If you want to save the sender's address past this time, it is safe to
  * call RefAddress() on the address and hold onto the pointer, so long as you
- * call Address.Unref() on it when you are done with it.
+ * call UnrefAddress() on it when you are done with it.
  *
  * Since datagrams can arrive from any address or port on the network without
  * prior warning, this information is available in the Datagram object that is
@@ -3285,8 +3278,8 @@ inline bool DatagramSocket::SendDatagram(AddressRef address,
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa DatagramSocket.SendDatagram
- * @sa Datagram.Destroy
+ * @sa SendDatagram
+ * @sa DestroyDatagram
  */
 inline bool ReceiveDatagram(DatagramSocketRef sock, Datagram& dgram)
 {
@@ -3306,10 +3299,10 @@ inline bool ReceiveDatagram(DatagramSocketRef sock, Datagram& dgram)
  * packets are available, so you should check for a successful return and a
  * non-nullptr value in `*dgram` to decide if a new packet is available.
  *
- * You must pass received packets to Datagram.Destroy when you are done with
+ * You must pass received packets to DestroyDatagram when you are done with
  * them. If you want to save the sender's address past this time, it is safe to
  * call RefAddress() on the address and hold onto the pointer, so long as you
- * call Address.Unref() on it when you are done with it.
+ * call UnrefAddress() on it when you are done with it.
  *
  * Since datagrams can arrive from any address or port on the network without
  * prior warning, this information is available in the Datagram object that is
@@ -3334,8 +3327,8 @@ inline bool ReceiveDatagram(DatagramSocketRef sock, Datagram& dgram)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa DatagramSocket.SendDatagram
- * @sa Datagram.Destroy
+ * @sa SendDatagram
+ * @sa DestroyDatagram
  */
 inline Datagram ReceiveDatagram(DatagramSocketRef sock)
 {
@@ -3370,13 +3363,13 @@ inline bool Datagram::Receive(DatagramSocketRef sock)
 /**
  * Dispose of a datagram packet previously received.
  *
- * You must pass packets received through DatagramSocket.ReceiveDatagram to this
- * function when you are done with them. This will free resources used by this
- * packet and unref its Address.
+ * You must pass packets received through ReceiveDatagram to this function when
+ * you are done with them. This will free resources used by this packet and
+ * unref its Address.
  *
  * If you want to save the sender's address from the packet past this time, it
  * is safe to call RefAddress() on the address and hold onto its pointer, so
- * long as you call Address.Unref() on it when you are done with it.
+ * long as you call UnrefAddress() on it when you are done with it.
  *
  * Once you call this function, the datagram pointer becomes invalid and should
  * not be used again by the app.
@@ -3453,8 +3446,8 @@ inline void DatagramSocket::SimulateDatagramPacketLoss(int percent_loss)
  * @since This function is available since SDL_net 3.0.0.
  *
  * @sa Address.CreateDatagramSocket
- * @sa DatagramSocket.SendDatagram
- * @sa DatagramSocket.ReceiveDatagram
+ * @sa SendDatagram
+ * @sa ReceiveDatagram
  */
 inline void DestroyDatagramSocket(DatagramSocketRaw sock)
 {
@@ -3477,12 +3470,12 @@ inline void DatagramSocket::Destroy() { DestroyDatagramSocket(release()); }
  * *`:
  *
  * - Server (reports new input when a connection is ready to be accepted with
- *   Server.AcceptClient())
+ *   AcceptClient())
  * - StreamSocket (reports new input when the remote end has sent more bytes of
- *   data to be read with StreamSocket.ReadFrom, or if the socket finished
- *   making its initial connection).
+ *   data to be read with ReadFromStreamSocket, or if the socket finished making
+ *   its initial connection).
  * - DatagramSocket (reports new input when a new packet arrives that can be
- *   read with DatagramSocket.ReceiveDatagram).
+ *   read with ReceiveDatagram).
  *
  * This function takes a timeout value, represented in milliseconds, of how long
  * to wait for resolution to complete. Specifying a timeout of -1 instructs the
@@ -3510,8 +3503,8 @@ inline void DatagramSocket::Destroy() { DestroyDatagramSocket(release()); }
  * @since This function is available since SDL_net 3.0.0.
  *
  * @sa Address.CreateDatagramSocket
- * @sa DatagramSocket.SendDatagram
- * @sa DatagramSocket.ReceiveDatagram
+ * @sa SendDatagram
+ * @sa ReceiveDatagram
  */
 inline int WaitUntilInputAvailable(void** vsockets,
                                    int numsockets,

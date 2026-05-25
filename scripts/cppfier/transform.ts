@@ -267,8 +267,9 @@ export class ApiContext {
   }
 
   addName(originalType: string, targetType: string) {
-    if (!this.nameMap[originalType])
+    if (!this.nameMap[originalType]) {
       this.nameMap[originalType] = targetType.replaceAll("::", ".");
+    }
   }
 
   getName(nameCandidate: string) {
@@ -1522,15 +1523,8 @@ function transformEntries(
       targetEntry.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
     }
     if (sourceName) {
-      const targetName = targetEntry.name?.replaceAll("::", ".");
-      if (targetName.match(/(\w+)\.\1/)) {
-        context.addName(
-          sourceName,
-          targetLink?.name?.replaceAll("::", ".") ?? targetName,
-        );
-      } else {
-        context.addName(sourceName, targetName);
-      }
+      const targetName = makeTargetName(targetEntry, targetLink);
+      context.addName(sourceName, targetName);
     }
     insertEntryAndCheck(targetEntries, targetEntry, context, sourceEntries);
   }
@@ -1555,6 +1549,21 @@ function transformEntries(
       insertEntryAndCheck(targetEntries, linkedEntry, context, sourceEntries);
     }
   }
+}
+
+function makeTargetName(
+  targetEntry: ApiEntry,
+  targetLink: ApiEntry | ApiEntryTransform,
+) {
+  let targetName = targetEntry.name;
+  while (targetName.match(/\.|::/)) {
+    if (!targetLink?.name) {
+      return targetName;
+    }
+    targetName = targetLink.name;
+    targetLink = targetLink.link;
+  }
+  return targetName;
 }
 
 function makeSortedEntryArray(

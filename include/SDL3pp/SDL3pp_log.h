@@ -21,11 +21,10 @@ namespace SDL {
  * SDL's own logs are sent below the default priority threshold, so they are
  * quiet by default.
  *
- * You can change the log verbosity programmatically using
- * LogCategory.SetLogPriority() or with SetHint(SDL_HINT_LOGGING, ...), or with
- * the "SDL_LOGGING" environment variable. This variable is a comma separated
- * set of category=level tokens that define the default logging levels for SDL
- * applications.
+ * You can change the log verbosity programmatically using SetLogPriority() or
+ * with SetHint(SDL_HINT_LOGGING, ...), or with the "SDL_LOGGING" environment
+ * variable. This variable is a comma separated set of category=level tokens
+ * that define the default logging levels for SDL applications.
  *
  * The category can be a numeric category, one of "app", "error", "assert",
  * "system", "audio", "video", "render", "input", "test", or `*` for any
@@ -166,7 +165,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa LogCategory.GetLogPriority
+   * @sa GetLogPriority
    * @sa ResetLogPriorities
    * @sa SetLogPriorities
    */
@@ -181,7 +180,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa LogCategory.SetLogPriority
+   * @sa SetLogPriority
    */
   LogPriority GetLogPriority() const;
 
@@ -226,14 +225,15 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa LogCategory.LogCritical
-   * @sa LogCategory.LogDebug
-   * @sa LogCategory.LogError
-   * @sa LogCategory.LogInfo
+   * @sa Log
+   * @sa LogCritical
+   * @sa LogDebug
+   * @sa LogError
+   * @sa LogInfo
    * @sa LogUnformatted
-   * @sa LogCategory.LogTrace
-   * @sa LogCategory.LogVerbose
-   * @sa LogCategory.LogWarn
+   * @sa LogTrace
+   * @sa LogVerbose
+   * @sa LogWarn
    */
   template<class... ARGS>
   void LogMessage(LogPriority priority,
@@ -254,14 +254,15 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa LogCategory.LogCritical
-   * @sa LogCategory.LogDebug
-   * @sa LogCategory.LogError
-   * @sa LogCategory.LogInfo
-   * @sa LogCategory.LogMessage
+   * @sa Log
+   * @sa LogCritical
+   * @sa LogDebug
+   * @sa LogError
+   * @sa LogInfo
+   * @sa LogMessage
    * @sa LogUnformatted
-   * @sa LogCategory.LogVerbose
-   * @sa LogCategory.LogWarn
+   * @sa LogVerbose
+   * @sa LogWarn
    */
   template<class... ARGS>
   void LogTrace(std::string_view fmt, ARGS&&... args) const;
@@ -281,13 +282,14 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa LogCategory.LogCritical
-   * @sa LogCategory.LogDebug
-   * @sa LogCategory.LogError
-   * @sa LogCategory.LogInfo
-   * @sa LogCategory.LogMessage
+   * @sa Log
+   * @sa LogCritical
+   * @sa LogDebug
+   * @sa LogError
+   * @sa LogInfo
+   * @sa LogMessage
    * @sa LogUnformatted
-   * @sa LogCategory.LogWarn
+   * @sa LogWarn
    */
   template<class... ARGS>
   void LogVerbose(std::string_view fmt, ARGS&&... args) const;
@@ -307,14 +309,15 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa LogCategory.LogCritical
-   * @sa LogCategory.LogError
-   * @sa LogCategory.LogInfo
-   * @sa LogCategory.LogMessage
+   * @sa Log
+   * @sa LogCritical
+   * @sa LogError
+   * @sa LogInfo
+   * @sa LogMessage
    * @sa LogUnformatted
-   * @sa LogCategory.LogTrace
-   * @sa LogCategory.LogVerbose
-   * @sa LogCategory.LogWarn
+   * @sa LogTrace
+   * @sa LogVerbose
+   * @sa LogWarn
    */
   template<class... ARGS>
   void LogDebug(std::string_view fmt, ARGS&&... args) const;
@@ -334,14 +337,15 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa LogCategory.LogCritical
-   * @sa LogCategory.LogDebug
-   * @sa LogCategory.LogError
-   * @sa LogCategory.LogMessage
+   * @sa Log
+   * @sa LogCritical
+   * @sa LogDebug
+   * @sa LogError
+   * @sa LogMessage
    * @sa LogUnformatted
-   * @sa LogCategory.LogTrace
-   * @sa LogCategory.LogVerbose
-   * @sa LogCategory.LogWarn
+   * @sa LogTrace
+   * @sa LogVerbose
+   * @sa LogWarn
    */
   template<class... ARGS>
   void LogInfo(std::string_view fmt, ARGS&&... args) const;
@@ -361,14 +365,15 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa LogCategory.LogCritical
-   * @sa LogCategory.LogDebug
-   * @sa LogCategory.LogError
-   * @sa LogCategory.LogInfo
-   * @sa LogCategory.LogMessage
+   * @sa Log
+   * @sa LogCritical
+   * @sa LogDebug
+   * @sa LogError
+   * @sa LogInfo
+   * @sa LogMessage
    * @sa LogUnformatted
-   * @sa LogCategory.LogTrace
-   * @sa LogCategory.LogVerbose
+   * @sa LogTrace
+   * @sa LogVerbose
    */
   template<class... ARGS>
   void LogWarn(std::string_view fmt, ARGS&&... args) const;
@@ -388,14 +393,15 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa LogCategory.LogCritical
-   * @sa LogCategory.LogDebug
-   * @sa LogCategory.LogInfo
-   * @sa LogCategory.LogMessage
+   * @sa Log
+   * @sa LogCritical
+   * @sa LogDebug
+   * @sa LogInfo
+   * @sa LogMessage
    * @sa LogUnformatted
-   * @sa LogCategory.LogTrace
-   * @sa LogCategory.LogVerbose
-   * @sa LogCategory.LogWarn
+   * @sa LogTrace
+   * @sa LogVerbose
+   * @sa LogWarn
    */
   template<class... ARGS>
   void LogError(std::string_view fmt, ARGS&&... args) const;
@@ -415,15 +421,15 @@ public:
    *
    * @cat formatted-string
    *
-   * @sa formatted-string
-   * @sa LogCategory.LogDebug()
-   * @sa LogCategory.LogError()
-   * @sa LogCategory.LogInfo()
-   * @sa LogUnformatted()
-   * @sa LogCategory.LogUnformatted()
-   * @sa LogCategory.LogTrace()
-   * @sa LogCategory.LogVerbose()
-   * @sa LogCategory.LogWarn
+   * @sa Log
+   * @sa LogDebug
+   * @sa LogError
+   * @sa LogInfo
+   * @sa LogMessage
+   * @sa LogUnformatted
+   * @sa LogTrace
+   * @sa LogVerbose
+   * @sa LogWarn
    */
   template<class... ARGS>
   void LogCritical(std::string_view fmt, ARGS&&... args) const;
@@ -489,7 +495,7 @@ constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM; ///< CUSTOM
  * @since This function is available since SDL 3.2.0.
  *
  * @sa ResetLogPriorities
- * @sa LogCategory.SetLogPriority
+ * @sa SetLogPriority
  */
 inline void SetLogPriorities(LogPriority priority)
 {
@@ -506,7 +512,7 @@ inline void SetLogPriorities(LogPriority priority)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LogCategory.GetLogPriority
+ * @sa GetLogPriority
  * @sa ResetLogPriorities
  * @sa SetLogPriorities
  */
@@ -530,7 +536,7 @@ inline void LogCategory::SetLogPriority(LogPriority priority) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa LogCategory.SetLogPriority
+ * @sa SetLogPriority
  */
 inline LogPriority GetLogPriority(int category)
 {
@@ -552,7 +558,7 @@ inline LogPriority LogCategory::GetLogPriority() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetLogPriorities
- * @sa LogCategory.SetLogPriority
+ * @sa SetLogPriority
  */
 inline void ResetLogPriorities() { SDL_ResetLogPriorities(); }
 
@@ -575,7 +581,7 @@ inline void ResetLogPriorities() { SDL_ResetLogPriorities(); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetLogPriorities
- * @sa LogCategory.SetLogPriority
+ * @sa SetLogPriority
  */
 inline void SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
 {
@@ -595,14 +601,14 @@ inline void SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogError
- * @sa LogCategory.LogInfo
- * @sa LogCategory.LogMessage
- * @sa LogCategory.LogTrace
- * @sa LogCategory.LogVerbose
- * @sa LogCategory.LogWarn
+ * @sa LogCritical
+ * @sa LogDebug
+ * @sa LogError
+ * @sa LogInfo
+ * @sa LogMessage
+ * @sa LogTrace
+ * @sa LogVerbose
+ * @sa LogWarn
  */
 inline void LogUnformatted(LogCategory category,
                            LogPriority priority,
@@ -622,13 +628,13 @@ inline void LogUnformatted(LogCategory category,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogError
- * @sa LogCategory.LogInfo
- * @sa LogCategory.LogMessage
- * @sa LogCategory.LogVerbose
- * @sa LogCategory.LogWarn
+ * @sa LogCritical
+ * @sa LogDebug
+ * @sa LogError
+ * @sa LogInfo
+ * @sa LogMessage
+ * @sa LogVerbose
+ * @sa LogWarn
  */
 inline void LogUnformatted(StringParam message)
 {
@@ -682,14 +688,13 @@ inline void Log(std::string_view fmt, ARGS&&... args)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogError
- * @sa LogCategory.LogInfo
+ * @sa LogCritical
+ * @sa LogDebug
+ * @sa LogError
+ * @sa LogInfo
+ * @sa LogMessage
  * @sa LogUnformatted
- * @sa LogCategory.LogTrace
- * @sa LogCategory.LogVerbose
- * @sa LogCategory.LogWarn
+ * @sa LogWarn
  */
 template<class... ARGS>
 inline void LogMessage(LogCategory category,
@@ -722,15 +727,14 @@ inline void LogCategory::LogMessage(LogPriority priority,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogError
- * @sa LogCategory.LogInfo
- * @sa LogCategory.LogMessage
+ * @sa LogCritical
+ * @sa LogError
+ * @sa LogInfo
+ * @sa LogMessage
  * @sa LogUnformatted
- * @sa LogCategory.LogTrace
- * @sa LogCategory.LogVerbose
- * @sa LogCategory.LogWarn
+ * @sa LogTrace
+ * @sa LogVerbose
+ * @sa LogWarn
  */
 template<class... ARGS>
 inline void LogTrace(LogCategory category, std::string_view fmt, ARGS&&... args)
@@ -757,13 +761,14 @@ inline void LogCategory::LogTrace(std::string_view fmt, ARGS&&... args) const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogError
- * @sa LogCategory.LogInfo
- * @sa LogCategory.LogMessage
+ * @sa LogCritical
+ * @sa LogDebug
+ * @sa LogError
+ * @sa LogMessage
  * @sa LogUnformatted
- * @sa LogCategory.LogWarn
+ * @sa LogTrace
+ * @sa LogVerbose
+ * @sa LogWarn
  */
 template<class... ARGS>
 inline void LogVerbose(LogCategory category,
@@ -792,14 +797,14 @@ inline void LogCategory::LogVerbose(std::string_view fmt, ARGS&&... args) const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogError
- * @sa LogCategory.LogInfo
- * @sa LogCategory.LogMessage
+ * @sa LogCritical
+ * @sa LogDebug
+ * @sa LogError
+ * @sa LogInfo
+ * @sa LogMessage
  * @sa LogUnformatted
- * @sa LogCategory.LogTrace
- * @sa LogCategory.LogVerbose
- * @sa LogCategory.LogWarn
+ * @sa LogTrace
+ * @sa LogVerbose
  */
 template<class... ARGS>
 inline void LogDebug(LogCategory category, std::string_view fmt, ARGS&&... args)
@@ -826,14 +831,14 @@ inline void LogCategory::LogDebug(std::string_view fmt, ARGS&&... args) const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogError
- * @sa LogCategory.LogMessage
+ * @sa LogCritical
+ * @sa LogDebug
+ * @sa LogInfo
+ * @sa LogMessage
  * @sa LogUnformatted
- * @sa LogCategory.LogTrace
- * @sa LogCategory.LogVerbose
- * @sa LogCategory.LogWarn
+ * @sa LogTrace
+ * @sa LogVerbose
+ * @sa LogWarn
  */
 template<class... ARGS>
 inline void LogInfo(LogCategory category, std::string_view fmt, ARGS&&... args)
@@ -860,14 +865,14 @@ inline void LogCategory::LogInfo(std::string_view fmt, ARGS&&... args) const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogError
- * @sa LogCategory.LogInfo
- * @sa LogCategory.LogMessage
+ * @sa LogDebug
+ * @sa LogError
+ * @sa LogInfo
+ * @sa LogMessage
  * @sa LogUnformatted
- * @sa LogCategory.LogTrace
- * @sa LogCategory.LogVerbose
+ * @sa LogTrace
+ * @sa LogVerbose
+ * @sa LogWarn
  */
 template<class... ARGS>
 inline void LogWarn(LogCategory category, std::string_view fmt, ARGS&&... args)
@@ -894,14 +899,14 @@ inline void LogCategory::LogWarn(std::string_view fmt, ARGS&&... args) const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Log
- * @sa LogCategory.LogCritical
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogInfo
- * @sa LogCategory.LogMessage
+ * @sa LogCritical
+ * @sa LogDebug
+ * @sa LogError
+ * @sa LogInfo
  * @sa LogUnformatted
- * @sa LogCategory.LogTrace
- * @sa LogCategory.LogVerbose
- * @sa LogCategory.LogWarn
+ * @sa LogTrace
+ * @sa LogVerbose
+ * @sa LogWarn
  */
 template<class... ARGS>
 inline void LogError(LogCategory category, std::string_view fmt, ARGS&&... args)
@@ -928,14 +933,14 @@ inline void LogCategory::LogError(std::string_view fmt, ARGS&&... args) const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Log
- * @sa LogCategory.LogDebug
- * @sa LogCategory.LogError
- * @sa LogCategory.LogInfo
- * @sa LogCategory.LogMessage
- * @sa LogUnformatted
- * @sa LogCategory.LogTrace
- * @sa LogCategory.LogVerbose
- * @sa LogCategory.LogWarn
+ * @sa LogCritical
+ * @sa LogDebug
+ * @sa LogError
+ * @sa LogInfo
+ * @sa LogMessage
+ * @sa LogTrace
+ * @sa LogVerbose
+ * @sa LogWarn
  */
 template<class... ARGS>
 inline void LogCritical(LogCategory category,

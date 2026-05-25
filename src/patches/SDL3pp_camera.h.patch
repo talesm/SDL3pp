@@ -40,7 +40,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
 @@ -320,8 +330,7 @@
-    * (or EVENT_CAMERA_DEVICE_DENIED) event, or poll Camera.GetPermissionState()
+    * (or EVENT_CAMERA_DEVICE_DENIED) event, or poll GetCameraPermissionState()
     * occasionally until it returns non-zero.
     *
 -   * @param spec the CameraSpec to be initialized by this function.
@@ -73,7 +73,7 @@
     * Acquire a frame.
     *
 @@ -432,7 +445,7 @@
-    * EVENT_CAMERA_DEVICE_DENIED) event, or poll Camera.GetPermissionState()
+    * EVENT_CAMERA_DEVICE_DENIED) event, or poll GetCameraPermissionState()
     * occasionally until it returns non-zero.
     *
 -   * @param camera opened camera device.
@@ -83,7 +83,7 @@
     * @post a new frame of video on success, nullptr if none is currently
 @@ -444,14 +457,15 @@
     *
-    * @sa Camera.ReleaseFrame
+    * @sa ReleaseCameraFrame
     */
 -  CameraFrame(CameraRef resource);
 +  CameraFrame(CameraRef resource, Uint64* timestampNS = nullptr);

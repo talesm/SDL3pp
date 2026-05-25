@@ -90,7 +90,7 @@
   * surface: call LoadTexture() instead.
   *
 - * When done with the returned surface, the app should dispose of it with a call
-- * to [Surface.Destroy](https://wiki.libsdl.org/SDL3/Surface.Destroy) ().
+- * to [DestroySurface](https://wiki.libsdl.org/SDL3/DestroySurface) ().
 - *
   * @param file a path on the filesystem to load an image from.
   * @returns a new SDL surface, or nullptr on error.
@@ -104,18 +104,16 @@
  
  inline Surface::Surface(StringParam file)
    : Surface(IMG_Load(file))
-@@ -183,10 +197,7 @@
-  *
-  * If you are using SDL's 2D rendering API, there is an equivalent call to load
+@@ -185,9 +199,6 @@
   * images directly into an Texture for use by the GPU without using a software
-- * surface: call LoadTexture_IO() instead.
-- *
-- * When done with the returned surface, the app should dispose of it with a call
-- * to Surface.Destroy().
-+ * surface: call LoadSurface() instead.
+  * surface: call LoadTexture_IO() instead.
   *
+- * When done with the returned surface, the app should dispose of it with a call
+- * to DestroySurface().
+- *
   * @param src an IOStream that data will be read from.
   * @param closeio true to close/free the IOStream before returning, false to
+  *                leave it open.
 @@ -200,7 +211,7 @@
   */
  inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
@@ -130,7 +128,7 @@
   * surface: call LoadTextureTyped_IO() instead.
   *
 - * When done with the returned surface, the app should dispose of it with a call
-- * to Surface.Destroy().
+- * to DestroySurface().
 - *
   * @param src an IOStream that data will be read from.
 - * @param closeio true to close/free the IOStream before returning, false to
@@ -156,7 +154,7 @@
   * memory), call LoadSurface() instead.
   *
 - * When done with the returned texture, the app should dispose of it with a call
-- * to Texture.Destroy().
+- * to DestroyTexture().
 - *
   * @param renderer the Renderer to use to create the texture.
   * @param file a path on the filesystem to load an image from.
@@ -175,7 +173,7 @@
   * memory), call LoadSurface() instead.
   *
 - * When done with the returned texture, the app should dispose of it with a call
-- * to Texture.Destroy().
+- * to DestroyTexture().
 - *
   * @param renderer the Renderer to use to create the texture.
   * @param src an IOStream that data will be read from.
@@ -194,7 +192,7 @@
   * memory), call LoadSurfaceTyped_IO() instead.
   *
 - * When done with the returned texture, the app should dispose of it with a call
-- * to Texture.Destroy().
+- * to DestroyTexture().
 - *
   * @param renderer the Renderer to use to create the texture.
   * @param src an IOStream that data will be read from.
@@ -229,7 +227,7 @@
   * @param width a pointer filled in with the width of the GPU texture. may be
   *              nullptr.
   * @param height a pointer filled in with the width of the GPU texture. may be
-@@ -572,7 +571,7 @@
+@@ -572,20 +571,17 @@
                                           int* height = nullptr)
  {
    return IMG_LoadGPUTextureTyped_IO(
@@ -238,7 +236,12 @@
  }
  
  /**
-@@ -585,7 +584,7 @@
+  * Get the image currently in the clipboard.
+  *
+- * When done with the returned surface, the app should dispose of it with a call
+- * to DestroySurface().
+- *
+  * @returns a new SDL surface, or nullptr if no supported image is available.
   *
   * @since This function is available since SDL_image 3.4.0.
   */
@@ -247,7 +250,7 @@
  
  /**
   * Detect ANI animated cursor data on a readable/seekable IOStream.
-@@ -607,7 +606,7 @@
+@@ -607,7 +603,7 @@
   * @param src a seekable/readable IOStream to provide image data.
   * @returns true if this is ANI animated cursor data, false otherwise.
   *
@@ -256,7 +259,7 @@
   *
   * @sa isAVIF
   * @sa isBMP
-@@ -1438,12 +1437,15 @@
+@@ -1438,12 +1434,15 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -275,7 +278,7 @@
   * which will skip SDL_image's file format detection routines. Generally it's
   * better to use the abstract interfaces; also, there is only an IOStream
   * interface available here.
-@@ -1454,7 +1456,7 @@
+@@ -1454,7 +1453,7 @@
   * @since This function is available since SDL_image 3.0.0.
   *
   * @sa LoadAVIF_IO
@@ -284,7 +287,7 @@
   * @sa LoadGIF_IO
   * @sa LoadICO_IO
   * @sa LoadJPG_IO
-@@ -1472,12 +1474,15 @@
+@@ -1472,12 +1471,15 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -303,7 +306,7 @@
   * which will skip SDL_image's file format detection routines. Generally it's
   * better to use the abstract interfaces; also, there is only an IOStream
   * interface available here.
-@@ -1489,7 +1494,7 @@
+@@ -1489,7 +1491,7 @@
   *
   * @sa LoadAVIF_IO
   * @sa LoadBMP_IO
@@ -312,7 +315,7 @@
   * @sa LoadICO_IO
   * @sa LoadJPG_IO
   * @sa LoadJXL_IO
-@@ -1506,12 +1511,15 @@
+@@ -1506,12 +1508,15 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -331,7 +334,7 @@
   * which will skip SDL_image's file format detection routines. Generally it's
   * better to use the abstract interfaces; also, there is only an IOStream
   * interface available here.
-@@ -1524,7 +1532,7 @@
+@@ -1524,7 +1529,7 @@
   * @sa LoadAVIF_IO
   * @sa LoadBMP_IO
   * @sa LoadCUR_IO
@@ -340,7 +343,7 @@
   * @sa LoadJPG_IO
   * @sa LoadJXL_IO
   * @sa LoadLBM_IO
-@@ -1540,12 +1548,15 @@
+@@ -1540,12 +1545,15 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -359,7 +362,7 @@
   * which will skip SDL_image's file format detection routines. Generally it's
   * better to use the abstract interfaces; also, there is only an IOStream
   * interface available here.
-@@ -1559,7 +1570,7 @@
+@@ -1559,7 +1567,7 @@
   * @sa LoadBMP_IO
   * @sa LoadCUR_IO
   * @sa LoadGIF_IO
@@ -368,7 +371,7 @@
   * @sa LoadJXL_IO
   * @sa LoadLBM_IO
   * @sa LoadPCX_IO
-@@ -1574,12 +1585,15 @@
+@@ -1574,12 +1582,15 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -387,7 +390,7 @@
   * which will skip SDL_image's file format detection routines. Generally it's
   * better to use the abstract interfaces; also, there is only an IOStream
   * interface available here.
-@@ -1594,7 +1608,7 @@
+@@ -1594,7 +1605,7 @@
   * @sa LoadCUR_IO
   * @sa LoadGIF_IO
   * @sa LoadICO_IO
@@ -396,7 +399,7 @@
   * @sa LoadLBM_IO
   * @sa LoadPCX_IO
   * @sa LoadPNG_IO
-@@ -1608,12 +1622,15 @@
+@@ -1608,12 +1619,15 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -415,7 +418,7 @@
   * which will skip SDL_image's file format detection routines. Generally it's
   * better to use the abstract interfaces; also, there is only an IOStream
   * interface available here.
-@@ -1629,7 +1646,7 @@
+@@ -1629,7 +1643,7 @@
   * @sa LoadGIF_IO
   * @sa LoadICO_IO
   * @sa LoadJPG_IO
@@ -424,7 +427,7 @@
   * @sa LoadPCX_IO
   * @sa LoadPNG_IO
   * @sa LoadPNM_IO
-@@ -1642,12 +1659,15 @@
+@@ -1642,12 +1656,15 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -443,7 +446,7 @@
   * which will skip SDL_image's file format detection routines. Generally it's
   * better to use the abstract interfaces; also, there is only an IOStream
   * interface available here.
-@@ -1664,7 +1684,7 @@
+@@ -1664,7 +1681,7 @@
   * @sa LoadICO_IO
   * @sa LoadJPG_IO
   * @sa LoadJXL_IO
@@ -452,7 +455,7 @@
   * @sa LoadPNG_IO
   * @sa LoadPNM_IO
   * @sa LoadQOI_IO
-@@ -1676,12 +1696,15 @@
+@@ -1676,12 +1693,15 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -471,7 +474,7 @@
   * which will skip SDL_image's file format detection routines. Generally it's
   * better to use the abstract interfaces; also, there is only an IOStream
   * interface available here.
-@@ -1699,7 +1722,7 @@
+@@ -1699,7 +1719,7 @@
   * @sa LoadJPG_IO
   * @sa LoadJXL_IO
   * @sa LoadLBM_IO
@@ -480,7 +483,7 @@
   * @sa LoadPNM_IO
   * @sa LoadQOI_IO
   * @sa LoadSVG_IO
-@@ -1710,7 +1733,10 @@
+@@ -1710,7 +1730,10 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -492,7 +495,7 @@
  
  /**
   * Load a PNG image directly.
-@@ -1721,6 +1747,8 @@
+@@ -1721,6 +1744,8 @@
   * interface available here.
   *
   * @param src an IOStream to load image data from.
@@ -501,7 +504,7 @@
   * @returns SDL surface, or nullptr on error.
   *
   * @since This function is available since SDL_image 3.0.0.
-@@ -1744,17 +1772,22 @@
+@@ -1744,17 +1769,22 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -529,7 +532,7 @@
   * @returns SDL surface, or nullptr on error.
   *
   * @since This function is available since SDL_image 3.0.0.
-@@ -1778,14 +1811,9 @@
+@@ -1778,14 +1808,9 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -545,7 +548,7 @@
  }
  
  /**
-@@ -1820,7 +1848,10 @@
+@@ -1820,7 +1845,10 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -557,7 +560,7 @@
  
  /**
   * Load a SVG image directly.
-@@ -1855,7 +1886,10 @@
+@@ -1855,7 +1883,10 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -569,9 +572,13 @@
  
  /**
   * Load an SVG image, scaled to a specific size.
-@@ -1870,8 +1904,7 @@
-  * to Surface.Destroy().
+@@ -1866,12 +1897,8 @@
+  * Either width or height may be 0 and the image will be auto-sized to preserve
+  * aspect ratio.
   *
+- * When done with the returned surface, the app should dispose of it with a call
+- * to DestroySurface().
+- *
   * @param src an IOStream to load SVG data from.
 - * @param width desired width of the generated surface, in pixels.
 - * @param height desired height of the generated surface, in pixels.
@@ -579,7 +586,7 @@
   * @returns a new SDL surface, or nullptr on error.
   *
   * @since This function is available since SDL_image 3.0.0.
-@@ -1880,7 +1913,7 @@
+@@ -1880,7 +1907,7 @@
   */
  inline Surface LoadSizedSVG_IO(IOStreamRef src, const PointRaw& size)
  {
@@ -588,7 +595,7 @@
  }
  
  /**
-@@ -1915,7 +1948,10 @@
+@@ -1915,7 +1942,10 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -600,7 +607,7 @@
  
  /**
   * Load a TGA image directly.
-@@ -1949,7 +1985,10 @@
+@@ -1949,7 +1979,10 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -612,7 +619,7 @@
  
  /**
   * Load a TIFF image directly.
-@@ -1983,7 +2022,10 @@
+@@ -1983,7 +2016,10 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -624,7 +631,7 @@
  
  /**
   * Load a WEBP image directly.
-@@ -2017,7 +2059,10 @@
+@@ -2017,7 +2053,10 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -636,7 +643,7 @@
  
  /**
   * Load a XCF image directly.
-@@ -2051,7 +2096,10 @@
+@@ -2051,7 +2090,10 @@
   * @sa LoadXPM_IO
   * @sa LoadXV_IO
   */
@@ -648,7 +655,7 @@
  
  /**
   * Load a XPM image directly.
-@@ -2085,7 +2133,10 @@
+@@ -2085,7 +2127,10 @@
   * @sa LoadXCF_IO
   * @sa LoadXV_IO
   */
@@ -660,7 +667,7 @@
  
  /**
   * Load a XV image directly.
-@@ -2119,7 +2170,10 @@
+@@ -2119,7 +2164,10 @@
   * @sa LoadXCF_IO
   * @sa LoadXPM_IO
   */
@@ -672,17 +679,17 @@
  
  /**
   * Load an XPM image from a memory array.
-@@ -2128,9 +2182,6 @@
+@@ -2128,9 +2176,6 @@
   * it will be 32bpp. If you always want 32-bit data, use
   * ReadXPMFromArrayToRGB888() instead.
   *
 - * When done with the returned surface, the app should dispose of it with a call
-- * to Surface.Destroy().
+- * to DestroySurface().
 - *
   * @param xpm a null-terminated array of strings that comprise XPM data.
   * @returns a new SDL surface, or nullptr on error.
   *
-@@ -2140,7 +2191,7 @@
+@@ -2140,7 +2185,7 @@
   */
  inline Surface ReadXPMFromArray(char** xpm)
  {
@@ -691,17 +698,17 @@
  }
  
  /**
-@@ -2149,9 +2200,6 @@
+@@ -2149,9 +2194,6 @@
   * The returned surface will always be a 32-bit RGB surface. If you want 8-bit
   * indexed colors (and the XPM data allows it), use ReadXPMFromArray() instead.
   *
 - * When done with the returned surface, the app should dispose of it with a call
-- * to Surface.Destroy().
+- * to DestroySurface().
 - *
   * @param xpm a null-terminated array of strings that comprise XPM data.
   * @returns a new SDL surface, or nullptr on error.
   *
-@@ -2161,7 +2209,7 @@
+@@ -2161,7 +2203,7 @@
   */
  inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  {
@@ -710,7 +717,7 @@
  }
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -2197,7 +2245,7 @@
+@@ -2197,7 +2239,7 @@
  
  inline void Surface::Save(StringParam filename) const
  {
@@ -719,7 +726,7 @@
  }
  
  /**
-@@ -2212,10 +2260,10 @@
+@@ -2212,10 +2254,10 @@
   *
   * @param surface the SDL surface to save.
   * @param dst the IOStream to save the image data to.
@@ -732,7 +739,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -2236,14 +2284,14 @@
+@@ -2236,14 +2278,14 @@
                           StringParam type,
                           bool closeio = false)
  {
@@ -749,7 +756,7 @@
  }
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -2278,10 +2326,10 @@
+@@ -2278,10 +2320,10 @@
   *
   * @param surface the SDL surface to save.
   * @param dst the IOStream to save the image data to.
@@ -762,7 +769,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.0.0.
-@@ -2293,55 +2341,12 @@
+@@ -2293,55 +2335,12 @@
                          int quality,
                          bool closeio = false)
  {
@@ -819,7 +826,7 @@
   * Save an Surface into a CUR image file.
   *
   * If the file already exists, it will be overwritten.
-@@ -2502,10 +2507,10 @@
+@@ -2502,10 +2501,10 @@
   *
   * @param surface the SDL surface to save.
   * @param dst the IOStream to save the image data to.
@@ -832,7 +839,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.0.0.
-@@ -2517,7 +2522,7 @@
+@@ -2517,7 +2516,7 @@
                         int quality,
                         bool closeio = false)
  {
@@ -841,7 +848,7 @@
  }
  
  /**
-@@ -2538,6 +2543,11 @@
+@@ -2538,6 +2537,11 @@
    CheckError(IMG_SavePNG(surface, file));
  }
  
@@ -853,7 +860,7 @@
  /**
   * Save an Surface into PNG image data, via an IOStream.
   *
-@@ -2563,6 +2573,11 @@
+@@ -2563,6 +2567,11 @@
    CheckError(IMG_SavePNG_IO(surface, dst, closeio));
  }
  
@@ -865,7 +872,7 @@
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
  
  /**
-@@ -2640,12 +2655,12 @@
+@@ -2640,12 +2649,12 @@
   *
   * @param surface the SDL surface to save.
   * @param dst the IOStream to save the image data to.
@@ -880,7 +887,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -2657,7 +2672,7 @@
+@@ -2657,7 +2666,7 @@
                          float quality,
                          bool closeio = false)
  {
@@ -889,7 +896,27 @@
  }
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -2782,16 +2797,30 @@
+@@ -2699,9 +2708,6 @@
+   /**
+    * Load an animation from a file.
+    *
+-   * When done with the returned animation, the app should dispose of it with a
+-   * call to FreeAnimation().
+-   *
+    * @param file path on the filesystem containing an animated image.
+    * @post a new Animation, or nullptr on error.
+    *
+@@ -2726,9 +2732,6 @@
+    * function succeeds or not. SDL_image reads everything it needs from `src`
+    * during this call in any case.
+    *
+-   * When done with the returned animation, the app should dispose of it with a
+-   * call to FreeAnimation().
+-   *
+    * @param src an IOStream that data will be read from.
+    * @param closeio true to close/free the IOStream before returning, false to
+    *                leave it open.
+@@ -2782,16 +2785,30 @@
     */
    void Free();
  
@@ -920,7 +947,7 @@
    int GetDelay(int index) const;
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -2827,9 +2856,9 @@
+@@ -2827,9 +2844,9 @@
     * For formats that accept a quality, a default quality of 90 will be used.
     *
     * @param dst an IOStream that data will be written to.
@@ -931,7 +958,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -2894,10 +2923,10 @@
+@@ -2894,10 +2911,10 @@
     * function succeeds or not.
     *
     * @param dst an IOStream from which data will be written to.
@@ -944,7 +971,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -2940,12 +2969,12 @@
+@@ -2940,12 +2957,12 @@
     * function succeeds or not.
     *
     * @param dst an IOStream from which data will be written to.
@@ -959,7 +986,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -2962,8 +2991,7 @@
+@@ -2962,8 +2979,7 @@
    /**
     * Create an animated cursor from an animation.
     *
@@ -969,7 +996,7 @@
     * @returns the new cursor on success.
     * @throws Error on failure.
     *
-@@ -2978,40 +3006,41 @@
+@@ -2978,40 +2994,41 @@
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
  };
  
@@ -1025,7 +1052,7 @@
  }
  
  inline Surface Animation::GetFrame(int index) const
-@@ -3019,9 +3048,15 @@
+@@ -3019,9 +3036,15 @@
    return SDL::GetAnimationFrame(get(), index);
  }
  
@@ -1042,9 +1069,33 @@
  }
  
  inline int Animation::GetDelay(int index) const
-@@ -3114,9 +3149,9 @@
-  * call to Animation.Free().
+@@ -3032,9 +3055,6 @@
+ /**
+  * Load an animation from a file.
   *
+- * When done with the returned animation, the app should dispose of it with a
+- * call to FreeAnimation().
+- *
+  * @param file path on the filesystem containing an animated image.
+  * @returns a new Animation, or nullptr on error.
+  *
+@@ -3072,9 +3092,6 @@
+  * function succeeds or not. SDL_image reads everything it needs from `src`
+  * during this call in any case.
+  *
+- * When done with the returned animation, the app should dispose of it with a
+- * call to FreeAnimation().
+- *
+  * @param src an IOStream that data will be read from.
+  * @param closeio true to close/free the IOStream before returning, false to
+  *                leave it open.
+@@ -3110,13 +3127,10 @@
+  * function succeeds or not. SDL_image reads everything it needs from `src`
+  * during this call in any case.
+  *
+- * When done with the returned animation, the app should dispose of it with a
+- * call to FreeAnimation().
+- *
   * @param src an IOStream that data will be read from.
 + * @param type a filename extension that represent this data ("GIF", etc).
   * @param closeio true to close/free the IOStream before returning, false to
@@ -1053,7 +1104,7 @@
   * @returns a new Animation, or nullptr on error.
   *
   * @since This function is available since SDL_image 3.0.0.
-@@ -3135,7 +3170,7 @@
+@@ -3135,7 +3149,7 @@
                                         StringParam type,
                                         bool closeio = false)
  {
@@ -1062,7 +1113,17 @@
  }
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -3168,7 +3203,7 @@
+@@ -3148,9 +3162,6 @@
+  * better to use the abstract interfaces; also, there is only an IOStream
+  * interface available here.
+  *
+- * When done with the returned animation, the app should dispose of it with a
+- * call to FreeAnimation().
+- *
+  * @param src an IOStream from which data will be read.
+  * @returns a new Animation, or nullptr on error.
+  *
+@@ -3168,7 +3179,7 @@
   */
  inline Animation LoadANIAnimation_IO(IOStreamRef src)
  {
@@ -1071,7 +1132,17 @@
  }
  
  /**
-@@ -3199,7 +3234,7 @@
+@@ -3179,9 +3190,6 @@
+  * better to use the abstract interfaces; also, there is only an IOStream
+  * interface available here.
+  *
+- * When done with the returned animation, the app should dispose of it with a
+- * call to FreeAnimation().
+- *
+  * @param src an IOStream from which data will be read.
+  * @returns a new Animation, or nullptr on error.
+  *
+@@ -3199,7 +3207,7 @@
   */
  inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
  {
@@ -1080,7 +1151,17 @@
  }
  
  /**
-@@ -3230,7 +3265,7 @@
+@@ -3210,9 +3218,6 @@
+  * Generally it's better to use the abstract interfaces; also, there is only an
+  * IOStream interface available here.
+  *
+- * When done with the returned animation, the app should dispose of it with a
+- * call to FreeAnimation().
+- *
+  * @param src an IOStream that data will be read from.
+  * @returns a new Animation, or nullptr on error.
+  *
+@@ -3230,7 +3235,7 @@
   */
  inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
  {
@@ -1089,7 +1170,7 @@
  }
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -3260,7 +3295,7 @@
+@@ -3260,7 +3265,7 @@
   */
  inline Animation LoadGIFAnimation_IO(IOStreamRef src)
  {
@@ -1098,7 +1179,7 @@
  }
  
  /**
-@@ -3288,7 +3323,7 @@
+@@ -3288,7 +3293,7 @@
   */
  inline Animation LoadWEBPAnimation_IO(IOStreamRef src)
  {
@@ -1107,7 +1188,7 @@
  }
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -3352,7 +3387,7 @@
+@@ -3352,7 +3357,7 @@
                                    StringParam type,
                                    bool closeio = false)
  {
@@ -1116,7 +1197,7 @@
  }
  
  inline void Animation::SaveTyped_IO(IOStreamRef dst,
-@@ -3436,10 +3471,10 @@
+@@ -3436,10 +3441,10 @@
   *
   * @param anim the animation to save.
   * @param dst an IOStream from which data will be written to.
@@ -1129,7 +1210,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -3456,7 +3491,7 @@
+@@ -3456,7 +3461,7 @@
                                   int quality,
                                   bool closeio = false)
  {
@@ -1138,7 +1219,7 @@
  }
  
  inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
-@@ -3505,12 +3540,12 @@
+@@ -3505,12 +3510,12 @@
   *
   * @param anim the animation to save.
   * @param dst an IOStream from which data will be written to.
@@ -1153,7 +1234,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -3527,7 +3562,7 @@
+@@ -3527,7 +3532,7 @@
                                   int quality,
                                   bool closeio = false)
  {
@@ -1162,7 +1243,7 @@
  }
  
  inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
-@@ -3539,8 +3574,7 @@
+@@ -3539,8 +3544,7 @@
   * Create an animated cursor from an animation.
   *
   * @param anim an animation to use to create an animated cursor.
@@ -1172,7 +1253,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -3552,7 +3586,8 @@
+@@ -3552,7 +3556,8 @@
   */
  inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
  {
@@ -1182,7 +1263,7 @@
  }
  
  inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
-@@ -3584,6 +3619,8 @@
+@@ -3584,6 +3589,8 @@
  
  inline void Animation::Free() { FreeAnimation(release()); }
  
@@ -1191,7 +1272,7 @@
  /**
   * An object representing the encoder context.
   *
-@@ -3618,8 +3655,6 @@
+@@ -3618,8 +3625,6 @@
  
    constexpr AnimationEncoder(AnimationEncoderRef&& other) = delete;
  
@@ -1200,7 +1281,7 @@
    /**
     * Create an encoder to save a series of images to a file.
     *
-@@ -3663,9 +3698,9 @@
+@@ -3663,9 +3668,9 @@
     * succeeds.
     *
     * @param dst an IOStream that will be used to save the stream.
@@ -1211,7 +1292,7 @@
     * @post a new AnimationEncoder on success.
     * @throws Error on failure.
     *
-@@ -3727,8 +3762,6 @@
+@@ -3727,8 +3732,6 @@
     */
    AnimationEncoder(PropertiesRef props);
  
@@ -1220,7 +1301,7 @@
    /// Destructor
    ~AnimationEncoder() { IMG_CloseAnimationEncoder(get()); }
  
-@@ -3742,16 +3775,13 @@
+@@ -3742,16 +3745,13 @@
    /// Assignment operator.
    AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
  
@@ -1238,7 +1319,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -3759,7 +3789,7 @@
+@@ -3759,7 +3759,7 @@
     * @sa CreateAnimationEncoder_IO
     * @sa CreateAnimationEncoderWithProperties
     */
@@ -1247,8 +1328,8 @@
  
    /**
     * Add a frame to an animation encoder.
-@@ -3779,12 +3809,8 @@
-    * @sa AnimationEncoder.Close
+@@ -3779,12 +3779,8 @@
+    * @sa CloseAnimationEncoder
     */
    void AddFrame(SurfaceRef surface, Uint64 duration);
 -
@@ -1260,7 +1341,7 @@
  /**
   * Create an encoder to save a series of images to a file.
   *
-@@ -3824,7 +3850,7 @@
+@@ -3824,7 +3820,7 @@
                                            StringParam type,
                                            bool closeio)
    : AnimationEncoder(
@@ -1269,7 +1350,7 @@
  {
  }
  
-@@ -3849,8 +3875,8 @@
+@@ -3849,8 +3845,8 @@
   * fails, or when the animation encoder is closed if this function succeeds.
   *
   * @param dst an IOStream that will be used to save the stream.
@@ -1279,7 +1360,7 @@
   * @returns a new AnimationEncoder on success.
   * @throws Error on failure.
   *
-@@ -3920,6 +3946,11 @@
+@@ -3920,6 +3916,11 @@
    return AnimationEncoder(props);
  }
  
@@ -1291,7 +1372,7 @@
  namespace prop::AnimationEncoder::Create {
  
  constexpr auto FILENAME_STRING =
-@@ -4016,10 +4047,7 @@
+@@ -4016,10 +4017,7 @@
    CheckError(IMG_CloseAnimationEncoder(encoder));
  }
  
@@ -1303,7 +1384,7 @@
  
  /**
   * An enum representing the status of an animation decoder.
-@@ -4028,8 +4056,6 @@
+@@ -4028,8 +4026,6 @@
   */
  using AnimationDecoderStatus = IMG_AnimationDecoderStatus;
  
@@ -1312,7 +1393,7 @@
  constexpr AnimationDecoderStatus DECODER_STATUS_INVALID =
    IMG_DECODER_STATUS_INVALID; ///< The decoder is invalid
  
-@@ -4077,8 +4103,6 @@
+@@ -4077,8 +4073,6 @@
  
    constexpr AnimationDecoder(AnimationDecoderRef&& other) = delete;
  
@@ -1321,7 +1402,7 @@
    /**
     * Create a decoder to read a series of images from a file.
     *
-@@ -4179,8 +4203,6 @@
+@@ -4179,8 +4173,6 @@
     */
    AnimationDecoder(PropertiesRef props);
  
@@ -1330,7 +1411,7 @@
    /// Destructor
    ~AnimationDecoder() { IMG_CloseAnimationDecoder(get()); }
  
-@@ -4194,16 +4216,13 @@
+@@ -4194,16 +4186,13 @@
    /// Assignment operator.
    AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
  
@@ -1348,7 +1429,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -4211,7 +4230,7 @@
+@@ -4211,7 +4200,7 @@
     * @sa CreateAnimationDecoder_IO
     * @sa CreateAnimationDecoderWithProperties
     */
@@ -1357,7 +1438,7 @@
  
    /**
     * Get the properties of an animation decoder.
-@@ -4242,18 +4261,11 @@
+@@ -4242,18 +4231,11 @@
     * as an Surface. The returned surface should be freed with SDL_FreeSurface()
     * when no longer needed.
     *
@@ -1378,8 +1459,8 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -4297,12 +4309,8 @@
-    * @sa AnimationDecoder.Close
+@@ -4297,12 +4279,8 @@
+    * @sa CloseAnimationDecoder
     */
    void Reset();
 -
@@ -1391,7 +1472,7 @@
  /**
   * Create a decoder to read a series of images from a file.
   *
-@@ -4343,7 +4351,7 @@
+@@ -4343,7 +4321,7 @@
                                            StringParam type,
                                            bool closeio)
    : AnimationDecoder(
@@ -1400,7 +1481,7 @@
  {
  }
  
-@@ -4432,6 +4440,11 @@
+@@ -4432,6 +4410,11 @@
    return AnimationDecoder(props);
  }
  
@@ -1412,7 +1493,7 @@
  namespace prop::AnimationDecoder::Create {
  
  constexpr auto FILENAME_STRING =
-@@ -4519,6 +4532,12 @@
+@@ -4519,6 +4502,12 @@
    return SDL::GetAnimationDecoderProperties(get());
  }
  
@@ -1425,7 +1506,7 @@
  namespace prop::AnimationDecoder::Metadata {
  
  constexpr auto IGNORE_PROPS_BOOLEAN =
-@@ -4551,22 +4570,14 @@
+@@ -4551,22 +4540,14 @@
   * Get the next frame in an animation decoder.
   *
   * This function decodes the next frame in the animation decoder, returning it
@@ -1450,7 +1531,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.4.0.
-@@ -4581,7 +4592,9 @@
+@@ -4581,7 +4562,9 @@
  inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                          Uint64* duration)
  {
@@ -1461,7 +1542,7 @@
  }
  
  inline Surface AnimationDecoder::GetFrame(Uint64* duration)
-@@ -4656,10 +4669,7 @@
+@@ -4656,10 +4639,7 @@
    CheckError(IMG_CloseAnimationDecoder(decoder));
  }
  
@@ -1473,7 +1554,7 @@
  
  #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
  
-@@ -4667,4 +4677,32 @@
+@@ -4667,4 +4647,32 @@
  
  } // namespace SDL
  

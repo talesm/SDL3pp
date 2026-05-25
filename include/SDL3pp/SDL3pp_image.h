@@ -130,11 +130,11 @@ inline int Version() { return IMG_Version(); }
  * the image is in a format that SDL doesn't directly support or because it's
  * compressed data that could reasonably uncompress to various formats and
  * SDL_image had to pick one). You can inspect an Surface for its specifics, and
- * use Surface.Convert to then migrate to any supported format.
+ * use ConvertSurface to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards by
- * calling: Surface.SetColorKey(image, SDL_RLEACCEL, image->format->colorkey);
+ * calling: SetSurfaceColorKey(image, SDL_RLEACCEL, image->format->colorkey);
  *
  * There is a separate function to read files from an IOStream, if you need an
  * i/o abstraction to provide data from anywhere instead of a simple filesystem
@@ -176,11 +176,11 @@ inline Surface::Surface(IOStreamRef src, bool closeio)
  * the image is in a format that SDL doesn't directly support or because it's
  * compressed data that could reasonably uncompress to various formats and
  * SDL_image had to pick one). You can inspect an Surface for its specifics, and
- * use Surface.Convert to then migrate to any supported format.
+ * use ConvertSurface to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards by
- * calling: Surface.SetColorKey(image, SDL_RLEACCEL, image->format->colorkey);
+ * calling: SetSurfaceColorKey(image, SDL_RLEACCEL, image->format->colorkey);
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
@@ -197,7 +197,7 @@ inline Surface::Surface(IOStreamRef src, bool closeio)
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to load
  * images directly into an Texture for use by the GPU without using a software
- * surface: call LoadSurface() instead.
+ * surface: call LoadTexture_IO() instead.
  *
  * @param src an IOStream that data will be read from.
  * @param closeio true to close/free the IOStream before returning, false to
@@ -226,11 +226,11 @@ inline Surface LoadSurface_IO(IOStreamRef src, bool closeio = false)
  * the image is in a format that SDL doesn't directly support or because it's
  * compressed data that could reasonably uncompress to various formats and
  * SDL_image had to pick one). You can inspect an Surface for its specifics, and
- * use Surface.Convert to then migrate to any supported format.
+ * use ConvertSurface to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
  * for the surface. You can enable RLE acceleration on the surface afterwards by
- * calling: Surface.SetColorKey(image, SDL_RLEACCEL, image->format->colorkey);
+ * calling: SetSurfaceColorKey(image, SDL_RLEACCEL, image->format->colorkey);
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
@@ -434,7 +434,7 @@ inline Texture LoadTextureTyped_IO(RendererRef renderer,
  * read; that function is LoadGPUTexture_IO().
  *
  * When done with the returned texture, the app should dispose of it with a call
- * to GPUDevice.ReleaseTexture().
+ * to ReleaseGPUTexture().
  *
  * @param device the GPUDevice to use to create the GPU texture.
  * @param copy_pass the GPUCopyPass to use to upload the loaded image to the GPU
@@ -483,7 +483,7 @@ inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
  * SDL_image cannot autodetect the file format.
  *
  * When done with the returned texture, the app should dispose of it with a call
- * to GPUDevice.ReleaseTexture().
+ * to ReleaseGPUTexture().
  *
  * @param device the GPUDevice to use to create the GPU texture.
  * @param copy_pass the GPUCopyPass to use to upload the loaded image to the GPU
@@ -541,7 +541,7 @@ inline GPUTexture LoadGPUTexture_IO(GPUDeviceRef device,
  * loading, much like passing a nullptr for type.
  *
  * When done with the returned texture, the app should dispose of it with a call
- * to GPUDevice.ReleaseTexture().
+ * to ReleaseGPUTexture().
  *
  * @param device the GPUDevice to use to create the GPU texture.
  * @param copy_pass the GPUCopyPass to use to upload the loaded image to the GPU
@@ -576,9 +576,6 @@ inline GPUTexture LoadGPUTextureTyped_IO(GPUDeviceRef device,
 
 /**
  * Get the image currently in the clipboard.
- *
- * When done with the returned surface, the app should dispose of it with a call
- * to Surface.Destroy().
  *
  * @returns a new SDL surface, or nullptr if no supported image is available.
  *
@@ -1900,9 +1897,6 @@ inline Surface LoadSVG_IO(IOStreamRef src)
  * Either width or height may be 0 and the image will be auto-sized to preserve
  * aspect ratio.
  *
- * When done with the returned surface, the app should dispose of it with a call
- * to Surface.Destroy().
- *
  * @param src an IOStream to load SVG data from.
  * @param size desired width and height of the generated surface, in pixels.
  * @returns a new SDL surface, or nullptr on error.
@@ -2714,15 +2708,12 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
   /**
    * Load an animation from a file.
    *
-   * When done with the returned animation, the app should dispose of it with a
-   * call to Animation.Free().
-   *
    * @param file path on the filesystem containing an animated image.
    * @post a new Animation, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Animation.CreateCursor
+   * @sa CreateAnimatedCursor
    * @sa LoadAnimation_IO
    * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation_IO
@@ -2730,7 +2721,7 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    * @sa LoadAVIFAnimation_IO
    * @sa LoadGIFAnimation_IO
    * @sa LoadWEBPAnimation_IO
-   * @sa Animation.Free
+   * @sa FreeAnimation
    */
   Animation(StringParam file);
 
@@ -2741,9 +2732,6 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    * function succeeds or not. SDL_image reads everything it needs from `src`
    * during this call in any case.
    *
-   * When done with the returned animation, the app should dispose of it with a
-   * call to Animation.Free().
-   *
    * @param src an IOStream that data will be read from.
    * @param closeio true to close/free the IOStream before returning, false to
    *                leave it open.
@@ -2751,7 +2739,7 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Animation.CreateCursor
+   * @sa CreateAnimatedCursor
    * @sa LoadAnimation
    * @sa LoadAnimationTyped_IO
    * @sa LoadANIAnimation_IO
@@ -2759,7 +2747,7 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    * @sa LoadAVIFAnimation_IO
    * @sa LoadGIFAnimation_IO
    * @sa LoadWEBPAnimation_IO
-   * @sa Animation.Free
+   * @sa FreeAnimation
    */
   Animation(IOStreamRef src, bool closeio = false);
 
@@ -2835,19 +2823,19 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveGIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa SaveAnimationTyped_IO
+   * @sa SaveANIAnimation_IO
+   * @sa SaveAPNGAnimation_IO
+   * @sa SaveAVIFAnimation_IO
+   * @sa SaveGIFAnimation_IO
+   * @sa SaveWEBPAnimation_IO
    */
   void Save(StringParam file);
 
   /**
    * Save an animation to an IOStream.
    *
-   * If you just want to save to a filename, you can use Animation.Save()
+   * If you just want to save to a filename, you can use SaveAnimation()
    * instead.
    *
    * If `closeio` is true, `dst` will be closed before returning, whether this
@@ -2863,12 +2851,12 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.Save
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveGIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa SaveAnimation
+   * @sa SaveANIAnimation_IO
+   * @sa SaveAPNGAnimation_IO
+   * @sa SaveAVIFAnimation_IO
+   * @sa SaveGIFAnimation_IO
+   * @sa SaveWEBPAnimation_IO
    */
   void SaveTyped_IO(IOStreamRef dst, StringParam type, bool closeio = false);
 
@@ -2885,12 +2873,12 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.Save
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveGIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa SaveAnimation
+   * @sa SaveAnimationTyped_IO
+   * @sa SaveAPNGAnimation_IO
+   * @sa SaveAVIFAnimation_IO
+   * @sa SaveGIFAnimation_IO
+   * @sa SaveWEBPAnimation_IO
    */
   void SaveANI_IO(IOStreamRef dst, bool closeio = false);
 
@@ -2907,12 +2895,12 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.Save
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveGIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa SaveAnimation
+   * @sa SaveAnimationTyped_IO
+   * @sa SaveANIAnimation_IO
+   * @sa SaveAVIFAnimation_IO
+   * @sa SaveGIFAnimation_IO
+   * @sa SaveWEBPAnimation_IO
    */
   void SaveAPNG_IO(IOStreamRef dst, bool closeio = false);
 
@@ -2931,12 +2919,12 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.Save
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveGIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa SaveAnimation
+   * @sa SaveAnimationTyped_IO
+   * @sa SaveANIAnimation_IO
+   * @sa SaveAPNGAnimation_IO
+   * @sa SaveGIFAnimation_IO
+   * @sa SaveWEBPAnimation_IO
    */
   void SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio = false);
 
@@ -2953,12 +2941,12 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.Save
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa SaveAnimation
+   * @sa SaveAnimationTyped_IO
+   * @sa SaveANIAnimation_IO
+   * @sa SaveAPNGAnimation_IO
+   * @sa SaveAVIFAnimation_IO
+   * @sa SaveWEBPAnimation_IO
    */
   void SaveGIF_IO(IOStreamRef dst, bool closeio = false);
 
@@ -2979,12 +2967,12 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.Save
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveGIF_IO
+   * @sa SaveAnimation
+   * @sa SaveAnimationTyped_IO
+   * @sa SaveANIAnimation_IO
+   * @sa SaveAPNGAnimation_IO
+   * @sa SaveAVIFAnimation_IO
+   * @sa SaveGIFAnimation_IO
    */
   void SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio = false);
 
@@ -3067,15 +3055,12 @@ inline int Animation::GetDelay(int index) const
 /**
  * Load an animation from a file.
  *
- * When done with the returned animation, the app should dispose of it with a
- * call to Animation.Free().
- *
  * @param file path on the filesystem containing an animated image.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Animation.CreateCursor
+ * @sa CreateAnimatedCursor
  * @sa LoadAnimation_IO
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
@@ -3083,7 +3068,7 @@ inline int Animation::GetDelay(int index) const
  * @sa LoadAVIFAnimation_IO
  * @sa LoadGIFAnimation_IO
  * @sa LoadWEBPAnimation_IO
- * @sa Animation.Free
+ * @sa FreeAnimation
  */
 inline Animation LoadAnimation(StringParam file)
 {
@@ -3107,9 +3092,6 @@ inline Animation::Animation(IOStreamRef src, bool closeio)
  * function succeeds or not. SDL_image reads everything it needs from `src`
  * during this call in any case.
  *
- * When done with the returned animation, the app should dispose of it with a
- * call to Animation.Free().
- *
  * @param src an IOStream that data will be read from.
  * @param closeio true to close/free the IOStream before returning, false to
  *                leave it open.
@@ -3117,7 +3099,7 @@ inline Animation::Animation(IOStreamRef src, bool closeio)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Animation.CreateCursor
+ * @sa CreateAnimatedCursor
  * @sa LoadAnimation
  * @sa LoadAnimationTyped_IO
  * @sa LoadANIAnimation_IO
@@ -3125,7 +3107,7 @@ inline Animation::Animation(IOStreamRef src, bool closeio)
  * @sa LoadAVIFAnimation_IO
  * @sa LoadGIFAnimation_IO
  * @sa LoadWEBPAnimation_IO
- * @sa Animation.Free
+ * @sa FreeAnimation
  */
 inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
 {
@@ -3145,9 +3127,6 @@ inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
  * function succeeds or not. SDL_image reads everything it needs from `src`
  * during this call in any case.
  *
- * When done with the returned animation, the app should dispose of it with a
- * call to Animation.Free().
- *
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("GIF", etc).
  * @param closeio true to close/free the IOStream before returning, false to
@@ -3156,7 +3135,7 @@ inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Animation.CreateCursor
+ * @sa CreateAnimatedCursor
  * @sa LoadAnimation
  * @sa LoadAnimation_IO
  * @sa LoadANIAnimation_IO
@@ -3164,7 +3143,7 @@ inline Animation LoadAnimation_IO(IOStreamRef src, bool closeio = false)
  * @sa LoadAVIFAnimation_IO
  * @sa LoadGIFAnimation_IO
  * @sa LoadWEBPAnimation_IO
- * @sa Animation.Free
+ * @sa FreeAnimation
  */
 inline Animation LoadAnimationTyped_IO(IOStreamRef src,
                                        StringParam type,
@@ -3183,9 +3162,6 @@ inline Animation LoadAnimationTyped_IO(IOStreamRef src,
  * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * When done with the returned animation, the app should dispose of it with a
- * call to Animation.Free().
- *
  * @param src an IOStream from which data will be read.
  * @returns a new Animation, or nullptr on error.
  *
@@ -3199,7 +3175,7 @@ inline Animation LoadAnimationTyped_IO(IOStreamRef src,
  * @sa LoadAVIFAnimation_IO
  * @sa LoadGIFAnimation_IO
  * @sa LoadWEBPAnimation_IO
- * @sa Animation.Free
+ * @sa FreeAnimation
  */
 inline Animation LoadANIAnimation_IO(IOStreamRef src)
 {
@@ -3214,9 +3190,6 @@ inline Animation LoadANIAnimation_IO(IOStreamRef src)
  * better to use the abstract interfaces; also, there is only an IOStream
  * interface available here.
  *
- * When done with the returned animation, the app should dispose of it with a
- * call to Animation.Free().
- *
  * @param src an IOStream from which data will be read.
  * @returns a new Animation, or nullptr on error.
  *
@@ -3230,7 +3203,7 @@ inline Animation LoadANIAnimation_IO(IOStreamRef src)
  * @sa LoadAVIFAnimation_IO
  * @sa LoadGIFAnimation_IO
  * @sa LoadWEBPAnimation_IO
- * @sa Animation.Free
+ * @sa FreeAnimation
  */
 inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
 {
@@ -3245,9 +3218,6 @@ inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
  * Generally it's better to use the abstract interfaces; also, there is only an
  * IOStream interface available here.
  *
- * When done with the returned animation, the app should dispose of it with a
- * call to Animation.Free().
- *
  * @param src an IOStream that data will be read from.
  * @returns a new Animation, or nullptr on error.
  *
@@ -3261,7 +3231,7 @@ inline Animation LoadAPNGAnimation_IO(IOStreamRef src)
  * @sa LoadAPNGAnimation_IO
  * @sa LoadGIFAnimation_IO
  * @sa LoadWEBPAnimation_IO
- * @sa Animation.Free
+ * @sa FreeAnimation
  */
 inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
 {
@@ -3291,7 +3261,7 @@ inline Animation LoadAVIFAnimation_IO(IOStreamRef src)
  * @sa LoadAPNGAnimation_IO
  * @sa LoadAVIFAnimation_IO
  * @sa LoadWEBPAnimation_IO
- * @sa Animation.Free
+ * @sa FreeAnimation
  */
 inline Animation LoadGIFAnimation_IO(IOStreamRef src)
 {
@@ -3319,7 +3289,7 @@ inline Animation LoadGIFAnimation_IO(IOStreamRef src)
  * @sa LoadAPNGAnimation_IO
  * @sa LoadAVIFAnimation_IO
  * @sa LoadGIFAnimation_IO
- * @sa Animation.Free
+ * @sa FreeAnimation
  */
 inline Animation LoadWEBPAnimation_IO(IOStreamRef src)
 {
@@ -3339,12 +3309,12 @@ inline Animation LoadWEBPAnimation_IO(IOStreamRef src)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveGIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa SaveAnimationTyped_IO
+ * @sa SaveANIAnimation_IO
+ * @sa SaveAPNGAnimation_IO
+ * @sa SaveAVIFAnimation_IO
+ * @sa SaveGIFAnimation_IO
+ * @sa SaveWEBPAnimation_IO
  */
 inline void SaveAnimation(AnimationRef anim, StringParam file)
 {
@@ -3359,7 +3329,7 @@ inline void Animation::Save(StringParam file)
 /**
  * Save an animation to an IOStream.
  *
- * If you just want to save to a filename, you can use Animation.Save() instead.
+ * If you just want to save to a filename, you can use SaveAnimation() instead.
  *
  * If `closeio` is true, `dst` will be closed before returning, whether this
  * function succeeds or not.
@@ -3375,12 +3345,12 @@ inline void Animation::Save(StringParam file)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.Save
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveGIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa SaveAnimation
+ * @sa SaveANIAnimation_IO
+ * @sa SaveAPNGAnimation_IO
+ * @sa SaveAVIFAnimation_IO
+ * @sa SaveGIFAnimation_IO
+ * @sa SaveWEBPAnimation_IO
  */
 inline void SaveAnimationTyped_IO(AnimationRef anim,
                                   IOStreamRef dst,
@@ -3411,12 +3381,12 @@ inline void Animation::SaveTyped_IO(IOStreamRef dst,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.Save
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveGIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa SaveAnimation
+ * @sa SaveAnimationTyped_IO
+ * @sa SaveAPNGAnimation_IO
+ * @sa SaveAVIFAnimation_IO
+ * @sa SaveGIFAnimation_IO
+ * @sa SaveWEBPAnimation_IO
  */
 inline void SaveANIAnimation_IO(AnimationRef anim,
                                 IOStreamRef dst,
@@ -3444,12 +3414,12 @@ inline void Animation::SaveANI_IO(IOStreamRef dst, bool closeio)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.Save
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveGIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa SaveAnimation
+ * @sa SaveAnimationTyped_IO
+ * @sa SaveANIAnimation_IO
+ * @sa SaveAVIFAnimation_IO
+ * @sa SaveGIFAnimation_IO
+ * @sa SaveWEBPAnimation_IO
  */
 inline void SaveAPNGAnimation_IO(AnimationRef anim,
                                  IOStreamRef dst,
@@ -3479,12 +3449,12 @@ inline void Animation::SaveAPNG_IO(IOStreamRef dst, bool closeio)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.Save
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveGIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa SaveAnimation
+ * @sa SaveAnimationTyped_IO
+ * @sa SaveANIAnimation_IO
+ * @sa SaveAPNGAnimation_IO
+ * @sa SaveGIFAnimation_IO
+ * @sa SaveWEBPAnimation_IO
  */
 inline void SaveAVIFAnimation_IO(AnimationRef anim,
                                  IOStreamRef dst,
@@ -3513,12 +3483,12 @@ inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.Save
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa SaveAnimation
+ * @sa SaveAnimationTyped_IO
+ * @sa SaveANIAnimation_IO
+ * @sa SaveAPNGAnimation_IO
+ * @sa SaveAVIFAnimation_IO
+ * @sa SaveWEBPAnimation_IO
  */
 inline void SaveGIFAnimation_IO(AnimationRef anim,
                                 IOStreamRef dst,
@@ -3550,12 +3520,12 @@ inline void Animation::SaveGIF_IO(IOStreamRef dst, bool closeio)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.Save
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveGIF_IO
+ * @sa SaveAnimation
+ * @sa SaveAnimationTyped_IO
+ * @sa SaveANIAnimation_IO
+ * @sa SaveAPNGAnimation_IO
+ * @sa SaveAVIFAnimation_IO
+ * @sa SaveGIFAnimation_IO
  */
 inline void SaveWEBPAnimation_IO(AnimationRef anim,
                                  IOStreamRef dst,
@@ -3677,8 +3647,8 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    *
    * @sa CreateAnimationEncoder_IO
    * @sa CreateAnimationEncoderWithProperties
-   * @sa AnimationEncoder.AddFrame
-   * @sa AnimationEncoder.Close
+   * @sa AddAnimationEncoderFrame
+   * @sa CloseAnimationEncoder
    */
   AnimationEncoder(StringParam file);
 
@@ -3708,8 +3678,8 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    *
    * @sa CreateAnimationEncoder
    * @sa CreateAnimationEncoderWithProperties
-   * @sa AnimationEncoder.AddFrame
-   * @sa AnimationEncoder.Close
+   * @sa AddAnimationEncoderFrame
+   * @sa CloseAnimationEncoder
    */
   AnimationEncoder(IOStreamRef dst, StringParam type, bool closeio = false);
 
@@ -3757,8 +3727,8 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    *
    * @sa CreateAnimationEncoder
    * @sa CreateAnimationEncoder_IO
-   * @sa AnimationEncoder.AddFrame
-   * @sa AnimationEncoder.Close
+   * @sa AddAnimationEncoderFrame
+   * @sa CloseAnimationEncoder
    */
   AnimationEncoder(PropertiesRef props);
 
@@ -3806,7 +3776,7 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    * @sa CreateAnimationEncoder
    * @sa CreateAnimationEncoder_IO
    * @sa CreateAnimationEncoderWithProperties
-   * @sa AnimationEncoder.Close
+   * @sa CloseAnimationEncoder
    */
   void AddFrame(SurfaceRef surface, Uint64 duration);
 };
@@ -3833,8 +3803,8 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
  *
  * @sa CreateAnimationEncoder_IO
  * @sa CreateAnimationEncoderWithProperties
- * @sa AnimationEncoder.AddFrame
- * @sa AnimationEncoder.Close
+ * @sa AddAnimationEncoderFrame
+ * @sa CloseAnimationEncoder
  */
 inline AnimationEncoder CreateAnimationEncoder(StringParam file)
 {
@@ -3884,8 +3854,8 @@ inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
  *
  * @sa CreateAnimationEncoder
  * @sa CreateAnimationEncoderWithProperties
- * @sa AnimationEncoder.AddFrame
- * @sa AnimationEncoder.Close
+ * @sa AddAnimationEncoderFrame
+ * @sa CloseAnimationEncoder
  */
 inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
                                                   StringParam type,
@@ -3937,8 +3907,8 @@ inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamRef dst,
  *
  * @sa CreateAnimationEncoder
  * @sa CreateAnimationEncoder_IO
- * @sa AnimationEncoder.AddFrame
- * @sa AnimationEncoder.Close
+ * @sa AddAnimationEncoderFrame
+ * @sa CloseAnimationEncoder
  */
 inline AnimationEncoder CreateAnimationEncoderWithProperties(
   PropertiesRef props)
@@ -4013,7 +3983,7 @@ constexpr auto GIF_USE_LUT_BOOLEAN =
  * @sa CreateAnimationEncoder
  * @sa CreateAnimationEncoder_IO
  * @sa CreateAnimationEncoderWithProperties
- * @sa AnimationEncoder.Close
+ * @sa CloseAnimationEncoder
  */
 inline void AddAnimationEncoderFrame(AnimationEncoderRef encoder,
                                      SurfaceRef surface,
@@ -4125,9 +4095,9 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    *
    * @sa CreateAnimationDecoder_IO
    * @sa CreateAnimationDecoderWithProperties
-   * @sa AnimationDecoder.GetFrame
-   * @sa AnimationDecoder.Reset
-   * @sa AnimationDecoder.Close
+   * @sa GetAnimationDecoderFrame
+   * @sa ResetAnimationDecoder
+   * @sa CloseAnimationDecoder
    */
   AnimationDecoder(StringParam file);
 
@@ -4157,9 +4127,9 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    *
    * @sa CreateAnimationDecoder
    * @sa CreateAnimationDecoderWithProperties
-   * @sa AnimationDecoder.GetFrame
-   * @sa AnimationDecoder.Reset
-   * @sa AnimationDecoder.Close
+   * @sa GetAnimationDecoderFrame
+   * @sa ResetAnimationDecoder
+   * @sa CloseAnimationDecoder
    */
   AnimationDecoder(IOStreamRef src, StringParam type, bool closeio = false);
 
@@ -4197,9 +4167,9 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    *
    * @sa CreateAnimationDecoder
    * @sa CreateAnimationDecoder_IO
-   * @sa AnimationDecoder.GetFrame
-   * @sa AnimationDecoder.Reset
-   * @sa AnimationDecoder.Close
+   * @sa GetAnimationDecoderFrame
+   * @sa ResetAnimationDecoder
+   * @sa CloseAnimationDecoder
    */
   AnimationDecoder(PropertiesRef props);
 
@@ -4273,9 +4243,9 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    * @sa CreateAnimationDecoder
    * @sa CreateAnimationDecoder_IO
    * @sa CreateAnimationDecoderWithProperties
-   * @sa AnimationDecoder.GetStatus
-   * @sa AnimationDecoder.Reset
-   * @sa AnimationDecoder.Close
+   * @sa GetAnimationDecoderStatus
+   * @sa ResetAnimationDecoder
+   * @sa CloseAnimationDecoder
    */
   Surface GetFrame(Uint64* duration);
 
@@ -4287,7 +4257,7 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa AnimationDecoder.GetFrame
+   * @sa GetAnimationDecoderFrame
    */
   AnimationDecoderStatus GetStatus();
 
@@ -4305,8 +4275,8 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    * @sa CreateAnimationDecoder
    * @sa CreateAnimationDecoder_IO
    * @sa CreateAnimationDecoderWithProperties
-   * @sa AnimationDecoder.GetFrame
-   * @sa AnimationDecoder.Close
+   * @sa GetAnimationDecoderFrame
+   * @sa CloseAnimationDecoder
    */
   void Reset();
 };
@@ -4333,9 +4303,9 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
  *
  * @sa CreateAnimationDecoder_IO
  * @sa CreateAnimationDecoderWithProperties
- * @sa AnimationDecoder.GetFrame
- * @sa AnimationDecoder.Reset
- * @sa AnimationDecoder.Close
+ * @sa GetAnimationDecoderFrame
+ * @sa ResetAnimationDecoder
+ * @sa CloseAnimationDecoder
  */
 inline AnimationDecoder CreateAnimationDecoder(StringParam file)
 {
@@ -4385,9 +4355,9 @@ inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
  *
  * @sa CreateAnimationDecoder
  * @sa CreateAnimationDecoderWithProperties
- * @sa AnimationDecoder.GetFrame
- * @sa AnimationDecoder.Reset
- * @sa AnimationDecoder.Close
+ * @sa GetAnimationDecoderFrame
+ * @sa ResetAnimationDecoder
+ * @sa CloseAnimationDecoder
  */
 inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
                                                   StringParam type,
@@ -4430,9 +4400,9 @@ inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamRef src,
  *
  * @sa CreateAnimationDecoder
  * @sa CreateAnimationDecoder_IO
- * @sa AnimationDecoder.GetFrame
- * @sa AnimationDecoder.Reset
- * @sa AnimationDecoder.Close
+ * @sa GetAnimationDecoderFrame
+ * @sa ResetAnimationDecoder
+ * @sa CloseAnimationDecoder
  */
 inline AnimationDecoder CreateAnimationDecoderWithProperties(
   PropertiesRef props)
@@ -4585,9 +4555,9 @@ constexpr auto LOOP_COUNT_NUMBER =
  * @sa CreateAnimationDecoder
  * @sa CreateAnimationDecoder_IO
  * @sa CreateAnimationDecoderWithProperties
- * @sa AnimationDecoder.GetStatus
- * @sa AnimationDecoder.Reset
- * @sa AnimationDecoder.Close
+ * @sa GetAnimationDecoderStatus
+ * @sa ResetAnimationDecoder
+ * @sa CloseAnimationDecoder
  */
 inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                         Uint64* duration)
@@ -4611,7 +4581,7 @@ inline Surface AnimationDecoder::GetFrame(Uint64* duration)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa AnimationDecoder.GetFrame
+ * @sa GetAnimationDecoderFrame
  */
 inline AnimationDecoderStatus GetAnimationDecoderStatus(
   AnimationDecoderRef decoder)
@@ -4639,8 +4609,8 @@ inline AnimationDecoderStatus AnimationDecoder::GetStatus()
  * @sa CreateAnimationDecoder
  * @sa CreateAnimationDecoder_IO
  * @sa CreateAnimationDecoderWithProperties
- * @sa AnimationDecoder.GetFrame
- * @sa AnimationDecoder.Close
+ * @sa GetAnimationDecoderFrame
+ * @sa CloseAnimationDecoder
  */
 inline void ResetAnimationDecoder(AnimationDecoderRef decoder)
 {

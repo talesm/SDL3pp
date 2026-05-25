@@ -73,8 +73,8 @@
     *
 +   * @sa TrayMenu.InsertEntry
     * @sa TrayEntryFlags
-    * @sa TrayMenu.GetEntries
-    * @sa TrayEntry.Remove
+    * @sa GetTrayEntries
+    * @sa RemoveTrayEntry
 @@ -637,8 +658,6 @@
     * Sets a callback to be invoked when the entry is selected.
     *
@@ -135,8 +135,8 @@
   *
 + * @sa TrayMenu.InsertEntry
   * @sa TrayEntryFlags
-  * @sa TrayMenu.GetEntries
-  * @sa TrayEntry.Remove
+  * @sa GetTrayEntries
+  * @sa RemoveTrayEntry
 @@ -1216,8 +1237,6 @@
   *
   * @param entry the entry to be updated.

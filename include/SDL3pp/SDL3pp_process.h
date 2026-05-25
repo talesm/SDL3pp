@@ -17,14 +17,14 @@ namespace SDL {
  * processes.
  *
  * You can create a new subprocess with CreateProcess() and optionally read and
- * write to it using Process.Read() or Process.GetInput() and
- * Process.GetOutput(). If more advanced functionality like chaining input
- * between processes is necessary, you can use CreateProcessWithProperties().
+ * write to it using ReadProcess() or GetProcessInput() and GetProcessOutput().
+ * If more advanced functionality like chaining input between processes is
+ * necessary, you can use CreateProcessWithProperties().
  *
- * You can get the status of a created process with Process.Wait(), or terminate
- * the process with Process.Kill().
+ * You can get the status of a created process with WaitProcess(), or terminate
+ * the process with KillProcess().
  *
- * Don't forget to call Process.Destroy() to clean up, whether the process
+ * Don't forget to call DestroyProcess() to clean up, whether the process
  * process was killed, terminated on its own, or is still running!
  *
  * @{
@@ -56,10 +56,10 @@ using ProcessRef = ResourceRef<Process>;
  *
  * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected to a
  * new IOStream that is available to the application. Standard input will be
- * available as `prop.Process.STDIN_POINTER` and allows Process.GetInput(),
+ * available as `prop.Process.STDIN_POINTER` and allows GetProcessInput(),
  * standard output will be available as `prop.Process.STDOUT_POINTER` and allows
- * Process.Read() and Process.GetOutput(), and standard error will be available
- * as `prop.Process.STDERR_POINTER` in the properties for the created process.
+ * ReadProcess() and GetProcessOutput(), and standard error will be available as
+ * `prop.Process.STDERR_POINTER` in the properties for the created process.
  *
  * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is connected to
  * an existing IOStream provided by the application. Standard input is provided
@@ -77,10 +77,10 @@ using ProcessRef = ResourceRef<Process>;
  * @since This enum is available since SDL 3.2.0.
  *
  * @sa CreateProcessWithProperties
- * @sa Process.GetProperties
- * @sa Process.Read
- * @sa Process.GetInput
- * @sa Process.GetOutput
+ * @sa GetProcessProperties
+ * @sa ReadProcess
+ * @sa GetProcessInput
+ * @sa GetProcessOutput
  */
 using ProcessIO = SDL_ProcessIO;
 
@@ -151,8 +151,8 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * Setting pipe_stdio to true is equivalent to setting
    * `prop.Process.Create.STDIN_NUMBER` and `prop.Process.Create.STDOUT_NUMBER`
-   * to `PROCESS_STDIO_APP`, and will allow the use of Process.Read() or
-   * Process.GetInput() and Process.GetOutput().
+   * to `PROCESS_STDIO_APP`, and will allow the use of ReadProcess() or
+   * GetProcessInput() and GetProcessOutput().
    *
    * See CreateProcessWithProperties() for more details.
    *
@@ -169,13 +169,13 @@ struct Process : ResourceBase<ProcessRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateProcessWithProperties
-   * @sa Process.GetProperties
-   * @sa Process.Read
-   * @sa Process.GetInput
-   * @sa Process.GetOutput
-   * @sa Process.Kill
-   * @sa Process.Wait
-   * @sa Process.Destroy
+   * @sa GetProcessProperties
+   * @sa ReadProcess
+   * @sa GetProcessInput
+   * @sa GetProcessOutput
+   * @sa KillProcess
+   * @sa WaitProcess
+   * @sa DestroyProcess
    */
   Process(const char* const* args, bool pipe_stdio);
 
@@ -230,7 +230,7 @@ struct Process : ResourceBase<ProcessRaw>
    * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
    * SIGCHLD should not be ignored or handled because those would prevent SDL
    * from properly tracking the lifetime of the underlying process. You should
-   * use Process.Wait() instead.
+   * use WaitProcess() instead.
    *
    * @param props the properties to use.
    * @post the newly created and running process, or nullptr if the process
@@ -241,13 +241,13 @@ struct Process : ResourceBase<ProcessRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateProcess
-   * @sa Process.GetProperties
-   * @sa Process.Read
-   * @sa Process.GetInput
-   * @sa Process.GetOutput
-   * @sa Process.Kill
-   * @sa Process.Wait
-   * @sa Process.Destroy
+   * @sa GetProcessProperties
+   * @sa ReadProcess
+   * @sa GetProcessInput
+   * @sa GetProcessOutput
+   * @sa KillProcess
+   * @sa WaitProcess
+   * @sa DestroyProcess
    */
   Process(PropertiesRef props);
 
@@ -268,7 +268,7 @@ struct Process : ResourceBase<ProcessRaw>
    * Destroy a previously created process object.
    *
    * Note that this does not stop the process, just destroys the SDL object used
-   * to track it. If you want to stop the process you should use Process.Kill().
+   * to track it. If you want to stop the process you should use KillProcess().
    *
    * @threadsafety This function is not thread safe.
    *
@@ -276,7 +276,7 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * @sa CreateProcess
    * @sa CreateProcessWithProperties
-   * @sa Process.Kill
+   * @sa KillProcess
    */
   void Destroy();
 
@@ -334,7 +334,7 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * @sa CreateProcess
    * @sa CreateProcessWithProperties
-   * @sa Process.Destroy
+   * @sa DestroyProcess
    */
   StringResult Read(int* exitcode = nullptr);
 
@@ -380,7 +380,7 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * Writing to this stream can return less data than expected if the process
    * hasn't read its input. It may be blocked waiting for its output to be read,
-   * if so you may need to call Process.GetOutput() and read the output in
+   * if so you may need to call GetProcessOutput() and read the output in
    * parallel with writing input.
    *
    * @returns the input stream or nullptr on failure; call GetError() for more
@@ -392,7 +392,7 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * @sa CreateProcess
    * @sa CreateProcessWithProperties
-   * @sa Process.GetOutput
+   * @sa GetProcessOutput
    */
   IOStreamRef GetInput();
 
@@ -403,7 +403,7 @@ struct Process : ResourceBase<ProcessRaw>
    * to true, or with CreateProcessWithProperties() and
    * `prop.Process.Create.STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
    *
-   * Reading from this stream can return 0 with IOStream.GetStatus() returning
+   * Reading from this stream can return 0 with GetIOStatus() returning
    * IO_STATUS_NOT_READY if no output is available yet.
    *
    * @returns the output stream or nullptr on failure; call GetError() for more
@@ -415,7 +415,7 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * @sa CreateProcess
    * @sa CreateProcessWithProperties
-   * @sa Process.GetInput
+   * @sa GetProcessInput
    */
   IOStreamRef GetOutput();
 
@@ -435,8 +435,8 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * @sa CreateProcess
    * @sa CreateProcessWithProperties
-   * @sa Process.Wait
-   * @sa Process.Destroy
+   * @sa WaitProcess
+   * @sa DestroyProcess
    */
   void Kill(bool force);
 
@@ -451,8 +451,8 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * If you create a process with standard output piped to the application
    * (`pipe_stdio` being true) then you should read all of the process output
-   * before calling Process.Wait(). If you don't do this the process might be
-   * blocked indefinitely waiting for output to be read and Process.Wait() will
+   * before calling WaitProcess(). If you don't do this the process might be
+   * blocked indefinitely waiting for output to be read and WaitProcess() will
    * never return true;
    *
    * @param block If true, block until the process finishes; otherwise, report
@@ -467,8 +467,8 @@ struct Process : ResourceBase<ProcessRaw>
    *
    * @sa CreateProcess
    * @sa CreateProcessWithProperties
-   * @sa Process.Kill
-   * @sa Process.Destroy
+   * @sa KillProcess
+   * @sa DestroyProcess
    */
   bool Wait(bool block, int* exitcode);
 };
@@ -486,8 +486,8 @@ struct Process : ResourceBase<ProcessRaw>
  *
  * Setting pipe_stdio to true is equivalent to setting
  * `prop.Process.Create.STDIN_NUMBER` and `prop.Process.Create.STDOUT_NUMBER` to
- * `PROCESS_STDIO_APP`, and will allow the use of Process.Read() or
- * Process.GetInput() and Process.GetOutput().
+ * `PROCESS_STDIO_APP`, and will allow the use of ReadProcess() or
+ * GetProcessInput() and GetProcessOutput().
  *
  * See CreateProcessWithProperties() for more details.
  *
@@ -504,13 +504,13 @@ struct Process : ResourceBase<ProcessRaw>
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateProcessWithProperties
- * @sa Process.GetProperties
- * @sa Process.Read
- * @sa Process.GetInput
- * @sa Process.GetOutput
- * @sa Process.Kill
- * @sa Process.Wait
- * @sa Process.Destroy
+ * @sa GetProcessProperties
+ * @sa ReadProcess
+ * @sa GetProcessInput
+ * @sa GetProcessOutput
+ * @sa KillProcess
+ * @sa WaitProcess
+ * @sa DestroyProcess
  */
 inline Process CreateProcess(const char* const* args, bool pipe_stdio)
 {
@@ -577,7 +577,7 @@ inline Process::Process(PropertiesRef props)
  * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
  * SIGCHLD should not be ignored or handled because those would prevent SDL from
  * properly tracking the lifetime of the underlying process. You should use
- * Process.Wait() instead.
+ * WaitProcess() instead.
  *
  * @param props the properties to use.
  * @returns the newly created and running process, or nullptr if the process
@@ -588,13 +588,13 @@ inline Process::Process(PropertiesRef props)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateProcess
- * @sa Process.GetProperties
- * @sa Process.Read
- * @sa Process.GetInput
- * @sa Process.GetOutput
- * @sa Process.Kill
- * @sa Process.Wait
- * @sa Process.Destroy
+ * @sa GetProcessProperties
+ * @sa ReadProcess
+ * @sa GetProcessInput
+ * @sa GetProcessOutput
+ * @sa KillProcess
+ * @sa WaitProcess
+ * @sa DestroyProcess
  */
 inline Process CreateProcessWithProperties(PropertiesRef props)
 {
@@ -749,7 +749,7 @@ constexpr auto BACKGROUND_BOOLEAN =
  *
  * @sa CreateProcess
  * @sa CreateProcessWithProperties
- * @sa Process.Destroy
+ * @sa DestroyProcess
  */
 inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
 {
@@ -772,8 +772,8 @@ inline StringResult Process::Read(int* exitcode)
  *
  * Writing to this stream can return less data than expected if the process
  * hasn't read its input. It may be blocked waiting for its output to be read,
- * if so you may need to call Process.GetOutput() and read the output in
- * parallel with writing input.
+ * if so you may need to call GetProcessOutput() and read the output in parallel
+ * with writing input.
  *
  * @param process The process to get the input stream for.
  * @returns the input stream or nullptr on failure; call GetError() for more
@@ -785,7 +785,7 @@ inline StringResult Process::Read(int* exitcode)
  *
  * @sa CreateProcess
  * @sa CreateProcessWithProperties
- * @sa Process.GetOutput
+ * @sa GetProcessOutput
  */
 inline IOStreamRef GetProcessInput(ProcessRef process)
 {
@@ -801,7 +801,7 @@ inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
  * true, or with CreateProcessWithProperties() and
  * `prop.Process.Create.STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
  *
- * Reading from this stream can return 0 with IOStream.GetStatus() returning
+ * Reading from this stream can return 0 with GetIOStatus() returning
  * IO_STATUS_NOT_READY if no output is available yet.
  *
  * @param process The process to get the output stream for.
@@ -814,7 +814,7 @@ inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
  *
  * @sa CreateProcess
  * @sa CreateProcessWithProperties
- * @sa Process.GetInput
+ * @sa GetProcessInput
  */
 inline IOStreamRef GetProcessOutput(ProcessRef process)
 {
@@ -839,8 +839,8 @@ inline IOStreamRef Process::GetOutput() { return SDL::GetProcessOutput(get()); }
  *
  * @sa CreateProcess
  * @sa CreateProcessWithProperties
- * @sa Process.Wait
- * @sa Process.Destroy
+ * @sa WaitProcess
+ * @sa DestroyProcess
  */
 inline void KillProcess(ProcessRef process, bool force)
 {
@@ -860,8 +860,8 @@ inline void Process::Kill(bool force) { SDL::KillProcess(get(), force); }
  *
  * If you create a process with standard output piped to the application
  * (`pipe_stdio` being true) then you should read all of the process output
- * before calling Process.Wait(). If you don't do this the process might be
- * blocked indefinitely waiting for output to be read and Process.Wait() will
+ * before calling WaitProcess(). If you don't do this the process might be
+ * blocked indefinitely waiting for output to be read and WaitProcess() will
  * never return true;
  *
  * @param process The process to wait for.
@@ -877,8 +877,8 @@ inline void Process::Kill(bool force) { SDL::KillProcess(get(), force); }
  *
  * @sa CreateProcess
  * @sa CreateProcessWithProperties
- * @sa Process.Kill
- * @sa Process.Destroy
+ * @sa KillProcess
+ * @sa DestroyProcess
  */
 inline bool WaitProcess(ProcessRef process, bool block, int* exitcode)
 {
@@ -894,7 +894,7 @@ inline bool Process::Wait(bool block, int* exitcode)
  * Destroy a previously created process object.
  *
  * Note that this does not stop the process, just destroys the SDL object used
- * to track it. If you want to stop the process you should use Process.Kill().
+ * to track it. If you want to stop the process you should use KillProcess().
  *
  * @param process The process object to destroy.
  *
@@ -904,7 +904,7 @@ inline bool Process::Wait(bool block, int* exitcode)
  *
  * @sa CreateProcess
  * @sa CreateProcessWithProperties
- * @sa Process.Kill
+ * @sa KillProcess
  */
 inline void DestroyProcess(ProcessRaw process) { SDL_DestroyProcess(process); }
 

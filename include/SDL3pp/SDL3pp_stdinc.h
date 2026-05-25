@@ -546,7 +546,7 @@ concept Interface = requires(I* iface) { (iface)->version = sizeof(I); };
  * // Fill in the interface function pointers with your implementation
  * iface.seek = ...
  *
- * stream = IOStream.Open(&iface, nullptr);
+ * stream = OpenIO(&iface, nullptr);
  * ```
  *
  * If you are using designated initializers, you can use the size of the
@@ -557,7 +557,7 @@ concept Interface = requires(I* iface) { (iface)->version = sizeof(I); };
  *     .version = sizeof(iface),
  *     .seek = ...
  * };
- * stream = IOStream.Open(&iface, nullptr);
+ * stream = OpenIO(&iface, nullptr);
  * ```
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -912,15 +912,15 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @cat resource
- *
  * @sa GetEnvironment
  * @sa CreateEnvironment
- * @sa Environment.GetVariable
- * @sa Environment.GetVariables
- * @sa Environment.SetVariable
- * @sa Environment.UnsetVariable
- * @sa Environment.Destroy
+ * @sa GetEnvironmentVariable
+ * @sa GetEnvironmentVariables
+ * @sa SetEnvironmentVariable
+ * @sa UnsetEnvironmentVariable
+ * @sa DestroyEnvironment
+ *
+ * @cat resource
  */
 struct Environment : ResourceBase<EnvironmentRaw>
 {
@@ -965,11 +965,11 @@ struct Environment : ResourceBase<EnvironmentRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Environment.GetVariable
-   * @sa Environment.GetVariables
-   * @sa Environment.SetVariable
-   * @sa Environment.UnsetVariable
-   * @sa Environment.Destroy
+   * @sa GetEnvironmentVariable
+   * @sa GetEnvironmentVariables
+   * @sa SetEnvironmentVariable
+   * @sa UnsetEnvironmentVariable
+   * @sa DestroyEnvironment
    */
   Environment(bool populated);
 
@@ -1011,9 +1011,9 @@ struct Environment : ResourceBase<EnvironmentRaw>
    *
    * @sa GetEnvironment
    * @sa CreateEnvironment
-   * @sa Environment.GetVariables
-   * @sa Environment.SetVariable
-   * @sa Environment.UnsetVariable
+   * @sa GetEnvironmentVariables
+   * @sa SetEnvironmentVariable
+   * @sa UnsetEnvironmentVariable
    */
   const char* GetVariable(StringParam name);
 
@@ -1032,9 +1032,9 @@ struct Environment : ResourceBase<EnvironmentRaw>
    *
    * @sa GetEnvironment
    * @sa CreateEnvironment
-   * @sa Environment.GetVariables
-   * @sa Environment.SetVariable
-   * @sa Environment.UnsetVariable
+   * @sa GetEnvironmentVariables
+   * @sa SetEnvironmentVariable
+   * @sa UnsetEnvironmentVariable
    */
   OwnArray<char*> GetVariables();
 
@@ -1063,9 +1063,9 @@ struct Environment : ResourceBase<EnvironmentRaw>
    *
    * @sa GetEnvironment
    * @sa CreateEnvironment
-   * @sa Environment.GetVariable
-   * @sa Environment.GetVariables
-   * @sa Environment.UnsetVariable
+   * @sa GetEnvironmentVariable
+   * @sa GetEnvironmentVariables
+   * @sa UnsetEnvironmentVariable
    */
   void SetVariable(StringParam name, StringParam value, bool overwrite);
 
@@ -1081,10 +1081,10 @@ struct Environment : ResourceBase<EnvironmentRaw>
    *
    * @sa GetEnvironment
    * @sa CreateEnvironment
-   * @sa Environment.GetVariable
-   * @sa Environment.GetVariables
-   * @sa Environment.SetVariable
-   * @sa Environment.UnsetVariable
+   * @sa GetEnvironmentVariable
+   * @sa GetEnvironmentVariables
+   * @sa SetEnvironmentVariable
+   * @sa UnsetEnvironmentVariable
    */
   void UnsetVariable(StringParam name);
 };
@@ -1093,8 +1093,8 @@ struct Environment : ResourceBase<EnvironmentRaw>
  * Get the process environment.
  *
  * This is initialized at application start and is not affected by setenv() and
- * unsetenv() calls after that point. Use Environment.SetVariable() and
- * Environment.UnsetVariable() if you want to modify this environment, or
+ * unsetenv() calls after that point. Use SetEnvironmentVariable() and
+ * UnsetEnvironmentVariable() if you want to modify this environment, or
  * setenv_unsafe() or unsetenv_unsafe() if you want changes to persist in the C
  * runtime environment after Quit().
  *
@@ -1105,10 +1105,10 @@ struct Environment : ResourceBase<EnvironmentRaw>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Environment.GetVariable
- * @sa Environment.GetVariables
- * @sa Environment.SetVariable
- * @sa Environment.UnsetVariable
+ * @sa GetEnvironmentVariable
+ * @sa GetEnvironmentVariables
+ * @sa SetEnvironmentVariable
+ * @sa UnsetEnvironmentVariable
  */
 inline EnvironmentRaw GetEnvironment() { return SDL_GetEnvironment(); }
 
@@ -1126,11 +1126,11 @@ inline EnvironmentRaw GetEnvironment() { return SDL_GetEnvironment(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Environment.GetVariable
- * @sa Environment.GetVariables
- * @sa Environment.SetVariable
- * @sa Environment.UnsetVariable
- * @sa Environment.Destroy
+ * @sa GetEnvironmentVariable
+ * @sa GetEnvironmentVariables
+ * @sa SetEnvironmentVariable
+ * @sa UnsetEnvironmentVariable
+ * @sa DestroyEnvironment
  */
 inline Environment CreateEnvironment(bool populated)
 {
@@ -1156,9 +1156,9 @@ inline Environment::Environment(bool populated)
  *
  * @sa GetEnvironment
  * @sa CreateEnvironment
- * @sa Environment.GetVariables
- * @sa Environment.SetVariable
- * @sa Environment.UnsetVariable
+ * @sa GetEnvironmentVariables
+ * @sa SetEnvironmentVariable
+ * @sa UnsetEnvironmentVariable
  */
 inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
@@ -1185,9 +1185,9 @@ inline const char* Environment::GetVariable(StringParam name)
  *
  * @sa GetEnvironment
  * @sa CreateEnvironment
- * @sa Environment.GetVariables
- * @sa Environment.SetVariable
- * @sa Environment.UnsetVariable
+ * @sa GetEnvironmentVariables
+ * @sa SetEnvironmentVariable
+ * @sa UnsetEnvironmentVariable
  */
 inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
 {
@@ -1215,9 +1215,9 @@ inline OwnArray<char*> Environment::GetVariables()
  *
  * @sa GetEnvironment
  * @sa CreateEnvironment
- * @sa Environment.GetVariable
- * @sa Environment.GetVariables
- * @sa Environment.UnsetVariable
+ * @sa GetEnvironmentVariable
+ * @sa GetEnvironmentVariables
+ * @sa UnsetEnvironmentVariable
  */
 inline void SetEnvironmentVariable(EnvironmentRef env,
                                    StringParam name,
@@ -1248,10 +1248,10 @@ inline void Environment::SetVariable(StringParam name,
  *
  * @sa GetEnvironment
  * @sa CreateEnvironment
- * @sa Environment.GetVariable
- * @sa Environment.GetVariables
- * @sa Environment.SetVariable
- * @sa Environment.UnsetVariable
+ * @sa GetEnvironmentVariable
+ * @sa GetEnvironmentVariables
+ * @sa SetEnvironmentVariable
+ * @sa UnsetEnvironmentVariable
  */
 inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
@@ -1335,11 +1335,11 @@ inline const char* getenv_unsafe(StringParam name)
  * @returns 0 on success, -1 on error.
  *
  * @threadsafety This function is not thread safe, consider using
- *               Environment.SetVariable() instead.
+ *               SetEnvironmentVariable() instead.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Environment.SetVariable
+ * @sa SetEnvironmentVariable
  */
 inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
 {
@@ -1353,11 +1353,11 @@ inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
  * @returns 0 on success, -1 on error.
  *
  * @threadsafety This function is not thread safe, consider using
- *               Environment.UnsetVariable() instead.
+ *               UnsetEnvironmentVariable() instead.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Environment.UnsetVariable
+ * @sa UnsetEnvironmentVariable
  */
 inline int unsetenv_unsafe(StringParam name)
 {
@@ -5886,8 +5886,8 @@ struct IConv : ResourceBase<IConvRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConv.iconv
-   * @sa IConv.close
+   * @sa iconv
+   * @sa iconv_close
    * @sa iconv_string
    */
   IConv(StringParam tocode, StringParam fromcode);
@@ -5920,7 +5920,7 @@ struct IConv : ResourceBase<IConvRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConv.iconv
+   * @sa iconv
    * @sa iconv_open
    * @sa iconv_string
    */
@@ -5959,7 +5959,7 @@ struct IConv : ResourceBase<IConvRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa iconv_open
-   * @sa IConv.close
+   * @sa iconv_close
    * @sa iconv_string
    */
   size_t iconv(const char** inbuf,
@@ -5973,15 +5973,15 @@ struct IConv : ResourceBase<IConvRaw>
  *
  * @param tocode The target character encoding, must not be nullptr.
  * @param fromcode The source character encoding, must not be nullptr.
- * @returns a handle that must be freed with IConv.close, or ICONV_ERROR on
+ * @returns a handle that must be freed with iconv_close, or ICONV_ERROR on
  *          failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConv.iconv
- * @sa IConv.close
+ * @sa iconv
+ * @sa iconv_close
  * @sa iconv_string
  */
 inline IConv iconv_open(StringParam tocode, StringParam fromcode)
@@ -6005,7 +6005,7 @@ inline IConv::IConv(StringParam tocode, StringParam fromcode)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConv.iconv
+ * @sa iconv
  * @sa iconv_open
  * @sa iconv_string
  */
@@ -6046,7 +6046,7 @@ inline int IConv::close() { return iconv_close(release()); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa iconv_open
- * @sa IConv.close
+ * @sa iconv_close
  * @sa iconv_string
  */
 inline size_t iconv(IConvRaw cd,
@@ -6098,8 +6098,8 @@ constexpr size_t ICONV_EINVAL =
  * @since This function is available since SDL 3.2.0.
  *
  * @sa iconv_open
- * @sa IConv.close
- * @sa IConv.iconv
+ * @sa iconv_close
+ * @sa iconv
  */
 inline OwnArray<char> iconv_string(StringParam tocode,
                                    StringParam fromcode,

@@ -75,7 +75,7 @@ struct MetalView : ResourceBase<MetalViewRaw>
    * its own. It is up to user code to do that.
    *
    * The returned handle can be casted directly to a NSView or UIView. To access
-   * the backing CAMetalLayer, call MetalView.GetLayer().
+   * the backing CAMetalLayer, call Metal_GetLayer().
    *
    * @param window the window.
    * @post handle NSView or UIView.
@@ -84,8 +84,8 @@ struct MetalView : ResourceBase<MetalViewRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa MetalView.Destroy
-   * @sa MetalView.GetLayer
+   * @sa Metal_DestroyView
+   * @sa Metal_GetLayer
    */
   MetalView(WindowRef window);
 
@@ -105,7 +105,7 @@ struct MetalView : ResourceBase<MetalViewRaw>
   /**
    * Destroy an existing MetalView object.
    *
-   * This should be called before Window.Destroy, if Metal_CreateView was called
+   * This should be called before DestroyWindow, if Metal_CreateView was called
    * after CreateWindow.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -136,7 +136,7 @@ struct MetalView : ResourceBase<MetalViewRaw>
  * own. It is up to user code to do that.
  *
  * The returned handle can be casted directly to a NSView or UIView. To access
- * the backing CAMetalLayer, call MetalView.GetLayer().
+ * the backing CAMetalLayer, call Metal_GetLayer().
  *
  * @param window the window.
  * @returns handle NSView or UIView.
@@ -145,8 +145,8 @@ struct MetalView : ResourceBase<MetalViewRaw>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa MetalView.Destroy
- * @sa MetalView.GetLayer
+ * @sa Metal_DestroyView
+ * @sa Metal_GetLayer
  */
 inline MetalView Metal_CreateView(WindowRef window)
 {
@@ -161,7 +161,7 @@ inline MetalView::MetalView(WindowRef window)
 /**
  * Destroy an existing MetalView object.
  *
- * This should be called before Window.Destroy, if Metal_CreateView was called
+ * This should be called before DestroyWindow, if Metal_CreateView was called
  * after CreateWindow.
  *
  * @param view the MetalView object.

@@ -121,7 +121,7 @@
  /**
   * Callback from the application to let the suspend continue.
   *
-@@ -257,6 +293,249 @@
+@@ -256,6 +292,249 @@
   */
  inline void GDKSuspendComplete() { SDL_GDKSuspendComplete(); }
  

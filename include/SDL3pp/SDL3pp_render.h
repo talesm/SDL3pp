@@ -132,7 +132,7 @@ constexpr TextureAccess TEXTUREACCESS_TARGET =
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * The addressing mode for a texture when used in Renderer.RenderGeometry().
+ * The addressing mode for a texture when used in RenderGeometry().
  *
  * This affects how texture coordinates are interpreted outside of [0, 1]
  *
@@ -258,7 +258,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * listed, until one succeeds or all of them fail.
    *
    * By default the rendering size matches the window size in pixels, but you
-   * can call Renderer.SetLogicalPresentation() to change the content size and
+   * can call SetRenderLogicalPresentation() to change the content size and
    * scaling options.
    *
    * @param window the window where rendering is displayed.
@@ -272,10 +272,10 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @sa CreateRendererWithProperties
    * @sa CreateSoftwareRenderer
-   * @sa Renderer.Destroy
+   * @sa DestroyRenderer
    * @sa GetNumRenderDrivers
    * @sa GetRenderDriver
-   * @sa Renderer.GetName
+   * @sa GetRendererName
    */
   Renderer(WindowRef window, StringParam name = nullptr);
 
@@ -299,7 +299,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *   textures can be used for HDR content.
    * - `prop.Renderer.Create.PRESENT_VSYNC_NUMBER`: non-zero if you want present
    *   synchronized with the refresh rate. This property can take any value that
-   *   is supported by Renderer.SetVSync() for the renderer.
+   *   is supported by SetRenderVSync() for the renderer.
    *
    * With the SDL GPU renderer (since SDL 3.4.0):
    *
@@ -334,11 +334,11 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Create
+   * @sa CreateProperties
    * @sa CreateRenderer
    * @sa CreateSoftwareRenderer
-   * @sa Renderer.Destroy
-   * @sa Renderer.GetName
+   * @sa DestroyRenderer
+   * @sa GetRendererName
    */
   Renderer(PropertiesRef props);
 
@@ -358,7 +358,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Destroy
+   * @sa DestroyRenderer
    */
   Renderer(SurfaceRef surface);
 
@@ -525,7 +525,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * logical size and presentation.
    *
    * For the output size of the current rendering target, with logical size
-   * adjustments, use Renderer.GetCurrentOutputSize() instead.
+   * adjustments, use GetCurrentRenderOutputSize() instead.
    *
    * @param w a pointer filled in with the width in pixels.
    * @param h a pointer filled in with the height in pixels.
@@ -535,7 +535,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetCurrentOutputSize
+   * @sa GetCurrentRenderOutputSize
    */
   void GetOutputSize(int* w, int* h) const;
 
@@ -546,7 +546,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * logical size and presentation.
    *
    * For the output size of the current rendering target, with logical size
-   * adjustments, use Renderer.GetCurrentOutputSize() instead.
+   * adjustments, use GetCurrentRenderOutputSize() instead.
    *
    * @returns Point on success.
    * @throws Error on failure.
@@ -555,7 +555,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetCurrentOutputSize
+   * @sa GetCurrentRenderOutputSize
    */
   Point GetOutputSize() const;
 
@@ -563,10 +563,10 @@ struct Renderer : ResourceBase<RendererRaw>
    * Get the current output size in pixels of a rendering context.
    *
    * If a rendering target is active, this will return the size of the rendering
-   * target in pixels, otherwise return the value of Renderer.GetOutputSize().
+   * target in pixels, otherwise return the value of GetRenderOutputSize().
    *
    * Rendering target or not, the output will be adjusted by the current logical
-   * presentation state, dictated by Renderer.SetLogicalPresentation().
+   * presentation state, dictated by SetRenderLogicalPresentation().
    *
    * @param w a pointer filled in with the current width.
    * @param h a pointer filled in with the current height.
@@ -576,7 +576,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetOutputSize
+   * @sa GetRenderOutputSize
    */
   void GetCurrentOutputSize(int* w, int* h) const;
 
@@ -584,10 +584,10 @@ struct Renderer : ResourceBase<RendererRaw>
    * Get the current output size in pixels of a rendering context.
    *
    * If a rendering target is active, this will return the size of the rendering
-   * target in pixels, otherwise return the value of Renderer.GetOutputSize().
+   * target in pixels, otherwise return the value of GetRenderOutputSize().
    *
    * Rendering target or not, the output will be adjusted by the current logical
-   * presentation state, dictated by Renderer.SetLogicalPresentation().
+   * presentation state, dictated by SetRenderLogicalPresentation().
    *
    * @returns the size on success.
    * @throws Error on failure.
@@ -596,7 +596,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetOutputSize
+   * @sa GetRenderOutputSize
    */
   Point GetCurrentOutputSize() const;
 
@@ -617,9 +617,9 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @sa Renderer.CreateTextureFromSurface
    * @sa Renderer.CreateTextureWithProperties
-   * @sa Texture.Destroy
-   * @sa Texture.GetSize
-   * @sa Texture.Update
+   * @sa DestroyTexture
+   * @sa GetTextureSize
+   * @sa UpdateTexture
    */
   Texture CreateTexture(PixelFormat format,
                         TextureAccess access,
@@ -647,7 +647,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @sa Renderer.CreateTexture
    * @sa Renderer.CreateTextureWithProperties
-   * @sa Texture.Destroy
+   * @sa DestroyTexture
    */
   Texture CreateTextureFromSurface(SurfaceRef surface);
 
@@ -669,7 +669,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * - `prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels,
    *   required
    * - `prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized
-   *   texture formats. This can be set later with Texture.SetPalette()
+   *   texture formats. This can be set later with SetTexturePalette()
    * - `prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
    *   textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
@@ -766,12 +766,12 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Create
+   * @sa CreateProperties
    * @sa Renderer.CreateTexture
    * @sa Renderer.CreateTextureFromSurface
-   * @sa Texture.Destroy
-   * @sa Texture.GetSize
-   * @sa Texture.Update
+   * @sa DestroyTexture
+   * @sa GetTextureSize
+   * @sa UpdateTexture
    */
   Texture CreateTextureWithProperties(PropertiesRef props);
 
@@ -796,7 +796,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetTarget
+   * @sa GetRenderTarget
    */
   void SetTarget(TextureRef texture);
 
@@ -829,7 +829,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetTarget
+   * @sa SetRenderTarget
    */
   Texture GetTarget() const;
 
@@ -861,7 +861,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * presentation while drawing text, for example.
    *
    * You can convert coordinates in an event into rendering coordinates using
-   * Renderer.ConvertEventToRenderCoordinates().
+   * ConvertEventToRenderCoordinates().
    *
    * @param size the width and height of the logical resolution.
    * @param mode the presentation mode used.
@@ -871,9 +871,9 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.ConvertEventToRenderCoordinates
-   * @sa Renderer.GetLogicalPresentation
-   * @sa Renderer.GetLogicalPresentationRect
+   * @sa ConvertEventToRenderCoordinates
+   * @sa GetRenderLogicalPresentation
+   * @sa GetRenderLogicalPresentationRect
    */
   void SetLogicalPresentation(const PointRaw& size,
                               RendererLogicalPresentation mode);
@@ -897,7 +897,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetLogicalPresentation
+   * @sa SetRenderLogicalPresentation
    */
   void GetLogicalPresentation(int* w,
                               int* h,
@@ -921,7 +921,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetLogicalPresentation
+   * @sa SetRenderLogicalPresentation
    */
   void GetLogicalPresentation(PointRaw* size,
                               RendererLogicalPresentation* mode);
@@ -944,7 +944,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetLogicalPresentation
+   * @sa SetRenderLogicalPresentation
    */
   FRect GetLogicalPresentationRect() const;
 
@@ -954,9 +954,9 @@ struct Renderer : ResourceBase<RendererRaw>
    * This takes into account several states:
    *
    * - The window dimensions.
-   * - The logical presentation settings (Renderer.SetLogicalPresentation)
-   * - The scale (Renderer.SetScale)
-   * - The viewport (Renderer.SetViewport)
+   * - The logical presentation settings (SetRenderLogicalPresentation)
+   * - The scale (SetRenderScale)
+   * - The viewport (SetRenderViewport)
    *
    * @param window_coord the x, y coordinate in window coordinates.
    * @returns a FPoint containing ther render coordinates on success.
@@ -966,8 +966,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetLogicalPresentation
-   * @sa Renderer.SetScale
+   * @sa SetRenderLogicalPresentation
+   * @sa SetRenderScale
    */
   FPoint RenderCoordinatesFromWindow(const FPointRaw& window_coord) const;
 
@@ -977,9 +977,9 @@ struct Renderer : ResourceBase<RendererRaw>
    * This takes into account several states:
    *
    * - The window dimensions.
-   * - The logical presentation settings (Renderer.SetLogicalPresentation)
-   * - The scale (Renderer.SetScale)
-   * - The viewport (Renderer.SetViewport)
+   * - The logical presentation settings (SetRenderLogicalPresentation)
+   * - The scale (SetRenderScale)
+   * - The viewport (SetRenderViewport)
    *
    * @param coord the x, y coordinate in render coordinates.
    * @returns a FPoint filled with window coordinates on success.
@@ -989,9 +989,9 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetLogicalPresentation
-   * @sa Renderer.SetScale
-   * @sa Renderer.SetViewport
+   * @sa SetRenderLogicalPresentation
+   * @sa SetRenderScale
+   * @sa SetRenderViewport
    */
   FPoint RenderCoordinatesToWindow(const FPointRaw& coord) const;
 
@@ -1001,9 +1001,9 @@ struct Renderer : ResourceBase<RendererRaw>
    * This takes into account several states:
    *
    * - The window dimensions.
-   * - The logical presentation settings (Renderer.SetLogicalPresentation)
-   * - The scale (Renderer.SetScale)
-   * - The viewport (Renderer.SetViewport)
+   * - The logical presentation settings (SetRenderLogicalPresentation)
+   * - The scale (SetRenderScale)
+   * - The viewport (SetRenderViewport)
    *
    * Various event types are converted with this function: mouse, touch, pen,
    * etc.
@@ -1013,8 +1013,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * Relative mouse coordinates (xrel and yrel event fields) are _also_
    * converted. Applications that do not want these fields converted should use
-   * Renderer.RenderCoordinatesFromWindow() on the specific event fields instead
-   * of converting the entire event structure.
+   * RenderCoordinatesFromWindow() on the specific event fields instead of
+   * converting the entire event structure.
    *
    * Once converted, coordinates may be outside the rendering area.
    *
@@ -1025,7 +1025,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderCoordinatesFromWindow
+   * @sa RenderCoordinatesFromWindow
    */
   void ConvertEventToRenderCoordinates(Event* event) const;
 
@@ -1033,8 +1033,8 @@ struct Renderer : ResourceBase<RendererRaw>
    * Set the drawing area for rendering on the current target.
    *
    * Drawing will clip to this area (separately from any clipping done with
-   * Renderer.SetClipRect), and the top left of the area will become coordinate
-   * (0, 0) for future drawing commands.
+   * SetRenderClipRect), and the top left of the area will become coordinate (0,
+   * 0) for future drawing commands.
    *
    * The area's width and height must be >= 0.
    *
@@ -1049,8 +1049,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetViewport
-   * @sa Renderer.ViewportSet
+   * @sa GetRenderViewport
+   * @sa RenderViewportSet
    */
   void SetViewport(OptionalRef<const RectRaw> rect);
 
@@ -1084,8 +1084,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.ViewportSet
-   * @sa Renderer.SetViewport
+   * @sa RenderViewportSet
+   * @sa SetRenderViewport
    */
   Rect GetViewport() const;
 
@@ -1105,8 +1105,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetViewport
-   * @sa Renderer.SetViewport
+   * @sa GetRenderViewport
+   * @sa SetRenderViewport
    */
   bool ViewportSet() const;
 
@@ -1143,9 +1143,9 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetClipRect
-   * @sa Renderer.ResetClipRect()
-   * @sa Renderer.IsClipEnabled
+   * @sa GetRenderClipRect
+   * @sa ResetRenderClipRect
+   * @sa RenderClipEnabled
    */
   void SetClipRect(OptionalRef<const RectRaw> rect);
 
@@ -1180,8 +1180,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.IsClipEnabled
-   * @sa Renderer.SetClipRect
+   * @sa RenderClipEnabled
+   * @sa SetRenderClipRect
    */
   Rect GetClipRect() const;
 
@@ -1198,8 +1198,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetClipRect
-   * @sa Renderer.SetClipRect
+   * @sa GetRenderClipRect
+   * @sa SetRenderClipRect
    */
   bool IsClipEnabled() const;
 
@@ -1224,7 +1224,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetScale
+   * @sa GetRenderScale
    */
   void SetScale(const FPointRaw& scale);
 
@@ -1242,7 +1242,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetScale
+   * @sa SetRenderScale
    */
   void GetScale(float* scaleX, float* scaleY) const;
 
@@ -1259,7 +1259,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetScale
+   * @sa SetRenderScale
    */
   FPoint GetScale() const;
 
@@ -1267,7 +1267,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * Set the color used for drawing operations.
    *
    * Set the color for drawing or filling rectangles, lines, and points, and for
-   * Renderer.RenderClear().
+   * RenderClear().
    *
    * @param c the color value used to draw on the rendering target.
    * @throws Error on failure.
@@ -1276,8 +1276,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetDrawColor
-   * @sa Renderer.SetDrawColorFloat
+   * @sa GetRenderDrawColor
+   * @sa SetRenderDrawColorFloat
    */
   void SetDrawColor(ColorRaw c);
 
@@ -1285,7 +1285,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * Set the color used for drawing operations (Rect, Line and Clear).
    *
    * Set the color for drawing or filling rectangles, lines, and points, and for
-   * Renderer.RenderClear().
+   * RenderClear().
    *
    * @param c the RGBA values used to draw on the rendering target.
    * @throws Error on failure.
@@ -1294,8 +1294,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetDrawColorFloat
-   * @sa Renderer.SetDrawColor
+   * @sa GetRenderDrawColorFloat
+   * @sa SetRenderDrawColor
    */
   void SetDrawColorFloat(const FColorRaw& c);
 
@@ -1316,8 +1316,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetDrawColorFloat
-   * @sa Renderer.SetDrawColor
+   * @sa GetRenderDrawColorFloat
+   * @sa SetRenderDrawColor
    */
   void GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const;
 
@@ -1331,8 +1331,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetDrawColor(SDL_FColor*)
-   * @sa SetDrawColor()
+   * @sa GetRenderDrawColorFloat
+   * @sa SetRenderDrawColor
    */
   Color GetDrawColor() const;
 
@@ -1353,8 +1353,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetDrawColorFloat
-   * @sa Renderer.GetDrawColor
+   * @sa SetRenderDrawColorFloat
+   * @sa GetRenderDrawColor
    */
   void GetDrawColorFloat(float* r, float* g, float* b, float* a) const;
 
@@ -1368,8 +1368,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetDrawColor(SDL_FColor*)
-   * @sa SetDrawColor()
+   * @sa SetRenderDrawColorFloat
+   * @sa GetRenderDrawColor
    */
   FColor GetDrawColorFloat() const;
 
@@ -1391,7 +1391,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetColorScale
+   * @sa GetRenderColorScale
    */
   void SetColorScale(float scale);
 
@@ -1405,7 +1405,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetColorScale
+   * @sa SetRenderColorScale
    */
   float GetColorScale() const;
 
@@ -1421,7 +1421,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetDrawBlendMode
+   * @sa GetRenderDrawBlendMode
    */
   void SetDrawBlendMode(BlendMode blendMode);
 
@@ -1435,7 +1435,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetDrawBlendMode
+   * @sa SetRenderDrawBlendMode
    */
   BlendMode GetDrawBlendMode() const;
 
@@ -1445,7 +1445,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * This function clears the entire rendering target, ignoring the viewport and
    * the clip rectangle. Note, that clearing will also set/fill all pixels of
    * the rendering target to current renderer draw color, so make sure to invoke
-   * Renderer.SetDrawColor() when needed.
+   * SetRenderDrawColor() when needed.
    *
    * @throws Error on failure.
    *
@@ -1453,7 +1453,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetDrawColor
+   * @sa SetRenderDrawColor
    */
   void RenderClear();
 
@@ -1467,7 +1467,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderPoints
+   * @sa RenderPoints
    */
   void RenderPoint(const FPointRaw& p);
 
@@ -1481,7 +1481,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderPoint
+   * @sa RenderPoint
    */
   void RenderPoints(SpanRef<const FPointRaw> points);
 
@@ -1496,7 +1496,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderLines
+   * @sa RenderLines
    */
   void RenderLine(const FPointRaw& p1, const FPointRaw& p2);
 
@@ -1511,7 +1511,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderLine
+   * @sa RenderLine
    */
   void RenderLines(SpanRef<const FPointRaw> points);
 
@@ -1526,7 +1526,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderRects
+   * @sa RenderRects
    */
   void RenderRect(OptionalRef<const FRectRaw> rect);
 
@@ -1541,7 +1541,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderRect
+   * @sa RenderRect
    */
   void RenderRects(SpanRef<const FRectRaw> rects);
 
@@ -1557,7 +1557,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderFillRects
+   * @sa RenderFillRects
    */
   void RenderFillRect(OptionalRef<const FRectRaw> rect);
 
@@ -1572,7 +1572,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderFillRect
+   * @sa RenderFillRect
    */
   void RenderFillRects(SpanRef<const FRectRaw> rects);
 
@@ -1591,8 +1591,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderTextureRotated
-   * @sa Renderer.RenderTextureTiled
+   * @sa RenderTextureRotated
+   * @sa RenderTextureTiled
    */
   void RenderTexture(TextureRef texture,
                      OptionalRef<const FRectRaw> srcrect,
@@ -1620,7 +1620,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderTexture
+   * @sa RenderTexture
    */
   void RenderTextureRotated(TextureRef texture,
                             OptionalRef<const FRectRaw> srcrect,
@@ -1651,7 +1651,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderTexture
+   * @sa RenderTexture
    */
   void RenderTextureAffine(TextureRef texture,
                            OptionalRef<const FRectRaw> srcrect,
@@ -1680,7 +1680,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderTexture
+   * @sa RenderTexture
    */
   void RenderTextureTiled(TextureRef texture,
                           OptionalRef<const FRectRaw> srcrect,
@@ -1715,8 +1715,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderTexture
-   * @sa Renderer.RenderTexture9GridTiled
+   * @sa RenderTexture
+   * @sa RenderTexture9GridTiled
    */
   void RenderTexture9Grid(TextureRef texture,
                           OptionalRef<const FRectRaw> srcrect,
@@ -1760,8 +1760,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Renderer.RenderTexture
-   * @sa Renderer.RenderTexture9Grid
+   * @sa RenderTexture
+   * @sa RenderTexture9Grid
    */
   void RenderTexture9GridTiled(TextureRef texture,
                                const FRectRaw& srcrect,
@@ -1778,7 +1778,7 @@ struct Renderer : ResourceBase<RendererRaw>
   /**
    * Render a list of triangles, optionally using a texture and indices into the
    * vertex array Color and alpha modulation is done per vertex
-   * (Texture.SetColorMod and Texture.SetAlphaMod are ignored).
+   * (SetTextureColorMod and SetTextureAlphaMod are ignored).
    *
    * @param texture (optional) The SDL texture to use.
    * @param vertices vertices.
@@ -1791,8 +1791,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderGeometryRaw
-   * @sa Renderer.SetRenderTextureAddressMode
+   * @sa RenderGeometryRaw
+   * @sa SetRenderTextureAddressMode
    */
   void RenderGeometry(TextureRef texture,
                       std::span<const Vertex> vertices,
@@ -1801,7 +1801,7 @@ struct Renderer : ResourceBase<RendererRaw>
   /**
    * Render a list of triangles, optionally using a texture and indices into the
    * vertex arrays Color and alpha modulation is done per vertex
-   * (Texture.SetColorMod and Texture.SetAlphaMod are ignored).
+   * (SetTextureColorMod and SetTextureAlphaMod are ignored).
    *
    * @param texture (optional) The SDL texture to use.
    * @param xy vertex positions.
@@ -1822,8 +1822,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderGeometry
-   * @sa Renderer.SetRenderTextureAddressMode
+   * @sa RenderGeometry
+   * @sa SetRenderTextureAddressMode
    */
   void RenderGeometryRaw(TextureRef texture,
                          const float* xy,
@@ -1840,41 +1840,41 @@ struct Renderer : ResourceBase<RendererRaw>
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
-   * Set the texture addressing mode used in Renderer.RenderGeometry().
+   * Set the texture addressing mode used in RenderGeometry().
    *
    * @param u_mode the TextureAddressMode to use for horizontal texture
-   *               coordinates in Renderer.RenderGeometry().
+   *               coordinates in RenderGeometry().
    * @param v_mode the TextureAddressMode to use for vertical texture
-   *               coordinates in Renderer.RenderGeometry().
+   *               coordinates in RenderGeometry().
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Renderer.RenderGeometry
-   * @sa Renderer.RenderGeometryRaw
-   * @sa Renderer.GetRenderTextureAddressMode
+   * @sa RenderGeometry
+   * @sa RenderGeometryRaw
+   * @sa GetRenderTextureAddressMode
    */
   void SetRenderTextureAddressMode(TextureAddressMode u_mode,
                                    TextureAddressMode v_mode);
 
   /**
-   * Get the texture addressing mode used in Renderer.RenderGeometry().
+   * Get the texture addressing mode used in RenderGeometry().
    *
    * @param u_mode a pointer filled in with the TextureAddressMode to use for
-   *               horizontal texture coordinates in Renderer.RenderGeometry(),
-   *               may be nullptr.
+   *               horizontal texture coordinates in RenderGeometry(), may be
+   *               nullptr.
    * @param v_mode a pointer filled in with the TextureAddressMode to use for
-   *               vertical texture coordinates in Renderer.RenderGeometry(),
-   *               may be nullptr.
+   *               vertical texture coordinates in RenderGeometry(), may be
+   *               nullptr.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Renderer.SetRenderTextureAddressMode
+   * @sa SetRenderTextureAddressMode
    */
   void GetRenderTextureAddressMode(TextureAddressMode* u_mode,
                                    TextureAddressMode* v_mode);
@@ -1884,16 +1884,13 @@ struct Renderer : ResourceBase<RendererRaw>
   /**
    * Read pixels from the current rendering target.
    *
-   * The returned surface contains pixels inside the desired area clipped to the
-   * current viewport, and should be freed with Surface.Destroy().
-   *
    * Note that this returns the actual pixels on the screen, so if you are using
-   * logical presentation you should use Renderer.GetLogicalPresentationRect()
-   * to get the area containing your content.
+   * logical presentation you should use GetRenderLogicalPresentationRect() to
+   * get the area containing your content.
    *
    * **WARNING**: This is a very slow operation, and should not be used
    * frequently. If you're using this on the main rendering target, it should be
-   * called after rendering and before Renderer.Present().
+   * called after rendering and before RenderPresent().
    *
    * @param rect an Rect structure representing the area to read, which will be
    *             clipped to the current viewport, or nullptr for the entire
@@ -1911,10 +1908,10 @@ struct Renderer : ResourceBase<RendererRaw>
    * Update the screen with any rendering performed since the previous call.
    *
    * SDL's rendering functions operate on a backbuffer; that is, calling a
-   * rendering function such as Renderer.RenderLine() does not directly put a
-   * line on the screen, but rather updates the backbuffer. As such, you compose
-   * your entire scene and *present* the composed backbuffer to the screen as a
-   * complete picture.
+   * rendering function such as RenderLine() does not directly put a line on the
+   * screen, but rather updates the backbuffer. As such, you compose your entire
+   * scene and *present* the composed backbuffer to the screen as a complete
+   * picture.
    *
    * Therefore, when using SDL's rendering API, one does all drawing intended
    * for the frame, and then calls this function once per frame to present the
@@ -1922,16 +1919,16 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * The backbuffer should be considered invalidated after each present; do not
    * assume that previous contents will exist between frames. You are strongly
-   * encouraged to call Renderer.RenderClear() to initialize the backbuffer
-   * before starting each new frame's drawing, even if you plan to overwrite
-   * every pixel.
+   * encouraged to call RenderClear() to initialize the backbuffer before
+   * starting each new frame's drawing, even if you plan to overwrite every
+   * pixel.
    *
    * Please note, that in case of rendering to a texture - there is **no need**
-   * to call `Renderer.Present` after drawing needed objects to a texture, and
+   * to call `RenderPresent` after drawing needed objects to a texture, and
    * should not be done; you are only required to change back the rendering
-   * target to default via `Renderer.SetTarget(renderer, nullptr)` afterwards,
-   * as textures by themselves do not have a concept of backbuffers. Calling
-   * Renderer.Present while rendering to a texture will fail.
+   * target to default via `SetRenderTarget(renderer, nullptr)` afterwards, as
+   * textures by themselves do not have a concept of backbuffers. Calling
+   * RenderPresent while rendering to a texture will fail.
    *
    * @throws Error on failure.
    *
@@ -1940,17 +1937,17 @@ struct Renderer : ResourceBase<RendererRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateRenderer
-   * @sa Renderer.RenderClear
-   * @sa Renderer.RenderFillRect
-   * @sa Renderer.RenderFillRects
-   * @sa Renderer.RenderLine
-   * @sa Renderer.RenderLines
-   * @sa Renderer.RenderPoint
-   * @sa Renderer.RenderPoints
-   * @sa Renderer.RenderRect
-   * @sa Renderer.RenderRects
-   * @sa Renderer.SetDrawBlendMode
-   * @sa Renderer.SetDrawColor
+   * @sa RenderClear
+   * @sa RenderFillRect
+   * @sa RenderFillRects
+   * @sa RenderLine
+   * @sa RenderLines
+   * @sa RenderPoint
+   * @sa RenderPoints
+   * @sa RenderRect
+   * @sa RenderRects
+   * @sa SetRenderDrawBlendMode
+   * @sa SetRenderDrawColor
    */
   void Present();
 
@@ -1998,7 +1995,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetRenderMetalCommandEncoder
+   * @sa GetRenderMetalCommandEncoder
    */
   void* GetRenderMetalLayer();
 
@@ -2020,7 +2017,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetRenderMetalLayer
+   * @sa GetRenderMetalLayer
    */
   void* GetRenderMetalCommandEncoder();
 
@@ -2073,7 +2070,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetVSync
+   * @sa GetRenderVSync
    */
   void SetVSync(int vsync);
 
@@ -2087,7 +2084,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.SetVSync
+   * @sa SetRenderVSync
    */
   int GetVSync() const;
 
@@ -2102,7 +2099,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * - It accepts UTF-8 strings, but will only renders ASCII characters.
    * - It has a single, tiny size (8x8 pixels). You can use logical presentation
-   *   or Renderer.SetScale() to adjust it.
+   *   or SetRenderScale() to adjust it.
    * - It uses a simple, hardcoded bitmap font. It does not allow different font
    *   selections and it does not support truetype, for proper scaling.
    * - It does no word-wrapping and does not treat newline characters as a line
@@ -2114,7 +2111,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * On first use, this will create an internal texture for rendering glyphs.
    * This texture will live until the renderer is destroyed.
    *
-   * The text is drawn in the color specified by Renderer.SetDrawColor().
+   * The text is drawn in the color specified by SetRenderDrawColor().
    *
    * @param p the x, y coordinates where the top-left corner of the text will
    *          draw.
@@ -2125,7 +2122,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderDebugTextFormat
+   * @sa RenderDebugTextFormat
    * @sa DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   void RenderDebugText(const FPointRaw& p, StringParam str);
@@ -2139,7 +2136,7 @@ struct Renderer : ResourceBase<RendererRaw>
    * games.
    *
    * For the full list of limitations and other useful information, see
-   * Renderer.RenderDebugText.
+   * RenderDebugText.
    *
    * @param p the x, y coordinates where the top-left corner of the text will
    *          draw.
@@ -2152,7 +2149,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderDebugText
+   * @sa RenderDebugText
    * @sa DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   template<class... ARGS>
@@ -2174,7 +2171,7 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Renderer.GetDefaultTextureScaleMode
+   * @sa GetDefaultTextureScaleMode
    */
   void SetDefaultTextureScaleMode(ScaleMode scale_mode);
 
@@ -2182,15 +2179,15 @@ struct Renderer : ResourceBase<RendererRaw>
    * Get default texture scale mode of the given renderer.
    *
    * @param scale_mode a ScaleMode filled with current default scale mode. See
-   *                   Renderer.SetDefaultTextureScaleMode() for the meaning of
-   *                   the value.
+   *                   SetDefaultTextureScaleMode() for the meaning of the
+   *                   value.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Renderer.SetDefaultTextureScaleMode
+   * @sa SetDefaultTextureScaleMode
    */
   void GetDefaultTextureScaleMode(ScaleMode* scale_mode);
 
@@ -2206,9 +2203,9 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa GPURenderState.SetFragmentUniforms
-   * @sa Renderer.SetGPURenderState
-   * @sa GPURenderState.Destroy
+   * @sa SetGPURenderStateFragmentUniforms
+   * @sa SetGPURenderState
+   * @sa DestroyGPURenderState
    */
   GPURenderState CreateGPURenderState(
     const GPURenderStateCreateInfo& createinfo);
@@ -2241,7 +2238,7 @@ struct Renderer : ResourceBase<RendererRaw>
  * @sa Renderer.CreateTexture
  * @sa Renderer.CreateTextureFromSurface
  * @sa Renderer.CreateTextureWithProperties
- * @sa Texture.Destroy
+ * @sa DestroyTexture
  *
  * @cat resource
  */
@@ -2291,9 +2288,9 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @sa Renderer.CreateTextureFromSurface
    * @sa Renderer.CreateTextureWithProperties
-   * @sa Texture.Destroy
-   * @sa Texture.GetSize
-   * @sa Texture.Update
+   * @sa DestroyTexture
+   * @sa GetTextureSize
+   * @sa UpdateTexture
    */
   Texture(RendererRef renderer,
           PixelFormat format,
@@ -2322,7 +2319,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @sa Renderer.CreateTexture
    * @sa Renderer.CreateTextureWithProperties
-   * @sa Texture.Destroy
+   * @sa DestroyTexture
    */
   Texture(RendererRef renderer, SurfaceRef surface);
 
@@ -2344,7 +2341,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * - `prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels,
    *   required
    * - `prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized
-   *   texture formats. This can be set later with Texture.SetPalette()
+   *   texture formats. This can be set later with SetTexturePalette()
    * - `prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
    *   textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
@@ -2441,12 +2438,12 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Properties.Create
+   * @sa CreateProperties
    * @sa Renderer.CreateTexture
    * @sa Renderer.CreateTextureFromSurface
-   * @sa Texture.Destroy
-   * @sa Texture.GetSize
-   * @sa Texture.Update
+   * @sa DestroyTexture
+   * @sa GetTextureSize
+   * @sa UpdateTexture
    */
   Texture(RendererRef renderer, PropertiesRef props);
 
@@ -2734,7 +2731,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * @since This function is available since SDL 3.4.0.
    *
    * @sa CreatePalette
-   * @sa Texture.GetPalette
+   * @sa GetTexturePalette
    */
   void SetPalette(PaletteRef palette);
 
@@ -2748,7 +2745,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Texture.SetPalette
+   * @sa SetTexturePalette
    */
   Palette GetPalette();
 
@@ -2775,9 +2772,9 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.GetColorMod
-   * @sa Texture.SetAlphaMod
-   * @sa Texture.SetColorModFloat
+   * @sa GetTextureColorMod
+   * @sa SetTextureAlphaMod
+   * @sa SetTextureColorModFloat
    */
   void SetColorMod(Uint8 r, Uint8 g, Uint8 b);
 
@@ -2802,9 +2799,9 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.GetColorModFloat
-   * @sa Texture.SetAlphaModFloat
-   * @sa Texture.SetColorMod
+   * @sa GetTextureColorModFloat
+   * @sa SetTextureAlphaModFloat
+   * @sa SetTextureColorMod
    */
   void SetColorModFloat(float r, float g, float b);
 
@@ -2820,9 +2817,9 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.GetAlphaMod
-   * @sa Texture.GetColorModFloat
-   * @sa Texture.SetColorMod
+   * @sa GetTextureAlphaMod
+   * @sa GetTextureColorModFloat
+   * @sa SetTextureColorMod
    */
   void GetColorMod(Uint8* r, Uint8* g, Uint8* b) const;
 
@@ -2838,9 +2835,9 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.GetAlphaModFloat
-   * @sa Texture.GetColorMod
-   * @sa Texture.SetColorModFloat
+   * @sa GetTextureAlphaModFloat
+   * @sa GetTextureColorMod
+   * @sa SetTextureColorModFloat
    */
   void GetColorModFloat(float* r, float* g, float* b) const;
 
@@ -2862,9 +2859,9 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.GetAlphaMod
-   * @sa Texture.SetAlphaModFloat
-   * @sa Texture.SetColorMod
+   * @sa GetTextureAlphaMod
+   * @sa SetTextureAlphaModFloat
+   * @sa SetTextureColorMod
    */
   void SetAlphaMod(Uint8 alpha);
 
@@ -2886,9 +2883,9 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.GetAlphaModFloat
-   * @sa Texture.SetAlphaMod
-   * @sa Texture.SetColorModFloat
+   * @sa GetTextureAlphaModFloat
+   * @sa SetTextureAlphaMod
+   * @sa SetTextureColorModFloat
    */
   void SetAlphaModFloat(float alpha);
 
@@ -2902,9 +2899,9 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.GetAlphaModFloat
-   * @sa Texture.GetColorMod
-   * @sa Texture.SetAlphaMod
+   * @sa GetTextureAlphaModFloat
+   * @sa GetTextureColorMod
+   * @sa SetTextureAlphaMod
    */
   Uint8 GetAlphaMod() const;
 
@@ -2918,9 +2915,9 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.GetAlphaMod
-   * @sa Texture.GetColorModFloat
-   * @sa Texture.SetAlphaModFloat
+   * @sa GetTextureAlphaMod
+   * @sa GetTextureColorModFloat
+   * @sa SetTextureAlphaModFloat
    */
   float GetAlphaModFloat() const;
 
@@ -3003,7 +3000,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
   FColor GetModFloat() const;
 
   /**
-   * Set the blend mode for a texture, used by Renderer.RenderTexture().
+   * Set the blend mode for a texture, used by RenderTexture().
    *
    * If the blend mode is not supported, the closest supported mode is chosen
    * and this function returns false.
@@ -3015,7 +3012,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.GetBlendMode
+   * @sa GetTextureBlendMode
    */
   void SetBlendMode(BlendMode blendMode);
 
@@ -3029,7 +3026,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.SetBlendMode
+   * @sa SetTextureBlendMode
    */
   BlendMode GetBlendMode() const;
 
@@ -3047,7 +3044,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.GetScaleMode
+   * @sa GetTextureScaleMode
    */
   void SetScaleMode(ScaleMode scaleMode);
 
@@ -3061,7 +3058,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.SetScaleMode
+   * @sa SetTextureScaleMode
    */
   ScaleMode GetScaleMode() const;
 
@@ -3090,10 +3087,10 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Lock
-   * @sa Texture.Unlock
-   * @sa Texture.UpdateNV
-   * @sa Texture.UpdateYUV
+   * @sa LockTexture
+   * @sa UnlockTexture
+   * @sa UpdateNVTexture
+   * @sa UpdateYUVTexture
    */
   void Update(OptionalRef<const RectRaw> rect, const void* pixels, int pitch);
 
@@ -3121,10 +3118,10 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Lock
-   * @sa Texture.Unlock
-   * @sa Texture.UpdateNV
-   * @sa Texture.UpdateYUV
+   * @sa LockTexture
+   * @sa UnlockTexture
+   * @sa UpdateNVTexture
+   * @sa UpdateYUVTexture
    */
   void Update(SurfaceConstRef surface,
               OptionalRef<const RectRaw> rect = std::nullopt);
@@ -3133,7 +3130,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * Update a rectangle within a planar YV12 or IYUV texture with new pixel
    * data.
    *
-   * You can use Texture.Update() as long as your pixel data is a contiguous
+   * You can use UpdateTexture() as long as your pixel data is a contiguous
    * block of Y and U/V planes in the proper order, but this function is
    * available if your pixel data is not contiguous.
    *
@@ -3154,8 +3151,8 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.UpdateNV
-   * @sa Texture.Update
+   * @sa UpdateNVTexture
+   * @sa UpdateTexture
    */
   void UpdateYUV(OptionalRef<const RectRaw> rect,
                  const Uint8* Yplane,
@@ -3168,7 +3165,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
   /**
    * Update a rectangle within a planar NV12 or NV21 texture with new pixels.
    *
-   * You can use Texture.Update() as long as your pixel data is a contiguous
+   * You can use UpdateTexture() as long as your pixel data is a contiguous
    * block of NV12/21 planes in the proper order, but this function is available
    * if your pixel data is not contiguous.
    *
@@ -3186,8 +3183,8 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Update
-   * @sa Texture.UpdateYUV
+   * @sa UpdateTexture
+   * @sa UpdateYUVTexture
    */
   void UpdateNV(OptionalRef<const RectRaw> rect,
                 const Uint8* Yplane,
@@ -3203,7 +3200,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * need to keep a copy of the texture data you should do that at the
    * application level.
    *
-   * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+   * You must use UnlockTexture() to unlock the pixels and apply any changes.
    *
    * @param rect an Rect structure representing the area to lock for access;
    *             nullptr to lock the entire texture.
@@ -3217,8 +3214,8 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.LockToSurface
-   * @sa Texture.Unlock
+   * @sa LockTextureToSurface
+   * @sa UnlockTexture
    */
   TextureLock Lock(OptionalRef<const RectRaw> rect, void** pixels, int* pitch);
 
@@ -3227,17 +3224,17 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * it as a SDL surface.
    *
    * Besides providing an Surface instead of raw pixel data, this function
-   * operates like Texture.Lock.
+   * operates like LockTexture.
    *
    * As an optimization, the pixels made available for editing don't necessarily
    * contain the old texture data. This is a write-only operation, and if you
    * need to keep a copy of the texture data you should do that at the
    * application level.
    *
-   * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+   * You must use UnlockTexture() to unlock the pixels and apply any changes.
    *
-   * The returned surface is freed internally after calling Texture.Unlock() or
-   * Texture.Destroy(). The caller should not free it.
+   * The returned surface is freed internally after calling UnlockTexture() or
+   * DestroyTexture(). The caller should not free it.
    *
    * @param rect a pointer to the rectangle to lock for access. If the rect is
    *             nullptr, the entire texture will be locked.
@@ -3249,8 +3246,8 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Lock
-   * @sa Texture.Unlock
+   * @sa LockTexture
+   * @sa UnlockTexture
    */
   TextureSurfaceLock LockToSurface(
     OptionalRef<const RectRaw> rect = std::nullopt);
@@ -3258,7 +3255,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
-   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * **Warning**: Please note that LockTexture() is intended to be write-only;
    * it will not guarantee the previous contents of the texture will be
    * provided. You must fully initialize any area of a texture that you lock
    * before unlocking it, as the pixels might otherwise be uninitialized memory.
@@ -3270,14 +3267,14 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Lock
+   * @sa LockTexture
    */
   void Unlock(TextureLock&& lock);
 
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
-   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * **Warning**: Please note that LockTexture() is intended to be write-only;
    * it will not guarantee the previous contents of the texture will be
    * provided. You must fully initialize any area of a texture that you lock
    * before unlocking it, as the pixels might otherwise be uninitialized memory.
@@ -3289,7 +3286,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Lock
+   * @sa LockTexture
    */
   void Unlock(TextureSurfaceLock&& lock);
 };
@@ -3302,7 +3299,7 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
  * to keep a copy of the texture data you should do that at the application
  * level.
  *
- * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+ * You must use UnlockTexture() to unlock the pixels and apply any changes.
  *
  * @param texture the texture to lock for access, which was created with
  *                `TEXTUREACCESS_STREAMING`.
@@ -3320,8 +3317,8 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.LockToSurface
- * @sa Texture.Unlock
+ * @sa LockTextureToSurface
+ * @sa UnlockTexture
  */
 class TextureLock
 {
@@ -3336,7 +3333,7 @@ public:
    * need to keep a copy of the texture data you should do that at the
    * application level.
    *
-   * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+   * You must use UnlockTexture() to unlock the pixels and apply any changes.
    *
    * @param resource the texture to lock for access, which was created with
    *                 `TEXTUREACCESS_STREAMING`.
@@ -3354,8 +3351,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.LockToSurface
-   * @sa Texture.Unlock
+   * @sa LockTextureToSurface
+   * @sa UnlockTexture
    */
   TextureLock(TextureRef resource,
               OptionalRef<const RectRaw> rect,
@@ -3374,7 +3371,7 @@ public:
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
-   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * **Warning**: Please note that LockTexture() is intended to be write-only;
    * it will not guarantee the previous contents of the texture will be
    * provided. You must fully initialize any area of a texture that you lock
    * before unlocking it, as the pixels might otherwise be uninitialized memory.
@@ -3386,7 +3383,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Lock
+   * @sa LockTexture
    */
   ~TextureLock() { reset(); }
 
@@ -3405,7 +3402,7 @@ public:
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
-   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * **Warning**: Please note that LockTexture() is intended to be write-only;
    * it will not guarantee the previous contents of the texture will be
    * provided. You must fully initialize any area of a texture that you lock
    * before unlocking it, as the pixels might otherwise be uninitialized memory.
@@ -3417,7 +3414,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Lock
+   * @sa LockTexture
    */
   void reset();
 
@@ -3433,22 +3430,22 @@ public:
  * as a SDL surface.
  *
  * Besides providing an Surface instead of raw pixel data, this function
- * operates like Texture.Lock.
+ * operates like LockTexture.
  *
  * As an optimization, the pixels made available for editing don't necessarily
  * contain the old texture data. This is a write-only operation, and if you need
  * to keep a copy of the texture data you should do that at the application
  * level.
  *
- * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+ * You must use UnlockTexture() to unlock the pixels and apply any changes.
  *
- * The returned surface is freed internally after calling Texture.Unlock() or
- * Texture.Destroy(). The caller should not free it.
+ * The returned surface is freed internally after calling UnlockTexture() or
+ * DestroyTexture(). The caller should not free it.
  *
  * @since This class is available since SDL 3.2.0.
  *
- * @sa Texture.Lock
- * @sa Texture.Unlock
+ * @sa LockTexture
+ * @sa UnlockTexture
  */
 class TextureSurfaceLock : public Surface
 {
@@ -3460,17 +3457,17 @@ public:
    * it as a SDL surface.
    *
    * Besides providing an Surface instead of raw pixel data, this function
-   * operates like Texture.Lock.
+   * operates like LockTexture.
    *
    * As an optimization, the pixels made available for editing don't necessarily
    * contain the old texture data. This is a write-only operation, and if you
    * need to keep a copy of the texture data you should do that at the
    * application level.
    *
-   * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+   * You must use UnlockTexture() to unlock the pixels and apply any changes.
    *
-   * The returned surface is freed internally after calling Texture.Unlock() or
-   * Texture.Destroy(). The caller should not free it.
+   * The returned surface is freed internally after calling UnlockTexture() or
+   * DestroyTexture(). The caller should not free it.
    *
    * @param resource the texture to lock for access, which must be created with
    *                `TEXTUREACCESS_STREAMING`.
@@ -3484,8 +3481,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Lock
-   * @sa Texture.Unlock
+   * @sa LockTexture
+   * @sa UnlockTexture
    */
   TextureSurfaceLock(TextureRef resource,
                      OptionalRef<const RectRaw> rect = std::nullopt);
@@ -3503,7 +3500,7 @@ public:
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
-   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * **Warning**: Please note that LockTexture() is intended to be write-only;
    * it will not guarantee the previous contents of the texture will be
    * provided. You must fully initialize any area of a texture that you lock
    * before unlocking it, as the pixels might otherwise be uninitialized memory.
@@ -3515,7 +3512,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Lock
+   * @sa LockTexture
    */
   ~TextureSurfaceLock() { reset(); }
 
@@ -3532,7 +3529,7 @@ public:
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
-   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * **Warning**: Please note that LockTexture() is intended to be write-only;
    * it will not guarantee the previous contents of the texture will be
    * provided. You must fully initialize any area of a texture that you lock
    * before unlocking it, as the pixels might otherwise be uninitialized memory.
@@ -3544,7 +3541,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Texture.Lock
+   * @sa LockTexture
    */
   void reset();
 
@@ -3736,7 +3733,7 @@ inline Window::Window(StringParam title,
  * listed, until one succeeds or all of them fail.
  *
  * By default the rendering size matches the window size in pixels, but you can
- * call Renderer.SetLogicalPresentation() to change the content size and scaling
+ * call SetRenderLogicalPresentation() to change the content size and scaling
  * options.
  *
  * @param window the window where rendering is displayed.
@@ -3751,10 +3748,10 @@ inline Window::Window(StringParam title,
  *
  * @sa CreateRendererWithProperties
  * @sa CreateSoftwareRenderer
- * @sa Renderer.Destroy
+ * @sa DestroyRenderer
  * @sa GetNumRenderDrivers
  * @sa GetRenderDriver
- * @sa Renderer.GetName
+ * @sa GetRendererName
  */
 inline Renderer CreateRenderer(WindowRef window, StringParam name = nullptr)
 {
@@ -3796,7 +3793,7 @@ inline Renderer::Renderer(SurfaceRef surface)
  *   can be used for HDR content.
  * - `prop.Renderer.Create.PRESENT_VSYNC_NUMBER`: non-zero if you want present
  *   synchronized with the refresh rate. This property can take any value that
- *   is supported by Renderer.SetVSync() for the renderer.
+ *   is supported by SetRenderVSync() for the renderer.
  *
  * With the SDL GPU renderer (since SDL 3.4.0):
  *
@@ -3832,11 +3829,11 @@ inline Renderer::Renderer(SurfaceRef surface)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Properties.Create
+ * @sa CreateProperties
  * @sa CreateRenderer
  * @sa CreateSoftwareRenderer
- * @sa Renderer.Destroy
- * @sa Renderer.GetName
+ * @sa DestroyRenderer
+ * @sa GetRendererName
  */
 inline Renderer CreateRendererWithProperties(PropertiesRef props)
 {
@@ -3924,12 +3921,12 @@ constexpr auto VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER =
  *
  * The GPU device to use is passed in as a parameter. If this is nullptr, then a
  * device will be created normally and can be retrieved using
- * Renderer.GetGPUDevice().
+ * GetGPURendererDevice().
  *
  * The window to use is passed in as a parameter. If this is nullptr, then this
  * will become an offscreen renderer. In that case, you should call
- * Renderer.SetTarget() to setup rendering to a texture, and then call
- * Renderer.Present() normally to complete drawing a frame.
+ * SetRenderTarget() to setup rendering to a texture, and then call
+ * RenderPresent() normally to complete drawing a frame.
  *
  * @param device the GPU device to use with the renderer, or nullptr to create a
  *               device.
@@ -3946,10 +3943,10 @@ constexpr auto VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER =
  * @since This function is available since SDL 3.4.0.
  *
  * @sa CreateRendererWithProperties
- * @sa Renderer.GetGPUDevice
+ * @sa GetGPURendererDevice
  * @sa GPUDevice.CreateShader
  * @sa Renderer.CreateGPURenderState
- * @sa Renderer.SetGPURenderState
+ * @sa SetGPURenderState
  */
 inline RendererRef CreateGPURenderer(GPUDeviceRef device, WindowRef window)
 {
@@ -3996,7 +3993,7 @@ inline GPUDeviceRef Renderer::GetGPUDevice()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.Destroy
+ * @sa DestroyRenderer
  */
 inline Renderer CreateSoftwareRenderer(SurfaceRef surface)
 {
@@ -4255,7 +4252,7 @@ constexpr auto GPU_DEVICE_POINTER =
  * logical size and presentation.
  *
  * For the output size of the current rendering target, with logical size
- * adjustments, use Renderer.GetCurrentOutputSize() instead.
+ * adjustments, use GetCurrentRenderOutputSize() instead.
  *
  * @param renderer the rendering context.
  * @param w a pointer filled in with the width in pixels.
@@ -4266,7 +4263,7 @@ constexpr auto GPU_DEVICE_POINTER =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetCurrentOutputSize
+ * @sa GetCurrentRenderOutputSize
  */
 inline void GetRenderOutputSize(RendererRef renderer, int* w, int* h)
 {
@@ -4280,7 +4277,7 @@ inline void GetRenderOutputSize(RendererRef renderer, int* w, int* h)
  * logical size and presentation.
  *
  * For the output size of the current rendering target, with logical size
- * adjustments, use Renderer.GetCurrentOutputSize() instead.
+ * adjustments, use GetCurrentRenderOutputSize() instead.
  *
  * @param renderer the rendering context.
  * @returns the size on success.
@@ -4290,7 +4287,7 @@ inline void GetRenderOutputSize(RendererRef renderer, int* w, int* h)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetCurrentOutputSize
+ * @sa GetCurrentRenderOutputSize
  */
 inline Point GetRenderOutputSize(RendererRef renderer)
 {
@@ -4313,10 +4310,10 @@ inline Point Renderer::GetOutputSize() const
  * Get the current output size in pixels of a rendering context.
  *
  * If a rendering target is active, this will return the size of the rendering
- * target in pixels, otherwise return the value of Renderer.GetOutputSize().
+ * target in pixels, otherwise return the value of GetRenderOutputSize().
  *
  * Rendering target or not, the output will be adjusted by the current logical
- * presentation state, dictated by Renderer.SetLogicalPresentation().
+ * presentation state, dictated by SetRenderLogicalPresentation().
  *
  * @param renderer the rendering context.
  * @param w a pointer filled in with the current width.
@@ -4327,7 +4324,7 @@ inline Point Renderer::GetOutputSize() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetOutputSize
+ * @sa GetRenderOutputSize
  */
 inline void GetCurrentRenderOutputSize(RendererRef renderer, int* w, int* h)
 {
@@ -4338,10 +4335,10 @@ inline void GetCurrentRenderOutputSize(RendererRef renderer, int* w, int* h)
  * Get the current output size in pixels of a rendering context.
  *
  * If a rendering target is active, this will return the size of the rendering
- * target in pixels, otherwise return the value of Renderer.GetOutputSize().
+ * target in pixels, otherwise return the value of GetRenderOutputSize().
  *
  * Rendering target or not, the output will be adjusted by the current logical
- * presentation state, dictated by Renderer.SetLogicalPresentation().
+ * presentation state, dictated by SetRenderLogicalPresentation().
  *
  * @param renderer the rendering context.
  * @returns the size on success.
@@ -4351,7 +4348,7 @@ inline void GetCurrentRenderOutputSize(RendererRef renderer, int* w, int* h)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetOutputSize
+ * @sa GetRenderOutputSize
  */
 inline Point GetCurrentRenderOutputSize(RendererRef renderer)
 {
@@ -4388,9 +4385,9 @@ inline Point Renderer::GetCurrentOutputSize() const
  *
  * @sa Renderer.CreateTextureFromSurface
  * @sa Renderer.CreateTextureWithProperties
- * @sa Texture.Destroy
- * @sa Texture.GetSize
- * @sa Texture.Update
+ * @sa DestroyTexture
+ * @sa GetTextureSize
+ * @sa UpdateTexture
  */
 inline Texture CreateTexture(RendererRef renderer,
                              PixelFormat format,
@@ -4448,7 +4445,7 @@ inline Texture::Texture(RendererRef renderer, PropertiesRef props)
  *
  * @sa Renderer.CreateTexture
  * @sa Renderer.CreateTextureWithProperties
- * @sa Texture.Destroy
+ * @sa DestroyTexture
  */
 inline Texture CreateTextureFromSurface(RendererRef renderer,
                                         SurfaceRef surface)
@@ -4479,7 +4476,7 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
  * - `prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels,
  *   required
  * - `prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized
- *   texture formats. This can be set later with Texture.SetPalette()
+ *   texture formats. This can be set later with SetTexturePalette()
  * - `prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
  *   textures, this defines the value of 100% diffuse white, with higher values
  *   being displayed in the High Dynamic Range headroom. This defaults to 100
@@ -4575,12 +4572,12 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Properties.Create
+ * @sa CreateProperties
  * @sa Renderer.CreateTexture
  * @sa Renderer.CreateTextureFromSurface
- * @sa Texture.Destroy
- * @sa Texture.GetSize
- * @sa Texture.Update
+ * @sa DestroyTexture
+ * @sa GetTextureSize
+ * @sa UpdateTexture
  */
 inline Texture CreateTextureWithProperties(RendererRef renderer,
                                            PropertiesRef props)
@@ -5035,7 +5032,7 @@ inline PixelFormat Texture::GetFormat() const
  * @since This function is available since SDL 3.4.0.
  *
  * @sa CreatePalette
- * @sa Texture.GetPalette
+ * @sa GetTexturePalette
  */
 inline void SetTexturePalette(TextureRef texture, PaletteRef palette)
 {
@@ -5058,7 +5055,7 @@ inline void Texture::SetPalette(PaletteRef palette)
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Texture.SetPalette
+ * @sa SetTexturePalette
  */
 inline Palette GetTexturePalette(TextureRef texture)
 {
@@ -5091,9 +5088,9 @@ inline Palette Texture::GetPalette() { return SDL::GetTexturePalette(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.GetColorMod
- * @sa Texture.SetAlphaMod
- * @sa Texture.SetColorModFloat
+ * @sa GetTextureColorMod
+ * @sa SetTextureAlphaMod
+ * @sa SetTextureColorModFloat
  */
 inline void SetTextureColorMod(TextureRef texture, Uint8 r, Uint8 g, Uint8 b)
 {
@@ -5127,9 +5124,9 @@ inline void Texture::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.GetColorModFloat
- * @sa Texture.SetAlphaModFloat
- * @sa Texture.SetColorMod
+ * @sa GetTextureColorModFloat
+ * @sa SetTextureAlphaModFloat
+ * @sa SetTextureColorMod
  */
 inline void SetTextureColorModFloat(TextureRef texture,
                                     float r,
@@ -5157,9 +5154,9 @@ inline void Texture::SetColorModFloat(float r, float g, float b)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.GetAlphaMod
- * @sa Texture.GetColorModFloat
- * @sa Texture.SetColorMod
+ * @sa GetTextureAlphaMod
+ * @sa GetTextureColorModFloat
+ * @sa SetTextureColorMod
  */
 inline void GetTextureColorMod(TextureConstRef texture,
                                Uint8* r,
@@ -5187,9 +5184,9 @@ inline void Texture::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.GetAlphaModFloat
- * @sa Texture.GetColorMod
- * @sa Texture.SetColorModFloat
+ * @sa GetTextureAlphaModFloat
+ * @sa GetTextureColorMod
+ * @sa SetTextureColorModFloat
  */
 inline void GetTextureColorModFloat(TextureConstRef texture,
                                     float* r,
@@ -5223,9 +5220,9 @@ inline void Texture::GetColorModFloat(float* r, float* g, float* b) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.GetAlphaMod
- * @sa Texture.SetAlphaModFloat
- * @sa Texture.SetColorMod
+ * @sa GetTextureAlphaMod
+ * @sa SetTextureAlphaModFloat
+ * @sa SetTextureColorMod
  */
 inline void SetTextureAlphaMod(TextureRef texture, Uint8 alpha)
 {
@@ -5256,9 +5253,9 @@ inline void Texture::SetAlphaMod(Uint8 alpha)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.GetAlphaModFloat
- * @sa Texture.SetAlphaMod
- * @sa Texture.SetColorModFloat
+ * @sa GetTextureAlphaModFloat
+ * @sa SetTextureAlphaMod
+ * @sa SetTextureColorModFloat
  */
 inline void SetTextureAlphaModFloat(TextureRef texture, float alpha)
 {
@@ -5281,9 +5278,9 @@ inline void Texture::SetAlphaModFloat(float alpha)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.GetAlphaModFloat
- * @sa Texture.GetColorMod
- * @sa Texture.SetAlphaMod
+ * @sa GetTextureAlphaModFloat
+ * @sa GetTextureColorMod
+ * @sa SetTextureAlphaMod
  */
 inline Uint8 GetTextureAlphaMod(TextureConstRef texture)
 {
@@ -5308,9 +5305,9 @@ inline Uint8 Texture::GetAlphaMod() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.GetAlphaMod
- * @sa Texture.GetColorModFloat
- * @sa Texture.SetAlphaModFloat
+ * @sa GetTextureAlphaMod
+ * @sa GetTextureColorModFloat
+ * @sa SetTextureAlphaModFloat
  */
 inline float GetTextureAlphaModFloat(TextureConstRef texture)
 {
@@ -5441,7 +5438,7 @@ inline FColor Texture::GetModFloat() const
 }
 
 /**
- * Set the blend mode for a texture, used by Renderer.RenderTexture().
+ * Set the blend mode for a texture, used by RenderTexture().
  *
  * If the blend mode is not supported, the closest supported mode is chosen and
  * this function returns false.
@@ -5454,7 +5451,7 @@ inline FColor Texture::GetModFloat() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.GetBlendMode
+ * @sa GetTextureBlendMode
  */
 inline void SetTextureBlendMode(TextureRef texture, BlendMode blendMode)
 {
@@ -5477,7 +5474,7 @@ inline void Texture::SetBlendMode(BlendMode blendMode)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.SetBlendMode
+ * @sa SetTextureBlendMode
  */
 inline BlendMode GetTextureBlendMode(TextureConstRef texture)
 {
@@ -5506,7 +5503,7 @@ inline BlendMode Texture::GetBlendMode() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.GetScaleMode
+ * @sa GetTextureScaleMode
  */
 inline void SetTextureScaleMode(TextureRef texture, ScaleMode scaleMode)
 {
@@ -5529,7 +5526,7 @@ inline void Texture::SetScaleMode(ScaleMode scaleMode)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.SetScaleMode
+ * @sa SetTextureScaleMode
  */
 inline ScaleMode GetTextureScaleMode(TextureConstRef texture)
 {
@@ -5569,10 +5566,10 @@ inline ScaleMode Texture::GetScaleMode() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Lock
- * @sa Texture.Unlock
- * @sa Texture.UpdateNV
- * @sa Texture.UpdateYUV
+ * @sa LockTexture
+ * @sa UnlockTexture
+ * @sa UpdateNVTexture
+ * @sa UpdateYUVTexture
  */
 inline void UpdateTexture(TextureRef texture,
                           OptionalRef<const RectRaw> rect,
@@ -5607,10 +5604,10 @@ inline void UpdateTexture(TextureRef texture,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Lock
- * @sa Texture.Unlock
- * @sa Texture.UpdateNV
- * @sa Texture.UpdateYUV
+ * @sa LockTexture
+ * @sa UnlockTexture
+ * @sa UpdateNVTexture
+ * @sa UpdateYUVTexture
  */
 inline void UpdateTexture(TextureRef texture,
                           SurfaceConstRef surface,
@@ -5635,7 +5632,7 @@ inline void Texture::Update(SurfaceConstRef surface,
 /**
  * Update a rectangle within a planar YV12 or IYUV texture with new pixel data.
  *
- * You can use Texture.Update() as long as your pixel data is a contiguous block
+ * You can use UpdateTexture() as long as your pixel data is a contiguous block
  * of Y and U/V planes in the proper order, but this function is available if
  * your pixel data is not contiguous.
  *
@@ -5654,8 +5651,8 @@ inline void Texture::Update(SurfaceConstRef surface,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.UpdateNV
- * @sa Texture.Update
+ * @sa UpdateNVTexture
+ * @sa UpdateTexture
  */
 inline void UpdateYUVTexture(TextureRef texture,
                              OptionalRef<const RectRaw> rect,
@@ -5685,7 +5682,7 @@ inline void Texture::UpdateYUV(OptionalRef<const RectRaw> rect,
 /**
  * Update a rectangle within a planar NV12 or NV21 texture with new pixels.
  *
- * You can use Texture.Update() as long as your pixel data is a contiguous block
+ * You can use UpdateTexture() as long as your pixel data is a contiguous block
  * of NV12/21 planes in the proper order, but this function is available if your
  * pixel data is not contiguous.
  *
@@ -5703,8 +5700,8 @@ inline void Texture::UpdateYUV(OptionalRef<const RectRaw> rect,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Update
- * @sa Texture.UpdateYUV
+ * @sa UpdateTexture
+ * @sa UpdateYUVTexture
  */
 inline void UpdateNVTexture(TextureRef texture,
                             OptionalRef<const RectRaw> rect,
@@ -5734,7 +5731,7 @@ inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
  * to keep a copy of the texture data you should do that at the application
  * level.
  *
- * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+ * You must use UnlockTexture() to unlock the pixels and apply any changes.
  *
  * @param texture the texture to lock for access, which was created with
  *                `TEXTUREACCESS_STREAMING`.
@@ -5750,8 +5747,8 @@ inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.LockToSurface
- * @sa Texture.Unlock
+ * @sa LockTextureToSurface
+ * @sa UnlockTexture
  */
 inline void LockTexture(TextureRef texture,
                         OptionalRef<const RectRaw> rect,
@@ -5782,17 +5779,17 @@ inline TextureLock::TextureLock(TextureRef resource,
  * as a SDL surface.
  *
  * Besides providing an Surface instead of raw pixel data, this function
- * operates like Texture.Lock.
+ * operates like LockTexture.
  *
  * As an optimization, the pixels made available for editing don't necessarily
  * contain the old texture data. This is a write-only operation, and if you need
  * to keep a copy of the texture data you should do that at the application
  * level.
  *
- * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+ * You must use UnlockTexture() to unlock the pixels and apply any changes.
  *
- * The returned surface is freed internally after calling Texture.Unlock() or
- * Texture.Destroy(). The caller should not free it.
+ * The returned surface is freed internally after calling UnlockTexture() or
+ * DestroyTexture(). The caller should not free it.
  *
  * @param texture the texture to lock for access, which must be created with
  *                `TEXTUREACCESS_STREAMING`.
@@ -5805,8 +5802,8 @@ inline TextureLock::TextureLock(TextureRef resource,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Lock
- * @sa Texture.Unlock
+ * @sa LockTexture
+ * @sa UnlockTexture
  */
 inline Surface LockTextureToSurface(
   TextureRef texture,
@@ -5833,7 +5830,7 @@ inline TextureSurfaceLock::TextureSurfaceLock(TextureRef resource,
 /**
  * Unlock a texture, uploading the changes to video memory, if needed.
  *
- * **Warning**: Please note that Texture.Lock() is intended to be write-only; it
+ * **Warning**: Please note that LockTexture() is intended to be write-only; it
  * will not guarantee the previous contents of the texture will be provided. You
  * must fully initialize any area of a texture that you lock before unlocking
  * it, as the pixels might otherwise be uninitialized memory.
@@ -5841,13 +5838,13 @@ inline TextureSurfaceLock::TextureSurfaceLock(TextureRef resource,
  * Which is to say: locking and immediately unlocking a texture can result in
  * corrupted textures, depending on the renderer in use.
  *
- * @param texture a texture locked by Texture.Lock().
+ * @param texture a texture locked by LockTexture().
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Texture.Lock
+ * @sa LockTexture
  */
 inline void UnlockTexture(TextureRef texture) { SDL_UnlockTexture(texture); }
 
@@ -5899,7 +5896,7 @@ inline void TextureLock::reset()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetTarget
+ * @sa GetRenderTarget
  */
 inline void SetRenderTarget(RendererRef renderer, TextureRef texture)
 {
@@ -5946,7 +5943,7 @@ inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetTarget
+ * @sa SetRenderTarget
  */
 inline Texture GetRenderTarget(RendererRef renderer)
 {
@@ -5988,7 +5985,7 @@ inline Texture Renderer::GetTarget() const
  * presentation while drawing text, for example.
  *
  * You can convert coordinates in an event into rendering coordinates using
- * Renderer.ConvertEventToRenderCoordinates().
+ * ConvertEventToRenderCoordinates().
  *
  * @param renderer the rendering context.
  * @param size the width and height of the logical resolution.
@@ -5999,9 +5996,9 @@ inline Texture Renderer::GetTarget() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.ConvertEventToRenderCoordinates
- * @sa Renderer.GetLogicalPresentation
- * @sa Renderer.GetLogicalPresentationRect
+ * @sa ConvertEventToRenderCoordinates
+ * @sa GetRenderLogicalPresentation
+ * @sa GetRenderLogicalPresentationRect
  */
 inline void SetRenderLogicalPresentation(RendererRef renderer,
                                          const PointRaw& size,
@@ -6035,7 +6032,7 @@ inline void Renderer::SetLogicalPresentation(const PointRaw& size,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetLogicalPresentation
+ * @sa SetRenderLogicalPresentation
  */
 inline void GetRenderLogicalPresentation(RendererRef renderer,
                                          int* w,
@@ -6064,7 +6061,7 @@ inline void GetRenderLogicalPresentation(RendererRef renderer,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetLogicalPresentation
+ * @sa SetRenderLogicalPresentation
  */
 inline void GetRenderLogicalPresentation(RendererRef renderer,
                                          PointRaw* size,
@@ -6108,7 +6105,7 @@ inline void Renderer::GetLogicalPresentation(PointRaw* size,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetLogicalPresentation
+ * @sa SetRenderLogicalPresentation
  */
 inline FRect GetRenderLogicalPresentationRect(RendererRef renderer)
 {
@@ -6128,9 +6125,9 @@ inline FRect Renderer::GetLogicalPresentationRect() const
  * This takes into account several states:
  *
  * - The window dimensions.
- * - The logical presentation settings (Renderer.SetLogicalPresentation)
- * - The scale (Renderer.SetScale)
- * - The viewport (Renderer.SetViewport)
+ * - The logical presentation settings (SetRenderLogicalPresentation)
+ * - The scale (SetRenderScale)
+ * - The viewport (SetRenderViewport)
  *
  * @param renderer the rendering context.
  * @param window_coord the x, y coordinate in window coordinates.
@@ -6141,8 +6138,8 @@ inline FRect Renderer::GetLogicalPresentationRect() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetLogicalPresentation
- * @sa Renderer.SetScale
+ * @sa SetRenderLogicalPresentation
+ * @sa SetRenderScale
  */
 inline FPoint RenderCoordinatesFromWindow(RendererRef renderer,
                                           const FPointRaw& window_coord)
@@ -6165,9 +6162,9 @@ inline FPoint Renderer::RenderCoordinatesFromWindow(
  * This takes into account several states:
  *
  * - The window dimensions.
- * - The logical presentation settings (Renderer.SetLogicalPresentation)
- * - The scale (Renderer.SetScale)
- * - The viewport (Renderer.SetViewport)
+ * - The logical presentation settings (SetRenderLogicalPresentation)
+ * - The scale (SetRenderScale)
+ * - The viewport (SetRenderViewport)
  *
  * @param renderer the rendering context.
  * @param coord the x, y coordinates in render coordinates.
@@ -6178,9 +6175,9 @@ inline FPoint Renderer::RenderCoordinatesFromWindow(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetLogicalPresentation
- * @sa Renderer.SetScale
- * @sa Renderer.SetViewport
+ * @sa SetRenderLogicalPresentation
+ * @sa SetRenderScale
+ * @sa SetRenderViewport
  */
 inline FPoint RenderCoordinatesToWindow(RendererRef renderer,
                                         const FPointRaw& coord)
@@ -6202,9 +6199,9 @@ inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
  * This takes into account several states:
  *
  * - The window dimensions.
- * - The logical presentation settings (Renderer.SetLogicalPresentation)
- * - The scale (Renderer.SetScale)
- * - The viewport (Renderer.SetViewport)
+ * - The logical presentation settings (SetRenderLogicalPresentation)
+ * - The scale (SetRenderScale)
+ * - The viewport (SetRenderViewport)
  *
  * Various event types are converted with this function: mouse, touch, pen, etc.
  *
@@ -6213,8 +6210,8 @@ inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
  *
  * Relative mouse coordinates (xrel and yrel event fields) are _also_ converted.
  * Applications that do not want these fields converted should use
- * Renderer.RenderCoordinatesFromWindow() on the specific event fields instead
- * of converting the entire event structure.
+ * RenderCoordinatesFromWindow() on the specific event fields instead of
+ * converting the entire event structure.
  *
  * Once converted, coordinates may be outside the rendering area.
  *
@@ -6226,7 +6223,7 @@ inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderCoordinatesFromWindow
+ * @sa RenderCoordinatesFromWindow
  */
 inline void ConvertEventToRenderCoordinates(RendererRef renderer, Event* event)
 {
@@ -6242,8 +6239,8 @@ inline void Renderer::ConvertEventToRenderCoordinates(Event* event) const
  * Set the drawing area for rendering on the current target.
  *
  * Drawing will clip to this area (separately from any clipping done with
- * Renderer.SetClipRect), and the top left of the area will become coordinate
- * (0, 0) for future drawing commands.
+ * SetRenderClipRect), and the top left of the area will become coordinate (0,
+ * 0) for future drawing commands.
  *
  * The area's width and height must be >= 0.
  *
@@ -6259,8 +6256,8 @@ inline void Renderer::ConvertEventToRenderCoordinates(Event* event) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetViewport
- * @sa Renderer.ViewportSet
+ * @sa GetRenderViewport
+ * @sa RenderViewportSet
  */
 inline void SetRenderViewport(RendererRef renderer,
                               OptionalRef<const RectRaw> rect)
@@ -6310,8 +6307,8 @@ inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.ViewportSet
- * @sa Renderer.SetViewport
+ * @sa RenderViewportSet
+ * @sa SetRenderViewport
  */
 inline Rect GetRenderViewport(RendererRef renderer)
 {
@@ -6342,8 +6339,8 @@ inline Rect Renderer::GetViewport() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetViewport
- * @sa Renderer.SetViewport
+ * @sa GetRenderViewport
+ * @sa SetRenderViewport
  */
 inline bool RenderViewportSet(RendererRef renderer)
 {
@@ -6400,8 +6397,9 @@ inline Rect Renderer::GetSafeArea() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetClipRect
- * @sa Renderer.IsClipEnabled
+ * @sa GetRenderClipRect
+ * @sa ResetRenderClipRect
+ * @sa RenderClipEnabled
  */
 inline void SetRenderClipRect(RendererRef renderer,
                               OptionalRef<const RectRaw> rect)
@@ -6452,8 +6450,8 @@ inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.IsClipEnabled
- * @sa Renderer.SetClipRect
+ * @sa RenderClipEnabled
+ * @sa SetRenderClipRect
  */
 inline Rect GetRenderClipRect(RendererRef renderer)
 {
@@ -6481,8 +6479,8 @@ inline Rect Renderer::GetClipRect() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetClipRect
- * @sa Renderer.SetClipRect
+ * @sa GetRenderClipRect
+ * @sa SetRenderClipRect
  */
 inline bool RenderClipEnabled(RendererRef renderer)
 {
@@ -6516,7 +6514,7 @@ inline bool Renderer::IsClipEnabled() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetScale
+ * @sa GetRenderScale
  */
 inline void SetRenderScale(RendererRef renderer, const FPointRaw& scale)
 {
@@ -6543,7 +6541,7 @@ inline void Renderer::SetScale(const FPointRaw& scale)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetScale
+ * @sa SetRenderScale
  */
 inline void GetRenderScale(RendererRef renderer, float* scaleX, float* scaleY)
 {
@@ -6563,7 +6561,7 @@ inline void GetRenderScale(RendererRef renderer, float* scaleX, float* scaleY)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetScale
+ * @sa SetRenderScale
  */
 inline FPoint GetRenderScale(RendererRef renderer)
 {
@@ -6583,7 +6581,7 @@ inline FPoint Renderer::GetScale() const { return SDL::GetRenderScale(get()); }
  * Set the color used for drawing operations.
  *
  * Set the color for drawing or filling rectangles, lines, and points, and for
- * Renderer.RenderClear().
+ * RenderClear().
  *
  * @param renderer the rendering context.
  * @param c the color used to draw on the rendering target.
@@ -6593,8 +6591,8 @@ inline FPoint Renderer::GetScale() const { return SDL::GetRenderScale(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetDrawColor
- * @sa Renderer.SetDrawColorFloat
+ * @sa GetRenderDrawColor
+ * @sa SetRenderDrawColorFloat
  */
 inline void SetRenderDrawColor(RendererRef renderer, ColorRaw c)
 {
@@ -6610,7 +6608,7 @@ inline void Renderer::SetDrawColor(ColorRaw c)
  * Set the color used for drawing operations (Rect, Line and Clear).
  *
  * Set the color for drawing or filling rectangles, lines, and points, and for
- * Renderer.RenderClear().
+ * RenderClear().
  *
  * @param renderer the rendering context.
  * @param c the color used to draw on the rendering target.
@@ -6620,8 +6618,8 @@ inline void Renderer::SetDrawColor(ColorRaw c)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetDrawColorFloat
- * @sa Renderer.SetDrawColor
+ * @sa GetRenderDrawColorFloat
+ * @sa SetRenderDrawColor
  */
 inline void SetRenderDrawColorFloat(RendererRef renderer, const FColorRaw& c)
 {
@@ -6651,8 +6649,8 @@ inline void Renderer::SetDrawColorFloat(const FColorRaw& c)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetDrawColorFloat
- * @sa Renderer.SetDrawColor
+ * @sa GetRenderDrawColorFloat
+ * @sa SetRenderDrawColor
  */
 inline void GetRenderDrawColor(RendererRef renderer,
                                Uint8* r,
@@ -6674,8 +6672,8 @@ inline void GetRenderDrawColor(RendererRef renderer,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetDrawColorFloat
- * @sa Renderer.SetDrawColor
+ * @sa GetRenderDrawColorFloat
+ * @sa SetRenderDrawColor
  */
 inline Color GetRenderDrawColor(RendererRef renderer)
 {
@@ -6712,8 +6710,8 @@ inline Color Renderer::GetDrawColor() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetDrawColorFloat
- * @sa Renderer.GetDrawColor
+ * @sa SetRenderDrawColorFloat
+ * @sa GetRenderDrawColor
  */
 inline void GetRenderDrawColorFloat(RendererRef renderer,
                                     float* r,
@@ -6735,8 +6733,8 @@ inline void GetRenderDrawColorFloat(RendererRef renderer,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetDrawColorFloat
- * @sa Renderer.GetDrawColor
+ * @sa SetRenderDrawColorFloat
+ * @sa GetRenderDrawColor
  */
 inline FColor GetRenderDrawColorFloat(RendererRef renderer)
 {
@@ -6776,7 +6774,7 @@ inline FColor Renderer::GetDrawColorFloat() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetColorScale
+ * @sa GetRenderColorScale
  */
 inline void SetRenderColorScale(RendererRef renderer, float scale)
 {
@@ -6799,7 +6797,7 @@ inline void Renderer::SetColorScale(float scale)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetColorScale
+ * @sa SetRenderColorScale
  */
 inline float GetRenderColorScale(RendererRef renderer)
 {
@@ -6826,7 +6824,7 @@ inline float Renderer::GetColorScale() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetDrawBlendMode
+ * @sa GetRenderDrawBlendMode
  */
 inline void SetRenderDrawBlendMode(RendererRef renderer, BlendMode blendMode)
 {
@@ -6849,7 +6847,7 @@ inline void Renderer::SetDrawBlendMode(BlendMode blendMode)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetDrawBlendMode
+ * @sa SetRenderDrawBlendMode
  */
 inline BlendMode GetRenderDrawBlendMode(RendererRef renderer)
 {
@@ -6869,7 +6867,7 @@ inline BlendMode Renderer::GetDrawBlendMode() const
  * This function clears the entire rendering target, ignoring the viewport and
  * the clip rectangle. Note, that clearing will also set/fill all pixels of the
  * rendering target to current renderer draw color, so make sure to invoke
- * Renderer.SetDrawColor() when needed.
+ * SetRenderDrawColor() when needed.
  *
  * @param renderer the rendering context.
  * @throws Error on failure.
@@ -6878,7 +6876,7 @@ inline BlendMode Renderer::GetDrawBlendMode() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetDrawColor
+ * @sa SetRenderDrawColor
  */
 inline void RenderClear(RendererRef renderer)
 {
@@ -6898,7 +6896,7 @@ inline void Renderer::RenderClear() { SDL::RenderClear(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderPoints
+ * @sa RenderPoints
  */
 inline void RenderPoint(RendererRef renderer, const FPointRaw& p)
 {
@@ -6921,7 +6919,7 @@ inline void Renderer::RenderPoint(const FPointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderPoint
+ * @sa RenderPoint
  */
 inline void RenderPoints(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
@@ -6946,7 +6944,7 @@ inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderLines
+ * @sa RenderLines
  */
 inline void RenderLine(RendererRef renderer,
                        const FPointRaw& p1,
@@ -6972,7 +6970,7 @@ inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderLine
+ * @sa RenderLine
  */
 inline void RenderLines(RendererRef renderer, SpanRef<const FPointRaw> points)
 {
@@ -6997,7 +6995,7 @@ inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderRects
+ * @sa RenderRects
  */
 inline void RenderRect(RendererRef renderer, OptionalRef<const FRectRaw> rect)
 {
@@ -7021,7 +7019,7 @@ inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderRect
+ * @sa RenderRect
  */
 inline void RenderRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
@@ -7046,7 +7044,7 @@ inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderFillRects
+ * @sa RenderFillRects
  */
 inline void RenderFillRect(RendererRef renderer,
                            OptionalRef<const FRectRaw> rect)
@@ -7071,7 +7069,7 @@ inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderFillRect
+ * @sa RenderFillRect
  */
 inline void RenderFillRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
 {
@@ -7100,8 +7098,8 @@ inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderTextureRotated
- * @sa Renderer.RenderTextureTiled
+ * @sa RenderTextureRotated
+ * @sa RenderTextureTiled
  */
 inline void RenderTexture(RendererRef renderer,
                           TextureRef texture,
@@ -7141,7 +7139,7 @@ inline void Renderer::RenderTexture(TextureRef texture,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderTexture
+ * @sa RenderTexture
  */
 inline void RenderTextureRotated(RendererRef renderer,
                                  TextureRef texture,
@@ -7189,7 +7187,7 @@ inline void Renderer::RenderTextureRotated(TextureRef texture,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderTexture
+ * @sa RenderTexture
  */
 inline void RenderTextureAffine(RendererRef renderer,
                                 TextureRef texture,
@@ -7233,7 +7231,7 @@ inline void Renderer::RenderTextureAffine(TextureRef texture,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderTexture
+ * @sa RenderTexture
  */
 inline void RenderTextureTiled(RendererRef renderer,
                                TextureRef texture,
@@ -7282,8 +7280,8 @@ inline void Renderer::RenderTextureTiled(TextureRef texture,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderTexture
- * @sa Renderer.RenderTexture9GridTiled
+ * @sa RenderTexture
+ * @sa RenderTexture9GridTiled
  */
 inline void RenderTexture9Grid(RendererRef renderer,
                                TextureRef texture,
@@ -7360,8 +7358,8 @@ inline void Renderer::RenderTexture9Grid(TextureRef texture,
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Renderer.RenderTexture
- * @sa Renderer.RenderTexture9Grid
+ * @sa RenderTexture
+ * @sa RenderTexture9Grid
  */
 inline void RenderTexture9GridTiled(RendererRef renderer,
                                     TextureRef texture,
@@ -7413,7 +7411,7 @@ inline void Renderer::RenderTexture9GridTiled(TextureRef texture,
 /**
  * Render a list of triangles, optionally using a texture and indices into the
  * vertex array Color and alpha modulation is done per vertex
- * (Texture.SetColorMod and Texture.SetAlphaMod are ignored).
+ * (SetTextureColorMod and SetTextureAlphaMod are ignored).
  *
  * @param renderer the rendering context.
  * @param texture (optional) The SDL texture to use.
@@ -7427,8 +7425,8 @@ inline void Renderer::RenderTexture9GridTiled(TextureRef texture,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderGeometryRaw
- * @sa Renderer.SetRenderTextureAddressMode
+ * @sa RenderGeometryRaw
+ * @sa SetRenderTextureAddressMode
  */
 inline void RenderGeometry(RendererRef renderer,
                            TextureRef texture,
@@ -7453,7 +7451,7 @@ inline void Renderer::RenderGeometry(TextureRef texture,
 /**
  * Render a list of triangles, optionally using a texture and indices into the
  * vertex arrays Color and alpha modulation is done per vertex
- * (Texture.SetColorMod and Texture.SetAlphaMod are ignored).
+ * (SetTextureColorMod and SetTextureAlphaMod are ignored).
  *
  * @param renderer the rendering context.
  * @param texture (optional) The SDL texture to use.
@@ -7474,8 +7472,8 @@ inline void Renderer::RenderGeometry(TextureRef texture,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderGeometry
- * @sa Renderer.SetRenderTextureAddressMode
+ * @sa RenderGeometry
+ * @sa SetRenderTextureAddressMode
  */
 inline void RenderGeometryRaw(RendererRef renderer,
                               TextureRef texture,
@@ -7533,22 +7531,22 @@ inline void Renderer::RenderGeometryRaw(TextureRef texture,
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * Set the texture addressing mode used in Renderer.RenderGeometry().
+ * Set the texture addressing mode used in RenderGeometry().
  *
  * @param renderer the rendering context.
  * @param u_mode the TextureAddressMode to use for horizontal texture
- *               coordinates in Renderer.RenderGeometry().
+ *               coordinates in RenderGeometry().
  * @param v_mode the TextureAddressMode to use for vertical texture coordinates
- *               in Renderer.RenderGeometry().
+ *               in RenderGeometry().
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Renderer.RenderGeometry
- * @sa Renderer.RenderGeometryRaw
- * @sa Renderer.GetRenderTextureAddressMode
+ * @sa RenderGeometry
+ * @sa RenderGeometryRaw
+ * @sa GetRenderTextureAddressMode
  */
 inline void SetRenderTextureAddressMode(RendererRef renderer,
                                         TextureAddressMode u_mode,
@@ -7564,22 +7562,22 @@ inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
 }
 
 /**
- * Get the texture addressing mode used in Renderer.RenderGeometry().
+ * Get the texture addressing mode used in RenderGeometry().
  *
  * @param renderer the rendering context.
  * @param u_mode a pointer filled in with the TextureAddressMode to use for
- *               horizontal texture coordinates in Renderer.RenderGeometry(),
- *               may be nullptr.
+ *               horizontal texture coordinates in RenderGeometry(), may be
+ *               nullptr.
  * @param v_mode a pointer filled in with the TextureAddressMode to use for
- *               vertical texture coordinates in Renderer.RenderGeometry(), may
- *               be nullptr.
+ *               vertical texture coordinates in RenderGeometry(), may be
+ *               nullptr.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Renderer.SetRenderTextureAddressMode
+ * @sa SetRenderTextureAddressMode
  */
 inline void GetRenderTextureAddressMode(RendererRef renderer,
                                         TextureAddressMode* u_mode,
@@ -7599,16 +7597,13 @@ inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
 /**
  * Read pixels from the current rendering target.
  *
- * The returned surface contains pixels inside the desired area clipped to the
- * current viewport, and should be freed with Surface.Destroy().
- *
  * Note that this returns the actual pixels on the screen, so if you are using
- * logical presentation you should use Renderer.GetLogicalPresentationRect() to
- * get the area containing your content.
+ * logical presentation you should use GetRenderLogicalPresentationRect() to get
+ * the area containing your content.
  *
  * **WARNING**: This is a very slow operation, and should not be used
  * frequently. If you're using this on the main rendering target, it should be
- * called after rendering and before Renderer.Present().
+ * called after rendering and before RenderPresent().
  *
  * @param renderer the rendering context.
  * @param rect an Rect structure representing the area to read, which will be
@@ -7636,10 +7631,10 @@ inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
  * Update the screen with any rendering performed since the previous call.
  *
  * SDL's rendering functions operate on a backbuffer; that is, calling a
- * rendering function such as Renderer.RenderLine() does not directly put a line
- * on the screen, but rather updates the backbuffer. As such, you compose your
- * entire scene and *present* the composed backbuffer to the screen as a
- * complete picture.
+ * rendering function such as RenderLine() does not directly put a line on the
+ * screen, but rather updates the backbuffer. As such, you compose your entire
+ * scene and *present* the composed backbuffer to the screen as a complete
+ * picture.
  *
  * Therefore, when using SDL's rendering API, one does all drawing intended for
  * the frame, and then calls this function once per frame to present the final
@@ -7647,15 +7642,15 @@ inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
  *
  * The backbuffer should be considered invalidated after each present; do not
  * assume that previous contents will exist between frames. You are strongly
- * encouraged to call Renderer.RenderClear() to initialize the backbuffer before
- * starting each new frame's drawing, even if you plan to overwrite every pixel.
+ * encouraged to call RenderClear() to initialize the backbuffer before starting
+ * each new frame's drawing, even if you plan to overwrite every pixel.
  *
  * Please note, that in case of rendering to a texture - there is **no need** to
- * call `Renderer.Present` after drawing needed objects to a texture, and should
+ * call `RenderPresent` after drawing needed objects to a texture, and should
  * not be done; you are only required to change back the rendering target to
- * default via `Renderer.SetTarget(renderer, nullptr)` afterwards, as textures
- * by themselves do not have a concept of backbuffers. Calling Renderer.Present
- * while rendering to a texture will fail.
+ * default via `SetRenderTarget(renderer, nullptr)` afterwards, as textures by
+ * themselves do not have a concept of backbuffers. Calling RenderPresent while
+ * rendering to a texture will fail.
  *
  * @param renderer the rendering context.
  * @throws Error on failure.
@@ -7665,17 +7660,17 @@ inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateRenderer
- * @sa Renderer.RenderClear
- * @sa Renderer.RenderFillRect
- * @sa Renderer.RenderFillRects
- * @sa Renderer.RenderLine
- * @sa Renderer.RenderLines
- * @sa Renderer.RenderPoint
- * @sa Renderer.RenderPoints
- * @sa Renderer.RenderRect
- * @sa Renderer.RenderRects
- * @sa Renderer.SetDrawBlendMode
- * @sa Renderer.SetDrawColor
+ * @sa RenderClear
+ * @sa RenderFillRect
+ * @sa RenderFillRects
+ * @sa RenderLine
+ * @sa RenderLines
+ * @sa RenderPoint
+ * @sa RenderPoints
+ * @sa RenderRect
+ * @sa RenderRects
+ * @sa SetRenderDrawBlendMode
+ * @sa SetRenderDrawColor
  */
 inline void RenderPresent(RendererRef renderer)
 {
@@ -7774,7 +7769,7 @@ inline void Renderer::Flush() { SDL::FlushRenderer(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetRenderMetalCommandEncoder
+ * @sa GetRenderMetalCommandEncoder
  */
 inline void* GetRenderMetalLayer(RendererRef renderer)
 {
@@ -7805,7 +7800,7 @@ inline void* Renderer::GetRenderMetalLayer()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetRenderMetalLayer
+ * @sa GetRenderMetalLayer
  */
 inline void* GetRenderMetalCommandEncoder(RendererRef renderer)
 {
@@ -7880,7 +7875,7 @@ inline void Renderer::AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.GetVSync
+ * @sa GetRenderVSync
  */
 inline void SetRenderVSync(RendererRef renderer, int vsync)
 {
@@ -7907,7 +7902,7 @@ constexpr int RENDERER_VSYNC_ADAPTIVE = SDL_RENDERER_VSYNC_ADAPTIVE;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.SetVSync
+ * @sa SetRenderVSync
  */
 inline int GetRenderVSync(RendererRef renderer)
 {
@@ -7919,13 +7914,13 @@ inline int GetRenderVSync(RendererRef renderer)
 inline int Renderer::GetVSync() const { return SDL::GetRenderVSync(get()); }
 
 /**
- * The size, in pixels, of a single Renderer.RenderDebugText() character.
+ * The size, in pixels, of a single RenderDebugText() character.
  *
  * The font is monospaced and square, so this applies to all characters.
  *
  * @since This constant is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderDebugText
+ * @sa RenderDebugText
  */
 constexpr int DEBUG_TEXT_FONT_CHARACTER_SIZE =
   SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE;
@@ -7941,7 +7936,7 @@ constexpr int DEBUG_TEXT_FONT_CHARACTER_SIZE =
  *
  * - It accepts UTF-8 strings, but will only renders ASCII characters.
  * - It has a single, tiny size (8x8 pixels). You can use logical presentation
- *   or Renderer.SetScale() to adjust it.
+ *   or SetRenderScale() to adjust it.
  * - It uses a simple, hardcoded bitmap font. It does not allow different font
  *   selections and it does not support truetype, for proper scaling.
  * - It does no word-wrapping and does not treat newline characters as a line
@@ -7953,7 +7948,7 @@ constexpr int DEBUG_TEXT_FONT_CHARACTER_SIZE =
  * On first use, this will create an internal texture for rendering glyphs. This
  * texture will live until the renderer is destroyed.
  *
- * The text is drawn in the color specified by Renderer.SetDrawColor().
+ * The text is drawn in the color specified by SetRenderDrawColor().
  *
  * @param renderer the renderer which should draw a line of text.
  * @param p the x,y coordinates where the top-left corner of the text will draw.
@@ -7964,7 +7959,7 @@ constexpr int DEBUG_TEXT_FONT_CHARACTER_SIZE =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderDebugTextFormat
+ * @sa RenderDebugTextFormat
  * @sa DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
 inline void RenderDebugText(RendererRef renderer,
@@ -7987,7 +7982,7 @@ inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
  * and is not intended to be used for production apps and games.
  *
  * For the full list of limitations and other useful information, see
- * Renderer.RenderDebugText.
+ * RenderDebugText.
  *
  * @param renderer the renderer which should draw the text.
  * @param p the x,y coordinate where the top-left corner of the text will draw.
@@ -8000,7 +7995,7 @@ inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.RenderDebugText
+ * @sa RenderDebugText
  * @sa DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
 template<class... ARGS>
@@ -8036,7 +8031,7 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Renderer.GetDefaultTextureScaleMode
+ * @sa GetDefaultTextureScaleMode
  */
 inline void SetDefaultTextureScaleMode(RendererRef renderer,
                                        ScaleMode scale_mode)
@@ -8054,15 +8049,14 @@ inline void Renderer::SetDefaultTextureScaleMode(ScaleMode scale_mode)
  *
  * @param renderer the renderer to get data from.
  * @param scale_mode a ScaleMode filled with current default scale mode. See
- *                   Renderer.SetDefaultTextureScaleMode() for the meaning of
- *                   the value.
+ *                   SetDefaultTextureScaleMode() for the meaning of the value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Renderer.SetDefaultTextureScaleMode
+ * @sa SetDefaultTextureScaleMode
  */
 inline void GetDefaultTextureScaleMode(RendererRef renderer,
                                        ScaleMode* scale_mode)
@@ -8081,9 +8075,9 @@ inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
  * @since This struct is available since SDL 3.4.0.
  *
  * @sa Renderer.CreateGPURenderState
- * @sa GPURenderState.SetFragmentUniforms
- * @sa Renderer.SetGPURenderState
- * @sa GPURenderState.Destroy
+ * @sa SetGPURenderStateFragmentUniforms
+ * @sa SetGPURenderState
+ * @sa DestroyGPURenderState
  *
  * @cat resource
  */
@@ -8129,9 +8123,9 @@ struct GPURenderState : ResourceBase<GPURenderStateRaw>
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa GPURenderState.SetFragmentUniforms
-   * @sa Renderer.SetGPURenderState
-   * @sa GPURenderState.Destroy
+   * @sa SetGPURenderStateFragmentUniforms
+   * @sa SetGPURenderState
+   * @sa DestroyGPURenderState
    */
   GPURenderState(RendererRef renderer,
                  const GPURenderStateCreateInfo& createinfo);
@@ -8165,8 +8159,8 @@ struct GPURenderState : ResourceBase<GPURenderStateRaw>
   /**
    * Set fragment shader uniform variables in a custom GPU render state.
    *
-   * The data is copied and will be pushed using
-   * GPUCommandBuffer.PushFragmentUniformData() during draw call execution.
+   * The data is copied and will be pushed using PushGPUFragmentUniformData()
+   * during draw call execution.
    *
    * @param slot_index the fragment uniform slot to push data to.
    * @param data client data to write.
@@ -8194,9 +8188,9 @@ struct GPURenderState : ResourceBase<GPURenderStateRaw>
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa GPURenderState.SetFragmentUniforms
- * @sa Renderer.SetGPURenderState
- * @sa GPURenderState.Destroy
+ * @sa SetGPURenderStateFragmentUniforms
+ * @sa SetGPURenderState
+ * @sa DestroyGPURenderState
  */
 inline GPURenderState CreateGPURenderState(
   RendererRef renderer,
@@ -8221,8 +8215,8 @@ inline GPURenderState::GPURenderState(
 /**
  * Set fragment shader uniform variables in a custom GPU render state.
  *
- * The data is copied and will be pushed using
- * GPUCommandBuffer.PushFragmentUniformData() during draw call execution.
+ * The data is copied and will be pushed using PushGPUFragmentUniformData()
+ * during draw call execution.
  *
  * @param state the state to modify.
  * @param slot_index the fragment uniform slot to push data to.

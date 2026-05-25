@@ -97,7 +97,7 @@ using SensorID = Uint32;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa Display.GetCurrentOrientation
+ * @sa GetCurrentDisplayOrientation
  */
 using SensorType = SDL_SensorType;
 

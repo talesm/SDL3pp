@@ -79,10 +79,10 @@ constexpr IOWhence IO_SEEK_END =
 /**
  * The function pointers that drive an IOStream.
  *
- * Applications can provide this struct to IOStream.Open() to create their own
+ * Applications can provide this struct to OpenIO() to create their own
  * implementation of IOStream. This is not necessarily required, as SDL already
- * offers several common types of I/O streams, via functions like
- * IOStream.FromFile() and IOStream.FromMem().
+ * offers several common types of I/O streams, via functions like IOFromFile()
+ * and IOFromMem().
  *
  * This structure should be initialized using InitInterface()
  *
@@ -96,9 +96,9 @@ using IOStreamInterface = SDL_IOStreamInterface;
  * The read/write operation structure.
  *
  * This operates as an opaque handle. There are several APIs to create various
- * types of I/O streams, or an app can supply an IOStreamInterface to
- * IOStream.Open() to provide their own stream implementation behind this
- * struct's abstract interface.
+ * types of I/O streams, or an app can supply an IOStreamInterface to OpenIO()
+ * to provide their own stream implementation behind this struct's abstract
+ * interface.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -176,9 +176,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * This function supports Unicode filenames, but they must be encoded in UTF-8
    * format, regardless of the underlying operating system.
    *
-   * In Android, IOStream.FromFile() can be used to open content:// URIs. As a
-   * fallback, IOStream.FromFile() will transparently open a matching filename
-   * in the app's `assets`.
+   * In Android, IOFromFile() can be used to open content:// URIs. As a
+   * fallback, IOFromFile() will transparently open a matching filename in the
+   * app's `assets`.
    *
    * Closing the IOStream will close SDL's internal file handle.
    *
@@ -212,12 +212,12 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.Close
-   * @sa IOStream.Flush
-   * @sa IOStream.Read
-   * @sa IOStream.Seek
-   * @sa IOStream.Tell
-   * @sa IOStream.Write
+   * @sa CloseIO
+   * @sa FlushIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   * @sa WriteIO
    */
   static IOStream FromFile(StringParam file, StringParam mode);
 
@@ -232,8 +232,7 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * must remain valid until you close the stream.
    *
    * If you need to make sure the IOStream never writes to the memory buffer,
-   * you should use IOStream.FromConstMem() with a read-only buffer of memory
-   * instead.
+   * you should use IOFromConstMem() with a read-only buffer of memory instead.
    *
    * The following properties will be set at creation time by SDL:
    *
@@ -257,13 +256,13 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.FromConstMem
-   * @sa IOStream.Close
-   * @sa IOStream.Flush
-   * @sa IOStream.Read
-   * @sa IOStream.Seek
-   * @sa IOStream.Tell
-   * @sa IOStream.Write
+   * @sa IOFromConstMem
+   * @sa CloseIO
+   * @sa FlushIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   * @sa WriteIO
    */
   static IOStream FromMem(TargetBytes mem);
 
@@ -280,8 +279,8 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * This memory buffer is not copied by the IOStream; the pointer you provide
    * must remain valid until you close the stream.
    *
-   * If you need to write to a memory buffer, you should use IOStream.FromMem()
-   * with a writable buffer of memory instead.
+   * If you need to write to a memory buffer, you should use IOFromMem() with a
+   * writable buffer of memory instead.
    *
    * The following properties will be set at creation time by SDL:
    *
@@ -305,11 +304,11 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.FromMem
-   * @sa IOStream.Close
-   * @sa IOStream.Read
-   * @sa IOStream.Seek
-   * @sa IOStream.Tell
+   * @sa IOFromMem
+   * @sa CloseIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
    */
   static IOStream FromConstMem(SourceBytes mem);
 
@@ -323,7 +322,7 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * - `prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
    *   of the stream. This can be set to nullptr to transfer ownership of the
    *   memory to the application, which should free the memory with free(). If
-   *   this is done, the next operation on the stream must be IOStream.Close().
+   *   this is done, the next operation on the stream must be CloseIO().
    * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
    *   multiples of this size, defaulting to 1024.
    *
@@ -334,11 +333,11 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.Close
-   * @sa IOStream.Read
-   * @sa IOStream.Seek
-   * @sa IOStream.Tell
-   * @sa IOStream.Write
+   * @sa CloseIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   * @sa WriteIO
    */
   static IOStream FromDynamicMem();
 
@@ -348,8 +347,7 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * Applications do not need to use this function unless they are providing
    * their own IOStream implementation. If you just need an IOStream to
    * read/write a common data source, you should use the built-in
-   * implementations in SDL, like IOStream.FromFile() or IOStream.FromMem(),
-   * etc.
+   * implementations in SDL, like IOFromFile() or IOFromMem(), etc.
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -364,11 +362,11 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.Close
+   * @sa CloseIO
    * @sa InitInterface
-   * @sa IOStream.FromConstMem
-   * @sa IOStream.FromFile
-   * @sa IOStream.FromMem
+   * @sa IOFromConstMem
+   * @sa IOFromFile
+   * @sa IOFromMem
    */
   static IOStream Open(const IOStreamInterface& iface, void* userdata);
 
@@ -388,7 +386,7 @@ struct IOStream : ResourceBase<IOStreamRaw>
   /**
    * Close and free an allocated IOStream structure.
    *
-   * IOStream.Close() closes and cleans up the IOStream stream. It releases any
+   * CloseIO() closes and cleans up the IOStream stream. It releases any
    * resources used by the stream and frees the IOStream itself. This returns
    * true on success, or false if the stream failed to flush to its output (e.g.
    * to disk).
@@ -402,9 +400,8 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * be in the OS's file cache, waiting to go to disk later. If it's absolutely
    * crucial that writes go to disk immediately, so they are definitely stored
    * even if the power fails before the file cache would have caught up, one
-   * should call IOStream.Flush() before closing. Note that flushing takes time
-   * and makes the system and your app operate less efficiently, so do so
-   * sparingly.
+   * should call FlushIO() before closing. Note that flushing takes time and
+   * makes the system and your app operate less efficiently, so do so sparingly.
    *
    * @throws Error on failure.
    *
@@ -412,7 +409,7 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.Open
+   * @sa OpenIO
    */
   void Close();
 
@@ -435,9 +432,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * to an error, an EOF, or a non-blocking operation that isn't yet ready to
    * complete.
    *
-   * An IOStream's status is only expected to change after a IOStream.Read or
-   * IOStream.Write call; don't expect it to change if you just call this query
-   * function in a tight loop.
+   * An IOStream's status is only expected to change after a ReadIO or WriteIO
+   * call; don't expect it to change if you just call this query function in a
+   * tight loop.
    *
    * @returns an IOStatus enum with the current state.
    *
@@ -482,15 +479,15 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.Tell
+   * @sa TellIO
    */
   Sint64 Seek(Sint64 offset, IOWhence whence);
 
   /**
    * Determine the current read/write offset in an IOStream data stream.
    *
-   * IOStream.Tell is actually a wrapper function that calls the IOStream's
-   * `seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify
+   * TellIO is actually a wrapper function that calls the IOStream's `seek`
+   * method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify
    * application development.
    *
    * @returns the current offset in the stream, or -1 if the information can not
@@ -500,7 +497,7 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.Seek
+   * @sa SeekIO
    */
   Sint64 Tell() const;
 
@@ -550,9 +547,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * pointed at by `ptr`. This function may read less bytes than requested.
    *
    * This function will return zero when the data stream is completely read, and
-   * IOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and the
-   * stream is not at EOF, IOStream.GetStatus() will return a different error
-   * value and GetError() will offer a human-readable message.
+   * GetIOStatus() will return IO_STATUS_EOF. If zero is returned and the stream
+   * is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * A request for zero bytes on a valid stream will return zero immediately
    * without accessing the stream, so the stream status (EOF, err, etc) will not
@@ -566,8 +563,8 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.Write
-   * @sa IOStream.GetStatus
+   * @sa WriteIO
+   * @sa GetIOStatus
    */
   size_t Read(TargetBytes buf);
 
@@ -581,7 +578,7 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * On error, this function still attempts to write as much as possible, so it
    * might return a positive value less than the requested write size.
    *
-   * The caller can use IOStream.GetStatus() to determine if the problem is
+   * The caller can use GetIOStatus() to determine if the problem is
    * recoverable, such as a non-blocking write that can simply be retried later,
    * or a fatal error.
    *
@@ -597,11 +594,11 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.printf
-   * @sa IOStream.Read
-   * @sa IOStream.Seek
-   * @sa IOStream.Flush
-   * @sa IOStream.GetStatus
+   * @sa IOprintf
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa FlushIO
+   * @sa GetIOStatus
    */
   size_t Write(SourceBytes buf);
 
@@ -648,8 +645,8 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.vprintf
-   * @sa IOStream.Write
+   * @sa IOvprintf
+   * @sa WriteIO
    */
   size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
   {
@@ -679,8 +676,8 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.printf
-   * @sa IOStream.Write
+   * @sa IOprintf
+   * @sa WriteIO
    */
   size_t vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt, va_list ap);
 
@@ -697,8 +694,8 @@ struct IOStream : ResourceBase<IOStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IOStream.Open
-   * @sa IOStream.Write
+   * @sa OpenIO
+   * @sa WriteIO
    */
   void Flush();
 
@@ -716,7 +713,7 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa LoadFile
-   * @sa IOStream.SaveFile
+   * @sa SaveFile_IO
    */
   StringResult LoadFile();
 
@@ -757,7 +754,7 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SaveFile
-   * @sa IOStream.LoadFile
+   * @sa LoadFile_IO
    */
   void SaveFile(SourceBytes data);
 
@@ -765,9 +762,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * Use this function to read a byte from an IOStream.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -782,9 +779,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * Use this function to read a signed byte from an IOStream.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -803,9 +800,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -824,9 +821,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -845,9 +842,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -866,9 +863,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -887,9 +884,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -908,9 +905,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -929,9 +926,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -950,9 +947,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -971,9 +968,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -992,9 +989,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -1013,9 +1010,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -1034,9 +1031,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
    * the native byte order.
    *
    * This function will return false when the data stream is completely read,
-   * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * and GetIOStatus() will return IO_STATUS_EOF. If false is returned and the
+   * stream is not at EOF, GetIOStatus() will return a different error value and
+   * GetError() will offer a human-readable message.
    *
    * @returns the data read on success.
    * @throws Error on failure.
@@ -1637,9 +1634,9 @@ struct IOStream : ResourceBase<IOStreamRaw>
  * This function supports Unicode filenames, but they must be encoded in UTF-8
  * format, regardless of the underlying operating system.
  *
- * In Android, IOStream.FromFile() can be used to open content:// URIs. As a
- * fallback, IOStream.FromFile() will transparently open a matching filename in
- * the app's `assets`.
+ * In Android, IOFromFile() can be used to open content:// URIs. As a fallback,
+ * IOFromFile() will transparently open a matching filename in the app's
+ * `assets`.
  *
  * Closing the IOStream will close SDL's internal file handle.
  *
@@ -1673,12 +1670,12 @@ struct IOStream : ResourceBase<IOStreamRaw>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.Close
- * @sa IOStream.Flush
- * @sa IOStream.Read
- * @sa IOStream.Seek
- * @sa IOStream.Tell
- * @sa IOStream.Write
+ * @sa CloseIO
+ * @sa FlushIO
+ * @sa ReadIO
+ * @sa SeekIO
+ * @sa TellIO
+ * @sa WriteIO
  */
 inline IOStream IOFromFile(StringParam file, StringParam mode)
 {
@@ -1750,7 +1747,7 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * must remain valid until you close the stream.
  *
  * If you need to make sure the IOStream never writes to the memory buffer, you
- * should use IOStream.FromConstMem() with a read-only buffer of memory instead.
+ * should use IOFromConstMem() with a read-only buffer of memory instead.
  *
  * The following properties will be set at creation time by SDL:
  *
@@ -1774,13 +1771,13 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.FromConstMem
- * @sa IOStream.Close
- * @sa IOStream.Flush
- * @sa IOStream.Read
- * @sa IOStream.Seek
- * @sa IOStream.Tell
- * @sa IOStream.Write
+ * @sa IOFromConstMem
+ * @sa CloseIO
+ * @sa FlushIO
+ * @sa ReadIO
+ * @sa SeekIO
+ * @sa TellIO
+ * @sa WriteIO
  */
 inline IOStream IOFromMem(TargetBytes mem)
 {
@@ -1804,8 +1801,8 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  * This memory buffer is not copied by the IOStream; the pointer you provide
  * must remain valid until you close the stream.
  *
- * If you need to write to a memory buffer, you should use IOStream.FromMem()
- * with a writable buffer of memory instead.
+ * If you need to write to a memory buffer, you should use IOFromMem() with a
+ * writable buffer of memory instead.
  *
  * The following properties will be set at creation time by SDL:
  *
@@ -1829,11 +1826,11 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.FromMem
- * @sa IOStream.Close
- * @sa IOStream.Read
- * @sa IOStream.Seek
- * @sa IOStream.Tell
+ * @sa IOFromMem
+ * @sa CloseIO
+ * @sa ReadIO
+ * @sa SeekIO
+ * @sa TellIO
  */
 inline IOStream IOFromConstMem(SourceBytes mem)
 {
@@ -1855,7 +1852,7 @@ inline IOStream IOStream::FromConstMem(SourceBytes mem)
  * - `prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory of
  *   the stream. This can be set to nullptr to transfer ownership of the memory
  *   to the application, which should free the memory with free(). If this is
- *   done, the next operation on the stream must be IOStream.Close().
+ *   done, the next operation on the stream must be CloseIO().
  * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
  *   multiples of this size, defaulting to 1024.
  *
@@ -1866,11 +1863,11 @@ inline IOStream IOStream::FromConstMem(SourceBytes mem)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.Close
- * @sa IOStream.Read
- * @sa IOStream.Seek
- * @sa IOStream.Tell
- * @sa IOStream.Write
+ * @sa CloseIO
+ * @sa ReadIO
+ * @sa SeekIO
+ * @sa TellIO
+ * @sa WriteIO
  */
 inline IOStream IOFromDynamicMem() { return IOStream(SDL_IOFromDynamicMem()); }
 
@@ -1882,7 +1879,7 @@ inline IOStream IOStream::FromDynamicMem() { return SDL::IOFromDynamicMem(); }
  * Applications do not need to use this function unless they are providing their
  * own IOStream implementation. If you just need an IOStream to read/write a
  * common data source, you should use the built-in implementations in SDL, like
- * IOStream.FromFile() or IOStream.FromMem(), etc.
+ * IOFromFile() or IOFromMem(), etc.
  *
  * This function makes a copy of `iface` and the caller does not need to keep it
  * around after this call.
@@ -1897,11 +1894,11 @@ inline IOStream IOStream::FromDynamicMem() { return SDL::IOFromDynamicMem(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.Close
+ * @sa CloseIO
  * @sa InitInterface
- * @sa IOStream.FromConstMem
- * @sa IOStream.FromFile
- * @sa IOStream.FromMem
+ * @sa IOFromConstMem
+ * @sa IOFromFile
+ * @sa IOFromMem
  */
 inline IOStream OpenIO(const IOStreamInterface& iface, void* userdata)
 {
@@ -1916,10 +1913,9 @@ inline IOStream IOStream::Open(const IOStreamInterface& iface, void* userdata)
 /**
  * Close and free an allocated IOStream structure.
  *
- * IOStream.Close() closes and cleans up the IOStream stream. It releases any
- * resources used by the stream and frees the IOStream itself. This returns true
- * on success, or false if the stream failed to flush to its output (e.g. to
- * disk).
+ * CloseIO() closes and cleans up the IOStream stream. It releases any resources
+ * used by the stream and frees the IOStream itself. This returns true on
+ * success, or false if the stream failed to flush to its output (e.g. to disk).
  *
  * Note that if this fails to flush the stream for any reason, this function
  * reports an error, but the IOStream is still invalid once this function
@@ -1930,8 +1926,8 @@ inline IOStream IOStream::Open(const IOStreamInterface& iface, void* userdata)
  * the OS's file cache, waiting to go to disk later. If it's absolutely crucial
  * that writes go to disk immediately, so they are definitely stored even if the
  * power fails before the file cache would have caught up, one should call
- * IOStream.Flush() before closing. Note that flushing takes time and makes the
- * system and your app operate less efficiently, so do so sparingly.
+ * FlushIO() before closing. Note that flushing takes time and makes the system
+ * and your app operate less efficiently, so do so sparingly.
  *
  * @param context IOStream structure to close.
  * @throws Error on failure.
@@ -1940,7 +1936,7 @@ inline IOStream IOStream::Open(const IOStreamInterface& iface, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.Open
+ * @sa OpenIO
  */
 inline void CloseIO(IOStreamRaw context) { CheckError(SDL_CloseIO(context)); }
 
@@ -1974,9 +1970,9 @@ inline PropertiesRef IOStream::GetProperties() const
  * an error, an EOF, or a non-blocking operation that isn't yet ready to
  * complete.
  *
- * An IOStream's status is only expected to change after a IOStream.Read or
- * IOStream.Write call; don't expect it to change if you just call this query
- * function in a tight loop.
+ * An IOStream's status is only expected to change after a ReadIO or WriteIO
+ * call; don't expect it to change if you just call this query function in a
+ * tight loop.
  *
  * @param context the IOStream to query.
  * @returns an IOStatus enum with the current state.
@@ -2034,7 +2030,7 @@ inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.Tell
+ * @sa TellIO
  */
 inline Sint64 SeekIO(IOStreamRef context, Sint64 offset, IOWhence whence)
 {
@@ -2049,7 +2045,7 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
 /**
  * Determine the current read/write offset in an IOStream data stream.
  *
- * IOStream.Tell is actually a wrapper function that calls the IOStream's `seek`
+ * TellIO is actually a wrapper function that calls the IOStream's `seek`
  * method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify application
  * development.
  *
@@ -2062,7 +2058,7 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.Seek
+ * @sa SeekIO
  */
 inline Sint64 TellIO(IOStreamRef context) { return SDL_TellIO(context); }
 
@@ -2075,9 +2071,9 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(get()); }
  * at by `ptr`. This function may read less bytes than requested.
  *
  * This function will return zero when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If zero is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * A request for zero bytes on a valid stream will return zero immediately
  * without accessing the stream, so the stream status (EOF, err, etc) will not
@@ -2092,8 +2088,8 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.Write
- * @sa IOStream.GetStatus
+ * @sa WriteIO
+ * @sa GetIOStatus
  */
 inline size_t ReadIO(IOStreamRef context, TargetBytes buf)
 {
@@ -2115,9 +2111,9 @@ inline size_t IOStream::Read(TargetBytes buf)
  * On error, this function still attempts to write as much as possible, so it
  * might return a positive value less than the requested write size.
  *
- * The caller can use IOStream.GetStatus() to determine if the problem is
- * recoverable, such as a non-blocking write that can simply be retried later,
- * or a fatal error.
+ * The caller can use GetIOStatus() to determine if the problem is recoverable,
+ * such as a non-blocking write that can simply be retried later, or a fatal
+ * error.
  *
  * A request for zero bytes on a valid stream will return zero immediately
  * without accessing the stream, so the stream status (EOF, err, etc) will not
@@ -2132,11 +2128,11 @@ inline size_t IOStream::Read(TargetBytes buf)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.printf
- * @sa IOStream.Read
- * @sa IOStream.Seek
- * @sa IOStream.Flush
- * @sa IOStream.GetStatus
+ * @sa IOprintf
+ * @sa ReadIO
+ * @sa SeekIO
+ * @sa FlushIO
+ * @sa GetIOStatus
  */
 inline size_t WriteIO(IOStreamRef context, SourceBytes buf)
 {
@@ -2166,8 +2162,8 @@ inline size_t IOStream::Write(SourceBytes buf)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.vprintf
- * @sa IOStream.Write
+ * @sa IOvprintf
+ * @sa WriteIO
  */
 inline size_t IOprintf(IOStreamRef context,
                        SDL_PRINTF_FORMAT_STRING const char* fmt,
@@ -2198,8 +2194,8 @@ inline size_t IOprintf(IOStreamRef context,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.printf
- * @sa IOStream.Write
+ * @sa IOprintf
+ * @sa WriteIO
  */
 inline size_t IOvprintf(IOStreamRef context,
                         SDL_PRINTF_FORMAT_STRING const char* fmt,
@@ -2228,8 +2224,8 @@ inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.Open
- * @sa IOStream.Write
+ * @sa OpenIO
+ * @sa WriteIO
  */
 inline void FlushIO(IOStreamRef context) { CheckError(SDL_FlushIO(context)); }
 
@@ -2245,8 +2241,8 @@ inline void IOStream::Flush() { SDL::FlushIO(get()); }
  * The data should be freed with free().
  *
  * @param src the IOStream to read all available data from.
- * @param closeio if true, calls IOStream.Close() on `src` before returning,
- *                even in the case of an error.
+ * @param closeio if true, calls CloseIO() on `src` before returning, even in
+ *                the case of an error.
  * @returns the data or nullptr on failure; call GetError() for more
  *          information.
  *
@@ -2255,7 +2251,7 @@ inline void IOStream::Flush() { SDL::FlushIO(get()); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa LoadFile
- * @sa IOStream.SaveFile
+ * @sa SaveFile_IO
  */
 inline StringResult LoadFile_IO(IOStreamRef src, bool closeio = true)
 {
@@ -2307,7 +2303,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.LoadFile
+ * @sa LoadFile_IO
  * @sa SaveFile
  */
 inline StringResult LoadFile(StringParam file)
@@ -2321,9 +2317,10 @@ inline StringResult LoadFile(StringParam file)
  * Save all the data into an SDL data stream.
  *
  * @param src the IOStream to write all data to.
- * @param data the data to be written.
- * @param closeio if true, calls IOStream.Close() on `src` before returning,
- *                even in the case of an error.
+ * @param data the data to be written. If datasize is 0, may be nullptr or a
+ *             invalid pointer.
+ * @param closeio if true, calls CloseIO() on `src` before returning, even in
+ *                the case of an error.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -2331,7 +2328,7 @@ inline StringResult LoadFile(StringParam file)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SaveFile
- * @sa IOStream.LoadFile
+ * @sa LoadFile_IO
  */
 inline void SaveFile_IO(IOStreamRef src, SourceBytes data, bool closeio = true)
 {
@@ -2354,7 +2351,7 @@ inline void IOStream::SaveFile(SourceBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IOStream.SaveFile
+ * @sa SaveFile_IO
  * @sa LoadFile
  */
 inline void SaveFile(StringParam file, SourceBytes data)
@@ -2366,9 +2363,9 @@ inline void SaveFile(StringParam file, SourceBytes data)
  * Use this function to read a byte from an IOStream.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
  * @return the  data read.
@@ -2391,9 +2388,9 @@ inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(get()); }
  * Use this function to read a signed byte from an IOStream.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
  * @return the  data read.
@@ -2420,9 +2417,9 @@ inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2449,9 +2446,9 @@ inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2478,9 +2475,9 @@ inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2507,9 +2504,9 @@ inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2536,9 +2533,9 @@ inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2565,9 +2562,9 @@ inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2594,9 +2591,9 @@ inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2623,9 +2620,9 @@ inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2652,9 +2649,9 @@ inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2681,9 +2678,9 @@ inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2710,9 +2707,9 @@ inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2739,9 +2736,9 @@ inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(get()); }
  * native byte order.
  *
  * This function will return false when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
- * stream is not at EOF, IOStream.GetStatus() will return a different error
- * value and GetError() will offer a human-readable message.
+ * GetIOStatus() will return IO_STATUS_EOF. If false is returned and the stream
+ * is not at EOF, GetIOStatus() will return a different error value and
+ * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.

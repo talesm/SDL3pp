@@ -15,9 +15,8 @@ namespace SDL {
  * calls these "DLLs", Linux calls them "shared libraries", etc.
  *
  * To use them, build such a library, then call LoadObject() on it. Once loaded,
- * you can use SharedObject.LoadFunction() on that object to find the address of
- * its exported symbols. When done with the object, call SharedObject.Unload()
- * to dispose of it.
+ * you can use LoadFunction() on that object to find the address of its exported
+ * symbols. When done with the object, call UnloadObject() to dispose of it.
  *
  * Some things to keep in mind:
  *
@@ -32,10 +31,10 @@ namespace SDL {
  *   application. If it does and it conflicts with symbols in your code or other
  *   shared libraries, you will not get the results you expect. :)
  * - Once a library is unloaded, all pointers into it obtained through
- *   SharedObject.LoadFunction() become invalid, even if the library is later
- *   reloaded. Don't unload a library if you plan to use these pointers in the
- *   future. Notably: beware of giving one of these pointers to atexit(), since
- *   it may call that pointer after the library unloads.
+ *   LoadFunction() become invalid, even if the library is later reloaded. Don't
+ *   unload a library if you plan to use these pointers in the future. Notably:
+ *   beware of giving one of these pointers to atexit(), since it may call that
+ *   pointer after the library unloads.
  *
  * @{
  */
@@ -59,8 +58,8 @@ using SharedObjectRef = ResourceRef<SharedObject>;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa LoadObject
- * @sa SharedObject.LoadFunction
- * @sa SharedObject.Unload
+ * @sa LoadFunction
+ * @sa UnloadObject
  *
  * @cat resource
  */
@@ -104,8 +103,8 @@ struct SharedObject : ResourceBase<SharedObjectRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObject.LoadFunction
-   * @sa SharedObject.Unload
+   * @sa LoadFunction
+   * @sa UnloadObject
    */
   SharedObject(StringParam sofile);
 
@@ -125,8 +124,8 @@ struct SharedObject : ResourceBase<SharedObjectRaw>
   /**
    * Unload a shared object from memory.
    *
-   * Note that any pointers from this object looked up through
-   * SharedObject.LoadFunction() will no longer be valid.
+   * Note that any pointers from this object looked up through LoadFunction()
+   * will no longer be valid.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -139,8 +138,7 @@ struct SharedObject : ResourceBase<SharedObjectRaw>
   /**
    * Look up the address of the named function in a shared object.
    *
-   * This function pointer is no longer valid after calling
-   * SharedObject.Unload().
+   * This function pointer is no longer valid after calling UnloadObject().
    *
    * This function can only look up C function names. Other languages may have
    * name mangling and intrinsic language support that varies from compiler to
@@ -176,8 +174,8 @@ struct SharedObject : ResourceBase<SharedObjectRaw>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SharedObject.LoadFunction
- * @sa SharedObject.Unload
+ * @sa LoadFunction
+ * @sa UnloadObject
  */
 inline SharedObject LoadObject(StringParam sofile)
 {
@@ -192,7 +190,7 @@ inline SharedObject::SharedObject(StringParam sofile)
 /**
  * Look up the address of the named function in a shared object.
  *
- * This function pointer is no longer valid after calling SharedObject.Unload().
+ * This function pointer is no longer valid after calling UnloadObject().
  *
  * This function can only look up C function names. Other languages may have
  * name mangling and intrinsic language support that varies from compiler to
@@ -228,8 +226,8 @@ inline FunctionPointer SharedObject::LoadFunction(StringParam name)
 /**
  * Unload a shared object from memory.
  *
- * Note that any pointers from this object looked up through
- * SharedObject.LoadFunction() will no longer be valid.
+ * Note that any pointers from this object looked up through LoadFunction() will
+ * no longer be valid.
  *
  * @param handle a valid shared object handle returned by LoadObject().
  *

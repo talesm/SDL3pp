@@ -66,8 +66,8 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * selected filter.
  *
  * In Android, the `filelist` are `content://` URIs. They should be opened using
- * IOStream.FromFile() with appropriate modes. This applies both to open and
- * save file dialog.
+ * IOFromFile() with appropriate modes. This applies both to open and save file
+ * dialog.
  *
  * @param userdata an app-provided pointer, for the callback's use.
  * @param filelist the file(s) chosen by the user.
@@ -107,8 +107,8 @@ using DialogFileCallback = void(SDLCALL*)(void* userdata,
  * selected filter.
  *
  * In Android, the `filelist` are `content://` URIs. They should be opened using
- * IOStream.FromFile() with appropriate modes. This applies both to open and
- * save file dialog.
+ * IOFromFile() with appropriate modes. This applies both to open and save file
+ * dialog.
  *
  * @param filelist the file(s) chosen by the user.
  * @param filter index of the selected filter.

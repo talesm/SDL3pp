@@ -26,7 +26,7 @@ namespace SDL {
  *
  * Games that want the system to track the mouse but want to draw their own
  * cursor can use HideCursor() and ShowCursor(). It might be more efficient to
- * let the system manage the cursor, if possible, using Cursor.Set() with a
+ * let the system manage the cursor, if possible, using SetCursor() with a
  * custom image made through CreateColorCursor(), or perhaps just a specific
  * system cursor from CreateSystemCursor().
  *
@@ -198,7 +198,7 @@ struct Cursor : ResourceBase<CursorRaw>
    * - data=0, mask=0: transparent
    * - data=1, mask=0: inverted color if possible, black if not.
    *
-   * Cursors created with this function must be freed with Cursor.Destroy().
+   * Cursors created with this function must be freed with DestroyCursor().
    *
    * If you want to have a color cursor, or create your cursor from an Surface,
    * you should use CreateColorCursor(). Alternately, you can hide the cursor
@@ -223,8 +223,8 @@ struct Cursor : ResourceBase<CursorRaw>
    * @sa CreateAnimatedCursor
    * @sa CreateColorCursor
    * @sa CreateSystemCursor
-   * @sa Cursor.Destroy
-   * @sa Cursor.Set
+   * @sa DestroyCursor
+   * @sa SetCursor
    */
   Cursor(const Uint8* data,
          const Uint8* mask,
@@ -235,7 +235,7 @@ struct Cursor : ResourceBase<CursorRaw>
    * Create a color cursor.
    *
    * If this function is passed a surface with alternate representations added
-   * with Surface.AddAlternateImage(), the surface will be interpreted as the
+   * with AddSurfaceAlternateImage(), the surface will be interpreted as the
    * content to be used for 100% display scale, and the alternate
    * representations will be used for high DPI situations if
    * SDL_HINT_MOUSE_DPI_SCALE_CURSORS is enabled. For example, if the original
@@ -255,12 +255,12 @@ struct Cursor : ResourceBase<CursorRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Surface.AddAlternateImage
+   * @sa AddSurfaceAlternateImage
    * @sa CreateAnimatedCursor
    * @sa CreateCursor
    * @sa CreateSystemCursor
-   * @sa Cursor.Destroy
-   * @sa Cursor.Set
+   * @sa DestroyCursor
+   * @sa SetCursor
    */
   Cursor(SurfaceRef surface, const PointRaw& hot);
 
@@ -275,7 +275,7 @@ struct Cursor : ResourceBase<CursorRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Cursor.Destroy
+   * @sa DestroyCursor
    */
   Cursor(SystemCursor id);
 
@@ -314,8 +314,8 @@ struct Cursor : ResourceBase<CursorRaw>
    *
    * This function sets the currently active cursor to the specified one. If the
    * cursor is currently visible, the change will be immediately represented on
-   * the display. Cursor.Set(nullptr) can be used to force cursor redraw, if
-   * this is desired for any reason.
+   * the display. SetCursor(nullptr) can be used to force cursor redraw, if this
+   * is desired for any reason.
    *
    * @throws Error on failure.
    *
@@ -562,7 +562,7 @@ inline WindowRef GetMouseFocus() { return {SDL_GetMouseFocus()}; }
  *
  * In Relative Mode, the SDL-cursor's position usually contradicts the
  * platform-cursor's position as manually calculated from GetGlobalMouseState()
- * and Window.GetPosition.
+ * and GetWindowPosition.
  *
  * @param x a pointer to receive the SDL-cursor's x-position from the focused
  *          window's top left corner, can be nullptr if unused.
@@ -596,7 +596,7 @@ inline MouseButtonFlags GetMouseState(float* x, float* y)
  *
  * In Relative Mode, the platform-cursor's position usually contradicts the
  * SDL-cursor's position as manually calculated from GetMouseState() and
- * Window.GetPosition.
+ * GetWindowPosition.
  *
  * This function can be useful if you need to track the mouse outside of a
  * specific window and CaptureMouse() doesn't fit your needs. For example, it
@@ -760,8 +760,8 @@ inline bool Window::GetRelativeMouseMode() const
  * mouse while the user is dragging something, until the user releases a mouse
  * button. It is not recommended that you capture the mouse for long periods of
  * time, such as the entire time your app is running. For that, you should
- * probably use Window.SetRelativeMouseMode() or Window.SetMouseGrab(),
- * depending on your goals.
+ * probably use Window.SetRelativeMouseMode() or SetWindowMouseGrab(), depending
+ * on your goals.
  *
  * While captured, mouse events still report coordinates relative to the current
  * (foreground) window, but those coordinates may be outside the bounds of the
@@ -808,7 +808,7 @@ inline void CaptureMouse(bool enabled)
  * - data=0, mask=0: transparent
  * - data=1, mask=0: inverted color if possible, black if not.
  *
- * Cursors created with this function must be freed with Cursor.Destroy().
+ * Cursors created with this function must be freed with DestroyCursor().
  *
  * If you want to have a color cursor, or create your cursor from an Surface,
  * you should use CreateColorCursor(). Alternately, you can hide the cursor and
@@ -833,8 +833,8 @@ inline void CaptureMouse(bool enabled)
  * @sa CreateAnimatedCursor
  * @sa CreateColorCursor
  * @sa CreateSystemCursor
- * @sa Cursor.Destroy
- * @sa Cursor.Set
+ * @sa DestroyCursor
+ * @sa SetCursor
  */
 inline Cursor CreateCursor(const Uint8* data,
                            const Uint8* mask,
@@ -867,7 +867,7 @@ inline Cursor::Cursor(SystemCursor id)
  * Create a color cursor.
  *
  * If this function is passed a surface with alternate representations added
- * with Surface.AddAlternateImage(), the surface will be interpreted as the
+ * with AddSurfaceAlternateImage(), the surface will be interpreted as the
  * content to be used for 100% display scale, and the alternate representations
  * will be used for high DPI situations if SDL_HINT_MOUSE_DPI_SCALE_CURSORS is
  * enabled. For example, if the original surface is 32x32, then on a 2x macOS
@@ -886,12 +886,12 @@ inline Cursor::Cursor(SystemCursor id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.AddAlternateImage
+ * @sa AddSurfaceAlternateImage
  * @sa CreateAnimatedCursor
  * @sa CreateCursor
  * @sa CreateSystemCursor
- * @sa Cursor.Destroy
- * @sa Cursor.Set
+ * @sa DestroyCursor
+ * @sa SetCursor
  */
 inline Cursor CreateColorCursor(SurfaceRef surface, const PointRaw& hot)
 {
@@ -913,7 +913,7 @@ inline Cursor CreateColorCursor(SurfaceRef surface, const PointRaw& hot)
  * one-shot animation, set the duration of the last frame in the sequence to 0.
  *
  * If this function is passed surfaces with alternate representations added with
- * Surface.AddAlternateImage(), the surfaces will be interpreted as the content
+ * AddSurfaceAlternateImage(), the surfaces will be interpreted as the content
  * to be used for 100% display scale, and the alternate representations will be
  * used for high DPI situations. For example, if the original surfaces are
  * 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64
@@ -937,12 +937,12 @@ inline Cursor CreateColorCursor(SurfaceRef surface, const PointRaw& hot)
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Surface.AddAlternateImage
+ * @sa AddSurfaceAlternateImage
  * @sa CreateCursor
  * @sa CreateColorCursor
  * @sa CreateSystemCursor
- * @sa Cursor.Destroy
- * @sa Cursor.Set
+ * @sa DestroyCursor
+ * @sa SetCursor
  */
 inline CursorRef CreateAnimatedCursor(CursorFrameInfo* frames,
                                       int frame_count,
@@ -966,7 +966,7 @@ inline CursorRef CreateAnimatedCursor(CursorFrameInfo* frames,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Cursor.Destroy
+ * @sa DestroyCursor
  */
 inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
 
@@ -975,7 +975,7 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  *
  * This function sets the currently active cursor to the specified one. If the
  * cursor is currently visible, the change will be immediately represented on
- * the display. Cursor.Set(nullptr) can be used to force cursor redraw, if this
+ * the display. SetCursor(nullptr) can be used to force cursor redraw, if this
  * is desired for any reason.
  *
  * @param cursor a cursor to make active.
@@ -995,7 +995,7 @@ inline void Cursor::Set() { SDL::SetCursor(get()); }
  * Get the active cursor.
  *
  * This function returns a pointer to the current cursor which is owned by the
- * library. It is not necessary to free the cursor with Cursor.Destroy().
+ * library. It is not necessary to free the cursor with DestroyCursor().
  *
  * @returns the active cursor or nullptr if there is no mouse.
  *
@@ -1003,14 +1003,14 @@ inline void Cursor::Set() { SDL::SetCursor(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Cursor.Set
+ * @sa SetCursor
  */
 inline CursorRef GetCursor() { return {SDL_GetCursor()}; }
 
 /**
  * Get the default cursor.
  *
- * You do not have to call Cursor.Destroy() on the return value, but it is safe
+ * You do not have to call DestroyCursor() on the return value, but it is safe
  * to do so.
  *
  * @returns the default cursor on success.

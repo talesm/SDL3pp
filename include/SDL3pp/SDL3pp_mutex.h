@@ -133,8 +133,8 @@ struct Mutex : ResourceBase<MutexRaw>
    *
    * All newly-created mutexes begin in the _unlocked_ state.
    *
-   * Calls to Mutex.Lock() will not return while the mutex is locked by another
-   * thread. See Mutex.TryLock() to attempt to lock without blocking.
+   * Calls to LockMutex() will not return while the mutex is locked by another
+   * thread. See TryLockMutex() to attempt to lock without blocking.
    *
    * SDL mutexes are reentrant.
    *
@@ -145,10 +145,10 @@ struct Mutex : ResourceBase<MutexRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Mutex.Destroy
-   * @sa Mutex.Lock
-   * @sa Mutex.TryLock
-   * @sa Mutex.Unlock
+   * @sa DestroyMutex
+   * @sa LockMutex
+   * @sa TryLockMutex
+   * @sa UnlockMutex
    */
   Mutex();
 
@@ -201,15 +201,15 @@ struct Mutex : ResourceBase<MutexRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Mutex.TryLock
-   * @sa Mutex.Unlock
+   * @sa TryLockMutex
+   * @sa UnlockMutex
    */
   void Lock();
 
   /**
    * Try to lock a mutex without blocking.
    *
-   * This works just like Mutex.Lock(), but if the mutex is not available, this
+   * This works just like LockMutex(), but if the mutex is not available, this
    * function returns false immediately.
    *
    * This technique is useful if you need exclusive access to a resource but
@@ -223,8 +223,8 @@ struct Mutex : ResourceBase<MutexRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Mutex.Lock
-   * @sa Mutex.Unlock
+   * @sa LockMutex
+   * @sa UnlockMutex
    */
   bool TryLock();
 
@@ -243,8 +243,8 @@ struct Mutex : ResourceBase<MutexRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Mutex.Lock
-   * @sa Mutex.TryLock
+   * @sa LockMutex
+   * @sa TryLockMutex
    */
   void Unlock();
 };
@@ -254,8 +254,8 @@ struct Mutex : ResourceBase<MutexRaw>
  *
  * All newly-created mutexes begin in the _unlocked_ state.
  *
- * Calls to Mutex.Lock() will not return while the mutex is locked by another
- * thread. See Mutex.TryLock() to attempt to lock without blocking.
+ * Calls to LockMutex() will not return while the mutex is locked by another
+ * thread. See TryLockMutex() to attempt to lock without blocking.
  *
  * SDL mutexes are reentrant.
  *
@@ -266,10 +266,10 @@ struct Mutex : ResourceBase<MutexRaw>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Mutex.Destroy
- * @sa Mutex.Lock
- * @sa Mutex.TryLock
- * @sa Mutex.Unlock
+ * @sa DestroyMutex
+ * @sa LockMutex
+ * @sa TryLockMutex
+ * @sa UnlockMutex
  */
 inline Mutex CreateMutex() { return Mutex(); }
 
@@ -299,8 +299,8 @@ inline Mutex::Mutex()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Mutex.TryLock
- * @sa Mutex.Unlock
+ * @sa TryLockMutex
+ * @sa UnlockMutex
  */
 inline void LockMutex(MutexRef mutex) { SDL_LockMutex(mutex); }
 
@@ -309,7 +309,7 @@ inline void Mutex::Lock() { SDL::LockMutex(get()); }
 /**
  * Try to lock a mutex without blocking.
  *
- * This works just like Mutex.Lock(), but if the mutex is not available, this
+ * This works just like LockMutex(), but if the mutex is not available, this
  * function returns false immediately.
  *
  * This technique is useful if you need exclusive access to a resource but don't
@@ -324,8 +324,8 @@ inline void Mutex::Lock() { SDL::LockMutex(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Mutex.Lock
- * @sa Mutex.Unlock
+ * @sa LockMutex
+ * @sa UnlockMutex
  */
 inline bool TryLockMutex(MutexRef mutex) { return SDL_TryLockMutex(mutex); }
 
@@ -348,8 +348,8 @@ inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Mutex.Lock
- * @sa Mutex.TryLock
+ * @sa LockMutex
+ * @sa TryLockMutex
  */
 inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 
@@ -444,8 +444,8 @@ struct RWLock : ResourceBase<RWLockRaw>
    *
    * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
    * while the rwlock is locked _for writing_ by another thread. See
-   * RWLock.TryLockForReading() and RWLock.TryLockForWriting() to attempt to
-   * lock without blocking.
+   * TryLockRWLockForReading() and TryLockRWLockForWriting() to attempt to lock
+   * without blocking.
    *
    * SDL read/write locks are only recursive for read-only locks! They are not
    * guaranteed to be fair, or provide access in a FIFO manner! They are not
@@ -460,12 +460,12 @@ struct RWLock : ResourceBase<RWLockRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa RWLock.Destroy
+   * @sa DestroyRWLock
    * @sa LockRWLockForReading
    * @sa LockRWLockForWriting
-   * @sa RWLock.TryLockForReading
-   * @sa RWLock.TryLockForWriting
-   * @sa RWLock.Unlock
+   * @sa TryLockRWLockForReading
+   * @sa TryLockRWLockForWriting
+   * @sa UnlockRWLock
    */
   RWLock();
 
@@ -531,8 +531,8 @@ struct RWLock : ResourceBase<RWLockRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa LockRWLockForWriting
-   * @sa RWLock.TryLockForReading
-   * @sa RWLock.Unlock
+   * @sa TryLockRWLockForReading
+   * @sa UnlockRWLock
    */
   void LockForReading();
 
@@ -562,8 +562,8 @@ struct RWLock : ResourceBase<RWLockRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa LockRWLockForReading
-   * @sa RWLock.TryLockForWriting
-   * @sa RWLock.Unlock
+   * @sa TryLockRWLockForWriting
+   * @sa UnlockRWLock
    */
   void LockForWriting();
 
@@ -588,8 +588,8 @@ struct RWLock : ResourceBase<RWLockRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa LockRWLockForReading
-   * @sa RWLock.TryLockForWriting
-   * @sa RWLock.Unlock
+   * @sa TryLockRWLockForWriting
+   * @sa UnlockRWLock
    */
   bool TryLockForReading();
 
@@ -619,8 +619,8 @@ struct RWLock : ResourceBase<RWLockRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa LockRWLockForWriting
-   * @sa RWLock.TryLockForReading
-   * @sa RWLock.Unlock
+   * @sa TryLockRWLockForReading
+   * @sa UnlockRWLock
    */
   bool TryLockForWriting();
 
@@ -645,8 +645,8 @@ struct RWLock : ResourceBase<RWLockRaw>
    *
    * @sa LockRWLockForReading
    * @sa LockRWLockForWriting
-   * @sa RWLock.TryLockForReading
-   * @sa RWLock.TryLockForWriting
+   * @sa TryLockRWLockForReading
+   * @sa TryLockRWLockForWriting
    */
   void Unlock();
 };
@@ -670,7 +670,7 @@ struct RWLock : ResourceBase<RWLockRaw>
  *
  * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
  * while the rwlock is locked _for writing_ by another thread. See
- * RWLock.TryLockForReading() and RWLock.TryLockForWriting() to attempt to lock
+ * TryLockRWLockForReading() and TryLockRWLockForWriting() to attempt to lock
  * without blocking.
  *
  * SDL read/write locks are only recursive for read-only locks! They are not
@@ -686,12 +686,12 @@ struct RWLock : ResourceBase<RWLockRaw>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RWLock.Destroy
+ * @sa DestroyRWLock
  * @sa LockRWLockForReading
  * @sa LockRWLockForWriting
- * @sa RWLock.TryLockForReading
- * @sa RWLock.TryLockForWriting
- * @sa RWLock.Unlock
+ * @sa TryLockRWLockForReading
+ * @sa TryLockRWLockForWriting
+ * @sa UnlockRWLock
  */
 inline RWLock CreateRWLock() { return RWLock(); }
 
@@ -734,8 +734,8 @@ inline RWLock::RWLock()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa LockRWLockForWriting
- * @sa RWLock.TryLockForReading
- * @sa RWLock.Unlock
+ * @sa TryLockRWLockForReading
+ * @sa UnlockRWLock
  */
 inline void LockRWLockForReading(RWLockRef rwlock)
 {
@@ -772,8 +772,8 @@ inline void RWLock::LockForReading() { SDL::LockRWLockForReading(get()); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa LockRWLockForReading
- * @sa RWLock.TryLockForWriting
- * @sa RWLock.Unlock
+ * @sa TryLockRWLockForWriting
+ * @sa UnlockRWLock
  */
 inline void LockRWLockForWriting(RWLockRef rwlock)
 {
@@ -804,8 +804,8 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(get()); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa LockRWLockForReading
- * @sa RWLock.TryLockForWriting
- * @sa RWLock.Unlock
+ * @sa TryLockRWLockForWriting
+ * @sa UnlockRWLock
  */
 inline bool TryLockRWLockForReading(RWLockRef rwlock)
 {
@@ -844,8 +844,8 @@ inline bool RWLock::TryLockForReading()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa LockRWLockForWriting
- * @sa RWLock.TryLockForReading
- * @sa RWLock.Unlock
+ * @sa TryLockRWLockForReading
+ * @sa UnlockRWLock
  */
 inline bool TryLockRWLockForWriting(RWLockRef rwlock)
 {
@@ -880,8 +880,8 @@ inline bool RWLock::TryLockForWriting()
  *
  * @sa LockRWLockForReading
  * @sa LockRWLockForWriting
- * @sa RWLock.TryLockForReading
- * @sa RWLock.TryLockForWriting
+ * @sa TryLockRWLockForReading
+ * @sa TryLockRWLockForWriting
  */
 inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 
@@ -970,12 +970,12 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Semaphore.Destroy
-   * @sa Semaphore.Signal
-   * @sa Semaphore.TryWait
-   * @sa Semaphore.GetValue
-   * @sa Semaphore.Wait
-   * @sa Semaphore.WaitTimeout
+   * @sa DestroySemaphore
+   * @sa SignalSemaphore
+   * @sa TryWaitSemaphore
+   * @sa GetSemaphoreValue
+   * @sa WaitSemaphore
+   * @sa WaitSemaphoreTimeout
    */
   Semaphore(Uint32 initial_value);
 
@@ -1013,16 +1013,16 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
    * `sem` has a positive value, and then atomically decrement the semaphore
    * value.
    *
-   * This function is the equivalent of calling Semaphore.WaitTimeout() with a
+   * This function is the equivalent of calling WaitSemaphoreTimeout() with a
    * time length of -1.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Semaphore.Signal
-   * @sa Semaphore.TryWait
-   * @sa Semaphore.WaitTimeout
+   * @sa SignalSemaphore
+   * @sa TryWaitSemaphore
+   * @sa WaitSemaphoreTimeout
    */
   void Wait();
 
@@ -1040,9 +1040,9 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Semaphore.Signal
-   * @sa Semaphore.Wait
-   * @sa Semaphore.WaitTimeout
+   * @sa SignalSemaphore
+   * @sa WaitSemaphore
+   * @sa WaitSemaphoreTimeout
    */
   bool TryWait();
 
@@ -1061,9 +1061,9 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Semaphore.Signal
-   * @sa Semaphore.TryWait
-   * @sa Semaphore.Wait
+   * @sa SignalSemaphore
+   * @sa TryWaitSemaphore
+   * @sa WaitSemaphore
    */
   bool WaitTimeout(std::chrono::milliseconds timeout);
 
@@ -1074,9 +1074,9 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Semaphore.TryWait
-   * @sa Semaphore.Wait
-   * @sa Semaphore.WaitTimeout
+   * @sa TryWaitSemaphore
+   * @sa WaitSemaphore
+   * @sa WaitSemaphoreTimeout
    */
   void Signal();
 
@@ -1109,12 +1109,12 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Semaphore.Destroy
- * @sa Semaphore.Signal
- * @sa Semaphore.TryWait
- * @sa Semaphore.GetValue
- * @sa Semaphore.Wait
- * @sa Semaphore.WaitTimeout
+ * @sa DestroySemaphore
+ * @sa SignalSemaphore
+ * @sa TryWaitSemaphore
+ * @sa GetSemaphoreValue
+ * @sa WaitSemaphore
+ * @sa WaitSemaphoreTimeout
  */
 inline Semaphore CreateSemaphore(Uint32 initial_value)
 {
@@ -1151,8 +1151,8 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  * `sem` has a positive value, and then atomically decrement the semaphore
  * value.
  *
- * This function is the equivalent of calling Semaphore.WaitTimeout() with a
- * time length of -1.
+ * This function is the equivalent of calling WaitSemaphoreTimeout() with a time
+ * length of -1.
  *
  * @param sem the semaphore wait on.
  *
@@ -1160,9 +1160,9 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Semaphore.Signal
- * @sa Semaphore.TryWait
- * @sa Semaphore.WaitTimeout
+ * @sa SignalSemaphore
+ * @sa TryWaitSemaphore
+ * @sa WaitSemaphoreTimeout
  */
 inline void WaitSemaphore(SemaphoreRef sem) { SDL_WaitSemaphore(sem); }
 
@@ -1183,9 +1183,9 @@ inline void Semaphore::Wait() { SDL::WaitSemaphore(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Semaphore.Signal
- * @sa Semaphore.Wait
- * @sa Semaphore.WaitTimeout
+ * @sa SignalSemaphore
+ * @sa WaitSemaphore
+ * @sa WaitSemaphoreTimeout
  */
 inline bool TryWaitSemaphore(SemaphoreRef sem)
 {
@@ -1210,9 +1210,9 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Semaphore.Signal
- * @sa Semaphore.TryWait
- * @sa Semaphore.Wait
+ * @sa SignalSemaphore
+ * @sa TryWaitSemaphore
+ * @sa WaitSemaphore
  */
 inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                  std::chrono::milliseconds timeout)
@@ -1234,9 +1234,9 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Semaphore.TryWait
- * @sa Semaphore.Wait
- * @sa Semaphore.WaitTimeout
+ * @sa TryWaitSemaphore
+ * @sa WaitSemaphore
+ * @sa WaitSemaphoreTimeout
  */
 inline void SignalSemaphore(SemaphoreRef sem) { SDL_SignalSemaphore(sem); }
 
@@ -1316,11 +1316,11 @@ struct Condition : ResourceBase<ConditionRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Condition.Broadcast
-   * @sa Condition.Signal
-   * @sa Condition.Wait
-   * @sa Condition.WaitTimeout
-   * @sa Condition.Destroy
+   * @sa BroadcastCondition
+   * @sa SignalCondition
+   * @sa WaitCondition
+   * @sa WaitConditionTimeout
+   * @sa DestroyCondition
    */
   Condition();
 
@@ -1355,9 +1355,9 @@ struct Condition : ResourceBase<ConditionRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Condition.Broadcast
-   * @sa Condition.Wait
-   * @sa Condition.WaitTimeout
+   * @sa BroadcastCondition
+   * @sa WaitCondition
+   * @sa WaitConditionTimeout
    */
   void Signal();
 
@@ -1368,9 +1368,9 @@ struct Condition : ResourceBase<ConditionRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Condition.Signal
-   * @sa Condition.Wait
-   * @sa Condition.WaitTimeout
+   * @sa SignalCondition
+   * @sa WaitCondition
+   * @sa WaitConditionTimeout
    */
   void Broadcast();
 
@@ -1378,7 +1378,7 @@ struct Condition : ResourceBase<ConditionRaw>
    * Wait until a condition variable is signaled.
    *
    * This function unlocks the specified `mutex` and waits for another thread to
-   * call Condition.Signal() or Condition.Broadcast() on the condition variable
+   * call SignalCondition() or BroadcastCondition() on the condition variable
    * `cond`. Once the condition variable is signaled, the mutex is re-locked and
    * the function returns.
    *
@@ -1386,7 +1386,7 @@ struct Condition : ResourceBase<ConditionRaw>
    * recursively (more than once) is not supported and leads to undefined
    * behavior.
    *
-   * This function is the equivalent of calling Condition.WaitTimeout() with a
+   * This function is the equivalent of calling WaitConditionTimeout() with a
    * time length of -1.
    *
    * @param mutex the mutex used to coordinate thread access.
@@ -1395,9 +1395,9 @@ struct Condition : ResourceBase<ConditionRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Condition.Broadcast
-   * @sa Condition.Signal
-   * @sa Condition.WaitTimeout
+   * @sa BroadcastCondition
+   * @sa SignalCondition
+   * @sa WaitConditionTimeout
    */
   void Wait(MutexRef mutex);
 
@@ -1405,7 +1405,7 @@ struct Condition : ResourceBase<ConditionRaw>
    * Wait until a condition variable is signaled or a certain time has passed.
    *
    * This function unlocks the specified `mutex` and waits for another thread to
-   * call Condition.Signal() or Condition.Broadcast() on the condition variable
+   * call SignalCondition() or BroadcastCondition() on the condition variable
    * `cond`, or for the specified time to elapse. Once the condition variable is
    * signaled or the time elapsed, the mutex is re-locked and the function
    * returns.
@@ -1424,9 +1424,9 @@ struct Condition : ResourceBase<ConditionRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Condition.Broadcast
-   * @sa Condition.Signal
-   * @sa Condition.Wait
+   * @sa BroadcastCondition
+   * @sa SignalCondition
+   * @sa WaitCondition
    */
   bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout);
 };
@@ -1441,11 +1441,11 @@ struct Condition : ResourceBase<ConditionRaw>
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Condition.Broadcast
- * @sa Condition.Signal
- * @sa Condition.Wait
- * @sa Condition.WaitTimeout
- * @sa Condition.Destroy
+ * @sa BroadcastCondition
+ * @sa SignalCondition
+ * @sa WaitCondition
+ * @sa WaitConditionTimeout
+ * @sa DestroyCondition
  */
 inline Condition CreateCondition() { return Condition(); }
 
@@ -1478,9 +1478,9 @@ inline void Condition::Destroy() { DestroyCondition(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Condition.Broadcast
- * @sa Condition.Wait
- * @sa Condition.WaitTimeout
+ * @sa BroadcastCondition
+ * @sa WaitCondition
+ * @sa WaitConditionTimeout
  */
 inline void SignalCondition(ConditionRef cond) { SDL_SignalCondition(cond); }
 
@@ -1495,9 +1495,9 @@ inline void Condition::Signal() { SDL::SignalCondition(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Condition.Signal
- * @sa Condition.Wait
- * @sa Condition.WaitTimeout
+ * @sa SignalCondition
+ * @sa WaitCondition
+ * @sa WaitConditionTimeout
  */
 inline void BroadcastCondition(ConditionRef cond)
 {
@@ -1510,7 +1510,7 @@ inline void Condition::Broadcast() { SDL::BroadcastCondition(get()); }
  * Wait until a condition variable is signaled.
  *
  * This function unlocks the specified `mutex` and waits for another thread to
- * call Condition.Signal() or Condition.Broadcast() on the condition variable
+ * call SignalCondition() or BroadcastCondition() on the condition variable
  * `cond`. Once the condition variable is signaled, the mutex is re-locked and
  * the function returns.
  *
@@ -1518,8 +1518,8 @@ inline void Condition::Broadcast() { SDL::BroadcastCondition(get()); }
  * recursively (more than once) is not supported and leads to undefined
  * behavior.
  *
- * This function is the equivalent of calling Condition.WaitTimeout() with a
- * time length of -1.
+ * This function is the equivalent of calling WaitConditionTimeout() with a time
+ * length of -1.
  *
  * @param cond the condition variable to wait on.
  * @param mutex the mutex used to coordinate thread access.
@@ -1528,9 +1528,9 @@ inline void Condition::Broadcast() { SDL::BroadcastCondition(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Condition.Broadcast
- * @sa Condition.Signal
- * @sa Condition.WaitTimeout
+ * @sa BroadcastCondition
+ * @sa SignalCondition
+ * @sa WaitConditionTimeout
  */
 inline void WaitCondition(ConditionRef cond, MutexRef mutex)
 {
@@ -1546,7 +1546,7 @@ inline void Condition::Wait(MutexRef mutex)
  * Wait until a condition variable is signaled or a certain time has passed.
  *
  * This function unlocks the specified `mutex` and waits for another thread to
- * call Condition.Signal() or Condition.Broadcast() on the condition variable
+ * call SignalCondition() or BroadcastCondition() on the condition variable
  * `cond`, or for the specified time to elapse. Once the condition variable is
  * signaled or the time elapsed, the mutex is re-locked and the function
  * returns.
@@ -1566,9 +1566,9 @@ inline void Condition::Wait(MutexRef mutex)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Condition.Broadcast
- * @sa Condition.Signal
- * @sa Condition.Wait
+ * @sa BroadcastCondition
+ * @sa SignalCondition
+ * @sa WaitCondition
  */
 inline bool WaitConditionTimeout(ConditionRef cond,
                                  MutexRef mutex,
@@ -1612,24 +1612,24 @@ constexpr InitStatus INIT_STATUS_UNINITIALIZING =
  *
  *    bool InitSystem(void)
  *    {
- *        if (!InitState.ShouldInit(&init)) {
+ *        if (!ShouldInit(&init)) {
  *            // The system is initialized
  *            return true;
  *        }
  *
  *        // At this point, you should not leave this function without calling
- * InitState.SetInitialized()
+ * SetInitialized()
  *
  *        bool initialized = DoInitTasks();
- *        InitState.SetInitialized(&init, initialized);
+ *        SetInitialized(&init, initialized);
  *        return initialized;
  *    }
  *
  *    bool UseSubsystem(void)
  *    {
- *        if (InitState.ShouldInit(&init)) {
+ *        if (ShouldInit(&init)) {
  *            // Error, the subsystem isn't initialized
- *            InitState.SetInitialized(&init, false);
+ *            SetInitialized(&init, false);
  *            return false;
  *        }
  *
@@ -1640,16 +1640,16 @@ constexpr InitStatus INIT_STATUS_UNINITIALIZING =
  *
  *    void QuitSystem(void)
  *    {
- *        if (!InitState.ShouldQuit(&init)) {
+ *        if (!ShouldQuit(&init)) {
  *            // The system is not initialized
  *            return;
  *        }
  *
  *        // At this point, you should not leave this function without calling
- * InitState.SetInitialized()
+ * SetInitialized()
  *
  *        DoQuitTasks();
- *        InitState.SetInitialized(&init, false);
+ *        SetInitialized(&init, false);
  *    }
  * ```
  *
@@ -1674,8 +1674,8 @@ struct InitState : InitStateRaw
    * another thread is already modifying this state, it will wait until that's
    * done before returning.
    *
-   * If this function returns true, the calling code must call
-   * InitState.SetInitialized() to complete the initialization.
+   * If this function returns true, the calling code must call SetInitialized()
+   * to complete the initialization.
    *
    * @returns true if initialization needs to be done, false otherwise.
    *
@@ -1683,8 +1683,8 @@ struct InitState : InitStateRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa InitState.SetInitialized
-   * @sa InitState.ShouldQuit
+   * @sa SetInitialized
+   * @sa ShouldQuit
    */
   bool ShouldInit();
 
@@ -1694,8 +1694,8 @@ struct InitState : InitStateRaw
    * This function checks the passed in state and if cleanup should be done,
    * sets the status to `INIT_STATUS_UNINITIALIZING` and returns true.
    *
-   * If this function returns true, the calling code must call
-   * InitState.SetInitialized() to complete the cleanup.
+   * If this function returns true, the calling code must call SetInitialized()
+   * to complete the cleanup.
    *
    * @returns true if cleanup needs to be done, false otherwise.
    *
@@ -1703,8 +1703,8 @@ struct InitState : InitStateRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa InitState.SetInitialized
-   * @sa InitState.ShouldInit
+   * @sa SetInitialized
+   * @sa ShouldInit
    */
   bool ShouldQuit();
 
@@ -1721,8 +1721,8 @@ struct InitState : InitStateRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa InitState.ShouldInit
-   * @sa InitState.ShouldQuit
+   * @sa ShouldInit
+   * @sa ShouldQuit
    */
   void SetInitialized(bool initialized);
 };
@@ -1735,8 +1735,8 @@ struct InitState : InitStateRaw
  * another thread is already modifying this state, it will wait until that's
  * done before returning.
  *
- * If this function returns true, the calling code must call
- * InitState.SetInitialized() to complete the initialization.
+ * If this function returns true, the calling code must call SetInitialized() to
+ * complete the initialization.
  *
  * @param state the initialization state to check.
  * @returns true if initialization needs to be done, false otherwise.
@@ -1745,8 +1745,8 @@ struct InitState : InitStateRaw
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa InitState.SetInitialized
- * @sa InitState.ShouldQuit
+ * @sa SetInitialized
+ * @sa ShouldQuit
  */
 inline bool ShouldInit(InitStateRaw* state) { return SDL_ShouldInit(state); }
 
@@ -1758,8 +1758,8 @@ inline bool InitState::ShouldInit() { return SDL::ShouldInit(this); }
  * This function checks the passed in state and if cleanup should be done, sets
  * the status to `INIT_STATUS_UNINITIALIZING` and returns true.
  *
- * If this function returns true, the calling code must call
- * InitState.SetInitialized() to complete the cleanup.
+ * If this function returns true, the calling code must call SetInitialized() to
+ * complete the cleanup.
  *
  * @param state the initialization state to check.
  * @returns true if cleanup needs to be done, false otherwise.
@@ -1768,8 +1768,8 @@ inline bool InitState::ShouldInit() { return SDL::ShouldInit(this); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa InitState.SetInitialized
- * @sa InitState.ShouldInit
+ * @sa SetInitialized
+ * @sa ShouldInit
  */
 inline bool ShouldQuit(InitStateRaw* state) { return SDL_ShouldQuit(state); }
 
@@ -1789,8 +1789,8 @@ inline bool InitState::ShouldQuit() { return SDL::ShouldQuit(this); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa InitState.ShouldInit
- * @sa InitState.ShouldQuit
+ * @sa ShouldInit
+ * @sa ShouldQuit
  */
 inline void SetInitialized(InitStateRaw* state, bool initialized)
 {

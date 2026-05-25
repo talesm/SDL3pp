@@ -90,8 +90,8 @@ constexpr auto operator<=>(const FPointRaw& lhs, const FPointRaw& rhs) noexcept
  *
  * @cat wrap-extending-struct
  *
- * @sa Rect.GetEnclosingPoints
- * @sa Point.InRect
+ * @sa GetRectEnclosingPoints
+ * @sa PointInRect
  */
 struct Point : PointRaw
 {
@@ -415,8 +415,8 @@ constexpr Point operator*(const Point& lhs, const Point& rhs)
  *
  * @cat wrap-extending-struct
  *
- * @sa FRect.GetEnclosingPoints
- * @sa FPoint.InRect
+ * @sa GetRectEnclosingPointsFloat
+ * @sa PointInRectFloat
  */
 struct FPoint : FPointRaw
 {
@@ -694,13 +694,13 @@ constexpr FPoint operator*(const FPoint& lhs, const FPoint& rhs)
  *
  * @cat wrap-extending-struct
  *
- * @sa Rect.Empty
- * @sa Rect.Equal
- * @sa Rect.HasIntersection
- * @sa Rect.GetIntersection
- * @sa Rect.GetLineIntersection
- * @sa Rect.GetUnion
- * @sa Rect.GetEnclosingPoints
+ * @sa RectEmpty
+ * @sa RectsEqual
+ * @sa HasRectIntersection
+ * @sa GetRectIntersection
+ * @sa GetRectAndLineIntersection
+ * @sa GetRectUnion
+ * @sa GetRectEnclosingPoints
  */
 struct Rect : RectRaw
 {
@@ -1172,7 +1172,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Rect.GetIntersection
+   * @sa GetRectIntersection
    */
   bool HasIntersection(const RectRaw& other) const;
 
@@ -1189,7 +1189,7 @@ struct Rect : RectRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Rect.HasIntersection
+   * @sa HasRectIntersection
    */
   Rect GetIntersection(const RectRaw& other) const;
 
@@ -1337,15 +1337,15 @@ struct Rect : RectRaw
  *
  * @cat wrap-extending-struct
  *
- * @sa FRect.Empty
- * @sa FRect.Equal
- * @sa FRect.EqualEpsilon
- * @sa FRect.HasIntersection
- * @sa FRect.GetIntersection
- * @sa FRect.GetLineIntersection
- * @sa FRect.GetUnion
- * @sa FRect.GetEnclosingPoints
- * @sa FPoint.InRect
+ * @sa RectEmptyFloat
+ * @sa RectsEqualFloat
+ * @sa RectsEqualEpsilon
+ * @sa HasRectIntersectionFloat
+ * @sa GetRectIntersectionFloat
+ * @sa GetRectAndLineIntersectionFloat
+ * @sa GetRectUnionFloat
+ * @sa GetRectEnclosingPointsFloat
+ * @sa PointInRectFloat
  */
 struct FRect : FRectRaw
 {
@@ -1747,7 +1747,7 @@ struct FRect : FRectRaw
    *
    * Rectangles are considered equal if both are not nullptr and each of their
    * x, y, width and height are within `epsilon` of each other. If you don't
-   * know what value to use for `epsilon`, you should call the FRect.Equal
+   * know what value to use for `epsilon`, you should call the RectsEqualFloat
    * function instead.
    *
    * Note that this is a forced-inline function in a header, and not a public
@@ -1763,7 +1763,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa FRect.Equal
+   * @sa RectsEqualFloat
    */
   bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
 
@@ -1789,7 +1789,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa FRect.EqualEpsilon
+   * @sa RectsEqualEpsilon
    */
   bool Equal(const FRectRaw& other) const;
 
@@ -1829,7 +1829,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa FRect.GetIntersection
+   * @sa GetRectIntersectionFloat
    */
   bool HasIntersection(const FRectRaw& other) const;
 
@@ -1846,7 +1846,7 @@ struct FRect : FRectRaw
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa FRect.HasIntersection
+   * @sa HasRectIntersectionFloat
    */
   FRect GetIntersection(const FRectRaw& other) const;
 
@@ -2097,7 +2097,7 @@ inline bool Rect::Equal(const RectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Rect.GetIntersection
+ * @sa GetRectIntersection
  */
 inline bool HasRectIntersection(const RectRaw& A, const RectRaw& B)
 {
@@ -2123,7 +2123,7 @@ inline bool Rect::HasIntersection(const RectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Rect.HasIntersection
+ * @sa HasRectIntersection
  */
 inline Rect GetRectIntersection(const RectRaw& A, const RectRaw& B)
 {
@@ -2286,7 +2286,7 @@ inline bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
  *
  * Rectangles are considered equal if both are not nullptr and each of their x,
  * y, width and height are within `epsilon` of each other. If you don't know
- * what value to use for `epsilon`, you should call the FRect.Equal function
+ * what value to use for `epsilon`, you should call the RectsEqualFloat function
  * instead.
  *
  * Note that this is a forced-inline function in a header, and not a public API
@@ -2303,7 +2303,7 @@ inline bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa FRect.Equal
+ * @sa RectsEqualFloat
  */
 inline bool RectsEqualEpsilon(const FRectRaw& a,
                               const FRectRaw& b,
@@ -2341,7 +2341,7 @@ inline bool FRect::EqualEpsilon(const FRectRaw& other,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa FRect.EqualEpsilon
+ * @sa RectsEqualEpsilon
  */
 inline bool RectsEqualFloat(const FRectRaw& a, const FRectRaw& b)
 {
@@ -2366,7 +2366,7 @@ inline bool FRect::Equal(const FRectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa FRect.GetIntersection
+ * @sa GetRectIntersectionFloat
  */
 inline bool HasRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {
@@ -2392,7 +2392,7 @@ inline bool FRect::HasIntersection(const FRectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa FRect.HasIntersection
+ * @sa HasRectIntersectionFloat
  */
 inline FRect GetRectIntersectionFloat(const FRectRaw& A, const FRectRaw& B)
 {

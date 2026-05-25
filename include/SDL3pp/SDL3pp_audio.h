@@ -151,8 +151,7 @@ struct AudioStreamLock;
 /**
  * Mask of bits in an AudioFormat that contains the format bit size.
  *
- * Generally one should use AudioFormat.GetBitSize instead of this constant
- * directly.
+ * Generally one should use AudioBitSize instead of this constant directly.
  *
  * @since This constant is available since SDL 3.2.0.
  */
@@ -161,8 +160,7 @@ constexpr Uint32 AUDIO_MASK_BITSIZE = SDL_AUDIO_MASK_BITSIZE;
 /**
  * Mask of bits in an AudioFormat that contain the floating point flag.
  *
- * Generally one should use AudioFormat.IsFloat instead of this constant
- * directly.
+ * Generally one should use IsAudioFloat instead of this constant directly.
  *
  * @since This constant is available since SDL 3.2.0.
  */
@@ -171,8 +169,8 @@ constexpr Uint32 AUDIO_MASK_FLOAT = SDL_AUDIO_MASK_FLOAT;
 /**
  * Mask of bits in an AudioFormat that contain the bigendian flag.
  *
- * Generally one should use AudioFormat.IsBigEndian or
- * AudioFormat.IsLittleEndian instead of this constant directly.
+ * Generally one should use IsAudioBigENDIAN or IsAudioLittleEndian instead of
+ * this constant directly.
  *
  * @since This constant is available since SDL 3.2.0.
  */
@@ -181,8 +179,7 @@ constexpr Uint32 AUDIO_MASK_BIG_ENDIAN = SDL_AUDIO_MASK_BIG_ENDIAN;
 /**
  * Mask of bits in an AudioFormat that contain the signed data flag.
  *
- * Generally one should use AudioFormat.IsSigned instead of this constant
- * directly.
+ * Generally one should use IsAudioSigned instead of this constant directly.
  *
  * @since This constant is available since SDL 3.2.0.
  */
@@ -202,14 +199,14 @@ using AudioSpec = SDL_AudioSpec;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa AudioFormat.GetBitSize
- * @sa AudioFormat.GetByteSize
- * @sa AudioFormat.IsInt
- * @sa AudioFormat.IsFloat
- * @sa AudioFormat.IsBigEndian
- * @sa AudioFormat.IsLittleEndian
- * @sa AudioFormat.IsSigned
- * @sa AudioFormat.IsUnsigned
+ * @sa AudioBitSize
+ * @sa AudioByteSize
+ * @sa IsAudioInt
+ * @sa IsAudioFloat
+ * @sa IsAudioBigENDIAN
+ * @sa IsAudioLittleEndian
+ * @sa IsAudioSigned
+ * @sa IsAudioUnsigned
  */
 class AudioFormat
 {
@@ -261,7 +258,7 @@ public:
   /**
    * Retrieve the size, in bits, from an AudioFormat.
    *
-   * For example, `AudioFormat.GetBitSize(AUDIO_S16)` returns 16.
+   * For example, `AudioBitSize(AUDIO_S16)` returns 16.
    *
    * @returns data size in bits.
    *
@@ -274,7 +271,7 @@ public:
   /**
    * Retrieve the size, in bytes, from an AudioFormat.
    *
-   * For example, `AudioFormat.GetByteSize(AUDIO_S16)` returns 2.
+   * For example, `AudioByteSize(AUDIO_S16)` returns 2.
    *
    * @returns data size in bytes.
    *
@@ -287,7 +284,7 @@ public:
   /**
    * Determine if an AudioFormat represents floating point data.
    *
-   * For example, `AudioFormat.IsFloat(AUDIO_S16)` returns 0.
+   * For example, `IsAudioFloat(AUDIO_S16)` returns 0.
    *
    * @returns non-zero if format is floating point, zero otherwise.
    *
@@ -300,7 +297,7 @@ public:
   /**
    * Determine if an AudioFormat represents bigendian data.
    *
-   * For example, `AudioFormat.IsBigEndian(AUDIO_S16LE)` returns 0.
+   * For example, `IsAudioBigENDIAN(AUDIO_S16LE)` returns 0.
    *
    * @returns non-zero if format is bigendian, zero otherwise.
    *
@@ -313,7 +310,7 @@ public:
   /**
    * Determine if an AudioFormat represents littleendian data.
    *
-   * For example, `AudioFormat.IsLittleEndian(AUDIO_S16BE)` returns 0.
+   * For example, `IsAudioLittleEndian(AUDIO_S16BE)` returns 0.
    *
    * @returns non-zero if format is littleendian, zero otherwise.
    *
@@ -326,7 +323,7 @@ public:
   /**
    * Determine if an AudioFormat represents signed data.
    *
-   * For example, `AudioFormat.IsSigned(AUDIO_U8)` returns 0.
+   * For example, `IsAudioSigned(AUDIO_U8)` returns 0.
    *
    * @returns non-zero if format is signed, zero otherwise.
    *
@@ -339,7 +336,7 @@ public:
   /**
    * Determine if an AudioFormat represents integer data.
    *
-   * For example, `AudioFormat.IsInt(AUDIO_F32)` returns 0.
+   * For example, `IsAudioInt(AUDIO_F32)` returns 0.
    *
    * @returns non-zero if format is integer, zero otherwise.
    *
@@ -352,7 +349,7 @@ public:
   /**
    * Determine if an AudioFormat represents unsigned data.
    *
-   * For example, `AudioFormat.IsUnsigned(AUDIO_S16)` returns 0.
+   * For example, `IsAudioUnsigned(AUDIO_S16)` returns 0.
    *
    * @returns non-zero if format is unsigned, zero otherwise.
    *
@@ -468,7 +465,7 @@ constexpr AudioFormat::AudioFormat(bool sign,
 /**
  * Retrieve the size, in bits, from an AudioFormat.
  *
- * For example, `AudioFormat.GetBitSize(AUDIO_S16)` returns 16.
+ * For example, `AudioBitSize(AUDIO_S16)` returns 16.
  *
  * @param x an AudioFormat value.
  * @returns data size in bits.
@@ -487,7 +484,7 @@ constexpr Uint16 AudioFormat::GetBitSize() const
 /**
  * Retrieve the size, in bytes, from an AudioFormat.
  *
- * For example, `AudioFormat.GetByteSize(AUDIO_S16)` returns 2.
+ * For example, `AudioByteSize(AUDIO_S16)` returns 2.
  *
  * @param x an AudioFormat value.
  * @returns data size in bytes.
@@ -509,7 +506,7 @@ constexpr Uint16 AudioFormat::GetByteSize() const
 /**
  * Determine if an AudioFormat represents floating point data.
  *
- * For example, `AudioFormat.IsFloat(AUDIO_S16)` returns 0.
+ * For example, `IsAudioFloat(AUDIO_S16)` returns 0.
  *
  * @param x an AudioFormat value.
  * @returns non-zero if format is floating point, zero otherwise.
@@ -528,7 +525,7 @@ constexpr bool AudioFormat::IsFloat() const
 /**
  * Determine if an AudioFormat represents bigendian data.
  *
- * For example, `AudioFormat.IsBigEndian(AUDIO_S16LE)` returns 0.
+ * For example, `IsAudioBigENDIAN(AUDIO_S16LE)` returns 0.
  *
  * @param x an AudioFormat value.
  * @returns non-zero if format is bigendian, zero otherwise.
@@ -550,7 +547,7 @@ constexpr bool AudioFormat::IsBigEndian() const
 /**
  * Determine if an AudioFormat represents littleendian data.
  *
- * For example, `AudioFormat.IsLittleEndian(AUDIO_S16BE)` returns 0.
+ * For example, `IsAudioLittleEndian(AUDIO_S16BE)` returns 0.
  *
  * @param x an AudioFormat value.
  * @returns non-zero if format is littleendian, zero otherwise.
@@ -572,7 +569,7 @@ constexpr bool AudioFormat::IsLittleEndian() const
 /**
  * Determine if an AudioFormat represents signed data.
  *
- * For example, `AudioFormat.IsSigned(AUDIO_U8)` returns 0.
+ * For example, `IsAudioSigned(AUDIO_U8)` returns 0.
  *
  * @param x an AudioFormat value.
  * @returns non-zero if format is signed, zero otherwise.
@@ -591,7 +588,7 @@ constexpr bool AudioFormat::IsSigned() const
 /**
  * Determine if an AudioFormat represents integer data.
  *
- * For example, `AudioFormat.IsInt(AUDIO_F32)` returns 0.
+ * For example, `IsAudioInt(AUDIO_F32)` returns 0.
  *
  * @param x an AudioFormat value.
  * @returns non-zero if format is integer, zero otherwise.
@@ -610,7 +607,7 @@ constexpr bool AudioFormat::IsInt() const
 /**
  * Determine if an AudioFormat represents unsigned data.
  *
- * For example, `AudioFormat.IsUnsigned(AUDIO_S16)` returns 0.
+ * For example, `IsAudioUnsigned(AUDIO_S16)` returns 0.
  *
  * @param x an AudioFormat value.
  * @returns non-zero if format is unsigned, zero otherwise.
@@ -649,7 +646,7 @@ constexpr bool AudioFormat::IsUnsigned() const
  * this point than the gain settings would suggest.
  *
  * @param userdata a pointer provided by the app through
- *                 AudioDevice.SetPostmixCallback, for its own use.
+ *                 SetAudioPostmixCallback, for its own use.
  * @param spec the current format of audio that is to be submitted to the audio
  *             device.
  * @param buffer the buffer of audio samples to be submitted. The callback can
@@ -662,7 +659,7 @@ constexpr bool AudioFormat::IsUnsigned() const
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa AudioDevice.SetPostmixCallback
+ * @sa SetAudioPostmixCallback
  */
 using AudioPostmixCallback = void(SDLCALL*)(void* userdata,
                                             const AudioSpec* spec,
@@ -699,7 +696,7 @@ using AudioPostmixCallback = void(SDLCALL*)(void* userdata,
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa AudioDevice.SetPostmixCallback
+ * @sa SetAudioPostmixCallback
  *
  * @sa AudioPostmixCallback
  */
@@ -710,8 +707,8 @@ using AudioPostmixCB =
  * A callback that fires when data passes through an AudioStream.
  *
  * Apps can (optionally) register a callback with an audio stream that is called
- * when data is added with AudioStream.PutData, or requested with
- * AudioStream.GetData.
+ * when data is added with PutAudioStreamData, or requested with
+ * GetAudioStreamData.
  *
  * Two values are offered here: one is the amount of additional data needed to
  * satisfy the immediate request (which might be zero if the stream already has
@@ -735,15 +732,15 @@ using AudioPostmixCB =
  * @param userdata an opaque pointer provided by the app for their personal use.
  *
  * @threadsafety This callbacks may run from any thread, so if you need to
- *               protect shared data, you should use AudioStream.Lock to
+ *               protect shared data, you should use LockAudioStream to
  *               serialize access; this lock will be held before your callback
  *               is called, so your callback does not need to manage the lock
  *               explicitly.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetGetCallback
- * @sa AudioStream.SetPutCallback
+ * @sa SetAudioStreamGetCallback
+ * @sa SetAudioStreamPutCallback
  */
 using AudioStreamCallback = void(SDLCALL*)(void* userdata,
                                            AudioStreamRaw stream,
@@ -754,8 +751,8 @@ using AudioStreamCallback = void(SDLCALL*)(void* userdata,
  * A callback that fires when data passes through an AudioStream.
  *
  * Apps can (optionally) register a callback with an audio stream that is called
- * when data is added with AudioStream.PutData, or requested with
- * AudioStream.GetData.
+ * when data is added with PutAudioStreamData, or requested with
+ * GetAudioStreamData.
  *
  * Two values are offered here: one is the amount of additional data needed to
  * satisfy the immediate request (which might be zero if the stream already has
@@ -778,15 +775,15 @@ using AudioStreamCallback = void(SDLCALL*)(void* userdata,
  *                     requested or available.
  *
  * @threadsafety This callbacks may run from any thread, so if you need to
- *               protect shared data, you should use AudioStream.Lock to
+ *               protect shared data, you should use LockAudioStream to
  *               serialize access; this lock will be held before your callback
  *               is called, so your callback does not need to manage the lock
  *               explicitly.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetGetCallback
- * @sa AudioStream.SetPutCallback
+ * @sa SetAudioStreamGetCallback
+ * @sa SetAudioStreamPutCallback
  * @sa AudioStreamCallback
  */
 using AudioStreamCB = MakeFrontCallback<
@@ -858,7 +855,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    * promise the device will honor that request for several reasons. As such,
    * it's only meant to be a hint as to what data your app will provide. Audio
    * streams will accept data in whatever format you specify and manage
-   * conversion for you as appropriate. AudioDevice.GetFormat can tell you the
+   * conversion for you as appropriate. GetAudioDeviceFormat can tell you the
    * preferred format for the device before opening and the actual format the
    * device is using after opening.
    *
@@ -883,7 +880,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    * need, and not something an application should specifically manage.
    *
    * When done with an audio device, possibly at the end of the app's life, one
-   * should call AudioDevice.Close() on the returned device id.
+   * should call CloseAudioDevice() on the returned device id.
    *
    * @param devid the device instance id to open, or
    *              AUDIO_DEVICE_DEFAULT_PLAYBACK or
@@ -898,8 +895,8 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.Close
-   * @sa AudioDevice.GetFormat
+   * @sa CloseAudioDevice
+   * @sa GetAudioDeviceFormat
    */
   AudioDevice(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec);
 
@@ -1007,7 +1004,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetInputChannelMap
+   * @sa SetAudioStreamInputChannelMap
    */
   OwnArray<int> GetChannelMap() const;
 
@@ -1072,8 +1069,8 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.Resume
-   * @sa AudioDevice.Paused
+   * @sa ResumeAudioDevice
+   * @sa AudioDevicePaused
    */
   void Pause();
 
@@ -1081,7 +1078,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    * Use this function to unpause audio playback on a specified device.
    *
    * This function unpauses audio processing for a given device that has
-   * previously been paused with AudioDevice.Pause(). Once unpaused, any bound
+   * previously been paused with PauseAudioDevice(). Once unpaused, any bound
    * audio streams will begin to progress again, and audio can be generated.
    *
    * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app
@@ -1097,8 +1094,8 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.Paused
-   * @sa AudioDevice.Pause
+   * @sa AudioDevicePaused
+   * @sa PauseAudioDevice
    */
   void Resume();
 
@@ -1118,8 +1115,8 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.Pause
-   * @sa AudioDevice.Resume
+   * @sa PauseAudioDevice
+   * @sa ResumeAudioDevice
    */
   bool Paused() const;
 
@@ -1141,7 +1138,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.SetGain
+   * @sa SetAudioDeviceGain
    */
   float GetGain() const;
 
@@ -1174,7 +1171,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.GetGain
+   * @sa GetAudioDeviceGain
    */
   void SetGain(float gain);
 
@@ -1197,7 +1194,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    * Binding a stream to a device will set its output format for playback
    * devices, and its input format for recording devices, so they match the
    * device's settings. The caller is welcome to change the other end of the
-   * stream's format at any time with AudioStream.SetFormat(). If the other end
+   * stream's format at any time with SetAudioStreamFormat(). If the other end
    * of the stream's format has never been set (the audio stream was created
    * with a nullptr audio spec), this function will set it to match the device
    * end's format.
@@ -1209,9 +1206,9 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.BindAudioStreams
-   * @sa AudioStream.Unbind
-   * @sa AudioStream.GetDevice
+   * @sa BindAudioStreams
+   * @sa UnbindAudioStream
+   * @sa GetAudioStreamDevice
    */
   void BindAudioStreams(std::span<AudioStreamRef> streams);
 
@@ -1219,7 +1216,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    * Bind a single audio stream to an audio device.
    *
    * This is a convenience function, equivalent to calling
-   * `AudioDevice.BindAudioStreams(devid, &stream, 1)`.
+   * `BindAudioStreams(devid, &stream, 1)`.
    *
    * @param stream an audio stream to bind to a device.
    * @throws Error on failure.
@@ -1228,9 +1225,9 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.BindAudioStreams
-   * @sa AudioStream.Unbind
-   * @sa AudioStream.GetDevice
+   * @sa BindAudioStreams
+   * @sa UnbindAudioStream
+   * @sa GetAudioStreamDevice
    */
   void BindAudioStream(AudioStreamRef stream);
 
@@ -1353,14 +1350,14 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    * Also unlike other functions, the audio device begins paused. This is to map
    * more closely to SDL2-style behavior, since there is no extra step here to
    * bind a stream to begin audio flowing. The audio device should be resumed
-   * with AudioStream.ResumeDevice().
+   * with ResumeAudioStreamDevice().
    *
    * This function works with both playback and recording devices.
    *
    * The `spec` parameter represents the app's side of the audio stream. That
    * is, for recording audio, this will be the output format, and for playing
    * audio, this will be the input format. If spec is nullptr, the system will
-   * choose the format, and the app can use AudioStream.GetFormat() to obtain
+   * choose the format, and the app can use GetAudioStreamFormat() to obtain
    * this information later.
    *
    * If you don't care about opening a specific audio device, you can (and
@@ -1372,14 +1369,14 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    * capturing). Otherwise, the callback will begin to fire once the device is
    * unpaused.
    *
-   * Destroying the returned stream with AudioStream.Destroy will also close the
+   * Destroying the returned stream with DestroyAudioStream will also close the
    * audio device associated with this stream.
    *
    * @param spec the audio stream's data format. Can be nullptr.
    * @param callback a callback where the app will provide new data for
    *                 playback, or receive new data for recording. Can be
    *                 nullptr, in which case the app will need to call
-   *                 AudioStream.PutData or AudioStream.GetData as necessary.
+   *                 PutAudioStreamData or GetAudioStreamData as necessary.
    * @param userdata app-controlled pointer passed to callback. Can be nullptr.
    *                 Ignored if callback is nullptr.
    * @returns an audio stream on success.
@@ -1389,8 +1386,8 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.GetDevice
-   * @sa AudioStream.ResumeDevice
+   * @sa GetAudioStreamDevice
+   * @sa ResumeAudioStreamDevice
    */
   AudioStream OpenStream(OptionalRef<const AudioSpec> spec,
                          AudioStreamCallback callback,
@@ -1412,14 +1409,14 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    * Also unlike other functions, the audio device begins paused. This is to map
    * more closely to SDL2-style behavior, since there is no extra step here to
    * bind a stream to begin audio flowing. The audio device should be resumed
-   * with AudioStream.ResumeDevice().
+   * with ResumeAudioStreamDevice().
    *
    * This function works with both playback and recording devices.
    *
    * The `spec` parameter represents the app's side of the audio stream. That
    * is, for recording audio, this will be the output format, and for playing
    * audio, this will be the input format. If spec is nullptr, the system will
-   * choose the format, and the app can use AudioStream.GetFormat() to obtain
+   * choose the format, and the app can use GetAudioStreamFormat() to obtain
    * this information later.
    *
    * If you don't care about opening a specific audio device, you can (and
@@ -1431,7 +1428,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    * capturing). Otherwise, the callback will begin to fire once the device is
    * unpaused.
    *
-   * Destroying the returned stream with AudioStream.Destroy will also close the
+   * Destroying the returned stream with DestroyAudioStream will also close the
    * audio device associated with this stream.
    *
    * @param spec the audio stream's data format. Can be nullptr.
@@ -1444,8 +1441,8 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.GetDevice
-   * @sa AudioStream.ResumeDevice
+   * @sa GetAudioStreamDevice
+   * @sa ResumeAudioStreamDevice
    */
   AudioStream OpenStream(OptionalRef<const AudioSpec> spec,
                          AudioStreamCB callback);
@@ -1496,59 +1493,59 @@ constexpr int AudioFrameSize(const AudioSpec& x)
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * A callback that fires for completed AudioStream.PutDataNoCopy() data.
+ * A callback that fires for completed PutAudioStreamDataNoCopy() data.
  *
- * When using AudioStream.PutDataNoCopy() to provide data to an AudioStream,
- * it's not safe to dispose of the data until the stream has completely consumed
- * it. Often times it's difficult to know exactly when this has happened.
+ * When using PutAudioStreamDataNoCopy() to provide data to an AudioStream, it's
+ * not safe to dispose of the data until the stream has completely consumed it.
+ * Often times it's difficult to know exactly when this has happened.
  *
  * This callback fires once when the stream no longer needs the buffer, allowing
  * the app to easily free or reuse it.
  *
  * @param userdata an opaque pointer provided by the app for their personal use.
- * @param buf the pointer provided to AudioStream.PutDataNoCopy().
+ * @param buf the pointer provided to PutAudioStreamDataNoCopy().
  * @param buflen the size of buffer, in bytes, provided to
- *               AudioStream.PutDataNoCopy().
+ *               PutAudioStreamDataNoCopy().
  *
  * @threadsafety This callbacks may run from any thread, so if you need to
- *               protect shared data, you should use AudioStream.Lock to
+ *               protect shared data, you should use LockAudioStream to
  *               serialize access; this lock will be held before your callback
  *               is called, so your callback does not need to manage the lock
  *               explicitly.
  *
  * @since This datatype is available since SDL 3.4.0.
  *
- * @sa AudioStream.SetGetCallback
- * @sa AudioStream.SetPutCallback
+ * @sa SetAudioStreamGetCallback
+ * @sa SetAudioStreamPutCallback
  */
 using AudioStreamDataCompleteCallback = void(SDLCALL*)(void* userdata,
                                                        const void* buf,
                                                        int buflen);
 
 /**
- * A callback that fires for completed AudioStream.PutDataNoCopy() data.
+ * A callback that fires for completed PutAudioStreamDataNoCopy() data.
  *
- * When using AudioStream.PutDataNoCopy() to provide data to an AudioStream,
- * it's not safe to dispose of the data until the stream has completely consumed
- * it. Often times it's difficult to know exactly when this has happened.
+ * When using PutAudioStreamDataNoCopy() to provide data to an AudioStream, it's
+ * not safe to dispose of the data until the stream has completely consumed it.
+ * Often times it's difficult to know exactly when this has happened.
  *
  * This callback fires once when the stream no longer needs the buffer, allowing
  * the app to easily free or reuse it.
  *
- * @param buf the pointer provided to AudioStream.PutDataNoCopy().
+ * @param buf the pointer provided to PutAudioStreamDataNoCopy().
  * @param buflen the size of buffer, in bytes, provided to
- *               AudioStream.PutDataNoCopy().
+ *               PutAudioStreamDataNoCopy().
  *
  * @threadsafety This callbacks may run from any thread, so if you need to
- *               protect shared data, you should use AudioStream.Lock to
+ *               protect shared data, you should use LockAudioStream to
  *               serialize access; this lock will be held before your callback
  *               is called, so your callback does not need to manage the lock
  *               explicitly.
  *
  * @since This datatype is available since SDL 3.4.0.
  *
- * @sa AudioStream.SetGetCallback
- * @sa AudioStream.SetPutCallback
+ * @sa SetAudioStreamGetCallback
+ * @sa SetAudioStreamPutCallback
  * @sa AudioStreamDataCompleteCallback
  */
 using AudioStreamDataCompleteCB =
@@ -1623,13 +1620,13 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.PutData
-   * @sa AudioStream.GetData
-   * @sa AudioStream.GetAvailable
-   * @sa AudioStream.Flush
-   * @sa AudioStream.Clear
-   * @sa AudioStream.SetFormat
-   * @sa AudioStream.Destroy
+   * @sa PutAudioStreamData
+   * @sa GetAudioStreamData
+   * @sa GetAudioStreamAvailable
+   * @sa FlushAudioStream
+   * @sa ClearAudioStream
+   * @sa SetAudioStreamFormat
+   * @sa DestroyAudioStream
    */
   AudioStream(OptionalRef<const AudioSpec> src_spec,
               OptionalRef<const AudioSpec> dst_spec);
@@ -1650,14 +1647,14 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * Also unlike other functions, the audio device begins paused. This is to map
    * more closely to SDL2-style behavior, since there is no extra step here to
    * bind a stream to begin audio flowing. The audio device should be resumed
-   * with AudioStream.ResumeDevice().
+   * with ResumeAudioStreamDevice().
    *
    * This function works with both playback and recording devices.
    *
    * The `spec` parameter represents the app's side of the audio stream. That
    * is, for recording audio, this will be the output format, and for playing
    * audio, this will be the input format. If spec is nullptr, the system will
-   * choose the format, and the app can use AudioStream.GetFormat() to obtain
+   * choose the format, and the app can use GetAudioStreamFormat() to obtain
    * this information later.
    *
    * If you don't care about opening a specific audio device, you can (and
@@ -1669,7 +1666,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * capturing). Otherwise, the callback will begin to fire once the device is
    * unpaused.
    *
-   * Destroying the returned stream with AudioStream.Destroy will also close the
+   * Destroying the returned stream with DestroyAudioStream will also close the
    * audio device associated with this stream.
    *
    * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or
@@ -1678,7 +1675,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * @param callback a callback where the app will provide new data for
    *                 playback, or receive new data for recording. Can be
    *                 nullptr, in which case the app will need to call
-   *                 AudioStream.PutData or AudioStream.GetData as necessary.
+   *                 PutAudioStreamData or GetAudioStreamData as necessary.
    * @param userdata app-controlled pointer passed to callback. Can be nullptr.
    *                 Ignored if callback is nullptr.
    * @post an audio stream on success.
@@ -1688,8 +1685,8 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.GetDevice
-   * @sa AudioStream.ResumeDevice
+   * @sa GetAudioStreamDevice
+   * @sa ResumeAudioStreamDevice
    */
   AudioStream(AudioDeviceRef devid,
               OptionalRef<const AudioSpec> spec = std::nullopt,
@@ -1746,8 +1743,8 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.GetDevice
-   * @sa AudioStream.ResumeDevice
+   * @sa GetAudioStreamDevice
+   * @sa ResumeAudioStreamDevice
    */
   AudioStream(AudioDeviceRef devid,
               OptionalRef<const AudioSpec> spec,
@@ -1860,7 +1857,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetFormat
+   * @sa SetAudioStreamFormat
    */
   void GetFormat(AudioSpec* src_spec, AudioSpec* dst_spec) const;
 
@@ -1931,9 +1928,9 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
   /**
    * Change the input and output formats of an audio stream.
    *
-   * Future calls to and AudioStream.GetAvailable and AudioStream.GetData will
-   * reflect the new format, and future calls to AudioStream.PutData must
-   * provide data in the new input formats.
+   * Future calls to and GetAudioStreamAvailable and GetAudioStreamData will
+   * reflect the new format, and future calls to PutAudioStreamData must provide
+   * data in the new input formats.
    *
    * Data that was previously queued in the stream will still be operated on in
    * the format that was current when it was added, which is to say you can put
@@ -1958,8 +1955,8 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.GetFormat
-   * @sa AudioStream.SetFrequencyRatio
+   * @sa GetAudioStreamFormat
+   * @sa SetAudioStreamFrequencyRatio
    */
   void SetFormat(OptionalRef<const AudioSpec> src_spec,
                  OptionalRef<const AudioSpec> dst_spec);
@@ -1975,7 +1972,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetFrequencyRatio
+   * @sa SetAudioStreamFrequencyRatio
    */
   float GetFrequencyRatio() const;
 
@@ -1988,7 +1985,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * higher pitch. A value less than 1.0f will play the audio slower, and at a
    * lower pitch. 1.0f means play at normal speed.
    *
-   * This is applied during AudioStream.GetData, and can be continuously changed
+   * This is applied during GetAudioStreamData, and can be continuously changed
    * to create various effects.
    *
    * @param ratio the frequency ratio. 1.0 is normal speed. Must be between 0.01
@@ -2000,8 +1997,8 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.GetFrequencyRatio
-   * @sa AudioStream.SetFormat
+   * @sa GetAudioStreamFrequencyRatio
+   * @sa SetAudioStreamFormat
    */
   void SetFrequencyRatio(float ratio);
 
@@ -2021,7 +2018,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetGain
+   * @sa SetAudioStreamGain
    */
   float GetGain() const;
 
@@ -2033,7 +2030,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * Audio streams default to a gain of 1.0f (no change in output).
    *
-   * This is applied during AudioStream.GetData, and can be continuously changed
+   * This is applied during GetAudioStreamData, and can be continuously changed
    * to create various effects.
    *
    * @param gain the gain. 1.0f is no change, 0.0f is silence.
@@ -2044,7 +2041,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.GetGain
+   * @sa GetAudioStreamGain
    */
   void SetGain(float gain);
 
@@ -2065,7 +2062,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetInputChannelMap
+   * @sa SetAudioStreamInputChannelMap
    */
   OwnArray<int> GetInputChannelMap() const;
 
@@ -2086,7 +2083,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetInputChannelMap
+   * @sa SetAudioStreamInputChannelMap
    */
   OwnArray<int> GetOutputChannelMap() const;
 
@@ -2097,8 +2094,8 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * data in the [order that SDL expects](CategoryAudio#channel-layouts).
    *
    * The input channel map reorders data that is added to a stream via
-   * AudioStream.PutData. Future calls to AudioStream.PutData must provide data
-   * in the new channel order.
+   * PutAudioStreamData. Future calls to PutAudioStreamData must provide data in
+   * the new channel order.
    *
    * Each item in the array represents an input channel, and its value is the
    * channel that it should be remapped to. To reverse a stereo signal's left
@@ -2143,7 +2140,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetOutputChannelMap
+   * @sa SetAudioStreamOutputChannelMap
    */
   void SetInputChannelMap(std::span<int> chmap);
 
@@ -2154,7 +2151,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * data in the [order that SDL expects](CategoryAudio#channel-layouts).
    *
    * The output channel map reorders data that is leaving a stream via
-   * AudioStream.GetData.
+   * GetAudioStreamData.
    *
    * Each item in the array represents an input channel, and its value is the
    * channel that it should be remapped to. To reverse a stereo signal's left
@@ -2168,7 +2165,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * reorder/mute them.
    *
    * The output channel map can be changed at any time, as output remapping is
-   * applied during AudioStream.GetData.
+   * applied during GetAudioStreamData.
    *
    * Audio streams default to no remapping applied. Passing a nullptr channel
    * map is legal, and turns off remapping.
@@ -2198,7 +2195,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetInputChannelMap
+   * @sa SetAudioStreamInputChannelMap
    */
   void SetOutputChannelMap(std::span<int> chmap);
 
@@ -2206,7 +2203,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * Add data to the stream.
    *
    * This data must match the format/channels/samplerate specified in the latest
-   * call to AudioStream.SetFormat, or the format specified when creating the
+   * call to SetAudioStreamFormat, or the format specified when creating the
    * stream if it hasn't been changed.
    *
    * Note that this call simply copies the unconverted data for later. This is
@@ -2222,10 +2219,10 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.Clear
-   * @sa AudioStream.Flush
-   * @sa AudioStream.GetData
-   * @sa AudioStream.GetQueued
+   * @sa ClearAudioStream
+   * @sa FlushAudioStream
+   * @sa GetAudioStreamData
+   * @sa GetAudioStreamQueued
    */
   void PutData(SourceBytes buf);
 
@@ -2234,15 +2231,15 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
   /**
    * Add external data to an audio stream without copying it.
    *
-   * Unlike AudioStream.PutData(), this function does not make a copy of the
+   * Unlike PutAudioStreamData(), this function does not make a copy of the
    * provided data, instead storing the provided pointer. This means that the
    * put operation does not need to allocate and copy the data, but the original
    * data must remain available until the stream is done with it, either by
-   * being read from the stream in its entirety, or a call to
-   * AudioStream.Clear() or AudioStream.Destroy().
+   * being read from the stream in its entirety, or a call to ClearAudioStream()
+   * or DestroyAudioStream().
    *
    * The data must match the format/channels/samplerate specified in the latest
-   * call to AudioStream.SetFormat, or the format specified when creating the
+   * call to SetAudioStreamFormat, or the format specified when creating the
    * stream if it hasn't been changed.
    *
    * An optional callback may be provided, which is called when the stream no
@@ -2253,7 +2250,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * Note that there is still an allocation to store tracking information, so
    * this function is more efficient for larger blocks of data. If you're
    * planning to put a few samples at a time, it will be more efficient to use
-   * AudioStream.PutData(), which allocates and buffers in blocks.
+   * PutAudioStreamData(), which allocates and buffers in blocks.
    *
    * @param buf a pointer to the audio data to add.
    * @param callback the callback function to call when the data is no longer
@@ -2268,10 +2265,10 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa AudioStream.Clear
-   * @sa AudioStream.Flush
-   * @sa AudioStream.GetData
-   * @sa AudioStream.GetQueued
+   * @sa ClearAudioStream
+   * @sa FlushAudioStream
+   * @sa GetAudioStreamData
+   * @sa GetAudioStreamQueued
    */
   void PutDataNoCopy(SourceBytes buf,
                      AudioStreamDataCompleteCallback callback,
@@ -2280,15 +2277,15 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
   /**
    * Add external data to an audio stream without copying it.
    *
-   * Unlike AudioStream.PutData(), this function does not make a copy of the
+   * Unlike PutAudioStreamData(), this function does not make a copy of the
    * provided data, instead storing the provided pointer. This means that the
    * put operation does not need to allocate and copy the data, but the original
    * data must remain available until the stream is done with it, either by
-   * being read from the stream in its entirety, or a call to
-   * AudioStream.Clear() or AudioStream.Destroy().
+   * being read from the stream in its entirety, or a call to ClearAudioStream()
+   * or DestroyAudioStream().
    *
    * The data must match the format/channels/samplerate specified in the latest
-   * call to AudioStream.SetFormat, or the format specified when creating the
+   * call to SetAudioStreamFormat, or the format specified when creating the
    * stream if it hasn't been changed.
    *
    * An optional callback may be provided, which is called when the stream no
@@ -2299,7 +2296,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * Note that there is still an allocation to store tracking information, so
    * this function is more efficient for larger blocks of data. If you're
    * planning to put a few samples at a time, it will be more efficient to use
-   * AudioStream.PutData(), which allocates and buffers in blocks.
+   * PutAudioStreamData(), which allocates and buffers in blocks.
    *
    * @param buf a pointer to the audio data to add.
    * @param callback the callback function to call when the data is no longer
@@ -2312,10 +2309,10 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa AudioStream.Clear
-   * @sa AudioStream.Flush
-   * @sa AudioStream.GetData
-   * @sa AudioStream.GetQueued
+   * @sa ClearAudioStream
+   * @sa FlushAudioStream
+   * @sa GetAudioStreamData
+   * @sa GetAudioStreamQueued
    */
   void PutDataNoCopy(SourceBytes buf, AudioStreamDataCompleteCB callback);
 
@@ -2326,10 +2323,10 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * The input/output data format/channels/samplerate is specified when creating
    * the stream, and can be changed after creation by calling
-   * AudioStream.SetFormat.
+   * SetAudioStreamFormat.
    *
    * Note that any conversion and resampling necessary is done during this call,
-   * and AudioStream.PutData simply queues unconverted data for later. This is
+   * and PutAudioStreamData simply queues unconverted data for later. This is
    * different than SDL2, where that work was done while inputting new data to
    * the stream and requesting the output just copied the converted data.
    *
@@ -2343,9 +2340,9 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.Clear
-   * @sa AudioStream.GetAvailable
-   * @sa AudioStream.PutData
+   * @sa ClearAudioStream
+   * @sa GetAudioStreamAvailable
+   * @sa PutAudioStreamData
    */
   int GetData(TargetBytes buf);
 
@@ -2359,7 +2356,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * If the stream has so much data that it would overflow an int, the return
    * value is clamped to a maximum value, but no queued data is lost; if there
    * are gigabytes of data queued, the app might need to read some of it with
-   * AudioStream.GetData before this function's return value is no longer
+   * GetAudioStreamData before this function's return value is no longer
    * clamped.
    *
    * @returns the number of converted/resampled bytes available or -1 on
@@ -2369,8 +2366,8 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.GetData
-   * @sa AudioStream.PutData
+   * @sa GetAudioStreamData
+   * @sa PutAudioStreamData
    */
   int GetAvailable() const;
 
@@ -2381,7 +2378,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * can be retrieved as output. Because of several details, it's not possible
    * to calculate one number directly from the other. If you need to know how
    * much usable data can be retrieved right now, you should use
-   * AudioStream.GetAvailable() and not this function.
+   * GetAudioStreamAvailable() and not this function.
    *
    * Note that audio streams can change their input format at any time, even if
    * there is still data queued in a different format, so the returned byte
@@ -2389,14 +2386,14 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * Users of this API should be aware of format changes they make when feeding
    * a stream and plan accordingly.
    *
-   * Queued data is not converted until it is consumed by AudioStream.GetData,
-   * so this value should be representative of the exact data that was put into
-   * the stream.
+   * Queued data is not converted until it is consumed by GetAudioStreamData, so
+   * this value should be representative of the exact data that was put into the
+   * stream.
    *
    * If the stream has so much data that it would overflow an int, the return
    * value is clamped to a maximum value, but no queued data is lost; if there
    * are gigabytes of data queued, the app might need to read some of it with
-   * AudioStream.GetData before this function's return value is no longer
+   * GetAudioStreamData before this function's return value is no longer
    * clamped.
    *
    * @returns the number of bytes queued or -1 on failure; call GetError() for
@@ -2406,8 +2403,8 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.PutData
-   * @sa AudioStream.Clear
+   * @sa PutAudioStreamData
+   * @sa ClearAudioStream
    */
   int GetQueued() const;
 
@@ -2425,7 +2422,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.PutData
+   * @sa PutAudioStreamData
    */
   void Flush();
 
@@ -2441,10 +2438,10 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.GetAvailable
-   * @sa AudioStream.GetData
-   * @sa AudioStream.GetQueued
-   * @sa AudioStream.PutData
+   * @sa GetAudioStreamAvailable
+   * @sa GetAudioStreamData
+   * @sa GetAudioStreamQueued
+   * @sa PutAudioStreamData
    */
   void Clear();
 
@@ -2466,7 +2463,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.ResumeDevice
+   * @sa ResumeAudioStreamDevice
    */
   void PauseDevice();
 
@@ -2487,7 +2484,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.PauseDevice
+   * @sa PauseAudioStreamDevice
    */
   void ResumeDevice();
 
@@ -2504,8 +2501,8 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.PauseDevice
-   * @sa AudioStream.ResumeDevice
+   * @sa PauseAudioStreamDevice
+   * @sa ResumeAudioStreamDevice
    */
   bool DevicePaused() const;
 
@@ -2522,7 +2519,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * protect shared data during those callbacks, locking the stream guarantees
    * that the callback is not running while the lock is held.
    *
-   * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
+   * As this is just a wrapper over LockMutex for an internal lock; it has all
    * the same attributes (recursive locks are allowed, etc).
    *
    * @throws Error on failure.
@@ -2531,23 +2528,23 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.Unlock
+   * @sa UnlockAudioStream
    */
   AudioStreamLock Lock();
 
   /**
    * Unlock an audio stream for serialized access.
    *
-   * This unlocks an audio stream after a call to AudioStream.Lock.
+   * This unlocks an audio stream after a call to LockAudioStream.
    *
    * @throws Error on failure.
    *
    * @threadsafety You should only call this from the same thread that
-   *               previously called AudioStream.Lock.
+   *               previously called LockAudioStream.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.Lock
+   * @sa LockAudioStream
    */
   void Unlock(AudioStreamLock&& lock);
 
@@ -2557,7 +2554,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * This callback is called _before_ data is obtained from the stream, giving
    * the callback the chance to add more on-demand.
    *
-   * The callback can (optionally) call AudioStream.PutData() to add more audio
+   * The callback can (optionally) call PutAudioStreamData() to add more audio
    * to the stream during this call; if needed, the request that triggered this
    * callback will obtain the new data immediately.
    *
@@ -2591,7 +2588,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetPutCallback
+   * @sa SetAudioStreamPutCallback
    */
   void SetGetCallback(AudioStreamCallback callback, void* userdata);
 
@@ -2601,7 +2598,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * This callback is called _before_ data is obtained from the stream, giving
    * the callback the chance to add more on-demand.
    *
-   * The callback can (optionally) call AudioStream.PutData() to add more audio
+   * The callback can (optionally) call PutAudioStreamData() to add more audio
    * to the stream during this call; if needed, the request that triggered this
    * callback will obtain the new data immediately.
    *
@@ -2633,7 +2630,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetPutCallback
+   * @sa SetAudioStreamPutCallback
    */
   void SetGetCallback(AudioStreamCB callback);
 
@@ -2643,7 +2640,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * This callback is called _after_ the data is added to the stream, giving the
    * callback the chance to obtain it immediately.
    *
-   * The callback can (optionally) call AudioStream.GetData() to obtain audio
+   * The callback can (optionally) call GetAudioStreamData() to obtain audio
    * from the stream during this call.
    *
    * The callback's `additional_amount` argument is how many bytes of
@@ -2654,7 +2651,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * needs to keep a buffer to aid in resampling. Which means the callback may
    * be provided with zero bytes, and a different amount on each call.
    *
-   * The callback may call AudioStream.GetAvailable to see the total amount
+   * The callback may call GetAudioStreamAvailable to see the total amount
    * currently available to read from the stream, instead of the total provided
    * by the current call.
    *
@@ -2680,7 +2677,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetGetCallback
+   * @sa SetAudioStreamGetCallback
    */
   void SetPutCallback(AudioStreamCallback callback, void* userdata);
 
@@ -2690,7 +2687,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * This callback is called _after_ the data is added to the stream, giving the
    * callback the chance to obtain it immediately.
    *
-   * The callback can (optionally) call AudioStream.GetData() to obtain audio
+   * The callback can (optionally) call GetAudioStreamData() to obtain audio
    * from the stream during this call.
    *
    * The callback's `additional_amount` argument is how many bytes of
@@ -2701,7 +2698,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * needs to keep a buffer to aid in resampling. Which means the callback may
    * be provided with zero bytes, and a different amount on each call.
    *
-   * The callback may call AudioStream.GetAvailable to see the total amount
+   * The callback may call GetAudioStreamAvailable to see the total amount
    * currently available to read from the stream, instead of the total provided
    * by the current call.
    *
@@ -2725,7 +2722,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.SetGetCallback
+   * @sa SetAudioStreamGetCallback
    */
   void SetPutCallback(AudioStreamCB callback);
 
@@ -2739,7 +2736,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.BindAudioStream
+   * @sa BindAudioStream
    */
   void Unbind();
 
@@ -2758,8 +2755,8 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioDevice.BindAudioStream
-   * @sa AudioDevice.BindAudioStreams
+   * @sa BindAudioStream
+   * @sa BindAudioStreams
    */
   AudioDeviceRef GetDevice() const;
 
@@ -2769,7 +2766,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * Add data to the stream with each channel in a separate array.
    *
    * This data must match the format/channels/samplerate specified in the latest
-   * call to AudioStream.SetFormat, or the format specified when creating the
+   * call to SetAudioStreamFormat, or the format specified when creating the
    * stream if it hasn't been changed.
    *
    * The data will be interleaved and queued. Note that AudioStream only
@@ -2793,7 +2790,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * Note that `num_samples` is the number of _samples per array_. This can also
    * be thought of as the number of _sample frames_ to be queued. A value of 1
    * with stereo arrays will queue two samples to the stream. This is different
-   * than AudioStream.PutData, which wants the size of a single array in bytes.
+   * than PutAudioStreamData, which wants the size of a single array in bytes.
    *
    * @param channel_buffers a pointer to an array of arrays, one array per
    *                        channel.
@@ -2808,10 +2805,10 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa AudioStream.Clear
-   * @sa AudioStream.Flush
-   * @sa AudioStream.GetData
-   * @sa AudioStream.GetQueued
+   * @sa ClearAudioStream
+   * @sa FlushAudioStream
+   * @sa GetAudioStreamData
+   * @sa GetAudioStreamQueued
    */
   void PutPlanarData(const void* const* channel_buffers,
                      int num_channels,
@@ -2833,8 +2830,8 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
  * protect shared data during those callbacks, locking the stream guarantees
  * that the callback is not running while the lock is held.
  *
- * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
- * the same attributes (recursive locks are allowed, etc).
+ * As this is just a wrapper over LockMutex for an internal lock; it has all the
+ * same attributes (recursive locks are allowed, etc).
  *
  * @sa AudioStream.Lock
  */
@@ -2856,7 +2853,7 @@ public:
    * protect shared data during those callbacks, locking the stream guarantees
    * that the callback is not running while the lock is held.
    *
-   * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
+   * As this is just a wrapper over LockMutex for an internal lock; it has all
    * the same attributes (recursive locks are allowed, etc).
    *
    * @param resource the audio stream to lock.
@@ -2867,7 +2864,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.Unlock
+   * @sa UnlockAudioStream
    */
   AudioStreamLock(AudioStreamRef resource);
 
@@ -2883,14 +2880,14 @@ public:
   /**
    * Unlock an audio stream for serialized access.
    *
-   * This unlocks an audio stream after a call to AudioStream.Lock.
+   * This unlocks an audio stream after a call to LockAudioStream.
    *
    * @threadsafety You should only call this from the same thread that
-   *               previously called AudioStream.Lock.
+   *               previously called LockAudioStream.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.Lock
+   * @sa LockAudioStream
    */
   ~AudioStreamLock()
   {
@@ -2913,16 +2910,16 @@ public:
   /**
    * Unlock an audio stream for serialized access.
    *
-   * This unlocks an audio stream after a call to AudioStream.Lock.
+   * This unlocks an audio stream after a call to LockAudioStream.
    *
    * @throws Error on failure.
    *
    * @threadsafety You should only call this from the same thread that
-   *               previously called AudioStream.Lock.
+   *               previously called LockAudioStream.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa AudioStream.Lock
+   * @sa LockAudioStream
    */
   void reset();
 
@@ -3159,7 +3156,7 @@ inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetInputChannelMap
+ * @sa SetAudioStreamInputChannelMap
  */
 inline OwnArray<int> GetAudioDeviceChannelMap(AudioDeviceRef devid)
 {
@@ -3201,7 +3198,7 @@ inline OwnArray<int> AudioDevice::GetChannelMap() const
  * promise the device will honor that request for several reasons. As such, it's
  * only meant to be a hint as to what data your app will provide. Audio streams
  * will accept data in whatever format you specify and manage conversion for you
- * as appropriate. AudioDevice.GetFormat can tell you the preferred format for
+ * as appropriate. GetAudioDeviceFormat can tell you the preferred format for
  * the device before opening and the actual format the device is using after
  * opening.
  *
@@ -3226,7 +3223,7 @@ inline OwnArray<int> AudioDevice::GetChannelMap() const
  * something an application should specifically manage.
  *
  * When done with an audio device, possibly at the end of the app's life, one
- * should call AudioDevice.Close() on the returned device id.
+ * should call CloseAudioDevice() on the returned device id.
  *
  * @param devid the device instance id to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
  *              or AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable
@@ -3240,8 +3237,8 @@ inline OwnArray<int> AudioDevice::GetChannelMap() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.Close
- * @sa AudioDevice.GetFormat
+ * @sa CloseAudioDevice
+ * @sa GetAudioDeviceFormat
  */
 inline AudioDevice OpenAudioDevice(AudioDeviceRef devid,
                                    OptionalRef<const AudioSpec> spec)
@@ -3335,8 +3332,8 @@ inline bool AudioDevice::IsPlayback() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.Resume
- * @sa AudioDevice.Paused
+ * @sa ResumeAudioDevice
+ * @sa AudioDevicePaused
  */
 inline void PauseAudioDevice(AudioDeviceRef devid)
 {
@@ -3349,7 +3346,7 @@ inline void AudioDevice::Pause() { SDL::PauseAudioDevice(get()); }
  * Use this function to unpause audio playback on a specified device.
  *
  * This function unpauses audio processing for a given device that has
- * previously been paused with AudioDevice.Pause(). Once unpaused, any bound
+ * previously been paused with PauseAudioDevice(). Once unpaused, any bound
  * audio streams will begin to progress again, and audio can be generated.
  *
  * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app has
@@ -3366,8 +3363,8 @@ inline void AudioDevice::Pause() { SDL::PauseAudioDevice(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.Paused
- * @sa AudioDevice.Pause
+ * @sa AudioDevicePaused
+ * @sa PauseAudioDevice
  */
 inline void ResumeAudioDevice(AudioDeviceRef devid)
 {
@@ -3393,8 +3390,8 @@ inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.Pause
- * @sa AudioDevice.Resume
+ * @sa PauseAudioDevice
+ * @sa ResumeAudioDevice
  */
 inline bool AudioDevicePaused(AudioDeviceRef devid)
 {
@@ -3425,7 +3422,7 @@ inline bool AudioDevice::Paused() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.SetGain
+ * @sa SetAudioDeviceGain
  */
 inline float GetAudioDeviceGain(AudioDeviceRef devid)
 {
@@ -3467,7 +3464,7 @@ inline float AudioDevice::GetGain() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.GetGain
+ * @sa GetAudioDeviceGain
  */
 inline void SetAudioDeviceGain(AudioDeviceRef devid, float gain)
 {
@@ -3523,7 +3520,7 @@ inline void AudioDevice::Close() { CloseAudioDevice(release()); }
  * Binding a stream to a device will set its output format for playback devices,
  * and its input format for recording devices, so they match the device's
  * settings. The caller is welcome to change the other end of the stream's
- * format at any time with AudioStream.SetFormat(). If the other end of the
+ * format at any time with SetAudioStreamFormat(). If the other end of the
  * stream's format has never been set (the audio stream was created with a
  * nullptr audio spec), this function will set it to match the device end's
  * format.
@@ -3536,9 +3533,9 @@ inline void AudioDevice::Close() { CloseAudioDevice(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.BindAudioStreams
- * @sa AudioStream.Unbind
- * @sa AudioStream.GetDevice
+ * @sa BindAudioStreams
+ * @sa UnbindAudioStream
+ * @sa GetAudioStreamDevice
  */
 inline void BindAudioStreams(AudioDeviceRef devid,
                              std::span<AudioStreamRef> streams)
@@ -3558,7 +3555,7 @@ inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
  * Bind a single audio stream to an audio device.
  *
  * This is a convenience function, equivalent to calling
- * `AudioDevice.BindAudioStreams(devid, &stream, 1)`.
+ * `BindAudioStreams(devid, &stream, 1)`.
  *
  * @param devid an audio device to bind a stream to.
  * @param stream an audio stream to bind to a device.
@@ -3568,9 +3565,9 @@ inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.BindAudioStreams
- * @sa AudioStream.Unbind
- * @sa AudioStream.GetDevice
+ * @sa BindAudioStreams
+ * @sa UnbindAudioStream
+ * @sa GetAudioStreamDevice
  */
 inline void BindAudioStream(AudioDeviceRef devid, AudioStreamRef stream)
 {
@@ -3598,7 +3595,7 @@ inline void AudioDevice::BindAudioStream(AudioStreamRef stream)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.BindAudioStreams
+ * @sa BindAudioStreams
  */
 inline void UnbindAudioStreams(std::span<AudioStreamRef> streams)
 {
@@ -3619,7 +3616,7 @@ inline void UnbindAudioStreams(std::span<AudioStreamRef> streams)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.BindAudioStream
+ * @sa BindAudioStream
  */
 inline void UnbindAudioStream(AudioStreamRef stream)
 {
@@ -3643,8 +3640,8 @@ inline void AudioStream::Unbind() { SDL::UnbindAudioStream(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioDevice.BindAudioStream
- * @sa AudioDevice.BindAudioStreams
+ * @sa BindAudioStream
+ * @sa BindAudioStreams
  */
 inline AudioDeviceRef GetAudioStreamDevice(AudioStreamRef stream)
 {
@@ -3668,13 +3665,13 @@ inline AudioDeviceRef AudioStream::GetDevice() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.PutData
- * @sa AudioStream.GetData
- * @sa AudioStream.GetAvailable
- * @sa AudioStream.Flush
- * @sa AudioStream.Clear
- * @sa AudioStream.SetFormat
- * @sa AudioStream.Destroy
+ * @sa PutAudioStreamData
+ * @sa GetAudioStreamData
+ * @sa GetAudioStreamAvailable
+ * @sa FlushAudioStream
+ * @sa ClearAudioStream
+ * @sa SetAudioStreamFormat
+ * @sa DestroyAudioStream
  */
 inline AudioStream CreateAudioStream(OptionalRef<const AudioSpec> src_spec,
                                      OptionalRef<const AudioSpec> dst_spec)
@@ -3777,7 +3774,7 @@ constexpr auto AUTO_CLEANUP_BOOLEAN =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetFormat
+ * @sa SetAudioStreamFormat
  */
 inline void GetAudioStreamFormat(AudioStreamRef stream,
                                  AudioSpec* src_spec,
@@ -3795,8 +3792,8 @@ inline void AudioStream::GetFormat(AudioSpec* src_spec,
 /**
  * Change the input and output formats of an audio stream.
  *
- * Future calls to and AudioStream.GetAvailable and AudioStream.GetData will
- * reflect the new format, and future calls to AudioStream.PutData must provide
+ * Future calls to and GetAudioStreamAvailable and GetAudioStreamData will
+ * reflect the new format, and future calls to PutAudioStreamData must provide
  * data in the new input formats.
  *
  * Data that was previously queued in the stream will still be operated on in
@@ -3823,8 +3820,8 @@ inline void AudioStream::GetFormat(AudioSpec* src_spec,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.GetFormat
- * @sa AudioStream.SetFrequencyRatio
+ * @sa GetAudioStreamFormat
+ * @sa SetAudioStreamFrequencyRatio
  */
 inline void SetAudioStreamFormat(AudioStreamRef stream,
                                  OptionalRef<const AudioSpec> src_spec,
@@ -3851,7 +3848,7 @@ inline void AudioStream::SetFormat(OptionalRef<const AudioSpec> src_spec,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetFrequencyRatio
+ * @sa SetAudioStreamFrequencyRatio
  */
 inline float GetAudioStreamFrequencyRatio(AudioStreamRef stream)
 {
@@ -3872,8 +3869,8 @@ inline float AudioStream::GetFrequencyRatio() const
  * pitch. A value less than 1.0f will play the audio slower, and at a lower
  * pitch. 1.0f means play at normal speed.
  *
- * This is applied during AudioStream.GetData, and can be continuously changed
- * to create various effects.
+ * This is applied during GetAudioStreamData, and can be continuously changed to
+ * create various effects.
  *
  * @param stream the stream on which the frequency ratio is being changed.
  * @param ratio the frequency ratio. 1.0 is normal speed. Must be between 0.01
@@ -3885,8 +3882,8 @@ inline float AudioStream::GetFrequencyRatio() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.GetFrequencyRatio
- * @sa AudioStream.SetFormat
+ * @sa GetAudioStreamFrequencyRatio
+ * @sa SetAudioStreamFormat
  */
 inline void SetAudioStreamFrequencyRatio(AudioStreamRef stream, float ratio)
 {
@@ -3915,7 +3912,7 @@ inline void AudioStream::SetFrequencyRatio(float ratio)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetGain
+ * @sa SetAudioStreamGain
  */
 inline float GetAudioStreamGain(AudioStreamRef stream)
 {
@@ -3935,8 +3932,8 @@ inline float AudioStream::GetGain() const
  *
  * Audio streams default to a gain of 1.0f (no change in output).
  *
- * This is applied during AudioStream.GetData, and can be continuously changed
- * to create various effects.
+ * This is applied during GetAudioStreamData, and can be continuously changed to
+ * create various effects.
  *
  * @param stream the stream on which the gain is being changed.
  * @param gain the gain. 1.0f is no change, 0.0f is silence.
@@ -3947,7 +3944,7 @@ inline float AudioStream::GetGain() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.GetGain
+ * @sa GetAudioStreamGain
  */
 inline void SetAudioStreamGain(AudioStreamRef stream, float gain)
 {
@@ -3977,7 +3974,7 @@ inline void AudioStream::SetGain(float gain)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetInputChannelMap
+ * @sa SetAudioStreamInputChannelMap
  */
 inline OwnArray<int> GetAudioStreamInputChannelMap(AudioStreamRef stream)
 {
@@ -4010,7 +4007,7 @@ inline OwnArray<int> AudioStream::GetInputChannelMap() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetInputChannelMap
+ * @sa SetAudioStreamInputChannelMap
  */
 inline OwnArray<int> GetAudioStreamOutputChannelMap(AudioStreamRef stream)
 {
@@ -4032,7 +4029,7 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
  * in the [order that SDL expects](CategoryAudio#channel-layouts).
  *
  * The input channel map reorders data that is added to a stream via
- * AudioStream.PutData. Future calls to AudioStream.PutData must provide data in
+ * PutAudioStreamData. Future calls to PutAudioStreamData must provide data in
  * the new channel order.
  *
  * Each item in the array represents an input channel, and its value is the
@@ -4079,7 +4076,7 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetOutputChannelMap
+ * @sa SetAudioStreamOutputChannelMap
  */
 inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
                                           std::span<int> chmap)
@@ -4100,7 +4097,7 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
  * in the [order that SDL expects](CategoryAudio#channel-layouts).
  *
  * The output channel map reorders data that is leaving a stream via
- * AudioStream.GetData.
+ * GetAudioStreamData.
  *
  * Each item in the array represents an input channel, and its value is the
  * channel that it should be remapped to. To reverse a stereo signal's left and
@@ -4114,7 +4111,7 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
  * reorder/mute them.
  *
  * The output channel map can be changed at any time, as output remapping is
- * applied during AudioStream.GetData.
+ * applied during GetAudioStreamData.
  *
  * Audio streams default to no remapping applied. Passing a nullptr channel map
  * is legal, and turns off remapping.
@@ -4145,7 +4142,7 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetInputChannelMap
+ * @sa SetAudioStreamInputChannelMap
  */
 inline void SetAudioStreamOutputChannelMap(AudioStreamRef stream,
                                            std::span<int> chmap)
@@ -4163,7 +4160,7 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  * Add data to the stream.
  *
  * This data must match the format/channels/samplerate specified in the latest
- * call to AudioStream.SetFormat, or the format specified when creating the
+ * call to SetAudioStreamFormat, or the format specified when creating the
  * stream if it hasn't been changed.
  *
  * Note that this call simply copies the unconverted data for later. This is
@@ -4180,10 +4177,10 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.Clear
- * @sa AudioStream.Flush
- * @sa AudioStream.GetData
- * @sa AudioStream.GetQueued
+ * @sa ClearAudioStream
+ * @sa FlushAudioStream
+ * @sa GetAudioStreamData
+ * @sa GetAudioStreamQueued
  */
 inline void PutAudioStreamData(AudioStreamRef stream, SourceBytes buf)
 {
@@ -4201,15 +4198,15 @@ inline void AudioStream::PutData(SourceBytes buf)
 /**
  * Add external data to an audio stream without copying it.
  *
- * Unlike AudioStream.PutData(), this function does not make a copy of the
+ * Unlike PutAudioStreamData(), this function does not make a copy of the
  * provided data, instead storing the provided pointer. This means that the put
  * operation does not need to allocate and copy the data, but the original data
  * must remain available until the stream is done with it, either by being read
- * from the stream in its entirety, or a call to AudioStream.Clear() or
- * AudioStream.Destroy().
+ * from the stream in its entirety, or a call to ClearAudioStream() or
+ * DestroyAudioStream().
  *
  * The data must match the format/channels/samplerate specified in the latest
- * call to AudioStream.SetFormat, or the format specified when creating the
+ * call to SetAudioStreamFormat, or the format specified when creating the
  * stream if it hasn't been changed.
  *
  * An optional callback may be provided, which is called when the stream no
@@ -4220,7 +4217,7 @@ inline void AudioStream::PutData(SourceBytes buf)
  * Note that there is still an allocation to store tracking information, so this
  * function is more efficient for larger blocks of data. If you're planning to
  * put a few samples at a time, it will be more efficient to use
- * AudioStream.PutData(), which allocates and buffers in blocks.
+ * PutAudioStreamData(), which allocates and buffers in blocks.
  *
  * @param stream the stream the audio data is being added to.
  * @param buf a pointer to the audio data to add.
@@ -4236,10 +4233,10 @@ inline void AudioStream::PutData(SourceBytes buf)
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa AudioStream.Clear
- * @sa AudioStream.Flush
- * @sa AudioStream.GetData
- * @sa AudioStream.GetQueued
+ * @sa ClearAudioStream
+ * @sa FlushAudioStream
+ * @sa GetAudioStreamData
+ * @sa GetAudioStreamQueued
  */
 inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                                      SourceBytes buf,
@@ -4253,15 +4250,15 @@ inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
 /**
  * Add external data to an audio stream without copying it.
  *
- * Unlike AudioStream.PutData(), this function does not make a copy of the
+ * Unlike PutAudioStreamData(), this function does not make a copy of the
  * provided data, instead storing the provided pointer. This means that the put
  * operation does not need to allocate and copy the data, but the original data
  * must remain available until the stream is done with it, either by being read
- * from the stream in its entirety, or a call to AudioStream.Clear() or
- * AudioStream.Destroy().
+ * from the stream in its entirety, or a call to ClearAudioStream() or
+ * DestroyAudioStream().
  *
  * The data must match the format/channels/samplerate specified in the latest
- * call to AudioStream.SetFormat, or the format specified when creating the
+ * call to SetAudioStreamFormat, or the format specified when creating the
  * stream if it hasn't been changed.
  *
  * An optional callback may be provided, which is called when the stream no
@@ -4272,7 +4269,7 @@ inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
  * Note that there is still an allocation to store tracking information, so this
  * function is more efficient for larger blocks of data. If you're planning to
  * put a few samples at a time, it will be more efficient to use
- * AudioStream.PutData(), which allocates and buffers in blocks.
+ * PutAudioStreamData(), which allocates and buffers in blocks.
  *
  * @param stream the stream the audio data is being added to.
  * @param buf a pointer to the audio data to add.
@@ -4286,10 +4283,10 @@ inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa AudioStream.Clear
- * @sa AudioStream.Flush
- * @sa AudioStream.GetData
- * @sa AudioStream.GetQueued
+ * @sa ClearAudioStream
+ * @sa FlushAudioStream
+ * @sa GetAudioStreamData
+ * @sa GetAudioStreamQueued
  */
 inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                                      SourceBytes buf,
@@ -4319,7 +4316,7 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
  * Add data to the stream with each channel in a separate array.
  *
  * This data must match the format/channels/samplerate specified in the latest
- * call to AudioStream.SetFormat, or the format specified when creating the
+ * call to SetAudioStreamFormat, or the format specified when creating the
  * stream if it hasn't been changed.
  *
  * The data will be interleaved and queued. Note that AudioStream only operates
@@ -4343,7 +4340,7 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
  * Note that `num_samples` is the number of _samples per array_. This can also
  * be thought of as the number of _sample frames_ to be queued. A value of 1
  * with stereo arrays will queue two samples to the stream. This is different
- * than AudioStream.PutData, which wants the size of a single array in bytes.
+ * than PutAudioStreamData, which wants the size of a single array in bytes.
  *
  * @param stream the stream the audio data is being added to.
  * @param channel_buffers a pointer to an array of arrays, one array per
@@ -4358,10 +4355,10 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa AudioStream.Clear
- * @sa AudioStream.Flush
- * @sa AudioStream.GetData
- * @sa AudioStream.GetQueued
+ * @sa ClearAudioStream
+ * @sa FlushAudioStream
+ * @sa GetAudioStreamData
+ * @sa GetAudioStreamQueued
  */
 inline void PutAudioStreamPlanarData(AudioStreamRef stream,
                                      const void* const* channel_buffers,
@@ -4387,10 +4384,10 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
  *
  * The input/output data format/channels/samplerate is specified when creating
  * the stream, and can be changed after creation by calling
- * AudioStream.SetFormat.
+ * SetAudioStreamFormat.
  *
  * Note that any conversion and resampling necessary is done during this call,
- * and AudioStream.PutData simply queues unconverted data for later. This is
+ * and PutAudioStreamData simply queues unconverted data for later. This is
  * different than SDL2, where that work was done while inputting new data to the
  * stream and requesting the output just copied the converted data.
  *
@@ -4405,9 +4402,9 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.Clear
- * @sa AudioStream.GetAvailable
- * @sa AudioStream.PutData
+ * @sa ClearAudioStream
+ * @sa GetAudioStreamAvailable
+ * @sa PutAudioStreamData
  */
 inline int GetAudioStreamData(AudioStreamRef stream, TargetBytes buf)
 {
@@ -4430,7 +4427,7 @@ inline int AudioStream::GetData(TargetBytes buf)
  * If the stream has so much data that it would overflow an int, the return
  * value is clamped to a maximum value, but no queued data is lost; if there are
  * gigabytes of data queued, the app might need to read some of it with
- * AudioStream.GetData before this function's return value is no longer clamped.
+ * GetAudioStreamData before this function's return value is no longer clamped.
  *
  * @param stream the audio stream to query.
  * @returns the number of converted/resampled bytes available or -1 on failure;
@@ -4440,8 +4437,8 @@ inline int AudioStream::GetData(TargetBytes buf)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.GetData
- * @sa AudioStream.PutData
+ * @sa GetAudioStreamData
+ * @sa PutAudioStreamData
  */
 inline int GetAudioStreamAvailable(AudioStreamRef stream)
 {
@@ -4460,7 +4457,7 @@ inline int AudioStream::GetAvailable() const
  * can be retrieved as output. Because of several details, it's not possible to
  * calculate one number directly from the other. If you need to know how much
  * usable data can be retrieved right now, you should use
- * AudioStream.GetAvailable() and not this function.
+ * GetAudioStreamAvailable() and not this function.
  *
  * Note that audio streams can change their input format at any time, even if
  * there is still data queued in a different format, so the returned byte count
@@ -4468,14 +4465,14 @@ inline int AudioStream::GetAvailable() const
  * this API should be aware of format changes they make when feeding a stream
  * and plan accordingly.
  *
- * Queued data is not converted until it is consumed by AudioStream.GetData, so
+ * Queued data is not converted until it is consumed by GetAudioStreamData, so
  * this value should be representative of the exact data that was put into the
  * stream.
  *
  * If the stream has so much data that it would overflow an int, the return
  * value is clamped to a maximum value, but no queued data is lost; if there are
  * gigabytes of data queued, the app might need to read some of it with
- * AudioStream.GetData before this function's return value is no longer clamped.
+ * GetAudioStreamData before this function's return value is no longer clamped.
  *
  * @param stream the audio stream to query.
  * @returns the number of bytes queued or -1 on failure; call GetError() for
@@ -4485,8 +4482,8 @@ inline int AudioStream::GetAvailable() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.PutData
- * @sa AudioStream.Clear
+ * @sa PutAudioStreamData
+ * @sa ClearAudioStream
  */
 inline int GetAudioStreamQueued(AudioStreamRef stream)
 {
@@ -4513,7 +4510,7 @@ inline int AudioStream::GetQueued() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.PutData
+ * @sa PutAudioStreamData
  */
 inline void FlushAudioStream(AudioStreamRef stream)
 {
@@ -4535,10 +4532,10 @@ inline void AudioStream::Flush() { SDL::FlushAudioStream(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.GetAvailable
- * @sa AudioStream.GetData
- * @sa AudioStream.GetQueued
- * @sa AudioStream.PutData
+ * @sa GetAudioStreamAvailable
+ * @sa GetAudioStreamData
+ * @sa GetAudioStreamQueued
+ * @sa PutAudioStreamData
  */
 inline void ClearAudioStream(AudioStreamRef stream)
 {
@@ -4566,7 +4563,7 @@ inline void AudioStream::Clear() { SDL::ClearAudioStream(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.ResumeDevice
+ * @sa ResumeAudioStreamDevice
  */
 inline void PauseAudioStreamDevice(AudioStreamRef stream)
 {
@@ -4593,7 +4590,7 @@ inline void AudioStream::PauseDevice() { SDL::PauseAudioStreamDevice(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.PauseDevice
+ * @sa PauseAudioStreamDevice
  */
 inline void ResumeAudioStreamDevice(AudioStreamRef stream)
 {
@@ -4616,8 +4613,8 @@ inline void AudioStream::ResumeDevice() { SDL::ResumeAudioStreamDevice(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.PauseDevice
- * @sa AudioStream.ResumeDevice
+ * @sa PauseAudioStreamDevice
+ * @sa ResumeAudioStreamDevice
  */
 inline bool AudioStreamDevicePaused(AudioStreamRef stream)
 {
@@ -4642,8 +4639,8 @@ inline bool AudioStream::DevicePaused() const
  * protect shared data during those callbacks, locking the stream guarantees
  * that the callback is not running while the lock is held.
  *
- * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
- * the same attributes (recursive locks are allowed, etc).
+ * As this is just a wrapper over LockMutex for an internal lock; it has all the
+ * same attributes (recursive locks are allowed, etc).
  *
  * @param stream the audio stream to lock.
  * @throws Error on failure.
@@ -4652,7 +4649,7 @@ inline bool AudioStream::DevicePaused() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.Unlock
+ * @sa UnlockAudioStream
  */
 inline void LockAudioStream(AudioStreamRef stream)
 {
@@ -4670,17 +4667,17 @@ inline AudioStreamLock::AudioStreamLock(AudioStreamRef resource)
 /**
  * Unlock an audio stream for serialized access.
  *
- * This unlocks an audio stream after a call to AudioStream.Lock.
+ * This unlocks an audio stream after a call to LockAudioStream.
  *
  * @param stream the audio stream to unlock.
  * @throws Error on failure.
  *
  * @threadsafety You should only call this from the same thread that previously
- *               called AudioStream.Lock.
+ *               called LockAudioStream.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.Lock
+ * @sa LockAudioStream
  */
 inline void UnlockAudioStream(AudioStreamRef stream)
 {
@@ -4706,7 +4703,7 @@ inline void AudioStreamLock::reset()
  * This callback is called _before_ data is obtained from the stream, giving the
  * callback the chance to add more on-demand.
  *
- * The callback can (optionally) call AudioStream.PutData() to add more audio to
+ * The callback can (optionally) call PutAudioStreamData() to add more audio to
  * the stream during this call; if needed, the request that triggered this
  * callback will obtain the new data immediately.
  *
@@ -4739,7 +4736,7 @@ inline void AudioStreamLock::reset()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetPutCallback
+ * @sa SetAudioStreamPutCallback
  */
 inline void SetAudioStreamGetCallback(AudioStreamRef stream,
                                       AudioStreamCallback callback,
@@ -4754,7 +4751,7 @@ inline void SetAudioStreamGetCallback(AudioStreamRef stream,
  * This callback is called _before_ data is obtained from the stream, giving the
  * callback the chance to add more on-demand.
  *
- * The callback can (optionally) call AudioStream.PutData() to add more audio to
+ * The callback can (optionally) call PutAudioStreamData() to add more audio to
  * the stream during this call; if needed, the request that triggered this
  * callback will obtain the new data immediately.
  *
@@ -4785,7 +4782,7 @@ inline void SetAudioStreamGetCallback(AudioStreamRef stream,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetPutCallback
+ * @sa SetAudioStreamPutCallback
  */
 inline void SetAudioStreamGetCallback(AudioStreamRef stream,
                                       AudioStreamCB callback)
@@ -4810,7 +4807,7 @@ inline void AudioStream::SetGetCallback(AudioStreamCB callback)
  * This callback is called _after_ the data is added to the stream, giving the
  * callback the chance to obtain it immediately.
  *
- * The callback can (optionally) call AudioStream.GetData() to obtain audio from
+ * The callback can (optionally) call GetAudioStreamData() to obtain audio from
  * the stream during this call.
  *
  * The callback's `additional_amount` argument is how many bytes of _converted_
@@ -4821,7 +4818,7 @@ inline void AudioStream::SetGetCallback(AudioStreamCB callback)
  * to aid in resampling. Which means the callback may be provided with zero
  * bytes, and a different amount on each call.
  *
- * The callback may call AudioStream.GetAvailable to see the total amount
+ * The callback may call GetAudioStreamAvailable to see the total amount
  * currently available to read from the stream, instead of the total provided by
  * the current call.
  *
@@ -4847,7 +4844,7 @@ inline void AudioStream::SetGetCallback(AudioStreamCB callback)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetGetCallback
+ * @sa SetAudioStreamGetCallback
  */
 inline void SetAudioStreamPutCallback(AudioStreamRef stream,
                                       AudioStreamCallback callback,
@@ -4862,7 +4859,7 @@ inline void SetAudioStreamPutCallback(AudioStreamRef stream,
  * This callback is called _after_ the data is added to the stream, giving the
  * callback the chance to obtain it immediately.
  *
- * The callback can (optionally) call AudioStream.GetData() to obtain audio from
+ * The callback can (optionally) call GetAudioStreamData() to obtain audio from
  * the stream during this call.
  *
  * The callback's `additional_amount` argument is how many bytes of _converted_
@@ -4873,7 +4870,7 @@ inline void SetAudioStreamPutCallback(AudioStreamRef stream,
  * to aid in resampling. Which means the callback may be provided with zero
  * bytes, and a different amount on each call.
  *
- * The callback may call AudioStream.GetAvailable to see the total amount
+ * The callback may call GetAudioStreamAvailable to see the total amount
  * currently available to read from the stream, instead of the total provided by
  * the current call.
  *
@@ -4897,7 +4894,7 @@ inline void SetAudioStreamPutCallback(AudioStreamRef stream,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.SetGetCallback
+ * @sa SetAudioStreamGetCallback
  */
 inline void SetAudioStreamPutCallback(AudioStreamRef stream,
                                       AudioStreamCB callback)
@@ -4957,15 +4954,15 @@ inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
  * Also unlike other functions, the audio device begins paused. This is to map
  * more closely to SDL2-style behavior, since there is no extra step here to
  * bind a stream to begin audio flowing. The audio device should be resumed with
- * AudioStream.ResumeDevice().
+ * ResumeAudioStreamDevice().
  *
  * This function works with both playback and recording devices.
  *
  * The `spec` parameter represents the app's side of the audio stream. That is,
  * for recording audio, this will be the output format, and for playing audio,
  * this will be the input format. If spec is nullptr, the system will choose the
- * format, and the app can use AudioStream.GetFormat() to obtain this
- * information later.
+ * format, and the app can use GetAudioStreamFormat() to obtain this information
+ * later.
  *
  * If you don't care about opening a specific audio device, you can (and
  * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
@@ -4976,7 +4973,7 @@ inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
  * capturing). Otherwise, the callback will begin to fire once the device is
  * unpaused.
  *
- * Destroying the returned stream with AudioStream.Destroy will also close the
+ * Destroying the returned stream with DestroyAudioStream will also close the
  * audio device associated with this stream.
  *
  * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or
@@ -4984,8 +4981,8 @@ inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
  * @param spec the audio stream's data format. Can be nullptr.
  * @param callback a callback where the app will provide new data for playback,
  *                 or receive new data for recording. Can be nullptr, in which
- *                 case the app will need to call AudioStream.PutData or
- *                 AudioStream.GetData as necessary.
+ *                 case the app will need to call PutAudioStreamData or
+ *                 GetAudioStreamData as necessary.
  * @param userdata app-controlled pointer passed to callback. Can be nullptr.
  *                 Ignored if callback is nullptr.
  * @returns an audio stream on success.
@@ -4995,8 +4992,8 @@ inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.GetDevice
- * @sa AudioStream.ResumeDevice
+ * @sa GetAudioStreamDevice
+ * @sa ResumeAudioStreamDevice
  */
 inline AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
                                          OptionalRef<const AudioSpec> spec,
@@ -5022,15 +5019,15 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
  * Also unlike other functions, the audio device begins paused. This is to map
  * more closely to SDL2-style behavior, since there is no extra step here to
  * bind a stream to begin audio flowing. The audio device should be resumed with
- * AudioStream.ResumeDevice().
+ * ResumeAudioStreamDevice().
  *
  * This function works with both playback and recording devices.
  *
  * The `spec` parameter represents the app's side of the audio stream. That is,
  * for recording audio, this will be the output format, and for playing audio,
  * this will be the input format. If spec is nullptr, the system will choose the
- * format, and the app can use AudioStream.GetFormat() to obtain this
- * information later.
+ * format, and the app can use GetAudioStreamFormat() to obtain this information
+ * later.
  *
  * If you don't care about opening a specific audio device, you can (and
  * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
@@ -5041,7 +5038,7 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
  * capturing). Otherwise, the callback will begin to fire once the device is
  * unpaused.
  *
- * Destroying the returned stream with AudioStream.Destroy will also close the
+ * Destroying the returned stream with DestroyAudioStream will also close the
  * audio device associated with this stream.
  *
  * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or
@@ -5056,8 +5053,8 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AudioStream.GetDevice
- * @sa AudioStream.ResumeDevice
+ * @sa GetAudioStreamDevice
+ * @sa ResumeAudioStreamDevice
  */
 inline AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
                                          OptionalRef<const AudioSpec> spec,
@@ -5257,7 +5254,7 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  * @param src the data source for the WAVE data.
  * @param spec a pointer to an AudioSpec that will be set to the WAVE data's
  *             format details on successful return.
- * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ * @param closeio if true, calls CloseIO() on `src` before returning,
  *                even in the case of an error.
  * @returns an allocated buffer containing the audio data on success, or nullptr
  * on failure.
@@ -5287,7 +5284,7 @@ inline OwnArray<Uint8> LoadWAV_IO(IOStreamRef src,
  * This is a convenience function that is effectively the same as:
  *
  * ```cpp
- * LoadWAV_IO(IOStream.FromFile(path, "rb"), true, spec);
+ * LoadWAV_IO(IOFromFile(path, "rb"), true, spec);
  * ```
  *
  * @param path the file path of the WAV file to open.
