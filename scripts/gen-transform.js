@@ -8952,7 +8952,7 @@ const transform = {
           parameters: [{ type: "DatagramSocketRef", name: "sock" }],
           hints: { copyDoc: "NET_ReceiveDatagram" },
         },
-        "Datagram::Receive": {
+        "DatagramBase::Receive": {
           kind: "function",
           type: "bool",
           static: false,

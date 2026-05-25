@@ -133795,6 +133795,10 @@
           "name": "Time",
           "kind": "forward"
         },
+        "EnvironmentBase-forward": {
+          "name": "EnvironmentBase",
+          "kind": "forward"
+        },
         "Environment-forward": {
           "name": "Environment",
           "kind": "forward"
@@ -133814,7 +133818,7 @@
             "Reference for Environment.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Environment>"
+          "type": "ResourceRefT<EnvironmentBase>"
         },
         "IConv-forward": {
           "name": "IConv",
@@ -135615,255 +135619,21 @@
           "parameters": [],
           "sourceName": "SDL_GetNumAllocations"
         },
-        "Environment": {
-          "doc": [
-            "A thread-safe set of environment variables",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            [
-              {
-                "tag": "@sa",
-                "content": "GetEnvironment"
-              },
-              {
-                "tag": "@sa",
-                "content": "CreateEnvironment"
-              },
-              {
-                "tag": "@sa",
-                "content": "GetEnvironmentVariable"
-              },
-              {
-                "tag": "@sa",
-                "content": "GetEnvironmentVariables"
-              },
-              {
-                "tag": "@sa",
-                "content": "SetEnvironmentVariable"
-              },
-              {
-                "tag": "@sa",
-                "content": "UnsetEnvironmentVariable"
-              },
-              {
-                "tag": "@sa",
-                "content": "DestroyEnvironment"
-              }
-            ],
-            "@cat resource"
-          ],
-          "name": "Environment",
+        "EnvironmentBase": {
+          "name": "EnvironmentBase",
           "kind": "struct",
-          "type": "ResourceBase<EnvironmentRaw>",
-          "sourceName": "SDL_Environment",
+          "type": "ResourceBaseT<EnvironmentRaw>",
+          "doc": [
+            "Base class to Environment.",
+            {
+              "tag": "@see",
+              "content": "Environment"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Environment": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "EnvironmentRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Environment.",
-                {
-                  "tag": "@param resource",
-                  "content": "a EnvironmentRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Environment",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Environment &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Environment",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Environment &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Environment(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Environment",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const EnvironmentRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Environment",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "EnvironmentRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Environment",
-                      "overload": {
-                        "doc": [
-                          "Create a set of environment variables",
-                          [
-                            {
-                              "tag": "@param populated",
-                              "content": "true to initialize it from the C runtime environment, false to create an empty environment."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a pointer to the new environment or nullptr on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "If `populated` is false, it is safe to call this function from any thread, otherwise it is safe if no other threads are calling setenv() or unsetenv()"
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "GetEnvironmentVariable"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetEnvironmentVariables"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "SetEnvironmentVariable"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "UnsetEnvironmentVariable"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyEnvironment"
-                            }
-                          ]
-                        ],
-                        "name": "Environment",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "populated",
-                            "type": "bool"
-                          }
-                        ],
-                        "sourceName": "SDL_CreateEnvironment",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Environment": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyEnvironment(get());"
-              },
-              "name": "~Environment"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Environment &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Environment &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Environment &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Environment &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -136149,6 +135919,229 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "Environment": {
+          "doc": [
+            "A thread-safe set of environment variables",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "GetEnvironment"
+              },
+              {
+                "tag": "@sa",
+                "content": "CreateEnvironment"
+              },
+              {
+                "tag": "@sa",
+                "content": "GetEnvironmentVariable"
+              },
+              {
+                "tag": "@sa",
+                "content": "GetEnvironmentVariables"
+              },
+              {
+                "tag": "@sa",
+                "content": "SetEnvironmentVariable"
+              },
+              {
+                "tag": "@sa",
+                "content": "UnsetEnvironmentVariable"
+              },
+              {
+                "tag": "@sa",
+                "content": "DestroyEnvironment"
+              }
+            ],
+            "@cat resource"
+          ],
+          "name": "Environment",
+          "kind": "struct",
+          "type": "EnvironmentBase",
+          "sourceName": "SDL_Environment",
+          "entries": {
+            "EnvironmentBase::EnvironmentBase": {
+              "kind": "alias",
+              "name": "EnvironmentBase::EnvironmentBase"
+            },
+            "Environment": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "EnvironmentRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "EnvironmentBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Environment.",
+                {
+                  "tag": "@param resource",
+                  "content": "a EnvironmentRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Environment",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Environment &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Environment",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Environment &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Environment(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Environment",
+                  "overload": {
+                    "doc": [
+                      "Create a set of environment variables",
+                      [
+                        {
+                          "tag": "@param populated",
+                          "content": "true to initialize it from the C runtime environment, false to create an empty environment."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a pointer to the new environment or nullptr on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "If `populated` is false, it is safe to call this function from any thread, otherwise it is safe if no other threads are calling setenv() or unsetenv()"
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "GetEnvironmentVariable"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetEnvironmentVariables"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "SetEnvironmentVariable"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "UnsetEnvironmentVariable"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyEnvironment"
+                        }
+                      ]
+                    ],
+                    "name": "Environment",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "populated",
+                        "type": "bool"
+                      }
+                    ],
+                    "sourceName": "SDL_CreateEnvironment",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Environment": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyEnvironment(get());"
+              },
+              "name": "~Environment"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Environment &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Environment &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Environment &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Environment &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "Environment"
           }
@@ -136332,8 +136325,8 @@
           ],
           "sourceName": "SDL_GetEnvironmentVariable"
         },
-        "Environment::GetVariable": {
-          "name": "Environment::GetVariable",
+        "EnvironmentBase::GetVariable": {
+          "name": "EnvironmentBase::GetVariable",
           "kind": "function",
           "type": "const char *",
           "parameters": [
@@ -136345,7 +136338,6 @@
           "sourceName": "SDL_GetEnvironmentVariable",
           "hints": {
             "self": "get()",
-            "super": "Environment",
             "delegate": "SDL::GetEnvironmentVariable"
           }
         },
@@ -136404,15 +136396,14 @@
           ],
           "sourceName": "SDL_GetEnvironmentVariables"
         },
-        "Environment::GetVariables": {
-          "name": "Environment::GetVariables",
+        "EnvironmentBase::GetVariables": {
+          "name": "EnvironmentBase::GetVariables",
           "kind": "function",
           "type": "OwnArray<char *>",
           "parameters": [],
           "sourceName": "SDL_GetEnvironmentVariables",
           "hints": {
             "self": "get()",
-            "super": "Environment",
             "delegate": "SDL::GetEnvironmentVariables"
           }
         },
@@ -136498,8 +136489,8 @@
             "mayFail": true
           }
         },
-        "Environment::SetVariable": {
-          "name": "Environment::SetVariable",
+        "EnvironmentBase::SetVariable": {
+          "name": "EnvironmentBase::SetVariable",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -136519,7 +136510,6 @@
           "sourceName": "SDL_SetEnvironmentVariable",
           "hints": {
             "self": "get()",
-            "super": "Environment",
             "mayFail": true,
             "delegate": "SDL::SetEnvironmentVariable"
           }
@@ -136594,8 +136584,8 @@
             "mayFail": true
           }
         },
-        "Environment::UnsetVariable": {
-          "name": "Environment::UnsetVariable",
+        "EnvironmentBase::UnsetVariable": {
+          "name": "EnvironmentBase::UnsetVariable",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -136607,7 +136597,6 @@
           "sourceName": "SDL_UnsetEnvironmentVariable",
           "hints": {
             "self": "get()",
-            "super": "Environment",
             "mayFail": true,
             "delegate": "SDL::UnsetEnvironmentVariable"
           }
@@ -136643,15 +136632,14 @@
           ],
           "sourceName": "SDL_DestroyEnvironment"
         },
-        "Environment::Destroy": {
-          "name": "Environment::Destroy",
+        "EnvironmentBase::Destroy": {
+          "name": "EnvironmentBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyEnvironment",
           "hints": {
             "self": "get()",
-            "super": "Environment",
             "body": "DestroyEnvironment(release());",
             "delegate": "SDL::DestroyEnvironment"
           }
@@ -212959,6 +212947,10 @@
           ],
           "type": "ResourceRef<Server>"
         },
+        "DatagramSocketBase-forward": {
+          "name": "DatagramSocketBase",
+          "kind": "forward"
+        },
         "DatagramSocket-forward": {
           "name": "DatagramSocket",
           "kind": "forward"
@@ -212978,7 +212970,11 @@
             "Reference for DatagramSocket.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<DatagramSocket>"
+          "type": "ResourceRefT<DatagramSocketBase>"
+        },
+        "DatagramBase-forward": {
+          "name": "DatagramBase",
+          "kind": "forward"
         },
         "Datagram-forward": {
           "name": "Datagram",
@@ -213007,7 +213003,7 @@
             "Reference for Datagram.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Datagram>"
+          "type": "ResourceRefT<DatagramBase>"
         },
         "DatagramConstRef": {
           "name": "DatagramConstRef",
@@ -216623,273 +216619,21 @@
             "delegate": "SDL::DestroyStreamSocket"
           }
         },
-        "DatagramSocket": {
-          "doc": [
-            "An object that represents a datagram connection to another system.",
-            "This is meant to be an unreliable, packet-oriented connection, such as UDP.",
-            "Datagram sockets follow different rules than stream sockets. They are not a reliable stream of bytes but rather packets, they are not limited to talking to a single other remote system, they do not maintain a single \"connection\" that can be dropped, and they are more nimble about network failures at the expense of being more complex to use. What makes sense for your app depends entirely on what your app is trying to accomplish.",
-            "Generally the idea of a datagram socket is that you send data one chunk (\"packet\") at a time to any address you want, and it arrives whenever it gets there, even if later packets get there first, and maybe it doesn't get there at all, and you don't know when anything of this happens by default.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL_net 3.0.0."
-            },
-            [
-              {
-                "tag": "@sa",
-                "content": "AddressBase.CreateDatagramSocket"
-              },
-              {
-                "tag": "@sa",
-                "content": "SendDatagram"
-              },
-              {
-                "tag": "@sa",
-                "content": "ReceiveDatagram"
-              }
-            ],
-            "@cat resource"
-          ],
-          "name": "DatagramSocket",
+        "DatagramSocketBase": {
+          "name": "DatagramSocketBase",
           "kind": "struct",
-          "type": "ResourceBase<DatagramSocketRaw>",
-          "sourceName": "NET_DatagramSocket",
+          "type": "ResourceBaseT<DatagramSocketRaw>",
+          "doc": [
+            "Base class to DatagramSocket.",
+            {
+              "tag": "@see",
+              "content": "DatagramSocket"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "DatagramSocket": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "DatagramSocketRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw DatagramSocket.",
-                {
-                  "tag": "@param resource",
-                  "content": "a DatagramSocketRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "DatagramSocket",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const DatagramSocket &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "DatagramSocket",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "DatagramSocket &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "DatagramSocket(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "DatagramSocket",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const DatagramSocketRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "DatagramSocket",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "DatagramSocketRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "DatagramSocket",
-                      "overload": {
-                        "doc": [
-                          "Create and bind a new datagram socket.",
-                          "Datagram sockets follow different rules than stream sockets. They are not a reliable stream of bytes but rather packets, they are not limited to talking to a single other remote system, they do not maintain a single \"connection\" that can be dropped, and they are more nimble about network failures at the expense of being more complex to use. What makes sense for your app depends entirely on what your app is trying to accomplish.",
-                          "Generally the idea of a datagram socket is that you send data one chunk (\"packet\") at a time to any address you want, and it arrives whenever it gets there, even if later packets get there first, and maybe it doesn't get there at all, and you don't know when anything of this happens by default.",
-                          "This function creates a new datagram socket.",
-                          "This function does not block, and is not asynchronous, as the system can decide immediately if it can create a socket or not. If this returns success, you can immediately start talking to the network.",
-                          "You can specify an address to listen for connections on; this address must be local to the system, and probably one returned by GetLocalAddresses(), but almost always you just want to specify nullptr here, to listen on any address available to the app.",
-                          "If you need to bind to a specific port (like a server), you should specify it in the `port` argument; datagram servers should do this, so they can be reached at a well-known port. If you only plan to initiate communications (like a client), you should specify 0 and let the system pick an unused port. Only one process can bind to a specific port at a time, so if you aren't acting as a server, you should choose 0. Datagram sockets can send individual packets to any port, so this just declares where data will arrive for your socket.",
-                          "Datagram sockets don't employ any protocol (above the UDP level), so they can talk to apps that aren't using SDL_net, but if you want to speak any protocol beyond arbitrary packets of bytes, such as WebRTC, you'll have to implement that yourself on top of the stream socket.",
-                          "Unlike BSD sockets or WinSock, you specify the port as a normal integer; you do not have to byteswap it into \"network order,\" as the library will handle that for you.",
-                          "The caller may supply properties to customize behavior. This is optional, and a value of zero for `props` will request defaults for all properties.",
-                          "These are the supported properties:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "`prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be created even if a previous socket has recently used this address. For various reasons, networks prefer that there be some delay between apps reusing the same address, but this can be problematic when iterating quickly, for software development purposes or just restarting a crashed service. This property defaults to true (although it should be noted that, at the operating system level, this defaults to false!). If this property is false and the OS feels that not enough time has elapsed, socket creation will fail and this function will report an error."
-                            },
-                            {
-                              "tag": "-",
-                              "content": "`prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should allow broadcasting. At the lower level, this will set `SO_BROADCAST` for IPv4 sockets, to allow sending to the subnet's broadcast address at the OS level. For IPv6, it'll join the all-nodes link-local multicast group, ff02::1, allowing sending and receiving there, more or less simulating the usual IPv4 broadcast semantics. Other protocols take similar approaches. If you do not intend to send or receive broadcast packets on this socket, set this property to false, or omit it, as it defaults to false. Note: IPv4 will still be able to receive broadcast packets without this option, but IPv6 will not. Also see notes about sending to a broadcast address in SendDatagram()."
-                            }
-                          ],
-                          [
-                            {
-                              "tag": "@param addr",
-                              "content": "the local address to listen for connections on, or nullptr to listen on all available local addresses."
-                            },
-                            {
-                              "tag": "@param port",
-                              "content": "the port on the local address to listen for connections on, or zero for the system to decide."
-                            },
-                            {
-                              "tag": "@param props",
-                              "content": "properties of the new socket. Specify zero for defaults."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new DatagramSocket on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_net 3.0.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "GetLocalAddresses"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyDatagramSocket"
-                            }
-                          ]
-                        ],
-                        "name": "DatagramSocket",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "addr",
-                            "type": "AddressRef"
-                          },
-                          {
-                            "name": "port",
-                            "type": "Uint16"
-                          },
-                          {
-                            "name": "props",
-                            "type": "PropertiesRef"
-                          }
-                        ],
-                        "sourceName": "NET_CreateDatagramSocket",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~DatagramSocket": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "NET_DestroyDatagramSocket(get());"
-              },
-              "name": "~DatagramSocket"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "DatagramSocket &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "DatagramSocket &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "DatagramSocket &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const DatagramSocket &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -217146,13 +216890,15 @@
             }
           },
           "hints": {
-            "self": "get()",
-            "super": "DatagramSocket"
+            "self": "get()"
           }
         },
-        "Datagram": {
+        "DatagramSocket": {
           "doc": [
-            "The data provided for new incoming packets from ReceiveDatagram().",
+            "An object that represents a datagram connection to another system.",
+            "This is meant to be an unreliable, packet-oriented connection, such as UDP.",
+            "Datagram sockets follow different rules than stream sockets. They are not a reliable stream of bytes but rather packets, they are not limited to talking to a single other remote system, they do not maintain a single \"connection\" that can be dropped, and they are more nimble about network failures at the expense of being more complex to use. What makes sense for your app depends entirely on what your app is trying to accomplish.",
+            "Generally the idea of a datagram socket is that you send data one chunk (\"packet\") at a time to any address you want, and it arrives whenever it gets there, even if later packets get there first, and maybe it doesn't get there at all, and you don't know when anything of this happens by default.",
             {
               "tag": "@since",
               "content": "This datatype is available since SDL_net 3.0.0."
@@ -217160,24 +216906,29 @@
             [
               {
                 "tag": "@sa",
-                "content": "ReceiveDatagram"
+                "content": "AddressBase.CreateDatagramSocket"
               },
               {
                 "tag": "@sa",
-                "content": "DestroyDatagram"
+                "content": "SendDatagram"
+              },
+              {
+                "tag": "@sa",
+                "content": "ReceiveDatagram"
               }
             ],
             "@cat resource"
           ],
-          "name": "Datagram",
+          "name": "DatagramSocket",
           "kind": "struct",
-          "sourceName": "NET_Datagram",
+          "type": "DatagramSocketBase",
+          "sourceName": "NET_DatagramSocket",
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "DatagramSocketBase::DatagramSocketBase": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
+              "name": "DatagramSocketBase::DatagramSocketBase"
             },
-            "Datagram": {
+            "DatagramSocket": {
               "kind": "function",
               "type": "",
               "constexpr": true,
@@ -217185,24 +216936,24 @@
               "parameters": [
                 {
                   "name": "resource",
-                  "type": "DatagramRaw"
+                  "type": "DatagramSocketRaw"
                 }
               ],
               "hints": {
                 "init": [
-                  "ResourceBase(resource)"
+                  "DatagramSocketBase(resource)"
                 ],
                 "noexcept": true
               },
               "doc": [
-                "Constructs from raw Datagram.",
+                "Constructs from raw DatagramSocket.",
                 {
                   "tag": "@param resource",
-                  "content": "a DatagramRaw to be wrapped."
+                  "content": "a DatagramSocketRaw to be wrapped."
                 },
                 "This assumes the ownership, call release() if you need to take back."
               ],
-              "name": "Datagram",
+              "name": "DatagramSocket",
               "overload": {
                 "kind": "function",
                 "type": "",
@@ -217210,7 +216961,7 @@
                 "parameters": [
                   {
                     "name": "other",
-                    "type": "const Datagram &"
+                    "type": "const DatagramSocket &"
                   }
                 ],
                 "hints": {
@@ -217219,7 +216970,7 @@
                 "doc": [
                   "Copy constructor"
                 ],
-                "name": "Datagram",
+                "name": "DatagramSocket",
                 "overload": {
                   "kind": "function",
                   "type": "",
@@ -217227,107 +216978,178 @@
                   "parameters": [
                     {
                       "name": "other",
-                      "type": "Datagram &&"
+                      "type": "DatagramSocket &&"
                     }
                   ],
                   "hints": {
                     "init": [
-                      "Datagram(other.release())"
+                      "DatagramSocket(other.release())"
                     ],
                     "noexcept": true
                   },
                   "doc": [
                     "Move constructor"
                   ],
-                  "name": "Datagram",
+                  "name": "DatagramSocket",
                   "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const DatagramRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Datagram",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
+                    "doc": [
+                      "Create and bind a new datagram socket.",
+                      "Datagram sockets follow different rules than stream sockets. They are not a reliable stream of bytes but rather packets, they are not limited to talking to a single other remote system, they do not maintain a single \"connection\" that can be dropped, and they are more nimble about network failures at the expense of being more complex to use. What makes sense for your app depends entirely on what your app is trying to accomplish.",
+                      "Generally the idea of a datagram socket is that you send data one chunk (\"packet\") at a time to any address you want, and it arrives whenever it gets there, even if later packets get there first, and maybe it doesn't get there at all, and you don't know when anything of this happens by default.",
+                      "This function creates a new datagram socket.",
+                      "This function does not block, and is not asynchronous, as the system can decide immediately if it can create a socket or not. If this returns success, you can immediately start talking to the network.",
+                      "You can specify an address to listen for connections on; this address must be local to the system, and probably one returned by GetLocalAddresses(), but almost always you just want to specify nullptr here, to listen on any address available to the app.",
+                      "If you need to bind to a specific port (like a server), you should specify it in the `port` argument; datagram servers should do this, so they can be reached at a well-known port. If you only plan to initiate communications (like a client), you should specify 0 and let the system pick an unused port. Only one process can bind to a specific port at a time, so if you aren't acting as a server, you should choose 0. Datagram sockets can send individual packets to any port, so this just declares where data will arrive for your socket.",
+                      "Datagram sockets don't employ any protocol (above the UDP level), so they can talk to apps that aren't using SDL_net, but if you want to speak any protocol beyond arbitrary packets of bytes, such as WebRTC, you'll have to implement that yourself on top of the stream socket.",
+                      "Unlike BSD sockets or WinSock, you specify the port as a normal integer; you do not have to byteswap it into \"network order,\" as the library will handle that for you.",
+                      "The caller may supply properties to customize behavior. This is optional, and a value of zero for `props` will request defaults for all properties.",
+                      "These are the supported properties:",
+                      [
                         {
-                          "name": "other",
-                          "type": "DatagramRef &&"
+                          "tag": "-",
+                          "content": "`prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be created even if a previous socket has recently used this address. For various reasons, networks prefer that there be some delay between apps reusing the same address, but this can be problematic when iterating quickly, for software development purposes or just restarting a crashed service. This property defaults to true (although it should be noted that, at the operating system level, this defaults to false!). If this property is false and the OS feels that not enough time has elapsed, socket creation will fail and this function will report an error."
+                        },
+                        {
+                          "tag": "-",
+                          "content": "`prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should allow broadcasting. At the lower level, this will set `SO_BROADCAST` for IPv4 sockets, to allow sending to the subnet's broadcast address at the OS level. For IPv6, it'll join the all-nodes link-local multicast group, ff02::1, allowing sending and receiving there, more or less simulating the usual IPv4 broadcast semantics. Other protocols take similar approaches. If you do not intend to send or receive broadcast packets on this socket, set this property to false, or omit it, as it defaults to false. Note: IPv4 will still be able to receive broadcast packets without this option, but IPv6 will not. Also see notes about sending to a broadcast address in SendDatagram()."
                         }
                       ],
-                      "hints": {
-                        "delete": true
+                      [
+                        {
+                          "tag": "@param addr",
+                          "content": "the local address to listen for connections on, or nullptr to listen on all available local addresses."
+                        },
+                        {
+                          "tag": "@param port",
+                          "content": "the port on the local address to listen for connections on, or zero for the system to decide."
+                        },
+                        {
+                          "tag": "@param props",
+                          "content": "properties of the new socket. Specify zero for defaults."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a new DatagramSocket on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
                       },
-                      "name": "Datagram",
-                      "overload": {
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "type": "DatagramSocketRef",
-                            "name": "sock"
-                          }
-                        ],
-                        "hints": {},
-                        "name": "Datagram",
-                        "doc": [
-                          "Receive a new packet that a remote system sent to a datagram socket.",
-                          "Datagram sockets send packets of data. They either arrive as complete packets or they don't arrive at all, so you'll never receive half a packet.",
-                          "This call never blocks; if no new data is available at the time of the call, it returns true immediately. The caller can try again later.",
-                          "On a successful call to this function, it returns true, even if no new packets are available, so you should check for a successful return and a non-nullptr value in `*dgram` to decide if a new packet is available.",
-                          "You must pass received packets to DestroyDatagram when you are done with them. If you want to save the sender's address past this time, it is safe to call RefAddress() on the address and hold onto the pointer, so long as you call UnrefAddress() on it when you are done with it.",
-                          "Since datagrams can arrive from any address or port on the network without prior warning, this information is available in the Datagram object that is provided by this function, and this is the only way to know who to reply to. Even if you aren't acting as a \"server,\" packets can still arrive at your socket if someone sends one.",
-                          "If there's a fatal error, this function will return false. Datagram sockets generally won't report failures, because there is no state like a \"connection\" to fail at this level, but may report failure for unrecoverable system-level conditions; once a datagram socket fails, you should assume it is no longer usable and should destroy it with SDL_DestroyDatagramSocket().",
-                          [
-                            {
-                              "tag": "@param sock",
-                              "content": "the datagram socket to send data through."
-                            },
-                            {
-                              "tag": "@param dgram",
-                              "content": "a pointer to the datagram packet pointer."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "true if data sent or queued for transmission, false on failure; call GetError() for details."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "You should not operate on the same socket from multiple threads at the same time without supplying a serialization mechanism. However, different threads may access different sockets at the same time without problems."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_net 3.0.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "SendDatagram"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyDatagram"
-                            }
-                          ]
-                        ],
-                        "proto": true
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_net 3.0.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "GetLocalAddresses"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyDatagramSocket"
+                        }
+                      ]
+                    ],
+                    "name": "DatagramSocket",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "addr",
+                        "type": "AddressRef"
+                      },
+                      {
+                        "name": "port",
+                        "type": "Uint16"
+                      },
+                      {
+                        "name": "props",
+                        "type": "PropertiesRef"
                       }
-                    }
+                    ],
+                    "sourceName": "NET_CreateDatagramSocket",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "proto": true
                   }
                 }
               }
+            },
+            "~DatagramSocket": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "NET_DestroyDatagramSocket(get());"
+              },
+              "name": "~DatagramSocket"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "DatagramSocket &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "DatagramSocket &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "DatagramSocket &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const DatagramSocket &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
+            "self": "get()",
+            "super": "DatagramSocket"
+          }
+        },
+        "DatagramBase": {
+          "name": "DatagramBase",
+          "kind": "struct",
+          "type": "ResourceBaseT<DatagramRaw, DatagramRawConst>",
+          "doc": [
+            "Base class to Datagram.",
+            {
+              "tag": "@see",
+              "content": "Datagram"
+            }
+          ],
+          "entries": {
+            "ResourceBaseT::ResourceBaseT": {
+              "kind": "alias",
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "operator DatagramConstRef": {
               "kind": "function",
@@ -217343,54 +217165,6 @@
                 "Converts to DatagramConstRef"
               ],
               "name": "operator DatagramConstRef"
-            },
-            "~Datagram": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "NET_DestroyDatagram(get());"
-              },
-              "name": "~Datagram"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Datagram &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Datagram &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Datagram &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Datagram &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
             },
             "Destroy": {
               "doc": [
@@ -217474,7 +217248,207 @@
               "proto": true
             }
           },
-          "type": "ResourceBase<DatagramRaw, DatagramRawConst>",
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Datagram": {
+          "doc": [
+            "The data provided for new incoming packets from ReceiveDatagram().",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL_net 3.0.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "ReceiveDatagram"
+              },
+              {
+                "tag": "@sa",
+                "content": "DestroyDatagram"
+              }
+            ],
+            "@cat resource"
+          ],
+          "name": "Datagram",
+          "kind": "struct",
+          "sourceName": "NET_Datagram",
+          "entries": {
+            "DatagramBase::DatagramBase": {
+              "kind": "alias",
+              "name": "DatagramBase::DatagramBase"
+            },
+            "Datagram": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "DatagramRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "DatagramBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Datagram.",
+                {
+                  "tag": "@param resource",
+                  "content": "a DatagramRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Datagram",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Datagram &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Datagram",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Datagram &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Datagram(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Datagram",
+                  "overload": {
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "type": "DatagramSocketRef",
+                        "name": "sock"
+                      }
+                    ],
+                    "hints": {},
+                    "name": "Datagram",
+                    "doc": [
+                      "Receive a new packet that a remote system sent to a datagram socket.",
+                      "Datagram sockets send packets of data. They either arrive as complete packets or they don't arrive at all, so you'll never receive half a packet.",
+                      "This call never blocks; if no new data is available at the time of the call, it returns true immediately. The caller can try again later.",
+                      "On a successful call to this function, it returns true, even if no new packets are available, so you should check for a successful return and a non-nullptr value in `*dgram` to decide if a new packet is available.",
+                      "You must pass received packets to DestroyDatagram when you are done with them. If you want to save the sender's address past this time, it is safe to call RefAddress() on the address and hold onto the pointer, so long as you call UnrefAddress() on it when you are done with it.",
+                      "Since datagrams can arrive from any address or port on the network without prior warning, this information is available in the Datagram object that is provided by this function, and this is the only way to know who to reply to. Even if you aren't acting as a \"server,\" packets can still arrive at your socket if someone sends one.",
+                      "If there's a fatal error, this function will return false. Datagram sockets generally won't report failures, because there is no state like a \"connection\" to fail at this level, but may report failure for unrecoverable system-level conditions; once a datagram socket fails, you should assume it is no longer usable and should destroy it with SDL_DestroyDatagramSocket().",
+                      [
+                        {
+                          "tag": "@param sock",
+                          "content": "the datagram socket to send data through."
+                        },
+                        {
+                          "tag": "@param dgram",
+                          "content": "a pointer to the datagram packet pointer."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "true if data sent or queued for transmission, false on failure; call GetError() for details."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "You should not operate on the same socket from multiple threads at the same time without supplying a serialization mechanism. However, different threads may access different sockets at the same time without problems."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_net 3.0.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "SendDatagram"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyDatagram"
+                        }
+                      ]
+                    ],
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Datagram": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "NET_DestroyDatagram(get());"
+              },
+              "name": "~Datagram"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Datagram &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Datagram &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Datagram &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Datagram &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "type": "DatagramBase",
           "hints": {
             "self": "get()",
             "super": "Datagram"
@@ -217720,8 +217694,8 @@
           ],
           "sourceName": "NET_SendDatagram"
         },
-        "DatagramSocket::SendDatagram": {
-          "name": "DatagramSocket::SendDatagram",
+        "DatagramSocketBase::SendDatagram": {
+          "name": "DatagramSocketBase::SendDatagram",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -217745,7 +217719,6 @@
           "sourceName": "NET_SendDatagram",
           "hints": {
             "self": "get()",
-            "super": "DatagramSocket",
             "delegate": "SDL::SendDatagram"
           }
         },
@@ -217864,8 +217837,8 @@
             ]
           }
         },
-        "DatagramSocket::ReceiveDatagram": {
-          "name": "DatagramSocket::ReceiveDatagram",
+        "DatagramSocketBase::ReceiveDatagram": {
+          "name": "DatagramSocketBase::ReceiveDatagram",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -217877,7 +217850,6 @@
           "sourceName": "NET_ReceiveDatagram",
           "hints": {
             "self": "get()",
-            "super": "DatagramSocket",
             "body": "return dgram.Receive(sock);",
             "delegate": "SDL::ReceiveDatagram"
           },
@@ -217887,10 +217859,9 @@
             "parameters": [],
             "hints": {
               "self": "get()",
-              "super": "DatagramSocket",
               "delegate": "SDL::ReceiveDatagram"
             },
-            "name": "DatagramSocket::ReceiveDatagram"
+            "name": "DatagramSocketBase::ReceiveDatagram"
           }
         },
         "Datagram::Datagram": {
@@ -217908,7 +217879,7 @@
           },
           "name": "Datagram::Datagram"
         },
-        "Datagram::Receive": {
+        "DatagramBase::Receive": {
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -217918,10 +217889,9 @@
             }
           ],
           "hints": {
-            "self": "get()",
-            "super": "Datagram"
+            "self": "get()"
           },
-          "name": "Datagram::Receive"
+          "name": "DatagramBase::Receive"
         },
         "DestroyDatagram": {
           "doc": [
@@ -217953,15 +217923,14 @@
           ],
           "sourceName": "NET_DestroyDatagram"
         },
-        "Datagram::Destroy": {
-          "name": "Datagram::Destroy",
+        "DatagramBase::Destroy": {
+          "name": "DatagramBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "NET_DestroyDatagram",
           "hints": {
             "self": "get()",
-            "super": "Datagram",
             "body": "DestroyDatagram(release());",
             "delegate": "SDL::DestroyDatagram"
           }
@@ -218007,8 +217976,8 @@
           ],
           "sourceName": "NET_SimulateDatagramPacketLoss"
         },
-        "DatagramSocket::SimulateDatagramPacketLoss": {
-          "name": "DatagramSocket::SimulateDatagramPacketLoss",
+        "DatagramSocketBase::SimulateDatagramPacketLoss": {
+          "name": "DatagramSocketBase::SimulateDatagramPacketLoss",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -218020,7 +217989,6 @@
           "sourceName": "NET_SimulateDatagramPacketLoss",
           "hints": {
             "self": "get()",
-            "super": "DatagramSocket",
             "delegate": "SDL::SimulateDatagramPacketLoss"
           }
         },
@@ -218067,15 +218035,14 @@
           ],
           "sourceName": "NET_DestroyDatagramSocket"
         },
-        "DatagramSocket::Destroy": {
-          "name": "DatagramSocket::Destroy",
+        "DatagramSocketBase::Destroy": {
+          "name": "DatagramSocketBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "NET_DestroyDatagramSocket",
           "hints": {
             "self": "get()",
-            "super": "DatagramSocket",
             "body": "DestroyDatagramSocket(release());",
             "delegate": "SDL::DestroyDatagramSocket"
           }

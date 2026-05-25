@@ -10846,6 +10846,9 @@ using TimeRaw = SDL_Time;
 struct Time;
 
 // Forward decl
+struct EnvironmentBase;
+
+// Forward decl
 struct Environment;
 
 /// Alias to raw representation for Environment.
@@ -10856,7 +10859,7 @@ using EnvironmentRaw = SDL_Environment*;
  *
  * This does not take ownership!
  */
-using EnvironmentRef = ResourceRef<Environment>;
+using EnvironmentRef = ResourceRefT<EnvironmentBase>;
 
 // Forward decl
 struct IConv;
@@ -11708,83 +11711,13 @@ inline void aligned_free(void* mem) { SDL_aligned_free(mem); }
 inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
 
 /**
- * A thread-safe set of environment variables
+ * Base class to Environment.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GetEnvironment
- * @sa CreateEnvironment
- * @sa GetEnvironmentVariable
- * @sa GetEnvironmentVariables
- * @sa SetEnvironmentVariable
- * @sa UnsetEnvironmentVariable
- * @sa DestroyEnvironment
- *
- * @cat resource
+ * @see Environment
  */
-struct Environment : ResourceBase<EnvironmentRaw>
+struct EnvironmentBase : ResourceBaseT<EnvironmentRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Environment.
-   *
-   * @param resource a EnvironmentRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Environment(EnvironmentRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Environment(const Environment& other) = delete;
-
-  /// Move constructor
-  constexpr Environment(Environment&& other) noexcept
-    : Environment(other.release())
-  {
-  }
-
-  constexpr Environment(const EnvironmentRef& other) = delete;
-
-  constexpr Environment(EnvironmentRef&& other) = delete;
-
-  /**
-   * Create a set of environment variables
-   *
-   * @param populated true to initialize it from the C runtime environment,
-   *                  false to create an empty environment.
-   * @post a pointer to the new environment or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety If `populated` is false, it is safe to call this function
-   *               from any thread, otherwise it is safe if no other threads are
-   *               calling setenv() or unsetenv()
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetEnvironmentVariable
-   * @sa GetEnvironmentVariables
-   * @sa SetEnvironmentVariable
-   * @sa UnsetEnvironmentVariable
-   * @sa DestroyEnvironment
-   */
-  Environment(bool populated);
-
-  /// Destructor
-  ~Environment() { SDL_DestroyEnvironment(get()); }
-
-  /// Assignment operator.
-  constexpr Environment& operator=(Environment&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Environment& operator=(const Environment& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a set of environment variables.
@@ -11890,6 +11823,82 @@ struct Environment : ResourceBase<EnvironmentRaw>
 };
 
 /**
+ * A thread-safe set of environment variables
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GetEnvironment
+ * @sa CreateEnvironment
+ * @sa GetEnvironmentVariable
+ * @sa GetEnvironmentVariables
+ * @sa SetEnvironmentVariable
+ * @sa UnsetEnvironmentVariable
+ * @sa DestroyEnvironment
+ *
+ * @cat resource
+ */
+struct Environment : EnvironmentBase
+{
+  using EnvironmentBase::EnvironmentBase;
+
+  /**
+   * Constructs from raw Environment.
+   *
+   * @param resource a EnvironmentRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Environment(EnvironmentRaw resource) noexcept
+    : EnvironmentBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Environment(const Environment& other) = delete;
+
+  /// Move constructor
+  constexpr Environment(Environment&& other) noexcept
+    : Environment(other.release())
+  {
+  }
+
+  /**
+   * Create a set of environment variables
+   *
+   * @param populated true to initialize it from the C runtime environment,
+   *                  false to create an empty environment.
+   * @post a pointer to the new environment or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety If `populated` is false, it is safe to call this function
+   *               from any thread, otherwise it is safe if no other threads are
+   *               calling setenv() or unsetenv()
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetEnvironmentVariable
+   * @sa GetEnvironmentVariables
+   * @sa SetEnvironmentVariable
+   * @sa UnsetEnvironmentVariable
+   * @sa DestroyEnvironment
+   */
+  Environment(bool populated);
+
+  /// Destructor
+  ~Environment() { SDL_DestroyEnvironment(get()); }
+
+  /// Assignment operator.
+  constexpr Environment& operator=(Environment&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Environment& operator=(const Environment& other) = delete;
+};
+
+/**
  * Get the process environment.
  *
  * This is initialized at application start and is not affected by setenv() and
@@ -11965,7 +11974,7 @@ inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
   return SDL_GetEnvironmentVariable(env, name);
 }
 
-inline const char* Environment::GetVariable(StringParam name)
+inline const char* EnvironmentBase::GetVariable(StringParam name)
 {
   return SDL::GetEnvironmentVariable(get(), std::move(name));
 }
@@ -11994,7 +12003,7 @@ inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
 }
 
-inline OwnArray<char*> Environment::GetVariables()
+inline OwnArray<char*> EnvironmentBase::GetVariables()
 {
   return SDL::GetEnvironmentVariables(get());
 }
@@ -12027,9 +12036,9 @@ inline void SetEnvironmentVariable(EnvironmentRef env,
   CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite));
 }
 
-inline void Environment::SetVariable(StringParam name,
-                                     StringParam value,
-                                     bool overwrite)
+inline void EnvironmentBase::SetVariable(StringParam name,
+                                         StringParam value,
+                                         bool overwrite)
 {
   SDL::SetEnvironmentVariable(
     get(), std::move(name), std::move(value), overwrite);
@@ -12058,7 +12067,7 @@ inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
   CheckError(SDL_UnsetEnvironmentVariable(env, name));
 }
 
-inline void Environment::UnsetVariable(StringParam name)
+inline void EnvironmentBase::UnsetVariable(StringParam name)
 {
   SDL::UnsetEnvironmentVariable(get(), std::move(name));
 }
@@ -12080,7 +12089,7 @@ inline void DestroyEnvironment(EnvironmentRaw env)
   SDL_DestroyEnvironment(env);
 }
 
-inline void Environment::Destroy() { DestroyEnvironment(release()); }
+inline void EnvironmentBase::Destroy() { DestroyEnvironment(release()); }
 
 /**
  * Get the value of a variable in the environment.
@@ -90258,6 +90267,9 @@ using ServerRaw = NET_Server*;
 using ServerRef = ResourceRef<Server>;
 
 // Forward decl
+struct DatagramSocketBase;
+
+// Forward decl
 struct DatagramSocket;
 
 /// Alias to raw representation for DatagramSocket.
@@ -90268,7 +90280,10 @@ using DatagramSocketRaw = NET_DatagramSocket*;
  *
  * This does not take ownership!
  */
-using DatagramSocketRef = ResourceRef<DatagramSocket>;
+using DatagramSocketRef = ResourceRefT<DatagramSocketBase>;
+
+// Forward decl
+struct DatagramBase;
 
 // Forward decl
 struct Datagram;
@@ -90284,7 +90299,7 @@ using DatagramRawConst = const NET_Datagram*;
  *
  * This does not take ownership!
  */
-using DatagramRef = ResourceRef<Datagram>;
+using DatagramRef = ResourceRefT<DatagramBase>;
 
 /// Safely wrap Datagram for non owning const parameters
 using DatagramConstRef = ResourceConstRef<DatagramRaw, DatagramRawConst>;
@@ -92601,158 +92616,13 @@ inline void DestroyStreamSocket(StreamSocketRaw sock)
 inline void StreamSocket::Destroy() { DestroyStreamSocket(release()); }
 
 /**
- * An object that represents a datagram connection to another system.
+ * Base class to DatagramSocket.
  *
- * This is meant to be an unreliable, packet-oriented connection, such as UDP.
- *
- * Datagram sockets follow different rules than stream sockets. They are not a
- * reliable stream of bytes but rather packets, they are not limited to talking
- * to a single other remote system, they do not maintain a single "connection"
- * that can be dropped, and they are more nimble about network failures at the
- * expense of being more complex to use. What makes sense for your app depends
- * entirely on what your app is trying to accomplish.
- *
- * Generally the idea of a datagram socket is that you send data one chunk
- * ("packet") at a time to any address you want, and it arrives whenever it gets
- * there, even if later packets get there first, and maybe it doesn't get there
- * at all, and you don't know when anything of this happens by default.
- *
- * @since This datatype is available since SDL_net 3.0.0.
- *
- * @sa AddressBase.CreateDatagramSocket
- * @sa SendDatagram
- * @sa ReceiveDatagram
- *
- * @cat resource
+ * @see DatagramSocket
  */
-struct DatagramSocket : ResourceBase<DatagramSocketRaw>
+struct DatagramSocketBase : ResourceBaseT<DatagramSocketRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw DatagramSocket.
-   *
-   * @param resource a DatagramSocketRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit DatagramSocket(DatagramSocketRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr DatagramSocket(const DatagramSocket& other) = delete;
-
-  /// Move constructor
-  constexpr DatagramSocket(DatagramSocket&& other) noexcept
-    : DatagramSocket(other.release())
-  {
-  }
-
-  constexpr DatagramSocket(const DatagramSocketRef& other) = delete;
-
-  constexpr DatagramSocket(DatagramSocketRef&& other) = delete;
-
-  /**
-   * Create and bind a new datagram socket.
-   *
-   * Datagram sockets follow different rules than stream sockets. They are not a
-   * reliable stream of bytes but rather packets, they are not limited to
-   * talking to a single other remote system, they do not maintain a single
-   * "connection" that can be dropped, and they are more nimble about network
-   * failures at the expense of being more complex to use. What makes sense for
-   * your app depends entirely on what your app is trying to accomplish.
-   *
-   * Generally the idea of a datagram socket is that you send data one chunk
-   * ("packet") at a time to any address you want, and it arrives whenever it
-   * gets there, even if later packets get there first, and maybe it doesn't get
-   * there at all, and you don't know when anything of this happens by default.
-   *
-   * This function creates a new datagram socket.
-   *
-   * This function does not block, and is not asynchronous, as the system can
-   * decide immediately if it can create a socket or not. If this returns
-   * success, you can immediately start talking to the network.
-   *
-   * You can specify an address to listen for connections on; this address must
-   * be local to the system, and probably one returned by GetLocalAddresses(),
-   * but almost always you just want to specify nullptr here, to listen on any
-   * address available to the app.
-   *
-   * If you need to bind to a specific port (like a server), you should specify
-   * it in the `port` argument; datagram servers should do this, so they can be
-   * reached at a well-known port. If you only plan to initiate communications
-   * (like a client), you should specify 0 and let the system pick an unused
-   * port. Only one process can bind to a specific port at a time, so if you
-   * aren't acting as a server, you should choose 0. Datagram sockets can send
-   * individual packets to any port, so this just declares where data will
-   * arrive for your socket.
-   *
-   * Datagram sockets don't employ any protocol (above the UDP level), so they
-   * can talk to apps that aren't using SDL_net, but if you want to speak any
-   * protocol beyond arbitrary packets of bytes, such as WebRTC, you'll have to
-   * implement that yourself on top of the stream socket.
-   *
-   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
-   * you do not have to byteswap it into "network order," as the library will
-   * handle that for you.
-   *
-   * The caller may supply properties to customize behavior. This is optional,
-   * and a value of zero for `props` will request defaults for all properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be
-   *   created even if a previous socket has recently used this address. For
-   *   various reasons, networks prefer that there be some delay between apps
-   *   reusing the same address, but this can be problematic when iterating
-   *   quickly, for software development purposes or just restarting a crashed
-   *   service. This property defaults to true (although it should be noted
-   *   that, at the operating system level, this defaults to false!). If this
-   *   property is false and the OS feels that not enough time has elapsed,
-   *   socket creation will fail and this function will report an error.
-   * - `prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should
-   *   allow broadcasting. At the lower level, this will set `SO_BROADCAST` for
-   *   IPv4 sockets, to allow sending to the subnet's broadcast address at the
-   *   OS level. For IPv6, it'll join the all-nodes link-local multicast group,
-   *   ff02::1, allowing sending and receiving there, more or less simulating
-   *   the usual IPv4 broadcast semantics. Other protocols take similar
-   *   approaches. If you do not intend to send or receive broadcast packets on
-   *   this socket, set this property to false, or omit it, as it defaults to
-   *   false. Note: IPv4 will still be able to receive broadcast packets without
-   *   this option, but IPv6 will not. Also see notes about sending to a
-   *   broadcast address in SendDatagram().
-   *
-   * @param addr the local address to listen for connections on, or nullptr to
-   *             listen on all available local addresses.
-   * @param port the port on the local address to listen for connections on, or
-   *             zero for the system to decide.
-   * @param props properties of the new socket. Specify zero for defaults.
-   * @post a new DatagramSocket on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa GetLocalAddresses
-   * @sa DestroyDatagramSocket
-   */
-  DatagramSocket(AddressRef addr, Uint16 port, PropertiesRef props);
-
-  /// Destructor
-  ~DatagramSocket() { NET_DestroyDatagramSocket(get()); }
-
-  /// Assignment operator.
-  constexpr DatagramSocket& operator=(DatagramSocket&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  DatagramSocket& operator=(const DatagramSocket& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Dispose of a previously-created datagram socket.
@@ -92989,106 +92859,167 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
 };
 
 /**
- * The data provided for new incoming packets from ReceiveDatagram().
+ * An object that represents a datagram connection to another system.
+ *
+ * This is meant to be an unreliable, packet-oriented connection, such as UDP.
+ *
+ * Datagram sockets follow different rules than stream sockets. They are not a
+ * reliable stream of bytes but rather packets, they are not limited to talking
+ * to a single other remote system, they do not maintain a single "connection"
+ * that can be dropped, and they are more nimble about network failures at the
+ * expense of being more complex to use. What makes sense for your app depends
+ * entirely on what your app is trying to accomplish.
+ *
+ * Generally the idea of a datagram socket is that you send data one chunk
+ * ("packet") at a time to any address you want, and it arrives whenever it gets
+ * there, even if later packets get there first, and maybe it doesn't get there
+ * at all, and you don't know when anything of this happens by default.
  *
  * @since This datatype is available since SDL_net 3.0.0.
  *
+ * @sa AddressBase.CreateDatagramSocket
+ * @sa SendDatagram
  * @sa ReceiveDatagram
- * @sa DestroyDatagram
  *
  * @cat resource
  */
-struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
+struct DatagramSocket : DatagramSocketBase
 {
-  using ResourceBase::ResourceBase;
+  using DatagramSocketBase::DatagramSocketBase;
 
   /**
-   * Constructs from raw Datagram.
+   * Constructs from raw DatagramSocket.
    *
-   * @param resource a DatagramRaw to be wrapped.
+   * @param resource a DatagramSocketRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Datagram(DatagramRaw resource) noexcept
-    : ResourceBase(resource)
+  constexpr explicit DatagramSocket(DatagramSocketRaw resource) noexcept
+    : DatagramSocketBase(resource)
   {
   }
 
   /// Copy constructor
-  constexpr Datagram(const Datagram& other) = delete;
+  constexpr DatagramSocket(const DatagramSocket& other) = delete;
 
   /// Move constructor
-  constexpr Datagram(Datagram&& other) noexcept
-    : Datagram(other.release())
+  constexpr DatagramSocket(DatagramSocket&& other) noexcept
+    : DatagramSocket(other.release())
   {
   }
 
-  constexpr Datagram(const DatagramRef& other) = delete;
-
-  constexpr Datagram(DatagramRef&& other) = delete;
-
   /**
-   * Receive a new packet that a remote system sent to a datagram socket.
+   * Create and bind a new datagram socket.
    *
-   * Datagram sockets send packets of data. They either arrive as complete
-   * packets or they don't arrive at all, so you'll never receive half a packet.
+   * Datagram sockets follow different rules than stream sockets. They are not a
+   * reliable stream of bytes but rather packets, they are not limited to
+   * talking to a single other remote system, they do not maintain a single
+   * "connection" that can be dropped, and they are more nimble about network
+   * failures at the expense of being more complex to use. What makes sense for
+   * your app depends entirely on what your app is trying to accomplish.
    *
-   * This call never blocks; if no new data is available at the time of the
-   * call, it returns true immediately. The caller can try again later.
+   * Generally the idea of a datagram socket is that you send data one chunk
+   * ("packet") at a time to any address you want, and it arrives whenever it
+   * gets there, even if later packets get there first, and maybe it doesn't get
+   * there at all, and you don't know when anything of this happens by default.
    *
-   * On a successful call to this function, it returns true, even if no new
-   * packets are available, so you should check for a successful return and a
-   * non-nullptr value in `*dgram` to decide if a new packet is available.
+   * This function creates a new datagram socket.
    *
-   * You must pass received packets to DestroyDatagram when you are done with
-   * them. If you want to save the sender's address past this time, it is safe
-   * to call RefAddress() on the address and hold onto the pointer, so long as
-   * you call UnrefAddress() on it when you are done with it.
+   * This function does not block, and is not asynchronous, as the system can
+   * decide immediately if it can create a socket or not. If this returns
+   * success, you can immediately start talking to the network.
    *
-   * Since datagrams can arrive from any address or port on the network without
-   * prior warning, this information is available in the Datagram object that is
-   * provided by this function, and this is the only way to know who to reply
-   * to. Even if you aren't acting as a "server," packets can still arrive at
-   * your socket if someone sends one.
+   * You can specify an address to listen for connections on; this address must
+   * be local to the system, and probably one returned by GetLocalAddresses(),
+   * but almost always you just want to specify nullptr here, to listen on any
+   * address available to the app.
    *
-   * If there's a fatal error, this function will return false. Datagram sockets
-   * generally won't report failures, because there is no state like a
-   * "connection" to fail at this level, but may report failure for
-   * unrecoverable system-level conditions; once a datagram socket fails, you
-   * should assume it is no longer usable and should destroy it with
-   * DestroyDatagramSocket().
+   * If you need to bind to a specific port (like a server), you should specify
+   * it in the `port` argument; datagram servers should do this, so they can be
+   * reached at a well-known port. If you only plan to initiate communications
+   * (like a client), you should specify 0 and let the system pick an unused
+   * port. Only one process can bind to a specific port at a time, so if you
+   * aren't acting as a server, you should choose 0. Datagram sockets can send
+   * individual packets to any port, so this just declares where data will
+   * arrive for your socket.
    *
-   * @param sock the datagram socket to send data through.
-   * @post a valid Datagram object if data sent or queued for transmission,
-   *       nullptr on failure; call GetError() for details.
+   * Datagram sockets don't employ any protocol (above the UDP level), so they
+   * can talk to apps that aren't using SDL_net, but if you want to speak any
+   * protocol beyond arbitrary packets of bytes, such as WebRTC, you'll have to
+   * implement that yourself on top of the stream socket.
    *
-   * @threadsafety You should not operate on the same socket from multiple
-   *               threads at the same time without supplying a serialization
-   *               mechanism. However, different threads may access different
-   *               sockets at the same time without problems.
+   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
+   * you do not have to byteswap it into "network order," as the library will
+   * handle that for you.
+   *
+   * The caller may supply properties to customize behavior. This is optional,
+   * and a value of zero for `props` will request defaults for all properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be
+   *   created even if a previous socket has recently used this address. For
+   *   various reasons, networks prefer that there be some delay between apps
+   *   reusing the same address, but this can be problematic when iterating
+   *   quickly, for software development purposes or just restarting a crashed
+   *   service. This property defaults to true (although it should be noted
+   *   that, at the operating system level, this defaults to false!). If this
+   *   property is false and the OS feels that not enough time has elapsed,
+   *   socket creation will fail and this function will report an error.
+   * - `prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should
+   *   allow broadcasting. At the lower level, this will set `SO_BROADCAST` for
+   *   IPv4 sockets, to allow sending to the subnet's broadcast address at the
+   *   OS level. For IPv6, it'll join the all-nodes link-local multicast group,
+   *   ff02::1, allowing sending and receiving there, more or less simulating
+   *   the usual IPv4 broadcast semantics. Other protocols take similar
+   *   approaches. If you do not intend to send or receive broadcast packets on
+   *   this socket, set this property to false, or omit it, as it defaults to
+   *   false. Note: IPv4 will still be able to receive broadcast packets without
+   *   this option, but IPv6 will not. Also see notes about sending to a
+   *   broadcast address in SendDatagram().
+   *
+   * @param addr the local address to listen for connections on, or nullptr to
+   *             listen on all available local addresses.
+   * @param port the port on the local address to listen for connections on, or
+   *             zero for the system to decide.
+   * @param props properties of the new socket. Specify zero for defaults.
+   * @post a new DatagramSocket on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa SendDatagram
-   * @sa DestroyDatagram
+   * @sa GetLocalAddresses
+   * @sa DestroyDatagramSocket
    */
-  Datagram(DatagramSocketRef sock);
-
-  /// Converts to DatagramConstRef
-  constexpr operator DatagramConstRef() const noexcept { return get(); }
+  DatagramSocket(AddressRef addr, Uint16 port, PropertiesRef props);
 
   /// Destructor
-  ~Datagram() { NET_DestroyDatagram(get()); }
+  ~DatagramSocket() { NET_DestroyDatagramSocket(get()); }
 
   /// Assignment operator.
-  constexpr Datagram& operator=(Datagram&& other) noexcept
+  constexpr DatagramSocket& operator=(DatagramSocket&& other) noexcept
   {
     swap(*this, other);
     return *this;
   }
 
   /// Assignment operator.
-  Datagram& operator=(const Datagram& other) = delete;
+  DatagramSocket& operator=(const DatagramSocket& other) = delete;
+};
+
+/**
+ * Base class to Datagram.
+ *
+ * @see Datagram
+ */
+struct DatagramBase : ResourceBaseT<DatagramRaw, DatagramRawConst>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /// Converts to DatagramConstRef
+  constexpr operator DatagramConstRef() const noexcept { return get(); }
 
   /**
    * Dispose of a datagram packet previously received.
@@ -93156,6 +93087,102 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
    * @sa DestroyDatagram
    */
   bool Receive(DatagramSocketRef sock);
+};
+
+/**
+ * The data provided for new incoming packets from ReceiveDatagram().
+ *
+ * @since This datatype is available since SDL_net 3.0.0.
+ *
+ * @sa ReceiveDatagram
+ * @sa DestroyDatagram
+ *
+ * @cat resource
+ */
+struct Datagram : DatagramBase
+{
+  using DatagramBase::DatagramBase;
+
+  /**
+   * Constructs from raw Datagram.
+   *
+   * @param resource a DatagramRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Datagram(DatagramRaw resource) noexcept
+    : DatagramBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Datagram(const Datagram& other) = delete;
+
+  /// Move constructor
+  constexpr Datagram(Datagram&& other) noexcept
+    : Datagram(other.release())
+  {
+  }
+
+  /**
+   * Receive a new packet that a remote system sent to a datagram socket.
+   *
+   * Datagram sockets send packets of data. They either arrive as complete
+   * packets or they don't arrive at all, so you'll never receive half a packet.
+   *
+   * This call never blocks; if no new data is available at the time of the
+   * call, it returns true immediately. The caller can try again later.
+   *
+   * On a successful call to this function, it returns true, even if no new
+   * packets are available, so you should check for a successful return and a
+   * non-nullptr value in `*dgram` to decide if a new packet is available.
+   *
+   * You must pass received packets to DestroyDatagram when you are done with
+   * them. If you want to save the sender's address past this time, it is safe
+   * to call RefAddress() on the address and hold onto the pointer, so long as
+   * you call UnrefAddress() on it when you are done with it.
+   *
+   * Since datagrams can arrive from any address or port on the network without
+   * prior warning, this information is available in the Datagram object that is
+   * provided by this function, and this is the only way to know who to reply
+   * to. Even if you aren't acting as a "server," packets can still arrive at
+   * your socket if someone sends one.
+   *
+   * If there's a fatal error, this function will return false. Datagram sockets
+   * generally won't report failures, because there is no state like a
+   * "connection" to fail at this level, but may report failure for
+   * unrecoverable system-level conditions; once a datagram socket fails, you
+   * should assume it is no longer usable and should destroy it with
+   * DestroyDatagramSocket().
+   *
+   * @param sock the datagram socket to send data through.
+   * @post a valid Datagram object if data sent or queued for transmission,
+   *       nullptr on failure; call GetError() for details.
+   *
+   * @threadsafety You should not operate on the same socket from multiple
+   *               threads at the same time without supplying a serialization
+   *               mechanism. However, different threads may access different
+   *               sockets at the same time without problems.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa SendDatagram
+   * @sa DestroyDatagram
+   */
+  Datagram(DatagramSocketRef sock);
+
+  /// Destructor
+  ~Datagram() { NET_DestroyDatagram(get()); }
+
+  /// Assignment operator.
+  constexpr Datagram& operator=(Datagram&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Datagram& operator=(const Datagram& other) = delete;
 };
 
 /**
@@ -93361,10 +93388,10 @@ inline bool SendDatagram(DatagramSocketRef sock,
   return NET_SendDatagram(sock, address, port, buf, buflen);
 }
 
-inline bool DatagramSocket::SendDatagram(AddressRef address,
-                                         Uint16 port,
-                                         const void* buf,
-                                         int buflen)
+inline bool DatagramSocketBase::SendDatagram(AddressRef address,
+                                             Uint16 port,
+                                             const void* buf,
+                                             int buflen)
 {
   return SDL::SendDatagram(get(), address, port, buf, buflen);
 }
@@ -93470,12 +93497,12 @@ inline Datagram ReceiveDatagram(DatagramSocketRef sock)
   return dgram;
 }
 
-inline bool DatagramSocket::ReceiveDatagram(Datagram& dgram)
+inline bool DatagramSocketBase::ReceiveDatagram(Datagram& dgram)
 {
   return dgram.Receive(*this);
 }
 
-inline Datagram DatagramSocket::ReceiveDatagram()
+inline Datagram DatagramSocketBase::ReceiveDatagram()
 {
   return SDL::ReceiveDatagram(get());
 }
@@ -93485,7 +93512,7 @@ inline Datagram::Datagram(DatagramSocketRef sock)
 {
 }
 
-inline bool Datagram::Receive(DatagramSocketRef sock)
+inline bool DatagramBase::Receive(DatagramSocketRef sock)
 {
   DatagramRaw dgram;
   if (!NET_ReceiveDatagram(sock, &dgram)) return false;
@@ -93515,7 +93542,7 @@ inline bool Datagram::Receive(DatagramSocketRef sock)
  */
 inline void DestroyDatagram(DatagramRaw dgram) { NET_DestroyDatagram(dgram); }
 
-inline void Datagram::Destroy() { DestroyDatagram(release()); }
+inline void DatagramBase::Destroy() { DestroyDatagram(release()); }
 
 /**
  * Enable simulated datagram socket failures.
@@ -93552,7 +93579,7 @@ inline void SimulateDatagramPacketLoss(DatagramSocketRef sock, int percent_loss)
   NET_SimulateDatagramPacketLoss(sock, percent_loss);
 }
 
-inline void DatagramSocket::SimulateDatagramPacketLoss(int percent_loss)
+inline void DatagramSocketBase::SimulateDatagramPacketLoss(int percent_loss)
 {
   SDL::SimulateDatagramPacketLoss(get(), percent_loss);
 }
@@ -93587,7 +93614,7 @@ inline void DestroyDatagramSocket(DatagramSocketRaw sock)
   NET_DestroyDatagramSocket(sock);
 }
 
-inline void DatagramSocket::Destroy() { DestroyDatagramSocket(release()); }
+inline void DatagramSocketBase::Destroy() { DestroyDatagramSocket(release()); }
 
 /**
  * Block on multiple sockets until at least one has data available.
