@@ -4594,7 +4594,7 @@
           "tag": "##",
           "content": "Simplified audio"
         },
-        "As a simplified model for when a single source of audio is all that's needed, an app can use AudioDevice.OpenStream, which is a single function to open an audio device, create an audio stream, bind that stream to the newly-opened device, and (optionally) provide a callback for obtaining audio data. When using this function, the primary interface is the AudioStream and the device handle is mostly hidden away; destroying a stream created through this function will also close the device, stream bindings cannot be changed, etc. One other quirk of this is that the device is started in a _paused_ state and must be explicitly resumed; this is partially to offer a clean migration for SDL2 apps and partially because the app might have to do more setup before playback begins; in the non-simplified form, nothing will play until a stream is bound to a device, so they start _unpaused_.",
+        "As a simplified model for when a single source of audio is all that's needed, an app can use AudioDeviceBase.OpenStream, which is a single function to open an audio device, create an audio stream, bind that stream to the newly-opened device, and (optionally) provide a callback for obtaining audio data. When using this function, the primary interface is the AudioStream and the device handle is mostly hidden away; destroying a stream created through this function will also close the device, stream bindings cannot be changed, etc. One other quirk of this is that the device is started in a _paused_ state and must be explicitly resumed; this is partially to offer a clean migration for SDL2 apps and partially because the app might have to do more setup before playback begins; in the non-simplified form, nothing will play until a stream is bound to a device, so they start _unpaused_.",
         {
           "tag": "##",
           "content": "Channel layouts"
@@ -4694,6 +4694,10 @@
           "name": "AudioFormat",
           "kind": "forward"
         },
+        "AudioDeviceBase-forward": {
+          "name": "AudioDeviceBase",
+          "kind": "forward"
+        },
         "AudioDevice-forward": {
           "name": "AudioDevice",
           "kind": "forward"
@@ -4713,7 +4717,11 @@
             "Reference for AudioDevice.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<AudioDevice>"
+          "type": "ResourceRefT<AudioDeviceBase>"
+        },
+        "AudioStreamBase-forward": {
+          "name": "AudioStreamBase",
+          "kind": "forward"
         },
         "AudioStream-forward": {
           "name": "AudioStream",
@@ -4734,7 +4742,7 @@
             "Reference for AudioStream.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<AudioStream>"
+          "type": "ResourceRefT<AudioStreamBase>"
         },
         "AudioStreamLock-forward": {
           "kind": "forward",
@@ -6085,7 +6093,7 @@
             ],
             {
               "tag": "@threadsafety",
-              "content": "This callbacks may run from any thread, so if you need to protect shared data, you should use LockAudioStream to serialize access; this lock will be held before your callback is called, so your callback does not need to manage the lock explicitly."
+              "content": "This callbacks may run from any thread, so if you need to protect shared data, you should use AudioStreamBase.Lock to serialize access; this lock will be held before your callback is called, so your callback does not need to manage the lock explicitly."
             },
             {
               "tag": "@since",
@@ -6131,7 +6139,7 @@
             ],
             {
               "tag": "@threadsafety",
-              "content": "This callbacks may run from any thread, so if you need to protect shared data, you should use LockAudioStream to serialize access; this lock will be held before your callback is called, so your callback does not need to manage the lock explicitly."
+              "content": "This callbacks may run from any thread, so if you need to protect shared data, you should use AudioStreamBase.Lock to serialize access; this lock will be held before your callback is called, so your callback does not need to manage the lock explicitly."
             },
             {
               "tag": "@since",
@@ -6153,238 +6161,21 @@
             ]
           ]
         },
-        "AudioDevice": {
-          "doc": [
-            "SDL Audio Device instance IDs.",
-            "Zero is used to signify an invalid/null device.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "AudioDevice",
+        "AudioDeviceBase": {
+          "name": "AudioDeviceBase",
           "kind": "struct",
-          "type": "ResourceBase<AudioDeviceID>",
-          "sourceName": "SDL_AudioDeviceID",
+          "type": "ResourceBaseT<AudioDeviceID>",
+          "doc": [
+            "Base class to AudioDevice.",
+            {
+              "tag": "@see",
+              "content": "AudioDevice"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "AudioDevice": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AudioDeviceID"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw AudioDevice.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AudioDeviceID to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "AudioDevice",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AudioDevice &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "AudioDevice",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "AudioDevice &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "AudioDevice(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "AudioDevice",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const AudioDeviceRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "AudioDevice",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "AudioDeviceRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "AudioDevice",
-                      "overload": {
-                        "doc": [
-                          "Open a specific audio device.",
-                          "You can open both playback and recording devices through this function. Playback devices will take data from bound audio streams, mix it, and send it to the hardware. Recording devices will feed any bound audio streams with a copy of any incoming data.",
-                          "An opened audio device starts out with no audio streams bound. To start audio playing, bind a stream and supply audio data to it. Unlike SDL2, there is no audio callback; you only bind audio streams and make sure they have data flowing into them (however, you can simulate SDL2's semantics fairly closely by using AudioDevice.OpenStream instead of this function).",
-                          "If you don't care about opening a specific device, pass a `devid` of either `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick the most reasonable default, and may also switch between physical devices seamlessly later, if the most reasonable default changes during the lifetime of this opened device (user changed the default in the OS's system preferences, the default got unplugged so the system jumped to a new default, the user plugged in headphones on a mobile device, etc). Unless you have a good reason to choose a specific device, this is probably what you want.",
-                          "You may request a specific format for the audio device, but there is no promise the device will honor that request for several reasons. As such, it's only meant to be a hint as to what data your app will provide. Audio streams will accept data in whatever format you specify and manage conversion for you as appropriate. GetAudioDeviceFormat can tell you the preferred format for the device before opening and the actual format the device is using after opening.",
-                          "It's legal to open the same device ID more than once; each successful open will generate a new logical AudioDevice that is managed separately from others on the same physical device. This allows libraries to open a device separately from the main app and bind its own streams without conflicting.",
-                          "It is also legal to open a device ID returned by a previous call to this function; doing so just creates another logical device on the same physical device. This may be useful for making logical groupings of audio streams.",
-                          "This function returns the opened device ID on success. This is a new, unique AudioDevice that represents a logical device.",
-                          "Some backends might offer arbitrary devices (for example, a networked audio protocol that can connect to an arbitrary server). For these, as a change from SDL2, you should open a default device ID and use an SDL hint to specify the target if you care, or otherwise let the backend figure out a reasonable default. Most backends don't offer anything like this, and often this would be an end user setting an environment variable for their custom need, and not something an application should specifically manage.",
-                          "When done with an audio device, possibly at the end of the app's life, one should call CloseAudioDevice() on the returned device id.",
-                          [
-                            {
-                              "tag": "@param devid",
-                              "content": "the device instance id to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable default device."
-                            },
-                            {
-                              "tag": "@param spec",
-                              "content": "the requested device configuration. Can be nullptr to use reasonable defaults."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "the device ID on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CloseAudioDevice"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetAudioDeviceFormat"
-                            }
-                          ]
-                        ],
-                        "name": "AudioDevice",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "devid",
-                            "type": "AudioDeviceRef"
-                          },
-                          {
-                            "name": "spec",
-                            "type": "OptionalRef<const AudioSpec>"
-                          }
-                        ],
-                        "sourceName": "SDL_OpenAudioDevice",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~AudioDevice": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_CloseAudioDevice(get());"
-              },
-              "name": "~AudioDevice"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "AudioDevice &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "AudioDevice &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "AudioDevice &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AudioDevice &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Close": {
               "doc": [
@@ -6567,7 +6358,7 @@
             "IsPhysical": {
               "doc": [
                 "Determine if an audio device is physical (instead of logical).",
-                "An AudioDevice that represents physical hardware is a physical device; there is one for each piece of hardware that SDL can see. Logical devices are created by calling OpenAudioDevice or AudioDevice.OpenStream, and while each is associated with a physical device, there can be any number of logical devices on one physical device.",
+                "An AudioDevice that represents physical hardware is a physical device; there is one for each piece of hardware that SDL can see. Logical devices are created by calling OpenAudioDevice or AudioDeviceBase.OpenStream, and while each is associated with a physical device, there can be any number of logical devices on one physical device.",
                 "For the most part, logical and physical IDs are interchangeable--if you try to open a logical device, SDL understands to assign that effort to the underlying physical device, etc. However, it might be useful to know if an arbitrary device ID is physical or logical. This function reports which.",
                 "This function may return either true or false for invalid device IDs.",
                 [
@@ -7203,6 +6994,212 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "AudioDevice": {
+          "doc": [
+            "SDL Audio Device instance IDs.",
+            "Zero is used to signify an invalid/null device.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "AudioDevice",
+          "kind": "struct",
+          "type": "AudioDeviceBase",
+          "sourceName": "SDL_AudioDeviceID",
+          "entries": {
+            "AudioDeviceBase::AudioDeviceBase": {
+              "kind": "alias",
+              "name": "AudioDeviceBase::AudioDeviceBase"
+            },
+            "AudioDevice": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AudioDeviceID"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "AudioDeviceBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw AudioDevice.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AudioDeviceID to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "AudioDevice",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AudioDevice &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "AudioDevice",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "AudioDevice &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "AudioDevice(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "AudioDevice",
+                  "overload": {
+                    "doc": [
+                      "Open a specific audio device.",
+                      "You can open both playback and recording devices through this function. Playback devices will take data from bound audio streams, mix it, and send it to the hardware. Recording devices will feed any bound audio streams with a copy of any incoming data.",
+                      "An opened audio device starts out with no audio streams bound. To start audio playing, bind a stream and supply audio data to it. Unlike SDL2, there is no audio callback; you only bind audio streams and make sure they have data flowing into them (however, you can simulate SDL2's semantics fairly closely by using AudioDeviceBase.OpenStream instead of this function).",
+                      "If you don't care about opening a specific device, pass a `devid` of either `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick the most reasonable default, and may also switch between physical devices seamlessly later, if the most reasonable default changes during the lifetime of this opened device (user changed the default in the OS's system preferences, the default got unplugged so the system jumped to a new default, the user plugged in headphones on a mobile device, etc). Unless you have a good reason to choose a specific device, this is probably what you want.",
+                      "You may request a specific format for the audio device, but there is no promise the device will honor that request for several reasons. As such, it's only meant to be a hint as to what data your app will provide. Audio streams will accept data in whatever format you specify and manage conversion for you as appropriate. GetAudioDeviceFormat can tell you the preferred format for the device before opening and the actual format the device is using after opening.",
+                      "It's legal to open the same device ID more than once; each successful open will generate a new logical AudioDevice that is managed separately from others on the same physical device. This allows libraries to open a device separately from the main app and bind its own streams without conflicting.",
+                      "It is also legal to open a device ID returned by a previous call to this function; doing so just creates another logical device on the same physical device. This may be useful for making logical groupings of audio streams.",
+                      "This function returns the opened device ID on success. This is a new, unique AudioDevice that represents a logical device.",
+                      "Some backends might offer arbitrary devices (for example, a networked audio protocol that can connect to an arbitrary server). For these, as a change from SDL2, you should open a default device ID and use an SDL hint to specify the target if you care, or otherwise let the backend figure out a reasonable default. Most backends don't offer anything like this, and often this would be an end user setting an environment variable for their custom need, and not something an application should specifically manage.",
+                      "When done with an audio device, possibly at the end of the app's life, one should call CloseAudioDevice() on the returned device id.",
+                      [
+                        {
+                          "tag": "@param devid",
+                          "content": "the device instance id to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable default device."
+                        },
+                        {
+                          "tag": "@param spec",
+                          "content": "the requested device configuration. Can be nullptr to use reasonable defaults."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "the device ID on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CloseAudioDevice"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetAudioDeviceFormat"
+                        }
+                      ]
+                    ],
+                    "name": "AudioDevice",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "devid",
+                        "type": "AudioDeviceRef"
+                      },
+                      {
+                        "name": "spec",
+                        "type": "OptionalRef<const AudioSpec>"
+                      }
+                    ],
+                    "sourceName": "SDL_OpenAudioDevice",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~AudioDevice": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_CloseAudioDevice(get());"
+              },
+              "name": "~AudioDevice"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "AudioDevice &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "AudioDevice &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "AudioDevice &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AudioDevice &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "AudioDevice"
           }
@@ -7298,7 +7295,7 @@
             ],
             {
               "tag": "@threadsafety",
-              "content": "This callbacks may run from any thread, so if you need to protect shared data, you should use LockAudioStream to serialize access; this lock will be held before your callback is called, so your callback does not need to manage the lock explicitly."
+              "content": "This callbacks may run from any thread, so if you need to protect shared data, you should use AudioStreamBase.Lock to serialize access; this lock will be held before your callback is called, so your callback does not need to manage the lock explicitly."
             },
             {
               "tag": "@since",
@@ -7344,7 +7341,7 @@
             ],
             {
               "tag": "@threadsafety",
-              "content": "This callbacks may run from any thread, so if you need to protect shared data, you should use LockAudioStream to serialize access; this lock will be held before your callback is called, so your callback does not need to manage the lock explicitly."
+              "content": "This callbacks may run from any thread, so if you need to protect shared data, you should use AudioStreamBase.Lock to serialize access; this lock will be held before your callback is called, so your callback does not need to manage the lock explicitly."
             },
             {
               "tag": "@since",
@@ -7372,456 +7369,27 @@
             "patch": 0
           }
         },
-        "AudioStream": {
-          "doc": [
-            "The opaque handle that represents an audio stream.",
-            "AudioStream is an audio conversion interface.",
-            [
-              {
-                "tag": "-",
-                "content": "It can handle resampling data in chunks without generating artifacts, when it doesn't have the complete buffer available."
-              },
-              {
-                "tag": "-",
-                "content": "It can handle incoming data in any variable size."
-              },
-              {
-                "tag": "-",
-                "content": "It can handle input/output format changes on the fly."
-              },
-              {
-                "tag": "-",
-                "content": "It can remap audio channels between inputs and outputs."
-              },
-              {
-                "tag": "-",
-                "content": "You push data as you have it, and pull it when you need it"
-              },
-              {
-                "tag": "-",
-                "content": "It can also function as a basic audio data queue even if you just have sound that needs to pass from one place to another."
-              },
-              {
-                "tag": "-",
-                "content": "You can hook callbacks up to them when more data is added or requested, to manage data on-the-fly."
-              }
-            ],
-            "Audio streams are the core of the SDL3 audio interface. You create one or more of them, bind them to an opened audio device, and feed data to them (or for recording, consume data from them).",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            {
-              "tag": "@sa",
-              "content": "CreateAudioStream"
-            },
-            "@cat resource"
-          ],
-          "name": "AudioStream",
+        "AudioStreamBase": {
+          "name": "AudioStreamBase",
           "kind": "struct",
-          "type": "ResourceBase<AudioStreamRaw>",
-          "sourceName": "SDL_AudioStream",
+          "type": "ResourceBaseT<AudioStreamRaw>",
+          "doc": [
+            "Base class to AudioStream.",
+            {
+              "tag": "@see",
+              "content": "AudioStream"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "AudioStream": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "AudioStreamRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw AudioStream.",
-                {
-                  "tag": "@param resource",
-                  "content": "a AudioStreamRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "AudioStream",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AudioStream &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "AudioStream",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "AudioStream &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "AudioStream(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "AudioStream",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const AudioStreamRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "AudioStream",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "AudioStreamRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "AudioStream",
-                      "overload": {
-                        "doc": [
-                          "Create a new audio stream.",
-                          [
-                            {
-                              "tag": "@param src_spec",
-                              "content": "the format details of the input audio."
-                            },
-                            {
-                              "tag": "@param dst_spec",
-                              "content": "the format details of the output audio."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new audio stream on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "PutAudioStreamData"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetAudioStreamData"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetAudioStreamAvailable"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "FlushAudioStream"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "ClearAudioStream"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "SetAudioStreamFormat"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyAudioStream"
-                            }
-                          ]
-                        ],
-                        "name": "AudioStream",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "src_spec",
-                            "type": "OptionalRef<const AudioSpec>"
-                          },
-                          {
-                            "name": "dst_spec",
-                            "type": "OptionalRef<const AudioSpec>"
-                          }
-                        ],
-                        "sourceName": "SDL_CreateAudioStream",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "overload": {
-                          "doc": [
-                            "Convenience function for straightforward audio init for the common case.",
-                            "If all your app intends to do is provide a single source of PCM audio, this function allows you to do all your audio setup in a single call.",
-                            "This is also intended to be a clean means to migrate apps from SDL2.",
-                            "This function will open an audio device, create a stream and bind it. Unlike other methods of setup, the audio device will be closed when this stream is destroyed, so the app can treat the returned AudioStream as the only object needed to manage audio playback.",
-                            "Also unlike other functions, the audio device begins paused. This is to map more closely to SDL2-style behavior, since there is no extra step here to bind a stream to begin audio flowing. The audio device should be resumed with ResumeAudioStreamDevice().",
-                            "This function works with both playback and recording devices.",
-                            "The `spec` parameter represents the app's side of the audio stream. That is, for recording audio, this will be the output format, and for playing audio, this will be the input format. If spec is nullptr, the system will choose the format, and the app can use GetAudioStreamFormat() to obtain this information later.",
-                            "If you don't care about opening a specific audio device, you can (and probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and AUDIO_DEVICE_DEFAULT_RECORDING for recording.",
-                            "One can optionally provide a callback function; if nullptr, the app is expected to queue audio data for playback (or unqueue audio data if capturing). Otherwise, the callback will begin to fire once the device is unpaused.",
-                            "Destroying the returned stream with DestroyAudioStream will also close the audio device associated with this stream.",
-                            [
-                              {
-                                "tag": "@param devid",
-                                "content": "an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or AUDIO_DEVICE_DEFAULT_RECORDING."
-                              },
-                              {
-                                "tag": "@param spec",
-                                "content": "the audio stream's data format. Can be nullptr."
-                              },
-                              {
-                                "tag": "@param callback",
-                                "content": "a callback where the app will provide new data for playback, or receive new data for recording. Can be nullptr, in which case the app will need to call PutAudioStreamData or GetAudioStreamData as necessary."
-                              },
-                              {
-                                "tag": "@param userdata",
-                                "content": "app-controlled pointer passed to callback. Can be nullptr. Ignored if callback is nullptr."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "an audio stream on success."
-                              },
-                              {
-                                "tag": "@throws",
-                                "content": "Error on failure."
-                              }
-                            ],
-                            {
-                              "tag": "@threadsafety",
-                              "content": "It is safe to call this function from any thread."
-                            },
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL 3.2.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "GetAudioStreamDevice"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "ResumeAudioStreamDevice"
-                              }
-                            ]
-                          ],
-                          "name": "AudioStream",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "devid",
-                              "type": "AudioDeviceRef"
-                            },
-                            {
-                              "name": "spec",
-                              "type": "OptionalRef<const AudioSpec>",
-                              "default": "std::nullopt"
-                            },
-                            {
-                              "name": "callback",
-                              "type": "AudioStreamCallback",
-                              "default": "nullptr"
-                            },
-                            {
-                              "name": "userdata",
-                              "type": "void *",
-                              "default": "nullptr"
-                            }
-                          ],
-                          "sourceName": "SDL_OpenAudioDeviceStream",
-                          "hints": {
-                            "mayFail": true
-                          },
-                          "overload": {
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "devid",
-                                "type": "AudioDeviceRef"
-                              },
-                              {
-                                "name": "spec",
-                                "type": "OptionalRef<const AudioSpec>"
-                              },
-                              {
-                                "name": "callback",
-                                "type": "AudioStreamCB"
-                              }
-                            ],
-                            "name": "AudioStream",
-                            "doc": [
-                              "Create a new audio stream.",
-                              [
-                                {
-                                  "tag": "@param src_spec",
-                                  "content": "the format details of the input audio."
-                                },
-                                {
-                                  "tag": "@param dst_spec",
-                                  "content": "the format details of the output audio."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "a new audio stream on success."
-                                },
-                                {
-                                  "tag": "@throws",
-                                  "content": "Error on failure."
-                                }
-                              ],
-                              {
-                                "tag": "@threadsafety",
-                                "content": "It is safe to call this function from any thread."
-                              },
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL 3.2.0."
-                              },
-                              [
-                                {
-                                  "tag": "@sa",
-                                  "content": "PutAudioStreamData"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "GetAudioStreamData"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "GetAudioStreamAvailable"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "FlushAudioStream"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "ClearAudioStream"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "SetAudioStreamFormat"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "DestroyAudioStream"
-                                }
-                              ]
-                            ],
-                            "proto": true
-                          },
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~AudioStream": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyAudioStream(get());"
-              },
-              "name": "~AudioStream"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "AudioStream &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "AudioStream &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "AudioStream &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const AudioStream &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
                 "Free an audio stream.",
                 "This will release all allocated data, including any audio that is still queued. You do not need to manually clear the stream first.",
-                "If this stream was bound to an audio device, it is unbound during this call. If this stream was created with AudioDevice.OpenStream, the audio device that was opened alongside this stream's creation will be closed, too.",
+                "If this stream was bound to an audio device, it is unbound during this call. If this stream was created with AudioDeviceBase.OpenStream, the audio device that was opened alongside this stream's creation will be closed, too.",
                 {
                   "tag": "@threadsafety",
                   "content": "It is safe to call this function from any thread."
@@ -7852,7 +7420,7 @@
                 "The application can hang any data it wants here, but the following properties are understood by SDL:",
                 {
                   "tag": "-",
-                  "content": "`prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream be automatically cleaned up when the audio subsystem quits. If set to false, the streams will persist beyond that. This property is ignored for streams created through AudioDevice.OpenStream(), and will always be cleaned up. Streams that are not cleaned up will still be unbound from devices when the audio subsystem quits. This property was added in SDL 3.4.0."
+                  "content": "`prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream be automatically cleaned up when the audio subsystem quits. If set to false, the streams will persist beyond that. This property is ignored for streams created through AudioDeviceBase.OpenStream(), and will always be cleaned up. Streams that are not cleaned up will still be unbound from devices when the audio subsystem quits. This property was added in SDL 3.4.0."
                 },
                 [
                   {
@@ -8873,7 +8441,7 @@
               "doc": [
                 "Use this function to unpause audio playback on the audio device associated with an audio stream.",
                 "This function unpauses audio processing for a given device that has previously been paused. Once unpaused, any bound audio streams will begin to progress again, and audio can be generated.",
-                "AudioDevice.OpenStream opens audio devices in a paused state, so this function call is required for audio playback to begin on such devices.",
+                "AudioDeviceBase.OpenStream opens audio devices in a paused state, so this function call is required for audio playback to begin on such devices.",
                 [
                   {
                     "tag": "@throws",
@@ -8966,17 +8534,16 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "UnlockAudioStream"
+                  "content": "AudioStreamBase.Unlock"
                 }
               ],
               "name": "Lock",
               "kind": "function",
-              "type": "AudioStreamLock",
+              "type": "void",
               "parameters": [],
               "sourceName": "SDL_LockAudioStream",
               "hints": {
                 "mayFail": true,
-                "body": "return {AudioStreamRef(*this)};",
                 "delegate": "SDL::LockAudioStream"
               },
               "proto": true
@@ -8984,7 +8551,7 @@
             "Unlock": {
               "doc": [
                 "Unlock an audio stream for serialized access.",
-                "This unlocks an audio stream after a call to LockAudioStream.",
+                "This unlocks an audio stream after a call to AudioStreamBase.Lock.",
                 [
                   {
                     "tag": "@throws",
@@ -8993,7 +8560,7 @@
                 ],
                 {
                   "tag": "@threadsafety",
-                  "content": "You should only call this from the same thread that previously called LockAudioStream."
+                  "content": "You should only call this from the same thread that previously called AudioStreamBase.Lock."
                 },
                 {
                   "tag": "@since",
@@ -9001,22 +8568,16 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "LockAudioStream"
+                  "content": "AudioStreamBase.Lock"
                 }
               ],
               "name": "Unlock",
               "kind": "function",
               "type": "void",
-              "parameters": [
-                {
-                  "type": "AudioStreamLock &&",
-                  "name": "lock"
-                }
-              ],
+              "parameters": [],
               "sourceName": "SDL_UnlockAudioStream",
               "hints": {
                 "mayFail": true,
-                "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
                 "delegate": "SDL::UnlockAudioStream"
               },
               "proto": true
@@ -9394,6 +8955,501 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "AudioStream": {
+          "doc": [
+            "The opaque handle that represents an audio stream.",
+            "AudioStream is an audio conversion interface.",
+            [
+              {
+                "tag": "-",
+                "content": "It can handle resampling data in chunks without generating artifacts, when it doesn't have the complete buffer available."
+              },
+              {
+                "tag": "-",
+                "content": "It can handle incoming data in any variable size."
+              },
+              {
+                "tag": "-",
+                "content": "It can handle input/output format changes on the fly."
+              },
+              {
+                "tag": "-",
+                "content": "It can remap audio channels between inputs and outputs."
+              },
+              {
+                "tag": "-",
+                "content": "You push data as you have it, and pull it when you need it"
+              },
+              {
+                "tag": "-",
+                "content": "It can also function as a basic audio data queue even if you just have sound that needs to pass from one place to another."
+              },
+              {
+                "tag": "-",
+                "content": "You can hook callbacks up to them when more data is added or requested, to manage data on-the-fly."
+              }
+            ],
+            "Audio streams are the core of the SDL3 audio interface. You create one or more of them, bind them to an opened audio device, and feed data to them (or for recording, consume data from them).",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "CreateAudioStream"
+            },
+            "@cat resource"
+          ],
+          "name": "AudioStream",
+          "kind": "struct",
+          "type": "AudioStreamBase",
+          "sourceName": "SDL_AudioStream",
+          "entries": {
+            "AudioStreamBase::AudioStreamBase": {
+              "kind": "alias",
+              "name": "AudioStreamBase::AudioStreamBase"
+            },
+            "AudioStream": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "AudioStreamRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "AudioStreamBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw AudioStream.",
+                {
+                  "tag": "@param resource",
+                  "content": "a AudioStreamRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "AudioStream",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AudioStream &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "AudioStream",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "AudioStream &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "AudioStream(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "AudioStream",
+                  "overload": {
+                    "doc": [
+                      "Create a new audio stream.",
+                      [
+                        {
+                          "tag": "@param src_spec",
+                          "content": "the format details of the input audio."
+                        },
+                        {
+                          "tag": "@param dst_spec",
+                          "content": "the format details of the output audio."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a new audio stream on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "PutAudioStreamData"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetAudioStreamData"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetAudioStreamAvailable"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "FlushAudioStream"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "ClearAudioStream"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "SetAudioStreamFormat"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyAudioStream"
+                        }
+                      ]
+                    ],
+                    "name": "AudioStream",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "src_spec",
+                        "type": "OptionalRef<const AudioSpec>"
+                      },
+                      {
+                        "name": "dst_spec",
+                        "type": "OptionalRef<const AudioSpec>"
+                      }
+                    ],
+                    "sourceName": "SDL_CreateAudioStream",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Convenience function for straightforward audio init for the common case.",
+                        "If all your app intends to do is provide a single source of PCM audio, this function allows you to do all your audio setup in a single call.",
+                        "This is also intended to be a clean means to migrate apps from SDL2.",
+                        "This function will open an audio device, create a stream and bind it. Unlike other methods of setup, the audio device will be closed when this stream is destroyed, so the app can treat the returned AudioStream as the only object needed to manage audio playback.",
+                        "Also unlike other functions, the audio device begins paused. This is to map more closely to SDL2-style behavior, since there is no extra step here to bind a stream to begin audio flowing. The audio device should be resumed with ResumeAudioStreamDevice().",
+                        "This function works with both playback and recording devices.",
+                        "The `spec` parameter represents the app's side of the audio stream. That is, for recording audio, this will be the output format, and for playing audio, this will be the input format. If spec is nullptr, the system will choose the format, and the app can use GetAudioStreamFormat() to obtain this information later.",
+                        "If you don't care about opening a specific audio device, you can (and probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and AUDIO_DEVICE_DEFAULT_RECORDING for recording.",
+                        "One can optionally provide a callback function; if nullptr, the app is expected to queue audio data for playback (or unqueue audio data if capturing). Otherwise, the callback will begin to fire once the device is unpaused.",
+                        "Destroying the returned stream with DestroyAudioStream will also close the audio device associated with this stream.",
+                        [
+                          {
+                            "tag": "@param devid",
+                            "content": "an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or AUDIO_DEVICE_DEFAULT_RECORDING."
+                          },
+                          {
+                            "tag": "@param spec",
+                            "content": "the audio stream's data format. Can be nullptr."
+                          },
+                          {
+                            "tag": "@param callback",
+                            "content": "a callback where the app will provide new data for playback, or receive new data for recording. Can be nullptr, in which case the app will need to call PutAudioStreamData or GetAudioStreamData as necessary."
+                          },
+                          {
+                            "tag": "@param userdata",
+                            "content": "app-controlled pointer passed to callback. Can be nullptr. Ignored if callback is nullptr."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "an audio stream on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "It is safe to call this function from any thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL 3.2.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "GetAudioStreamDevice"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "ResumeAudioStreamDevice"
+                          }
+                        ]
+                      ],
+                      "name": "AudioStream",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "devid",
+                          "type": "AudioDeviceRef"
+                        },
+                        {
+                          "name": "spec",
+                          "type": "OptionalRef<const AudioSpec>",
+                          "default": "std::nullopt"
+                        },
+                        {
+                          "name": "callback",
+                          "type": "AudioStreamCallback",
+                          "default": "nullptr"
+                        },
+                        {
+                          "name": "userdata",
+                          "type": "void *",
+                          "default": "nullptr"
+                        }
+                      ],
+                      "sourceName": "SDL_OpenAudioDeviceStream",
+                      "hints": {
+                        "mayFail": true
+                      },
+                      "overload": {
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "devid",
+                            "type": "AudioDeviceRef"
+                          },
+                          {
+                            "name": "spec",
+                            "type": "OptionalRef<const AudioSpec>"
+                          },
+                          {
+                            "name": "callback",
+                            "type": "AudioStreamCB"
+                          }
+                        ],
+                        "name": "AudioStream",
+                        "doc": [
+                          "Create a new audio stream.",
+                          [
+                            {
+                              "tag": "@param src_spec",
+                              "content": "the format details of the input audio."
+                            },
+                            {
+                              "tag": "@param dst_spec",
+                              "content": "the format details of the output audio."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "a new audio stream on success."
+                            },
+                            {
+                              "tag": "@throws",
+                              "content": "Error on failure."
+                            }
+                          ],
+                          {
+                            "tag": "@threadsafety",
+                            "content": "It is safe to call this function from any thread."
+                          },
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL 3.2.0."
+                          },
+                          [
+                            {
+                              "tag": "@sa",
+                              "content": "PutAudioStreamData"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "GetAudioStreamData"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "GetAudioStreamAvailable"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "FlushAudioStream"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "ClearAudioStream"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "SetAudioStreamFormat"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "DestroyAudioStream"
+                            }
+                          ]
+                        ],
+                        "proto": true
+                      },
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~AudioStream": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyAudioStream(get());"
+              },
+              "name": "~AudioStream"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "AudioStream &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "AudioStream &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "AudioStream &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const AudioStream &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            },
+            "Lock": {
+              "doc": [
+                "Lock an audio stream for serialized access.",
+                "Each AudioStream has an internal mutex it uses to protect its data structures from threading conflicts. This function allows an app to lock that mutex, which could be useful if registering callbacks on this stream.",
+                "One does not need to lock a stream to use in it most cases, as the stream manages this lock internally. However, this lock is held during callbacks, which may run from arbitrary threads at any time, so if an app needs to protect shared data during those callbacks, locking the stream guarantees that the callback is not running while the lock is held.",
+                "As this is just a wrapper over LockMutex for an internal lock; it has all the same attributes (recursive locks are allowed, etc).",
+                [
+                  {
+                    "tag": "@throws",
+                    "content": "Error on failure."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                {
+                  "tag": "@sa",
+                  "content": "AudioStreamBase.Unlock"
+                }
+              ],
+              "name": "Lock",
+              "kind": "function",
+              "type": "AudioStreamLock",
+              "parameters": [],
+              "sourceName": "SDL_LockAudioStream",
+              "hints": {
+                "mayFail": true,
+                "body": "return {AudioStreamRef(*this)};",
+                "delegate": "SDL::AudioStreamBase::Lock"
+              },
+              "proto": true
+            },
+            "Unlock": {
+              "doc": [
+                "Unlock an audio stream for serialized access.",
+                "This unlocks an audio stream after a call to AudioStreamBase.Lock.",
+                [
+                  {
+                    "tag": "@throws",
+                    "content": "Error on failure."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "You should only call this from the same thread that previously called AudioStreamBase.Lock."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                {
+                  "tag": "@sa",
+                  "content": "AudioStreamBase.Lock"
+                }
+              ],
+              "name": "Unlock",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "type": "AudioStreamLock &&",
+                  "name": "lock"
+                }
+              ],
+              "sourceName": "SDL_UnlockAudioStream",
+              "hints": {
+                "mayFail": true,
+                "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
+                "delegate": "SDL::AudioStreamBase::Unlock"
+              },
+              "proto": true
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "AudioStream"
           }
@@ -9451,7 +9507,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "UnlockAudioStream"
+                  "content": "AudioStreamBase.Unlock"
                 }
               ],
               "proto": true,
@@ -9503,7 +9559,7 @@
               },
               "doc": [
                 "Unlock an audio stream for serialized access.",
-                "This unlocks an audio stream after a call to LockAudioStream.",
+                "This unlocks an audio stream after a call to AudioStreamBase.Lock.",
                 [
                   {
                     "tag": "@param stream",
@@ -9516,7 +9572,7 @@
                 ],
                 {
                   "tag": "@threadsafety",
-                  "content": "You should only call this from the same thread that previously called LockAudioStream."
+                  "content": "You should only call this from the same thread that previously called AudioStreamBase.Lock."
                 },
                 {
                   "tag": "@since",
@@ -9524,7 +9580,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "LockAudioStream"
+                  "content": "AudioStreamBase.Lock"
                 }
               ]
             },
@@ -9586,7 +9642,7 @@
               },
               "doc": [
                 "Unlock an audio stream for serialized access.",
-                "This unlocks an audio stream after a call to LockAudioStream.",
+                "This unlocks an audio stream after a call to AudioStreamBase.Lock.",
                 [
                   {
                     "tag": "@param stream",
@@ -9599,7 +9655,7 @@
                 ],
                 {
                   "tag": "@threadsafety",
-                  "content": "You should only call this from the same thread that previously called LockAudioStream."
+                  "content": "You should only call this from the same thread that previously called AudioStreamBase.Lock."
                 },
                 {
                   "tag": "@since",
@@ -9607,7 +9663,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "LockAudioStream"
+                  "content": "AudioStreamBase.Lock"
                 }
               ],
               "proto": true
@@ -9664,7 +9720,7 @@
             },
             {
               "tag": "@sa",
-              "content": "UnlockAudioStream"
+              "content": "AudioStreamBase.Unlock"
             }
           ]
         },
@@ -9898,15 +9954,14 @@
             "mayFail": true
           }
         },
-        "AudioDevice::GetName": {
-          "name": "AudioDevice::GetName",
+        "AudioDeviceBase::GetName": {
+          "name": "AudioDeviceBase::GetName",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
           "sourceName": "SDL_GetAudioDeviceName",
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "mayFail": true,
             "delegate": "SDL::GetAudioDeviceName"
           },
@@ -9966,8 +10021,8 @@
             "mayFail": true
           }
         },
-        "AudioDevice::GetFormat": {
-          "name": "AudioDevice::GetFormat",
+        "AudioDeviceBase::GetFormat": {
+          "name": "AudioDeviceBase::GetFormat",
           "kind": "function",
           "type": "AudioSpec",
           "parameters": [
@@ -9979,7 +10034,6 @@
           "sourceName": "SDL_GetAudioDeviceFormat",
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "mayFail": true,
             "delegate": "SDL::GetAudioDeviceFormat"
           },
@@ -10028,8 +10082,8 @@
           ],
           "sourceName": "SDL_GetAudioDeviceChannelMap"
         },
-        "AudioDevice::GetChannelMap": {
-          "name": "AudioDevice::GetChannelMap",
+        "AudioDeviceBase::GetChannelMap": {
+          "name": "AudioDeviceBase::GetChannelMap",
           "kind": "function",
           "type": "OwnArray<int>",
           "parameters": [],
@@ -10037,7 +10091,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "delegate": "SDL::GetAudioDeviceChannelMap"
           }
         },
@@ -10045,7 +10098,7 @@
           "doc": [
             "Open a specific audio device.",
             "You can open both playback and recording devices through this function. Playback devices will take data from bound audio streams, mix it, and send it to the hardware. Recording devices will feed any bound audio streams with a copy of any incoming data.",
-            "An opened audio device starts out with no audio streams bound. To start audio playing, bind a stream and supply audio data to it. Unlike SDL2, there is no audio callback; you only bind audio streams and make sure they have data flowing into them (however, you can simulate SDL2's semantics fairly closely by using AudioDevice.OpenStream instead of this function).",
+            "An opened audio device starts out with no audio streams bound. To start audio playing, bind a stream and supply audio data to it. Unlike SDL2, there is no audio callback; you only bind audio streams and make sure they have data flowing into them (however, you can simulate SDL2's semantics fairly closely by using AudioDeviceBase.OpenStream instead of this function).",
             "If you don't care about opening a specific device, pass a `devid` of either `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick the most reasonable default, and may also switch between physical devices seamlessly later, if the most reasonable default changes during the lifetime of this opened device (user changed the default in the OS's system preferences, the default got unplugged so the system jumped to a new default, the user plugged in headphones on a mobile device, etc). Unless you have a good reason to choose a specific device, this is probably what you want.",
             "You may request a specific format for the audio device, but there is no promise the device will honor that request for several reasons. As such, it's only meant to be a hint as to what data your app will provide. Audio streams will accept data in whatever format you specify and manage conversion for you as appropriate. GetAudioDeviceFormat can tell you the preferred format for the device before opening and the actual format the device is using after opening.",
             "It's legal to open the same device ID more than once; each successful open will generate a new logical AudioDevice that is managed separately from others on the same physical device. This allows libraries to open a device separately from the main app and bind its own streams without conflicting.",
@@ -10134,7 +10187,7 @@
         "IsAudioDevicePhysical": {
           "doc": [
             "Determine if an audio device is physical (instead of logical).",
-            "An AudioDevice that represents physical hardware is a physical device; there is one for each piece of hardware that SDL can see. Logical devices are created by calling OpenAudioDevice or AudioDevice.OpenStream, and while each is associated with a physical device, there can be any number of logical devices on one physical device.",
+            "An AudioDevice that represents physical hardware is a physical device; there is one for each piece of hardware that SDL can see. Logical devices are created by calling OpenAudioDevice or AudioDeviceBase.OpenStream, and while each is associated with a physical device, there can be any number of logical devices on one physical device.",
             "For the most part, logical and physical IDs are interchangeable--if you try to open a logical device, SDL understands to assign that effort to the underlying physical device, etc. However, it might be useful to know if an arbitrary device ID is physical or logical. This function reports which.",
             "This function may return either true or false for invalid device IDs.",
             [
@@ -10167,8 +10220,8 @@
           ],
           "sourceName": "SDL_IsAudioDevicePhysical"
         },
-        "AudioDevice::IsPhysical": {
-          "name": "AudioDevice::IsPhysical",
+        "AudioDeviceBase::IsPhysical": {
+          "name": "AudioDeviceBase::IsPhysical",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -10176,7 +10229,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "delegate": "SDL::IsAudioDevicePhysical"
           }
         },
@@ -10214,8 +10266,8 @@
           ],
           "sourceName": "SDL_IsAudioDevicePlayback"
         },
-        "AudioDevice::IsPlayback": {
-          "name": "AudioDevice::IsPlayback",
+        "AudioDeviceBase::IsPlayback": {
+          "name": "AudioDeviceBase::IsPlayback",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -10223,7 +10275,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "delegate": "SDL::IsAudioDevicePlayback"
           }
         },
@@ -10277,15 +10328,14 @@
             "mayFail": true
           }
         },
-        "AudioDevice::Pause": {
-          "name": "AudioDevice::Pause",
+        "AudioDeviceBase::Pause": {
+          "name": "AudioDeviceBase::Pause",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_PauseAudioDevice",
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "mayFail": true,
             "delegate": "SDL::PauseAudioDevice"
           }
@@ -10339,15 +10389,14 @@
             "mayFail": true
           }
         },
-        "AudioDevice::Resume": {
-          "name": "AudioDevice::Resume",
+        "AudioDeviceBase::Resume": {
+          "name": "AudioDeviceBase::Resume",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_ResumeAudioDevice",
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "mayFail": true,
             "delegate": "SDL::ResumeAudioDevice"
           }
@@ -10397,8 +10446,8 @@
           ],
           "sourceName": "SDL_AudioDevicePaused"
         },
-        "AudioDevice::Paused": {
-          "name": "AudioDevice::Paused",
+        "AudioDeviceBase::Paused": {
+          "name": "AudioDeviceBase::Paused",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -10406,7 +10455,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "delegate": "SDL::AudioDevicePaused"
           }
         },
@@ -10450,8 +10498,8 @@
           ],
           "sourceName": "SDL_GetAudioDeviceGain"
         },
-        "AudioDevice::GetGain": {
-          "name": "AudioDevice::GetGain",
+        "AudioDeviceBase::GetGain": {
+          "name": "AudioDeviceBase::GetGain",
           "kind": "function",
           "type": "float",
           "parameters": [],
@@ -10459,7 +10507,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "delegate": "SDL::GetAudioDeviceGain"
           }
         },
@@ -10515,8 +10562,8 @@
             "mayFail": true
           }
         },
-        "AudioDevice::SetGain": {
-          "name": "AudioDevice::SetGain",
+        "AudioDeviceBase::SetGain": {
+          "name": "AudioDeviceBase::SetGain",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -10528,7 +10575,6 @@
           "sourceName": "SDL_SetAudioDeviceGain",
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "mayFail": true,
             "delegate": "SDL::SetAudioDeviceGain"
           }
@@ -10566,15 +10612,14 @@
           ],
           "sourceName": "SDL_CloseAudioDevice"
         },
-        "AudioDevice::Close": {
-          "name": "AudioDevice::Close",
+        "AudioDeviceBase::Close": {
+          "name": "AudioDeviceBase::Close",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_CloseAudioDevice",
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "body": "CloseAudioDevice(release());",
             "delegate": "SDL::CloseAudioDevice"
           }
@@ -10645,8 +10690,8 @@
             "mayFail": true
           }
         },
-        "AudioDevice::BindAudioStreams": {
-          "name": "AudioDevice::BindAudioStreams",
+        "AudioDeviceBase::BindAudioStreams": {
+          "name": "AudioDeviceBase::BindAudioStreams",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -10658,7 +10703,6 @@
           "sourceName": "SDL_BindAudioStreams",
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "mayFail": true,
             "delegate": "SDL::BindAudioStreams"
           }
@@ -10722,8 +10766,8 @@
             "mayFail": true
           }
         },
-        "AudioDevice::BindAudioStream": {
-          "name": "AudioDevice::BindAudioStream",
+        "AudioDeviceBase::BindAudioStream": {
+          "name": "AudioDeviceBase::BindAudioStream",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -10735,7 +10779,6 @@
           "sourceName": "SDL_BindAudioStream",
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "mayFail": true,
             "delegate": "SDL::BindAudioStream"
           }
@@ -10811,15 +10854,14 @@
           ],
           "sourceName": "SDL_UnbindAudioStream"
         },
-        "AudioStream::Unbind": {
-          "name": "AudioStream::Unbind",
+        "AudioStreamBase::Unbind": {
+          "name": "AudioStreamBase::Unbind",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_UnbindAudioStream",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "delegate": "SDL::UnbindAudioStream"
           }
         },
@@ -10868,8 +10910,8 @@
           ],
           "sourceName": "SDL_GetAudioStreamDevice"
         },
-        "AudioStream::GetDevice": {
-          "name": "AudioStream::GetDevice",
+        "AudioStreamBase::GetDevice": {
+          "name": "AudioStreamBase::GetDevice",
           "kind": "function",
           "type": "AudioDeviceRef",
           "parameters": [],
@@ -10877,7 +10919,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "delegate": "SDL::GetAudioStreamDevice"
           }
         },
@@ -11040,7 +11081,7 @@
             "The application can hang any data it wants here, but the following properties are understood by SDL:",
             {
               "tag": "-",
-              "content": "`prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream be automatically cleaned up when the audio subsystem quits. If set to false, the streams will persist beyond that. This property is ignored for streams created through AudioDevice.OpenStream(), and will always be cleaned up. Streams that are not cleaned up will still be unbound from devices when the audio subsystem quits. This property was added in SDL 3.4.0."
+              "content": "`prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream be automatically cleaned up when the audio subsystem quits. If set to false, the streams will persist beyond that. This property is ignored for streams created through AudioDeviceBase.OpenStream(), and will always be cleaned up. Streams that are not cleaned up will still be unbound from devices when the audio subsystem quits. This property was added in SDL 3.4.0."
             },
             [
               {
@@ -11079,15 +11120,14 @@
             "mayFail": true
           }
         },
-        "AudioStream::GetProperties": {
-          "name": "AudioStream::GetProperties",
+        "AudioStreamBase::GetProperties": {
+          "name": "AudioStreamBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetAudioStreamProperties",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::GetAudioStreamProperties"
           },
@@ -11178,8 +11218,8 @@
             "mayFail": true
           }
         },
-        "AudioStream::GetFormat": {
-          "name": "AudioStream::GetFormat",
+        "AudioStreamBase::GetFormat": {
+          "name": "AudioStreamBase::GetFormat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -11195,7 +11235,6 @@
           "sourceName": "SDL_GetAudioStreamFormat",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::GetAudioStreamFormat"
           },
@@ -11266,8 +11305,8 @@
             "mayFail": true
           }
         },
-        "AudioStream::SetFormat": {
-          "name": "AudioStream::SetFormat",
+        "AudioStreamBase::SetFormat": {
+          "name": "AudioStreamBase::SetFormat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -11283,7 +11322,6 @@
           "sourceName": "SDL_SetAudioStreamFormat",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::SetAudioStreamFormat"
           }
@@ -11325,8 +11363,8 @@
           ],
           "sourceName": "SDL_GetAudioStreamFrequencyRatio"
         },
-        "AudioStream::GetFrequencyRatio": {
-          "name": "AudioStream::GetFrequencyRatio",
+        "AudioStreamBase::GetFrequencyRatio": {
+          "name": "AudioStreamBase::GetFrequencyRatio",
           "kind": "function",
           "type": "float",
           "parameters": [],
@@ -11334,7 +11372,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "delegate": "SDL::GetAudioStreamFrequencyRatio"
           }
         },
@@ -11394,8 +11431,8 @@
             "mayFail": true
           }
         },
-        "AudioStream::SetFrequencyRatio": {
-          "name": "AudioStream::SetFrequencyRatio",
+        "AudioStreamBase::SetFrequencyRatio": {
+          "name": "AudioStreamBase::SetFrequencyRatio",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -11407,7 +11444,6 @@
           "sourceName": "SDL_SetAudioStreamFrequencyRatio",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::SetAudioStreamFrequencyRatio"
           }
@@ -11451,8 +11487,8 @@
           ],
           "sourceName": "SDL_GetAudioStreamGain"
         },
-        "AudioStream::GetGain": {
-          "name": "AudioStream::GetGain",
+        "AudioStreamBase::GetGain": {
+          "name": "AudioStreamBase::GetGain",
           "kind": "function",
           "type": "float",
           "parameters": [],
@@ -11460,7 +11496,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "delegate": "SDL::GetAudioStreamGain"
           }
         },
@@ -11515,8 +11550,8 @@
             "mayFail": true
           }
         },
-        "AudioStream::SetGain": {
-          "name": "AudioStream::SetGain",
+        "AudioStreamBase::SetGain": {
+          "name": "AudioStreamBase::SetGain",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -11528,7 +11563,6 @@
           "sourceName": "SDL_SetAudioStreamGain",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::SetAudioStreamGain"
           }
@@ -11576,8 +11610,8 @@
           ],
           "sourceName": "SDL_GetAudioStreamInputChannelMap"
         },
-        "AudioStream::GetInputChannelMap": {
-          "name": "AudioStream::GetInputChannelMap",
+        "AudioStreamBase::GetInputChannelMap": {
+          "name": "AudioStreamBase::GetInputChannelMap",
           "kind": "function",
           "type": "OwnArray<int>",
           "parameters": [],
@@ -11585,7 +11619,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "delegate": "SDL::GetAudioStreamInputChannelMap"
           }
         },
@@ -11632,8 +11665,8 @@
           ],
           "sourceName": "SDL_GetAudioStreamOutputChannelMap"
         },
-        "AudioStream::GetOutputChannelMap": {
-          "name": "AudioStream::GetOutputChannelMap",
+        "AudioStreamBase::GetOutputChannelMap": {
+          "name": "AudioStreamBase::GetOutputChannelMap",
           "kind": "function",
           "type": "OwnArray<int>",
           "parameters": [],
@@ -11641,7 +11674,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "delegate": "SDL::GetAudioStreamOutputChannelMap"
           }
         },
@@ -11706,8 +11738,8 @@
             "mayFail": true
           }
         },
-        "AudioStream::SetInputChannelMap": {
-          "name": "AudioStream::SetInputChannelMap",
+        "AudioStreamBase::SetInputChannelMap": {
+          "name": "AudioStreamBase::SetInputChannelMap",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -11719,7 +11751,6 @@
           "sourceName": "SDL_SetAudioStreamInputChannelMap",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::SetAudioStreamInputChannelMap"
           }
@@ -11785,8 +11816,8 @@
             "mayFail": true
           }
         },
-        "AudioStream::SetOutputChannelMap": {
-          "name": "AudioStream::SetOutputChannelMap",
+        "AudioStreamBase::SetOutputChannelMap": {
+          "name": "AudioStreamBase::SetOutputChannelMap",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -11798,7 +11829,6 @@
           "sourceName": "SDL_SetAudioStreamOutputChannelMap",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::SetAudioStreamOutputChannelMap"
           }
@@ -11871,8 +11901,8 @@
             "mayFail": true
           }
         },
-        "AudioStream::PutData": {
-          "name": "AudioStream::PutData",
+        "AudioStreamBase::PutData": {
+          "name": "AudioStreamBase::PutData",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -11884,7 +11914,6 @@
           "sourceName": "SDL_PutAudioStreamData",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::PutAudioStreamData"
           }
@@ -12068,8 +12097,8 @@
             "patch": 0
           }
         },
-        "AudioStream::PutDataNoCopy": {
-          "name": "AudioStream::PutDataNoCopy",
+        "AudioStreamBase::PutDataNoCopy": {
+          "name": "AudioStreamBase::PutDataNoCopy",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -12089,7 +12118,6 @@
           "sourceName": "SDL_PutAudioStreamDataNoCopy",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::PutAudioStreamDataNoCopy"
           },
@@ -12114,10 +12142,9 @@
             },
             "hints": {
               "self": "get()",
-              "super": "AudioStream",
               "delegate": "SDL::PutAudioStreamDataNoCopy"
             },
-            "name": "AudioStream::PutDataNoCopy"
+            "name": "AudioStreamBase::PutDataNoCopy"
           },
           "since": {
             "tag": "SDL",
@@ -12215,8 +12242,8 @@
             "patch": 0
           }
         },
-        "AudioStream::PutPlanarData": {
-          "name": "AudioStream::PutPlanarData",
+        "AudioStreamBase::PutPlanarData": {
+          "name": "AudioStreamBase::PutPlanarData",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -12236,7 +12263,6 @@
           "sourceName": "SDL_PutAudioStreamPlanarData",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::PutAudioStreamPlanarData"
           },
@@ -12308,8 +12334,8 @@
           ],
           "sourceName": "SDL_GetAudioStreamData"
         },
-        "AudioStream::GetData": {
-          "name": "AudioStream::GetData",
+        "AudioStreamBase::GetData": {
+          "name": "AudioStreamBase::GetData",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -12321,7 +12347,6 @@
           "sourceName": "SDL_GetAudioStreamData",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "delegate": "SDL::GetAudioStreamData"
           }
         },
@@ -12370,8 +12395,8 @@
           ],
           "sourceName": "SDL_GetAudioStreamAvailable"
         },
-        "AudioStream::GetAvailable": {
-          "name": "AudioStream::GetAvailable",
+        "AudioStreamBase::GetAvailable": {
+          "name": "AudioStreamBase::GetAvailable",
           "kind": "function",
           "type": "int",
           "parameters": [],
@@ -12379,7 +12404,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "delegate": "SDL::GetAudioStreamAvailable"
           }
         },
@@ -12430,8 +12454,8 @@
           ],
           "sourceName": "SDL_GetAudioStreamQueued"
         },
-        "AudioStream::GetQueued": {
-          "name": "AudioStream::GetQueued",
+        "AudioStreamBase::GetQueued": {
+          "name": "AudioStreamBase::GetQueued",
           "kind": "function",
           "type": "int",
           "parameters": [],
@@ -12439,7 +12463,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "delegate": "SDL::GetAudioStreamQueued"
           }
         },
@@ -12484,15 +12507,14 @@
             "mayFail": true
           }
         },
-        "AudioStream::Flush": {
-          "name": "AudioStream::Flush",
+        "AudioStreamBase::Flush": {
+          "name": "AudioStreamBase::Flush",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_FlushAudioStream",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::FlushAudioStream"
           }
@@ -12552,15 +12574,14 @@
             "mayFail": true
           }
         },
-        "AudioStream::Clear": {
-          "name": "AudioStream::Clear",
+        "AudioStreamBase::Clear": {
+          "name": "AudioStreamBase::Clear",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_ClearAudioStream",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::ClearAudioStream"
           }
@@ -12607,15 +12628,14 @@
             "mayFail": true
           }
         },
-        "AudioStream::PauseDevice": {
-          "name": "AudioStream::PauseDevice",
+        "AudioStreamBase::PauseDevice": {
+          "name": "AudioStreamBase::PauseDevice",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_PauseAudioStreamDevice",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::PauseAudioStreamDevice"
           }
@@ -12624,7 +12644,7 @@
           "doc": [
             "Use this function to unpause audio playback on the audio device associated with an audio stream.",
             "This function unpauses audio processing for a given device that has previously been paused. Once unpaused, any bound audio streams will begin to progress again, and audio can be generated.",
-            "AudioDevice.OpenStream opens audio devices in a paused state, so this function call is required for audio playback to begin on such devices.",
+            "AudioDeviceBase.OpenStream opens audio devices in a paused state, so this function call is required for audio playback to begin on such devices.",
             [
               {
                 "tag": "@param stream",
@@ -12662,15 +12682,14 @@
             "mayFail": true
           }
         },
-        "AudioStream::ResumeDevice": {
-          "name": "AudioStream::ResumeDevice",
+        "AudioStreamBase::ResumeDevice": {
+          "name": "AudioStreamBase::ResumeDevice",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_ResumeAudioStreamDevice",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::ResumeAudioStreamDevice"
           }
@@ -12719,8 +12738,8 @@
           ],
           "sourceName": "SDL_AudioStreamDevicePaused"
         },
-        "AudioStream::DevicePaused": {
-          "name": "AudioStream::DevicePaused",
+        "AudioStreamBase::DevicePaused": {
+          "name": "AudioStreamBase::DevicePaused",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -12728,7 +12747,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "delegate": "SDL::AudioStreamDevicePaused"
           }
         },
@@ -12758,7 +12776,7 @@
             },
             {
               "tag": "@sa",
-              "content": "UnlockAudioStream"
+              "content": "AudioStreamBase.Unlock"
             }
           ],
           "name": "LockAudioStream",
@@ -12775,6 +12793,18 @@
             "mayFail": true
           }
         },
+        "AudioStreamBase::Lock": {
+          "name": "AudioStreamBase::Lock",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_LockAudioStream",
+          "hints": {
+            "self": "get()",
+            "mayFail": true,
+            "delegate": "SDL::LockAudioStream"
+          }
+        },
         "AudioStream::Lock": {
           "name": "AudioStream::Lock",
           "kind": "function",
@@ -12786,7 +12816,7 @@
             "super": "AudioStream",
             "mayFail": true,
             "body": "return {AudioStreamRef(*this)};",
-            "delegate": "SDL::LockAudioStream"
+            "delegate": "SDL::AudioStreamBase::Lock"
           }
         },
         "AudioStreamLock::AudioStreamLock": {
@@ -12810,7 +12840,7 @@
         "UnlockAudioStream": {
           "doc": [
             "Unlock an audio stream for serialized access.",
-            "This unlocks an audio stream after a call to LockAudioStream.",
+            "This unlocks an audio stream after a call to AudioStreamBase.Lock.",
             [
               {
                 "tag": "@param stream",
@@ -12823,7 +12853,7 @@
             ],
             {
               "tag": "@threadsafety",
-              "content": "You should only call this from the same thread that previously called LockAudioStream."
+              "content": "You should only call this from the same thread that previously called AudioStreamBase.Lock."
             },
             {
               "tag": "@since",
@@ -12831,7 +12861,7 @@
             },
             {
               "tag": "@sa",
-              "content": "LockAudioStream"
+              "content": "AudioStreamBase.Lock"
             }
           ],
           "name": "UnlockAudioStream",
@@ -12846,6 +12876,18 @@
           "sourceName": "SDL_UnlockAudioStream",
           "hints": {
             "mayFail": true
+          }
+        },
+        "AudioStreamBase::Unlock": {
+          "name": "AudioStreamBase::Unlock",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_UnlockAudioStream",
+          "hints": {
+            "self": "get()",
+            "mayFail": true,
+            "delegate": "SDL::UnlockAudioStream"
           }
         },
         "AudioStream::Unlock": {
@@ -12864,7 +12906,7 @@
             "super": "AudioStream",
             "mayFail": true,
             "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
-            "delegate": "SDL::UnlockAudioStream"
+            "delegate": "SDL::AudioStreamBase::Unlock"
           }
         },
         "AudioStreamLock::reset": {
@@ -12998,8 +13040,8 @@
             ]
           }
         },
-        "AudioStream::SetGetCallback": {
-          "name": "AudioStream::SetGetCallback",
+        "AudioStreamBase::SetGetCallback": {
+          "name": "AudioStreamBase::SetGetCallback",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -13015,7 +13057,6 @@
           "sourceName": "SDL_SetAudioStreamGetCallback",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::SetAudioStreamGetCallback"
           },
@@ -13030,10 +13071,9 @@
             ],
             "hints": {
               "self": "get()",
-              "super": "AudioStream",
               "delegate": "SDL::SetAudioStreamGetCallback"
             },
-            "name": "AudioStream::SetGetCallback"
+            "name": "AudioStreamBase::SetGetCallback"
           }
         },
         "SetAudioStreamPutCallback": {
@@ -13159,8 +13199,8 @@
             ]
           }
         },
-        "AudioStream::SetPutCallback": {
-          "name": "AudioStream::SetPutCallback",
+        "AudioStreamBase::SetPutCallback": {
+          "name": "AudioStreamBase::SetPutCallback",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -13176,7 +13216,6 @@
           "sourceName": "SDL_SetAudioStreamPutCallback",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "delegate": "SDL::SetAudioStreamPutCallback"
           },
@@ -13191,17 +13230,16 @@
             ],
             "hints": {
               "self": "get()",
-              "super": "AudioStream",
               "delegate": "SDL::SetAudioStreamPutCallback"
             },
-            "name": "AudioStream::SetPutCallback"
+            "name": "AudioStreamBase::SetPutCallback"
           }
         },
         "DestroyAudioStream": {
           "doc": [
             "Free an audio stream.",
             "This will release all allocated data, including any audio that is still queued. You do not need to manually clear the stream first.",
-            "If this stream was bound to an audio device, it is unbound during this call. If this stream was created with AudioDevice.OpenStream, the audio device that was opened alongside this stream's creation will be closed, too.",
+            "If this stream was bound to an audio device, it is unbound during this call. If this stream was created with AudioDeviceBase.OpenStream, the audio device that was opened alongside this stream's creation will be closed, too.",
             {
               "tag": "@param stream",
               "content": "the audio stream to destroy."
@@ -13230,15 +13268,14 @@
           ],
           "sourceName": "SDL_DestroyAudioStream"
         },
-        "AudioStream::Destroy": {
-          "name": "AudioStream::Destroy",
+        "AudioStreamBase::Destroy": {
+          "name": "AudioStreamBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyAudioStream",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "body": "DestroyAudioStream(release());",
             "delegate": "SDL::DestroyAudioStream"
           }
@@ -13406,8 +13443,8 @@
             ]
           }
         },
-        "AudioDevice::OpenStream": {
-          "name": "AudioDevice::OpenStream",
+        "AudioDeviceBase::OpenStream": {
+          "name": "AudioDeviceBase::OpenStream",
           "kind": "function",
           "type": "AudioStreamRef",
           "parameters": [
@@ -13427,7 +13464,6 @@
           "sourceName": "SDL_OpenAudioDeviceStream",
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "mayFail": true,
             "delegate": "AudioStream"
           },
@@ -13446,10 +13482,9 @@
             ],
             "hints": {
               "self": "get()",
-              "super": "AudioDevice",
               "delegate": "SDL::OpenAudioDeviceStream"
             },
-            "name": "AudioDevice::OpenStream"
+            "name": "AudioDeviceBase::OpenStream"
           }
         },
         "SetAudioPostmixCallback": {
@@ -13569,8 +13604,8 @@
             ]
           }
         },
-        "AudioDevice::SetPostmixCallback": {
-          "name": "AudioDevice::SetPostmixCallback",
+        "AudioDeviceBase::SetPostmixCallback": {
+          "name": "AudioDeviceBase::SetPostmixCallback",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -13586,7 +13621,6 @@
           "sourceName": "SDL_SetAudioPostmixCallback",
           "hints": {
             "self": "get()",
-            "super": "AudioDevice",
             "mayFail": true,
             "delegate": "SDL::SetAudioPostmixCallback"
           },
@@ -13601,10 +13635,9 @@
             ],
             "hints": {
               "self": "get()",
-              "super": "AudioDevice",
               "delegate": "SDL::SetAudioPostmixCallback"
             },
-            "name": "AudioDevice::SetPostmixCallback"
+            "name": "AudioDeviceBase::SetPostmixCallback"
           }
         },
         "LoadWAV_IO": {
