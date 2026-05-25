@@ -14651,6 +14651,10 @@
         "It's not uncommon that a newly-opened camera will provide a couple of completely black frames, maybe followed by some under-exposed images. If taking a single frame automatically, or recording video from a camera's input without the user initiating it from a preview, it could be wise to drop the first several frames (if not the first several _seconds_ worth of frames!) before using images from a camera."
       ],
       "entries": {
+        "CameraBase-forward": {
+          "name": "CameraBase",
+          "kind": "forward"
+        },
         "Camera-forward": {
           "name": "Camera",
           "kind": "forward"
@@ -14670,7 +14674,7 @@
             "Reference for Camera.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Camera>"
+          "type": "ResourceRefT<CameraBase>"
         },
         "CameraFrame-forward": {
           "kind": "forward",
@@ -14837,227 +14841,21 @@
           ],
           "sourceName": "SDL_CAMERA_PERMISSION_STATE_APPROVED"
         },
-        "Camera": {
-          "doc": [
-            "The opaque structure used to identify an opened SDL camera.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Camera",
+        "CameraBase": {
+          "name": "CameraBase",
           "kind": "struct",
-          "type": "ResourceBase<CameraRaw>",
-          "sourceName": "SDL_Camera",
+          "type": "ResourceBaseT<CameraRaw>",
+          "doc": [
+            "Base class to Camera.",
+            {
+              "tag": "@see",
+              "content": "Camera"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Camera": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "CameraRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Camera.",
-                {
-                  "tag": "@param resource",
-                  "content": "a CameraRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Camera",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Camera &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Camera",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Camera &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Camera(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Camera",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const CameraRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Camera",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "CameraRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Camera",
-                      "overload": {
-                        "doc": [
-                          "Open a video recording device (a \"camera\").",
-                          "You can open the device with any reasonable spec, and if the hardware can't directly support it, it will convert data seamlessly to the requested format. This might incur overhead, including scaling of image data.",
-                          "If you would rather accept whatever format the device offers, you can pass a nullptr spec here and it will choose one for you (and you can use Surface's conversion/scaling functions directly if necessary).",
-                          "You can call GetCameraFormat() to get the actual data format if passing a nullptr spec here. You can see the exact specs a device can support without conversion with GetCameraSupportedFormats().",
-                          "SDL will not attempt to emulate framerate; it will try to set the hardware to the rate closest to the requested speed, but it won't attempt to limit or duplicate frames artificially; call GetCameraFormat() to see the actual framerate of the opened the device, and check your timestamps if this is crucial to your app!",
-                          "Note that the camera is not usable until the user approves its use! On some platforms, the operating system will prompt the user to permit access to the camera, and they can choose Yes or No at that point. Until they do, the camera will not be usable. The app should either wait for an EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll GetCameraPermissionState() occasionally until it returns non-zero. On platforms that don't require explicit user approval (and perhaps in places where the user previously permitted access), the approval event might come immediately, but it might come seconds, minutes, or hours later!",
-                          [
-                            {
-                              "tag": "@param instance_id",
-                              "content": "the camera device instance ID."
-                            },
-                            {
-                              "tag": "@param spec",
-                              "content": "the desired format for data the device will provide. Can be nullptr."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "an Camera object or nullptr on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "GetCameras"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetCameraFormat"
-                            }
-                          ]
-                        ],
-                        "name": "Camera",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "instance_id",
-                            "type": "CameraID"
-                          },
-                          {
-                            "name": "spec",
-                            "type": "OptionalRef<const CameraSpec>",
-                            "default": "{}"
-                          }
-                        ],
-                        "sourceName": "SDL_OpenCamera",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Camera": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_CloseCamera(get());"
-              },
-              "name": "~Camera"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Camera &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Camera &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Camera &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Camera &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Close": {
               "doc": [
@@ -15243,8 +15041,8 @@
                 "The frame is a memory pointer to the image data, whose size and format are given by the spec requested when opening the device.",
                 "This is a non blocking API. If there is a frame available, a non-nullptr surface is returned, and timestampNS will be filled with a non-zero value.",
                 "Note that an error case can also return nullptr, but a nullptr by itself is normal and just signifies that a new frame is not yet available. Note that even if a camera device fails outright (a USB camera is unplugged while in use, etc), SDL will send an event separately to notify the app, but continue to provide blank frames at ongoing intervals until CloseCamera() is called, so real failure here is almost always an out of memory condition.",
-                "After use, the frame should be released with ReleaseCameraFrame(). If you don't do this, the system may stop providing more video!",
-                "Do not call DestroySurface() on the returned surface! It must be given back to the camera subsystem with ReleaseCameraFrame!",
+                "After use, the frame should be released with CameraBase.ReleaseFrame(). If you don't do this, the system may stop providing more video!",
+                "Do not call DestroySurface() on the returned surface! It must be given back to the camera subsystem with CameraBase.ReleaseFrame!",
                 "If the system is waiting for the user to approve access to the camera, as some platforms require, this will return nullptr (no frames available); you should either wait for an EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll GetCameraPermissionState() occasionally until it returns non-zero.",
                 [
                   {
@@ -15266,12 +15064,12 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "ReleaseCameraFrame"
+                  "content": "CameraBase.ReleaseFrame"
                 }
               ],
               "name": "AcquireFrame",
               "kind": "function",
-              "type": "CameraFrame",
+              "type": "Surface",
               "parameters": [
                 {
                   "name": "timestampNS",
@@ -15281,7 +15079,6 @@
               ],
               "sourceName": "SDL_AcquireCameraFrame",
               "hints": {
-                "body": "return {CameraRef(*this)};",
                 "delegate": "SDL::AcquireCameraFrame"
               },
               "proto": true
@@ -15290,7 +15087,7 @@
               "doc": [
                 "Release a frame of video acquired from a camera.",
                 "Let the back-end re-use the internal buffer for camera.",
-                "This function _must_ be called only on surface objects returned by AcquireCameraFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
+                "This function _must_ be called only on surface objects returned by CameraBase.AcquireFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
                 "If the app needs to keep the surface for a significant time, they should make a copy of it and release the original.",
                 "The app should not use the surface again after calling this function; assume the surface is freed and the pointer is invalid.",
                 [
@@ -15309,7 +15106,291 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "AcquireCameraFrame"
+                  "content": "CameraBase.AcquireFrame"
+                }
+              ],
+              "name": "ReleaseFrame",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "frame",
+                  "type": "SurfaceRef"
+                }
+              ],
+              "sourceName": "SDL_ReleaseCameraFrame",
+              "hints": {
+                "delegate": "SDL::ReleaseCameraFrame"
+              },
+              "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Camera": {
+          "doc": [
+            "The opaque structure used to identify an opened SDL camera.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Camera",
+          "kind": "struct",
+          "type": "CameraBase",
+          "sourceName": "SDL_Camera",
+          "entries": {
+            "CameraBase::CameraBase": {
+              "kind": "alias",
+              "name": "CameraBase::CameraBase"
+            },
+            "Camera": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "CameraRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "CameraBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Camera.",
+                {
+                  "tag": "@param resource",
+                  "content": "a CameraRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Camera",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Camera &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Camera",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Camera &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Camera(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Camera",
+                  "overload": {
+                    "doc": [
+                      "Open a video recording device (a \"camera\").",
+                      "You can open the device with any reasonable spec, and if the hardware can't directly support it, it will convert data seamlessly to the requested format. This might incur overhead, including scaling of image data.",
+                      "If you would rather accept whatever format the device offers, you can pass a nullptr spec here and it will choose one for you (and you can use Surface's conversion/scaling functions directly if necessary).",
+                      "You can call GetCameraFormat() to get the actual data format if passing a nullptr spec here. You can see the exact specs a device can support without conversion with GetCameraSupportedFormats().",
+                      "SDL will not attempt to emulate framerate; it will try to set the hardware to the rate closest to the requested speed, but it won't attempt to limit or duplicate frames artificially; call GetCameraFormat() to see the actual framerate of the opened the device, and check your timestamps if this is crucial to your app!",
+                      "Note that the camera is not usable until the user approves its use! On some platforms, the operating system will prompt the user to permit access to the camera, and they can choose Yes or No at that point. Until they do, the camera will not be usable. The app should either wait for an EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll GetCameraPermissionState() occasionally until it returns non-zero. On platforms that don't require explicit user approval (and perhaps in places where the user previously permitted access), the approval event might come immediately, but it might come seconds, minutes, or hours later!",
+                      [
+                        {
+                          "tag": "@param instance_id",
+                          "content": "the camera device instance ID."
+                        },
+                        {
+                          "tag": "@param spec",
+                          "content": "the desired format for data the device will provide. Can be nullptr."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "an Camera object or nullptr on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "GetCameras"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetCameraFormat"
+                        }
+                      ]
+                    ],
+                    "name": "Camera",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "instance_id",
+                        "type": "CameraID"
+                      },
+                      {
+                        "name": "spec",
+                        "type": "OptionalRef<const CameraSpec>",
+                        "default": "{}"
+                      }
+                    ],
+                    "sourceName": "SDL_OpenCamera",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Camera": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_CloseCamera(get());"
+              },
+              "name": "~Camera"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Camera &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Camera &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Camera &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Camera &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            },
+            "AcquireFrame": {
+              "doc": [
+                "Acquire a frame.",
+                "The frame is a memory pointer to the image data, whose size and format are given by the spec requested when opening the device.",
+                "This is a non blocking API. If there is a frame available, a non-nullptr surface is returned, and timestampNS will be filled with a non-zero value.",
+                "Note that an error case can also return nullptr, but a nullptr by itself is normal and just signifies that a new frame is not yet available. Note that even if a camera device fails outright (a USB camera is unplugged while in use, etc), SDL will send an event separately to notify the app, but continue to provide blank frames at ongoing intervals until CloseCamera() is called, so real failure here is almost always an out of memory condition.",
+                "After use, the frame should be released with CameraBase.ReleaseFrame(). If you don't do this, the system may stop providing more video!",
+                "Do not call DestroySurface() on the returned surface! It must be given back to the camera subsystem with CameraBase.ReleaseFrame!",
+                "If the system is waiting for the user to approve access to the camera, as some platforms require, this will return nullptr (no frames available); you should either wait for an EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll GetCameraPermissionState() occasionally until it returns non-zero.",
+                [
+                  {
+                    "tag": "@param timestampNS",
+                    "content": "a pointer filled in with the frame's timestamp, or 0 on error. Can be nullptr."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "a new frame of video on success, nullptr if none is currently available."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                {
+                  "tag": "@sa",
+                  "content": "CameraBase.ReleaseFrame"
+                }
+              ],
+              "name": "AcquireFrame",
+              "kind": "function",
+              "type": "CameraFrame",
+              "parameters": [
+                {
+                  "name": "timestampNS",
+                  "type": "Uint64 *"
+                }
+              ],
+              "sourceName": "SDL_AcquireCameraFrame",
+              "hints": {
+                "body": "return {CameraRef(*this)};",
+                "delegate": "SDL::CameraBase::AcquireFrame"
+              },
+              "proto": true
+            },
+            "ReleaseFrame": {
+              "doc": [
+                "Release a frame of video acquired from a camera.",
+                "Let the back-end re-use the internal buffer for camera.",
+                "This function _must_ be called only on surface objects returned by CameraBase.AcquireFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
+                "If the app needs to keep the surface for a significant time, they should make a copy of it and release the original.",
+                "The app should not use the surface again after calling this function; assume the surface is freed and the pointer is invalid.",
+                [
+                  {
+                    "tag": "@param frame",
+                    "content": "the video frame surface to release."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                {
+                  "tag": "@sa",
+                  "content": "CameraBase.AcquireFrame"
                 }
               ],
               "name": "ReleaseFrame",
@@ -15324,7 +15405,7 @@
               "sourceName": "SDL_ReleaseCameraFrame",
               "hints": {
                 "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
-                "delegate": "SDL::ReleaseCameraFrame"
+                "delegate": "SDL::CameraBase::ReleaseFrame"
               },
               "proto": true
             }
@@ -15360,8 +15441,8 @@
                 "The frame is a memory pointer to the image data, whose size and format are given by the spec requested when opening the device.",
                 "This is a non blocking API. If there is a frame available, a non-nullptr surface is returned, and timestampNS will be filled with a non-zero value.",
                 "Note that an error case can also return nullptr, but a nullptr by itself is normal and just signifies that a new frame is not yet available. Note that even if a camera device fails outright (a USB camera is unplugged while in use, etc), SDL will send an event separately to notify the app, but continue to provide blank frames at ongoing intervals until CloseCamera() is called, so real failure here is almost always an out of memory condition.",
-                "After use, the frame should be released with ReleaseCameraFrame(). If you don't do this, the system may stop providing more video!",
-                "Do not call DestroySurface() on the returned surface! It must be given back to the camera subsystem with ReleaseCameraFrame!",
+                "After use, the frame should be released with CameraBase.ReleaseFrame(). If you don't do this, the system may stop providing more video!",
+                "Do not call DestroySurface() on the returned surface! It must be given back to the camera subsystem with CameraBase.ReleaseFrame!",
                 "If the system is waiting for the user to approve access to the camera, as some platforms require, this will return nullptr (no frames available); you should either wait for an EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll GetCameraPermissionState() occasionally until it returns non-zero.",
                 [
                   {
@@ -15387,7 +15468,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "ReleaseCameraFrame"
+                  "content": "CameraBase.ReleaseFrame"
                 }
               ],
               "proto": true,
@@ -15440,7 +15521,7 @@
               "doc": [
                 "Release a frame of video acquired from a camera.",
                 "Let the back-end re-use the internal buffer for camera.",
-                "This function _must_ be called only on surface objects returned by AcquireCameraFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
+                "This function _must_ be called only on surface objects returned by CameraBase.AcquireFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
                 "If the app needs to keep the surface for a significant time, they should make a copy of it and release the original.",
                 "The app should not use the surface again after calling this function; assume the surface is freed and the pointer is invalid.",
                 [
@@ -15463,7 +15544,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "AcquireCameraFrame"
+                  "content": "CameraBase.AcquireFrame"
                 }
               ]
             },
@@ -15526,7 +15607,7 @@
               "doc": [
                 "Release a frame of video acquired from a camera.",
                 "Let the back-end re-use the internal buffer for camera.",
-                "This function _must_ be called only on surface objects returned by AcquireCameraFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
+                "This function _must_ be called only on surface objects returned by CameraBase.AcquireFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
                 "If the app needs to keep the surface for a significant time, they should make a copy of it and release the original.",
                 "The app should not use the surface again after calling this function; assume the surface is freed and the pointer is invalid.",
                 [
@@ -15549,7 +15630,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "AcquireCameraFrame"
+                  "content": "CameraBase.AcquireFrame"
                 }
               ],
               "proto": true
@@ -15957,15 +16038,14 @@
           ],
           "sourceName": "SDL_GetCameraPermissionState"
         },
-        "Camera::GetPermissionState": {
-          "name": "Camera::GetPermissionState",
+        "CameraBase::GetPermissionState": {
+          "name": "CameraBase::GetPermissionState",
           "kind": "function",
           "type": "CameraPermissionState",
           "parameters": [],
           "sourceName": "SDL_GetCameraPermissionState",
           "hints": {
             "self": "get()",
-            "super": "Camera",
             "delegate": "SDL::GetCameraPermissionState"
           }
         },
@@ -16013,15 +16093,14 @@
             "mayFail": true
           }
         },
-        "Camera::GetID": {
-          "name": "Camera::GetID",
+        "CameraBase::GetID": {
+          "name": "CameraBase::GetID",
           "kind": "function",
           "type": "CameraID",
           "parameters": [],
           "sourceName": "SDL_GetCameraID",
           "hints": {
             "self": "get()",
-            "super": "Camera",
             "mayFail": true,
             "delegate": "SDL::GetCameraID"
           }
@@ -16066,15 +16145,14 @@
             "mayFail": true
           }
         },
-        "Camera::GetProperties": {
-          "name": "Camera::GetProperties",
+        "CameraBase::GetProperties": {
+          "name": "CameraBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetCameraProperties",
           "hints": {
             "self": "get()",
-            "super": "Camera",
             "mayFail": true,
             "delegate": "SDL::GetCameraProperties"
           }
@@ -16125,15 +16203,14 @@
             "mayFail": true
           }
         },
-        "Camera::GetFormat": {
-          "name": "Camera::GetFormat",
+        "CameraBase::GetFormat": {
+          "name": "CameraBase::GetFormat",
           "kind": "function",
           "type": "std::optional<CameraSpec>",
           "parameters": [],
           "sourceName": "SDL_GetCameraFormat",
           "hints": {
             "self": "get()",
-            "super": "Camera",
             "mayFail": true,
             "delegate": "SDL::GetCameraFormat"
           }
@@ -16144,8 +16221,8 @@
             "The frame is a memory pointer to the image data, whose size and format are given by the spec requested when opening the device.",
             "This is a non blocking API. If there is a frame available, a non-nullptr surface is returned, and timestampNS will be filled with a non-zero value.",
             "Note that an error case can also return nullptr, but a nullptr by itself is normal and just signifies that a new frame is not yet available. Note that even if a camera device fails outright (a USB camera is unplugged while in use, etc), SDL will send an event separately to notify the app, but continue to provide blank frames at ongoing intervals until CloseCamera() is called, so real failure here is almost always an out of memory condition.",
-            "After use, the frame should be released with ReleaseCameraFrame(). If you don't do this, the system may stop providing more video!",
-            "Do not call DestroySurface() on the returned surface! It must be given back to the camera subsystem with ReleaseCameraFrame!",
+            "After use, the frame should be released with CameraBase.ReleaseFrame(). If you don't do this, the system may stop providing more video!",
+            "Do not call DestroySurface() on the returned surface! It must be given back to the camera subsystem with CameraBase.ReleaseFrame!",
             "If the system is waiting for the user to approve access to the camera, as some platforms require, this will return nullptr (no frames available); you should either wait for an EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll GetCameraPermissionState() occasionally until it returns non-zero.",
             [
               {
@@ -16171,7 +16248,7 @@
             },
             {
               "tag": "@sa",
-              "content": "ReleaseCameraFrame"
+              "content": "CameraBase.ReleaseFrame"
             }
           ],
           "name": "AcquireCameraFrame",
@@ -16190,6 +16267,22 @@
           ],
           "sourceName": "SDL_AcquireCameraFrame"
         },
+        "CameraBase::AcquireFrame": {
+          "name": "CameraBase::AcquireFrame",
+          "kind": "function",
+          "type": "Surface",
+          "parameters": [
+            {
+              "name": "timestampNS",
+              "type": "Uint64 *"
+            }
+          ],
+          "sourceName": "SDL_AcquireCameraFrame",
+          "hints": {
+            "self": "get()",
+            "delegate": "SDL::AcquireCameraFrame"
+          }
+        },
         "Camera::AcquireFrame": {
           "name": "Camera::AcquireFrame",
           "kind": "function",
@@ -16205,7 +16298,7 @@
             "self": "get()",
             "super": "Camera",
             "body": "return {CameraRef(*this)};",
-            "delegate": "SDL::AcquireCameraFrame"
+            "delegate": "SDL::CameraBase::AcquireFrame"
           }
         },
         "CameraFrame::CameraFrame": {
@@ -16229,7 +16322,7 @@
           "doc": [
             "Release a frame of video acquired from a camera.",
             "Let the back-end re-use the internal buffer for camera.",
-            "This function _must_ be called only on surface objects returned by AcquireCameraFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
+            "This function _must_ be called only on surface objects returned by CameraBase.AcquireFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
             "If the app needs to keep the surface for a significant time, they should make a copy of it and release the original.",
             "The app should not use the surface again after calling this function; assume the surface is freed and the pointer is invalid.",
             [
@@ -16252,7 +16345,7 @@
             },
             {
               "tag": "@sa",
-              "content": "AcquireCameraFrame"
+              "content": "CameraBase.AcquireFrame"
             }
           ],
           "name": "ReleaseCameraFrame",
@@ -16270,6 +16363,22 @@
           ],
           "sourceName": "SDL_ReleaseCameraFrame"
         },
+        "CameraBase::ReleaseFrame": {
+          "name": "CameraBase::ReleaseFrame",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "frame",
+              "type": "SurfaceRef"
+            }
+          ],
+          "sourceName": "SDL_ReleaseCameraFrame",
+          "hints": {
+            "self": "get()",
+            "delegate": "SDL::ReleaseCameraFrame"
+          }
+        },
         "Camera::ReleaseFrame": {
           "name": "Camera::ReleaseFrame",
           "kind": "function",
@@ -16285,7 +16394,7 @@
             "self": "get()",
             "super": "Camera",
             "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
-            "delegate": "SDL::ReleaseCameraFrame"
+            "delegate": "SDL::CameraBase::ReleaseFrame"
           }
         },
         "CameraFrame::reset": {
@@ -16328,15 +16437,14 @@
           ],
           "sourceName": "SDL_CloseCamera"
         },
-        "Camera::Close": {
-          "name": "Camera::Close",
+        "CameraBase::Close": {
+          "name": "CameraBase::Close",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_CloseCamera",
           "hints": {
             "self": "get()",
-            "super": "Camera",
             "body": "CloseCamera(release());",
             "delegate": "SDL::CloseCamera"
           }
@@ -86945,6 +87053,10 @@
         "Since many apps only care about basic mouse input, SDL offers a virtual mouse device for touch and pen input, which often can make a desktop application work on a touchscreen phone without any code changes. Apps that care about touch/pen separately from mouse input should filter out events with a `which` field of TOUCH_MOUSEID/PEN_MOUSEID."
       ],
       "entries": {
+        "CursorBase-forward": {
+          "name": "CursorBase",
+          "kind": "forward"
+        },
         "Cursor-forward": {
           "name": "Cursor",
           "kind": "forward"
@@ -86964,7 +87076,7 @@
             "Reference for Cursor.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Cursor>"
+          "type": "ResourceRefT<CursorBase>"
         },
         "SystemCursor": {
           "name": "SystemCursor",
@@ -87204,414 +87316,21 @@
           "type": "SDL_MouseID",
           "sourceName": "SDL_MouseID"
         },
-        "Cursor": {
-          "doc": [
-            "The structure used to identify an SDL cursor.",
-            "This is opaque data.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Cursor",
+        "CursorBase": {
+          "name": "CursorBase",
           "kind": "struct",
-          "type": "ResourceBase<CursorRaw>",
-          "sourceName": "SDL_Cursor",
+          "type": "ResourceBaseT<CursorRaw>",
+          "doc": [
+            "Base class to Cursor.",
+            {
+              "tag": "@see",
+              "content": "Cursor"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Cursor": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "CursorRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Cursor.",
-                {
-                  "tag": "@param resource",
-                  "content": "a CursorRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Cursor",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Cursor &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Cursor",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Cursor &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Cursor(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Cursor",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const CursorRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Cursor",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "CursorRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Cursor",
-                      "overload": {
-                        "doc": [
-                          "Create a cursor using the specified bitmap data and mask (in MSB format).",
-                          "`mask` has to be in MSB (Most Significant Bit) format.",
-                          "The cursor width (`w`) must be a multiple of 8 bits.",
-                          "The cursor is created in black and white according to the following:",
-                          [
-                            {
-                              "tag": "-",
-                              "content": "data=0, mask=1: white"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "data=1, mask=1: black"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "data=0, mask=0: transparent"
-                            },
-                            {
-                              "tag": "-",
-                              "content": "data=1, mask=0: inverted color if possible, black if not."
-                            }
-                          ],
-                          "Cursors created with this function must be freed with DestroyCursor().",
-                          "If you want to have a color cursor, or create your cursor from an Surface, you should use CreateColorCursor(). Alternately, you can hide the cursor and draw your own as part of your game's rendering, but it will be bound to the framerate.",
-                          "Also, CreateSystemCursor() is available, which provides several readily-available system cursors to pick from.",
-                          [
-                            {
-                              "tag": "@param data",
-                              "content": "the color value for each pixel of the cursor."
-                            },
-                            {
-                              "tag": "@param mask",
-                              "content": "the mask value for each pixel of the cursor."
-                            },
-                            {
-                              "tag": "@param w",
-                              "content": "the width of the cursor."
-                            },
-                            {
-                              "tag": "@param h",
-                              "content": "the height of the cursor."
-                            },
-                            {
-                              "tag": "@param hot_x",
-                              "content": "the x-axis offset from the left of the cursor image to the mouse x position, in the range of 0 to `w` - 1."
-                            },
-                            {
-                              "tag": "@param hot_y",
-                              "content": "the y-axis offset from the top of the cursor image to the mouse y position, in the range of 0 to `h` - 1."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new cursor with the specified parameters on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "This function should only be called on the main thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateAnimatedCursor"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CreateColorCursor"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CreateSystemCursor"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyCursor"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "SetCursor"
-                            }
-                          ]
-                        ],
-                        "name": "Cursor",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "data",
-                            "type": "const Uint8 *"
-                          },
-                          {
-                            "name": "mask",
-                            "type": "const Uint8 *"
-                          },
-                          {
-                            "type": "const PointRaw &",
-                            "name": "size"
-                          },
-                          {
-                            "name": "hot",
-                            "type": "const PointRaw &"
-                          }
-                        ],
-                        "sourceName": "SDL_CreateCursor",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "overload": {
-                          "doc": [
-                            "Create a color cursor.",
-                            "If this function is passed a surface with alternate representations added with AddSurfaceAlternateImage(), the surface will be interpreted as the content to be used for 100% display scale, and the alternate representations will be used for high DPI situations if SDL_HINT_MOUSE_DPI_SCALE_CURSORS is enabled. For example, if the original surface is 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64 version of the image will be used, if available. If a matching version of the image isn't available, the closest larger size image will be downscaled to the appropriate size and be used instead, if available. Otherwise, the closest smaller image will be upscaled and be used instead.",
-                            [
-                              {
-                                "tag": "@param surface",
-                                "content": "an Surface structure representing the cursor image."
-                              },
-                              {
-                                "tag": "@param hot_x",
-                                "content": "the x position of the cursor hot spot."
-                              },
-                              {
-                                "tag": "@param hot_y",
-                                "content": "the y position of the cursor hot spot."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "the new cursor on success."
-                              },
-                              {
-                                "tag": "@throws",
-                                "content": "Error on failure."
-                              }
-                            ],
-                            {
-                              "tag": "@threadsafety",
-                              "content": "This function should only be called on the main thread."
-                            },
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL 3.2.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "AddSurfaceAlternateImage"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CreateAnimatedCursor"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CreateCursor"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CreateSystemCursor"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "DestroyCursor"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "SetCursor"
-                              }
-                            ]
-                          ],
-                          "name": "Cursor",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "surface",
-                              "type": "SurfaceRef"
-                            },
-                            {
-                              "name": "hot",
-                              "type": "const PointRaw &"
-                            }
-                          ],
-                          "sourceName": "SDL_CreateColorCursor",
-                          "hints": {
-                            "mayFail": true
-                          },
-                          "overload": {
-                            "doc": [
-                              "Create a system cursor.",
-                              [
-                                {
-                                  "tag": "@param id",
-                                  "content": "an SystemCursor enum value."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "a cursor on success."
-                                },
-                                {
-                                  "tag": "@throws",
-                                  "content": "Error on failure."
-                                }
-                              ],
-                              {
-                                "tag": "@threadsafety",
-                                "content": "This function should only be called on the main thread."
-                              },
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL 3.2.0."
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "DestroyCursor"
-                              }
-                            ],
-                            "name": "Cursor",
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "id",
-                                "type": "SystemCursor"
-                              }
-                            ],
-                            "sourceName": "SDL_CreateSystemCursor",
-                            "hints": {
-                              "mayFail": true
-                            },
-                            "proto": true
-                          },
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Cursor": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyCursor(get());"
-              },
-              "name": "~Cursor"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Cursor &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Cursor &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Cursor &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Cursor &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -87688,6 +87407,388 @@
                 "delegate": "SDL::SetCursor"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Cursor": {
+          "doc": [
+            "The structure used to identify an SDL cursor.",
+            "This is opaque data.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Cursor",
+          "kind": "struct",
+          "type": "CursorBase",
+          "sourceName": "SDL_Cursor",
+          "entries": {
+            "CursorBase::CursorBase": {
+              "kind": "alias",
+              "name": "CursorBase::CursorBase"
+            },
+            "Cursor": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "CursorRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "CursorBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Cursor.",
+                {
+                  "tag": "@param resource",
+                  "content": "a CursorRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Cursor",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Cursor &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Cursor",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Cursor &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Cursor(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Cursor",
+                  "overload": {
+                    "doc": [
+                      "Create a cursor using the specified bitmap data and mask (in MSB format).",
+                      "`mask` has to be in MSB (Most Significant Bit) format.",
+                      "The cursor width (`w`) must be a multiple of 8 bits.",
+                      "The cursor is created in black and white according to the following:",
+                      [
+                        {
+                          "tag": "-",
+                          "content": "data=0, mask=1: white"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "data=1, mask=1: black"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "data=0, mask=0: transparent"
+                        },
+                        {
+                          "tag": "-",
+                          "content": "data=1, mask=0: inverted color if possible, black if not."
+                        }
+                      ],
+                      "Cursors created with this function must be freed with DestroyCursor().",
+                      "If you want to have a color cursor, or create your cursor from an Surface, you should use CreateColorCursor(). Alternately, you can hide the cursor and draw your own as part of your game's rendering, but it will be bound to the framerate.",
+                      "Also, CreateSystemCursor() is available, which provides several readily-available system cursors to pick from.",
+                      [
+                        {
+                          "tag": "@param data",
+                          "content": "the color value for each pixel of the cursor."
+                        },
+                        {
+                          "tag": "@param mask",
+                          "content": "the mask value for each pixel of the cursor."
+                        },
+                        {
+                          "tag": "@param w",
+                          "content": "the width of the cursor."
+                        },
+                        {
+                          "tag": "@param h",
+                          "content": "the height of the cursor."
+                        },
+                        {
+                          "tag": "@param hot_x",
+                          "content": "the x-axis offset from the left of the cursor image to the mouse x position, in the range of 0 to `w` - 1."
+                        },
+                        {
+                          "tag": "@param hot_y",
+                          "content": "the y-axis offset from the top of the cursor image to the mouse y position, in the range of 0 to `h` - 1."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a new cursor with the specified parameters on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "This function should only be called on the main thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateAnimatedCursor"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "CreateColorCursor"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "CreateSystemCursor"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyCursor"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "SetCursor"
+                        }
+                      ]
+                    ],
+                    "name": "Cursor",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "data",
+                        "type": "const Uint8 *"
+                      },
+                      {
+                        "name": "mask",
+                        "type": "const Uint8 *"
+                      },
+                      {
+                        "type": "const PointRaw &",
+                        "name": "size"
+                      },
+                      {
+                        "name": "hot",
+                        "type": "const PointRaw &"
+                      }
+                    ],
+                    "sourceName": "SDL_CreateCursor",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Create a color cursor.",
+                        "If this function is passed a surface with alternate representations added with AddSurfaceAlternateImage(), the surface will be interpreted as the content to be used for 100% display scale, and the alternate representations will be used for high DPI situations if SDL_HINT_MOUSE_DPI_SCALE_CURSORS is enabled. For example, if the original surface is 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64 version of the image will be used, if available. If a matching version of the image isn't available, the closest larger size image will be downscaled to the appropriate size and be used instead, if available. Otherwise, the closest smaller image will be upscaled and be used instead.",
+                        [
+                          {
+                            "tag": "@param surface",
+                            "content": "an Surface structure representing the cursor image."
+                          },
+                          {
+                            "tag": "@param hot_x",
+                            "content": "the x position of the cursor hot spot."
+                          },
+                          {
+                            "tag": "@param hot_y",
+                            "content": "the y position of the cursor hot spot."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "the new cursor on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "This function should only be called on the main thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL 3.2.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "AddSurfaceAlternateImage"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CreateAnimatedCursor"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CreateCursor"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CreateSystemCursor"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyCursor"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "SetCursor"
+                          }
+                        ]
+                      ],
+                      "name": "Cursor",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "surface",
+                          "type": "SurfaceRef"
+                        },
+                        {
+                          "name": "hot",
+                          "type": "const PointRaw &"
+                        }
+                      ],
+                      "sourceName": "SDL_CreateColorCursor",
+                      "hints": {
+                        "mayFail": true
+                      },
+                      "overload": {
+                        "doc": [
+                          "Create a system cursor.",
+                          [
+                            {
+                              "tag": "@param id",
+                              "content": "an SystemCursor enum value."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "a cursor on success."
+                            },
+                            {
+                              "tag": "@throws",
+                              "content": "Error on failure."
+                            }
+                          ],
+                          {
+                            "tag": "@threadsafety",
+                            "content": "This function should only be called on the main thread."
+                          },
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL 3.2.0."
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyCursor"
+                          }
+                        ],
+                        "name": "Cursor",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "id",
+                            "type": "SystemCursor"
+                          }
+                        ],
+                        "sourceName": "SDL_CreateSystemCursor",
+                        "hints": {
+                          "mayFail": true
+                        },
+                        "proto": true
+                      },
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Cursor": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyCursor(get());"
+              },
+              "name": "~Cursor"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Cursor &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Cursor &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Cursor &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Cursor &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -89019,15 +89120,14 @@
             "mayFail": true
           }
         },
-        "Cursor::Set": {
-          "name": "Cursor::Set",
+        "CursorBase::Set": {
+          "name": "CursorBase::Set",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_SetCursor",
           "hints": {
             "self": "get()",
-            "super": "Cursor",
             "mayFail": true,
             "delegate": "SDL::SetCursor"
           }
@@ -89135,15 +89235,14 @@
           ],
           "sourceName": "SDL_DestroyCursor"
         },
-        "Cursor::Destroy": {
-          "name": "Cursor::Destroy",
+        "CursorBase::Destroy": {
+          "name": "CursorBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyCursor",
           "hints": {
             "self": "get()",
-            "super": "Cursor",
             "body": "DestroyCursor(release());",
             "delegate": "SDL::DestroyCursor"
           }
@@ -89351,6 +89450,10 @@
           ],
           "type": "ResourceRef<Semaphore>"
         },
+        "ConditionBase-forward": {
+          "name": "ConditionBase",
+          "kind": "forward"
+        },
         "Condition-forward": {
           "name": "Condition",
           "kind": "forward"
@@ -89370,7 +89473,7 @@
             "Reference for Condition.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Condition>"
+          "type": "ResourceRefT<ConditionBase>"
         },
         "InitStateRaw": {
           "name": "InitStateRaw",
@@ -91762,217 +91865,21 @@
             "delegate": "SDL::GetSemaphoreValue"
           }
         },
-        "Condition": {
-          "doc": [
-            "A means to block multiple threads until a condition is satisfied.",
-            "Condition variables, paired with an Mutex, let an app halt multiple threads until a condition has occurred, at which time the app can release one or all waiting threads.",
-            "Wikipedia has a thorough explanation of the concept:",
-            "https://en.wikipedia.org/wiki/Condition_variable",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Condition",
+        "ConditionBase": {
+          "name": "ConditionBase",
           "kind": "struct",
-          "type": "ResourceBase<ConditionRaw>",
-          "sourceName": "SDL_Condition",
+          "type": "ResourceBaseT<ConditionRaw>",
+          "doc": [
+            "Base class to Condition.",
+            {
+              "tag": "@see",
+              "content": "Condition"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Condition": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "ConditionRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Condition.",
-                {
-                  "tag": "@param resource",
-                  "content": "a ConditionRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Condition",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Condition &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Condition",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Condition &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Condition(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Condition",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const ConditionRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Condition",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "ConditionRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Condition",
-                      "overload": {
-                        "doc": [
-                          "Create a condition variable.",
-                          {
-                            "tag": "@post",
-                            "content": "a new condition variable or nullptr on failure; call GetError() for more information."
-                          },
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "BroadcastCondition"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "SignalCondition"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "WaitCondition"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "WaitConditionTimeout"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyCondition"
-                            }
-                          ]
-                        ],
-                        "name": "Condition",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [],
-                        "sourceName": "SDL_CreateCondition",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Condition": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyCondition(get());"
-              },
-              "name": "~Condition"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Condition &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Condition &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Condition &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Condition &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -92186,6 +92093,191 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "Condition": {
+          "doc": [
+            "A means to block multiple threads until a condition is satisfied.",
+            "Condition variables, paired with an Mutex, let an app halt multiple threads until a condition has occurred, at which time the app can release one or all waiting threads.",
+            "Wikipedia has a thorough explanation of the concept:",
+            "https://en.wikipedia.org/wiki/Condition_variable",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Condition",
+          "kind": "struct",
+          "type": "ConditionBase",
+          "sourceName": "SDL_Condition",
+          "entries": {
+            "ConditionBase::ConditionBase": {
+              "kind": "alias",
+              "name": "ConditionBase::ConditionBase"
+            },
+            "Condition": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "ConditionRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "ConditionBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Condition.",
+                {
+                  "tag": "@param resource",
+                  "content": "a ConditionRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Condition",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Condition &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Condition",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Condition &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Condition(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Condition",
+                  "overload": {
+                    "doc": [
+                      "Create a condition variable.",
+                      {
+                        "tag": "@post",
+                        "content": "a new condition variable or nullptr on failure; call GetError() for more information."
+                      },
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "BroadcastCondition"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "SignalCondition"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "WaitCondition"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "WaitConditionTimeout"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyCondition"
+                        }
+                      ]
+                    ],
+                    "name": "Condition",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [],
+                    "sourceName": "SDL_CreateCondition",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Condition": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyCondition(get());"
+              },
+              "name": "~Condition"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Condition &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Condition &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Condition &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Condition &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "Condition"
           }
@@ -92280,15 +92372,14 @@
           ],
           "sourceName": "SDL_DestroyCondition"
         },
-        "Condition::Destroy": {
-          "name": "Condition::Destroy",
+        "ConditionBase::Destroy": {
+          "name": "ConditionBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyCondition",
           "hints": {
             "self": "get()",
-            "super": "Condition",
             "body": "DestroyCondition(release());",
             "delegate": "SDL::DestroyCondition"
           }
@@ -92334,15 +92425,14 @@
           ],
           "sourceName": "SDL_SignalCondition"
         },
-        "Condition::Signal": {
-          "name": "Condition::Signal",
+        "ConditionBase::Signal": {
+          "name": "ConditionBase::Signal",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_SignalCondition",
           "hints": {
             "self": "get()",
-            "super": "Condition",
             "delegate": "SDL::SignalCondition"
           }
         },
@@ -92387,15 +92477,14 @@
           ],
           "sourceName": "SDL_BroadcastCondition"
         },
-        "Condition::Broadcast": {
-          "name": "Condition::Broadcast",
+        "ConditionBase::Broadcast": {
+          "name": "ConditionBase::Broadcast",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_BroadcastCondition",
           "hints": {
             "self": "get()",
-            "super": "Condition",
             "delegate": "SDL::BroadcastCondition"
           }
         },
@@ -92453,8 +92542,8 @@
           ],
           "sourceName": "SDL_WaitCondition"
         },
-        "Condition::Wait": {
-          "name": "Condition::Wait",
+        "ConditionBase::Wait": {
+          "name": "ConditionBase::Wait",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -92466,7 +92555,6 @@
           "sourceName": "SDL_WaitCondition",
           "hints": {
             "self": "get()",
-            "super": "Condition",
             "delegate": "SDL::WaitCondition"
           }
         },
@@ -92535,8 +92623,8 @@
           ],
           "sourceName": "SDL_WaitConditionTimeout"
         },
-        "Condition::WaitTimeout": {
-          "name": "Condition::WaitTimeout",
+        "ConditionBase::WaitTimeout": {
+          "name": "ConditionBase::WaitTimeout",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -92552,7 +92640,6 @@
           "sourceName": "SDL_WaitConditionTimeout",
           "hints": {
             "self": "get()",
-            "super": "Condition",
             "delegate": "SDL::WaitConditionTimeout"
           }
         },

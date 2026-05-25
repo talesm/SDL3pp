@@ -67,6 +67,9 @@ using SemaphoreRaw = SDL_Semaphore*;
 using SemaphoreRef = ResourceRef<Semaphore>;
 
 // Forward decl
+struct ConditionBase;
+
+// Forward decl
 struct Condition;
 
 /// Alias to raw representation for Condition.
@@ -77,7 +80,7 @@ using ConditionRaw = SDL_Condition*;
  *
  * This does not take ownership!
  */
-using ConditionRef = ResourceRef<Condition>;
+using ConditionRef = ResourceRefT<ConditionBase>;
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -1263,79 +1266,13 @@ inline Uint32 Semaphore::GetValue() const
 }
 
 /**
- * A means to block multiple threads until a condition is satisfied.
+ * Base class to Condition.
  *
- * Condition variables, paired with an Mutex, let an app halt multiple threads
- * until a condition has occurred, at which time the app can release one or all
- * waiting threads.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Condition_variable
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Condition
  */
-struct Condition : ResourceBase<ConditionRaw>
+struct ConditionBase : ResourceBaseT<ConditionRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Condition.
-   *
-   * @param resource a ConditionRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Condition(ConditionRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Condition(const Condition& other) = delete;
-
-  /// Move constructor
-  constexpr Condition(Condition&& other) noexcept
-    : Condition(other.release())
-  {
-  }
-
-  constexpr Condition(const ConditionRef& other) = delete;
-
-  constexpr Condition(ConditionRef&& other) = delete;
-
-  /**
-   * Create a condition variable.
-   *
-   * @post a new condition variable or nullptr on failure; call GetError() for
-   *       more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa BroadcastCondition
-   * @sa SignalCondition
-   * @sa WaitCondition
-   * @sa WaitConditionTimeout
-   * @sa DestroyCondition
-   */
-  Condition();
-
-  /// Destructor
-  ~Condition() { SDL_DestroyCondition(get()); }
-
-  /// Assignment operator.
-  constexpr Condition& operator=(Condition&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Condition& operator=(const Condition& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a condition variable.
@@ -1432,6 +1369,78 @@ struct Condition : ResourceBase<ConditionRaw>
 };
 
 /**
+ * A means to block multiple threads until a condition is satisfied.
+ *
+ * Condition variables, paired with an Mutex, let an app halt multiple threads
+ * until a condition has occurred, at which time the app can release one or all
+ * waiting threads.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Condition_variable
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Condition : ConditionBase
+{
+  using ConditionBase::ConditionBase;
+
+  /**
+   * Constructs from raw Condition.
+   *
+   * @param resource a ConditionRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Condition(ConditionRaw resource) noexcept
+    : ConditionBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Condition(const Condition& other) = delete;
+
+  /// Move constructor
+  constexpr Condition(Condition&& other) noexcept
+    : Condition(other.release())
+  {
+  }
+
+  /**
+   * Create a condition variable.
+   *
+   * @post a new condition variable or nullptr on failure; call GetError() for
+   *       more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa BroadcastCondition
+   * @sa SignalCondition
+   * @sa WaitCondition
+   * @sa WaitConditionTimeout
+   * @sa DestroyCondition
+   */
+  Condition();
+
+  /// Destructor
+  ~Condition() { SDL_DestroyCondition(get()); }
+
+  /// Assignment operator.
+  constexpr Condition& operator=(Condition&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Condition& operator=(const Condition& other) = delete;
+};
+
+/**
  * Create a condition variable.
  *
  * @returns a new condition variable or nullptr on failure; call GetError() for
@@ -1467,7 +1476,7 @@ inline Condition::Condition()
  */
 inline void DestroyCondition(ConditionRaw cond) { SDL_DestroyCondition(cond); }
 
-inline void Condition::Destroy() { DestroyCondition(release()); }
+inline void ConditionBase::Destroy() { DestroyCondition(release()); }
 
 /**
  * Restart one of the threads that are waiting on the condition variable.
@@ -1484,7 +1493,7 @@ inline void Condition::Destroy() { DestroyCondition(release()); }
  */
 inline void SignalCondition(ConditionRef cond) { SDL_SignalCondition(cond); }
 
-inline void Condition::Signal() { SDL::SignalCondition(get()); }
+inline void ConditionBase::Signal() { SDL::SignalCondition(get()); }
 
 /**
  * Restart all threads that are waiting on the condition variable.
@@ -1504,7 +1513,7 @@ inline void BroadcastCondition(ConditionRef cond)
   SDL_BroadcastCondition(cond);
 }
 
-inline void Condition::Broadcast() { SDL::BroadcastCondition(get()); }
+inline void ConditionBase::Broadcast() { SDL::BroadcastCondition(get()); }
 
 /**
  * Wait until a condition variable is signaled.
@@ -1537,7 +1546,7 @@ inline void WaitCondition(ConditionRef cond, MutexRef mutex)
   SDL_WaitCondition(cond, mutex);
 }
 
-inline void Condition::Wait(MutexRef mutex)
+inline void ConditionBase::Wait(MutexRef mutex)
 {
   SDL::WaitCondition(get(), mutex);
 }
@@ -1577,8 +1586,8 @@ inline bool WaitConditionTimeout(ConditionRef cond,
   return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
 }
 
-inline bool Condition::WaitTimeout(MutexRef mutex,
-                                   std::chrono::milliseconds timeout)
+inline bool ConditionBase::WaitTimeout(MutexRef mutex,
+                                       std::chrono::milliseconds timeout)
 {
   return SDL::WaitConditionTimeout(get(), mutex, timeout);
 }

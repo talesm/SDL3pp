@@ -45,6 +45,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct CursorBase;
+
+// Forward decl
 struct Cursor;
 
 /// Alias to raw representation for Cursor.
@@ -55,7 +58,7 @@ using CursorRaw = SDL_Cursor*;
  *
  * This does not take ownership!
  */
-using CursorRef = ResourceRef<Cursor>;
+using CursorRef = ResourceRefT<CursorBase>;
 
 /**
  * Cursor types for CreateSystemCursor().
@@ -147,6 +150,51 @@ constexpr SystemCursor SYSTEM_CURSOR_COUNT = SDL_SYSTEM_CURSOR_COUNT; ///< COUNT
 using MouseID = SDL_MouseID;
 
 /**
+ * Base class to Cursor.
+ *
+ * @see Cursor
+ */
+struct CursorBase : ResourceBaseT<CursorRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Free a previously-created cursor.
+   *
+   * Use this function to free cursor resources created with CreateCursor(),
+   * CreateColorCursor() or CreateSystemCursor().
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateAnimatedCursor
+   * @sa CreateColorCursor
+   * @sa CreateCursor
+   * @sa CreateSystemCursor
+   */
+  void Destroy();
+
+  /**
+   * Set the active cursor.
+   *
+   * This function sets the currently active cursor to the specified one. If the
+   * cursor is currently visible, the change will be immediately represented on
+   * the display. SetCursor(nullptr) can be used to force cursor redraw, if this
+   * is desired for any reason.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCursor
+   */
+  void Set();
+};
+
+/**
  * The structure used to identify an SDL cursor.
  *
  * This is opaque data.
@@ -155,9 +203,9 @@ using MouseID = SDL_MouseID;
  *
  * @cat resource
  */
-struct Cursor : ResourceBase<CursorRaw>
+struct Cursor : CursorBase
 {
-  using ResourceBase::ResourceBase;
+  using CursorBase::CursorBase;
 
   /**
    * Constructs from raw Cursor.
@@ -167,7 +215,7 @@ struct Cursor : ResourceBase<CursorRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Cursor(CursorRaw resource) noexcept
-    : ResourceBase(resource)
+    : CursorBase(resource)
   {
   }
 
@@ -179,10 +227,6 @@ struct Cursor : ResourceBase<CursorRaw>
     : Cursor(other.release())
   {
   }
-
-  constexpr Cursor(const CursorRef& other) = delete;
-
-  constexpr Cursor(CursorRef&& other) = delete;
 
   /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
@@ -291,41 +335,6 @@ struct Cursor : ResourceBase<CursorRaw>
 
   /// Assignment operator.
   Cursor& operator=(const Cursor& other) = delete;
-
-  /**
-   * Free a previously-created cursor.
-   *
-   * Use this function to free cursor resources created with CreateCursor(),
-   * CreateColorCursor() or CreateSystemCursor().
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateAnimatedCursor
-   * @sa CreateColorCursor
-   * @sa CreateCursor
-   * @sa CreateSystemCursor
-   */
-  void Destroy();
-
-  /**
-   * Set the active cursor.
-   *
-   * This function sets the currently active cursor to the specified one. If the
-   * cursor is currently visible, the change will be immediately represented on
-   * the display. SetCursor(nullptr) can be used to force cursor redraw, if this
-   * is desired for any reason.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCursor
-   */
-  void Set();
 };
 
 /**
@@ -989,7 +998,7 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  */
 inline void SetCursor(CursorRef cursor) { CheckError(SDL_SetCursor(cursor)); }
 
-inline void Cursor::Set() { SDL::SetCursor(get()); }
+inline void CursorBase::Set() { SDL::SetCursor(get()); }
 
 /**
  * Get the active cursor.
@@ -1045,7 +1054,7 @@ inline CursorRef GetDefaultCursor()
  */
 inline void DestroyCursor(CursorRaw cursor) { SDL_DestroyCursor(cursor); }
 
-inline void Cursor::Destroy() { DestroyCursor(release()); }
+inline void CursorBase::Destroy() { DestroyCursor(release()); }
 
 /**
  * Show the cursor.

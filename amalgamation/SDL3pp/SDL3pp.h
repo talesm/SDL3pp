@@ -47616,6 +47616,9 @@ inline void CleanupTLS() { SDL_CleanupTLS(); }
  */
 
 // Forward decl
+struct CameraBase;
+
+// Forward decl
 struct Camera;
 
 /// Alias to raw representation for Camera.
@@ -47626,7 +47629,7 @@ using CameraRaw = SDL_Camera*;
  *
  * This does not take ownership!
  */
-using CameraRef = ResourceRef<Camera>;
+using CameraRef = ResourceRefT<CameraBase>;
 
 // Forward decl
 struct CameraFrame;
@@ -47709,99 +47712,13 @@ using CameraPermissionState = int;
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * The opaque structure used to identify an opened SDL camera.
+ * Base class to Camera.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Camera
  */
-struct Camera : ResourceBase<CameraRaw>
+struct CameraBase : ResourceBaseT<CameraRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Camera.
-   *
-   * @param resource a CameraRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Camera(CameraRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Camera(const Camera& other) = delete;
-
-  /// Move constructor
-  constexpr Camera(Camera&& other) noexcept
-    : Camera(other.release())
-  {
-  }
-
-  constexpr Camera(const CameraRef& other) = delete;
-
-  constexpr Camera(CameraRef&& other) = delete;
-
-  /**
-   * Open a video recording device (a "camera").
-   *
-   * You can open the device with any reasonable spec, and if the hardware can't
-   * directly support it, it will convert data seamlessly to the requested
-   * format. This might incur overhead, including scaling of image data.
-   *
-   * If you would rather accept whatever format the device offers, you can pass
-   * a nullptr spec here and it will choose one for you (and you can use
-   * Surface's conversion/scaling functions directly if necessary).
-   *
-   * You can call GetCameraFormat() to get the actual data format if passing a
-   * nullptr spec here. You can see the exact specs a device can support without
-   * conversion with GetCameraSupportedFormats().
-   *
-   * SDL will not attempt to emulate framerate; it will try to set the hardware
-   * to the rate closest to the requested speed, but it won't attempt to limit
-   * or duplicate frames artificially; call GetCameraFormat() to see the actual
-   * framerate of the opened the device, and check your timestamps if this is
-   * crucial to your app!
-   *
-   * Note that the camera is not usable until the user approves its use! On some
-   * platforms, the operating system will prompt the user to permit access to
-   * the camera, and they can choose Yes or No at that point. Until they do, the
-   * camera will not be usable. The app should either wait for an
-   * EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll
-   * GetCameraPermissionState() occasionally until it returns non-zero. On
-   * platforms that don't require explicit user approval (and perhaps in places
-   * where the user previously permitted access), the approval event might come
-   * immediately, but it might come seconds, minutes, or hours later!
-   *
-   * @param instance_id the camera device instance ID.
-   * @param spec the desired format for data the device will provide. Can be
-   *             std::nullopt.
-   * @post an Camera object on success..
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCameras
-   * @sa GetCameraFormat
-   */
-  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
-
-  /// Destructor
-  ~Camera() { SDL_CloseCamera(get()); }
-
-  /// Assignment operator.
-  constexpr Camera& operator=(Camera&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Camera& operator=(const Camera& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Use this function to shut down camera processing and close the camera
@@ -47966,6 +47883,98 @@ struct Camera : ResourceBase<CameraRaw>
    * @sa AcquireCameraFrame
    */
   void ReleaseFrame(CameraFrame&& lock);
+};
+
+/**
+ * The opaque structure used to identify an opened SDL camera.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Camera : CameraBase
+{
+  using CameraBase::CameraBase;
+
+  /**
+   * Constructs from raw Camera.
+   *
+   * @param resource a CameraRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Camera(CameraRaw resource) noexcept
+    : CameraBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Camera(const Camera& other) = delete;
+
+  /// Move constructor
+  constexpr Camera(Camera&& other) noexcept
+    : Camera(other.release())
+  {
+  }
+
+  /**
+   * Open a video recording device (a "camera").
+   *
+   * You can open the device with any reasonable spec, and if the hardware can't
+   * directly support it, it will convert data seamlessly to the requested
+   * format. This might incur overhead, including scaling of image data.
+   *
+   * If you would rather accept whatever format the device offers, you can pass
+   * a nullptr spec here and it will choose one for you (and you can use
+   * Surface's conversion/scaling functions directly if necessary).
+   *
+   * You can call GetCameraFormat() to get the actual data format if passing a
+   * nullptr spec here. You can see the exact specs a device can support without
+   * conversion with GetCameraSupportedFormats().
+   *
+   * SDL will not attempt to emulate framerate; it will try to set the hardware
+   * to the rate closest to the requested speed, but it won't attempt to limit
+   * or duplicate frames artificially; call GetCameraFormat() to see the actual
+   * framerate of the opened the device, and check your timestamps if this is
+   * crucial to your app!
+   *
+   * Note that the camera is not usable until the user approves its use! On some
+   * platforms, the operating system will prompt the user to permit access to
+   * the camera, and they can choose Yes or No at that point. Until they do, the
+   * camera will not be usable. The app should either wait for an
+   * EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll
+   * GetCameraPermissionState() occasionally until it returns non-zero. On
+   * platforms that don't require explicit user approval (and perhaps in places
+   * where the user previously permitted access), the approval event might come
+   * immediately, but it might come seconds, minutes, or hours later!
+   *
+   * @param instance_id the camera device instance ID.
+   * @param spec the desired format for data the device will provide. Can be
+   *             std::nullopt.
+   * @post an Camera object on success..
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCameras
+   * @sa GetCameraFormat
+   */
+  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
+
+  /// Destructor
+  ~Camera() { SDL_CloseCamera(get()); }
+
+  /// Assignment operator.
+  constexpr Camera& operator=(Camera&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Camera& operator=(const Camera& other) = delete;
 };
 
 /// Camera Frame.
@@ -48349,7 +48358,7 @@ inline CameraPermissionState GetCameraPermissionState(CameraRef camera)
   return SDL_GetCameraPermissionState(camera);
 }
 
-inline CameraPermissionState Camera::GetPermissionState()
+inline CameraPermissionState CameraBase::GetPermissionState()
 {
   return SDL::GetCameraPermissionState(get());
 }
@@ -48372,7 +48381,7 @@ inline CameraID GetCameraID(CameraRef camera)
   return CheckError(SDL_GetCameraID(camera));
 }
 
-inline CameraID Camera::GetID() { return SDL::GetCameraID(get()); }
+inline CameraID CameraBase::GetID() { return SDL::GetCameraID(get()); }
 
 /**
  * Get the properties associated with an opened camera.
@@ -48390,7 +48399,7 @@ inline PropertiesRef GetCameraProperties(CameraRef camera)
   return {CheckError(SDL_GetCameraProperties(camera))};
 }
 
-inline PropertiesRef Camera::GetProperties()
+inline PropertiesRef CameraBase::GetProperties()
 {
   return SDL::GetCameraProperties(get());
 }
@@ -48422,7 +48431,7 @@ inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
   return std::nullopt;
 }
 
-inline std::optional<CameraSpec> Camera::GetFormat()
+inline std::optional<CameraSpec> CameraBase::GetFormat()
 {
   return SDL::GetCameraFormat(get());
 }
@@ -48473,7 +48482,7 @@ inline Surface AcquireCameraFrame(CameraRef camera,
   return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
 }
 
-inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
+inline CameraFrame CameraBase::AcquireFrame(Uint64* timestampNS)
 {
   return {CameraRef(*this), timestampNS};
 }
@@ -48516,7 +48525,7 @@ inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
   SDL_ReleaseCameraFrame(camera, frame);
 }
 
-inline void Camera::ReleaseFrame(CameraFrame&& lock)
+inline void CameraBase::ReleaseFrame(CameraFrame&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -48543,7 +48552,7 @@ inline void CameraFrame::reset()
  */
 inline void CloseCamera(CameraRaw camera) { SDL_CloseCamera(camera); }
 
-inline void Camera::Close() { CloseCamera(release()); }
+inline void CameraBase::Close() { CloseCamera(release()); }
 
 /// @}
 
@@ -48607,6 +48616,9 @@ using SemaphoreRaw = SDL_Semaphore*;
 using SemaphoreRef = ResourceRef<Semaphore>;
 
 // Forward decl
+struct ConditionBase;
+
+// Forward decl
 struct Condition;
 
 /// Alias to raw representation for Condition.
@@ -48617,7 +48629,7 @@ using ConditionRaw = SDL_Condition*;
  *
  * This does not take ownership!
  */
-using ConditionRef = ResourceRef<Condition>;
+using ConditionRef = ResourceRefT<ConditionBase>;
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -49803,79 +49815,13 @@ inline Uint32 Semaphore::GetValue() const
 }
 
 /**
- * A means to block multiple threads until a condition is satisfied.
+ * Base class to Condition.
  *
- * Condition variables, paired with an Mutex, let an app halt multiple threads
- * until a condition has occurred, at which time the app can release one or all
- * waiting threads.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Condition_variable
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Condition
  */
-struct Condition : ResourceBase<ConditionRaw>
+struct ConditionBase : ResourceBaseT<ConditionRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Condition.
-   *
-   * @param resource a ConditionRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Condition(ConditionRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Condition(const Condition& other) = delete;
-
-  /// Move constructor
-  constexpr Condition(Condition&& other) noexcept
-    : Condition(other.release())
-  {
-  }
-
-  constexpr Condition(const ConditionRef& other) = delete;
-
-  constexpr Condition(ConditionRef&& other) = delete;
-
-  /**
-   * Create a condition variable.
-   *
-   * @post a new condition variable or nullptr on failure; call GetError() for
-   *       more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa BroadcastCondition
-   * @sa SignalCondition
-   * @sa WaitCondition
-   * @sa WaitConditionTimeout
-   * @sa DestroyCondition
-   */
-  Condition();
-
-  /// Destructor
-  ~Condition() { SDL_DestroyCondition(get()); }
-
-  /// Assignment operator.
-  constexpr Condition& operator=(Condition&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Condition& operator=(const Condition& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a condition variable.
@@ -49972,6 +49918,78 @@ struct Condition : ResourceBase<ConditionRaw>
 };
 
 /**
+ * A means to block multiple threads until a condition is satisfied.
+ *
+ * Condition variables, paired with an Mutex, let an app halt multiple threads
+ * until a condition has occurred, at which time the app can release one or all
+ * waiting threads.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Condition_variable
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Condition : ConditionBase
+{
+  using ConditionBase::ConditionBase;
+
+  /**
+   * Constructs from raw Condition.
+   *
+   * @param resource a ConditionRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Condition(ConditionRaw resource) noexcept
+    : ConditionBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Condition(const Condition& other) = delete;
+
+  /// Move constructor
+  constexpr Condition(Condition&& other) noexcept
+    : Condition(other.release())
+  {
+  }
+
+  /**
+   * Create a condition variable.
+   *
+   * @post a new condition variable or nullptr on failure; call GetError() for
+   *       more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa BroadcastCondition
+   * @sa SignalCondition
+   * @sa WaitCondition
+   * @sa WaitConditionTimeout
+   * @sa DestroyCondition
+   */
+  Condition();
+
+  /// Destructor
+  ~Condition() { SDL_DestroyCondition(get()); }
+
+  /// Assignment operator.
+  constexpr Condition& operator=(Condition&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Condition& operator=(const Condition& other) = delete;
+};
+
+/**
  * Create a condition variable.
  *
  * @returns a new condition variable or nullptr on failure; call GetError() for
@@ -50007,7 +50025,7 @@ inline Condition::Condition()
  */
 inline void DestroyCondition(ConditionRaw cond) { SDL_DestroyCondition(cond); }
 
-inline void Condition::Destroy() { DestroyCondition(release()); }
+inline void ConditionBase::Destroy() { DestroyCondition(release()); }
 
 /**
  * Restart one of the threads that are waiting on the condition variable.
@@ -50024,7 +50042,7 @@ inline void Condition::Destroy() { DestroyCondition(release()); }
  */
 inline void SignalCondition(ConditionRef cond) { SDL_SignalCondition(cond); }
 
-inline void Condition::Signal() { SDL::SignalCondition(get()); }
+inline void ConditionBase::Signal() { SDL::SignalCondition(get()); }
 
 /**
  * Restart all threads that are waiting on the condition variable.
@@ -50044,7 +50062,7 @@ inline void BroadcastCondition(ConditionRef cond)
   SDL_BroadcastCondition(cond);
 }
 
-inline void Condition::Broadcast() { SDL::BroadcastCondition(get()); }
+inline void ConditionBase::Broadcast() { SDL::BroadcastCondition(get()); }
 
 /**
  * Wait until a condition variable is signaled.
@@ -50077,7 +50095,7 @@ inline void WaitCondition(ConditionRef cond, MutexRef mutex)
   SDL_WaitCondition(cond, mutex);
 }
 
-inline void Condition::Wait(MutexRef mutex)
+inline void ConditionBase::Wait(MutexRef mutex)
 {
   SDL::WaitCondition(get(), mutex);
 }
@@ -50117,8 +50135,8 @@ inline bool WaitConditionTimeout(ConditionRef cond,
   return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
 }
 
-inline bool Condition::WaitTimeout(MutexRef mutex,
-                                   std::chrono::milliseconds timeout)
+inline bool ConditionBase::WaitTimeout(MutexRef mutex,
+                                       std::chrono::milliseconds timeout)
 {
   return SDL::WaitConditionTimeout(get(), mutex, timeout);
 }
@@ -73821,6 +73839,9 @@ inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(get()); }
  */
 
 // Forward decl
+struct CursorBase;
+
+// Forward decl
 struct Cursor;
 
 /// Alias to raw representation for Cursor.
@@ -73831,7 +73852,7 @@ using CursorRaw = SDL_Cursor*;
  *
  * This does not take ownership!
  */
-using CursorRef = ResourceRef<Cursor>;
+using CursorRef = ResourceRefT<CursorBase>;
 
 /**
  * Cursor types for CreateSystemCursor().
@@ -73923,6 +73944,51 @@ constexpr SystemCursor SYSTEM_CURSOR_COUNT = SDL_SYSTEM_CURSOR_COUNT; ///< COUNT
 using MouseID = SDL_MouseID;
 
 /**
+ * Base class to Cursor.
+ *
+ * @see Cursor
+ */
+struct CursorBase : ResourceBaseT<CursorRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Free a previously-created cursor.
+   *
+   * Use this function to free cursor resources created with CreateCursor(),
+   * CreateColorCursor() or CreateSystemCursor().
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateAnimatedCursor
+   * @sa CreateColorCursor
+   * @sa CreateCursor
+   * @sa CreateSystemCursor
+   */
+  void Destroy();
+
+  /**
+   * Set the active cursor.
+   *
+   * This function sets the currently active cursor to the specified one. If the
+   * cursor is currently visible, the change will be immediately represented on
+   * the display. SetCursor(nullptr) can be used to force cursor redraw, if this
+   * is desired for any reason.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCursor
+   */
+  void Set();
+};
+
+/**
  * The structure used to identify an SDL cursor.
  *
  * This is opaque data.
@@ -73931,9 +73997,9 @@ using MouseID = SDL_MouseID;
  *
  * @cat resource
  */
-struct Cursor : ResourceBase<CursorRaw>
+struct Cursor : CursorBase
 {
-  using ResourceBase::ResourceBase;
+  using CursorBase::CursorBase;
 
   /**
    * Constructs from raw Cursor.
@@ -73943,7 +74009,7 @@ struct Cursor : ResourceBase<CursorRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Cursor(CursorRaw resource) noexcept
-    : ResourceBase(resource)
+    : CursorBase(resource)
   {
   }
 
@@ -73955,10 +74021,6 @@ struct Cursor : ResourceBase<CursorRaw>
     : Cursor(other.release())
   {
   }
-
-  constexpr Cursor(const CursorRef& other) = delete;
-
-  constexpr Cursor(CursorRef&& other) = delete;
 
   /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
@@ -74067,41 +74129,6 @@ struct Cursor : ResourceBase<CursorRaw>
 
   /// Assignment operator.
   Cursor& operator=(const Cursor& other) = delete;
-
-  /**
-   * Free a previously-created cursor.
-   *
-   * Use this function to free cursor resources created with CreateCursor(),
-   * CreateColorCursor() or CreateSystemCursor().
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateAnimatedCursor
-   * @sa CreateColorCursor
-   * @sa CreateCursor
-   * @sa CreateSystemCursor
-   */
-  void Destroy();
-
-  /**
-   * Set the active cursor.
-   *
-   * This function sets the currently active cursor to the specified one. If the
-   * cursor is currently visible, the change will be immediately represented on
-   * the display. SetCursor(nullptr) can be used to force cursor redraw, if this
-   * is desired for any reason.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCursor
-   */
-  void Set();
 };
 
 /**
@@ -74765,7 +74792,7 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  */
 inline void SetCursor(CursorRef cursor) { CheckError(SDL_SetCursor(cursor)); }
 
-inline void Cursor::Set() { SDL::SetCursor(get()); }
+inline void CursorBase::Set() { SDL::SetCursor(get()); }
 
 /**
  * Get the active cursor.
@@ -74821,7 +74848,7 @@ inline CursorRef GetDefaultCursor()
  */
 inline void DestroyCursor(CursorRaw cursor) { SDL_DestroyCursor(cursor); }
 
-inline void Cursor::Destroy() { DestroyCursor(release()); }
+inline void CursorBase::Destroy() { DestroyCursor(release()); }
 
 /**
  * Show the cursor.
