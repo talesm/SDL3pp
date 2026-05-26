@@ -473,7 +473,7 @@ struct Joystick : ResourceBase<JoystickRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Joystick.Joystick
+   * @sa OpenJoystick
    */
   void Close();
 
@@ -1303,7 +1303,7 @@ inline bool HasJoystick() { return SDL_HasJoystick(); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa HasJoystick
- * @sa Joystick.Joystick
+ * @sa OpenJoystick
  */
 inline OwnArray<JoystickID> GetJoysticks()
 {
@@ -1951,7 +1951,7 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
  * - `prop.JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has simple
  *   trigger rumble
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
@@ -2001,7 +2001,7 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
 /**
  * Get the implementation dependent name of a joystick.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns the name of the selected joystick. If no name can be found, this
  *          function returns nullptr; call GetError() for more information.
  *
@@ -2021,7 +2021,7 @@ inline const char* Joystick::GetName() { return SDL::GetJoystickName(get()); }
 /**
  * Get the implementation dependent path of a joystick.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns the path of the selected joystick. If no path can be found, this
  *          function returns nullptr; call GetError() for more information.
  *
@@ -2044,7 +2044,7 @@ inline const char* Joystick::GetPath() { return SDL::GetJoystickPath(get()); }
  * For XInput controllers this returns the XInput user index. Many joysticks
  * will not be able to supply this information.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns the player index, or -1 if it's not available.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2066,7 +2066,7 @@ inline int Joystick::GetPlayerIndex()
 /**
  * Set the player index of an opened joystick.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @param player_index player index to assign to this joystick, or -1 to clear
  *                     the player index and turn off player LEDs.
  * @throws Error on failure.
@@ -2092,7 +2092,7 @@ inline void Joystick::SetPlayerIndex(int player_index)
  *
  * This function requires an open joystick.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns the GUID of the given joystick. If called on an invalid index, this
  *          function returns a zero GUID; call GetError() for more information.
  *
@@ -2115,7 +2115,7 @@ inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(get()); }
  *
  * If the vendor ID isn't available this function returns 0.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns the USB vendor ID of the selected joystick, or 0 if unavailable.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2136,7 +2136,7 @@ inline Uint16 Joystick::GetVendor() { return SDL::GetJoystickVendor(get()); }
  *
  * If the product ID isn't available this function returns 0.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns the USB product ID of the selected joystick, or 0 if unavailable.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2157,7 +2157,7 @@ inline Uint16 Joystick::GetProduct() { return SDL::GetJoystickProduct(get()); }
  *
  * If the product version isn't available this function returns 0.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns the product version of the selected joystick, or 0 if unavailable.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2181,7 +2181,7 @@ inline Uint16 Joystick::GetProductVersion()
  *
  * If the firmware version isn't available this function returns 0.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns the firmware version of the selected joystick, or 0 if unavailable.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2203,7 +2203,7 @@ inline Uint16 Joystick::GetFirmwareVersion()
  *
  * Returns the serial number of the joystick, or nullptr if it is not available.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns the serial number of the selected joystick, or nullptr if
  *          unavailable.
  *
@@ -2224,7 +2224,7 @@ inline const char* Joystick::GetSerial()
 /**
  * Get the type of an opened joystick.
  *
- * @param joystick the Joystick obtained from Joystick.Joystick().
+ * @param joystick the Joystick obtained from OpenJoystick().
  * @returns the JoystickType of the selected joystick.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2732,7 +2732,7 @@ inline void Joystick::SendEffect(const void* data, int size)
 }
 
 /**
- * Close a joystick previously opened with Joystick.Joystick().
+ * Close a joystick previously opened with OpenJoystick().
  *
  * @param joystick the joystick device to close.
  *
@@ -2740,7 +2740,7 @@ inline void Joystick::SendEffect(const void* data, int size)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Joystick.Joystick
+ * @sa OpenJoystick
  */
 inline void CloseJoystick(JoystickRaw joystick) { SDL_CloseJoystick(joystick); }
 

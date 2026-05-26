@@ -36,47 +36,16 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -265,11 +274,11 @@
-    * is called, so real failure here is almost always an out of memory
-    * condition.
+@@ -288,7 +297,7 @@
     *
--   * After use, the frame should be released with CameraBase.ReleaseFrame(). If
--   * you don't do this, the system may stop providing more video!
-+   * After use, the frame should be released with ReleaseCameraFrame(). If you
-+   * don't do this, the system may stop providing more video!
-    *
-    * Do not call DestroySurface() on the returned surface! It must be given back
--   * to the camera subsystem with CameraBase.ReleaseFrame!
-+   * to the camera subsystem with ReleaseCameraFrame!
-    *
-    * If the system is waiting for the user to approve access to the camera, as
-    * some platforms require, this will return nullptr (no frames available); you
-@@ -286,9 +295,9 @@
-    *
-    * @since This function is available since SDL 3.2.0.
-    *
--   * @sa CameraBase.ReleaseFrame
-+   * @sa ReleaseCameraFrame
+    * @sa ReleaseCameraFrame
     */
 -  Surface AcquireFrame(Uint64* timestampNS = nullptr);
 +  CameraFrame AcquireFrame(Uint64* timestampNS = nullptr);
  
    /**
     * Release a frame of video acquired from a camera.
-@@ -296,9 +305,9 @@
-    * Let the back-end re-use the internal buffer for camera.
-    *
-    * This function _must_ be called only on surface objects returned by
--   * CameraBase.AcquireFrame(). This function should be called as quickly as
--   * possible after acquisition, as SDL keeps a small FIFO queue of surfaces for
--   * video frames; if surfaces aren't released in a timely manner, SDL may drop
-+   * AcquireCameraFrame(). This function should be called as quickly as possible
-+   * after acquisition, as SDL keeps a small FIFO queue of surfaces for video
-+   * frames; if surfaces aren't released in a timely manner, SDL may drop
-    * upcoming video frames from the camera.
-    *
-    * If the app needs to keep the surface for a significant time, they should
-@@ -307,15 +316,15 @@
+@@ -307,7 +316,7 @@
     * The app should not use the surface again after calling this function;
     * assume the surface is freed and the pointer is invalid.
     *
@@ -85,10 +54,9 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-    * @since This function is available since SDL 3.2.0.
+@@ -315,7 +324,7 @@
     *
--   * @sa CameraBase.AcquireFrame
-+   * @sa AcquireCameraFrame
+    * @sa AcquireCameraFrame
     */
 -  void ReleaseFrame(SurfaceRef frame);
 +  void ReleaseFrame(CameraFrame&& lock);
@@ -130,11 +98,11 @@
 -   * is called, so real failure here is almost always an out of memory
 -   * condition.
 -   *
--   * After use, the frame should be released with CameraBase.ReleaseFrame(). If
--   * you don't do this, the system may stop providing more video!
+-   * After use, the frame should be released with ReleaseCameraFrame(). If you
+-   * don't do this, the system may stop providing more video!
 -   *
 -   * Do not call DestroySurface() on the returned surface! It must be given back
--   * to the camera subsystem with CameraBase.ReleaseFrame!
+-   * to the camera subsystem with ReleaseCameraFrame!
 -   *
 -   * If the system is waiting for the user to approve access to the camera, as
 -   * some platforms require, this will return nullptr (no frames available); you
@@ -151,7 +119,7 @@
 -   *
 -   * @since This function is available since SDL 3.2.0.
 -   *
--   * @sa CameraBase.ReleaseFrame
+-   * @sa ReleaseCameraFrame
 -   */
 -  CameraFrame AcquireFrame(Uint64* timestampNS);
 -
@@ -161,9 +129,9 @@
 -   * Let the back-end re-use the internal buffer for camera.
 -   *
 -   * This function _must_ be called only on surface objects returned by
--   * CameraBase.AcquireFrame(). This function should be called as quickly as
--   * possible after acquisition, as SDL keeps a small FIFO queue of surfaces for
--   * video frames; if surfaces aren't released in a timely manner, SDL may drop
+-   * AcquireCameraFrame(). This function should be called as quickly as possible
+-   * after acquisition, as SDL keeps a small FIFO queue of surfaces for video
+-   * frames; if surfaces aren't released in a timely manner, SDL may drop
 -   * upcoming video frames from the camera.
 -   *
 -   * If the app needs to keep the surface for a significant time, they should
@@ -178,7 +146,7 @@
 -   *
 -   * @since This function is available since SDL 3.2.0.
 -   *
--   * @sa CameraBase.AcquireFrame
+-   * @sa AcquireCameraFrame
 -   */
 -  void ReleaseFrame(CameraFrame&& lock);
  };
@@ -193,21 +161,6 @@
    /**
     * Acquire a frame.
     *
-@@ -498,11 +442,11 @@
-    * is called, so real failure here is almost always an out of memory
-    * condition.
-    *
--   * After use, the frame should be released with CameraBase.ReleaseFrame(). If
--   * you don't do this, the system may stop providing more video!
-+   * After use, the frame should be released with ReleaseCameraFrame(). If you
-+   * don't do this, the system may stop providing more video!
-    *
-    * Do not call DestroySurface() on the returned surface! It must be given back
--   * to the camera subsystem with CameraBase.ReleaseFrame!
-+   * to the camera subsystem with ReleaseCameraFrame!
-    *
-    * If the system is waiting for the user to approve access to the camera, as
-    * some platforms require, this will return nullptr (no frames available); you
 @@ -510,7 +454,7 @@
     * EVENT_CAMERA_DEVICE_DENIED) event, or poll GetCameraPermissionState()
     * occasionally until it returns non-zero.
@@ -217,12 +170,9 @@
     * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
     *                    error. Can be nullptr.
     * @post a new frame of video on success, nullptr if none is currently
-@@ -520,16 +464,17 @@
+@@ -522,14 +466,15 @@
     *
-    * @since This function is available since SDL 3.2.0.
-    *
--   * @sa CameraBase.ReleaseFrame
-+   * @sa ReleaseCameraFrame
+    * @sa ReleaseCameraFrame
     */
 -  CameraFrame(CameraRef resource);
 +  CameraFrame(CameraRef resource, Uint64* timestampNS = nullptr);
@@ -238,20 +188,7 @@
    {
    }
  
-@@ -539,9 +484,9 @@
-    * Let the back-end re-use the internal buffer for camera.
-    *
-    * This function _must_ be called only on surface objects returned by
--   * CameraBase.AcquireFrame(). This function should be called as quickly as
--   * possible after acquisition, as SDL keeps a small FIFO queue of surfaces for
--   * video frames; if surfaces aren't released in a timely manner, SDL may drop
-+   * AcquireCameraFrame(). This function should be called as quickly as possible
-+   * after acquisition, as SDL keeps a small FIFO queue of surfaces for video
-+   * frames; if surfaces aren't released in a timely manner, SDL may drop
-    * upcoming video frames from the camera.
-    *
-    * If the app needs to keep the surface for a significant time, they should
-@@ -550,14 +495,11 @@
+@@ -550,9 +495,6 @@
     * The app should not use the surface again after calling this function;
     * assume the surface is freed and the pointer is invalid.
     *
@@ -261,13 +198,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-    *
--   * @sa CameraBase.AcquireFrame
-+   * @sa AcquireCameraFrame
-    */
-   ~CameraFrame() { reset(); }
- 
-@@ -570,18 +512,15 @@
+@@ -570,9 +512,6 @@
      return *this;
    }
  
@@ -277,19 +208,7 @@
    /**
     * Release a frame of video acquired from a camera.
     *
-    * Let the back-end re-use the internal buffer for camera.
-    *
-    * This function _must_ be called only on surface objects returned by
--   * CameraBase.AcquireFrame(). This function should be called as quickly as
--   * possible after acquisition, as SDL keeps a small FIFO queue of surfaces for
--   * video frames; if surfaces aren't released in a timely manner, SDL may drop
-+   * AcquireCameraFrame(). This function should be called as quickly as possible
-+   * after acquisition, as SDL keeps a small FIFO queue of surfaces for video
-+   * frames; if surfaces aren't released in a timely manner, SDL may drop
-    * upcoming video frames from the camera.
-    *
-    * If the app needs to keep the surface for a significant time, they should
-@@ -590,22 +529,16 @@
+@@ -590,9 +529,6 @@
     * The app should not use the surface again after calling this function;
     * assume the surface is freed and the pointer is invalid.
     *
@@ -299,11 +218,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-    *
--   * @sa CameraBase.AcquireFrame
-+   * @sa AcquireCameraFrame
-    */
-   void reset();
+@@ -603,9 +539,6 @@
  
    /// Get the reference to locked resource.
    CameraRef resource() const { return m_lock; }
@@ -407,82 +322,38 @@
  }
  
  inline std::optional<CameraSpec> CameraBase::GetFormat()
-@@ -961,11 +894,11 @@
-  * to provide blank frames at ongoing intervals until CloseCamera() is called,
-  * so real failure here is almost always an out of memory condition.
-  *
-- * After use, the frame should be released with CameraBase.ReleaseFrame(). If
-- * you don't do this, the system may stop providing more video!
-+ * After use, the frame should be released with ReleaseCameraFrame(). If you
-+ * don't do this, the system may stop providing more video!
-  *
-  * Do not call DestroySurface() on the returned surface! It must be given back
-- * to the camera subsystem with CameraBase.ReleaseFrame!
-+ * to the camera subsystem with ReleaseCameraFrame!
-  *
-  * If the system is waiting for the user to approve access to the camera, as
-  * some platforms require, this will return nullptr (no frames available); you
-@@ -983,28 +916,24 @@
-  *
-  * @since This function is available since SDL 3.2.0.
-  *
-- * @sa CameraBase.ReleaseFrame
-+ * @sa ReleaseCameraFrame
-  */
+@@ -988,23 +921,19 @@
  inline Surface AcquireCameraFrame(CameraRef camera,
                                    Uint64* timestampNS = nullptr)
  {
 -  return SDL_AcquireCameraFrame(camera, timestampNS);
--}
--
--inline Surface CameraBase::AcquireFrame(Uint64* timestampNS)
--{
--  return SDL::AcquireCameraFrame(get(), timestampNS);
 +  return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
  }
  
--inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
+-inline Surface CameraBase::AcquireFrame(Uint64* timestampNS)
 +inline CameraFrame CameraBase::AcquireFrame(Uint64* timestampNS)
  {
--  return {CameraRef(*this)};
+-  return SDL::AcquireCameraFrame(get(), timestampNS);
 +  return {CameraRef(*this), timestampNS};
  }
  
--inline CameraFrame::CameraFrame(CameraRef resource)
--  : m_lock(std::move(resource))
+-inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
 +inline CameraFrame::CameraFrame(CameraRef resource, Uint64* timestampNS)
 +  : Surface(AcquireCameraFrame(resource, timestampNS))
 +  , m_lock(std::move(resource))
  {
+-  return {CameraRef(*this)};
+-}
+-
+-inline CameraFrame::CameraFrame(CameraRef resource)
+-  : m_lock(std::move(resource))
+-{
 -  AcquireCameraFrame(m_lock);
 +  if (!*this) m_lock.release();
  }
  
  /**
-@@ -1013,10 +942,10 @@
-  * Let the back-end re-use the internal buffer for camera.
-  *
-  * This function _must_ be called only on surface objects returned by
-- * CameraBase.AcquireFrame(). This function should be called as quickly as
-- * possible after acquisition, as SDL keeps a small FIFO queue of surfaces for
-- * video frames; if surfaces aren't released in a timely manner, SDL may drop
-- * upcoming video frames from the camera.
-+ * AcquireCameraFrame(). This function should be called as quickly as possible
-+ * after acquisition, as SDL keeps a small FIFO queue of surfaces for video
-+ * frames; if surfaces aren't released in a timely manner, SDL may drop upcoming
-+ * video frames from the camera.
-  *
-  * If the app needs to keep the surface for a significant time, they should make
-  * a copy of it and release the original.
-@@ -1031,19 +960,14 @@
-  *
-  * @since This function is available since SDL 3.2.0.
-  *
-- * @sa CameraBase.AcquireFrame
-+ * @sa AcquireCameraFrame
-  */
- inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
- {
+@@ -1038,12 +967,7 @@
    SDL_ReleaseCameraFrame(camera, frame);
  }
  

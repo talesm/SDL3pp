@@ -1508,7 +1508,8 @@ function transformEntries(
     if (sourceName) context.addGlossary(sourceName, targetEntry);
     const targetDelta = transformMap[sourceName];
     const targetLink = targetDelta?.link ?? targetEntry.link;
-    insertLinks(targetEntry, targetLink);
+
+    const names = insertLinks(targetEntry, targetLink);
     if (targetDelta) {
       combineObject(targetEntry, targetDelta);
       delete targetEntry.link;
@@ -1524,7 +1525,7 @@ function transformEntries(
       targetEntry.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
     }
     if (sourceName) {
-      const targetName = makeTargetName(targetEntry, targetLink);
+      const targetName = makeTargetName([targetEntry.name, ...names]);
       context.addName(sourceName, targetName);
     }
     insertEntryAndCheck(targetEntries, targetEntry, context, sourceEntries);
@@ -1532,9 +1533,9 @@ function transformEntries(
 
   return targetEntries;
 
-  function insertLinks(entry: ApiEntry, link: ApiEntryTransform) {
-    if (!link) return;
-    insertLinks(entry, link.link);
+  function insertLinks(entry: ApiEntry, link: ApiEntryTransform): string[] {
+    if (!link) return [];
+    const names = [link.name, ...insertLinks(entry, link.link)];
     delete link.link;
 
     const linkedEntry = deepClone(entry);
@@ -1549,22 +1550,15 @@ function transformEntries(
       }
       insertEntryAndCheck(targetEntries, linkedEntry, context, sourceEntries);
     }
+    return names;
   }
 }
 
-function makeTargetName(
-  targetEntry: ApiEntry,
-  targetLink: ApiEntry | ApiEntryTransform,
-) {
-  let targetName = targetEntry.name;
-  while (targetName.match(/\.|::/)) {
-    if (!targetLink?.name) {
-      return targetName;
-    }
-    targetName = targetLink.name;
-    targetLink = targetLink.link;
+function makeTargetName(names: string[]) {
+  for (const name of names) {
+    if (!name.includes(".") && !name.includes("::")) return name;
   }
-  return targetName;
+  return names[0];
 }
 
 function makeSortedEntryArray(

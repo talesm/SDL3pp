@@ -2780,7 +2780,7 @@ struct Window : ResourceBase<WindowRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GL_DestroyContext
-   * @sa Window.MakeCurrent
+   * @sa GL_MakeCurrent
    */
   GLContext CreateGLContext();
 
@@ -2796,7 +2796,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.CreateGLContext
+   * @sa GL_CreateContext
    */
   void MakeCurrent(GLContext context);
 
@@ -3187,9 +3187,9 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa Window.CreateGLContext
+ * @sa GL_CreateContext
  * @sa GL_SetAttribute
- * @sa Window.MakeCurrent
+ * @sa GL_MakeCurrent
  * @sa GL_DestroyContext
  *
  * @cat resource
@@ -3224,7 +3224,7 @@ struct GLContext : ResourceBaseT<GLContextRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GL_DestroyContext
-   * @sa Window.MakeCurrent
+   * @sa GL_MakeCurrent
    */
   GLContext(WindowRef window);
 
@@ -3238,7 +3238,7 @@ struct GLContext : ResourceBaseT<GLContextRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.CreateGLContext
+   * @sa GL_CreateContext
    */
   void Destroy();
 
@@ -3254,7 +3254,7 @@ struct GLContext : ResourceBaseT<GLContextRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.CreateGLContext
+   * @sa GL_CreateContext
    */
   void MakeCurrent(WindowRef window);
 };
@@ -7252,7 +7252,7 @@ inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.CreateGLContext
+ * @sa GL_CreateContext
  * @sa GL_GetAttribute
  * @sa GL_ResetAttributes
  */
@@ -7306,7 +7306,7 @@ inline void GL_GetAttribute(GLAttr attr, int* value)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GL_DestroyContext
- * @sa Window.MakeCurrent
+ * @sa GL_MakeCurrent
  */
 inline GLContext GL_CreateContext(WindowRef window)
 {
@@ -7333,7 +7333,7 @@ inline GLContext::GLContext(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.CreateGLContext
+ * @sa GL_CreateContext
  */
 inline void GL_MakeCurrent(WindowRef window, GLContext context)
 {
@@ -7376,7 +7376,7 @@ inline WindowRef GL_GetCurrentWindow()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.MakeCurrent
+ * @sa GL_MakeCurrent
  */
 inline GLContext GL_GetCurrentContext() { return SDL_GL_GetCurrentContext(); }
 
@@ -7550,7 +7550,7 @@ inline void Window::GL_Swap() { SDL::GL_SwapWindow(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.CreateGLContext
+ * @sa GL_CreateContext
  */
 inline void GL_DestroyContext(GLContextRaw context)
 {

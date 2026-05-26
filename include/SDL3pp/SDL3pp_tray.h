@@ -58,7 +58,7 @@ using TrayEntryRef = TrayEntry;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  */
 using TrayEntryFlags = Uint32;
 
@@ -306,7 +306,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RemoveTrayEntry
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    */
   std::span<TrayEntry> GetEntries();
 
@@ -480,7 +480,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTrayEntries
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    */
   void Remove();
 
@@ -501,7 +501,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    * @sa GetTraySubmenu
    * @sa GetTrayMenuParentEntry
    */
@@ -525,7 +525,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    * @sa CreateTraySubmenu
    */
   TrayMenu GetSubmenu();
@@ -546,7 +546,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTrayEntries
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    * @sa GetTrayEntryLabel
    */
   void SetLabel(StringParam label);
@@ -564,7 +564,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTrayEntries
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    * @sa SetTrayEntryLabel
    */
   const char* GetLabel() const;
@@ -582,7 +582,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTrayEntries
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    * @sa GetTrayEntryChecked
    */
   void SetChecked(bool checked);
@@ -600,7 +600,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTrayEntries
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    * @sa SetTrayEntryChecked
    */
   bool GetChecked() const;
@@ -616,7 +616,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTrayEntries
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    * @sa GetTrayEntryEnabled
    */
   void SetEnabled(bool enabled);
@@ -632,7 +632,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTrayEntries
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    * @sa SetTrayEntryEnabled
    */
   bool GetEnabled() const;
@@ -650,7 +650,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTrayEntries
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    */
   void SetCallback(TrayCallback callback, void* userdata);
 
@@ -665,7 +665,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetTrayEntries
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    */
   void SetCallback(TrayCB callback);
 
@@ -689,7 +689,7 @@ struct TrayEntry : ResourceBase<TrayEntryRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa TrayMenu.InsertEntry
+   * @sa InsertTrayEntryAt
    */
   TrayMenu GetParent();
 };
@@ -840,7 +840,7 @@ inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  * @sa GetTraySubmenu
  * @sa GetTrayMenuParentEntry
  */
@@ -899,7 +899,7 @@ inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  * @sa CreateTraySubmenu
  */
 inline TrayMenu GetTraySubmenu(TrayEntry entry)
@@ -923,7 +923,7 @@ inline TrayMenu TrayEntry::GetSubmenu() { return SDL::GetTraySubmenu(get()); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RemoveTrayEntry
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  */
 inline std::span<TrayEntry> GetTrayEntries(TrayMenu menu)
 {
@@ -949,7 +949,7 @@ inline std::span<TrayEntry> TrayMenu::GetEntries()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTrayEntries
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  */
 inline void RemoveTrayEntry(TrayEntryRaw entry) { SDL_RemoveTrayEntry(entry); }
 
@@ -1065,7 +1065,7 @@ inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTrayEntries
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  * @sa GetTrayEntryLabel
  */
 inline void SetTrayEntryLabel(TrayEntry entry, StringParam label)
@@ -1092,7 +1092,7 @@ inline void TrayEntry::SetLabel(StringParam label)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTrayEntries
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  * @sa SetTrayEntryLabel
  */
 inline const char* GetTrayEntryLabel(TrayEntryRef entry)
@@ -1119,7 +1119,7 @@ inline const char* TrayEntry::GetLabel() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTrayEntries
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  * @sa GetTrayEntryChecked
  */
 inline void SetTrayEntryChecked(TrayEntry entry, bool checked)
@@ -1146,7 +1146,7 @@ inline void TrayEntry::SetChecked(bool checked)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTrayEntries
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  * @sa SetTrayEntryChecked
  */
 inline bool GetTrayEntryChecked(TrayEntryRef entry)
@@ -1171,7 +1171,7 @@ inline bool TrayEntry::GetChecked() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTrayEntries
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  * @sa GetTrayEntryEnabled
  */
 inline void SetTrayEntryEnabled(TrayEntry entry, bool enabled)
@@ -1196,7 +1196,7 @@ inline void TrayEntry::SetEnabled(bool enabled)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTrayEntries
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  * @sa SetTrayEntryEnabled
  */
 inline bool GetTrayEntryEnabled(TrayEntryRef entry)
@@ -1223,7 +1223,7 @@ inline bool TrayEntry::GetEnabled() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTrayEntries
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  */
 inline void SetTrayEntryCallback(TrayEntry entry,
                                  TrayCallback callback,
@@ -1244,7 +1244,7 @@ inline void SetTrayEntryCallback(TrayEntry entry,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetTrayEntries
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  */
 inline void SetTrayEntryCallback(TrayEntry entry, TrayCB callback)
 {
@@ -1304,7 +1304,7 @@ inline void Tray::Destroy() { DestroyTray(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa TrayMenu.InsertEntry
+ * @sa InsertTrayEntryAt
  */
 inline TrayMenu GetTrayEntryParent(TrayEntry entry)
 {

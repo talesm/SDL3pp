@@ -42,16 +42,15 @@ namespace SDL {
  *
  * Something that initiates a connection to a remote system is called a
  * "client," connecting to a "server." To establish a connection, use the
- * Address you resolved with AddressBase.CreateClient(). Once the connection is
- * established (a non-blocking operation), you'll have a StreamSocket object
- * that can send and receive data over the connection, using
- * WriteToStreamSocket() and ReadFromStreamSocket().
+ * Address you resolved with CreateClient(). Once the connection is established
+ * (a non-blocking operation), you'll have a StreamSocket object that can send
+ * and receive data over the connection, using WriteToStreamSocket() and
+ * ReadFromStreamSocket().
  *
- * To instead be a server, that clients connect to, call
- * AddressBase.CreateServer() to get a Server object. All a Server does is allow
- * you to accept connections from clients, turning them into NET_StreamSockets,
- * where you can read and write from the opposite side of the connection from a
- * given client.
+ * To instead be a server, that clients connect to, call CreateServer() to get a
+ * Server object. All a Server does is allow you to accept connections from
+ * clients, turning them into NET_StreamSockets, where you can read and write
+ * from the opposite side of the connection from a given client.
  *
  * These things are, underneath this API, TCP connections, which means you can
  * use a client or server to talk to something that _isn't_ using SDL_net at
@@ -65,9 +64,9 @@ namespace SDL {
  * on if a packet is lost, each packet is clearly separated from every other,
  * and communication can happen in a peer-to-peer model instead of
  * client-server: while datagrams can be more complex, these _are_ useful
- * properties not avaiable to stream sockets. AddressBase.CreateDatagramSocket()
- * is used to prepare for datagram communication, then SendDatagram() and
- * ReceiveDatagram() transmit packets.
+ * properties not avaiable to stream sockets. CreateDatagramSocket() is used to
+ * prepare for datagram communication, then SendDatagram() and ReceiveDatagram()
+ * transmit packets.
  *
  * As previously mentioned, SDL_net's API is "non-blocking" (asynchronous). Any
  * network operation might take time, but SDL_net's APIs will not wait until
@@ -1168,9 +1167,8 @@ using LocalAddressesArray = OwnArray<AddressRef, LocalAddressesArrayDeleter>;
  * addresses that are accessible on the same LAN, but not public ones that are
  * accessible from the outside Internet.
  *
- * Usually it's better to use AddressBase.CreateServer() or
- * AddressBase.CreateDatagramSocket() with a nullptr address, to say "bind to
- * all interfaces."
+ * Usually it's better to use CreateServer() or CreateDatagramSocket() with a
+ * nullptr address, to say "bind to all interfaces."
  *
  * The array of addresses returned from this is guaranteed to be
  * nullptr-terminated. You can also pass a pointer to an int, which will return
@@ -1235,7 +1233,7 @@ inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
  *
  * @since This datatype is available since SDL_net 3.0.0.
  *
- * @sa AddressBase.CreateClient
+ * @sa CreateClient
  * @sa WriteToStreamSocket
  * @sa ReadFromStreamSocket
  *
@@ -1361,7 +1359,7 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa AddressBase.CreateClient
+   * @sa CreateClient
    * @sa AcceptClient
    * @sa GetStreamSocketPendingWrites
    * @sa WaitUntilStreamSocketDrained
@@ -1371,9 +1369,9 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
   /**
    * Block until a stream socket has connected to a server.
    *
-   * The StreamSocket objects returned by AddressBase.CreateClient take time to
-   * do their work, so it does so _asynchronously_ instead of making your
-   * program wait an indefinite amount of time.
+   * The StreamSocket objects returned by CreateClient take time to do their
+   * work, so it does so _asynchronously_ instead of making your program wait an
+   * indefinite amount of time.
    *
    * However, if you want your program to sleep until the connection is
    * complete, you can call this function.
@@ -1432,9 +1430,9 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
   /**
    * Check if a stream socket is connected, without blocking.
    *
-   * The StreamSocket objects returned by AddressBase.CreateClient take time to
-   * do negotiate a connection to a server, so it does so _asynchronously_
-   * instead of making your program wait an indefinite amount of time.
+   * The StreamSocket objects returned by CreateClient take time to do negotiate
+   * a connection to a server, so it does so _asynchronously_ instead of making
+   * your program wait an indefinite amount of time.
    *
    * This function allows you to check the progress of that work without
    * blocking.
@@ -1746,9 +1744,9 @@ inline StreamSocket::StreamSocket(AddressRef address,
 /**
  * Block until a stream socket has connected to a server.
  *
- * The StreamSocket objects returned by AddressBase.CreateClient take time to do
- * their work, so it does so _asynchronously_ instead of making your program
- * wait an indefinite amount of time.
+ * The StreamSocket objects returned by CreateClient take time to do their work,
+ * so it does so _asynchronously_ instead of making your program wait an
+ * indefinite amount of time.
  *
  * However, if you want your program to sleep until the connection is complete,
  * you can call this function.
@@ -1807,7 +1805,7 @@ inline Status StreamSocket::WaitUntilConnected(Sint32 timeout)
  *
  * @since This datatype is available since SDL_net 3.0.0.
  *
- * @sa AddressBase.CreateServer
+ * @sa CreateServer
  *
  * @cat resource
  */
@@ -1933,7 +1931,7 @@ struct Server : ResourceBase<ServerRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa AddressBase.CreateServer
+   * @sa CreateServer
    */
   void Destroy();
 
@@ -1945,9 +1943,9 @@ struct Server : ResourceBase<ServerRaw>
    * given a stream socket to communicate with the client, and they can send
    * data to, and receive data from, each other.
    *
-   * Unlike AddressBase.CreateClient, stream sockets returned from this function
-   * are already connected and do not have to wait for the connection to
-   * complete, as server acceptance is the final step of connecting.
+   * Unlike CreateClient, stream sockets returned from this function are already
+   * connected and do not have to wait for the connection to complete, as server
+   * acceptance is the final step of connecting.
    *
    * This function does not block. If there are no new connections pending, this
    * function will return true (for success, but `*client_stream` will be set to
@@ -2070,9 +2068,9 @@ constexpr auto REUSEADDR_BOOLEAN =
  * a stream socket to communicate with the client, and they can send data to,
  * and receive data from, each other.
  *
- * Unlike AddressBase.CreateClient, stream sockets returned from this function
- * are already connected and do not have to wait for the connection to complete,
- * as server acceptance is the final step of connecting.
+ * Unlike CreateClient, stream sockets returned from this function are already
+ * connected and do not have to wait for the connection to complete, as server
+ * acceptance is the final step of connecting.
  *
  * This function does not block. If there are no new connections pending, this
  * function will return true (for success, but `*client_stream` will be set to
@@ -2128,7 +2126,7 @@ inline void Server::AcceptClient(NET_StreamSocket** client_stream)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa AddressBase.CreateServer
+ * @sa CreateServer
  */
 inline void DestroyServer(ServerRaw server) { NET_DestroyServer(server); }
 
@@ -2164,9 +2162,9 @@ inline Address StreamSocket::GetAddress()
 /**
  * Check if a stream socket is connected, without blocking.
  *
- * The StreamSocket objects returned by AddressBase.CreateClient take time to do
- * negotiate a connection to a server, so it does so _asynchronously_ instead of
- * making your program wait an indefinite amount of time.
+ * The StreamSocket objects returned by CreateClient take time to do negotiate a
+ * connection to a server, so it does so _asynchronously_ instead of making your
+ * program wait an indefinite amount of time.
  *
  * This function allows you to check the progress of that work without blocking.
  *
@@ -2478,7 +2476,7 @@ inline void StreamSocket::SimulateStreamPacketLoss(int percent_loss)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa AddressBase.CreateClient
+ * @sa CreateClient
  * @sa AcceptClient
  * @sa GetStreamSocketPendingWrites
  * @sa WaitUntilStreamSocketDrained
@@ -2518,7 +2516,7 @@ struct DatagramSocketBase : ResourceBaseT<DatagramSocketRaw>
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa AddressBase.CreateDatagramSocket
+   * @sa CreateDatagramSocket
    * @sa SendDatagram
    * @sa ReceiveDatagram
    */
@@ -2752,7 +2750,7 @@ struct DatagramSocketBase : ResourceBaseT<DatagramSocketRaw>
  *
  * @since This datatype is available since SDL_net 3.0.0.
  *
- * @sa AddressBase.CreateDatagramSocket
+ * @sa CreateDatagramSocket
  * @sa SendDatagram
  * @sa ReceiveDatagram
  *
@@ -3480,7 +3478,7 @@ inline void DatagramSocketBase::SimulateDatagramPacketLoss(int percent_loss)
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa AddressBase.CreateDatagramSocket
+ * @sa CreateDatagramSocket
  * @sa SendDatagram
  * @sa ReceiveDatagram
  */
@@ -3537,7 +3535,7 @@ inline void DatagramSocketBase::Destroy() { DestroyDatagramSocket(release()); }
  *
  * @since This function is available since SDL_net 3.0.0.
  *
- * @sa AddressBase.CreateDatagramSocket
+ * @sa CreateDatagramSocket
  * @sa SendDatagram
  * @sa ReceiveDatagram
  */

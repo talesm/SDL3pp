@@ -52,15 +52,6 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -464,7 +467,7 @@
-   Joystick& operator=(const Joystick& other) = delete;
- 
-   /**
--   * Close a joystick previously opened with Joystick.Joystick().
-+   * Close a joystick previously opened with OpenJoystick().
-    *
-    * @threadsafety It is safe to call this function from any thread.
-    *
 @@ -587,10 +590,8 @@
     *                 update.
     * @param finger the index of the finger on the touchpad to set.
@@ -94,7 +85,7 @@
   *          free() when it is no longer needed.
 @@ -1306,7 +1305,12 @@
   * @sa HasJoystick
-  * @sa Joystick.Joystick
+  * @sa OpenJoystick
   */
 -inline OwnArray<JoystickID> GetJoysticks() { return SDL_GetJoysticks(); }
 +inline OwnArray<JoystickID> GetJoysticks()

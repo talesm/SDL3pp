@@ -28,15 +28,13 @@ namespace SDL {
  * Next, the app prepares static data (things that are created once and used
  * over and over). For example:
  *
- * - Shaders (programs that run on the GPU): use GPUDeviceBase.CreateShader().
+ * - Shaders (programs that run on the GPU): use CreateGPUShader().
  * - Vertex buffers (arrays of geometry data) and other rendering data: use
- *   GPUDeviceBase.CreateBuffer() and UploadToGPUBuffer().
- * - Textures (images): use GPUDeviceBase.CreateTexture() and
- *   UploadToGPUTexture().
- * - Samplers (how textures should be read from): use
- *   GPUDeviceBase.CreateSampler().
+ *   CreateGPUBuffer() and UploadToGPUBuffer().
+ * - Textures (images): use CreateGPUTexture() and UploadToGPUTexture().
+ * - Samplers (how textures should be read from): use CreateGPUSampler().
  * - Render pipelines (precalculated rendering state): use
- *   GPUDeviceBase.CreateGraphicsPipeline()
+ *   CreateGPUGraphicsPipeline()
  *
  * To render, the app creates one or more command buffers, with
  * AcquireGPUCommandBuffer(). Command buffers collect rendering instructions
@@ -180,8 +178,8 @@ namespace SDL {
  * shader resources/registers correctly. The GPU API is very strict with how it
  * wants resources to be laid out and it's difficult for the API to
  * automatically validate shaders to see if they have a compatible layout. See
- * the documentation for GPUDeviceBase.CreateShader() and
- * GPUDeviceBase.CreateComputePipeline() for information on the expected layout.
+ * the documentation for CreateGPUShader() and CreateGPUComputePipeline() for
+ * information on the expected layout.
  *
  * Another common issue is not setting the correct number of samplers, textures,
  * and buffers in GPUShaderCreateInfo. If possible use shader reflection to
@@ -462,7 +460,7 @@ struct GPUCopyPass;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateBuffer
+ * @sa CreateGPUBuffer
  * @sa GPUBufferUsageFlags
  */
 using GPUBufferCreateInfo = SDL_GPUBufferCreateInfo;
@@ -474,7 +472,7 @@ using GPUBufferCreateInfo = SDL_GPUBufferCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateBuffer
+ * @sa CreateGPUBuffer
  * @sa UploadToGPUBuffer
  * @sa DownloadFromGPUBuffer
  * @sa CopyGPUBufferToBuffer
@@ -561,7 +559,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateTransferBuffer
+ * @sa CreateGPUTransferBuffer
  */
 using GPUTransferBufferCreateInfo = SDL_GPUTransferBufferCreateInfo;
 
@@ -572,7 +570,7 @@ using GPUTransferBufferCreateInfo = SDL_GPUTransferBufferCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateTransferBuffer
+ * @sa CreateGPUTransferBuffer
  * @sa MapGPUTransferBuffer
  * @sa UnmapGPUTransferBuffer
  * @sa UploadToGPUBuffer
@@ -647,7 +645,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateTexture
+ * @sa CreateGPUTexture
  * @sa GPUTextureType
  * @sa GPUTextureFormat
  * @sa GPUTextureUsageFlags
@@ -660,7 +658,7 @@ using GPUTextureCreateInfo = SDL_GPUTextureCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateTexture
+ * @sa CreateGPUTexture
  * @sa UploadToGPUTexture
  * @sa DownloadFromGPUTexture
  * @sa CopyGPUTextureToTexture
@@ -764,7 +762,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateSampler
+ * @sa CreateGPUSampler
  * @sa GPUFilter
  * @sa GPUSamplerMipmapMode
  * @sa GPUSamplerAddressMode
@@ -777,7 +775,7 @@ using GPUSamplerCreateInfo = SDL_GPUSamplerCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateSampler
+ * @sa CreateGPUSampler
  * @sa BindGPUVertexSamplers
  * @sa BindGPUFragmentSamplers
  * @sa ReleaseGPUSampler
@@ -833,7 +831,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
+ * @sa CreateGPUShader
  * @sa GPUShaderFormat
  * @sa GPUShaderStage
  */
@@ -844,8 +842,8 @@ using GPUShaderCreateInfo = SDL_GPUShaderCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUShader
+ * @sa CreateGPUGraphicsPipeline
  * @sa ReleaseGPUShader
  */
 class GPUShader
@@ -933,7 +931,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateGraphicsPipeline
+   * @sa CreateGPUGraphicsPipeline
    * @sa ReleaseGPUShader
    */
   GPUShader(GPUDeviceRef device, const GPUShaderCreateInfo& createinfo);
@@ -951,7 +949,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateComputePipeline
+ * @sa CreateGPUComputePipeline
  * @sa GPUShaderFormat
  */
 using GPUComputePipelineCreateInfo = SDL_GPUComputePipelineCreateInfo;
@@ -963,7 +961,7 @@ using GPUComputePipelineCreateInfo = SDL_GPUComputePipelineCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateComputePipeline
+ * @sa CreateGPUComputePipeline
  * @sa BindGPUComputePipeline
  * @sa ReleaseGPUComputePipeline
  */
@@ -1047,7 +1045,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  * @sa GPUShader
  * @sa GPUVertexInputState
  * @sa GPUPrimitiveType
@@ -1065,7 +1063,7 @@ using GPUGraphicsPipelineCreateInfo = SDL_GPUGraphicsPipelineCreateInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  * @sa BindGPUGraphicsPipeline
  * @sa ReleaseGPUGraphicsPipeline
  */
@@ -1102,7 +1100,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateShader
+   * @sa CreateGPUShader
    * @sa BindGPUGraphicsPipeline
    * @sa ReleaseGPUGraphicsPipeline
    */
@@ -1144,7 +1142,7 @@ using GPUBufferBinding = SDL_GPUBufferBinding;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUIndexElementSize = SDL_GPUIndexElementSize;
 
@@ -1284,7 +1282,7 @@ public:
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUDeviceBase.CreateShader().
+   * CreateGPUShader().
    *
    * @param first_slot the vertex sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
@@ -1292,7 +1290,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateShader
+   * @sa CreateGPUShader
    */
   void BindVertexSamplers(
     Uint32 first_slot,
@@ -1305,14 +1303,14 @@ public:
    * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUDeviceBase.CreateShader().
+   * CreateGPUShader().
    *
    * @param first_slot the vertex storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateShader
+   * @sa CreateGPUShader
    */
   void BindVertexStorageTextures(Uint32 first_slot,
                                  SpanRef<const GPUTextureRaw> storage_textures);
@@ -1324,14 +1322,14 @@ public:
    * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUDeviceBase.CreateShader().
+   * CreateGPUShader().
    *
    * @param first_slot the vertex storage buffer slot to begin binding from.
    * @param storage_buffers an array of buffers.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateShader
+   * @sa CreateGPUShader
    */
   void BindVertexStorageBuffers(Uint32 first_slot,
                                 SpanRef<const GPUBufferRaw> storage_buffers);
@@ -1342,7 +1340,7 @@ public:
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUDeviceBase.CreateShader().
+   * CreateGPUShader().
    *
    * @param first_slot the fragment sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
@@ -1350,7 +1348,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateShader
+   * @sa CreateGPUShader
    */
   void BindFragmentSamplers(
     Uint32 first_slot,
@@ -1363,14 +1361,14 @@ public:
    * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUDeviceBase.CreateShader().
+   * CreateGPUShader().
    *
    * @param first_slot the fragment storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateShader
+   * @sa CreateGPUShader
    */
   void BindFragmentStorageTextures(
     Uint32 first_slot,
@@ -1383,14 +1381,14 @@ public:
    * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUDeviceBase.CreateShader().
+   * CreateGPUShader().
    *
    * @param first_slot the fragment storage buffer slot to begin binding from.
    * @param storage_buffers an array of storage buffers.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateShader
+   * @sa CreateGPUShader
    */
   void BindFragmentStorageBuffers(Uint32 first_slot,
                                   SpanRef<const GPUBufferRaw> storage_buffers);
@@ -1547,7 +1545,7 @@ public:
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUDeviceBase.CreateComputePipeline().
+   * CreateGPUComputePipeline().
    *
    * @param first_slot the compute sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
@@ -1555,7 +1553,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateComputePipeline
+   * @sa CreateGPUComputePipeline
    */
   void BindSamplers(
     Uint32 first_slot,
@@ -1568,14 +1566,14 @@ public:
    * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUDeviceBase.CreateComputePipeline().
+   * CreateGPUComputePipeline().
    *
    * @param first_slot the compute storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateComputePipeline
+   * @sa CreateGPUComputePipeline
    */
   void BindStorageTextures(Uint32 first_slot,
                            SpanRef<const GPUTextureRaw> storage_textures);
@@ -1587,14 +1585,14 @@ public:
    * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUDeviceBase.CreateComputePipeline().
+   * CreateGPUComputePipeline().
    *
    * @param first_slot the compute storage buffer slot to begin binding from.
    * @param storage_buffers an array of storage buffer binding structs.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateComputePipeline
+   * @sa CreateGPUComputePipeline
    */
   void BindStorageBuffers(Uint32 first_slot,
                           SpanRef<const GPUBufferRaw> storage_buffers);
@@ -1692,7 +1690,7 @@ using GPUBufferLocation = SDL_GPUBufferLocation;
  *
  * @sa UploadToGPUTexture
  * @sa DownloadFromGPUTexture
- * @sa GPUDeviceBase.CreateTexture
+ * @sa CreateGPUTexture
  */
 using GPUTextureRegion = SDL_GPUTextureRegion;
 
@@ -2127,7 +2125,7 @@ public:
    * aligned.
    *
    * For detailed information about accessing uniform data from a shader, please
-   * refer to GPUDeviceBase.CreateShader.
+   * refer to CreateGPUShader.
    *
    * @param slot_index the vertex uniform slot to push data to.
    * @param data client data to write.
@@ -2445,7 +2443,7 @@ public:
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
+ * @sa CreateGPUShader
  */
 using GPUShaderFormat = Uint32;
 
@@ -2623,7 +2621,7 @@ constexpr GPUPresentMode GPU_PRESENTMODE_MAILBOX =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateTexture
+ * @sa CreateGPUTexture
  * @sa GPUTextureSupportsFormat
  */
 using GPUTextureFormat = SDL_GPUTextureFormat;
@@ -2948,7 +2946,7 @@ constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x12_FLOAT =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateTexture
+ * @sa CreateGPUTexture
  */
 using GPUTextureType = SDL_GPUTextureType;
 
@@ -2985,7 +2983,7 @@ constexpr GPUTextureType GPU_TEXTURETYPE_CUBE_ARRAY =
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateTexture
+ * @sa CreateGPUTexture
  */
 using GPUTextureUsageFlags = Uint32;
 
@@ -3027,7 +3025,7 @@ constexpr GPUTextureUsageFlags
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateTexture
+ * @sa CreateGPUTexture
  * @sa GPUTextureSupportsSampleCount
  */
 using GPUSampleCount = SDL_GPUSampleCount;
@@ -3248,7 +3246,7 @@ struct GPUDeviceBase : ResourceBaseT<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateShader
+   * @sa CreateGPUShader
    * @sa BindGPUGraphicsPipeline
    * @sa ReleaseGPUGraphicsPipeline
    */
@@ -3346,7 +3344,7 @@ struct GPUDeviceBase : ResourceBaseT<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateGraphicsPipeline
+   * @sa CreateGPUGraphicsPipeline
    * @sa ReleaseGPUShader
    */
   GPUShader CreateShader(const GPUShaderCreateInfo& createinfo);
@@ -3486,9 +3484,8 @@ struct GPUDeviceBase : ResourceBaseT<GPUDeviceRaw>
   /**
    * Sets an arbitrary string constant to label a buffer.
    *
-   * You should use prop.GPUBuffer.Create.NAME_STRING with
-   * GPUDeviceBase.CreateBuffer instead of this function to avoid thread safety
-   * issues.
+   * You should use prop.GPUBuffer.Create.NAME_STRING with CreateGPUBuffer
+   * instead of this function to avoid thread safety issues.
    *
    * @param buffer a buffer to attach the name to.
    * @param text a UTF-8 string constant to mark as the name of the buffer.
@@ -3498,16 +3495,15 @@ struct GPUDeviceBase : ResourceBaseT<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateBuffer
+   * @sa CreateGPUBuffer
    */
   void SetBufferName(GPUBuffer buffer, StringParam text);
 
   /**
    * Sets an arbitrary string constant to label a texture.
    *
-   * You should use prop.GPUTexture.Create.NAME_STRING with
-   * GPUDeviceBase.CreateTexture instead of this function to avoid thread safety
-   * issues.
+   * You should use prop.GPUTexture.Create.NAME_STRING with CreateGPUTexture
+   * instead of this function to avoid thread safety issues.
    *
    * @param texture a texture to attach the name to.
    * @param text a UTF-8 string constant to mark as the name of the texture.
@@ -3517,7 +3513,7 @@ struct GPUDeviceBase : ResourceBaseT<GPUDeviceRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDeviceBase.CreateTexture
+   * @sa CreateGPUTexture
    */
   void SetTextureName(GPUTexture texture, StringParam text);
 
@@ -4112,7 +4108,7 @@ struct GPUDevice : GPUDeviceBase
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUPrimitiveType = SDL_GPUPrimitiveType;
 
@@ -4229,7 +4225,7 @@ constexpr GPUCubeMapFace GPU_CUBEMAPFACE_NEGATIVEZ =
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateBuffer
+ * @sa CreateGPUBuffer
  */
 using GPUBufferUsageFlags = Uint32;
 
@@ -4262,7 +4258,7 @@ constexpr GPUBufferUsageFlags GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateTransferBuffer
+ * @sa CreateGPUTransferBuffer
  */
 using GPUTransferBufferUsage = SDL_GPUTransferBufferUsage;
 
@@ -4277,7 +4273,7 @@ constexpr GPUTransferBufferUsage GPU_TRANSFERBUFFERUSAGE_DOWNLOAD =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
+ * @sa CreateGPUShader
  */
 using GPUShaderStage = SDL_GPUShaderStage;
 
@@ -4292,7 +4288,7 @@ constexpr GPUShaderStage GPU_SHADERSTAGE_FRAGMENT =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUVertexElementFormat = SDL_GPUVertexElementFormat;
 
@@ -4394,7 +4390,7 @@ constexpr GPUVertexElementFormat GPU_VERTEXELEMENTFORMAT_HALF4 =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUVertexInputRate = SDL_GPUVertexInputRate;
 
@@ -4411,7 +4407,7 @@ constexpr GPUVertexInputRate GPU_VERTEXINPUTRATE_INSTANCE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUFillMode = SDL_GPUFillMode;
 
@@ -4426,7 +4422,7 @@ constexpr GPUFillMode GPU_FILLMODE_LINE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUCullMode = SDL_GPUCullMode;
 
@@ -4445,7 +4441,7 @@ constexpr GPUCullMode GPU_CULLMODE_BACK =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUFrontFace = SDL_GPUFrontFace;
 
@@ -4464,7 +4460,7 @@ constexpr GPUFrontFace GPU_FRONTFACE_CLOCKWISE = SDL_GPU_FRONTFACE_CLOCKWISE;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUCompareOp = SDL_GPUCompareOp;
 
@@ -4503,7 +4499,7 @@ constexpr GPUCompareOp GPU_COMPAREOP_ALWAYS =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUStencilOp = SDL_GPUStencilOp;
 
@@ -4547,7 +4543,7 @@ constexpr GPUStencilOp GPU_STENCILOP_DECREMENT_AND_WRAP =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUBlendOp = SDL_GPUBlendOp;
 
@@ -4579,7 +4575,7 @@ constexpr GPUBlendOp GPU_BLENDOP_MAX =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUBlendFactor = SDL_GPUBlendFactor;
 
@@ -4629,7 +4625,7 @@ constexpr GPUBlendFactor GPU_BLENDFACTOR_SRC_ALPHA_SATURATE =
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  */
 using GPUColorComponentFlags = Uint8;
 
@@ -4650,7 +4646,7 @@ constexpr GPUColorComponentFlags GPU_COLORCOMPONENT_A =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateSampler
+ * @sa CreateGPUSampler
  */
 using GPUFilter = SDL_GPUFilter;
 
@@ -4665,7 +4661,7 @@ constexpr GPUFilter GPU_FILTER_LINEAR =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateSampler
+ * @sa CreateGPUSampler
  */
 using GPUSamplerMipmapMode = SDL_GPUSamplerMipmapMode;
 
@@ -4681,7 +4677,7 @@ constexpr GPUSamplerMipmapMode GPU_SAMPLERMIPMAPMODE_LINEAR =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateSampler
+ * @sa CreateGPUSampler
  */
 using GPUSamplerAddressMode = SDL_GPUSamplerAddressMode;
 
@@ -5528,7 +5524,7 @@ constexpr auto NAME_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
+ * @sa CreateGPUShader
  * @sa BindGPUGraphicsPipeline
  * @sa ReleaseGPUGraphicsPipeline
  */
@@ -5684,7 +5680,7 @@ constexpr auto NAME_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateGraphicsPipeline
+ * @sa CreateGPUGraphicsPipeline
  * @sa ReleaseGPUShader
  */
 inline GPUShader CreateGPUShader(GPUDeviceRef device,
@@ -5965,9 +5961,8 @@ constexpr auto NAME_STRING =
 /**
  * Sets an arbitrary string constant to label a buffer.
  *
- * You should use prop.GPUBuffer.Create.NAME_STRING with
- * GPUDeviceBase.CreateBuffer instead of this function to avoid thread safety
- * issues.
+ * You should use prop.GPUBuffer.Create.NAME_STRING with CreateGPUBuffer instead
+ * of this function to avoid thread safety issues.
  *
  * @param device a GPU Context.
  * @param buffer a buffer to attach the name to.
@@ -5978,7 +5973,7 @@ constexpr auto NAME_STRING =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateBuffer
+ * @sa CreateGPUBuffer
  */
 inline void SetGPUBufferName(GPUDeviceRef device,
                              GPUBuffer buffer,
@@ -5995,9 +5990,8 @@ inline void GPUDeviceBase::SetBufferName(GPUBuffer buffer, StringParam text)
 /**
  * Sets an arbitrary string constant to label a texture.
  *
- * You should use prop.GPUTexture.Create.NAME_STRING with
- * GPUDeviceBase.CreateTexture instead of this function to avoid thread safety
- * issues.
+ * You should use prop.GPUTexture.Create.NAME_STRING with CreateGPUTexture
+ * instead of this function to avoid thread safety issues.
  *
  * @param device a GPU Context.
  * @param texture a texture to attach the name to.
@@ -6008,7 +6002,7 @@ inline void GPUDeviceBase::SetBufferName(GPUBuffer buffer, StringParam text)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateTexture
+ * @sa CreateGPUTexture
  */
 inline void SetGPUTextureName(GPUDeviceRef device,
                               GPUTexture texture,
@@ -6298,7 +6292,7 @@ inline GPUCommandBuffer GPUDeviceBase::AcquireCommandBuffer()
  * aligned.
  *
  * For detailed information about accessing uniform data from a shader, please
- * refer to GPUDeviceBase.CreateShader.
+ * refer to CreateGPUShader.
  *
  * @param command_buffer a command buffer.
  * @param slot_index the vertex uniform slot to push data to.
@@ -6584,7 +6578,7 @@ inline void GPURenderPass::BindIndexBuffer(
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUDeviceBase.CreateShader().
+ * CreateGPUShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the vertex sampler slot to begin binding from.
@@ -6592,7 +6586,7 @@ inline void GPURenderPass::BindIndexBuffer(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
+ * @sa CreateGPUShader
  */
 inline void BindGPUVertexSamplers(
   GPURenderPass render_pass,
@@ -6620,7 +6614,7 @@ inline void GPURenderPass::BindVertexSamplers(
  * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUDeviceBase.CreateShader().
+ * CreateGPUShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the vertex storage texture slot to begin binding from.
@@ -6628,7 +6622,7 @@ inline void GPURenderPass::BindVertexSamplers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
+ * @sa CreateGPUShader
  */
 inline void BindGPUVertexStorageTextures(
   GPURenderPass render_pass,
@@ -6656,7 +6650,7 @@ inline void GPURenderPass::BindVertexStorageTextures(
  * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUDeviceBase.CreateShader().
+ * CreateGPUShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the vertex storage buffer slot to begin binding from.
@@ -6664,7 +6658,7 @@ inline void GPURenderPass::BindVertexStorageTextures(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
+ * @sa CreateGPUShader
  */
 inline void BindGPUVertexStorageBuffers(
   GPURenderPass render_pass,
@@ -6691,7 +6685,7 @@ inline void GPURenderPass::BindVertexStorageBuffers(
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUDeviceBase.CreateShader().
+ * CreateGPUShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the fragment sampler slot to begin binding from.
@@ -6699,7 +6693,7 @@ inline void GPURenderPass::BindVertexStorageBuffers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
+ * @sa CreateGPUShader
  */
 inline void BindGPUFragmentSamplers(
   GPURenderPass render_pass,
@@ -6727,7 +6721,7 @@ inline void GPURenderPass::BindFragmentSamplers(
  * GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUDeviceBase.CreateShader().
+ * CreateGPUShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the fragment storage texture slot to begin binding from.
@@ -6735,7 +6729,7 @@ inline void GPURenderPass::BindFragmentSamplers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
+ * @sa CreateGPUShader
  */
 inline void BindGPUFragmentStorageTextures(
   GPURenderPass render_pass,
@@ -6763,7 +6757,7 @@ inline void GPURenderPass::BindFragmentStorageTextures(
  * GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUDeviceBase.CreateShader().
+ * CreateGPUShader().
  *
  * @param render_pass a render pass handle.
  * @param first_slot the fragment storage buffer slot to begin binding from.
@@ -6771,7 +6765,7 @@ inline void GPURenderPass::BindFragmentStorageTextures(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateShader
+ * @sa CreateGPUShader
  */
 inline void BindGPUFragmentStorageBuffers(
   GPURenderPass render_pass,
@@ -7041,7 +7035,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUDeviceBase.CreateComputePipeline().
+ * CreateGPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute sampler slot to begin binding from.
@@ -7049,7 +7043,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateComputePipeline
+ * @sa CreateGPUComputePipeline
  */
 inline void BindGPUComputeSamplers(
   GPUComputePass compute_pass,
@@ -7077,7 +7071,7 @@ inline void GPUComputePass::BindSamplers(
  * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUDeviceBase.CreateComputePipeline().
+ * CreateGPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage texture slot to begin binding from.
@@ -7085,7 +7079,7 @@ inline void GPUComputePass::BindSamplers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateComputePipeline
+ * @sa CreateGPUComputePipeline
  */
 inline void BindGPUComputeStorageTextures(
   GPUComputePass compute_pass,
@@ -7113,7 +7107,7 @@ inline void GPUComputePass::BindStorageTextures(
  * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUDeviceBase.CreateComputePipeline().
+ * CreateGPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage buffer slot to begin binding from.
@@ -7121,7 +7115,7 @@ inline void GPUComputePass::BindStorageTextures(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDeviceBase.CreateComputePipeline
+ * @sa CreateGPUComputePipeline
  */
 inline void BindGPUComputeStorageBuffers(
   GPUComputePass compute_pass,
