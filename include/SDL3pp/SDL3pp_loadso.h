@@ -40,6 +40,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct SharedObjectBase;
+
+// Forward decl
 struct SharedObject;
 
 /// Alias to raw representation for SharedObject.
@@ -50,76 +53,16 @@ using SharedObjectRaw = SDL_SharedObject*;
  *
  * This does not take ownership!
  */
-using SharedObjectRef = ResourceRef<SharedObject>;
+using SharedObjectRef = ResourceRefT<SharedObjectBase>;
 
 /**
- * An opaque datatype that represents a loaded shared object.
+ * Base class to SharedObject.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa LoadObject
- * @sa LoadFunction
- * @sa UnloadObject
- *
- * @cat resource
+ * @see SharedObject
  */
-struct SharedObject : ResourceBase<SharedObjectRaw>
+struct SharedObjectBase : ResourceBaseT<SharedObjectRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw SharedObject.
-   *
-   * @param resource a SharedObjectRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) = delete;
-
-  /// Move constructor
-  constexpr SharedObject(SharedObject&& other) noexcept
-    : SharedObject(other.release())
-  {
-  }
-
-  constexpr SharedObject(const SharedObjectRef& other) = delete;
-
-  constexpr SharedObject(SharedObjectRef&& other) = delete;
-
-  /**
-   * Dynamically load a shared object.
-   *
-   * @param sofile a system-dependent name of the object file.
-   * @post an opaque pointer to the object handle or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa LoadFunction
-   * @sa UnloadObject
-   */
-  SharedObject(StringParam sofile);
-
-  /// Destructor
-  ~SharedObject() { SDL_UnloadObject(get()); }
-
-  /// Assignment operator.
-  constexpr SharedObject& operator=(SharedObject&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  SharedObject& operator=(const SharedObject& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Unload a shared object from memory.
@@ -161,6 +104,72 @@ struct SharedObject : ResourceBase<SharedObjectRaw>
    * @sa LoadObject
    */
   FunctionPointer LoadFunction(StringParam name);
+};
+
+/**
+ * An opaque datatype that represents a loaded shared object.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa LoadObject
+ * @sa LoadFunction
+ * @sa UnloadObject
+ *
+ * @cat resource
+ */
+struct SharedObject : SharedObjectBase
+{
+  using SharedObjectBase::SharedObjectBase;
+
+  /**
+   * Constructs from raw SharedObject.
+   *
+   * @param resource a SharedObjectRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
+    : SharedObjectBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr SharedObject(const SharedObject& other) = delete;
+
+  /// Move constructor
+  constexpr SharedObject(SharedObject&& other) noexcept
+    : SharedObject(other.release())
+  {
+  }
+
+  /**
+   * Dynamically load a shared object.
+   *
+   * @param sofile a system-dependent name of the object file.
+   * @post an opaque pointer to the object handle or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa LoadFunction
+   * @sa UnloadObject
+   */
+  SharedObject(StringParam sofile);
+
+  /// Destructor
+  ~SharedObject() { SDL_UnloadObject(get()); }
+
+  /// Assignment operator.
+  constexpr SharedObject& operator=(SharedObject&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  SharedObject& operator=(const SharedObject& other) = delete;
 };
 
 /**
@@ -218,7 +227,7 @@ inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
   return SDL_LoadFunction(handle, name);
 }
 
-inline FunctionPointer SharedObject::LoadFunction(StringParam name)
+inline FunctionPointer SharedObjectBase::LoadFunction(StringParam name)
 {
   return SDL::LoadFunction(get(), std::move(name));
 }
@@ -239,7 +248,7 @@ inline FunctionPointer SharedObject::LoadFunction(StringParam name)
  */
 inline void UnloadObject(SharedObjectRaw handle) { SDL_UnloadObject(handle); }
 
-inline void SharedObject::Unload() { UnloadObject(release()); }
+inline void SharedObjectBase::Unload() { UnloadObject(release()); }
 
 /// @}
 

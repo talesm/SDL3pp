@@ -60,6 +60,9 @@ using RWLockRaw = SDL_RWLock*;
 using RWLockRef = ResourceRefT<RWLockBase>;
 
 // Forward decl
+struct SemaphoreBase;
+
+// Forward decl
 struct Semaphore;
 
 /// Alias to raw representation for Semaphore.
@@ -70,7 +73,7 @@ using SemaphoreRaw = SDL_Semaphore*;
  *
  * This does not take ownership!
  */
-using SemaphoreRef = ResourceRef<Semaphore>;
+using SemaphoreRef = ResourceRefT<SemaphoreBase>;
 
 // Forward decl
 struct ConditionBase;
@@ -930,88 +933,13 @@ inline void DestroyRWLock(RWLockRaw rwlock) { SDL_DestroyRWLock(rwlock); }
 inline void RWLockBase::Destroy() { DestroyRWLock(release()); }
 
 /**
- * A means to manage access to a resource, by count, between threads.
+ * Base class to Semaphore.
  *
- * Semaphores (specifically, "counting semaphores"), let X number of threads
- * request access at the same time, each thread granted access decrementing a
- * counter. When the counter reaches zero, future requests block until a prior
- * thread releases their request, incrementing the counter again.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Semaphore_(programming)
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Semaphore
  */
-struct Semaphore : ResourceBase<SemaphoreRaw>
+struct SemaphoreBase : ResourceBaseT<SemaphoreRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Semaphore.
-   *
-   * @param resource a SemaphoreRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) = delete;
-
-  /// Move constructor
-  constexpr Semaphore(Semaphore&& other) noexcept
-    : Semaphore(other.release())
-  {
-  }
-
-  constexpr Semaphore(const SemaphoreRef& other) = delete;
-
-  constexpr Semaphore(SemaphoreRef&& other) = delete;
-
-  /**
-   * Create a semaphore.
-   *
-   * This function creates a new semaphore and initializes it with the value
-   * `initial_value`. Each wait operation on the semaphore will atomically
-   * decrement the semaphore value and potentially block if the semaphore value
-   * is 0. Each post operation will atomically increment the semaphore value and
-   * wake waiting threads and allow them to retry the wait operation.
-   *
-   * @param initial_value the starting value of the semaphore.
-   * @post a new semaphore or nullptr on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroySemaphore
-   * @sa SignalSemaphore
-   * @sa TryWaitSemaphore
-   * @sa GetSemaphoreValue
-   * @sa WaitSemaphore
-   * @sa WaitSemaphoreTimeout
-   */
-  Semaphore(Uint32 initial_value);
-
-  /// Destructor
-  ~Semaphore() { SDL_DestroySemaphore(get()); }
-
-  /// Assignment operator.
-  constexpr Semaphore& operator=(Semaphore&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Semaphore& operator=(const Semaphore& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a semaphore.
@@ -1114,6 +1042,87 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
 };
 
 /**
+ * A means to manage access to a resource, by count, between threads.
+ *
+ * Semaphores (specifically, "counting semaphores"), let X number of threads
+ * request access at the same time, each thread granted access decrementing a
+ * counter. When the counter reaches zero, future requests block until a prior
+ * thread releases their request, incrementing the counter again.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Semaphore_(programming)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Semaphore : SemaphoreBase
+{
+  using SemaphoreBase::SemaphoreBase;
+
+  /**
+   * Constructs from raw Semaphore.
+   *
+   * @param resource a SemaphoreRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
+    : SemaphoreBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Semaphore(const Semaphore& other) = delete;
+
+  /// Move constructor
+  constexpr Semaphore(Semaphore&& other) noexcept
+    : Semaphore(other.release())
+  {
+  }
+
+  /**
+   * Create a semaphore.
+   *
+   * This function creates a new semaphore and initializes it with the value
+   * `initial_value`. Each wait operation on the semaphore will atomically
+   * decrement the semaphore value and potentially block if the semaphore value
+   * is 0. Each post operation will atomically increment the semaphore value and
+   * wake waiting threads and allow them to retry the wait operation.
+   *
+   * @param initial_value the starting value of the semaphore.
+   * @post a new semaphore or nullptr on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroySemaphore
+   * @sa SignalSemaphore
+   * @sa TryWaitSemaphore
+   * @sa GetSemaphoreValue
+   * @sa WaitSemaphore
+   * @sa WaitSemaphoreTimeout
+   */
+  Semaphore(Uint32 initial_value);
+
+  /// Destructor
+  ~Semaphore() { SDL_DestroySemaphore(get()); }
+
+  /// Assignment operator.
+  constexpr Semaphore& operator=(Semaphore&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Semaphore& operator=(const Semaphore& other) = delete;
+};
+
+/**
  * Create a semaphore.
  *
  * This function creates a new semaphore and initializes it with the value
@@ -1163,7 +1172,7 @@ inline Semaphore::Semaphore(Uint32 initial_value)
  */
 inline void DestroySemaphore(SemaphoreRaw sem) { SDL_DestroySemaphore(sem); }
 
-inline void Semaphore::Destroy() { DestroySemaphore(release()); }
+inline void SemaphoreBase::Destroy() { DestroySemaphore(release()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -1187,7 +1196,7 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  */
 inline void WaitSemaphore(SemaphoreRef sem) { SDL_WaitSemaphore(sem); }
 
-inline void Semaphore::Wait() { SDL::WaitSemaphore(get()); }
+inline void SemaphoreBase::Wait() { SDL::WaitSemaphore(get()); }
 
 /**
  * See if a semaphore has a positive value and decrement it if it does.
@@ -1213,7 +1222,7 @@ inline bool TryWaitSemaphore(SemaphoreRef sem)
   return SDL_TryWaitSemaphore(sem);
 }
 
-inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(get()); }
+inline bool SemaphoreBase::TryWait() { return SDL::TryWaitSemaphore(get()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -1241,7 +1250,7 @@ inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
   return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
 }
 
-inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
+inline bool SemaphoreBase::WaitTimeout(std::chrono::milliseconds timeout)
 {
   return SDL::WaitSemaphoreTimeout(get(), timeout);
 }
@@ -1261,7 +1270,7 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  */
 inline void SignalSemaphore(SemaphoreRef sem) { SDL_SignalSemaphore(sem); }
 
-inline void Semaphore::Signal() { SDL::SignalSemaphore(get()); }
+inline void SemaphoreBase::Signal() { SDL::SignalSemaphore(get()); }
 
 /**
  * Get the current value of a semaphore.
@@ -1278,7 +1287,7 @@ inline Uint32 GetSemaphoreValue(SemaphoreRef sem)
   return SDL_GetSemaphoreValue(sem);
 }
 
-inline Uint32 Semaphore::GetValue() const
+inline Uint32 SemaphoreBase::GetValue() const
 {
   return SDL::GetSemaphoreValue(get());
 }

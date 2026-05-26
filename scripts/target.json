@@ -81320,6 +81320,10 @@
         ]
       ],
       "entries": {
+        "SharedObjectBase-forward": {
+          "name": "SharedObjectBase",
+          "kind": "forward"
+        },
         "SharedObject-forward": {
           "name": "SharedObject",
           "kind": "forward"
@@ -81339,229 +81343,23 @@
             "Reference for SharedObject.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<SharedObject>"
+          "type": "ResourceRefT<SharedObjectBase>"
         },
-        "SharedObject": {
-          "doc": [
-            "An opaque datatype that represents a loaded shared object.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL 3.2.0."
-            },
-            [
-              {
-                "tag": "@sa",
-                "content": "LoadObject"
-              },
-              {
-                "tag": "@sa",
-                "content": "LoadFunction"
-              },
-              {
-                "tag": "@sa",
-                "content": "UnloadObject"
-              }
-            ],
-            "@cat resource"
-          ],
-          "name": "SharedObject",
+        "SharedObjectBase": {
+          "name": "SharedObjectBase",
           "kind": "struct",
-          "type": "ResourceBase<SharedObjectRaw>",
-          "sourceName": "SDL_SharedObject",
+          "type": "ResourceBaseT<SharedObjectRaw>",
+          "doc": [
+            "Base class to SharedObject.",
+            {
+              "tag": "@see",
+              "content": "SharedObject"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "SharedObject": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "SharedObjectRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw SharedObject.",
-                {
-                  "tag": "@param resource",
-                  "content": "a SharedObjectRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "SharedObject",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const SharedObject &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "SharedObject",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "SharedObject &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "SharedObject(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "SharedObject",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const SharedObjectRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "SharedObject",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "SharedObjectRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "SharedObject",
-                      "overload": {
-                        "doc": [
-                          "Dynamically load a shared object.",
-                          [
-                            {
-                              "tag": "@param sofile",
-                              "content": "a system-dependent name of the object file."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "an opaque pointer to the object handle or nullptr on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "LoadFunction"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "UnloadObject"
-                            }
-                          ]
-                        ],
-                        "name": "SharedObject",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "sofile",
-                            "type": "StringParam"
-                          }
-                        ],
-                        "sourceName": "SDL_LoadObject",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~SharedObject": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_UnloadObject(get());"
-              },
-              "name": "~SharedObject"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "SharedObject &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "SharedObject &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "SharedObject &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const SharedObject &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Unload": {
               "doc": [
@@ -81635,6 +81433,201 @@
                 "delegate": "SDL::LoadFunction"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "SharedObject": {
+          "doc": [
+            "An opaque datatype that represents a loaded shared object.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "LoadObject"
+              },
+              {
+                "tag": "@sa",
+                "content": "LoadFunction"
+              },
+              {
+                "tag": "@sa",
+                "content": "UnloadObject"
+              }
+            ],
+            "@cat resource"
+          ],
+          "name": "SharedObject",
+          "kind": "struct",
+          "type": "SharedObjectBase",
+          "sourceName": "SDL_SharedObject",
+          "entries": {
+            "SharedObjectBase::SharedObjectBase": {
+              "kind": "alias",
+              "name": "SharedObjectBase::SharedObjectBase"
+            },
+            "SharedObject": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "SharedObjectRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "SharedObjectBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw SharedObject.",
+                {
+                  "tag": "@param resource",
+                  "content": "a SharedObjectRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "SharedObject",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const SharedObject &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "SharedObject",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "SharedObject &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "SharedObject(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "SharedObject",
+                  "overload": {
+                    "doc": [
+                      "Dynamically load a shared object.",
+                      [
+                        {
+                          "tag": "@param sofile",
+                          "content": "a system-dependent name of the object file."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "an opaque pointer to the object handle or nullptr on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "LoadFunction"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "UnloadObject"
+                        }
+                      ]
+                    ],
+                    "name": "SharedObject",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "sofile",
+                        "type": "StringParam"
+                      }
+                    ],
+                    "sourceName": "SDL_LoadObject",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~SharedObject": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_UnloadObject(get());"
+              },
+              "name": "~SharedObject"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "SharedObject &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "SharedObject &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "SharedObject &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const SharedObject &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -81754,8 +81747,8 @@
           ],
           "sourceName": "SDL_LoadFunction"
         },
-        "SharedObject::LoadFunction": {
-          "name": "SharedObject::LoadFunction",
+        "SharedObjectBase::LoadFunction": {
+          "name": "SharedObjectBase::LoadFunction",
           "kind": "function",
           "type": "FunctionPointer",
           "parameters": [
@@ -81767,7 +81760,6 @@
           "sourceName": "SDL_LoadFunction",
           "hints": {
             "self": "get()",
-            "super": "SharedObject",
             "delegate": "SDL::LoadFunction"
           }
         },
@@ -81803,15 +81795,14 @@
           ],
           "sourceName": "SDL_UnloadObject"
         },
-        "SharedObject::Unload": {
-          "name": "SharedObject::Unload",
+        "SharedObjectBase::Unload": {
+          "name": "SharedObjectBase::Unload",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_UnloadObject",
           "hints": {
             "self": "get()",
-            "super": "SharedObject",
             "body": "UnloadObject(release());",
             "delegate": "SDL::UnloadObject"
           }
@@ -88983,6 +88974,10 @@
           ],
           "type": "ResourceRefT<RWLockBase>"
         },
+        "SemaphoreBase-forward": {
+          "name": "SemaphoreBase",
+          "kind": "forward"
+        },
         "Semaphore-forward": {
           "name": "Semaphore",
           "kind": "forward"
@@ -89002,7 +88997,7 @@
             "Reference for Semaphore.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Semaphore>"
+          "type": "ResourceRefT<SemaphoreBase>"
         },
         "ConditionBase-forward": {
           "name": "ConditionBase",
@@ -90515,233 +90510,21 @@
             "delegate": "SDL::DestroyRWLock"
           }
         },
-        "Semaphore": {
-          "doc": [
-            "A means to manage access to a resource, by count, between threads.",
-            "Semaphores (specifically, \"counting semaphores\"), let X number of threads request access at the same time, each thread granted access decrementing a counter. When the counter reaches zero, future requests block until a prior thread releases their request, incrementing the counter again.",
-            "Wikipedia has a thorough explanation of the concept:",
-            "https://en.wikipedia.org/wiki/Semaphore_(programming)",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Semaphore",
+        "SemaphoreBase": {
+          "name": "SemaphoreBase",
           "kind": "struct",
-          "type": "ResourceBase<SemaphoreRaw>",
-          "sourceName": "SDL_Semaphore",
+          "type": "ResourceBaseT<SemaphoreRaw>",
+          "doc": [
+            "Base class to Semaphore.",
+            {
+              "tag": "@see",
+              "content": "Semaphore"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Semaphore": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "SemaphoreRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Semaphore.",
-                {
-                  "tag": "@param resource",
-                  "content": "a SemaphoreRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Semaphore",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Semaphore &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Semaphore",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Semaphore &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Semaphore(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Semaphore",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const SemaphoreRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Semaphore",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "SemaphoreRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Semaphore",
-                      "overload": {
-                        "doc": [
-                          "Create a semaphore.",
-                          "This function creates a new semaphore and initializes it with the value `initial_value`. Each wait operation on the semaphore will atomically decrement the semaphore value and potentially block if the semaphore value is 0. Each post operation will atomically increment the semaphore value and wake waiting threads and allow them to retry the wait operation.",
-                          [
-                            {
-                              "tag": "@param initial_value",
-                              "content": "the starting value of the semaphore."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new semaphore or nullptr on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "DestroySemaphore"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "SignalSemaphore"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "TryWaitSemaphore"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetSemaphoreValue"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "WaitSemaphore"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "WaitSemaphoreTimeout"
-                            }
-                          ]
-                        ],
-                        "name": "Semaphore",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "initial_value",
-                            "type": "Uint32"
-                          }
-                        ],
-                        "sourceName": "SDL_CreateSemaphore",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Semaphore": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroySemaphore(get());"
-              },
-              "name": "~Semaphore"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Semaphore &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Semaphore &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Semaphore &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Semaphore &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -90971,6 +90754,207 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "Semaphore": {
+          "doc": [
+            "A means to manage access to a resource, by count, between threads.",
+            "Semaphores (specifically, \"counting semaphores\"), let X number of threads request access at the same time, each thread granted access decrementing a counter. When the counter reaches zero, future requests block until a prior thread releases their request, incrementing the counter again.",
+            "Wikipedia has a thorough explanation of the concept:",
+            "https://en.wikipedia.org/wiki/Semaphore_(programming)",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Semaphore",
+          "kind": "struct",
+          "type": "SemaphoreBase",
+          "sourceName": "SDL_Semaphore",
+          "entries": {
+            "SemaphoreBase::SemaphoreBase": {
+              "kind": "alias",
+              "name": "SemaphoreBase::SemaphoreBase"
+            },
+            "Semaphore": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "SemaphoreRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "SemaphoreBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Semaphore.",
+                {
+                  "tag": "@param resource",
+                  "content": "a SemaphoreRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Semaphore",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Semaphore &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Semaphore",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Semaphore &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Semaphore(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Semaphore",
+                  "overload": {
+                    "doc": [
+                      "Create a semaphore.",
+                      "This function creates a new semaphore and initializes it with the value `initial_value`. Each wait operation on the semaphore will atomically decrement the semaphore value and potentially block if the semaphore value is 0. Each post operation will atomically increment the semaphore value and wake waiting threads and allow them to retry the wait operation.",
+                      [
+                        {
+                          "tag": "@param initial_value",
+                          "content": "the starting value of the semaphore."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a new semaphore or nullptr on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "DestroySemaphore"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "SignalSemaphore"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "TryWaitSemaphore"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetSemaphoreValue"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "WaitSemaphore"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "WaitSemaphoreTimeout"
+                        }
+                      ]
+                    ],
+                    "name": "Semaphore",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "initial_value",
+                        "type": "Uint32"
+                      }
+                    ],
+                    "sourceName": "SDL_CreateSemaphore",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Semaphore": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroySemaphore(get());"
+              },
+              "name": "~Semaphore"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Semaphore &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Semaphore &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Semaphore &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Semaphore &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "Semaphore"
           }
@@ -91087,15 +91071,14 @@
           ],
           "sourceName": "SDL_DestroySemaphore"
         },
-        "Semaphore::Destroy": {
-          "name": "Semaphore::Destroy",
+        "SemaphoreBase::Destroy": {
+          "name": "SemaphoreBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroySemaphore",
           "hints": {
             "self": "get()",
-            "super": "Semaphore",
             "body": "DestroySemaphore(release());",
             "delegate": "SDL::DestroySemaphore"
           }
@@ -91143,15 +91126,14 @@
           ],
           "sourceName": "SDL_WaitSemaphore"
         },
-        "Semaphore::Wait": {
-          "name": "Semaphore::Wait",
+        "SemaphoreBase::Wait": {
+          "name": "SemaphoreBase::Wait",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_WaitSemaphore",
           "hints": {
             "self": "get()",
-            "super": "Semaphore",
             "delegate": "SDL::WaitSemaphore"
           }
         },
@@ -91203,15 +91185,14 @@
           ],
           "sourceName": "SDL_TryWaitSemaphore"
         },
-        "Semaphore::TryWait": {
-          "name": "Semaphore::TryWait",
+        "SemaphoreBase::TryWait": {
+          "name": "SemaphoreBase::TryWait",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_TryWaitSemaphore",
           "hints": {
             "self": "get()",
-            "super": "Semaphore",
             "delegate": "SDL::TryWaitSemaphore"
           }
         },
@@ -91271,8 +91252,8 @@
           ],
           "sourceName": "SDL_WaitSemaphoreTimeout"
         },
-        "Semaphore::WaitTimeout": {
-          "name": "Semaphore::WaitTimeout",
+        "SemaphoreBase::WaitTimeout": {
+          "name": "SemaphoreBase::WaitTimeout",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -91284,7 +91265,6 @@
           "sourceName": "SDL_WaitSemaphoreTimeout",
           "hints": {
             "self": "get()",
-            "super": "Semaphore",
             "delegate": "SDL::WaitSemaphoreTimeout"
           }
         },
@@ -91329,15 +91309,14 @@
           ],
           "sourceName": "SDL_SignalSemaphore"
         },
-        "Semaphore::Signal": {
-          "name": "Semaphore::Signal",
+        "SemaphoreBase::Signal": {
+          "name": "SemaphoreBase::Signal",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_SignalSemaphore",
           "hints": {
             "self": "get()",
-            "super": "Semaphore",
             "delegate": "SDL::SignalSemaphore"
           }
         },
@@ -91374,8 +91353,8 @@
           ],
           "sourceName": "SDL_GetSemaphoreValue"
         },
-        "Semaphore::GetValue": {
-          "name": "Semaphore::GetValue",
+        "SemaphoreBase::GetValue": {
+          "name": "SemaphoreBase::GetValue",
           "kind": "function",
           "type": "Uint32",
           "parameters": [],
@@ -91383,7 +91362,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Semaphore",
             "delegate": "SDL::GetSemaphoreValue"
           }
         },
@@ -132015,6 +131993,10 @@
         "In order to use these functions, Init() must have been called with the INIT_SENSOR flag. This causes SDL to scan the system for sensors, and load appropriate drivers."
       ],
       "entries": {
+        "SensorBase-forward": {
+          "name": "SensorBase",
+          "kind": "forward"
+        },
         "Sensor-forward": {
           "name": "Sensor",
           "kind": "forward"
@@ -132034,7 +132016,7 @@
             "Reference for Sensor.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Sensor>"
+          "type": "ResourceRefT<SensorBase>"
         },
         "SensorID": {
           "name": "SensorID",
@@ -132230,199 +132212,21 @@
           ],
           "sourceName": "SDL_SENSOR_COUNT"
         },
-        "Sensor": {
-          "doc": [
-            "The opaque structure used to identify an opened SDL sensor.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Sensor",
+        "SensorBase": {
+          "name": "SensorBase",
           "kind": "struct",
-          "type": "ResourceBase<SensorRaw>",
-          "sourceName": "SDL_Sensor",
+          "type": "ResourceBaseT<SensorRaw>",
+          "doc": [
+            "Base class to Sensor.",
+            {
+              "tag": "@see",
+              "content": "Sensor"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Sensor": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "SensorRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Sensor.",
-                {
-                  "tag": "@param resource",
-                  "content": "a SensorRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Sensor",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Sensor &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Sensor",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Sensor &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Sensor(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Sensor",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const SensorRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Sensor",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "SensorRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Sensor",
-                      "overload": {
-                        "doc": [
-                          "Open a sensor for use.",
-                          [
-                            {
-                              "tag": "@param instance_id",
-                              "content": "the sensor instance ID."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "an Sensor object or nullptr on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          }
-                        ],
-                        "name": "Sensor",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "instance_id",
-                            "type": "SensorID"
-                          }
-                        ],
-                        "sourceName": "SDL_OpenSensor",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Sensor": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_CloseSensor(get());"
-              },
-              "name": "~Sensor"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Sensor &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Sensor &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Sensor &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Sensor &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Close": {
               "doc": [
@@ -132615,6 +132419,173 @@
                 "delegate": "SDL::GetSensorData"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Sensor": {
+          "doc": [
+            "The opaque structure used to identify an opened SDL sensor.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Sensor",
+          "kind": "struct",
+          "type": "SensorBase",
+          "sourceName": "SDL_Sensor",
+          "entries": {
+            "SensorBase::SensorBase": {
+              "kind": "alias",
+              "name": "SensorBase::SensorBase"
+            },
+            "Sensor": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "SensorRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "SensorBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Sensor.",
+                {
+                  "tag": "@param resource",
+                  "content": "a SensorRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Sensor",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Sensor &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Sensor",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Sensor &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Sensor(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Sensor",
+                  "overload": {
+                    "doc": [
+                      "Open a sensor for use.",
+                      [
+                        {
+                          "tag": "@param instance_id",
+                          "content": "the sensor instance ID."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "an Sensor object or nullptr on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      }
+                    ],
+                    "name": "Sensor",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "instance_id",
+                        "type": "SensorID"
+                      }
+                    ],
+                    "sourceName": "SDL_OpenSensor",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Sensor": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_CloseSensor(get());"
+              },
+              "name": "~Sensor"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Sensor &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Sensor &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Sensor &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Sensor &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -132866,15 +132837,14 @@
             "mayFail": true
           }
         },
-        "Sensor::GetProperties": {
-          "name": "Sensor::GetProperties",
+        "SensorBase::GetProperties": {
+          "name": "SensorBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetSensorProperties",
           "hints": {
             "self": "get()",
-            "super": "Sensor",
             "mayFail": true,
             "delegate": "SDL::GetSensorProperties"
           }
@@ -132908,15 +132878,14 @@
           ],
           "sourceName": "SDL_GetSensorName"
         },
-        "Sensor::GetName": {
-          "name": "Sensor::GetName",
+        "SensorBase::GetName": {
+          "name": "SensorBase::GetName",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
           "sourceName": "SDL_GetSensorName",
           "hints": {
             "self": "get()",
-            "super": "Sensor",
             "delegate": "SDL::GetSensorName"
           }
         },
@@ -132949,15 +132918,14 @@
           ],
           "sourceName": "SDL_GetSensorType"
         },
-        "Sensor::GetType": {
-          "name": "Sensor::GetType",
+        "SensorBase::GetType": {
+          "name": "SensorBase::GetType",
           "kind": "function",
           "type": "SensorType",
           "parameters": [],
           "sourceName": "SDL_GetSensorType",
           "hints": {
             "self": "get()",
-            "super": "Sensor",
             "delegate": "SDL::GetSensorType"
           }
         },
@@ -132990,15 +132958,14 @@
           ],
           "sourceName": "SDL_GetSensorNonPortableType"
         },
-        "Sensor::GetNonPortableType": {
-          "name": "Sensor::GetNonPortableType",
+        "SensorBase::GetNonPortableType": {
+          "name": "SensorBase::GetNonPortableType",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "SDL_GetSensorNonPortableType",
           "hints": {
             "self": "get()",
-            "super": "Sensor",
             "delegate": "SDL::GetSensorNonPortableType"
           }
         },
@@ -133038,15 +133005,14 @@
             "mayFail": true
           }
         },
-        "Sensor::GetID": {
-          "name": "Sensor::GetID",
+        "SensorBase::GetID": {
+          "name": "SensorBase::GetID",
           "kind": "function",
           "type": "SensorID",
           "parameters": [],
           "sourceName": "SDL_GetSensorID",
           "hints": {
             "self": "get()",
-            "super": "Sensor",
             "mayFail": true,
             "delegate": "SDL::GetSensorID"
           }
@@ -133100,8 +133066,8 @@
             "mayFail": true
           }
         },
-        "Sensor::GetData": {
-          "name": "Sensor::GetData",
+        "SensorBase::GetData": {
+          "name": "SensorBase::GetData",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -133117,7 +133083,6 @@
           "sourceName": "SDL_GetSensorData",
           "hints": {
             "self": "get()",
-            "super": "Sensor",
             "mayFail": true,
             "delegate": "SDL::GetSensorData"
           }
@@ -133145,15 +133110,14 @@
           ],
           "sourceName": "SDL_CloseSensor"
         },
-        "Sensor::Close": {
-          "name": "Sensor::Close",
+        "SensorBase::Close": {
+          "name": "SensorBase::Close",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_CloseSensor",
           "hints": {
             "self": "get()",
-            "super": "Sensor",
             "body": "CloseSensor(release());",
             "delegate": "SDL::CloseSensor"
           }
@@ -145571,6 +145535,10 @@
         "All valid UTF-8 strings (discounting the nullptr terminator character and the '/' path separator) are usable for filenames, however, an underlying Storage implementation may not support particularly strange sequences and refuse to create files with those names, etc."
       ],
       "entries": {
+        "StorageBase-forward": {
+          "name": "StorageBase",
+          "kind": "forward"
+        },
         "Storage-forward": {
           "name": "Storage",
           "kind": "forward"
@@ -145590,7 +145558,7 @@
             "Reference for Storage.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Storage>"
+          "type": "ResourceRefT<StorageBase>"
         },
         "StorageInterface": {
           "doc": [
@@ -145612,463 +145580,21 @@
           "sourceName": "SDL_StorageInterface",
           "type": "SDL_StorageInterface"
         },
-        "Storage": {
-          "doc": [
-            "An abstract interface for filesystem access.",
-            "This is an opaque datatype. One can create this object using standard SDL functions like OpenTitleStorage or OpenUserStorage, etc, or create an object with a custom implementation using OpenStorage.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Storage",
+        "StorageBase": {
+          "name": "StorageBase",
           "kind": "struct",
-          "type": "ResourceBase<StorageRaw>",
-          "sourceName": "SDL_Storage",
+          "type": "ResourceBaseT<StorageRaw>",
+          "doc": [
+            "Base class to Storage.",
+            {
+              "tag": "@see",
+              "content": "Storage"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Storage": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "StorageRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Storage.",
-                {
-                  "tag": "@param resource",
-                  "content": "a StorageRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Storage",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Storage &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Storage",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Storage &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Storage(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Storage",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const StorageRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Storage",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "StorageRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Storage",
-                      "overload": {
-                        "doc": [
-                          "Opens up a read-only container for the application's filesystem.",
-                          "By default, OpenTitleStorage uses the generic storage implementation. When the path override is not provided, the generic implementation will use the output of GetBasePath as the base path.",
-                          [
-                            {
-                              "tag": "@param override",
-                              "content": "a path to override the backend's default title root."
-                            },
-                            {
-                              "tag": "@param props",
-                              "content": "a property list that may contain backend-specific information."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a title storage container on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CloseStorage"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetStorageFileSize"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "OpenUserStorage"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "ReadStorageFile"
-                            }
-                          ]
-                        ],
-                        "name": "Storage",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "override",
-                            "type": "StringParam"
-                          },
-                          {
-                            "name": "props",
-                            "type": "PropertiesRef"
-                          }
-                        ],
-                        "sourceName": "SDL_OpenTitleStorage",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "overload": {
-                          "doc": [
-                            "Opens up a container for a user's unique read/write filesystem.",
-                            "While title storage can generally be kept open throughout runtime, user storage should only be opened when the client is ready to read/write files. This allows the backend to properly batch file operations and flush them when the container has been closed; ensuring safe and optimal save I/O.",
-                            [
-                              {
-                                "tag": "@param org",
-                                "content": "the name of your organization."
-                              },
-                              {
-                                "tag": "@param app",
-                                "content": "the name of your application."
-                              },
-                              {
-                                "tag": "@param props",
-                                "content": "a property list that may contain backend-specific information."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "a user storage container on success."
-                              },
-                              {
-                                "tag": "@throws",
-                                "content": "Error on failure."
-                              }
-                            ],
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL 3.2.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "CloseStorage"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "GetStorageFileSize"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "GetStorageSpaceRemaining"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "OpenTitleStorage"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "ReadStorageFile"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "StorageReady"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "WriteStorageFile"
-                              }
-                            ]
-                          ],
-                          "name": "Storage",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "org",
-                              "type": "StringParam"
-                            },
-                            {
-                              "name": "app",
-                              "type": "StringParam"
-                            },
-                            {
-                              "name": "props",
-                              "type": "PropertiesRef"
-                            }
-                          ],
-                          "sourceName": "SDL_OpenUserStorage",
-                          "hints": {
-                            "mayFail": true
-                          },
-                          "overload": {
-                            "doc": [
-                              "Opens up a container for local filesystem storage.",
-                              "This is provided for development and tools. Portable applications should use OpenTitleStorage() for access to game data and OpenUserStorage() for access to user data.",
-                              [
-                                {
-                                  "tag": "@param path",
-                                  "content": "the base path prepended to all storage paths, or nullptr for no base path."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "a filesystem storage container on success."
-                                },
-                                {
-                                  "tag": "@throws",
-                                  "content": "Error on failure."
-                                }
-                              ],
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL 3.2.0."
-                              },
-                              [
-                                {
-                                  "tag": "@sa",
-                                  "content": "CloseStorage"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "GetStorageFileSize"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "GetStorageSpaceRemaining"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "OpenTitleStorage"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "OpenUserStorage"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "ReadStorageFile"
-                                },
-                                {
-                                  "tag": "@sa",
-                                  "content": "WriteStorageFile"
-                                }
-                              ]
-                            ],
-                            "name": "Storage",
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "path",
-                                "type": "StringParam"
-                              }
-                            ],
-                            "sourceName": "SDL_OpenFileStorage",
-                            "hints": {
-                              "mayFail": true
-                            },
-                            "overload": {
-                              "doc": [
-                                "Opens up a container using a client-provided storage interface.",
-                                "Applications do not need to use this function unless they are providing their own Storage implementation. If you just need an Storage, you should use the built-in implementations in SDL, like OpenTitleStorage() or OpenUserStorage().",
-                                "This function makes a copy of `iface` and the caller does not need to keep it around after this call.",
-                                [
-                                  {
-                                    "tag": "@param iface",
-                                    "content": "the interface that implements this storage, initialized using InitInterface()."
-                                  },
-                                  {
-                                    "tag": "@param userdata",
-                                    "content": "the pointer that will be passed to the interface functions."
-                                  },
-                                  {
-                                    "tag": "@post",
-                                    "content": "a storage container on success."
-                                  },
-                                  {
-                                    "tag": "@throws",
-                                    "content": "Error on failure."
-                                  }
-                                ],
-                                {
-                                  "tag": "@since",
-                                  "content": "This function is available since SDL 3.2.0."
-                                },
-                                [
-                                  {
-                                    "tag": "@sa",
-                                    "content": "CloseStorage"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "GetStorageFileSize"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "GetStorageSpaceRemaining"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "InitInterface"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "ReadStorageFile"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "StorageReady"
-                                  },
-                                  {
-                                    "tag": "@sa",
-                                    "content": "WriteStorageFile"
-                                  }
-                                ]
-                              ],
-                              "name": "Storage",
-                              "kind": "function",
-                              "type": "",
-                              "parameters": [
-                                {
-                                  "name": "iface",
-                                  "type": "const StorageInterface &"
-                                },
-                                {
-                                  "name": "userdata",
-                                  "type": "void *"
-                                }
-                              ],
-                              "sourceName": "SDL_OpenStorage",
-                              "hints": {
-                                "mayFail": true
-                              },
-                              "proto": true
-                            },
-                            "proto": true
-                          },
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Storage": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_CloseStorage(get());"
-              },
-              "name": "~Storage"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Storage &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Storage &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Storage &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Storage &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Close": {
               "doc": [
@@ -146544,7 +146070,7 @@
                     "after": "EnumerateStorageDirectory#2",
                     "kind": "function",
                     "type": "std::vector<Path>",
-                    "name": "Storage::EnumerateDirectory",
+                    "name": "StorageBase::EnumerateDirectory",
                     "parameters": [
                       {
                         "name": "path",
@@ -146865,6 +146391,437 @@
                 "delegate": "SDL::GlobStorageDirectory"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Storage": {
+          "doc": [
+            "An abstract interface for filesystem access.",
+            "This is an opaque datatype. One can create this object using standard SDL functions like OpenTitleStorage or OpenUserStorage, etc, or create an object with a custom implementation using OpenStorage.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Storage",
+          "kind": "struct",
+          "type": "StorageBase",
+          "sourceName": "SDL_Storage",
+          "entries": {
+            "StorageBase::StorageBase": {
+              "kind": "alias",
+              "name": "StorageBase::StorageBase"
+            },
+            "Storage": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "StorageRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "StorageBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Storage.",
+                {
+                  "tag": "@param resource",
+                  "content": "a StorageRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Storage",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Storage &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Storage",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Storage &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Storage(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Storage",
+                  "overload": {
+                    "doc": [
+                      "Opens up a read-only container for the application's filesystem.",
+                      "By default, OpenTitleStorage uses the generic storage implementation. When the path override is not provided, the generic implementation will use the output of GetBasePath as the base path.",
+                      [
+                        {
+                          "tag": "@param override",
+                          "content": "a path to override the backend's default title root."
+                        },
+                        {
+                          "tag": "@param props",
+                          "content": "a property list that may contain backend-specific information."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a title storage container on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CloseStorage"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetStorageFileSize"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "OpenUserStorage"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "ReadStorageFile"
+                        }
+                      ]
+                    ],
+                    "name": "Storage",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "override",
+                        "type": "StringParam"
+                      },
+                      {
+                        "name": "props",
+                        "type": "PropertiesRef"
+                      }
+                    ],
+                    "sourceName": "SDL_OpenTitleStorage",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Opens up a container for a user's unique read/write filesystem.",
+                        "While title storage can generally be kept open throughout runtime, user storage should only be opened when the client is ready to read/write files. This allows the backend to properly batch file operations and flush them when the container has been closed; ensuring safe and optimal save I/O.",
+                        [
+                          {
+                            "tag": "@param org",
+                            "content": "the name of your organization."
+                          },
+                          {
+                            "tag": "@param app",
+                            "content": "the name of your application."
+                          },
+                          {
+                            "tag": "@param props",
+                            "content": "a property list that may contain backend-specific information."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "a user storage container on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          }
+                        ],
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL 3.2.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CloseStorage"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "GetStorageFileSize"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "GetStorageSpaceRemaining"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "OpenTitleStorage"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "ReadStorageFile"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "StorageReady"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "WriteStorageFile"
+                          }
+                        ]
+                      ],
+                      "name": "Storage",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "org",
+                          "type": "StringParam"
+                        },
+                        {
+                          "name": "app",
+                          "type": "StringParam"
+                        },
+                        {
+                          "name": "props",
+                          "type": "PropertiesRef"
+                        }
+                      ],
+                      "sourceName": "SDL_OpenUserStorage",
+                      "hints": {
+                        "mayFail": true
+                      },
+                      "overload": {
+                        "doc": [
+                          "Opens up a container for local filesystem storage.",
+                          "This is provided for development and tools. Portable applications should use OpenTitleStorage() for access to game data and OpenUserStorage() for access to user data.",
+                          [
+                            {
+                              "tag": "@param path",
+                              "content": "the base path prepended to all storage paths, or nullptr for no base path."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "a filesystem storage container on success."
+                            },
+                            {
+                              "tag": "@throws",
+                              "content": "Error on failure."
+                            }
+                          ],
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL 3.2.0."
+                          },
+                          [
+                            {
+                              "tag": "@sa",
+                              "content": "CloseStorage"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "GetStorageFileSize"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "GetStorageSpaceRemaining"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "OpenTitleStorage"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "OpenUserStorage"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "ReadStorageFile"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "WriteStorageFile"
+                            }
+                          ]
+                        ],
+                        "name": "Storage",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "path",
+                            "type": "StringParam"
+                          }
+                        ],
+                        "sourceName": "SDL_OpenFileStorage",
+                        "hints": {
+                          "mayFail": true
+                        },
+                        "overload": {
+                          "doc": [
+                            "Opens up a container using a client-provided storage interface.",
+                            "Applications do not need to use this function unless they are providing their own Storage implementation. If you just need an Storage, you should use the built-in implementations in SDL, like OpenTitleStorage() or OpenUserStorage().",
+                            "This function makes a copy of `iface` and the caller does not need to keep it around after this call.",
+                            [
+                              {
+                                "tag": "@param iface",
+                                "content": "the interface that implements this storage, initialized using InitInterface()."
+                              },
+                              {
+                                "tag": "@param userdata",
+                                "content": "the pointer that will be passed to the interface functions."
+                              },
+                              {
+                                "tag": "@post",
+                                "content": "a storage container on success."
+                              },
+                              {
+                                "tag": "@throws",
+                                "content": "Error on failure."
+                              }
+                            ],
+                            {
+                              "tag": "@since",
+                              "content": "This function is available since SDL 3.2.0."
+                            },
+                            [
+                              {
+                                "tag": "@sa",
+                                "content": "CloseStorage"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "GetStorageFileSize"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "GetStorageSpaceRemaining"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "InitInterface"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "ReadStorageFile"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "StorageReady"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "WriteStorageFile"
+                              }
+                            ]
+                          ],
+                          "name": "Storage",
+                          "kind": "function",
+                          "type": "",
+                          "parameters": [
+                            {
+                              "name": "iface",
+                              "type": "const StorageInterface &"
+                            },
+                            {
+                              "name": "userdata",
+                              "type": "void *"
+                            }
+                          ],
+                          "sourceName": "SDL_OpenStorage",
+                          "hints": {
+                            "mayFail": true
+                          },
+                          "proto": true
+                        },
+                        "proto": true
+                      },
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Storage": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_CloseStorage(get());"
+              },
+              "name": "~Storage"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Storage &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Storage &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Storage &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Storage &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -147300,15 +147257,14 @@
           ],
           "sourceName": "SDL_CloseStorage"
         },
-        "Storage::Close": {
-          "name": "Storage::Close",
+        "StorageBase::Close": {
+          "name": "StorageBase::Close",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_CloseStorage",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "body": "return CloseStorage(release());",
             "delegate": "SDL::CloseStorage"
           }
@@ -147343,15 +147299,14 @@
           ],
           "sourceName": "SDL_StorageReady"
         },
-        "Storage::Ready": {
-          "name": "Storage::Ready",
+        "StorageBase::Ready": {
+          "name": "StorageBase::Ready",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_StorageReady",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "delegate": "SDL::StorageReady"
           }
         },
@@ -147406,8 +147361,8 @@
           ],
           "sourceName": "SDL_GetStorageFileSize"
         },
-        "Storage::GetFileSize": {
-          "name": "Storage::GetFileSize",
+        "StorageBase::GetFileSize": {
+          "name": "StorageBase::GetFileSize",
           "kind": "function",
           "type": "std::optional<Uint64>",
           "parameters": [
@@ -147419,7 +147374,6 @@
           "sourceName": "SDL_GetStorageFileSize",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "delegate": "SDL::GetStorageFileSize"
           }
         },
@@ -147546,8 +147500,8 @@
             ]
           }
         },
-        "Storage::ReadFile": {
-          "name": "Storage::ReadFile",
+        "StorageBase::ReadFile": {
+          "name": "StorageBase::ReadFile",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -147563,7 +147517,6 @@
           "sourceName": "SDL_ReadStorageFile",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "delegate": "SDL::ReadStorageFile"
           },
           "overload": {
@@ -147575,10 +147528,9 @@
                 "type": "StringParam"
               }
             ],
-            "name": "Storage::ReadFile",
+            "name": "StorageBase::ReadFile",
             "hints": {
               "self": "get()",
-              "super": "Storage",
               "delegate": "SDL::ReadStorageFile"
             }
           }
@@ -147604,7 +147556,7 @@
           ],
           "name": "ReadStorageFileAs"
         },
-        "Storage::ReadFileAs": {
+        "StorageBase::ReadFileAs": {
           "kind": "function",
           "template": [
             {
@@ -147619,10 +147571,9 @@
               "type": "StringParam"
             }
           ],
-          "name": "Storage::ReadFileAs",
+          "name": "StorageBase::ReadFileAs",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "delegate": "SDL::ReadStorageFileAs"
           }
         },
@@ -147689,8 +147640,8 @@
           ],
           "sourceName": "SDL_WriteStorageFile"
         },
-        "Storage::WriteFile": {
-          "name": "Storage::WriteFile",
+        "StorageBase::WriteFile": {
+          "name": "StorageBase::WriteFile",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -147706,7 +147657,6 @@
           "sourceName": "SDL_WriteStorageFile",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "delegate": "SDL::WriteStorageFile"
           }
         },
@@ -147754,8 +147704,8 @@
             "mayFail": true
           }
         },
-        "Storage::CreateDirectory": {
-          "name": "Storage::CreateDirectory",
+        "StorageBase::CreateDirectory": {
+          "name": "StorageBase::CreateDirectory",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -147767,7 +147717,6 @@
           "sourceName": "SDL_CreateStorageDirectory",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "mayFail": true,
             "delegate": "SDL::CreateStorageDirectory"
           }
@@ -147941,8 +147890,8 @@
             }
           }
         },
-        "Storage::EnumerateDirectory": {
-          "name": "Storage::EnumerateDirectory",
+        "StorageBase::EnumerateDirectory": {
+          "name": "StorageBase::EnumerateDirectory",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -147962,14 +147911,13 @@
           "sourceName": "SDL_EnumerateStorageDirectory",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "mayFail": true,
             "delegate": "SDL::EnumerateStorageDirectory"
           },
           "overload": {
             "kind": "function",
             "type": "std::vector<Path>",
-            "name": "Storage::EnumerateDirectory",
+            "name": "StorageBase::EnumerateDirectory",
             "parameters": [
               {
                 "name": "path",
@@ -147978,14 +147926,13 @@
             ],
             "hints": {
               "self": "get()",
-              "super": "Storage",
               "delegate": "SDL::EnumerateStorageDirectory"
             },
             "after": "EnumerateStorageDirectory#2",
             "overload": {
               "kind": "function",
               "type": "void",
-              "name": "Storage::EnumerateDirectory",
+              "name": "StorageBase::EnumerateDirectory",
               "parameters": [
                 {
                   "name": "path",
@@ -147998,14 +147945,13 @@
               ],
               "hints": {
                 "self": "get()",
-                "super": "Storage",
                 "delegate": "SDL::EnumerateStorageDirectory"
               },
               "link": {
                 "after": "EnumerateStorageDirectory#2",
                 "kind": "function",
                 "type": "std::vector<Path>",
-                "name": "Storage::EnumerateDirectory",
+                "name": "StorageBase::EnumerateDirectory",
                 "parameters": [
                   {
                     "name": "path",
@@ -148064,8 +148010,8 @@
             "mayFail": true
           }
         },
-        "Storage::RemovePath": {
-          "name": "Storage::RemovePath",
+        "StorageBase::RemovePath": {
+          "name": "StorageBase::RemovePath",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -148077,7 +148023,6 @@
           "sourceName": "SDL_RemoveStoragePath",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "mayFail": true,
             "delegate": "SDL::RemoveStoragePath"
           }
@@ -148134,8 +148079,8 @@
             "mayFail": true
           }
         },
-        "Storage::RenamePath": {
-          "name": "Storage::RenamePath",
+        "StorageBase::RenamePath": {
+          "name": "StorageBase::RenamePath",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -148151,7 +148096,6 @@
           "sourceName": "SDL_RenameStoragePath",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "mayFail": true,
             "delegate": "SDL::RenameStoragePath"
           }
@@ -148208,8 +148152,8 @@
             "mayFail": true
           }
         },
-        "Storage::CopyFile": {
-          "name": "Storage::CopyFile",
+        "StorageBase::CopyFile": {
+          "name": "StorageBase::CopyFile",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -148225,7 +148169,6 @@
           "sourceName": "SDL_CopyStorageFile",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "mayFail": true,
             "delegate": "SDL::CopyStorageFile"
           }
@@ -148278,8 +148221,8 @@
             "mayFail": true
           }
         },
-        "Storage::GetPathInfo": {
-          "name": "Storage::GetPathInfo",
+        "StorageBase::GetPathInfo": {
+          "name": "StorageBase::GetPathInfo",
           "kind": "function",
           "type": "PathInfo",
           "parameters": [
@@ -148291,7 +148234,6 @@
           "sourceName": "SDL_GetStoragePathInfo",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "mayFail": true,
             "delegate": "SDL::GetStoragePathInfo"
           }
@@ -148335,15 +148277,14 @@
           ],
           "sourceName": "SDL_GetStorageSpaceRemaining"
         },
-        "Storage::GetSpaceRemaining": {
-          "name": "Storage::GetSpaceRemaining",
+        "StorageBase::GetSpaceRemaining": {
+          "name": "StorageBase::GetSpaceRemaining",
           "kind": "function",
           "type": "Uint64",
           "parameters": [],
           "sourceName": "SDL_GetStorageSpaceRemaining",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "delegate": "SDL::GetStorageSpaceRemaining"
           }
         },
@@ -148419,8 +148360,8 @@
             "mayFail": true
           }
         },
-        "Storage::GlobDirectory": {
-          "name": "Storage::GlobDirectory",
+        "StorageBase::GlobDirectory": {
+          "name": "StorageBase::GlobDirectory",
           "kind": "function",
           "type": "OwnArray<char *>",
           "parameters": [
@@ -148440,7 +148381,6 @@
           "sourceName": "SDL_GlobStorageDirectory",
           "hints": {
             "self": "get()",
-            "super": "Storage",
             "mayFail": true,
             "delegate": "SDL::GlobStorageDirectory"
           }
@@ -212262,6 +212202,10 @@
           ],
           "type": "ResourceRefT<AddressBase>"
         },
+        "StreamSocketBase-forward": {
+          "name": "StreamSocketBase",
+          "kind": "forward"
+        },
         "StreamSocket-forward": {
           "name": "StreamSocket",
           "kind": "forward"
@@ -212281,7 +212225,11 @@
             "Reference for StreamSocket.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<StreamSocket>"
+          "type": "ResourceRefT<StreamSocketBase>"
+        },
+        "ServerBase-forward": {
+          "name": "ServerBase",
+          "kind": "forward"
         },
         "Server-forward": {
           "name": "Server",
@@ -212302,7 +212250,7 @@
             "Reference for Server.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Server>"
+          "type": "ResourceRefT<ServerBase>"
         },
         "DatagramSocketBase-forward": {
           "name": "DatagramSocketBase",
@@ -213968,264 +213916,21 @@
           },
           "name": "LocalAddressesArrayDeleter::operator()"
         },
-        "StreamSocket": {
-          "doc": [
-            "An object that represents a streaming connection to another system.",
-            "This is meant to be a reliable, stream-oriented connection, such as TCP.",
-            "Each StreamSocket represents a single connection between systems. Usually, a client app will have one connection to a server app on a different computer, and the server app might have many connections from different clients. Each of these connections communicate over a separate stream socket.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL_net 3.0.0."
-            },
-            [
-              {
-                "tag": "@sa",
-                "content": "CreateClient"
-              },
-              {
-                "tag": "@sa",
-                "content": "WriteToStreamSocket"
-              },
-              {
-                "tag": "@sa",
-                "content": "ReadFromStreamSocket"
-              }
-            ],
-            "@cat resource"
-          ],
-          "name": "StreamSocket",
+        "StreamSocketBase": {
+          "name": "StreamSocketBase",
           "kind": "struct",
-          "type": "ResourceBase<StreamSocketRaw>",
-          "sourceName": "NET_StreamSocket",
+          "type": "ResourceBaseT<StreamSocketRaw>",
+          "doc": [
+            "Base class to StreamSocket.",
+            {
+              "tag": "@see",
+              "content": "StreamSocket"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "StreamSocket": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "StreamSocketRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw StreamSocket.",
-                {
-                  "tag": "@param resource",
-                  "content": "a StreamSocketRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "StreamSocket",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const StreamSocket &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "StreamSocket",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "StreamSocket &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "StreamSocket(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "StreamSocket",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const StreamSocketRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "StreamSocket",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "StreamSocketRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "StreamSocket",
-                      "overload": {
-                        "doc": [
-                          "Begin connecting a socket as a client to a remote server.",
-                          "Each StreamSocket represents a single connection between systems. Usually, a client app will have one connection to a server app on a different computer, and the server app might have many connections from different clients. Each of these connections communicate over a separate stream socket.",
-                          "Connecting is an asynchronous operation; this function does not block, and will return before the connection is complete. One has to then use WaitUntilConnected() or GetConnectionStatus() to see when the operation has completed, and if it was successful.",
-                          "Once connected, you can read and write data to the returned socket. Stream sockets are a mode of _reliable_ transmission, which means data will be received as a stream of bytes in the order you sent it. If there are problems in transmission, the system will deal with protocol negotiation and retransmission as necessary, transparent to your app, but this means until data is available in the order sent, the remote side will not get any new data. This is the tradeoff vs datagram sockets, where data can arrive in any order, or not arrive at all, without waiting, but the sender will not know.",
-                          "Stream sockets don't employ any protocol (above the TCP level), so they can connect to servers that aren't using SDL_net, but if you want to speak any protocol beyond an abritrary stream of bytes, such as HTTP, you'll have to implement that yourself on top of the stream socket.",
-                          "This function will fail if `address` is not finished resolving.",
-                          "When you are done with this connection (whether it failed to connect or not), you must dispose of it with DestroyStreamSocket().",
-                          "Unlike BSD sockets or WinSock, you specify the port as a normal integer; you do not have to byteswap it into \"network order,\" as the library will handle that for you.",
-                          "There are currently no extra properties for creating a client, so `props` should be zero. A future revision of SDL_net may add additional (optional) properties.",
-                          [
-                            {
-                              "tag": "@param address",
-                              "content": "the address of the remote server to connect to."
-                            },
-                            {
-                              "tag": "@param port",
-                              "content": "the port on the remote server to connect to."
-                            },
-                            {
-                              "tag": "@param props",
-                              "content": "properties of the new client. Specify zero for defaults."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": " pending connection on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_net 3.0.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "WaitUntilConnected"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetConnectionStatus"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyStreamSocket"
-                            }
-                          ]
-                        ],
-                        "name": "StreamSocket",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "address",
-                            "type": "AddressRef"
-                          },
-                          {
-                            "name": "port",
-                            "type": "Uint16"
-                          },
-                          {
-                            "name": "props",
-                            "type": "PropertiesRef"
-                          }
-                        ],
-                        "sourceName": "NET_CreateClient",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~StreamSocket": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "NET_DestroyStreamSocket(get());"
-              },
-              "name": "~StreamSocket"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "StreamSocket &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "StreamSocket &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "StreamSocket &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const StreamSocket &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -214640,6 +214345,238 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "StreamSocket": {
+          "doc": [
+            "An object that represents a streaming connection to another system.",
+            "This is meant to be a reliable, stream-oriented connection, such as TCP.",
+            "Each StreamSocket represents a single connection between systems. Usually, a client app will have one connection to a server app on a different computer, and the server app might have many connections from different clients. Each of these connections communicate over a separate stream socket.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL_net 3.0.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "CreateClient"
+              },
+              {
+                "tag": "@sa",
+                "content": "WriteToStreamSocket"
+              },
+              {
+                "tag": "@sa",
+                "content": "ReadFromStreamSocket"
+              }
+            ],
+            "@cat resource"
+          ],
+          "name": "StreamSocket",
+          "kind": "struct",
+          "type": "StreamSocketBase",
+          "sourceName": "NET_StreamSocket",
+          "entries": {
+            "StreamSocketBase::StreamSocketBase": {
+              "kind": "alias",
+              "name": "StreamSocketBase::StreamSocketBase"
+            },
+            "StreamSocket": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "StreamSocketRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "StreamSocketBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw StreamSocket.",
+                {
+                  "tag": "@param resource",
+                  "content": "a StreamSocketRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "StreamSocket",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const StreamSocket &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "StreamSocket",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "StreamSocket &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "StreamSocket(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "StreamSocket",
+                  "overload": {
+                    "doc": [
+                      "Begin connecting a socket as a client to a remote server.",
+                      "Each StreamSocket represents a single connection between systems. Usually, a client app will have one connection to a server app on a different computer, and the server app might have many connections from different clients. Each of these connections communicate over a separate stream socket.",
+                      "Connecting is an asynchronous operation; this function does not block, and will return before the connection is complete. One has to then use WaitUntilConnected() or GetConnectionStatus() to see when the operation has completed, and if it was successful.",
+                      "Once connected, you can read and write data to the returned socket. Stream sockets are a mode of _reliable_ transmission, which means data will be received as a stream of bytes in the order you sent it. If there are problems in transmission, the system will deal with protocol negotiation and retransmission as necessary, transparent to your app, but this means until data is available in the order sent, the remote side will not get any new data. This is the tradeoff vs datagram sockets, where data can arrive in any order, or not arrive at all, without waiting, but the sender will not know.",
+                      "Stream sockets don't employ any protocol (above the TCP level), so they can connect to servers that aren't using SDL_net, but if you want to speak any protocol beyond an abritrary stream of bytes, such as HTTP, you'll have to implement that yourself on top of the stream socket.",
+                      "This function will fail if `address` is not finished resolving.",
+                      "When you are done with this connection (whether it failed to connect or not), you must dispose of it with DestroyStreamSocket().",
+                      "Unlike BSD sockets or WinSock, you specify the port as a normal integer; you do not have to byteswap it into \"network order,\" as the library will handle that for you.",
+                      "There are currently no extra properties for creating a client, so `props` should be zero. A future revision of SDL_net may add additional (optional) properties.",
+                      [
+                        {
+                          "tag": "@param address",
+                          "content": "the address of the remote server to connect to."
+                        },
+                        {
+                          "tag": "@param port",
+                          "content": "the port on the remote server to connect to."
+                        },
+                        {
+                          "tag": "@param props",
+                          "content": "properties of the new client. Specify zero for defaults."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": " pending connection on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_net 3.0.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "WaitUntilConnected"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetConnectionStatus"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyStreamSocket"
+                        }
+                      ]
+                    ],
+                    "name": "StreamSocket",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "address",
+                        "type": "AddressRef"
+                      },
+                      {
+                        "name": "port",
+                        "type": "Uint16"
+                      },
+                      {
+                        "name": "props",
+                        "type": "PropertiesRef"
+                      }
+                    ],
+                    "sourceName": "NET_CreateClient",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~StreamSocket": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "NET_DestroyStreamSocket(get());"
+              },
+              "name": "~StreamSocket"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "StreamSocket &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "StreamSocket &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "StreamSocket &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const StreamSocket &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "StreamSocket"
           }
@@ -214820,8 +214757,8 @@
           ],
           "sourceName": "NET_WaitUntilConnected"
         },
-        "StreamSocket::WaitUntilConnected": {
-          "name": "StreamSocket::WaitUntilConnected",
+        "StreamSocketBase::WaitUntilConnected": {
+          "name": "StreamSocketBase::WaitUntilConnected",
           "kind": "function",
           "type": "Status",
           "parameters": [
@@ -214833,264 +214770,24 @@
           "sourceName": "NET_WaitUntilConnected",
           "hints": {
             "self": "get()",
-            "super": "StreamSocket",
             "delegate": "SDL::WaitUntilConnected"
           }
         },
-        "Server": {
-          "doc": [
-            "The receiving end of a stream connection.",
-            "This is an opaque datatype, to be treated by the app as a handle.",
-            "Internally, this is what BSD sockets refers to as a \"listen socket\". Clients attempt to connect to a server, and if the server accepts the connection, will provide the app with a stream socket to send and receive data over that connection.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL_net 3.0.0."
-            },
-            {
-              "tag": "@sa",
-              "content": "CreateServer"
-            },
-            "@cat resource"
-          ],
-          "name": "Server",
+        "ServerBase": {
+          "name": "ServerBase",
           "kind": "struct",
-          "type": "ResourceBase<ServerRaw>",
-          "sourceName": "NET_Server",
+          "type": "ResourceBaseT<ServerRaw>",
+          "doc": [
+            "Base class to Server.",
+            {
+              "tag": "@see",
+              "content": "Server"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Server": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "ServerRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Server.",
-                {
-                  "tag": "@param resource",
-                  "content": "a ServerRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Server",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Server &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Server",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Server &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Server(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Server",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const ServerRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Server",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "ServerRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Server",
-                      "overload": {
-                        "doc": [
-                          "Create a server, which listens for connections to accept.",
-                          "An app that initiates connection to a remote computer is called a \"client,\" and the thing the client connects to is called a \"server.\"",
-                          "Servers listen for and accept connections from clients, which spawns a new stream socket on the server's end, which it can then send/receive data on.",
-                          "Use this function to create a server that will accept connections from other systems.",
-                          "This function does not block, and is not asynchronous, as the system can decide immediately if it can create a server or not. If this returns success, you can immediately start accepting connections.",
-                          "You can specify an address to listen for connections on; this address must be local to the system, and probably one returned by GetLocalAddresses(), but almost always you just want to specify nullptr here, to listen on any address available to the app.",
-                          "After creating a server, you get stream sockets to talk to incoming client connections by calling AcceptClient().",
-                          "Stream sockets don't employ any protocol (above the TCP level), so they can accept connections from clients that aren't using SDL_net, but if you want to speak any protocol beyond an abritrary stream of bytes, such as HTTP, you'll have to implement that yourself on top of the stream socket.",
-                          "Unlike BSD sockets or WinSock, you specify the port as a normal integer; you do not have to byteswap it into \"network order,\" as the library will handle that for you.",
-                          "The caller may supply properties to customize behavior. This is optional, and a value of zero for `props` will request defaults for all properties.",
-                          "These are the supported properties:",
-                          {
-                            "tag": "-",
-                            "content": "`prop.Server.REUSEADDR_BOOLEAN`: true if the server should be created even if a previous server has recently used this address. For various reasons, networks prefer that there be some delay between apps reusing the same address, but this can be problematic when iterating quickly, for software development purposes or just restarting a crashed service. This property defaults to true (although it should be noted that, at the operating system level, this defaults to false!). If this property is false and the OS feels that not enough time has elapsed, server creation will fail and this function will report an error."
-                          },
-                          [
-                            {
-                              "tag": "@param addr",
-                              "content": "the _local_ address to listen for connections on, or nullptr."
-                            },
-                            {
-                              "tag": "@param port",
-                              "content": "the port on the local address to listen for connections on."
-                            },
-                            {
-                              "tag": "@param props",
-                              "content": "properties of the new server. Specify zero for defaults."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new Server on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_net 3.0.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "GetLocalAddresses"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "AcceptClient"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyServer"
-                            }
-                          ]
-                        ],
-                        "name": "Server",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "addr",
-                            "type": "AddressRef"
-                          },
-                          {
-                            "name": "port",
-                            "type": "Uint16"
-                          },
-                          {
-                            "name": "props",
-                            "type": "PropertiesRef"
-                          }
-                        ],
-                        "sourceName": "NET_CreateServer",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Server": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "NET_DestroyServer(get());"
-              },
-              "name": "~Server"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Server &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Server &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Server &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Server &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -215172,6 +214869,234 @@
                 "delegate": "SDL::AcceptClient"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Server": {
+          "doc": [
+            "The receiving end of a stream connection.",
+            "This is an opaque datatype, to be treated by the app as a handle.",
+            "Internally, this is what BSD sockets refers to as a \"listen socket\". Clients attempt to connect to a server, and if the server accepts the connection, will provide the app with a stream socket to send and receive data over that connection.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL_net 3.0.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "CreateServer"
+            },
+            "@cat resource"
+          ],
+          "name": "Server",
+          "kind": "struct",
+          "type": "ServerBase",
+          "sourceName": "NET_Server",
+          "entries": {
+            "ServerBase::ServerBase": {
+              "kind": "alias",
+              "name": "ServerBase::ServerBase"
+            },
+            "Server": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "ServerRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "ServerBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Server.",
+                {
+                  "tag": "@param resource",
+                  "content": "a ServerRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Server",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Server &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Server",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Server &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Server(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Server",
+                  "overload": {
+                    "doc": [
+                      "Create a server, which listens for connections to accept.",
+                      "An app that initiates connection to a remote computer is called a \"client,\" and the thing the client connects to is called a \"server.\"",
+                      "Servers listen for and accept connections from clients, which spawns a new stream socket on the server's end, which it can then send/receive data on.",
+                      "Use this function to create a server that will accept connections from other systems.",
+                      "This function does not block, and is not asynchronous, as the system can decide immediately if it can create a server or not. If this returns success, you can immediately start accepting connections.",
+                      "You can specify an address to listen for connections on; this address must be local to the system, and probably one returned by GetLocalAddresses(), but almost always you just want to specify nullptr here, to listen on any address available to the app.",
+                      "After creating a server, you get stream sockets to talk to incoming client connections by calling AcceptClient().",
+                      "Stream sockets don't employ any protocol (above the TCP level), so they can accept connections from clients that aren't using SDL_net, but if you want to speak any protocol beyond an abritrary stream of bytes, such as HTTP, you'll have to implement that yourself on top of the stream socket.",
+                      "Unlike BSD sockets or WinSock, you specify the port as a normal integer; you do not have to byteswap it into \"network order,\" as the library will handle that for you.",
+                      "The caller may supply properties to customize behavior. This is optional, and a value of zero for `props` will request defaults for all properties.",
+                      "These are the supported properties:",
+                      {
+                        "tag": "-",
+                        "content": "`prop.Server.REUSEADDR_BOOLEAN`: true if the server should be created even if a previous server has recently used this address. For various reasons, networks prefer that there be some delay between apps reusing the same address, but this can be problematic when iterating quickly, for software development purposes or just restarting a crashed service. This property defaults to true (although it should be noted that, at the operating system level, this defaults to false!). If this property is false and the OS feels that not enough time has elapsed, server creation will fail and this function will report an error."
+                      },
+                      [
+                        {
+                          "tag": "@param addr",
+                          "content": "the _local_ address to listen for connections on, or nullptr."
+                        },
+                        {
+                          "tag": "@param port",
+                          "content": "the port on the local address to listen for connections on."
+                        },
+                        {
+                          "tag": "@param props",
+                          "content": "properties of the new server. Specify zero for defaults."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a new Server on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_net 3.0.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "GetLocalAddresses"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "AcceptClient"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyServer"
+                        }
+                      ]
+                    ],
+                    "name": "Server",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "addr",
+                        "type": "AddressRef"
+                      },
+                      {
+                        "name": "port",
+                        "type": "Uint16"
+                      },
+                      {
+                        "name": "props",
+                        "type": "PropertiesRef"
+                      }
+                    ],
+                    "sourceName": "NET_CreateServer",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Server": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "NET_DestroyServer(get());"
+              },
+              "name": "~Server"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Server &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Server &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Server &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Server &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -215386,8 +215311,8 @@
             "mayFail": true
           }
         },
-        "Server::AcceptClient": {
-          "name": "Server::AcceptClient",
+        "ServerBase::AcceptClient": {
+          "name": "ServerBase::AcceptClient",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -215399,7 +215324,6 @@
           "sourceName": "NET_AcceptClient",
           "hints": {
             "self": "get()",
-            "super": "Server",
             "mayFail": true,
             "delegate": "SDL::AcceptClient"
           }
@@ -215436,15 +215360,14 @@
           ],
           "sourceName": "NET_DestroyServer"
         },
-        "Server::Destroy": {
-          "name": "Server::Destroy",
+        "ServerBase::Destroy": {
+          "name": "ServerBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "NET_DestroyServer",
           "hints": {
             "self": "get()",
-            "super": "Server",
             "body": "DestroyServer(release());",
             "delegate": "SDL::DestroyServer"
           }
@@ -215491,15 +215414,14 @@
             "mayFail": true
           }
         },
-        "StreamSocket::GetAddress": {
-          "name": "StreamSocket::GetAddress",
+        "StreamSocketBase::GetAddress": {
+          "name": "StreamSocketBase::GetAddress",
           "kind": "function",
           "type": "Address",
           "parameters": [],
           "sourceName": "NET_GetStreamSocketAddress",
           "hints": {
             "self": "get()",
-            "super": "StreamSocket",
             "mayFail": true,
             "delegate": "SDL::GetStreamSocketAddress"
           }
@@ -215546,15 +215468,14 @@
           ],
           "sourceName": "NET_GetConnectionStatus"
         },
-        "StreamSocket::GetConnectionStatus": {
-          "name": "StreamSocket::GetConnectionStatus",
+        "StreamSocketBase::GetConnectionStatus": {
+          "name": "StreamSocketBase::GetConnectionStatus",
           "kind": "function",
           "type": "Status",
           "parameters": [],
           "sourceName": "NET_GetConnectionStatus",
           "hints": {
             "self": "get()",
-            "super": "StreamSocket",
             "delegate": "SDL::GetConnectionStatus"
           }
         },
@@ -215626,8 +215547,8 @@
           ],
           "sourceName": "NET_WriteToStreamSocket"
         },
-        "StreamSocket::WriteTo": {
-          "name": "StreamSocket::WriteTo",
+        "StreamSocketBase::WriteTo": {
+          "name": "StreamSocketBase::WriteTo",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -215643,7 +215564,6 @@
           "sourceName": "NET_WriteToStreamSocket",
           "hints": {
             "self": "get()",
-            "super": "StreamSocket",
             "delegate": "SDL::WriteToStreamSocket"
           }
         },
@@ -215693,15 +215613,14 @@
           ],
           "sourceName": "NET_GetStreamSocketPendingWrites"
         },
-        "StreamSocket::GetPendingWrites": {
-          "name": "StreamSocket::GetPendingWrites",
+        "StreamSocketBase::GetPendingWrites": {
+          "name": "StreamSocketBase::GetPendingWrites",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "NET_GetStreamSocketPendingWrites",
           "hints": {
             "self": "get()",
-            "super": "StreamSocket",
             "delegate": "SDL::GetStreamSocketPendingWrites"
           }
         },
@@ -215760,8 +215679,8 @@
           ],
           "sourceName": "NET_WaitUntilStreamSocketDrained"
         },
-        "StreamSocket::WaitUntilDrained": {
-          "name": "StreamSocket::WaitUntilDrained",
+        "StreamSocketBase::WaitUntilDrained": {
+          "name": "StreamSocketBase::WaitUntilDrained",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -215773,7 +215692,6 @@
           "sourceName": "NET_WaitUntilStreamSocketDrained",
           "hints": {
             "self": "get()",
-            "super": "StreamSocket",
             "delegate": "SDL::WaitUntilStreamSocketDrained"
           }
         },
@@ -215836,8 +215754,8 @@
           ],
           "sourceName": "NET_ReadFromStreamSocket"
         },
-        "StreamSocket::ReadFrom": {
-          "name": "StreamSocket::ReadFrom",
+        "StreamSocketBase::ReadFrom": {
+          "name": "StreamSocketBase::ReadFrom",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -215853,7 +215771,6 @@
           "sourceName": "NET_ReadFromStreamSocket",
           "hints": {
             "self": "get()",
-            "super": "StreamSocket",
             "delegate": "SDL::ReadFromStreamSocket"
           }
         },
@@ -215899,8 +215816,8 @@
           ],
           "sourceName": "NET_SimulateStreamPacketLoss"
         },
-        "StreamSocket::SimulateStreamPacketLoss": {
-          "name": "StreamSocket::SimulateStreamPacketLoss",
+        "StreamSocketBase::SimulateStreamPacketLoss": {
+          "name": "StreamSocketBase::SimulateStreamPacketLoss",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -215912,7 +215829,6 @@
           "sourceName": "NET_SimulateStreamPacketLoss",
           "hints": {
             "self": "get()",
-            "super": "StreamSocket",
             "delegate": "SDL::SimulateStreamPacketLoss"
           }
         },
@@ -215963,15 +215879,14 @@
           ],
           "sourceName": "NET_DestroyStreamSocket"
         },
-        "StreamSocket::Destroy": {
-          "name": "StreamSocket::Destroy",
+        "StreamSocketBase::Destroy": {
+          "name": "StreamSocketBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "NET_DestroyStreamSocket",
           "hints": {
             "self": "get()",
-            "super": "StreamSocket",
             "body": "DestroyStreamSocket(release());",
             "delegate": "SDL::DestroyStreamSocket"
           }

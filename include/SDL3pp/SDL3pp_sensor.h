@@ -24,6 +24,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct SensorBase;
+
+// Forward decl
 struct Sensor;
 
 /// Alias to raw representation for Sensor.
@@ -34,7 +37,7 @@ using SensorRaw = SDL_Sensor*;
  *
  * This does not take ownership!
  */
-using SensorRef = ResourceRef<Sensor>;
+using SensorRef = ResourceRefT<SensorBase>;
 
 /**
  * This is a unique ID for a sensor for the time it is connected to the system,
@@ -130,64 +133,13 @@ constexpr SensorType SENSOR_COUNT = SDL_SENSOR_COUNT; ///< SENSOR_COUNT
 #endif // SDL_VERSION_ATLEAST(3, 2, 22)
 
 /**
- * The opaque structure used to identify an opened SDL sensor.
+ * Base class to Sensor.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Sensor
  */
-struct Sensor : ResourceBase<SensorRaw>
+struct SensorBase : ResourceBaseT<SensorRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Sensor.
-   *
-   * @param resource a SensorRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Sensor(SensorRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Sensor(const Sensor& other) = delete;
-
-  /// Move constructor
-  constexpr Sensor(Sensor&& other) noexcept
-    : Sensor(other.release())
-  {
-  }
-
-  constexpr Sensor(const SensorRef& other) = delete;
-
-  constexpr Sensor(SensorRef&& other) = delete;
-
-  /**
-   * Open a sensor for use.
-   *
-   * @param instance_id the sensor instance ID.
-   * @post an Sensor object or nullptr on failure; call GetError() for more
-   *       information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  Sensor(SensorID instance_id);
-
-  /// Destructor
-  ~Sensor() { SDL_CloseSensor(get()); }
-
-  /// Assignment operator.
-  constexpr Sensor& operator=(Sensor&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Sensor& operator=(const Sensor& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close a sensor previously opened with OpenSensor().
@@ -256,6 +208,63 @@ struct Sensor : ResourceBase<SensorRaw>
    * @since This function is available since SDL 3.2.0.
    */
   void GetData(float* data, int num_values);
+};
+
+/**
+ * The opaque structure used to identify an opened SDL sensor.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Sensor : SensorBase
+{
+  using SensorBase::SensorBase;
+
+  /**
+   * Constructs from raw Sensor.
+   *
+   * @param resource a SensorRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Sensor(SensorRaw resource) noexcept
+    : SensorBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Sensor(const Sensor& other) = delete;
+
+  /// Move constructor
+  constexpr Sensor(Sensor&& other) noexcept
+    : Sensor(other.release())
+  {
+  }
+
+  /**
+   * Open a sensor for use.
+   *
+   * @param instance_id the sensor instance ID.
+   * @post an Sensor object or nullptr on failure; call GetError() for more
+   *       information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sensor(SensorID instance_id);
+
+  /// Destructor
+  ~Sensor() { SDL_CloseSensor(get()); }
+
+  /// Assignment operator.
+  constexpr Sensor& operator=(Sensor&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Sensor& operator=(const Sensor& other) = delete;
 };
 
 /**
@@ -375,7 +384,7 @@ inline PropertiesRef GetSensorProperties(SensorRef sensor)
   return {CheckError(SDL_GetSensorProperties(sensor))};
 }
 
-inline PropertiesRef Sensor::GetProperties()
+inline PropertiesRef SensorBase::GetProperties()
 {
   return SDL::GetSensorProperties(get());
 }
@@ -394,7 +403,7 @@ inline const char* GetSensorName(SensorRef sensor)
   return SDL_GetSensorName(sensor);
 }
 
-inline const char* Sensor::GetName() { return SDL::GetSensorName(get()); }
+inline const char* SensorBase::GetName() { return SDL::GetSensorName(get()); }
 
 /**
  * Get the type of a sensor.
@@ -409,7 +418,7 @@ inline SensorType GetSensorType(SensorRef sensor)
   return SDL_GetSensorType(sensor);
 }
 
-inline SensorType Sensor::GetType() { return SDL::GetSensorType(get()); }
+inline SensorType SensorBase::GetType() { return SDL::GetSensorType(get()); }
 
 /**
  * Get the platform dependent type of a sensor.
@@ -424,7 +433,7 @@ inline int GetSensorNonPortableType(SensorRef sensor)
   return SDL_GetSensorNonPortableType(sensor);
 }
 
-inline int Sensor::GetNonPortableType()
+inline int SensorBase::GetNonPortableType()
 {
   return SDL::GetSensorNonPortableType(get());
 }
@@ -443,7 +452,7 @@ inline SensorID GetSensorID(SensorRef sensor)
   return CheckError(SDL_GetSensorID(sensor));
 }
 
-inline SensorID Sensor::GetID() { return SDL::GetSensorID(get()); }
+inline SensorID SensorBase::GetID() { return SDL::GetSensorID(get()); }
 
 /**
  * Get the current state of an opened sensor.
@@ -462,7 +471,7 @@ inline void GetSensorData(SensorRef sensor, float* data, int num_values)
   CheckError(SDL_GetSensorData(sensor, data, num_values));
 }
 
-inline void Sensor::GetData(float* data, int num_values)
+inline void SensorBase::GetData(float* data, int num_values)
 {
   SDL::GetSensorData(get(), data, num_values);
 }
@@ -476,7 +485,7 @@ inline void Sensor::GetData(float* data, int num_values)
  */
 inline void CloseSensor(SensorRaw sensor) { SDL_CloseSensor(sensor); }
 
-inline void Sensor::Close() { CloseSensor(release()); }
+inline void SensorBase::Close() { CloseSensor(release()); }
 
 /**
  * Update the current state of the open sensors.

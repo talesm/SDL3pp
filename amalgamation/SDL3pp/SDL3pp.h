@@ -25080,6 +25080,9 @@ inline void IOStreamBase::WriteS64BE(Sint64 value)
  */
 
 // Forward decl
+struct SharedObjectBase;
+
+// Forward decl
 struct SharedObject;
 
 /// Alias to raw representation for SharedObject.
@@ -25090,76 +25093,16 @@ using SharedObjectRaw = SDL_SharedObject*;
  *
  * This does not take ownership!
  */
-using SharedObjectRef = ResourceRef<SharedObject>;
+using SharedObjectRef = ResourceRefT<SharedObjectBase>;
 
 /**
- * An opaque datatype that represents a loaded shared object.
+ * Base class to SharedObject.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa LoadObject
- * @sa LoadFunction
- * @sa UnloadObject
- *
- * @cat resource
+ * @see SharedObject
  */
-struct SharedObject : ResourceBase<SharedObjectRaw>
+struct SharedObjectBase : ResourceBaseT<SharedObjectRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw SharedObject.
-   *
-   * @param resource a SharedObjectRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) = delete;
-
-  /// Move constructor
-  constexpr SharedObject(SharedObject&& other) noexcept
-    : SharedObject(other.release())
-  {
-  }
-
-  constexpr SharedObject(const SharedObjectRef& other) = delete;
-
-  constexpr SharedObject(SharedObjectRef&& other) = delete;
-
-  /**
-   * Dynamically load a shared object.
-   *
-   * @param sofile a system-dependent name of the object file.
-   * @post an opaque pointer to the object handle or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa LoadFunction
-   * @sa UnloadObject
-   */
-  SharedObject(StringParam sofile);
-
-  /// Destructor
-  ~SharedObject() { SDL_UnloadObject(get()); }
-
-  /// Assignment operator.
-  constexpr SharedObject& operator=(SharedObject&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  SharedObject& operator=(const SharedObject& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Unload a shared object from memory.
@@ -25201,6 +25144,72 @@ struct SharedObject : ResourceBase<SharedObjectRaw>
    * @sa LoadObject
    */
   FunctionPointer LoadFunction(StringParam name);
+};
+
+/**
+ * An opaque datatype that represents a loaded shared object.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa LoadObject
+ * @sa LoadFunction
+ * @sa UnloadObject
+ *
+ * @cat resource
+ */
+struct SharedObject : SharedObjectBase
+{
+  using SharedObjectBase::SharedObjectBase;
+
+  /**
+   * Constructs from raw SharedObject.
+   *
+   * @param resource a SharedObjectRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
+    : SharedObjectBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr SharedObject(const SharedObject& other) = delete;
+
+  /// Move constructor
+  constexpr SharedObject(SharedObject&& other) noexcept
+    : SharedObject(other.release())
+  {
+  }
+
+  /**
+   * Dynamically load a shared object.
+   *
+   * @param sofile a system-dependent name of the object file.
+   * @post an opaque pointer to the object handle or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa LoadFunction
+   * @sa UnloadObject
+   */
+  SharedObject(StringParam sofile);
+
+  /// Destructor
+  ~SharedObject() { SDL_UnloadObject(get()); }
+
+  /// Assignment operator.
+  constexpr SharedObject& operator=(SharedObject&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  SharedObject& operator=(const SharedObject& other) = delete;
 };
 
 /**
@@ -25258,7 +25267,7 @@ inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
   return SDL_LoadFunction(handle, name);
 }
 
-inline FunctionPointer SharedObject::LoadFunction(StringParam name)
+inline FunctionPointer SharedObjectBase::LoadFunction(StringParam name)
 {
   return SDL::LoadFunction(get(), std::move(name));
 }
@@ -25279,7 +25288,7 @@ inline FunctionPointer SharedObject::LoadFunction(StringParam name)
  */
 inline void UnloadObject(SharedObjectRaw handle) { SDL_UnloadObject(handle); }
 
-inline void SharedObject::Unload() { UnloadObject(release()); }
+inline void SharedObjectBase::Unload() { UnloadObject(release()); }
 
 /// @}
 
@@ -31858,6 +31867,9 @@ constexpr Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
  */
 
 // Forward decl
+struct SensorBase;
+
+// Forward decl
 struct Sensor;
 
 /// Alias to raw representation for Sensor.
@@ -31868,7 +31880,7 @@ using SensorRaw = SDL_Sensor*;
  *
  * This does not take ownership!
  */
-using SensorRef = ResourceRef<Sensor>;
+using SensorRef = ResourceRefT<SensorBase>;
 
 /**
  * This is a unique ID for a sensor for the time it is connected to the system,
@@ -31964,64 +31976,13 @@ constexpr SensorType SENSOR_COUNT = SDL_SENSOR_COUNT; ///< SENSOR_COUNT
 #endif // SDL_VERSION_ATLEAST(3, 2, 22)
 
 /**
- * The opaque structure used to identify an opened SDL sensor.
+ * Base class to Sensor.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Sensor
  */
-struct Sensor : ResourceBase<SensorRaw>
+struct SensorBase : ResourceBaseT<SensorRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Sensor.
-   *
-   * @param resource a SensorRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Sensor(SensorRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Sensor(const Sensor& other) = delete;
-
-  /// Move constructor
-  constexpr Sensor(Sensor&& other) noexcept
-    : Sensor(other.release())
-  {
-  }
-
-  constexpr Sensor(const SensorRef& other) = delete;
-
-  constexpr Sensor(SensorRef&& other) = delete;
-
-  /**
-   * Open a sensor for use.
-   *
-   * @param instance_id the sensor instance ID.
-   * @post an Sensor object or nullptr on failure; call GetError() for more
-   *       information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  Sensor(SensorID instance_id);
-
-  /// Destructor
-  ~Sensor() { SDL_CloseSensor(get()); }
-
-  /// Assignment operator.
-  constexpr Sensor& operator=(Sensor&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Sensor& operator=(const Sensor& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close a sensor previously opened with OpenSensor().
@@ -32090,6 +32051,63 @@ struct Sensor : ResourceBase<SensorRaw>
    * @since This function is available since SDL 3.2.0.
    */
   void GetData(float* data, int num_values);
+};
+
+/**
+ * The opaque structure used to identify an opened SDL sensor.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Sensor : SensorBase
+{
+  using SensorBase::SensorBase;
+
+  /**
+   * Constructs from raw Sensor.
+   *
+   * @param resource a SensorRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Sensor(SensorRaw resource) noexcept
+    : SensorBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Sensor(const Sensor& other) = delete;
+
+  /// Move constructor
+  constexpr Sensor(Sensor&& other) noexcept
+    : Sensor(other.release())
+  {
+  }
+
+  /**
+   * Open a sensor for use.
+   *
+   * @param instance_id the sensor instance ID.
+   * @post an Sensor object or nullptr on failure; call GetError() for more
+   *       information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sensor(SensorID instance_id);
+
+  /// Destructor
+  ~Sensor() { SDL_CloseSensor(get()); }
+
+  /// Assignment operator.
+  constexpr Sensor& operator=(Sensor&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Sensor& operator=(const Sensor& other) = delete;
 };
 
 /**
@@ -32209,7 +32227,7 @@ inline PropertiesRef GetSensorProperties(SensorRef sensor)
   return {CheckError(SDL_GetSensorProperties(sensor))};
 }
 
-inline PropertiesRef Sensor::GetProperties()
+inline PropertiesRef SensorBase::GetProperties()
 {
   return SDL::GetSensorProperties(get());
 }
@@ -32228,7 +32246,7 @@ inline const char* GetSensorName(SensorRef sensor)
   return SDL_GetSensorName(sensor);
 }
 
-inline const char* Sensor::GetName() { return SDL::GetSensorName(get()); }
+inline const char* SensorBase::GetName() { return SDL::GetSensorName(get()); }
 
 /**
  * Get the type of a sensor.
@@ -32243,7 +32261,7 @@ inline SensorType GetSensorType(SensorRef sensor)
   return SDL_GetSensorType(sensor);
 }
 
-inline SensorType Sensor::GetType() { return SDL::GetSensorType(get()); }
+inline SensorType SensorBase::GetType() { return SDL::GetSensorType(get()); }
 
 /**
  * Get the platform dependent type of a sensor.
@@ -32258,7 +32276,7 @@ inline int GetSensorNonPortableType(SensorRef sensor)
   return SDL_GetSensorNonPortableType(sensor);
 }
 
-inline int Sensor::GetNonPortableType()
+inline int SensorBase::GetNonPortableType()
 {
   return SDL::GetSensorNonPortableType(get());
 }
@@ -32277,7 +32295,7 @@ inline SensorID GetSensorID(SensorRef sensor)
   return CheckError(SDL_GetSensorID(sensor));
 }
 
-inline SensorID Sensor::GetID() { return SDL::GetSensorID(get()); }
+inline SensorID SensorBase::GetID() { return SDL::GetSensorID(get()); }
 
 /**
  * Get the current state of an opened sensor.
@@ -32296,7 +32314,7 @@ inline void GetSensorData(SensorRef sensor, float* data, int num_values)
   CheckError(SDL_GetSensorData(sensor, data, num_values));
 }
 
-inline void Sensor::GetData(float* data, int num_values)
+inline void SensorBase::GetData(float* data, int num_values)
 {
   SDL::GetSensorData(get(), data, num_values);
 }
@@ -32310,7 +32328,7 @@ inline void Sensor::GetData(float* data, int num_values)
  */
 inline void CloseSensor(SensorRaw sensor) { SDL_CloseSensor(sensor); }
 
-inline void Sensor::Close() { CloseSensor(release()); }
+inline void SensorBase::Close() { CloseSensor(release()); }
 
 /**
  * Update the current state of the open sensors.
@@ -40777,6 +40795,9 @@ inline void ProcessBase::Destroy() { DestroyProcess(release()); }
  */
 
 // Forward decl
+struct StorageBase;
+
+// Forward decl
 struct Storage;
 
 /// Alias to raw representation for Storage.
@@ -40787,7 +40808,7 @@ using StorageRaw = SDL_Storage*;
  *
  * This does not take ownership!
  */
-using StorageRef = ResourceRef<Storage>;
+using StorageRef = ResourceRefT<StorageBase>;
 
 /**
  * Function interface for Storage.
@@ -40808,157 +40829,13 @@ using StorageRef = ResourceRef<Storage>;
 using StorageInterface = SDL_StorageInterface;
 
 /**
- * An abstract interface for filesystem access.
+ * Base class to Storage.
  *
- * This is an opaque datatype. One can create this object using standard SDL
- * functions like OpenTitleStorage or OpenUserStorage, etc, or create an object
- * with a custom implementation using OpenStorage.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Storage
  */
-struct Storage : ResourceBase<StorageRaw>
+struct StorageBase : ResourceBaseT<StorageRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Storage.
-   *
-   * @param resource a StorageRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Storage(StorageRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Storage(const Storage& other) = delete;
-
-  /// Move constructor
-  constexpr Storage(Storage&& other) noexcept
-    : Storage(other.release())
-  {
-  }
-
-  constexpr Storage(const StorageRef& other) = delete;
-
-  constexpr Storage(StorageRef&& other) = delete;
-
-  /**
-   * Opens up a read-only container for the application's filesystem.
-   *
-   * By default, OpenTitleStorage uses the generic storage implementation. When
-   * the path override is not provided, the generic implementation will use the
-   * output of GetBasePath as the base path.
-   *
-   * @param override a path to override the backend's default title root.
-   * @param props a property list that may contain backend-specific information.
-   * @post a title storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa OpenUserStorage
-   * @sa ReadStorageFile
-   */
-  Storage(StringParam override, PropertiesRef props);
-
-  /**
-   * Opens up a container for a user's unique read/write filesystem.
-   *
-   * While title storage can generally be kept open throughout runtime, user
-   * storage should only be opened when the client is ready to read/write files.
-   * This allows the backend to properly batch file operations and flush them
-   * when the container has been closed; ensuring safe and optimal save I/O.
-   *
-   * @param org the name of your organization.
-   * @param app the name of your application.
-   * @param props a property list that may contain backend-specific information.
-   * @post a user storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa GetStorageSpaceRemaining
-   * @sa OpenTitleStorage
-   * @sa ReadStorageFile
-   * @sa StorageReady
-   * @sa WriteStorageFile
-   */
-  Storage(StringParam org, StringParam app, PropertiesRef props);
-
-  /**
-   * Opens up a container for local filesystem storage.
-   *
-   * This is provided for development and tools. Portable applications should
-   * use OpenTitleStorage() for access to game data and OpenUserStorage() for
-   * access to user data.
-   *
-   * @param path the base path prepended to all storage paths, or nullptr for no
-   *             base path.
-   * @post a filesystem storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa GetStorageSpaceRemaining
-   * @sa OpenTitleStorage
-   * @sa OpenUserStorage
-   * @sa ReadStorageFile
-   * @sa WriteStorageFile
-   */
-  Storage(StringParam path);
-
-  /**
-   * Opens up a container using a client-provided storage interface.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own Storage implementation. If you just need an Storage, you should
-   * use the built-in implementations in SDL, like OpenTitleStorage() or
-   * OpenUserStorage().
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this storage, initialized using
-   *              InitInterface().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @post a storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa GetStorageSpaceRemaining
-   * @sa InitInterface
-   * @sa ReadStorageFile
-   * @sa StorageReady
-   * @sa WriteStorageFile
-   */
-  Storage(const StorageInterface& iface, void* userdata);
-
-  /// Destructor
-  ~Storage() { CheckError(SDL_CloseStorage(get())); }
-
-  /// Assignment operator.
-  constexpr Storage& operator=(Storage&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Storage& operator=(const Storage& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Closes and frees a storage container.
@@ -41277,6 +41154,156 @@ struct Storage : ResourceBase<StorageRaw>
 };
 
 /**
+ * An abstract interface for filesystem access.
+ *
+ * This is an opaque datatype. One can create this object using standard SDL
+ * functions like OpenTitleStorage or OpenUserStorage, etc, or create an object
+ * with a custom implementation using OpenStorage.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Storage : StorageBase
+{
+  using StorageBase::StorageBase;
+
+  /**
+   * Constructs from raw Storage.
+   *
+   * @param resource a StorageRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Storage(StorageRaw resource) noexcept
+    : StorageBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Storage(const Storage& other) = delete;
+
+  /// Move constructor
+  constexpr Storage(Storage&& other) noexcept
+    : Storage(other.release())
+  {
+  }
+
+  /**
+   * Opens up a read-only container for the application's filesystem.
+   *
+   * By default, OpenTitleStorage uses the generic storage implementation. When
+   * the path override is not provided, the generic implementation will use the
+   * output of GetBasePath as the base path.
+   *
+   * @param override a path to override the backend's default title root.
+   * @param props a property list that may contain backend-specific information.
+   * @post a title storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa OpenUserStorage
+   * @sa ReadStorageFile
+   */
+  Storage(StringParam override, PropertiesRef props);
+
+  /**
+   * Opens up a container for a user's unique read/write filesystem.
+   *
+   * While title storage can generally be kept open throughout runtime, user
+   * storage should only be opened when the client is ready to read/write files.
+   * This allows the backend to properly batch file operations and flush them
+   * when the container has been closed; ensuring safe and optimal save I/O.
+   *
+   * @param org the name of your organization.
+   * @param app the name of your application.
+   * @param props a property list that may contain backend-specific information.
+   * @post a user storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
+   * @sa OpenTitleStorage
+   * @sa ReadStorageFile
+   * @sa StorageReady
+   * @sa WriteStorageFile
+   */
+  Storage(StringParam org, StringParam app, PropertiesRef props);
+
+  /**
+   * Opens up a container for local filesystem storage.
+   *
+   * This is provided for development and tools. Portable applications should
+   * use OpenTitleStorage() for access to game data and OpenUserStorage() for
+   * access to user data.
+   *
+   * @param path the base path prepended to all storage paths, or nullptr for no
+   *             base path.
+   * @post a filesystem storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
+   * @sa OpenTitleStorage
+   * @sa OpenUserStorage
+   * @sa ReadStorageFile
+   * @sa WriteStorageFile
+   */
+  Storage(StringParam path);
+
+  /**
+   * Opens up a container using a client-provided storage interface.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own Storage implementation. If you just need an Storage, you should
+   * use the built-in implementations in SDL, like OpenTitleStorage() or
+   * OpenUserStorage().
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this storage, initialized using
+   *              InitInterface().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @post a storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
+   * @sa InitInterface
+   * @sa ReadStorageFile
+   * @sa StorageReady
+   * @sa WriteStorageFile
+   */
+  Storage(const StorageInterface& iface, void* userdata);
+
+  /// Destructor
+  ~Storage() { CheckError(SDL_CloseStorage(get())); }
+
+  /// Assignment operator.
+  constexpr Storage& operator=(Storage&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Storage& operator=(const Storage& other) = delete;
+};
+
+/**
  * Opens up a read-only container for the application's filesystem.
  *
  * By default, OpenTitleStorage uses the generic storage implementation. When
@@ -41431,7 +41458,7 @@ inline bool CloseStorage(StorageRaw storage)
   return SDL_CloseStorage(storage);
 }
 
-inline bool Storage::Close() { return CloseStorage(release()); }
+inline bool StorageBase::Close() { return CloseStorage(release()); }
 
 /**
  * Checks if the storage container is ready to use.
@@ -41451,7 +41478,7 @@ inline bool StorageReady(StorageRef storage)
   return SDL_StorageReady(storage);
 }
 
-inline bool Storage::Ready() { return SDL::StorageReady(get()); }
+inline bool StorageBase::Ready() { return SDL::StorageReady(get()); }
 
 /**
  * Query the size of a file within a storage container.
@@ -41475,7 +41502,7 @@ inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
   return {};
 }
 
-inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
+inline std::optional<Uint64> StorageBase::GetFileSize(StringParam path)
 {
   return SDL::GetStorageFileSize(get(), std::move(path));
 }
@@ -41532,12 +41559,12 @@ inline std::string ReadStorageFile(StorageRef storage, StringParam path)
   return buffer;
 }
 
-inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
+inline bool StorageBase::ReadFile(StringParam path, TargetBytes destination)
 {
   return SDL::ReadStorageFile(get(), std::move(path), std::move(destination));
 }
 
-inline std::string Storage::ReadFile(StringParam path)
+inline std::string StorageBase::ReadFile(StringParam path)
 {
   return SDL::ReadStorageFile(get(), std::move(path));
 }
@@ -41568,7 +41595,7 @@ inline std::vector<T> ReadStorageFileAs(StorageRef storage, StringParam path)
 }
 
 template<class T>
-inline std::vector<T> Storage::ReadFileAs(StringParam path)
+inline std::vector<T> StorageBase::ReadFileAs(StringParam path)
 {
   return SDL::ReadStorageFileAs<T>(get(), std::move(path));
 }
@@ -41595,7 +41622,7 @@ inline void WriteStorageFile(StorageRef storage,
     SDL_WriteStorageFile(storage, path, source.data(), source.size_bytes()));
 }
 
-inline void Storage::WriteFile(StringParam path, SourceBytes source)
+inline void StorageBase::WriteFile(StringParam path, SourceBytes source)
 {
   SDL::WriteStorageFile(get(), std::move(path), std::move(source));
 }
@@ -41616,7 +41643,7 @@ inline void CreateStorageDirectory(StorageRef storage, StringParam path)
   CheckError(SDL_CreateStorageDirectory(storage, path));
 }
 
-inline void Storage::CreateDirectory(StringParam path)
+inline void StorageBase::CreateDirectory(StringParam path)
 {
   SDL::CreateStorageDirectory(get(), std::move(path));
 }
@@ -41725,20 +41752,20 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
   return r;
 }
 
-inline void Storage::EnumerateDirectory(StringParam path,
-                                        EnumerateDirectoryCallback callback,
-                                        void* userdata)
+inline void StorageBase::EnumerateDirectory(StringParam path,
+                                            EnumerateDirectoryCallback callback,
+                                            void* userdata)
 {
   SDL::EnumerateStorageDirectory(get(), std::move(path), callback, userdata);
 }
 
-inline std::vector<Path> Storage::EnumerateDirectory(StringParam path)
+inline std::vector<Path> StorageBase::EnumerateDirectory(StringParam path)
 {
   return SDL::EnumerateStorageDirectory(get(), std::move(path));
 }
 
-inline void Storage::EnumerateDirectory(StringParam path,
-                                        EnumerateDirectoryCB callback)
+inline void StorageBase::EnumerateDirectory(StringParam path,
+                                            EnumerateDirectoryCB callback)
 {
   SDL::EnumerateStorageDirectory(get(), std::move(path), callback);
 }
@@ -41759,7 +41786,7 @@ inline void RemoveStoragePath(StorageRef storage, StringParam path)
   CheckError(SDL_RemoveStoragePath(storage, path));
 }
 
-inline void Storage::RemovePath(StringParam path)
+inline void StorageBase::RemovePath(StringParam path)
 {
   SDL::RemoveStoragePath(get(), std::move(path));
 }
@@ -41783,7 +41810,7 @@ inline void RenameStoragePath(StorageRef storage,
   CheckError(SDL_RenameStoragePath(storage, oldpath, newpath));
 }
 
-inline void Storage::RenamePath(StringParam oldpath, StringParam newpath)
+inline void StorageBase::RenamePath(StringParam oldpath, StringParam newpath)
 {
   SDL::RenameStoragePath(get(), std::move(oldpath), std::move(newpath));
 }
@@ -41807,7 +41834,7 @@ inline void CopyStorageFile(StorageRef storage,
   CheckError(SDL_CopyStorageFile(storage, oldpath, newpath));
 }
 
-inline void Storage::CopyFile(StringParam oldpath, StringParam newpath)
+inline void StorageBase::CopyFile(StringParam oldpath, StringParam newpath)
 {
   SDL::CopyStorageFile(get(), std::move(oldpath), std::move(newpath));
 }
@@ -41832,7 +41859,7 @@ inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
   return {};
 }
 
-inline PathInfo Storage::GetPathInfo(StringParam path)
+inline PathInfo StorageBase::GetPathInfo(StringParam path)
 {
   return SDL::GetStoragePathInfo(get(), std::move(path));
 }
@@ -41853,7 +41880,7 @@ inline Uint64 GetStorageSpaceRemaining(StorageRef storage)
   return SDL_GetStorageSpaceRemaining(storage);
 }
 
-inline Uint64 Storage::GetSpaceRemaining()
+inline Uint64 StorageBase::GetSpaceRemaining()
 {
   return SDL::GetStorageSpaceRemaining(get());
 }
@@ -41902,9 +41929,9 @@ inline OwnArray<char*> GlobStorageDirectory(StorageRef storage,
   return OwnArray<char*>{data, size_t(count)};
 }
 
-inline OwnArray<char*> Storage::GlobDirectory(StringParam path,
-                                              StringParam pattern,
-                                              GlobFlags flags)
+inline OwnArray<char*> StorageBase::GlobDirectory(StringParam path,
+                                                  StringParam pattern,
+                                                  GlobFlags flags)
 {
   return SDL::GlobStorageDirectory(
     get(), std::move(path), std::move(pattern), flags);
@@ -48690,6 +48717,9 @@ using RWLockRaw = SDL_RWLock*;
 using RWLockRef = ResourceRefT<RWLockBase>;
 
 // Forward decl
+struct SemaphoreBase;
+
+// Forward decl
 struct Semaphore;
 
 /// Alias to raw representation for Semaphore.
@@ -48700,7 +48730,7 @@ using SemaphoreRaw = SDL_Semaphore*;
  *
  * This does not take ownership!
  */
-using SemaphoreRef = ResourceRef<Semaphore>;
+using SemaphoreRef = ResourceRefT<SemaphoreBase>;
 
 // Forward decl
 struct ConditionBase;
@@ -49560,88 +49590,13 @@ inline void DestroyRWLock(RWLockRaw rwlock) { SDL_DestroyRWLock(rwlock); }
 inline void RWLockBase::Destroy() { DestroyRWLock(release()); }
 
 /**
- * A means to manage access to a resource, by count, between threads.
+ * Base class to Semaphore.
  *
- * Semaphores (specifically, "counting semaphores"), let X number of threads
- * request access at the same time, each thread granted access decrementing a
- * counter. When the counter reaches zero, future requests block until a prior
- * thread releases their request, incrementing the counter again.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Semaphore_(programming)
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Semaphore
  */
-struct Semaphore : ResourceBase<SemaphoreRaw>
+struct SemaphoreBase : ResourceBaseT<SemaphoreRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Semaphore.
-   *
-   * @param resource a SemaphoreRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) = delete;
-
-  /// Move constructor
-  constexpr Semaphore(Semaphore&& other) noexcept
-    : Semaphore(other.release())
-  {
-  }
-
-  constexpr Semaphore(const SemaphoreRef& other) = delete;
-
-  constexpr Semaphore(SemaphoreRef&& other) = delete;
-
-  /**
-   * Create a semaphore.
-   *
-   * This function creates a new semaphore and initializes it with the value
-   * `initial_value`. Each wait operation on the semaphore will atomically
-   * decrement the semaphore value and potentially block if the semaphore value
-   * is 0. Each post operation will atomically increment the semaphore value and
-   * wake waiting threads and allow them to retry the wait operation.
-   *
-   * @param initial_value the starting value of the semaphore.
-   * @post a new semaphore or nullptr on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroySemaphore
-   * @sa SignalSemaphore
-   * @sa TryWaitSemaphore
-   * @sa GetSemaphoreValue
-   * @sa WaitSemaphore
-   * @sa WaitSemaphoreTimeout
-   */
-  Semaphore(Uint32 initial_value);
-
-  /// Destructor
-  ~Semaphore() { SDL_DestroySemaphore(get()); }
-
-  /// Assignment operator.
-  constexpr Semaphore& operator=(Semaphore&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Semaphore& operator=(const Semaphore& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a semaphore.
@@ -49744,6 +49699,87 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
 };
 
 /**
+ * A means to manage access to a resource, by count, between threads.
+ *
+ * Semaphores (specifically, "counting semaphores"), let X number of threads
+ * request access at the same time, each thread granted access decrementing a
+ * counter. When the counter reaches zero, future requests block until a prior
+ * thread releases their request, incrementing the counter again.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Semaphore_(programming)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Semaphore : SemaphoreBase
+{
+  using SemaphoreBase::SemaphoreBase;
+
+  /**
+   * Constructs from raw Semaphore.
+   *
+   * @param resource a SemaphoreRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
+    : SemaphoreBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Semaphore(const Semaphore& other) = delete;
+
+  /// Move constructor
+  constexpr Semaphore(Semaphore&& other) noexcept
+    : Semaphore(other.release())
+  {
+  }
+
+  /**
+   * Create a semaphore.
+   *
+   * This function creates a new semaphore and initializes it with the value
+   * `initial_value`. Each wait operation on the semaphore will atomically
+   * decrement the semaphore value and potentially block if the semaphore value
+   * is 0. Each post operation will atomically increment the semaphore value and
+   * wake waiting threads and allow them to retry the wait operation.
+   *
+   * @param initial_value the starting value of the semaphore.
+   * @post a new semaphore or nullptr on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroySemaphore
+   * @sa SignalSemaphore
+   * @sa TryWaitSemaphore
+   * @sa GetSemaphoreValue
+   * @sa WaitSemaphore
+   * @sa WaitSemaphoreTimeout
+   */
+  Semaphore(Uint32 initial_value);
+
+  /// Destructor
+  ~Semaphore() { SDL_DestroySemaphore(get()); }
+
+  /// Assignment operator.
+  constexpr Semaphore& operator=(Semaphore&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Semaphore& operator=(const Semaphore& other) = delete;
+};
+
+/**
  * Create a semaphore.
  *
  * This function creates a new semaphore and initializes it with the value
@@ -49793,7 +49829,7 @@ inline Semaphore::Semaphore(Uint32 initial_value)
  */
 inline void DestroySemaphore(SemaphoreRaw sem) { SDL_DestroySemaphore(sem); }
 
-inline void Semaphore::Destroy() { DestroySemaphore(release()); }
+inline void SemaphoreBase::Destroy() { DestroySemaphore(release()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -49817,7 +49853,7 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  */
 inline void WaitSemaphore(SemaphoreRef sem) { SDL_WaitSemaphore(sem); }
 
-inline void Semaphore::Wait() { SDL::WaitSemaphore(get()); }
+inline void SemaphoreBase::Wait() { SDL::WaitSemaphore(get()); }
 
 /**
  * See if a semaphore has a positive value and decrement it if it does.
@@ -49843,7 +49879,7 @@ inline bool TryWaitSemaphore(SemaphoreRef sem)
   return SDL_TryWaitSemaphore(sem);
 }
 
-inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(get()); }
+inline bool SemaphoreBase::TryWait() { return SDL::TryWaitSemaphore(get()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -49871,7 +49907,7 @@ inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
   return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
 }
 
-inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
+inline bool SemaphoreBase::WaitTimeout(std::chrono::milliseconds timeout)
 {
   return SDL::WaitSemaphoreTimeout(get(), timeout);
 }
@@ -49891,7 +49927,7 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  */
 inline void SignalSemaphore(SemaphoreRef sem) { SDL_SignalSemaphore(sem); }
 
-inline void Semaphore::Signal() { SDL::SignalSemaphore(get()); }
+inline void SemaphoreBase::Signal() { SDL::SignalSemaphore(get()); }
 
 /**
  * Get the current value of a semaphore.
@@ -49908,7 +49944,7 @@ inline Uint32 GetSemaphoreValue(SemaphoreRef sem)
   return SDL_GetSemaphoreValue(sem);
 }
 
-inline Uint32 Semaphore::GetValue() const
+inline Uint32 SemaphoreBase::GetValue() const
 {
   return SDL::GetSemaphoreValue(get());
 }
@@ -90453,6 +90489,9 @@ using AddressRaw = NET_Address*;
 using AddressRef = ResourceRefT<AddressBase>;
 
 // Forward decl
+struct StreamSocketBase;
+
+// Forward decl
 struct StreamSocket;
 
 /// Alias to raw representation for StreamSocket.
@@ -90463,7 +90502,10 @@ using StreamSocketRaw = NET_StreamSocket*;
  *
  * This does not take ownership!
  */
-using StreamSocketRef = ResourceRef<StreamSocket>;
+using StreamSocketRef = ResourceRefT<StreamSocketBase>;
+
+// Forward decl
+struct ServerBase;
 
 // Forward decl
 struct Server;
@@ -90476,7 +90518,7 @@ using ServerRaw = NET_Server*;
  *
  * This does not take ownership!
  */
-using ServerRef = ResourceRef<Server>;
+using ServerRef = ResourceRefT<ServerBase>;
 
 // Forward decl
 struct DatagramSocketBase;
@@ -91560,122 +91602,13 @@ inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
 }
 
 /**
- * An object that represents a streaming connection to another system.
+ * Base class to StreamSocket.
  *
- * This is meant to be a reliable, stream-oriented connection, such as TCP.
- *
- * Each StreamSocket represents a single connection between systems. Usually, a
- * client app will have one connection to a server app on a different computer,
- * and the server app might have many connections from different clients. Each
- * of these connections communicate over a separate stream socket.
- *
- * @since This datatype is available since SDL_net 3.0.0.
- *
- * @sa CreateClient
- * @sa WriteToStreamSocket
- * @sa ReadFromStreamSocket
- *
- * @cat resource
+ * @see StreamSocket
  */
-struct StreamSocket : ResourceBase<StreamSocketRaw>
+struct StreamSocketBase : ResourceBaseT<StreamSocketRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw StreamSocket.
-   *
-   * @param resource a StreamSocketRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit StreamSocket(StreamSocketRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr StreamSocket(const StreamSocket& other) = delete;
-
-  /// Move constructor
-  constexpr StreamSocket(StreamSocket&& other) noexcept
-    : StreamSocket(other.release())
-  {
-  }
-
-  constexpr StreamSocket(const StreamSocketRef& other) = delete;
-
-  constexpr StreamSocket(StreamSocketRef&& other) = delete;
-
-  /**
-   * Begin connecting a socket as a client to a remote server.
-   *
-   * Each StreamSocket represents a single connection between systems. Usually,
-   * a client app will have one connection to a server app on a different
-   * computer, and the server app might have many connections from different
-   * clients. Each of these connections communicate over a separate stream
-   * socket.
-   *
-   * Connecting is an asynchronous operation; this function does not block, and
-   * will return before the connection is complete. One has to then use
-   * WaitUntilConnected() or GetConnectionStatus() to see when the operation has
-   * completed, and if it was successful.
-   *
-   * Once connected, you can read and write data to the returned socket. Stream
-   * sockets are a mode of _reliable_ transmission, which means data will be
-   * received as a stream of bytes in the order you sent it. If there are
-   * problems in transmission, the system will deal with protocol negotiation
-   * and retransmission as necessary, transparent to your app, but this means
-   * until data is available in the order sent, the remote side will not get any
-   * new data. This is the tradeoff vs datagram sockets, where data can arrive
-   * in any order, or not arrive at all, without waiting, but the sender will
-   * not know.
-   *
-   * Stream sockets don't employ any protocol (above the TCP level), so they can
-   * connect to servers that aren't using SDL_net, but if you want to speak any
-   * protocol beyond an abritrary stream of bytes, such as HTTP, you'll have to
-   * implement that yourself on top of the stream socket.
-   *
-   * This function will fail if `address` is not finished resolving.
-   *
-   * When you are done with this connection (whether it failed to connect or
-   * not), you must dispose of it with DestroyStreamSocket().
-   *
-   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
-   * you do not have to byteswap it into "network order," as the library will
-   * handle that for you.
-   *
-   * There are currently no extra properties for creating a client, so `props`
-   * should be zero. A future revision of SDL_net may add additional (optional)
-   * properties.
-   *
-   * @param address the address of the remote server to connect to.
-   * @param port the port on the remote server to connect to.
-   * @param props properties of the new client. Specify zero for defaults.
-   * @post  pending connection on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa WaitUntilConnected
-   * @sa GetConnectionStatus
-   * @sa DestroyStreamSocket
-   */
-  StreamSocket(AddressRef address, Uint16 port, PropertiesRef props);
-
-  /// Destructor
-  ~StreamSocket() { NET_DestroyStreamSocket(get()); }
-
-  /// Assignment operator.
-  constexpr StreamSocket& operator=(StreamSocket&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  StreamSocket& operator=(const StreamSocket& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Dispose of a previously-created stream socket.
@@ -92007,6 +91940,121 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
 };
 
 /**
+ * An object that represents a streaming connection to another system.
+ *
+ * This is meant to be a reliable, stream-oriented connection, such as TCP.
+ *
+ * Each StreamSocket represents a single connection between systems. Usually, a
+ * client app will have one connection to a server app on a different computer,
+ * and the server app might have many connections from different clients. Each
+ * of these connections communicate over a separate stream socket.
+ *
+ * @since This datatype is available since SDL_net 3.0.0.
+ *
+ * @sa CreateClient
+ * @sa WriteToStreamSocket
+ * @sa ReadFromStreamSocket
+ *
+ * @cat resource
+ */
+struct StreamSocket : StreamSocketBase
+{
+  using StreamSocketBase::StreamSocketBase;
+
+  /**
+   * Constructs from raw StreamSocket.
+   *
+   * @param resource a StreamSocketRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit StreamSocket(StreamSocketRaw resource) noexcept
+    : StreamSocketBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr StreamSocket(const StreamSocket& other) = delete;
+
+  /// Move constructor
+  constexpr StreamSocket(StreamSocket&& other) noexcept
+    : StreamSocket(other.release())
+  {
+  }
+
+  /**
+   * Begin connecting a socket as a client to a remote server.
+   *
+   * Each StreamSocket represents a single connection between systems. Usually,
+   * a client app will have one connection to a server app on a different
+   * computer, and the server app might have many connections from different
+   * clients. Each of these connections communicate over a separate stream
+   * socket.
+   *
+   * Connecting is an asynchronous operation; this function does not block, and
+   * will return before the connection is complete. One has to then use
+   * WaitUntilConnected() or GetConnectionStatus() to see when the operation has
+   * completed, and if it was successful.
+   *
+   * Once connected, you can read and write data to the returned socket. Stream
+   * sockets are a mode of _reliable_ transmission, which means data will be
+   * received as a stream of bytes in the order you sent it. If there are
+   * problems in transmission, the system will deal with protocol negotiation
+   * and retransmission as necessary, transparent to your app, but this means
+   * until data is available in the order sent, the remote side will not get any
+   * new data. This is the tradeoff vs datagram sockets, where data can arrive
+   * in any order, or not arrive at all, without waiting, but the sender will
+   * not know.
+   *
+   * Stream sockets don't employ any protocol (above the TCP level), so they can
+   * connect to servers that aren't using SDL_net, but if you want to speak any
+   * protocol beyond an abritrary stream of bytes, such as HTTP, you'll have to
+   * implement that yourself on top of the stream socket.
+   *
+   * This function will fail if `address` is not finished resolving.
+   *
+   * When you are done with this connection (whether it failed to connect or
+   * not), you must dispose of it with DestroyStreamSocket().
+   *
+   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
+   * you do not have to byteswap it into "network order," as the library will
+   * handle that for you.
+   *
+   * There are currently no extra properties for creating a client, so `props`
+   * should be zero. A future revision of SDL_net may add additional (optional)
+   * properties.
+   *
+   * @param address the address of the remote server to connect to.
+   * @param port the port on the remote server to connect to.
+   * @param props properties of the new client. Specify zero for defaults.
+   * @post  pending connection on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa WaitUntilConnected
+   * @sa GetConnectionStatus
+   * @sa DestroyStreamSocket
+   */
+  StreamSocket(AddressRef address, Uint16 port, PropertiesRef props);
+
+  /// Destructor
+  ~StreamSocket() { NET_DestroyStreamSocket(get()); }
+
+  /// Assignment operator.
+  constexpr StreamSocket& operator=(StreamSocket&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  StreamSocket& operator=(const StreamSocket& other) = delete;
+};
+
+/**
  * Begin connecting a socket as a client to a remote server.
  *
  * Each StreamSocket represents a single connection between systems. Usually, a
@@ -92126,10 +92174,80 @@ inline Status WaitUntilConnected(StreamSocketRef sock, Sint32 timeout)
   return NET_WaitUntilConnected(sock, timeout);
 }
 
-inline Status StreamSocket::WaitUntilConnected(Sint32 timeout)
+inline Status StreamSocketBase::WaitUntilConnected(Sint32 timeout)
 {
   return SDL::WaitUntilConnected(get(), timeout);
 }
+
+/**
+ * Base class to Server.
+ *
+ * @see Server
+ */
+struct ServerBase : ResourceBaseT<ServerRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Dispose of a previously-created server.
+   *
+   * This will immediately disconnect any pending client connections that had
+   * not yet been accepted, but will not disconnect any existing accepted
+   * connections (which can still be used and must be destroyed separately).
+   * Further attempts to make new connections to this server will fail on the
+   * client side.
+   *
+   * @threadsafety You should not operate on the same server from multiple
+   *               threads at the same time without supplying a serialization
+   *               mechanism. However, different threads may access different
+   *               servers at the same time without problems.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa CreateServer
+   */
+  void Destroy();
+
+  /**
+   * Create a stream socket for the next pending client connection.
+   *
+   * When a client connects to a server, their connection will be pending until
+   * the server _accepts_ the connection. Once accepted, the server will be
+   * given a stream socket to communicate with the client, and they can send
+   * data to, and receive data from, each other.
+   *
+   * Unlike CreateClient, stream sockets returned from this function are already
+   * connected and do not have to wait for the connection to complete, as server
+   * acceptance is the final step of connecting.
+   *
+   * This function does not block. If there are no new connections pending, this
+   * function will return true (for success, but `*client_stream` will be set to
+   * nullptr. This is not an error and a common condition the app should expect.
+   * In fact, this function should be called in a loop until this condition
+   * occurs, so all pending connections are accepted in a single batch.
+   *
+   * If you want the server to sleep until there's a new connection, you can use
+   * WaitUntilInputAvailable().
+   *
+   * When done with the newly-accepted client, you can disconnect and dispose of
+   * the stream socket by calling DestroyStreamSocket().
+   *
+   * @param client_stream Will be set to a new stream socket if a connection was
+   *                      pending, nullptr otherwise.
+   * @throws Error on failure.
+   *
+   * @threadsafety You should not operate on the same server from multiple
+   *               threads at the same time without supplying a serialization
+   *               mechanism. However, different threads may access different
+   *               servers at the same time without problems.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa WaitUntilInputAvailable
+   * @sa DestroyStreamSocket
+   */
+  void AcceptClient(NET_StreamSocket** client_stream);
+};
 
 /**
  * The receiving end of a stream connection.
@@ -92147,9 +92265,9 @@ inline Status StreamSocket::WaitUntilConnected(Sint32 timeout)
  *
  * @cat resource
  */
-struct Server : ResourceBase<ServerRaw>
+struct Server : ServerBase
 {
-  using ResourceBase::ResourceBase;
+  using ServerBase::ServerBase;
 
   /**
    * Constructs from raw Server.
@@ -92159,7 +92277,7 @@ struct Server : ResourceBase<ServerRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Server(ServerRaw resource) noexcept
-    : ResourceBase(resource)
+    : ServerBase(resource)
   {
   }
 
@@ -92171,10 +92289,6 @@ struct Server : ResourceBase<ServerRaw>
     : Server(other.release())
   {
   }
-
-  constexpr Server(const ServerRef& other) = delete;
-
-  constexpr Server(ServerRef&& other) = delete;
 
   /**
    * Create a server, which listens for connections to accept.
@@ -92252,66 +92366,6 @@ struct Server : ResourceBase<ServerRaw>
 
   /// Assignment operator.
   Server& operator=(const Server& other) = delete;
-
-  /**
-   * Dispose of a previously-created server.
-   *
-   * This will immediately disconnect any pending client connections that had
-   * not yet been accepted, but will not disconnect any existing accepted
-   * connections (which can still be used and must be destroyed separately).
-   * Further attempts to make new connections to this server will fail on the
-   * client side.
-   *
-   * @threadsafety You should not operate on the same server from multiple
-   *               threads at the same time without supplying a serialization
-   *               mechanism. However, different threads may access different
-   *               servers at the same time without problems.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa CreateServer
-   */
-  void Destroy();
-
-  /**
-   * Create a stream socket for the next pending client connection.
-   *
-   * When a client connects to a server, their connection will be pending until
-   * the server _accepts_ the connection. Once accepted, the server will be
-   * given a stream socket to communicate with the client, and they can send
-   * data to, and receive data from, each other.
-   *
-   * Unlike CreateClient, stream sockets returned from this function are already
-   * connected and do not have to wait for the connection to complete, as server
-   * acceptance is the final step of connecting.
-   *
-   * This function does not block. If there are no new connections pending, this
-   * function will return true (for success, but `*client_stream` will be set to
-   * nullptr. This is not an error and a common condition the app should expect.
-   * In fact, this function should be called in a loop until this condition
-   * occurs, so all pending connections are accepted in a single batch.
-   *
-   * If you want the server to sleep until there's a new connection, you can use
-   * WaitUntilInputAvailable().
-   *
-   * When done with the newly-accepted client, you can disconnect and dispose of
-   * the stream socket by calling DestroyStreamSocket().
-   *
-   * @param client_stream Will be set to a new stream socket if a connection was
-   *                      pending, nullptr otherwise.
-   * @throws Error on failure.
-   *
-   * @threadsafety You should not operate on the same server from multiple
-   *               threads at the same time without supplying a serialization
-   *               mechanism. However, different threads may access different
-   *               servers at the same time without problems.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa WaitUntilInputAvailable
-   * @sa DestroyStreamSocket
-   */
-  void AcceptClient(NET_StreamSocket** client_stream);
 };
 
 /**
@@ -92442,7 +92496,7 @@ inline void AcceptClient(ServerRef server, NET_StreamSocket** client_stream)
   CheckError(NET_AcceptClient(server, client_stream));
 }
 
-inline void Server::AcceptClient(NET_StreamSocket** client_stream)
+inline void ServerBase::AcceptClient(NET_StreamSocket** client_stream)
 {
   SDL::AcceptClient(get(), client_stream);
 }
@@ -92468,7 +92522,7 @@ inline void Server::AcceptClient(NET_StreamSocket** client_stream)
  */
 inline void DestroyServer(ServerRaw server) { NET_DestroyServer(server); }
 
-inline void Server::Destroy() { DestroyServer(release()); }
+inline void ServerBase::Destroy() { DestroyServer(release()); }
 
 /**
  * Get the remote address of a stream socket.
@@ -92492,7 +92546,7 @@ inline Address GetStreamSocketAddress(StreamSocketRef sock)
   return Address(CheckError(NET_GetStreamSocketAddress(sock)));
 }
 
-inline Address StreamSocket::GetAddress()
+inline Address StreamSocketBase::GetAddress()
 {
   return SDL::GetStreamSocketAddress(get());
 }
@@ -92537,7 +92591,7 @@ inline Status GetConnectionStatus(StreamSocketRef sock)
   return NET_GetConnectionStatus(sock);
 }
 
-inline Status StreamSocket::GetConnectionStatus()
+inline Status StreamSocketBase::GetConnectionStatus()
 {
   return SDL::GetConnectionStatus(get());
 }
@@ -92594,7 +92648,7 @@ inline bool WriteToStreamSocket(StreamSocketRef sock,
   return NET_WriteToStreamSocket(sock, buf, buflen);
 }
 
-inline bool StreamSocket::WriteTo(const void* buf, int buflen)
+inline bool StreamSocketBase::WriteTo(const void* buf, int buflen)
 {
   return SDL::WriteToStreamSocket(get(), buf, buflen);
 }
@@ -92634,7 +92688,7 @@ inline int GetStreamSocketPendingWrites(StreamSocketRef sock)
   return NET_GetStreamSocketPendingWrites(sock);
 }
 
-inline int StreamSocket::GetPendingWrites()
+inline int StreamSocketBase::GetPendingWrites()
 {
   return SDL::GetStreamSocketPendingWrites(get());
 }
@@ -92682,7 +92736,7 @@ inline int WaitUntilStreamSocketDrained(StreamSocketRef sock, Sint32 timeout)
   return NET_WaitUntilStreamSocketDrained(sock, timeout);
 }
 
-inline int StreamSocket::WaitUntilDrained(Sint32 timeout)
+inline int StreamSocketBase::WaitUntilDrained(Sint32 timeout)
 {
   return SDL::WaitUntilStreamSocketDrained(get(), timeout);
 }
@@ -92740,7 +92794,7 @@ inline int ReadFromStreamSocket(StreamSocketRef sock, void* buf, int buflen)
   return NET_ReadFromStreamSocket(sock, buf, buflen);
 }
 
-inline int StreamSocket::ReadFrom(void* buf, int buflen)
+inline int StreamSocketBase::ReadFrom(void* buf, int buflen)
 {
   return SDL::ReadFromStreamSocket(get(), buf, buflen);
 }
@@ -92787,7 +92841,7 @@ inline void SimulateStreamPacketLoss(StreamSocketRef sock, int percent_loss)
   NET_SimulateStreamPacketLoss(sock, percent_loss);
 }
 
-inline void StreamSocket::SimulateStreamPacketLoss(int percent_loss)
+inline void StreamSocketBase::SimulateStreamPacketLoss(int percent_loss)
 {
   SDL::SimulateStreamPacketLoss(get(), percent_loss);
 }
@@ -92824,7 +92878,7 @@ inline void DestroyStreamSocket(StreamSocketRaw sock)
   NET_DestroyStreamSocket(sock);
 }
 
-inline void StreamSocket::Destroy() { DestroyStreamSocket(release()); }
+inline void StreamSocketBase::Destroy() { DestroyStreamSocket(release()); }
 
 /**
  * Base class to DatagramSocket.
