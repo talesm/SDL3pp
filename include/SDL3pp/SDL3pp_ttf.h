@@ -4142,11 +4142,11 @@ struct SubStringIterator;
 using TextData = TTF_TextData;
 
 /**
- * Text created with TextEngine.CreateText()
+ * Text created with CreateText()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
- * @sa TextEngine.CreateText
+ * @sa CreateText
  * @sa GetTextProperties
  * @sa DestroyText
  *
@@ -4224,7 +4224,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextEngine.CreateText
+   * @sa CreateText
    */
   void Destroy();
 
@@ -4245,7 +4245,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateSurfaceTextEngine
-   * @sa TextEngine.CreateText
+   * @sa CreateText
    */
   void DrawSurface(Point p, SurfaceRef surface) const;
 
@@ -4266,7 +4266,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateRendererTextEngine
-   * @sa TextEngine.CreateText
+   * @sa CreateText
    */
   void DrawRenderer(FPoint p) const;
 
@@ -4294,7 +4294,7 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa CreateGPUTextEngine
-   * @sa TextEngine.CreateText
+   * @sa CreateText
    */
   GPUAtlasDrawSequence* GetGPUDrawData() const;
 
@@ -5119,7 +5119,7 @@ inline SurfaceTextEngine::SurfaceTextEngine()
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa CreateSurfaceTextEngine
- * @sa TextEngine.CreateText
+ * @sa CreateText
  */
 inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceRef surface)
 {
@@ -5254,7 +5254,7 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa CreateRendererTextEngine
- * @sa TextEngine.CreateText
+ * @sa CreateText
  */
 inline void DrawRendererText(TextConstRef text, FPoint p)
 {
@@ -5393,7 +5393,7 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa CreateGPUTextEngine
- * @sa TextEngine.CreateText
+ * @sa CreateText
  */
 inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstRef text)
 {
@@ -6473,7 +6473,7 @@ inline void Text::Update() { SDL::UpdateText(get()); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TextEngine.CreateText
+ * @sa CreateText
  */
 inline void DestroyText(TextRaw text) { TTF_DestroyText(text); }
 

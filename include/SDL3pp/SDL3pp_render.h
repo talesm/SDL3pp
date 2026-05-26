@@ -203,7 +203,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
  *
  * @since This struct is available since SDL 3.4.0.
  *
- * @sa Renderer.CreateGPURenderState
+ * @sa CreateGPURenderState
  */
 using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
 
@@ -615,8 +615,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.CreateTextureFromSurface
-   * @sa Renderer.CreateTextureWithProperties
+   * @sa CreateTextureFromSurface
+   * @sa CreateTextureWithProperties
    * @sa DestroyTexture
    * @sa GetTextureSize
    * @sa UpdateTexture
@@ -645,8 +645,8 @@ struct Renderer : ResourceBase<RendererRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.CreateTexture
-   * @sa Renderer.CreateTextureWithProperties
+   * @sa CreateTexture
+   * @sa CreateTextureWithProperties
    * @sa DestroyTexture
    */
   Texture CreateTextureFromSurface(SurfaceRef surface);
@@ -767,8 +767,8 @@ struct Renderer : ResourceBase<RendererRaw>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateProperties
-   * @sa Renderer.CreateTexture
-   * @sa Renderer.CreateTextureFromSurface
+   * @sa CreateTexture
+   * @sa CreateTextureFromSurface
    * @sa DestroyTexture
    * @sa GetTextureSize
    * @sa UpdateTexture
@@ -2235,9 +2235,9 @@ struct Renderer : ResourceBase<RendererRaw>
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Renderer.CreateTexture
- * @sa Renderer.CreateTextureFromSurface
- * @sa Renderer.CreateTextureWithProperties
+ * @sa CreateTexture
+ * @sa CreateTextureFromSurface
+ * @sa CreateTextureWithProperties
  * @sa DestroyTexture
  *
  * @cat resource
@@ -2286,8 +2286,8 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.CreateTextureFromSurface
-   * @sa Renderer.CreateTextureWithProperties
+   * @sa CreateTextureFromSurface
+   * @sa CreateTextureWithProperties
    * @sa DestroyTexture
    * @sa GetTextureSize
    * @sa UpdateTexture
@@ -2317,8 +2317,8 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.CreateTexture
-   * @sa Renderer.CreateTextureWithProperties
+   * @sa CreateTexture
+   * @sa CreateTextureWithProperties
    * @sa DestroyTexture
    */
   Texture(RendererRef renderer, SurfaceRef surface);
@@ -2439,8 +2439,8 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateProperties
-   * @sa Renderer.CreateTexture
-   * @sa Renderer.CreateTextureFromSurface
+   * @sa CreateTexture
+   * @sa CreateTextureFromSurface
    * @sa DestroyTexture
    * @sa GetTextureSize
    * @sa UpdateTexture
@@ -2569,8 +2569,8 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.CreateTexture
-   * @sa Renderer.CreateTextureFromSurface
+   * @sa CreateTexture
+   * @sa CreateTextureFromSurface
    */
   void Destroy();
 
@@ -3944,8 +3944,8 @@ constexpr auto VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER =
  *
  * @sa CreateRendererWithProperties
  * @sa GetGPURendererDevice
- * @sa GPUDevice.CreateShader
- * @sa Renderer.CreateGPURenderState
+ * @sa CreateGPUShader
+ * @sa CreateGPURenderState
  * @sa SetGPURenderState
  */
 inline RendererRef CreateGPURenderer(GPUDeviceRef device, WindowRef window)
@@ -4383,8 +4383,8 @@ inline Point Renderer::GetCurrentOutputSize() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.CreateTextureFromSurface
- * @sa Renderer.CreateTextureWithProperties
+ * @sa CreateTextureFromSurface
+ * @sa CreateTextureWithProperties
  * @sa DestroyTexture
  * @sa GetTextureSize
  * @sa UpdateTexture
@@ -4443,8 +4443,8 @@ inline Texture::Texture(RendererRef renderer, PropertiesRef props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.CreateTexture
- * @sa Renderer.CreateTextureWithProperties
+ * @sa CreateTexture
+ * @sa CreateTextureWithProperties
  * @sa DestroyTexture
  */
 inline Texture CreateTextureFromSurface(RendererRef renderer,
@@ -4573,8 +4573,8 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa CreateProperties
- * @sa Renderer.CreateTexture
- * @sa Renderer.CreateTextureFromSurface
+ * @sa CreateTexture
+ * @sa CreateTextureFromSurface
  * @sa DestroyTexture
  * @sa GetTextureSize
  * @sa UpdateTexture
@@ -7691,8 +7691,8 @@ inline void Renderer::Present() { SDL::RenderPresent(get()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.CreateTexture
- * @sa Renderer.CreateTextureFromSurface
+ * @sa CreateTexture
+ * @sa CreateTextureFromSurface
  */
 inline void DestroyTexture(TextureRaw texture) { SDL_DestroyTexture(texture); }
 
@@ -8074,7 +8074,7 @@ inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
  *
  * @since This struct is available since SDL 3.4.0.
  *
- * @sa Renderer.CreateGPURenderState
+ * @sa CreateGPURenderState
  * @sa SetGPURenderStateFragmentUniforms
  * @sa SetGPURenderState
  * @sa DestroyGPURenderState
@@ -8152,7 +8152,7 @@ struct GPURenderState : ResourceBase<GPURenderStateRaw>
    *
    * @since This function is available since SDL 3.4.0.
    *
-   * @sa Renderer.CreateGPURenderState
+   * @sa CreateGPURenderState
    */
   void Destroy();
 
@@ -8281,7 +8281,7 @@ inline void Renderer::SetGPURenderState(GPURenderStateRef state)
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @sa Renderer.CreateGPURenderState
+ * @sa CreateGPURenderState
  */
 inline void DestroyGPURenderState(GPURenderStateRaw state)
 {

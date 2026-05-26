@@ -37,17 +37,15 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -577,8 +580,8 @@
+@@ -577,7 +580,7 @@
     *
     * This is equivalent to calling:
     *
 -   * ```c
--   * Mixer.LoadAudio_IO(mixer, IOFromFile(path, "rb"), predecode, true);
 +   * ```cpp
-+   * mixer.LoadAudio_IO(mixer, IOFromFile(path, "rb"), predecode, true);
+    * LoadAudio_IO(mixer, IOFromFile(path, "rb"), predecode, true);
     * ```
     *
-    * This function loads data from a path on the filesystem. There is also a
 @@ -587,9 +590,8 @@
     *
     * @param path the path on the filesystem to load data from.
@@ -337,17 +335,15 @@
  {
  }
  
-@@ -4237,8 +4222,8 @@
+@@ -4237,7 +4222,7 @@
   *
   * This is equivalent to calling:
   *
 - * ```c
-- * Mixer.LoadAudio_IO(mixer, IOFromFile(path, "rb"), predecode, true);
 + * ```cpp
-+ * mixer.LoadAudio_IO(mixer, IOFromFile(path, "rb"), predecode, true);
+  * LoadAudio_IO(mixer, IOFromFile(path, "rb"), predecode, true);
   * ```
   *
-  * This function loads data from a path on the filesystem. There is also a
 @@ -4248,9 +4233,8 @@
   * @param mixer a mixer this audio is intended to be used with. May be nullptr.
   * @param path the path on the filesystem to load data from.

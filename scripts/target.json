@@ -4617,7 +4617,7 @@
           "tag": "##",
           "content": "Simplified audio"
         },
-        "As a simplified model for when a single source of audio is all that's needed, an app can use AudioDevice.OpenStream, which is a single function to open an audio device, create an audio stream, bind that stream to the newly-opened device, and (optionally) provide a callback for obtaining audio data. When using this function, the primary interface is the AudioStream and the device handle is mostly hidden away; destroying a stream created through this function will also close the device, stream bindings cannot be changed, etc. One other quirk of this is that the device is started in a _paused_ state and must be explicitly resumed; this is partially to offer a clean migration for SDL2 apps and partially because the app might have to do more setup before playback begins; in the non-simplified form, nothing will play until a stream is bound to a device, so they start _unpaused_.",
+        "As a simplified model for when a single source of audio is all that's needed, an app can use OpenAudioDeviceStream, which is a single function to open an audio device, create an audio stream, bind that stream to the newly-opened device, and (optionally) provide a callback for obtaining audio data. When using this function, the primary interface is the AudioStream and the device handle is mostly hidden away; destroying a stream created through this function will also close the device, stream bindings cannot be changed, etc. One other quirk of this is that the device is started in a _paused_ state and must be explicitly resumed; this is partially to offer a clean migration for SDL2 apps and partially because the app might have to do more setup before playback begins; in the non-simplified form, nothing will play until a stream is bound to a device, so they start _unpaused_.",
         {
           "tag": "##",
           "content": "Channel layouts"
@@ -6292,7 +6292,7 @@
                         "doc": [
                           "Open a specific audio device.",
                           "You can open both playback and recording devices through this function. Playback devices will take data from bound audio streams, mix it, and send it to the hardware. Recording devices will feed any bound audio streams with a copy of any incoming data.",
-                          "An opened audio device starts out with no audio streams bound. To start audio playing, bind a stream and supply audio data to it. Unlike SDL2, there is no audio callback; you only bind audio streams and make sure they have data flowing into them (however, you can simulate SDL2's semantics fairly closely by using AudioDevice.OpenStream instead of this function).",
+                          "An opened audio device starts out with no audio streams bound. To start audio playing, bind a stream and supply audio data to it. Unlike SDL2, there is no audio callback; you only bind audio streams and make sure they have data flowing into them (however, you can simulate SDL2's semantics fairly closely by using OpenAudioDeviceStream instead of this function).",
                           "If you don't care about opening a specific device, pass a `devid` of either `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick the most reasonable default, and may also switch between physical devices seamlessly later, if the most reasonable default changes during the lifetime of this opened device (user changed the default in the OS's system preferences, the default got unplugged so the system jumped to a new default, the user plugged in headphones on a mobile device, etc). Unless you have a good reason to choose a specific device, this is probably what you want.",
                           "You may request a specific format for the audio device, but there is no promise the device will honor that request for several reasons. As such, it's only meant to be a hint as to what data your app will provide. Audio streams will accept data in whatever format you specify and manage conversion for you as appropriate. GetAudioDeviceFormat can tell you the preferred format for the device before opening and the actual format the device is using after opening.",
                           "It's legal to open the same device ID more than once; each successful open will generate a new logical AudioDevice that is managed separately from others on the same physical device. This allows libraries to open a device separately from the main app and bind its own streams without conflicting.",
@@ -6590,7 +6590,7 @@
             "IsPhysical": {
               "doc": [
                 "Determine if an audio device is physical (instead of logical).",
-                "An AudioDevice that represents physical hardware is a physical device; there is one for each piece of hardware that SDL can see. Logical devices are created by calling OpenAudioDevice or AudioDevice.OpenStream, and while each is associated with a physical device, there can be any number of logical devices on one physical device.",
+                "An AudioDevice that represents physical hardware is a physical device; there is one for each piece of hardware that SDL can see. Logical devices are created by calling OpenAudioDevice or OpenAudioDeviceStream, and while each is associated with a physical device, there can be any number of logical devices on one physical device.",
                 "For the most part, logical and physical IDs are interchangeable--if you try to open a logical device, SDL understands to assign that effort to the underlying physical device, etc. However, it might be useful to know if an arbitrary device ID is physical or logical. This function reports which.",
                 "This function may return either true or false for invalid device IDs.",
                 [
@@ -7844,7 +7844,7 @@
               "doc": [
                 "Free an audio stream.",
                 "This will release all allocated data, including any audio that is still queued. You do not need to manually clear the stream first.",
-                "If this stream was bound to an audio device, it is unbound during this call. If this stream was created with AudioDevice.OpenStream, the audio device that was opened alongside this stream's creation will be closed, too.",
+                "If this stream was bound to an audio device, it is unbound during this call. If this stream was created with OpenAudioDeviceStream, the audio device that was opened alongside this stream's creation will be closed, too.",
                 {
                   "tag": "@threadsafety",
                   "content": "It is safe to call this function from any thread."
@@ -7875,7 +7875,7 @@
                 "The application can hang any data it wants here, but the following properties are understood by SDL:",
                 {
                   "tag": "-",
-                  "content": "`prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream be automatically cleaned up when the audio subsystem quits. If set to false, the streams will persist beyond that. This property is ignored for streams created through AudioDevice.OpenStream(), and will always be cleaned up. Streams that are not cleaned up will still be unbound from devices when the audio subsystem quits. This property was added in SDL 3.4.0."
+                  "content": "`prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream be automatically cleaned up when the audio subsystem quits. If set to false, the streams will persist beyond that. This property is ignored for streams created through OpenAudioDeviceStream(), and will always be cleaned up. Streams that are not cleaned up will still be unbound from devices when the audio subsystem quits. This property was added in SDL 3.4.0."
                 },
                 [
                   {
@@ -8896,7 +8896,7 @@
               "doc": [
                 "Use this function to unpause audio playback on the audio device associated with an audio stream.",
                 "This function unpauses audio processing for a given device that has previously been paused. Once unpaused, any bound audio streams will begin to progress again, and audio can be generated.",
-                "AudioDevice.OpenStream opens audio devices in a paused state, so this function call is required for audio playback to begin on such devices.",
+                "OpenAudioDeviceStream opens audio devices in a paused state, so this function call is required for audio playback to begin on such devices.",
                 [
                   {
                     "tag": "@throws",
@@ -10068,7 +10068,7 @@
           "doc": [
             "Open a specific audio device.",
             "You can open both playback and recording devices through this function. Playback devices will take data from bound audio streams, mix it, and send it to the hardware. Recording devices will feed any bound audio streams with a copy of any incoming data.",
-            "An opened audio device starts out with no audio streams bound. To start audio playing, bind a stream and supply audio data to it. Unlike SDL2, there is no audio callback; you only bind audio streams and make sure they have data flowing into them (however, you can simulate SDL2's semantics fairly closely by using AudioDevice.OpenStream instead of this function).",
+            "An opened audio device starts out with no audio streams bound. To start audio playing, bind a stream and supply audio data to it. Unlike SDL2, there is no audio callback; you only bind audio streams and make sure they have data flowing into them (however, you can simulate SDL2's semantics fairly closely by using OpenAudioDeviceStream instead of this function).",
             "If you don't care about opening a specific device, pass a `devid` of either `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick the most reasonable default, and may also switch between physical devices seamlessly later, if the most reasonable default changes during the lifetime of this opened device (user changed the default in the OS's system preferences, the default got unplugged so the system jumped to a new default, the user plugged in headphones on a mobile device, etc). Unless you have a good reason to choose a specific device, this is probably what you want.",
             "You may request a specific format for the audio device, but there is no promise the device will honor that request for several reasons. As such, it's only meant to be a hint as to what data your app will provide. Audio streams will accept data in whatever format you specify and manage conversion for you as appropriate. GetAudioDeviceFormat can tell you the preferred format for the device before opening and the actual format the device is using after opening.",
             "It's legal to open the same device ID more than once; each successful open will generate a new logical AudioDevice that is managed separately from others on the same physical device. This allows libraries to open a device separately from the main app and bind its own streams without conflicting.",
@@ -10157,7 +10157,7 @@
         "IsAudioDevicePhysical": {
           "doc": [
             "Determine if an audio device is physical (instead of logical).",
-            "An AudioDevice that represents physical hardware is a physical device; there is one for each piece of hardware that SDL can see. Logical devices are created by calling OpenAudioDevice or AudioDevice.OpenStream, and while each is associated with a physical device, there can be any number of logical devices on one physical device.",
+            "An AudioDevice that represents physical hardware is a physical device; there is one for each piece of hardware that SDL can see. Logical devices are created by calling OpenAudioDevice or OpenAudioDeviceStream, and while each is associated with a physical device, there can be any number of logical devices on one physical device.",
             "For the most part, logical and physical IDs are interchangeable--if you try to open a logical device, SDL understands to assign that effort to the underlying physical device, etc. However, it might be useful to know if an arbitrary device ID is physical or logical. This function reports which.",
             "This function may return either true or false for invalid device IDs.",
             [
@@ -11063,7 +11063,7 @@
             "The application can hang any data it wants here, but the following properties are understood by SDL:",
             {
               "tag": "-",
-              "content": "`prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream be automatically cleaned up when the audio subsystem quits. If set to false, the streams will persist beyond that. This property is ignored for streams created through AudioDevice.OpenStream(), and will always be cleaned up. Streams that are not cleaned up will still be unbound from devices when the audio subsystem quits. This property was added in SDL 3.4.0."
+              "content": "`prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream be automatically cleaned up when the audio subsystem quits. If set to false, the streams will persist beyond that. This property is ignored for streams created through OpenAudioDeviceStream(), and will always be cleaned up. Streams that are not cleaned up will still be unbound from devices when the audio subsystem quits. This property was added in SDL 3.4.0."
             },
             [
               {
@@ -12647,7 +12647,7 @@
           "doc": [
             "Use this function to unpause audio playback on the audio device associated with an audio stream.",
             "This function unpauses audio processing for a given device that has previously been paused. Once unpaused, any bound audio streams will begin to progress again, and audio can be generated.",
-            "AudioDevice.OpenStream opens audio devices in a paused state, so this function call is required for audio playback to begin on such devices.",
+            "OpenAudioDeviceStream opens audio devices in a paused state, so this function call is required for audio playback to begin on such devices.",
             [
               {
                 "tag": "@param stream",
@@ -13224,7 +13224,7 @@
           "doc": [
             "Free an audio stream.",
             "This will release all allocated data, including any audio that is still queued. You do not need to manually clear the stream first.",
-            "If this stream was bound to an audio device, it is unbound during this call. If this stream was created with AudioDevice.OpenStream, the audio device that was opened alongside this stream's creation will be closed, too.",
+            "If this stream was bound to an audio device, it is unbound during this call. If this stream was created with OpenAudioDeviceStream, the audio device that was opened alongside this stream's creation will be closed, too.",
             {
               "tag": "@param stream",
               "content": "the audio stream to destroy."
@@ -31053,23 +31053,23 @@
         [
           {
             "tag": "-",
-            "content": "Shaders (programs that run on the GPU): use GPUDevice.CreateShader()."
+            "content": "Shaders (programs that run on the GPU): use CreateGPUShader()."
           },
           {
             "tag": "-",
-            "content": "Vertex buffers (arrays of geometry data) and other rendering data: use GPUDevice.CreateBuffer() and UploadToGPUBuffer()."
+            "content": "Vertex buffers (arrays of geometry data) and other rendering data: use CreateGPUBuffer() and UploadToGPUBuffer()."
           },
           {
             "tag": "-",
-            "content": "Textures (images): use GPUDevice.CreateTexture() and UploadToGPUTexture()."
+            "content": "Textures (images): use CreateGPUTexture() and UploadToGPUTexture()."
           },
           {
             "tag": "-",
-            "content": "Samplers (how textures should be read from): use GPUDevice.CreateSampler()."
+            "content": "Samplers (how textures should be read from): use CreateGPUSampler()."
           },
           {
             "tag": "-",
-            "content": "Render pipelines (precalculated rendering state): use GPUDevice.CreateGraphicsPipeline()"
+            "content": "Render pipelines (precalculated rendering state): use CreateGPUGraphicsPipeline()"
           }
         ],
         "To render, the app creates one or more command buffers, with AcquireGPUCommandBuffer(). Command buffers collect rendering instructions that will be submitted to the GPU in batch. Complex scenes can use multiple command buffers, maybe configured across multiple threads in parallel, as long as they are submitted in the correct order, but many apps will just need one command buffer per frame.",
@@ -31190,7 +31190,7 @@
         "**Question: When are you adding more advanced features, like ray tracing or mesh shaders?**",
         "Answer: We don't have immediate plans to add more bleeding-edge features, but we certainly might in the future, when these features prove worthwhile, and reasonable to implement across several platforms and underlying APIs. So while these things are not in the \"never\" category, they are definitely not \"near future\" items either.",
         "**Question: Why is my shader not working?**",
-        "Answer: A common oversight when using shaders is not properly laying out the shader resources/registers correctly. The GPU API is very strict with how it wants resources to be laid out and it's difficult for the API to automatically validate shaders to see if they have a compatible layout. See the documentation for GPUDevice.CreateShader() and GPUDevice.CreateComputePipeline() for information on the expected layout.",
+        "Answer: A common oversight when using shaders is not properly laying out the shader resources/registers correctly. The GPU API is very strict with how it wants resources to be laid out and it's difficult for the API to automatically validate shaders to see if they have a compatible layout. See the documentation for CreateGPUShader() and CreateGPUComputePipeline() for information on the expected layout.",
         "Another common issue is not setting the correct number of samplers, textures, and buffers in GPUShaderCreateInfo. If possible use shader reflection to extract the required information from the shader automatically instead of manually filling in the struct's values.",
         "**Question: My application isn't performing very well. Is this the GPU API's fault?**",
         "Answer: No. Long answer: The GPU API is a relatively thin layer over the underlying graphics API. While it's possible that we have done something inefficiently, it's very unlikely especially if you are relatively inexperienced with GPU rendering. Please see the performance tips above and make sure you are following them. Additionally, tools like [RenderDoc](https://renderdoc.org/) can be very helpful for diagnosing incorrect behavior and performance issues.",
@@ -31508,7 +31508,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateBuffer"
+                "content": "CreateGPUBuffer"
               },
               {
                 "tag": "@sa",
@@ -31689,7 +31689,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateBuffer"
+                "content": "CreateGPUBuffer"
               },
               {
                 "tag": "@sa",
@@ -31759,7 +31759,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateTransferBuffer"
+              "content": "CreateGPUTransferBuffer"
             }
           ],
           "sourceName": "SDL_GPUTransferBufferCreateInfo",
@@ -31904,7 +31904,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateTransferBuffer"
+                "content": "CreateGPUTransferBuffer"
               },
               {
                 "tag": "@sa",
@@ -31956,7 +31956,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateTexture"
+                "content": "CreateGPUTexture"
               },
               {
                 "tag": "@sa",
@@ -32173,7 +32173,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateTexture"
+                "content": "CreateGPUTexture"
               },
               {
                 "tag": "@sa",
@@ -32241,7 +32241,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateSampler"
+                "content": "CreateGPUSampler"
               },
               {
                 "tag": "@sa",
@@ -32393,7 +32393,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateSampler"
+                "content": "CreateGPUSampler"
               },
               {
                 "tag": "@sa",
@@ -32428,7 +32428,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateShader"
+                "content": "CreateGPUShader"
               },
               {
                 "tag": "@sa",
@@ -32582,7 +32582,7 @@
                   [
                     {
                       "tag": "@sa",
-                      "content": "GPUDevice.CreateGraphicsPipeline"
+                      "content": "CreateGPUGraphicsPipeline"
                     },
                     {
                       "tag": "@sa",
@@ -32639,11 +32639,11 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateShader"
+                "content": "CreateGPUShader"
               },
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateGraphicsPipeline"
+                "content": "CreateGPUGraphicsPipeline"
               },
               {
                 "tag": "@sa",
@@ -32670,7 +32670,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateComputePipeline"
+                "content": "CreateGPUComputePipeline"
               },
               {
                 "tag": "@sa",
@@ -32849,7 +32849,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateComputePipeline"
+                "content": "CreateGPUComputePipeline"
               },
               {
                 "tag": "@sa",
@@ -32880,7 +32880,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateGraphicsPipeline"
+                "content": "CreateGPUGraphicsPipeline"
               },
               {
                 "tag": "@sa",
@@ -32983,7 +32983,7 @@
                   [
                     {
                       "tag": "@sa",
-                      "content": "GPUDevice.CreateShader"
+                      "content": "CreateGPUShader"
                     },
                     {
                       "tag": "@sa",
@@ -33045,7 +33045,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateGraphicsPipeline"
+                "content": "CreateGPUGraphicsPipeline"
               },
               {
                 "tag": "@sa",
@@ -33115,7 +33115,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "sourceName": "SDL_GPUIndexElementSize",
@@ -33472,7 +33472,7 @@
               "doc": [
                 "Binds texture-sampler pairs for use on the vertex shader.",
                 "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
-                "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+                "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
                 [
                   {
                     "tag": "@param first_slot",
@@ -33493,7 +33493,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateShader"
+                  "content": "CreateGPUShader"
                 }
               ],
               "name": "BindVertexSamplers",
@@ -33520,7 +33520,7 @@
               "doc": [
                 "Binds storage textures for use on the vertex shader.",
                 "These textures must have been created with GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.",
-                "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+                "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
                 [
                   {
                     "tag": "@param first_slot",
@@ -33541,7 +33541,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateShader"
+                  "content": "CreateGPUShader"
                 }
               ],
               "name": "BindVertexStorageTextures",
@@ -33568,7 +33568,7 @@
               "doc": [
                 "Binds storage buffers for use on the vertex shader.",
                 "These buffers must have been created with GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.",
-                "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+                "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
                 [
                   {
                     "tag": "@param first_slot",
@@ -33589,7 +33589,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateShader"
+                  "content": "CreateGPUShader"
                 }
               ],
               "name": "BindVertexStorageBuffers",
@@ -33616,7 +33616,7 @@
               "doc": [
                 "Binds texture-sampler pairs for use on the fragment shader.",
                 "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
-                "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+                "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
                 [
                   {
                     "tag": "@param first_slot",
@@ -33637,7 +33637,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateShader"
+                  "content": "CreateGPUShader"
                 }
               ],
               "name": "BindFragmentSamplers",
@@ -33664,7 +33664,7 @@
               "doc": [
                 "Binds storage textures for use on the fragment shader.",
                 "These textures must have been created with GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.",
-                "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+                "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
                 [
                   {
                     "tag": "@param first_slot",
@@ -33685,7 +33685,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateShader"
+                  "content": "CreateGPUShader"
                 }
               ],
               "name": "BindFragmentStorageTextures",
@@ -33712,7 +33712,7 @@
               "doc": [
                 "Binds storage buffers for use on the fragment shader.",
                 "These buffers must have been created with GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.",
-                "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+                "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
                 [
                   {
                     "tag": "@param first_slot",
@@ -33733,7 +33733,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateShader"
+                  "content": "CreateGPUShader"
                 }
               ],
               "name": "BindFragmentStorageBuffers",
@@ -34104,7 +34104,7 @@
               "doc": [
                 "Binds texture-sampler pairs for use on the compute shader.",
                 "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
-                "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateComputePipeline().",
+                "Be sure your shader is set up according to the requirements documented in CreateGPUComputePipeline().",
                 [
                   {
                     "tag": "@param first_slot",
@@ -34125,7 +34125,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateComputePipeline"
+                  "content": "CreateGPUComputePipeline"
                 }
               ],
               "name": "BindSamplers",
@@ -34152,7 +34152,7 @@
               "doc": [
                 "Binds storage textures as readonly for use on the compute pipeline.",
                 "These textures must have been created with GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.",
-                "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateComputePipeline().",
+                "Be sure your shader is set up according to the requirements documented in CreateGPUComputePipeline().",
                 [
                   {
                     "tag": "@param first_slot",
@@ -34173,7 +34173,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateComputePipeline"
+                  "content": "CreateGPUComputePipeline"
                 }
               ],
               "name": "BindStorageTextures",
@@ -34200,7 +34200,7 @@
               "doc": [
                 "Binds storage buffers as readonly for use on the compute pipeline.",
                 "These buffers must have been created with GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.",
-                "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateComputePipeline().",
+                "Be sure your shader is set up according to the requirements documented in CreateGPUComputePipeline().",
                 [
                   {
                     "tag": "@param first_slot",
@@ -34221,7 +34221,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateComputePipeline"
+                  "content": "CreateGPUComputePipeline"
                 }
               ],
               "name": "BindStorageBuffers",
@@ -34458,7 +34458,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateTexture"
+                "content": "CreateGPUTexture"
               }
             ]
           ],
@@ -35277,7 +35277,7 @@
                 "Pushes data to a vertex uniform slot on the command buffer.",
                 "Subsequent draw calls in this command buffer will use this uniform data.",
                 "The data being pushed must respect std140 layout conventions. In practical terms this means you must ensure that vec3 and vec4 fields are 16-byte aligned.",
-                "For detailed information about accessing uniform data from a shader, please refer to GPUDevice.CreateShader.",
+                "For detailed information about accessing uniform data from a shader, please refer to CreateGPUShader.",
                 [
                   {
                     "tag": "@param slot_index",
@@ -35971,7 +35971,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateShader"
+              "content": "CreateGPUShader"
             }
           ],
           "type": "Uint32",
@@ -36453,7 +36453,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateTexture"
+                "content": "CreateGPUTexture"
               },
               {
                 "tag": "@sa",
@@ -37525,7 +37525,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateTexture"
+              "content": "CreateGPUTexture"
             }
           ],
           "sourceName": "SDL_GPUTextureType",
@@ -37594,7 +37594,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateTexture"
+              "content": "CreateGPUTexture"
             }
           ],
           "type": "Uint32",
@@ -37690,7 +37690,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateTexture"
+                "content": "CreateGPUTexture"
               },
               {
                 "tag": "@sa",
@@ -38530,7 +38530,7 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "GPUDevice.CreateShader"
+                    "content": "CreateGPUShader"
                   },
                   {
                     "tag": "@sa",
@@ -38717,7 +38717,7 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "GPUDevice.CreateGraphicsPipeline"
+                    "content": "CreateGPUGraphicsPipeline"
                   },
                   {
                     "tag": "@sa",
@@ -39033,7 +39033,7 @@
             "SetBufferName": {
               "doc": [
                 "Sets an arbitrary string constant to label a buffer.",
-                "You should use prop.GPUBuffer.Create.NAME_STRING with GPUDevice.CreateBuffer instead of this function to avoid thread safety issues.",
+                "You should use prop.GPUBuffer.Create.NAME_STRING with CreateGPUBuffer instead of this function to avoid thread safety issues.",
                 [
                   {
                     "tag": "@param buffer",
@@ -39054,7 +39054,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateBuffer"
+                  "content": "CreateGPUBuffer"
                 }
               ],
               "name": "SetBufferName",
@@ -39080,7 +39080,7 @@
             "SetTextureName": {
               "doc": [
                 "Sets an arbitrary string constant to label a texture.",
-                "You should use prop.GPUTexture.Create.NAME_STRING with GPUDevice.CreateTexture instead of this function to avoid thread safety issues.",
+                "You should use prop.GPUTexture.Create.NAME_STRING with CreateGPUTexture instead of this function to avoid thread safety issues.",
                 [
                   {
                     "tag": "@param texture",
@@ -39101,7 +39101,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "GPUDevice.CreateTexture"
+                  "content": "CreateGPUTexture"
                 }
               ],
               "name": "SetTextureName",
@@ -40165,7 +40165,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUPrimitiveType",
@@ -40413,7 +40413,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateBuffer"
+              "content": "CreateGPUBuffer"
             }
           ],
           "name": "GPUBufferUsageFlags",
@@ -40497,7 +40497,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateTransferBuffer"
+              "content": "CreateGPUTransferBuffer"
             }
           ],
           "name": "GPUTransferBufferUsage",
@@ -40534,7 +40534,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateShader"
+              "content": "CreateGPUShader"
             }
           ],
           "name": "GPUShaderStage",
@@ -40571,7 +40571,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUVertexElementFormat",
@@ -40898,7 +40898,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUVertexInputRate",
@@ -40935,7 +40935,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUFillMode",
@@ -40972,7 +40972,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUCullMode",
@@ -41019,7 +41019,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUFrontFace",
@@ -41056,7 +41056,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUCompareOp",
@@ -41163,7 +41163,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUStencilOp",
@@ -41271,7 +41271,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUBlendOp",
@@ -41349,7 +41349,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUBlendFactor",
@@ -41506,7 +41506,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateGraphicsPipeline"
+              "content": "CreateGPUGraphicsPipeline"
             }
           ],
           "name": "GPUColorComponentFlags",
@@ -41567,7 +41567,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateSampler"
+              "content": "CreateGPUSampler"
             }
           ],
           "name": "GPUFilter",
@@ -41604,7 +41604,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateSampler"
+              "content": "CreateGPUSampler"
             }
           ],
           "name": "GPUSamplerMipmapMode",
@@ -41641,7 +41641,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateSampler"
+              "content": "CreateGPUSampler"
             }
           ],
           "name": "GPUSamplerAddressMode",
@@ -43325,7 +43325,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateShader"
+                "content": "CreateGPUShader"
               },
               {
                 "tag": "@sa",
@@ -43640,7 +43640,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateGraphicsPipeline"
+                "content": "CreateGPUGraphicsPipeline"
               },
               {
                 "tag": "@sa",
@@ -44280,7 +44280,7 @@
         "SetGPUBufferName": {
           "doc": [
             "Sets an arbitrary string constant to label a buffer.",
-            "You should use prop.GPUBuffer.Create.NAME_STRING with GPUDevice.CreateBuffer instead of this function to avoid thread safety issues.",
+            "You should use prop.GPUBuffer.Create.NAME_STRING with CreateGPUBuffer instead of this function to avoid thread safety issues.",
             [
               {
                 "tag": "@param device",
@@ -44305,7 +44305,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateBuffer"
+              "content": "CreateGPUBuffer"
             }
           ],
           "name": "SetGPUBufferName",
@@ -44355,7 +44355,7 @@
         "SetGPUTextureName": {
           "doc": [
             "Sets an arbitrary string constant to label a texture.",
-            "You should use prop.GPUTexture.Create.NAME_STRING with GPUDevice.CreateTexture instead of this function to avoid thread safety issues.",
+            "You should use prop.GPUTexture.Create.NAME_STRING with CreateGPUTexture instead of this function to avoid thread safety issues.",
             [
               {
                 "tag": "@param device",
@@ -44380,7 +44380,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateTexture"
+              "content": "CreateGPUTexture"
             }
           ],
           "name": "SetGPUTextureName",
@@ -45042,7 +45042,7 @@
             "Pushes data to a vertex uniform slot on the command buffer.",
             "Subsequent draw calls in this command buffer will use this uniform data.",
             "The data being pushed must respect std140 layout conventions. In practical terms this means you must ensure that vec3 and vec4 fields are 16-byte aligned.",
-            "For detailed information about accessing uniform data from a shader, please refer to GPUDevice.CreateShader.",
+            "For detailed information about accessing uniform data from a shader, please refer to CreateGPUShader.",
             [
               {
                 "tag": "@param command_buffer",
@@ -45755,7 +45755,7 @@
           "doc": [
             "Binds texture-sampler pairs for use on the vertex shader.",
             "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
-            "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+            "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
             [
               {
                 "tag": "@param render_pass",
@@ -45780,7 +45780,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateShader"
+              "content": "CreateGPUShader"
             }
           ],
           "name": "BindGPUVertexSamplers",
@@ -45831,7 +45831,7 @@
           "doc": [
             "Binds storage textures for use on the vertex shader.",
             "These textures must have been created with GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.",
-            "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+            "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
             [
               {
                 "tag": "@param render_pass",
@@ -45856,7 +45856,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateShader"
+              "content": "CreateGPUShader"
             }
           ],
           "name": "BindGPUVertexStorageTextures",
@@ -45907,7 +45907,7 @@
           "doc": [
             "Binds storage buffers for use on the vertex shader.",
             "These buffers must have been created with GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.",
-            "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+            "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
             [
               {
                 "tag": "@param render_pass",
@@ -45932,7 +45932,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateShader"
+              "content": "CreateGPUShader"
             }
           ],
           "name": "BindGPUVertexStorageBuffers",
@@ -45983,7 +45983,7 @@
           "doc": [
             "Binds texture-sampler pairs for use on the fragment shader.",
             "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
-            "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+            "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
             [
               {
                 "tag": "@param render_pass",
@@ -46008,7 +46008,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateShader"
+              "content": "CreateGPUShader"
             }
           ],
           "name": "BindGPUFragmentSamplers",
@@ -46059,7 +46059,7 @@
           "doc": [
             "Binds storage textures for use on the fragment shader.",
             "These textures must have been created with GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.",
-            "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+            "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
             [
               {
                 "tag": "@param render_pass",
@@ -46084,7 +46084,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateShader"
+              "content": "CreateGPUShader"
             }
           ],
           "name": "BindGPUFragmentStorageTextures",
@@ -46135,7 +46135,7 @@
           "doc": [
             "Binds storage buffers for use on the fragment shader.",
             "These buffers must have been created with GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.",
-            "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateShader().",
+            "Be sure your shader is set up according to the requirements documented in CreateGPUShader().",
             [
               {
                 "tag": "@param render_pass",
@@ -46160,7 +46160,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateShader"
+              "content": "CreateGPUShader"
             }
           ],
           "name": "BindGPUFragmentStorageBuffers",
@@ -46739,7 +46739,7 @@
           "doc": [
             "Binds texture-sampler pairs for use on the compute shader.",
             "The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.",
-            "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateComputePipeline().",
+            "Be sure your shader is set up according to the requirements documented in CreateGPUComputePipeline().",
             [
               {
                 "tag": "@param compute_pass",
@@ -46764,7 +46764,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateComputePipeline"
+              "content": "CreateGPUComputePipeline"
             }
           ],
           "name": "BindGPUComputeSamplers",
@@ -46815,7 +46815,7 @@
           "doc": [
             "Binds storage textures as readonly for use on the compute pipeline.",
             "These textures must have been created with GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.",
-            "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateComputePipeline().",
+            "Be sure your shader is set up according to the requirements documented in CreateGPUComputePipeline().",
             [
               {
                 "tag": "@param compute_pass",
@@ -46840,7 +46840,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateComputePipeline"
+              "content": "CreateGPUComputePipeline"
             }
           ],
           "name": "BindGPUComputeStorageTextures",
@@ -46891,7 +46891,7 @@
           "doc": [
             "Binds storage buffers as readonly for use on the compute pipeline.",
             "These buffers must have been created with GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.",
-            "Be sure your shader is set up according to the requirements documented in GPUDevice.CreateComputePipeline().",
+            "Be sure your shader is set up according to the requirements documented in CreateGPUComputePipeline().",
             [
               {
                 "tag": "@param compute_pass",
@@ -46916,7 +46916,7 @@
             },
             {
               "tag": "@sa",
-              "content": "GPUDevice.CreateComputePipeline"
+              "content": "CreateGPUComputePipeline"
             }
           ],
           "name": "BindGPUComputeStorageBuffers",
@@ -52424,7 +52424,7 @@
             [
               {
                 "tag": "@param haptic",
-                "content": "the Haptic obtained from Joystick.Joystick()."
+                "content": "the Haptic obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -71736,7 +71736,7 @@
             },
             "Close": {
               "doc": [
-                "Close a joystick previously opened with Joystick.Joystick().",
+                "Close a joystick previously opened with OpenJoystick().",
                 {
                   "tag": "@threadsafety",
                   "content": "It is safe to call this function from any thread."
@@ -71747,7 +71747,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Joystick.Joystick"
+                  "content": "OpenJoystick"
                 }
               ],
               "name": "Close",
@@ -73790,7 +73790,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Joystick.Joystick"
+                "content": "OpenJoystick"
               }
             ]
           ],
@@ -75347,7 +75347,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -75461,7 +75461,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -75510,7 +75510,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -75560,7 +75560,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -75609,7 +75609,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@param player_index",
@@ -75676,7 +75676,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -75732,7 +75732,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -75782,7 +75782,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -75832,7 +75832,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -75882,7 +75882,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -75928,7 +75928,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -75973,7 +75973,7 @@
             [
               {
                 "tag": "@param joystick",
-                "content": "the Joystick obtained from Joystick.Joystick()."
+                "content": "the Joystick obtained from OpenJoystick()."
               },
               {
                 "tag": "@returns",
@@ -77244,7 +77244,7 @@
         },
         "CloseJoystick": {
           "doc": [
-            "Close a joystick previously opened with Joystick.Joystick().",
+            "Close a joystick previously opened with OpenJoystick().",
             {
               "tag": "@param joystick",
               "content": "the joystick device to close."
@@ -77259,7 +77259,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Joystick.Joystick"
+              "content": "OpenJoystick"
             }
           ],
           "name": "CloseJoystick",
@@ -110509,7 +110509,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Renderer.CreateGPURenderState"
+              "content": "CreateGPURenderState"
             }
           ],
           "sourceName": "SDL_GPURenderStateCreateInfo",
@@ -111440,11 +111440,11 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Renderer.CreateTextureFromSurface"
+                    "content": "CreateTextureFromSurface"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Renderer.CreateTextureWithProperties"
+                    "content": "CreateTextureWithProperties"
                   },
                   {
                     "tag": "@sa",
@@ -111510,11 +111510,11 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Renderer.CreateTexture"
+                    "content": "CreateTexture"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Renderer.CreateTextureWithProperties"
+                    "content": "CreateTextureWithProperties"
                   },
                   {
                     "tag": "@sa",
@@ -111703,11 +111703,11 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Renderer.CreateTexture"
+                    "content": "CreateTexture"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Renderer.CreateTextureFromSurface"
+                    "content": "CreateTextureFromSurface"
                   },
                   {
                     "tag": "@sa",
@@ -115302,15 +115302,15 @@
             [
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTexture"
+                "content": "CreateTexture"
               },
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTextureFromSurface"
+                "content": "CreateTextureFromSurface"
               },
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTextureWithProperties"
+                "content": "CreateTextureWithProperties"
               },
               {
                 "tag": "@sa",
@@ -115434,11 +115434,11 @@
                       [
                         {
                           "tag": "@sa",
-                          "content": "Renderer.CreateTextureFromSurface"
+                          "content": "CreateTextureFromSurface"
                         },
                         {
                           "tag": "@sa",
-                          "content": "Renderer.CreateTextureWithProperties"
+                          "content": "CreateTextureWithProperties"
                         },
                         {
                           "tag": "@sa",
@@ -115507,11 +115507,11 @@
                         [
                           {
                             "tag": "@sa",
-                            "content": "Renderer.CreateTexture"
+                            "content": "CreateTexture"
                           },
                           {
                             "tag": "@sa",
-                            "content": "Renderer.CreateTextureWithProperties"
+                            "content": "CreateTextureWithProperties"
                           },
                           {
                             "tag": "@sa",
@@ -115703,11 +115703,11 @@
                             },
                             {
                               "tag": "@sa",
-                              "content": "Renderer.CreateTexture"
+                              "content": "CreateTexture"
                             },
                             {
                               "tag": "@sa",
-                              "content": "Renderer.CreateTextureFromSurface"
+                              "content": "CreateTextureFromSurface"
                             },
                             {
                               "tag": "@sa",
@@ -115965,11 +115965,11 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Renderer.CreateTexture"
+                    "content": "CreateTexture"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Renderer.CreateTextureFromSurface"
+                    "content": "CreateTextureFromSurface"
                   }
                 ]
               ],
@@ -119080,11 +119080,11 @@
               },
               {
                 "tag": "@sa",
-                "content": "GPUDevice.CreateShader"
+                "content": "CreateGPUShader"
               },
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateGPURenderState"
+                "content": "CreateGPURenderState"
               },
               {
                 "tag": "@sa",
@@ -120128,11 +120128,11 @@
             [
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTextureFromSurface"
+                "content": "CreateTextureFromSurface"
               },
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTextureWithProperties"
+                "content": "CreateTextureWithProperties"
               },
               {
                 "tag": "@sa",
@@ -120299,11 +120299,11 @@
             [
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTexture"
+                "content": "CreateTexture"
               },
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTextureWithProperties"
+                "content": "CreateTextureWithProperties"
               },
               {
                 "tag": "@sa",
@@ -120517,11 +120517,11 @@
               },
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTexture"
+                "content": "CreateTexture"
               },
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTextureFromSurface"
+                "content": "CreateTextureFromSurface"
               },
               {
                 "tag": "@sa",
@@ -128145,11 +128145,11 @@
             [
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTexture"
+                "content": "CreateTexture"
               },
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateTextureFromSurface"
+                "content": "CreateTextureFromSurface"
               }
             ]
           ],
@@ -129023,7 +129023,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Renderer.CreateGPURenderState"
+                "content": "CreateGPURenderState"
               },
               {
                 "tag": "@sa",
@@ -129270,7 +129270,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Renderer.CreateGPURenderState"
+                  "content": "CreateGPURenderState"
                 }
               ],
               "name": "Destroy",
@@ -129668,7 +129668,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Renderer.CreateGPURenderState"
+              "content": "CreateGPURenderState"
             }
           ],
           "name": "DestroyGPURenderState",
@@ -165936,7 +165936,7 @@
             },
             {
               "tag": "@sa",
-              "content": "TrayMenu.InsertEntry"
+              "content": "InsertTrayEntryAt"
             }
           ],
           "type": "Uint32",
@@ -166559,7 +166559,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   }
                 ]
               ],
@@ -166956,7 +166956,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   }
                 ]
               ],
@@ -166994,7 +166994,7 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   },
                   {
                     "tag": "@sa",
@@ -167040,7 +167040,7 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   },
                   {
                     "tag": "@sa",
@@ -167084,7 +167084,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   },
                   {
                     "tag": "@sa",
@@ -167132,7 +167132,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   },
                   {
                     "tag": "@sa",
@@ -167176,7 +167176,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   },
                   {
                     "tag": "@sa",
@@ -167224,7 +167224,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   },
                   {
                     "tag": "@sa",
@@ -167267,7 +167267,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   },
                   {
                     "tag": "@sa",
@@ -167314,7 +167314,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   },
                   {
                     "tag": "@sa",
@@ -167361,7 +167361,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TrayMenu.InsertEntry"
+                    "content": "InsertTrayEntryAt"
                   }
                 ]
               ],
@@ -167423,7 +167423,7 @@
                     },
                     {
                       "tag": "@sa",
-                      "content": "TrayMenu.InsertEntry"
+                      "content": "InsertTrayEntryAt"
                     }
                   ]
                 ],
@@ -167472,7 +167472,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "TrayMenu.InsertEntry"
+                  "content": "InsertTrayEntryAt"
                 }
               ],
               "name": "GetParent",
@@ -167860,7 +167860,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               },
               {
                 "tag": "@sa",
@@ -167985,7 +167985,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               },
               {
                 "tag": "@sa",
@@ -168052,7 +168052,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               }
             ]
           ],
@@ -168105,7 +168105,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               }
             ]
           ],
@@ -168416,7 +168416,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               },
               {
                 "tag": "@sa",
@@ -168485,7 +168485,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               },
               {
                 "tag": "@sa",
@@ -168546,7 +168546,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               },
               {
                 "tag": "@sa",
@@ -168615,7 +168615,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               },
               {
                 "tag": "@sa",
@@ -168675,7 +168675,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               },
               {
                 "tag": "@sa",
@@ -168743,7 +168743,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               },
               {
                 "tag": "@sa",
@@ -168807,7 +168807,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TrayMenu.InsertEntry"
+                "content": "InsertTrayEntryAt"
               }
             ]
           ],
@@ -168874,7 +168874,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "TrayMenu.InsertEntry"
+                  "content": "InsertTrayEntryAt"
                 }
               ]
             ]
@@ -169024,7 +169024,7 @@
             },
             {
               "tag": "@sa",
-              "content": "TrayMenu.InsertEntry"
+              "content": "InsertTrayEntryAt"
             }
           ],
           "name": "GetTrayEntryParent",
@@ -175489,7 +175489,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Window.MakeCurrent"
+                    "content": "GL_MakeCurrent"
                   }
                 ]
               ],
@@ -175528,7 +175528,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Window.CreateGLContext"
+                  "content": "GL_CreateContext"
                 }
               ],
               "name": "MakeCurrent",
@@ -176337,7 +176337,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Window.CreateGLContext"
+                "content": "GL_CreateContext"
               },
               {
                 "tag": "@sa",
@@ -176345,7 +176345,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Window.MakeCurrent"
+                "content": "GL_MakeCurrent"
               },
               {
                 "tag": "@sa",
@@ -176395,7 +176395,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Window.MakeCurrent"
+                    "content": "GL_MakeCurrent"
                   }
                 ]
               ],
@@ -176445,7 +176445,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Window.CreateGLContext"
+                  "content": "GL_CreateContext"
                 }
               ],
               "name": "Destroy",
@@ -176488,7 +176488,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Window.CreateGLContext"
+                  "content": "GL_CreateContext"
                 }
               ],
               "name": "MakeCurrent",
@@ -185303,7 +185303,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Window.CreateGLContext"
+                "content": "GL_CreateContext"
               },
               {
                 "tag": "@sa",
@@ -185419,7 +185419,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Window.MakeCurrent"
+                "content": "GL_MakeCurrent"
               }
             ]
           ],
@@ -185496,7 +185496,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Window.CreateGLContext"
+              "content": "GL_CreateContext"
             }
           ],
           "name": "GL_MakeCurrent",
@@ -185601,7 +185601,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Window.MakeCurrent"
+              "content": "GL_MakeCurrent"
             }
           ],
           "name": "GL_GetCurrentContext",
@@ -185916,7 +185916,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Window.CreateGLContext"
+              "content": "GL_CreateContext"
             }
           ],
           "name": "GL_DestroyContext",
@@ -198616,9 +198616,9 @@
         "It offers audio file decoding, mixing multiple sounds together, basic 3D positional audio, and various audio effects.",
         "It can mix sound to multiple audio devices in real time, or generate mixed audio data to a memory buffer for any other use. It can do both at the same time!",
         "To use the library, first call MIX.Init(). Then create a mixer with CreateMixerDevice() (or CreateMixer() to render to memory).",
-        "Once you have a mixer, you can load sound data with Mixer.LoadAudio(), Mixer.LoadAudio_IO(), or LoadAudioWithProperties(). Data gets loaded once and can be played over and over.",
+        "Once you have a mixer, you can load sound data with LoadAudio(), LoadAudio_IO(), or LoadAudioWithProperties(). Data gets loaded once and can be played over and over.",
         "When loading audio, SDL_mixer can parse out several metadata tag formats, such as ID3 and APE tags, and exposes this information through the GetAudioProperties() function.",
-        "To play audio, you create a track with Mixer.CreateTrack(). You need one track for each sound that will be played simultaneously; think of tracks as individual sliders on a mixer board. You might have loaded hundreds of audio files, but you probably only have a handful of tracks that you assign those loaded files to when they are ready to play, and reuse those tracks with different audio later. Tracks take their input from a Audio (static data to be played multiple times) or an AudioStream (streaming PCM audio the app supplies, possibly as needed). A third option is to supply an IOStream, to load and decode on the fly, which might be more efficient for background music that is only used once, etc.",
+        "To play audio, you create a track with CreateTrack(). You need one track for each sound that will be played simultaneously; think of tracks as individual sliders on a mixer board. You might have loaded hundreds of audio files, but you probably only have a handful of tracks that you assign those loaded files to when they are ready to play, and reuse those tracks with different audio later. Tracks take their input from a Audio (static data to be played multiple times) or an AudioStream (streaming PCM audio the app supplies, possibly as needed). A third option is to supply an IOStream, to load and decode on the fly, which might be more efficient for background music that is only used once, etc.",
         "Assign input to a Track with SetTrackAudio(), SetTrackAudioStream(), or SetTrackIOStream().",
         "Once a track has an input, start it playing with PlayTrack(). There are many options to this function to dictate mixing features: looping, fades, etc.",
         "Tracks can be tagged with arbitrary strings, like \"music\" or \"ingame\" or \"ui\". These tags can be used to start, stop, and pause a selection of tracks at the same moment.",
@@ -198945,7 +198945,7 @@
                           "This will call Init(INIT_AUDIO) internally; it's safe to call Init() before this call, too, if you intend to enumerate audio devices to choose one to open here.",
                           "An audio format can be requested, and the system will try to set the hardware to those specifications, or as close as possible, but this is just a hint. SDL_mixer will handle all data conversion behind the scenes in any case, and specifying a nullptr spec is a reasonable choice. The best reason to specify a format is because you know all your data is in that format and it might save some unnecessary CPU time on conversion.",
                           "The actual device format chosen is available through GetMixerFormat().",
-                          "Once a mixer is created, next steps are usually to load audio (through Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and play that audio through that track.",
+                          "Once a mixer is created, next steps are usually to load audio (through LoadAudio() and friends), create a track (CreateTrack()), and play that audio through that track.",
                           "When done with the mixer, it can be destroyed with DestroyMixer().",
                           [
                             {
@@ -199007,7 +199007,7 @@
                             "Create a mixer that generates audio to a memory buffer.",
                             "Usually you want CreateMixerDevice() instead of this function. The mixer created here can be used with Generate() to produce more data on demand, as fast as desired.",
                             "An audio format must be specified. This is the format it will output in. This cannot be nullptr.",
-                            "Once a mixer is created, next steps are usually to load audio (through Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and play that audio through that track.",
+                            "Once a mixer is created, next steps are usually to load audio (through LoadAudio() and friends), create a track (CreateTrack()), and play that audio through that track.",
                             "When done with the mixer, it can be destroyed with DestroyMixer().",
                             [
                               {
@@ -199315,7 +199315,7 @@
                 "Audio objects can be shared between mixers. This function takes a Mixer, to imply this is the most likely place it will be used and loading should try to match its audio format, but the resulting audio can be used elsewhere. If `mixer` is nullptr, SDL_mixer will set reasonable defaults.",
                 "Once a Audio is created, it can be assigned to a Track with SetTrackAudio(), or played without any management with PlayAudio().",
                 "When done with a Audio, it can be freed with DestroyAudio().",
-                "This function loads data from an IOStream. There is also a version that loads from a path on the filesystem (Mixer.LoadAudio()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
+                "This function loads data from an IOStream. There is also a version that loads from a path on the filesystem (LoadAudio()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
                 "The IOStream provided must be able to seek, or loading will fail. If the stream can't seek (data is coming from an HTTP connection, etc), consider caching the data to memory or disk first and creating a new stream to read from there.",
                 [
                   {
@@ -199358,7 +199358,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadAudio"
+                    "content": "LoadAudio"
                   },
                   {
                     "tag": "@sa",
@@ -199396,9 +199396,9 @@
                 "Load audio for playback from a file.",
                 "This is equivalent to calling:",
                 {
-                  "content": "```c\nMixer.LoadAudio_IO(mixer, IOFromFile(path, \"rb\"), predecode, true);\n```"
+                  "content": "```c\nLoadAudio_IO(mixer, IOFromFile(path, \"rb\"), predecode, true);\n```"
                 },
-                "This function loads data from a path on the filesystem. There is also a version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
+                "This function loads data from a path on the filesystem. There is also a version that loads from an IOStream (LoadAudio_IO()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
                 [
                   {
                     "tag": "@param path",
@@ -199436,7 +199436,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadAudio_IO"
+                    "content": "LoadAudio_IO"
                   },
                   {
                     "tag": "@sa",
@@ -199469,7 +199469,7 @@
                 "Load audio for playback from a memory buffer without making a copy.",
                 "When loading audio through most other LoadAudio functions, the data will be cached fully in RAM in its original data format, for decoding on-demand. This function does most of the same work as those functions, but instead uses a buffer of memory provided by the app that it does not make a copy of.",
                 "This buffer must live for the entire time the returned Audio lives, as the mixer will access the buffer whenever it needs to mix more data.",
-                "This function is meant to maximize efficiency: if the data is already in memory and can remain there, don't copy it. This data can be in any supported audio file format (WAV, MP3, etc); it will be decoded on the fly while mixing. Unlike Mixer.LoadAudio(), there is no `predecode` option offered here, as this is meant to optimize for data that's already in memory and intends to exist there for significant time; since predecoding would only need the file format data once, upfront, one could simply wrap it in SDL_CreateIOFromConstMem() and pass that to Mixer.LoadAudio_IO().",
+                "This function is meant to maximize efficiency: if the data is already in memory and can remain there, don't copy it. This data can be in any supported audio file format (WAV, MP3, etc); it will be decoded on the fly while mixing. Unlike LoadAudio(), there is no `predecode` option offered here, as this is meant to optimize for data that's already in memory and intends to exist there for significant time; since predecoding would only need the file format data once, upfront, one could simply wrap it in SDL_CreateIOFromConstMem() and pass that to LoadAudio_IO().",
                 "Audio objects can be shared between multiple mixers. The `mixer` parameter just suggests the most likely mixer to use this audio, in case some optimization might be applied, but this is not required, and a nullptr mixer may be specified.",
                 "If `free_when_done` is true, SDL_mixer will call `free(data)` when the returned Audio is eventually destroyed. This can be useful when the data is not static, but rather loaded elsewhere for this specific Audio and simply wants to avoid the extra copy.",
                 "As audio format information is obtained from the file format metadata, this isn't useful for raw PCM data; in that case, use LoadRawAudioNoCopy() instead, which offers an AudioSpec.",
@@ -199520,7 +199520,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadAudio_IO"
+                    "content": "LoadAudio_IO"
                   }
                 ]
               ],
@@ -199591,7 +199591,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadRawAudio"
+                    "content": "LoadRawAudio"
                   },
                   {
                     "tag": "@sa",
@@ -199599,7 +199599,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadAudio_IO"
+                    "content": "LoadAudio_IO"
                   }
                 ]
               ],
@@ -199675,7 +199675,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadRawAudio_IO"
+                    "content": "LoadRawAudio_IO"
                   },
                   {
                     "tag": "@sa",
@@ -199683,7 +199683,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadAudio_IO"
+                    "content": "LoadAudio_IO"
                   }
                 ]
               ],
@@ -199759,15 +199759,15 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadRawAudio"
+                    "content": "LoadRawAudio"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadRawAudio_IO"
+                    "content": "LoadRawAudio_IO"
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadAudio_IO"
+                    "content": "LoadAudio_IO"
                   }
                 ]
               ],
@@ -199843,7 +199843,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadAudio_IO"
+                    "content": "LoadAudio_IO"
                   }
                 ]
               ],
@@ -200061,7 +200061,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "Mixer.LoadAudio"
+                    "content": "LoadAudio"
                   }
                 ]
               ],
@@ -201121,7 +201121,7 @@
         "Audio": {
           "doc": [
             "An opaque object that represents audio data.",
-            "Generally you load audio data (in whatever file format) into SDL_mixer with Mixer.LoadAudio() or one of its several variants, producing a Audio object.",
+            "Generally you load audio data (in whatever file format) into SDL_mixer with LoadAudio() or one of its several variants, producing a Audio object.",
             "A Audio represents static audio data; it could be background music, or maybe a laser gun sound effect. It is loaded into RAM and can be played multiple times, possibly on different tracks at the same time.",
             "Unlike most other objects, Audio objects can be shared between mixers.",
             {
@@ -201242,7 +201242,7 @@
                           "Audio objects can be shared between mixers. This function takes a Mixer, to imply this is the most likely place it will be used and loading should try to match its audio format, but the resulting audio can be used elsewhere. If `mixer` is nullptr, SDL_mixer will set reasonable defaults.",
                           "Once a Audio is created, it can be assigned to a Track with SetTrackAudio(), or played without any management with PlayAudio().",
                           "When done with a Audio, it can be freed with DestroyAudio().",
-                          "This function loads data from an IOStream. There is also a version that loads from a path on the filesystem (Mixer.LoadAudio()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
+                          "This function loads data from an IOStream. There is also a version that loads from a path on the filesystem (LoadAudio()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
                           "The IOStream provided must be able to seek, or loading will fail. If the stream can't seek (data is coming from an HTTP connection, etc), consider caching the data to memory or disk first and creating a new stream to read from there.",
                           [
                             {
@@ -201289,7 +201289,7 @@
                             },
                             {
                               "tag": "@sa",
-                              "content": "Mixer.LoadAudio"
+                              "content": "LoadAudio"
                             },
                             {
                               "tag": "@sa",
@@ -201328,9 +201328,9 @@
                             "Load audio for playback from a file.",
                             "This is equivalent to calling:",
                             {
-                              "content": "```c\nMixer.LoadAudio_IO(mixer, IOFromFile(path, \"rb\"), predecode, true);\n```"
+                              "content": "```c\nLoadAudio_IO(mixer, IOFromFile(path, \"rb\"), predecode, true);\n```"
                             },
-                            "This function loads data from a path on the filesystem. There is also a version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
+                            "This function loads data from a path on the filesystem. There is also a version that loads from an IOStream (LoadAudio_IO()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
                             [
                               {
                                 "tag": "@param mixer",
@@ -201372,7 +201372,7 @@
                               },
                               {
                                 "tag": "@sa",
-                                "content": "Mixer.LoadAudio_IO"
+                                "content": "LoadAudio_IO"
                               },
                               {
                                 "tag": "@sa",
@@ -201404,7 +201404,7 @@
                           "overload": {
                             "doc": [
                               "Load audio for playback through a collection of properties.",
-                              "Please see Mixer.LoadAudio_IO() for a description of what the various LoadAudio functions do. This function uses properties to dictate how it operates, and exposes functionality the other functions don't provide.",
+                              "Please see LoadAudio_IO() for a description of what the various LoadAudio functions do. This function uses properties to dictate how it operates, and exposes functionality the other functions don't provide.",
                               "Properties are discussed in [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .",
                               "These are the supported properties:",
                               [
@@ -201467,11 +201467,11 @@
                                 },
                                 {
                                   "tag": "@sa",
-                                  "content": "Mixer.LoadAudio"
+                                  "content": "LoadAudio"
                                 },
                                 {
                                   "tag": "@sa",
-                                  "content": "Mixer.LoadAudio_IO"
+                                  "content": "LoadAudio_IO"
                                 }
                               ]
                             ],
@@ -201539,7 +201539,7 @@
                                   },
                                   {
                                     "tag": "@sa",
-                                    "content": "Mixer.LoadRawAudio"
+                                    "content": "LoadRawAudio"
                                   },
                                   {
                                     "tag": "@sa",
@@ -201547,7 +201547,7 @@
                                   },
                                   {
                                     "tag": "@sa",
-                                    "content": "Mixer.LoadAudio_IO"
+                                    "content": "LoadAudio_IO"
                                   }
                                 ]
                               ],
@@ -201628,7 +201628,7 @@
                                     },
                                     {
                                       "tag": "@sa",
-                                      "content": "Mixer.LoadRawAudio_IO"
+                                      "content": "LoadRawAudio_IO"
                                     },
                                     {
                                       "tag": "@sa",
@@ -201636,7 +201636,7 @@
                                     },
                                     {
                                       "tag": "@sa",
-                                      "content": "Mixer.LoadAudio_IO"
+                                      "content": "LoadAudio_IO"
                                     }
                                   ]
                                 ],
@@ -202465,7 +202465,7 @@
             "GetMixer": {
               "doc": [
                 "Get the Mixer that owns a Track.",
-                "This is the mixer pointer that was passed to Mixer.CreateTrack().",
+                "This is the mixer pointer that was passed to CreateTrack().",
                 [
                   {
                     "tag": "@returns",
@@ -203943,7 +203943,7 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Mixer.CreateGroup"
+                    "content": "CreateGroup"
                   },
                   {
                     "tag": "@sa",
@@ -204610,7 +204610,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Mixer.CreateGroup"
+                  "content": "CreateGroup"
                 }
               ],
               "name": "Destroy",
@@ -204662,7 +204662,7 @@
             "GetMixer": {
               "doc": [
                 "Get the Mixer that owns a Group.",
-                "This is the mixer pointer that was passed to Mixer.CreateGroup().",
+                "This is the mixer pointer that was passed to CreateGroup().",
                 [
                   {
                     "tag": "@returns",
@@ -205023,7 +205023,7 @@
             "This will call Init(INIT_AUDIO) internally; it's safe to call Init() before this call, too, if you intend to enumerate audio devices to choose one to open here.",
             "An audio format can be requested, and the system will try to set the hardware to those specifications, or as close as possible, but this is just a hint. SDL_mixer will handle all data conversion behind the scenes in any case, and specifying a nullptr spec is a reasonable choice. The best reason to specify a format is because you know all your data is in that format and it might save some unnecessary CPU time on conversion.",
             "The actual device format chosen is available through GetMixerFormat().",
-            "Once a mixer is created, next steps are usually to load audio (through Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and play that audio through that track.",
+            "Once a mixer is created, next steps are usually to load audio (through LoadAudio() and friends), create a track (CreateTrack()), and play that audio through that track.",
             "When done with the mixer, it can be destroyed with DestroyMixer().",
             [
               {
@@ -205126,7 +205126,7 @@
             "Create a mixer that generates audio to a memory buffer.",
             "Usually you want CreateMixerDevice() instead of this function. The mixer created here can be used with Generate() to produce more data on demand, as fast as desired.",
             "An audio format must be specified. This is the format it will output in. This cannot be nullptr.",
-            "Once a mixer is created, next steps are usually to load audio (through Mixer.LoadAudio() and friends), create a track (Mixer.CreateTrack()), and play that audio through that track.",
+            "Once a mixer is created, next steps are usually to load audio (through LoadAudio() and friends), create a track (CreateTrack()), and play that audio through that track.",
             "When done with the mixer, it can be destroyed with DestroyMixer().",
             [
               {
@@ -205520,7 +205520,7 @@
             "Audio objects can be shared between mixers. This function takes a Mixer, to imply this is the most likely place it will be used and loading should try to match its audio format, but the resulting audio can be used elsewhere. If `mixer` is nullptr, SDL_mixer will set reasonable defaults.",
             "Once a Audio is created, it can be assigned to a Track with SetTrackAudio(), or played without any management with PlayAudio().",
             "When done with a Audio, it can be freed with DestroyAudio().",
-            "This function loads data from an IOStream. There is also a version that loads from a path on the filesystem (Mixer.LoadAudio()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
+            "This function loads data from an IOStream. There is also a version that loads from a path on the filesystem (LoadAudio()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
             "The IOStream provided must be able to seek, or loading will fail. If the stream can't seek (data is coming from an HTTP connection, etc), consider caching the data to memory or disk first and creating a new stream to read from there.",
             [
               {
@@ -205567,7 +205567,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadAudio"
+                "content": "LoadAudio"
               },
               {
                 "tag": "@sa",
@@ -205759,9 +205759,9 @@
             "Load audio for playback from a file.",
             "This is equivalent to calling:",
             {
-              "content": "```c\nMixer.LoadAudio_IO(mixer, IOFromFile(path, \"rb\"), predecode, true);\n```"
+              "content": "```c\nLoadAudio_IO(mixer, IOFromFile(path, \"rb\"), predecode, true);\n```"
             },
-            "This function loads data from a path on the filesystem. There is also a version that loads from an IOStream (Mixer.LoadAudio_IO()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
+            "This function loads data from a path on the filesystem. There is also a version that loads from an IOStream (LoadAudio_IO()), and one that accepts properties for ultimate control (LoadAudioWithProperties()).",
             [
               {
                 "tag": "@param mixer",
@@ -205803,7 +205803,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadAudio_IO"
+                "content": "LoadAudio_IO"
               },
               {
                 "tag": "@sa",
@@ -205861,7 +205861,7 @@
             "Load audio for playback from a memory buffer without making a copy.",
             "When loading audio through most other LoadAudio functions, the data will be cached fully in RAM in its original data format, for decoding on-demand. This function does most of the same work as those functions, but instead uses a buffer of memory provided by the app that it does not make a copy of.",
             "This buffer must live for the entire time the returned Audio lives, as the mixer will access the buffer whenever it needs to mix more data.",
-            "This function is meant to maximize efficiency: if the data is already in memory and can remain there, don't copy it. This data can be in any supported audio file format (WAV, MP3, etc); it will be decoded on the fly while mixing. Unlike Mixer.LoadAudio(), there is no `predecode` option offered here, as this is meant to optimize for data that's already in memory and intends to exist there for significant time; since predecoding would only need the file format data once, upfront, one could simply wrap it in SDL_CreateIOFromConstMem() and pass that to Mixer.LoadAudio_IO().",
+            "This function is meant to maximize efficiency: if the data is already in memory and can remain there, don't copy it. This data can be in any supported audio file format (WAV, MP3, etc); it will be decoded on the fly while mixing. Unlike LoadAudio(), there is no `predecode` option offered here, as this is meant to optimize for data that's already in memory and intends to exist there for significant time; since predecoding would only need the file format data once, upfront, one could simply wrap it in SDL_CreateIOFromConstMem() and pass that to LoadAudio_IO().",
             "Audio objects can be shared between multiple mixers. The `mixer` parameter just suggests the most likely mixer to use this audio, in case some optimization might be applied, but this is not required, and a nullptr mixer may be specified.",
             "If `free_when_done` is true, SDL_mixer will call `free(data)` when the returned Audio is eventually destroyed. This can be useful when the data is not static, but rather loaded elsewhere for this specific Audio and simply wants to avoid the extra copy.",
             "As audio format information is obtained from the file format metadata, this isn't useful for raw PCM data; in that case, use LoadRawAudioNoCopy() instead, which offers an AudioSpec.",
@@ -205916,7 +205916,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadAudio_IO"
+                "content": "LoadAudio_IO"
               }
             ]
           ],
@@ -205967,7 +205967,7 @@
         "LoadAudioWithProperties": {
           "doc": [
             "Load audio for playback through a collection of properties.",
-            "Please see Mixer.LoadAudio_IO() for a description of what the various LoadAudio functions do. This function uses properties to dictate how it operates, and exposes functionality the other functions don't provide.",
+            "Please see LoadAudio_IO() for a description of what the various LoadAudio functions do. This function uses properties to dictate how it operates, and exposes functionality the other functions don't provide.",
             "Properties are discussed in [SDL's documentation](https://wiki.libsdl.org/SDL3/CategoryProperties) .",
             "These are the supported properties:",
             [
@@ -206030,11 +206030,11 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadAudio"
+                "content": "LoadAudio"
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadAudio_IO"
+                "content": "LoadAudio_IO"
               }
             ]
           ],
@@ -206176,7 +206176,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadRawAudio"
+                "content": "LoadRawAudio"
               },
               {
                 "tag": "@sa",
@@ -206184,7 +206184,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadAudio_IO"
+                "content": "LoadAudio_IO"
               }
             ]
           ],
@@ -206293,7 +206293,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadRawAudio_IO"
+                "content": "LoadRawAudio_IO"
               },
               {
                 "tag": "@sa",
@@ -206301,7 +206301,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadAudio_IO"
+                "content": "LoadAudio_IO"
               }
             ]
           ],
@@ -206406,15 +206406,15 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadRawAudio"
+                "content": "LoadRawAudio"
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadRawAudio_IO"
+                "content": "LoadRawAudio_IO"
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadAudio_IO"
+                "content": "LoadAudio_IO"
               }
             ]
           ],
@@ -206522,7 +206522,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadAudio_IO"
+                "content": "LoadAudio_IO"
               }
             ]
           ],
@@ -207131,7 +207131,7 @@
         "GetTrackMixer": {
           "doc": [
             "Get the Mixer that owns a Track.",
-            "This is the mixer pointer that was passed to Mixer.CreateTrack().",
+            "This is the mixer pointer that was passed to CreateTrack().",
             [
               {
                 "tag": "@param track",
@@ -209015,7 +209015,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "Mixer.LoadAudio"
+                "content": "LoadAudio"
               }
             ]
           ],
@@ -210801,7 +210801,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Mixer.CreateGroup"
+              "content": "CreateGroup"
             }
           ],
           "name": "DestroyGroup",
@@ -210886,7 +210886,7 @@
         "GetGroupMixer": {
           "doc": [
             "Get the Mixer that owns a Group.",
-            "This is the mixer pointer that was passed to Mixer.CreateGroup().",
+            "This is the mixer pointer that was passed to CreateGroup().",
             [
               {
                 "tag": "@param group",
@@ -210968,7 +210968,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Mixer.CreateGroup"
+                "content": "CreateGroup"
               },
               {
                 "tag": "@sa",
@@ -212729,10 +212729,10 @@
         "There are several pieces to this library, and most apps won't use them all, but rather choose the portion that's relevant to their needs.",
         "All apps will call NET.Init() on startup and NET.Quit() on shutdown.",
         "The cornerstone of the library is the Address object. This is what manages the details of how to reach another computer on the network, and what network protocol to use to get there. You'll need a Address to talk over the network. If you need to convert a hostname (such as \"google.com\" or \"libsdl.org\") into a Address, you can call ResolveHostname(), which will do the appropriate DNS queries on a background thread. Once these are ready, you can use the Address to connect to these hosts over the Internet.",
-        "Something that initiates a connection to a remote system is called a \"client,\" connecting to a \"server.\" To establish a connection, use the Address you resolved with Address.CreateClient(). Once the connection is established (a non-blocking operation), you'll have a StreamSocket object that can send and receive data over the connection, using WriteToStreamSocket() and ReadFromStreamSocket().",
-        "To instead be a server, that clients connect to, call Address.CreateServer() to get a Server object. All a Server does is allow you to accept connections from clients, turning them into NET_StreamSockets, where you can read and write from the opposite side of the connection from a given client.",
+        "Something that initiates a connection to a remote system is called a \"client,\" connecting to a \"server.\" To establish a connection, use the Address you resolved with CreateClient(). Once the connection is established (a non-blocking operation), you'll have a StreamSocket object that can send and receive data over the connection, using WriteToStreamSocket() and ReadFromStreamSocket().",
+        "To instead be a server, that clients connect to, call CreateServer() to get a Server object. All a Server does is allow you to accept connections from clients, turning them into NET_StreamSockets, where you can read and write from the opposite side of the connection from a given client.",
         "These things are, underneath this API, TCP connections, which means you can use a client or server to talk to something that _isn't_ using SDL_net at all.",
-        "Clients and servers deal with \"stream sockets,\" a reliable stream of bytes. There are tradeoffs to using these, especially in poor network conditions. Another option is to use \"datagram sockets,\" which map to UDP packet transmission. With datagrams, everyone involved can send small packets of data that may arrive in any order, or not at all, but transmission can carry on if a packet is lost, each packet is clearly separated from every other, and communication can happen in a peer-to-peer model instead of client-server: while datagrams can be more complex, these _are_ useful properties not avaiable to stream sockets. Address.CreateDatagramSocket() is used to prepare for datagram communication, then SendDatagram() and ReceiveDatagram() transmit packets.",
+        "Clients and servers deal with \"stream sockets,\" a reliable stream of bytes. There are tradeoffs to using these, especially in poor network conditions. Another option is to use \"datagram sockets,\" which map to UDP packet transmission. With datagrams, everyone involved can send small packets of data that may arrive in any order, or not at all, but transmission can carry on if a packet is lost, each packet is clearly separated from every other, and communication can happen in a peer-to-peer model instead of client-server: while datagrams can be more complex, these _are_ useful properties not avaiable to stream sockets. CreateDatagramSocket() is used to prepare for datagram communication, then SendDatagram() and ReceiveDatagram() transmit packets.",
         "As previously mentioned, SDL_net's API is \"non-blocking\" (asynchronous). Any network operation might take time, but SDL_net's APIs will not wait until they complete. Any operation will return immediately, with options to check if the operation has completed later. Generally this is what a video game needs, but there are times where it makes sense to pause until an operation completes; in a background thread this might make sense, as it could simplify the code dramatically.",
         "The functions that block until an operation completes:",
         [
@@ -214395,7 +214395,7 @@
             "Obtain a list of local addresses on the system.",
             "This returns addresses that you can theoretically bind a socket to, to accept connections from other machines at that address.",
             "You almost never need this function; first, it's hard to tell _what_ is a good address to bind to, without asking the user (who will likely find it equally hard to decide). Second, most machines will have lots of _private_ addresses that are accessible on the same LAN, but not public ones that are accessible from the outside Internet.",
-            "Usually it's better to use Address.CreateServer() or Address.CreateDatagramSocket() with a nullptr address, to say \"bind to all interfaces.\"",
+            "Usually it's better to use CreateServer() or CreateDatagramSocket() with a nullptr address, to say \"bind to all interfaces.\"",
             "The array of addresses returned from this is guaranteed to be nullptr-terminated. You can also pass a pointer to an int, which will return the final count, not counting the nullptr at the end of the array.",
             "Pass the returned array to FreeLocalAddresses when you are done with it. It is safe to keep any addresses you want from this array even after calling that function, as long as you called RefAddress() on them.",
             [
@@ -214488,7 +214488,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Address.CreateClient"
+                "content": "CreateClient"
               },
               {
                 "tag": "@sa",
@@ -214751,7 +214751,7 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Address.CreateClient"
+                    "content": "CreateClient"
                   },
                   {
                     "tag": "@sa",
@@ -214781,7 +214781,7 @@
             "WaitUntilConnected": {
               "doc": [
                 "Block until a stream socket has connected to a server.",
-                "The StreamSocket objects returned by Address.CreateClient take time to do their work, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
+                "The StreamSocket objects returned by CreateClient take time to do their work, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
                 "However, if you want your program to sleep until the connection is complete, you can call this function.",
                 "This function takes a timeout value, represented in milliseconds, of how long to wait for resolution to complete. Specifying a timeout of -1 instructs the library to wait indefinitely, and a timeout of 0 just checks the current status and returns immediately (and is functionally equivalent to calling GetConnectionStatus).",
                 "Connections can fail after some time (server took awhile to respond at all, and then refused the connection outright), so be sure to check the result of this function instead of assuming it worked!",
@@ -214863,7 +214863,7 @@
             "GetConnectionStatus": {
               "doc": [
                 "Check if a stream socket is connected, without blocking.",
-                "The StreamSocket objects returned by Address.CreateClient take time to do negotiate a connection to a server, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
+                "The StreamSocket objects returned by CreateClient take time to do negotiate a connection to a server, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
                 "This function allows you to check the progress of that work without blocking.",
                 "Connection can fail after some time (server took a while to respond, and then rejected the connection), so be sure to check the result of this function instead of assuming it worked because it's non-zero!",
                 "Once a connection is successfully made, the stream socket can be used to send and receive data with the server.",
@@ -215281,7 +215281,7 @@
         "WaitUntilConnected": {
           "doc": [
             "Block until a stream socket has connected to a server.",
-            "The StreamSocket objects returned by Address.CreateClient take time to do their work, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
+            "The StreamSocket objects returned by CreateClient take time to do their work, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
             "However, if you want your program to sleep until the connection is complete, you can call this function.",
             "This function takes a timeout value, represented in milliseconds, of how long to wait for resolution to complete. Specifying a timeout of -1 instructs the library to wait indefinitely, and a timeout of 0 just checks the current status and returns immediately (and is functionally equivalent to calling GetConnectionStatus).",
             "Connections can fail after some time (server took awhile to respond at all, and then refused the connection outright), so be sure to check the result of this function instead of assuming it worked!",
@@ -215357,7 +215357,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Address.CreateServer"
+              "content": "CreateServer"
             },
             "@cat resource"
           ],
@@ -215615,7 +215615,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "Address.CreateServer"
+                  "content": "CreateServer"
                 }
               ],
               "name": "Destroy",
@@ -215633,7 +215633,7 @@
               "doc": [
                 "Create a stream socket for the next pending client connection.",
                 "When a client connects to a server, their connection will be pending until the server _accepts_ the connection. Once accepted, the server will be given a stream socket to communicate with the client, and they can send data to, and receive data from, each other.",
-                "Unlike Address.CreateClient, stream sockets returned from this function are already connected and do not have to wait for the connection to complete, as server acceptance is the final step of connecting.",
+                "Unlike CreateClient, stream sockets returned from this function are already connected and do not have to wait for the connection to complete, as server acceptance is the final step of connecting.",
                 "This function does not block. If there are no new connections pending, this function will return true (for success, but `*client_stream` will be set to nullptr. This is not an error and a common condition the app should expect. In fact, this function should be called in a loop until this condition occurs, so all pending connections are accepted in a single batch.",
                 "If you want the server to sleep until there's a new connection, you can use WaitUntilInputAvailable().",
                 "When done with the newly-accepted client, you can disconnect and dispose of the stream socket by calling DestroyStreamSocket().",
@@ -215841,7 +215841,7 @@
           "doc": [
             "Create a stream socket for the next pending client connection.",
             "When a client connects to a server, their connection will be pending until the server _accepts_ the connection. Once accepted, the server will be given a stream socket to communicate with the client, and they can send data to, and receive data from, each other.",
-            "Unlike Address.CreateClient, stream sockets returned from this function are already connected and do not have to wait for the connection to complete, as server acceptance is the final step of connecting.",
+            "Unlike CreateClient, stream sockets returned from this function are already connected and do not have to wait for the connection to complete, as server acceptance is the final step of connecting.",
             "This function does not block. If there are no new connections pending, this function will return true (for success, but `*client_stream` will be set to nullptr. This is not an error and a common condition the app should expect. In fact, this function should be called in a loop until this condition occurs, so all pending connections are accepted in a single batch.",
             "If you want the server to sleep until there's a new connection, you can use WaitUntilInputAvailable().",
             "When done with the newly-accepted client, you can disconnect and dispose of the stream socket by calling DestroyStreamSocket().",
@@ -215932,7 +215932,7 @@
             },
             {
               "tag": "@sa",
-              "content": "Address.CreateServer"
+              "content": "CreateServer"
             }
           ],
           "name": "DestroyServer",
@@ -216017,7 +216017,7 @@
         "GetConnectionStatus": {
           "doc": [
             "Check if a stream socket is connected, without blocking.",
-            "The StreamSocket objects returned by Address.CreateClient take time to do negotiate a connection to a server, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
+            "The StreamSocket objects returned by CreateClient take time to do negotiate a connection to a server, so it does so _asynchronously_ instead of making your program wait an indefinite amount of time.",
             "This function allows you to check the progress of that work without blocking.",
             "Connection can fail after some time (server took a while to respond, and then rejected the connection), so be sure to check the result of this function instead of assuming it worked because it's non-zero!",
             "Once a connection is successfully made, the stream socket can be used to send and receive data with the server.",
@@ -216446,7 +216446,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Address.CreateClient"
+                "content": "CreateClient"
               },
               {
                 "tag": "@sa",
@@ -216499,7 +216499,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Address.CreateDatagramSocket"
+                "content": "CreateDatagramSocket"
               },
               {
                 "tag": "@sa",
@@ -216770,7 +216770,7 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "Address.CreateDatagramSocket"
+                    "content": "CreateDatagramSocket"
                   },
                   {
                     "tag": "@sa",
@@ -217908,7 +217908,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Address.CreateDatagramSocket"
+                "content": "CreateDatagramSocket"
               },
               {
                 "tag": "@sa",
@@ -217995,7 +217995,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "Address.CreateDatagramSocket"
+                "content": "CreateDatagramSocket"
               },
               {
                 "tag": "@sa",
@@ -228039,7 +228039,7 @@
         },
         "Text": {
           "doc": [
-            "Text created with TextEngine.CreateText()",
+            "Text created with CreateText()",
             {
               "tag": "@since",
               "content": "This struct is available since SDL_ttf 3.0.0."
@@ -228047,7 +228047,7 @@
             [
               {
                 "tag": "@sa",
-                "content": "TextEngine.CreateText"
+                "content": "CreateText"
               },
               {
                 "tag": "@sa",
@@ -228300,7 +228300,7 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "TextEngine.CreateText"
+                  "content": "CreateText"
                 }
               ],
               "name": "Destroy",
@@ -228355,7 +228355,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TextEngine.CreateText"
+                    "content": "CreateText"
                   }
                 ]
               ],
@@ -228418,7 +228418,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TextEngine.CreateText"
+                    "content": "CreateText"
                   }
                 ]
               ],
@@ -228467,7 +228467,7 @@
                   },
                   {
                     "tag": "@sa",
-                    "content": "TextEngine.CreateText"
+                    "content": "CreateText"
                   }
                 ]
               ],
@@ -230433,7 +230433,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TextEngine.CreateText"
+                "content": "CreateText"
               }
             ]
           ],
@@ -230724,7 +230724,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TextEngine.CreateText"
+                "content": "CreateText"
               }
             ]
           ],
@@ -231001,7 +231001,7 @@
               },
               {
                 "tag": "@sa",
-                "content": "TextEngine.CreateText"
+                "content": "CreateText"
               }
             ]
           ],
@@ -233698,7 +233698,7 @@
             },
             {
               "tag": "@sa",
-              "content": "TextEngine.CreateText"
+              "content": "CreateText"
             }
           ],
           "name": "DestroyText",

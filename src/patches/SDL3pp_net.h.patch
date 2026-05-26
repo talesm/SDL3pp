@@ -91,7 +91,7 @@
  }
  
  /// @private
-@@ -1153,10 +1153,6 @@
+@@ -1152,10 +1152,6 @@
   * nullptr-terminated. You can also pass a pointer to an int, which will return
   * the final count, not counting the nullptr at the end of the array.
   *
@@ -102,7 +102,7 @@
   * @param num_addresses on exit, will be set to the number of addresses
   *                      returned. Can be nullptr.
   * @returns  one for each bindable address on the system on success.
-@@ -1184,15 +1180,19 @@
+@@ -1183,15 +1179,19 @@
   *
   * It is safe to pass a nullptr in here, it will be ignored.
   *
@@ -124,7 +124,7 @@
  }
  
  inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
-@@ -2130,7 +2130,7 @@
+@@ -2129,7 +2129,7 @@
   */
  inline Address GetStreamSocketAddress(StreamSocketRef sock)
  {
@@ -133,7 +133,7 @@
  }
  
  inline Address StreamSocket::GetAddress()
-@@ -2761,7 +2761,7 @@
+@@ -2760,7 +2760,7 @@
     * should assume it is no longer usable and should destroy it with
     * SDL_DestroyDatagramSocket().
     *
@@ -142,7 +142,7 @@
     * @returns true if data sent or queued for transmission, false on failure;
     *          call GetError() for details.
     *
-@@ -2808,9 +2808,8 @@
+@@ -2807,9 +2807,8 @@
     * should assume it is no longer usable and should destroy it with
     * SDL_DestroyDatagramSocket().
     *
@@ -154,7 +154,7 @@
     *
     * @threadsafety You should not operate on the same socket from multiple
     *               threads at the same time without supplying a serialization
-@@ -2924,12 +2923,11 @@
+@@ -2923,12 +2922,11 @@
     * "connection" to fail at this level, but may report failure for
     * unrecoverable system-level conditions; once a datagram socket fails, you
     * should assume it is no longer usable and should destroy it with
@@ -170,7 +170,7 @@
     *
     * @threadsafety You should not operate on the same socket from multiple
     *               threads at the same time without supplying a serialization
-@@ -3011,7 +3009,6 @@
+@@ -3010,7 +3008,6 @@
     * SDL_DestroyDatagramSocket().
     *
     * @param sock the datagram socket to send data through.
@@ -178,7 +178,7 @@
     * @returns true if data sent or queued for transmission, false on failure;
     *          call GetError() for details.
     *
-@@ -3320,9 +3317,8 @@
+@@ -3319,9 +3316,8 @@
   * is no longer usable and should destroy it with SDL_DestroyDatagramSocket().
   *
   * @param sock the datagram socket to send data through.
@@ -190,7 +190,7 @@
   *
   * @threadsafety You should not operate on the same socket from multiple threads
   *               at the same time without supplying a serialization mechanism.
-@@ -3343,7 +3339,7 @@
+@@ -3342,7 +3338,7 @@
  
  inline bool DatagramSocket::ReceiveDatagram(Datagram& dgram)
  {
@@ -199,7 +199,7 @@
  }
  
  inline Datagram DatagramSocket::ReceiveDatagram()
-@@ -3351,11 +3347,17 @@
+@@ -3350,11 +3346,17 @@
    return SDL::ReceiveDatagram(get());
  }
  
@@ -219,7 +219,7 @@
  }
  
  /**
-@@ -3515,4 +3517,6 @@
+@@ -3514,4 +3516,6 @@
  
  } // namespace SDL
  

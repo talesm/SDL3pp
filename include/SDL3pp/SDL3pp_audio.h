@@ -57,7 +57,7 @@ namespace SDL {
  * ## Simplified audio
  *
  * As a simplified model for when a single source of audio is all that's needed,
- * an app can use AudioDevice.OpenStream, which is a single function to open an
+ * an app can use OpenAudioDeviceStream, which is a single function to open an
  * audio device, create an audio stream, bind that stream to the newly-opened
  * device, and (optionally) provide a callback for obtaining audio data. When
  * using this function, the primary interface is the AudioStream and the device
@@ -839,7 +839,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
    * there is no audio callback; you only bind audio streams and make sure they
    * have data flowing into them (however, you can simulate SDL2's semantics
-   * fairly closely by using AudioDevice.OpenStream instead of this function).
+   * fairly closely by using OpenAudioDeviceStream instead of this function).
    *
    * If you don't care about opening a specific device, pass a `devid` of either
    * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In
@@ -1013,7 +1013,7 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
    *
    * An AudioDevice that represents physical hardware is a physical device;
    * there is one for each piece of hardware that SDL can see. Logical devices
-   * are created by calling OpenAudioDevice or AudioDevice.OpenStream, and while
+   * are created by calling OpenAudioDevice or OpenAudioDeviceStream, and while
    * each is associated with a physical device, there can be any number of
    * logical devices on one physical device.
    *
@@ -1770,7 +1770,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * queued. You do not need to manually clear the stream first.
    *
    * If this stream was bound to an audio device, it is unbound during this
-   * call. If this stream was created with AudioDevice.OpenStream, the audio
+   * call. If this stream was created with OpenAudioDeviceStream, the audio
    * device that was opened alongside this stream's creation will be closed,
    * too.
    *
@@ -1791,7 +1791,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * - `prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the
    *   stream be automatically cleaned up when the audio subsystem quits. If set
    *   to false, the streams will persist beyond that. This property is ignored
-   *   for streams created through AudioDevice.OpenStream(), and will always be
+   *   for streams created through OpenAudioDeviceStream(), and will always be
    *   cleaned up. Streams that are not cleaned up will still be unbound from
    *   devices when the audio subsystem quits. This property was added in SDL
    *   3.4.0.
@@ -2475,7 +2475,7 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
    * previously been paused. Once unpaused, any bound audio streams will begin
    * to progress again, and audio can be generated.
    *
-   * AudioDevice.OpenStream opens audio devices in a paused state, so this
+   * OpenAudioDeviceStream opens audio devices in a paused state, so this
    * function call is required for audio playback to begin on such devices.
    *
    * @throws Error on failure.
@@ -3182,7 +3182,7 @@ inline OwnArray<int> AudioDevice::GetChannelMap() const
  * playing, bind a stream and supply audio data to it. Unlike SDL2, there is no
  * audio callback; you only bind audio streams and make sure they have data
  * flowing into them (however, you can simulate SDL2's semantics fairly closely
- * by using AudioDevice.OpenStream instead of this function).
+ * by using OpenAudioDeviceStream instead of this function).
  *
  * If you don't care about opening a specific device, pass a `devid` of either
  * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In this
@@ -3257,7 +3257,7 @@ inline AudioDevice::AudioDevice(AudioDeviceRef devid,
  *
  * An AudioDevice that represents physical hardware is a physical device; there
  * is one for each piece of hardware that SDL can see. Logical devices are
- * created by calling OpenAudioDevice or AudioDevice.OpenStream, and while each
+ * created by calling OpenAudioDevice or OpenAudioDeviceStream, and while each
  * is associated with a physical device, there can be any number of logical
  * devices on one physical device.
  *
@@ -3715,10 +3715,9 @@ inline AudioStream::AudioStream(AudioDeviceRef devid,
  * - `prop.AudioStream.AUTO_CLEANUP_BOOLEAN`: if true (the default), the stream
  *   be automatically cleaned up when the audio subsystem quits. If set to
  *   false, the streams will persist beyond that. This property is ignored for
- *   streams created through AudioDevice.OpenStream(), and will always be
- *   cleaned up. Streams that are not cleaned up will still be unbound from
- *   devices when the audio subsystem quits. This property was added in SDL
- *   3.4.0.
+ *   streams created through OpenAudioDeviceStream(), and will always be cleaned
+ *   up. Streams that are not cleaned up will still be unbound from devices when
+ *   the audio subsystem quits. This property was added in SDL 3.4.0.
  *
  * @param stream the AudioStream to query.
  * @returns a valid property ID on success.
@@ -4580,8 +4579,8 @@ inline void AudioStream::PauseDevice() { SDL::PauseAudioStreamDevice(get()); }
  * previously been paused. Once unpaused, any bound audio streams will begin to
  * progress again, and audio can be generated.
  *
- * AudioDevice.OpenStream opens audio devices in a paused state, so this
- * function call is required for audio playback to begin on such devices.
+ * OpenAudioDeviceStream opens audio devices in a paused state, so this function
+ * call is required for audio playback to begin on such devices.
  *
  * @param stream the audio stream associated with the audio device to resume.
  * @throws Error on failure.
@@ -4920,7 +4919,7 @@ inline void AudioStream::SetPutCallback(AudioStreamCB callback)
  * queued. You do not need to manually clear the stream first.
  *
  * If this stream was bound to an audio device, it is unbound during this call.
- * If this stream was created with AudioDevice.OpenStream, the audio device that
+ * If this stream was created with OpenAudioDeviceStream, the audio device that
  * was opened alongside this stream's creation will be closed, too.
  *
  * @param stream the audio stream to destroy.
