@@ -44,6 +44,9 @@ using MutexRaw = SDL_Mutex*;
 using MutexRef = ResourceRefT<MutexBase>;
 
 // Forward decl
+struct RWLockBase;
+
+// Forward decl
 struct RWLock;
 
 /// Alias to raw representation for RWLock.
@@ -54,7 +57,7 @@ using RWLockRaw = SDL_RWLock*;
  *
  * This does not take ownership!
  */
-using RWLockRef = ResourceRef<RWLock>;
+using RWLockRef = ResourceRefT<RWLockBase>;
 
 // Forward decl
 struct Semaphore;
@@ -389,110 +392,13 @@ inline void DestroyMutex(MutexRaw mutex) { SDL_DestroyMutex(mutex); }
 inline void MutexBase::Destroy() { DestroyMutex(release()); }
 
 /**
- * A mutex that allows read-only threads to run in parallel.
+ * Base class to RWLock.
  *
- * A rwlock is roughly the same concept as Mutex, but allows threads that
- * request read-only access to all hold the lock at the same time. If a thread
- * requests write access, it will block until all read-only threads have
- * released the lock, and no one else can hold the thread (for reading or
- * writing) at the same time as the writing thread.
- *
- * This can be more efficient in cases where several threads need to access data
- * frequently, but changes to that data are rare.
- *
- * There are other rules that apply to rwlocks that don't apply to mutexes,
- * about how threads are scheduled and when they can be recursively locked.
- * These are documented in the other rwlock functions.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see RWLock
  */
-struct RWLock : ResourceBase<RWLockRaw>
+struct RWLockBase : ResourceBaseT<RWLockRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw RWLock.
-   *
-   * @param resource a RWLockRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit RWLock(RWLockRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr RWLock(const RWLock& other) = delete;
-
-  /// Move constructor
-  constexpr RWLock(RWLock&& other) noexcept
-    : RWLock(other.release())
-  {
-  }
-
-  constexpr RWLock(const RWLockRef& other) = delete;
-
-  constexpr RWLock(RWLockRef&& other) = delete;
-
-  /**
-   * Create a new read/write lock.
-   *
-   * A read/write lock is useful for situations where you have multiple threads
-   * trying to access a resource that is rarely updated. All threads requesting
-   * a read-only lock will be allowed to run in parallel; if a thread requests a
-   * write lock, it will be provided exclusive access. This makes it safe for
-   * multiple threads to use a resource at the same time if they promise not to
-   * change it, and when it has to be changed, the rwlock will serve as a
-   * gateway to make sure those changes can be made safely.
-   *
-   * In the right situation, a rwlock can be more efficient than a mutex, which
-   * only lets a single thread proceed at a time, even if it won't be modifying
-   * the data.
-   *
-   * All newly-created read/write locks begin in the _unlocked_ state.
-   *
-   * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
-   * while the rwlock is locked _for writing_ by another thread. See
-   * TryLockRWLockForReading() and TryLockRWLockForWriting() to attempt to lock
-   * without blocking.
-   *
-   * SDL read/write locks are only recursive for read-only locks! They are not
-   * guaranteed to be fair, or provide access in a FIFO manner! They are not
-   * guaranteed to favor writers. You may not lock a rwlock for both read-only
-   * and write access at the same time from the same thread (so you can't
-   * promote your read-only lock to a write lock without unlocking first).
-   *
-   * @post the initialized and unlocked read/write lock or nullptr on failure;
-   *       call GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyRWLock
-   * @sa LockRWLockForReading
-   * @sa LockRWLockForWriting
-   * @sa TryLockRWLockForReading
-   * @sa TryLockRWLockForWriting
-   * @sa UnlockRWLock
-   */
-  RWLock();
-
-  /// Destructor
-  ~RWLock() { SDL_DestroyRWLock(get()); }
-
-  /// Assignment operator.
-  constexpr RWLock& operator=(RWLock&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  RWLock& operator=(const RWLock& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a read/write lock created with CreateRWLock().
@@ -664,6 +570,109 @@ struct RWLock : ResourceBase<RWLockRaw>
 };
 
 /**
+ * A mutex that allows read-only threads to run in parallel.
+ *
+ * A rwlock is roughly the same concept as Mutex, but allows threads that
+ * request read-only access to all hold the lock at the same time. If a thread
+ * requests write access, it will block until all read-only threads have
+ * released the lock, and no one else can hold the thread (for reading or
+ * writing) at the same time as the writing thread.
+ *
+ * This can be more efficient in cases where several threads need to access data
+ * frequently, but changes to that data are rare.
+ *
+ * There are other rules that apply to rwlocks that don't apply to mutexes,
+ * about how threads are scheduled and when they can be recursively locked.
+ * These are documented in the other rwlock functions.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct RWLock : RWLockBase
+{
+  using RWLockBase::RWLockBase;
+
+  /**
+   * Constructs from raw RWLock.
+   *
+   * @param resource a RWLockRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit RWLock(RWLockRaw resource) noexcept
+    : RWLockBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr RWLock(const RWLock& other) = delete;
+
+  /// Move constructor
+  constexpr RWLock(RWLock&& other) noexcept
+    : RWLock(other.release())
+  {
+  }
+
+  /**
+   * Create a new read/write lock.
+   *
+   * A read/write lock is useful for situations where you have multiple threads
+   * trying to access a resource that is rarely updated. All threads requesting
+   * a read-only lock will be allowed to run in parallel; if a thread requests a
+   * write lock, it will be provided exclusive access. This makes it safe for
+   * multiple threads to use a resource at the same time if they promise not to
+   * change it, and when it has to be changed, the rwlock will serve as a
+   * gateway to make sure those changes can be made safely.
+   *
+   * In the right situation, a rwlock can be more efficient than a mutex, which
+   * only lets a single thread proceed at a time, even if it won't be modifying
+   * the data.
+   *
+   * All newly-created read/write locks begin in the _unlocked_ state.
+   *
+   * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
+   * while the rwlock is locked _for writing_ by another thread. See
+   * TryLockRWLockForReading() and TryLockRWLockForWriting() to attempt to lock
+   * without blocking.
+   *
+   * SDL read/write locks are only recursive for read-only locks! They are not
+   * guaranteed to be fair, or provide access in a FIFO manner! They are not
+   * guaranteed to favor writers. You may not lock a rwlock for both read-only
+   * and write access at the same time from the same thread (so you can't
+   * promote your read-only lock to a write lock without unlocking first).
+   *
+   * @post the initialized and unlocked read/write lock or nullptr on failure;
+   *       call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyRWLock
+   * @sa LockRWLockForReading
+   * @sa LockRWLockForWriting
+   * @sa TryLockRWLockForReading
+   * @sa TryLockRWLockForWriting
+   * @sa UnlockRWLock
+   */
+  RWLock();
+
+  /// Destructor
+  ~RWLock() { SDL_DestroyRWLock(get()); }
+
+  /// Assignment operator.
+  constexpr RWLock& operator=(RWLock&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  RWLock& operator=(const RWLock& other) = delete;
+};
+
+/**
  * Create a new read/write lock.
  *
  * A read/write lock is useful for situations where you have multiple threads
@@ -754,7 +763,7 @@ inline void LockRWLockForReading(RWLockRef rwlock)
   SDL_LockRWLockForReading(rwlock);
 }
 
-inline void RWLock::LockForReading() { SDL::LockRWLockForReading(get()); }
+inline void RWLockBase::LockForReading() { SDL::LockRWLockForReading(get()); }
 
 /**
  * Lock the read/write lock for _write_ operations.
@@ -792,7 +801,7 @@ inline void LockRWLockForWriting(RWLockRef rwlock)
   SDL_LockRWLockForWriting(rwlock);
 }
 
-inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(get()); }
+inline void RWLockBase::LockForWriting() { SDL::LockRWLockForWriting(get()); }
 
 /**
  * Try to lock a read/write lock _for reading_ without blocking.
@@ -824,7 +833,7 @@ inline bool TryLockRWLockForReading(RWLockRef rwlock)
   return SDL_TryLockRWLockForReading(rwlock);
 }
 
-inline bool RWLock::TryLockForReading()
+inline bool RWLockBase::TryLockForReading()
 {
   return SDL::TryLockRWLockForReading(get());
 }
@@ -864,7 +873,7 @@ inline bool TryLockRWLockForWriting(RWLockRef rwlock)
   return SDL_TryLockRWLockForWriting(rwlock);
 }
 
-inline bool RWLock::TryLockForWriting()
+inline bool RWLockBase::TryLockForWriting()
 {
   return SDL::TryLockRWLockForWriting(get());
 }
@@ -897,7 +906,7 @@ inline bool RWLock::TryLockForWriting()
  */
 inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 
-inline void RWLock::Unlock() { SDL::UnlockRWLock(get()); }
+inline void RWLockBase::Unlock() { SDL::UnlockRWLock(get()); }
 
 /**
  * Destroy a read/write lock created with CreateRWLock().
@@ -918,7 +927,7 @@ inline void RWLock::Unlock() { SDL::UnlockRWLock(get()); }
  */
 inline void DestroyRWLock(RWLockRaw rwlock) { SDL_DestroyRWLock(rwlock); }
 
-inline void RWLock::Destroy() { DestroyRWLock(release()); }
+inline void RWLockBase::Destroy() { DestroyRWLock(release()); }
 
 /**
  * A means to manage access to a resource, by count, between threads.

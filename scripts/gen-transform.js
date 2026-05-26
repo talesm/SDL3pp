@@ -4741,7 +4741,7 @@ const transform = {
         "SDL_RENDERER_VSYNC_ADAPTIVE": { kind: "var", constexpr: true, type: "int" },
         "SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE": { kind: "var", constexpr: true, type: "int" },
         "SDL_GPURenderStateCreateInfo": {
-          before: "Renderer",
+          before: "RendererBase",
         },
         "SDL_Renderer": {
           resource: true,
@@ -4797,7 +4797,7 @@ const transform = {
             name: "window"
           },
           {
-            type: "Renderer *",
+            type: "RendererBase *",
             name: "renderer"
           }],
         },
@@ -4835,7 +4835,7 @@ const transform = {
             name: "window_flags"
           },
           {
-            type: "Renderer *",
+            type: "RendererBase *",
             name: "renderer"
           }]
         },
@@ -4855,7 +4855,7 @@ const transform = {
             name: "window_flags"
           },
           {
-            type: "RendererRef *",
+            type: "RendererBase *",
             name: "renderer"
           }],
           hints: {
@@ -7935,10 +7935,10 @@ const transform = {
         "SDL_PROP_WINDOW_": "prop::Window"
       },
       transform: {
-        "Renderer": { kind: "forward" },
+        "RendererBase": { kind: "forward" },
         "RendererRef": {
           kind: "alias",
-          type: "ResourceRef<Renderer>",
+          type: "ResourceRefT<RendererBase>",
           doc: [
             "Reference for Renderer.",
             "This does not take ownership!"

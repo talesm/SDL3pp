@@ -88958,6 +88958,10 @@
           ],
           "type": "ResourceRefT<MutexBase>"
         },
+        "RWLockBase-forward": {
+          "name": "RWLockBase",
+          "kind": "forward"
+        },
         "RWLock-forward": {
           "name": "RWLock",
           "kind": "forward"
@@ -88977,7 +88981,7 @@
             "Reference for RWLock.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<RWLock>"
+          "type": "ResourceRefT<RWLockBase>"
         },
         "Semaphore-forward": {
           "name": "Semaphore",
@@ -89641,226 +89645,21 @@
             "delegate": "SDL::DestroyMutex"
           }
         },
-        "RWLock": {
-          "doc": [
-            "A mutex that allows read-only threads to run in parallel.",
-            "A rwlock is roughly the same concept as Mutex, but allows threads that request read-only access to all hold the lock at the same time. If a thread requests write access, it will block until all read-only threads have released the lock, and no one else can hold the thread (for reading or writing) at the same time as the writing thread.",
-            "This can be more efficient in cases where several threads need to access data frequently, but changes to that data are rare.",
-            "There are other rules that apply to rwlocks that don't apply to mutexes, about how threads are scheduled and when they can be recursively locked. These are documented in the other rwlock functions.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "RWLock",
+        "RWLockBase": {
+          "name": "RWLockBase",
           "kind": "struct",
-          "type": "ResourceBase<RWLockRaw>",
-          "sourceName": "SDL_RWLock",
+          "type": "ResourceBaseT<RWLockRaw>",
+          "doc": [
+            "Base class to RWLock.",
+            {
+              "tag": "@see",
+              "content": "RWLock"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "RWLock": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "RWLockRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw RWLock.",
-                {
-                  "tag": "@param resource",
-                  "content": "a RWLockRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "RWLock",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const RWLock &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "RWLock",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "RWLock &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "RWLock(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "RWLock",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const RWLockRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "RWLock",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "RWLockRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "RWLock",
-                      "overload": {
-                        "doc": [
-                          "Create a new read/write lock.",
-                          "A read/write lock is useful for situations where you have multiple threads trying to access a resource that is rarely updated. All threads requesting a read-only lock will be allowed to run in parallel; if a thread requests a write lock, it will be provided exclusive access. This makes it safe for multiple threads to use a resource at the same time if they promise not to change it, and when it has to be changed, the rwlock will serve as a gateway to make sure those changes can be made safely.",
-                          "In the right situation, a rwlock can be more efficient than a mutex, which only lets a single thread proceed at a time, even if it won't be modifying the data.",
-                          "All newly-created read/write locks begin in the _unlocked_ state.",
-                          "Calls to LockRWLockForReading() and LockRWLockForWriting will not return while the rwlock is locked _for writing_ by another thread. See TryLockRWLockForReading() and TryLockRWLockForWriting() to attempt to lock without blocking.",
-                          "SDL read/write locks are only recursive for read-only locks! They are not guaranteed to be fair, or provide access in a FIFO manner! They are not guaranteed to favor writers. You may not lock a rwlock for both read-only and write access at the same time from the same thread (so you can't promote your read-only lock to a write lock without unlocking first).",
-                          {
-                            "tag": "@post",
-                            "content": "the initialized and unlocked read/write lock or nullptr on failure; call GetError() for more information."
-                          },
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyRWLock"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LockRWLockForReading"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LockRWLockForWriting"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "TryLockRWLockForReading"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "TryLockRWLockForWriting"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "UnlockRWLock"
-                            }
-                          ]
-                        ],
-                        "name": "RWLock",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [],
-                        "sourceName": "SDL_CreateRWLock",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~RWLock": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyRWLock(get());"
-              },
-              "name": "~RWLock"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "RWLock &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "RWLock &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "RWLock &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const RWLock &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -90109,6 +89908,200 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "RWLock": {
+          "doc": [
+            "A mutex that allows read-only threads to run in parallel.",
+            "A rwlock is roughly the same concept as Mutex, but allows threads that request read-only access to all hold the lock at the same time. If a thread requests write access, it will block until all read-only threads have released the lock, and no one else can hold the thread (for reading or writing) at the same time as the writing thread.",
+            "This can be more efficient in cases where several threads need to access data frequently, but changes to that data are rare.",
+            "There are other rules that apply to rwlocks that don't apply to mutexes, about how threads are scheduled and when they can be recursively locked. These are documented in the other rwlock functions.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "RWLock",
+          "kind": "struct",
+          "type": "RWLockBase",
+          "sourceName": "SDL_RWLock",
+          "entries": {
+            "RWLockBase::RWLockBase": {
+              "kind": "alias",
+              "name": "RWLockBase::RWLockBase"
+            },
+            "RWLock": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "RWLockRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "RWLockBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw RWLock.",
+                {
+                  "tag": "@param resource",
+                  "content": "a RWLockRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "RWLock",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const RWLock &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "RWLock",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "RWLock &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "RWLock(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "RWLock",
+                  "overload": {
+                    "doc": [
+                      "Create a new read/write lock.",
+                      "A read/write lock is useful for situations where you have multiple threads trying to access a resource that is rarely updated. All threads requesting a read-only lock will be allowed to run in parallel; if a thread requests a write lock, it will be provided exclusive access. This makes it safe for multiple threads to use a resource at the same time if they promise not to change it, and when it has to be changed, the rwlock will serve as a gateway to make sure those changes can be made safely.",
+                      "In the right situation, a rwlock can be more efficient than a mutex, which only lets a single thread proceed at a time, even if it won't be modifying the data.",
+                      "All newly-created read/write locks begin in the _unlocked_ state.",
+                      "Calls to LockRWLockForReading() and LockRWLockForWriting will not return while the rwlock is locked _for writing_ by another thread. See TryLockRWLockForReading() and TryLockRWLockForWriting() to attempt to lock without blocking.",
+                      "SDL read/write locks are only recursive for read-only locks! They are not guaranteed to be fair, or provide access in a FIFO manner! They are not guaranteed to favor writers. You may not lock a rwlock for both read-only and write access at the same time from the same thread (so you can't promote your read-only lock to a write lock without unlocking first).",
+                      {
+                        "tag": "@post",
+                        "content": "the initialized and unlocked read/write lock or nullptr on failure; call GetError() for more information."
+                      },
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyRWLock"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LockRWLockForReading"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LockRWLockForWriting"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "TryLockRWLockForReading"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "TryLockRWLockForWriting"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "UnlockRWLock"
+                        }
+                      ]
+                    ],
+                    "name": "RWLock",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [],
+                    "sourceName": "SDL_CreateRWLock",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~RWLock": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyRWLock(get());"
+              },
+              "name": "~RWLock"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "RWLock &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "RWLock &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "RWLock &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const RWLock &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "RWLock"
           }
@@ -90227,15 +90220,14 @@
           ],
           "sourceName": "SDL_LockRWLockForReading"
         },
-        "RWLock::LockForReading": {
-          "name": "RWLock::LockForReading",
+        "RWLockBase::LockForReading": {
+          "name": "RWLockBase::LockForReading",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_LockRWLockForReading",
           "hints": {
             "self": "get()",
-            "super": "RWLock",
             "delegate": "SDL::LockRWLockForReading"
           }
         },
@@ -90284,15 +90276,14 @@
           ],
           "sourceName": "SDL_LockRWLockForWriting"
         },
-        "RWLock::LockForWriting": {
-          "name": "RWLock::LockForWriting",
+        "RWLockBase::LockForWriting": {
+          "name": "RWLockBase::LockForWriting",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_LockRWLockForWriting",
           "hints": {
             "self": "get()",
-            "super": "RWLock",
             "delegate": "SDL::LockRWLockForWriting"
           }
         },
@@ -90347,15 +90338,14 @@
           ],
           "sourceName": "SDL_TryLockRWLockForReading"
         },
-        "RWLock::TryLockForReading": {
-          "name": "RWLock::TryLockForReading",
+        "RWLockBase::TryLockForReading": {
+          "name": "RWLockBase::TryLockForReading",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_TryLockRWLockForReading",
           "hints": {
             "self": "get()",
-            "super": "RWLock",
             "delegate": "SDL::TryLockRWLockForReading"
           }
         },
@@ -90411,15 +90401,14 @@
           ],
           "sourceName": "SDL_TryLockRWLockForWriting"
         },
-        "RWLock::TryLockForWriting": {
-          "name": "RWLock::TryLockForWriting",
+        "RWLockBase::TryLockForWriting": {
+          "name": "RWLockBase::TryLockForWriting",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_TryLockRWLockForWriting",
           "hints": {
             "self": "get()",
-            "super": "RWLock",
             "delegate": "SDL::TryLockRWLockForWriting"
           }
         },
@@ -90471,15 +90460,14 @@
           ],
           "sourceName": "SDL_UnlockRWLock"
         },
-        "RWLock::Unlock": {
-          "name": "RWLock::Unlock",
+        "RWLockBase::Unlock": {
+          "name": "RWLockBase::Unlock",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_UnlockRWLock",
           "hints": {
             "self": "get()",
-            "super": "RWLock",
             "delegate": "SDL::UnlockRWLock"
           }
         },
@@ -90515,15 +90503,14 @@
           ],
           "sourceName": "SDL_DestroyRWLock"
         },
-        "RWLock::Destroy": {
-          "name": "RWLock::Destroy",
+        "RWLockBase::Destroy": {
+          "name": "RWLockBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyRWLock",
           "hints": {
             "self": "get()",
-            "super": "RWLock",
             "body": "DestroyRWLock(release());",
             "delegate": "SDL::DestroyRWLock"
           }
@@ -102502,6 +102489,10 @@
         "Properties can be removed from a group by using ClearProperty."
       ],
       "entries": {
+        "PropertiesBase-forward": {
+          "name": "PropertiesBase",
+          "kind": "forward"
+        },
         "Properties-forward": {
           "name": "Properties",
           "kind": "forward"
@@ -102521,7 +102512,7 @@
             "Reference for Properties.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Properties>"
+          "type": "ResourceRefT<PropertiesBase>"
         },
         "PropertiesLock-forward": {
           "kind": "forward",
@@ -102738,204 +102729,21 @@
             }
           ]
         },
-        "Properties": {
-          "doc": [
-            "An ID that represents a properties set.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Properties",
+        "PropertiesBase": {
+          "name": "PropertiesBase",
           "kind": "struct",
-          "type": "ResourceBase<PropertiesID>",
-          "sourceName": "SDL_PropertiesID",
+          "type": "ResourceBaseT<PropertiesID>",
+          "doc": [
+            "Base class to Properties.",
+            {
+              "tag": "@see",
+              "content": "Properties"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Properties": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "PropertiesID"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Properties.",
-                {
-                  "tag": "@param resource",
-                  "content": "a PropertiesID to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Properties",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Properties &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Properties",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Properties &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Properties(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Properties",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const PropertiesRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Properties",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "PropertiesRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Properties",
-                      "overload": {
-                        "doc": [
-                          "Create a group of properties.",
-                          "All properties are automatically destroyed when Quit() is called.",
-                          {
-                            "tag": "@post",
-                            "content": "an ID for a new group of properties on success."
-                          },
-                          {
-                            "tag": "@throws",
-                            "content": "Error on failure."
-                          },
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          {
-                            "tag": "@sa",
-                            "content": "DestroyProperties"
-                          }
-                        ],
-                        "name": "Properties",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [],
-                        "sourceName": "SDL_CreateProperties",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Properties": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyProperties(get());"
-              },
-              "name": "~Properties"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Properties &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Properties &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Properties &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Properties &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -104037,6 +103845,178 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "Properties": {
+          "doc": [
+            "An ID that represents a properties set.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Properties",
+          "kind": "struct",
+          "type": "PropertiesBase",
+          "sourceName": "SDL_PropertiesID",
+          "entries": {
+            "PropertiesBase::PropertiesBase": {
+              "kind": "alias",
+              "name": "PropertiesBase::PropertiesBase"
+            },
+            "Properties": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "PropertiesID"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "PropertiesBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Properties.",
+                {
+                  "tag": "@param resource",
+                  "content": "a PropertiesID to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Properties",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Properties &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Properties",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Properties &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Properties(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Properties",
+                  "overload": {
+                    "doc": [
+                      "Create a group of properties.",
+                      "All properties are automatically destroyed when Quit() is called.",
+                      {
+                        "tag": "@post",
+                        "content": "an ID for a new group of properties on success."
+                      },
+                      {
+                        "tag": "@throws",
+                        "content": "Error on failure."
+                      },
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      {
+                        "tag": "@sa",
+                        "content": "DestroyProperties"
+                      }
+                    ],
+                    "name": "Properties",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [],
+                    "sourceName": "SDL_CreateProperties",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Properties": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyProperties(get());"
+              },
+              "name": "~Properties"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Properties &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Properties &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Properties &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Properties &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "Properties"
           }
@@ -104441,8 +104421,8 @@
             "mayFail": true
           }
         },
-        "Properties::Copy": {
-          "name": "Properties::Copy",
+        "PropertiesBase::Copy": {
+          "name": "PropertiesBase::Copy",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -104454,7 +104434,6 @@
           "sourceName": "SDL_CopyProperties",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "mayFail": true,
             "delegate": "SDL::CopyProperties"
           }
@@ -104501,15 +104480,14 @@
             "mayFail": true
           }
         },
-        "Properties::Lock": {
-          "name": "Properties::Lock",
+        "PropertiesBase::Lock": {
+          "name": "PropertiesBase::Lock",
           "kind": "function",
           "type": "PropertiesLock",
           "parameters": [],
           "sourceName": "SDL_LockProperties",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "mayFail": true,
             "body": "return {PropertiesRef(*this)};",
             "delegate": "SDL::LockProperties"
@@ -104564,8 +104542,8 @@
           ],
           "sourceName": "SDL_UnlockProperties"
         },
-        "Properties::Unlock": {
-          "name": "Properties::Unlock",
+        "PropertiesBase::Unlock": {
+          "name": "PropertiesBase::Unlock",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -104577,7 +104555,6 @@
           "sourceName": "SDL_UnlockProperties",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
             "delegate": "SDL::UnlockProperties"
           }
@@ -104753,8 +104730,8 @@
             ]
           }
         },
-        "Properties::SetPointerPropertyWithCleanup": {
-          "name": "Properties::SetPointerPropertyWithCleanup",
+        "PropertiesBase::SetPointerPropertyWithCleanup": {
+          "name": "PropertiesBase::SetPointerPropertyWithCleanup",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -104778,7 +104755,6 @@
           "sourceName": "SDL_SetPointerPropertyWithCleanup",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "mayFail": true,
             "delegate": "SDL::SetPointerPropertyWithCleanup"
           },
@@ -104799,10 +104775,9 @@
                 "name": "cleanup"
               }
             ],
-            "name": "Properties::SetPointerPropertyWithCleanup",
+            "name": "PropertiesBase::SetPointerPropertyWithCleanup",
             "hints": {
               "self": "get()",
-              "super": "Properties",
               "delegate": "SDL::SetPointerPropertyWithCleanup"
             }
           }
@@ -104889,8 +104864,8 @@
             "mayFail": true
           }
         },
-        "Properties::SetPointerProperty": {
-          "name": "Properties::SetPointerProperty",
+        "PropertiesBase::SetPointerProperty": {
+          "name": "PropertiesBase::SetPointerProperty",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -104906,7 +104881,6 @@
           "sourceName": "SDL_SetPointerProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "mayFail": true,
             "delegate": "SDL::SetPointerProperty"
           }
@@ -104968,8 +104942,8 @@
             "mayFail": true
           }
         },
-        "Properties::SetStringProperty": {
-          "name": "Properties::SetStringProperty",
+        "PropertiesBase::SetStringProperty": {
+          "name": "PropertiesBase::SetStringProperty",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -104985,7 +104959,6 @@
           "sourceName": "SDL_SetStringProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "mayFail": true,
             "delegate": "SDL::SetStringProperty"
           }
@@ -105046,8 +105019,8 @@
             "mayFail": true
           }
         },
-        "Properties::SetNumberProperty": {
-          "name": "Properties::SetNumberProperty",
+        "PropertiesBase::SetNumberProperty": {
+          "name": "PropertiesBase::SetNumberProperty",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -105063,7 +105036,6 @@
           "sourceName": "SDL_SetNumberProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "mayFail": true,
             "delegate": "SDL::SetNumberProperty"
           }
@@ -105124,8 +105096,8 @@
             "mayFail": true
           }
         },
-        "Properties::SetFloatProperty": {
-          "name": "Properties::SetFloatProperty",
+        "PropertiesBase::SetFloatProperty": {
+          "name": "PropertiesBase::SetFloatProperty",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -105141,7 +105113,6 @@
           "sourceName": "SDL_SetFloatProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "mayFail": true,
             "delegate": "SDL::SetFloatProperty"
           }
@@ -105202,8 +105173,8 @@
             "mayFail": true
           }
         },
-        "Properties::SetBooleanProperty": {
-          "name": "Properties::SetBooleanProperty",
+        "PropertiesBase::SetBooleanProperty": {
+          "name": "PropertiesBase::SetBooleanProperty",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -105219,7 +105190,6 @@
           "sourceName": "SDL_SetBooleanProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "mayFail": true,
             "delegate": "SDL::SetBooleanProperty"
           }
@@ -105269,8 +105239,8 @@
           ],
           "sourceName": "SDL_HasProperty"
         },
-        "Properties::HasProperty": {
-          "name": "Properties::HasProperty",
+        "PropertiesBase::HasProperty": {
+          "name": "PropertiesBase::HasProperty",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -105282,7 +105252,6 @@
           "sourceName": "SDL_HasProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "delegate": "SDL::HasProperty"
           }
         },
@@ -105331,8 +105300,8 @@
           ],
           "sourceName": "SDL_GetPropertyType"
         },
-        "Properties::GetPropertyType": {
-          "name": "Properties::GetPropertyType",
+        "PropertiesBase::GetPropertyType": {
+          "name": "PropertiesBase::GetPropertyType",
           "kind": "function",
           "type": "PropertyType",
           "parameters": [
@@ -105344,7 +105313,6 @@
           "sourceName": "SDL_GetPropertyType",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "delegate": "SDL::GetPropertyType"
           }
         },
@@ -105428,8 +105396,8 @@
           ],
           "sourceName": "SDL_GetPointerProperty"
         },
-        "Properties::GetPointerProperty": {
-          "name": "Properties::GetPointerProperty",
+        "PropertiesBase::GetPointerProperty": {
+          "name": "PropertiesBase::GetPointerProperty",
           "kind": "function",
           "type": "void *",
           "parameters": [
@@ -105445,7 +105413,6 @@
           "sourceName": "SDL_GetPointerProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "delegate": "SDL::GetPointerProperty"
           }
         },
@@ -105512,8 +105479,8 @@
           ],
           "sourceName": "SDL_GetStringProperty"
         },
-        "Properties::GetStringProperty": {
-          "name": "Properties::GetStringProperty",
+        "PropertiesBase::GetStringProperty": {
+          "name": "PropertiesBase::GetStringProperty",
           "kind": "function",
           "type": "const char *",
           "parameters": [
@@ -105529,7 +105496,6 @@
           "sourceName": "SDL_GetStringProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "delegate": "SDL::GetStringProperty"
           }
         },
@@ -105597,8 +105563,8 @@
           ],
           "sourceName": "SDL_GetNumberProperty"
         },
-        "Properties::GetNumberProperty": {
-          "name": "Properties::GetNumberProperty",
+        "PropertiesBase::GetNumberProperty": {
+          "name": "PropertiesBase::GetNumberProperty",
           "kind": "function",
           "type": "Sint64",
           "parameters": [
@@ -105614,7 +105580,6 @@
           "sourceName": "SDL_GetNumberProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "delegate": "SDL::GetNumberProperty"
           }
         },
@@ -105682,8 +105647,8 @@
           ],
           "sourceName": "SDL_GetFloatProperty"
         },
-        "Properties::GetFloatProperty": {
-          "name": "Properties::GetFloatProperty",
+        "PropertiesBase::GetFloatProperty": {
+          "name": "PropertiesBase::GetFloatProperty",
           "kind": "function",
           "type": "float",
           "parameters": [
@@ -105699,7 +105664,6 @@
           "sourceName": "SDL_GetFloatProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "delegate": "SDL::GetFloatProperty"
           }
         },
@@ -105767,8 +105731,8 @@
           ],
           "sourceName": "SDL_GetBooleanProperty"
         },
-        "Properties::GetBooleanProperty": {
-          "name": "Properties::GetBooleanProperty",
+        "PropertiesBase::GetBooleanProperty": {
+          "name": "PropertiesBase::GetBooleanProperty",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -105784,7 +105748,6 @@
           "sourceName": "SDL_GetBooleanProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "delegate": "SDL::GetBooleanProperty"
           }
         },
@@ -105832,8 +105795,8 @@
             "mayFail": true
           }
         },
-        "Properties::ClearProperty": {
-          "name": "Properties::ClearProperty",
+        "PropertiesBase::ClearProperty": {
+          "name": "PropertiesBase::ClearProperty",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -105845,7 +105808,6 @@
           "sourceName": "SDL_ClearProperty",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "mayFail": true,
             "delegate": "SDL::ClearProperty"
           }
@@ -105948,8 +105910,8 @@
             ]
           }
         },
-        "Properties::Enumerate": {
-          "name": "Properties::Enumerate",
+        "PropertiesBase::Enumerate": {
+          "name": "PropertiesBase::Enumerate",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -105965,7 +105927,6 @@
           "sourceName": "SDL_EnumerateProperties",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "mayFail": true,
             "delegate": "SDL::EnumerateProperties"
           },
@@ -105978,10 +105939,9 @@
                 "name": "callback"
               }
             ],
-            "name": "Properties::Enumerate",
+            "name": "PropertiesBase::Enumerate",
             "hints": {
               "self": "get()",
-              "super": "Properties",
               "delegate": "SDL::EnumerateProperties"
             }
           }
@@ -106000,16 +105960,15 @@
           },
           "name": "CountProperties"
         },
-        "Properties::GetCount": {
+        "PropertiesBase::GetCount": {
           "kind": "function",
           "type": "Uint64",
           "parameters": [],
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "delegate": "SDL::CountProperties"
           },
-          "name": "Properties::GetCount"
+          "name": "PropertiesBase::GetCount"
         },
         "DestroyProperties": {
           "doc": [
@@ -106043,15 +106002,14 @@
           ],
           "sourceName": "SDL_DestroyProperties"
         },
-        "Properties::Destroy": {
-          "name": "Properties::Destroy",
+        "PropertiesBase::Destroy": {
+          "name": "PropertiesBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyProperties",
           "hints": {
             "self": "get()",
-            "super": "Properties",
             "body": "DestroyProperties(release());",
             "delegate": "SDL::DestroyProperties"
           }
@@ -109855,6 +109813,10 @@
         "These functions must be called from the main thread. See this bug for details: https://github.com/libsdl-org/SDL/issues/986"
       ],
       "entries": {
+        "RendererBase-forward": {
+          "name": "RendererBase",
+          "kind": "forward"
+        },
         "Renderer-forward": {
           "name": "Renderer",
           "kind": "forward"
@@ -109874,7 +109836,7 @@
             "Reference for Renderer.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Renderer>"
+          "type": "ResourceRefT<RendererBase>"
         },
         "Texture-forward": {
           "name": "Texture",
@@ -110209,405 +110171,21 @@
             "patch": 0
           }
         },
-        "Renderer": {
-          "doc": [
-            "A structure representing rendering state",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Renderer",
+        "RendererBase": {
+          "name": "RendererBase",
           "kind": "struct",
-          "type": "ResourceBase<RendererRaw>",
-          "sourceName": "SDL_Renderer",
+          "type": "ResourceBaseT<RendererRaw>",
+          "doc": [
+            "Base class to Renderer.",
+            {
+              "tag": "@see",
+              "content": "Renderer"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Renderer": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "RendererRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Renderer.",
-                {
-                  "tag": "@param resource",
-                  "content": "a RendererRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Renderer",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Renderer &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Renderer",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Renderer &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Renderer(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Renderer",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const RendererRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Renderer",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "RendererRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Renderer",
-                      "overload": {
-                        "doc": [
-                          "Create a 2D rendering context for a window.",
-                          "If you want a specific renderer, you can specify its name here. A list of available renderers can be obtained by calling GetRenderDriver() multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you don't need a specific renderer, specify nullptr and SDL will attempt to choose the best option for you, based on what is available on the user's system.",
-                          "If `name` is a comma-separated list, SDL will try each name, in the order listed, until one succeeds or all of them fail.",
-                          "By default the rendering size matches the window size in pixels, but you can call SetRenderLogicalPresentation() to change the content size and scaling options.",
-                          [
-                            {
-                              "tag": "@param window",
-                              "content": "the window where rendering is displayed."
-                            },
-                            {
-                              "tag": "@param name",
-                              "content": "the name of the rendering driver to initialize, or nullptr to let SDL choose one."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a valid rendering context or nullptr if there was an error; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "This function should only be called on the main thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateRendererWithProperties"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "CreateSoftwareRenderer"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyRenderer"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetNumRenderDrivers"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetRenderDriver"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetRendererName"
-                            }
-                          ]
-                        ],
-                        "name": "Renderer",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "window",
-                            "type": "WindowRef"
-                          },
-                          {
-                            "name": "name",
-                            "type": "StringParam",
-                            "default": "nullptr"
-                          }
-                        ],
-                        "sourceName": "SDL_CreateRenderer",
-                        "overload": {
-                          "doc": [
-                            "Create a 2D rendering context for a window, with the specified properties.",
-                            "These are the supported properties:",
-                            [
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.NAME_STRING`: the name of the rendering driver to use, if a specific one is desired"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.WINDOW_POINTER`: the window where rendering is displayed, required if this isn't a software renderer using a surface"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.SURFACE_POINTER`: the surface where rendering is displayed, if you want a software renderer without a window"
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing the colorspace for output to the display, defaults to COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB colorspace, but values can go beyond 1.0 and float (linear) format textures can be used for HDR content."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.PRESENT_VSYNC_NUMBER`: non-zero if you want present synchronized with the refresh rate. This property can take any value that is supported by SetRenderVSync() for the renderer."
-                              }
-                            ],
-                            "With the SDL GPU renderer (since SDL 3.4.0):",
-                            [
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.GPU_DEVICE_POINTER`: the device to use with the renderer, optional."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to provide SPIR-V shaders to GPURenderState, optional."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.GPU_SHADERS_DXIL_BOOLEAN`: the app is able to provide DXIL shaders to GPURenderState, optional."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide MSL shaders to GPURenderState, optional."
-                              }
-                            ],
-                            "With the vulkan renderer:",
-                            [
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.VULKAN_INSTANCE_POINTER`: the VkInstance to use with the renderer, optional."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use with the renderer, optional."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice to use with the renderer, optional."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.VULKAN_DEVICE_POINTER`: the VkDevice to use with the renderer, optional."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue family index used for rendering."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Renderer.Create.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue family index used for presentation."
-                              }
-                            ],
-                            [
-                              {
-                                "tag": "@param props",
-                                "content": "the properties to use."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "a valid rendering context or nullptr if there was an error; call GetError() for more information."
-                              }
-                            ],
-                            {
-                              "tag": "@threadsafety",
-                              "content": "This function should only be called on the main thread."
-                            },
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL 3.2.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "CreateProperties"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CreateRenderer"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "CreateSoftwareRenderer"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "DestroyRenderer"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "GetRendererName"
-                              }
-                            ]
-                          ],
-                          "name": "Renderer",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "props",
-                              "type": "PropertiesRef"
-                            }
-                          ],
-                          "sourceName": "SDL_CreateRendererWithProperties",
-                          "overload": {
-                            "doc": [
-                              "Create a 2D software rendering context for a surface.",
-                              "Two other API which can be used to create Renderer: CreateRenderer() and CreateWindowAndRenderer(). These can _also_ create a software renderer, but they are intended to be used with an Window as the final destination and not an Surface.",
-                              [
-                                {
-                                  "tag": "@param surface",
-                                  "content": "the Surface structure representing the surface where rendering is done."
-                                },
-                                {
-                                  "tag": "@post",
-                                  "content": "a valid rendering context or nullptr if there was an error; call GetError() for more information."
-                                }
-                              ],
-                              {
-                                "tag": "@threadsafety",
-                                "content": "It is safe to call this function from any thread."
-                              },
-                              {
-                                "tag": "@since",
-                                "content": "This function is available since SDL 3.2.0."
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "DestroyRenderer"
-                              }
-                            ],
-                            "name": "Renderer",
-                            "kind": "function",
-                            "type": "",
-                            "parameters": [
-                              {
-                                "name": "surface",
-                                "type": "SurfaceRef"
-                              }
-                            ],
-                            "sourceName": "SDL_CreateSoftwareRenderer",
-                            "proto": true
-                          },
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Renderer": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyRenderer(get());"
-              },
-              "name": "~Renderer"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Renderer &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Renderer &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Renderer &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Renderer &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -114976,6 +114554,379 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "Renderer": {
+          "doc": [
+            "A structure representing rendering state",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Renderer",
+          "kind": "struct",
+          "type": "RendererBase",
+          "sourceName": "SDL_Renderer",
+          "entries": {
+            "RendererBase::RendererBase": {
+              "kind": "alias",
+              "name": "RendererBase::RendererBase"
+            },
+            "Renderer": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "RendererRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "RendererBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Renderer.",
+                {
+                  "tag": "@param resource",
+                  "content": "a RendererRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Renderer",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Renderer &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Renderer",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Renderer &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Renderer(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Renderer",
+                  "overload": {
+                    "doc": [
+                      "Create a 2D rendering context for a window.",
+                      "If you want a specific renderer, you can specify its name here. A list of available renderers can be obtained by calling GetRenderDriver() multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you don't need a specific renderer, specify nullptr and SDL will attempt to choose the best option for you, based on what is available on the user's system.",
+                      "If `name` is a comma-separated list, SDL will try each name, in the order listed, until one succeeds or all of them fail.",
+                      "By default the rendering size matches the window size in pixels, but you can call SetRenderLogicalPresentation() to change the content size and scaling options.",
+                      [
+                        {
+                          "tag": "@param window",
+                          "content": "the window where rendering is displayed."
+                        },
+                        {
+                          "tag": "@param name",
+                          "content": "the name of the rendering driver to initialize, or nullptr to let SDL choose one."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a valid rendering context or nullptr if there was an error; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "This function should only be called on the main thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateRendererWithProperties"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "CreateSoftwareRenderer"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyRenderer"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetNumRenderDrivers"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetRenderDriver"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetRendererName"
+                        }
+                      ]
+                    ],
+                    "name": "Renderer",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "window",
+                        "type": "WindowRef"
+                      },
+                      {
+                        "name": "name",
+                        "type": "StringParam",
+                        "default": "nullptr"
+                      }
+                    ],
+                    "sourceName": "SDL_CreateRenderer",
+                    "overload": {
+                      "doc": [
+                        "Create a 2D rendering context for a window, with the specified properties.",
+                        "These are the supported properties:",
+                        [
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.NAME_STRING`: the name of the rendering driver to use, if a specific one is desired"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.WINDOW_POINTER`: the window where rendering is displayed, required if this isn't a software renderer using a surface"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.SURFACE_POINTER`: the surface where rendering is displayed, if you want a software renderer without a window"
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing the colorspace for output to the display, defaults to COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB colorspace, but values can go beyond 1.0 and float (linear) format textures can be used for HDR content."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.PRESENT_VSYNC_NUMBER`: non-zero if you want present synchronized with the refresh rate. This property can take any value that is supported by SetRenderVSync() for the renderer."
+                          }
+                        ],
+                        "With the SDL GPU renderer (since SDL 3.4.0):",
+                        [
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.GPU_DEVICE_POINTER`: the device to use with the renderer, optional."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to provide SPIR-V shaders to GPURenderState, optional."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.GPU_SHADERS_DXIL_BOOLEAN`: the app is able to provide DXIL shaders to GPURenderState, optional."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide MSL shaders to GPURenderState, optional."
+                          }
+                        ],
+                        "With the vulkan renderer:",
+                        [
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.VULKAN_INSTANCE_POINTER`: the VkInstance to use with the renderer, optional."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use with the renderer, optional."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice to use with the renderer, optional."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.VULKAN_DEVICE_POINTER`: the VkDevice to use with the renderer, optional."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue family index used for rendering."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Renderer.Create.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue family index used for presentation."
+                          }
+                        ],
+                        [
+                          {
+                            "tag": "@param props",
+                            "content": "the properties to use."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "a valid rendering context or nullptr if there was an error; call GetError() for more information."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "This function should only be called on the main thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL 3.2.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateProperties"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CreateRenderer"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "CreateSoftwareRenderer"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyRenderer"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "GetRendererName"
+                          }
+                        ]
+                      ],
+                      "name": "Renderer",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "props",
+                          "type": "PropertiesRef"
+                        }
+                      ],
+                      "sourceName": "SDL_CreateRendererWithProperties",
+                      "overload": {
+                        "doc": [
+                          "Create a 2D software rendering context for a surface.",
+                          "Two other API which can be used to create Renderer: CreateRenderer() and CreateWindowAndRenderer(). These can _also_ create a software renderer, but they are intended to be used with an Window as the final destination and not an Surface.",
+                          [
+                            {
+                              "tag": "@param surface",
+                              "content": "the Surface structure representing the surface where rendering is done."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "a valid rendering context or nullptr if there was an error; call GetError() for more information."
+                            }
+                          ],
+                          {
+                            "tag": "@threadsafety",
+                            "content": "It is safe to call this function from any thread."
+                          },
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL 3.2.0."
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyRenderer"
+                          }
+                        ],
+                        "name": "Renderer",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "surface",
+                            "type": "SurfaceRef"
+                          }
+                        ],
+                        "sourceName": "SDL_CreateSoftwareRenderer",
+                        "proto": true
+                      },
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Renderer": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyRenderer(get());"
+              },
+              "name": "~Renderer"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Renderer &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Renderer &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Renderer &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Renderer &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "Renderer"
           }
@@ -118096,7 +118047,7 @@
             },
             {
               "name": "renderer",
-              "type": "Renderer *"
+              "type": "RendererBase *"
             }
           ],
           "sourceName": "SDL_CreateWindowAndRenderer",
@@ -118191,7 +118142,7 @@
                   "name": "window_flags"
                 },
                 {
-                  "type": "Renderer *",
+                  "type": "RendererBase *",
                   "name": "renderer"
                 }
               ],
@@ -118266,7 +118217,7 @@
               "name": "window_flags"
             },
             {
-              "type": "RendererRef *",
+              "type": "RendererBase *",
               "name": "renderer"
             }
           ],
@@ -118840,15 +118791,14 @@
             "patch": 0
           }
         },
-        "Renderer::GetGPUDevice": {
-          "name": "Renderer::GetGPUDevice",
+        "RendererBase::GetGPUDevice": {
+          "name": "RendererBase::GetGPUDevice",
           "kind": "function",
           "type": "GPUDeviceRef",
           "parameters": [],
           "sourceName": "SDL_GetGPURendererDevice",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "delegate": "SDL::GetGPURendererDevice"
           },
           "since": {
@@ -118954,15 +118904,14 @@
             "methodName": "GetWindow"
           }
         },
-        "Renderer::GetWindow": {
-          "name": "Renderer::GetWindow",
+        "RendererBase::GetWindow": {
+          "name": "RendererBase::GetWindow",
           "kind": "function",
           "type": "WindowRef",
           "parameters": [],
           "sourceName": "SDL_GetRenderWindow",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetWindow",
             "delegate": "SDL::GetRenderWindow"
@@ -119018,15 +118967,14 @@
             "mayFail": true
           }
         },
-        "Renderer::GetName": {
-          "name": "Renderer::GetName",
+        "RendererBase::GetName": {
+          "name": "RendererBase::GetName",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
           "sourceName": "SDL_GetRendererName",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::GetRendererName"
           },
@@ -119186,15 +119134,14 @@
             "mayFail": true
           }
         },
-        "Renderer::GetProperties": {
-          "name": "Renderer::GetProperties",
+        "RendererBase::GetProperties": {
+          "name": "RendererBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetRendererProperties",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::GetRendererProperties"
           },
@@ -119595,8 +119542,8 @@
             ]
           }
         },
-        "Renderer::GetOutputSize": {
-          "name": "Renderer::GetOutputSize",
+        "RendererBase::GetOutputSize": {
+          "name": "RendererBase::GetOutputSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -119612,7 +119559,6 @@
           "sourceName": "SDL_GetRenderOutputSize",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetOutputSize",
             "delegate": "SDL::GetRenderOutputSize"
@@ -119625,10 +119571,9 @@
             "parameters": [],
             "hints": {
               "self": "get()",
-              "super": "Renderer",
               "delegate": "SDL::GetRenderOutputSize"
             },
-            "name": "Renderer::GetOutputSize"
+            "name": "RendererBase::GetOutputSize"
           }
         },
         "GetCurrentRenderOutputSize": {
@@ -119739,8 +119684,8 @@
             ]
           }
         },
-        "Renderer::GetCurrentOutputSize": {
-          "name": "Renderer::GetCurrentOutputSize",
+        "RendererBase::GetCurrentOutputSize": {
+          "name": "RendererBase::GetCurrentOutputSize",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -119756,7 +119701,6 @@
           "sourceName": "SDL_GetCurrentRenderOutputSize",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetCurrentOutputSize",
             "delegate": "SDL::GetCurrentRenderOutputSize"
@@ -119769,10 +119713,9 @@
             "parameters": [],
             "hints": {
               "self": "get()",
-              "super": "Renderer",
               "delegate": "SDL::GetCurrentRenderOutputSize"
             },
-            "name": "Renderer::GetCurrentOutputSize"
+            "name": "RendererBase::GetCurrentOutputSize"
           }
         },
         "CreateTexture": {
@@ -119863,8 +119806,8 @@
             "delegate": "Texture"
           }
         },
-        "Renderer::CreateTexture": {
-          "name": "Renderer::CreateTexture",
+        "RendererBase::CreateTexture": {
+          "name": "RendererBase::CreateTexture",
           "kind": "function",
           "type": "Texture",
           "parameters": [
@@ -119884,7 +119827,6 @@
           "sourceName": "SDL_CreateTexture",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "delegate": "Texture"
           }
         },
@@ -120018,8 +119960,8 @@
             "delegate": "Texture"
           }
         },
-        "Renderer::CreateTextureFromSurface": {
-          "name": "Renderer::CreateTextureFromSurface",
+        "RendererBase::CreateTextureFromSurface": {
+          "name": "RendererBase::CreateTextureFromSurface",
           "kind": "function",
           "type": "Texture",
           "parameters": [
@@ -120031,7 +119973,6 @@
           "sourceName": "SDL_CreateTextureFromSurface",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "delegate": "Texture"
           }
         },
@@ -120244,8 +120185,8 @@
             "delegate": "Texture"
           }
         },
-        "Renderer::CreateTextureWithProperties": {
-          "name": "Renderer::CreateTextureWithProperties",
+        "RendererBase::CreateTextureWithProperties": {
+          "name": "RendererBase::CreateTextureWithProperties",
           "kind": "function",
           "type": "Texture",
           "parameters": [
@@ -120257,7 +120198,6 @@
           "sourceName": "SDL_CreateTextureWithProperties",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "delegate": "Texture"
           }
         },
@@ -123479,8 +123419,8 @@
             "methodName": "SetTarget"
           }
         },
-        "Renderer::SetTarget": {
-          "name": "Renderer::SetTarget",
+        "RendererBase::SetTarget": {
+          "name": "RendererBase::SetTarget",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -123492,7 +123432,6 @@
           "sourceName": "SDL_SetRenderTarget",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "SetTarget",
             "delegate": "SDL::SetRenderTarget"
@@ -123512,16 +123451,15 @@
           },
           "name": "ResetRenderTarget"
         },
-        "Renderer::ResetTarget": {
+        "RendererBase::ResetTarget": {
           "kind": "function",
           "type": "void",
           "parameters": [],
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "delegate": "SDL::ResetRenderTarget"
           },
-          "name": "Renderer::ResetTarget"
+          "name": "RendererBase::ResetTarget"
         },
         "GetRenderTarget": {
           "doc": [
@@ -123564,8 +123502,8 @@
             "methodName": "GetTarget"
           }
         },
-        "Renderer::GetTarget": {
-          "name": "Renderer::GetTarget",
+        "RendererBase::GetTarget": {
+          "name": "RendererBase::GetTarget",
           "kind": "function",
           "type": "Texture",
           "parameters": [],
@@ -123573,7 +123511,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "methodName": "GetTarget",
             "delegate": "SDL::GetRenderTarget"
           }
@@ -123654,8 +123591,8 @@
             "methodName": "SetLogicalPresentation"
           }
         },
-        "Renderer::SetLogicalPresentation": {
-          "name": "Renderer::SetLogicalPresentation",
+        "RendererBase::SetLogicalPresentation": {
+          "name": "RendererBase::SetLogicalPresentation",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -123671,7 +123608,6 @@
           "sourceName": "SDL_SetRenderLogicalPresentation",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "SetLogicalPresentation",
             "delegate": "SDL::SetRenderLogicalPresentation"
@@ -123805,8 +123741,8 @@
             ]
           }
         },
-        "Renderer::GetLogicalPresentation": {
-          "name": "Renderer::GetLogicalPresentation",
+        "RendererBase::GetLogicalPresentation": {
+          "name": "RendererBase::GetLogicalPresentation",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -123826,7 +123762,6 @@
           "sourceName": "SDL_GetRenderLogicalPresentation",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetLogicalPresentation",
             "delegate": "SDL::GetRenderLogicalPresentation"
@@ -123847,10 +123782,9 @@
             ],
             "hints": {
               "self": "get()",
-              "super": "Renderer",
               "delegate": "SDL::GetRenderLogicalPresentation"
             },
-            "name": "Renderer::GetLogicalPresentation"
+            "name": "RendererBase::GetLogicalPresentation"
           }
         },
         "GetRenderLogicalPresentationRect": {
@@ -123900,15 +123834,14 @@
             "methodName": "GetLogicalPresentationRect"
           }
         },
-        "Renderer::GetLogicalPresentationRect": {
-          "name": "Renderer::GetLogicalPresentationRect",
+        "RendererBase::GetLogicalPresentationRect": {
+          "name": "RendererBase::GetLogicalPresentationRect",
           "kind": "function",
           "type": "FRect",
           "parameters": [],
           "sourceName": "SDL_GetRenderLogicalPresentationRect",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetLogicalPresentationRect",
             "delegate": "SDL::GetRenderLogicalPresentationRect"
@@ -124000,8 +123933,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderCoordinatesFromWindow": {
-          "name": "Renderer::RenderCoordinatesFromWindow",
+        "RendererBase::RenderCoordinatesFromWindow": {
+          "name": "RendererBase::RenderCoordinatesFromWindow",
           "kind": "function",
           "type": "FPoint",
           "parameters": [
@@ -124013,7 +123946,6 @@
           "sourceName": "SDL_RenderCoordinatesFromWindow",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderCoordinatesFromWindow"
           },
@@ -124108,8 +124040,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderCoordinatesToWindow": {
-          "name": "Renderer::RenderCoordinatesToWindow",
+        "RendererBase::RenderCoordinatesToWindow": {
+          "name": "RendererBase::RenderCoordinatesToWindow",
           "kind": "function",
           "type": "FPoint",
           "parameters": [
@@ -124121,7 +124053,6 @@
           "sourceName": "SDL_RenderCoordinatesToWindow",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderCoordinatesToWindow"
           },
@@ -124198,8 +124129,8 @@
             "mayFail": true
           }
         },
-        "Renderer::ConvertEventToRenderCoordinates": {
-          "name": "Renderer::ConvertEventToRenderCoordinates",
+        "RendererBase::ConvertEventToRenderCoordinates": {
+          "name": "RendererBase::ConvertEventToRenderCoordinates",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -124211,7 +124142,6 @@
           "sourceName": "SDL_ConvertEventToRenderCoordinates",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::ConvertEventToRenderCoordinates"
           },
@@ -124275,8 +124205,8 @@
             "methodName": "SetViewport"
           }
         },
-        "Renderer::SetViewport": {
-          "name": "Renderer::SetViewport",
+        "RendererBase::SetViewport": {
+          "name": "RendererBase::SetViewport",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -124288,7 +124218,6 @@
           "sourceName": "SDL_SetRenderViewport",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "SetViewport",
             "delegate": "SDL::SetRenderViewport"
@@ -124308,16 +124237,15 @@
           },
           "name": "ResetRenderViewport"
         },
-        "Renderer::ResetViewport": {
+        "RendererBase::ResetViewport": {
           "kind": "function",
           "type": "void",
           "parameters": [],
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "delegate": "SDL::ResetRenderViewport"
           },
-          "name": "Renderer::ResetViewport"
+          "name": "RendererBase::ResetViewport"
         },
         "GetRenderViewport": {
           "doc": [
@@ -124371,15 +124299,14 @@
             "methodName": "GetViewport"
           }
         },
-        "Renderer::GetViewport": {
-          "name": "Renderer::GetViewport",
+        "RendererBase::GetViewport": {
+          "name": "RendererBase::GetViewport",
           "kind": "function",
           "type": "Rect",
           "parameters": [],
           "sourceName": "SDL_GetRenderViewport",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetViewport",
             "delegate": "SDL::GetRenderViewport"
@@ -124434,8 +124361,8 @@
             "methodName": "ViewportSet"
           }
         },
-        "Renderer::ViewportSet": {
-          "name": "Renderer::ViewportSet",
+        "RendererBase::ViewportSet": {
+          "name": "RendererBase::ViewportSet",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -124443,7 +124370,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "methodName": "ViewportSet",
             "delegate": "SDL::RenderViewportSet"
           }
@@ -124490,15 +124416,14 @@
             "methodName": "GetSafeArea"
           }
         },
-        "Renderer::GetSafeArea": {
-          "name": "Renderer::GetSafeArea",
+        "RendererBase::GetSafeArea": {
+          "name": "RendererBase::GetSafeArea",
           "kind": "function",
           "type": "Rect",
           "parameters": [],
           "sourceName": "SDL_GetRenderSafeArea",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetSafeArea",
             "delegate": "SDL::GetRenderSafeArea"
@@ -124561,8 +124486,8 @@
             "methodName": "SetClipRect"
           }
         },
-        "Renderer::SetClipRect": {
-          "name": "Renderer::SetClipRect",
+        "RendererBase::SetClipRect": {
+          "name": "RendererBase::SetClipRect",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -124574,7 +124499,6 @@
           "sourceName": "SDL_SetRenderClipRect",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "SetClipRect",
             "delegate": "SDL::SetRenderClipRect"
@@ -124594,16 +124518,15 @@
           },
           "name": "ResetRenderClipRect"
         },
-        "Renderer::ResetClipRect": {
+        "RendererBase::ResetClipRect": {
           "kind": "function",
           "type": "void",
           "parameters": [],
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "delegate": "SDL::ResetRenderClipRect"
           },
-          "name": "Renderer::ResetClipRect"
+          "name": "RendererBase::ResetClipRect"
         },
         "GetRenderClipRect": {
           "doc": [
@@ -124657,15 +124580,14 @@
             "methodName": "GetClipRect"
           }
         },
-        "Renderer::GetClipRect": {
-          "name": "Renderer::GetClipRect",
+        "RendererBase::GetClipRect": {
+          "name": "RendererBase::GetClipRect",
           "kind": "function",
           "type": "Rect",
           "parameters": [],
           "sourceName": "SDL_GetRenderClipRect",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetClipRect",
             "delegate": "SDL::GetRenderClipRect"
@@ -124719,8 +124641,8 @@
             "methodName": "IsClipEnabled"
           }
         },
-        "Renderer::IsClipEnabled": {
-          "name": "Renderer::IsClipEnabled",
+        "RendererBase::IsClipEnabled": {
+          "name": "RendererBase::IsClipEnabled",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -124728,7 +124650,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "methodName": "IsClipEnabled",
             "delegate": "SDL::RenderClipEnabled"
           }
@@ -124789,8 +124710,8 @@
             "methodName": "SetScale"
           }
         },
-        "Renderer::SetScale": {
-          "name": "Renderer::SetScale",
+        "RendererBase::SetScale": {
+          "name": "RendererBase::SetScale",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -124802,7 +124723,6 @@
           "sourceName": "SDL_SetRenderScale",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "SetScale",
             "delegate": "SDL::SetRenderScale"
@@ -124914,8 +124834,8 @@
             ]
           }
         },
-        "Renderer::GetScale": {
-          "name": "Renderer::GetScale",
+        "RendererBase::GetScale": {
+          "name": "RendererBase::GetScale",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -124931,7 +124851,6 @@
           "sourceName": "SDL_GetRenderScale",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetScale",
             "delegate": "SDL::GetRenderScale"
@@ -124944,10 +124863,9 @@
             "parameters": [],
             "hints": {
               "self": "get()",
-              "super": "Renderer",
               "delegate": "SDL::GetRenderScale"
             },
-            "name": "Renderer::GetScale"
+            "name": "RendererBase::GetScale"
           }
         },
         "SetRenderDrawColor": {
@@ -125018,8 +124936,8 @@
             "methodName": "SetDrawColor"
           }
         },
-        "Renderer::SetDrawColor": {
-          "name": "Renderer::SetDrawColor",
+        "RendererBase::SetDrawColor": {
+          "name": "RendererBase::SetDrawColor",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -125031,7 +124949,6 @@
           "sourceName": "SDL_SetRenderDrawColor",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "SetDrawColor",
             "delegate": "SDL::SetRenderDrawColor"
@@ -125105,8 +125022,8 @@
             "methodName": "SetDrawColorFloat"
           }
         },
-        "Renderer::SetDrawColorFloat": {
-          "name": "Renderer::SetDrawColorFloat",
+        "RendererBase::SetDrawColorFloat": {
+          "name": "RendererBase::SetDrawColorFloat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -125118,7 +125035,6 @@
           "sourceName": "SDL_SetRenderDrawColorFloat",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "SetDrawColorFloat",
             "delegate": "SDL::SetRenderDrawColorFloat"
@@ -125264,8 +125180,8 @@
             ]
           }
         },
-        "Renderer::GetDrawColor": {
-          "name": "Renderer::GetDrawColor",
+        "RendererBase::GetDrawColor": {
+          "name": "RendererBase::GetDrawColor",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -125289,7 +125205,6 @@
           "sourceName": "SDL_GetRenderDrawColor",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetDrawColor",
             "delegate": "SDL::GetRenderDrawColor"
@@ -125302,10 +125217,9 @@
             "parameters": [],
             "hints": {
               "self": "get()",
-              "super": "Renderer",
               "delegate": "SDL::GetRenderDrawColor"
             },
-            "name": "Renderer::GetDrawColor"
+            "name": "RendererBase::GetDrawColor"
           }
         },
         "GetRenderDrawColorFloat": {
@@ -125448,8 +125362,8 @@
             ]
           }
         },
-        "Renderer::GetDrawColorFloat": {
-          "name": "Renderer::GetDrawColorFloat",
+        "RendererBase::GetDrawColorFloat": {
+          "name": "RendererBase::GetDrawColorFloat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -125473,7 +125387,6 @@
           "sourceName": "SDL_GetRenderDrawColorFloat",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetDrawColorFloat",
             "delegate": "SDL::GetRenderDrawColorFloat"
@@ -125486,10 +125399,9 @@
             "parameters": [],
             "hints": {
               "self": "get()",
-              "super": "Renderer",
               "delegate": "SDL::GetRenderDrawColorFloat"
             },
-            "name": "Renderer::GetDrawColorFloat"
+            "name": "RendererBase::GetDrawColorFloat"
           }
         },
         "SetRenderColorScale": {
@@ -125543,8 +125455,8 @@
             "methodName": "SetColorScale"
           }
         },
-        "Renderer::SetColorScale": {
-          "name": "Renderer::SetColorScale",
+        "RendererBase::SetColorScale": {
+          "name": "RendererBase::SetColorScale",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -125556,7 +125468,6 @@
           "sourceName": "SDL_SetRenderColorScale",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "SetColorScale",
             "delegate": "SDL::SetRenderColorScale"
@@ -125607,15 +125518,14 @@
             "methodName": "GetColorScale"
           }
         },
-        "Renderer::GetColorScale": {
-          "name": "Renderer::GetColorScale",
+        "RendererBase::GetColorScale": {
+          "name": "RendererBase::GetColorScale",
           "kind": "function",
           "type": "float",
           "parameters": [],
           "sourceName": "SDL_GetRenderColorScale",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetColorScale",
             "delegate": "SDL::GetRenderColorScale"
@@ -125672,8 +125582,8 @@
             "methodName": "SetDrawBlendMode"
           }
         },
-        "Renderer::SetDrawBlendMode": {
-          "name": "Renderer::SetDrawBlendMode",
+        "RendererBase::SetDrawBlendMode": {
+          "name": "RendererBase::SetDrawBlendMode",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -125685,7 +125595,6 @@
           "sourceName": "SDL_SetRenderDrawBlendMode",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "SetDrawBlendMode",
             "delegate": "SDL::SetRenderDrawBlendMode"
@@ -125736,15 +125645,14 @@
             "methodName": "GetDrawBlendMode"
           }
         },
-        "Renderer::GetDrawBlendMode": {
-          "name": "Renderer::GetDrawBlendMode",
+        "RendererBase::GetDrawBlendMode": {
+          "name": "RendererBase::GetDrawBlendMode",
           "kind": "function",
           "type": "BlendMode",
           "parameters": [],
           "sourceName": "SDL_GetRenderDrawBlendMode",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetDrawBlendMode",
             "delegate": "SDL::GetRenderDrawBlendMode"
@@ -125792,15 +125700,14 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderClear": {
-          "name": "Renderer::RenderClear",
+        "RendererBase::RenderClear": {
+          "name": "RendererBase::RenderClear",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_RenderClear",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderClear"
           }
@@ -125857,8 +125764,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderPoint": {
-          "name": "Renderer::RenderPoint",
+        "RendererBase::RenderPoint": {
+          "name": "RendererBase::RenderPoint",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -125870,7 +125777,6 @@
           "sourceName": "SDL_RenderPoint",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderPoint"
           }
@@ -125927,8 +125833,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderPoints": {
-          "name": "Renderer::RenderPoints",
+        "RendererBase::RenderPoints": {
+          "name": "RendererBase::RenderPoints",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -125940,7 +125846,6 @@
           "sourceName": "SDL_RenderPoints",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderPoints"
           }
@@ -126009,8 +125914,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderLine": {
-          "name": "Renderer::RenderLine",
+        "RendererBase::RenderLine": {
+          "name": "RendererBase::RenderLine",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126026,7 +125931,6 @@
           "sourceName": "SDL_RenderLine",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderLine"
           }
@@ -126083,8 +125987,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderLines": {
-          "name": "Renderer::RenderLines",
+        "RendererBase::RenderLines": {
+          "name": "RendererBase::RenderLines",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126096,7 +126000,6 @@
           "sourceName": "SDL_RenderLines",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderLines"
           }
@@ -126149,8 +126052,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderRect": {
-          "name": "Renderer::RenderRect",
+        "RendererBase::RenderRect": {
+          "name": "RendererBase::RenderRect",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126162,7 +126065,6 @@
           "sourceName": "SDL_RenderRect",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderRect"
           }
@@ -126219,8 +126121,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderRects": {
-          "name": "Renderer::RenderRects",
+        "RendererBase::RenderRects": {
+          "name": "RendererBase::RenderRects",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126232,7 +126134,6 @@
           "sourceName": "SDL_RenderRects",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderRects"
           }
@@ -126285,8 +126186,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderFillRect": {
-          "name": "Renderer::RenderFillRect",
+        "RendererBase::RenderFillRect": {
+          "name": "RendererBase::RenderFillRect",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126298,7 +126199,6 @@
           "sourceName": "SDL_RenderFillRect",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderFillRect"
           }
@@ -126355,8 +126255,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderFillRects": {
-          "name": "Renderer::RenderFillRects",
+        "RendererBase::RenderFillRects": {
+          "name": "RendererBase::RenderFillRects",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126368,7 +126268,6 @@
           "sourceName": "SDL_RenderFillRects",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderFillRects"
           }
@@ -126443,8 +126342,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderTexture": {
-          "name": "Renderer::RenderTexture",
+        "RendererBase::RenderTexture": {
+          "name": "RendererBase::RenderTexture",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126464,7 +126363,6 @@
           "sourceName": "SDL_RenderTexture",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderTexture"
           }
@@ -126557,8 +126455,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderTextureRotated": {
-          "name": "Renderer::RenderTextureRotated",
+        "RendererBase::RenderTextureRotated": {
+          "name": "RendererBase::RenderTextureRotated",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126590,7 +126488,6 @@
           "sourceName": "SDL_RenderTextureRotated",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderTextureRotated"
           }
@@ -126675,8 +126572,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderTextureAffine": {
-          "name": "Renderer::RenderTextureAffine",
+        "RendererBase::RenderTextureAffine": {
+          "name": "RendererBase::RenderTextureAffine",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126704,7 +126601,6 @@
           "sourceName": "SDL_RenderTextureAffine",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderTextureAffine"
           }
@@ -126782,8 +126678,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderTextureTiled": {
-          "name": "Renderer::RenderTextureTiled",
+        "RendererBase::RenderTextureTiled": {
+          "name": "RendererBase::RenderTextureTiled",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126807,7 +126703,6 @@
           "sourceName": "SDL_RenderTextureTiled",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderTextureTiled"
           }
@@ -126923,8 +126818,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderTexture9Grid": {
-          "name": "Renderer::RenderTexture9Grid",
+        "RendererBase::RenderTexture9Grid": {
+          "name": "RendererBase::RenderTexture9Grid",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -126964,7 +126859,6 @@
           "sourceName": "SDL_RenderTexture9Grid",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderTexture9Grid"
           }
@@ -127094,8 +126988,8 @@
             "patch": 0
           }
         },
-        "Renderer::RenderTexture9GridTiled": {
-          "name": "Renderer::RenderTexture9GridTiled",
+        "RendererBase::RenderTexture9GridTiled": {
+          "name": "RendererBase::RenderTexture9GridTiled",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -127139,7 +127033,6 @@
           "sourceName": "SDL_RenderTexture9GridTiled",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderTexture9GridTiled"
           },
@@ -127228,8 +127121,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderGeometry": {
-          "name": "Renderer::RenderGeometry",
+        "RendererBase::RenderGeometry": {
+          "name": "RendererBase::RenderGeometry",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -127249,7 +127142,6 @@
           "sourceName": "SDL_RenderGeometry",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderGeometry"
           }
@@ -127388,8 +127280,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderGeometryRaw": {
-          "name": "Renderer::RenderGeometryRaw",
+        "RendererBase::RenderGeometryRaw": {
+          "name": "RendererBase::RenderGeometryRaw",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -127441,7 +127333,6 @@
           "sourceName": "SDL_RenderGeometryRaw",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderGeometryRaw"
           }
@@ -127518,8 +127409,8 @@
             "patch": 0
           }
         },
-        "Renderer::SetRenderTextureAddressMode": {
-          "name": "Renderer::SetRenderTextureAddressMode",
+        "RendererBase::SetRenderTextureAddressMode": {
+          "name": "RendererBase::SetRenderTextureAddressMode",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -127535,7 +127426,6 @@
           "sourceName": "SDL_SetRenderTextureAddressMode",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::SetRenderTextureAddressMode"
           },
@@ -127608,8 +127498,8 @@
             "patch": 0
           }
         },
-        "Renderer::GetRenderTextureAddressMode": {
-          "name": "Renderer::GetRenderTextureAddressMode",
+        "RendererBase::GetRenderTextureAddressMode": {
+          "name": "RendererBase::GetRenderTextureAddressMode",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -127625,7 +127515,6 @@
           "sourceName": "SDL_GetRenderTextureAddressMode",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::GetRenderTextureAddressMode"
           },
@@ -127689,8 +127578,8 @@
             "methodName": "ReadPixels"
           }
         },
-        "Renderer::ReadPixels": {
-          "name": "Renderer::ReadPixels",
+        "RendererBase::ReadPixels": {
+          "name": "RendererBase::ReadPixels",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -127702,7 +127591,6 @@
           "sourceName": "SDL_RenderReadPixels",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "ReadPixels",
             "delegate": "SDL::RenderReadPixels"
@@ -127800,15 +127688,14 @@
             "methodName": "Present"
           }
         },
-        "Renderer::Present": {
-          "name": "Renderer::Present",
+        "RendererBase::Present": {
+          "name": "RendererBase::Present",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_RenderPresent",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "Present",
             "delegate": "SDL::RenderPresent"
@@ -127897,15 +127784,14 @@
           ],
           "sourceName": "SDL_DestroyRenderer"
         },
-        "Renderer::Destroy": {
-          "name": "Renderer::Destroy",
+        "RendererBase::Destroy": {
+          "name": "RendererBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyRenderer",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "body": "DestroyRenderer(release());",
             "delegate": "SDL::DestroyRenderer"
           }
@@ -127951,15 +127837,14 @@
             "mayFail": true
           }
         },
-        "Renderer::Flush": {
-          "name": "Renderer::Flush",
+        "RendererBase::Flush": {
+          "name": "RendererBase::Flush",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_FlushRenderer",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::FlushRenderer"
           }
@@ -128002,15 +127887,14 @@
           ],
           "sourceName": "SDL_GetRenderMetalLayer"
         },
-        "Renderer::GetRenderMetalLayer": {
-          "name": "Renderer::GetRenderMetalLayer",
+        "RendererBase::GetRenderMetalLayer": {
+          "name": "RendererBase::GetRenderMetalLayer",
           "kind": "function",
           "type": "void *",
           "parameters": [],
           "sourceName": "SDL_GetRenderMetalLayer",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "delegate": "SDL::GetRenderMetalLayer"
           }
         },
@@ -128053,15 +127937,14 @@
           ],
           "sourceName": "SDL_GetRenderMetalCommandEncoder"
         },
-        "Renderer::GetRenderMetalCommandEncoder": {
-          "name": "Renderer::GetRenderMetalCommandEncoder",
+        "RendererBase::GetRenderMetalCommandEncoder": {
+          "name": "RendererBase::GetRenderMetalCommandEncoder",
           "kind": "function",
           "type": "void *",
           "parameters": [],
           "sourceName": "SDL_GetRenderMetalCommandEncoder",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "delegate": "SDL::GetRenderMetalCommandEncoder"
           }
         },
@@ -128127,8 +128010,8 @@
             "mayFail": true
           }
         },
-        "Renderer::AddVulkanRenderSemaphores": {
-          "name": "Renderer::AddVulkanRenderSemaphores",
+        "RendererBase::AddVulkanRenderSemaphores": {
+          "name": "RendererBase::AddVulkanRenderSemaphores",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -128148,7 +128031,6 @@
           "sourceName": "SDL_AddVulkanRenderSemaphores",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::AddVulkanRenderSemaphores"
           }
@@ -128204,8 +128086,8 @@
             "methodName": "SetVSync"
           }
         },
-        "Renderer::SetVSync": {
-          "name": "Renderer::SetVSync",
+        "RendererBase::SetVSync": {
+          "name": "RendererBase::SetVSync",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -128217,7 +128099,6 @@
           "sourceName": "SDL_SetRenderVSync",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "SetVSync",
             "delegate": "SDL::SetRenderVSync"
@@ -128284,15 +128165,14 @@
             "methodName": "GetVSync"
           }
         },
-        "Renderer::GetVSync": {
-          "name": "Renderer::GetVSync",
+        "RendererBase::GetVSync": {
+          "name": "RendererBase::GetVSync",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "SDL_GetRenderVSync",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "methodName": "GetVSync",
             "delegate": "SDL::GetRenderVSync"
@@ -128408,8 +128288,8 @@
             "mayFail": true
           }
         },
-        "Renderer::RenderDebugText": {
-          "name": "Renderer::RenderDebugText",
+        "RendererBase::RenderDebugText": {
+          "name": "RendererBase::RenderDebugText",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -128425,7 +128305,6 @@
           "sourceName": "SDL_RenderDebugText",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderDebugText"
           }
@@ -128512,8 +128391,8 @@
             }
           ]
         },
-        "Renderer::RenderDebugTextFormat": {
-          "name": "Renderer::RenderDebugTextFormat",
+        "RendererBase::RenderDebugTextFormat": {
+          "name": "RendererBase::RenderDebugTextFormat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -128533,7 +128412,6 @@
           "sourceName": "SDL_RenderDebugTextFormat",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::RenderDebugTextFormat"
           },
@@ -128599,8 +128477,8 @@
             "patch": 0
           }
         },
-        "Renderer::SetDefaultTextureScaleMode": {
-          "name": "Renderer::SetDefaultTextureScaleMode",
+        "RendererBase::SetDefaultTextureScaleMode": {
+          "name": "RendererBase::SetDefaultTextureScaleMode",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -128612,7 +128490,6 @@
           "sourceName": "SDL_SetDefaultTextureScaleMode",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::SetDefaultTextureScaleMode"
           },
@@ -128677,8 +128554,8 @@
             "patch": 0
           }
         },
-        "Renderer::GetDefaultTextureScaleMode": {
-          "name": "Renderer::GetDefaultTextureScaleMode",
+        "RendererBase::GetDefaultTextureScaleMode": {
+          "name": "RendererBase::GetDefaultTextureScaleMode",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -128690,7 +128567,6 @@
           "sourceName": "SDL_GetDefaultTextureScaleMode",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::GetDefaultTextureScaleMode"
           },
@@ -129111,8 +128987,8 @@
             "patch": 0
           }
         },
-        "Renderer::CreateGPURenderState": {
-          "name": "Renderer::CreateGPURenderState",
+        "RendererBase::CreateGPURenderState": {
+          "name": "RendererBase::CreateGPURenderState",
           "kind": "function",
           "type": "GPURenderStateRef",
           "parameters": [
@@ -129124,7 +129000,6 @@
           "sourceName": "SDL_CreateGPURenderState",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "delegate": "GPURenderState"
           },
           "since": {
@@ -129309,8 +129184,8 @@
             "patch": 0
           }
         },
-        "Renderer::SetGPURenderState": {
-          "name": "Renderer::SetGPURenderState",
+        "RendererBase::SetGPURenderState": {
+          "name": "RendererBase::SetGPURenderState",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -129322,7 +129197,6 @@
           "sourceName": "SDL_SetGPURenderState",
           "hints": {
             "self": "get()",
-            "super": "Renderer",
             "mayFail": true,
             "delegate": "SDL::SetGPURenderState"
           },
@@ -169246,13 +169120,13 @@
             "Alias to GLContext for non owning parameters."
           ]
         },
-        "Renderer-forward": {
+        "RendererBase-forward": {
           "kind": "forward",
-          "name": "Renderer"
+          "name": "RendererBase"
         },
         "RendererRef": {
           "kind": "alias",
-          "type": "ResourceRef<Renderer>",
+          "type": "ResourceRefT<RendererBase>",
           "doc": [
             "Reference for Renderer.",
             "This does not take ownership!"
@@ -170966,7 +170840,7 @@
                             "name": "window_flags"
                           },
                           {
-                            "type": "RendererRef *",
+                            "type": "RendererBase *",
                             "name": "renderer"
                           }
                         ],

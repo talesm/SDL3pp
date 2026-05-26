@@ -65,14 +65,15 @@ struct GLContextScoped;
 /// Alias to GLContext for non owning parameters.
 using GLContextRef = GLContext;
 
-struct Renderer;
+// Forward decl
+struct RendererBase;
 
 /**
  * Reference for Renderer.
  *
  * This does not take ownership!
  */
-using RendererRef = ResourceRef<Renderer>;
+using RendererRef = ResourceRefT<RendererBase>;
 
 /**
  * Display orientation values; the way a display is rotated.
@@ -793,7 +794,7 @@ struct Window : ResourceBase<WindowRaw>
   Window(StringParam title,
          const PointRaw& size,
          WindowFlags window_flags,
-         RendererRef* renderer);
+         RendererBase* renderer);
 
   /**
    * Create a window with the specified dimensions and flags.

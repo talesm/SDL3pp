@@ -66,7 +66,7 @@ export function expandResource(
     : `ResourceBaseT<${rawName}>`;
   const since =
     targetEntry.since ?? resolveVersionDoc(sourceEntry.doc, context);
-  const isNew = targetName < "Properties";
+  const isNew = targetName < "S";
   if (isNew) {
     system.log(
       `Expanding resource ${sourceName} to ${targetName} in new format...`,
