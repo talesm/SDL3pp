@@ -148408,6 +148408,10 @@
         "In general these functions are thread-safe in that they can be called on different threads with different surfaces. You should not try to modify any surface from two threads simultaneously."
       ],
       "entries": {
+        "SurfaceBase-forward": {
+          "name": "SurfaceBase",
+          "kind": "forward"
+        },
         "Surface-forward": {
           "name": "Surface",
           "kind": "forward"
@@ -148435,7 +148439,7 @@
             "Reference for Surface.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Surface>"
+          "type": "ResourceRefT<SurfaceBase>"
         },
         "SurfaceConstRef": {
           "name": "SurfaceConstRef",
@@ -148653,363 +148657,21 @@
           ],
           "sourceName": "SDL_FLIP_HORIZONTAL_AND_VERTICAL"
         },
-        "Surface": {
-          "doc": [
-            "A collection of pixels used in software blitting.",
-            "Pixels are arranged in memory in rows, with the top row first. Each row occupies an amount of memory given by the pitch (sometimes known as the row stride in non-SDL APIs).",
-            "Within each row, pixels are arranged from left to right until the width is reached. Each pixel occupies a number of bits appropriate for its format, with most formats representing each pixel as one or more whole bytes (in some indexed formats, instead multiple pixels are packed into each byte), and a byte order given by the format. After encoding all pixels, any remaining bytes to reach the pitch are used as padding to reach a desired alignment, and have undefined contents.",
-            "When a surface holds YUV format data, the planes are assumed to be contiguous without padding between them, e.g. a 32x32 surface in NV12 format with a pitch of 32 would consist of 32x32 bytes of Y plane followed by 32x16 bytes of UV plane.",
-            "When a surface holds MJPG format data, pixels points at the compressed JPEG image and pitch is the length of that data.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            [
-              {
-                "tag": "@sa",
-                "content": "CreateSurface"
-              },
-              {
-                "tag": "@sa",
-                "content": "DestroySurface"
-              }
-            ],
-            "@cat resource"
-          ],
-          "name": "Surface",
+        "SurfaceBase": {
+          "name": "SurfaceBase",
           "kind": "struct",
-          "sourceName": "SDL_Surface",
+          "type": "ResourceBaseT<SurfaceRaw, SurfaceRawConst>",
+          "doc": [
+            "Base class to Surface.",
+            {
+              "tag": "@see",
+              "content": "Surface"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Surface": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "SurfaceRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Surface.",
-                {
-                  "tag": "@param resource",
-                  "content": "a SurfaceRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Surface",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Surface &"
-                  }
-                ],
-                "hints": {
-                  "init": [
-                    "Surface(other.get())"
-                  ],
-                  "body": "if (auto res = get()) ++res->refcount;"
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Surface",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Surface &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Surface(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Surface",
-                  "overload": {
-                    "doc": [
-                      "Allocate a new surface with a specific pixel format.",
-                      "The pixels of the new surface are initialized to zero.",
-                      [
-                        {
-                          "tag": "@param width",
-                          "content": "the width of the surface."
-                        },
-                        {
-                          "tag": "@param height",
-                          "content": "the height of the surface."
-                        },
-                        {
-                          "tag": "@param format",
-                          "content": "the PixelFormat for the new surface's pixel format."
-                        },
-                        {
-                          "tag": "@post",
-                          "content": "the new Surface structure that is created or nullptr on failure; call GetError() for more information."
-                        }
-                      ],
-                      {
-                        "tag": "@threadsafety",
-                        "content": "It is safe to call this function from any thread."
-                      },
-                      {
-                        "tag": "@since",
-                        "content": "This function is available since SDL 3.2.0."
-                      },
-                      [
-                        {
-                          "tag": "@sa",
-                          "content": "CreateSurfaceFrom"
-                        },
-                        {
-                          "tag": "@sa",
-                          "content": "DestroySurface"
-                        }
-                      ]
-                    ],
-                    "name": "Surface",
-                    "kind": "function",
-                    "type": "",
-                    "parameters": [
-                      {
-                        "type": "const PointRaw &",
-                        "name": "size"
-                      },
-                      {
-                        "name": "format",
-                        "type": "PixelFormat"
-                      }
-                    ],
-                    "sourceName": "SDL_CreateSurface",
-                    "overload": {
-                      "doc": [
-                        "Allocate a new surface with a specific pixel format and existing pixel data.",
-                        "No copy is made of the pixel data. Pixel data is not managed automatically; you must free the surface before you free the pixel data.",
-                        "Pitch is the offset in bytes from one row of pixels to the next, e.g. `width*4` for `PIXELFORMAT_RGBA8888`.",
-                        "You may pass nullptr for pixels and 0 for pitch to create a surface that you will fill in with valid values later.",
-                        [
-                          {
-                            "tag": "@param width",
-                            "content": "the width of the surface."
-                          },
-                          {
-                            "tag": "@param height",
-                            "content": "the height of the surface."
-                          },
-                          {
-                            "tag": "@param format",
-                            "content": "the PixelFormat for the new surface's pixel format."
-                          },
-                          {
-                            "tag": "@param pixels",
-                            "content": "a pointer to existing pixel data."
-                          },
-                          {
-                            "tag": "@param pitch",
-                            "content": "the number of bytes between each row, including padding."
-                          },
-                          {
-                            "tag": "@post",
-                            "content": "the new Surface structure that is created or nullptr on failure; call GetError() for more information."
-                          }
-                        ],
-                        {
-                          "tag": "@threadsafety",
-                          "content": "It is safe to call this function from any thread."
-                        },
-                        {
-                          "tag": "@since",
-                          "content": "This function is available since SDL 3.2.0."
-                        },
-                        [
-                          {
-                            "tag": "@sa",
-                            "content": "CreateSurface"
-                          },
-                          {
-                            "tag": "@sa",
-                            "content": "DestroySurface"
-                          }
-                        ]
-                      ],
-                      "name": "Surface",
-                      "kind": "function",
-                      "type": "",
-                      "parameters": [
-                        {
-                          "type": "const PointRaw &",
-                          "name": "size"
-                        },
-                        {
-                          "name": "format",
-                          "type": "PixelFormat"
-                        },
-                        {
-                          "name": "pixels",
-                          "type": "void *"
-                        },
-                        {
-                          "name": "pitch",
-                          "type": "int"
-                        }
-                      ],
-                      "sourceName": "SDL_CreateSurfaceFrom",
-                      "proto": true,
-                      "overload": {
-                        "doc": [
-                          "Load an image from a filesystem path into a software surface.",
-                          "An Surface is a buffer of pixels in memory accessible by the CPU. Use this if you plan to hand the data to something else or manipulate it further in code.",
-                          "There are no guarantees about what format the new Surface data will be; in many cases, SDL_image will attempt to supply a surface that exactly matches the provided image, but in others it might have to convert (either because the image is in a format that SDL doesn't directly support or because it's compressed data that could reasonably uncompress to various formats and SDL_image had to pick one). You can inspect an Surface for its specifics, and use ConvertSurface to then migrate to any supported format.",
-                          "If the image format supports a transparent pixel, SDL will set the colorkey for the surface. You can enable RLE acceleration on the surface afterwards by calling: SetSurfaceColorKey(image, SDL_RLEACCEL, image->format->colorkey);",
-                          "There is a separate function to read files from an IOStream, if you need an i/o abstraction to provide data from anywhere instead of a simple filesystem read; that function is LoadSurface_IO().",
-                          "If you are using SDL's 2D rendering API, there is an equivalent call to load images directly into an Texture for use by the GPU without using a software surface: call LoadTexture() instead.",
-                          "When done with the returned surface, the app should dispose of it with a call to [DestroySurface](https://wiki.libsdl.org/SDL3/DestroySurface) ().",
-                          [
-                            {
-                              "tag": "@param file",
-                              "content": "a path on the filesystem to load an image from."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a new SDL surface, or nullptr on error."
-                            }
-                          ],
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_image 3.0.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "LoadSurfaceTyped_IO"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LoadSurface_IO"
-                            }
-                          ]
-                        ],
-                        "name": "Surface",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "file",
-                            "type": "StringParam"
-                          }
-                        ],
-                        "sourceName": "IMG_Load",
-                        "overload": {
-                          "doc": [
-                            "Load an image from an SDL data source into a software surface.",
-                            "An Surface is a buffer of pixels in memory accessible by the CPU. Use this if you plan to hand the data to something else or manipulate it further in code.",
-                            "There are no guarantees about what format the new Surface data will be; in many cases, SDL_image will attempt to supply a surface that exactly matches the provided image, but in others it might have to convert (either because the image is in a format that SDL doesn't directly support or because it's compressed data that could reasonably uncompress to various formats and SDL_image had to pick one). You can inspect an Surface for its specifics, and use ConvertSurface to then migrate to any supported format.",
-                            "If the image format supports a transparent pixel, SDL will set the colorkey for the surface. You can enable RLE acceleration on the surface afterwards by calling: SetSurfaceColorKey(image, SDL_RLEACCEL, image->format->colorkey);",
-                            "If `closeio` is true, `src` will be closed before returning, whether this function succeeds or not. SDL_image reads everything it needs from `src` during this call in any case.",
-                            "There is a separate function to read files from disk without having to deal with IOStream: `LoadSurface(\"filename.jpg\")` will call this function and manage those details for you, determining the file type from the filename's extension.",
-                            "There is also LoadSurfaceTyped_IO(), which is equivalent to this function except a file extension (like \"BMP\", \"JPG\", etc) can be specified, in case SDL_image cannot autodetect the file format.",
-                            "If you are using SDL's 2D rendering API, there is an equivalent call to load images directly into an Texture for use by the GPU without using a software surface: call LoadTexture_IO() instead.",
-                            "When done with the returned surface, the app should dispose of it with a call to DestroySurface().",
-                            [
-                              {
-                                "tag": "@param src",
-                                "content": "an IOStream that data will be read from."
-                              },
-                              {
-                                "tag": "@param closeio",
-                                "content": "true to close/free the IOStream before returning, false to leave it open."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "a new SDL surface, or nullptr on error."
-                              }
-                            ],
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL_image 3.0.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "LoadSurface"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "LoadSurfaceTyped_IO"
-                              }
-                            ]
-                          ],
-                          "name": "Surface",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "src",
-                              "type": "IOStreamRef"
-                            },
-                            {
-                              "name": "closeio",
-                              "type": "bool",
-                              "default": "false"
-                            }
-                          ],
-                          "sourceName": "IMG_Load_IO",
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    },
-                    "proto": true
-                  }
-                }
-              }
-            },
-            "Borrow": {
-              "kind": "function",
-              "static": true,
-              "type": "Surface",
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "SurfaceRaw"
-                }
-              ],
-              "hints": {
-                "body": "if (resource) {\n  ++resource->refcount;\n  return Surface(resource);}\nreturn {};"
-              },
-              "doc": [
-                "Safely borrows the from SurfaceRaw.",
-                {
-                  "tag": "@param resource",
-                  "content": "a SurfaceRaw."
-                },
-                "This does not takes ownership!"
-              ],
-              "name": "Borrow"
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "operator SurfaceConstRef": {
               "kind": "function",
@@ -149025,55 +148687,6 @@
                 "Converts to SurfaceConstRef"
               ],
               "name": "operator SurfaceConstRef"
-            },
-            "~Surface": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroySurface(get());"
-              },
-              "name": "~Surface"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Surface &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Surface &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Surface &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Surface &"
-                  }
-                ],
-                "hints": {
-                  "delete": false,
-                  "body": "if (get() != other.get()) {\n  Surface tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;"
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
             },
             "Destroy": {
               "doc": [
@@ -152461,7 +152074,419 @@
               "proto": true
             }
           },
-          "type": "ResourceBase<SurfaceRaw, SurfaceRawConst>",
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Surface": {
+          "doc": [
+            "A collection of pixels used in software blitting.",
+            "Pixels are arranged in memory in rows, with the top row first. Each row occupies an amount of memory given by the pitch (sometimes known as the row stride in non-SDL APIs).",
+            "Within each row, pixels are arranged from left to right until the width is reached. Each pixel occupies a number of bits appropriate for its format, with most formats representing each pixel as one or more whole bytes (in some indexed formats, instead multiple pixels are packed into each byte), and a byte order given by the format. After encoding all pixels, any remaining bytes to reach the pitch are used as padding to reach a desired alignment, and have undefined contents.",
+            "When a surface holds YUV format data, the planes are assumed to be contiguous without padding between them, e.g. a 32x32 surface in NV12 format with a pitch of 32 would consist of 32x32 bytes of Y plane followed by 32x16 bytes of UV plane.",
+            "When a surface holds MJPG format data, pixels points at the compressed JPEG image and pitch is the length of that data.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "CreateSurface"
+              },
+              {
+                "tag": "@sa",
+                "content": "DestroySurface"
+              }
+            ],
+            "@cat resource"
+          ],
+          "name": "Surface",
+          "kind": "struct",
+          "sourceName": "SDL_Surface",
+          "entries": {
+            "SurfaceBase::SurfaceBase": {
+              "kind": "alias",
+              "name": "SurfaceBase::SurfaceBase"
+            },
+            "Surface": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "SurfaceRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "SurfaceBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Surface.",
+                {
+                  "tag": "@param resource",
+                  "content": "a SurfaceRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Surface",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Surface &"
+                  }
+                ],
+                "hints": {
+                  "init": [
+                    "Surface(other.get())"
+                  ],
+                  "body": "if (auto res = get()) ++res->refcount;"
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Surface",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Surface &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Surface(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Surface",
+                  "overload": {
+                    "doc": [
+                      "Allocate a new surface with a specific pixel format.",
+                      "The pixels of the new surface are initialized to zero.",
+                      [
+                        {
+                          "tag": "@param width",
+                          "content": "the width of the surface."
+                        },
+                        {
+                          "tag": "@param height",
+                          "content": "the height of the surface."
+                        },
+                        {
+                          "tag": "@param format",
+                          "content": "the PixelFormat for the new surface's pixel format."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "the new Surface structure that is created or nullptr on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateSurfaceFrom"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroySurface"
+                        }
+                      ]
+                    ],
+                    "name": "Surface",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "type": "const PointRaw &",
+                        "name": "size"
+                      },
+                      {
+                        "name": "format",
+                        "type": "PixelFormat"
+                      }
+                    ],
+                    "sourceName": "SDL_CreateSurface",
+                    "overload": {
+                      "doc": [
+                        "Allocate a new surface with a specific pixel format and existing pixel data.",
+                        "No copy is made of the pixel data. Pixel data is not managed automatically; you must free the surface before you free the pixel data.",
+                        "Pitch is the offset in bytes from one row of pixels to the next, e.g. `width*4` for `PIXELFORMAT_RGBA8888`.",
+                        "You may pass nullptr for pixels and 0 for pitch to create a surface that you will fill in with valid values later.",
+                        [
+                          {
+                            "tag": "@param width",
+                            "content": "the width of the surface."
+                          },
+                          {
+                            "tag": "@param height",
+                            "content": "the height of the surface."
+                          },
+                          {
+                            "tag": "@param format",
+                            "content": "the PixelFormat for the new surface's pixel format."
+                          },
+                          {
+                            "tag": "@param pixels",
+                            "content": "a pointer to existing pixel data."
+                          },
+                          {
+                            "tag": "@param pitch",
+                            "content": "the number of bytes between each row, including padding."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "the new Surface structure that is created or nullptr on failure; call GetError() for more information."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "It is safe to call this function from any thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL 3.2.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateSurface"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroySurface"
+                          }
+                        ]
+                      ],
+                      "name": "Surface",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "type": "const PointRaw &",
+                          "name": "size"
+                        },
+                        {
+                          "name": "format",
+                          "type": "PixelFormat"
+                        },
+                        {
+                          "name": "pixels",
+                          "type": "void *"
+                        },
+                        {
+                          "name": "pitch",
+                          "type": "int"
+                        }
+                      ],
+                      "sourceName": "SDL_CreateSurfaceFrom",
+                      "proto": true,
+                      "overload": {
+                        "doc": [
+                          "Load an image from a filesystem path into a software surface.",
+                          "An Surface is a buffer of pixels in memory accessible by the CPU. Use this if you plan to hand the data to something else or manipulate it further in code.",
+                          "There are no guarantees about what format the new Surface data will be; in many cases, SDL_image will attempt to supply a surface that exactly matches the provided image, but in others it might have to convert (either because the image is in a format that SDL doesn't directly support or because it's compressed data that could reasonably uncompress to various formats and SDL_image had to pick one). You can inspect an Surface for its specifics, and use ConvertSurface to then migrate to any supported format.",
+                          "If the image format supports a transparent pixel, SDL will set the colorkey for the surface. You can enable RLE acceleration on the surface afterwards by calling: SetSurfaceColorKey(image, SDL_RLEACCEL, image->format->colorkey);",
+                          "There is a separate function to read files from an IOStream, if you need an i/o abstraction to provide data from anywhere instead of a simple filesystem read; that function is LoadSurface_IO().",
+                          "If you are using SDL's 2D rendering API, there is an equivalent call to load images directly into an Texture for use by the GPU without using a software surface: call LoadTexture() instead.",
+                          "When done with the returned surface, the app should dispose of it with a call to [DestroySurface](https://wiki.libsdl.org/SDL3/DestroySurface) ().",
+                          [
+                            {
+                              "tag": "@param file",
+                              "content": "a path on the filesystem to load an image from."
+                            },
+                            {
+                              "tag": "@post",
+                              "content": "a new SDL surface, or nullptr on error."
+                            }
+                          ],
+                          {
+                            "tag": "@since",
+                            "content": "This function is available since SDL_image 3.0.0."
+                          },
+                          [
+                            {
+                              "tag": "@sa",
+                              "content": "LoadSurfaceTyped_IO"
+                            },
+                            {
+                              "tag": "@sa",
+                              "content": "LoadSurface_IO"
+                            }
+                          ]
+                        ],
+                        "name": "Surface",
+                        "kind": "function",
+                        "type": "",
+                        "parameters": [
+                          {
+                            "name": "file",
+                            "type": "StringParam"
+                          }
+                        ],
+                        "sourceName": "IMG_Load",
+                        "overload": {
+                          "doc": [
+                            "Load an image from an SDL data source into a software surface.",
+                            "An Surface is a buffer of pixels in memory accessible by the CPU. Use this if you plan to hand the data to something else or manipulate it further in code.",
+                            "There are no guarantees about what format the new Surface data will be; in many cases, SDL_image will attempt to supply a surface that exactly matches the provided image, but in others it might have to convert (either because the image is in a format that SDL doesn't directly support or because it's compressed data that could reasonably uncompress to various formats and SDL_image had to pick one). You can inspect an Surface for its specifics, and use ConvertSurface to then migrate to any supported format.",
+                            "If the image format supports a transparent pixel, SDL will set the colorkey for the surface. You can enable RLE acceleration on the surface afterwards by calling: SetSurfaceColorKey(image, SDL_RLEACCEL, image->format->colorkey);",
+                            "If `closeio` is true, `src` will be closed before returning, whether this function succeeds or not. SDL_image reads everything it needs from `src` during this call in any case.",
+                            "There is a separate function to read files from disk without having to deal with IOStream: `LoadSurface(\"filename.jpg\")` will call this function and manage those details for you, determining the file type from the filename's extension.",
+                            "There is also LoadSurfaceTyped_IO(), which is equivalent to this function except a file extension (like \"BMP\", \"JPG\", etc) can be specified, in case SDL_image cannot autodetect the file format.",
+                            "If you are using SDL's 2D rendering API, there is an equivalent call to load images directly into an Texture for use by the GPU without using a software surface: call LoadTexture_IO() instead.",
+                            "When done with the returned surface, the app should dispose of it with a call to DestroySurface().",
+                            [
+                              {
+                                "tag": "@param src",
+                                "content": "an IOStream that data will be read from."
+                              },
+                              {
+                                "tag": "@param closeio",
+                                "content": "true to close/free the IOStream before returning, false to leave it open."
+                              },
+                              {
+                                "tag": "@post",
+                                "content": "a new SDL surface, or nullptr on error."
+                              }
+                            ],
+                            {
+                              "tag": "@since",
+                              "content": "This function is available since SDL_image 3.0.0."
+                            },
+                            [
+                              {
+                                "tag": "@sa",
+                                "content": "LoadSurface"
+                              },
+                              {
+                                "tag": "@sa",
+                                "content": "LoadSurfaceTyped_IO"
+                              }
+                            ]
+                          ],
+                          "name": "Surface",
+                          "kind": "function",
+                          "type": "",
+                          "parameters": [
+                            {
+                              "name": "src",
+                              "type": "IOStreamRef"
+                            },
+                            {
+                              "name": "closeio",
+                              "type": "bool",
+                              "default": "false"
+                            }
+                          ],
+                          "sourceName": "IMG_Load_IO",
+                          "proto": true
+                        },
+                        "proto": true
+                      }
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "Borrow": {
+              "kind": "function",
+              "static": true,
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "SurfaceRaw"
+                }
+              ],
+              "hints": {
+                "body": "if (resource) {\n  ++resource->refcount;\n  return Surface(resource);}\nreturn {};"
+              },
+              "doc": [
+                "Safely borrows the from SurfaceRaw.",
+                {
+                  "tag": "@param resource",
+                  "content": "a SurfaceRaw."
+                },
+                "This does not takes ownership!"
+              ],
+              "name": "Borrow"
+            },
+            "~Surface": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroySurface(get());"
+              },
+              "name": "~Surface"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Surface &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Surface &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Surface &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Surface &"
+                  }
+                ],
+                "hints": {
+                  "delete": false,
+                  "body": "if (get() != other.get()) {\n  Surface tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;"
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "type": "SurfaceBase",
           "hints": {
             "self": "get()",
             "super": "Surface"
@@ -153448,15 +153473,14 @@
           ],
           "sourceName": "SDL_DestroySurface"
         },
-        "Surface::Destroy": {
-          "name": "Surface::Destroy",
+        "SurfaceBase::Destroy": {
+          "name": "SurfaceBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroySurface",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "body": "DestroySurface(release());",
             "delegate": "SDL::DestroySurface"
           }
@@ -153528,15 +153552,14 @@
             "mayFail": true
           }
         },
-        "Surface::GetProperties": {
-          "name": "Surface::GetProperties",
+        "SurfaceBase::GetProperties": {
+          "name": "SurfaceBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetSurfaceProperties",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::GetSurfaceProperties"
           },
@@ -153681,8 +153704,8 @@
             "mayFail": true
           }
         },
-        "Surface::SetColorspace": {
-          "name": "Surface::SetColorspace",
+        "SurfaceBase::SetColorspace": {
+          "name": "SurfaceBase::SetColorspace",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -153694,7 +153717,6 @@
           "sourceName": "SDL_SetSurfaceColorspace",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SetSurfaceColorspace"
           }
@@ -153737,8 +153759,8 @@
           ],
           "sourceName": "SDL_GetSurfaceColorspace"
         },
-        "Surface::GetColorspace": {
-          "name": "Surface::GetColorspace",
+        "SurfaceBase::GetColorspace": {
+          "name": "SurfaceBase::GetColorspace",
           "kind": "function",
           "type": "Colorspace",
           "parameters": [],
@@ -153746,7 +153768,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::GetSurfaceColorspace"
           }
         },
@@ -153797,15 +153818,14 @@
             "mayFail": true
           }
         },
-        "Surface::CreatePalette": {
-          "name": "Surface::CreatePalette",
+        "SurfaceBase::CreatePalette": {
+          "name": "SurfaceBase::CreatePalette",
           "kind": "function",
           "type": "Palette",
           "parameters": [],
           "sourceName": "SDL_CreateSurfacePalette",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::CreateSurfacePalette"
           }
@@ -153866,8 +153886,8 @@
             "mayFail": true
           }
         },
-        "Surface::SetPalette": {
-          "name": "Surface::SetPalette",
+        "SurfaceBase::SetPalette": {
+          "name": "SurfaceBase::SetPalette",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -153879,7 +153899,6 @@
           "sourceName": "SDL_SetSurfacePalette",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SetSurfacePalette"
           }
@@ -153921,8 +153940,8 @@
           ],
           "sourceName": "SDL_GetSurfacePalette"
         },
-        "Surface::GetPalette": {
-          "name": "Surface::GetPalette",
+        "SurfaceBase::GetPalette": {
+          "name": "SurfaceBase::GetPalette",
           "kind": "function",
           "type": "Palette",
           "parameters": [],
@@ -153930,7 +153949,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::GetSurfacePalette"
           }
         },
@@ -153994,8 +154012,8 @@
             "mayFail": true
           }
         },
-        "Surface::AddAlternateImage": {
-          "name": "Surface::AddAlternateImage",
+        "SurfaceBase::AddAlternateImage": {
+          "name": "SurfaceBase::AddAlternateImage",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -154007,7 +154025,6 @@
           "sourceName": "SDL_AddSurfaceAlternateImage",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::AddSurfaceAlternateImage"
           }
@@ -154059,8 +154076,8 @@
           ],
           "sourceName": "SDL_SurfaceHasAlternateImages"
         },
-        "Surface::HasAlternateImages": {
-          "name": "Surface::HasAlternateImages",
+        "SurfaceBase::HasAlternateImages": {
+          "name": "SurfaceBase::HasAlternateImages",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -154068,7 +154085,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::SurfaceHasAlternateImages"
           }
         },
@@ -154125,8 +154141,8 @@
           ],
           "sourceName": "SDL_GetSurfaceImages"
         },
-        "Surface::GetImages": {
-          "name": "Surface::GetImages",
+        "SurfaceBase::GetImages": {
+          "name": "SurfaceBase::GetImages",
           "kind": "function",
           "type": "OwnArray<SurfaceRaw>",
           "parameters": [],
@@ -154134,7 +154150,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::GetSurfaceImages"
           }
         },
@@ -154180,15 +154195,14 @@
           ],
           "sourceName": "SDL_RemoveSurfaceAlternateImages"
         },
-        "Surface::RemoveAlternateImages": {
-          "name": "Surface::RemoveAlternateImages",
+        "SurfaceBase::RemoveAlternateImages": {
+          "name": "SurfaceBase::RemoveAlternateImages",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_RemoveSurfaceAlternateImages",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::RemoveSurfaceAlternateImages"
           }
         },
@@ -154240,15 +154254,14 @@
             "mayFail": true
           }
         },
-        "Surface::Lock": {
-          "name": "Surface::Lock",
+        "SurfaceBase::Lock": {
+          "name": "SurfaceBase::Lock",
           "kind": "function",
           "type": "SurfaceLock",
           "parameters": [],
           "sourceName": "SDL_LockSurface",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "body": "return {SurfaceRef(*this)};",
             "delegate": "SDL::LockSurface"
@@ -154303,8 +154316,8 @@
           ],
           "sourceName": "SDL_UnlockSurface"
         },
-        "Surface::Unlock": {
-          "name": "Surface::Unlock",
+        "SurfaceBase::Unlock": {
+          "name": "SurfaceBase::Unlock",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -154316,7 +154329,6 @@
           "sourceName": "SDL_UnlockSurface",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
             "delegate": "SDL::UnlockSurface"
           }
@@ -154609,8 +154621,8 @@
             "mayFail": true
           }
         },
-        "Surface::SaveBMP_IO": {
-          "name": "Surface::SaveBMP_IO",
+        "SurfaceBase::SaveBMP_IO": {
+          "name": "SurfaceBase::SaveBMP_IO",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -154626,7 +154638,6 @@
           "sourceName": "SDL_SaveBMP_IO",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SaveBMP_IO"
           },
@@ -154687,8 +154698,8 @@
             "mayFail": true
           }
         },
-        "Surface::SaveBMP": {
-          "name": "Surface::SaveBMP",
+        "SurfaceBase::SaveBMP": {
+          "name": "SurfaceBase::SaveBMP",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -154700,7 +154711,6 @@
           "sourceName": "SDL_SaveBMP",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SaveBMP"
           },
@@ -154894,8 +154904,8 @@
             "patch": 0
           }
         },
-        "Surface::SavePNG_IO": {
-          "name": "Surface::SavePNG_IO",
+        "SurfaceBase::SavePNG_IO": {
+          "name": "SurfaceBase::SavePNG_IO",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -154911,7 +154921,6 @@
           "sourceName": "SDL_SavePNG_IO",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SaveTrustedPNG_IO"
           },
@@ -154983,8 +154992,8 @@
             "patch": 0
           }
         },
-        "Surface::SavePNG": {
-          "name": "Surface::SavePNG",
+        "SurfaceBase::SavePNG": {
+          "name": "SurfaceBase::SavePNG",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -154996,7 +155005,6 @@
           "sourceName": "SDL_SavePNG",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SaveTrustedPNG"
           },
@@ -155067,8 +155075,8 @@
             "mayFail": true
           }
         },
-        "Surface::SetRLE": {
-          "name": "Surface::SetRLE",
+        "SurfaceBase::SetRLE": {
+          "name": "SurfaceBase::SetRLE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -155080,7 +155088,6 @@
           "sourceName": "SDL_SetSurfaceRLE",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SetSurfaceRLE"
           }
@@ -155123,8 +155130,8 @@
           ],
           "sourceName": "SDL_SurfaceHasRLE"
         },
-        "Surface::HasRLE": {
-          "name": "Surface::HasRLE",
+        "SurfaceBase::HasRLE": {
+          "name": "SurfaceBase::HasRLE",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -155132,7 +155139,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::SurfaceHasRLE"
           }
         },
@@ -155200,8 +155206,8 @@
             "mayFail": true
           }
         },
-        "Surface::SetColorKey": {
-          "name": "Surface::SetColorKey",
+        "SurfaceBase::SetColorKey": {
+          "name": "SurfaceBase::SetColorKey",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -155213,7 +155219,6 @@
           "sourceName": "SDL_SetSurfaceColorKey",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SetSurfaceColorKey"
           }
@@ -155229,14 +155234,13 @@
           ],
           "name": "ClearSurfaceColorKey"
         },
-        "Surface::ClearColorKey": {
+        "SurfaceBase::ClearColorKey": {
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "name": "Surface::ClearColorKey",
+          "name": "SurfaceBase::ClearColorKey",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::ClearSurfaceColorKey"
           }
         },
@@ -155284,8 +155288,8 @@
           ],
           "sourceName": "SDL_SurfaceHasColorKey"
         },
-        "Surface::HasColorKey": {
-          "name": "Surface::HasColorKey",
+        "SurfaceBase::HasColorKey": {
+          "name": "SurfaceBase::HasColorKey",
           "kind": "function",
           "type": "bool",
           "parameters": [],
@@ -155293,7 +155297,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::SurfaceHasColorKey"
           }
         },
@@ -155349,15 +155352,14 @@
             "mayFail": true
           }
         },
-        "Surface::GetColorKey": {
-          "name": "Surface::GetColorKey",
+        "SurfaceBase::GetColorKey": {
+          "name": "SurfaceBase::GetColorKey",
           "kind": "function",
           "type": "std::optional<Uint32>",
           "parameters": [],
           "sourceName": "SDL_GetSurfaceColorKey",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::GetSurfaceColorKey"
           },
@@ -155435,8 +155437,8 @@
             "mayFail": true
           }
         },
-        "Surface::SetColorMod": {
-          "name": "Surface::SetColorMod",
+        "SurfaceBase::SetColorMod": {
+          "name": "SurfaceBase::SetColorMod",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -155456,7 +155458,6 @@
           "sourceName": "SDL_SetSurfaceColorMod",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SetSurfaceColorMod"
           }
@@ -155531,8 +155532,8 @@
             "mayFail": true
           }
         },
-        "Surface::GetColorMod": {
-          "name": "Surface::GetColorMod",
+        "SurfaceBase::GetColorMod": {
+          "name": "SurfaceBase::GetColorMod",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -155552,7 +155553,6 @@
           "sourceName": "SDL_GetSurfaceColorMod",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::GetSurfaceColorMod"
           },
@@ -155614,8 +155614,8 @@
             "mayFail": true
           }
         },
-        "Surface::SetAlphaMod": {
-          "name": "Surface::SetAlphaMod",
+        "SurfaceBase::SetAlphaMod": {
+          "name": "SurfaceBase::SetAlphaMod",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -155627,7 +155627,6 @@
           "sourceName": "SDL_SetSurfaceAlphaMod",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SetSurfaceAlphaMod"
           }
@@ -155682,15 +155681,14 @@
             "mayFail": true
           }
         },
-        "Surface::GetAlphaMod": {
-          "name": "Surface::GetAlphaMod",
+        "SurfaceBase::GetAlphaMod": {
+          "name": "SurfaceBase::GetAlphaMod",
           "kind": "function",
           "type": "Uint8",
           "parameters": [],
           "sourceName": "SDL_GetSurfaceAlphaMod",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::GetSurfaceAlphaMod"
           },
@@ -155711,7 +155709,7 @@
           ],
           "name": "SetSurfaceMod"
         },
-        "Surface::SetMod": {
+        "SurfaceBase::SetMod": {
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -155720,10 +155718,9 @@
               "name": "color"
             }
           ],
-          "name": "Surface::SetMod",
+          "name": "SurfaceBase::SetMod",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::SetSurfaceMod"
           }
         },
@@ -155738,15 +155735,14 @@
           ],
           "name": "GetSurfaceMod"
         },
-        "Surface::GetMod": {
+        "SurfaceBase::GetMod": {
           "kind": "function",
           "type": "Color",
           "immutable": true,
           "parameters": [],
-          "name": "Surface::GetMod",
+          "name": "SurfaceBase::GetMod",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::GetSurfaceMod"
           }
         },
@@ -155799,8 +155795,8 @@
             "mayFail": true
           }
         },
-        "Surface::SetBlendMode": {
-          "name": "Surface::SetBlendMode",
+        "SurfaceBase::SetBlendMode": {
+          "name": "SurfaceBase::SetBlendMode",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -155812,7 +155808,6 @@
           "sourceName": "SDL_SetSurfaceBlendMode",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::SetSurfaceBlendMode"
           }
@@ -155861,15 +155856,14 @@
             "mayFail": true
           }
         },
-        "Surface::GetBlendMode": {
-          "name": "Surface::GetBlendMode",
+        "SurfaceBase::GetBlendMode": {
+          "name": "SurfaceBase::GetBlendMode",
           "kind": "function",
           "type": "BlendMode",
           "parameters": [],
           "sourceName": "SDL_GetSurfaceBlendMode",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::GetSurfaceBlendMode"
           },
@@ -155922,8 +155916,8 @@
           ],
           "sourceName": "SDL_SetSurfaceClipRect"
         },
-        "Surface::SetClipRect": {
-          "name": "Surface::SetClipRect",
+        "SurfaceBase::SetClipRect": {
+          "name": "SurfaceBase::SetClipRect",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -155935,7 +155929,6 @@
           "sourceName": "SDL_SetSurfaceClipRect",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::SetSurfaceClipRect"
           }
         },
@@ -155950,14 +155943,13 @@
           ],
           "name": "ResetSurfaceClipRect"
         },
-        "Surface::ResetClipRect": {
+        "SurfaceBase::ResetClipRect": {
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "name": "Surface::ResetClipRect",
+          "name": "SurfaceBase::ResetClipRect",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::ResetSurfaceClipRect"
           }
         },
@@ -156006,15 +155998,14 @@
             "mayFail": true
           }
         },
-        "Surface::GetClipRect": {
-          "name": "Surface::GetClipRect",
+        "SurfaceBase::GetClipRect": {
+          "name": "SurfaceBase::GetClipRect",
           "kind": "function",
           "type": "Rect",
           "parameters": [],
           "sourceName": "SDL_GetSurfaceClipRect",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::GetSurfaceClipRect"
           },
@@ -156064,8 +156055,8 @@
             "mayFail": true
           }
         },
-        "Surface::Flip": {
-          "name": "Surface::Flip",
+        "SurfaceBase::Flip": {
+          "name": "SurfaceBase::Flip",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -156077,7 +156068,6 @@
           "sourceName": "SDL_FlipSurface",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::FlipSurface"
           }
@@ -156132,8 +156122,8 @@
             "patch": 0
           }
         },
-        "Surface::Rotate": {
-          "name": "Surface::Rotate",
+        "SurfaceBase::Rotate": {
+          "name": "SurfaceBase::Rotate",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -156145,7 +156135,6 @@
           "sourceName": "SDL_RotateSurface",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::RotateSurface"
           },
           "since": {
@@ -156194,8 +156183,8 @@
           ],
           "sourceName": "SDL_DuplicateSurface"
         },
-        "Surface::Duplicate": {
-          "name": "Surface::Duplicate",
+        "SurfaceBase::Duplicate": {
+          "name": "SurfaceBase::Duplicate",
           "kind": "function",
           "type": "Surface",
           "parameters": [],
@@ -156203,7 +156192,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::DuplicateSurface"
           }
         },
@@ -156265,8 +156253,8 @@
           ],
           "sourceName": "SDL_ScaleSurface"
         },
-        "Surface::Scale": {
-          "name": "Surface::Scale",
+        "SurfaceBase::Scale": {
+          "name": "SurfaceBase::Scale",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -156283,7 +156271,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::ScaleSurface"
           }
         },
@@ -156341,8 +156328,8 @@
           ],
           "sourceName": "SDL_ConvertSurface"
         },
-        "Surface::Convert": {
-          "name": "Surface::Convert",
+        "SurfaceBase::Convert": {
+          "name": "SurfaceBase::Convert",
           "kind": "function",
           "type": "Surface",
           "parameters": [
@@ -156355,11 +156342,10 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::ConvertSurface"
           },
           "overload": {
-            "name": "Surface::Convert",
+            "name": "SurfaceBase::Convert",
             "kind": "function",
             "type": "Surface",
             "parameters": [
@@ -156384,7 +156370,6 @@
             "immutable": true,
             "hints": {
               "self": "get()",
-              "super": "Surface",
               "methodName": "Convert",
               "delegate": "SDL::ConvertSurfaceAndColorspace"
             }
@@ -156828,8 +156813,8 @@
             "mayFail": true
           }
         },
-        "Surface::PremultiplyAlpha": {
-          "name": "Surface::PremultiplyAlpha",
+        "SurfaceBase::PremultiplyAlpha": {
+          "name": "SurfaceBase::PremultiplyAlpha",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -156841,7 +156826,6 @@
           "sourceName": "SDL_PremultiplySurfaceAlpha",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::PremultiplySurfaceAlpha"
           }
@@ -156904,8 +156888,8 @@
             "mayFail": true
           }
         },
-        "Surface::Clear": {
-          "name": "Surface::Clear",
+        "SurfaceBase::Clear": {
+          "name": "SurfaceBase::Clear",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -156917,7 +156901,6 @@
           "sourceName": "SDL_ClearSurface",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::ClearSurface"
           }
@@ -156980,8 +156963,8 @@
             "mayFail": true
           }
         },
-        "Surface::FillRect": {
-          "name": "Surface::FillRect",
+        "SurfaceBase::FillRect": {
+          "name": "SurfaceBase::FillRect",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -156997,7 +156980,6 @@
           "sourceName": "SDL_FillSurfaceRect",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::FillSurfaceRect"
           }
@@ -157017,7 +156999,7 @@
           ],
           "name": "FillSurface"
         },
-        "Surface::Fill": {
+        "SurfaceBase::Fill": {
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -157026,10 +157008,9 @@
               "name": "color"
             }
           ],
-          "name": "Surface::Fill",
+          "name": "SurfaceBase::Fill",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::FillSurface"
           }
         },
@@ -157095,8 +157076,8 @@
             "mayFail": true
           }
         },
-        "Surface::FillRects": {
-          "name": "Surface::FillRects",
+        "SurfaceBase::FillRects": {
+          "name": "SurfaceBase::FillRects",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -157112,7 +157093,6 @@
           "sourceName": "SDL_FillSurfaceRects",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::FillSurfaceRects"
           }
@@ -157187,8 +157167,8 @@
             "mayFail": true
           }
         },
-        "Surface::Blit": {
-          "name": "Surface::Blit",
+        "SurfaceBase::Blit": {
+          "name": "SurfaceBase::Blit",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -157208,12 +157188,11 @@
           "sourceName": "SDL_BlitSurface",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::BlitSurface"
           }
         },
-        "Surface::BlitAt": {
+        "SurfaceBase::BlitAt": {
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -157230,10 +157209,9 @@
               "name": "dstpos"
             }
           ],
-          "name": "Surface::BlitAt",
+          "name": "SurfaceBase::BlitAt",
           "hints": {
-            "self": "get()",
-            "super": "Surface"
+            "self": "get()"
           }
         },
         "BlitSurfaceAt": {
@@ -157324,8 +157302,8 @@
             "mayFail": true
           }
         },
-        "Surface::BlitUnchecked": {
-          "name": "Surface::BlitUnchecked",
+        "SurfaceBase::BlitUnchecked": {
+          "name": "SurfaceBase::BlitUnchecked",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -157345,7 +157323,6 @@
           "sourceName": "SDL_BlitSurfaceUnchecked",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::BlitSurfaceUnchecked"
           }
@@ -157422,8 +157399,8 @@
             "mayFail": true
           }
         },
-        "Surface::BlitScaled": {
-          "name": "Surface::BlitScaled",
+        "SurfaceBase::BlitScaled": {
+          "name": "SurfaceBase::BlitScaled",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -157447,7 +157424,6 @@
           "sourceName": "SDL_BlitSurfaceScaled",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::BlitSurfaceScaled"
           }
@@ -157525,8 +157501,8 @@
             "mayFail": true
           }
         },
-        "Surface::BlitUncheckedScaled": {
-          "name": "Surface::BlitUncheckedScaled",
+        "SurfaceBase::BlitUncheckedScaled": {
+          "name": "SurfaceBase::BlitUncheckedScaled",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -157550,7 +157526,6 @@
           "sourceName": "SDL_BlitSurfaceUncheckedScaled",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::BlitSurfaceUncheckedScaled"
           }
@@ -157633,8 +157608,8 @@
             "patch": 0
           }
         },
-        "Surface::Stretch": {
-          "name": "Surface::Stretch",
+        "SurfaceBase::Stretch": {
+          "name": "SurfaceBase::Stretch",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -157658,7 +157633,6 @@
           "sourceName": "SDL_StretchSurface",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::StretchSurface"
           },
@@ -157734,8 +157708,8 @@
             "mayFail": true
           }
         },
-        "Surface::BlitTiled": {
-          "name": "Surface::BlitTiled",
+        "SurfaceBase::BlitTiled": {
+          "name": "SurfaceBase::BlitTiled",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -157755,7 +157729,6 @@
           "sourceName": "SDL_BlitSurfaceTiled",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::BlitSurfaceTiled"
           }
@@ -157841,8 +157814,8 @@
             "mayFail": true
           }
         },
-        "Surface::BlitTiledWithScale": {
-          "name": "Surface::BlitTiledWithScale",
+        "SurfaceBase::BlitTiledWithScale": {
+          "name": "SurfaceBase::BlitTiledWithScale",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -157870,7 +157843,6 @@
           "sourceName": "SDL_BlitSurfaceTiledWithScale",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::BlitSurfaceTiledWithScale"
           }
@@ -157990,8 +157962,8 @@
             "mayFail": true
           }
         },
-        "Surface::Blit9Grid": {
-          "name": "Surface::Blit9Grid",
+        "SurfaceBase::Blit9Grid": {
+          "name": "SurfaceBase::Blit9Grid",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -158035,7 +158007,6 @@
           "sourceName": "SDL_BlitSurface9Grid",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::BlitSurface9Grid"
           }
@@ -158105,8 +158076,8 @@
           ],
           "sourceName": "SDL_MapSurfaceRGB"
         },
-        "Surface::MapRGB": {
-          "name": "Surface::MapRGB",
+        "SurfaceBase::MapRGB": {
+          "name": "SurfaceBase::MapRGB",
           "kind": "function",
           "type": "Uint32",
           "parameters": [
@@ -158127,7 +158098,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::MapSurfaceRGB"
           }
         },
@@ -158192,8 +158162,8 @@
           ],
           "sourceName": "SDL_MapSurfaceRGBA"
         },
-        "Surface::MapRGBA": {
-          "name": "Surface::MapRGBA",
+        "SurfaceBase::MapRGBA": {
+          "name": "SurfaceBase::MapRGBA",
           "kind": "function",
           "type": "Uint32",
           "parameters": [
@@ -158206,7 +158176,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::MapSurfaceRGBA"
           }
         },
@@ -158500,8 +158469,8 @@
             }
           }
         },
-        "Surface::ReadPixel": {
-          "name": "Surface::ReadPixel",
+        "SurfaceBase::ReadPixel": {
+          "name": "SurfaceBase::ReadPixel",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -158529,7 +158498,6 @@
           "sourceName": "SDL_ReadSurfacePixel",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::ReadSurfacePixel"
           },
@@ -158544,10 +158512,9 @@
                 "name": "p"
               }
             ],
-            "name": "Surface::ReadPixel",
+            "name": "SurfaceBase::ReadPixel",
             "hints": {
               "self": "get()",
-              "super": "Surface",
               "delegate": "SDL::ReadSurfacePixel"
             }
           }
@@ -158838,8 +158805,8 @@
             }
           }
         },
-        "Surface::ReadPixelFloat": {
-          "name": "Surface::ReadPixelFloat",
+        "SurfaceBase::ReadPixelFloat": {
+          "name": "SurfaceBase::ReadPixelFloat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -158867,7 +158834,6 @@
           "sourceName": "SDL_ReadSurfacePixelFloat",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::ReadSurfacePixelFloat"
           },
@@ -158882,10 +158848,9 @@
                 "name": "p"
               }
             ],
-            "name": "Surface::ReadPixelFloat",
+            "name": "SurfaceBase::ReadPixelFloat",
             "hints": {
               "self": "get()",
-              "super": "Surface",
               "delegate": "SDL::ReadSurfacePixelFloat"
             }
           }
@@ -159029,8 +158994,8 @@
             ]
           }
         },
-        "Surface::WritePixel": {
-          "name": "Surface::WritePixel",
+        "SurfaceBase::WritePixel": {
+          "name": "SurfaceBase::WritePixel",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -159046,7 +159011,6 @@
           "sourceName": "SDL_WriteSurfacePixel",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::WriteSurfacePixel"
           }
@@ -159188,8 +159152,8 @@
             ]
           }
         },
-        "Surface::WritePixelFloat": {
-          "name": "Surface::WritePixelFloat",
+        "SurfaceBase::WritePixelFloat": {
+          "name": "SurfaceBase::WritePixelFloat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -159205,7 +159169,6 @@
           "sourceName": "SDL_WriteSurfacePixelFloat",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "mayFail": true,
             "delegate": "SDL::WriteSurfacePixelFloat"
           }
@@ -159243,16 +159206,15 @@
             ]
           }
         },
-        "Surface::GetWidth": {
+        "SurfaceBase::GetWidth": {
           "kind": "function",
           "immutable": true,
           "type": "int",
           "constexpr": true,
           "parameters": [],
-          "name": "Surface::GetWidth",
+          "name": "SurfaceBase::GetWidth",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::GetSurfaceWidth"
           }
         },
@@ -159289,16 +159251,15 @@
             ]
           }
         },
-        "Surface::GetHeight": {
+        "SurfaceBase::GetHeight": {
           "kind": "function",
           "immutable": true,
           "type": "int",
           "constexpr": true,
           "parameters": [],
-          "name": "Surface::GetHeight",
+          "name": "SurfaceBase::GetHeight",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::GetSurfaceHeight"
           }
         },
@@ -159335,16 +159296,15 @@
             ]
           }
         },
-        "Surface::GetSize": {
+        "SurfaceBase::GetSize": {
           "kind": "function",
           "immutable": true,
           "type": "Point",
           "constexpr": true,
           "parameters": [],
-          "name": "Surface::GetSize",
+          "name": "SurfaceBase::GetSize",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::GetSurfaceSize"
           }
         },
@@ -159381,16 +159341,15 @@
             ]
           }
         },
-        "Surface::GetPitch": {
+        "SurfaceBase::GetPitch": {
           "kind": "function",
           "type": "int",
           "immutable": true,
           "constexpr": true,
           "parameters": [],
-          "name": "Surface::GetPitch",
+          "name": "SurfaceBase::GetPitch",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::GetSurfacePitch"
           }
         },
@@ -159427,16 +159386,15 @@
             ]
           }
         },
-        "Surface::GetFormat": {
+        "SurfaceBase::GetFormat": {
           "kind": "function",
           "immutable": true,
           "type": "PixelFormat",
           "constexpr": true,
           "parameters": [],
-          "name": "Surface::GetFormat",
+          "name": "SurfaceBase::GetFormat",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::GetSurfaceFormat"
           }
         },
@@ -159473,16 +159431,15 @@
             ]
           }
         },
-        "Surface::GetPixels": {
+        "SurfaceBase::GetPixels": {
           "kind": "function",
           "immutable": true,
           "type": "void *",
           "constexpr": true,
           "parameters": [],
-          "name": "Surface::GetPixels",
+          "name": "SurfaceBase::GetPixels",
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SDL::GetSurfacePixels"
           }
         }
@@ -191032,7 +190989,7 @@
             "patch": 0
           }
         },
-        "Surface::Save": {
+        "SurfaceBase::Save": {
           "kind": "function",
           "type": "void",
           "immutable": true,
@@ -191044,7 +191001,6 @@
           ],
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "Save"
           },
           "since": {
@@ -191053,7 +191009,7 @@
             "minor": 4,
             "patch": 0
           },
-          "name": "Surface::Save"
+          "name": "SurfaceBase::Save"
         },
         "SaveTyped_IO": {
           "doc": [
@@ -191163,7 +191119,7 @@
             "patch": 0
           }
         },
-        "Surface::SaveTyped_IO": {
+        "SurfaceBase::SaveTyped_IO": {
           "kind": "function",
           "type": "void",
           "immutable": true,
@@ -191183,7 +191139,6 @@
           ],
           "hints": {
             "self": "get()",
-            "super": "Surface",
             "delegate": "SaveTyped_IO"
           },
           "since": {
@@ -191192,7 +191147,7 @@
             "minor": 4,
             "patch": 0
           },
-          "name": "Surface::SaveTyped_IO"
+          "name": "SurfaceBase::SaveTyped_IO"
         },
         "SaveAVIF": {
           "doc": [

@@ -6866,7 +6866,7 @@ const transform = {
             }
           ]
         },
-        "Surface::SDL_BlitSurface": {
+        "SurfaceBase::SDL_BlitSurface": {
           parameters: [
             {
             },
@@ -6902,7 +6902,7 @@ const transform = {
             name: "dstrect"
           }]
         },
-        "Surface::BlitAt": {
+        "SurfaceBase::BlitAt": {
           kind: "function",
           type: "void",
           static: false,
@@ -6941,7 +6941,7 @@ const transform = {
             name: "dstpos"
           }]
         },
-        "Surface::SDL_BlitSurfaceUnchecked": {
+        "SurfaceBase::SDL_BlitSurfaceUnchecked": {
           parameters: [
             {
             },
@@ -6977,7 +6977,7 @@ const transform = {
             name: "dstrect"
           }]
         },
-        "Surface::SDL_BlitSurfaceScaled": {
+        "SurfaceBase::SDL_BlitSurfaceScaled": {
           parameters: [
             {
             },
@@ -7021,7 +7021,7 @@ const transform = {
             name: "scaleMode"
           }]
         },
-        "Surface::SDL_BlitSurfaceUncheckedScaled": {
+        "SurfaceBase::SDL_BlitSurfaceUncheckedScaled": {
           parameters: [
             {
             },
@@ -7065,7 +7065,7 @@ const transform = {
             name: "scaleMode"
           }]
         },
-        "Surface::SDL_StretchSurface": {
+        "SurfaceBase::SDL_StretchSurface": {
           parameters: [
             {
             },
@@ -7109,7 +7109,7 @@ const transform = {
             name: "scaleMode"
           }]
         },
-        "Surface::SDL_BlitSurfaceTiled": {
+        "SurfaceBase::SDL_BlitSurfaceTiled": {
           parameters: [
             {
             },
@@ -7145,7 +7145,7 @@ const transform = {
             name: "dstrect"
           }]
         },
-        "Surface::SDL_BlitSurfaceTiledWithScale": {
+        "SurfaceBase::SDL_BlitSurfaceTiledWithScale": {
           parameters: [
             {
             },
@@ -7197,7 +7197,7 @@ const transform = {
             name: "dstrect"
           }]
         },
-        "Surface::SDL_BlitSurface9Grid": {
+        "SurfaceBase::SDL_BlitSurface9Grid": {
           parameters: [{
           },
           {
@@ -8457,7 +8457,7 @@ const transform = {
         "IMG_Save": {
           parameters: [{ type: "SurfaceConstRef" }, {}],
         },
-        "Surface::Save": {
+        "SurfaceBase::Save": {
           kind: "function",
           type: "void",
           immutable: true,
@@ -8480,7 +8480,7 @@ const transform = {
             default: "false"
           }],
         },
-        "Surface::SaveTyped_IO": {
+        "SurfaceBase::SaveTyped_IO": {
           kind: "function",
           type: "void",
           immutable: true,

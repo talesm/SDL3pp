@@ -41969,6 +41969,9 @@ inline OwnArray<char*> StorageBase::GlobDirectory(StringParam path,
  */
 
 // Forward decl
+struct SurfaceBase;
+
+// Forward decl
 struct Surface;
 
 /// Alias to raw representation for Surface.
@@ -41982,7 +41985,7 @@ using SurfaceRawConst = const SDL_Surface*;
  *
  * This does not take ownership!
  */
-using SurfaceRef = ResourceRef<Surface>;
+using SurfaceRef = ResourceRefT<SurfaceBase>;
 
 /// Safely wrap Surface for non owning const parameters
 using SurfaceConstRef = ResourceConstRef<SurfaceRaw, SurfaceRawConst>;
@@ -42072,235 +42075,16 @@ constexpr FlipMode FLIP_HORIZONTAL_AND_VERTICAL =
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * A collection of pixels used in software blitting.
+ * Base class to Surface.
  *
- * Pixels are arranged in memory in rows, with the top row first. Each row
- * occupies an amount of memory given by the pitch (sometimes known as the row
- * stride in non-SDL APIs).
- *
- * Within each row, pixels are arranged from left to right until the width is
- * reached. Each pixel occupies a number of bits appropriate for its format,
- * with most formats representing each pixel as one or more whole bytes (in some
- * indexed formats, instead multiple pixels are packed into each byte), and a
- * byte order given by the format. After encoding all pixels, any remaining
- * bytes to reach the pitch are used as padding to reach a desired alignment,
- * and have undefined contents.
- *
- * When a surface holds YUV format data, the planes are assumed to be contiguous
- * without padding between them, e.g. a 32x32 surface in NV12 format with a
- * pitch of 32 would consist of 32x32 bytes of Y plane followed by 32x16 bytes
- * of UV plane.
- *
- * When a surface holds MJPG format data, pixels points at the compressed JPEG
- * image and pitch is the length of that data.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa CreateSurface
- * @sa DestroySurface
- *
- * @cat resource
+ * @see Surface
  */
-struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
+struct SurfaceBase : ResourceBaseT<SurfaceRaw, SurfaceRawConst>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Surface.
-   *
-   * @param resource a SurfaceRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Surface(SurfaceRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Surface(const Surface& other)
-    : Surface(other.get())
-  {
-    if (auto res = get()) ++res->refcount;
-  }
-
-  /// Move constructor
-  constexpr Surface(Surface&& other) noexcept
-    : Surface(other.release())
-  {
-  }
-
-  /**
-   * Allocate a new surface with a specific pixel format.
-   *
-   * The pixels of the new surface are initialized to zero.
-   *
-   * @param size the width and height of the surface.
-   * @param format the PixelFormat for the new surface's pixel format.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateSurfaceFrom
-   * @sa DestroySurface
-   */
-  Surface(const PointRaw& size, PixelFormat format);
-
-  /**
-   * Allocate a new surface with a specific pixel format and existing pixel
-   * data.
-   *
-   * No copy is made of the pixel data. Pixel data is not managed automatically;
-   * you must free the surface before you free the pixel data.
-   *
-   * Pitch is the offset in bytes from one row of pixels to the next, e.g.
-   * `width*4` for `PIXELFORMAT_RGBA8888`.
-   *
-   * You may pass nullptr for pixels and 0 for pitch to create a surface that
-   * you will fill in with valid values later.
-   *
-   * @param size the width and height of the surface.
-   * @param format the PixelFormat for the new surface's pixel format.
-   * @param pixels a pointer to existing pixel data.
-   * @param pitch the number of bytes between each row, including padding.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateSurface
-   * @sa DestroySurface
-   */
-  Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch);
-
-  /**
-   * Load an image from a filesystem path into a software surface.
-   *
-   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
-   * if you plan to hand the data to something else or manipulate it further in
-   * code.
-   *
-   * There are no guarantees about what format the new Surface data will be; in
-   * many cases, SDL_image will attempt to supply a surface that exactly matches
-   * the provided image, but in others it might have to convert (either because
-   * the image is in a format that SDL doesn't directly support or because it's
-   * compressed data that could reasonably uncompress to various formats and
-   * SDL_image had to pick one). You can inspect an Surface for its specifics,
-   * and use ConvertSurface to then migrate to any supported format.
-   *
-   * If the image format supports a transparent pixel, SDL will set the colorkey
-   * for the surface. You can enable RLE acceleration on the surface afterwards
-   * by calling: SetSurfaceColorKey(image, SDL_RLEACCEL,
-   * image->format->colorkey);
-   *
-   * There is a separate function to read files from an IOStream, if you need an
-   * i/o abstraction to provide data from anywhere instead of a simple
-   * filesystem read; that function is LoadSurface_IO().
-   *
-   * If you are using SDL's 2D rendering API, there is an equivalent call to
-   * load images directly into an Texture for use by the GPU without using a
-   * software surface: call LoadTexture() instead.
-   *
-   * @param file a path on the filesystem to load an image from.
-   * @post a new SDL surface, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa LoadSurfaceTyped_IO
-   * @sa LoadSurface_IO
-   */
-  Surface(StringParam file);
-
-  /**
-   * Load an image from an SDL data source into a software surface.
-   *
-   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
-   * if you plan to hand the data to something else or manipulate it further in
-   * code.
-   *
-   * There are no guarantees about what format the new Surface data will be; in
-   * many cases, SDL_image will attempt to supply a surface that exactly matches
-   * the provided image, but in others it might have to convert (either because
-   * the image is in a format that SDL doesn't directly support or because it's
-   * compressed data that could reasonably uncompress to various formats and
-   * SDL_image had to pick one). You can inspect an Surface for its specifics,
-   * and use ConvertSurface to then migrate to any supported format.
-   *
-   * If the image format supports a transparent pixel, SDL will set the colorkey
-   * for the surface. You can enable RLE acceleration on the surface afterwards
-   * by calling: SetSurfaceColorKey(image, SDL_RLEACCEL,
-   * image->format->colorkey);
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
-   * There is a separate function to read files from disk without having to deal
-   * with IOStream: `LoadSurface("filename.jpg")` will call this function and
-   * manage those details for you, determining the file type from the filename's
-   * extension.
-   *
-   * There is also LoadSurfaceTyped_IO(), which is equivalent to this function
-   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
-   * SDL_image cannot autodetect the file format.
-   *
-   * If you are using SDL's 2D rendering API, there is an equivalent call to
-   * load images directly into an Texture for use by the GPU without using a
-   * software surface: call LoadTexture_IO() instead.
-   *
-   * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
-   * @post a new SDL surface, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa LoadSurface
-   * @sa LoadSurfaceTyped_IO
-   */
-  Surface(IOStreamRef src, bool closeio = false);
-
-  /**
-   * Safely borrows the from SurfaceRaw.
-   *
-   * @param resource a SurfaceRaw.
-   *
-   * This does not takes ownership!
-   */
-  static Surface Borrow(SurfaceRaw resource)
-  {
-    if (resource) {
-      ++resource->refcount;
-      return Surface(resource);
-    }
-    return {};
-  }
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to SurfaceConstRef
   constexpr operator SurfaceConstRef() const noexcept { return get(); }
-
-  /// Destructor
-  ~Surface() { SDL_DestroySurface(get()); }
-
-  /// Assignment operator.
-  constexpr Surface& operator=(Surface&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Surface& operator=(const Surface& other)
-  {
-    if (get() != other.get()) {
-      Surface tmp(other);
-      swap(*this, tmp);
-    }
-    return *this;
-  }
 
   /**
    * Free this surface.
@@ -43791,6 +43575,235 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
 };
 
 /**
+ * A collection of pixels used in software blitting.
+ *
+ * Pixels are arranged in memory in rows, with the top row first. Each row
+ * occupies an amount of memory given by the pitch (sometimes known as the row
+ * stride in non-SDL APIs).
+ *
+ * Within each row, pixels are arranged from left to right until the width is
+ * reached. Each pixel occupies a number of bits appropriate for its format,
+ * with most formats representing each pixel as one or more whole bytes (in some
+ * indexed formats, instead multiple pixels are packed into each byte), and a
+ * byte order given by the format. After encoding all pixels, any remaining
+ * bytes to reach the pitch are used as padding to reach a desired alignment,
+ * and have undefined contents.
+ *
+ * When a surface holds YUV format data, the planes are assumed to be contiguous
+ * without padding between them, e.g. a 32x32 surface in NV12 format with a
+ * pitch of 32 would consist of 32x32 bytes of Y plane followed by 32x16 bytes
+ * of UV plane.
+ *
+ * When a surface holds MJPG format data, pixels points at the compressed JPEG
+ * image and pitch is the length of that data.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa CreateSurface
+ * @sa DestroySurface
+ *
+ * @cat resource
+ */
+struct Surface : SurfaceBase
+{
+  using SurfaceBase::SurfaceBase;
+
+  /**
+   * Constructs from raw Surface.
+   *
+   * @param resource a SurfaceRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Surface(SurfaceRaw resource) noexcept
+    : SurfaceBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Surface(const Surface& other)
+    : Surface(other.get())
+  {
+    if (auto res = get()) ++res->refcount;
+  }
+
+  /// Move constructor
+  constexpr Surface(Surface&& other) noexcept
+    : Surface(other.release())
+  {
+  }
+
+  /**
+   * Allocate a new surface with a specific pixel format.
+   *
+   * The pixels of the new surface are initialized to zero.
+   *
+   * @param size the width and height of the surface.
+   * @param format the PixelFormat for the new surface's pixel format.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateSurfaceFrom
+   * @sa DestroySurface
+   */
+  Surface(const PointRaw& size, PixelFormat format);
+
+  /**
+   * Allocate a new surface with a specific pixel format and existing pixel
+   * data.
+   *
+   * No copy is made of the pixel data. Pixel data is not managed automatically;
+   * you must free the surface before you free the pixel data.
+   *
+   * Pitch is the offset in bytes from one row of pixels to the next, e.g.
+   * `width*4` for `PIXELFORMAT_RGBA8888`.
+   *
+   * You may pass nullptr for pixels and 0 for pitch to create a surface that
+   * you will fill in with valid values later.
+   *
+   * @param size the width and height of the surface.
+   * @param format the PixelFormat for the new surface's pixel format.
+   * @param pixels a pointer to existing pixel data.
+   * @param pitch the number of bytes between each row, including padding.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateSurface
+   * @sa DestroySurface
+   */
+  Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch);
+
+  /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
+   * if you plan to hand the data to something else or manipulate it further in
+   * code.
+   *
+   * There are no guarantees about what format the new Surface data will be; in
+   * many cases, SDL_image will attempt to supply a surface that exactly matches
+   * the provided image, but in others it might have to convert (either because
+   * the image is in a format that SDL doesn't directly support or because it's
+   * compressed data that could reasonably uncompress to various formats and
+   * SDL_image had to pick one). You can inspect an Surface for its specifics,
+   * and use ConvertSurface to then migrate to any supported format.
+   *
+   * If the image format supports a transparent pixel, SDL will set the colorkey
+   * for the surface. You can enable RLE acceleration on the surface afterwards
+   * by calling: SetSurfaceColorKey(image, SDL_RLEACCEL,
+   * image->format->colorkey);
+   *
+   * There is a separate function to read files from an IOStream, if you need an
+   * i/o abstraction to provide data from anywhere instead of a simple
+   * filesystem read; that function is LoadSurface_IO().
+   *
+   * If you are using SDL's 2D rendering API, there is an equivalent call to
+   * load images directly into an Texture for use by the GPU without using a
+   * software surface: call LoadTexture() instead.
+   *
+   * @param file a path on the filesystem to load an image from.
+   * @post a new SDL surface, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa LoadSurfaceTyped_IO
+   * @sa LoadSurface_IO
+   */
+  Surface(StringParam file);
+
+  /**
+   * Load an image from an SDL data source into a software surface.
+   *
+   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
+   * if you plan to hand the data to something else or manipulate it further in
+   * code.
+   *
+   * There are no guarantees about what format the new Surface data will be; in
+   * many cases, SDL_image will attempt to supply a surface that exactly matches
+   * the provided image, but in others it might have to convert (either because
+   * the image is in a format that SDL doesn't directly support or because it's
+   * compressed data that could reasonably uncompress to various formats and
+   * SDL_image had to pick one). You can inspect an Surface for its specifics,
+   * and use ConvertSurface to then migrate to any supported format.
+   *
+   * If the image format supports a transparent pixel, SDL will set the colorkey
+   * for the surface. You can enable RLE acceleration on the surface afterwards
+   * by calling: SetSurfaceColorKey(image, SDL_RLEACCEL,
+   * image->format->colorkey);
+   *
+   * If `closeio` is true, `src` will be closed before returning, whether this
+   * function succeeds or not. SDL_image reads everything it needs from `src`
+   * during this call in any case.
+   *
+   * There is a separate function to read files from disk without having to deal
+   * with IOStream: `LoadSurface("filename.jpg")` will call this function and
+   * manage those details for you, determining the file type from the filename's
+   * extension.
+   *
+   * There is also LoadSurfaceTyped_IO(), which is equivalent to this function
+   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
+   * SDL_image cannot autodetect the file format.
+   *
+   * If you are using SDL's 2D rendering API, there is an equivalent call to
+   * load images directly into an Texture for use by the GPU without using a
+   * software surface: call LoadTexture_IO() instead.
+   *
+   * @param src an IOStream that data will be read from.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
+   * @post a new SDL surface, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa LoadSurface
+   * @sa LoadSurfaceTyped_IO
+   */
+  Surface(IOStreamRef src, bool closeio = false);
+
+  /**
+   * Safely borrows the from SurfaceRaw.
+   *
+   * @param resource a SurfaceRaw.
+   *
+   * This does not takes ownership!
+   */
+  static Surface Borrow(SurfaceRaw resource)
+  {
+    if (resource) {
+      ++resource->refcount;
+      return Surface(resource);
+    }
+    return {};
+  }
+
+  /// Destructor
+  ~Surface() { SDL_DestroySurface(get()); }
+
+  /// Assignment operator.
+  constexpr Surface& operator=(Surface&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Surface& operator=(const Surface& other)
+  {
+    if (get() != other.get()) {
+      Surface tmp(other);
+      swap(*this, tmp);
+    }
+    return *this;
+  }
+};
+
+/**
  * Set up a surface for directly accessing the pixels.
  *
  * Between calls to LockSurface() / UnlockSurface(), you can write to and read
@@ -44142,7 +44155,7 @@ inline Surface CreateSurfaceFrom(const PointRaw& size,
  */
 inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
 
-inline void Surface::Destroy() { DestroySurface(release()); }
+inline void SurfaceBase::Destroy() { DestroySurface(release()); }
 
 /**
  * Get the properties associated with a surface.
@@ -44183,10 +44196,10 @@ inline void Surface::Destroy() { DestroySurface(release()); }
  */
 inline PropertiesRef GetSurfaceProperties(SurfaceConstRef surface)
 {
-  return {CheckError(SDL_GetSurfaceProperties(surface))};
+  return CheckError(SDL_GetSurfaceProperties(surface));
 }
 
-inline PropertiesRef Surface::GetProperties() const
+inline PropertiesRef SurfaceBase::GetProperties() const
 {
   return SDL::GetSurfaceProperties(get());
 }
@@ -44255,7 +44268,7 @@ inline void SetSurfaceColorspace(SurfaceRef surface, Colorspace colorspace)
   CheckError(SDL_SetSurfaceColorspace(surface, colorspace));
 }
 
-inline void Surface::SetColorspace(Colorspace colorspace)
+inline void SurfaceBase::SetColorspace(Colorspace colorspace)
 {
   SDL::SetSurfaceColorspace(get(), colorspace);
 }
@@ -44283,7 +44296,7 @@ inline Colorspace GetSurfaceColorspace(SurfaceConstRef surface)
   return SDL_GetSurfaceColorspace(surface);
 }
 
-inline Colorspace Surface::GetColorspace() const
+inline Colorspace SurfaceBase::GetColorspace() const
 {
   return SDL::GetSurfaceColorspace(get());
 }
@@ -44320,7 +44333,7 @@ inline Palette CreateSurfacePalette(SurfaceRef surface)
   return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
 }
 
-inline Palette Surface::CreatePalette()
+inline Palette SurfaceBase::CreatePalette()
 {
   return SDL::CreateSurfacePalette(get());
 }
@@ -44350,7 +44363,7 @@ inline void SetSurfacePalette(SurfaceRef surface, PaletteRef palette)
   CheckError(SDL_SetSurfacePalette(surface, palette));
 }
 
-inline void Surface::SetPalette(PaletteRef palette)
+inline void SurfaceBase::SetPalette(PaletteRef palette)
 {
   SDL::SetSurfacePalette(get(), palette);
 }
@@ -44373,7 +44386,7 @@ inline Palette GetSurfacePalette(SurfaceConstRef surface)
   return Palette::Borrow(SDL_GetSurfacePalette(surface));
 }
 
-inline Palette Surface::GetPalette() const
+inline Palette SurfaceBase::GetPalette() const
 {
   return SDL::GetSurfacePalette(get());
 }
@@ -44408,7 +44421,7 @@ inline void AddSurfaceAlternateImage(SurfaceRef surface, SurfaceRef image)
   CheckError(SDL_AddSurfaceAlternateImage(surface, image));
 }
 
-inline void Surface::AddAlternateImage(SurfaceRef image)
+inline void SurfaceBase::AddAlternateImage(SurfaceRef image)
 {
   SDL::AddSurfaceAlternateImage(get(), image);
 }
@@ -44432,7 +44445,7 @@ inline bool SurfaceHasAlternateImages(SurfaceConstRef surface)
   return SDL_SurfaceHasAlternateImages(surface);
 }
 
-inline bool Surface::HasAlternateImages() const
+inline bool SurfaceBase::HasAlternateImages() const
 {
   return SDL::SurfaceHasAlternateImages(get());
 }
@@ -44467,7 +44480,7 @@ inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstRef surface)
   return OwnArray<SurfaceRaw>(CheckError(data), count);
 }
 
-inline OwnArray<SurfaceRaw> Surface::GetImages() const
+inline OwnArray<SurfaceRaw> SurfaceBase::GetImages() const
 {
   return SDL::GetSurfaceImages(get());
 }
@@ -44494,7 +44507,7 @@ inline void RemoveSurfaceAlternateImages(SurfaceRef surface)
   SDL_RemoveSurfaceAlternateImages(surface);
 }
 
-inline void Surface::RemoveAlternateImages()
+inline void SurfaceBase::RemoveAlternateImages()
 {
   SDL::RemoveSurfaceAlternateImages(get());
 }
@@ -44529,7 +44542,7 @@ inline void LockSurface(SurfaceRef surface)
   CheckError(SDL_LockSurface(surface));
 }
 
-inline SurfaceLock Surface::Lock() { return {SurfaceRef(*this)}; }
+inline SurfaceLock SurfaceBase::Lock() { return {SurfaceRef(*this)}; }
 
 inline SurfaceLock::SurfaceLock(SurfaceRef resource)
   : m_lock(resource)
@@ -44552,7 +44565,7 @@ inline SurfaceLock::SurfaceLock(SurfaceRef resource)
  */
 inline void UnlockSurface(SurfaceRef surface) { SDL_UnlockSurface(surface); }
 
-inline void Surface::Unlock(SurfaceLock&& lock)
+inline void SurfaceBase::Unlock(SurfaceLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -44685,7 +44698,7 @@ inline void SaveBMP_IO(SurfaceConstRef surface,
   CheckError(SDL_SaveBMP_IO(surface, dst, closeio));
 }
 
-inline void Surface::SaveBMP_IO(IOStreamRef dst, bool closeio) const
+inline void SurfaceBase::SaveBMP_IO(IOStreamRef dst, bool closeio) const
 {
   SDL::SaveBMP_IO(get(), dst, closeio);
 }
@@ -44716,7 +44729,7 @@ inline void SaveBMP(SurfaceConstRef surface, StringParam file)
   CheckError(SDL_SaveBMP(surface, file));
 }
 
-inline void Surface::SaveBMP(StringParam file) const
+inline void SurfaceBase::SaveBMP(StringParam file) const
 {
   SDL::SaveBMP(get(), std::move(file));
 }
@@ -44876,7 +44889,7 @@ inline void SetSurfaceRLE(SurfaceRef surface, bool enabled)
   CheckError(SDL_SetSurfaceRLE(surface, enabled));
 }
 
-inline void Surface::SetRLE(bool enabled)
+inline void SurfaceBase::SetRLE(bool enabled)
 {
   SDL::SetSurfaceRLE(get(), enabled);
 }
@@ -44900,7 +44913,7 @@ inline bool SurfaceHasRLE(SurfaceConstRef surface)
   return SDL_SurfaceHasRLE(surface);
 }
 
-inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(get()); }
+inline bool SurfaceBase::HasRLE() const { return SDL::SurfaceHasRLE(get()); }
 
 /**
  * Set the color key (transparent pixel) in a surface.
@@ -44929,7 +44942,7 @@ inline void SetSurfaceColorKey(SurfaceRef surface, std::optional<Uint32> key)
   CheckError(SDL_SetSurfaceColorKey(surface, key.has_value(), key.value_or(0)));
 }
 
-inline void Surface::SetColorKey(std::optional<Uint32> key)
+inline void SurfaceBase::SetColorKey(std::optional<Uint32> key)
 {
   SDL::SetSurfaceColorKey(get(), key);
 }
@@ -44949,7 +44962,7 @@ inline void ClearSurfaceColorKey(SurfaceRef surface)
   SetSurfaceColorKey(surface, std::nullopt);
 }
 
-inline void Surface::ClearColorKey() { SDL::ClearSurfaceColorKey(get()); }
+inline void SurfaceBase::ClearColorKey() { SDL::ClearSurfaceColorKey(get()); }
 
 /**
  * Returns whether the surface has a color key.
@@ -44971,7 +44984,7 @@ inline bool SurfaceHasColorKey(SurfaceConstRef surface)
   return SDL_SurfaceHasColorKey(surface);
 }
 
-inline bool Surface::HasColorKey() const
+inline bool SurfaceBase::HasColorKey() const
 {
   return SDL::SurfaceHasColorKey(get());
 }
@@ -45001,7 +45014,7 @@ inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstRef surface)
   return std::nullopt;
 }
 
-inline std::optional<Uint32> Surface::GetColorKey() const
+inline std::optional<Uint32> SurfaceBase::GetColorKey() const
 {
   return SDL::GetSurfaceColorKey(get());
 }
@@ -45034,7 +45047,7 @@ inline void SetSurfaceColorMod(SurfaceRef surface, Uint8 r, Uint8 g, Uint8 b)
   CheckError(SDL_SetSurfaceColorMod(surface, r, g, b));
 }
 
-inline void Surface::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+inline void SurfaceBase::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
 {
   SDL::SetSurfaceColorMod(get(), r, g, b);
 }
@@ -45064,7 +45077,7 @@ inline void GetSurfaceColorMod(SurfaceConstRef surface,
   CheckError(SDL_GetSurfaceColorMod(surface, r, g, b));
 }
 
-inline void Surface::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+inline void SurfaceBase::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
 {
   SDL::GetSurfaceColorMod(get(), r, g, b);
 }
@@ -45094,7 +45107,7 @@ inline void SetSurfaceAlphaMod(SurfaceRef surface, Uint8 alpha)
   CheckError(SDL_SetSurfaceAlphaMod(surface, alpha));
 }
 
-inline void Surface::SetAlphaMod(Uint8 alpha)
+inline void SurfaceBase::SetAlphaMod(Uint8 alpha)
 {
   SDL::SetSurfaceAlphaMod(get(), alpha);
 }
@@ -45120,7 +45133,7 @@ inline Uint8 GetSurfaceAlphaMod(SurfaceConstRef surface)
   return alpha;
 }
 
-inline Uint8 Surface::GetAlphaMod() const
+inline Uint8 SurfaceBase::GetAlphaMod() const
 {
   return SDL::GetSurfaceAlphaMod(get());
 }
@@ -45146,7 +45159,7 @@ inline void SetSurfaceMod(SurfaceRef surface, Color color)
   SetSurfaceAlphaMod(surface, color.a);
 }
 
-inline void Surface::SetMod(Color color) { SetSurfaceMod(get(), color); }
+inline void SurfaceBase::SetMod(Color color) { SetSurfaceMod(get(), color); }
 
 /**
  * Get the additional color and alpha value multiplied into blit
@@ -45164,7 +45177,7 @@ inline Color GetSurfaceMod(SurfaceConstRef surface)
   return c;
 }
 
-inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(get()); }
+inline Color SurfaceBase::GetMod() const { return GetSurfaceMod(get()); }
 
 /**
  * Set the blend mode used for blit operations.
@@ -45189,7 +45202,7 @@ inline void SetSurfaceBlendMode(SurfaceRef surface, BlendMode blendMode)
   CheckError(SDL_SetSurfaceBlendMode(surface, blendMode));
 }
 
-inline void Surface::SetBlendMode(BlendMode blendMode)
+inline void SurfaceBase::SetBlendMode(BlendMode blendMode)
 {
   SDL::SetSurfaceBlendMode(get(), blendMode);
 }
@@ -45214,7 +45227,7 @@ inline BlendMode GetSurfaceBlendMode(SurfaceConstRef surface)
   return blendmode;
 }
 
-inline BlendMode Surface::GetBlendMode() const
+inline BlendMode SurfaceBase::GetBlendMode() const
 {
   return SDL::GetSurfaceBlendMode(get());
 }
@@ -45248,7 +45261,7 @@ inline bool SetSurfaceClipRect(SurfaceRef surface,
   return SDL_SetSurfaceClipRect(surface, rect);
 }
 
-inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
+inline bool SurfaceBase::SetClipRect(OptionalRef<const RectRaw> rect)
 {
   return SDL::SetSurfaceClipRect(get(), rect);
 }
@@ -45263,7 +45276,7 @@ inline void ResetSurfaceClipRect(SurfaceRef surface)
   SetSurfaceClipRect(surface, std::nullopt);
 }
 
-inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(get()); }
+inline void SurfaceBase::ResetClipRect() { SDL::ResetSurfaceClipRect(get()); }
 
 /**
  * Get the clipping rectangle for a surface.
@@ -45290,7 +45303,7 @@ inline Rect GetSurfaceClipRect(SurfaceConstRef surface)
   return r;
 }
 
-inline Rect Surface::GetClipRect() const
+inline Rect SurfaceBase::GetClipRect() const
 {
   return SDL::GetSurfaceClipRect(get());
 }
@@ -45312,7 +45325,7 @@ inline void FlipSurface(SurfaceRef surface, FlipMode flip)
   CheckError(SDL_FlipSurface(surface, flip));
 }
 
-inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(get(), flip); }
+inline void SurfaceBase::Flip(FlipMode flip) { SDL::FlipSurface(get(), flip); }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -45348,7 +45361,7 @@ inline Surface RotateSurface(SurfaceRef surface, float angle)
   return Surface{SDL_RotateSurface(surface, angle)};
 }
 
-inline Surface Surface::Rotate(float angle)
+inline Surface SurfaceBase::Rotate(float angle)
 {
   return SDL::RotateSurface(get(), angle);
 }
@@ -45379,7 +45392,7 @@ inline Surface DuplicateSurface(SurfaceConstRef surface)
   return Surface(SDL_DuplicateSurface(surface));
 }
 
-inline Surface Surface::Duplicate() const
+inline Surface SurfaceBase::Duplicate() const
 {
   return SDL::DuplicateSurface(get());
 }
@@ -45410,7 +45423,8 @@ inline Surface ScaleSurface(SurfaceConstRef surface,
   return Surface(SDL_ScaleSurface(surface, size.x, size.y, scaleMode));
 }
 
-inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
+inline Surface SurfaceBase::Scale(const PointRaw& size,
+                                  ScaleMode scaleMode) const
 {
   return SDL::ScaleSurface(get(), size, scaleMode);
 }
@@ -45447,7 +45461,7 @@ inline Surface ConvertSurface(SurfaceConstRef surface, PixelFormat format)
   return Surface(SDL_ConvertSurface(surface, format));
 }
 
-inline Surface Surface::Convert(PixelFormat format) const
+inline Surface SurfaceBase::Convert(PixelFormat format) const
 {
   return SDL::ConvertSurface(get(), format);
 }
@@ -45490,10 +45504,10 @@ inline Surface ConvertSurfaceAndColorspace(SurfaceConstRef surface,
     surface, format, palette, colorspace, props)};
 }
 
-inline Surface Surface::Convert(PixelFormat format,
-                                PaletteRef palette,
-                                Colorspace colorspace,
-                                PropertiesRef props) const
+inline Surface SurfaceBase::Convert(PixelFormat format,
+                                    PaletteRef palette,
+                                    Colorspace colorspace,
+                                    PropertiesRef props) const
 {
   return SDL::ConvertSurfaceAndColorspace(
     get(), format, palette, colorspace, props);
@@ -45648,7 +45662,7 @@ inline void PremultiplySurfaceAlpha(SurfaceRef surface, bool linear)
   CheckError(SDL_PremultiplySurfaceAlpha(surface, linear));
 }
 
-inline void Surface::PremultiplyAlpha(bool linear)
+inline void SurfaceBase::PremultiplyAlpha(bool linear)
 {
   SDL::PremultiplySurfaceAlpha(get(), linear);
 }
@@ -45675,7 +45689,7 @@ inline void ClearSurface(SurfaceRef surface, const FColorRaw& c)
   CheckError(SDL_ClearSurface(surface, c.r, c.g, c.b, c.a));
 }
 
-inline void Surface::Clear(const FColorRaw& c) { SDL::ClearSurface(get(), c); }
+inline void SurfaceBase::Clear(const FColorRaw& c) { ClearSurface(get(), c); }
 
 /**
  * Perform a fast fill of a rectangle with a specific color.
@@ -45709,7 +45723,7 @@ inline void FillSurfaceRect(SurfaceRef dst,
   CheckError(SDL_FillSurfaceRect(dst, rect, color));
 }
 
-inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
+inline void SurfaceBase::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
 {
   SDL::FillSurfaceRect(get(), rect, color);
 }
@@ -45730,7 +45744,7 @@ inline void FillSurface(SurfaceRef dst, Uint32 color)
   FillSurfaceRect(dst, std::nullopt, color);
 }
 
-inline void Surface::Fill(Uint32 color) { SDL::FillSurface(get(), color); }
+inline void SurfaceBase::Fill(Uint32 color) { FillSurface(get(), color); }
 
 /**
  * Perform a fast fill of a set of rectangles with a specific color.
@@ -45764,7 +45778,7 @@ inline void FillSurfaceRects(SurfaceRef dst,
     SDL_FillSurfaceRects(dst, rects.data(), narrowS32(rects.size()), color));
 }
 
-inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
+inline void SurfaceBase::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
 {
   SDL::FillSurfaceRects(get(), rects, color);
 }
@@ -45847,16 +45861,16 @@ inline void BlitSurface(SurfaceRef src,
   CheckError(SDL_BlitSurface(src, srcrect, dst, dstrect));
 }
 
-inline void Surface::Blit(SurfaceRef src,
-                          OptionalRef<const RectRaw> srcrect,
-                          OptionalRef<const RectRaw> dstrect)
+inline void SurfaceBase::Blit(SurfaceRef src,
+                              OptionalRef<const RectRaw> srcrect,
+                              OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurface(src, srcrect, get(), dstrect);
 }
 
-inline void Surface::BlitAt(SurfaceRef src,
-                            OptionalRef<const RectRaw> srcrect,
-                            const PointRaw& dstpos)
+inline void SurfaceBase::BlitAt(SurfaceRef src,
+                                OptionalRef<const RectRaw> srcrect,
+                                const PointRaw& dstpos)
 {
   Blit(src, srcrect, Rect{dstpos, {}});
 }
@@ -45926,7 +45940,7 @@ inline void Surface::BlitAt(SurfaceRef src,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.BlitSurface
+ * @sa BlitSurface
  */
 inline void BlitSurfaceAt(SurfaceRef src,
                           OptionalRef<const RectRaw> srcrect,
@@ -45965,9 +45979,9 @@ inline void BlitSurfaceUnchecked(SurfaceRef src,
   CheckError(SDL_BlitSurfaceUnchecked(src, &srcrect, dst, &dstrect));
 }
 
-inline void Surface::BlitUnchecked(SurfaceRef src,
-                                   const RectRaw& srcrect,
-                                   const RectRaw& dstrect)
+inline void SurfaceBase::BlitUnchecked(SurfaceRef src,
+                                       const RectRaw& srcrect,
+                                       const RectRaw& dstrect)
 {
   SDL::BlitSurfaceUnchecked(src, srcrect, get(), dstrect);
 }
@@ -46002,10 +46016,10 @@ inline void BlitSurfaceScaled(SurfaceRef src,
   CheckError(SDL_BlitSurfaceScaled(src, srcrect, dst, dstrect, scaleMode));
 }
 
-inline void Surface::BlitScaled(SurfaceRef src,
-                                OptionalRef<const RectRaw> srcrect,
-                                OptionalRef<const RectRaw> dstrect,
-                                ScaleMode scaleMode)
+inline void SurfaceBase::BlitScaled(SurfaceRef src,
+                                    OptionalRef<const RectRaw> srcrect,
+                                    OptionalRef<const RectRaw> dstrect,
+                                    ScaleMode scaleMode)
 {
   SDL::BlitSurfaceScaled(src, srcrect, get(), dstrect, scaleMode);
 }
@@ -46042,10 +46056,10 @@ inline void BlitSurfaceUncheckedScaled(SurfaceRef src,
     SDL_BlitSurfaceUncheckedScaled(src, &srcrect, dst, &dstrect, scaleMode));
 }
 
-inline void Surface::BlitUncheckedScaled(SurfaceRef src,
-                                         const RectRaw& srcrect,
-                                         const RectRaw& dstrect,
-                                         ScaleMode scaleMode)
+inline void SurfaceBase::BlitUncheckedScaled(SurfaceRef src,
+                                             const RectRaw& srcrect,
+                                             const RectRaw& dstrect,
+                                             ScaleMode scaleMode)
 {
   SDL::BlitSurfaceUncheckedScaled(src, srcrect, get(), dstrect, scaleMode);
 }
@@ -46081,10 +46095,10 @@ inline void StretchSurface(SurfaceRef src,
   CheckError(SDL_StretchSurface(src, srcrect, dst, dstrect, scaleMode));
 }
 
-inline void Surface::Stretch(SurfaceRef src,
-                             OptionalRef<RectRaw> srcrect,
-                             OptionalRef<RectRaw> dstrect,
-                             ScaleMode scaleMode)
+inline void SurfaceBase::Stretch(SurfaceRef src,
+                                 OptionalRef<RectRaw> srcrect,
+                                 OptionalRef<RectRaw> dstrect,
+                                 ScaleMode scaleMode)
 {
   SDL::StretchSurface(src, srcrect, get(), dstrect, scaleMode);
 }
@@ -46121,9 +46135,9 @@ inline void BlitSurfaceTiled(SurfaceRef src,
   CheckError(SDL_BlitSurfaceTiled(src, srcrect, dst, dstrect));
 }
 
-inline void Surface::BlitTiled(SurfaceRef src,
-                               OptionalRef<const RectRaw> srcrect,
-                               OptionalRef<const RectRaw> dstrect)
+inline void SurfaceBase::BlitTiled(SurfaceRef src,
+                                   OptionalRef<const RectRaw> srcrect,
+                                   OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurfaceTiled(src, srcrect, get(), dstrect);
 }
@@ -46165,11 +46179,11 @@ inline void BlitSurfaceTiledWithScale(SurfaceRef src,
     src, srcrect, scale, scaleMode, dst, dstrect));
 }
 
-inline void Surface::BlitTiledWithScale(SurfaceRef src,
-                                        OptionalRef<const RectRaw> srcrect,
-                                        float scale,
-                                        ScaleMode scaleMode,
-                                        OptionalRef<const RectRaw> dstrect)
+inline void SurfaceBase::BlitTiledWithScale(SurfaceRef src,
+                                            OptionalRef<const RectRaw> srcrect,
+                                            float scale,
+                                            ScaleMode scaleMode,
+                                            OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurfaceTiledWithScale(
     src, srcrect, scale, scaleMode, get(), dstrect);
@@ -46231,15 +46245,15 @@ inline void BlitSurface9Grid(SurfaceRef src,
                                   dstrect));
 }
 
-inline void Surface::Blit9Grid(SurfaceRef src,
-                               OptionalRef<const RectRaw> srcrect,
-                               int left_width,
-                               int right_width,
-                               int top_height,
-                               int bottom_height,
-                               OptionalRef<const RectRaw> dstrect,
-                               float scale,
-                               ScaleMode scaleMode)
+inline void SurfaceBase::Blit9Grid(SurfaceRef src,
+                                   OptionalRef<const RectRaw> srcrect,
+                                   int left_width,
+                                   int right_width,
+                                   int top_height,
+                                   int bottom_height,
+                                   OptionalRef<const RectRaw> dstrect,
+                                   float scale,
+                                   ScaleMode scaleMode)
 {
   SDL::BlitSurface9Grid(src,
                         srcrect,
@@ -46289,7 +46303,7 @@ inline Uint32 MapSurfaceRGB(SurfaceConstRef surface, Uint8 r, Uint8 g, Uint8 b)
   return SDL_MapSurfaceRGB(surface, r, g, b);
 }
 
-inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
+inline Uint32 SurfaceBase::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
 {
   return SDL::MapSurfaceRGB(get(), r, g, b);
 }
@@ -46328,7 +46342,7 @@ inline Uint32 MapSurfaceRGBA(SurfaceConstRef surface, ColorRaw c)
   return SDL_MapSurfaceRGBA(surface, c.r, c.g, c.b, c.a);
 }
 
-inline Uint32 Surface::MapRGBA(ColorRaw c) const
+inline Uint32 SurfaceBase::MapRGBA(ColorRaw c) const
 {
   return SDL::MapSurfaceRGBA(get(), c);
 }
@@ -46455,16 +46469,16 @@ inline Color ReadSurfacePixel(const SurfaceLock& lock, const PointRaw& p)
   return lock.ReadPixel(p);
 }
 
-inline void Surface::ReadPixel(const PointRaw& p,
-                               Uint8* r,
-                               Uint8* g,
-                               Uint8* b,
-                               Uint8* a) const
+inline void SurfaceBase::ReadPixel(const PointRaw& p,
+                                   Uint8* r,
+                                   Uint8* g,
+                                   Uint8* b,
+                                   Uint8* a) const
 {
   SDL::ReadSurfacePixel(get(), p, r, g, b, a);
 }
 
-inline Color Surface::ReadPixel(const PointRaw& p) const
+inline Color SurfaceBase::ReadPixel(const PointRaw& p) const
 {
   return SDL::ReadSurfacePixel(get(), p);
 }
@@ -46579,16 +46593,16 @@ inline FColor ReadSurfacePixelFloat(const SurfaceLock& lock, const PointRaw& p)
   return lock.ReadPixelFloat(p);
 }
 
-inline void Surface::ReadPixelFloat(const PointRaw& p,
-                                    float* r,
-                                    float* g,
-                                    float* b,
-                                    float* a) const
+inline void SurfaceBase::ReadPixelFloat(const PointRaw& p,
+                                        float* r,
+                                        float* g,
+                                        float* b,
+                                        float* a) const
 {
   SDL::ReadSurfacePixelFloat(get(), p, r, g, b, a);
 }
 
-inline FColor Surface::ReadPixelFloat(const PointRaw& p) const
+inline FColor SurfaceBase::ReadPixelFloat(const PointRaw& p) const
 {
   return SDL::ReadSurfacePixelFloat(get(), p);
 }
@@ -46641,7 +46655,7 @@ inline void WriteSurfacePixel(SurfaceLock& lock, const PointRaw& p, ColorRaw c)
   lock.WritePixel(p, c);
 }
 
-inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
+inline void SurfaceBase::WritePixel(const PointRaw& p, ColorRaw c)
 {
   SDL::WriteSurfacePixel(get(), p, c);
 }
@@ -46692,7 +46706,7 @@ inline void WriteSurfacePixelFloat(SurfaceLock& lock,
   lock.WritePixelFloat(p, c);
 }
 
-inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
+inline void SurfaceBase::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
 {
   SDL::WriteSurfacePixelFloat(get(), p, c);
 }
@@ -46706,7 +46720,7 @@ constexpr int GetSurfaceWidth(const SurfaceLock& lock)
   return lock.GetWidth();
 }
 
-constexpr int Surface::GetWidth() const { return SDL::GetSurfaceWidth(get()); }
+constexpr int SurfaceBase::GetWidth() const { return GetSurfaceWidth(get()); }
 
 /// Get the height in pixels.
 constexpr int GetSurfaceHeight(SurfaceConstRef surface) { return surface->h; }
@@ -46717,10 +46731,7 @@ constexpr int GetSurfaceHeight(const SurfaceLock& lock)
   return lock.GetHeight();
 }
 
-constexpr int Surface::GetHeight() const
-{
-  return SDL::GetSurfaceHeight(get());
-}
+constexpr int SurfaceBase::GetHeight() const { return GetSurfaceHeight(get()); }
 
 /// Get the size in pixels.
 constexpr Point GetSurfaceSize(SurfaceConstRef surface)
@@ -46734,7 +46745,7 @@ constexpr Point GetSurfaceSize(const SurfaceLock& lock)
   return lock.GetSize();
 }
 
-constexpr Point Surface::GetSize() const { return SDL::GetSurfaceSize(get()); }
+constexpr Point SurfaceBase::GetSize() const { return GetSurfaceSize(get()); }
 
 /// Get pitch in bytes.
 constexpr int GetSurfacePitch(SurfaceConstRef surface)
@@ -46748,7 +46759,7 @@ constexpr int GetSurfacePitch(const SurfaceLock& lock)
   return lock.GetPitch();
 }
 
-constexpr int Surface::GetPitch() const { return SDL::GetSurfacePitch(get()); }
+constexpr int SurfaceBase::GetPitch() const { return GetSurfacePitch(get()); }
 
 /// Get the pixel format.
 constexpr PixelFormat GetSurfaceFormat(SurfaceConstRef surface)
@@ -46762,7 +46773,7 @@ constexpr PixelFormat GetSurfaceFormat(const SurfaceLock& lock)
   return lock.GetFormat();
 }
 
-constexpr PixelFormat Surface::GetFormat() const
+constexpr PixelFormat SurfaceBase::GetFormat() const
 {
   return SDL::GetSurfaceFormat(get());
 }
@@ -46779,7 +46790,7 @@ constexpr void* GetSurfacePixels(const SurfaceLock& lock)
   return lock.GetPixels();
 }
 
-constexpr void* Surface::GetPixels() const
+constexpr void* SurfaceBase::GetPixels() const
 {
   return SDL::GetSurfacePixels(get());
 }
@@ -103939,7 +103950,7 @@ inline void Save(SurfaceConstRef surface, StringParam file)
   CheckError(IMG_Save(surface, file));
 }
 
-inline void Surface::Save(StringParam filename) const
+inline void SurfaceBase::Save(StringParam filename) const
 {
   SDL::Save(*this, std::move(filename));
 }
@@ -103983,9 +103994,9 @@ inline void SaveTyped_IO(SurfaceConstRef surface,
   CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
 }
 
-inline void Surface::SaveTyped_IO(IOStreamRef dst,
-                                  StringParam type,
-                                  bool closeio) const
+inline void SurfaceBase::SaveTyped_IO(IOStreamRef dst,
+                                      StringParam type,
+                                      bool closeio) const
 {
   SDL::SaveTyped_IO(*this, dst, std::move(type), closeio);
 }
@@ -104239,7 +104250,7 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
   CheckError(IMG_SavePNG(surface, file));
 }
 
-inline void Surface::SavePNG(StringParam file) const
+inline void SurfaceBase::SavePNG(StringParam file) const
 {
   SDL::SavePNG(get(), std::move(file));
 }
@@ -104269,7 +104280,7 @@ inline void SavePNG_IO(SurfaceRef surface,
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
 }
 
-inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
+inline void SurfaceBase::SavePNG_IO(IOStreamRef dst, bool closeio) const
 {
   SDL::SavePNG_IO(get(), dst, closeio);
 }
@@ -104702,6 +104713,7 @@ struct Animation : AnimationBase
   Animation& operator=(const Animation& other) = delete;
 };
 
+/// Get the width in pixels.
 inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
 
 inline int AnimationBase::GetWidth() const
@@ -105326,8 +105338,7 @@ struct AnimationEncoderBase : ResourceBaseT<AnimationEncoderRaw>
    * Calling this function frees the animation encoder, and returns the final
    * status of the encoding process.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *

@@ -2246,7 +2246,7 @@ inline void Save(SurfaceConstRef surface, StringParam file)
   CheckError(IMG_Save(surface, file));
 }
 
-inline void Surface::Save(StringParam filename) const
+inline void SurfaceBase::Save(StringParam filename) const
 {
   SDL::Save(*this, std::move(filename));
 }
@@ -2290,9 +2290,9 @@ inline void SaveTyped_IO(SurfaceConstRef surface,
   CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
 }
 
-inline void Surface::SaveTyped_IO(IOStreamRef dst,
-                                  StringParam type,
-                                  bool closeio) const
+inline void SurfaceBase::SaveTyped_IO(IOStreamRef dst,
+                                      StringParam type,
+                                      bool closeio) const
 {
   SDL::SaveTyped_IO(*this, dst, std::move(type), closeio);
 }
@@ -2546,7 +2546,7 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
   CheckError(IMG_SavePNG(surface, file));
 }
 
-inline void Surface::SavePNG(StringParam file) const
+inline void SurfaceBase::SavePNG(StringParam file) const
 {
   SDL::SavePNG(get(), std::move(file));
 }
@@ -2576,7 +2576,7 @@ inline void SavePNG_IO(SurfaceRef surface,
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
 }
 
-inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
+inline void SurfaceBase::SavePNG_IO(IOStreamRef dst, bool closeio) const
 {
   SDL::SavePNG_IO(get(), dst, closeio);
 }
@@ -3009,6 +3009,7 @@ struct Animation : AnimationBase
   Animation& operator=(const Animation& other) = delete;
 };
 
+/// Get the width in pixels.
 inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
 
 inline int AnimationBase::GetWidth() const
@@ -3633,8 +3634,7 @@ struct AnimationEncoderBase : ResourceBaseT<AnimationEncoderRaw>
    * Calling this function frees the animation encoder, and returns the final
    * status of the encoding process.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
    *
