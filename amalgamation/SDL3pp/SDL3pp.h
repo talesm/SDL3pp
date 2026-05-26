@@ -20972,6 +20972,9 @@ inline GUID::GUID(StringParam pchGUID)
  */
 
 // Forward decl
+struct HidDeviceBase;
+
+// Forward decl
 struct HidDevice;
 
 /// Alias to raw representation for HidDevice.
@@ -20982,7 +20985,7 @@ using HidDeviceRaw = SDL_hid_device*;
  *
  * This does not take ownership!
  */
-using HidDeviceRef = ResourceRef<HidDevice>;
+using HidDeviceRef = ResourceRefT<HidDeviceBase>;
 
 /**
  * HID underlying bus types.
@@ -21032,85 +21035,13 @@ constexpr hid_bus_type HID_API_BUS_SPI = SDL_HID_API_BUS_SPI;
 using hid_device_info = SDL_hid_device_info;
 
 /**
- * An opaque handle representing an open HID device.
+ * Base class to HidDevice.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see HidDevice
  */
-struct HidDevice : ResourceBase<HidDeviceRaw>
+struct HidDeviceBase : ResourceBaseT<HidDeviceRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw HidDevice.
-   *
-   * @param resource a HidDeviceRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit HidDevice(HidDeviceRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) = delete;
-
-  /// Move constructor
-  constexpr HidDevice(HidDevice&& other) noexcept
-    : HidDevice(other.release())
-  {
-  }
-
-  constexpr HidDevice(const HidDeviceRef& other) = delete;
-
-  constexpr HidDevice(HidDeviceRef&& other) = delete;
-
-  /**
-   * Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally
-   * a serial number.
-   *
-   * If `serial_number` is nullptr, the first device with the specified VID and
-   * PID is opened.
-   *
-   * @param vendor_id the Vendor ID (VID) of the device to open.
-   * @param product_id the Product ID (PID) of the device to open.
-   * @param serial_number the Serial Number of the device to open (Optionally
-   *                      nullptr).
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  HidDevice(unsigned short vendor_id,
-            unsigned short product_id,
-            const wchar_t* serial_number);
-
-  /**
-   * Open a HID device by its path name.
-   *
-   * The path name be determined by calling hid_enumerate(), or a
-   * platform-specific path name can be used (eg: /dev/hidraw0 on Linux).
-   *
-   * @param path the path name of the device to open.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  HidDevice(StringParam path);
-
-  /// Destructor
-  ~HidDevice() { SDL_hid_close(get()); }
-
-  /// Assignment operator.
-  constexpr HidDevice& operator=(HidDevice&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  HidDevice& operator=(const HidDevice& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close a HID device.
@@ -21350,6 +21281,84 @@ struct HidDevice : ResourceBase<HidDeviceRaw>
 };
 
 /**
+ * An opaque handle representing an open HID device.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct HidDevice : HidDeviceBase
+{
+  using HidDeviceBase::HidDeviceBase;
+
+  /**
+   * Constructs from raw HidDevice.
+   *
+   * @param resource a HidDeviceRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit HidDevice(HidDeviceRaw resource) noexcept
+    : HidDeviceBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr HidDevice(const HidDevice& other) = delete;
+
+  /// Move constructor
+  constexpr HidDevice(HidDevice&& other) noexcept
+    : HidDevice(other.release())
+  {
+  }
+
+  /**
+   * Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally
+   * a serial number.
+   *
+   * If `serial_number` is nullptr, the first device with the specified VID and
+   * PID is opened.
+   *
+   * @param vendor_id the Vendor ID (VID) of the device to open.
+   * @param product_id the Product ID (PID) of the device to open.
+   * @param serial_number the Serial Number of the device to open (Optionally
+   *                      nullptr).
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  HidDevice(unsigned short vendor_id,
+            unsigned short product_id,
+            const wchar_t* serial_number);
+
+  /**
+   * Open a HID device by its path name.
+   *
+   * The path name be determined by calling hid_enumerate(), or a
+   * platform-specific path name can be used (eg: /dev/hidraw0 on Linux).
+   *
+   * @param path the path name of the device to open.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  HidDevice(StringParam path);
+
+  /// Destructor
+  ~HidDevice() { SDL_hid_close(get()); }
+
+  /// Assignment operator.
+  constexpr HidDevice& operator=(HidDevice&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  HidDevice& operator=(const HidDevice& other) = delete;
+};
+
+/**
  * Initialize the HIDAPI library.
  *
  * This function initializes the HIDAPI library. Calling it is not strictly
@@ -21525,7 +21534,7 @@ inline PropertiesRef hid_get_properties(HidDeviceRef dev)
   return CheckError(SDL_hid_get_properties(dev));
 }
 
-inline PropertiesRef HidDevice::hid_get_properties()
+inline PropertiesRef HidDeviceBase::hid_get_properties()
 {
   return SDL::hid_get_properties(get());
 }
@@ -21573,7 +21582,7 @@ inline int hid_write(HidDeviceRef dev, SourceBytes data)
   return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
-inline int HidDevice::write(SourceBytes data)
+inline int HidDeviceBase::write(SourceBytes data)
 {
   return SDL::hid_write(get(), std::move(data));
 }
@@ -21602,7 +21611,7 @@ inline int hid_read_timeout(HidDeviceRef dev,
     dev, data.data_as<Uint8>(), data.size_bytes(), narrowS32(timeout.count()));
 }
 
-inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
+inline int HidDeviceBase::read_timeout(TargetBytes data, Milliseconds timeout)
 {
   return SDL::hid_read_timeout(get(), std::move(data), timeout);
 }
@@ -21627,7 +21636,7 @@ inline int hid_read(HidDeviceRef dev, TargetBytes data)
   return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
-inline int HidDevice::read(TargetBytes data)
+inline int HidDeviceBase::read(TargetBytes data)
 {
   return SDL::hid_read(get(), std::move(data));
 }
@@ -21653,7 +21662,7 @@ inline void hid_set_nonblocking(HidDeviceRef dev, bool nonblock)
   CheckErrorIfNot(SDL_hid_set_nonblocking(dev, nonblock), 0);
 }
 
-inline void HidDevice::set_nonblocking(bool nonblock)
+inline void HidDeviceBase::set_nonblocking(bool nonblock)
 {
   SDL::hid_set_nonblocking(get(), nonblock);
 }
@@ -21684,7 +21693,7 @@ inline int hid_send_feature_report(HidDeviceRef dev, SourceBytes data)
     dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
-inline int HidDevice::send_feature_report(SourceBytes data)
+inline int HidDeviceBase::send_feature_report(SourceBytes data)
 {
   return SDL::hid_send_feature_report(get(), std::move(data));
 }
@@ -21714,7 +21723,7 @@ inline int hid_get_feature_report(HidDeviceRef dev, TargetBytes data)
     dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
-inline int HidDevice::get_feature_report(TargetBytes data)
+inline int HidDeviceBase::get_feature_report(TargetBytes data)
 {
   return SDL::hid_get_feature_report(get(), std::move(data));
 }
@@ -21744,7 +21753,7 @@ inline int hid_get_input_report(HidDeviceRef dev, TargetBytes data)
     dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
-inline int HidDevice::get_input_report(TargetBytes data)
+inline int HidDeviceBase::get_input_report(TargetBytes data)
 {
   return SDL::hid_get_input_report(get(), std::move(data));
 }
@@ -21762,7 +21771,7 @@ inline void hid_close(HidDeviceRaw dev)
   CheckErrorIfNot(SDL_hid_close(dev), 0);
 }
 
-inline void HidDevice::close() { hid_close(release()); }
+inline void HidDeviceBase::close() { hid_close(release()); }
 
 /**
  * Get The Manufacturer String from a HID device.
@@ -21781,7 +21790,8 @@ inline void hid_get_manufacturer_string(HidDeviceRef dev,
   CheckErrorIfNot(SDL_hid_get_manufacturer_string(dev, string, maxlen), 0);
 }
 
-inline void HidDevice::get_manufacturer_string(wchar_t* string, size_t maxlen)
+inline void HidDeviceBase::get_manufacturer_string(wchar_t* string,
+                                                   size_t maxlen)
 {
   SDL::hid_get_manufacturer_string(get(), string, maxlen);
 }
@@ -21803,7 +21813,7 @@ inline void hid_get_product_string(HidDeviceRef dev,
   CheckErrorIfNot(SDL_hid_get_product_string(dev, string, maxlen), 0);
 }
 
-inline void HidDevice::get_product_string(wchar_t* string, size_t maxlen)
+inline void HidDeviceBase::get_product_string(wchar_t* string, size_t maxlen)
 {
   SDL::hid_get_product_string(get(), string, maxlen);
 }
@@ -21825,7 +21835,8 @@ inline void hid_get_serial_number_string(HidDeviceRef dev,
   CheckErrorIfNot(SDL_hid_get_serial_number_string(dev, string, maxlen), 0);
 }
 
-inline void HidDevice::get_serial_number_string(wchar_t* string, size_t maxlen)
+inline void HidDeviceBase::get_serial_number_string(wchar_t* string,
+                                                    size_t maxlen)
 {
   SDL::hid_get_serial_number_string(get(), string, maxlen);
 }
@@ -21850,9 +21861,9 @@ inline void hid_get_indexed_string(HidDeviceRef dev,
                   0);
 }
 
-inline void HidDevice::get_indexed_string(int string_index,
-                                          wchar_t* string,
-                                          size_t maxlen)
+inline void HidDeviceBase::get_indexed_string(int string_index,
+                                              wchar_t* string,
+                                              size_t maxlen)
 {
   SDL::hid_get_indexed_string(get(), string_index, string, maxlen);
 }
@@ -21873,7 +21884,7 @@ inline hid_device_info* hid_get_device_info(HidDeviceRef dev)
   return CheckError(SDL_hid_get_device_info(dev));
 }
 
-inline hid_device_info* HidDevice::get_device_info()
+inline hid_device_info* HidDeviceBase::get_device_info()
 {
   return SDL::hid_get_device_info(get());
 }
@@ -21897,7 +21908,7 @@ inline int hid_get_report_descriptor(HidDeviceRef dev, TargetBytes buf)
     dev, buf.data_as<Uint8>(), buf.size_bytes());
 }
 
-inline int HidDevice::get_report_descriptor(TargetBytes buf)
+inline int HidDeviceBase::get_report_descriptor(TargetBytes buf)
 {
   return SDL::hid_get_report_descriptor(get(), std::move(buf));
 }

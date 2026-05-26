@@ -53892,6 +53892,10 @@
         "If you would like a version of SDL without this code, you can build SDL with SDL_HIDAPI_DISABLED defined to 1. You might want to do this for example on iOS or tvOS to avoid a dependency on the CoreBluetooth framework."
       ],
       "entries": {
+        "HidDeviceBase-forward": {
+          "name": "HidDeviceBase",
+          "kind": "forward"
+        },
         "HidDevice-forward": {
           "name": "HidDevice",
           "kind": "forward"
@@ -53911,7 +53915,7 @@
             "Reference for HidDevice.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<HidDevice>"
+          "type": "ResourceRefT<HidDeviceBase>"
         },
         "hid_bus_type": {
           "name": "hid_bus_type",
@@ -53989,261 +53993,21 @@
           "sourceName": "SDL_hid_device_info",
           "type": "SDL_hid_device_info"
         },
-        "HidDevice": {
-          "doc": [
-            "An opaque handle representing an open HID device.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "HidDevice",
+        "HidDeviceBase": {
+          "name": "HidDeviceBase",
           "kind": "struct",
-          "type": "ResourceBase<HidDeviceRaw>",
-          "sourceName": "SDL_hid_device",
+          "type": "ResourceBaseT<HidDeviceRaw>",
+          "doc": [
+            "Base class to HidDevice.",
+            {
+              "tag": "@see",
+              "content": "HidDevice"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "HidDevice": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "HidDeviceRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw HidDevice.",
-                {
-                  "tag": "@param resource",
-                  "content": "a HidDeviceRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "HidDevice",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const HidDevice &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "HidDevice",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "HidDevice &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "HidDevice(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "HidDevice",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const HidDeviceRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "HidDevice",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "HidDeviceRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "HidDevice",
-                      "overload": {
-                        "doc": [
-                          "Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally a serial number.",
-                          "If `serial_number` is nullptr, the first device with the specified VID and PID is opened.",
-                          [
-                            {
-                              "tag": "@param vendor_id",
-                              "content": "the Vendor ID (VID) of the device to open."
-                            },
-                            {
-                              "tag": "@param product_id",
-                              "content": "the Product ID (PID) of the device to open."
-                            },
-                            {
-                              "tag": "@param serial_number",
-                              "content": "the Serial Number of the device to open (Optionally nullptr)."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a pointer to a HidDevice object on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          }
-                        ],
-                        "name": "HidDevice",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "vendor_id",
-                            "type": "unsigned short"
-                          },
-                          {
-                            "name": "product_id",
-                            "type": "unsigned short"
-                          },
-                          {
-                            "name": "serial_number",
-                            "type": "const wchar_t *"
-                          }
-                        ],
-                        "sourceName": "SDL_hid_open",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "overload": {
-                          "doc": [
-                            "Open a HID device by its path name.",
-                            "The path name be determined by calling hid_enumerate(), or a platform-specific path name can be used (eg: /dev/hidraw0 on Linux).",
-                            [
-                              {
-                                "tag": "@param path",
-                                "content": "the path name of the device to open."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "a pointer to a HidDevice object on success."
-                              },
-                              {
-                                "tag": "@throws",
-                                "content": "Error on failure."
-                              }
-                            ],
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL 3.2.0."
-                            }
-                          ],
-                          "name": "HidDevice",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "path",
-                              "type": "StringParam"
-                            }
-                          ],
-                          "sourceName": "SDL_hid_open_path",
-                          "hints": {
-                            "mayFail": true
-                          },
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~HidDevice": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_hid_close(get());"
-              },
-              "name": "~HidDevice"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "HidDevice &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "HidDevice &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "HidDevice &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const HidDevice &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "close": {
               "doc": [
@@ -54858,6 +54622,235 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "HidDevice": {
+          "doc": [
+            "An opaque handle representing an open HID device.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "HidDevice",
+          "kind": "struct",
+          "type": "HidDeviceBase",
+          "sourceName": "SDL_hid_device",
+          "entries": {
+            "HidDeviceBase::HidDeviceBase": {
+              "kind": "alias",
+              "name": "HidDeviceBase::HidDeviceBase"
+            },
+            "HidDevice": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "HidDeviceRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "HidDeviceBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw HidDevice.",
+                {
+                  "tag": "@param resource",
+                  "content": "a HidDeviceRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "HidDevice",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const HidDevice &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "HidDevice",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "HidDevice &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "HidDevice(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "HidDevice",
+                  "overload": {
+                    "doc": [
+                      "Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally a serial number.",
+                      "If `serial_number` is nullptr, the first device with the specified VID and PID is opened.",
+                      [
+                        {
+                          "tag": "@param vendor_id",
+                          "content": "the Vendor ID (VID) of the device to open."
+                        },
+                        {
+                          "tag": "@param product_id",
+                          "content": "the Product ID (PID) of the device to open."
+                        },
+                        {
+                          "tag": "@param serial_number",
+                          "content": "the Serial Number of the device to open (Optionally nullptr)."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a pointer to a HidDevice object on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      }
+                    ],
+                    "name": "HidDevice",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "vendor_id",
+                        "type": "unsigned short"
+                      },
+                      {
+                        "name": "product_id",
+                        "type": "unsigned short"
+                      },
+                      {
+                        "name": "serial_number",
+                        "type": "const wchar_t *"
+                      }
+                    ],
+                    "sourceName": "SDL_hid_open",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Open a HID device by its path name.",
+                        "The path name be determined by calling hid_enumerate(), or a platform-specific path name can be used (eg: /dev/hidraw0 on Linux).",
+                        [
+                          {
+                            "tag": "@param path",
+                            "content": "the path name of the device to open."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "a pointer to a HidDevice object on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          }
+                        ],
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL 3.2.0."
+                        }
+                      ],
+                      "name": "HidDevice",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "path",
+                          "type": "StringParam"
+                        }
+                      ],
+                      "sourceName": "SDL_hid_open_path",
+                      "hints": {
+                        "mayFail": true
+                      },
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~HidDevice": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_hid_close(get());"
+              },
+              "name": "~HidDevice"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "HidDevice &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "HidDevice &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "HidDevice &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const HidDevice &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "HidDevice"
           }
@@ -55200,15 +55193,14 @@
             "patch": 0
           }
         },
-        "HidDevice::hid_get_properties": {
-          "name": "HidDevice::hid_get_properties",
+        "HidDeviceBase::hid_get_properties": {
+          "name": "HidDeviceBase::hid_get_properties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_hid_get_properties",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "mayFail": true,
             "delegate": "SDL::hid_get_properties"
           },
@@ -55294,8 +55286,8 @@
             "methodName": "write"
           }
         },
-        "HidDevice::write": {
-          "name": "HidDevice::write",
+        "HidDeviceBase::write": {
+          "name": "HidDeviceBase::write",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -55307,7 +55299,6 @@
           "sourceName": "SDL_hid_write",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "methodName": "write",
             "delegate": "SDL::hid_write"
           }
@@ -55365,8 +55356,8 @@
             "methodName": "read_timeout"
           }
         },
-        "HidDevice::read_timeout": {
-          "name": "HidDevice::read_timeout",
+        "HidDeviceBase::read_timeout": {
+          "name": "HidDeviceBase::read_timeout",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -55382,7 +55373,6 @@
           "sourceName": "SDL_hid_read_timeout",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "methodName": "read_timeout",
             "delegate": "SDL::hid_read_timeout"
           }
@@ -55432,8 +55422,8 @@
             "methodName": "read"
           }
         },
-        "HidDevice::read": {
-          "name": "HidDevice::read",
+        "HidDeviceBase::read": {
+          "name": "HidDeviceBase::read",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -55445,7 +55435,6 @@
           "sourceName": "SDL_hid_read",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "methodName": "read",
             "delegate": "SDL::hid_read"
           }
@@ -55497,8 +55486,8 @@
             "methodName": "set_nonblocking"
           }
         },
-        "HidDevice::set_nonblocking": {
-          "name": "HidDevice::set_nonblocking",
+        "HidDeviceBase::set_nonblocking": {
+          "name": "HidDeviceBase::set_nonblocking",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -55510,7 +55499,6 @@
           "sourceName": "SDL_hid_set_nonblocking",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "mayFail": "0",
             "methodName": "set_nonblocking",
             "delegate": "SDL::hid_set_nonblocking"
@@ -55561,8 +55549,8 @@
             "methodName": "send_feature_report"
           }
         },
-        "HidDevice::send_feature_report": {
-          "name": "HidDevice::send_feature_report",
+        "HidDeviceBase::send_feature_report": {
+          "name": "HidDeviceBase::send_feature_report",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -55574,7 +55562,6 @@
           "sourceName": "SDL_hid_send_feature_report",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "methodName": "send_feature_report",
             "delegate": "SDL::hid_send_feature_report"
           }
@@ -55624,8 +55611,8 @@
             "methodName": "get_feature_report"
           }
         },
-        "HidDevice::get_feature_report": {
-          "name": "HidDevice::get_feature_report",
+        "HidDeviceBase::get_feature_report": {
+          "name": "HidDeviceBase::get_feature_report",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -55637,7 +55624,6 @@
           "sourceName": "SDL_hid_get_feature_report",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "methodName": "get_feature_report",
             "delegate": "SDL::hid_get_feature_report"
           }
@@ -55687,8 +55673,8 @@
             "methodName": "get_input_report"
           }
         },
-        "HidDevice::get_input_report": {
-          "name": "HidDevice::get_input_report",
+        "HidDeviceBase::get_input_report": {
+          "name": "HidDeviceBase::get_input_report",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -55700,7 +55686,6 @@
           "sourceName": "SDL_hid_get_input_report",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "methodName": "get_input_report",
             "delegate": "SDL::hid_get_input_report"
           }
@@ -55741,15 +55726,14 @@
             "mayFail": true
           }
         },
-        "HidDevice::close": {
-          "name": "HidDevice::close",
+        "HidDeviceBase::close": {
+          "name": "HidDeviceBase::close",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_hid_close",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "mayFail": "0",
             "body": "hid_close(release());",
             "delegate": "SDL::hid_close"
@@ -55808,8 +55792,8 @@
             "methodName": "get_manufacturer_string"
           }
         },
-        "HidDevice::get_manufacturer_string": {
-          "name": "HidDevice::get_manufacturer_string",
+        "HidDeviceBase::get_manufacturer_string": {
+          "name": "HidDeviceBase::get_manufacturer_string",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -55825,7 +55809,6 @@
           "sourceName": "SDL_hid_get_manufacturer_string",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "mayFail": "0",
             "methodName": "get_manufacturer_string",
             "delegate": "SDL::hid_get_manufacturer_string"
@@ -55884,8 +55867,8 @@
             "methodName": "get_product_string"
           }
         },
-        "HidDevice::get_product_string": {
-          "name": "HidDevice::get_product_string",
+        "HidDeviceBase::get_product_string": {
+          "name": "HidDeviceBase::get_product_string",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -55901,7 +55884,6 @@
           "sourceName": "SDL_hid_get_product_string",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "mayFail": "0",
             "methodName": "get_product_string",
             "delegate": "SDL::hid_get_product_string"
@@ -55960,8 +55942,8 @@
             "methodName": "get_serial_number_string"
           }
         },
-        "HidDevice::get_serial_number_string": {
-          "name": "HidDevice::get_serial_number_string",
+        "HidDeviceBase::get_serial_number_string": {
+          "name": "HidDeviceBase::get_serial_number_string",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -55977,7 +55959,6 @@
           "sourceName": "SDL_hid_get_serial_number_string",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "mayFail": "0",
             "methodName": "get_serial_number_string",
             "delegate": "SDL::hid_get_serial_number_string"
@@ -56044,8 +56025,8 @@
             "methodName": "get_indexed_string"
           }
         },
-        "HidDevice::get_indexed_string": {
-          "name": "HidDevice::get_indexed_string",
+        "HidDeviceBase::get_indexed_string": {
+          "name": "HidDeviceBase::get_indexed_string",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -56065,7 +56046,6 @@
           "sourceName": "SDL_hid_get_indexed_string",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "mayFail": "0",
             "methodName": "get_indexed_string",
             "delegate": "SDL::hid_get_indexed_string"
@@ -56104,15 +56084,14 @@
             "mayFail": true
           }
         },
-        "HidDevice::get_device_info": {
-          "name": "HidDevice::get_device_info",
+        "HidDeviceBase::get_device_info": {
+          "name": "HidDeviceBase::get_device_info",
           "kind": "function",
           "type": "hid_device_info *",
           "parameters": [],
           "sourceName": "SDL_hid_get_device_info",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "methodName": "get_device_info",
             "mayFail": true,
             "delegate": "SDL::hid_get_device_info"
@@ -56163,8 +56142,8 @@
             "methodName": "get_report_descriptor"
           }
         },
-        "HidDevice::get_report_descriptor": {
-          "name": "HidDevice::get_report_descriptor",
+        "HidDeviceBase::get_report_descriptor": {
+          "name": "HidDeviceBase::get_report_descriptor",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -56176,7 +56155,6 @@
           "sourceName": "SDL_hid_get_report_descriptor",
           "hints": {
             "self": "get()",
-            "super": "HidDevice",
             "methodName": "get_report_descriptor",
             "delegate": "SDL::hid_get_report_descriptor"
           }
