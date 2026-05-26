@@ -3179,9 +3179,8 @@ const transform = {
     "SDL_metal.h": {
       localIncludes: ["SDL3pp_video.h"],
       transform: {
-        "SDL_Metal_GetLayer": {
-          hints: { methodName: "GetLayer" }
-        },
+        "SDL_Metal_GetLayer": { hints: { methodName: "GetLayer" } },
+        "SDL_Metal_DestroyView": { hints: { methodName: "Destroy" } },
       }
     },
     "SDL_mouse.h": {

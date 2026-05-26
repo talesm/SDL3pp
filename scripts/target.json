@@ -70405,6 +70405,10 @@
         "SDL can provide virtual joysticks as well: the app defines an imaginary controller with AttachVirtualJoystick(), and then can provide inputs for it via SetJoystickVirtualAxis(), SetJoystickVirtualButton(), etc. As this data is supplied, it will look like a normal joystick to SDL, just not backed by a hardware driver. This has been used to make unusual devices, like VR headset controllers, look like normal joysticks, or provide recording/playback of game inputs, etc."
       ],
       "entries": {
+        "JoystickBase-forward": {
+          "name": "JoystickBase",
+          "kind": "forward"
+        },
         "Joystick-forward": {
           "name": "Joystick",
           "kind": "forward"
@@ -70424,7 +70428,7 @@
             "Reference for Joystick.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Joystick>"
+          "type": "ResourceRefT<JoystickBase>"
         },
         "JoystickIDRaw": {
           "name": "JoystickIDRaw",
@@ -71238,209 +71242,21 @@
             "LEFTDOWN"
           ]
         },
-        "Joystick": {
-          "doc": [
-            "The joystick structure used to identify an SDL joystick.",
-            "This is opaque data.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Joystick",
+        "JoystickBase": {
+          "name": "JoystickBase",
           "kind": "struct",
-          "type": "ResourceBase<JoystickRaw>",
-          "sourceName": "SDL_Joystick",
+          "type": "ResourceBaseT<JoystickRaw>",
+          "doc": [
+            "Base class to Joystick.",
+            {
+              "tag": "@see",
+              "content": "Joystick"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Joystick": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "JoystickRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Joystick.",
-                {
-                  "tag": "@param resource",
-                  "content": "a JoystickRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Joystick",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Joystick &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Joystick",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Joystick &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Joystick(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Joystick",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const JoystickRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Joystick",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "JoystickRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Joystick",
-                      "overload": {
-                        "doc": [
-                          "Open a joystick for use.",
-                          "The joystick subsystem must be initialized before a joystick can be opened for use.",
-                          [
-                            {
-                              "tag": "@param instance_id",
-                              "content": "the joystick instance ID."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a joystick identifier or nullptr on failure; call GetError() for more information."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          {
-                            "tag": "@sa",
-                            "content": "CloseJoystick"
-                          }
-                        ],
-                        "name": "Joystick",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "instance_id",
-                            "type": "JoystickID"
-                          }
-                        ],
-                        "sourceName": "SDL_OpenJoystick",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Joystick": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_CloseJoystick(get());"
-              },
-              "name": "~Joystick"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Joystick &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Joystick &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Joystick &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Joystick &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Close": {
               "doc": [
@@ -73151,6 +72967,183 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "Joystick": {
+          "doc": [
+            "The joystick structure used to identify an SDL joystick.",
+            "This is opaque data.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Joystick",
+          "kind": "struct",
+          "type": "JoystickBase",
+          "sourceName": "SDL_Joystick",
+          "entries": {
+            "JoystickBase::JoystickBase": {
+              "kind": "alias",
+              "name": "JoystickBase::JoystickBase"
+            },
+            "Joystick": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "JoystickRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "JoystickBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Joystick.",
+                {
+                  "tag": "@param resource",
+                  "content": "a JoystickRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Joystick",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Joystick &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Joystick",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Joystick &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Joystick(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Joystick",
+                  "overload": {
+                    "doc": [
+                      "Open a joystick for use.",
+                      "The joystick subsystem must be initialized before a joystick can be opened for use.",
+                      [
+                        {
+                          "tag": "@param instance_id",
+                          "content": "the joystick instance ID."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a joystick identifier or nullptr on failure; call GetError() for more information."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      {
+                        "tag": "@sa",
+                        "content": "CloseJoystick"
+                      }
+                    ],
+                    "name": "Joystick",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "instance_id",
+                        "type": "JoystickID"
+                      }
+                    ],
+                    "sourceName": "SDL_OpenJoystick",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Joystick": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_CloseJoystick(get());"
+              },
+              "name": "~Joystick"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Joystick &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Joystick &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Joystick &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Joystick &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "Joystick"
           }
@@ -74443,8 +74436,8 @@
             "mayFail": true
           }
         },
-        "Joystick::SetVirtualAxis": {
-          "name": "Joystick::SetVirtualAxis",
+        "JoystickBase::SetVirtualAxis": {
+          "name": "JoystickBase::SetVirtualAxis",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -74460,7 +74453,6 @@
           "sourceName": "SDL_SetJoystickVirtualAxis",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::SetJoystickVirtualAxis"
           }
@@ -74548,8 +74540,8 @@
             "mayFail": true
           }
         },
-        "Joystick::SetVirtualBall": {
-          "name": "Joystick::SetVirtualBall",
+        "JoystickBase::SetVirtualBall": {
+          "name": "JoystickBase::SetVirtualBall",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -74569,7 +74561,6 @@
           "sourceName": "SDL_SetJoystickVirtualBall",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::SetJoystickVirtualBall"
           }
@@ -74649,8 +74640,8 @@
             "mayFail": true
           }
         },
-        "Joystick::SetVirtualButton": {
-          "name": "Joystick::SetVirtualButton",
+        "JoystickBase::SetVirtualButton": {
+          "name": "JoystickBase::SetVirtualButton",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -74666,7 +74657,6 @@
           "sourceName": "SDL_SetJoystickVirtualButton",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::SetJoystickVirtualButton"
           }
@@ -74746,8 +74736,8 @@
             "mayFail": true
           }
         },
-        "Joystick::SetVirtualHat": {
-          "name": "Joystick::SetVirtualHat",
+        "JoystickBase::SetVirtualHat": {
+          "name": "JoystickBase::SetVirtualHat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -74763,7 +74753,6 @@
           "sourceName": "SDL_SetJoystickVirtualHat",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::SetJoystickVirtualHat"
           }
@@ -74871,8 +74860,8 @@
             "mayFail": true
           }
         },
-        "Joystick::SetVirtualTouchpad": {
-          "name": "Joystick::SetVirtualTouchpad",
+        "JoystickBase::SetVirtualTouchpad": {
+          "name": "JoystickBase::SetVirtualTouchpad",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -74900,7 +74889,6 @@
           "sourceName": "SDL_SetJoystickVirtualTouchpad",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::SetJoystickVirtualTouchpad"
           }
@@ -74996,8 +74984,8 @@
             "mayFail": true
           }
         },
-        "Joystick::SendVirtualSensorData": {
-          "name": "Joystick::SendVirtualSensorData",
+        "JoystickBase::SendVirtualSensorData": {
+          "name": "JoystickBase::SendVirtualSensorData",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -75021,7 +75009,6 @@
           "sourceName": "SDL_SendJoystickVirtualSensorData",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::SendJoystickVirtualSensorData"
           }
@@ -75089,15 +75076,14 @@
             "mayFail": true
           }
         },
-        "Joystick::GetProperties": {
-          "name": "Joystick::GetProperties",
+        "JoystickBase::GetProperties": {
+          "name": "JoystickBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetJoystickProperties",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::GetJoystickProperties"
           }
@@ -75200,15 +75186,14 @@
           ],
           "sourceName": "SDL_GetJoystickName"
         },
-        "Joystick::GetName": {
-          "name": "Joystick::GetName",
+        "JoystickBase::GetName": {
+          "name": "JoystickBase::GetName",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
           "sourceName": "SDL_GetJoystickName",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickName"
           }
         },
@@ -75249,15 +75234,14 @@
           ],
           "sourceName": "SDL_GetJoystickPath"
         },
-        "Joystick::GetPath": {
-          "name": "Joystick::GetPath",
+        "JoystickBase::GetPath": {
+          "name": "JoystickBase::GetPath",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
           "sourceName": "SDL_GetJoystickPath",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickPath"
           }
         },
@@ -75299,15 +75283,14 @@
           ],
           "sourceName": "SDL_GetJoystickPlayerIndex"
         },
-        "Joystick::GetPlayerIndex": {
-          "name": "Joystick::GetPlayerIndex",
+        "JoystickBase::GetPlayerIndex": {
+          "name": "JoystickBase::GetPlayerIndex",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "SDL_GetJoystickPlayerIndex",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickPlayerIndex"
           }
         },
@@ -75359,8 +75342,8 @@
             "mayFail": true
           }
         },
-        "Joystick::SetPlayerIndex": {
-          "name": "Joystick::SetPlayerIndex",
+        "JoystickBase::SetPlayerIndex": {
+          "name": "JoystickBase::SetPlayerIndex",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -75372,7 +75355,6 @@
           "sourceName": "SDL_SetJoystickPlayerIndex",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::SetJoystickPlayerIndex"
           }
@@ -75421,15 +75403,14 @@
           ],
           "sourceName": "SDL_GetJoystickGUID"
         },
-        "Joystick::GetGUID": {
-          "name": "Joystick::GetGUID",
+        "JoystickBase::GetGUID": {
+          "name": "JoystickBase::GetGUID",
           "kind": "function",
           "type": "GUID",
           "parameters": [],
           "sourceName": "SDL_GetJoystickGUID",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickGUID"
           }
         },
@@ -75471,15 +75452,14 @@
           ],
           "sourceName": "SDL_GetJoystickVendor"
         },
-        "Joystick::GetVendor": {
-          "name": "Joystick::GetVendor",
+        "JoystickBase::GetVendor": {
+          "name": "JoystickBase::GetVendor",
           "kind": "function",
           "type": "Uint16",
           "parameters": [],
           "sourceName": "SDL_GetJoystickVendor",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickVendor"
           }
         },
@@ -75521,15 +75501,14 @@
           ],
           "sourceName": "SDL_GetJoystickProduct"
         },
-        "Joystick::GetProduct": {
-          "name": "Joystick::GetProduct",
+        "JoystickBase::GetProduct": {
+          "name": "JoystickBase::GetProduct",
           "kind": "function",
           "type": "Uint16",
           "parameters": [],
           "sourceName": "SDL_GetJoystickProduct",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickProduct"
           }
         },
@@ -75571,15 +75550,14 @@
           ],
           "sourceName": "SDL_GetJoystickProductVersion"
         },
-        "Joystick::GetProductVersion": {
-          "name": "Joystick::GetProductVersion",
+        "JoystickBase::GetProductVersion": {
+          "name": "JoystickBase::GetProductVersion",
           "kind": "function",
           "type": "Uint16",
           "parameters": [],
           "sourceName": "SDL_GetJoystickProductVersion",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickProductVersion"
           }
         },
@@ -75617,15 +75595,14 @@
           ],
           "sourceName": "SDL_GetJoystickFirmwareVersion"
         },
-        "Joystick::GetFirmwareVersion": {
-          "name": "Joystick::GetFirmwareVersion",
+        "JoystickBase::GetFirmwareVersion": {
+          "name": "JoystickBase::GetFirmwareVersion",
           "kind": "function",
           "type": "Uint16",
           "parameters": [],
           "sourceName": "SDL_GetJoystickFirmwareVersion",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickFirmwareVersion"
           }
         },
@@ -75663,15 +75640,14 @@
           ],
           "sourceName": "SDL_GetJoystickSerial"
         },
-        "Joystick::GetSerial": {
-          "name": "Joystick::GetSerial",
+        "JoystickBase::GetSerial": {
+          "name": "JoystickBase::GetSerial",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
           "sourceName": "SDL_GetJoystickSerial",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickSerial"
           }
         },
@@ -75712,15 +75688,14 @@
           ],
           "sourceName": "SDL_GetJoystickType"
         },
-        "Joystick::GetType": {
-          "name": "Joystick::GetType",
+        "JoystickBase::GetType": {
+          "name": "JoystickBase::GetType",
           "kind": "function",
           "type": "JoystickType",
           "parameters": [],
           "sourceName": "SDL_GetJoystickType",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickType"
           }
         },
@@ -75822,15 +75797,14 @@
           ],
           "sourceName": "SDL_JoystickConnected"
         },
-        "Joystick::Connected": {
-          "name": "Joystick::Connected",
+        "JoystickBase::Connected": {
+          "name": "JoystickBase::Connected",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_JoystickConnected",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::JoystickConnected"
           }
         },
@@ -75874,15 +75848,14 @@
             "mayFail": true
           }
         },
-        "Joystick::GetID": {
-          "name": "Joystick::GetID",
+        "JoystickBase::GetID": {
+          "name": "JoystickBase::GetID",
           "kind": "function",
           "type": "JoystickID",
           "parameters": [],
           "sourceName": "SDL_GetJoystickID",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::GetJoystickID"
           }
@@ -75946,15 +75919,14 @@
             "mayFail": true
           }
         },
-        "Joystick::GetNumAxes": {
-          "name": "Joystick::GetNumAxes",
+        "JoystickBase::GetNumAxes": {
+          "name": "JoystickBase::GetNumAxes",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "SDL_GetNumJoystickAxes",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::GetNumJoystickAxes"
           }
@@ -76019,15 +75991,14 @@
             "mayFail": true
           }
         },
-        "Joystick::GetNumBalls": {
-          "name": "Joystick::GetNumBalls",
+        "JoystickBase::GetNumBalls": {
+          "name": "JoystickBase::GetNumBalls",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "SDL_GetNumJoystickBalls",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::GetNumJoystickBalls"
           }
@@ -76090,15 +76061,14 @@
             "mayFail": true
           }
         },
-        "Joystick::GetNumHats": {
-          "name": "Joystick::GetNumHats",
+        "JoystickBase::GetNumHats": {
+          "name": "JoystickBase::GetNumHats",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "SDL_GetNumJoystickHats",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::GetNumJoystickHats"
           }
@@ -76161,15 +76131,14 @@
             "mayFail": true
           }
         },
-        "Joystick::GetNumButtons": {
-          "name": "Joystick::GetNumButtons",
+        "JoystickBase::GetNumButtons": {
+          "name": "JoystickBase::GetNumButtons",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "SDL_GetNumJoystickButtons",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::GetNumJoystickButtons"
           }
@@ -76305,8 +76274,8 @@
           ],
           "sourceName": "SDL_GetJoystickAxis"
         },
-        "Joystick::GetAxis": {
-          "name": "Joystick::GetAxis",
+        "JoystickBase::GetAxis": {
+          "name": "JoystickBase::GetAxis",
           "kind": "function",
           "type": "Sint16",
           "parameters": [
@@ -76318,7 +76287,6 @@
           "sourceName": "SDL_GetJoystickAxis",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickAxis"
           }
         },
@@ -76373,8 +76341,8 @@
           ],
           "sourceName": "SDL_GetJoystickAxisInitialState"
         },
-        "Joystick::GetAxisInitialState": {
-          "name": "Joystick::GetAxisInitialState",
+        "JoystickBase::GetAxisInitialState": {
+          "name": "JoystickBase::GetAxisInitialState",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -76390,7 +76358,6 @@
           "sourceName": "SDL_GetJoystickAxisInitialState",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickAxisInitialState"
           }
         },
@@ -76460,8 +76427,8 @@
             "mayFail": true
           }
         },
-        "Joystick::GetBall": {
-          "name": "Joystick::GetBall",
+        "JoystickBase::GetBall": {
+          "name": "JoystickBase::GetBall",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -76481,7 +76448,6 @@
           "sourceName": "SDL_GetJoystickBall",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::GetJoystickBall"
           }
@@ -76532,8 +76498,8 @@
           ],
           "sourceName": "SDL_GetJoystickHat"
         },
-        "Joystick::GetHat": {
-          "name": "Joystick::GetHat",
+        "JoystickBase::GetHat": {
+          "name": "JoystickBase::GetHat",
           "kind": "function",
           "type": "Uint8",
           "parameters": [
@@ -76545,7 +76511,6 @@
           "sourceName": "SDL_GetJoystickHat",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickHat"
           }
         },
@@ -76594,8 +76559,8 @@
           ],
           "sourceName": "SDL_GetJoystickButton"
         },
-        "Joystick::GetButton": {
-          "name": "Joystick::GetButton",
+        "JoystickBase::GetButton": {
+          "name": "JoystickBase::GetButton",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -76607,7 +76572,6 @@
           "sourceName": "SDL_GetJoystickButton",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickButton"
           }
         },
@@ -76670,8 +76634,8 @@
           ],
           "sourceName": "SDL_RumbleJoystick"
         },
-        "Joystick::Rumble": {
-          "name": "Joystick::Rumble",
+        "JoystickBase::Rumble": {
+          "name": "JoystickBase::Rumble",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -76691,7 +76655,6 @@
           "sourceName": "SDL_RumbleJoystick",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::RumbleJoystick"
           }
         },
@@ -76762,8 +76725,8 @@
             "mayFail": true
           }
         },
-        "Joystick::RumbleTriggers": {
-          "name": "Joystick::RumbleTriggers",
+        "JoystickBase::RumbleTriggers": {
+          "name": "JoystickBase::RumbleTriggers",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -76783,7 +76746,6 @@
           "sourceName": "SDL_RumbleJoystickTriggers",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::RumbleJoystickTriggers"
           }
@@ -76850,8 +76812,8 @@
             "mayFail": true
           }
         },
-        "Joystick::SetLED": {
-          "name": "Joystick::SetLED",
+        "JoystickBase::SetLED": {
+          "name": "JoystickBase::SetLED",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -76871,7 +76833,6 @@
           "sourceName": "SDL_SetJoystickLED",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::SetJoystickLED"
           }
@@ -76928,8 +76889,8 @@
             "mayFail": true
           }
         },
-        "Joystick::SendEffect": {
-          "name": "Joystick::SendEffect",
+        "JoystickBase::SendEffect": {
+          "name": "JoystickBase::SendEffect",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -76945,7 +76906,6 @@
           "sourceName": "SDL_SendJoystickEffect",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::SendJoystickEffect"
           }
@@ -76981,15 +76941,14 @@
           ],
           "sourceName": "SDL_CloseJoystick"
         },
-        "Joystick::Close": {
-          "name": "Joystick::Close",
+        "JoystickBase::Close": {
+          "name": "JoystickBase::Close",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_CloseJoystick",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "body": "CloseJoystick(release());",
             "delegate": "SDL::CloseJoystick"
           }
@@ -77034,15 +76993,14 @@
             "mayFail": true
           }
         },
-        "Joystick::GetConnectionState": {
-          "name": "Joystick::GetConnectionState",
+        "JoystickBase::GetConnectionState": {
+          "name": "JoystickBase::GetConnectionState",
           "kind": "function",
           "type": "JoystickConnectionState",
           "parameters": [],
           "sourceName": "SDL_GetJoystickConnectionState",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "mayFail": true,
             "delegate": "SDL::GetJoystickConnectionState"
           }
@@ -77089,8 +77047,8 @@
           ],
           "sourceName": "SDL_GetJoystickPowerInfo"
         },
-        "Joystick::GetPowerInfo": {
-          "name": "Joystick::GetPowerInfo",
+        "JoystickBase::GetPowerInfo": {
+          "name": "JoystickBase::GetPowerInfo",
           "kind": "function",
           "type": "PowerState",
           "parameters": [
@@ -77102,7 +77060,6 @@
           "sourceName": "SDL_GetJoystickPowerInfo",
           "hints": {
             "self": "get()",
-            "super": "Joystick",
             "delegate": "SDL::GetJoystickPowerInfo"
           }
         }
@@ -86112,6 +86069,10 @@
         "This provides some platform-specific glue for Apple platforms. Most macOS and iOS apps can use SDL without these functions, but this API they can be useful for specific OS-level integration tasks."
       ],
       "entries": {
+        "MetalViewBase-forward": {
+          "name": "MetalViewBase",
+          "kind": "forward"
+        },
         "MetalView-forward": {
           "name": "MetalView",
           "kind": "forward"
@@ -86131,217 +86092,23 @@
             "Reference for MetalView.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<MetalView>"
+          "type": "ResourceRefT<MetalViewBase>"
         },
-        "MetalView": {
-          "doc": [
-            "A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "MetalView",
+        "MetalViewBase": {
+          "name": "MetalViewBase",
           "kind": "struct",
-          "type": "ResourceBase<MetalViewRaw>",
-          "sourceName": "SDL_MetalView",
+          "type": "ResourceBaseT<MetalViewRaw>",
+          "doc": [
+            "Base class to MetalView.",
+            {
+              "tag": "@see",
+              "content": "MetalView"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "MetalView": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "MetalViewRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw MetalView.",
-                {
-                  "tag": "@param resource",
-                  "content": "a MetalViewRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "MetalView",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const MetalView &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "MetalView",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "MetalView &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "MetalView(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "MetalView",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const MetalViewRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "MetalView",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "MetalViewRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "MetalView",
-                      "overload": {
-                        "doc": [
-                          "Create a CAMetalLayer-backed NSView/UIView and attach it to the specified window.",
-                          "On macOS, this does *not* associate a MTLDevice with the CAMetalLayer on its own. It is up to user code to do that.",
-                          "The returned handle can be casted directly to a NSView or UIView. To access the backing CAMetalLayer, call Metal_GetLayer().",
-                          [
-                            {
-                              "tag": "@param window",
-                              "content": "the window."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "handle NSView or UIView."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "This function should only be called on the main thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "Metal_DestroyView"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "Metal_GetLayer"
-                            }
-                          ]
-                        ],
-                        "name": "MetalView",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "window",
-                            "type": "WindowRef"
-                          }
-                        ],
-                        "sourceName": "SDL_Metal_CreateView",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~MetalView": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_Metal_DestroyView(get());"
-              },
-              "name": "~MetalView"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "MetalView &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "MetalView &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "MetalView &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const MetalView &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Metal_DestroyView": {
               "doc": [
@@ -86399,6 +86166,189 @@
                 "delegate": "SDL::Metal_GetLayer"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "MetalView": {
+          "doc": [
+            "A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "MetalView",
+          "kind": "struct",
+          "type": "MetalViewBase",
+          "sourceName": "SDL_MetalView",
+          "entries": {
+            "MetalViewBase::MetalViewBase": {
+              "kind": "alias",
+              "name": "MetalViewBase::MetalViewBase"
+            },
+            "MetalView": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "MetalViewRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "MetalViewBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw MetalView.",
+                {
+                  "tag": "@param resource",
+                  "content": "a MetalViewRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "MetalView",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const MetalView &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "MetalView",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "MetalView &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "MetalView(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "MetalView",
+                  "overload": {
+                    "doc": [
+                      "Create a CAMetalLayer-backed NSView/UIView and attach it to the specified window.",
+                      "On macOS, this does *not* associate a MTLDevice with the CAMetalLayer on its own. It is up to user code to do that.",
+                      "The returned handle can be casted directly to a NSView or UIView. To access the backing CAMetalLayer, call Metal_GetLayer().",
+                      [
+                        {
+                          "tag": "@param window",
+                          "content": "the window."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "handle NSView or UIView."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "This function should only be called on the main thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "Metal_DestroyView"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "Metal_GetLayer"
+                        }
+                      ]
+                    ],
+                    "name": "MetalView",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "window",
+                        "type": "WindowRef"
+                      }
+                    ],
+                    "sourceName": "SDL_Metal_CreateView",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~MetalView": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_Metal_DestroyView(get());"
+              },
+              "name": "~MetalView"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "MetalView &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "MetalView &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "MetalView &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const MetalView &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -86498,20 +86448,27 @@
           "parameters": [
             {
               "name": "view",
-              "type": "MetalViewRaw"
+              "type": "MetalViewRef"
+            },
+            {
+              "name": "view",
+              "type": "MetalViewRef"
             }
           ],
-          "sourceName": "SDL_Metal_DestroyView"
+          "sourceName": "SDL_Metal_DestroyView",
+          "hints": {
+            "body": "Metal_DestroyView(release());",
+            "methodName": "Destroy"
+          }
         },
-        "MetalView::Metal_DestroyView": {
-          "name": "MetalView::Metal_DestroyView",
+        "MetalViewBase::Metal_DestroyView": {
+          "name": "MetalViewBase::Metal_DestroyView",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_Metal_DestroyView",
           "hints": {
             "self": "get()",
-            "super": "MetalView",
             "body": "Metal_DestroyView(release());",
             "delegate": "SDL::Metal_DestroyView"
           }
@@ -86552,15 +86509,14 @@
             "methodName": "GetLayer"
           }
         },
-        "MetalView::GetLayer": {
-          "name": "MetalView::GetLayer",
+        "MetalViewBase::GetLayer": {
+          "name": "MetalViewBase::GetLayer",
           "kind": "function",
           "type": "void *",
           "parameters": [],
           "sourceName": "SDL_Metal_GetLayer",
           "hints": {
             "self": "get()",
-            "super": "MetalView",
             "methodName": "GetLayer",
             "delegate": "SDL::Metal_GetLayer"
           }
@@ -88977,6 +88933,10 @@
         "SDL also offers a datatype, InitState, which can be used to make sure only one thread initializes/deinitializes some resource that several threads might try to use for the first time simultaneously."
       ],
       "entries": {
+        "MutexBase-forward": {
+          "name": "MutexBase",
+          "kind": "forward"
+        },
         "Mutex-forward": {
           "name": "Mutex",
           "kind": "forward"
@@ -88996,7 +88956,7 @@
             "Reference for Mutex.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Mutex>"
+          "type": "ResourceRefT<MutexBase>"
         },
         "RWLock-forward": {
           "name": "RWLock",
@@ -89077,216 +89037,21 @@
           "name": "InitState",
           "kind": "forward"
         },
-        "Mutex": {
-          "doc": [
-            "A means to serialize access to a resource between threads.",
-            "Mutexes (short for \"mutual exclusion\") are a synchronization primitive that allows exactly one thread to proceed at a time.",
-            "Wikipedia has a thorough explanation of the concept:",
-            "https://en.wikipedia.org/wiki/Mutex",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Mutex",
+        "MutexBase": {
+          "name": "MutexBase",
           "kind": "struct",
-          "type": "ResourceBase<MutexRaw>",
-          "sourceName": "SDL_Mutex",
+          "type": "ResourceBaseT<MutexRaw>",
+          "doc": [
+            "Base class to Mutex.",
+            {
+              "tag": "@see",
+              "content": "Mutex"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Mutex": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "MutexRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Mutex.",
-                {
-                  "tag": "@param resource",
-                  "content": "a MutexRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Mutex",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Mutex &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Mutex",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Mutex &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Mutex(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Mutex",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const MutexRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Mutex",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "MutexRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Mutex",
-                      "overload": {
-                        "doc": [
-                          "Create a new mutex.",
-                          "All newly-created mutexes begin in the _unlocked_ state.",
-                          "Calls to LockMutex() will not return while the mutex is locked by another thread. See TryLockMutex() to attempt to lock without blocking.",
-                          "SDL mutexes are reentrant.",
-                          {
-                            "tag": "@post",
-                            "content": "the initialized and unlocked mutex or nullptr on failure; call GetError() for more information."
-                          },
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyMutex"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "LockMutex"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "TryLockMutex"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "UnlockMutex"
-                            }
-                          ]
-                        ],
-                        "name": "Mutex",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [],
-                        "sourceName": "SDL_CreateMutex",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Mutex": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyMutex(get());"
-              },
-              "name": "~Mutex"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Mutex &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Mutex &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Mutex &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Mutex &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -89428,6 +89193,190 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "Mutex": {
+          "doc": [
+            "A means to serialize access to a resource between threads.",
+            "Mutexes (short for \"mutual exclusion\") are a synchronization primitive that allows exactly one thread to proceed at a time.",
+            "Wikipedia has a thorough explanation of the concept:",
+            "https://en.wikipedia.org/wiki/Mutex",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Mutex",
+          "kind": "struct",
+          "type": "MutexBase",
+          "sourceName": "SDL_Mutex",
+          "entries": {
+            "MutexBase::MutexBase": {
+              "kind": "alias",
+              "name": "MutexBase::MutexBase"
+            },
+            "Mutex": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "MutexRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "MutexBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Mutex.",
+                {
+                  "tag": "@param resource",
+                  "content": "a MutexRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Mutex",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Mutex &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Mutex",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Mutex &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Mutex(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Mutex",
+                  "overload": {
+                    "doc": [
+                      "Create a new mutex.",
+                      "All newly-created mutexes begin in the _unlocked_ state.",
+                      "Calls to LockMutex() will not return while the mutex is locked by another thread. See TryLockMutex() to attempt to lock without blocking.",
+                      "SDL mutexes are reentrant.",
+                      {
+                        "tag": "@post",
+                        "content": "the initialized and unlocked mutex or nullptr on failure; call GetError() for more information."
+                      },
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyMutex"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "LockMutex"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "TryLockMutex"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "UnlockMutex"
+                        }
+                      ]
+                    ],
+                    "name": "Mutex",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [],
+                    "sourceName": "SDL_CreateMutex",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Mutex": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyMutex(get());"
+              },
+              "name": "~Mutex"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Mutex &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Mutex &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Mutex &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Mutex &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "Mutex"
           }
@@ -89530,15 +89479,14 @@
           ],
           "sourceName": "SDL_LockMutex"
         },
-        "Mutex::Lock": {
-          "name": "Mutex::Lock",
+        "MutexBase::Lock": {
+          "name": "MutexBase::Lock",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_LockMutex",
           "hints": {
             "self": "get()",
-            "super": "Mutex",
             "delegate": "SDL::LockMutex"
           }
         },
@@ -89588,15 +89536,14 @@
           ],
           "sourceName": "SDL_TryLockMutex"
         },
-        "Mutex::TryLock": {
-          "name": "Mutex::TryLock",
+        "MutexBase::TryLock": {
+          "name": "MutexBase::TryLock",
           "kind": "function",
           "type": "bool",
           "parameters": [],
           "sourceName": "SDL_TryLockMutex",
           "hints": {
             "self": "get()",
-            "super": "Mutex",
             "delegate": "SDL::TryLockMutex"
           }
         },
@@ -89639,15 +89586,14 @@
           ],
           "sourceName": "SDL_UnlockMutex"
         },
-        "Mutex::Unlock": {
-          "name": "Mutex::Unlock",
+        "MutexBase::Unlock": {
+          "name": "MutexBase::Unlock",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_UnlockMutex",
           "hints": {
             "self": "get()",
-            "super": "Mutex",
             "delegate": "SDL::UnlockMutex"
           }
         },
@@ -89683,15 +89629,14 @@
           ],
           "sourceName": "SDL_DestroyMutex"
         },
-        "Mutex::Destroy": {
-          "name": "Mutex::Destroy",
+        "MutexBase::Destroy": {
+          "name": "MutexBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyMutex",
           "hints": {
             "self": "get()",
-            "super": "Mutex",
             "body": "DestroyMutex(release());",
             "delegate": "SDL::DestroyMutex"
           }
@@ -93135,6 +93080,10 @@
           "name": "FColor",
           "kind": "forward"
         },
+        "PaletteBase-forward": {
+          "name": "PaletteBase",
+          "kind": "forward"
+        },
         "Palette-forward": {
           "name": "Palette",
           "kind": "forward"
@@ -93162,7 +93111,7 @@
             "Reference for Palette.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Palette>"
+          "type": "ResourceRefT<PaletteBase>"
         },
         "PaletteConstRef": {
           "name": "PaletteConstRef",
@@ -99050,6 +98999,164 @@
           },
           "name": "PaletteIndex"
         },
+        "PaletteBase": {
+          "name": "PaletteBase",
+          "kind": "struct",
+          "type": "ResourceBaseT<PaletteRaw, PaletteRawConst>",
+          "doc": [
+            "Base class to Palette.",
+            {
+              "tag": "@see",
+              "content": "Palette"
+            }
+          ],
+          "entries": {
+            "ResourceBaseT::ResourceBaseT": {
+              "kind": "alias",
+              "name": "ResourceBaseT::ResourceBaseT"
+            },
+            "operator PaletteConstRef": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "hints": {
+                "body": "return get();",
+                "noexcept": true
+              },
+              "doc": [
+                "Converts to PaletteConstRef"
+              ],
+              "name": "operator PaletteConstRef"
+            },
+            "Destroy": {
+              "doc": [
+                "Free a palette created with CreatePalette().",
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                {
+                  "tag": "@sa",
+                  "content": "CreatePalette"
+                }
+              ],
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyPalette",
+              "hints": {
+                "body": "DestroyPalette(release());",
+                "delegate": "SDL::DestroyPalette"
+              },
+              "proto": true
+            },
+            "data": {
+              "kind": "function",
+              "type": "const ColorRaw *",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "name": "data"
+            },
+            "size": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "name": "size"
+            },
+            "operator[]": {
+              "kind": "function",
+              "type": "ColorRaw",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "index"
+                }
+              ],
+              "name": "operator[]",
+              "overload": {
+                "kind": "function",
+                "name": "operator[]",
+                "type": "PaletteIndex",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "int",
+                    "name": "index"
+                  }
+                ],
+                "hints": {
+                  "body": "return PaletteIndex{get(), index};"
+                }
+              }
+            },
+            "SetColors": {
+              "doc": [
+                "Set a range of colors in a palette.",
+                [
+                  {
+                    "tag": "@param colors",
+                    "content": "an array of Color structures to copy into the palette."
+                  },
+                  {
+                    "tag": "@param firstcolor",
+                    "content": "the index of the first palette entry to modify."
+                  },
+                  {
+                    "tag": "@param ncolors",
+                    "content": "the number of entries to modify."
+                  },
+                  {
+                    "tag": "@throws",
+                    "content": "Error on failure."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                }
+              ],
+              "name": "SetColors",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "colors",
+                  "type": "SpanRef<const ColorRaw>"
+                },
+                {
+                  "name": "firstcolor",
+                  "type": "int",
+                  "default": "0"
+                }
+              ],
+              "sourceName": "SDL_SetPaletteColors",
+              "hints": {
+                "mayFail": true,
+                "delegate": "SDL::SetPaletteColors"
+              },
+              "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
         "Palette": {
           "doc": [
             "A set of indexed colors representing a palette.",
@@ -99067,9 +99174,9 @@
           "kind": "struct",
           "sourceName": "SDL_Palette",
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "PaletteBase::PaletteBase": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
+              "name": "PaletteBase::PaletteBase"
             },
             "Palette": {
               "kind": "function",
@@ -99084,7 +99191,7 @@
               ],
               "hints": {
                 "init": [
-                  "ResourceBase(resource)"
+                  "PaletteBase(resource)"
                 ],
                 "noexcept": true
               },
@@ -99219,21 +99326,6 @@
               ],
               "name": "Borrow"
             },
-            "operator PaletteConstRef": {
-              "kind": "function",
-              "type": "",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "hints": {
-                "body": "return get();",
-                "noexcept": true
-              },
-              "doc": [
-                "Converts to PaletteConstRef"
-              ],
-              "name": "operator PaletteConstRef"
-            },
             "~Palette": {
               "kind": "function",
               "doc": [
@@ -99282,131 +99374,9 @@
                 ],
                 "name": "operator="
               }
-            },
-            "Destroy": {
-              "doc": [
-                "Free a palette created with CreatePalette().",
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                {
-                  "tag": "@sa",
-                  "content": "CreatePalette"
-                }
-              ],
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyPalette",
-              "hints": {
-                "body": "DestroyPalette(release());",
-                "delegate": "SDL::DestroyPalette"
-              },
-              "proto": true
-            },
-            "data": {
-              "kind": "function",
-              "type": "const ColorRaw *",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "name": "data"
-            },
-            "size": {
-              "kind": "function",
-              "type": "int",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "name": "size"
-            },
-            "operator[]": {
-              "kind": "function",
-              "type": "ColorRaw",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "int",
-                  "name": "index"
-                }
-              ],
-              "name": "operator[]",
-              "overload": {
-                "kind": "function",
-                "name": "operator[]",
-                "type": "PaletteIndex",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "type": "int",
-                    "name": "index"
-                  }
-                ],
-                "hints": {
-                  "body": "return PaletteIndex{get(), index};"
-                }
-              }
-            },
-            "SetColors": {
-              "doc": [
-                "Set a range of colors in a palette.",
-                [
-                  {
-                    "tag": "@param colors",
-                    "content": "an array of Color structures to copy into the palette."
-                  },
-                  {
-                    "tag": "@param firstcolor",
-                    "content": "the index of the first palette entry to modify."
-                  },
-                  {
-                    "tag": "@param ncolors",
-                    "content": "the number of entries to modify."
-                  },
-                  {
-                    "tag": "@throws",
-                    "content": "Error on failure."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                }
-              ],
-              "name": "SetColors",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "colors",
-                  "type": "SpanRef<const ColorRaw>"
-                },
-                {
-                  "name": "firstcolor",
-                  "type": "int",
-                  "default": "0"
-                }
-              ],
-              "sourceName": "SDL_SetPaletteColors",
-              "hints": {
-                "mayFail": true,
-                "delegate": "SDL::SetPaletteColors"
-              },
-              "proto": true
             }
           },
-          "type": "ResourceBase<PaletteRaw, PaletteRawConst>",
+          "type": "PaletteBase",
           "hints": {
             "self": "get()",
             "super": "Palette"
@@ -99872,8 +99842,8 @@
             "mayFail": true
           }
         },
-        "Palette::SetColors": {
-          "name": "Palette::SetColors",
+        "PaletteBase::SetColors": {
+          "name": "PaletteBase::SetColors",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -99889,7 +99859,6 @@
           "sourceName": "SDL_SetPaletteColors",
           "hints": {
             "self": "get()",
-            "super": "Palette",
             "mayFail": true,
             "delegate": "SDL::SetPaletteColors"
           }
@@ -99939,15 +99908,14 @@
           ],
           "sourceName": "SDL_DestroyPalette"
         },
-        "Palette::Destroy": {
-          "name": "Palette::Destroy",
+        "PaletteBase::Destroy": {
+          "name": "PaletteBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyPalette",
           "hints": {
             "self": "get()",
-            "super": "Palette",
             "body": "DestroyPalette(release());",
             "delegate": "SDL::DestroyPalette"
           }
@@ -100664,6 +100632,10 @@
         "Don't forget to call DestroyProcess() to clean up, whether the process process was killed, terminated on its own, or is still running!"
       ],
       "entries": {
+        "ProcessBase-forward": {
+          "name": "ProcessBase",
+          "kind": "forward"
+        },
         "Process-forward": {
           "name": "Process",
           "kind": "forward"
@@ -100683,7 +100655,7 @@
             "Reference for Process.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Process>"
+          "type": "ResourceRefT<ProcessBase>"
         },
         "ProcessIO": {
           "name": "ProcessIO",
@@ -100765,375 +100737,21 @@
           ],
           "sourceName": "SDL_PROCESS_STDIO_REDIRECT"
         },
-        "Process": {
-          "doc": [
-            "An opaque handle representing a system process.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL 3.2.0."
-            },
-            {
-              "tag": "@sa",
-              "content": "CreateProcess"
-            },
-            "@cat resource"
-          ],
-          "name": "Process",
+        "ProcessBase": {
+          "name": "ProcessBase",
           "kind": "struct",
-          "type": "ResourceBase<ProcessRaw>",
-          "sourceName": "SDL_Process",
+          "type": "ResourceBaseT<ProcessRaw>",
+          "doc": [
+            "Base class to Process.",
+            {
+              "tag": "@see",
+              "content": "Process"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Process": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "ProcessRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Process.",
-                {
-                  "tag": "@param resource",
-                  "content": "a ProcessRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Process",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Process &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Process",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Process &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Process(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Process",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const ProcessRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Process",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "ProcessRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Process",
-                      "overload": {
-                        "doc": [
-                          "Create a new process.",
-                          "The path to the executable is supplied in args[0]. args[1..N] are additional arguments passed on the command line of the new process, and the argument list should be terminated with a nullptr, e.g.:",
-                          {
-                            "content": "```c\nconst char *args[] = { \"myprogram\", \"argument\", nullptr };\n```"
-                          },
-                          "Setting pipe_stdio to true is equivalent to setting `prop.Process.Create.STDIN_NUMBER` and `prop.Process.Create.STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and will allow the use of ReadProcess() or GetProcessInput() and GetProcessOutput().",
-                          "See CreateProcessWithProperties() for more details.",
-                          [
-                            {
-                              "tag": "@param args",
-                              "content": "the path and arguments for the new process."
-                            },
-                            {
-                              "tag": "@param pipe_stdio",
-                              "content": "true to create pipes to the process's standard input and from the process's standard output, false for the process to have no input and inherit the application's standard output."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "the newly created and running process, or nullptr if the process couldn't be created."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateProcessWithProperties"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetProcessProperties"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "ReadProcess"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetProcessInput"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "GetProcessOutput"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "KillProcess"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "WaitProcess"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyProcess"
-                            }
-                          ]
-                        ],
-                        "name": "Process",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "args",
-                            "type": "const char * const *"
-                          },
-                          {
-                            "name": "pipe_stdio",
-                            "type": "bool"
-                          }
-                        ],
-                        "sourceName": "SDL_CreateProcess",
-                        "overload": {
-                          "doc": [
-                            "Create a new process with the specified properties.",
-                            "These are the supported properties:",
-                            [
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.ARGS_POINTER`: an array of strings containing the program to run, any arguments, and a nullptr pointer, e.g. const char *args[] = { \"myprogram\", \"argument\", nullptr }. This is a required property."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.ENVIRONMENT_POINTER`: an Environment pointer. If this property is set, it will be the entire environment for the process, otherwise the current environment is used."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.WORKING_DIRECTORY_STRING`: a UTF-8 encoded string representing the working directory for the process, defaults to the current working directory."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.STDIN_NUMBER`: an ProcessIO value describing where standard input for the process comes from, defaults to `SDL_PROCESS_STDIO_nullptr`."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.STDIN_POINTER`: an IOStream pointer used for standard input when `prop.Process.Create.STDIN_NUMBER` is set to `PROCESS_STDIO_REDIRECT`."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.STDOUT_NUMBER`: an ProcessIO value describing where standard output for the process goes to, defaults to `PROCESS_STDIO_INHERITED`."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.STDOUT_POINTER`: an IOStream pointer used for standard output when `prop.Process.Create.STDOUT_NUMBER` is set to `PROCESS_STDIO_REDIRECT`."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.STDERR_NUMBER`: an ProcessIO value describing where standard error for the process goes to, defaults to `PROCESS_STDIO_INHERITED`."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.STDERR_POINTER`: an IOStream pointer used for standard error when `prop.Process.Create.STDERR_NUMBER` is set to `PROCESS_STDIO_REDIRECT`."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.STDERR_TO_STDOUT_BOOLEAN`: true if the error output of the process should be redirected into the standard output of the process. This property has no effect if `prop.Process.Create.STDERR_NUMBER` is set."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.BACKGROUND_BOOLEAN`: true if the process should run in the background. In this case the default input and output is `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not available, and will always be 0."
-                              },
-                              {
-                                "tag": "-",
-                                "content": "`prop.Process.Create.CMDLINE_STRING`: a string containing the program to run and any parameters. This string is passed directly to `CreateProcess` on Windows, and does nothing on other platforms. This property is only important if you want to start programs that does non-standard command-line processing, and in most cases using `prop.Process.Create.ARGS_POINTER` is sufficient."
-                              }
-                            ],
-                            "On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and SIGCHLD should not be ignored or handled because those would prevent SDL from properly tracking the lifetime of the underlying process. You should use WaitProcess() instead.",
-                            [
-                              {
-                                "tag": "@param props",
-                                "content": "the properties to use."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "the newly created and running process, or nullptr if the process couldn't be created."
-                              }
-                            ],
-                            {
-                              "tag": "@threadsafety",
-                              "content": "It is safe to call this function from any thread."
-                            },
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL 3.2.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "CreateProcess"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "GetProcessProperties"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "ReadProcess"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "GetProcessInput"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "GetProcessOutput"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "KillProcess"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "WaitProcess"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "DestroyProcess"
-                              }
-                            ]
-                          ],
-                          "name": "Process",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "props",
-                              "type": "PropertiesRef"
-                            }
-                          ],
-                          "sourceName": "SDL_CreateProcessWithProperties",
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Process": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_DestroyProcess(get());"
-              },
-              "name": "~Process"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Process &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Process &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Process &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Process &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -101526,6 +101144,349 @@
                 "delegate": "SDL::WaitProcess"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Process": {
+          "doc": [
+            "An opaque handle representing a system process.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "CreateProcess"
+            },
+            "@cat resource"
+          ],
+          "name": "Process",
+          "kind": "struct",
+          "type": "ProcessBase",
+          "sourceName": "SDL_Process",
+          "entries": {
+            "ProcessBase::ProcessBase": {
+              "kind": "alias",
+              "name": "ProcessBase::ProcessBase"
+            },
+            "Process": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "ProcessRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "ProcessBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Process.",
+                {
+                  "tag": "@param resource",
+                  "content": "a ProcessRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Process",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Process &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Process",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Process &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Process(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Process",
+                  "overload": {
+                    "doc": [
+                      "Create a new process.",
+                      "The path to the executable is supplied in args[0]. args[1..N] are additional arguments passed on the command line of the new process, and the argument list should be terminated with a nullptr, e.g.:",
+                      {
+                        "content": "```c\nconst char *args[] = { \"myprogram\", \"argument\", nullptr };\n```"
+                      },
+                      "Setting pipe_stdio to true is equivalent to setting `prop.Process.Create.STDIN_NUMBER` and `prop.Process.Create.STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and will allow the use of ReadProcess() or GetProcessInput() and GetProcessOutput().",
+                      "See CreateProcessWithProperties() for more details.",
+                      [
+                        {
+                          "tag": "@param args",
+                          "content": "the path and arguments for the new process."
+                        },
+                        {
+                          "tag": "@param pipe_stdio",
+                          "content": "true to create pipes to the process's standard input and from the process's standard output, false for the process to have no input and inherit the application's standard output."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "the newly created and running process, or nullptr if the process couldn't be created."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateProcessWithProperties"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetProcessProperties"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "ReadProcess"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetProcessInput"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "GetProcessOutput"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "KillProcess"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "WaitProcess"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyProcess"
+                        }
+                      ]
+                    ],
+                    "name": "Process",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "args",
+                        "type": "const char * const *"
+                      },
+                      {
+                        "name": "pipe_stdio",
+                        "type": "bool"
+                      }
+                    ],
+                    "sourceName": "SDL_CreateProcess",
+                    "overload": {
+                      "doc": [
+                        "Create a new process with the specified properties.",
+                        "These are the supported properties:",
+                        [
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.ARGS_POINTER`: an array of strings containing the program to run, any arguments, and a nullptr pointer, e.g. const char *args[] = { \"myprogram\", \"argument\", nullptr }. This is a required property."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.ENVIRONMENT_POINTER`: an Environment pointer. If this property is set, it will be the entire environment for the process, otherwise the current environment is used."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.WORKING_DIRECTORY_STRING`: a UTF-8 encoded string representing the working directory for the process, defaults to the current working directory."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.STDIN_NUMBER`: an ProcessIO value describing where standard input for the process comes from, defaults to `SDL_PROCESS_STDIO_nullptr`."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.STDIN_POINTER`: an IOStream pointer used for standard input when `prop.Process.Create.STDIN_NUMBER` is set to `PROCESS_STDIO_REDIRECT`."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.STDOUT_NUMBER`: an ProcessIO value describing where standard output for the process goes to, defaults to `PROCESS_STDIO_INHERITED`."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.STDOUT_POINTER`: an IOStream pointer used for standard output when `prop.Process.Create.STDOUT_NUMBER` is set to `PROCESS_STDIO_REDIRECT`."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.STDERR_NUMBER`: an ProcessIO value describing where standard error for the process goes to, defaults to `PROCESS_STDIO_INHERITED`."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.STDERR_POINTER`: an IOStream pointer used for standard error when `prop.Process.Create.STDERR_NUMBER` is set to `PROCESS_STDIO_REDIRECT`."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.STDERR_TO_STDOUT_BOOLEAN`: true if the error output of the process should be redirected into the standard output of the process. This property has no effect if `prop.Process.Create.STDERR_NUMBER` is set."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.BACKGROUND_BOOLEAN`: true if the process should run in the background. In this case the default input and output is `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not available, and will always be 0."
+                          },
+                          {
+                            "tag": "-",
+                            "content": "`prop.Process.Create.CMDLINE_STRING`: a string containing the program to run and any parameters. This string is passed directly to `CreateProcess` on Windows, and does nothing on other platforms. This property is only important if you want to start programs that does non-standard command-line processing, and in most cases using `prop.Process.Create.ARGS_POINTER` is sufficient."
+                          }
+                        ],
+                        "On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and SIGCHLD should not be ignored or handled because those would prevent SDL from properly tracking the lifetime of the underlying process. You should use WaitProcess() instead.",
+                        [
+                          {
+                            "tag": "@param props",
+                            "content": "the properties to use."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "the newly created and running process, or nullptr if the process couldn't be created."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "It is safe to call this function from any thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL 3.2.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateProcess"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "GetProcessProperties"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "ReadProcess"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "GetProcessInput"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "GetProcessOutput"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "KillProcess"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "WaitProcess"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyProcess"
+                          }
+                        ]
+                      ],
+                      "name": "Process",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "props",
+                          "type": "PropertiesRef"
+                        }
+                      ],
+                      "sourceName": "SDL_CreateProcessWithProperties",
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Process": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_DestroyProcess(get());"
+              },
+              "name": "~Process"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Process &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Process &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Process &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Process &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -102000,15 +101961,14 @@
             "mayFail": true
           }
         },
-        "Process::GetProperties": {
-          "name": "Process::GetProperties",
+        "ProcessBase::GetProperties": {
+          "name": "ProcessBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetProcessProperties",
           "hints": {
             "self": "get()",
-            "super": "Process",
             "mayFail": true,
             "delegate": "SDL::GetProcessProperties"
           },
@@ -102138,8 +102098,8 @@
           ],
           "sourceName": "SDL_ReadProcess"
         },
-        "Process::Read": {
-          "name": "Process::Read",
+        "ProcessBase::Read": {
+          "name": "ProcessBase::Read",
           "kind": "function",
           "type": "StringResult",
           "parameters": [
@@ -102151,7 +102111,6 @@
           "sourceName": "SDL_ReadProcess",
           "hints": {
             "self": "get()",
-            "super": "Process",
             "delegate": "SDL::ReadProcess"
           }
         },
@@ -102204,15 +102163,14 @@
           ],
           "sourceName": "SDL_GetProcessInput"
         },
-        "Process::GetInput": {
-          "name": "Process::GetInput",
+        "ProcessBase::GetInput": {
+          "name": "ProcessBase::GetInput",
           "kind": "function",
           "type": "IOStreamRef",
           "parameters": [],
           "sourceName": "SDL_GetProcessInput",
           "hints": {
             "self": "get()",
-            "super": "Process",
             "delegate": "SDL::GetProcessInput"
           }
         },
@@ -102265,15 +102223,14 @@
           ],
           "sourceName": "SDL_GetProcessOutput"
         },
-        "Process::GetOutput": {
-          "name": "Process::GetOutput",
+        "ProcessBase::GetOutput": {
+          "name": "ProcessBase::GetOutput",
           "kind": "function",
           "type": "IOStreamRef",
           "parameters": [],
           "sourceName": "SDL_GetProcessOutput",
           "hints": {
             "self": "get()",
-            "super": "Process",
             "delegate": "SDL::GetProcessOutput"
           }
         },
@@ -102339,8 +102296,8 @@
             "mayFail": true
           }
         },
-        "Process::Kill": {
-          "name": "Process::Kill",
+        "ProcessBase::Kill": {
+          "name": "ProcessBase::Kill",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -102352,7 +102309,6 @@
           "sourceName": "SDL_KillProcess",
           "hints": {
             "self": "get()",
-            "super": "Process",
             "mayFail": true,
             "delegate": "SDL::KillProcess"
           }
@@ -102427,8 +102383,8 @@
           ],
           "sourceName": "SDL_WaitProcess"
         },
-        "Process::Wait": {
-          "name": "Process::Wait",
+        "ProcessBase::Wait": {
+          "name": "ProcessBase::Wait",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -102444,7 +102400,6 @@
           "sourceName": "SDL_WaitProcess",
           "hints": {
             "self": "get()",
-            "super": "Process",
             "delegate": "SDL::WaitProcess"
           }
         },
@@ -102490,15 +102445,14 @@
           ],
           "sourceName": "SDL_DestroyProcess"
         },
-        "Process::Destroy": {
-          "name": "Process::Destroy",
+        "ProcessBase::Destroy": {
+          "name": "ProcessBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_DestroyProcess",
           "hints": {
             "self": "get()",
-            "super": "Process",
             "body": "DestroyProcess(release());",
             "delegate": "SDL::DestroyProcess"
           }
@@ -198340,6 +198294,10 @@
         "SDL_mixer offers basic positional audio: a simple 3D positioning API through SetTrack3DPosition() and SetTrackStereo(). The former will do simple distance attenuation and spatialization--on a stereo setup, you will hear sounds move from left to right--and on a surround-sound configuration, individual tracks can move around the user. The latter, SetTrackStereo(), will force a sound to the Front Left and Front Right speakers and let the app pan it left and right as desired. Either effect can be useful for different situations. SDL_mixer is not meant to be a full 3D audio engine, but rather Good Enough for many purposes; if something more powerful in terms of 3D audio is needed, consider a proper 3D library like OpenAL."
       ],
       "entries": {
+        "MixerBase-forward": {
+          "name": "MixerBase",
+          "kind": "forward"
+        },
         "Mixer-forward": {
           "name": "Mixer",
           "kind": "forward"
@@ -198359,7 +198317,7 @@
             "Reference for Mixer.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<Mixer>"
+          "type": "ResourceRefT<MixerBase>"
         },
         "AudioBase-forward": {
           "name": "AudioBase",
@@ -198546,294 +198504,21 @@
             }
           ]
         },
-        "Mixer": {
-          "doc": [
-            "An opaque object that represents a mixer.",
-            "The Mixer is the toplevel object for this library. To use SDL_mixer, you must have at least one, but are allowed to have several. Each mixer is responsible for generating a single output stream of mixed audio, usually to an audio device for realtime playback.",
-            "Mixers are either created to feed an audio device (through CreateMixerDevice()), or to generate audio to a buffer in memory, where it can be used for anything (through CreateMixer()).",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL_mixer 3.0.0."
-            },
-            "@cat resource"
-          ],
-          "name": "Mixer",
+        "MixerBase": {
+          "name": "MixerBase",
           "kind": "struct",
-          "type": "ResourceBase<MixerRaw>",
-          "sourceName": "MIX_Mixer",
+          "type": "ResourceBaseT<MixerRaw>",
+          "doc": [
+            "Base class to Mixer.",
+            {
+              "tag": "@see",
+              "content": "Mixer"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "Mixer": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "MixerRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw Mixer.",
-                {
-                  "tag": "@param resource",
-                  "content": "a MixerRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "Mixer",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Mixer &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "Mixer",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "Mixer &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "Mixer(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "Mixer",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const MixerRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "Mixer",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "MixerRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "Mixer",
-                      "overload": {
-                        "doc": [
-                          "Create a mixer that plays sound directly to an audio device.",
-                          "This is usually the function you want, vs CreateMixer().",
-                          "You can choose a specific device ID to open, following SDL's usual rules, but often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK and let SDL figure out what device to use (and seamlessly transition you to new hardware if the default changes).",
-                          "Only playback devices make sense here. Attempting to open a recording device will fail.",
-                          "This will call Init(INIT_AUDIO) internally; it's safe to call Init() before this call, too, if you intend to enumerate audio devices to choose one to open here.",
-                          "An audio format can be requested, and the system will try to set the hardware to those specifications, or as close as possible, but this is just a hint. SDL_mixer will handle all data conversion behind the scenes in any case, and specifying a nullptr spec is a reasonable choice. The best reason to specify a format is because you know all your data is in that format and it might save some unnecessary CPU time on conversion.",
-                          "The actual device format chosen is available through GetMixerFormat().",
-                          "Once a mixer is created, next steps are usually to load audio (through LoadAudio() and friends), create a track (CreateTrack()), and play that audio through that track.",
-                          "When done with the mixer, it can be destroyed with DestroyMixer().",
-                          [
-                            {
-                              "tag": "@param devid",
-                              "content": "the device to open for playback, or AUDIO_DEVICE_DEFAULT_PLAYBACK for the default."
-                            },
-                            {
-                              "tag": "@param spec",
-                              "content": "the audio format to request from the device. May be nullptr."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a mixer that can be used to play audio on success."
-                            },
-                            {
-                              "tag": "@throws",
-                              "content": "Error on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "This function should only be called on the main thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL_mixer 3.0.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "CreateMixer"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "DestroyMixer"
-                            }
-                          ]
-                        ],
-                        "name": "Mixer",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "devid",
-                            "type": "AudioDeviceRef"
-                          },
-                          {
-                            "name": "spec",
-                            "type": "OptionalRef<const AudioSpec>",
-                            "default": "std::nullopt"
-                          }
-                        ],
-                        "sourceName": "MIX_CreateMixerDevice",
-                        "hints": {
-                          "mayFail": true
-                        },
-                        "overload": {
-                          "doc": [
-                            "Create a mixer that generates audio to a memory buffer.",
-                            "Usually you want CreateMixerDevice() instead of this function. The mixer created here can be used with Generate() to produce more data on demand, as fast as desired.",
-                            "An audio format must be specified. This is the format it will output in. This cannot be nullptr.",
-                            "Once a mixer is created, next steps are usually to load audio (through LoadAudio() and friends), create a track (CreateTrack()), and play that audio through that track.",
-                            "When done with the mixer, it can be destroyed with DestroyMixer().",
-                            [
-                              {
-                                "tag": "@param spec",
-                                "content": "the audio format that mixer will generate."
-                              },
-                              {
-                                "tag": "@post",
-                                "content": "a mixer that can be used to generate audio on success."
-                              },
-                              {
-                                "tag": "@throws",
-                                "content": "Error on failure."
-                              }
-                            ],
-                            {
-                              "tag": "@threadsafety",
-                              "content": "It is safe to call this function from any thread."
-                            },
-                            {
-                              "tag": "@since",
-                              "content": "This function is available since SDL_mixer 3.0.0."
-                            },
-                            [
-                              {
-                                "tag": "@sa",
-                                "content": "CreateMixerDevice"
-                              },
-                              {
-                                "tag": "@sa",
-                                "content": "DestroyMixer"
-                              }
-                            ]
-                          ],
-                          "name": "Mixer",
-                          "kind": "function",
-                          "type": "",
-                          "parameters": [
-                            {
-                              "name": "spec",
-                              "type": "const AudioSpec &"
-                            }
-                          ],
-                          "sourceName": "MIX_CreateMixer",
-                          "hints": {
-                            "mayFail": true
-                          },
-                          "proto": true
-                        },
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~Mixer": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "MIX_DestroyMixer(get());"
-              },
-              "name": "~Mixer"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "Mixer &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "Mixer &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "Mixer &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const Mixer &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Destroy": {
               "doc": [
@@ -200558,6 +200243,268 @@
                 "delegate": "SDL::Generate"
               },
               "proto": true
+            }
+          },
+          "hints": {
+            "self": "get()"
+          }
+        },
+        "Mixer": {
+          "doc": [
+            "An opaque object that represents a mixer.",
+            "The Mixer is the toplevel object for this library. To use SDL_mixer, you must have at least one, but are allowed to have several. Each mixer is responsible for generating a single output stream of mixed audio, usually to an audio device for realtime playback.",
+            "Mixers are either created to feed an audio device (through CreateMixerDevice()), or to generate audio to a buffer in memory, where it can be used for anything (through CreateMixer()).",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL_mixer 3.0.0."
+            },
+            "@cat resource"
+          ],
+          "name": "Mixer",
+          "kind": "struct",
+          "type": "MixerBase",
+          "sourceName": "MIX_Mixer",
+          "entries": {
+            "MixerBase::MixerBase": {
+              "kind": "alias",
+              "name": "MixerBase::MixerBase"
+            },
+            "Mixer": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "MixerRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "MixerBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw Mixer.",
+                {
+                  "tag": "@param resource",
+                  "content": "a MixerRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "Mixer",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Mixer &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "Mixer",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "Mixer &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "Mixer(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "Mixer",
+                  "overload": {
+                    "doc": [
+                      "Create a mixer that plays sound directly to an audio device.",
+                      "This is usually the function you want, vs CreateMixer().",
+                      "You can choose a specific device ID to open, following SDL's usual rules, but often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK and let SDL figure out what device to use (and seamlessly transition you to new hardware if the default changes).",
+                      "Only playback devices make sense here. Attempting to open a recording device will fail.",
+                      "This will call Init(INIT_AUDIO) internally; it's safe to call Init() before this call, too, if you intend to enumerate audio devices to choose one to open here.",
+                      "An audio format can be requested, and the system will try to set the hardware to those specifications, or as close as possible, but this is just a hint. SDL_mixer will handle all data conversion behind the scenes in any case, and specifying a nullptr spec is a reasonable choice. The best reason to specify a format is because you know all your data is in that format and it might save some unnecessary CPU time on conversion.",
+                      "The actual device format chosen is available through GetMixerFormat().",
+                      "Once a mixer is created, next steps are usually to load audio (through LoadAudio() and friends), create a track (CreateTrack()), and play that audio through that track.",
+                      "When done with the mixer, it can be destroyed with DestroyMixer().",
+                      [
+                        {
+                          "tag": "@param devid",
+                          "content": "the device to open for playback, or AUDIO_DEVICE_DEFAULT_PLAYBACK for the default."
+                        },
+                        {
+                          "tag": "@param spec",
+                          "content": "the audio format to request from the device. May be nullptr."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a mixer that can be used to play audio on success."
+                        },
+                        {
+                          "tag": "@throws",
+                          "content": "Error on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "This function should only be called on the main thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL_mixer 3.0.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "CreateMixer"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "DestroyMixer"
+                        }
+                      ]
+                    ],
+                    "name": "Mixer",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "devid",
+                        "type": "AudioDeviceRef"
+                      },
+                      {
+                        "name": "spec",
+                        "type": "OptionalRef<const AudioSpec>",
+                        "default": "std::nullopt"
+                      }
+                    ],
+                    "sourceName": "MIX_CreateMixerDevice",
+                    "hints": {
+                      "mayFail": true
+                    },
+                    "overload": {
+                      "doc": [
+                        "Create a mixer that generates audio to a memory buffer.",
+                        "Usually you want CreateMixerDevice() instead of this function. The mixer created here can be used with Generate() to produce more data on demand, as fast as desired.",
+                        "An audio format must be specified. This is the format it will output in. This cannot be nullptr.",
+                        "Once a mixer is created, next steps are usually to load audio (through LoadAudio() and friends), create a track (CreateTrack()), and play that audio through that track.",
+                        "When done with the mixer, it can be destroyed with DestroyMixer().",
+                        [
+                          {
+                            "tag": "@param spec",
+                            "content": "the audio format that mixer will generate."
+                          },
+                          {
+                            "tag": "@post",
+                            "content": "a mixer that can be used to generate audio on success."
+                          },
+                          {
+                            "tag": "@throws",
+                            "content": "Error on failure."
+                          }
+                        ],
+                        {
+                          "tag": "@threadsafety",
+                          "content": "It is safe to call this function from any thread."
+                        },
+                        {
+                          "tag": "@since",
+                          "content": "This function is available since SDL_mixer 3.0.0."
+                        },
+                        [
+                          {
+                            "tag": "@sa",
+                            "content": "CreateMixerDevice"
+                          },
+                          {
+                            "tag": "@sa",
+                            "content": "DestroyMixer"
+                          }
+                        ]
+                      ],
+                      "name": "Mixer",
+                      "kind": "function",
+                      "type": "",
+                      "parameters": [
+                        {
+                          "name": "spec",
+                          "type": "const AudioSpec &"
+                        }
+                      ],
+                      "sourceName": "MIX_CreateMixer",
+                      "hints": {
+                        "mayFail": true
+                      },
+                      "proto": true
+                    },
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~Mixer": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "MIX_DestroyMixer(get());"
+              },
+              "name": "~Mixer"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "Mixer &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "Mixer &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "Mixer &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Mixer &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
             }
           },
           "hints": {
@@ -204917,15 +204864,14 @@
           ],
           "sourceName": "MIX_DestroyMixer"
         },
-        "Mixer::Destroy": {
-          "name": "Mixer::Destroy",
+        "MixerBase::Destroy": {
+          "name": "MixerBase::Destroy",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "MIX_DestroyMixer",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "body": "DestroyMixer(release());",
             "delegate": "SDL::DestroyMixer"
           }
@@ -204975,15 +204921,14 @@
             "mayFail": true
           }
         },
-        "Mixer::GetProperties": {
-          "name": "Mixer::GetProperties",
+        "MixerBase::GetProperties": {
+          "name": "MixerBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "MIX_GetMixerProperties",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::GetMixerProperties"
           }
@@ -205053,8 +204998,8 @@
             "mayFail": true
           }
         },
-        "Mixer::GetFormat": {
-          "name": "Mixer::GetFormat",
+        "MixerBase::GetFormat": {
+          "name": "MixerBase::GetFormat",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -205066,7 +205011,6 @@
           "sourceName": "MIX_GetMixerFormat",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::GetMixerFormat"
           }
@@ -205118,15 +205062,14 @@
           ],
           "sourceName": "MIX_LockMixer"
         },
-        "Mixer::Lock": {
-          "name": "Mixer::Lock",
+        "MixerBase::Lock": {
+          "name": "MixerBase::Lock",
           "kind": "function",
           "type": "MixerLock",
           "parameters": [],
           "sourceName": "MIX_LockMixer",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "body": "return {MixerRef(*this)};",
             "delegate": "SDL::LockMixer"
           }
@@ -205183,8 +205126,8 @@
           ],
           "sourceName": "MIX_UnlockMixer"
         },
-        "Mixer::Unlock": {
-          "name": "Mixer::Unlock",
+        "MixerBase::Unlock": {
+          "name": "MixerBase::Unlock",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -205196,7 +205139,6 @@
           "sourceName": "MIX_UnlockMixer",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
             "delegate": "SDL::UnlockMixer"
           }
@@ -205304,8 +205246,8 @@
             "delegate": "Audio"
           }
         },
-        "Mixer::LoadAudio_IO": {
-          "name": "Mixer::LoadAudio_IO",
+        "MixerBase::LoadAudio_IO": {
+          "name": "MixerBase::LoadAudio_IO",
           "kind": "function",
           "type": "Audio",
           "parameters": [
@@ -205325,7 +205267,6 @@
           "sourceName": "MIX_LoadAudio_IO",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": false,
             "delegate": "Audio"
           }
@@ -205535,8 +205476,8 @@
             "delegate": "Audio"
           }
         },
-        "Mixer::LoadAudio": {
-          "name": "Mixer::LoadAudio",
+        "MixerBase::LoadAudio": {
+          "name": "MixerBase::LoadAudio",
           "kind": "function",
           "type": "Audio",
           "parameters": [
@@ -205552,7 +205493,6 @@
           "sourceName": "MIX_LoadAudio",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": false,
             "delegate": "Audio"
           }
@@ -205643,8 +205583,8 @@
             "mayFail": true
           }
         },
-        "Mixer::LoadAudioNoCopy": {
-          "name": "Mixer::LoadAudioNoCopy",
+        "MixerBase::LoadAudioNoCopy": {
+          "name": "MixerBase::LoadAudioNoCopy",
           "kind": "function",
           "type": "Audio",
           "parameters": [
@@ -205660,7 +205600,6 @@
           "sourceName": "MIX_LoadAudioNoCopy",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::LoadAudioNoCopy"
           }
@@ -205917,8 +205856,8 @@
             "delegate": "Audio"
           }
         },
-        "Mixer::LoadRawAudio_IO": {
-          "name": "Mixer::LoadRawAudio_IO",
+        "MixerBase::LoadRawAudio_IO": {
+          "name": "MixerBase::LoadRawAudio_IO",
           "kind": "function",
           "type": "Audio",
           "parameters": [
@@ -205938,7 +205877,6 @@
           "sourceName": "MIX_LoadRawAudio_IO",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "Audio"
           }
@@ -206029,8 +205967,8 @@
             "delegate": "Audio"
           }
         },
-        "Mixer::LoadRawAudio": {
-          "name": "Mixer::LoadRawAudio",
+        "MixerBase::LoadRawAudio": {
+          "name": "MixerBase::LoadRawAudio",
           "kind": "function",
           "type": "Audio",
           "parameters": [
@@ -206046,7 +205984,6 @@
           "sourceName": "MIX_LoadRawAudio",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "Audio"
           }
@@ -206145,8 +206082,8 @@
             "mayFail": true
           }
         },
-        "Mixer::LoadRawAudioNoCopy": {
-          "name": "Mixer::LoadRawAudioNoCopy",
+        "MixerBase::LoadRawAudioNoCopy": {
+          "name": "MixerBase::LoadRawAudioNoCopy",
           "kind": "function",
           "type": "Audio",
           "parameters": [
@@ -206166,7 +206103,6 @@
           "sourceName": "MIX_LoadRawAudioNoCopy",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::LoadRawAudioNoCopy"
           }
@@ -206253,8 +206189,8 @@
             "mayFail": true
           }
         },
-        "Mixer::CreateSineWaveAudio": {
-          "name": "Mixer::CreateSineWaveAudio",
+        "MixerBase::CreateSineWaveAudio": {
+          "name": "MixerBase::CreateSineWaveAudio",
           "kind": "function",
           "type": "Audio",
           "parameters": [
@@ -206274,7 +206210,6 @@
           "sourceName": "MIX_CreateSineWaveAudio",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::CreateSineWaveAudio"
           }
@@ -206697,15 +206632,14 @@
             "delegate": "Track"
           }
         },
-        "Mixer::CreateTrack": {
-          "name": "Mixer::CreateTrack",
+        "MixerBase::CreateTrack": {
+          "name": "MixerBase::CreateTrack",
           "kind": "function",
           "type": "TrackRef",
           "parameters": [],
           "sourceName": "MIX_CreateTrack",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "Track"
           }
@@ -207449,8 +207383,8 @@
             "mayFail": true
           }
         },
-        "Mixer::GetTaggedTracks": {
-          "name": "Mixer::GetTaggedTracks",
+        "MixerBase::GetTaggedTracks": {
+          "name": "MixerBase::GetTaggedTracks",
           "kind": "function",
           "type": "OwnArray<TrackRef>",
           "parameters": [
@@ -207462,7 +207396,6 @@
           "sourceName": "MIX_GetTaggedTracks",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::GetTaggedTracks"
           }
@@ -208653,8 +208586,8 @@
             "mayFail": true
           }
         },
-        "Mixer::PlayTag": {
-          "name": "Mixer::PlayTag",
+        "MixerBase::PlayTag": {
+          "name": "MixerBase::PlayTag",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -208670,7 +208603,6 @@
           "sourceName": "MIX_PlayTag",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::PlayTag"
           }
@@ -208729,8 +208661,8 @@
           ],
           "sourceName": "MIX_PlayAudio"
         },
-        "Mixer::PlayAudio": {
-          "name": "Mixer::PlayAudio",
+        "MixerBase::PlayAudio": {
+          "name": "MixerBase::PlayAudio",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -208742,7 +208674,6 @@
           "sourceName": "MIX_PlayAudio",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "delegate": "SDL::PlayAudio"
           }
         },
@@ -208864,8 +208795,8 @@
             "mayFail": true
           }
         },
-        "Mixer::StopAllTracks": {
-          "name": "Mixer::StopAllTracks",
+        "MixerBase::StopAllTracks": {
+          "name": "MixerBase::StopAllTracks",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -208877,7 +208808,6 @@
           "sourceName": "MIX_StopAllTracks",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::StopAllTracks"
           }
@@ -208947,8 +208877,8 @@
             "mayFail": true
           }
         },
-        "Mixer::StopTag": {
-          "name": "Mixer::StopTag",
+        "MixerBase::StopTag": {
+          "name": "MixerBase::StopTag",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -208964,7 +208894,6 @@
           "sourceName": "MIX_StopTag",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::StopTag"
           }
@@ -209068,15 +208997,14 @@
             "mayFail": true
           }
         },
-        "Mixer::PauseAllTracks": {
-          "name": "Mixer::PauseAllTracks",
+        "MixerBase::PauseAllTracks": {
+          "name": "MixerBase::PauseAllTracks",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "MIX_PauseAllTracks",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::PauseAllTracks"
           }
@@ -209146,8 +209074,8 @@
             "mayFail": true
           }
         },
-        "Mixer::PauseTag": {
-          "name": "Mixer::PauseTag",
+        "MixerBase::PauseTag": {
+          "name": "MixerBase::PauseTag",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -209159,7 +209087,6 @@
           "sourceName": "MIX_PauseTag",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::PauseTag"
           }
@@ -209263,15 +209190,14 @@
             "mayFail": true
           }
         },
-        "Mixer::ResumeAllTracks": {
-          "name": "Mixer::ResumeAllTracks",
+        "MixerBase::ResumeAllTracks": {
+          "name": "MixerBase::ResumeAllTracks",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "MIX_ResumeAllTracks",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::ResumeAllTracks"
           }
@@ -209341,8 +209267,8 @@
             "mayFail": true
           }
         },
-        "Mixer::ResumeTag": {
-          "name": "Mixer::ResumeTag",
+        "MixerBase::ResumeTag": {
+          "name": "MixerBase::ResumeTag",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -209354,7 +209280,6 @@
           "sourceName": "MIX_ResumeTag",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::ResumeTag"
           }
@@ -209554,8 +209479,8 @@
             "mayFail": true
           }
         },
-        "Mixer::SetGain": {
-          "name": "Mixer::SetGain",
+        "MixerBase::SetGain": {
+          "name": "MixerBase::SetGain",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -209567,7 +209492,6 @@
           "sourceName": "MIX_SetMixerGain",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::SetMixerGain"
           }
@@ -209616,15 +209540,14 @@
           ],
           "sourceName": "MIX_GetMixerGain"
         },
-        "Mixer::GetGain": {
-          "name": "Mixer::GetGain",
+        "MixerBase::GetGain": {
+          "name": "MixerBase::GetGain",
           "kind": "function",
           "type": "float",
           "parameters": [],
           "sourceName": "MIX_GetMixerGain",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "delegate": "SDL::GetMixerGain"
           }
         },
@@ -209834,8 +209757,8 @@
             "mayFail": true
           }
         },
-        "Mixer::SetTagGain": {
-          "name": "Mixer::SetTagGain",
+        "MixerBase::SetTagGain": {
+          "name": "MixerBase::SetTagGain",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -209851,7 +209774,6 @@
           "sourceName": "MIX_SetTagGain",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::SetTagGain"
           }
@@ -209914,8 +209836,8 @@
             "mayFail": true
           }
         },
-        "Mixer::SetFrequencyRatio": {
-          "name": "Mixer::SetFrequencyRatio",
+        "MixerBase::SetFrequencyRatio": {
+          "name": "MixerBase::SetFrequencyRatio",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -209927,7 +209849,6 @@
           "sourceName": "MIX_SetMixerFrequencyRatio",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::SetMixerFrequencyRatio"
           }
@@ -209976,15 +209897,14 @@
           ],
           "sourceName": "MIX_GetMixerFrequencyRatio"
         },
-        "Mixer::GetFrequencyRatio": {
-          "name": "Mixer::GetFrequencyRatio",
+        "MixerBase::GetFrequencyRatio": {
+          "name": "MixerBase::GetFrequencyRatio",
           "kind": "function",
           "type": "float",
           "parameters": [],
           "sourceName": "MIX_GetMixerFrequencyRatio",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "delegate": "SDL::GetMixerFrequencyRatio"
           }
         },
@@ -210448,15 +210368,14 @@
             "delegate": "Group"
           }
         },
-        "Mixer::CreateGroup": {
-          "name": "Mixer::CreateGroup",
+        "MixerBase::CreateGroup": {
+          "name": "MixerBase::CreateGroup",
           "kind": "function",
           "type": "GroupRef",
           "parameters": [],
           "sourceName": "MIX_CreateGroup",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "Group"
           }
@@ -211383,8 +211302,8 @@
             ]
           }
         },
-        "Mixer::SetPostMixCallback": {
-          "name": "Mixer::SetPostMixCallback",
+        "MixerBase::SetPostMixCallback": {
+          "name": "MixerBase::SetPostMixCallback",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -211400,7 +211319,6 @@
           "sourceName": "MIX_SetPostMixCallback",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::SetPostMixCallback"
           },
@@ -211413,10 +211331,9 @@
                 "type": "PostMixCB"
               }
             ],
-            "name": "Mixer::SetPostMixCallback",
+            "name": "MixerBase::SetPostMixCallback",
             "hints": {
               "self": "get()",
-              "super": "Mixer",
               "delegate": "SDL::SetPostMixCallback"
             }
           }
@@ -211484,8 +211401,8 @@
             "mayFail": true
           }
         },
-        "Mixer::Generate": {
-          "name": "Mixer::Generate",
+        "MixerBase::Generate": {
+          "name": "MixerBase::Generate",
           "kind": "function",
           "type": "int",
           "parameters": [
@@ -211497,7 +211414,6 @@
           "sourceName": "MIX_Generate",
           "hints": {
             "self": "get()",
-            "super": "Mixer",
             "mayFail": true,
             "delegate": "SDL::Generate"
           }

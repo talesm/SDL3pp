@@ -28,6 +28,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct MutexBase;
+
+// Forward decl
 struct Mutex;
 
 /// Alias to raw representation for Mutex.
@@ -38,7 +41,7 @@ using MutexRaw = SDL_Mutex*;
  *
  * This does not take ownership!
  */
-using MutexRef = ResourceRef<Mutex>;
+using MutexRef = ResourceRefT<MutexBase>;
 
 // Forward decl
 struct RWLock;
@@ -89,84 +92,13 @@ using InitStateRaw = SDL_InitState;
 struct InitState;
 
 /**
- * A means to serialize access to a resource between threads.
+ * Base class to Mutex.
  *
- * Mutexes (short for "mutual exclusion") are a synchronization primitive that
- * allows exactly one thread to proceed at a time.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Mutex
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Mutex
  */
-struct Mutex : ResourceBase<MutexRaw>
+struct MutexBase : ResourceBaseT<MutexRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Mutex.
-   *
-   * @param resource a MutexRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Mutex(MutexRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Mutex(const Mutex& other) = delete;
-
-  /// Move constructor
-  constexpr Mutex(Mutex&& other) noexcept
-    : Mutex(other.release())
-  {
-  }
-
-  constexpr Mutex(const MutexRef& other) = delete;
-
-  constexpr Mutex(MutexRef&& other) = delete;
-
-  /**
-   * Create a new mutex.
-   *
-   * All newly-created mutexes begin in the _unlocked_ state.
-   *
-   * Calls to LockMutex() will not return while the mutex is locked by another
-   * thread. See TryLockMutex() to attempt to lock without blocking.
-   *
-   * SDL mutexes are reentrant.
-   *
-   * @post the initialized and unlocked mutex or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyMutex
-   * @sa LockMutex
-   * @sa TryLockMutex
-   * @sa UnlockMutex
-   */
-  Mutex();
-
-  /// Destructor
-  ~Mutex() { SDL_DestroyMutex(get()); }
-
-  /// Assignment operator.
-  constexpr Mutex& operator=(Mutex&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Mutex& operator=(const Mutex& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a mutex created with CreateMutex().
@@ -253,6 +185,83 @@ struct Mutex : ResourceBase<MutexRaw>
 };
 
 /**
+ * A means to serialize access to a resource between threads.
+ *
+ * Mutexes (short for "mutual exclusion") are a synchronization primitive that
+ * allows exactly one thread to proceed at a time.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Mutex
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Mutex : MutexBase
+{
+  using MutexBase::MutexBase;
+
+  /**
+   * Constructs from raw Mutex.
+   *
+   * @param resource a MutexRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Mutex(MutexRaw resource) noexcept
+    : MutexBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Mutex(const Mutex& other) = delete;
+
+  /// Move constructor
+  constexpr Mutex(Mutex&& other) noexcept
+    : Mutex(other.release())
+  {
+  }
+
+  /**
+   * Create a new mutex.
+   *
+   * All newly-created mutexes begin in the _unlocked_ state.
+   *
+   * Calls to LockMutex() will not return while the mutex is locked by another
+   * thread. See TryLockMutex() to attempt to lock without blocking.
+   *
+   * SDL mutexes are reentrant.
+   *
+   * @post the initialized and unlocked mutex or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyMutex
+   * @sa LockMutex
+   * @sa TryLockMutex
+   * @sa UnlockMutex
+   */
+  Mutex();
+
+  /// Destructor
+  ~Mutex() { SDL_DestroyMutex(get()); }
+
+  /// Assignment operator.
+  constexpr Mutex& operator=(Mutex&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Mutex& operator=(const Mutex& other) = delete;
+};
+
+/**
  * Create a new mutex.
  *
  * All newly-created mutexes begin in the _unlocked_ state.
@@ -307,7 +316,7 @@ inline Mutex::Mutex()
  */
 inline void LockMutex(MutexRef mutex) { SDL_LockMutex(mutex); }
 
-inline void Mutex::Lock() { SDL::LockMutex(get()); }
+inline void MutexBase::Lock() { SDL::LockMutex(get()); }
 
 /**
  * Try to lock a mutex without blocking.
@@ -332,7 +341,7 @@ inline void Mutex::Lock() { SDL::LockMutex(get()); }
  */
 inline bool TryLockMutex(MutexRef mutex) { return SDL_TryLockMutex(mutex); }
 
-inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
+inline bool MutexBase::TryLock() { return SDL::TryLockMutex(get()); }
 
 /**
  * Unlock the mutex.
@@ -356,7 +365,7 @@ inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
  */
 inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 
-inline void Mutex::Unlock() { SDL::UnlockMutex(get()); }
+inline void MutexBase::Unlock() { SDL::UnlockMutex(get()); }
 
 /**
  * Destroy a mutex created with CreateMutex().
@@ -377,7 +386,7 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(get()); }
  */
 inline void DestroyMutex(MutexRaw mutex) { SDL_DestroyMutex(mutex); }
 
-inline void Mutex::Destroy() { DestroyMutex(release()); }
+inline void MutexBase::Destroy() { DestroyMutex(release()); }
 
 /**
  * A mutex that allows read-only threads to run in parallel.

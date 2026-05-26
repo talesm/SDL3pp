@@ -61,12 +61,12 @@ export function expandResource(
   const pointerType = isStruct ? `${type} *` : type;
   const constPointerType = `const ${pointerType}`;
   const title = targetName[0].toLowerCase() + targetName.slice(1);
-  const isNew = targetName < "J";
   const baseType = enableConstParam
     ? `ResourceBaseT<${rawName}, ${constRawName}>`
     : `ResourceBaseT<${rawName}>`;
   const since =
     targetEntry.since ?? resolveVersionDoc(sourceEntry.doc, context);
+  const isNew = targetName < "Properties";
   if (isNew) {
     system.log(
       `Expanding resource ${sourceName} to ${targetName} in new format...`,

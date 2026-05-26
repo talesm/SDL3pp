@@ -106,6 +106,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct MixerBase;
+
+// Forward decl
 struct Mixer;
 
 /// Alias to raw representation for Mixer.
@@ -116,7 +119,7 @@ using MixerRaw = MIX_Mixer*;
  *
  * This does not take ownership!
  */
-using MixerRef = ResourceRef<Mixer>;
+using MixerRef = ResourceRefT<MixerBase>;
 
 // Forward decl
 struct AudioBase;
@@ -259,139 +262,13 @@ using PostMixCB = MakeFrontCallback<
   void(MixerRaw mixer, const AudioSpec* spec, float* pcm, int samples)>;
 
 /**
- * An opaque object that represents a mixer.
+ * Base class to Mixer.
  *
- * The Mixer is the toplevel object for this library. To use SDL_mixer, you must
- * have at least one, but are allowed to have several. Each mixer is responsible
- * for generating a single output stream of mixed audio, usually to an audio
- * device for realtime playback.
- *
- * Mixers are either created to feed an audio device (through
- * CreateMixerDevice()), or to generate audio to a buffer in memory, where it
- * can be used for anything (through CreateMixer()).
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @cat resource
+ * @see Mixer
  */
-struct Mixer : ResourceBase<MixerRaw>
+struct MixerBase : ResourceBaseT<MixerRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Mixer.
-   *
-   * @param resource a MixerRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Mixer(MixerRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Mixer(const Mixer& other) = delete;
-
-  /// Move constructor
-  constexpr Mixer(Mixer&& other) noexcept
-    : Mixer(other.release())
-  {
-  }
-
-  constexpr Mixer(const MixerRef& other) = delete;
-
-  constexpr Mixer(MixerRef&& other) = delete;
-
-  /**
-   * Create a mixer that plays sound directly to an audio device.
-   *
-   * This is usually the function you want, vs CreateMixer().
-   *
-   * You can choose a specific device ID to open, following SDL's usual rules,
-   * but often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK
-   * and let SDL figure out what device to use (and seamlessly transition you to
-   * new hardware if the default changes).
-   *
-   * Only playback devices make sense here. Attempting to open a recording
-   * device will fail.
-   *
-   * This will call Init(INIT_AUDIO) internally; it's safe to call Init() before
-   * this call, too, if you intend to enumerate audio devices to choose one to
-   * open here.
-   *
-   * An audio format can be requested, and the system will try to set the
-   * hardware to those specifications, or as close as possible, but this is just
-   * a hint. SDL_mixer will handle all data conversion behind the scenes in any
-   * case, and specifying a nullptr spec is a reasonable choice. The best reason
-   * to specify a format is because you know all your data is in that format and
-   * it might save some unnecessary CPU time on conversion.
-   *
-   * The actual device format chosen is available through GetMixerFormat().
-   *
-   * Once a mixer is created, next steps are usually to load audio (through
-   * LoadAudio() and friends), create a track (CreateTrack()), and play that
-   * audio through that track.
-   *
-   * When done with the mixer, it can be destroyed with DestroyMixer().
-   *
-   * @param devid the device to open for playback, or
-   *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
-   * @param spec the audio format to request from the device. May be
-   *             std::nullopt.
-   * @post a mixer that can be used to play audio on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa CreateMixer
-   * @sa DestroyMixer
-   */
-  Mixer(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec = std::nullopt);
-
-  /**
-   * Create a mixer that generates audio to a memory buffer.
-   *
-   * Usually you want CreateMixerDevice() instead of this function. The mixer
-   * created here can be used with Generate() to produce more data on demand, as
-   * fast as desired.
-   *
-   * An audio format must be specified. This is the format it will output in.
-   * This cannot be nullptr.
-   *
-   * Once a mixer is created, next steps are usually to load audio (through
-   * LoadAudio() and friends), create a track (CreateTrack()), and play that
-   * audio through that track.
-   *
-   * When done with the mixer, it can be destroyed with DestroyMixer().
-   *
-   * @param spec the audio format that mixer will generate.
-   * @post a mixer that can be used to generate audio on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa CreateMixerDevice
-   * @sa DestroyMixer
-   */
-  Mixer(const AudioSpec& spec);
-
-  /// Destructor
-  ~Mixer() { MIX_DestroyMixer(get()); }
-
-  /// Assignment operator.
-  constexpr Mixer& operator=(Mixer&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Mixer& operator=(const Mixer& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Free a mixer.
@@ -1347,6 +1224,138 @@ struct Mixer : ResourceBase<MixerRaw>
    * @sa CreateMixer
    */
   int Generate(TargetBytes buffer);
+};
+
+/**
+ * An opaque object that represents a mixer.
+ *
+ * The Mixer is the toplevel object for this library. To use SDL_mixer, you must
+ * have at least one, but are allowed to have several. Each mixer is responsible
+ * for generating a single output stream of mixed audio, usually to an audio
+ * device for realtime playback.
+ *
+ * Mixers are either created to feed an audio device (through
+ * CreateMixerDevice()), or to generate audio to a buffer in memory, where it
+ * can be used for anything (through CreateMixer()).
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @cat resource
+ */
+struct Mixer : MixerBase
+{
+  using MixerBase::MixerBase;
+
+  /**
+   * Constructs from raw Mixer.
+   *
+   * @param resource a MixerRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Mixer(MixerRaw resource) noexcept
+    : MixerBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Mixer(const Mixer& other) = delete;
+
+  /// Move constructor
+  constexpr Mixer(Mixer&& other) noexcept
+    : Mixer(other.release())
+  {
+  }
+
+  /**
+   * Create a mixer that plays sound directly to an audio device.
+   *
+   * This is usually the function you want, vs CreateMixer().
+   *
+   * You can choose a specific device ID to open, following SDL's usual rules,
+   * but often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK
+   * and let SDL figure out what device to use (and seamlessly transition you to
+   * new hardware if the default changes).
+   *
+   * Only playback devices make sense here. Attempting to open a recording
+   * device will fail.
+   *
+   * This will call Init(INIT_AUDIO) internally; it's safe to call Init() before
+   * this call, too, if you intend to enumerate audio devices to choose one to
+   * open here.
+   *
+   * An audio format can be requested, and the system will try to set the
+   * hardware to those specifications, or as close as possible, but this is just
+   * a hint. SDL_mixer will handle all data conversion behind the scenes in any
+   * case, and specifying a nullptr spec is a reasonable choice. The best reason
+   * to specify a format is because you know all your data is in that format and
+   * it might save some unnecessary CPU time on conversion.
+   *
+   * The actual device format chosen is available through GetMixerFormat().
+   *
+   * Once a mixer is created, next steps are usually to load audio (through
+   * LoadAudio() and friends), create a track (CreateTrack()), and play that
+   * audio through that track.
+   *
+   * When done with the mixer, it can be destroyed with DestroyMixer().
+   *
+   * @param devid the device to open for playback, or
+   *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
+   * @param spec the audio format to request from the device. May be
+   *             std::nullopt.
+   * @post a mixer that can be used to play audio on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa CreateMixer
+   * @sa DestroyMixer
+   */
+  Mixer(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec = std::nullopt);
+
+  /**
+   * Create a mixer that generates audio to a memory buffer.
+   *
+   * Usually you want CreateMixerDevice() instead of this function. The mixer
+   * created here can be used with Generate() to produce more data on demand, as
+   * fast as desired.
+   *
+   * An audio format must be specified. This is the format it will output in.
+   * This cannot be nullptr.
+   *
+   * Once a mixer is created, next steps are usually to load audio (through
+   * LoadAudio() and friends), create a track (CreateTrack()), and play that
+   * audio through that track.
+   *
+   * When done with the mixer, it can be destroyed with DestroyMixer().
+   *
+   * @param spec the audio format that mixer will generate.
+   * @post a mixer that can be used to generate audio on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa CreateMixerDevice
+   * @sa DestroyMixer
+   */
+  Mixer(const AudioSpec& spec);
+
+  /// Destructor
+  ~Mixer() { MIX_DestroyMixer(get()); }
+
+  /// Assignment operator.
+  constexpr Mixer& operator=(Mixer&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Mixer& operator=(const Mixer& other) = delete;
 };
 
 /**
@@ -3970,7 +3979,7 @@ inline Mixer CreateMixer(const AudioSpec& spec) { return Mixer(spec); }
  */
 inline void DestroyMixer(MixerRaw mixer) { MIX_DestroyMixer(mixer); }
 
-inline void Mixer::Destroy() { DestroyMixer(release()); }
+inline void MixerBase::Destroy() { DestroyMixer(release()); }
 
 /**
  * Get the properties associated with a mixer.
@@ -3994,7 +4003,7 @@ inline PropertiesRef GetMixerProperties(MixerRef mixer)
   return CheckError(MIX_GetMixerProperties(mixer));
 }
 
-inline PropertiesRef Mixer::GetProperties()
+inline PropertiesRef MixerBase::GetProperties()
 {
   return SDL::GetMixerProperties(get());
 }
@@ -4042,7 +4051,7 @@ inline void GetMixerFormat(MixerRef mixer, AudioSpec* spec)
   CheckError(MIX_GetMixerFormat(mixer, spec));
 }
 
-inline void Mixer::GetFormat(AudioSpec* spec)
+inline void MixerBase::GetFormat(AudioSpec* spec)
 {
   SDL::GetMixerFormat(get(), spec);
 }
@@ -4092,7 +4101,7 @@ inline void Mixer::GetFormat(AudioSpec* spec)
  */
 inline void LockMixer(MixerRef mixer) { MIX_LockMixer(mixer); }
 
-inline MixerLock Mixer::Lock() { return {MixerRef(*this)}; }
+inline MixerLock MixerBase::Lock() { return {MixerRef(*this)}; }
 
 inline MixerLock::MixerLock(MixerRef resource)
   : m_lock(std::move(resource))
@@ -4124,7 +4133,7 @@ inline MixerLock::MixerLock(MixerRef resource)
  */
 inline void UnlockMixer(MixerRef mixer) { MIX_UnlockMixer(mixer); }
 
-inline void Mixer::Unlock(MixerLock&& lock)
+inline void MixerBase::Unlock(MixerLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -4201,7 +4210,9 @@ inline Audio LoadAudio_IO(MixerRef mixer,
   return Audio(mixer, io, predecode, closeio);
 }
 
-inline Audio Mixer::LoadAudio_IO(IOStreamRef io, bool predecode, bool closeio)
+inline Audio MixerBase::LoadAudio_IO(IOStreamRef io,
+                                     bool predecode,
+                                     bool closeio)
 {
   return Audio(get(), io, predecode, closeio);
 }
@@ -4271,7 +4282,7 @@ inline Audio LoadAudio(MixerRef mixer, StringParam path, bool predecode)
   return Audio(mixer, std::move(path), predecode);
 }
 
-inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
+inline Audio MixerBase::LoadAudio(StringParam path, bool predecode)
 {
   return Audio(get(), std::move(path), predecode);
 }
@@ -4340,7 +4351,7 @@ inline Audio LoadAudioNoCopy(MixerRef mixer,
     mixer, data.data(), data.size_bytes(), free_when_done)));
 }
 
-inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
+inline Audio MixerBase::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
 {
   return SDL::LoadAudioNoCopy(get(), std::move(data), free_when_done);
 }
@@ -4467,9 +4478,9 @@ inline Audio LoadRawAudio_IO(MixerRef mixer,
   return Audio(mixer, io, spec, closeio);
 }
 
-inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
-                                    const AudioSpec& spec,
-                                    bool closeio)
+inline Audio MixerBase::LoadRawAudio_IO(IOStreamRef io,
+                                        const AudioSpec& spec,
+                                        bool closeio)
 {
   return Audio(get(), io, spec, closeio);
 }
@@ -4515,7 +4526,7 @@ inline Audio LoadRawAudio(MixerRef mixer,
   return Audio(mixer, std::move(data), spec);
 }
 
-inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
+inline Audio MixerBase::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
 {
   return Audio(get(), std::move(data), spec);
 }
@@ -4569,9 +4580,9 @@ inline Audio LoadRawAudioNoCopy(MixerRef mixer,
     mixer, data.data(), data.size_bytes(), &spec, free_when_done)));
 }
 
-inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
-                                       const AudioSpec& spec,
-                                       bool free_when_done)
+inline Audio MixerBase::LoadRawAudioNoCopy(SourceBytes data,
+                                           const AudioSpec& spec,
+                                           bool free_when_done)
 {
   return SDL::LoadRawAudioNoCopy(get(), std::move(data), spec, free_when_done);
 }
@@ -4620,7 +4631,7 @@ inline Audio CreateSineWaveAudio(MixerRef mixer,
   return Audio(CheckError(MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms)));
 }
 
-inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
+inline Audio MixerBase::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
 {
   return SDL::CreateSineWaveAudio(get(), hz, amplitude, ms);
 }
@@ -4835,7 +4846,7 @@ inline void AudioBase::Destroy() { DestroyAudio(release()); }
  */
 inline Track CreateTrack(MixerRef mixer) { return Track(mixer); }
 
-inline TrackRef Mixer::CreateTrack() { return Track(get()); }
+inline TrackRef MixerBase::CreateTrack() { return Track(get()); }
 
 inline Track::Track(MixerRef mixer)
   : Track(CheckError(MIX_CreateTrack(mixer)))
@@ -5240,7 +5251,7 @@ inline OwnArray<TrackRef> GetTaggedTracks(MixerRef mixer, StringParam tag)
   return OwnArray<TrackRef>(reinterpret_cast<TrackRef*>(result), count);
 }
 
-inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
+inline OwnArray<TrackRef> MixerBase::GetTaggedTracks(StringParam tag)
 {
   return SDL::GetTaggedTracks(get(), std::move(tag));
 }
@@ -5908,7 +5919,7 @@ inline void PlayTag(MixerRef mixer, StringParam tag, PropertiesRef options)
   CheckError(MIX_PlayTag(mixer, tag, options));
 }
 
-inline void Mixer::PlayTag(StringParam tag, PropertiesRef options)
+inline void MixerBase::PlayTag(StringParam tag, PropertiesRef options)
 {
   SDL::PlayTag(get(), std::move(tag), options);
 }
@@ -5948,7 +5959,7 @@ inline bool PlayAudio(MixerRef mixer, AudioRef audio)
   return MIX_PlayAudio(mixer, audio);
 }
 
-inline bool Mixer::PlayAudio(AudioRef audio)
+inline bool MixerBase::PlayAudio(AudioRef audio)
 {
   return SDL::PlayAudio(get(), audio);
 }
@@ -6032,7 +6043,7 @@ inline void StopAllTracks(MixerRef mixer, Sint64 fade_out_ms)
   CheckError(MIX_StopAllTracks(mixer, fade_out_ms));
 }
 
-inline void Mixer::StopAllTracks(Sint64 fade_out_ms)
+inline void MixerBase::StopAllTracks(Sint64 fade_out_ms)
 {
   SDL::StopAllTracks(get(), fade_out_ms);
 }
@@ -6073,7 +6084,7 @@ inline void StopTag(MixerRef mixer, StringParam tag, Sint64 fade_out_ms)
   CheckError(MIX_StopTag(mixer, tag, fade_out_ms));
 }
 
-inline void Mixer::StopTag(StringParam tag, Sint64 fade_out_ms)
+inline void MixerBase::StopTag(StringParam tag, Sint64 fade_out_ms)
 {
   SDL::StopTag(get(), std::move(tag), fade_out_ms);
 }
@@ -6129,7 +6140,7 @@ inline void PauseAllTracks(MixerRef mixer)
   CheckError(MIX_PauseAllTracks(mixer));
 }
 
-inline void Mixer::PauseAllTracks() { SDL::PauseAllTracks(get()); }
+inline void MixerBase::PauseAllTracks() { SDL::PauseAllTracks(get()); }
 
 /**
  * Pause all tracks with a specific tag.
@@ -6162,7 +6173,7 @@ inline void PauseTag(MixerRef mixer, StringParam tag)
   CheckError(MIX_PauseTag(mixer, tag));
 }
 
-inline void Mixer::PauseTag(StringParam tag)
+inline void MixerBase::PauseTag(StringParam tag)
 {
   SDL::PauseTag(get(), std::move(tag));
 }
@@ -6218,7 +6229,7 @@ inline void ResumeAllTracks(MixerRef mixer)
   CheckError(MIX_ResumeAllTracks(mixer));
 }
 
-inline void Mixer::ResumeAllTracks() { SDL::ResumeAllTracks(get()); }
+inline void MixerBase::ResumeAllTracks() { SDL::ResumeAllTracks(get()); }
 
 /**
  * Resume all tracks with a specific tag.
@@ -6250,7 +6261,7 @@ inline void ResumeTag(MixerRef mixer, StringParam tag)
   CheckError(MIX_ResumeTag(mixer, tag));
 }
 
-inline void Mixer::ResumeTag(StringParam tag)
+inline void MixerBase::ResumeTag(StringParam tag)
 {
   SDL::ResumeTag(get(), std::move(tag));
 }
@@ -6339,7 +6350,7 @@ inline void SetMixerGain(MixerRef mixer, float gain)
   CheckError(MIX_SetMixerGain(mixer, gain));
 }
 
-inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
+inline void MixerBase::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
 
 /**
  * Get a mixer's master gain control.
@@ -6359,7 +6370,7 @@ inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
  */
 inline float GetMixerGain(MixerRef mixer) { return MIX_GetMixerGain(mixer); }
 
-inline float Mixer::GetGain() { return SDL::GetMixerGain(get()); }
+inline float MixerBase::GetGain() { return SDL::GetMixerGain(get()); }
 
 /**
  * Set a track's gain control.
@@ -6452,7 +6463,7 @@ inline void SetTagGain(MixerRef mixer, StringParam tag, float gain)
   CheckError(MIX_SetTagGain(mixer, tag, gain));
 }
 
-inline void Mixer::SetTagGain(StringParam tag, float gain)
+inline void MixerBase::SetTagGain(StringParam tag, float gain)
 {
   SDL::SetTagGain(get(), std::move(tag), gain);
 }
@@ -6489,7 +6500,7 @@ inline void SetMixerFrequencyRatio(MixerRef mixer, float ratio)
   CheckError(MIX_SetMixerFrequencyRatio(mixer, ratio));
 }
 
-inline void Mixer::SetFrequencyRatio(float ratio)
+inline void MixerBase::SetFrequencyRatio(float ratio)
 {
   SDL::SetMixerFrequencyRatio(get(), ratio);
 }
@@ -6515,7 +6526,7 @@ inline float GetMixerFrequencyRatio(MixerRef mixer)
   return MIX_GetMixerFrequencyRatio(mixer);
 }
 
-inline float Mixer::GetFrequencyRatio()
+inline float MixerBase::GetFrequencyRatio()
 {
   return SDL::GetMixerFrequencyRatio(get());
 }
@@ -6782,7 +6793,7 @@ inline Point3D Track::Get3DPosition() { return SDL::GetTrack3DPosition(get()); }
  */
 inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 
-inline GroupRef Mixer::CreateGroup() { return Group(get()); }
+inline GroupRef MixerBase::CreateGroup() { return Group(get()); }
 
 inline Group::Group(MixerRef mixer)
   : Group(CheckError(MIX_CreateGroup(mixer)))
@@ -7248,12 +7259,12 @@ inline void SetPostMixCallback(MixerRef mixer, PostMixCB cb)
   SetPostMixCallback(mixer, cb.wrapper, cb.data);
 }
 
-inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
+inline void MixerBase::SetPostMixCallback(PostMixCallback cb, void* userdata)
 {
   SDL::SetPostMixCallback(get(), cb, userdata);
 }
 
-inline void Mixer::SetPostMixCallback(PostMixCB cb)
+inline void MixerBase::SetPostMixCallback(PostMixCB cb)
 {
   SDL::SetPostMixCallback(get(), cb);
 }
@@ -7315,7 +7326,7 @@ inline int Generate(MixerRef mixer, TargetBytes buffer)
     MIX_Generate(mixer, buffer.data(), narrowS32(buffer.size_bytes())), -1);
 }
 
-inline int Mixer::Generate(TargetBytes buffer)
+inline int MixerBase::Generate(TargetBytes buffer)
 {
   return SDL::Generate(get(), std::move(buffer));
 }

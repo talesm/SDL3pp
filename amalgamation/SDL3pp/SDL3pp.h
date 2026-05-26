@@ -25471,6 +25471,9 @@ using FColorRaw = SDL_FColor;
 struct FColor;
 
 // Forward decl
+struct PaletteBase;
+
+// Forward decl
 struct Palette;
 
 /// Alias to raw representation for Palette.
@@ -25484,7 +25487,7 @@ using PaletteRawConst = const SDL_Palette*;
  *
  * This does not take ownership!
  */
-using PaletteRef = ResourceRef<Palette>;
+using PaletteRef = ResourceRefT<PaletteBase>;
 
 /// Safely wrap Palette for non owning const parameters
 using PaletteConstRef = ResourceConstRef<PaletteRaw, PaletteRawConst>;
@@ -27803,6 +27806,65 @@ public:
 };
 
 /**
+ * Base class to Palette.
+ *
+ * @see Palette
+ */
+struct PaletteBase : ResourceBaseT<PaletteRaw, PaletteRawConst>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /// Converts to PaletteConstRef
+  constexpr operator PaletteConstRef() const noexcept { return get(); }
+
+  /**
+   * Free a palette created with CreatePalette().
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreatePalette
+   */
+  void Destroy();
+
+  /// Access specific pallete colors
+  constexpr const ColorRaw* data() const { return get()->colors; }
+
+  /// Returns number of colors in the palette.
+  constexpr int size() const { return get()->ncolors; }
+
+  /// Access specific pallete index
+  constexpr ColorRaw operator[](int index) const
+  {
+    return get()->colors[index];
+  }
+
+  /// Change specific pallete index
+  constexpr PaletteIndex operator[](int index)
+  {
+    return PaletteIndex{get(), index};
+  }
+
+  /**
+   * Set a range of colors in a palette.
+   *
+   * @param colors an array of Color structures to copy into the palette.
+   * @param firstcolor the index of the first palette entry to modify.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Palette.Palette
+   */
+  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
+};
+
+/**
  * A set of indexed colors representing a palette.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -27811,9 +27873,9 @@ public:
  *
  * @cat resource
  */
-struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
+struct Palette : PaletteBase
 {
-  using ResourceBase::ResourceBase;
+  using PaletteBase::PaletteBase;
 
   /**
    * Constructs from raw Palette.
@@ -27823,7 +27885,7 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Palette(PaletteRaw resource) noexcept
-    : ResourceBase(resource)
+    : PaletteBase(resource)
   {
   }
 
@@ -27875,9 +27937,6 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
     return {};
   }
 
-  /// Converts to PaletteConstRef
-  constexpr operator PaletteConstRef() const noexcept { return get(); }
-
   /// Destructor
   ~Palette() { SDL_DestroyPalette(get()); }
 
@@ -27897,52 +27956,6 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
     }
     return *this;
   }
-
-  /**
-   * Free a palette created with CreatePalette().
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreatePalette
-   */
-  void Destroy();
-
-  /// Access specific pallete colors
-  constexpr const ColorRaw* data() const { return get()->colors; }
-
-  /// Returns number of colors in the palette.
-  constexpr int size() const { return get()->ncolors; }
-
-  /// Access specific pallete index
-  constexpr ColorRaw operator[](int index) const
-  {
-    return get()->colors[index];
-  }
-
-  /// Change specific pallete index
-  constexpr PaletteIndex operator[](int index)
-  {
-    return PaletteIndex{get(), index};
-  }
-
-  /**
-   * Set a range of colors in a palette.
-   *
-   * @param colors an array of Color structures to copy into the palette.
-   * @param firstcolor the index of the first palette entry to modify.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Palette.Palette
-   */
-  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
 };
 
 /**
@@ -28115,7 +28128,8 @@ inline void SetPaletteColors(PaletteRef palette,
     palette, colors.data(), firstcolor, narrowS32(colors.size())));
 }
 
-inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
+inline void PaletteBase::SetColors(SpanRef<const ColorRaw> colors,
+                                   int firstcolor)
 {
   SDL::SetPaletteColors(get(), colors, firstcolor);
 }
@@ -28140,7 +28154,7 @@ inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
  */
 inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
 
-inline void Palette::Destroy() { DestroyPalette(release()); }
+inline void PaletteBase::Destroy() { DestroyPalette(release()); }
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -39638,6 +39652,9 @@ constexpr Keycode ScancodeToKeycode(Scancode x)
  */
 
 // Forward decl
+struct ProcessBase;
+
+// Forward decl
 struct Process;
 
 /// Alias to raw representation for Process.
@@ -39648,7 +39665,7 @@ using ProcessRaw = SDL_Process*;
  *
  * This does not take ownership!
  */
-using ProcessRef = ResourceRef<Process>;
+using ProcessRef = ResourceRefT<ProcessBase>;
 
 /**
  * Description of where standard I/O should be directed when creating a process.
@@ -39708,168 +39725,13 @@ constexpr ProcessIO PROCESS_STDIO_APP = SDL_PROCESS_STDIO_APP;
 constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
 
 /**
- * An opaque handle representing a system process.
+ * Base class to Process.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa CreateProcess
- *
- * @cat resource
+ * @see Process
  */
-struct Process : ResourceBase<ProcessRaw>
+struct ProcessBase : ResourceBaseT<ProcessRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Process.
-   *
-   * @param resource a ProcessRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Process(ProcessRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Process(const Process& other) = delete;
-
-  /// Move constructor
-  constexpr Process(Process&& other) noexcept
-    : Process(other.release())
-  {
-  }
-
-  constexpr Process(const ProcessRef& other) = delete;
-
-  constexpr Process(ProcessRef&& other) = delete;
-
-  /**
-   * Create a new process.
-   *
-   * The path to the executable is supplied in args[0]. args[1..N] are
-   * additional arguments passed on the command line of the new process, and the
-   * argument list should be terminated with a nullptr, e.g.:
-   *
-   * ```c
-   * const char *args[] = { "myprogram", "argument", nullptr };
-   * ```
-   *
-   * Setting pipe_stdio to true is equivalent to setting
-   * `prop.Process.Create.STDIN_NUMBER` and `prop.Process.Create.STDOUT_NUMBER`
-   * to `PROCESS_STDIO_APP`, and will allow the use of ReadProcess() or
-   * GetProcessInput() and GetProcessOutput().
-   *
-   * See CreateProcessWithProperties() for more details.
-   *
-   * @param args the path and arguments for the new process.
-   * @param pipe_stdio true to create pipes to the process's standard input and
-   *                   from the process's standard output, false for the process
-   *                   to have no input and inherit the application's standard
-   *                   output.
-   * @post the newly created and running process, or nullptr if the process
-   *       couldn't be created.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateProcessWithProperties
-   * @sa GetProcessProperties
-   * @sa ReadProcess
-   * @sa GetProcessInput
-   * @sa GetProcessOutput
-   * @sa KillProcess
-   * @sa WaitProcess
-   * @sa DestroyProcess
-   */
-  Process(const char* const* args, bool pipe_stdio);
-
-  /**
-   * Create a new process with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.Process.Create.ARGS_POINTER`: an array of strings containing the
-   *   program to run, any arguments, and a nullptr pointer, e.g. const char
-   *   *args[] = { "myprogram", "argument", nullptr }. This is a required
-   *   property.
-   * - `prop.Process.Create.ENVIRONMENT_POINTER`: an Environment pointer. If
-   *   this property is set, it will be the entire environment for the process,
-   *   otherwise the current environment is used.
-   * - `prop.Process.Create.WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
-   *   representing the working directory for the process, defaults to the
-   *   current working directory.
-   * - `prop.Process.Create.STDIN_NUMBER`: an ProcessIO value describing where
-   *   standard input for the process comes from, defaults to
-   *   `SDL_PROCESS_STDIO_nullptr`.
-   * - `prop.Process.Create.STDIN_POINTER`: an IOStream pointer used for
-   *   standard input when `prop.Process.Create.STDIN_NUMBER` is set to
-   *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop.Process.Create.STDOUT_NUMBER`: an ProcessIO value describing where
-   *   standard output for the process goes to, defaults to
-   *   `PROCESS_STDIO_INHERITED`.
-   * - `prop.Process.Create.STDOUT_POINTER`: an IOStream pointer used for
-   *   standard output when `prop.Process.Create.STDOUT_NUMBER` is set to
-   *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop.Process.Create.STDERR_NUMBER`: an ProcessIO value describing where
-   *   standard error for the process goes to, defaults to
-   *   `PROCESS_STDIO_INHERITED`.
-   * - `prop.Process.Create.STDERR_POINTER`: an IOStream pointer used for
-   *   standard error when `prop.Process.Create.STDERR_NUMBER` is set to
-   *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop.Process.Create.STDERR_TO_STDOUT_BOOLEAN`: true if the error output
-   *   of the process should be redirected into the standard output of the
-   *   process. This property has no effect if
-   *   `prop.Process.Create.STDERR_NUMBER` is set.
-   * - `prop.Process.Create.BACKGROUND_BOOLEAN`: true if the process should run
-   *   in the background. In this case the default input and output is
-   *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
-   *   available, and will always be 0.
-   * - `prop.Process.Create.CMDLINE_STRING`: a string containing the program to
-   *   run and any parameters. This string is passed directly to `CreateProcess`
-   *   on Windows, and does nothing on other platforms. This property is only
-   *   important if you want to start programs that does non-standard
-   *   command-line processing, and in most cases using
-   *   `prop.Process.Create.ARGS_POINTER` is sufficient.
-   *
-   * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
-   * SIGCHLD should not be ignored or handled because those would prevent SDL
-   * from properly tracking the lifetime of the underlying process. You should
-   * use WaitProcess() instead.
-   *
-   * @param props the properties to use.
-   * @post the newly created and running process, or nullptr if the process
-   *       couldn't be created.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateProcess
-   * @sa GetProcessProperties
-   * @sa ReadProcess
-   * @sa GetProcessInput
-   * @sa GetProcessOutput
-   * @sa KillProcess
-   * @sa WaitProcess
-   * @sa DestroyProcess
-   */
-  Process(PropertiesRef props);
-
-  /// Destructor
-  ~Process() { SDL_DestroyProcess(get()); }
-
-  /// Assignment operator.
-  constexpr Process& operator=(Process&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Process& operator=(const Process& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a previously created process object.
@@ -40078,6 +39940,167 @@ struct Process : ResourceBase<ProcessRaw>
    * @sa DestroyProcess
    */
   bool Wait(bool block, int* exitcode);
+};
+
+/**
+ * An opaque handle representing a system process.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa CreateProcess
+ *
+ * @cat resource
+ */
+struct Process : ProcessBase
+{
+  using ProcessBase::ProcessBase;
+
+  /**
+   * Constructs from raw Process.
+   *
+   * @param resource a ProcessRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Process(ProcessRaw resource) noexcept
+    : ProcessBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Process(const Process& other) = delete;
+
+  /// Move constructor
+  constexpr Process(Process&& other) noexcept
+    : Process(other.release())
+  {
+  }
+
+  /**
+   * Create a new process.
+   *
+   * The path to the executable is supplied in args[0]. args[1..N] are
+   * additional arguments passed on the command line of the new process, and the
+   * argument list should be terminated with a nullptr, e.g.:
+   *
+   * ```c
+   * const char *args[] = { "myprogram", "argument", nullptr };
+   * ```
+   *
+   * Setting pipe_stdio to true is equivalent to setting
+   * `prop.Process.Create.STDIN_NUMBER` and `prop.Process.Create.STDOUT_NUMBER`
+   * to `PROCESS_STDIO_APP`, and will allow the use of ReadProcess() or
+   * GetProcessInput() and GetProcessOutput().
+   *
+   * See CreateProcessWithProperties() for more details.
+   *
+   * @param args the path and arguments for the new process.
+   * @param pipe_stdio true to create pipes to the process's standard input and
+   *                   from the process's standard output, false for the process
+   *                   to have no input and inherit the application's standard
+   *                   output.
+   * @post the newly created and running process, or nullptr if the process
+   *       couldn't be created.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateProcessWithProperties
+   * @sa GetProcessProperties
+   * @sa ReadProcess
+   * @sa GetProcessInput
+   * @sa GetProcessOutput
+   * @sa KillProcess
+   * @sa WaitProcess
+   * @sa DestroyProcess
+   */
+  Process(const char* const* args, bool pipe_stdio);
+
+  /**
+   * Create a new process with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.Process.Create.ARGS_POINTER`: an array of strings containing the
+   *   program to run, any arguments, and a nullptr pointer, e.g. const char
+   *   *args[] = { "myprogram", "argument", nullptr }. This is a required
+   *   property.
+   * - `prop.Process.Create.ENVIRONMENT_POINTER`: an Environment pointer. If
+   *   this property is set, it will be the entire environment for the process,
+   *   otherwise the current environment is used.
+   * - `prop.Process.Create.WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+   *   representing the working directory for the process, defaults to the
+   *   current working directory.
+   * - `prop.Process.Create.STDIN_NUMBER`: an ProcessIO value describing where
+   *   standard input for the process comes from, defaults to
+   *   `SDL_PROCESS_STDIO_nullptr`.
+   * - `prop.Process.Create.STDIN_POINTER`: an IOStream pointer used for
+   *   standard input when `prop.Process.Create.STDIN_NUMBER` is set to
+   *   `PROCESS_STDIO_REDIRECT`.
+   * - `prop.Process.Create.STDOUT_NUMBER`: an ProcessIO value describing where
+   *   standard output for the process goes to, defaults to
+   *   `PROCESS_STDIO_INHERITED`.
+   * - `prop.Process.Create.STDOUT_POINTER`: an IOStream pointer used for
+   *   standard output when `prop.Process.Create.STDOUT_NUMBER` is set to
+   *   `PROCESS_STDIO_REDIRECT`.
+   * - `prop.Process.Create.STDERR_NUMBER`: an ProcessIO value describing where
+   *   standard error for the process goes to, defaults to
+   *   `PROCESS_STDIO_INHERITED`.
+   * - `prop.Process.Create.STDERR_POINTER`: an IOStream pointer used for
+   *   standard error when `prop.Process.Create.STDERR_NUMBER` is set to
+   *   `PROCESS_STDIO_REDIRECT`.
+   * - `prop.Process.Create.STDERR_TO_STDOUT_BOOLEAN`: true if the error output
+   *   of the process should be redirected into the standard output of the
+   *   process. This property has no effect if
+   *   `prop.Process.Create.STDERR_NUMBER` is set.
+   * - `prop.Process.Create.BACKGROUND_BOOLEAN`: true if the process should run
+   *   in the background. In this case the default input and output is
+   *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
+   *   available, and will always be 0.
+   * - `prop.Process.Create.CMDLINE_STRING`: a string containing the program to
+   *   run and any parameters. This string is passed directly to `CreateProcess`
+   *   on Windows, and does nothing on other platforms. This property is only
+   *   important if you want to start programs that does non-standard
+   *   command-line processing, and in most cases using
+   *   `prop.Process.Create.ARGS_POINTER` is sufficient.
+   *
+   * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
+   * SIGCHLD should not be ignored or handled because those would prevent SDL
+   * from properly tracking the lifetime of the underlying process. You should
+   * use WaitProcess() instead.
+   *
+   * @param props the properties to use.
+   * @post the newly created and running process, or nullptr if the process
+   *       couldn't be created.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateProcess
+   * @sa GetProcessProperties
+   * @sa ReadProcess
+   * @sa GetProcessInput
+   * @sa GetProcessOutput
+   * @sa KillProcess
+   * @sa WaitProcess
+   * @sa DestroyProcess
+   */
+  Process(PropertiesRef props);
+
+  /// Destructor
+  ~Process() { SDL_DestroyProcess(get()); }
+
+  /// Assignment operator.
+  constexpr Process& operator=(Process&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Process& operator=(const Process& other) = delete;
 };
 
 /**
@@ -40297,7 +40320,7 @@ inline PropertiesRef GetProcessProperties(ProcessRef process)
   return {CheckError(SDL_GetProcessProperties(process))};
 }
 
-inline PropertiesRef Process::GetProperties() const
+inline PropertiesRef ProcessBase::GetProperties() const
 {
   return SDL::GetProcessProperties(get());
 }
@@ -40365,7 +40388,7 @@ inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
   return StringResult(CheckError(data), size);
 }
 
-inline StringResult Process::Read(int* exitcode)
+inline StringResult ProcessBase::Read(int* exitcode)
 {
   return SDL::ReadProcess(get(), exitcode);
 }
@@ -40399,7 +40422,10 @@ inline IOStreamRef GetProcessInput(ProcessRef process)
   return {SDL_GetProcessInput(process)};
 }
 
-inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
+inline IOStreamRef ProcessBase::GetInput()
+{
+  return SDL::GetProcessInput(get());
+}
 
 /**
  * Get the IOStream associated with process standard output.
@@ -40428,7 +40454,10 @@ inline IOStreamRef GetProcessOutput(ProcessRef process)
   return {SDL_GetProcessOutput(process)};
 }
 
-inline IOStreamRef Process::GetOutput() { return SDL::GetProcessOutput(get()); }
+inline IOStreamRef ProcessBase::GetOutput()
+{
+  return SDL::GetProcessOutput(get());
+}
 
 /**
  * Stop a process.
@@ -40454,7 +40483,7 @@ inline void KillProcess(ProcessRef process, bool force)
   CheckError(SDL_KillProcess(process, force));
 }
 
-inline void Process::Kill(bool force) { SDL::KillProcess(get(), force); }
+inline void ProcessBase::Kill(bool force) { SDL::KillProcess(get(), force); }
 
 /**
  * Wait for a process to finish.
@@ -40492,7 +40521,7 @@ inline bool WaitProcess(ProcessRef process, bool block, int* exitcode)
   return SDL_WaitProcess(process, block, exitcode);
 }
 
-inline bool Process::Wait(bool block, int* exitcode)
+inline bool ProcessBase::Wait(bool block, int* exitcode)
 {
   return SDL::WaitProcess(get(), block, exitcode);
 }
@@ -40515,7 +40544,7 @@ inline bool Process::Wait(bool block, int* exitcode)
  */
 inline void DestroyProcess(ProcessRaw process) { SDL_DestroyProcess(process); }
 
-inline void Process::Destroy() { DestroyProcess(release()); }
+inline void ProcessBase::Destroy() { DestroyProcess(release()); }
 
 /// @}
 
@@ -48616,6 +48645,9 @@ inline void CameraBase::Close() { CloseCamera(release()); }
  */
 
 // Forward decl
+struct MutexBase;
+
+// Forward decl
 struct Mutex;
 
 /// Alias to raw representation for Mutex.
@@ -48626,7 +48658,7 @@ using MutexRaw = SDL_Mutex*;
  *
  * This does not take ownership!
  */
-using MutexRef = ResourceRef<Mutex>;
+using MutexRef = ResourceRefT<MutexBase>;
 
 // Forward decl
 struct RWLock;
@@ -48677,84 +48709,13 @@ using InitStateRaw = SDL_InitState;
 struct InitState;
 
 /**
- * A means to serialize access to a resource between threads.
+ * Base class to Mutex.
  *
- * Mutexes (short for "mutual exclusion") are a synchronization primitive that
- * allows exactly one thread to proceed at a time.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Mutex
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Mutex
  */
-struct Mutex : ResourceBase<MutexRaw>
+struct MutexBase : ResourceBaseT<MutexRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Mutex.
-   *
-   * @param resource a MutexRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Mutex(MutexRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Mutex(const Mutex& other) = delete;
-
-  /// Move constructor
-  constexpr Mutex(Mutex&& other) noexcept
-    : Mutex(other.release())
-  {
-  }
-
-  constexpr Mutex(const MutexRef& other) = delete;
-
-  constexpr Mutex(MutexRef&& other) = delete;
-
-  /**
-   * Create a new mutex.
-   *
-   * All newly-created mutexes begin in the _unlocked_ state.
-   *
-   * Calls to LockMutex() will not return while the mutex is locked by another
-   * thread. See TryLockMutex() to attempt to lock without blocking.
-   *
-   * SDL mutexes are reentrant.
-   *
-   * @post the initialized and unlocked mutex or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyMutex
-   * @sa LockMutex
-   * @sa TryLockMutex
-   * @sa UnlockMutex
-   */
-  Mutex();
-
-  /// Destructor
-  ~Mutex() { SDL_DestroyMutex(get()); }
-
-  /// Assignment operator.
-  constexpr Mutex& operator=(Mutex&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Mutex& operator=(const Mutex& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a mutex created with CreateMutex().
@@ -48841,6 +48802,83 @@ struct Mutex : ResourceBase<MutexRaw>
 };
 
 /**
+ * A means to serialize access to a resource between threads.
+ *
+ * Mutexes (short for "mutual exclusion") are a synchronization primitive that
+ * allows exactly one thread to proceed at a time.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Mutex
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Mutex : MutexBase
+{
+  using MutexBase::MutexBase;
+
+  /**
+   * Constructs from raw Mutex.
+   *
+   * @param resource a MutexRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Mutex(MutexRaw resource) noexcept
+    : MutexBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Mutex(const Mutex& other) = delete;
+
+  /// Move constructor
+  constexpr Mutex(Mutex&& other) noexcept
+    : Mutex(other.release())
+  {
+  }
+
+  /**
+   * Create a new mutex.
+   *
+   * All newly-created mutexes begin in the _unlocked_ state.
+   *
+   * Calls to LockMutex() will not return while the mutex is locked by another
+   * thread. See TryLockMutex() to attempt to lock without blocking.
+   *
+   * SDL mutexes are reentrant.
+   *
+   * @post the initialized and unlocked mutex or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyMutex
+   * @sa LockMutex
+   * @sa TryLockMutex
+   * @sa UnlockMutex
+   */
+  Mutex();
+
+  /// Destructor
+  ~Mutex() { SDL_DestroyMutex(get()); }
+
+  /// Assignment operator.
+  constexpr Mutex& operator=(Mutex&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Mutex& operator=(const Mutex& other) = delete;
+};
+
+/**
  * Create a new mutex.
  *
  * All newly-created mutexes begin in the _unlocked_ state.
@@ -48895,7 +48933,7 @@ inline Mutex::Mutex()
  */
 inline void LockMutex(MutexRef mutex) { SDL_LockMutex(mutex); }
 
-inline void Mutex::Lock() { SDL::LockMutex(get()); }
+inline void MutexBase::Lock() { SDL::LockMutex(get()); }
 
 /**
  * Try to lock a mutex without blocking.
@@ -48920,7 +48958,7 @@ inline void Mutex::Lock() { SDL::LockMutex(get()); }
  */
 inline bool TryLockMutex(MutexRef mutex) { return SDL_TryLockMutex(mutex); }
 
-inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
+inline bool MutexBase::TryLock() { return SDL::TryLockMutex(get()); }
 
 /**
  * Unlock the mutex.
@@ -48944,7 +48982,7 @@ inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
  */
 inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 
-inline void Mutex::Unlock() { SDL::UnlockMutex(get()); }
+inline void MutexBase::Unlock() { SDL::UnlockMutex(get()); }
 
 /**
  * Destroy a mutex created with CreateMutex().
@@ -48965,7 +49003,7 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(get()); }
  */
 inline void DestroyMutex(MutexRaw mutex) { SDL_DestroyMutex(mutex); }
 
-inline void Mutex::Destroy() { DestroyMutex(release()); }
+inline void MutexBase::Destroy() { DestroyMutex(release()); }
 
 /**
  * A mutex that allows read-only threads to run in parallel.
@@ -70101,6 +70139,9 @@ inline void GPUDeviceBase::GDKResumeGPU() { SDL::GDKResumeGPU(get()); }
  */
 
 // Forward decl
+struct JoystickBase;
+
+// Forward decl
 struct Joystick;
 
 /// Alias to raw representation for Joystick.
@@ -70111,7 +70152,7 @@ using JoystickRaw = SDL_Joystick*;
  *
  * This does not take ownership!
  */
-using JoystickRef = ResourceRef<Joystick>;
+using JoystickRef = ResourceRefT<JoystickBase>;
 
 /// Alias to raw representation for JoystickID.
 using JoystickIDRaw = SDL_JoystickID;
@@ -70445,72 +70486,13 @@ constexpr Uint8 HAT_LEFTUP = SDL_HAT_LEFTUP; ///< LEFTUP
 constexpr Uint8 HAT_LEFTDOWN = SDL_HAT_LEFTDOWN; ///< LEFTDOWN
 
 /**
- * The joystick structure used to identify an SDL joystick.
+ * Base class to Joystick.
  *
- * This is opaque data.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Joystick
  */
-struct Joystick : ResourceBase<JoystickRaw>
+struct JoystickBase : ResourceBaseT<JoystickRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Joystick.
-   *
-   * @param resource a JoystickRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Joystick(JoystickRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Joystick(const Joystick& other) = delete;
-
-  /// Move constructor
-  constexpr Joystick(Joystick&& other) noexcept
-    : Joystick(other.release())
-  {
-  }
-
-  constexpr Joystick(const JoystickRef& other) = delete;
-
-  constexpr Joystick(JoystickRef&& other) = delete;
-
-  /**
-   * Open a joystick for use.
-   *
-   * The joystick subsystem must be initialized before a joystick can be opened
-   * for use.
-   *
-   * @param instance_id the joystick instance ID.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseJoystick
-   */
-  Joystick(JoystickID instance_id);
-
-  /// Destructor
-  ~Joystick() { SDL_CloseJoystick(get()); }
-
-  /// Assignment operator.
-  constexpr Joystick& operator=(Joystick&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Joystick& operator=(const Joystick& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close a joystick previously opened with OpenJoystick().
@@ -71195,6 +71177,71 @@ struct Joystick : ResourceBase<JoystickRaw>
 };
 
 /**
+ * The joystick structure used to identify an SDL joystick.
+ *
+ * This is opaque data.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Joystick : JoystickBase
+{
+  using JoystickBase::JoystickBase;
+
+  /**
+   * Constructs from raw Joystick.
+   *
+   * @param resource a JoystickRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Joystick(JoystickRaw resource) noexcept
+    : JoystickBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Joystick(const Joystick& other) = delete;
+
+  /// Move constructor
+  constexpr Joystick(Joystick&& other) noexcept
+    : Joystick(other.release())
+  {
+  }
+
+  /**
+   * Open a joystick for use.
+   *
+   * The joystick subsystem must be initialized before a joystick can be opened
+   * for use.
+   *
+   * @param instance_id the joystick instance ID.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseJoystick
+   */
+  Joystick(JoystickID instance_id);
+
+  /// Destructor
+  ~Joystick() { SDL_CloseJoystick(get()); }
+
+  /// Assignment operator.
+  constexpr Joystick& operator=(Joystick&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Joystick& operator=(const Joystick& other) = delete;
+};
+
+/**
  * The largest value an Joystick's axis can report.
  *
  * @since This constant is available since SDL 3.2.0.
@@ -71609,7 +71656,7 @@ inline Joystick JoystickID::OpenJoystick() { return Joystick(m_joystickID); }
  */
 inline JoystickRef GetJoystickFromID(JoystickID instance_id)
 {
-  return {CheckError(SDL_GetJoystickFromID(instance_id))};
+  return CheckError(SDL_GetJoystickFromID(instance_id));
 }
 
 inline JoystickRef JoystickID::GetJoystickFromID()
@@ -71633,7 +71680,7 @@ inline JoystickRef JoystickID::GetJoystickFromID()
  */
 inline JoystickRef GetJoystickFromPlayerIndex(int player_index)
 {
-  return {CheckError(SDL_GetJoystickFromPlayerIndex(player_index))};
+  return CheckError(SDL_GetJoystickFromPlayerIndex(player_index));
 }
 
 /**
@@ -71779,7 +71826,7 @@ inline void SetJoystickVirtualAxis(JoystickRef joystick, int axis, Sint16 value)
   CheckError(SDL_SetJoystickVirtualAxis(joystick, axis, value));
 }
 
-inline void Joystick::SetVirtualAxis(int axis, Sint16 value)
+inline void JoystickBase::SetVirtualAxis(int axis, Sint16 value)
 {
   SDL::SetJoystickVirtualAxis(get(), axis, value);
 }
@@ -71816,7 +71863,7 @@ inline void SetJoystickVirtualBall(JoystickRef joystick,
   CheckError(SDL_SetJoystickVirtualBall(joystick, ball, xrel, yrel));
 }
 
-inline void Joystick::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
+inline void JoystickBase::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
 {
   SDL::SetJoystickVirtualBall(get(), ball, xrel, yrel);
 }
@@ -71851,7 +71898,7 @@ inline void SetJoystickVirtualButton(JoystickRef joystick,
   CheckError(SDL_SetJoystickVirtualButton(joystick, button, down));
 }
 
-inline void Joystick::SetVirtualButton(int button, bool down)
+inline void JoystickBase::SetVirtualButton(int button, bool down)
 {
   SDL::SetJoystickVirtualButton(get(), button, down);
 }
@@ -71884,7 +71931,7 @@ inline void SetJoystickVirtualHat(JoystickRef joystick, int hat, Uint8 value)
   CheckError(SDL_SetJoystickVirtualHat(joystick, hat, value));
 }
 
-inline void Joystick::SetVirtualHat(int hat, Uint8 value)
+inline void JoystickBase::SetVirtualHat(int hat, Uint8 value)
 {
   SDL::SetJoystickVirtualHat(get(), hat, value);
 }
@@ -71927,11 +71974,11 @@ inline void SetJoystickVirtualTouchpad(JoystickRef joystick,
     joystick, touchpad, finger, down, p.x, p.y, pressure));
 }
 
-inline void Joystick::SetVirtualTouchpad(int touchpad,
-                                         int finger,
-                                         bool down,
-                                         const FPointRaw& p,
-                                         float pressure)
+inline void JoystickBase::SetVirtualTouchpad(int touchpad,
+                                             int finger,
+                                             bool down,
+                                             const FPointRaw& p,
+                                             float pressure)
 {
   SDL::SetJoystickVirtualTouchpad(get(), touchpad, finger, down, p, pressure);
 }
@@ -71972,10 +72019,10 @@ inline void SendJoystickVirtualSensorData(JoystickRef joystick,
     joystick, type, sensor_timestamp, data, num_values));
 }
 
-inline void Joystick::SendVirtualSensorData(SensorType type,
-                                            Uint64 sensor_timestamp,
-                                            const float* data,
-                                            int num_values)
+inline void JoystickBase::SendVirtualSensorData(SensorType type,
+                                                Uint64 sensor_timestamp,
+                                                const float* data,
+                                                int num_values)
 {
   SDL::SendJoystickVirtualSensorData(
     get(), type, sensor_timestamp, data, num_values);
@@ -72007,10 +72054,10 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
  */
 inline PropertiesRef GetJoystickProperties(JoystickRef joystick)
 {
-  return {CheckError(SDL_GetJoystickProperties(joystick))};
+  return CheckError(SDL_GetJoystickProperties(joystick));
 }
 
-inline PropertiesRef Joystick::GetProperties()
+inline PropertiesRef JoystickBase::GetProperties()
 {
   return SDL::GetJoystickProperties(get());
 }
@@ -72062,7 +72109,10 @@ inline const char* GetJoystickName(JoystickRef joystick)
   return SDL_GetJoystickName(joystick);
 }
 
-inline const char* Joystick::GetName() { return SDL::GetJoystickName(get()); }
+inline const char* JoystickBase::GetName()
+{
+  return SDL::GetJoystickName(get());
+}
 
 /**
  * Get the implementation dependent path of a joystick.
@@ -72082,7 +72132,10 @@ inline const char* GetJoystickPath(JoystickRef joystick)
   return SDL_GetJoystickPath(joystick);
 }
 
-inline const char* Joystick::GetPath() { return SDL::GetJoystickPath(get()); }
+inline const char* JoystickBase::GetPath()
+{
+  return SDL::GetJoystickPath(get());
+}
 
 /**
  * Get the player index of an opened joystick.
@@ -72104,7 +72157,7 @@ inline int GetJoystickPlayerIndex(JoystickRef joystick)
   return SDL_GetJoystickPlayerIndex(joystick);
 }
 
-inline int Joystick::GetPlayerIndex()
+inline int JoystickBase::GetPlayerIndex()
 {
   return SDL::GetJoystickPlayerIndex(get());
 }
@@ -72128,7 +72181,7 @@ inline void SetJoystickPlayerIndex(JoystickRef joystick, int player_index)
   CheckError(SDL_SetJoystickPlayerIndex(joystick, player_index));
 }
 
-inline void Joystick::SetPlayerIndex(int player_index)
+inline void JoystickBase::SetPlayerIndex(int player_index)
 {
   SDL::SetJoystickPlayerIndex(get(), player_index);
 }
@@ -72154,7 +72207,7 @@ inline GUID GetJoystickGUID(JoystickRef joystick)
   return SDL_GetJoystickGUID(joystick);
 }
 
-inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(get()); }
+inline GUID JoystickBase::GetGUID() { return SDL::GetJoystickGUID(get()); }
 
 /**
  * Get the USB vendor ID of an opened joystick, if available.
@@ -72175,7 +72228,10 @@ inline Uint16 GetJoystickVendor(JoystickRef joystick)
   return SDL_GetJoystickVendor(joystick);
 }
 
-inline Uint16 Joystick::GetVendor() { return SDL::GetJoystickVendor(get()); }
+inline Uint16 JoystickBase::GetVendor()
+{
+  return SDL::GetJoystickVendor(get());
+}
 
 /**
  * Get the USB product ID of an opened joystick, if available.
@@ -72196,7 +72252,10 @@ inline Uint16 GetJoystickProduct(JoystickRef joystick)
   return SDL_GetJoystickProduct(joystick);
 }
 
-inline Uint16 Joystick::GetProduct() { return SDL::GetJoystickProduct(get()); }
+inline Uint16 JoystickBase::GetProduct()
+{
+  return SDL::GetJoystickProduct(get());
+}
 
 /**
  * Get the product version of an opened joystick, if available.
@@ -72217,7 +72276,7 @@ inline Uint16 GetJoystickProductVersion(JoystickRef joystick)
   return SDL_GetJoystickProductVersion(joystick);
 }
 
-inline Uint16 Joystick::GetProductVersion()
+inline Uint16 JoystickBase::GetProductVersion()
 {
   return SDL::GetJoystickProductVersion(get());
 }
@@ -72239,7 +72298,7 @@ inline Uint16 GetJoystickFirmwareVersion(JoystickRef joystick)
   return SDL_GetJoystickFirmwareVersion(joystick);
 }
 
-inline Uint16 Joystick::GetFirmwareVersion()
+inline Uint16 JoystickBase::GetFirmwareVersion()
 {
   return SDL::GetJoystickFirmwareVersion(get());
 }
@@ -72262,7 +72321,7 @@ inline const char* GetJoystickSerial(JoystickRef joystick)
   return SDL_GetJoystickSerial(joystick);
 }
 
-inline const char* Joystick::GetSerial()
+inline const char* JoystickBase::GetSerial()
 {
   return SDL::GetJoystickSerial(get());
 }
@@ -72284,7 +72343,10 @@ inline JoystickType GetJoystickType(JoystickRef joystick)
   return SDL_GetJoystickType(joystick);
 }
 
-inline JoystickType Joystick::GetType() { return SDL::GetJoystickType(get()); }
+inline JoystickType JoystickBase::GetType()
+{
+  return SDL::GetJoystickType(get());
+}
 
 /**
  * Get the device information encoded in a GUID structure.
@@ -72329,7 +72391,7 @@ inline bool JoystickConnected(JoystickRef joystick)
   return SDL_JoystickConnected(joystick);
 }
 
-inline bool Joystick::Connected() { return SDL::JoystickConnected(get()); }
+inline bool JoystickBase::Connected() { return SDL::JoystickConnected(get()); }
 
 /**
  * Get the instance ID of an opened joystick.
@@ -72347,7 +72409,7 @@ inline JoystickID GetJoystickID(JoystickRef joystick)
   return CheckError(SDL_GetJoystickID(joystick));
 }
 
-inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(get()); }
+inline JoystickID JoystickBase::GetID() { return SDL::GetJoystickID(get()); }
 
 /**
  * Get the number of general axis controls on a joystick.
@@ -72374,7 +72436,7 @@ inline int GetNumJoystickAxes(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickAxes(joystick));
 }
 
-inline int Joystick::GetNumAxes() { return SDL::GetNumJoystickAxes(get()); }
+inline int JoystickBase::GetNumAxes() { return SDL::GetNumJoystickAxes(get()); }
 
 /**
  * Get the number of trackballs on a joystick.
@@ -72402,7 +72464,10 @@ inline int GetNumJoystickBalls(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickBalls(joystick));
 }
 
-inline int Joystick::GetNumBalls() { return SDL::GetNumJoystickBalls(get()); }
+inline int JoystickBase::GetNumBalls()
+{
+  return SDL::GetNumJoystickBalls(get());
+}
 
 /**
  * Get the number of POV hats on a joystick.
@@ -72425,7 +72490,7 @@ inline int GetNumJoystickHats(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickHats(joystick));
 }
 
-inline int Joystick::GetNumHats() { return SDL::GetNumJoystickHats(get()); }
+inline int JoystickBase::GetNumHats() { return SDL::GetNumJoystickHats(get()); }
 
 /**
  * Get the number of buttons on a joystick.
@@ -72448,7 +72513,7 @@ inline int GetNumJoystickButtons(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickButtons(joystick));
 }
 
-inline int Joystick::GetNumButtons()
+inline int JoystickBase::GetNumButtons()
 {
   return SDL::GetNumJoystickButtons(get());
 }
@@ -72530,7 +72595,7 @@ inline Sint16 GetJoystickAxis(JoystickRef joystick, int axis)
   return SDL_GetJoystickAxis(joystick, axis);
 }
 
-inline Sint16 Joystick::GetAxis(int axis)
+inline Sint16 JoystickBase::GetAxis(int axis)
 {
   return SDL::GetJoystickAxis(get(), axis);
 }
@@ -72558,7 +72623,7 @@ inline bool GetJoystickAxisInitialState(JoystickRef joystick,
   return SDL_GetJoystickAxisInitialState(joystick, axis, state);
 }
 
-inline bool Joystick::GetAxisInitialState(int axis, Sint16* state)
+inline bool JoystickBase::GetAxisInitialState(int axis, Sint16* state)
 {
   return SDL::GetJoystickAxisInitialState(get(), axis, state);
 }
@@ -72588,7 +72653,7 @@ inline void GetJoystickBall(JoystickRef joystick, int ball, int* dx, int* dy)
   CheckError(SDL_GetJoystickBall(joystick, ball, dx, dy));
 }
 
-inline void Joystick::GetBall(int ball, int* dx, int* dy)
+inline void JoystickBase::GetBall(int ball, int* dx, int* dy)
 {
   SDL::GetJoystickBall(get(), ball, dx, dy);
 }
@@ -72613,7 +72678,7 @@ inline Uint8 GetJoystickHat(JoystickRef joystick, int hat)
   return SDL_GetJoystickHat(joystick, hat);
 }
 
-inline Uint8 Joystick::GetHat(int hat)
+inline Uint8 JoystickBase::GetHat(int hat)
 {
   return SDL::GetJoystickHat(get(), hat);
 }
@@ -72637,7 +72702,7 @@ inline bool GetJoystickButton(JoystickRef joystick, int button)
   return SDL_GetJoystickButton(joystick, button);
 }
 
-inline bool Joystick::GetButton(int button)
+inline bool JoystickBase::GetButton(int button)
 {
   return SDL::GetJoystickButton(get(), button);
 }
@@ -72672,9 +72737,9 @@ inline bool RumbleJoystick(JoystickRef joystick,
     joystick, low_frequency_rumble, high_frequency_rumble, duration_ms);
 }
 
-inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
-                             Uint16 high_frequency_rumble,
-                             Uint32 duration_ms)
+inline bool JoystickBase::Rumble(Uint16 low_frequency_rumble,
+                                 Uint16 high_frequency_rumble,
+                                 Uint32 duration_ms)
 {
   return SDL::RumbleJoystick(
     get(), low_frequency_rumble, high_frequency_rumble, duration_ms);
@@ -72716,9 +72781,9 @@ inline void RumbleJoystickTriggers(JoystickRef joystick,
     joystick, left_rumble, right_rumble, duration_ms));
 }
 
-inline void Joystick::RumbleTriggers(Uint16 left_rumble,
-                                     Uint16 right_rumble,
-                                     Uint32 duration_ms)
+inline void JoystickBase::RumbleTriggers(Uint16 left_rumble,
+                                         Uint16 right_rumble,
+                                         Uint32 duration_ms)
 {
   SDL::RumbleJoystickTriggers(get(), left_rumble, right_rumble, duration_ms);
 }
@@ -72750,7 +72815,7 @@ inline void SetJoystickLED(JoystickRef joystick,
   CheckError(SDL_SetJoystickLED(joystick, red, green, blue));
 }
 
-inline void Joystick::SetLED(Uint8 red, Uint8 green, Uint8 blue)
+inline void JoystickBase::SetLED(Uint8 red, Uint8 green, Uint8 blue)
 {
   SDL::SetJoystickLED(get(), red, green, blue);
 }
@@ -72772,7 +72837,7 @@ inline void SendJoystickEffect(JoystickRef joystick, const void* data, int size)
   CheckError(SDL_SendJoystickEffect(joystick, data, size));
 }
 
-inline void Joystick::SendEffect(const void* data, int size)
+inline void JoystickBase::SendEffect(const void* data, int size)
 {
   SDL::SendJoystickEffect(get(), data, size);
 }
@@ -72790,7 +72855,7 @@ inline void Joystick::SendEffect(const void* data, int size)
  */
 inline void CloseJoystick(JoystickRaw joystick) { SDL_CloseJoystick(joystick); }
 
-inline void Joystick::Close() { CloseJoystick(release()); }
+inline void JoystickBase::Close() { CloseJoystick(release()); }
 
 /**
  * Get the connection state of a joystick.
@@ -72808,7 +72873,7 @@ inline JoystickConnectionState GetJoystickConnectionState(JoystickRef joystick)
   return CheckError(SDL_GetJoystickConnectionState(joystick));
 }
 
-inline JoystickConnectionState Joystick::GetConnectionState()
+inline JoystickConnectionState JoystickBase::GetConnectionState()
 {
   return SDL::GetJoystickConnectionState(get());
 }
@@ -72838,7 +72903,7 @@ inline PowerState GetJoystickPowerInfo(JoystickRef joystick, int* percent)
   return SDL_GetJoystickPowerInfo(joystick, percent);
 }
 
-inline PowerState Joystick::GetPowerInfo(int* percent)
+inline PowerState JoystickBase::GetPowerInfo(int* percent)
 {
   return SDL::GetJoystickPowerInfo(get(), percent);
 }
@@ -73675,6 +73740,9 @@ inline void ShowSimpleMessageBox(MessageBoxFlags flags,
  */
 
 // Forward decl
+struct MetalViewBase;
+
+// Forward decl
 struct MetalView;
 
 /// Alias to raw representation for MetalView.
@@ -73685,7 +73753,42 @@ using MetalViewRaw = SDL_MetalView;
  *
  * This does not take ownership!
  */
-using MetalViewRef = ResourceRef<MetalView>;
+using MetalViewRef = ResourceRefT<MetalViewBase>;
+
+/**
+ * Base class to MetalView.
+ *
+ * @see MetalView
+ */
+struct MetalViewBase : ResourceBaseT<MetalViewRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Destroy an existing MetalView object.
+   *
+   * This should be called before DestroyWindow, if Metal_CreateView was called
+   * after CreateWindow.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Metal_CreateView
+   */
+  void Destroy();
+
+  /**
+   * Get a pointer to the backing CAMetalLayer for the given view.
+   *
+   * @returns a pointer.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void* GetLayer();
+};
 
 /**
  * A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
@@ -73694,9 +73797,9 @@ using MetalViewRef = ResourceRef<MetalView>;
  *
  * @cat resource
  */
-struct MetalView : ResourceBase<MetalViewRaw>
+struct MetalView : MetalViewBase
 {
-  using ResourceBase::ResourceBase;
+  using MetalViewBase::MetalViewBase;
 
   /**
    * Constructs from raw MetalView.
@@ -73706,7 +73809,7 @@ struct MetalView : ResourceBase<MetalViewRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit MetalView(MetalViewRaw resource) noexcept
-    : ResourceBase(resource)
+    : MetalViewBase(resource)
   {
   }
 
@@ -73718,10 +73821,6 @@ struct MetalView : ResourceBase<MetalViewRaw>
     : MetalView(other.release())
   {
   }
-
-  constexpr MetalView(const MetalViewRef& other) = delete;
-
-  constexpr MetalView(MetalViewRef&& other) = delete;
 
   /**
    * Create a CAMetalLayer-backed NSView/UIView and attach it to the specified
@@ -73757,31 +73856,6 @@ struct MetalView : ResourceBase<MetalViewRaw>
 
   /// Assignment operator.
   MetalView& operator=(const MetalView& other) = delete;
-
-  /**
-   * Destroy an existing MetalView object.
-   *
-   * This should be called before DestroyWindow, if Metal_CreateView was called
-   * after CreateWindow.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Metal_CreateView
-   */
-  void Destroy();
-
-  /**
-   * Get a pointer to the backing CAMetalLayer for the given view.
-   *
-   * @returns a pointer.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void* GetLayer();
 };
 
 /**
@@ -73833,7 +73907,7 @@ inline void Metal_DestroyView(MetalViewRaw view)
   SDL_Metal_DestroyView(view);
 }
 
-inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }
+inline void MetalViewBase::Destroy() { Metal_DestroyView(release()); }
 
 /**
  * Get a pointer to the backing CAMetalLayer for the given view.
@@ -73850,7 +73924,7 @@ inline void* Metal_GetLayer(MetalViewRef view)
   return SDL_Metal_GetLayer(view);
 }
 
-inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(get()); }
+inline void* MetalViewBase::GetLayer() { return SDL::Metal_GetLayer(get()); }
 
 /// @}
 
@@ -93865,6 +93939,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct MixerBase;
+
+// Forward decl
 struct Mixer;
 
 /// Alias to raw representation for Mixer.
@@ -93875,7 +93952,7 @@ using MixerRaw = MIX_Mixer*;
  *
  * This does not take ownership!
  */
-using MixerRef = ResourceRef<Mixer>;
+using MixerRef = ResourceRefT<MixerBase>;
 
 // Forward decl
 struct AudioBase;
@@ -94018,139 +94095,13 @@ using PostMixCB = MakeFrontCallback<
   void(MixerRaw mixer, const AudioSpec* spec, float* pcm, int samples)>;
 
 /**
- * An opaque object that represents a mixer.
+ * Base class to Mixer.
  *
- * The Mixer is the toplevel object for this library. To use SDL_mixer, you must
- * have at least one, but are allowed to have several. Each mixer is responsible
- * for generating a single output stream of mixed audio, usually to an audio
- * device for realtime playback.
- *
- * Mixers are either created to feed an audio device (through
- * CreateMixerDevice()), or to generate audio to a buffer in memory, where it
- * can be used for anything (through CreateMixer()).
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @cat resource
+ * @see Mixer
  */
-struct Mixer : ResourceBase<MixerRaw>
+struct MixerBase : ResourceBaseT<MixerRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Mixer.
-   *
-   * @param resource a MixerRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Mixer(MixerRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Mixer(const Mixer& other) = delete;
-
-  /// Move constructor
-  constexpr Mixer(Mixer&& other) noexcept
-    : Mixer(other.release())
-  {
-  }
-
-  constexpr Mixer(const MixerRef& other) = delete;
-
-  constexpr Mixer(MixerRef&& other) = delete;
-
-  /**
-   * Create a mixer that plays sound directly to an audio device.
-   *
-   * This is usually the function you want, vs CreateMixer().
-   *
-   * You can choose a specific device ID to open, following SDL's usual rules,
-   * but often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK
-   * and let SDL figure out what device to use (and seamlessly transition you to
-   * new hardware if the default changes).
-   *
-   * Only playback devices make sense here. Attempting to open a recording
-   * device will fail.
-   *
-   * This will call Init(INIT_AUDIO) internally; it's safe to call Init() before
-   * this call, too, if you intend to enumerate audio devices to choose one to
-   * open here.
-   *
-   * An audio format can be requested, and the system will try to set the
-   * hardware to those specifications, or as close as possible, but this is just
-   * a hint. SDL_mixer will handle all data conversion behind the scenes in any
-   * case, and specifying a nullptr spec is a reasonable choice. The best reason
-   * to specify a format is because you know all your data is in that format and
-   * it might save some unnecessary CPU time on conversion.
-   *
-   * The actual device format chosen is available through GetMixerFormat().
-   *
-   * Once a mixer is created, next steps are usually to load audio (through
-   * LoadAudio() and friends), create a track (CreateTrack()), and play that
-   * audio through that track.
-   *
-   * When done with the mixer, it can be destroyed with DestroyMixer().
-   *
-   * @param devid the device to open for playback, or
-   *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
-   * @param spec the audio format to request from the device. May be
-   *             std::nullopt.
-   * @post a mixer that can be used to play audio on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa CreateMixer
-   * @sa DestroyMixer
-   */
-  Mixer(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec = std::nullopt);
-
-  /**
-   * Create a mixer that generates audio to a memory buffer.
-   *
-   * Usually you want CreateMixerDevice() instead of this function. The mixer
-   * created here can be used with Generate() to produce more data on demand, as
-   * fast as desired.
-   *
-   * An audio format must be specified. This is the format it will output in.
-   * This cannot be nullptr.
-   *
-   * Once a mixer is created, next steps are usually to load audio (through
-   * LoadAudio() and friends), create a track (CreateTrack()), and play that
-   * audio through that track.
-   *
-   * When done with the mixer, it can be destroyed with DestroyMixer().
-   *
-   * @param spec the audio format that mixer will generate.
-   * @post a mixer that can be used to generate audio on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa CreateMixerDevice
-   * @sa DestroyMixer
-   */
-  Mixer(const AudioSpec& spec);
-
-  /// Destructor
-  ~Mixer() { MIX_DestroyMixer(get()); }
-
-  /// Assignment operator.
-  constexpr Mixer& operator=(Mixer&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Mixer& operator=(const Mixer& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Free a mixer.
@@ -95106,6 +95057,138 @@ struct Mixer : ResourceBase<MixerRaw>
    * @sa CreateMixer
    */
   int Generate(TargetBytes buffer);
+};
+
+/**
+ * An opaque object that represents a mixer.
+ *
+ * The Mixer is the toplevel object for this library. To use SDL_mixer, you must
+ * have at least one, but are allowed to have several. Each mixer is responsible
+ * for generating a single output stream of mixed audio, usually to an audio
+ * device for realtime playback.
+ *
+ * Mixers are either created to feed an audio device (through
+ * CreateMixerDevice()), or to generate audio to a buffer in memory, where it
+ * can be used for anything (through CreateMixer()).
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @cat resource
+ */
+struct Mixer : MixerBase
+{
+  using MixerBase::MixerBase;
+
+  /**
+   * Constructs from raw Mixer.
+   *
+   * @param resource a MixerRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Mixer(MixerRaw resource) noexcept
+    : MixerBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Mixer(const Mixer& other) = delete;
+
+  /// Move constructor
+  constexpr Mixer(Mixer&& other) noexcept
+    : Mixer(other.release())
+  {
+  }
+
+  /**
+   * Create a mixer that plays sound directly to an audio device.
+   *
+   * This is usually the function you want, vs CreateMixer().
+   *
+   * You can choose a specific device ID to open, following SDL's usual rules,
+   * but often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK
+   * and let SDL figure out what device to use (and seamlessly transition you to
+   * new hardware if the default changes).
+   *
+   * Only playback devices make sense here. Attempting to open a recording
+   * device will fail.
+   *
+   * This will call Init(INIT_AUDIO) internally; it's safe to call Init() before
+   * this call, too, if you intend to enumerate audio devices to choose one to
+   * open here.
+   *
+   * An audio format can be requested, and the system will try to set the
+   * hardware to those specifications, or as close as possible, but this is just
+   * a hint. SDL_mixer will handle all data conversion behind the scenes in any
+   * case, and specifying a nullptr spec is a reasonable choice. The best reason
+   * to specify a format is because you know all your data is in that format and
+   * it might save some unnecessary CPU time on conversion.
+   *
+   * The actual device format chosen is available through GetMixerFormat().
+   *
+   * Once a mixer is created, next steps are usually to load audio (through
+   * LoadAudio() and friends), create a track (CreateTrack()), and play that
+   * audio through that track.
+   *
+   * When done with the mixer, it can be destroyed with DestroyMixer().
+   *
+   * @param devid the device to open for playback, or
+   *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
+   * @param spec the audio format to request from the device. May be
+   *             std::nullopt.
+   * @post a mixer that can be used to play audio on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa CreateMixer
+   * @sa DestroyMixer
+   */
+  Mixer(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec = std::nullopt);
+
+  /**
+   * Create a mixer that generates audio to a memory buffer.
+   *
+   * Usually you want CreateMixerDevice() instead of this function. The mixer
+   * created here can be used with Generate() to produce more data on demand, as
+   * fast as desired.
+   *
+   * An audio format must be specified. This is the format it will output in.
+   * This cannot be nullptr.
+   *
+   * Once a mixer is created, next steps are usually to load audio (through
+   * LoadAudio() and friends), create a track (CreateTrack()), and play that
+   * audio through that track.
+   *
+   * When done with the mixer, it can be destroyed with DestroyMixer().
+   *
+   * @param spec the audio format that mixer will generate.
+   * @post a mixer that can be used to generate audio on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa CreateMixerDevice
+   * @sa DestroyMixer
+   */
+  Mixer(const AudioSpec& spec);
+
+  /// Destructor
+  ~Mixer() { MIX_DestroyMixer(get()); }
+
+  /// Assignment operator.
+  constexpr Mixer& operator=(Mixer&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Mixer& operator=(const Mixer& other) = delete;
 };
 
 /**
@@ -97729,7 +97812,7 @@ inline Mixer CreateMixer(const AudioSpec& spec) { return Mixer(spec); }
  */
 inline void DestroyMixer(MixerRaw mixer) { MIX_DestroyMixer(mixer); }
 
-inline void Mixer::Destroy() { DestroyMixer(release()); }
+inline void MixerBase::Destroy() { DestroyMixer(release()); }
 
 /**
  * Get the properties associated with a mixer.
@@ -97753,7 +97836,7 @@ inline PropertiesRef GetMixerProperties(MixerRef mixer)
   return CheckError(MIX_GetMixerProperties(mixer));
 }
 
-inline PropertiesRef Mixer::GetProperties()
+inline PropertiesRef MixerBase::GetProperties()
 {
   return SDL::GetMixerProperties(get());
 }
@@ -97801,7 +97884,7 @@ inline void GetMixerFormat(MixerRef mixer, AudioSpec* spec)
   CheckError(MIX_GetMixerFormat(mixer, spec));
 }
 
-inline void Mixer::GetFormat(AudioSpec* spec)
+inline void MixerBase::GetFormat(AudioSpec* spec)
 {
   SDL::GetMixerFormat(get(), spec);
 }
@@ -97851,7 +97934,7 @@ inline void Mixer::GetFormat(AudioSpec* spec)
  */
 inline void LockMixer(MixerRef mixer) { MIX_LockMixer(mixer); }
 
-inline MixerLock Mixer::Lock() { return {MixerRef(*this)}; }
+inline MixerLock MixerBase::Lock() { return {MixerRef(*this)}; }
 
 inline MixerLock::MixerLock(MixerRef resource)
   : m_lock(std::move(resource))
@@ -97883,7 +97966,7 @@ inline MixerLock::MixerLock(MixerRef resource)
  */
 inline void UnlockMixer(MixerRef mixer) { MIX_UnlockMixer(mixer); }
 
-inline void Mixer::Unlock(MixerLock&& lock)
+inline void MixerBase::Unlock(MixerLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -97960,7 +98043,9 @@ inline Audio LoadAudio_IO(MixerRef mixer,
   return Audio(mixer, io, predecode, closeio);
 }
 
-inline Audio Mixer::LoadAudio_IO(IOStreamRef io, bool predecode, bool closeio)
+inline Audio MixerBase::LoadAudio_IO(IOStreamRef io,
+                                     bool predecode,
+                                     bool closeio)
 {
   return Audio(get(), io, predecode, closeio);
 }
@@ -98030,7 +98115,7 @@ inline Audio LoadAudio(MixerRef mixer, StringParam path, bool predecode)
   return Audio(mixer, std::move(path), predecode);
 }
 
-inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
+inline Audio MixerBase::LoadAudio(StringParam path, bool predecode)
 {
   return Audio(get(), std::move(path), predecode);
 }
@@ -98099,7 +98184,7 @@ inline Audio LoadAudioNoCopy(MixerRef mixer,
     mixer, data.data(), data.size_bytes(), free_when_done)));
 }
 
-inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
+inline Audio MixerBase::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
 {
   return SDL::LoadAudioNoCopy(get(), std::move(data), free_when_done);
 }
@@ -98226,9 +98311,9 @@ inline Audio LoadRawAudio_IO(MixerRef mixer,
   return Audio(mixer, io, spec, closeio);
 }
 
-inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
-                                    const AudioSpec& spec,
-                                    bool closeio)
+inline Audio MixerBase::LoadRawAudio_IO(IOStreamRef io,
+                                        const AudioSpec& spec,
+                                        bool closeio)
 {
   return Audio(get(), io, spec, closeio);
 }
@@ -98274,7 +98359,7 @@ inline Audio LoadRawAudio(MixerRef mixer,
   return Audio(mixer, std::move(data), spec);
 }
 
-inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
+inline Audio MixerBase::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
 {
   return Audio(get(), std::move(data), spec);
 }
@@ -98328,9 +98413,9 @@ inline Audio LoadRawAudioNoCopy(MixerRef mixer,
     mixer, data.data(), data.size_bytes(), &spec, free_when_done)));
 }
 
-inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
-                                       const AudioSpec& spec,
-                                       bool free_when_done)
+inline Audio MixerBase::LoadRawAudioNoCopy(SourceBytes data,
+                                           const AudioSpec& spec,
+                                           bool free_when_done)
 {
   return SDL::LoadRawAudioNoCopy(get(), std::move(data), spec, free_when_done);
 }
@@ -98379,7 +98464,7 @@ inline Audio CreateSineWaveAudio(MixerRef mixer,
   return Audio(CheckError(MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms)));
 }
 
-inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
+inline Audio MixerBase::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
 {
   return SDL::CreateSineWaveAudio(get(), hz, amplitude, ms);
 }
@@ -98594,7 +98679,7 @@ inline void AudioBase::Destroy() { DestroyAudio(release()); }
  */
 inline Track CreateTrack(MixerRef mixer) { return Track(mixer); }
 
-inline TrackRef Mixer::CreateTrack() { return Track(get()); }
+inline TrackRef MixerBase::CreateTrack() { return Track(get()); }
 
 inline Track::Track(MixerRef mixer)
   : Track(CheckError(MIX_CreateTrack(mixer)))
@@ -98999,7 +99084,7 @@ inline OwnArray<TrackRef> GetTaggedTracks(MixerRef mixer, StringParam tag)
   return OwnArray<TrackRef>(reinterpret_cast<TrackRef*>(result), count);
 }
 
-inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
+inline OwnArray<TrackRef> MixerBase::GetTaggedTracks(StringParam tag)
 {
   return SDL::GetTaggedTracks(get(), std::move(tag));
 }
@@ -99667,7 +99752,7 @@ inline void PlayTag(MixerRef mixer, StringParam tag, PropertiesRef options)
   CheckError(MIX_PlayTag(mixer, tag, options));
 }
 
-inline void Mixer::PlayTag(StringParam tag, PropertiesRef options)
+inline void MixerBase::PlayTag(StringParam tag, PropertiesRef options)
 {
   SDL::PlayTag(get(), std::move(tag), options);
 }
@@ -99707,7 +99792,7 @@ inline bool PlayAudio(MixerRef mixer, AudioRef audio)
   return MIX_PlayAudio(mixer, audio);
 }
 
-inline bool Mixer::PlayAudio(AudioRef audio)
+inline bool MixerBase::PlayAudio(AudioRef audio)
 {
   return SDL::PlayAudio(get(), audio);
 }
@@ -99791,7 +99876,7 @@ inline void StopAllTracks(MixerRef mixer, Sint64 fade_out_ms)
   CheckError(MIX_StopAllTracks(mixer, fade_out_ms));
 }
 
-inline void Mixer::StopAllTracks(Sint64 fade_out_ms)
+inline void MixerBase::StopAllTracks(Sint64 fade_out_ms)
 {
   SDL::StopAllTracks(get(), fade_out_ms);
 }
@@ -99832,7 +99917,7 @@ inline void StopTag(MixerRef mixer, StringParam tag, Sint64 fade_out_ms)
   CheckError(MIX_StopTag(mixer, tag, fade_out_ms));
 }
 
-inline void Mixer::StopTag(StringParam tag, Sint64 fade_out_ms)
+inline void MixerBase::StopTag(StringParam tag, Sint64 fade_out_ms)
 {
   SDL::StopTag(get(), std::move(tag), fade_out_ms);
 }
@@ -99888,7 +99973,7 @@ inline void PauseAllTracks(MixerRef mixer)
   CheckError(MIX_PauseAllTracks(mixer));
 }
 
-inline void Mixer::PauseAllTracks() { SDL::PauseAllTracks(get()); }
+inline void MixerBase::PauseAllTracks() { SDL::PauseAllTracks(get()); }
 
 /**
  * Pause all tracks with a specific tag.
@@ -99921,7 +100006,7 @@ inline void PauseTag(MixerRef mixer, StringParam tag)
   CheckError(MIX_PauseTag(mixer, tag));
 }
 
-inline void Mixer::PauseTag(StringParam tag)
+inline void MixerBase::PauseTag(StringParam tag)
 {
   SDL::PauseTag(get(), std::move(tag));
 }
@@ -99977,7 +100062,7 @@ inline void ResumeAllTracks(MixerRef mixer)
   CheckError(MIX_ResumeAllTracks(mixer));
 }
 
-inline void Mixer::ResumeAllTracks() { SDL::ResumeAllTracks(get()); }
+inline void MixerBase::ResumeAllTracks() { SDL::ResumeAllTracks(get()); }
 
 /**
  * Resume all tracks with a specific tag.
@@ -100009,7 +100094,7 @@ inline void ResumeTag(MixerRef mixer, StringParam tag)
   CheckError(MIX_ResumeTag(mixer, tag));
 }
 
-inline void Mixer::ResumeTag(StringParam tag)
+inline void MixerBase::ResumeTag(StringParam tag)
 {
   SDL::ResumeTag(get(), std::move(tag));
 }
@@ -100098,7 +100183,7 @@ inline void SetMixerGain(MixerRef mixer, float gain)
   CheckError(MIX_SetMixerGain(mixer, gain));
 }
 
-inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
+inline void MixerBase::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
 
 /**
  * Get a mixer's master gain control.
@@ -100118,7 +100203,7 @@ inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
  */
 inline float GetMixerGain(MixerRef mixer) { return MIX_GetMixerGain(mixer); }
 
-inline float Mixer::GetGain() { return SDL::GetMixerGain(get()); }
+inline float MixerBase::GetGain() { return SDL::GetMixerGain(get()); }
 
 /**
  * Set a track's gain control.
@@ -100211,7 +100296,7 @@ inline void SetTagGain(MixerRef mixer, StringParam tag, float gain)
   CheckError(MIX_SetTagGain(mixer, tag, gain));
 }
 
-inline void Mixer::SetTagGain(StringParam tag, float gain)
+inline void MixerBase::SetTagGain(StringParam tag, float gain)
 {
   SDL::SetTagGain(get(), std::move(tag), gain);
 }
@@ -100248,7 +100333,7 @@ inline void SetMixerFrequencyRatio(MixerRef mixer, float ratio)
   CheckError(MIX_SetMixerFrequencyRatio(mixer, ratio));
 }
 
-inline void Mixer::SetFrequencyRatio(float ratio)
+inline void MixerBase::SetFrequencyRatio(float ratio)
 {
   SDL::SetMixerFrequencyRatio(get(), ratio);
 }
@@ -100274,7 +100359,7 @@ inline float GetMixerFrequencyRatio(MixerRef mixer)
   return MIX_GetMixerFrequencyRatio(mixer);
 }
 
-inline float Mixer::GetFrequencyRatio()
+inline float MixerBase::GetFrequencyRatio()
 {
   return SDL::GetMixerFrequencyRatio(get());
 }
@@ -100541,7 +100626,7 @@ inline Point3D Track::Get3DPosition() { return SDL::GetTrack3DPosition(get()); }
  */
 inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 
-inline GroupRef Mixer::CreateGroup() { return Group(get()); }
+inline GroupRef MixerBase::CreateGroup() { return Group(get()); }
 
 inline Group::Group(MixerRef mixer)
   : Group(CheckError(MIX_CreateGroup(mixer)))
@@ -101007,12 +101092,12 @@ inline void SetPostMixCallback(MixerRef mixer, PostMixCB cb)
   SetPostMixCallback(mixer, cb.wrapper, cb.data);
 }
 
-inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
+inline void MixerBase::SetPostMixCallback(PostMixCallback cb, void* userdata)
 {
   SDL::SetPostMixCallback(get(), cb, userdata);
 }
 
-inline void Mixer::SetPostMixCallback(PostMixCB cb)
+inline void MixerBase::SetPostMixCallback(PostMixCB cb)
 {
   SDL::SetPostMixCallback(get(), cb);
 }
@@ -101074,7 +101159,7 @@ inline int Generate(MixerRef mixer, TargetBytes buffer)
     MIX_Generate(mixer, buffer.data(), narrowS32(buffer.size_bytes())), -1);
 }
 
-inline int Mixer::Generate(TargetBytes buffer)
+inline int MixerBase::Generate(TargetBytes buffer)
 {
   return SDL::Generate(get(), std::move(buffer));
 }

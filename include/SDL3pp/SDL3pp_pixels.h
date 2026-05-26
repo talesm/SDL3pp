@@ -92,6 +92,9 @@ using FColorRaw = SDL_FColor;
 struct FColor;
 
 // Forward decl
+struct PaletteBase;
+
+// Forward decl
 struct Palette;
 
 /// Alias to raw representation for Palette.
@@ -105,7 +108,7 @@ using PaletteRawConst = const SDL_Palette*;
  *
  * This does not take ownership!
  */
-using PaletteRef = ResourceRef<Palette>;
+using PaletteRef = ResourceRefT<PaletteBase>;
 
 /// Safely wrap Palette for non owning const parameters
 using PaletteConstRef = ResourceConstRef<PaletteRaw, PaletteRawConst>;
@@ -2424,6 +2427,65 @@ public:
 };
 
 /**
+ * Base class to Palette.
+ *
+ * @see Palette
+ */
+struct PaletteBase : ResourceBaseT<PaletteRaw, PaletteRawConst>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /// Converts to PaletteConstRef
+  constexpr operator PaletteConstRef() const noexcept { return get(); }
+
+  /**
+   * Free a palette created with CreatePalette().
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreatePalette
+   */
+  void Destroy();
+
+  /// Access specific pallete colors
+  constexpr const ColorRaw* data() const { return get()->colors; }
+
+  /// Returns number of colors in the palette.
+  constexpr int size() const { return get()->ncolors; }
+
+  /// Access specific pallete index
+  constexpr ColorRaw operator[](int index) const
+  {
+    return get()->colors[index];
+  }
+
+  /// Change specific pallete index
+  constexpr PaletteIndex operator[](int index)
+  {
+    return PaletteIndex{get(), index};
+  }
+
+  /**
+   * Set a range of colors in a palette.
+   *
+   * @param colors an array of Color structures to copy into the palette.
+   * @param firstcolor the index of the first palette entry to modify.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Palette.Palette
+   */
+  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
+};
+
+/**
  * A set of indexed colors representing a palette.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -2432,9 +2494,9 @@ public:
  *
  * @cat resource
  */
-struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
+struct Palette : PaletteBase
 {
-  using ResourceBase::ResourceBase;
+  using PaletteBase::PaletteBase;
 
   /**
    * Constructs from raw Palette.
@@ -2444,7 +2506,7 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Palette(PaletteRaw resource) noexcept
-    : ResourceBase(resource)
+    : PaletteBase(resource)
   {
   }
 
@@ -2496,9 +2558,6 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
     return {};
   }
 
-  /// Converts to PaletteConstRef
-  constexpr operator PaletteConstRef() const noexcept { return get(); }
-
   /// Destructor
   ~Palette() { SDL_DestroyPalette(get()); }
 
@@ -2518,52 +2577,6 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
     }
     return *this;
   }
-
-  /**
-   * Free a palette created with CreatePalette().
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreatePalette
-   */
-  void Destroy();
-
-  /// Access specific pallete colors
-  constexpr const ColorRaw* data() const { return get()->colors; }
-
-  /// Returns number of colors in the palette.
-  constexpr int size() const { return get()->ncolors; }
-
-  /// Access specific pallete index
-  constexpr ColorRaw operator[](int index) const
-  {
-    return get()->colors[index];
-  }
-
-  /// Change specific pallete index
-  constexpr PaletteIndex operator[](int index)
-  {
-    return PaletteIndex{get(), index};
-  }
-
-  /**
-   * Set a range of colors in a palette.
-   *
-   * @param colors an array of Color structures to copy into the palette.
-   * @param firstcolor the index of the first palette entry to modify.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Palette.Palette
-   */
-  void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
 };
 
 /**
@@ -2736,7 +2749,8 @@ inline void SetPaletteColors(PaletteRef palette,
     palette, colors.data(), firstcolor, narrowS32(colors.size())));
 }
 
-inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
+inline void PaletteBase::SetColors(SpanRef<const ColorRaw> colors,
+                                   int firstcolor)
 {
   SDL::SetPaletteColors(get(), colors, firstcolor);
 }
@@ -2761,7 +2775,7 @@ inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
  */
 inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
 
-inline void Palette::Destroy() { DestroyPalette(release()); }
+inline void PaletteBase::Destroy() { DestroyPalette(release()); }
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.

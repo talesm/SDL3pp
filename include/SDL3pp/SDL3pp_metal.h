@@ -19,6 +19,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct MetalViewBase;
+
+// Forward decl
 struct MetalView;
 
 /// Alias to raw representation for MetalView.
@@ -29,7 +32,42 @@ using MetalViewRaw = SDL_MetalView;
  *
  * This does not take ownership!
  */
-using MetalViewRef = ResourceRef<MetalView>;
+using MetalViewRef = ResourceRefT<MetalViewBase>;
+
+/**
+ * Base class to MetalView.
+ *
+ * @see MetalView
+ */
+struct MetalViewBase : ResourceBaseT<MetalViewRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Destroy an existing MetalView object.
+   *
+   * This should be called before DestroyWindow, if Metal_CreateView was called
+   * after CreateWindow.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Metal_CreateView
+   */
+  void Destroy();
+
+  /**
+   * Get a pointer to the backing CAMetalLayer for the given view.
+   *
+   * @returns a pointer.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void* GetLayer();
+};
 
 /**
  * A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
@@ -38,9 +76,9 @@ using MetalViewRef = ResourceRef<MetalView>;
  *
  * @cat resource
  */
-struct MetalView : ResourceBase<MetalViewRaw>
+struct MetalView : MetalViewBase
 {
-  using ResourceBase::ResourceBase;
+  using MetalViewBase::MetalViewBase;
 
   /**
    * Constructs from raw MetalView.
@@ -50,7 +88,7 @@ struct MetalView : ResourceBase<MetalViewRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit MetalView(MetalViewRaw resource) noexcept
-    : ResourceBase(resource)
+    : MetalViewBase(resource)
   {
   }
 
@@ -62,10 +100,6 @@ struct MetalView : ResourceBase<MetalViewRaw>
     : MetalView(other.release())
   {
   }
-
-  constexpr MetalView(const MetalViewRef& other) = delete;
-
-  constexpr MetalView(MetalViewRef&& other) = delete;
 
   /**
    * Create a CAMetalLayer-backed NSView/UIView and attach it to the specified
@@ -101,31 +135,6 @@ struct MetalView : ResourceBase<MetalViewRaw>
 
   /// Assignment operator.
   MetalView& operator=(const MetalView& other) = delete;
-
-  /**
-   * Destroy an existing MetalView object.
-   *
-   * This should be called before DestroyWindow, if Metal_CreateView was called
-   * after CreateWindow.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Metal_CreateView
-   */
-  void Destroy();
-
-  /**
-   * Get a pointer to the backing CAMetalLayer for the given view.
-   *
-   * @returns a pointer.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void* GetLayer();
 };
 
 /**
@@ -177,7 +186,7 @@ inline void Metal_DestroyView(MetalViewRaw view)
   SDL_Metal_DestroyView(view);
 }
 
-inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }
+inline void MetalViewBase::Destroy() { Metal_DestroyView(release()); }
 
 /**
  * Get a pointer to the backing CAMetalLayer for the given view.
@@ -194,7 +203,7 @@ inline void* Metal_GetLayer(MetalViewRef view)
   return SDL_Metal_GetLayer(view);
 }
 
-inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(get()); }
+inline void* MetalViewBase::GetLayer() { return SDL::Metal_GetLayer(get()); }
 
 /// @}
 
