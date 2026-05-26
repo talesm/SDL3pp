@@ -220,6 +220,8 @@ export function expandResource(
   } else {
     targetEntry.doc = [`Wraps ${title} resource.`, "@cat resource"];
   }
+
+  if (hasLock) wrapLockFunctions(subEntries, lockName, hasLock);
   populateTargetEntry(
     hasScoped,
     hasShared,
@@ -246,8 +248,6 @@ export function expandResource(
       targetName,
     );
   }
-
-  if (hasLock) wrapLockFunctions(targetEntry.entries, lockName, hasLock);
 
   const derivedEntries: ApiEntryTransform[] = [];
 

@@ -8539,11 +8539,12 @@
               ],
               "name": "Lock",
               "kind": "function",
-              "type": "void",
+              "type": "AudioStreamLock",
               "parameters": [],
               "sourceName": "SDL_LockAudioStream",
               "hints": {
                 "mayFail": true,
+                "body": "return {AudioStreamRef(*this)};",
                 "delegate": "SDL::LockAudioStream"
               },
               "proto": true
@@ -8574,10 +8575,16 @@
               "name": "Unlock",
               "kind": "function",
               "type": "void",
-              "parameters": [],
+              "parameters": [
+                {
+                  "type": "AudioStreamLock &&",
+                  "name": "lock"
+                }
+              ],
               "sourceName": "SDL_UnlockAudioStream",
               "hints": {
                 "mayFail": true,
+                "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
                 "delegate": "SDL::UnlockAudioStream"
               },
               "proto": true
@@ -9370,83 +9377,6 @@
                 ],
                 "name": "operator="
               }
-            },
-            "Lock": {
-              "doc": [
-                "Lock an audio stream for serialized access.",
-                "Each AudioStream has an internal mutex it uses to protect its data structures from threading conflicts. This function allows an app to lock that mutex, which could be useful if registering callbacks on this stream.",
-                "One does not need to lock a stream to use in it most cases, as the stream manages this lock internally. However, this lock is held during callbacks, which may run from arbitrary threads at any time, so if an app needs to protect shared data during those callbacks, locking the stream guarantees that the callback is not running while the lock is held.",
-                "As this is just a wrapper over LockMutex for an internal lock; it has all the same attributes (recursive locks are allowed, etc).",
-                [
-                  {
-                    "tag": "@throws",
-                    "content": "Error on failure."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                {
-                  "tag": "@sa",
-                  "content": "UnlockAudioStream"
-                }
-              ],
-              "name": "Lock",
-              "kind": "function",
-              "type": "AudioStreamLock",
-              "parameters": [],
-              "sourceName": "SDL_LockAudioStream",
-              "hints": {
-                "mayFail": true,
-                "body": "return {AudioStreamRef(*this)};",
-                "delegate": "SDL::AudioStreamBase::Lock"
-              },
-              "proto": true
-            },
-            "Unlock": {
-              "doc": [
-                "Unlock an audio stream for serialized access.",
-                "This unlocks an audio stream after a call to LockAudioStream.",
-                [
-                  {
-                    "tag": "@throws",
-                    "content": "Error on failure."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "You should only call this from the same thread that previously called LockAudioStream."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                {
-                  "tag": "@sa",
-                  "content": "LockAudioStream"
-                }
-              ],
-              "name": "Unlock",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "type": "AudioStreamLock &&",
-                  "name": "lock"
-                }
-              ],
-              "sourceName": "SDL_UnlockAudioStream",
-              "hints": {
-                "mayFail": true,
-                "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
-                "delegate": "SDL::AudioStreamBase::Unlock"
-              },
-              "proto": true
             }
           },
           "hints": {
@@ -12796,27 +12726,14 @@
         "AudioStreamBase::Lock": {
           "name": "AudioStreamBase::Lock",
           "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "sourceName": "SDL_LockAudioStream",
-          "hints": {
-            "self": "get()",
-            "mayFail": true,
-            "delegate": "SDL::LockAudioStream"
-          }
-        },
-        "AudioStream::Lock": {
-          "name": "AudioStream::Lock",
-          "kind": "function",
           "type": "AudioStreamLock",
           "parameters": [],
           "sourceName": "SDL_LockAudioStream",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "body": "return {AudioStreamRef(*this)};",
-            "delegate": "SDL::AudioStreamBase::Lock"
+            "delegate": "SDL::LockAudioStream"
           }
         },
         "AudioStreamLock::AudioStreamLock": {
@@ -12882,18 +12799,6 @@
           "name": "AudioStreamBase::Unlock",
           "kind": "function",
           "type": "void",
-          "parameters": [],
-          "sourceName": "SDL_UnlockAudioStream",
-          "hints": {
-            "self": "get()",
-            "mayFail": true,
-            "delegate": "SDL::UnlockAudioStream"
-          }
-        },
-        "AudioStream::Unlock": {
-          "name": "AudioStream::Unlock",
-          "kind": "function",
-          "type": "void",
           "parameters": [
             {
               "type": "AudioStreamLock &&",
@@ -12903,10 +12808,9 @@
           "sourceName": "SDL_UnlockAudioStream",
           "hints": {
             "self": "get()",
-            "super": "AudioStream",
             "mayFail": true,
             "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
-            "delegate": "SDL::AudioStreamBase::Unlock"
+            "delegate": "SDL::UnlockAudioStream"
           }
         },
         "AudioStreamLock::reset": {
@@ -15069,7 +14973,7 @@
               ],
               "name": "AcquireFrame",
               "kind": "function",
-              "type": "Surface",
+              "type": "CameraFrame",
               "parameters": [
                 {
                   "name": "timestampNS",
@@ -15079,6 +14983,7 @@
               ],
               "sourceName": "SDL_AcquireCameraFrame",
               "hints": {
+                "body": "return {CameraRef(*this)};",
                 "delegate": "SDL::AcquireCameraFrame"
               },
               "proto": true
@@ -15114,12 +15019,13 @@
               "type": "void",
               "parameters": [
                 {
-                  "name": "frame",
-                  "type": "SurfaceRef"
+                  "name": "lock",
+                  "type": "CameraFrame &&"
                 }
               ],
               "sourceName": "SDL_ReleaseCameraFrame",
               "hints": {
+                "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
                 "delegate": "SDL::ReleaseCameraFrame"
               },
               "proto": true
@@ -15318,96 +15224,6 @@
                 ],
                 "name": "operator="
               }
-            },
-            "AcquireFrame": {
-              "doc": [
-                "Acquire a frame.",
-                "The frame is a memory pointer to the image data, whose size and format are given by the spec requested when opening the device.",
-                "This is a non blocking API. If there is a frame available, a non-nullptr surface is returned, and timestampNS will be filled with a non-zero value.",
-                "Note that an error case can also return nullptr, but a nullptr by itself is normal and just signifies that a new frame is not yet available. Note that even if a camera device fails outright (a USB camera is unplugged while in use, etc), SDL will send an event separately to notify the app, but continue to provide blank frames at ongoing intervals until CloseCamera() is called, so real failure here is almost always an out of memory condition.",
-                "After use, the frame should be released with ReleaseCameraFrame(). If you don't do this, the system may stop providing more video!",
-                "Do not call DestroySurface() on the returned surface! It must be given back to the camera subsystem with ReleaseCameraFrame!",
-                "If the system is waiting for the user to approve access to the camera, as some platforms require, this will return nullptr (no frames available); you should either wait for an EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll GetCameraPermissionState() occasionally until it returns non-zero.",
-                [
-                  {
-                    "tag": "@param timestampNS",
-                    "content": "a pointer filled in with the frame's timestamp, or 0 on error. Can be nullptr."
-                  },
-                  {
-                    "tag": "@returns",
-                    "content": "a new frame of video on success, nullptr if none is currently available."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                {
-                  "tag": "@sa",
-                  "content": "ReleaseCameraFrame"
-                }
-              ],
-              "name": "AcquireFrame",
-              "kind": "function",
-              "type": "CameraFrame",
-              "parameters": [
-                {
-                  "name": "timestampNS",
-                  "type": "Uint64 *"
-                }
-              ],
-              "sourceName": "SDL_AcquireCameraFrame",
-              "hints": {
-                "body": "return {CameraRef(*this)};",
-                "delegate": "SDL::CameraBase::AcquireFrame"
-              },
-              "proto": true
-            },
-            "ReleaseFrame": {
-              "doc": [
-                "Release a frame of video acquired from a camera.",
-                "Let the back-end re-use the internal buffer for camera.",
-                "This function _must_ be called only on surface objects returned by AcquireCameraFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
-                "If the app needs to keep the surface for a significant time, they should make a copy of it and release the original.",
-                "The app should not use the surface again after calling this function; assume the surface is freed and the pointer is invalid.",
-                [
-                  {
-                    "tag": "@param frame",
-                    "content": "the video frame surface to release."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                {
-                  "tag": "@sa",
-                  "content": "AcquireCameraFrame"
-                }
-              ],
-              "name": "ReleaseFrame",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "lock",
-                  "type": "CameraFrame &&"
-                }
-              ],
-              "sourceName": "SDL_ReleaseCameraFrame",
-              "hints": {
-                "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
-                "delegate": "SDL::CameraBase::ReleaseFrame"
-              },
-              "proto": true
             }
           },
           "hints": {
@@ -16270,22 +16086,6 @@
         "CameraBase::AcquireFrame": {
           "name": "CameraBase::AcquireFrame",
           "kind": "function",
-          "type": "Surface",
-          "parameters": [
-            {
-              "name": "timestampNS",
-              "type": "Uint64 *"
-            }
-          ],
-          "sourceName": "SDL_AcquireCameraFrame",
-          "hints": {
-            "self": "get()",
-            "delegate": "SDL::AcquireCameraFrame"
-          }
-        },
-        "Camera::AcquireFrame": {
-          "name": "Camera::AcquireFrame",
-          "kind": "function",
           "type": "CameraFrame",
           "parameters": [
             {
@@ -16296,9 +16096,8 @@
           "sourceName": "SDL_AcquireCameraFrame",
           "hints": {
             "self": "get()",
-            "super": "Camera",
             "body": "return {CameraRef(*this)};",
-            "delegate": "SDL::CameraBase::AcquireFrame"
+            "delegate": "SDL::AcquireCameraFrame"
           }
         },
         "CameraFrame::CameraFrame": {
@@ -16369,22 +16168,6 @@
           "type": "void",
           "parameters": [
             {
-              "name": "frame",
-              "type": "SurfaceRef"
-            }
-          ],
-          "sourceName": "SDL_ReleaseCameraFrame",
-          "hints": {
-            "self": "get()",
-            "delegate": "SDL::ReleaseCameraFrame"
-          }
-        },
-        "Camera::ReleaseFrame": {
-          "name": "Camera::ReleaseFrame",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
               "name": "lock",
               "type": "CameraFrame &&"
             }
@@ -16392,9 +16175,8 @@
           "sourceName": "SDL_ReleaseCameraFrame",
           "hints": {
             "self": "get()",
-            "super": "Camera",
             "body": "SDL_assert_paranoid(lock.resource()==*this);std::move(lock).reset();",
-            "delegate": "SDL::CameraBase::ReleaseFrame"
+            "delegate": "SDL::ReleaseCameraFrame"
           }
         },
         "CameraFrame::reset": {
