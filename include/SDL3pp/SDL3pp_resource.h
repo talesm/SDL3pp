@@ -61,6 +61,7 @@ public:
     return r;
   }
 
+  /// Swaps the underlying resource pointers.
   friend constexpr void swap(ResourceBaseT& lhs, ResourceBaseT& rhs) noexcept
   {
     std::swap(lhs.m_resource, rhs.m_resource);
@@ -70,10 +71,16 @@ protected:
   /// Destructor
   constexpr ~ResourceBaseT() = default;
 
+  /// Copy constructor.
   constexpr ResourceBaseT(const ResourceBaseT&) = default;
+
+  /// Move constructor.
   constexpr ResourceBaseT(ResourceBaseT&&) noexcept = default;
 
+  /// Assignment operator.
   constexpr ResourceBaseT& operator=(const ResourceBaseT&) = default;
+
+  /// Assignment operator.
   constexpr ResourceBaseT& operator=(ResourceBaseT&&) noexcept = default;
 
 private:
