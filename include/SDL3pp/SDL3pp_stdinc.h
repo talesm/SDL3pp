@@ -62,6 +62,9 @@ using EnvironmentRaw = SDL_Environment*;
 using EnvironmentRef = ResourceRefT<EnvironmentBase>;
 
 // Forward decl
+struct IConvBase;
+
+// Forward decl
 struct IConv;
 
 /// Alias to raw representation for IConv.
@@ -72,7 +75,7 @@ using IConvRaw = SDL_iconv_t;
  *
  * This does not take ownership!
  */
-using IConvRef = ResourceRef<IConv>;
+using IConvRef = ResourceRefT<IConvBase>;
 
 #ifdef SDL3PP_DOC
 
@@ -5839,80 +5842,13 @@ inline double tan(double x) { return SDL_tan(x); }
 inline float tan(float x) { return SDL_tanf(x); }
 
 /**
- * An opaque handle representing string encoding conversion state.
+ * Base class to IConv.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- *
- * @cat resource
- *
- * @sa iconv_open
+ * @see IConv
  */
-struct IConv : ResourceBase<IConvRaw>
+struct IConvBase : ResourceBaseT<IConvRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /// Default ctor
-  IConv(std::nullptr_t = nullptr) noexcept
-    : IConv(IConvRaw(SDL_ICONV_ERROR))
-  {
-  }
-
-  /**
-   * Constructs from raw IConv.
-   *
-   * @param resource a IConvRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit IConv(IConvRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr IConv(const IConv& other) = delete;
-
-  /// Move constructor
-  constexpr IConv(IConv&& other) noexcept
-    : IConv(other.release())
-  {
-  }
-
-  constexpr IConv(const IConvRef& other) = delete;
-
-  constexpr IConv(IConvRef&& other) = delete;
-
-  /**
-   * This function allocates a context for the specified character set
-   * conversion.
-   *
-   * @param tocode The target character encoding, must not be nullptr.
-   * @param fromcode The source character encoding, must not be nullptr.
-   * @post a valid handle or falsy on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa iconv
-   * @sa iconv_close
-   * @sa iconv_string
-   */
-  IConv(StringParam tocode, StringParam fromcode);
-
-  /// Destructor
-  ~IConv() { SDL_iconv_close(get()); }
-
-  /// Assignment operator.
-  constexpr IConv& operator=(IConv&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  IConv& operator=(const IConv& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to bool
   explicit operator bool() const noexcept
@@ -5978,6 +5914,79 @@ struct IConv : ResourceBase<IConvRaw>
 };
 
 /**
+ * An opaque handle representing string encoding conversion state.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ *
+ * @cat resource
+ *
+ * @sa iconv_open
+ */
+struct IConv : IConvBase
+{
+  using IConvBase::IConvBase;
+
+  /// Default ctor
+  IConv(std::nullptr_t = nullptr) noexcept
+    : IConv(IConvRaw(SDL_ICONV_ERROR))
+  {
+  }
+
+  /**
+   * Constructs from raw IConv.
+   *
+   * @param resource a IConvRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit IConv(IConvRaw resource) noexcept
+    : IConvBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr IConv(const IConv& other) = delete;
+
+  /// Move constructor
+  constexpr IConv(IConv&& other) noexcept
+    : IConv(other.release())
+  {
+  }
+
+  /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
+   * @post a valid handle or falsy on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa iconv
+   * @sa iconv_close
+   * @sa iconv_string
+   */
+  IConv(StringParam tocode, StringParam fromcode);
+
+  /// Destructor
+  ~IConv() { SDL_iconv_close(get()); }
+
+  /// Assignment operator.
+  constexpr IConv& operator=(IConv&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  IConv& operator=(const IConv& other) = delete;
+};
+
+/**
  * This function allocates a context for the specified character set conversion.
  *
  * @param tocode The target character encoding, must not be nullptr.
@@ -6020,7 +6029,7 @@ inline IConv::IConv(StringParam tocode, StringParam fromcode)
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
 
-inline int IConv::close() { return iconv_close(release()); }
+inline int IConvBase::close() { return iconv_close(release()); }
 
 /**
  * This function converts text between encodings, reading from and writing to a
@@ -6058,7 +6067,7 @@ inline int IConv::close() { return iconv_close(release()); }
  * @sa iconv_close
  * @sa iconv_string
  */
-inline size_t iconv(IConvRaw cd,
+inline size_t iconv(IConvRef cd,
                     const char** inbuf,
                     size_t* inbytesleft,
                     char** outbuf,
@@ -6067,10 +6076,10 @@ inline size_t iconv(IConvRaw cd,
   return CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft));
 }
 
-inline size_t IConv::iconv(const char** inbuf,
-                           size_t* inbytesleft,
-                           char** outbuf,
-                           size_t* outbytesleft) const
+inline size_t IConvBase::iconv(const char** inbuf,
+                               size_t* inbytesleft,
+                               char** outbuf,
+                               size_t* outbytesleft) const
 {
   return SDL::iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
 }

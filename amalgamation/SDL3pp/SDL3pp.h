@@ -10862,6 +10862,9 @@ using EnvironmentRaw = SDL_Environment*;
 using EnvironmentRef = ResourceRefT<EnvironmentBase>;
 
 // Forward decl
+struct IConvBase;
+
+// Forward decl
 struct IConv;
 
 /// Alias to raw representation for IConv.
@@ -10872,7 +10875,7 @@ using IConvRaw = SDL_iconv_t;
  *
  * This does not take ownership!
  */
-using IConvRef = ResourceRef<IConv>;
+using IConvRef = ResourceRefT<IConvBase>;
 
 #ifdef SDL3PP_DOC
 
@@ -16639,80 +16642,13 @@ inline double tan(double x) { return SDL_tan(x); }
 inline float tan(float x) { return SDL_tanf(x); }
 
 /**
- * An opaque handle representing string encoding conversion state.
+ * Base class to IConv.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- *
- * @cat resource
- *
- * @sa iconv_open
+ * @see IConv
  */
-struct IConv : ResourceBase<IConvRaw>
+struct IConvBase : ResourceBaseT<IConvRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /// Default ctor
-  IConv(std::nullptr_t = nullptr) noexcept
-    : IConv(IConvRaw(SDL_ICONV_ERROR))
-  {
-  }
-
-  /**
-   * Constructs from raw IConv.
-   *
-   * @param resource a IConvRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit IConv(IConvRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr IConv(const IConv& other) = delete;
-
-  /// Move constructor
-  constexpr IConv(IConv&& other) noexcept
-    : IConv(other.release())
-  {
-  }
-
-  constexpr IConv(const IConvRef& other) = delete;
-
-  constexpr IConv(IConvRef&& other) = delete;
-
-  /**
-   * This function allocates a context for the specified character set
-   * conversion.
-   *
-   * @param tocode The target character encoding, must not be nullptr.
-   * @param fromcode The source character encoding, must not be nullptr.
-   * @post a valid handle or falsy on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa iconv
-   * @sa iconv_close
-   * @sa iconv_string
-   */
-  IConv(StringParam tocode, StringParam fromcode);
-
-  /// Destructor
-  ~IConv() { SDL_iconv_close(get()); }
-
-  /// Assignment operator.
-  constexpr IConv& operator=(IConv&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  IConv& operator=(const IConv& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to bool
   explicit operator bool() const noexcept
@@ -16778,6 +16714,79 @@ struct IConv : ResourceBase<IConvRaw>
 };
 
 /**
+ * An opaque handle representing string encoding conversion state.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ *
+ * @cat resource
+ *
+ * @sa iconv_open
+ */
+struct IConv : IConvBase
+{
+  using IConvBase::IConvBase;
+
+  /// Default ctor
+  IConv(std::nullptr_t = nullptr) noexcept
+    : IConv(IConvRaw(SDL_ICONV_ERROR))
+  {
+  }
+
+  /**
+   * Constructs from raw IConv.
+   *
+   * @param resource a IConvRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit IConv(IConvRaw resource) noexcept
+    : IConvBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr IConv(const IConv& other) = delete;
+
+  /// Move constructor
+  constexpr IConv(IConv&& other) noexcept
+    : IConv(other.release())
+  {
+  }
+
+  /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
+   * @post a valid handle or falsy on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa iconv
+   * @sa iconv_close
+   * @sa iconv_string
+   */
+  IConv(StringParam tocode, StringParam fromcode);
+
+  /// Destructor
+  ~IConv() { SDL_iconv_close(get()); }
+
+  /// Assignment operator.
+  constexpr IConv& operator=(IConv&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  IConv& operator=(const IConv& other) = delete;
+};
+
+/**
  * This function allocates a context for the specified character set conversion.
  *
  * @param tocode The target character encoding, must not be nullptr.
@@ -16820,7 +16829,7 @@ inline IConv::IConv(StringParam tocode, StringParam fromcode)
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
 
-inline int IConv::close() { return iconv_close(release()); }
+inline int IConvBase::close() { return iconv_close(release()); }
 
 /**
  * This function converts text between encodings, reading from and writing to a
@@ -16858,7 +16867,7 @@ inline int IConv::close() { return iconv_close(release()); }
  * @sa iconv_close
  * @sa iconv_string
  */
-inline size_t iconv(IConvRaw cd,
+inline size_t iconv(IConvRef cd,
                     const char** inbuf,
                     size_t* inbytesleft,
                     char** outbuf,
@@ -16867,10 +16876,10 @@ inline size_t iconv(IConvRaw cd,
   return CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft));
 }
 
-inline size_t IConv::iconv(const char** inbuf,
-                           size_t* inbytesleft,
-                           char** outbuf,
-                           size_t* outbytesleft) const
+inline size_t IConvBase::iconv(const char** inbuf,
+                               size_t* inbytesleft,
+                               char** outbuf,
+                               size_t* outbytesleft) const
 {
   return SDL::iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
 }
@@ -21938,6 +21947,9 @@ inline void hid_ble_scan(bool active) { SDL_hid_ble_scan(active); }
  */
 
 // Forward decl
+struct IOStreamBase;
+
+// Forward decl
 struct IOStream;
 
 /// Alias to raw representation for IOStream.
@@ -21948,7 +21960,7 @@ using IOStreamRaw = SDL_IOStream*;
  *
  * This does not take ownership!
  */
-using IOStreamRef = ResourceRef<IOStream>;
+using IOStreamRef = ResourceRefT<IOStreamBase>;
 
 /**
  * IOStream status, set by a read or write operation.
@@ -22010,295 +22022,13 @@ constexpr IOWhence IO_SEEK_END =
 using IOStreamInterface = SDL_IOStreamInterface;
 
 /**
- * The read/write operation structure.
+ * Base class to IOStream.
  *
- * This operates as an opaque handle. There are several APIs to create various
- * types of I/O streams, or an app can supply an IOStreamInterface to OpenIO()
- * to provide their own stream implementation behind this struct's abstract
- * interface.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see IOStream
  */
-struct IOStream : ResourceBase<IOStreamRaw>
+struct IOStreamBase : ResourceBaseT<IOStreamRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw IOStream.
-   *
-   * @param resource a IOStreamRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit IOStream(IOStreamRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr IOStream(const IOStream& other) = delete;
-
-  /// Move constructor
-  constexpr IOStream(IOStream&& other) noexcept
-    : IOStream(other.release())
-  {
-  }
-
-  constexpr IOStream(const IOStreamRef& other) = delete;
-
-  constexpr IOStream(IOStreamRef&& other) = delete;
-
-  /**
-   * Use this function to create a new IOStream structure for reading from
-   * and/or writing to a named file.
-   *
-   * The `mode` string is treated roughly the same as in a call to the C
-   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
-   * scenes.
-   *
-   * Available `mode` strings:
-   *
-   * - "r": Open a file for reading. The file must exist.
-   * - "w": Create an empty file for writing. If a file with the same name
-   *   already exists its content is erased and the file is treated as a new
-   *   empty file.
-   * - "wx": Create an empty file for writing. If a file with the same name
-   *   already exists, the call fails. (Supported since SDL 3.4.0)
-   * - "a": Append to a file. Writing operations append data at the end of the
-   *   file. The file is created if it does not exist.
-   * - "r+": Open a file for update both reading and writing. The file must
-   *   exist.
-   * - "w+": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists its content is erased and the file is
-   *   treated as a new empty file.
-   * - "w+x": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
-   * - "a+": Open a file for reading and appending. All writing operations are
-   *   performed at the end of the file, protecting the previous content to be
-   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
-   *   anywhere in the file for reading, but writing operations will move it
-   *   back to the end of file. The file is created if it does not exist.
-   *
-   * **NOTE**: In order to open a file as a binary file, a "b" character has to
-   * be included in the `mode` string. This additional "b" character can either
-   * be appended at the end of the string (thus making the following compound
-   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
-   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
-   * Additional characters may follow the sequence, although they should have no
-   * effect. For example, "t" is sometimes appended to make explicit the file is
-   * a text file.
-   *
-   * This function supports Unicode filenames, but they must be encoded in UTF-8
-   * format, regardless of the underlying operating system.
-   *
-   * In Android, IOFromFile() can be used to open content:// URIs. As a
-   * fallback, IOFromFile() will transparently open a matching filename in the
-   * app's `assets`.
-   *
-   * Closing the IOStream will close SDL's internal file handle.
-   *
-   * The following properties may be set at creation time by SDL:
-   *
-   * - `prop.IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
-   *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
-   *   the program isn't running on Windows, or SDL used some other method to
-   *   access the filesystem, this property will not be set.
-   * - `prop.IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this IOStream is using to access the filesystem. If
-   *   SDL used some other method to access the filesystem, this property will
-   *   not be set. PLEASE NOTE that if SDL is using a different C runtime than
-   *   your app, trying to use this pointer will almost certainly result in a
-   *   crash! This is mostly a problem on Windows; make sure you build SDL and
-   *   your app with the same compiler and settings to avoid it.
-   * - `prop.IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
-   *   IOStream is using to access the filesystem.
-   * - `prop.IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
-   *   Android NDK `AAsset *`, that this IOStream is using to access the
-   *   filesystem. If SDL used some other method to access the filesystem, this
-   *   property will not be set.
-   *
-   * @param file a UTF-8 string representing the filename to open.
-   * @param mode an ASCII string representing the mode to be used for opening
-   *             the file.
-   * @returns a pointer to the IOStream structure that is created or nullptr on
-   *          failure; call GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseIO
-   * @sa FlushIO
-   * @sa ReadIO
-   * @sa SeekIO
-   * @sa TellIO
-   * @sa WriteIO
-   */
-  static IOStream FromFile(StringParam file, StringParam mode);
-
-  /**
-   * Use this function to prepare a read-write memory buffer for use with
-   * IOStream.
-   *
-   * This function sets up an IOStream struct based on a memory area of a
-   * certain size, for both read and write access.
-   *
-   * This memory buffer is not copied by the IOStream; the pointer you provide
-   * must remain valid until you close the stream.
-   *
-   * If you need to make sure the IOStream never writes to the memory buffer,
-   * you should use IOFromConstMem() with a read-only buffer of memory instead.
-   *
-   * The following properties will be set at creation time by SDL:
-   *
-   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
-   *   passed to this function.
-   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
-   *   that was passed to this function.
-   *
-   * Additionally, the following properties are recognized:
-   *
-   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
-   *   non-nullptr value it will be interpreted as a function of free_func type
-   *   and called with the passed `mem` pointer when closing the stream. By
-   *   default it is unset, i.e., the memory will not be freed.
-   *
-   * @param mem a buffer to feed an IOStream stream.
-   * @returns a valid IOStream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOFromConstMem
-   * @sa CloseIO
-   * @sa FlushIO
-   * @sa ReadIO
-   * @sa SeekIO
-   * @sa TellIO
-   * @sa WriteIO
-   */
-  static IOStream FromMem(TargetBytes mem);
-
-  /**
-   * Use this function to prepare a read-only memory buffer for use with
-   * IOStream.
-   *
-   * This function sets up an IOStream struct based on a memory area of a
-   * certain size. It assumes the memory area is not writable.
-   *
-   * Attempting to write to this IOStream stream will report an error without
-   * writing to the memory buffer.
-   *
-   * This memory buffer is not copied by the IOStream; the pointer you provide
-   * must remain valid until you close the stream.
-   *
-   * If you need to write to a memory buffer, you should use IOFromMem() with a
-   * writable buffer of memory instead.
-   *
-   * The following properties will be set at creation time by SDL:
-   *
-   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
-   *   passed to this function.
-   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
-   *   that was passed to this function.
-   *
-   * Additionally, the following properties are recognized:
-   *
-   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
-   *   non-nullptr value it will be interpreted as a function of free_func type
-   *   and called with the passed `mem` pointer when closing the stream. By
-   *   default it is unset, i.e., the memory will not be freed.
-   *
-   * @param mem a read-only buffer to feed an IOStreamRef stream.
-   * @returns a valid IOStream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOFromMem
-   * @sa CloseIO
-   * @sa ReadIO
-   * @sa SeekIO
-   * @sa TellIO
-   */
-  static IOStream FromConstMem(SourceBytes mem);
-
-  /**
-   * Use this function to create an IOStream that is backed by dynamically
-   * allocated memory.
-   *
-   * This supports the following properties to provide access to the memory and
-   * control over allocations:
-   *
-   * - `prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
-   *   of the stream. This can be set to nullptr to transfer ownership of the
-   *   memory to the application, which should free the memory with free(). If
-   *   this is done, the next operation on the stream must be CloseIO().
-   * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
-   *   multiples of this size, defaulting to 1024.
-   *
-   * @returns a valid IOStream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseIO
-   * @sa ReadIO
-   * @sa SeekIO
-   * @sa TellIO
-   * @sa WriteIO
-   */
-  static IOStream FromDynamicMem();
-
-  /**
-   * Create a custom IOStream.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own IOStream implementation. If you just need an IOStream to
-   * read/write a common data source, you should use the built-in
-   * implementations in SDL, like IOFromFile() or IOFromMem(), etc.
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this IOStream, initialized using
-   *              InitInterface().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @returns a valid stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseIO
-   * @sa InitInterface
-   * @sa IOFromConstMem
-   * @sa IOFromFile
-   * @sa IOFromMem
-   */
-  static IOStream Open(const IOStreamInterface& iface, void* userdata);
-
-  /// Destructor
-  ~IOStream() { SDL_CloseIO(get()); }
-
-  /// Assignment operator.
-  constexpr IOStream& operator=(IOStream&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  IOStream& operator=(const IOStream& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close and free an allocated IOStream structure.
@@ -23513,6 +23243,294 @@ struct IOStream : ResourceBase<IOStreamRaw>
 };
 
 /**
+ * The read/write operation structure.
+ *
+ * This operates as an opaque handle. There are several APIs to create various
+ * types of I/O streams, or an app can supply an IOStreamInterface to OpenIO()
+ * to provide their own stream implementation behind this struct's abstract
+ * interface.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct IOStream : IOStreamBase
+{
+  using IOStreamBase::IOStreamBase;
+
+  /**
+   * Constructs from raw IOStream.
+   *
+   * @param resource a IOStreamRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit IOStream(IOStreamRaw resource) noexcept
+    : IOStreamBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr IOStream(const IOStream& other) = delete;
+
+  /// Move constructor
+  constexpr IOStream(IOStream&& other) noexcept
+    : IOStream(other.release())
+  {
+  }
+
+  /**
+   * Use this function to create a new IOStream structure for reading from
+   * and/or writing to a named file.
+   *
+   * The `mode` string is treated roughly the same as in a call to the C
+   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
+   * scenes.
+   *
+   * Available `mode` strings:
+   *
+   * - "r": Open a file for reading. The file must exist.
+   * - "w": Create an empty file for writing. If a file with the same name
+   *   already exists its content is erased and the file is treated as a new
+   *   empty file.
+   * - "wx": Create an empty file for writing. If a file with the same name
+   *   already exists, the call fails. (Supported since SDL 3.4.0)
+   * - "a": Append to a file. Writing operations append data at the end of the
+   *   file. The file is created if it does not exist.
+   * - "r+": Open a file for update both reading and writing. The file must
+   *   exist.
+   * - "w+": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists its content is erased and the file is
+   *   treated as a new empty file.
+   * - "w+x": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
+   * - "a+": Open a file for reading and appending. All writing operations are
+   *   performed at the end of the file, protecting the previous content to be
+   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
+   *   anywhere in the file for reading, but writing operations will move it
+   *   back to the end of file. The file is created if it does not exist.
+   *
+   * **NOTE**: In order to open a file as a binary file, a "b" character has to
+   * be included in the `mode` string. This additional "b" character can either
+   * be appended at the end of the string (thus making the following compound
+   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
+   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
+   * Additional characters may follow the sequence, although they should have no
+   * effect. For example, "t" is sometimes appended to make explicit the file is
+   * a text file.
+   *
+   * This function supports Unicode filenames, but they must be encoded in UTF-8
+   * format, regardless of the underlying operating system.
+   *
+   * In Android, IOFromFile() can be used to open content:// URIs. As a
+   * fallback, IOFromFile() will transparently open a matching filename in the
+   * app's `assets`.
+   *
+   * Closing the IOStream will close SDL's internal file handle.
+   *
+   * The following properties may be set at creation time by SDL:
+   *
+   * - `prop.IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
+   *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
+   *   the program isn't running on Windows, or SDL used some other method to
+   *   access the filesystem, this property will not be set.
+   * - `prop.IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
+   *   stdio `FILE *`, that this IOStream is using to access the filesystem. If
+   *   SDL used some other method to access the filesystem, this property will
+   *   not be set. PLEASE NOTE that if SDL is using a different C runtime than
+   *   your app, trying to use this pointer will almost certainly result in a
+   *   crash! This is mostly a problem on Windows; make sure you build SDL and
+   *   your app with the same compiler and settings to avoid it.
+   * - `prop.IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+   *   IOStream is using to access the filesystem.
+   * - `prop.IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
+   *   Android NDK `AAsset *`, that this IOStream is using to access the
+   *   filesystem. If SDL used some other method to access the filesystem, this
+   *   property will not be set.
+   *
+   * @param file a UTF-8 string representing the filename to open.
+   * @param mode an ASCII string representing the mode to be used for opening
+   *             the file.
+   * @returns a pointer to the IOStream structure that is created or nullptr on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseIO
+   * @sa FlushIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   * @sa WriteIO
+   */
+  static IOStream FromFile(StringParam file, StringParam mode);
+
+  /**
+   * Use this function to prepare a read-write memory buffer for use with
+   * IOStream.
+   *
+   * This function sets up an IOStream struct based on a memory area of a
+   * certain size, for both read and write access.
+   *
+   * This memory buffer is not copied by the IOStream; the pointer you provide
+   * must remain valid until you close the stream.
+   *
+   * If you need to make sure the IOStream never writes to the memory buffer,
+   * you should use IOFromConstMem() with a read-only buffer of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+   *   passed to this function.
+   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * Additionally, the following properties are recognized:
+   *
+   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   *   non-nullptr value it will be interpreted as a function of free_func type
+   *   and called with the passed `mem` pointer when closing the stream. By
+   *   default it is unset, i.e., the memory will not be freed.
+   *
+   * @param mem a buffer to feed an IOStream stream.
+   * @returns a valid IOStream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOFromConstMem
+   * @sa CloseIO
+   * @sa FlushIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   * @sa WriteIO
+   */
+  static IOStream FromMem(TargetBytes mem);
+
+  /**
+   * Use this function to prepare a read-only memory buffer for use with
+   * IOStream.
+   *
+   * This function sets up an IOStream struct based on a memory area of a
+   * certain size. It assumes the memory area is not writable.
+   *
+   * Attempting to write to this IOStream stream will report an error without
+   * writing to the memory buffer.
+   *
+   * This memory buffer is not copied by the IOStream; the pointer you provide
+   * must remain valid until you close the stream.
+   *
+   * If you need to write to a memory buffer, you should use IOFromMem() with a
+   * writable buffer of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+   *   passed to this function.
+   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * Additionally, the following properties are recognized:
+   *
+   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   *   non-nullptr value it will be interpreted as a function of free_func type
+   *   and called with the passed `mem` pointer when closing the stream. By
+   *   default it is unset, i.e., the memory will not be freed.
+   *
+   * @param mem a read-only buffer to feed an IOStreamRef stream.
+   * @returns a valid IOStream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOFromMem
+   * @sa CloseIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   */
+  static IOStream FromConstMem(SourceBytes mem);
+
+  /**
+   * Use this function to create an IOStream that is backed by dynamically
+   * allocated memory.
+   *
+   * This supports the following properties to provide access to the memory and
+   * control over allocations:
+   *
+   * - `prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
+   *   of the stream. This can be set to nullptr to transfer ownership of the
+   *   memory to the application, which should free the memory with free(). If
+   *   this is done, the next operation on the stream must be CloseIO().
+   * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+   *   multiples of this size, defaulting to 1024.
+   *
+   * @returns a valid IOStream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   * @sa WriteIO
+   */
+  static IOStream FromDynamicMem();
+
+  /**
+   * Create a custom IOStream.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own IOStream implementation. If you just need an IOStream to
+   * read/write a common data source, you should use the built-in
+   * implementations in SDL, like IOFromFile() or IOFromMem(), etc.
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this IOStream, initialized using
+   *              InitInterface().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @returns a valid stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseIO
+   * @sa InitInterface
+   * @sa IOFromConstMem
+   * @sa IOFromFile
+   * @sa IOFromMem
+   */
+  static IOStream Open(const IOStreamInterface& iface, void* userdata);
+
+  /// Destructor
+  ~IOStream() { SDL_CloseIO(get()); }
+
+  /// Assignment operator.
+  constexpr IOStream& operator=(IOStream&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  IOStream& operator=(const IOStream& other) = delete;
+};
+
+/**
  * Use this function to create a new IOStream structure for reading from and/or
  * writing to a named file.
  *
@@ -23857,7 +23875,7 @@ inline IOStream IOStream::Open(const IOStreamInterface& iface, void* userdata)
  */
 inline void CloseIO(IOStreamRaw context) { CheckError(SDL_CloseIO(context)); }
 
-inline void IOStream::Close() { CloseIO(release()); }
+inline void IOStreamBase::Close() { CloseIO(release()); }
 
 /**
  * Get the properties associated with an IOStream.
@@ -23872,10 +23890,10 @@ inline void IOStream::Close() { CloseIO(release()); }
  */
 inline PropertiesRef GetIOProperties(IOStreamRef context)
 {
-  return {CheckError(SDL_GetIOProperties(context))};
+  return CheckError(SDL_GetIOProperties(context));
 }
 
-inline PropertiesRef IOStream::GetProperties() const
+inline PropertiesRef IOStreamBase::GetProperties() const
 {
   return SDL::GetIOProperties(get());
 }
@@ -23903,7 +23921,10 @@ inline IOStatus GetIOStatus(IOStreamRef context)
   return SDL_GetIOStatus(context);
 }
 
-inline IOStatus IOStream::GetStatus() const { return SDL::GetIOStatus(get()); }
+inline IOStatus IOStreamBase::GetStatus() const
+{
+  return SDL::GetIOStatus(get());
+}
 
 /**
  * Use this function to get the size of the data stream in an IOStream.
@@ -23921,7 +23942,7 @@ inline Sint64 GetIOSize(IOStreamRef context)
   return CheckError(SDL_GetIOSize(context));
 }
 
-inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(get()); }
+inline Sint64 IOStreamBase::GetSize() const { return SDL::GetIOSize(get()); }
 
 /**
  * Seek within an IOStream data stream.
@@ -23954,7 +23975,7 @@ inline Sint64 SeekIO(IOStreamRef context, Sint64 offset, IOWhence whence)
   return SDL_SeekIO(context, offset, whence);
 }
 
-inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
+inline Sint64 IOStreamBase::Seek(Sint64 offset, IOWhence whence)
 {
   return SDL::SeekIO(get(), offset, whence);
 }
@@ -23979,7 +24000,7 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
  */
 inline Sint64 TellIO(IOStreamRef context) { return SDL_TellIO(context); }
 
-inline Sint64 IOStream::Tell() const { return SDL::TellIO(get()); }
+inline Sint64 IOStreamBase::Tell() const { return SDL::TellIO(get()); }
 
 /**
  * Read from a data source.
@@ -24013,7 +24034,7 @@ inline size_t ReadIO(IOStreamRef context, TargetBytes buf)
   return SDL_ReadIO(context, buf.data(), buf.size_bytes());
 }
 
-inline size_t IOStream::Read(TargetBytes buf)
+inline size_t IOStreamBase::Read(TargetBytes buf)
 {
   return SDL::ReadIO(get(), std::move(buf));
 }
@@ -24056,7 +24077,7 @@ inline size_t WriteIO(IOStreamRef context, SourceBytes buf)
   return SDL_WriteIO(context, buf.data(), buf.size_bytes());
 }
 
-inline size_t IOStream::Write(SourceBytes buf)
+inline size_t IOStreamBase::Write(SourceBytes buf)
 {
   return SDL::WriteIO(get(), std::move(buf));
 }
@@ -24121,8 +24142,8 @@ inline size_t IOvprintf(IOStreamRef context,
   return SDL_IOvprintf(context, fmt, ap);
 }
 
-inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
-                                va_list ap)
+inline size_t IOStreamBase::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
+                                    va_list ap)
 {
   return SDL::IOvprintf(get(), fmt, ap);
 }
@@ -24146,7 +24167,7 @@ inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
  */
 inline void FlushIO(IOStreamRef context) { CheckError(SDL_FlushIO(context)); }
 
-inline void IOStream::Flush() { SDL::FlushIO(get()); }
+inline void IOStreamBase::Flush() { SDL::FlushIO(get()); }
 
 /**
  * Load all the data from an SDL data stream.
@@ -24177,7 +24198,7 @@ inline StringResult LoadFile_IO(IOStreamRef src, bool closeio = true)
   return StringResult{CheckError(data), datasize};
 }
 
-inline StringResult IOStream::LoadFile() { return SDL::LoadFile_IO(get()); }
+inline StringResult IOStreamBase::LoadFile() { return SDL::LoadFile_IO(get()); }
 
 /**
  * Load all the data from a file path.
@@ -24252,7 +24273,7 @@ inline void SaveFile_IO(IOStreamRef src, SourceBytes data, bool closeio = true)
   CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
 }
 
-inline void IOStream::SaveFile(SourceBytes data)
+inline void IOStreamBase::SaveFile(SourceBytes data)
 {
   SDL::SaveFile_IO(get(), std::move(data));
 }
@@ -24285,7 +24306,7 @@ inline void SaveFile(StringParam file, SourceBytes data)
  * GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24299,7 +24320,7 @@ inline Uint8 ReadU8(IOStreamRef src)
   return value;
 }
 
-inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(get()); }
+inline Uint8 IOStreamBase::ReadU8() { return SDL::ReadU8(get()); }
 
 /**
  * Use this function to read a signed byte from an IOStream.
@@ -24310,7 +24331,7 @@ inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24324,7 +24345,7 @@ inline Sint8 ReadS8(IOStreamRef src)
   return value;
 }
 
-inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(get()); }
+inline Sint8 IOStreamBase::ReadS8() { return SDL::ReadS8(get()); }
 
 /**
  * Use this function to read 16 bits of little-endian data from an IOStream and
@@ -24339,7 +24360,7 @@ inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24353,7 +24374,7 @@ inline Uint16 ReadU16LE(IOStreamRef src)
   return value;
 }
 
-inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(get()); }
+inline Uint16 IOStreamBase::ReadU16LE() { return SDL::ReadU16LE(get()); }
 
 /**
  * Use this function to read 16 bits of little-endian data from an IOStream and
@@ -24368,7 +24389,7 @@ inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24382,7 +24403,7 @@ inline Sint16 ReadS16LE(IOStreamRef src)
   return value;
 }
 
-inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(get()); }
+inline Sint16 IOStreamBase::ReadS16LE() { return SDL::ReadS16LE(get()); }
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream and
@@ -24397,7 +24418,7 @@ inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24411,7 +24432,7 @@ inline Uint16 ReadU16BE(IOStreamRef src)
   return value;
 }
 
-inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(get()); }
+inline Uint16 IOStreamBase::ReadU16BE() { return SDL::ReadU16BE(get()); }
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream and
@@ -24426,7 +24447,7 @@ inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24440,7 +24461,7 @@ inline Sint16 ReadS16BE(IOStreamRef src)
   return value;
 }
 
-inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(get()); }
+inline Sint16 IOStreamBase::ReadS16BE() { return SDL::ReadS16BE(get()); }
 
 /**
  * Use this function to read 32 bits of little-endian data from an IOStream and
@@ -24455,7 +24476,7 @@ inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24469,7 +24490,7 @@ inline Uint32 ReadU32LE(IOStreamRef src)
   return value;
 }
 
-inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(get()); }
+inline Uint32 IOStreamBase::ReadU32LE() { return SDL::ReadU32LE(get()); }
 
 /**
  * Use this function to read 32 bits of little-endian data from an IOStream and
@@ -24484,7 +24505,7 @@ inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24498,7 +24519,7 @@ inline Sint32 ReadS32LE(IOStreamRef src)
   return value;
 }
 
-inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(get()); }
+inline Sint32 IOStreamBase::ReadS32LE() { return SDL::ReadS32LE(get()); }
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream and
@@ -24513,7 +24534,7 @@ inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24527,7 +24548,7 @@ inline Uint32 ReadU32BE(IOStreamRef src)
   return value;
 }
 
-inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(get()); }
+inline Uint32 IOStreamBase::ReadU32BE() { return SDL::ReadU32BE(get()); }
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream and
@@ -24542,7 +24563,7 @@ inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24556,7 +24577,7 @@ inline Sint32 ReadS32BE(IOStreamRef src)
   return value;
 }
 
-inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(get()); }
+inline Sint32 IOStreamBase::ReadS32BE() { return SDL::ReadS32BE(get()); }
 
 /**
  * Use this function to read 64 bits of little-endian data from an IOStream and
@@ -24571,7 +24592,7 @@ inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24585,7 +24606,7 @@ inline Uint64 ReadU64LE(IOStreamRef src)
   return value;
 }
 
-inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(get()); }
+inline Uint64 IOStreamBase::ReadU64LE() { return SDL::ReadU64LE(get()); }
 
 /**
  * Use this function to read 64 bits of little-endian data from an IOStream and
@@ -24600,7 +24621,7 @@ inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24614,7 +24635,7 @@ inline Sint64 ReadS64LE(IOStreamRef src)
   return value;
 }
 
-inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(get()); }
+inline Sint64 IOStreamBase::ReadS64LE() { return SDL::ReadS64LE(get()); }
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream and
@@ -24629,7 +24650,7 @@ inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24643,7 +24664,7 @@ inline Uint64 ReadU64BE(IOStreamRef src)
   return value;
 }
 
-inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(get()); }
+inline Uint64 IOStreamBase::ReadU64BE() { return SDL::ReadU64BE(get()); }
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream and
@@ -24658,7 +24679,7 @@ inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24672,7 +24693,7 @@ inline Sint64 ReadS64BE(IOStreamRef src)
   return value;
 }
 
-inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(get()); }
+inline Sint64 IOStreamBase::ReadS64BE() { return SDL::ReadS64BE(get()); }
 
 /**
  * Use this function to write a byte to an IOStream.
@@ -24690,7 +24711,7 @@ inline void WriteU8(IOStreamRef dst, Uint8 value)
   CheckError(SDL_WriteU8(dst, value));
 }
 
-inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(get(), value); }
+inline void IOStreamBase::WriteU8(Uint8 value) { SDL::WriteU8(get(), value); }
 
 /**
  * Use this function to write a signed byte to an IOStream.
@@ -24708,7 +24729,7 @@ inline void WriteS8(IOStreamRef dst, Sint8 value)
   CheckError(SDL_WriteS8(dst, value));
 }
 
-inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(get(), value); }
+inline void IOStreamBase::WriteS8(Sint8 value) { SDL::WriteS8(get(), value); }
 
 /**
  * Use this function to write 16 bits in native format to an IOStream as
@@ -24730,7 +24751,7 @@ inline void WriteU16LE(IOStreamRef dst, Uint16 value)
   CheckError(SDL_WriteU16LE(dst, value));
 }
 
-inline void IOStream::WriteU16LE(Uint16 value)
+inline void IOStreamBase::WriteU16LE(Uint16 value)
 {
   SDL::WriteU16LE(get(), value);
 }
@@ -24755,7 +24776,7 @@ inline void WriteS16LE(IOStreamRef dst, Sint16 value)
   CheckError(SDL_WriteS16LE(dst, value));
 }
 
-inline void IOStream::WriteS16LE(Sint16 value)
+inline void IOStreamBase::WriteS16LE(Sint16 value)
 {
   SDL::WriteS16LE(get(), value);
 }
@@ -24780,7 +24801,7 @@ inline void WriteU16BE(IOStreamRef dst, Uint16 value)
   CheckError(SDL_WriteU16BE(dst, value));
 }
 
-inline void IOStream::WriteU16BE(Uint16 value)
+inline void IOStreamBase::WriteU16BE(Uint16 value)
 {
   SDL::WriteU16BE(get(), value);
 }
@@ -24805,7 +24826,7 @@ inline void WriteS16BE(IOStreamRef dst, Sint16 value)
   CheckError(SDL_WriteS16BE(dst, value));
 }
 
-inline void IOStream::WriteS16BE(Sint16 value)
+inline void IOStreamBase::WriteS16BE(Sint16 value)
 {
   SDL::WriteS16BE(get(), value);
 }
@@ -24830,7 +24851,7 @@ inline void WriteU32LE(IOStreamRef dst, Uint32 value)
   CheckError(SDL_WriteU32LE(dst, value));
 }
 
-inline void IOStream::WriteU32LE(Uint32 value)
+inline void IOStreamBase::WriteU32LE(Uint32 value)
 {
   SDL::WriteU32LE(get(), value);
 }
@@ -24855,7 +24876,7 @@ inline void WriteS32LE(IOStreamRef dst, Sint32 value)
   CheckError(SDL_WriteS32LE(dst, value));
 }
 
-inline void IOStream::WriteS32LE(Sint32 value)
+inline void IOStreamBase::WriteS32LE(Sint32 value)
 {
   SDL::WriteS32LE(get(), value);
 }
@@ -24880,7 +24901,7 @@ inline void WriteU32BE(IOStreamRef dst, Uint32 value)
   CheckError(SDL_WriteU32BE(dst, value));
 }
 
-inline void IOStream::WriteU32BE(Uint32 value)
+inline void IOStreamBase::WriteU32BE(Uint32 value)
 {
   SDL::WriteU32BE(get(), value);
 }
@@ -24905,7 +24926,7 @@ inline void WriteS32BE(IOStreamRef dst, Sint32 value)
   CheckError(SDL_WriteS32BE(dst, value));
 }
 
-inline void IOStream::WriteS32BE(Sint32 value)
+inline void IOStreamBase::WriteS32BE(Sint32 value)
 {
   SDL::WriteS32BE(get(), value);
 }
@@ -24930,7 +24951,7 @@ inline void WriteU64LE(IOStreamRef dst, Uint64 value)
   CheckError(SDL_WriteU64LE(dst, value));
 }
 
-inline void IOStream::WriteU64LE(Uint64 value)
+inline void IOStreamBase::WriteU64LE(Uint64 value)
 {
   SDL::WriteU64LE(get(), value);
 }
@@ -24955,7 +24976,7 @@ inline void WriteS64LE(IOStreamRef dst, Sint64 value)
   CheckError(SDL_WriteS64LE(dst, value));
 }
 
-inline void IOStream::WriteS64LE(Sint64 value)
+inline void IOStreamBase::WriteS64LE(Sint64 value)
 {
   SDL::WriteS64LE(get(), value);
 }
@@ -24980,7 +25001,7 @@ inline void WriteU64BE(IOStreamRef dst, Uint64 value)
   CheckError(SDL_WriteU64BE(dst, value));
 }
 
-inline void IOStream::WriteU64BE(Uint64 value)
+inline void IOStreamBase::WriteU64BE(Uint64 value)
 {
   SDL::WriteU64BE(get(), value);
 }
@@ -25005,7 +25026,7 @@ inline void WriteS64BE(IOStreamRef dst, Sint64 value)
   CheckError(SDL_WriteS64BE(dst, value));
 }
 
-inline void IOStream::WriteS64BE(Sint64 value)
+inline void IOStreamBase::WriteS64BE(Sint64 value)
 {
   SDL::WriteS64BE(get(), value);
 }

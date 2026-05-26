@@ -64738,6 +64738,10 @@
         "IOStream is not related to the standard C++ iostream class, other than both are abstract interfaces to read/write data."
       ],
       "entries": {
+        "IOStreamBase-forward": {
+          "name": "IOStreamBase",
+          "kind": "forward"
+        },
         "IOStream-forward": {
           "name": "IOStream",
           "kind": "forward"
@@ -64757,7 +64761,7 @@
             "Reference for IOStream.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<IOStream>"
+          "type": "ResourceRefT<IOStreamBase>"
         },
         "IOStatus": {
           "doc": [
@@ -64895,616 +64899,21 @@
           "sourceName": "SDL_IOStreamInterface",
           "type": "SDL_IOStreamInterface"
         },
-        "IOStream": {
-          "doc": [
-            "The read/write operation structure.",
-            "This operates as an opaque handle. There are several APIs to create various types of I/O streams, or an app can supply an IOStreamInterface to OpenIO() to provide their own stream implementation behind this struct's abstract interface.",
-            {
-              "tag": "@since",
-              "content": "This struct is available since SDL 3.2.0."
-            },
-            "@cat resource"
-          ],
-          "name": "IOStream",
+        "IOStreamBase": {
+          "name": "IOStreamBase",
           "kind": "struct",
-          "type": "ResourceBase<IOStreamRaw>",
-          "sourceName": "SDL_IOStream",
+          "type": "ResourceBaseT<IOStreamRaw>",
+          "doc": [
+            "Base class to IOStream.",
+            {
+              "tag": "@see",
+              "content": "IOStream"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "IOStream": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "IOStreamRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw IOStream.",
-                {
-                  "tag": "@param resource",
-                  "content": "a IOStreamRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "IOStream",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const IOStream &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "IOStream",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "IOStream &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "IOStream(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "IOStream",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const IOStreamRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "IOStream",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "IOStreamRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "IOStream"
-                    }
-                  }
-                }
-              }
-            },
-            "FromFile": {
-              "doc": [
-                "Use this function to create a new IOStream structure for reading from and/or writing to a named file.",
-                "The `mode` string is treated roughly the same as in a call to the C library's fopen(), even if SDL doesn't happen to use fopen() behind the scenes.",
-                "Available `mode` strings:",
-                [
-                  {
-                    "tag": "-",
-                    "content": "\"r\": Open a file for reading. The file must exist."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "\"w\": Create an empty file for writing. If a file with the same name already exists its content is erased and the file is treated as a new empty file."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "\"wx\": Create an empty file for writing. If a file with the same name already exists, the call fails."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "\"a\": Append to a file. Writing operations append data at the end of the file. The file is created if it does not exist."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "\"r+\": Open a file for update both reading and writing. The file must exist."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "\"w+\": Create an empty file for both reading and writing. If a file with the same name already exists its content is erased and the file is treated as a new empty file."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "\"w+x\": Create an empty file for both reading and writing. If a file with the same name already exists, the call fails."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "\"a+\": Open a file for reading and appending. All writing operations are performed at the end of the file, protecting the previous content to be overwritten. You can reposition (fseek, rewind) the internal pointer to anywhere in the file for reading, but writing operations will move it back to the end of file. The file is created if it does not exist."
-                  }
-                ],
-                "**NOTE**: In order to open a file as a binary file, a \"b\" character has to be included in the `mode` string. This additional \"b\" character can either be appended at the end of the string (thus making the following compound modes: \"rb\", \"wb\", \"ab\", \"r+b\", \"w+b\", \"a+b\") or be inserted between the letter and the \"+\" sign for the mixed modes (\"rb+\", \"wb+\", \"ab+\"). Additional characters may follow the sequence, although they should have no effect. For example, \"t\" is sometimes appended to make explicit the file is a text file.",
-                "This function supports Unicode filenames, but they must be encoded in UTF-8 format, regardless of the underlying operating system.",
-                "In Android, IOFromFile() can be used to open content:// URIs. As a fallback, IOFromFile() will transparently open a matching filename in the app's `assets`.",
-                "Closing the IOStream will close SDL's internal file handle.",
-                "The following properties may be set at creation time by SDL:",
-                [
-                  {
-                    "tag": "-",
-                    "content": "`prop.IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a win32 `HANDLE`, that this IOStream is using to access the filesystem. If the program isn't running on Windows, or SDL used some other method to access the filesystem, this property will not be set."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "`prop.IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a stdio `FILE *`, that this IOStream is using to access the filesystem. If SDL used some other method to access the filesystem, this property will not be set. PLEASE NOTE that if SDL is using a different C runtime than your app, trying to use this pointer will almost certainly result in a crash! This is mostly a problem on Windows; make sure you build SDL and your app with the same compiler and settings to avoid it."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "`prop.IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this IOStream is using to access the filesystem."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "`prop.IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an Android NDK `AAsset *`, that this IOStream is using to access the filesystem. If SDL used some other method to access the filesystem, this property will not be set."
-                  }
-                ],
-                [
-                  {
-                    "tag": "@param file",
-                    "content": "a UTF-8 string representing the filename to open."
-                  },
-                  {
-                    "tag": "@param mode",
-                    "content": "an ASCII string representing the mode to be used for opening the file."
-                  },
-                  {
-                    "tag": "@returns",
-                    "content": "a pointer to the IOStream structure that is created or nullptr on failure; call GetError() for more information."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                [
-                  {
-                    "tag": "@sa",
-                    "content": "CloseIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "FlushIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "ReadIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "SeekIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "TellIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "WriteIO"
-                  }
-                ]
-              ],
-              "name": "FromFile",
-              "kind": "function",
-              "type": "IOStream",
-              "parameters": [
-                {
-                  "name": "file",
-                  "type": "StringParam"
-                },
-                {
-                  "name": "mode",
-                  "type": "StringParam"
-                }
-              ],
-              "sourceName": "SDL_IOFromFile",
-              "static": true,
-              "hints": {
-                "wrapSelf": true,
-                "delegate": "SDL::IOFromFile"
-              },
-              "proto": true
-            },
-            "FromMem": {
-              "doc": [
-                "Use this function to prepare a read-write memory buffer for use with IOStream.",
-                "This function sets up an IOStream struct based on a memory area of a certain size, for both read and write access.",
-                "This memory buffer is not copied by the IOStream; the pointer you provide must remain valid until you close the stream.",
-                "If you need to make sure the IOStream never writes to the memory buffer, you should use IOFromConstMem() with a read-only buffer of memory instead.",
-                "The following properties will be set at creation time by SDL:",
-                [
-                  {
-                    "tag": "-",
-                    "content": "`prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was passed to this function."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "`prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that was passed to this function."
-                  }
-                ],
-                "Additionally, the following properties are recognized:",
-                {
-                  "tag": "-",
-                  "content": "`prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a non-nullptr value it will be interpreted as a function of free_func type and called with the passed `mem` pointer when closing the stream. By default it is unset, i.e., the memory will not be freed."
-                },
-                [
-                  {
-                    "tag": "@param mem",
-                    "content": "a pointer to a buffer to feed an IOStream stream."
-                  },
-                  {
-                    "tag": "@param size",
-                    "content": "the buffer size, in bytes."
-                  },
-                  {
-                    "tag": "@returns",
-                    "content": "a pointer to a new IOStream structure or nullptr on failure; call GetError() for more information."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                [
-                  {
-                    "tag": "@sa",
-                    "content": "IOFromConstMem"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "CloseIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "FlushIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "ReadIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "SeekIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "TellIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "WriteIO"
-                  }
-                ]
-              ],
-              "name": "FromMem",
-              "kind": "function",
-              "type": "IOStream",
-              "parameters": [
-                {
-                  "name": "mem",
-                  "type": "TargetBytes"
-                }
-              ],
-              "sourceName": "SDL_IOFromMem",
-              "static": true,
-              "hints": {
-                "wrapSelf": true,
-                "delegate": "SDL::IOFromMem"
-              },
-              "proto": true
-            },
-            "FromConstMem": {
-              "doc": [
-                "Use this function to prepare a read-only memory buffer for use with IOStream.",
-                "This function sets up an IOStream struct based on a memory area of a certain size. It assumes the memory area is not writable.",
-                "Attempting to write to this IOStream stream will report an error without writing to the memory buffer.",
-                "This memory buffer is not copied by the IOStream; the pointer you provide must remain valid until you close the stream.",
-                "If you need to write to a memory buffer, you should use IOFromMem() with a writable buffer of memory instead.",
-                "The following properties will be set at creation time by SDL:",
-                [
-                  {
-                    "tag": "-",
-                    "content": "`prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was passed to this function."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "`prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that was passed to this function."
-                  }
-                ],
-                "Additionally, the following properties are recognized:",
-                {
-                  "tag": "-",
-                  "content": "`prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a non-nullptr value it will be interpreted as a function of free_func type and called with the passed `mem` pointer when closing the stream. By default it is unset, i.e., the memory will not be freed."
-                },
-                [
-                  {
-                    "tag": "@param mem",
-                    "content": "a pointer to a read-only buffer to feed an IOStream stream."
-                  },
-                  {
-                    "tag": "@param size",
-                    "content": "the buffer size, in bytes."
-                  },
-                  {
-                    "tag": "@returns",
-                    "content": "a pointer to a new IOStream structure or nullptr on failure; call GetError() for more information."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                [
-                  {
-                    "tag": "@sa",
-                    "content": "IOFromMem"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "CloseIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "ReadIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "SeekIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "TellIO"
-                  }
-                ]
-              ],
-              "name": "FromConstMem",
-              "kind": "function",
-              "type": "IOStream",
-              "parameters": [
-                {
-                  "name": "mem",
-                  "type": "SourceBytes"
-                }
-              ],
-              "sourceName": "SDL_IOFromConstMem",
-              "static": true,
-              "hints": {
-                "wrapSelf": true,
-                "delegate": "SDL::IOFromConstMem"
-              },
-              "proto": true
-            },
-            "FromDynamicMem": {
-              "doc": [
-                "Use this function to create an IOStream that is backed by dynamically allocated memory.",
-                "This supports the following properties to provide access to the memory and control over allocations:",
-                [
-                  {
-                    "tag": "-",
-                    "content": "`prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory of the stream. This can be set to nullptr to transfer ownership of the memory to the application, which should free the memory with free(). If this is done, the next operation on the stream must be CloseIO()."
-                  },
-                  {
-                    "tag": "-",
-                    "content": "`prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in multiples of this size, defaulting to 1024."
-                  }
-                ],
-                {
-                  "tag": "@returns",
-                  "content": "a pointer to a new IOStream structure or nullptr on failure; call GetError() for more information."
-                },
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                [
-                  {
-                    "tag": "@sa",
-                    "content": "CloseIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "ReadIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "SeekIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "TellIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "WriteIO"
-                  }
-                ]
-              ],
-              "name": "FromDynamicMem",
-              "kind": "function",
-              "type": "IOStream",
-              "parameters": [],
-              "sourceName": "SDL_IOFromDynamicMem",
-              "static": true,
-              "hints": {
-                "wrapSelf": true,
-                "delegate": "SDL::IOFromDynamicMem"
-              },
-              "proto": true
-            },
-            "Open": {
-              "doc": [
-                "Create a custom IOStream.",
-                "Applications do not need to use this function unless they are providing their own IOStream implementation. If you just need an IOStream to read/write a common data source, you should use the built-in implementations in SDL, like IOFromFile() or IOFromMem(), etc.",
-                "This function makes a copy of `iface` and the caller does not need to keep it around after this call.",
-                [
-                  {
-                    "tag": "@param iface",
-                    "content": "the interface that implements this IOStream, initialized using InitInterface()."
-                  },
-                  {
-                    "tag": "@param userdata",
-                    "content": "the pointer that will be passed to the interface functions."
-                  },
-                  {
-                    "tag": "@returns",
-                    "content": "a pointer to the allocated memory on success."
-                  },
-                  {
-                    "tag": "@throws",
-                    "content": "Error on failure."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "It is safe to call this function from any thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                [
-                  {
-                    "tag": "@sa",
-                    "content": "CloseIO"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "InitInterface"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "IOFromConstMem"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "IOFromFile"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "IOFromMem"
-                  }
-                ]
-              ],
-              "name": "Open",
-              "kind": "function",
-              "type": "IOStream",
-              "parameters": [
-                {
-                  "name": "iface",
-                  "type": "const IOStreamInterface &"
-                },
-                {
-                  "name": "userdata",
-                  "type": "void *"
-                }
-              ],
-              "sourceName": "SDL_OpenIO",
-              "hints": {
-                "mayFail": true,
-                "wrapSelf": true,
-                "delegate": "SDL::OpenIO"
-              },
-              "static": true,
-              "proto": true
-            },
-            "~IOStream": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_CloseIO(get());"
-              },
-              "name": "~IOStream"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "IOStream &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "IOStream &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "IOStream &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const IOStream &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "Close": {
               "doc": [
@@ -67349,6 +66758,590 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "IOStream": {
+          "doc": [
+            "The read/write operation structure.",
+            "This operates as an opaque handle. There are several APIs to create various types of I/O streams, or an app can supply an IOStreamInterface to OpenIO() to provide their own stream implementation behind this struct's abstract interface.",
+            {
+              "tag": "@since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            "@cat resource"
+          ],
+          "name": "IOStream",
+          "kind": "struct",
+          "type": "IOStreamBase",
+          "sourceName": "SDL_IOStream",
+          "entries": {
+            "IOStreamBase::IOStreamBase": {
+              "kind": "alias",
+              "name": "IOStreamBase::IOStreamBase"
+            },
+            "IOStream": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "IOStreamRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "IOStreamBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw IOStream.",
+                {
+                  "tag": "@param resource",
+                  "content": "a IOStreamRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "IOStream",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const IOStream &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "IOStream",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "IOStream &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "IOStream(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "IOStream"
+                }
+              }
+            },
+            "FromFile": {
+              "doc": [
+                "Use this function to create a new IOStream structure for reading from and/or writing to a named file.",
+                "The `mode` string is treated roughly the same as in a call to the C library's fopen(), even if SDL doesn't happen to use fopen() behind the scenes.",
+                "Available `mode` strings:",
+                [
+                  {
+                    "tag": "-",
+                    "content": "\"r\": Open a file for reading. The file must exist."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "\"w\": Create an empty file for writing. If a file with the same name already exists its content is erased and the file is treated as a new empty file."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "\"wx\": Create an empty file for writing. If a file with the same name already exists, the call fails."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "\"a\": Append to a file. Writing operations append data at the end of the file. The file is created if it does not exist."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "\"r+\": Open a file for update both reading and writing. The file must exist."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "\"w+\": Create an empty file for both reading and writing. If a file with the same name already exists its content is erased and the file is treated as a new empty file."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "\"w+x\": Create an empty file for both reading and writing. If a file with the same name already exists, the call fails."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "\"a+\": Open a file for reading and appending. All writing operations are performed at the end of the file, protecting the previous content to be overwritten. You can reposition (fseek, rewind) the internal pointer to anywhere in the file for reading, but writing operations will move it back to the end of file. The file is created if it does not exist."
+                  }
+                ],
+                "**NOTE**: In order to open a file as a binary file, a \"b\" character has to be included in the `mode` string. This additional \"b\" character can either be appended at the end of the string (thus making the following compound modes: \"rb\", \"wb\", \"ab\", \"r+b\", \"w+b\", \"a+b\") or be inserted between the letter and the \"+\" sign for the mixed modes (\"rb+\", \"wb+\", \"ab+\"). Additional characters may follow the sequence, although they should have no effect. For example, \"t\" is sometimes appended to make explicit the file is a text file.",
+                "This function supports Unicode filenames, but they must be encoded in UTF-8 format, regardless of the underlying operating system.",
+                "In Android, IOFromFile() can be used to open content:// URIs. As a fallback, IOFromFile() will transparently open a matching filename in the app's `assets`.",
+                "Closing the IOStream will close SDL's internal file handle.",
+                "The following properties may be set at creation time by SDL:",
+                [
+                  {
+                    "tag": "-",
+                    "content": "`prop.IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a win32 `HANDLE`, that this IOStream is using to access the filesystem. If the program isn't running on Windows, or SDL used some other method to access the filesystem, this property will not be set."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "`prop.IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a stdio `FILE *`, that this IOStream is using to access the filesystem. If SDL used some other method to access the filesystem, this property will not be set. PLEASE NOTE that if SDL is using a different C runtime than your app, trying to use this pointer will almost certainly result in a crash! This is mostly a problem on Windows; make sure you build SDL and your app with the same compiler and settings to avoid it."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "`prop.IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this IOStream is using to access the filesystem."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "`prop.IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an Android NDK `AAsset *`, that this IOStream is using to access the filesystem. If SDL used some other method to access the filesystem, this property will not be set."
+                  }
+                ],
+                [
+                  {
+                    "tag": "@param file",
+                    "content": "a UTF-8 string representing the filename to open."
+                  },
+                  {
+                    "tag": "@param mode",
+                    "content": "an ASCII string representing the mode to be used for opening the file."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "a pointer to the IOStream structure that is created or nullptr on failure; call GetError() for more information."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "CloseIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "FlushIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "ReadIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "SeekIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "TellIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "WriteIO"
+                  }
+                ]
+              ],
+              "name": "FromFile",
+              "kind": "function",
+              "type": "IOStream",
+              "parameters": [
+                {
+                  "name": "file",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "mode",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_IOFromFile",
+              "static": true,
+              "hints": {
+                "wrapSelf": true,
+                "delegate": "SDL::IOFromFile"
+              },
+              "proto": true
+            },
+            "FromMem": {
+              "doc": [
+                "Use this function to prepare a read-write memory buffer for use with IOStream.",
+                "This function sets up an IOStream struct based on a memory area of a certain size, for both read and write access.",
+                "This memory buffer is not copied by the IOStream; the pointer you provide must remain valid until you close the stream.",
+                "If you need to make sure the IOStream never writes to the memory buffer, you should use IOFromConstMem() with a read-only buffer of memory instead.",
+                "The following properties will be set at creation time by SDL:",
+                [
+                  {
+                    "tag": "-",
+                    "content": "`prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was passed to this function."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "`prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that was passed to this function."
+                  }
+                ],
+                "Additionally, the following properties are recognized:",
+                {
+                  "tag": "-",
+                  "content": "`prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a non-nullptr value it will be interpreted as a function of free_func type and called with the passed `mem` pointer when closing the stream. By default it is unset, i.e., the memory will not be freed."
+                },
+                [
+                  {
+                    "tag": "@param mem",
+                    "content": "a pointer to a buffer to feed an IOStream stream."
+                  },
+                  {
+                    "tag": "@param size",
+                    "content": "the buffer size, in bytes."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "a pointer to a new IOStream structure or nullptr on failure; call GetError() for more information."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "IOFromConstMem"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "CloseIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "FlushIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "ReadIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "SeekIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "TellIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "WriteIO"
+                  }
+                ]
+              ],
+              "name": "FromMem",
+              "kind": "function",
+              "type": "IOStream",
+              "parameters": [
+                {
+                  "name": "mem",
+                  "type": "TargetBytes"
+                }
+              ],
+              "sourceName": "SDL_IOFromMem",
+              "static": true,
+              "hints": {
+                "wrapSelf": true,
+                "delegate": "SDL::IOFromMem"
+              },
+              "proto": true
+            },
+            "FromConstMem": {
+              "doc": [
+                "Use this function to prepare a read-only memory buffer for use with IOStream.",
+                "This function sets up an IOStream struct based on a memory area of a certain size. It assumes the memory area is not writable.",
+                "Attempting to write to this IOStream stream will report an error without writing to the memory buffer.",
+                "This memory buffer is not copied by the IOStream; the pointer you provide must remain valid until you close the stream.",
+                "If you need to write to a memory buffer, you should use IOFromMem() with a writable buffer of memory instead.",
+                "The following properties will be set at creation time by SDL:",
+                [
+                  {
+                    "tag": "-",
+                    "content": "`prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was passed to this function."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "`prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that was passed to this function."
+                  }
+                ],
+                "Additionally, the following properties are recognized:",
+                {
+                  "tag": "-",
+                  "content": "`prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a non-nullptr value it will be interpreted as a function of free_func type and called with the passed `mem` pointer when closing the stream. By default it is unset, i.e., the memory will not be freed."
+                },
+                [
+                  {
+                    "tag": "@param mem",
+                    "content": "a pointer to a read-only buffer to feed an IOStream stream."
+                  },
+                  {
+                    "tag": "@param size",
+                    "content": "the buffer size, in bytes."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "a pointer to a new IOStream structure or nullptr on failure; call GetError() for more information."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "IOFromMem"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "CloseIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "ReadIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "SeekIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "TellIO"
+                  }
+                ]
+              ],
+              "name": "FromConstMem",
+              "kind": "function",
+              "type": "IOStream",
+              "parameters": [
+                {
+                  "name": "mem",
+                  "type": "SourceBytes"
+                }
+              ],
+              "sourceName": "SDL_IOFromConstMem",
+              "static": true,
+              "hints": {
+                "wrapSelf": true,
+                "delegate": "SDL::IOFromConstMem"
+              },
+              "proto": true
+            },
+            "FromDynamicMem": {
+              "doc": [
+                "Use this function to create an IOStream that is backed by dynamically allocated memory.",
+                "This supports the following properties to provide access to the memory and control over allocations:",
+                [
+                  {
+                    "tag": "-",
+                    "content": "`prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory of the stream. This can be set to nullptr to transfer ownership of the memory to the application, which should free the memory with free(). If this is done, the next operation on the stream must be CloseIO()."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "`prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in multiples of this size, defaulting to 1024."
+                  }
+                ],
+                {
+                  "tag": "@returns",
+                  "content": "a pointer to a new IOStream structure or nullptr on failure; call GetError() for more information."
+                },
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "CloseIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "ReadIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "SeekIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "TellIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "WriteIO"
+                  }
+                ]
+              ],
+              "name": "FromDynamicMem",
+              "kind": "function",
+              "type": "IOStream",
+              "parameters": [],
+              "sourceName": "SDL_IOFromDynamicMem",
+              "static": true,
+              "hints": {
+                "wrapSelf": true,
+                "delegate": "SDL::IOFromDynamicMem"
+              },
+              "proto": true
+            },
+            "Open": {
+              "doc": [
+                "Create a custom IOStream.",
+                "Applications do not need to use this function unless they are providing their own IOStream implementation. If you just need an IOStream to read/write a common data source, you should use the built-in implementations in SDL, like IOFromFile() or IOFromMem(), etc.",
+                "This function makes a copy of `iface` and the caller does not need to keep it around after this call.",
+                [
+                  {
+                    "tag": "@param iface",
+                    "content": "the interface that implements this IOStream, initialized using InitInterface()."
+                  },
+                  {
+                    "tag": "@param userdata",
+                    "content": "the pointer that will be passed to the interface functions."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "a pointer to the allocated memory on success."
+                  },
+                  {
+                    "tag": "@throws",
+                    "content": "Error on failure."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "It is safe to call this function from any thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "CloseIO"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "InitInterface"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "IOFromConstMem"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "IOFromFile"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "IOFromMem"
+                  }
+                ]
+              ],
+              "name": "Open",
+              "kind": "function",
+              "type": "IOStream",
+              "parameters": [
+                {
+                  "name": "iface",
+                  "type": "const IOStreamInterface &"
+                },
+                {
+                  "name": "userdata",
+                  "type": "void *"
+                }
+              ],
+              "sourceName": "SDL_OpenIO",
+              "hints": {
+                "mayFail": true,
+                "wrapSelf": true,
+                "delegate": "SDL::OpenIO"
+              },
+              "static": true,
+              "proto": true
+            },
+            "~IOStream": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_CloseIO(get());"
+              },
+              "name": "~IOStream"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "IOStream &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "IOStream &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "IOStream &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const IOStream &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "IOStream"
           }
@@ -68045,15 +68038,14 @@
             "mayFail": true
           }
         },
-        "IOStream::Close": {
-          "name": "IOStream::Close",
+        "IOStreamBase::Close": {
+          "name": "IOStreamBase::Close",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_CloseIO",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "body": "CloseIO(release());",
             "delegate": "SDL::CloseIO"
@@ -68099,15 +68091,14 @@
             "mayFail": true
           }
         },
-        "IOStream::GetProperties": {
-          "name": "IOStream::GetProperties",
+        "IOStreamBase::GetProperties": {
+          "name": "IOStreamBase::GetProperties",
           "kind": "function",
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetIOProperties",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::GetIOProperties"
           },
@@ -68148,8 +68139,8 @@
           ],
           "sourceName": "SDL_GetIOStatus"
         },
-        "IOStream::GetStatus": {
-          "name": "IOStream::GetStatus",
+        "IOStreamBase::GetStatus": {
+          "name": "IOStreamBase::GetStatus",
           "kind": "function",
           "type": "IOStatus",
           "parameters": [],
@@ -68157,7 +68148,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "delegate": "SDL::GetIOStatus"
           }
         },
@@ -68201,15 +68191,14 @@
             "mayFail": true
           }
         },
-        "IOStream::GetSize": {
-          "name": "IOStream::GetSize",
+        "IOStreamBase::GetSize": {
+          "name": "IOStreamBase::GetSize",
           "kind": "function",
           "type": "Sint64",
           "parameters": [],
           "sourceName": "SDL_GetIOSize",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::GetIOSize"
           },
@@ -68285,8 +68274,8 @@
           ],
           "sourceName": "SDL_SeekIO"
         },
-        "IOStream::Seek": {
-          "name": "IOStream::Seek",
+        "IOStreamBase::Seek": {
+          "name": "IOStreamBase::Seek",
           "kind": "function",
           "type": "Sint64",
           "parameters": [
@@ -68302,7 +68291,6 @@
           "sourceName": "SDL_SeekIO",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "delegate": "SDL::SeekIO"
           }
         },
@@ -68344,8 +68332,8 @@
           ],
           "sourceName": "SDL_TellIO"
         },
-        "IOStream::Tell": {
-          "name": "IOStream::Tell",
+        "IOStreamBase::Tell": {
+          "name": "IOStreamBase::Tell",
           "kind": "function",
           "type": "Sint64",
           "parameters": [],
@@ -68353,7 +68341,6 @@
           "immutable": true,
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "delegate": "SDL::TellIO"
           }
         },
@@ -68415,8 +68402,8 @@
           ],
           "sourceName": "SDL_ReadIO"
         },
-        "IOStream::Read": {
-          "name": "IOStream::Read",
+        "IOStreamBase::Read": {
+          "name": "IOStreamBase::Read",
           "kind": "function",
           "type": "size_t",
           "parameters": [
@@ -68428,7 +68415,6 @@
           "sourceName": "SDL_ReadIO",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "delegate": "SDL::ReadIO"
           }
         },
@@ -68503,8 +68489,8 @@
           ],
           "sourceName": "SDL_WriteIO"
         },
-        "IOStream::Write": {
-          "name": "IOStream::Write",
+        "IOStreamBase::Write": {
+          "name": "IOStreamBase::Write",
           "kind": "function",
           "type": "size_t",
           "parameters": [
@@ -68516,7 +68502,6 @@
           "sourceName": "SDL_WriteIO",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "delegate": "SDL::WriteIO"
           }
         },
@@ -68636,8 +68621,8 @@
           ],
           "sourceName": "SDL_IOvprintf"
         },
-        "IOStream::vprintf": {
-          "name": "IOStream::vprintf",
+        "IOStreamBase::vprintf": {
+          "name": "IOStreamBase::vprintf",
           "kind": "function",
           "type": "size_t",
           "parameters": [
@@ -68653,7 +68638,6 @@
           "sourceName": "SDL_IOvprintf",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "delegate": "SDL::IOvprintf"
           }
         },
@@ -68704,15 +68688,14 @@
             "mayFail": true
           }
         },
-        "IOStream::Flush": {
-          "name": "IOStream::Flush",
+        "IOStreamBase::Flush": {
+          "name": "IOStreamBase::Flush",
           "kind": "function",
           "type": "void",
           "parameters": [],
           "sourceName": "SDL_FlushIO",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::FlushIO"
           }
@@ -68775,15 +68758,14 @@
           ],
           "sourceName": "SDL_LoadFile_IO"
         },
-        "IOStream::LoadFile": {
-          "name": "IOStream::LoadFile",
+        "IOStreamBase::LoadFile": {
+          "name": "IOStreamBase::LoadFile",
           "kind": "function",
           "type": "StringResult",
           "parameters": [],
           "sourceName": "SDL_LoadFile_IO",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "delegate": "SDL::LoadFile_IO"
           }
         },
@@ -68920,8 +68902,8 @@
             "mayFail": true
           }
         },
-        "IOStream::SaveFile": {
-          "name": "IOStream::SaveFile",
+        "IOStreamBase::SaveFile": {
+          "name": "IOStreamBase::SaveFile",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -68933,7 +68915,6 @@
           "sourceName": "SDL_SaveFile_IO",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::SaveFile_IO"
           }
@@ -69037,15 +69018,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadU8": {
-          "name": "IOStream::ReadU8",
+        "IOStreamBase::ReadU8": {
+          "name": "IOStreamBase::ReadU8",
           "kind": "function",
           "type": "Uint8",
           "parameters": [],
           "sourceName": "SDL_ReadU8",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadU8"
           }
@@ -69091,15 +69071,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadS8": {
-          "name": "IOStream::ReadS8",
+        "IOStreamBase::ReadS8": {
+          "name": "IOStreamBase::ReadS8",
           "kind": "function",
           "type": "Sint8",
           "parameters": [],
           "sourceName": "SDL_ReadS8",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadS8"
           }
@@ -69146,15 +69125,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadU16LE": {
-          "name": "IOStream::ReadU16LE",
+        "IOStreamBase::ReadU16LE": {
+          "name": "IOStreamBase::ReadU16LE",
           "kind": "function",
           "type": "Uint16",
           "parameters": [],
           "sourceName": "SDL_ReadU16LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadU16LE"
           }
@@ -69201,15 +69179,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadS16LE": {
-          "name": "IOStream::ReadS16LE",
+        "IOStreamBase::ReadS16LE": {
+          "name": "IOStreamBase::ReadS16LE",
           "kind": "function",
           "type": "Sint16",
           "parameters": [],
           "sourceName": "SDL_ReadS16LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadS16LE"
           }
@@ -69256,15 +69233,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadU16BE": {
-          "name": "IOStream::ReadU16BE",
+        "IOStreamBase::ReadU16BE": {
+          "name": "IOStreamBase::ReadU16BE",
           "kind": "function",
           "type": "Uint16",
           "parameters": [],
           "sourceName": "SDL_ReadU16BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadU16BE"
           }
@@ -69311,15 +69287,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadS16BE": {
-          "name": "IOStream::ReadS16BE",
+        "IOStreamBase::ReadS16BE": {
+          "name": "IOStreamBase::ReadS16BE",
           "kind": "function",
           "type": "Sint16",
           "parameters": [],
           "sourceName": "SDL_ReadS16BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadS16BE"
           }
@@ -69366,15 +69341,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadU32LE": {
-          "name": "IOStream::ReadU32LE",
+        "IOStreamBase::ReadU32LE": {
+          "name": "IOStreamBase::ReadU32LE",
           "kind": "function",
           "type": "Uint32",
           "parameters": [],
           "sourceName": "SDL_ReadU32LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadU32LE"
           }
@@ -69421,15 +69395,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadS32LE": {
-          "name": "IOStream::ReadS32LE",
+        "IOStreamBase::ReadS32LE": {
+          "name": "IOStreamBase::ReadS32LE",
           "kind": "function",
           "type": "Sint32",
           "parameters": [],
           "sourceName": "SDL_ReadS32LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadS32LE"
           }
@@ -69476,15 +69449,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadU32BE": {
-          "name": "IOStream::ReadU32BE",
+        "IOStreamBase::ReadU32BE": {
+          "name": "IOStreamBase::ReadU32BE",
           "kind": "function",
           "type": "Uint32",
           "parameters": [],
           "sourceName": "SDL_ReadU32BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadU32BE"
           }
@@ -69531,15 +69503,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadS32BE": {
-          "name": "IOStream::ReadS32BE",
+        "IOStreamBase::ReadS32BE": {
+          "name": "IOStreamBase::ReadS32BE",
           "kind": "function",
           "type": "Sint32",
           "parameters": [],
           "sourceName": "SDL_ReadS32BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadS32BE"
           }
@@ -69586,15 +69557,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadU64LE": {
-          "name": "IOStream::ReadU64LE",
+        "IOStreamBase::ReadU64LE": {
+          "name": "IOStreamBase::ReadU64LE",
           "kind": "function",
           "type": "Uint64",
           "parameters": [],
           "sourceName": "SDL_ReadU64LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadU64LE"
           }
@@ -69641,15 +69611,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadS64LE": {
-          "name": "IOStream::ReadS64LE",
+        "IOStreamBase::ReadS64LE": {
+          "name": "IOStreamBase::ReadS64LE",
           "kind": "function",
           "type": "Sint64",
           "parameters": [],
           "sourceName": "SDL_ReadS64LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadS64LE"
           }
@@ -69696,15 +69665,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadU64BE": {
-          "name": "IOStream::ReadU64BE",
+        "IOStreamBase::ReadU64BE": {
+          "name": "IOStreamBase::ReadU64BE",
           "kind": "function",
           "type": "Uint64",
           "parameters": [],
           "sourceName": "SDL_ReadU64BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadU64BE"
           }
@@ -69751,15 +69719,14 @@
             "mayFail": true
           }
         },
-        "IOStream::ReadS64BE": {
-          "name": "IOStream::ReadS64BE",
+        "IOStreamBase::ReadS64BE": {
+          "name": "IOStreamBase::ReadS64BE",
           "kind": "function",
           "type": "Sint64",
           "parameters": [],
           "sourceName": "SDL_ReadS64BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::ReadS64BE"
           }
@@ -69808,8 +69775,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteU8": {
-          "name": "IOStream::WriteU8",
+        "IOStreamBase::WriteU8": {
+          "name": "IOStreamBase::WriteU8",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -69821,7 +69788,6 @@
           "sourceName": "SDL_WriteU8",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteU8"
           }
@@ -69870,8 +69836,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteS8": {
-          "name": "IOStream::WriteS8",
+        "IOStreamBase::WriteS8": {
+          "name": "IOStreamBase::WriteS8",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -69883,7 +69849,6 @@
           "sourceName": "SDL_WriteS8",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteS8"
           }
@@ -69933,8 +69898,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteU16LE": {
-          "name": "IOStream::WriteU16LE",
+        "IOStreamBase::WriteU16LE": {
+          "name": "IOStreamBase::WriteU16LE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -69946,7 +69911,6 @@
           "sourceName": "SDL_WriteU16LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteU16LE"
           }
@@ -69996,8 +69960,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteS16LE": {
-          "name": "IOStream::WriteS16LE",
+        "IOStreamBase::WriteS16LE": {
+          "name": "IOStreamBase::WriteS16LE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70009,7 +69973,6 @@
           "sourceName": "SDL_WriteS16LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteS16LE"
           }
@@ -70059,8 +70022,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteU16BE": {
-          "name": "IOStream::WriteU16BE",
+        "IOStreamBase::WriteU16BE": {
+          "name": "IOStreamBase::WriteU16BE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70072,7 +70035,6 @@
           "sourceName": "SDL_WriteU16BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteU16BE"
           }
@@ -70122,8 +70084,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteS16BE": {
-          "name": "IOStream::WriteS16BE",
+        "IOStreamBase::WriteS16BE": {
+          "name": "IOStreamBase::WriteS16BE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70135,7 +70097,6 @@
           "sourceName": "SDL_WriteS16BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteS16BE"
           }
@@ -70185,8 +70146,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteU32LE": {
-          "name": "IOStream::WriteU32LE",
+        "IOStreamBase::WriteU32LE": {
+          "name": "IOStreamBase::WriteU32LE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70198,7 +70159,6 @@
           "sourceName": "SDL_WriteU32LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteU32LE"
           }
@@ -70248,8 +70208,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteS32LE": {
-          "name": "IOStream::WriteS32LE",
+        "IOStreamBase::WriteS32LE": {
+          "name": "IOStreamBase::WriteS32LE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70261,7 +70221,6 @@
           "sourceName": "SDL_WriteS32LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteS32LE"
           }
@@ -70311,8 +70270,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteU32BE": {
-          "name": "IOStream::WriteU32BE",
+        "IOStreamBase::WriteU32BE": {
+          "name": "IOStreamBase::WriteU32BE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70324,7 +70283,6 @@
           "sourceName": "SDL_WriteU32BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteU32BE"
           }
@@ -70374,8 +70332,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteS32BE": {
-          "name": "IOStream::WriteS32BE",
+        "IOStreamBase::WriteS32BE": {
+          "name": "IOStreamBase::WriteS32BE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70387,7 +70345,6 @@
           "sourceName": "SDL_WriteS32BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteS32BE"
           }
@@ -70437,8 +70394,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteU64LE": {
-          "name": "IOStream::WriteU64LE",
+        "IOStreamBase::WriteU64LE": {
+          "name": "IOStreamBase::WriteU64LE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70450,7 +70407,6 @@
           "sourceName": "SDL_WriteU64LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteU64LE"
           }
@@ -70500,8 +70456,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteS64LE": {
-          "name": "IOStream::WriteS64LE",
+        "IOStreamBase::WriteS64LE": {
+          "name": "IOStreamBase::WriteS64LE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70513,7 +70469,6 @@
           "sourceName": "SDL_WriteS64LE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteS64LE"
           }
@@ -70563,8 +70518,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteU64BE": {
-          "name": "IOStream::WriteU64BE",
+        "IOStreamBase::WriteU64BE": {
+          "name": "IOStreamBase::WriteU64BE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70576,7 +70531,6 @@
           "sourceName": "SDL_WriteU64BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteU64BE"
           }
@@ -70626,8 +70580,8 @@
             "mayFail": true
           }
         },
-        "IOStream::WriteS64BE": {
-          "name": "IOStream::WriteS64BE",
+        "IOStreamBase::WriteS64BE": {
+          "name": "IOStreamBase::WriteS64BE",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -70639,7 +70593,6 @@
           "sourceName": "SDL_WriteS64BE",
           "hints": {
             "self": "get()",
-            "super": "IOStream",
             "mayFail": true,
             "delegate": "SDL::WriteS64BE"
           }
@@ -133672,6 +133625,10 @@
           ],
           "type": "ResourceRefT<EnvironmentBase>"
         },
+        "IConvBase-forward": {
+          "name": "IConvBase",
+          "kind": "forward"
+        },
         "IConv-forward": {
           "name": "IConv",
           "kind": "forward"
@@ -133691,7 +133648,7 @@
             "Reference for IConv.",
             "This does not take ownership!"
           ],
-          "type": "ResourceRef<IConv>"
+          "type": "ResourceRefT<IConvBase>"
         },
         "int8_t": {
           "name": "int8_t",
@@ -144936,229 +144893,21 @@
             "sourceName": "SDL_tanf"
           }
         },
-        "IConv": {
-          "doc": [
-            "An opaque handle representing string encoding conversion state.",
-            {
-              "tag": "@since",
-              "content": "This datatype is available since SDL 3.2.0."
-            },
-            {
-              "tag": "@sa",
-              "content": "iconv_open"
-            },
-            "@cat resource"
-          ],
-          "name": "IConv",
+        "IConvBase": {
+          "name": "IConvBase",
           "kind": "struct",
-          "type": "ResourceBase<IConvRaw>",
-          "sourceName": "SDL_iconv_t",
+          "type": "ResourceBaseT<IConvRaw>",
+          "doc": [
+            "Base class to IConv.",
+            {
+              "tag": "@see",
+              "content": "IConv"
+            }
+          ],
           "entries": {
-            "ResourceBase::ResourceBase": {
+            "ResourceBaseT::ResourceBaseT": {
               "kind": "alias",
-              "name": "ResourceBase::ResourceBase"
-            },
-            "IConv": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "explicit": true,
-              "parameters": [
-                {
-                  "name": "resource",
-                  "type": "IConvRaw"
-                }
-              ],
-              "hints": {
-                "init": [
-                  "ResourceBase(resource)"
-                ],
-                "noexcept": true
-              },
-              "doc": [
-                "Constructs from raw IConv.",
-                {
-                  "tag": "@param resource",
-                  "content": "a IConvRaw to be wrapped."
-                },
-                "This assumes the ownership, call release() if you need to take back."
-              ],
-              "name": "IConv",
-              "overload": {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const IConv &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Copy constructor"
-                ],
-                "name": "IConv",
-                "overload": {
-                  "kind": "function",
-                  "type": "",
-                  "constexpr": true,
-                  "parameters": [
-                    {
-                      "name": "other",
-                      "type": "IConv &&"
-                    }
-                  ],
-                  "hints": {
-                    "init": [
-                      "IConv(other.release())"
-                    ],
-                    "noexcept": true
-                  },
-                  "doc": [
-                    "Move constructor"
-                  ],
-                  "name": "IConv",
-                  "overload": {
-                    "kind": "function",
-                    "doc": [],
-                    "type": "",
-                    "constexpr": true,
-                    "parameters": [
-                      {
-                        "name": "other",
-                        "type": "const IConvRef &"
-                      }
-                    ],
-                    "hints": {
-                      "delete": true
-                    },
-                    "name": "IConv",
-                    "overload": {
-                      "kind": "function",
-                      "doc": [],
-                      "type": "",
-                      "constexpr": true,
-                      "parameters": [
-                        {
-                          "name": "other",
-                          "type": "IConvRef &&"
-                        }
-                      ],
-                      "hints": {
-                        "delete": true
-                      },
-                      "name": "IConv",
-                      "overload": {
-                        "doc": [
-                          "This function allocates a context for the specified character set conversion.",
-                          [
-                            {
-                              "tag": "@param tocode",
-                              "content": "The target character encoding, must not be nullptr."
-                            },
-                            {
-                              "tag": "@param fromcode",
-                              "content": "The source character encoding, must not be nullptr."
-                            },
-                            {
-                              "tag": "@post",
-                              "content": "a handle that must be freed with iconv_close, or ICONV_ERROR on failure."
-                            }
-                          ],
-                          {
-                            "tag": "@threadsafety",
-                            "content": "It is safe to call this function from any thread."
-                          },
-                          {
-                            "tag": "@since",
-                            "content": "This function is available since SDL 3.2.0."
-                          },
-                          [
-                            {
-                              "tag": "@sa",
-                              "content": "iconv"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "iconv_close"
-                            },
-                            {
-                              "tag": "@sa",
-                              "content": "iconv_string"
-                            }
-                          ]
-                        ],
-                        "name": "IConv",
-                        "kind": "function",
-                        "type": "",
-                        "parameters": [
-                          {
-                            "name": "tocode",
-                            "type": "StringParam"
-                          },
-                          {
-                            "name": "fromcode",
-                            "type": "StringParam"
-                          }
-                        ],
-                        "sourceName": "SDL_iconv_open",
-                        "proto": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "~IConv": {
-              "kind": "function",
-              "doc": [
-                "Destructor"
-              ],
-              "type": "",
-              "parameters": [],
-              "hints": {
-                "body": "SDL_iconv_close(get());"
-              },
-              "name": "~IConv"
-            },
-            "operator=": {
-              "kind": "function",
-              "type": "IConv &",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "IConv &&"
-                }
-              ],
-              "constexpr": true,
-              "hints": {
-                "body": "swap(*this, other);\nreturn *this;",
-                "noexcept": true
-              },
-              "doc": [
-                "Assignment operator."
-              ],
-              "name": "operator=",
-              "overload": {
-                "kind": "function",
-                "type": "IConv &",
-                "parameters": [
-                  {
-                    "name": "other",
-                    "type": "const IConv &"
-                  }
-                ],
-                "hints": {
-                  "delete": true
-                },
-                "doc": [
-                  "Assignment operator."
-                ],
-                "name": "operator="
-              }
+              "name": "ResourceBaseT::ResourceBaseT"
             },
             "close": {
               "doc": [
@@ -145305,6 +145054,203 @@
             }
           },
           "hints": {
+            "self": "get()"
+          }
+        },
+        "IConv": {
+          "doc": [
+            "An opaque handle representing string encoding conversion state.",
+            {
+              "tag": "@since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "iconv_open"
+            },
+            "@cat resource"
+          ],
+          "name": "IConv",
+          "kind": "struct",
+          "type": "IConvBase",
+          "sourceName": "SDL_iconv_t",
+          "entries": {
+            "IConvBase::IConvBase": {
+              "kind": "alias",
+              "name": "IConvBase::IConvBase"
+            },
+            "IConv": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "name": "resource",
+                  "type": "IConvRaw"
+                }
+              ],
+              "hints": {
+                "init": [
+                  "IConvBase(resource)"
+                ],
+                "noexcept": true
+              },
+              "doc": [
+                "Constructs from raw IConv.",
+                {
+                  "tag": "@param resource",
+                  "content": "a IConvRaw to be wrapped."
+                },
+                "This assumes the ownership, call release() if you need to take back."
+              ],
+              "name": "IConv",
+              "overload": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const IConv &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Copy constructor"
+                ],
+                "name": "IConv",
+                "overload": {
+                  "kind": "function",
+                  "type": "",
+                  "constexpr": true,
+                  "parameters": [
+                    {
+                      "name": "other",
+                      "type": "IConv &&"
+                    }
+                  ],
+                  "hints": {
+                    "init": [
+                      "IConv(other.release())"
+                    ],
+                    "noexcept": true
+                  },
+                  "doc": [
+                    "Move constructor"
+                  ],
+                  "name": "IConv",
+                  "overload": {
+                    "doc": [
+                      "This function allocates a context for the specified character set conversion.",
+                      [
+                        {
+                          "tag": "@param tocode",
+                          "content": "The target character encoding, must not be nullptr."
+                        },
+                        {
+                          "tag": "@param fromcode",
+                          "content": "The source character encoding, must not be nullptr."
+                        },
+                        {
+                          "tag": "@post",
+                          "content": "a handle that must be freed with iconv_close, or ICONV_ERROR on failure."
+                        }
+                      ],
+                      {
+                        "tag": "@threadsafety",
+                        "content": "It is safe to call this function from any thread."
+                      },
+                      {
+                        "tag": "@since",
+                        "content": "This function is available since SDL 3.2.0."
+                      },
+                      [
+                        {
+                          "tag": "@sa",
+                          "content": "iconv"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "iconv_close"
+                        },
+                        {
+                          "tag": "@sa",
+                          "content": "iconv_string"
+                        }
+                      ]
+                    ],
+                    "name": "IConv",
+                    "kind": "function",
+                    "type": "",
+                    "parameters": [
+                      {
+                        "name": "tocode",
+                        "type": "StringParam"
+                      },
+                      {
+                        "name": "fromcode",
+                        "type": "StringParam"
+                      }
+                    ],
+                    "sourceName": "SDL_iconv_open",
+                    "proto": true
+                  }
+                }
+              }
+            },
+            "~IConv": {
+              "kind": "function",
+              "doc": [
+                "Destructor"
+              ],
+              "type": "",
+              "parameters": [],
+              "hints": {
+                "body": "SDL_iconv_close(get());"
+              },
+              "name": "~IConv"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "IConv &",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "IConv &&"
+                }
+              ],
+              "constexpr": true,
+              "hints": {
+                "body": "swap(*this, other);\nreturn *this;",
+                "noexcept": true
+              },
+              "doc": [
+                "Assignment operator."
+              ],
+              "name": "operator=",
+              "overload": {
+                "kind": "function",
+                "type": "IConv &",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const IConv &"
+                  }
+                ],
+                "hints": {
+                  "delete": true
+                },
+                "doc": [
+                  "Assignment operator."
+                ],
+                "name": "operator="
+              }
+            }
+          },
+          "hints": {
             "self": "get()",
             "super": "IConv"
           }
@@ -145435,15 +145381,14 @@
           ],
           "sourceName": "SDL_iconv_close"
         },
-        "IConv::close": {
-          "name": "IConv::close",
+        "IConvBase::close": {
+          "name": "IConvBase::close",
           "kind": "function",
           "type": "int",
           "parameters": [],
           "sourceName": "SDL_iconv_close",
           "hints": {
             "self": "get()",
-            "super": "IConv",
             "body": "return iconv_close(release());",
             "delegate": "SDL::iconv_close"
           }
@@ -145547,8 +145492,8 @@
           ],
           "sourceName": "SDL_iconv"
         },
-        "IConv::iconv": {
-          "name": "IConv::iconv",
+        "IConvBase::iconv": {
+          "name": "IConvBase::iconv",
           "kind": "function",
           "type": "size_t",
           "parameters": [
@@ -145572,7 +145517,6 @@
           "sourceName": "SDL_iconv",
           "hints": {
             "self": "get()",
-            "super": "IConv",
             "delegate": "SDL::iconv"
           }
         },
