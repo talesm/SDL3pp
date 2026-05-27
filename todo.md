@@ -3,7 +3,7 @@ Todo for next version
 
 Breaking changes:
 
-- [ ] Remove old entry point (break compat);
+- [x] Remove old entry point (break compat);
 - [x] Properties::Create is now a constructor;
 - [x] Refactor resource to become less hack-y (probably breaking compat):
   - [x] Create new ResourceBase and make ResourceOwned derive from it;
