@@ -549,12 +549,12 @@ using TextEditingCandidatesEvent = SDL_TextEditingCandidatesEvent;
  * Keyboard text input event structure (event.text.*)
  *
  * This event will never be delivered unless text input is enabled by calling
- * Window.StartTextInput(). Text input is disabled by default!
+ * StartTextInput(). Text input is disabled by default!
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
- * @sa Window.StopTextInput
+ * @sa StartTextInput
+ * @sa StopTextInput
  */
 using TextInputEvent = SDL_TextInputEvent;
 

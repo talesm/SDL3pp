@@ -9,7 +9,7 @@
   *
   * SDL sensor management.
   *
-@@ -273,15 +273,17 @@
+@@ -276,15 +276,17 @@
  /**
   * Get a list of currently connected sensors.
   *
@@ -32,7 +32,7 @@
  
  /**
   * Get the implementation dependent name of a sensor.
-@@ -356,7 +358,7 @@
+@@ -359,7 +361,7 @@
   */
  inline SensorRef GetSensorFromID(SensorID instance_id)
  {
@@ -41,7 +41,7 @@
  }
  
  /**
-@@ -370,7 +372,7 @@
+@@ -373,7 +375,7 @@
   */
  inline PropertiesRef GetSensorProperties(SensorRef sensor)
  {
@@ -49,4 +49,4 @@
 +  return {CheckError(SDL_GetSensorProperties(sensor))};
  }
  
- inline PropertiesRef Sensor::GetProperties()
+ inline PropertiesRef SensorBase::GetProperties()

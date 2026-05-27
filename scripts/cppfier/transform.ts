@@ -510,10 +510,11 @@ export function detectMethods(
   paramType: string,
   constParamType: string,
   blockedNames: Set<string>,
+  baseType: string = undefined,
 ) {
   const transformMap = file.transform;
   const foundEntries: Dict<ApiEntryTransform | QuickTransform> = {};
-  const prefix = `${targetType}::`;
+  const prefix = `${baseType ?? targetType}::`;
   let lastKey = "__begin";
   const placeAfter = new Map<string, string[]>();
   for (let [sourceName, entryDelta] of Object.entries(transformMap)) {
@@ -570,7 +571,7 @@ export function detectMethods(
       if (entryDelta.after) lastKey = entryDelta.after;
       if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(methodName);
       else placeAfter.set(lastKey, [methodName]);
-      const name = `${targetType}::${methodName}`;
+      const name = `${baseType ?? targetType}::${methodName}`;
       insertOrLink(
         transformMap,
         {
@@ -2279,6 +2280,7 @@ function prepareForTypeInsert(entry: ApiEntry, name: string, typeName: string) {
 
 function normalizeTypeName(typeName: string) {
   if (typeName.endsWith("Ref")) return typeName.slice(0, -3);
+  if (typeName.endsWith("Base")) return typeName.slice(0, -4);
   return typeName;
 }
 
@@ -2464,7 +2466,8 @@ function transformEntriesDocRefs(entries: ApiEntries, context: ApiContext) {
 }
 
 export function resolveVersionDoc(doc: ParsedDoc, context: ApiContext) {
-  const sinceTag = getTagInGroup(doc, "@since");
+  const sinceTag =
+    getTagInGroup(doc, "@since") ?? getTagInGroup(doc, "\\since");
   if (!sinceTag) return;
   const m = /\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(sinceTag.content);
   if (!m) return undefined;

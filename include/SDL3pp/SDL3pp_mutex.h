@@ -28,6 +28,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct MutexBase;
+
+// Forward decl
 struct Mutex;
 
 /// Alias to raw representation for Mutex.
@@ -38,7 +41,10 @@ using MutexRaw = SDL_Mutex*;
  *
  * This does not take ownership!
  */
-using MutexRef = ResourceRef<Mutex>;
+using MutexRef = ResourceRefT<MutexBase>;
+
+// Forward decl
+struct RWLockBase;
 
 // Forward decl
 struct RWLock;
@@ -51,7 +57,10 @@ using RWLockRaw = SDL_RWLock*;
  *
  * This does not take ownership!
  */
-using RWLockRef = ResourceRef<RWLock>;
+using RWLockRef = ResourceRefT<RWLockBase>;
+
+// Forward decl
+struct SemaphoreBase;
 
 // Forward decl
 struct Semaphore;
@@ -64,7 +73,10 @@ using SemaphoreRaw = SDL_Semaphore*;
  *
  * This does not take ownership!
  */
-using SemaphoreRef = ResourceRef<Semaphore>;
+using SemaphoreRef = ResourceRefT<SemaphoreBase>;
+
+// Forward decl
+struct ConditionBase;
 
 // Forward decl
 struct Condition;
@@ -77,7 +89,7 @@ using ConditionRaw = SDL_Condition*;
  *
  * This does not take ownership!
  */
-using ConditionRef = ResourceRef<Condition>;
+using ConditionRef = ResourceRefT<ConditionBase>;
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -86,84 +98,13 @@ using InitStateRaw = SDL_InitState;
 struct InitState;
 
 /**
- * A means to serialize access to a resource between threads.
+ * Base class to Mutex.
  *
- * Mutexes (short for "mutual exclusion") are a synchronization primitive that
- * allows exactly one thread to proceed at a time.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Mutex
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Mutex
  */
-struct Mutex : ResourceBase<MutexRaw>
+struct MutexBase : ResourceBaseT<MutexRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Mutex.
-   *
-   * @param resource a MutexRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Mutex(MutexRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Mutex(const Mutex& other) = delete;
-
-  /// Move constructor
-  constexpr Mutex(Mutex&& other) noexcept
-    : Mutex(other.release())
-  {
-  }
-
-  constexpr Mutex(const MutexRef& other) = delete;
-
-  constexpr Mutex(MutexRef&& other) = delete;
-
-  /**
-   * Create a new mutex.
-   *
-   * All newly-created mutexes begin in the _unlocked_ state.
-   *
-   * Calls to LockMutex() will not return while the mutex is locked by another
-   * thread. See TryLockMutex() to attempt to lock without blocking.
-   *
-   * SDL mutexes are reentrant.
-   *
-   * @post the initialized and unlocked mutex or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyMutex
-   * @sa LockMutex
-   * @sa TryLockMutex
-   * @sa UnlockMutex
-   */
-  Mutex();
-
-  /// Destructor
-  ~Mutex() { SDL_DestroyMutex(get()); }
-
-  /// Assignment operator.
-  constexpr Mutex& operator=(Mutex&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Mutex& operator=(const Mutex& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a mutex created with CreateMutex().
@@ -250,6 +191,77 @@ struct Mutex : ResourceBase<MutexRaw>
 };
 
 /**
+ * A means to serialize access to a resource between threads.
+ *
+ * Mutexes (short for "mutual exclusion") are a synchronization primitive that
+ * allows exactly one thread to proceed at a time.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Mutex
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Mutex : MutexBase
+{
+  using MutexBase::MutexBase;
+
+  /**
+   * Constructs from raw Mutex.
+   *
+   * @param resource a MutexRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Mutex(MutexRaw resource) noexcept
+    : MutexBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Mutex(Mutex&& other) noexcept
+    : Mutex(other.release())
+  {
+  }
+
+  /**
+   * Create a new mutex.
+   *
+   * All newly-created mutexes begin in the _unlocked_ state.
+   *
+   * Calls to LockMutex() will not return while the mutex is locked by another
+   * thread. See TryLockMutex() to attempt to lock without blocking.
+   *
+   * SDL mutexes are reentrant.
+   *
+   * @post the initialized and unlocked mutex or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyMutex
+   * @sa LockMutex
+   * @sa TryLockMutex
+   * @sa UnlockMutex
+   */
+  Mutex();
+
+  /// Destructor
+  ~Mutex() { SDL_DestroyMutex(get()); }
+
+  /// Assignment operator.
+  constexpr Mutex& operator=(Mutex&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Create a new mutex.
  *
  * All newly-created mutexes begin in the _unlocked_ state.
@@ -304,7 +316,7 @@ inline Mutex::Mutex()
  */
 inline void LockMutex(MutexRef mutex) { SDL_LockMutex(mutex); }
 
-inline void Mutex::Lock() { SDL::LockMutex(get()); }
+inline void MutexBase::Lock() { SDL::LockMutex(get()); }
 
 /**
  * Try to lock a mutex without blocking.
@@ -329,7 +341,7 @@ inline void Mutex::Lock() { SDL::LockMutex(get()); }
  */
 inline bool TryLockMutex(MutexRef mutex) { return SDL_TryLockMutex(mutex); }
 
-inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
+inline bool MutexBase::TryLock() { return SDL::TryLockMutex(get()); }
 
 /**
  * Unlock the mutex.
@@ -353,7 +365,7 @@ inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
  */
 inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 
-inline void Mutex::Unlock() { SDL::UnlockMutex(get()); }
+inline void MutexBase::Unlock() { SDL::UnlockMutex(get()); }
 
 /**
  * Destroy a mutex created with CreateMutex().
@@ -374,113 +386,16 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(get()); }
  */
 inline void DestroyMutex(MutexRaw mutex) { SDL_DestroyMutex(mutex); }
 
-inline void Mutex::Destroy() { DestroyMutex(release()); }
+inline void MutexBase::Destroy() { DestroyMutex(release()); }
 
 /**
- * A mutex that allows read-only threads to run in parallel.
+ * Base class to RWLock.
  *
- * A rwlock is roughly the same concept as Mutex, but allows threads that
- * request read-only access to all hold the lock at the same time. If a thread
- * requests write access, it will block until all read-only threads have
- * released the lock, and no one else can hold the thread (for reading or
- * writing) at the same time as the writing thread.
- *
- * This can be more efficient in cases where several threads need to access data
- * frequently, but changes to that data are rare.
- *
- * There are other rules that apply to rwlocks that don't apply to mutexes,
- * about how threads are scheduled and when they can be recursively locked.
- * These are documented in the other rwlock functions.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see RWLock
  */
-struct RWLock : ResourceBase<RWLockRaw>
+struct RWLockBase : ResourceBaseT<RWLockRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw RWLock.
-   *
-   * @param resource a RWLockRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit RWLock(RWLockRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr RWLock(const RWLock& other) = delete;
-
-  /// Move constructor
-  constexpr RWLock(RWLock&& other) noexcept
-    : RWLock(other.release())
-  {
-  }
-
-  constexpr RWLock(const RWLockRef& other) = delete;
-
-  constexpr RWLock(RWLockRef&& other) = delete;
-
-  /**
-   * Create a new read/write lock.
-   *
-   * A read/write lock is useful for situations where you have multiple threads
-   * trying to access a resource that is rarely updated. All threads requesting
-   * a read-only lock will be allowed to run in parallel; if a thread requests a
-   * write lock, it will be provided exclusive access. This makes it safe for
-   * multiple threads to use a resource at the same time if they promise not to
-   * change it, and when it has to be changed, the rwlock will serve as a
-   * gateway to make sure those changes can be made safely.
-   *
-   * In the right situation, a rwlock can be more efficient than a mutex, which
-   * only lets a single thread proceed at a time, even if it won't be modifying
-   * the data.
-   *
-   * All newly-created read/write locks begin in the _unlocked_ state.
-   *
-   * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
-   * while the rwlock is locked _for writing_ by another thread. See
-   * TryLockRWLockForReading() and TryLockRWLockForWriting() to attempt to lock
-   * without blocking.
-   *
-   * SDL read/write locks are only recursive for read-only locks! They are not
-   * guaranteed to be fair, or provide access in a FIFO manner! They are not
-   * guaranteed to favor writers. You may not lock a rwlock for both read-only
-   * and write access at the same time from the same thread (so you can't
-   * promote your read-only lock to a write lock without unlocking first).
-   *
-   * @post the initialized and unlocked read/write lock or nullptr on failure;
-   *       call GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyRWLock
-   * @sa LockRWLockForReading
-   * @sa LockRWLockForWriting
-   * @sa TryLockRWLockForReading
-   * @sa TryLockRWLockForWriting
-   * @sa UnlockRWLock
-   */
-  RWLock();
-
-  /// Destructor
-  ~RWLock() { SDL_DestroyRWLock(get()); }
-
-  /// Assignment operator.
-  constexpr RWLock& operator=(RWLock&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  RWLock& operator=(const RWLock& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a read/write lock created with CreateRWLock().
@@ -652,6 +567,103 @@ struct RWLock : ResourceBase<RWLockRaw>
 };
 
 /**
+ * A mutex that allows read-only threads to run in parallel.
+ *
+ * A rwlock is roughly the same concept as Mutex, but allows threads that
+ * request read-only access to all hold the lock at the same time. If a thread
+ * requests write access, it will block until all read-only threads have
+ * released the lock, and no one else can hold the thread (for reading or
+ * writing) at the same time as the writing thread.
+ *
+ * This can be more efficient in cases where several threads need to access data
+ * frequently, but changes to that data are rare.
+ *
+ * There are other rules that apply to rwlocks that don't apply to mutexes,
+ * about how threads are scheduled and when they can be recursively locked.
+ * These are documented in the other rwlock functions.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct RWLock : RWLockBase
+{
+  using RWLockBase::RWLockBase;
+
+  /**
+   * Constructs from raw RWLock.
+   *
+   * @param resource a RWLockRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit RWLock(RWLockRaw resource) noexcept
+    : RWLockBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr RWLock(RWLock&& other) noexcept
+    : RWLock(other.release())
+  {
+  }
+
+  /**
+   * Create a new read/write lock.
+   *
+   * A read/write lock is useful for situations where you have multiple threads
+   * trying to access a resource that is rarely updated. All threads requesting
+   * a read-only lock will be allowed to run in parallel; if a thread requests a
+   * write lock, it will be provided exclusive access. This makes it safe for
+   * multiple threads to use a resource at the same time if they promise not to
+   * change it, and when it has to be changed, the rwlock will serve as a
+   * gateway to make sure those changes can be made safely.
+   *
+   * In the right situation, a rwlock can be more efficient than a mutex, which
+   * only lets a single thread proceed at a time, even if it won't be modifying
+   * the data.
+   *
+   * All newly-created read/write locks begin in the _unlocked_ state.
+   *
+   * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
+   * while the rwlock is locked _for writing_ by another thread. See
+   * TryLockRWLockForReading() and TryLockRWLockForWriting() to attempt to lock
+   * without blocking.
+   *
+   * SDL read/write locks are only recursive for read-only locks! They are not
+   * guaranteed to be fair, or provide access in a FIFO manner! They are not
+   * guaranteed to favor writers. You may not lock a rwlock for both read-only
+   * and write access at the same time from the same thread (so you can't
+   * promote your read-only lock to a write lock without unlocking first).
+   *
+   * @post the initialized and unlocked read/write lock or nullptr on failure;
+   *       call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyRWLock
+   * @sa LockRWLockForReading
+   * @sa LockRWLockForWriting
+   * @sa TryLockRWLockForReading
+   * @sa TryLockRWLockForWriting
+   * @sa UnlockRWLock
+   */
+  RWLock();
+
+  /// Destructor
+  ~RWLock() { SDL_DestroyRWLock(get()); }
+
+  /// Assignment operator.
+  constexpr RWLock& operator=(RWLock&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Create a new read/write lock.
  *
  * A read/write lock is useful for situations where you have multiple threads
@@ -742,7 +754,7 @@ inline void LockRWLockForReading(RWLockRef rwlock)
   SDL_LockRWLockForReading(rwlock);
 }
 
-inline void RWLock::LockForReading() { SDL::LockRWLockForReading(get()); }
+inline void RWLockBase::LockForReading() { SDL::LockRWLockForReading(get()); }
 
 /**
  * Lock the read/write lock for _write_ operations.
@@ -780,7 +792,7 @@ inline void LockRWLockForWriting(RWLockRef rwlock)
   SDL_LockRWLockForWriting(rwlock);
 }
 
-inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(get()); }
+inline void RWLockBase::LockForWriting() { SDL::LockRWLockForWriting(get()); }
 
 /**
  * Try to lock a read/write lock _for reading_ without blocking.
@@ -812,7 +824,7 @@ inline bool TryLockRWLockForReading(RWLockRef rwlock)
   return SDL_TryLockRWLockForReading(rwlock);
 }
 
-inline bool RWLock::TryLockForReading()
+inline bool RWLockBase::TryLockForReading()
 {
   return SDL::TryLockRWLockForReading(get());
 }
@@ -852,7 +864,7 @@ inline bool TryLockRWLockForWriting(RWLockRef rwlock)
   return SDL_TryLockRWLockForWriting(rwlock);
 }
 
-inline bool RWLock::TryLockForWriting()
+inline bool RWLockBase::TryLockForWriting()
 {
   return SDL::TryLockRWLockForWriting(get());
 }
@@ -885,7 +897,7 @@ inline bool RWLock::TryLockForWriting()
  */
 inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 
-inline void RWLock::Unlock() { SDL::UnlockRWLock(get()); }
+inline void RWLockBase::Unlock() { SDL::UnlockRWLock(get()); }
 
 /**
  * Destroy a read/write lock created with CreateRWLock().
@@ -906,91 +918,16 @@ inline void RWLock::Unlock() { SDL::UnlockRWLock(get()); }
  */
 inline void DestroyRWLock(RWLockRaw rwlock) { SDL_DestroyRWLock(rwlock); }
 
-inline void RWLock::Destroy() { DestroyRWLock(release()); }
+inline void RWLockBase::Destroy() { DestroyRWLock(release()); }
 
 /**
- * A means to manage access to a resource, by count, between threads.
+ * Base class to Semaphore.
  *
- * Semaphores (specifically, "counting semaphores"), let X number of threads
- * request access at the same time, each thread granted access decrementing a
- * counter. When the counter reaches zero, future requests block until a prior
- * thread releases their request, incrementing the counter again.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Semaphore_(programming)
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Semaphore
  */
-struct Semaphore : ResourceBase<SemaphoreRaw>
+struct SemaphoreBase : ResourceBaseT<SemaphoreRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Semaphore.
-   *
-   * @param resource a SemaphoreRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) = delete;
-
-  /// Move constructor
-  constexpr Semaphore(Semaphore&& other) noexcept
-    : Semaphore(other.release())
-  {
-  }
-
-  constexpr Semaphore(const SemaphoreRef& other) = delete;
-
-  constexpr Semaphore(SemaphoreRef&& other) = delete;
-
-  /**
-   * Create a semaphore.
-   *
-   * This function creates a new semaphore and initializes it with the value
-   * `initial_value`. Each wait operation on the semaphore will atomically
-   * decrement the semaphore value and potentially block if the semaphore value
-   * is 0. Each post operation will atomically increment the semaphore value and
-   * wake waiting threads and allow them to retry the wait operation.
-   *
-   * @param initial_value the starting value of the semaphore.
-   * @post a new semaphore or nullptr on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroySemaphore
-   * @sa SignalSemaphore
-   * @sa TryWaitSemaphore
-   * @sa GetSemaphoreValue
-   * @sa WaitSemaphore
-   * @sa WaitSemaphoreTimeout
-   */
-  Semaphore(Uint32 initial_value);
-
-  /// Destructor
-  ~Semaphore() { SDL_DestroySemaphore(get()); }
-
-  /// Assignment operator.
-  constexpr Semaphore& operator=(Semaphore&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Semaphore& operator=(const Semaphore& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a semaphore.
@@ -1093,6 +1030,81 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
 };
 
 /**
+ * A means to manage access to a resource, by count, between threads.
+ *
+ * Semaphores (specifically, "counting semaphores"), let X number of threads
+ * request access at the same time, each thread granted access decrementing a
+ * counter. When the counter reaches zero, future requests block until a prior
+ * thread releases their request, incrementing the counter again.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Semaphore_(programming)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Semaphore : SemaphoreBase
+{
+  using SemaphoreBase::SemaphoreBase;
+
+  /**
+   * Constructs from raw Semaphore.
+   *
+   * @param resource a SemaphoreRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
+    : SemaphoreBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Semaphore(Semaphore&& other) noexcept
+    : Semaphore(other.release())
+  {
+  }
+
+  /**
+   * Create a semaphore.
+   *
+   * This function creates a new semaphore and initializes it with the value
+   * `initial_value`. Each wait operation on the semaphore will atomically
+   * decrement the semaphore value and potentially block if the semaphore value
+   * is 0. Each post operation will atomically increment the semaphore value and
+   * wake waiting threads and allow them to retry the wait operation.
+   *
+   * @param initial_value the starting value of the semaphore.
+   * @post a new semaphore or nullptr on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroySemaphore
+   * @sa SignalSemaphore
+   * @sa TryWaitSemaphore
+   * @sa GetSemaphoreValue
+   * @sa WaitSemaphore
+   * @sa WaitSemaphoreTimeout
+   */
+  Semaphore(Uint32 initial_value);
+
+  /// Destructor
+  ~Semaphore() { SDL_DestroySemaphore(get()); }
+
+  /// Assignment operator.
+  constexpr Semaphore& operator=(Semaphore&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Create a semaphore.
  *
  * This function creates a new semaphore and initializes it with the value
@@ -1142,7 +1154,7 @@ inline Semaphore::Semaphore(Uint32 initial_value)
  */
 inline void DestroySemaphore(SemaphoreRaw sem) { SDL_DestroySemaphore(sem); }
 
-inline void Semaphore::Destroy() { DestroySemaphore(release()); }
+inline void SemaphoreBase::Destroy() { DestroySemaphore(release()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -1166,7 +1178,7 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  */
 inline void WaitSemaphore(SemaphoreRef sem) { SDL_WaitSemaphore(sem); }
 
-inline void Semaphore::Wait() { SDL::WaitSemaphore(get()); }
+inline void SemaphoreBase::Wait() { SDL::WaitSemaphore(get()); }
 
 /**
  * See if a semaphore has a positive value and decrement it if it does.
@@ -1192,7 +1204,7 @@ inline bool TryWaitSemaphore(SemaphoreRef sem)
   return SDL_TryWaitSemaphore(sem);
 }
 
-inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(get()); }
+inline bool SemaphoreBase::TryWait() { return SDL::TryWaitSemaphore(get()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -1220,7 +1232,7 @@ inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
   return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
 }
 
-inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
+inline bool SemaphoreBase::WaitTimeout(std::chrono::milliseconds timeout)
 {
   return SDL::WaitSemaphoreTimeout(get(), timeout);
 }
@@ -1240,7 +1252,7 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  */
 inline void SignalSemaphore(SemaphoreRef sem) { SDL_SignalSemaphore(sem); }
 
-inline void Semaphore::Signal() { SDL::SignalSemaphore(get()); }
+inline void SemaphoreBase::Signal() { SDL::SignalSemaphore(get()); }
 
 /**
  * Get the current value of a semaphore.
@@ -1257,85 +1269,19 @@ inline Uint32 GetSemaphoreValue(SemaphoreRef sem)
   return SDL_GetSemaphoreValue(sem);
 }
 
-inline Uint32 Semaphore::GetValue() const
+inline Uint32 SemaphoreBase::GetValue() const
 {
   return SDL::GetSemaphoreValue(get());
 }
 
 /**
- * A means to block multiple threads until a condition is satisfied.
+ * Base class to Condition.
  *
- * Condition variables, paired with an Mutex, let an app halt multiple threads
- * until a condition has occurred, at which time the app can release one or all
- * waiting threads.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Condition_variable
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Condition
  */
-struct Condition : ResourceBase<ConditionRaw>
+struct ConditionBase : ResourceBaseT<ConditionRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Condition.
-   *
-   * @param resource a ConditionRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Condition(ConditionRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Condition(const Condition& other) = delete;
-
-  /// Move constructor
-  constexpr Condition(Condition&& other) noexcept
-    : Condition(other.release())
-  {
-  }
-
-  constexpr Condition(const ConditionRef& other) = delete;
-
-  constexpr Condition(ConditionRef&& other) = delete;
-
-  /**
-   * Create a condition variable.
-   *
-   * @post a new condition variable or nullptr on failure; call GetError() for
-   *       more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa BroadcastCondition
-   * @sa SignalCondition
-   * @sa WaitCondition
-   * @sa WaitConditionTimeout
-   * @sa DestroyCondition
-   */
-  Condition();
-
-  /// Destructor
-  ~Condition() { SDL_DestroyCondition(get()); }
-
-  /// Assignment operator.
-  constexpr Condition& operator=(Condition&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Condition& operator=(const Condition& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a condition variable.
@@ -1432,6 +1378,72 @@ struct Condition : ResourceBase<ConditionRaw>
 };
 
 /**
+ * A means to block multiple threads until a condition is satisfied.
+ *
+ * Condition variables, paired with an Mutex, let an app halt multiple threads
+ * until a condition has occurred, at which time the app can release one or all
+ * waiting threads.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Condition_variable
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Condition : ConditionBase
+{
+  using ConditionBase::ConditionBase;
+
+  /**
+   * Constructs from raw Condition.
+   *
+   * @param resource a ConditionRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Condition(ConditionRaw resource) noexcept
+    : ConditionBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Condition(Condition&& other) noexcept
+    : Condition(other.release())
+  {
+  }
+
+  /**
+   * Create a condition variable.
+   *
+   * @post a new condition variable or nullptr on failure; call GetError() for
+   *       more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa BroadcastCondition
+   * @sa SignalCondition
+   * @sa WaitCondition
+   * @sa WaitConditionTimeout
+   * @sa DestroyCondition
+   */
+  Condition();
+
+  /// Destructor
+  ~Condition() { SDL_DestroyCondition(get()); }
+
+  /// Assignment operator.
+  constexpr Condition& operator=(Condition&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Create a condition variable.
  *
  * @returns a new condition variable or nullptr on failure; call GetError() for
@@ -1467,7 +1479,7 @@ inline Condition::Condition()
  */
 inline void DestroyCondition(ConditionRaw cond) { SDL_DestroyCondition(cond); }
 
-inline void Condition::Destroy() { DestroyCondition(release()); }
+inline void ConditionBase::Destroy() { DestroyCondition(release()); }
 
 /**
  * Restart one of the threads that are waiting on the condition variable.
@@ -1484,7 +1496,7 @@ inline void Condition::Destroy() { DestroyCondition(release()); }
  */
 inline void SignalCondition(ConditionRef cond) { SDL_SignalCondition(cond); }
 
-inline void Condition::Signal() { SDL::SignalCondition(get()); }
+inline void ConditionBase::Signal() { SDL::SignalCondition(get()); }
 
 /**
  * Restart all threads that are waiting on the condition variable.
@@ -1504,7 +1516,7 @@ inline void BroadcastCondition(ConditionRef cond)
   SDL_BroadcastCondition(cond);
 }
 
-inline void Condition::Broadcast() { SDL::BroadcastCondition(get()); }
+inline void ConditionBase::Broadcast() { SDL::BroadcastCondition(get()); }
 
 /**
  * Wait until a condition variable is signaled.
@@ -1537,7 +1549,7 @@ inline void WaitCondition(ConditionRef cond, MutexRef mutex)
   SDL_WaitCondition(cond, mutex);
 }
 
-inline void Condition::Wait(MutexRef mutex)
+inline void ConditionBase::Wait(MutexRef mutex)
 {
   SDL::WaitCondition(get(), mutex);
 }
@@ -1577,8 +1589,8 @@ inline bool WaitConditionTimeout(ConditionRef cond,
   return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
 }
 
-inline bool Condition::WaitTimeout(MutexRef mutex,
-                                   std::chrono::milliseconds timeout)
+inline bool ConditionBase::WaitTimeout(MutexRef mutex,
+                                       std::chrono::milliseconds timeout)
 {
   return SDL::WaitConditionTimeout(get(), mutex, timeout);
 }

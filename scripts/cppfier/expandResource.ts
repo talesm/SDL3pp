@@ -7,6 +7,7 @@ import {
   insertTransform,
   makeNaturalName,
   mirrorMethods,
+  resolveVersionDoc,
   scanFreeFunction,
   transformDoc,
   transformEntry,
@@ -23,6 +24,7 @@ import {
   Dict,
   LockDefinition,
   ResourceDefinition,
+  VersionTag,
 } from "./types";
 import { combineObject, system } from "./utils";
 
@@ -40,6 +42,7 @@ export function expandResource(
   const rawName = resourceEntry.rawName || `${targetName}Raw`;
   const constRawName = `${rawName}Const`;
   const refName = `${targetName}Ref`;
+  const baseName = `${targetName}Base`;
   const enableMemberAccess =
     resourceEntry.enableMemberAccess ?? sourceEntry.kind === "struct";
   const enableConstParam = resourceEntry.enableConstParam ?? enableMemberAccess;
@@ -57,18 +60,18 @@ export function expandResource(
     (sourceEntry.kind === "alias" && sourceEntry.type.startsWith("struct "));
   const pointerType = isStruct ? `${type} *` : type;
   const constPointerType = `const ${pointerType}`;
-  const nullValue = isStruct ? "nullptr" : "0";
   const title = targetName[0].toLowerCase() + targetName.slice(1);
-
-  if (!targetEntry.type) {
-    targetEntry.type = enableConstParam
-      ? `ResourceBase<${rawName}, ${constRawName}>`
-      : `ResourceBase<${rawName}>`;
-  }
+  const baseType = enableConstParam
+    ? `ResourceBaseT<${rawName}, ${constRawName}>`
+    : `ResourceBaseT<${rawName}>`;
+  const since =
+    targetEntry.since ?? resolveVersionDoc(sourceEntry.doc, context);
+  targetEntry.type = hasRef ? baseName : baseType;
   context.addName(sourceName, targetName);
   context.addCallbackType(isStruct ? `${sourceName} *` : sourceName, rawName);
 
   const referenceAliases: ApiEntryTransform[] = [];
+  if (hasRef) referenceAliases.push({ name: baseName, kind: "forward" });
   referenceAliases.push(
     { name: targetName, kind: "forward" },
     {
@@ -96,16 +99,7 @@ export function expandResource(
     hasLock,
   );
 
-  if (hasScoped) {
-    referenceAliases.push({
-      kind: "alias",
-      name: refName,
-      type: targetName,
-      doc: [`Alias to ${targetName} for non owning parameters.`],
-    });
-  } else {
-    referenceAliases.push(createParam(refName, targetName, rawName, hasRef));
-  }
+  referenceAliases.push(createParam(refName, targetName, baseName, hasRef));
 
   if (enableConstParam) {
     referenceAliases.push(
@@ -128,14 +122,7 @@ export function expandResource(
     constRawName,
   );
 
-  const ctors = createBaselineCtors(
-    hasScoped,
-    targetName,
-    shared,
-    hasRef ? refName : undefined,
-    rawName,
-    isStruct,
-  );
+  const ctors = createBaselineCtors(hasScoped, targetName, shared, rawName);
   const subEntries = targetEntry.entries || {};
 
   wrapCustomCtors(subEntries, targetName, ctors);
@@ -183,6 +170,7 @@ export function expandResource(
       refName,
       constParamType,
       blockedNames,
+      hasScoped ? targetName : baseName,
     );
     mirrorMethods(
       sourceEntries,
@@ -203,20 +191,32 @@ export function expandResource(
   } else {
     targetEntry.doc = [`Wraps ${title} resource.`, "@cat resource"];
   }
+
+  if (hasLock) wrapLockFunctions(subEntries, lockName, hasLock);
   populateTargetEntry(
     hasScoped,
     hasShared,
     targetEntry,
     rawName,
-    nullValue,
     ctors,
     targetName,
     destroyFunction,
-    subEntries,
-    enableConstParam ? constParamType : undefined,
+    hasRef ? {} : subEntries,
   );
-
-  if (hasLock) wrapLockFunctions(targetEntry.entries, lockName, hasLock);
+  if (hasRef) {
+    context.includeBefore(
+      createBaseEntry(
+        baseName,
+        baseType,
+        targetName,
+        destroyFunction,
+        subEntries,
+        enableConstParam ? constParamType : undefined,
+        since,
+      ),
+      targetName,
+    );
+  }
 
   const derivedEntries: ApiEntryTransform[] = [];
 
@@ -234,16 +234,14 @@ export function expandResource(
 function createParam(
   paramType: string,
   targetName: string,
-  rawName: string,
+  baseName: string,
   targetAsBase = false,
 ): ApiEntryTransform {
   return {
     name: paramType,
     kind: "alias",
     doc: [`Reference for ${targetName}.`, "This does not take ownership!"],
-    type: targetAsBase
-      ? `ResourceRef<${targetName}>`
-      : `ResourceLegacyRef<${rawName}>`,
+    type: targetAsBase ? `ResourceRefT<${baseName}>` : targetName,
   };
 }
 
@@ -301,9 +299,7 @@ function createBaselineCtors(
   hasScoped: boolean,
   targetName: string,
   shared: boolean | string,
-  refName: string | undefined,
   rawName: string,
-  isStruct: boolean,
 ) {
   if (hasScoped) return {};
   const ctors: Dict<ApiEntryTransform> = {
@@ -314,7 +310,7 @@ function createBaselineCtors(
       explicit: true,
       parameters: [{ name: "resource", type: rawName }],
       hints: {
-        init: [`ResourceBase(resource)`],
+        init: [`${targetName}Base(resource)`],
         noexcept: true,
       },
       doc: [
@@ -329,9 +325,8 @@ function createBaselineCtors(
       constexpr: true,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
-        delete: shared ? undefined : true,
-        init: shared ? [`${targetName}(other.get())`] : undefined,
-        body: shared ? `if (auto res = get()) ++res->${shared};` : undefined,
+        delete: undefined,
+        init: [`${targetName}(borrow(other.get()))`],
       },
       doc: ["Copy constructor"],
     },
@@ -349,8 +344,8 @@ function createBaselineCtors(
   };
   if (shared) {
     addBorrowFunction(ctors, targetName, shared, rawName);
-  } else if (refName) {
-    deleteCtorsFromRef(ctors, refName, targetName);
+  } else {
+    delete ctors[`${targetName}#3`];
   }
   return ctors;
 }
@@ -364,7 +359,7 @@ function addBorrowFunction(
   if (shared === true) {
     ctors[`${targetName}#3`].hints = {};
   } else {
-    ctors["Borrow"] = {
+    ctors["borrow"] = {
       kind: "function",
       static: true,
       type: targetName,
@@ -570,20 +565,18 @@ function createOrDetectDestroyFunction(
   return freeFunction;
 }
 
-function populateTargetEntry(
-  hasScoped: boolean,
-  hasShared: boolean,
-  targetEntry: ApiEntryTransform,
-  rawName: string,
-  nullValue: string,
-  ctors: Dict<ApiEntryTransform>,
+function createBaseEntry(
+  baseName: string,
+  baseType: string,
   targetName: string,
   freeFunction: ApiEntry,
   subEntries: ApiEntryTransformMap,
   constParamType: string,
-) {
+  since: VersionTag,
+): ApiEntryTransform {
+  const extraEntries: ApiEntryTransformMap = {};
   if (constParamType) {
-    ctors[`operator ${constParamType}`] = {
+    extraEntries[`operator ${constParamType}`] = {
       kind: "function",
       type: "",
       immutable: true,
@@ -592,7 +585,34 @@ function populateTargetEntry(
       hints: { body: "return get();", noexcept: true },
       doc: [`Converts to ${constParamType}`],
     };
-  } else if (hasScoped) {
+  }
+  return {
+    name: baseName,
+    kind: "struct",
+    type: baseType,
+    since,
+    doc: [`Base class to ${targetName}.`, { tag: "@see", content: targetName }],
+    entries: {
+      "ResourceBaseT::ResourceBaseT": "alias",
+      ...extraEntries,
+      [freeFunction.name]: "plc",
+      ...subEntries,
+    },
+    hints: { self: "get()" },
+  };
+}
+
+function populateTargetEntry(
+  hasScoped: boolean,
+  hasShared: boolean,
+  targetEntry: ApiEntryTransform,
+  rawName: string,
+  ctors: Dict<ApiEntryTransform>,
+  targetName: string,
+  freeFunction: ApiEntry,
+  subEntries: ApiEntryTransformMap,
+) {
+  if (hasScoped) {
     ctors[`operator ${rawName}`] = {
       kind: "function",
       type: "",
@@ -603,8 +623,10 @@ function populateTargetEntry(
       doc: [`Converts to underlying ${rawName}.`],
     };
   }
+  const baseName = targetEntry.type;
+  const parentAlias = `${baseName}::${baseName}`.replaceAll(/<[^>]*>/g, "");
   const entries: ApiEntryTransformMap = {
-    "ResourceBase::ResourceBase": "alias",
+    [parentAlias]: "alias",
     ...ctors,
     [`~${targetName}`]: {
       kind: "function",
@@ -633,10 +655,7 @@ function populateTargetEntry(
       type: `${targetName} &`,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
-        delete: !hasShared,
-        body: hasShared
-          ? `if (get() != other.get()) {\n  ${targetName} tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;`
-          : undefined,
+        body: `if (get() != other.get()) {\n  ${targetName} tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;`,
       },
       doc: ["Assignment operator."],
     },
@@ -647,6 +666,9 @@ function populateTargetEntry(
     delete entries[`~${targetName}`];
     delete entries["operator="];
     delete entries["operator=#2"];
+  } else {
+    delete entries[freeFunction.name];
+    if (!hasShared) delete entries["operator=#2"];
   }
   addHints(targetEntry, {
     self: "get()",

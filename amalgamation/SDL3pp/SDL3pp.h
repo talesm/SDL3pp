@@ -16,6 +16,7 @@
 #include <span>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <variant>
 #include <SDL3/SDL.h>
 
@@ -1309,7 +1310,7 @@ inline const char* GetPlatform() { return SDL_GetPlatform(); }
 
 /// Base class for resources.
 template<typename RAW_POINTER, typename RAW_CONST_POINTER = RAW_POINTER>
-class ResourceBase
+class ResourceBaseT
 {
 public:
   /// The underlying raw pointer type.
@@ -1318,23 +1319,23 @@ public:
   /// The underlying const raw pointer type.
   using RawConstPointer = RAW_CONST_POINTER;
 
+  /// Default constructor, creates null/invalid resource.
+  constexpr ResourceBaseT() = default;
+
   /// Constructs from resource pointer.
-  constexpr ResourceBase(RawPointer resource)
+  constexpr ResourceBaseT(RawPointer resource)
     : m_resource(resource)
   {
   }
 
   /// Constructs null/invalid
-  constexpr ResourceBase(std::nullptr_t = nullptr)
-    : m_resource{}
-  {
-  }
+  constexpr ResourceBaseT(std::nullptr_t) {}
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Comparison
-  constexpr auto operator<=>(const ResourceBase& other) const = default;
+  constexpr auto operator<=>(const ResourceBaseT& other) const = default;
 
   /// member access to underlying resource pointer.
   constexpr RawConstPointer operator->() const noexcept { return m_resource; }
@@ -1353,49 +1354,52 @@ public:
     return r;
   }
 
-  friend constexpr void swap(ResourceBase& lhs, ResourceBase& rhs) noexcept
+  /// Swaps the underlying resource pointers.
+  friend constexpr void swap(ResourceBaseT& lhs, ResourceBaseT& rhs) noexcept
   {
     std::swap(lhs.m_resource, rhs.m_resource);
   }
 
+protected:
+  /// Destructor
+  constexpr ~ResourceBaseT() = default;
+
+  /// Copy constructor.
+  constexpr ResourceBaseT(const ResourceBaseT&) = default;
+
+  /// Move constructor.
+  constexpr ResourceBaseT(ResourceBaseT&&) noexcept = default;
+
+  /// Assignment operator.
+  constexpr ResourceBaseT& operator=(const ResourceBaseT&) = default;
+
+  /// Assignment operator.
+  constexpr ResourceBaseT& operator=(ResourceBaseT&&) noexcept = default;
+
 private:
-  RawPointer m_resource; ///< parameter's RawPointer
+  RawPointer m_resource = {}; ///< parameter's RawPointer
 };
 
-/// Reference wrapper for a given resource,
-template<typename RAW_POINTER>
-class ResourceLegacyRef
+/// A non-owning reference wrapper for a given resource
+template<typename BASE>
+struct ResourceRefT : BASE
 {
-public:
+  using BASE::BASE;
+
   /// The underlying raw pointer type.
-  using RawPointer = RAW_POINTER;
+  using RawPointer = BASE::RawPointer;
 
-  /// Constructs from RawPointer
-  constexpr ResourceLegacyRef(RawPointer resource)
-    : m_resource(resource)
+  /// The underlying const raw pointer type.
+  using RawConstPointer = BASE::RawConstPointer;
+
+  /// Constructs from resource.
+  constexpr ResourceRefT(const BASE& resource) noexcept
+    : BASE(resource.get())
   {
   }
 
-  /// Constructs null/invalid
-  constexpr ResourceLegacyRef(std::nullptr_t = nullptr)
-    : m_resource(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ResourceLegacyRef& other) const = default;
-
-  /// Converts to underlying RawPointer
-  constexpr operator RawPointer() const { return m_resource; }
-
-  /// member access to underlying type.
-  constexpr auto operator->() const { return m_resource; }
-
-private:
-  RawPointer m_resource; ///< parameter's RawPointer
+  /// Converts to raw pointer.
+  constexpr operator RawPointer() const noexcept { return this->get(); }
 };
 
 /// Const reference wrapper for a given resource,
@@ -1441,81 +1445,6 @@ public:
 
 private:
   RawConstPointer m_resource; ///< parameter's Surface
-};
-
-/// A non-owning reference wrapper for a given resource
-template<typename RESOURCE>
-struct ResourceRef : RESOURCE
-{
-  using RESOURCE::RESOURCE;
-
-  /// The underlying raw pointer type.
-  using RawPointer = RESOURCE::RawPointer;
-
-  /// The underlying const raw pointer type.
-  using RawConstPointer = RESOURCE::RawConstPointer;
-
-  /**
-   * Constructs from raw resource.
-   *
-   * @param resource a raw pointer.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ResourceRef(RawPointer resource) noexcept
-    : RESOURCE(resource)
-  {
-  }
-
-  /**
-   * Constructs from resource.
-   *
-   * @param resource a RESOURCE.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ResourceRef(const RESOURCE& resource) noexcept
-    : RESOURCE(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from RESOURCE.
-   *
-   * @param resource a RESOURCE.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ResourceRef(RESOURCE&& resource) noexcept
-    : RESOURCE(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ResourceRef(const ResourceRef& other) noexcept
-    : RESOURCE(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ResourceRef(ResourceRef&& other) noexcept
-    : RESOURCE(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ResourceRef() { this->release(); }
-
-  /// Assignment operator.
-  ResourceRef& operator=(const ResourceRef& other) noexcept
-  {
-    this->release();
-    RESOURCE::operator=(RESOURCE(other.get()));
-    return *this;
-  }
-
-  /// Converts to raw pointer.
-  constexpr operator RawPointer() const noexcept { return this->get(); }
 };
 
 /// @}
@@ -3869,7 +3798,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * - "0": Do not show the on-screen keyboard.
  * - "1": Show the on-screen keyboard, if available.
  *
- * This hint must be set before Window.StartTextInput() is called
+ * This hint must be set before StartTextInput() is called
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -4074,7 +4003,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling Window.StartTextInput()
+ * This hint should be set before calling StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -4085,7 +4014,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling Window.StartTextInput()
+ * This hint should be set before calling StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -4100,7 +4029,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling Window.StartTextInput()
+ * This hint should be set before calling StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -4115,7 +4044,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling Window.StartTextInput()
+ * This hint should be set before calling StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -4126,7 +4055,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling Window.StartTextInput()
+ * This hint should be set before calling StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -9262,6 +9191,9 @@ inline void ResetLogOutputFunction()
  */
 
 // Forward decl
+struct PropertiesBase;
+
+// Forward decl
 struct Properties;
 
 /// Alias to raw representation for Properties.
@@ -9272,7 +9204,7 @@ using PropertiesID = SDL_PropertiesID;
  *
  * This does not take ownership!
  */
-using PropertiesRef = ResourceRef<Properties>;
+using PropertiesRef = ResourceRefT<PropertiesBase>;
 
 // Forward decl
 struct PropertiesLock;
@@ -9393,73 +9325,13 @@ using CleanupPropertyCallback = void(SDLCALL*)(void* userdata, void* value);
 using CleanupPropertyCB = std::function<void(void* value)>;
 
 /**
- * An ID that represents a properties set.
+ * Base class to Properties.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat resource
- *
- * @sa Properties.Create
- * @sa prop
+ * @see Properties
  */
-struct Properties : ResourceBase<PropertiesID>
+struct PropertiesBase : ResourceBaseT<PropertiesID>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Properties.
-   *
-   * @param resource a PropertiesID to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Properties(PropertiesID resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Properties(const Properties& other) = delete;
-
-  /// Move constructor
-  constexpr Properties(Properties&& other) noexcept
-    : Properties(other.release())
-  {
-  }
-
-  constexpr Properties(const PropertiesRef& other) = delete;
-
-  constexpr Properties(PropertiesRef&& other) = delete;
-
-  /**
-   * Create a group of properties.
-   *
-   * All properties are automatically destroyed when Quit() is called.
-   *
-   * @returns an ID for a new group of properties on success.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyProperties
-   */
-  static Properties Create();
-
-  /// Destructor
-  ~Properties() { SDL_DestroyProperties(get()); }
-
-  /// Assignment operator.
-  constexpr Properties& operator=(Properties&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Properties& operator=(const Properties& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a group of properties.
@@ -9878,6 +9750,66 @@ struct Properties : ResourceBase<PropertiesID>
 };
 
 /**
+ * An ID that represents a properties set.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat resource
+ *
+ * @sa Properties.Create
+ * @sa prop
+ */
+struct Properties : PropertiesBase
+{
+  using PropertiesBase::PropertiesBase;
+
+  /**
+   * Constructs from raw Properties.
+   *
+   * @param resource a PropertiesID to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Properties(PropertiesID resource) noexcept
+    : PropertiesBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Properties(Properties&& other) noexcept
+    : Properties(other.release())
+  {
+  }
+
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when Quit() is called.
+   *
+   * @post an ID for a new group of properties on success.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyProperties
+   */
+  Properties();
+
+  /// Destructor
+  ~Properties() { SDL_DestroyProperties(get()); }
+
+  /// Assignment operator.
+  constexpr Properties& operator=(Properties&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Lock a group of properties.
  *
  * Obtain a multi-threaded lock for these properties. Other threads will wait
@@ -10037,12 +9969,12 @@ inline PropertiesRef GetGlobalProperties()
  *
  * @sa DestroyProperties
  */
-inline Properties CreateProperties()
-{
-  return Properties(CheckError(SDL_CreateProperties()));
-}
+inline Properties CreateProperties() { return Properties(); }
 
-inline Properties Properties::Create() { return SDL::CreateProperties(); }
+inline Properties::Properties()
+  : Properties(CheckError(SDL_CreateProperties()))
+{
+}
 
 /**
  * Copy a group of properties.
@@ -10067,7 +9999,7 @@ inline void CopyProperties(PropertiesRef src, PropertiesRef dst)
   CheckError(SDL_CopyProperties(src, dst));
 }
 
-inline void Properties::Copy(PropertiesRef dst)
+inline void PropertiesBase::Copy(PropertiesRef dst)
 {
   SDL::CopyProperties(get(), dst);
 }
@@ -10098,7 +10030,7 @@ inline void LockProperties(PropertiesRef props)
   CheckError(SDL_LockProperties(props));
 }
 
-inline PropertiesLock Properties::Lock() { return {PropertiesRef(*this)}; }
+inline PropertiesLock PropertiesBase::Lock() { return {PropertiesRef(*this)}; }
 
 inline PropertiesLock::PropertiesLock(PropertiesRef resource)
   : m_lock(std::move(resource))
@@ -10122,7 +10054,7 @@ inline void UnlockProperties(PropertiesRef props)
   SDL_UnlockProperties(props);
 }
 
-inline void Properties::Unlock(PropertiesLock&& lock)
+inline void PropertiesBase::Unlock(PropertiesLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -10215,7 +10147,7 @@ inline void SetPointerPropertyWithCleanup(PropertiesRef props,
                                     Wrapper::Wrap(std::move(cleanup)));
 }
 
-inline void Properties::SetPointerPropertyWithCleanup(
+inline void PropertiesBase::SetPointerPropertyWithCleanup(
   StringParam name,
   void* value,
   CleanupPropertyCallback cleanup,
@@ -10225,9 +10157,10 @@ inline void Properties::SetPointerPropertyWithCleanup(
     get(), std::move(name), value, cleanup, userdata);
 }
 
-inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
-                                                      void* value,
-                                                      CleanupPropertyCB cleanup)
+inline void PropertiesBase::SetPointerPropertyWithCleanup(
+  StringParam name,
+  void* value,
+  CleanupPropertyCB cleanup)
 {
   SDL::SetPointerPropertyWithCleanup(
     get(), std::move(name), value, std::move(cleanup));
@@ -10261,7 +10194,7 @@ inline void SetPointerProperty(PropertiesRef props,
   CheckError(SDL_SetPointerProperty(props, name, value));
 }
 
-inline void Properties::SetPointerProperty(StringParam name, void* value)
+inline void PropertiesBase::SetPointerProperty(StringParam name, void* value)
 {
   SDL::SetPointerProperty(get(), std::move(name), value);
 }
@@ -10291,7 +10224,8 @@ inline void SetStringProperty(PropertiesRef props,
   CheckError(SDL_SetStringProperty(props, name, value));
 }
 
-inline void Properties::SetStringProperty(StringParam name, StringParam value)
+inline void PropertiesBase::SetStringProperty(StringParam name,
+                                              StringParam value)
 {
   SDL::SetStringProperty(get(), std::move(name), std::move(value));
 }
@@ -10317,7 +10251,7 @@ inline void SetNumberProperty(PropertiesRef props,
   CheckError(SDL_SetNumberProperty(props, name, value));
 }
 
-inline void Properties::SetNumberProperty(StringParam name, Sint64 value)
+inline void PropertiesBase::SetNumberProperty(StringParam name, Sint64 value)
 {
   SDL::SetNumberProperty(get(), std::move(name), value);
 }
@@ -10341,7 +10275,7 @@ inline void SetFloatProperty(PropertiesRef props, StringParam name, float value)
   CheckError(SDL_SetFloatProperty(props, name, value));
 }
 
-inline void Properties::SetFloatProperty(StringParam name, float value)
+inline void PropertiesBase::SetFloatProperty(StringParam name, float value)
 {
   SDL::SetFloatProperty(get(), std::move(name), value);
 }
@@ -10367,7 +10301,7 @@ inline void SetBooleanProperty(PropertiesRef props,
   CheckError(SDL_SetBooleanProperty(props, name, value));
 }
 
-inline void Properties::SetBooleanProperty(StringParam name, bool value)
+inline void PropertiesBase::SetBooleanProperty(StringParam name, bool value)
 {
   SDL::SetBooleanProperty(get(), std::move(name), value);
 }
@@ -10390,7 +10324,7 @@ inline bool HasProperty(PropertiesRef props, StringParam name)
   return SDL_HasProperty(props, name);
 }
 
-inline bool Properties::HasProperty(StringParam name)
+inline bool PropertiesBase::HasProperty(StringParam name)
 {
   return SDL::HasProperty(get(), std::move(name));
 }
@@ -10413,7 +10347,7 @@ inline PropertyType GetPropertyType(PropertiesRef props, StringParam name)
   return SDL_GetPropertyType(props, name);
 }
 
-inline PropertyType Properties::GetPropertyType(StringParam name)
+inline PropertyType PropertiesBase::GetPropertyType(StringParam name)
 {
   return SDL::GetPropertyType(get(), std::move(name));
 }
@@ -10455,8 +10389,8 @@ inline void* GetPointerProperty(PropertiesRef props,
   return SDL_GetPointerProperty(props, name, default_value);
 }
 
-inline void* Properties::GetPointerProperty(StringParam name,
-                                            void* default_value)
+inline void* PropertiesBase::GetPointerProperty(StringParam name,
+                                                void* default_value)
 {
   return SDL::GetPointerProperty(get(), std::move(name), default_value);
 }
@@ -10489,8 +10423,8 @@ inline const char* GetStringProperty(PropertiesRef props,
   return SDL_GetStringProperty(props, name, default_value);
 }
 
-inline const char* Properties::GetStringProperty(StringParam name,
-                                                 StringParam default_value)
+inline const char* PropertiesBase::GetStringProperty(StringParam name,
+                                                     StringParam default_value)
 {
   return SDL::GetStringProperty(
     get(), std::move(name), std::move(default_value));
@@ -10523,8 +10457,8 @@ inline Sint64 GetNumberProperty(PropertiesRef props,
   return SDL_GetNumberProperty(props, name, default_value);
 }
 
-inline Sint64 Properties::GetNumberProperty(StringParam name,
-                                            Sint64 default_value)
+inline Sint64 PropertiesBase::GetNumberProperty(StringParam name,
+                                                Sint64 default_value)
 {
   return SDL::GetNumberProperty(get(), std::move(name), default_value);
 }
@@ -10556,7 +10490,8 @@ inline float GetFloatProperty(PropertiesRef props,
   return SDL_GetFloatProperty(props, name, default_value);
 }
 
-inline float Properties::GetFloatProperty(StringParam name, float default_value)
+inline float PropertiesBase::GetFloatProperty(StringParam name,
+                                              float default_value)
 {
   return SDL::GetFloatProperty(get(), std::move(name), default_value);
 }
@@ -10588,7 +10523,8 @@ inline bool GetBooleanProperty(PropertiesRef props,
   return SDL_GetBooleanProperty(props, name, default_value);
 }
 
-inline bool Properties::GetBooleanProperty(StringParam name, bool default_value)
+inline bool PropertiesBase::GetBooleanProperty(StringParam name,
+                                               bool default_value)
 {
   return SDL::GetBooleanProperty(get(), std::move(name), default_value);
 }
@@ -10609,7 +10545,7 @@ inline void ClearProperty(PropertiesRef props, StringParam name)
   CheckError(SDL_ClearProperty(props, name));
 }
 
-inline void Properties::ClearProperty(StringParam name)
+inline void PropertiesBase::ClearProperty(StringParam name)
 {
   SDL::ClearProperty(get(), std::move(name));
 }
@@ -10662,13 +10598,13 @@ inline void EnumerateProperties(PropertiesRef props,
     &callback);
 }
 
-inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-                                  void* userdata)
+inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
+                                      void* userdata)
 {
   SDL::EnumerateProperties(get(), callback, userdata);
 }
 
-inline void Properties::Enumerate(EnumeratePropertiesCB callback)
+inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback)
 {
   SDL::EnumerateProperties(get(), std::move(callback));
 }
@@ -10688,7 +10624,7 @@ inline Uint64 CountProperties(PropertiesRef props)
   return count;
 }
 
-inline Uint64 Properties::GetCount() { return SDL::CountProperties(get()); }
+inline Uint64 PropertiesBase::GetCount() { return SDL::CountProperties(get()); }
 
 /**
  * Destroy a group of properties.
@@ -10711,7 +10647,7 @@ inline void DestroyProperties(PropertiesID props)
   SDL_DestroyProperties(props);
 }
 
-inline void Properties::Destroy() { DestroyProperties(release()); }
+inline void PropertiesBase::Destroy() { DestroyProperties(release()); }
 
 /// @}
 
@@ -10758,6 +10694,9 @@ using TimeRaw = SDL_Time;
 struct Time;
 
 // Forward decl
+struct EnvironmentBase;
+
+// Forward decl
 struct Environment;
 
 /// Alias to raw representation for Environment.
@@ -10768,7 +10707,10 @@ using EnvironmentRaw = SDL_Environment*;
  *
  * This does not take ownership!
  */
-using EnvironmentRef = ResourceRef<Environment>;
+using EnvironmentRef = ResourceRefT<EnvironmentBase>;
+
+// Forward decl
+struct IConvBase;
 
 // Forward decl
 struct IConv;
@@ -10781,7 +10723,7 @@ using IConvRaw = SDL_iconv_t;
  *
  * This does not take ownership!
  */
-using IConvRef = ResourceRef<IConv>;
+using IConvRef = ResourceRefT<IConvBase>;
 
 #ifdef SDL3PP_DOC
 
@@ -11620,83 +11562,13 @@ inline void aligned_free(void* mem) { SDL_aligned_free(mem); }
 inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
 
 /**
- * A thread-safe set of environment variables
+ * Base class to Environment.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GetEnvironment
- * @sa CreateEnvironment
- * @sa GetEnvironmentVariable
- * @sa GetEnvironmentVariables
- * @sa SetEnvironmentVariable
- * @sa UnsetEnvironmentVariable
- * @sa DestroyEnvironment
- *
- * @cat resource
+ * @see Environment
  */
-struct Environment : ResourceBase<EnvironmentRaw>
+struct EnvironmentBase : ResourceBaseT<EnvironmentRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Environment.
-   *
-   * @param resource a EnvironmentRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Environment(EnvironmentRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Environment(const Environment& other) = delete;
-
-  /// Move constructor
-  constexpr Environment(Environment&& other) noexcept
-    : Environment(other.release())
-  {
-  }
-
-  constexpr Environment(const EnvironmentRef& other) = delete;
-
-  constexpr Environment(EnvironmentRef&& other) = delete;
-
-  /**
-   * Create a set of environment variables
-   *
-   * @param populated true to initialize it from the C runtime environment,
-   *                  false to create an empty environment.
-   * @post a pointer to the new environment or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety If `populated` is false, it is safe to call this function
-   *               from any thread, otherwise it is safe if no other threads are
-   *               calling setenv() or unsetenv()
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetEnvironmentVariable
-   * @sa GetEnvironmentVariables
-   * @sa SetEnvironmentVariable
-   * @sa UnsetEnvironmentVariable
-   * @sa DestroyEnvironment
-   */
-  Environment(bool populated);
-
-  /// Destructor
-  ~Environment() { SDL_DestroyEnvironment(get()); }
-
-  /// Assignment operator.
-  constexpr Environment& operator=(Environment&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Environment& operator=(const Environment& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a set of environment variables.
@@ -11802,6 +11674,76 @@ struct Environment : ResourceBase<EnvironmentRaw>
 };
 
 /**
+ * A thread-safe set of environment variables
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GetEnvironment
+ * @sa CreateEnvironment
+ * @sa GetEnvironmentVariable
+ * @sa GetEnvironmentVariables
+ * @sa SetEnvironmentVariable
+ * @sa UnsetEnvironmentVariable
+ * @sa DestroyEnvironment
+ *
+ * @cat resource
+ */
+struct Environment : EnvironmentBase
+{
+  using EnvironmentBase::EnvironmentBase;
+
+  /**
+   * Constructs from raw Environment.
+   *
+   * @param resource a EnvironmentRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Environment(EnvironmentRaw resource) noexcept
+    : EnvironmentBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Environment(Environment&& other) noexcept
+    : Environment(other.release())
+  {
+  }
+
+  /**
+   * Create a set of environment variables
+   *
+   * @param populated true to initialize it from the C runtime environment,
+   *                  false to create an empty environment.
+   * @post a pointer to the new environment or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety If `populated` is false, it is safe to call this function
+   *               from any thread, otherwise it is safe if no other threads are
+   *               calling setenv() or unsetenv()
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetEnvironmentVariable
+   * @sa GetEnvironmentVariables
+   * @sa SetEnvironmentVariable
+   * @sa UnsetEnvironmentVariable
+   * @sa DestroyEnvironment
+   */
+  Environment(bool populated);
+
+  /// Destructor
+  ~Environment() { SDL_DestroyEnvironment(get()); }
+
+  /// Assignment operator.
+  constexpr Environment& operator=(Environment&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Get the process environment.
  *
  * This is initialized at application start and is not affected by setenv() and
@@ -11877,7 +11819,7 @@ inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
   return SDL_GetEnvironmentVariable(env, name);
 }
 
-inline const char* Environment::GetVariable(StringParam name)
+inline const char* EnvironmentBase::GetVariable(StringParam name)
 {
   return SDL::GetEnvironmentVariable(get(), std::move(name));
 }
@@ -11906,7 +11848,7 @@ inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
 }
 
-inline OwnArray<char*> Environment::GetVariables()
+inline OwnArray<char*> EnvironmentBase::GetVariables()
 {
   return SDL::GetEnvironmentVariables(get());
 }
@@ -11939,9 +11881,9 @@ inline void SetEnvironmentVariable(EnvironmentRef env,
   CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite));
 }
 
-inline void Environment::SetVariable(StringParam name,
-                                     StringParam value,
-                                     bool overwrite)
+inline void EnvironmentBase::SetVariable(StringParam name,
+                                         StringParam value,
+                                         bool overwrite)
 {
   SDL::SetEnvironmentVariable(
     get(), std::move(name), std::move(value), overwrite);
@@ -11970,7 +11912,7 @@ inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
   CheckError(SDL_UnsetEnvironmentVariable(env, name));
 }
 
-inline void Environment::UnsetVariable(StringParam name)
+inline void EnvironmentBase::UnsetVariable(StringParam name)
 {
   SDL::UnsetEnvironmentVariable(get(), std::move(name));
 }
@@ -11992,7 +11934,7 @@ inline void DestroyEnvironment(EnvironmentRaw env)
   SDL_DestroyEnvironment(env);
 }
 
-inline void Environment::Destroy() { DestroyEnvironment(release()); }
+inline void EnvironmentBase::Destroy() { DestroyEnvironment(release()); }
 
 /**
  * Get the value of a variable in the environment.
@@ -16542,80 +16484,13 @@ inline double tan(double x) { return SDL_tan(x); }
 inline float tan(float x) { return SDL_tanf(x); }
 
 /**
- * An opaque handle representing string encoding conversion state.
+ * Base class to IConv.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- *
- * @cat resource
- *
- * @sa iconv_open
+ * @see IConv
  */
-struct IConv : ResourceBase<IConvRaw>
+struct IConvBase : ResourceBaseT<IConvRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /// Default ctor
-  IConv(std::nullptr_t = nullptr) noexcept
-    : IConv(IConvRaw(SDL_ICONV_ERROR))
-  {
-  }
-
-  /**
-   * Constructs from raw IConv.
-   *
-   * @param resource a IConvRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit IConv(IConvRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr IConv(const IConv& other) = delete;
-
-  /// Move constructor
-  constexpr IConv(IConv&& other) noexcept
-    : IConv(other.release())
-  {
-  }
-
-  constexpr IConv(const IConvRef& other) = delete;
-
-  constexpr IConv(IConvRef&& other) = delete;
-
-  /**
-   * This function allocates a context for the specified character set
-   * conversion.
-   *
-   * @param tocode The target character encoding, must not be nullptr.
-   * @param fromcode The source character encoding, must not be nullptr.
-   * @post a valid handle or falsy on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa iconv
-   * @sa iconv_close
-   * @sa iconv_string
-   */
-  IConv(StringParam tocode, StringParam fromcode);
-
-  /// Destructor
-  ~IConv() { SDL_iconv_close(get()); }
-
-  /// Assignment operator.
-  constexpr IConv& operator=(IConv&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  IConv& operator=(const IConv& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to bool
   explicit operator bool() const noexcept
@@ -16681,6 +16556,73 @@ struct IConv : ResourceBase<IConvRaw>
 };
 
 /**
+ * An opaque handle representing string encoding conversion state.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ *
+ * @cat resource
+ *
+ * @sa iconv_open
+ */
+struct IConv : IConvBase
+{
+  using IConvBase::IConvBase;
+
+  /// Default ctor
+  IConv(std::nullptr_t = nullptr) noexcept
+    : IConv(IConvRaw(SDL_ICONV_ERROR))
+  {
+  }
+
+  /**
+   * Constructs from raw IConv.
+   *
+   * @param resource a IConvRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit IConv(IConvRaw resource) noexcept
+    : IConvBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr IConv(IConv&& other) noexcept
+    : IConv(other.release())
+  {
+  }
+
+  /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
+   * @post a valid handle or falsy on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa iconv
+   * @sa iconv_close
+   * @sa iconv_string
+   */
+  IConv(StringParam tocode, StringParam fromcode);
+
+  /// Destructor
+  ~IConv() { SDL_iconv_close(get()); }
+
+  /// Assignment operator.
+  constexpr IConv& operator=(IConv&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * This function allocates a context for the specified character set conversion.
  *
  * @param tocode The target character encoding, must not be nullptr.
@@ -16723,7 +16665,7 @@ inline IConv::IConv(StringParam tocode, StringParam fromcode)
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
 
-inline int IConv::close() { return iconv_close(release()); }
+inline int IConvBase::close() { return iconv_close(release()); }
 
 /**
  * This function converts text between encodings, reading from and writing to a
@@ -16761,7 +16703,7 @@ inline int IConv::close() { return iconv_close(release()); }
  * @sa iconv_close
  * @sa iconv_string
  */
-inline size_t iconv(IConvRaw cd,
+inline size_t iconv(IConvRef cd,
                     const char** inbuf,
                     size_t* inbytesleft,
                     char** outbuf,
@@ -16770,10 +16712,10 @@ inline size_t iconv(IConvRaw cd,
   return CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft));
 }
 
-inline size_t IConv::iconv(const char** inbuf,
-                           size_t* inbytesleft,
-                           char** outbuf,
-                           size_t* outbytesleft) const
+inline size_t IConvBase::iconv(const char** inbuf,
+                               size_t* inbytesleft,
+                               char** outbuf,
+                               size_t* outbytesleft) const
 {
   return SDL::iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
 }
@@ -17064,6 +17006,9 @@ Uint32 narrowU32(T value)
  */
 
 // Forward decl
+struct AsyncIOBase;
+
+// Forward decl
 struct AsyncIO;
 
 /// Alias to raw representation for AsyncIO.
@@ -17074,7 +17019,10 @@ using AsyncIORaw = SDL_AsyncIO*;
  *
  * This does not take ownership!
  */
-using AsyncIORef = ResourceRef<AsyncIO>;
+using AsyncIORef = ResourceRefT<AsyncIOBase>;
+
+// Forward decl
+struct AsyncIOQueueBase;
 
 // Forward decl
 struct AsyncIOQueue;
@@ -17087,108 +17035,16 @@ using AsyncIOQueueRaw = SDL_AsyncIOQueue*;
  *
  * This does not take ownership!
  */
-using AsyncIOQueueRef = ResourceRef<AsyncIOQueue>;
+using AsyncIOQueueRef = ResourceRefT<AsyncIOQueueBase>;
 
 /**
- * The asynchronous I/O operation structure.
+ * Base class to AsyncIO.
  *
- * This operates as an opaque handle. One can then request read or write
- * operations on it.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa AsyncIOFromFile
- *
- * @cat resource
+ * @see AsyncIO
  */
-struct AsyncIO : ResourceBase<AsyncIORaw>
+struct AsyncIOBase : ResourceBaseT<AsyncIORaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw AsyncIO.
-   *
-   * @param resource a AsyncIORaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit AsyncIO(AsyncIORaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) = delete;
-
-  /// Move constructor
-  constexpr AsyncIO(AsyncIO&& other) noexcept
-    : AsyncIO(other.release())
-  {
-  }
-
-  constexpr AsyncIO(const AsyncIORef& other) = delete;
-
-  constexpr AsyncIO(AsyncIORef&& other) = delete;
-
-  /**
-   * Use this function to create a new AsyncIO object for reading from and/or
-   * writing to a named file.
-   *
-   * The `mode` string understands the following values:
-   *
-   * - "r": Open a file for reading only. It must exist.
-   * - "w": Open a file for writing only. It will create missing files or
-   *   truncate existing ones.
-   * - "r+": Open a file for update both reading and writing. The file must
-   *   exist.
-   * - "w+": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists its content is erased and the file is
-   *   treated as a new empty file.
-   *
-   * There is no "b" mode, as there is only "binary" style I/O, and no "a" mode
-   * for appending, since you specify the position when starting a task.
-   *
-   * This function supports Unicode filenames, but they must be encoded in UTF-8
-   * format, regardless of the underlying operating system.
-   *
-   * This call is _not_ asynchronous; it will open the file before returning,
-   * under the assumption that doing so is generally a fast operation. Future
-   * reads and writes to the opened file will be async, however.
-   *
-   * @param file a UTF-8 string representing the filename to open.
-   * @param mode an ASCII string representing the mode to be used for opening
-   *             the file.
-   * @post a pointer to the AsyncIO structure that is created or nullptr on
-   *       failure; call GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseAsyncIO
-   * @sa ReadAsyncIO
-   * @sa WriteAsyncIO
-   */
-  AsyncIO(StringParam file, StringParam mode);
-
-  /// Destructor
-  ~AsyncIO()
-  {
-    if (get()) {
-      LOG_CATEGORY_ERROR.LogDebug("AsyncIO ID was not properly Destroyed: {}",
-                                  (void*)(get()));
-    }
-  }
-
-  /// Assignment operator.
-  constexpr AsyncIO& operator=(AsyncIO&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  AsyncIO& operator=(const AsyncIO& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close and free any allocated resources for an async I/O object.
@@ -17334,6 +17190,98 @@ struct AsyncIO : ResourceBase<AsyncIORaw>
 };
 
 /**
+ * The asynchronous I/O operation structure.
+ *
+ * This operates as an opaque handle. One can then request read or write
+ * operations on it.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa AsyncIOFromFile
+ *
+ * @cat resource
+ */
+struct AsyncIO : AsyncIOBase
+{
+  using AsyncIOBase::AsyncIOBase;
+
+  /**
+   * Constructs from raw AsyncIO.
+   *
+   * @param resource a AsyncIORaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit AsyncIO(AsyncIORaw resource) noexcept
+    : AsyncIOBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr AsyncIO(AsyncIO&& other) noexcept
+    : AsyncIO(other.release())
+  {
+  }
+
+  /**
+   * Use this function to create a new AsyncIO object for reading from and/or
+   * writing to a named file.
+   *
+   * The `mode` string understands the following values:
+   *
+   * - "r": Open a file for reading only. It must exist.
+   * - "w": Open a file for writing only. It will create missing files or
+   *   truncate existing ones.
+   * - "r+": Open a file for update both reading and writing. The file must
+   *   exist.
+   * - "w+": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists its content is erased and the file is
+   *   treated as a new empty file.
+   *
+   * There is no "b" mode, as there is only "binary" style I/O, and no "a" mode
+   * for appending, since you specify the position when starting a task.
+   *
+   * This function supports Unicode filenames, but they must be encoded in UTF-8
+   * format, regardless of the underlying operating system.
+   *
+   * This call is _not_ asynchronous; it will open the file before returning,
+   * under the assumption that doing so is generally a fast operation. Future
+   * reads and writes to the opened file will be async, however.
+   *
+   * @param file a UTF-8 string representing the filename to open.
+   * @param mode an ASCII string representing the mode to be used for opening
+   *             the file.
+   * @post a pointer to the AsyncIO structure that is created or nullptr on
+   *       failure; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseAsyncIO
+   * @sa ReadAsyncIO
+   * @sa WriteAsyncIO
+   */
+  AsyncIO(StringParam file, StringParam mode);
+
+  /// Destructor
+  ~AsyncIO()
+  {
+    if (get()) {
+      LOG_CATEGORY_ERROR.LogDebug("AsyncIO ID was not properly Destroyed: {}",
+                                  (void*)(get()));
+    }
+  }
+
+  /// Assignment operator.
+  constexpr AsyncIO& operator=(AsyncIO&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Types of asynchronous I/O tasks.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -17373,83 +17321,13 @@ constexpr AsyncIOResult ASYNCIO_CANCELED =
 using AsyncIOOutcome = SDL_AsyncIOOutcome;
 
 /**
- * A queue of completed asynchronous I/O tasks.
+ * Base class to AsyncIOQueue.
  *
- * When starting an asynchronous operation, you specify a queue for the new
- * task. A queue can be asked later if any tasks in it have completed, allowing
- * an app to manage multiple pending tasks in one place, in whatever order they
- * complete.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa CreateAsyncIOQueue
- * @sa ReadAsyncIO
- * @sa WriteAsyncIO
- * @sa GetAsyncIOResult
- * @sa WaitAsyncIOResult
- *
- * @cat resource
+ * @see AsyncIOQueue
  */
-struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
+struct AsyncIOQueueBase : ResourceBaseT<AsyncIOQueueRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueueRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit AsyncIOQueue(AsyncIOQueueRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
-
-  /// Move constructor
-  constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
-    : AsyncIOQueue(other.release())
-  {
-  }
-
-  constexpr AsyncIOQueue(const AsyncIOQueueRef& other) = delete;
-
-  constexpr AsyncIOQueue(AsyncIOQueueRef&& other) = delete;
-
-  /**
-   * Create a task queue for tracking multiple I/O operations.
-   *
-   * Async I/O operations are assigned to a queue when started. The queue can be
-   * checked for completed tasks thereafter.
-   *
-   * @post a new task queue object or nullptr if there was an error; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyAsyncIOQueue
-   * @sa GetAsyncIOResult
-   * @sa WaitAsyncIOResult
-   */
-  AsyncIOQueue();
-
-  /// Destructor
-  ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(get()); }
-
-  /// Assignment operator.
-  constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  AsyncIOQueue& operator=(const AsyncIOQueue& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a previously-created async I/O task queue.
@@ -17607,6 +17485,76 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
 };
 
 /**
+ * A queue of completed asynchronous I/O tasks.
+ *
+ * When starting an asynchronous operation, you specify a queue for the new
+ * task. A queue can be asked later if any tasks in it have completed, allowing
+ * an app to manage multiple pending tasks in one place, in whatever order they
+ * complete.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa CreateAsyncIOQueue
+ * @sa ReadAsyncIO
+ * @sa WriteAsyncIO
+ * @sa GetAsyncIOResult
+ * @sa WaitAsyncIOResult
+ *
+ * @cat resource
+ */
+struct AsyncIOQueue : AsyncIOQueueBase
+{
+  using AsyncIOQueueBase::AsyncIOQueueBase;
+
+  /**
+   * Constructs from raw AsyncIOQueue.
+   *
+   * @param resource a AsyncIOQueueRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit AsyncIOQueue(AsyncIOQueueRaw resource) noexcept
+    : AsyncIOQueueBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
+    : AsyncIOQueue(other.release())
+  {
+  }
+
+  /**
+   * Create a task queue for tracking multiple I/O operations.
+   *
+   * Async I/O operations are assigned to a queue when started. The queue can be
+   * checked for completed tasks thereafter.
+   *
+   * @post a new task queue object or nullptr if there was an error; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyAsyncIOQueue
+   * @sa GetAsyncIOResult
+   * @sa WaitAsyncIOResult
+   */
+  AsyncIOQueue();
+
+  /// Destructor
+  ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(get()); }
+
+  /// Assignment operator.
+  constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Use this function to create a new AsyncIO object for reading from and/or
  * writing to a named file.
  *
@@ -17673,7 +17621,7 @@ inline Sint64 GetAsyncIOSize(AsyncIORef asyncio)
   return CheckError(SDL_GetAsyncIOSize(asyncio));
 }
 
-inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(get()); }
+inline Sint64 AsyncIOBase::GetSize() { return SDL::GetAsyncIOSize(get()); }
 
 /**
  * Start an async read.
@@ -17720,11 +17668,11 @@ inline void ReadAsyncIO(AsyncIORef asyncio,
   CheckError(SDL_ReadAsyncIO(asyncio, ptr, offset, size, queue, userdata));
 }
 
-inline void AsyncIO::Read(void* ptr,
-                          Uint64 offset,
-                          Uint64 size,
-                          AsyncIOQueueRef queue,
-                          void* userdata)
+inline void AsyncIOBase::Read(void* ptr,
+                              Uint64 offset,
+                              Uint64 size,
+                              AsyncIOQueueRef queue,
+                              void* userdata)
 {
   SDL::ReadAsyncIO(get(), ptr, offset, size, queue, userdata);
 }
@@ -17773,11 +17721,11 @@ inline void WriteAsyncIO(AsyncIORef asyncio,
   CheckError(SDL_WriteAsyncIO(asyncio, ptr, offset, size, queue, userdata));
 }
 
-inline void AsyncIO::Write(void* ptr,
-                           Uint64 offset,
-                           Uint64 size,
-                           AsyncIOQueueRef queue,
-                           void* userdata)
+inline void AsyncIOBase::Write(void* ptr,
+                               Uint64 offset,
+                               Uint64 size,
+                               AsyncIOQueueRef queue,
+                               void* userdata)
 {
   SDL::WriteAsyncIO(get(), ptr, offset, size, queue, userdata);
 }
@@ -17836,7 +17784,9 @@ inline bool CloseAsyncIO(AsyncIORaw asyncio,
   return SDL_CloseAsyncIO(asyncio, flush, queue, userdata);
 }
 
-inline bool AsyncIO::Close(bool flush, AsyncIOQueueRef queue, void* userdata)
+inline bool AsyncIOBase::Close(bool flush,
+                               AsyncIOQueueRef queue,
+                               void* userdata)
 {
   return CloseAsyncIO(release(), flush, queue, userdata);
 }
@@ -17896,7 +17846,7 @@ inline void DestroyAsyncIOQueue(AsyncIOQueueRaw queue)
   SDL_DestroyAsyncIOQueue(queue);
 }
 
-inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
+inline void AsyncIOQueueBase::Destroy() { DestroyAsyncIOQueue(release()); }
 
 /**
  * Query an async I/O task queue for completed tasks.
@@ -17929,7 +17879,7 @@ inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueRef queue)
   return std::nullopt;
 }
 
-inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
+inline std::optional<AsyncIOOutcome> AsyncIOQueueBase::GetResult()
 {
   return SDL::GetAsyncIOResult(get());
 }
@@ -18029,13 +17979,13 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue)
   return std::nullopt;
 }
 
-inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult(
+inline std::optional<AsyncIOOutcome> AsyncIOQueueBase::WaitResult(
   Milliseconds timeout)
 {
   return SDL::WaitAsyncIOResult(get(), timeout);
 }
 
-inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
+inline std::optional<AsyncIOOutcome> AsyncIOQueueBase::WaitResult()
 {
   return SDL::WaitAsyncIOResult(get());
 }
@@ -18067,7 +18017,7 @@ inline void SignalAsyncIOQueue(AsyncIOQueueRef queue)
   SDL_SignalAsyncIOQueue(queue);
 }
 
-inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(get()); }
+inline void AsyncIOQueueBase::Signal() { SDL::SignalAsyncIOQueue(get()); }
 
 /**
  * Load all the data from a file path, asynchronously.
@@ -20855,6 +20805,9 @@ inline GUID::GUID(StringParam pchGUID)
  */
 
 // Forward decl
+struct HidDeviceBase;
+
+// Forward decl
 struct HidDevice;
 
 /// Alias to raw representation for HidDevice.
@@ -20865,7 +20818,7 @@ using HidDeviceRaw = SDL_hid_device*;
  *
  * This does not take ownership!
  */
-using HidDeviceRef = ResourceRef<HidDevice>;
+using HidDeviceRef = ResourceRefT<HidDeviceBase>;
 
 /**
  * HID underlying bus types.
@@ -20915,85 +20868,13 @@ constexpr hid_bus_type HID_API_BUS_SPI = SDL_HID_API_BUS_SPI;
 using hid_device_info = SDL_hid_device_info;
 
 /**
- * An opaque handle representing an open HID device.
+ * Base class to HidDevice.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see HidDevice
  */
-struct HidDevice : ResourceBase<HidDeviceRaw>
+struct HidDeviceBase : ResourceBaseT<HidDeviceRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw HidDevice.
-   *
-   * @param resource a HidDeviceRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit HidDevice(HidDeviceRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) = delete;
-
-  /// Move constructor
-  constexpr HidDevice(HidDevice&& other) noexcept
-    : HidDevice(other.release())
-  {
-  }
-
-  constexpr HidDevice(const HidDeviceRef& other) = delete;
-
-  constexpr HidDevice(HidDeviceRef&& other) = delete;
-
-  /**
-   * Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally
-   * a serial number.
-   *
-   * If `serial_number` is nullptr, the first device with the specified VID and
-   * PID is opened.
-   *
-   * @param vendor_id the Vendor ID (VID) of the device to open.
-   * @param product_id the Product ID (PID) of the device to open.
-   * @param serial_number the Serial Number of the device to open (Optionally
-   *                      nullptr).
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  HidDevice(unsigned short vendor_id,
-            unsigned short product_id,
-            const wchar_t* serial_number);
-
-  /**
-   * Open a HID device by its path name.
-   *
-   * The path name be determined by calling hid_enumerate(), or a
-   * platform-specific path name can be used (eg: /dev/hidraw0 on Linux).
-   *
-   * @param path the path name of the device to open.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  HidDevice(StringParam path);
-
-  /// Destructor
-  ~HidDevice() { SDL_hid_close(get()); }
-
-  /// Assignment operator.
-  constexpr HidDevice& operator=(HidDevice&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  HidDevice& operator=(const HidDevice& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close a HID device.
@@ -21233,6 +21114,78 @@ struct HidDevice : ResourceBase<HidDeviceRaw>
 };
 
 /**
+ * An opaque handle representing an open HID device.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct HidDevice : HidDeviceBase
+{
+  using HidDeviceBase::HidDeviceBase;
+
+  /**
+   * Constructs from raw HidDevice.
+   *
+   * @param resource a HidDeviceRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit HidDevice(HidDeviceRaw resource) noexcept
+    : HidDeviceBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr HidDevice(HidDevice&& other) noexcept
+    : HidDevice(other.release())
+  {
+  }
+
+  /**
+   * Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally
+   * a serial number.
+   *
+   * If `serial_number` is nullptr, the first device with the specified VID and
+   * PID is opened.
+   *
+   * @param vendor_id the Vendor ID (VID) of the device to open.
+   * @param product_id the Product ID (PID) of the device to open.
+   * @param serial_number the Serial Number of the device to open (Optionally
+   *                      nullptr).
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  HidDevice(unsigned short vendor_id,
+            unsigned short product_id,
+            const wchar_t* serial_number);
+
+  /**
+   * Open a HID device by its path name.
+   *
+   * The path name be determined by calling hid_enumerate(), or a
+   * platform-specific path name can be used (eg: /dev/hidraw0 on Linux).
+   *
+   * @param path the path name of the device to open.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  HidDevice(StringParam path);
+
+  /// Destructor
+  ~HidDevice() { SDL_hid_close(get()); }
+
+  /// Assignment operator.
+  constexpr HidDevice& operator=(HidDevice&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Initialize the HIDAPI library.
  *
  * This function initializes the HIDAPI library. Calling it is not strictly
@@ -21408,7 +21361,7 @@ inline PropertiesRef hid_get_properties(HidDeviceRef dev)
   return CheckError(SDL_hid_get_properties(dev));
 }
 
-inline PropertiesRef HidDevice::hid_get_properties()
+inline PropertiesRef HidDeviceBase::hid_get_properties()
 {
   return SDL::hid_get_properties(get());
 }
@@ -21456,7 +21409,7 @@ inline int hid_write(HidDeviceRef dev, SourceBytes data)
   return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
-inline int HidDevice::write(SourceBytes data)
+inline int HidDeviceBase::write(SourceBytes data)
 {
   return SDL::hid_write(get(), std::move(data));
 }
@@ -21485,7 +21438,7 @@ inline int hid_read_timeout(HidDeviceRef dev,
     dev, data.data_as<Uint8>(), data.size_bytes(), narrowS32(timeout.count()));
 }
 
-inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
+inline int HidDeviceBase::read_timeout(TargetBytes data, Milliseconds timeout)
 {
   return SDL::hid_read_timeout(get(), std::move(data), timeout);
 }
@@ -21510,7 +21463,7 @@ inline int hid_read(HidDeviceRef dev, TargetBytes data)
   return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
-inline int HidDevice::read(TargetBytes data)
+inline int HidDeviceBase::read(TargetBytes data)
 {
   return SDL::hid_read(get(), std::move(data));
 }
@@ -21536,7 +21489,7 @@ inline void hid_set_nonblocking(HidDeviceRef dev, bool nonblock)
   CheckErrorIfNot(SDL_hid_set_nonblocking(dev, nonblock), 0);
 }
 
-inline void HidDevice::set_nonblocking(bool nonblock)
+inline void HidDeviceBase::set_nonblocking(bool nonblock)
 {
   SDL::hid_set_nonblocking(get(), nonblock);
 }
@@ -21567,7 +21520,7 @@ inline int hid_send_feature_report(HidDeviceRef dev, SourceBytes data)
     dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
-inline int HidDevice::send_feature_report(SourceBytes data)
+inline int HidDeviceBase::send_feature_report(SourceBytes data)
 {
   return SDL::hid_send_feature_report(get(), std::move(data));
 }
@@ -21597,7 +21550,7 @@ inline int hid_get_feature_report(HidDeviceRef dev, TargetBytes data)
     dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
-inline int HidDevice::get_feature_report(TargetBytes data)
+inline int HidDeviceBase::get_feature_report(TargetBytes data)
 {
   return SDL::hid_get_feature_report(get(), std::move(data));
 }
@@ -21627,7 +21580,7 @@ inline int hid_get_input_report(HidDeviceRef dev, TargetBytes data)
     dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
-inline int HidDevice::get_input_report(TargetBytes data)
+inline int HidDeviceBase::get_input_report(TargetBytes data)
 {
   return SDL::hid_get_input_report(get(), std::move(data));
 }
@@ -21645,7 +21598,7 @@ inline void hid_close(HidDeviceRaw dev)
   CheckErrorIfNot(SDL_hid_close(dev), 0);
 }
 
-inline void HidDevice::close() { hid_close(release()); }
+inline void HidDeviceBase::close() { hid_close(release()); }
 
 /**
  * Get The Manufacturer String from a HID device.
@@ -21664,7 +21617,8 @@ inline void hid_get_manufacturer_string(HidDeviceRef dev,
   CheckErrorIfNot(SDL_hid_get_manufacturer_string(dev, string, maxlen), 0);
 }
 
-inline void HidDevice::get_manufacturer_string(wchar_t* string, size_t maxlen)
+inline void HidDeviceBase::get_manufacturer_string(wchar_t* string,
+                                                   size_t maxlen)
 {
   SDL::hid_get_manufacturer_string(get(), string, maxlen);
 }
@@ -21686,7 +21640,7 @@ inline void hid_get_product_string(HidDeviceRef dev,
   CheckErrorIfNot(SDL_hid_get_product_string(dev, string, maxlen), 0);
 }
 
-inline void HidDevice::get_product_string(wchar_t* string, size_t maxlen)
+inline void HidDeviceBase::get_product_string(wchar_t* string, size_t maxlen)
 {
   SDL::hid_get_product_string(get(), string, maxlen);
 }
@@ -21708,7 +21662,8 @@ inline void hid_get_serial_number_string(HidDeviceRef dev,
   CheckErrorIfNot(SDL_hid_get_serial_number_string(dev, string, maxlen), 0);
 }
 
-inline void HidDevice::get_serial_number_string(wchar_t* string, size_t maxlen)
+inline void HidDeviceBase::get_serial_number_string(wchar_t* string,
+                                                    size_t maxlen)
 {
   SDL::hid_get_serial_number_string(get(), string, maxlen);
 }
@@ -21733,9 +21688,9 @@ inline void hid_get_indexed_string(HidDeviceRef dev,
                   0);
 }
 
-inline void HidDevice::get_indexed_string(int string_index,
-                                          wchar_t* string,
-                                          size_t maxlen)
+inline void HidDeviceBase::get_indexed_string(int string_index,
+                                              wchar_t* string,
+                                              size_t maxlen)
 {
   SDL::hid_get_indexed_string(get(), string_index, string, maxlen);
 }
@@ -21756,7 +21711,7 @@ inline hid_device_info* hid_get_device_info(HidDeviceRef dev)
   return CheckError(SDL_hid_get_device_info(dev));
 }
 
-inline hid_device_info* HidDevice::get_device_info()
+inline hid_device_info* HidDeviceBase::get_device_info()
 {
   return SDL::hid_get_device_info(get());
 }
@@ -21780,7 +21735,7 @@ inline int hid_get_report_descriptor(HidDeviceRef dev, TargetBytes buf)
     dev, buf.data_as<Uint8>(), buf.size_bytes());
 }
 
-inline int HidDevice::get_report_descriptor(TargetBytes buf)
+inline int HidDeviceBase::get_report_descriptor(TargetBytes buf)
 {
   return SDL::hid_get_report_descriptor(get(), std::move(buf));
 }
@@ -21810,6 +21765,9 @@ inline void hid_ble_scan(bool active) { SDL_hid_ble_scan(active); }
  */
 
 // Forward decl
+struct IOStreamBase;
+
+// Forward decl
 struct IOStream;
 
 /// Alias to raw representation for IOStream.
@@ -21820,7 +21778,7 @@ using IOStreamRaw = SDL_IOStream*;
  *
  * This does not take ownership!
  */
-using IOStreamRef = ResourceRef<IOStream>;
+using IOStreamRef = ResourceRefT<IOStreamBase>;
 
 /**
  * IOStream status, set by a read or write operation.
@@ -21882,295 +21840,13 @@ constexpr IOWhence IO_SEEK_END =
 using IOStreamInterface = SDL_IOStreamInterface;
 
 /**
- * The read/write operation structure.
+ * Base class to IOStream.
  *
- * This operates as an opaque handle. There are several APIs to create various
- * types of I/O streams, or an app can supply an IOStreamInterface to OpenIO()
- * to provide their own stream implementation behind this struct's abstract
- * interface.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see IOStream
  */
-struct IOStream : ResourceBase<IOStreamRaw>
+struct IOStreamBase : ResourceBaseT<IOStreamRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw IOStream.
-   *
-   * @param resource a IOStreamRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit IOStream(IOStreamRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr IOStream(const IOStream& other) = delete;
-
-  /// Move constructor
-  constexpr IOStream(IOStream&& other) noexcept
-    : IOStream(other.release())
-  {
-  }
-
-  constexpr IOStream(const IOStreamRef& other) = delete;
-
-  constexpr IOStream(IOStreamRef&& other) = delete;
-
-  /**
-   * Use this function to create a new IOStream structure for reading from
-   * and/or writing to a named file.
-   *
-   * The `mode` string is treated roughly the same as in a call to the C
-   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
-   * scenes.
-   *
-   * Available `mode` strings:
-   *
-   * - "r": Open a file for reading. The file must exist.
-   * - "w": Create an empty file for writing. If a file with the same name
-   *   already exists its content is erased and the file is treated as a new
-   *   empty file.
-   * - "wx": Create an empty file for writing. If a file with the same name
-   *   already exists, the call fails. (Supported since SDL 3.4.0)
-   * - "a": Append to a file. Writing operations append data at the end of the
-   *   file. The file is created if it does not exist.
-   * - "r+": Open a file for update both reading and writing. The file must
-   *   exist.
-   * - "w+": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists its content is erased and the file is
-   *   treated as a new empty file.
-   * - "w+x": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
-   * - "a+": Open a file for reading and appending. All writing operations are
-   *   performed at the end of the file, protecting the previous content to be
-   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
-   *   anywhere in the file for reading, but writing operations will move it
-   *   back to the end of file. The file is created if it does not exist.
-   *
-   * **NOTE**: In order to open a file as a binary file, a "b" character has to
-   * be included in the `mode` string. This additional "b" character can either
-   * be appended at the end of the string (thus making the following compound
-   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
-   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
-   * Additional characters may follow the sequence, although they should have no
-   * effect. For example, "t" is sometimes appended to make explicit the file is
-   * a text file.
-   *
-   * This function supports Unicode filenames, but they must be encoded in UTF-8
-   * format, regardless of the underlying operating system.
-   *
-   * In Android, IOFromFile() can be used to open content:// URIs. As a
-   * fallback, IOFromFile() will transparently open a matching filename in the
-   * app's `assets`.
-   *
-   * Closing the IOStream will close SDL's internal file handle.
-   *
-   * The following properties may be set at creation time by SDL:
-   *
-   * - `prop.IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
-   *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
-   *   the program isn't running on Windows, or SDL used some other method to
-   *   access the filesystem, this property will not be set.
-   * - `prop.IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this IOStream is using to access the filesystem. If
-   *   SDL used some other method to access the filesystem, this property will
-   *   not be set. PLEASE NOTE that if SDL is using a different C runtime than
-   *   your app, trying to use this pointer will almost certainly result in a
-   *   crash! This is mostly a problem on Windows; make sure you build SDL and
-   *   your app with the same compiler and settings to avoid it.
-   * - `prop.IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
-   *   IOStream is using to access the filesystem.
-   * - `prop.IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
-   *   Android NDK `AAsset *`, that this IOStream is using to access the
-   *   filesystem. If SDL used some other method to access the filesystem, this
-   *   property will not be set.
-   *
-   * @param file a UTF-8 string representing the filename to open.
-   * @param mode an ASCII string representing the mode to be used for opening
-   *             the file.
-   * @returns a pointer to the IOStream structure that is created or nullptr on
-   *          failure; call GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseIO
-   * @sa FlushIO
-   * @sa ReadIO
-   * @sa SeekIO
-   * @sa TellIO
-   * @sa WriteIO
-   */
-  static IOStream FromFile(StringParam file, StringParam mode);
-
-  /**
-   * Use this function to prepare a read-write memory buffer for use with
-   * IOStream.
-   *
-   * This function sets up an IOStream struct based on a memory area of a
-   * certain size, for both read and write access.
-   *
-   * This memory buffer is not copied by the IOStream; the pointer you provide
-   * must remain valid until you close the stream.
-   *
-   * If you need to make sure the IOStream never writes to the memory buffer,
-   * you should use IOFromConstMem() with a read-only buffer of memory instead.
-   *
-   * The following properties will be set at creation time by SDL:
-   *
-   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
-   *   passed to this function.
-   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
-   *   that was passed to this function.
-   *
-   * Additionally, the following properties are recognized:
-   *
-   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
-   *   non-nullptr value it will be interpreted as a function of free_func type
-   *   and called with the passed `mem` pointer when closing the stream. By
-   *   default it is unset, i.e., the memory will not be freed.
-   *
-   * @param mem a buffer to feed an IOStream stream.
-   * @returns a valid IOStream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOFromConstMem
-   * @sa CloseIO
-   * @sa FlushIO
-   * @sa ReadIO
-   * @sa SeekIO
-   * @sa TellIO
-   * @sa WriteIO
-   */
-  static IOStream FromMem(TargetBytes mem);
-
-  /**
-   * Use this function to prepare a read-only memory buffer for use with
-   * IOStream.
-   *
-   * This function sets up an IOStream struct based on a memory area of a
-   * certain size. It assumes the memory area is not writable.
-   *
-   * Attempting to write to this IOStream stream will report an error without
-   * writing to the memory buffer.
-   *
-   * This memory buffer is not copied by the IOStream; the pointer you provide
-   * must remain valid until you close the stream.
-   *
-   * If you need to write to a memory buffer, you should use IOFromMem() with a
-   * writable buffer of memory instead.
-   *
-   * The following properties will be set at creation time by SDL:
-   *
-   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
-   *   passed to this function.
-   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
-   *   that was passed to this function.
-   *
-   * Additionally, the following properties are recognized:
-   *
-   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
-   *   non-nullptr value it will be interpreted as a function of free_func type
-   *   and called with the passed `mem` pointer when closing the stream. By
-   *   default it is unset, i.e., the memory will not be freed.
-   *
-   * @param mem a read-only buffer to feed an IOStreamRef stream.
-   * @returns a valid IOStream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa IOFromMem
-   * @sa CloseIO
-   * @sa ReadIO
-   * @sa SeekIO
-   * @sa TellIO
-   */
-  static IOStream FromConstMem(SourceBytes mem);
-
-  /**
-   * Use this function to create an IOStream that is backed by dynamically
-   * allocated memory.
-   *
-   * This supports the following properties to provide access to the memory and
-   * control over allocations:
-   *
-   * - `prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
-   *   of the stream. This can be set to nullptr to transfer ownership of the
-   *   memory to the application, which should free the memory with free(). If
-   *   this is done, the next operation on the stream must be CloseIO().
-   * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
-   *   multiples of this size, defaulting to 1024.
-   *
-   * @returns a valid IOStream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseIO
-   * @sa ReadIO
-   * @sa SeekIO
-   * @sa TellIO
-   * @sa WriteIO
-   */
-  static IOStream FromDynamicMem();
-
-  /**
-   * Create a custom IOStream.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own IOStream implementation. If you just need an IOStream to
-   * read/write a common data source, you should use the built-in
-   * implementations in SDL, like IOFromFile() or IOFromMem(), etc.
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this IOStream, initialized using
-   *              InitInterface().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @returns a valid stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseIO
-   * @sa InitInterface
-   * @sa IOFromConstMem
-   * @sa IOFromFile
-   * @sa IOFromMem
-   */
-  static IOStream Open(const IOStreamInterface& iface, void* userdata);
-
-  /// Destructor
-  ~IOStream() { SDL_CloseIO(get()); }
-
-  /// Assignment operator.
-  constexpr IOStream& operator=(IOStream&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  IOStream& operator=(const IOStream& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close and free an allocated IOStream structure.
@@ -23385,6 +23061,288 @@ struct IOStream : ResourceBase<IOStreamRaw>
 };
 
 /**
+ * The read/write operation structure.
+ *
+ * This operates as an opaque handle. There are several APIs to create various
+ * types of I/O streams, or an app can supply an IOStreamInterface to OpenIO()
+ * to provide their own stream implementation behind this struct's abstract
+ * interface.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct IOStream : IOStreamBase
+{
+  using IOStreamBase::IOStreamBase;
+
+  /**
+   * Constructs from raw IOStream.
+   *
+   * @param resource a IOStreamRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit IOStream(IOStreamRaw resource) noexcept
+    : IOStreamBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr IOStream(IOStream&& other) noexcept
+    : IOStream(other.release())
+  {
+  }
+
+  /**
+   * Use this function to create a new IOStream structure for reading from
+   * and/or writing to a named file.
+   *
+   * The `mode` string is treated roughly the same as in a call to the C
+   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
+   * scenes.
+   *
+   * Available `mode` strings:
+   *
+   * - "r": Open a file for reading. The file must exist.
+   * - "w": Create an empty file for writing. If a file with the same name
+   *   already exists its content is erased and the file is treated as a new
+   *   empty file.
+   * - "wx": Create an empty file for writing. If a file with the same name
+   *   already exists, the call fails. (Supported since SDL 3.4.0)
+   * - "a": Append to a file. Writing operations append data at the end of the
+   *   file. The file is created if it does not exist.
+   * - "r+": Open a file for update both reading and writing. The file must
+   *   exist.
+   * - "w+": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists its content is erased and the file is
+   *   treated as a new empty file.
+   * - "w+x": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
+   * - "a+": Open a file for reading and appending. All writing operations are
+   *   performed at the end of the file, protecting the previous content to be
+   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
+   *   anywhere in the file for reading, but writing operations will move it
+   *   back to the end of file. The file is created if it does not exist.
+   *
+   * **NOTE**: In order to open a file as a binary file, a "b" character has to
+   * be included in the `mode` string. This additional "b" character can either
+   * be appended at the end of the string (thus making the following compound
+   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
+   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
+   * Additional characters may follow the sequence, although they should have no
+   * effect. For example, "t" is sometimes appended to make explicit the file is
+   * a text file.
+   *
+   * This function supports Unicode filenames, but they must be encoded in UTF-8
+   * format, regardless of the underlying operating system.
+   *
+   * In Android, IOFromFile() can be used to open content:// URIs. As a
+   * fallback, IOFromFile() will transparently open a matching filename in the
+   * app's `assets`.
+   *
+   * Closing the IOStream will close SDL's internal file handle.
+   *
+   * The following properties may be set at creation time by SDL:
+   *
+   * - `prop.IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
+   *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
+   *   the program isn't running on Windows, or SDL used some other method to
+   *   access the filesystem, this property will not be set.
+   * - `prop.IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
+   *   stdio `FILE *`, that this IOStream is using to access the filesystem. If
+   *   SDL used some other method to access the filesystem, this property will
+   *   not be set. PLEASE NOTE that if SDL is using a different C runtime than
+   *   your app, trying to use this pointer will almost certainly result in a
+   *   crash! This is mostly a problem on Windows; make sure you build SDL and
+   *   your app with the same compiler and settings to avoid it.
+   * - `prop.IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+   *   IOStream is using to access the filesystem.
+   * - `prop.IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
+   *   Android NDK `AAsset *`, that this IOStream is using to access the
+   *   filesystem. If SDL used some other method to access the filesystem, this
+   *   property will not be set.
+   *
+   * @param file a UTF-8 string representing the filename to open.
+   * @param mode an ASCII string representing the mode to be used for opening
+   *             the file.
+   * @returns a pointer to the IOStream structure that is created or nullptr on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseIO
+   * @sa FlushIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   * @sa WriteIO
+   */
+  static IOStream FromFile(StringParam file, StringParam mode);
+
+  /**
+   * Use this function to prepare a read-write memory buffer for use with
+   * IOStream.
+   *
+   * This function sets up an IOStream struct based on a memory area of a
+   * certain size, for both read and write access.
+   *
+   * This memory buffer is not copied by the IOStream; the pointer you provide
+   * must remain valid until you close the stream.
+   *
+   * If you need to make sure the IOStream never writes to the memory buffer,
+   * you should use IOFromConstMem() with a read-only buffer of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+   *   passed to this function.
+   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * Additionally, the following properties are recognized:
+   *
+   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   *   non-nullptr value it will be interpreted as a function of free_func type
+   *   and called with the passed `mem` pointer when closing the stream. By
+   *   default it is unset, i.e., the memory will not be freed.
+   *
+   * @param mem a buffer to feed an IOStream stream.
+   * @returns a valid IOStream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOFromConstMem
+   * @sa CloseIO
+   * @sa FlushIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   * @sa WriteIO
+   */
+  static IOStream FromMem(TargetBytes mem);
+
+  /**
+   * Use this function to prepare a read-only memory buffer for use with
+   * IOStream.
+   *
+   * This function sets up an IOStream struct based on a memory area of a
+   * certain size. It assumes the memory area is not writable.
+   *
+   * Attempting to write to this IOStream stream will report an error without
+   * writing to the memory buffer.
+   *
+   * This memory buffer is not copied by the IOStream; the pointer you provide
+   * must remain valid until you close the stream.
+   *
+   * If you need to write to a memory buffer, you should use IOFromMem() with a
+   * writable buffer of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `prop.IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+   *   passed to this function.
+   * - `prop.IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * Additionally, the following properties are recognized:
+   *
+   * - `prop.IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   *   non-nullptr value it will be interpreted as a function of free_func type
+   *   and called with the passed `mem` pointer when closing the stream. By
+   *   default it is unset, i.e., the memory will not be freed.
+   *
+   * @param mem a read-only buffer to feed an IOStreamRef stream.
+   * @returns a valid IOStream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa IOFromMem
+   * @sa CloseIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   */
+  static IOStream FromConstMem(SourceBytes mem);
+
+  /**
+   * Use this function to create an IOStream that is backed by dynamically
+   * allocated memory.
+   *
+   * This supports the following properties to provide access to the memory and
+   * control over allocations:
+   *
+   * - `prop.IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
+   *   of the stream. This can be set to nullptr to transfer ownership of the
+   *   memory to the application, which should free the memory with free(). If
+   *   this is done, the next operation on the stream must be CloseIO().
+   * - `prop.IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+   *   multiples of this size, defaulting to 1024.
+   *
+   * @returns a valid IOStream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseIO
+   * @sa ReadIO
+   * @sa SeekIO
+   * @sa TellIO
+   * @sa WriteIO
+   */
+  static IOStream FromDynamicMem();
+
+  /**
+   * Create a custom IOStream.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own IOStream implementation. If you just need an IOStream to
+   * read/write a common data source, you should use the built-in
+   * implementations in SDL, like IOFromFile() or IOFromMem(), etc.
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this IOStream, initialized using
+   *              InitInterface().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @returns a valid stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseIO
+   * @sa InitInterface
+   * @sa IOFromConstMem
+   * @sa IOFromFile
+   * @sa IOFromMem
+   */
+  static IOStream Open(const IOStreamInterface& iface, void* userdata);
+
+  /// Destructor
+  ~IOStream() { SDL_CloseIO(get()); }
+
+  /// Assignment operator.
+  constexpr IOStream& operator=(IOStream&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Use this function to create a new IOStream structure for reading from and/or
  * writing to a named file.
  *
@@ -23729,7 +23687,7 @@ inline IOStream IOStream::Open(const IOStreamInterface& iface, void* userdata)
  */
 inline void CloseIO(IOStreamRaw context) { CheckError(SDL_CloseIO(context)); }
 
-inline void IOStream::Close() { CloseIO(release()); }
+inline void IOStreamBase::Close() { CloseIO(release()); }
 
 /**
  * Get the properties associated with an IOStream.
@@ -23744,10 +23702,10 @@ inline void IOStream::Close() { CloseIO(release()); }
  */
 inline PropertiesRef GetIOProperties(IOStreamRef context)
 {
-  return {CheckError(SDL_GetIOProperties(context))};
+  return CheckError(SDL_GetIOProperties(context));
 }
 
-inline PropertiesRef IOStream::GetProperties() const
+inline PropertiesRef IOStreamBase::GetProperties() const
 {
   return SDL::GetIOProperties(get());
 }
@@ -23775,7 +23733,10 @@ inline IOStatus GetIOStatus(IOStreamRef context)
   return SDL_GetIOStatus(context);
 }
 
-inline IOStatus IOStream::GetStatus() const { return SDL::GetIOStatus(get()); }
+inline IOStatus IOStreamBase::GetStatus() const
+{
+  return SDL::GetIOStatus(get());
+}
 
 /**
  * Use this function to get the size of the data stream in an IOStream.
@@ -23793,7 +23754,7 @@ inline Sint64 GetIOSize(IOStreamRef context)
   return CheckError(SDL_GetIOSize(context));
 }
 
-inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(get()); }
+inline Sint64 IOStreamBase::GetSize() const { return SDL::GetIOSize(get()); }
 
 /**
  * Seek within an IOStream data stream.
@@ -23826,7 +23787,7 @@ inline Sint64 SeekIO(IOStreamRef context, Sint64 offset, IOWhence whence)
   return SDL_SeekIO(context, offset, whence);
 }
 
-inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
+inline Sint64 IOStreamBase::Seek(Sint64 offset, IOWhence whence)
 {
   return SDL::SeekIO(get(), offset, whence);
 }
@@ -23851,7 +23812,7 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
  */
 inline Sint64 TellIO(IOStreamRef context) { return SDL_TellIO(context); }
 
-inline Sint64 IOStream::Tell() const { return SDL::TellIO(get()); }
+inline Sint64 IOStreamBase::Tell() const { return SDL::TellIO(get()); }
 
 /**
  * Read from a data source.
@@ -23885,7 +23846,7 @@ inline size_t ReadIO(IOStreamRef context, TargetBytes buf)
   return SDL_ReadIO(context, buf.data(), buf.size_bytes());
 }
 
-inline size_t IOStream::Read(TargetBytes buf)
+inline size_t IOStreamBase::Read(TargetBytes buf)
 {
   return SDL::ReadIO(get(), std::move(buf));
 }
@@ -23928,7 +23889,7 @@ inline size_t WriteIO(IOStreamRef context, SourceBytes buf)
   return SDL_WriteIO(context, buf.data(), buf.size_bytes());
 }
 
-inline size_t IOStream::Write(SourceBytes buf)
+inline size_t IOStreamBase::Write(SourceBytes buf)
 {
   return SDL::WriteIO(get(), std::move(buf));
 }
@@ -23993,8 +23954,8 @@ inline size_t IOvprintf(IOStreamRef context,
   return SDL_IOvprintf(context, fmt, ap);
 }
 
-inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
-                                va_list ap)
+inline size_t IOStreamBase::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
+                                    va_list ap)
 {
   return SDL::IOvprintf(get(), fmt, ap);
 }
@@ -24018,7 +23979,7 @@ inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
  */
 inline void FlushIO(IOStreamRef context) { CheckError(SDL_FlushIO(context)); }
 
-inline void IOStream::Flush() { SDL::FlushIO(get()); }
+inline void IOStreamBase::Flush() { SDL::FlushIO(get()); }
 
 /**
  * Load all the data from an SDL data stream.
@@ -24049,7 +24010,7 @@ inline StringResult LoadFile_IO(IOStreamRef src, bool closeio = true)
   return StringResult{CheckError(data), datasize};
 }
 
-inline StringResult IOStream::LoadFile() { return SDL::LoadFile_IO(get()); }
+inline StringResult IOStreamBase::LoadFile() { return SDL::LoadFile_IO(get()); }
 
 /**
  * Load all the data from a file path.
@@ -24124,7 +24085,7 @@ inline void SaveFile_IO(IOStreamRef src, SourceBytes data, bool closeio = true)
   CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
 }
 
-inline void IOStream::SaveFile(SourceBytes data)
+inline void IOStreamBase::SaveFile(SourceBytes data)
 {
   SDL::SaveFile_IO(get(), std::move(data));
 }
@@ -24157,7 +24118,7 @@ inline void SaveFile(StringParam file, SourceBytes data)
  * GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24171,7 +24132,7 @@ inline Uint8 ReadU8(IOStreamRef src)
   return value;
 }
 
-inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(get()); }
+inline Uint8 IOStreamBase::ReadU8() { return SDL::ReadU8(get()); }
 
 /**
  * Use this function to read a signed byte from an IOStream.
@@ -24182,7 +24143,7 @@ inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24196,7 +24157,7 @@ inline Sint8 ReadS8(IOStreamRef src)
   return value;
 }
 
-inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(get()); }
+inline Sint8 IOStreamBase::ReadS8() { return SDL::ReadS8(get()); }
 
 /**
  * Use this function to read 16 bits of little-endian data from an IOStream and
@@ -24211,7 +24172,7 @@ inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24225,7 +24186,7 @@ inline Uint16 ReadU16LE(IOStreamRef src)
   return value;
 }
 
-inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(get()); }
+inline Uint16 IOStreamBase::ReadU16LE() { return SDL::ReadU16LE(get()); }
 
 /**
  * Use this function to read 16 bits of little-endian data from an IOStream and
@@ -24240,7 +24201,7 @@ inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24254,7 +24215,7 @@ inline Sint16 ReadS16LE(IOStreamRef src)
   return value;
 }
 
-inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(get()); }
+inline Sint16 IOStreamBase::ReadS16LE() { return SDL::ReadS16LE(get()); }
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream and
@@ -24269,7 +24230,7 @@ inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24283,7 +24244,7 @@ inline Uint16 ReadU16BE(IOStreamRef src)
   return value;
 }
 
-inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(get()); }
+inline Uint16 IOStreamBase::ReadU16BE() { return SDL::ReadU16BE(get()); }
 
 /**
  * Use this function to read 16 bits of big-endian data from an IOStream and
@@ -24298,7 +24259,7 @@ inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24312,7 +24273,7 @@ inline Sint16 ReadS16BE(IOStreamRef src)
   return value;
 }
 
-inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(get()); }
+inline Sint16 IOStreamBase::ReadS16BE() { return SDL::ReadS16BE(get()); }
 
 /**
  * Use this function to read 32 bits of little-endian data from an IOStream and
@@ -24327,7 +24288,7 @@ inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24341,7 +24302,7 @@ inline Uint32 ReadU32LE(IOStreamRef src)
   return value;
 }
 
-inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(get()); }
+inline Uint32 IOStreamBase::ReadU32LE() { return SDL::ReadU32LE(get()); }
 
 /**
  * Use this function to read 32 bits of little-endian data from an IOStream and
@@ -24356,7 +24317,7 @@ inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24370,7 +24331,7 @@ inline Sint32 ReadS32LE(IOStreamRef src)
   return value;
 }
 
-inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(get()); }
+inline Sint32 IOStreamBase::ReadS32LE() { return SDL::ReadS32LE(get()); }
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream and
@@ -24385,7 +24346,7 @@ inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24399,7 +24360,7 @@ inline Uint32 ReadU32BE(IOStreamRef src)
   return value;
 }
 
-inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(get()); }
+inline Uint32 IOStreamBase::ReadU32BE() { return SDL::ReadU32BE(get()); }
 
 /**
  * Use this function to read 32 bits of big-endian data from an IOStream and
@@ -24414,7 +24375,7 @@ inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24428,7 +24389,7 @@ inline Sint32 ReadS32BE(IOStreamRef src)
   return value;
 }
 
-inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(get()); }
+inline Sint32 IOStreamBase::ReadS32BE() { return SDL::ReadS32BE(get()); }
 
 /**
  * Use this function to read 64 bits of little-endian data from an IOStream and
@@ -24443,7 +24404,7 @@ inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24457,7 +24418,7 @@ inline Uint64 ReadU64LE(IOStreamRef src)
   return value;
 }
 
-inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(get()); }
+inline Uint64 IOStreamBase::ReadU64LE() { return SDL::ReadU64LE(get()); }
 
 /**
  * Use this function to read 64 bits of little-endian data from an IOStream and
@@ -24472,7 +24433,7 @@ inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24486,7 +24447,7 @@ inline Sint64 ReadS64LE(IOStreamRef src)
   return value;
 }
 
-inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(get()); }
+inline Sint64 IOStreamBase::ReadS64LE() { return SDL::ReadS64LE(get()); }
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream and
@@ -24501,7 +24462,7 @@ inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24515,7 +24476,7 @@ inline Uint64 ReadU64BE(IOStreamRef src)
   return value;
 }
 
-inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(get()); }
+inline Uint64 IOStreamBase::ReadU64BE() { return SDL::ReadU64BE(get()); }
 
 /**
  * Use this function to read 64 bits of big-endian data from an IOStream and
@@ -24530,7 +24491,7 @@ inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(get()); }
  * GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
- * @return the  data read.
+ * @return the data read.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -24544,7 +24505,7 @@ inline Sint64 ReadS64BE(IOStreamRef src)
   return value;
 }
 
-inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(get()); }
+inline Sint64 IOStreamBase::ReadS64BE() { return SDL::ReadS64BE(get()); }
 
 /**
  * Use this function to write a byte to an IOStream.
@@ -24562,7 +24523,7 @@ inline void WriteU8(IOStreamRef dst, Uint8 value)
   CheckError(SDL_WriteU8(dst, value));
 }
 
-inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(get(), value); }
+inline void IOStreamBase::WriteU8(Uint8 value) { SDL::WriteU8(get(), value); }
 
 /**
  * Use this function to write a signed byte to an IOStream.
@@ -24580,7 +24541,7 @@ inline void WriteS8(IOStreamRef dst, Sint8 value)
   CheckError(SDL_WriteS8(dst, value));
 }
 
-inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(get(), value); }
+inline void IOStreamBase::WriteS8(Sint8 value) { SDL::WriteS8(get(), value); }
 
 /**
  * Use this function to write 16 bits in native format to an IOStream as
@@ -24602,7 +24563,7 @@ inline void WriteU16LE(IOStreamRef dst, Uint16 value)
   CheckError(SDL_WriteU16LE(dst, value));
 }
 
-inline void IOStream::WriteU16LE(Uint16 value)
+inline void IOStreamBase::WriteU16LE(Uint16 value)
 {
   SDL::WriteU16LE(get(), value);
 }
@@ -24627,7 +24588,7 @@ inline void WriteS16LE(IOStreamRef dst, Sint16 value)
   CheckError(SDL_WriteS16LE(dst, value));
 }
 
-inline void IOStream::WriteS16LE(Sint16 value)
+inline void IOStreamBase::WriteS16LE(Sint16 value)
 {
   SDL::WriteS16LE(get(), value);
 }
@@ -24652,7 +24613,7 @@ inline void WriteU16BE(IOStreamRef dst, Uint16 value)
   CheckError(SDL_WriteU16BE(dst, value));
 }
 
-inline void IOStream::WriteU16BE(Uint16 value)
+inline void IOStreamBase::WriteU16BE(Uint16 value)
 {
   SDL::WriteU16BE(get(), value);
 }
@@ -24677,7 +24638,7 @@ inline void WriteS16BE(IOStreamRef dst, Sint16 value)
   CheckError(SDL_WriteS16BE(dst, value));
 }
 
-inline void IOStream::WriteS16BE(Sint16 value)
+inline void IOStreamBase::WriteS16BE(Sint16 value)
 {
   SDL::WriteS16BE(get(), value);
 }
@@ -24702,7 +24663,7 @@ inline void WriteU32LE(IOStreamRef dst, Uint32 value)
   CheckError(SDL_WriteU32LE(dst, value));
 }
 
-inline void IOStream::WriteU32LE(Uint32 value)
+inline void IOStreamBase::WriteU32LE(Uint32 value)
 {
   SDL::WriteU32LE(get(), value);
 }
@@ -24727,7 +24688,7 @@ inline void WriteS32LE(IOStreamRef dst, Sint32 value)
   CheckError(SDL_WriteS32LE(dst, value));
 }
 
-inline void IOStream::WriteS32LE(Sint32 value)
+inline void IOStreamBase::WriteS32LE(Sint32 value)
 {
   SDL::WriteS32LE(get(), value);
 }
@@ -24752,7 +24713,7 @@ inline void WriteU32BE(IOStreamRef dst, Uint32 value)
   CheckError(SDL_WriteU32BE(dst, value));
 }
 
-inline void IOStream::WriteU32BE(Uint32 value)
+inline void IOStreamBase::WriteU32BE(Uint32 value)
 {
   SDL::WriteU32BE(get(), value);
 }
@@ -24777,7 +24738,7 @@ inline void WriteS32BE(IOStreamRef dst, Sint32 value)
   CheckError(SDL_WriteS32BE(dst, value));
 }
 
-inline void IOStream::WriteS32BE(Sint32 value)
+inline void IOStreamBase::WriteS32BE(Sint32 value)
 {
   SDL::WriteS32BE(get(), value);
 }
@@ -24802,7 +24763,7 @@ inline void WriteU64LE(IOStreamRef dst, Uint64 value)
   CheckError(SDL_WriteU64LE(dst, value));
 }
 
-inline void IOStream::WriteU64LE(Uint64 value)
+inline void IOStreamBase::WriteU64LE(Uint64 value)
 {
   SDL::WriteU64LE(get(), value);
 }
@@ -24827,7 +24788,7 @@ inline void WriteS64LE(IOStreamRef dst, Sint64 value)
   CheckError(SDL_WriteS64LE(dst, value));
 }
 
-inline void IOStream::WriteS64LE(Sint64 value)
+inline void IOStreamBase::WriteS64LE(Sint64 value)
 {
   SDL::WriteS64LE(get(), value);
 }
@@ -24852,7 +24813,7 @@ inline void WriteU64BE(IOStreamRef dst, Uint64 value)
   CheckError(SDL_WriteU64BE(dst, value));
 }
 
-inline void IOStream::WriteU64BE(Uint64 value)
+inline void IOStreamBase::WriteU64BE(Uint64 value)
 {
   SDL::WriteU64BE(get(), value);
 }
@@ -24877,7 +24838,7 @@ inline void WriteS64BE(IOStreamRef dst, Sint64 value)
   CheckError(SDL_WriteS64BE(dst, value));
 }
 
-inline void IOStream::WriteS64BE(Sint64 value)
+inline void IOStreamBase::WriteS64BE(Sint64 value)
 {
   SDL::WriteS64BE(get(), value);
 }
@@ -24918,6 +24879,9 @@ inline void IOStream::WriteS64BE(Sint64 value)
  */
 
 // Forward decl
+struct SharedObjectBase;
+
+// Forward decl
 struct SharedObject;
 
 /// Alias to raw representation for SharedObject.
@@ -24928,76 +24892,16 @@ using SharedObjectRaw = SDL_SharedObject*;
  *
  * This does not take ownership!
  */
-using SharedObjectRef = ResourceRef<SharedObject>;
+using SharedObjectRef = ResourceRefT<SharedObjectBase>;
 
 /**
- * An opaque datatype that represents a loaded shared object.
+ * Base class to SharedObject.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa LoadObject
- * @sa LoadFunction
- * @sa UnloadObject
- *
- * @cat resource
+ * @see SharedObject
  */
-struct SharedObject : ResourceBase<SharedObjectRaw>
+struct SharedObjectBase : ResourceBaseT<SharedObjectRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw SharedObject.
-   *
-   * @param resource a SharedObjectRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) = delete;
-
-  /// Move constructor
-  constexpr SharedObject(SharedObject&& other) noexcept
-    : SharedObject(other.release())
-  {
-  }
-
-  constexpr SharedObject(const SharedObjectRef& other) = delete;
-
-  constexpr SharedObject(SharedObjectRef&& other) = delete;
-
-  /**
-   * Dynamically load a shared object.
-   *
-   * @param sofile a system-dependent name of the object file.
-   * @post an opaque pointer to the object handle or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa LoadFunction
-   * @sa UnloadObject
-   */
-  SharedObject(StringParam sofile);
-
-  /// Destructor
-  ~SharedObject() { SDL_UnloadObject(get()); }
-
-  /// Assignment operator.
-  constexpr SharedObject& operator=(SharedObject&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  SharedObject& operator=(const SharedObject& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Unload a shared object from memory.
@@ -25039,6 +24943,66 @@ struct SharedObject : ResourceBase<SharedObjectRaw>
    * @sa LoadObject
    */
   FunctionPointer LoadFunction(StringParam name);
+};
+
+/**
+ * An opaque datatype that represents a loaded shared object.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa LoadObject
+ * @sa LoadFunction
+ * @sa UnloadObject
+ *
+ * @cat resource
+ */
+struct SharedObject : SharedObjectBase
+{
+  using SharedObjectBase::SharedObjectBase;
+
+  /**
+   * Constructs from raw SharedObject.
+   *
+   * @param resource a SharedObjectRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit SharedObject(SharedObjectRaw resource) noexcept
+    : SharedObjectBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr SharedObject(SharedObject&& other) noexcept
+    : SharedObject(other.release())
+  {
+  }
+
+  /**
+   * Dynamically load a shared object.
+   *
+   * @param sofile a system-dependent name of the object file.
+   * @post an opaque pointer to the object handle or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa LoadFunction
+   * @sa UnloadObject
+   */
+  SharedObject(StringParam sofile);
+
+  /// Destructor
+  ~SharedObject() { SDL_UnloadObject(get()); }
+
+  /// Assignment operator.
+  constexpr SharedObject& operator=(SharedObject&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /**
@@ -25096,7 +25060,7 @@ inline FunctionPointer LoadFunction(SharedObjectRef handle, StringParam name)
   return SDL_LoadFunction(handle, name);
 }
 
-inline FunctionPointer SharedObject::LoadFunction(StringParam name)
+inline FunctionPointer SharedObjectBase::LoadFunction(StringParam name)
 {
   return SDL::LoadFunction(get(), std::move(name));
 }
@@ -25117,7 +25081,7 @@ inline FunctionPointer SharedObject::LoadFunction(StringParam name)
  */
 inline void UnloadObject(SharedObjectRaw handle) { SDL_UnloadObject(handle); }
 
-inline void SharedObject::Unload() { UnloadObject(release()); }
+inline void SharedObjectBase::Unload() { UnloadObject(release()); }
 
 /// @}
 
@@ -25322,6 +25286,9 @@ using FColorRaw = SDL_FColor;
 struct FColor;
 
 // Forward decl
+struct PaletteBase;
+
+// Forward decl
 struct Palette;
 
 /// Alias to raw representation for Palette.
@@ -25335,7 +25302,7 @@ using PaletteRawConst = const SDL_Palette*;
  *
  * This does not take ownership!
  */
-using PaletteRef = ResourceRef<Palette>;
+using PaletteRef = ResourceRefT<PaletteBase>;
 
 /// Safely wrap Palette for non owning const parameters
 using PaletteConstRef = ResourceConstRef<PaletteRaw, PaletteRawConst>;
@@ -27654,100 +27621,16 @@ public:
 };
 
 /**
- * A set of indexed colors representing a palette.
+ * Base class to Palette.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa SetPaletteColors
- *
- * @cat resource
+ * @see Palette
  */
-struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
+struct PaletteBase : ResourceBaseT<PaletteRaw, PaletteRawConst>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Palette.
-   *
-   * @param resource a PaletteRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Palette(PaletteRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Palette(const Palette& other)
-    : Palette(other.get())
-  {
-    if (auto res = get()) ++res->refcount;
-  }
-
-  /// Move constructor
-  constexpr Palette(Palette&& other) noexcept
-    : Palette(other.release())
-  {
-  }
-
-  /**
-   * Create a palette structure with the specified number of color entries.
-   *
-   * The palette entries are initialized to white.
-   *
-   * @param ncolors represents the number of color entries in the color palette.
-   * @post a new Palette structure on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyPalette
-   * @sa SetPaletteColors
-   * @sa SetSurfacePalette
-   */
-  Palette(int ncolors);
-
-  /**
-   * Safely borrows the from PaletteRaw.
-   *
-   * @param resource a PaletteRaw.
-   *
-   * This does not takes ownership!
-   */
-  static Palette Borrow(PaletteRaw resource)
-  {
-    if (resource) {
-      ++resource->refcount;
-      return Palette(resource);
-    }
-    return {};
-  }
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to PaletteConstRef
   constexpr operator PaletteConstRef() const noexcept { return get(); }
-
-  /// Destructor
-  ~Palette() { SDL_DestroyPalette(get()); }
-
-  /// Assignment operator.
-  constexpr Palette& operator=(Palette&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Palette& operator=(const Palette& other)
-  {
-    if (get() != other.get()) {
-      Palette tmp(other);
-      swap(*this, tmp);
-    }
-    return *this;
-  }
 
   /**
    * Free a palette created with CreatePalette().
@@ -27794,6 +27677,99 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
    * @sa Palette.Palette
    */
   void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
+};
+
+/**
+ * A set of indexed colors representing a palette.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa SetPaletteColors
+ *
+ * @cat resource
+ */
+struct Palette : PaletteBase
+{
+  using PaletteBase::PaletteBase;
+
+  /**
+   * Constructs from raw Palette.
+   *
+   * @param resource a PaletteRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Palette(PaletteRaw resource) noexcept
+    : PaletteBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Palette(const Palette& other)
+    : Palette(borrow(other.get()))
+  {
+  }
+
+  /// Move constructor
+  constexpr Palette(Palette&& other) noexcept
+    : Palette(other.release())
+  {
+  }
+
+  /**
+   * Create a palette structure with the specified number of color entries.
+   *
+   * The palette entries are initialized to white.
+   *
+   * @param ncolors represents the number of color entries in the color palette.
+   * @post a new Palette structure on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyPalette
+   * @sa SetPaletteColors
+   * @sa SetSurfacePalette
+   */
+  Palette(int ncolors);
+
+  /**
+   * Safely borrows the from PaletteRaw.
+   *
+   * @param resource a PaletteRaw.
+   *
+   * This does not takes ownership!
+   */
+  static Palette borrow(PaletteRaw resource)
+  {
+    if (resource) {
+      ++resource->refcount;
+      return Palette(resource);
+    }
+    return {};
+  }
+
+  /// Destructor
+  ~Palette() { SDL_DestroyPalette(get()); }
+
+  /// Assignment operator.
+  constexpr Palette& operator=(Palette&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Palette& operator=(const Palette& other)
+  {
+    if (get() != other.get()) {
+      Palette tmp(other);
+      swap(*this, tmp);
+    }
+    return *this;
+  }
 };
 
 /**
@@ -27966,7 +27942,8 @@ inline void SetPaletteColors(PaletteRef palette,
     palette, colors.data(), firstcolor, narrowS32(colors.size())));
 }
 
-inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
+inline void PaletteBase::SetColors(SpanRef<const ColorRaw> colors,
+                                   int firstcolor)
 {
   SDL::SetPaletteColors(get(), colors, firstcolor);
 }
@@ -27991,7 +27968,7 @@ inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
  */
 inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
 
-inline void Palette::Destroy() { DestroyPalette(release()); }
+inline void PaletteBase::Destroy() { DestroyPalette(release()); }
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -31682,6 +31659,9 @@ constexpr Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
  */
 
 // Forward decl
+struct SensorBase;
+
+// Forward decl
 struct Sensor;
 
 /// Alias to raw representation for Sensor.
@@ -31692,7 +31672,7 @@ using SensorRaw = SDL_Sensor*;
  *
  * This does not take ownership!
  */
-using SensorRef = ResourceRef<Sensor>;
+using SensorRef = ResourceRefT<SensorBase>;
 
 /**
  * This is a unique ID for a sensor for the time it is connected to the system,
@@ -31788,64 +31768,13 @@ constexpr SensorType SENSOR_COUNT = SDL_SENSOR_COUNT; ///< SENSOR_COUNT
 #endif // SDL_VERSION_ATLEAST(3, 2, 22)
 
 /**
- * The opaque structure used to identify an opened SDL sensor.
+ * Base class to Sensor.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Sensor
  */
-struct Sensor : ResourceBase<SensorRaw>
+struct SensorBase : ResourceBaseT<SensorRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Sensor.
-   *
-   * @param resource a SensorRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Sensor(SensorRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Sensor(const Sensor& other) = delete;
-
-  /// Move constructor
-  constexpr Sensor(Sensor&& other) noexcept
-    : Sensor(other.release())
-  {
-  }
-
-  constexpr Sensor(const SensorRef& other) = delete;
-
-  constexpr Sensor(SensorRef&& other) = delete;
-
-  /**
-   * Open a sensor for use.
-   *
-   * @param instance_id the sensor instance ID.
-   * @post an Sensor object or nullptr on failure; call GetError() for more
-   *       information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  Sensor(SensorID instance_id);
-
-  /// Destructor
-  ~Sensor() { SDL_CloseSensor(get()); }
-
-  /// Assignment operator.
-  constexpr Sensor& operator=(Sensor&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Sensor& operator=(const Sensor& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close a sensor previously opened with OpenSensor().
@@ -31914,6 +31843,57 @@ struct Sensor : ResourceBase<SensorRaw>
    * @since This function is available since SDL 3.2.0.
    */
   void GetData(float* data, int num_values);
+};
+
+/**
+ * The opaque structure used to identify an opened SDL sensor.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Sensor : SensorBase
+{
+  using SensorBase::SensorBase;
+
+  /**
+   * Constructs from raw Sensor.
+   *
+   * @param resource a SensorRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Sensor(SensorRaw resource) noexcept
+    : SensorBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Sensor(Sensor&& other) noexcept
+    : Sensor(other.release())
+  {
+  }
+
+  /**
+   * Open a sensor for use.
+   *
+   * @param instance_id the sensor instance ID.
+   * @post an Sensor object or nullptr on failure; call GetError() for more
+   *       information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sensor(SensorID instance_id);
+
+  /// Destructor
+  ~Sensor() { SDL_CloseSensor(get()); }
+
+  /// Assignment operator.
+  constexpr Sensor& operator=(Sensor&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /**
@@ -32033,7 +32013,7 @@ inline PropertiesRef GetSensorProperties(SensorRef sensor)
   return {CheckError(SDL_GetSensorProperties(sensor))};
 }
 
-inline PropertiesRef Sensor::GetProperties()
+inline PropertiesRef SensorBase::GetProperties()
 {
   return SDL::GetSensorProperties(get());
 }
@@ -32052,7 +32032,7 @@ inline const char* GetSensorName(SensorRef sensor)
   return SDL_GetSensorName(sensor);
 }
 
-inline const char* Sensor::GetName() { return SDL::GetSensorName(get()); }
+inline const char* SensorBase::GetName() { return SDL::GetSensorName(get()); }
 
 /**
  * Get the type of a sensor.
@@ -32067,7 +32047,7 @@ inline SensorType GetSensorType(SensorRef sensor)
   return SDL_GetSensorType(sensor);
 }
 
-inline SensorType Sensor::GetType() { return SDL::GetSensorType(get()); }
+inline SensorType SensorBase::GetType() { return SDL::GetSensorType(get()); }
 
 /**
  * Get the platform dependent type of a sensor.
@@ -32082,7 +32062,7 @@ inline int GetSensorNonPortableType(SensorRef sensor)
   return SDL_GetSensorNonPortableType(sensor);
 }
 
-inline int Sensor::GetNonPortableType()
+inline int SensorBase::GetNonPortableType()
 {
   return SDL::GetSensorNonPortableType(get());
 }
@@ -32101,7 +32081,7 @@ inline SensorID GetSensorID(SensorRef sensor)
   return CheckError(SDL_GetSensorID(sensor));
 }
 
-inline SensorID Sensor::GetID() { return SDL::GetSensorID(get()); }
+inline SensorID SensorBase::GetID() { return SDL::GetSensorID(get()); }
 
 /**
  * Get the current state of an opened sensor.
@@ -32120,7 +32100,7 @@ inline void GetSensorData(SensorRef sensor, float* data, int num_values)
   CheckError(SDL_GetSensorData(sensor, data, num_values));
 }
 
-inline void Sensor::GetData(float* data, int num_values)
+inline void SensorBase::GetData(float* data, int num_values)
 {
   SDL::GetSensorData(get(), data, num_values);
 }
@@ -32134,7 +32114,7 @@ inline void Sensor::GetData(float* data, int num_values)
  */
 inline void CloseSensor(SensorRaw sensor) { SDL_CloseSensor(sensor); }
 
-inline void Sensor::Close() { CloseSensor(release()); }
+inline void SensorBase::Close() { CloseSensor(release()); }
 
 /**
  * Update the current state of the open sensors.
@@ -33175,6 +33155,9 @@ using AudioFormatRaw = SDL_AudioFormat;
 struct AudioFormat;
 
 // Forward decl
+struct AudioDeviceBase;
+
+// Forward decl
 struct AudioDevice;
 
 /// Alias to raw representation for AudioDevice.
@@ -33185,7 +33168,10 @@ using AudioDeviceID = SDL_AudioDeviceID;
  *
  * This does not take ownership!
  */
-using AudioDeviceRef = ResourceRef<AudioDevice>;
+using AudioDeviceRef = ResourceRefT<AudioDeviceBase>;
+
+// Forward decl
+struct AudioStreamBase;
 
 // Forward decl
 struct AudioStream;
@@ -33198,7 +33184,7 @@ using AudioStreamRaw = SDL_AudioStream*;
  *
  * This does not take ownership!
  */
-using AudioStreamRef = ResourceRef<AudioStream>;
+using AudioStreamRef = ResourceRefT<AudioStreamBase>;
 
 // Forward decl
 struct AudioStreamLock;
@@ -33845,128 +33831,13 @@ using AudioStreamCB = MakeFrontCallback<
   void(AudioStreamRaw stream, int additional_amount, int total_amount)>;
 
 /**
- * SDL Audio Device instance IDs.
+ * Base class to AudioDevice.
  *
- * Zero is used to signify an invalid/null device.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see AudioDevice
  */
-struct AudioDevice : ResourceBase<AudioDeviceID>
+struct AudioDeviceBase : ResourceBaseT<AudioDeviceID>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw AudioDevice.
-   *
-   * @param resource a AudioDeviceID to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit AudioDevice(AudioDeviceID resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr AudioDevice(const AudioDevice& other) = delete;
-
-  /// Move constructor
-  constexpr AudioDevice(AudioDevice&& other) noexcept
-    : AudioDevice(other.release())
-  {
-  }
-
-  constexpr AudioDevice(const AudioDeviceRef& other) = delete;
-
-  constexpr AudioDevice(AudioDeviceRef&& other) = delete;
-
-  /**
-   * Open a specific audio device.
-   *
-   * You can open both playback and recording devices through this function.
-   * Playback devices will take data from bound audio streams, mix it, and send
-   * it to the hardware. Recording devices will feed any bound audio streams
-   * with a copy of any incoming data.
-   *
-   * An opened audio device starts out with no audio streams bound. To start
-   * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
-   * there is no audio callback; you only bind audio streams and make sure they
-   * have data flowing into them (however, you can simulate SDL2's semantics
-   * fairly closely by using OpenAudioDeviceStream instead of this function).
-   *
-   * If you don't care about opening a specific device, pass a `devid` of either
-   * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In
-   * this case, SDL will try to pick the most reasonable default, and may also
-   * switch between physical devices seamlessly later, if the most reasonable
-   * default changes during the lifetime of this opened device (user changed the
-   * default in the OS's system preferences, the default got unplugged so the
-   * system jumped to a new default, the user plugged in headphones on a mobile
-   * device, etc). Unless you have a good reason to choose a specific device,
-   * this is probably what you want.
-   *
-   * You may request a specific format for the audio device, but there is no
-   * promise the device will honor that request for several reasons. As such,
-   * it's only meant to be a hint as to what data your app will provide. Audio
-   * streams will accept data in whatever format you specify and manage
-   * conversion for you as appropriate. GetAudioDeviceFormat can tell you the
-   * preferred format for the device before opening and the actual format the
-   * device is using after opening.
-   *
-   * It's legal to open the same device ID more than once; each successful open
-   * will generate a new logical AudioDevice that is managed separately from
-   * others on the same physical device. This allows libraries to open a device
-   * separately from the main app and bind its own streams without conflicting.
-   *
-   * It is also legal to open a device ID returned by a previous call to this
-   * function; doing so just creates another logical device on the same physical
-   * device. This may be useful for making logical groupings of audio streams.
-   *
-   * This function returns the opened device ID on success. This is a new,
-   * unique AudioDevice that represents a logical device.
-   *
-   * Some backends might offer arbitrary devices (for example, a networked audio
-   * protocol that can connect to an arbitrary server). For these, as a change
-   * from SDL2, you should open a default device ID and use an SDL hint to
-   * specify the target if you care, or otherwise let the backend figure out a
-   * reasonable default. Most backends don't offer anything like this, and often
-   * this would be an end user setting an environment variable for their custom
-   * need, and not something an application should specifically manage.
-   *
-   * When done with an audio device, possibly at the end of the app's life, one
-   * should call CloseAudioDevice() on the returned device id.
-   *
-   * @param devid the device instance id to open, or
-   *              AUDIO_DEVICE_DEFAULT_PLAYBACK or
-   *              AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable default
-   *              device.
-   * @param spec the requested device configuration. Can be nullptr to use
-   *             reasonable defaults.
-   * @post the device ID on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseAudioDevice
-   * @sa GetAudioDeviceFormat
-   */
-  AudioDevice(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec);
-
-  /// Destructor
-  ~AudioDevice() { SDL_CloseAudioDevice(get()); }
-
-  /// Assignment operator.
-  constexpr AudioDevice& operator=(AudioDevice&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  AudioDevice& operator=(const AudioDevice& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close a previously-opened audio device.
@@ -34504,6 +34375,121 @@ struct AudioDevice : ResourceBase<AudioDeviceID>
 };
 
 /**
+ * SDL Audio Device instance IDs.
+ *
+ * Zero is used to signify an invalid/null device.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct AudioDevice : AudioDeviceBase
+{
+  using AudioDeviceBase::AudioDeviceBase;
+
+  /**
+   * Constructs from raw AudioDevice.
+   *
+   * @param resource a AudioDeviceID to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit AudioDevice(AudioDeviceID resource) noexcept
+    : AudioDeviceBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr AudioDevice(AudioDevice&& other) noexcept
+    : AudioDevice(other.release())
+  {
+  }
+
+  /**
+   * Open a specific audio device.
+   *
+   * You can open both playback and recording devices through this function.
+   * Playback devices will take data from bound audio streams, mix it, and send
+   * it to the hardware. Recording devices will feed any bound audio streams
+   * with a copy of any incoming data.
+   *
+   * An opened audio device starts out with no audio streams bound. To start
+   * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
+   * there is no audio callback; you only bind audio streams and make sure they
+   * have data flowing into them (however, you can simulate SDL2's semantics
+   * fairly closely by using OpenAudioDeviceStream instead of this function).
+   *
+   * If you don't care about opening a specific device, pass a `devid` of either
+   * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In
+   * this case, SDL will try to pick the most reasonable default, and may also
+   * switch between physical devices seamlessly later, if the most reasonable
+   * default changes during the lifetime of this opened device (user changed the
+   * default in the OS's system preferences, the default got unplugged so the
+   * system jumped to a new default, the user plugged in headphones on a mobile
+   * device, etc). Unless you have a good reason to choose a specific device,
+   * this is probably what you want.
+   *
+   * You may request a specific format for the audio device, but there is no
+   * promise the device will honor that request for several reasons. As such,
+   * it's only meant to be a hint as to what data your app will provide. Audio
+   * streams will accept data in whatever format you specify and manage
+   * conversion for you as appropriate. GetAudioDeviceFormat can tell you the
+   * preferred format for the device before opening and the actual format the
+   * device is using after opening.
+   *
+   * It's legal to open the same device ID more than once; each successful open
+   * will generate a new logical AudioDevice that is managed separately from
+   * others on the same physical device. This allows libraries to open a device
+   * separately from the main app and bind its own streams without conflicting.
+   *
+   * It is also legal to open a device ID returned by a previous call to this
+   * function; doing so just creates another logical device on the same physical
+   * device. This may be useful for making logical groupings of audio streams.
+   *
+   * This function returns the opened device ID on success. This is a new,
+   * unique AudioDevice that represents a logical device.
+   *
+   * Some backends might offer arbitrary devices (for example, a networked audio
+   * protocol that can connect to an arbitrary server). For these, as a change
+   * from SDL2, you should open a default device ID and use an SDL hint to
+   * specify the target if you care, or otherwise let the backend figure out a
+   * reasonable default. Most backends don't offer anything like this, and often
+   * this would be an end user setting an environment variable for their custom
+   * need, and not something an application should specifically manage.
+   *
+   * When done with an audio device, possibly at the end of the app's life, one
+   * should call CloseAudioDevice() on the returned device id.
+   *
+   * @param devid the device instance id to open, or
+   *              AUDIO_DEVICE_DEFAULT_PLAYBACK or
+   *              AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable default
+   *              device.
+   * @param spec the requested device configuration. Can be nullptr to use
+   *             reasonable defaults.
+   * @post the device ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseAudioDevice
+   * @sa GetAudioDeviceFormat
+   */
+  AudioDevice(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec);
+
+  /// Destructor
+  ~AudioDevice() { SDL_CloseAudioDevice(get()); }
+
+  /// Assignment operator.
+  constexpr AudioDevice& operator=(AudioDevice&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * A value used to request a default playback audio device.
  *
  * Several functions that require an AudioDevice will accept this value to
@@ -34609,214 +34595,13 @@ using AudioStreamDataCompleteCB =
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * The opaque handle that represents an audio stream.
+ * Base class to AudioStream.
  *
- * AudioStream is an audio conversion interface.
- *
- * - It can handle resampling data in chunks without generating artifacts, when
- *   it doesn't have the complete buffer available.
- * - It can handle incoming data in any variable size.
- * - It can handle input/output format changes on the fly.
- * - It can remap audio channels between inputs and outputs.
- * - You push data as you have it, and pull it when you need it
- * - It can also function as a basic audio data queue even if you just have
- *   sound that needs to pass from one place to another.
- * - You can hook callbacks up to them when more data is added or requested, to
- *   manage data on-the-fly.
- *
- * Audio streams are the core of the SDL3 audio interface. You create one or
- * more of them, bind them to an opened audio device, and feed data to them (or
- * for recording, consume data from them).
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa CreateAudioStream
- *
- * @cat resource
+ * @see AudioStream
  */
-struct AudioStream : ResourceBase<AudioStreamRaw>
+struct AudioStreamBase : ResourceBaseT<AudioStreamRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw AudioStream.
-   *
-   * @param resource a AudioStreamRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit AudioStream(AudioStreamRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr AudioStream(const AudioStream& other) = delete;
-
-  /// Move constructor
-  constexpr AudioStream(AudioStream&& other) noexcept
-    : AudioStream(other.release())
-  {
-  }
-
-  constexpr AudioStream(const AudioStreamRef& other) = delete;
-
-  constexpr AudioStream(AudioStreamRef&& other) = delete;
-
-  /**
-   * Create a new audio stream.
-   *
-   * @param src_spec the format details of the input audio.
-   * @param dst_spec the format details of the output audio.
-   * @post a new audio stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PutAudioStreamData
-   * @sa GetAudioStreamData
-   * @sa GetAudioStreamAvailable
-   * @sa FlushAudioStream
-   * @sa ClearAudioStream
-   * @sa SetAudioStreamFormat
-   * @sa DestroyAudioStream
-   */
-  AudioStream(OptionalRef<const AudioSpec> src_spec,
-              OptionalRef<const AudioSpec> dst_spec);
-
-  /**
-   * Convenience function for straightforward audio init for the common case.
-   *
-   * If all your app intends to do is provide a single source of PCM audio, this
-   * function allows you to do all your audio setup in a single call.
-   *
-   * This is also intended to be a clean means to migrate apps from SDL2.
-   *
-   * This function will open an audio device, create a stream and bind it.
-   * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStream as the
-   * only object needed to manage audio playback.
-   *
-   * Also unlike other functions, the audio device begins paused. This is to map
-   * more closely to SDL2-style behavior, since there is no extra step here to
-   * bind a stream to begin audio flowing. The audio device should be resumed
-   * with ResumeAudioStreamDevice().
-   *
-   * This function works with both playback and recording devices.
-   *
-   * The `spec` parameter represents the app's side of the audio stream. That
-   * is, for recording audio, this will be the output format, and for playing
-   * audio, this will be the input format. If spec is nullptr, the system will
-   * choose the format, and the app can use GetAudioStreamFormat() to obtain
-   * this information later.
-   *
-   * If you don't care about opening a specific audio device, you can (and
-   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
-   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
-   *
-   * One can optionally provide a callback function; if nullptr, the app is
-   * expected to queue audio data for playback (or unqueue audio data if
-   * capturing). Otherwise, the callback will begin to fire once the device is
-   * unpaused.
-   *
-   * Destroying the returned stream with DestroyAudioStream will also close the
-   * audio device associated with this stream.
-   *
-   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or
-   *              AUDIO_DEVICE_DEFAULT_RECORDING.
-   * @param spec the audio stream's data format. Can be nullptr.
-   * @param callback a callback where the app will provide new data for
-   *                 playback, or receive new data for recording. Can be
-   *                 nullptr, in which case the app will need to call
-   *                 PutAudioStreamData or GetAudioStreamData as necessary.
-   * @param userdata app-controlled pointer passed to callback. Can be nullptr.
-   *                 Ignored if callback is nullptr.
-   * @post an audio stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetAudioStreamDevice
-   * @sa ResumeAudioStreamDevice
-   */
-  AudioStream(AudioDeviceRef devid,
-              OptionalRef<const AudioSpec> spec = std::nullopt,
-              AudioStreamCallback callback = nullptr,
-              void* userdata = nullptr);
-
-  /**
-   * Convenience function for straightforward audio init for the common case.
-   *
-   * If all your app intends to do is provide a single source of PCM audio, this
-   * function allows you to do all your audio setup in a single call.
-   *
-   * This is also intended to be a clean means to migrate apps from SDL2.
-   *
-   * This function will open an audio device, create a stream and bind it.
-   * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStream as
-   * the only object needed to manage audio playback.
-   *
-   * Also unlike other functions, the audio device begins paused. This is to map
-   * more closely to SDL2-style behavior, since there is no extra step here to
-   * bind a stream to begin audio flowing. The audio device should be resumed
-   * with `AudioStream.ResumeDevice();`
-   *
-   * This function works with both playback and recording devices.
-   *
-   * The `spec` parameter represents the app's side of the audio stream. That
-   * is, for recording audio, this will be the output format, and for playing
-   * audio, this will be the input format. If spec is nullptr, the system will
-   * choose the format, and the app can use AudioStream.GetFormat() to obtain
-   * this information later.
-   *
-   * If you don't care about opening a specific audio device, you can (and
-   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
-   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
-   *
-   * One can optionally provide a callback function; if nullptr, the app is
-   * expected to queue audio data for playback (or unqueue audio data if
-   * capturing). Otherwise, the callback will begin to fire once the device is
-   * unpaused.
-   *
-   * Destroying the returned stream with AudioStream.Destroy will also close
-   * the audio device associated with this stream.
-   *
-   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
-   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
-   * @param spec the audio stream's data format. Can be nullptr.
-   * @param callback a callback where the app will provide new data for
-   *                 playback, or receive new data for recording.
-   * @post an audio stream on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetAudioStreamDevice
-   * @sa ResumeAudioStreamDevice
-   */
-  AudioStream(AudioDeviceRef devid,
-              OptionalRef<const AudioSpec> spec,
-              AudioStreamCB callback);
-
-  /// Destructor
-  ~AudioStream() { SDL_DestroyAudioStream(get()); }
-
-  /// Assignment operator.
-  constexpr AudioStream& operator=(AudioStream&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  AudioStream& operator=(const AudioStream& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Free an audio stream.
@@ -35873,6 +35658,207 @@ struct AudioStream : ResourceBase<AudioStreamRaw>
 };
 
 /**
+ * The opaque handle that represents an audio stream.
+ *
+ * AudioStream is an audio conversion interface.
+ *
+ * - It can handle resampling data in chunks without generating artifacts, when
+ *   it doesn't have the complete buffer available.
+ * - It can handle incoming data in any variable size.
+ * - It can handle input/output format changes on the fly.
+ * - It can remap audio channels between inputs and outputs.
+ * - You push data as you have it, and pull it when you need it
+ * - It can also function as a basic audio data queue even if you just have
+ *   sound that needs to pass from one place to another.
+ * - You can hook callbacks up to them when more data is added or requested, to
+ *   manage data on-the-fly.
+ *
+ * Audio streams are the core of the SDL3 audio interface. You create one or
+ * more of them, bind them to an opened audio device, and feed data to them (or
+ * for recording, consume data from them).
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa CreateAudioStream
+ *
+ * @cat resource
+ */
+struct AudioStream : AudioStreamBase
+{
+  using AudioStreamBase::AudioStreamBase;
+
+  /**
+   * Constructs from raw AudioStream.
+   *
+   * @param resource a AudioStreamRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit AudioStream(AudioStreamRaw resource) noexcept
+    : AudioStreamBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr AudioStream(AudioStream&& other) noexcept
+    : AudioStream(other.release())
+  {
+  }
+
+  /**
+   * Create a new audio stream.
+   *
+   * @param src_spec the format details of the input audio.
+   * @param dst_spec the format details of the output audio.
+   * @post a new audio stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PutAudioStreamData
+   * @sa GetAudioStreamData
+   * @sa GetAudioStreamAvailable
+   * @sa FlushAudioStream
+   * @sa ClearAudioStream
+   * @sa SetAudioStreamFormat
+   * @sa DestroyAudioStream
+   */
+  AudioStream(OptionalRef<const AudioSpec> src_spec,
+              OptionalRef<const AudioSpec> dst_spec);
+
+  /**
+   * Convenience function for straightforward audio init for the common case.
+   *
+   * If all your app intends to do is provide a single source of PCM audio, this
+   * function allows you to do all your audio setup in a single call.
+   *
+   * This is also intended to be a clean means to migrate apps from SDL2.
+   *
+   * This function will open an audio device, create a stream and bind it.
+   * Unlike other methods of setup, the audio device will be closed when this
+   * stream is destroyed, so the app can treat the returned AudioStream as the
+   * only object needed to manage audio playback.
+   *
+   * Also unlike other functions, the audio device begins paused. This is to map
+   * more closely to SDL2-style behavior, since there is no extra step here to
+   * bind a stream to begin audio flowing. The audio device should be resumed
+   * with ResumeAudioStreamDevice().
+   *
+   * This function works with both playback and recording devices.
+   *
+   * The `spec` parameter represents the app's side of the audio stream. That
+   * is, for recording audio, this will be the output format, and for playing
+   * audio, this will be the input format. If spec is nullptr, the system will
+   * choose the format, and the app can use GetAudioStreamFormat() to obtain
+   * this information later.
+   *
+   * If you don't care about opening a specific audio device, you can (and
+   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
+   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
+   *
+   * One can optionally provide a callback function; if nullptr, the app is
+   * expected to queue audio data for playback (or unqueue audio data if
+   * capturing). Otherwise, the callback will begin to fire once the device is
+   * unpaused.
+   *
+   * Destroying the returned stream with DestroyAudioStream will also close the
+   * audio device associated with this stream.
+   *
+   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or
+   *              AUDIO_DEVICE_DEFAULT_RECORDING.
+   * @param spec the audio stream's data format. Can be nullptr.
+   * @param callback a callback where the app will provide new data for
+   *                 playback, or receive new data for recording. Can be
+   *                 nullptr, in which case the app will need to call
+   *                 PutAudioStreamData or GetAudioStreamData as necessary.
+   * @param userdata app-controlled pointer passed to callback. Can be nullptr.
+   *                 Ignored if callback is nullptr.
+   * @post an audio stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetAudioStreamDevice
+   * @sa ResumeAudioStreamDevice
+   */
+  AudioStream(AudioDeviceRef devid,
+              OptionalRef<const AudioSpec> spec = std::nullopt,
+              AudioStreamCallback callback = nullptr,
+              void* userdata = nullptr);
+
+  /**
+   * Convenience function for straightforward audio init for the common case.
+   *
+   * If all your app intends to do is provide a single source of PCM audio, this
+   * function allows you to do all your audio setup in a single call.
+   *
+   * This is also intended to be a clean means to migrate apps from SDL2.
+   *
+   * This function will open an audio device, create a stream and bind it.
+   * Unlike other methods of setup, the audio device will be closed when this
+   * stream is destroyed, so the app can treat the returned AudioStream as
+   * the only object needed to manage audio playback.
+   *
+   * Also unlike other functions, the audio device begins paused. This is to map
+   * more closely to SDL2-style behavior, since there is no extra step here to
+   * bind a stream to begin audio flowing. The audio device should be resumed
+   * with `AudioStream.ResumeDevice();`
+   *
+   * This function works with both playback and recording devices.
+   *
+   * The `spec` parameter represents the app's side of the audio stream. That
+   * is, for recording audio, this will be the output format, and for playing
+   * audio, this will be the input format. If spec is nullptr, the system will
+   * choose the format, and the app can use AudioStream.GetFormat() to obtain
+   * this information later.
+   *
+   * If you don't care about opening a specific audio device, you can (and
+   * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
+   * AUDIO_DEVICE_DEFAULT_RECORDING for recording.
+   *
+   * One can optionally provide a callback function; if nullptr, the app is
+   * expected to queue audio data for playback (or unqueue audio data if
+   * capturing). Otherwise, the callback will begin to fire once the device is
+   * unpaused.
+   *
+   * Destroying the returned stream with AudioStream.Destroy will also close
+   * the audio device associated with this stream.
+   *
+   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
+   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+   * @param spec the audio stream's data format. Can be nullptr.
+   * @param callback a callback where the app will provide new data for
+   *                 playback, or receive new data for recording.
+   * @post an audio stream on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetAudioStreamDevice
+   * @sa ResumeAudioStreamDevice
+   */
+  AudioStream(AudioDeviceRef devid,
+              OptionalRef<const AudioSpec> spec,
+              AudioStreamCB callback);
+
+  /// Destructor
+  ~AudioStream() { SDL_DestroyAudioStream(get()); }
+
+  /// Assignment operator.
+  constexpr AudioStream& operator=(AudioStream&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Lock an audio stream for serialized access.
  *
  * Each AudioStream has an internal mutex it uses to protect its data structures
@@ -36146,7 +36132,7 @@ inline const char* GetAudioDeviceName(AudioDeviceRef devid)
   return CheckError(SDL_GetAudioDeviceName(devid));
 }
 
-inline const char* AudioDevice::GetName() const
+inline const char* AudioDeviceBase::GetName() const
 {
   return SDL::GetAudioDeviceName(get());
 }
@@ -36189,7 +36175,7 @@ inline AudioSpec GetAudioDeviceFormat(AudioDeviceRef devid,
   return spec;
 }
 
-inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
+inline AudioSpec AudioDeviceBase::GetFormat(int* sample_frames) const
 {
   return SDL::GetAudioDeviceFormat(get(), sample_frames);
 }
@@ -36220,7 +36206,7 @@ inline OwnArray<int> GetAudioDeviceChannelMap(AudioDeviceRef devid)
   return OwnArray<int>{data, size_t(count)};
 }
 
-inline OwnArray<int> AudioDevice::GetChannelMap() const
+inline OwnArray<int> AudioDeviceBase::GetChannelMap() const
 {
   return SDL::GetAudioDeviceChannelMap(get());
 }
@@ -36335,7 +36321,7 @@ inline bool IsAudioDevicePhysical(AudioDeviceRef devid)
   return SDL_IsAudioDevicePhysical(devid);
 }
 
-inline bool AudioDevice::IsPhysical() const
+inline bool AudioDeviceBase::IsPhysical() const
 {
   return SDL::IsAudioDevicePhysical(get());
 }
@@ -36357,7 +36343,7 @@ inline bool IsAudioDevicePlayback(AudioDeviceRef devid)
   return SDL_IsAudioDevicePlayback(devid);
 }
 
-inline bool AudioDevice::IsPlayback() const
+inline bool AudioDeviceBase::IsPlayback() const
 {
   return SDL::IsAudioDevicePlayback(get());
 }
@@ -36395,7 +36381,7 @@ inline void PauseAudioDevice(AudioDeviceRef devid)
   CheckError(SDL_PauseAudioDevice(devid));
 }
 
-inline void AudioDevice::Pause() { SDL::PauseAudioDevice(get()); }
+inline void AudioDeviceBase::Pause() { SDL::PauseAudioDevice(get()); }
 
 /**
  * Use this function to unpause audio playback on a specified device.
@@ -36426,7 +36412,7 @@ inline void ResumeAudioDevice(AudioDeviceRef devid)
   CheckError(SDL_ResumeAudioDevice(devid));
 }
 
-inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(get()); }
+inline void AudioDeviceBase::Resume() { SDL::ResumeAudioDevice(get()); }
 
 /**
  * Use this function to query if an audio device is paused.
@@ -36453,7 +36439,7 @@ inline bool AudioDevicePaused(AudioDeviceRef devid)
   return SDL_AudioDevicePaused(devid);
 }
 
-inline bool AudioDevice::Paused() const
+inline bool AudioDeviceBase::Paused() const
 {
   return SDL::AudioDevicePaused(get());
 }
@@ -36484,7 +36470,7 @@ inline float GetAudioDeviceGain(AudioDeviceRef devid)
   return SDL_GetAudioDeviceGain(devid);
 }
 
-inline float AudioDevice::GetGain() const
+inline float AudioDeviceBase::GetGain() const
 {
   return SDL::GetAudioDeviceGain(get());
 }
@@ -36526,7 +36512,7 @@ inline void SetAudioDeviceGain(AudioDeviceRef devid, float gain)
   CheckError(SDL_SetAudioDeviceGain(devid, gain));
 }
 
-inline void AudioDevice::SetGain(float gain)
+inline void AudioDeviceBase::SetGain(float gain)
 {
   SDL::SetAudioDeviceGain(get(), gain);
 }
@@ -36554,7 +36540,7 @@ inline void CloseAudioDevice(AudioDeviceID devid)
   SDL_CloseAudioDevice(devid);
 }
 
-inline void AudioDevice::Close() { CloseAudioDevice(release()); }
+inline void AudioDeviceBase::Close() { CloseAudioDevice(release()); }
 
 /**
  * Bind a list of audio streams to an audio device.
@@ -36601,7 +36587,7 @@ inline void BindAudioStreams(AudioDeviceRef devid,
     narrowS32(streams.size())));
 }
 
-inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
+inline void AudioDeviceBase::BindAudioStreams(std::span<AudioStreamRef> streams)
 {
   SDL::BindAudioStreams(get(), streams);
 }
@@ -36629,7 +36615,7 @@ inline void BindAudioStream(AudioDeviceRef devid, AudioStreamRef stream)
   CheckError(SDL_BindAudioStream(devid, stream));
 }
 
-inline void AudioDevice::BindAudioStream(AudioStreamRef stream)
+inline void AudioDeviceBase::BindAudioStream(AudioStreamRef stream)
 {
   SDL::BindAudioStream(get(), stream);
 }
@@ -36678,7 +36664,7 @@ inline void UnbindAudioStream(AudioStreamRef stream)
   SDL_UnbindAudioStream(stream);
 }
 
-inline void AudioStream::Unbind() { SDL::UnbindAudioStream(get()); }
+inline void AudioStreamBase::Unbind() { SDL::UnbindAudioStream(get()); }
 
 /**
  * Query an audio stream for its currently-bound device.
@@ -36700,10 +36686,10 @@ inline void AudioStream::Unbind() { SDL::UnbindAudioStream(get()); }
  */
 inline AudioDeviceRef GetAudioStreamDevice(AudioStreamRef stream)
 {
-  return {SDL_GetAudioStreamDevice(stream)};
+  return SDL_GetAudioStreamDevice(stream);
 }
 
-inline AudioDeviceRef AudioStream::GetDevice() const
+inline AudioDeviceRef AudioStreamBase::GetDevice() const
 {
   return SDL::GetAudioStreamDevice(get());
 }
@@ -36784,10 +36770,10 @@ inline AudioStream::AudioStream(AudioDeviceRef devid,
  */
 inline PropertiesRef GetAudioStreamProperties(AudioStreamRef stream)
 {
-  return {CheckError(SDL_GetAudioStreamProperties(stream))};
+  return CheckError(SDL_GetAudioStreamProperties(stream));
 }
 
-inline PropertiesRef AudioStream::GetProperties() const
+inline PropertiesRef AudioStreamBase::GetProperties() const
 {
   return SDL::GetAudioStreamProperties(get());
 }
@@ -36837,8 +36823,8 @@ inline void GetAudioStreamFormat(AudioStreamRef stream,
   CheckError(SDL_GetAudioStreamFormat(stream, src_spec, dst_spec));
 }
 
-inline void AudioStream::GetFormat(AudioSpec* src_spec,
-                                   AudioSpec* dst_spec) const
+inline void AudioStreamBase::GetFormat(AudioSpec* src_spec,
+                                       AudioSpec* dst_spec) const
 {
   SDL::GetAudioStreamFormat(get(), src_spec, dst_spec);
 }
@@ -36884,8 +36870,8 @@ inline void SetAudioStreamFormat(AudioStreamRef stream,
   CheckError(SDL_SetAudioStreamFormat(stream, src_spec, dst_spec));
 }
 
-inline void AudioStream::SetFormat(OptionalRef<const AudioSpec> src_spec,
-                                   OptionalRef<const AudioSpec> dst_spec)
+inline void AudioStreamBase::SetFormat(OptionalRef<const AudioSpec> src_spec,
+                                       OptionalRef<const AudioSpec> dst_spec)
 {
   SDL::SetAudioStreamFormat(get(), src_spec, dst_spec);
 }
@@ -36909,7 +36895,7 @@ inline float GetAudioStreamFrequencyRatio(AudioStreamRef stream)
   return SDL_GetAudioStreamFrequencyRatio(stream);
 }
 
-inline float AudioStream::GetFrequencyRatio() const
+inline float AudioStreamBase::GetFrequencyRatio() const
 {
   return SDL::GetAudioStreamFrequencyRatio(get());
 }
@@ -36944,7 +36930,7 @@ inline void SetAudioStreamFrequencyRatio(AudioStreamRef stream, float ratio)
   CheckError(SDL_SetAudioStreamFrequencyRatio(stream, ratio));
 }
 
-inline void AudioStream::SetFrequencyRatio(float ratio)
+inline void AudioStreamBase::SetFrequencyRatio(float ratio)
 {
   SDL::SetAudioStreamFrequencyRatio(get(), ratio);
 }
@@ -36973,7 +36959,7 @@ inline float GetAudioStreamGain(AudioStreamRef stream)
   return SDL_GetAudioStreamGain(stream);
 }
 
-inline float AudioStream::GetGain() const
+inline float AudioStreamBase::GetGain() const
 {
   return SDL::GetAudioStreamGain(get());
 }
@@ -37005,7 +36991,7 @@ inline void SetAudioStreamGain(AudioStreamRef stream, float gain)
   CheckError(SDL_SetAudioStreamGain(stream, gain));
 }
 
-inline void AudioStream::SetGain(float gain)
+inline void AudioStreamBase::SetGain(float gain)
 {
   SDL::SetAudioStreamGain(get(), gain);
 }
@@ -37038,7 +37024,7 @@ inline OwnArray<int> GetAudioStreamInputChannelMap(AudioStreamRef stream)
   return OwnArray<int>{data, size_t(count)};
 }
 
-inline OwnArray<int> AudioStream::GetInputChannelMap() const
+inline OwnArray<int> AudioStreamBase::GetInputChannelMap() const
 {
   return SDL::GetAudioStreamInputChannelMap(get());
 }
@@ -37071,7 +37057,7 @@ inline OwnArray<int> GetAudioStreamOutputChannelMap(AudioStreamRef stream)
   return OwnArray<int>{data, size_t(count)};
 }
 
-inline OwnArray<int> AudioStream::GetOutputChannelMap() const
+inline OwnArray<int> AudioStreamBase::GetOutputChannelMap() const
 {
   return SDL::GetAudioStreamOutputChannelMap(get());
 }
@@ -37139,7 +37125,7 @@ inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
     stream, chmap.data(), narrowS32(chmap.size())));
 }
 
-inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
+inline void AudioStreamBase::SetInputChannelMap(std::span<int> chmap)
 {
   SDL::SetAudioStreamInputChannelMap(get(), chmap);
 }
@@ -37205,7 +37191,7 @@ inline void SetAudioStreamOutputChannelMap(AudioStreamRef stream,
     stream, chmap.data(), narrowS32(chmap.size())));
 }
 
-inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
+inline void AudioStreamBase::SetOutputChannelMap(std::span<int> chmap)
 {
   SDL::SetAudioStreamOutputChannelMap(get(), chmap);
 }
@@ -37242,7 +37228,7 @@ inline void PutAudioStreamData(AudioStreamRef stream, SourceBytes buf)
     SDL_PutAudioStreamData(stream, buf.data(), narrowS32(buf.size_bytes())));
 }
 
-inline void AudioStream::PutData(SourceBytes buf)
+inline void AudioStreamBase::PutData(SourceBytes buf)
 {
   SDL::PutAudioStreamData(get(), std::move(buf));
 }
@@ -37353,15 +37339,16 @@ inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                            Wrapper::Wrap(std::move(callback)));
 }
 
-inline void AudioStream::PutDataNoCopy(SourceBytes buf,
-                                       AudioStreamDataCompleteCallback callback,
-                                       void* userdata)
+inline void AudioStreamBase::PutDataNoCopy(
+  SourceBytes buf,
+  AudioStreamDataCompleteCallback callback,
+  void* userdata)
 {
   SDL::PutAudioStreamDataNoCopy(get(), std::move(buf), callback, userdata);
 }
 
-inline void AudioStream::PutDataNoCopy(SourceBytes buf,
-                                       AudioStreamDataCompleteCB callback)
+inline void AudioStreamBase::PutDataNoCopy(SourceBytes buf,
+                                           AudioStreamDataCompleteCB callback)
 {
   SDL::PutAudioStreamDataNoCopy(get(), std::move(buf), std::move(callback));
 }
@@ -37423,9 +37410,9 @@ inline void PutAudioStreamPlanarData(AudioStreamRef stream,
     stream, channel_buffers, num_channels, num_samples));
 }
 
-inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
-                                       int num_channels,
-                                       int num_samples)
+inline void AudioStreamBase::PutPlanarData(const void* const* channel_buffers,
+                                           int num_channels,
+                                           int num_samples)
 {
   SDL::PutAudioStreamPlanarData(
     get(), channel_buffers, num_channels, num_samples);
@@ -37466,7 +37453,7 @@ inline int GetAudioStreamData(AudioStreamRef stream, TargetBytes buf)
     stream, buf.data(), narrowS32(buf.size_bytes()));
 }
 
-inline int AudioStream::GetData(TargetBytes buf)
+inline int AudioStreamBase::GetData(TargetBytes buf)
 {
   return SDL::GetAudioStreamData(get(), std::move(buf));
 }
@@ -37499,7 +37486,7 @@ inline int GetAudioStreamAvailable(AudioStreamRef stream)
   return SDL_GetAudioStreamAvailable(stream);
 }
 
-inline int AudioStream::GetAvailable() const
+inline int AudioStreamBase::GetAvailable() const
 {
   return SDL::GetAudioStreamAvailable(get());
 }
@@ -37544,7 +37531,7 @@ inline int GetAudioStreamQueued(AudioStreamRef stream)
   return SDL_GetAudioStreamQueued(stream);
 }
 
-inline int AudioStream::GetQueued() const
+inline int AudioStreamBase::GetQueued() const
 {
   return SDL::GetAudioStreamQueued(get());
 }
@@ -37571,7 +37558,7 @@ inline void FlushAudioStream(AudioStreamRef stream)
   CheckError(SDL_FlushAudioStream(stream));
 }
 
-inline void AudioStream::Flush() { SDL::FlushAudioStream(get()); }
+inline void AudioStreamBase::Flush() { SDL::FlushAudioStream(get()); }
 
 /**
  * Clear any pending data in the stream.
@@ -37596,7 +37583,7 @@ inline void ClearAudioStream(AudioStreamRef stream)
   CheckError(SDL_ClearAudioStream(stream));
 }
 
-inline void AudioStream::Clear() { SDL::ClearAudioStream(get()); }
+inline void AudioStreamBase::Clear() { SDL::ClearAudioStream(get()); }
 
 /**
  * Use this function to pause audio playback on the audio device associated with
@@ -37624,7 +37611,10 @@ inline void PauseAudioStreamDevice(AudioStreamRef stream)
   CheckError(SDL_PauseAudioStreamDevice(stream));
 }
 
-inline void AudioStream::PauseDevice() { SDL::PauseAudioStreamDevice(get()); }
+inline void AudioStreamBase::PauseDevice()
+{
+  SDL::PauseAudioStreamDevice(get());
+}
 
 /**
  * Use this function to unpause audio playback on the audio device associated
@@ -37651,7 +37641,10 @@ inline void ResumeAudioStreamDevice(AudioStreamRef stream)
   CheckError(SDL_ResumeAudioStreamDevice(stream));
 }
 
-inline void AudioStream::ResumeDevice() { SDL::ResumeAudioStreamDevice(get()); }
+inline void AudioStreamBase::ResumeDevice()
+{
+  SDL::ResumeAudioStreamDevice(get());
+}
 
 /**
  * Use this function to query if an audio device associated with a stream is
@@ -37675,7 +37668,7 @@ inline bool AudioStreamDevicePaused(AudioStreamRef stream)
   return SDL_AudioStreamDevicePaused(stream);
 }
 
-inline bool AudioStream::DevicePaused() const
+inline bool AudioStreamBase::DevicePaused() const
 {
   return SDL::AudioStreamDevicePaused(get());
 }
@@ -37710,7 +37703,10 @@ inline void LockAudioStream(AudioStreamRef stream)
   CheckError(SDL_LockAudioStream(stream));
 }
 
-inline AudioStreamLock AudioStream::Lock() { return {AudioStreamRef(*this)}; }
+inline AudioStreamLock AudioStreamBase::Lock()
+{
+  return {AudioStreamRef(*this)};
+}
 
 inline AudioStreamLock::AudioStreamLock(AudioStreamRef resource)
   : m_lock(std::move(resource))
@@ -37738,7 +37734,7 @@ inline void UnlockAudioStream(AudioStreamRef stream)
   CheckError(SDL_UnlockAudioStream(stream));
 }
 
-inline void AudioStream::Unlock(AudioStreamLock&& lock)
+inline void AudioStreamBase::Unlock(AudioStreamLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -37844,13 +37840,13 @@ inline void SetAudioStreamGetCallback(AudioStreamRef stream,
   SetAudioStreamGetCallback(stream, callback.wrapper, callback.data);
 }
 
-inline void AudioStream::SetGetCallback(AudioStreamCallback callback,
-                                        void* userdata)
+inline void AudioStreamBase::SetGetCallback(AudioStreamCallback callback,
+                                            void* userdata)
 {
   SDL::SetAudioStreamGetCallback(get(), callback, userdata);
 }
 
-inline void AudioStream::SetGetCallback(AudioStreamCB callback)
+inline void AudioStreamBase::SetGetCallback(AudioStreamCB callback)
 {
   SDL::SetAudioStreamGetCallback(get(), callback);
 }
@@ -37956,13 +37952,13 @@ inline void SetAudioStreamPutCallback(AudioStreamRef stream,
   SetAudioStreamPutCallback(stream, callback.wrapper, callback.data);
 }
 
-inline void AudioStream::SetPutCallback(AudioStreamCallback callback,
-                                        void* userdata)
+inline void AudioStreamBase::SetPutCallback(AudioStreamCallback callback,
+                                            void* userdata)
 {
   SDL::SetAudioStreamPutCallback(get(), callback, userdata);
 }
 
-inline void AudioStream::SetPutCallback(AudioStreamCB callback)
+inline void AudioStreamBase::SetPutCallback(AudioStreamCB callback)
 {
   SDL::SetAudioStreamPutCallback(get(), callback);
 }
@@ -37990,7 +37986,7 @@ inline void DestroyAudioStream(AudioStreamRaw stream)
   SDL_DestroyAudioStream(stream);
 }
 
-inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
+inline void AudioStreamBase::Destroy() { DestroyAudioStream(release()); }
 
 /**
  * Convenience function for straightforward audio init for the common case.
@@ -38117,15 +38113,17 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
   return AudioStream(devid, spec, callback);
 }
 
-inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
-                                           AudioStreamCallback callback,
-                                           void* userdata)
+inline AudioStream AudioDeviceBase::OpenStream(
+  OptionalRef<const AudioSpec> spec,
+  AudioStreamCallback callback,
+  void* userdata)
 {
   return AudioStream(get(), spec, callback, userdata);
 }
 
-inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
-                                           AudioStreamCB callback)
+inline AudioStream AudioDeviceBase::OpenStream(
+  OptionalRef<const AudioSpec> spec,
+  AudioStreamCB callback)
 {
   return SDL::OpenAudioDeviceStream(get(), spec, callback);
 }
@@ -38244,13 +38242,13 @@ inline void SetAudioPostmixCallback(AudioDeviceRef devid,
   SetAudioPostmixCallback(devid, callback.wrapper, callback.data);
 }
 
-inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
-                                            void* userdata)
+inline void AudioDeviceBase::SetPostmixCallback(AudioPostmixCallback callback,
+                                                void* userdata)
 {
   SDL::SetAudioPostmixCallback(get(), callback, userdata);
 }
 
-inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
+inline void AudioDeviceBase::SetPostmixCallback(AudioPostmixCB callback)
 {
   SDL::SetAudioPostmixCallback(get(), callback);
 }
@@ -39459,6 +39457,9 @@ constexpr Keycode ScancodeToKeycode(Scancode x)
  */
 
 // Forward decl
+struct ProcessBase;
+
+// Forward decl
 struct Process;
 
 /// Alias to raw representation for Process.
@@ -39469,7 +39470,7 @@ using ProcessRaw = SDL_Process*;
  *
  * This does not take ownership!
  */
-using ProcessRef = ResourceRef<Process>;
+using ProcessRef = ResourceRefT<ProcessBase>;
 
 /**
  * Description of where standard I/O should be directed when creating a process.
@@ -39529,168 +39530,13 @@ constexpr ProcessIO PROCESS_STDIO_APP = SDL_PROCESS_STDIO_APP;
 constexpr ProcessIO PROCESS_STDIO_REDIRECT = SDL_PROCESS_STDIO_REDIRECT;
 
 /**
- * An opaque handle representing a system process.
+ * Base class to Process.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa CreateProcess
- *
- * @cat resource
+ * @see Process
  */
-struct Process : ResourceBase<ProcessRaw>
+struct ProcessBase : ResourceBaseT<ProcessRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Process.
-   *
-   * @param resource a ProcessRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Process(ProcessRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Process(const Process& other) = delete;
-
-  /// Move constructor
-  constexpr Process(Process&& other) noexcept
-    : Process(other.release())
-  {
-  }
-
-  constexpr Process(const ProcessRef& other) = delete;
-
-  constexpr Process(ProcessRef&& other) = delete;
-
-  /**
-   * Create a new process.
-   *
-   * The path to the executable is supplied in args[0]. args[1..N] are
-   * additional arguments passed on the command line of the new process, and the
-   * argument list should be terminated with a nullptr, e.g.:
-   *
-   * ```c
-   * const char *args[] = { "myprogram", "argument", nullptr };
-   * ```
-   *
-   * Setting pipe_stdio to true is equivalent to setting
-   * `prop.Process.Create.STDIN_NUMBER` and `prop.Process.Create.STDOUT_NUMBER`
-   * to `PROCESS_STDIO_APP`, and will allow the use of ReadProcess() or
-   * GetProcessInput() and GetProcessOutput().
-   *
-   * See CreateProcessWithProperties() for more details.
-   *
-   * @param args the path and arguments for the new process.
-   * @param pipe_stdio true to create pipes to the process's standard input and
-   *                   from the process's standard output, false for the process
-   *                   to have no input and inherit the application's standard
-   *                   output.
-   * @post the newly created and running process, or nullptr if the process
-   *       couldn't be created.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateProcessWithProperties
-   * @sa GetProcessProperties
-   * @sa ReadProcess
-   * @sa GetProcessInput
-   * @sa GetProcessOutput
-   * @sa KillProcess
-   * @sa WaitProcess
-   * @sa DestroyProcess
-   */
-  Process(const char* const* args, bool pipe_stdio);
-
-  /**
-   * Create a new process with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.Process.Create.ARGS_POINTER`: an array of strings containing the
-   *   program to run, any arguments, and a nullptr pointer, e.g. const char
-   *   *args[] = { "myprogram", "argument", nullptr }. This is a required
-   *   property.
-   * - `prop.Process.Create.ENVIRONMENT_POINTER`: an Environment pointer. If
-   *   this property is set, it will be the entire environment for the process,
-   *   otherwise the current environment is used.
-   * - `prop.Process.Create.WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
-   *   representing the working directory for the process, defaults to the
-   *   current working directory.
-   * - `prop.Process.Create.STDIN_NUMBER`: an ProcessIO value describing where
-   *   standard input for the process comes from, defaults to
-   *   `SDL_PROCESS_STDIO_nullptr`.
-   * - `prop.Process.Create.STDIN_POINTER`: an IOStream pointer used for
-   *   standard input when `prop.Process.Create.STDIN_NUMBER` is set to
-   *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop.Process.Create.STDOUT_NUMBER`: an ProcessIO value describing where
-   *   standard output for the process goes to, defaults to
-   *   `PROCESS_STDIO_INHERITED`.
-   * - `prop.Process.Create.STDOUT_POINTER`: an IOStream pointer used for
-   *   standard output when `prop.Process.Create.STDOUT_NUMBER` is set to
-   *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop.Process.Create.STDERR_NUMBER`: an ProcessIO value describing where
-   *   standard error for the process goes to, defaults to
-   *   `PROCESS_STDIO_INHERITED`.
-   * - `prop.Process.Create.STDERR_POINTER`: an IOStream pointer used for
-   *   standard error when `prop.Process.Create.STDERR_NUMBER` is set to
-   *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop.Process.Create.STDERR_TO_STDOUT_BOOLEAN`: true if the error output
-   *   of the process should be redirected into the standard output of the
-   *   process. This property has no effect if
-   *   `prop.Process.Create.STDERR_NUMBER` is set.
-   * - `prop.Process.Create.BACKGROUND_BOOLEAN`: true if the process should run
-   *   in the background. In this case the default input and output is
-   *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
-   *   available, and will always be 0.
-   * - `prop.Process.Create.CMDLINE_STRING`: a string containing the program to
-   *   run and any parameters. This string is passed directly to `CreateProcess`
-   *   on Windows, and does nothing on other platforms. This property is only
-   *   important if you want to start programs that does non-standard
-   *   command-line processing, and in most cases using
-   *   `prop.Process.Create.ARGS_POINTER` is sufficient.
-   *
-   * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
-   * SIGCHLD should not be ignored or handled because those would prevent SDL
-   * from properly tracking the lifetime of the underlying process. You should
-   * use WaitProcess() instead.
-   *
-   * @param props the properties to use.
-   * @post the newly created and running process, or nullptr if the process
-   *       couldn't be created.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateProcess
-   * @sa GetProcessProperties
-   * @sa ReadProcess
-   * @sa GetProcessInput
-   * @sa GetProcessOutput
-   * @sa KillProcess
-   * @sa WaitProcess
-   * @sa DestroyProcess
-   */
-  Process(PropertiesRef props);
-
-  /// Destructor
-  ~Process() { SDL_DestroyProcess(get()); }
-
-  /// Assignment operator.
-  constexpr Process& operator=(Process&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Process& operator=(const Process& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a previously created process object.
@@ -39899,6 +39745,161 @@ struct Process : ResourceBase<ProcessRaw>
    * @sa DestroyProcess
    */
   bool Wait(bool block, int* exitcode);
+};
+
+/**
+ * An opaque handle representing a system process.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa CreateProcess
+ *
+ * @cat resource
+ */
+struct Process : ProcessBase
+{
+  using ProcessBase::ProcessBase;
+
+  /**
+   * Constructs from raw Process.
+   *
+   * @param resource a ProcessRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Process(ProcessRaw resource) noexcept
+    : ProcessBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Process(Process&& other) noexcept
+    : Process(other.release())
+  {
+  }
+
+  /**
+   * Create a new process.
+   *
+   * The path to the executable is supplied in args[0]. args[1..N] are
+   * additional arguments passed on the command line of the new process, and the
+   * argument list should be terminated with a nullptr, e.g.:
+   *
+   * ```c
+   * const char *args[] = { "myprogram", "argument", nullptr };
+   * ```
+   *
+   * Setting pipe_stdio to true is equivalent to setting
+   * `prop.Process.Create.STDIN_NUMBER` and `prop.Process.Create.STDOUT_NUMBER`
+   * to `PROCESS_STDIO_APP`, and will allow the use of ReadProcess() or
+   * GetProcessInput() and GetProcessOutput().
+   *
+   * See CreateProcessWithProperties() for more details.
+   *
+   * @param args the path and arguments for the new process.
+   * @param pipe_stdio true to create pipes to the process's standard input and
+   *                   from the process's standard output, false for the process
+   *                   to have no input and inherit the application's standard
+   *                   output.
+   * @post the newly created and running process, or nullptr if the process
+   *       couldn't be created.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateProcessWithProperties
+   * @sa GetProcessProperties
+   * @sa ReadProcess
+   * @sa GetProcessInput
+   * @sa GetProcessOutput
+   * @sa KillProcess
+   * @sa WaitProcess
+   * @sa DestroyProcess
+   */
+  Process(const char* const* args, bool pipe_stdio);
+
+  /**
+   * Create a new process with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.Process.Create.ARGS_POINTER`: an array of strings containing the
+   *   program to run, any arguments, and a nullptr pointer, e.g. const char
+   *   *args[] = { "myprogram", "argument", nullptr }. This is a required
+   *   property.
+   * - `prop.Process.Create.ENVIRONMENT_POINTER`: an Environment pointer. If
+   *   this property is set, it will be the entire environment for the process,
+   *   otherwise the current environment is used.
+   * - `prop.Process.Create.WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+   *   representing the working directory for the process, defaults to the
+   *   current working directory.
+   * - `prop.Process.Create.STDIN_NUMBER`: an ProcessIO value describing where
+   *   standard input for the process comes from, defaults to
+   *   `SDL_PROCESS_STDIO_nullptr`.
+   * - `prop.Process.Create.STDIN_POINTER`: an IOStream pointer used for
+   *   standard input when `prop.Process.Create.STDIN_NUMBER` is set to
+   *   `PROCESS_STDIO_REDIRECT`.
+   * - `prop.Process.Create.STDOUT_NUMBER`: an ProcessIO value describing where
+   *   standard output for the process goes to, defaults to
+   *   `PROCESS_STDIO_INHERITED`.
+   * - `prop.Process.Create.STDOUT_POINTER`: an IOStream pointer used for
+   *   standard output when `prop.Process.Create.STDOUT_NUMBER` is set to
+   *   `PROCESS_STDIO_REDIRECT`.
+   * - `prop.Process.Create.STDERR_NUMBER`: an ProcessIO value describing where
+   *   standard error for the process goes to, defaults to
+   *   `PROCESS_STDIO_INHERITED`.
+   * - `prop.Process.Create.STDERR_POINTER`: an IOStream pointer used for
+   *   standard error when `prop.Process.Create.STDERR_NUMBER` is set to
+   *   `PROCESS_STDIO_REDIRECT`.
+   * - `prop.Process.Create.STDERR_TO_STDOUT_BOOLEAN`: true if the error output
+   *   of the process should be redirected into the standard output of the
+   *   process. This property has no effect if
+   *   `prop.Process.Create.STDERR_NUMBER` is set.
+   * - `prop.Process.Create.BACKGROUND_BOOLEAN`: true if the process should run
+   *   in the background. In this case the default input and output is
+   *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
+   *   available, and will always be 0.
+   * - `prop.Process.Create.CMDLINE_STRING`: a string containing the program to
+   *   run and any parameters. This string is passed directly to `CreateProcess`
+   *   on Windows, and does nothing on other platforms. This property is only
+   *   important if you want to start programs that does non-standard
+   *   command-line processing, and in most cases using
+   *   `prop.Process.Create.ARGS_POINTER` is sufficient.
+   *
+   * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
+   * SIGCHLD should not be ignored or handled because those would prevent SDL
+   * from properly tracking the lifetime of the underlying process. You should
+   * use WaitProcess() instead.
+   *
+   * @param props the properties to use.
+   * @post the newly created and running process, or nullptr if the process
+   *       couldn't be created.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateProcess
+   * @sa GetProcessProperties
+   * @sa ReadProcess
+   * @sa GetProcessInput
+   * @sa GetProcessOutput
+   * @sa KillProcess
+   * @sa WaitProcess
+   * @sa DestroyProcess
+   */
+  Process(PropertiesRef props);
+
+  /// Destructor
+  ~Process() { SDL_DestroyProcess(get()); }
+
+  /// Assignment operator.
+  constexpr Process& operator=(Process&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /**
@@ -40118,7 +40119,7 @@ inline PropertiesRef GetProcessProperties(ProcessRef process)
   return {CheckError(SDL_GetProcessProperties(process))};
 }
 
-inline PropertiesRef Process::GetProperties() const
+inline PropertiesRef ProcessBase::GetProperties() const
 {
   return SDL::GetProcessProperties(get());
 }
@@ -40186,7 +40187,7 @@ inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
   return StringResult(CheckError(data), size);
 }
 
-inline StringResult Process::Read(int* exitcode)
+inline StringResult ProcessBase::Read(int* exitcode)
 {
   return SDL::ReadProcess(get(), exitcode);
 }
@@ -40220,7 +40221,10 @@ inline IOStreamRef GetProcessInput(ProcessRef process)
   return {SDL_GetProcessInput(process)};
 }
 
-inline IOStreamRef Process::GetInput() { return SDL::GetProcessInput(get()); }
+inline IOStreamRef ProcessBase::GetInput()
+{
+  return SDL::GetProcessInput(get());
+}
 
 /**
  * Get the IOStream associated with process standard output.
@@ -40249,7 +40253,10 @@ inline IOStreamRef GetProcessOutput(ProcessRef process)
   return {SDL_GetProcessOutput(process)};
 }
 
-inline IOStreamRef Process::GetOutput() { return SDL::GetProcessOutput(get()); }
+inline IOStreamRef ProcessBase::GetOutput()
+{
+  return SDL::GetProcessOutput(get());
+}
 
 /**
  * Stop a process.
@@ -40275,7 +40282,7 @@ inline void KillProcess(ProcessRef process, bool force)
   CheckError(SDL_KillProcess(process, force));
 }
 
-inline void Process::Kill(bool force) { SDL::KillProcess(get(), force); }
+inline void ProcessBase::Kill(bool force) { SDL::KillProcess(get(), force); }
 
 /**
  * Wait for a process to finish.
@@ -40313,7 +40320,7 @@ inline bool WaitProcess(ProcessRef process, bool block, int* exitcode)
   return SDL_WaitProcess(process, block, exitcode);
 }
 
-inline bool Process::Wait(bool block, int* exitcode)
+inline bool ProcessBase::Wait(bool block, int* exitcode)
 {
   return SDL::WaitProcess(get(), block, exitcode);
 }
@@ -40336,7 +40343,7 @@ inline bool Process::Wait(bool block, int* exitcode)
  */
 inline void DestroyProcess(ProcessRaw process) { SDL_DestroyProcess(process); }
 
-inline void Process::Destroy() { DestroyProcess(release()); }
+inline void ProcessBase::Destroy() { DestroyProcess(release()); }
 
 /// @}
 
@@ -40556,6 +40563,9 @@ inline void Process::Destroy() { DestroyProcess(release()); }
  */
 
 // Forward decl
+struct StorageBase;
+
+// Forward decl
 struct Storage;
 
 /// Alias to raw representation for Storage.
@@ -40566,7 +40576,7 @@ using StorageRaw = SDL_Storage*;
  *
  * This does not take ownership!
  */
-using StorageRef = ResourceRef<Storage>;
+using StorageRef = ResourceRefT<StorageBase>;
 
 /**
  * Function interface for Storage.
@@ -40587,157 +40597,13 @@ using StorageRef = ResourceRef<Storage>;
 using StorageInterface = SDL_StorageInterface;
 
 /**
- * An abstract interface for filesystem access.
+ * Base class to Storage.
  *
- * This is an opaque datatype. One can create this object using standard SDL
- * functions like OpenTitleStorage or OpenUserStorage, etc, or create an object
- * with a custom implementation using OpenStorage.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Storage
  */
-struct Storage : ResourceBase<StorageRaw>
+struct StorageBase : ResourceBaseT<StorageRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Storage.
-   *
-   * @param resource a StorageRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Storage(StorageRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Storage(const Storage& other) = delete;
-
-  /// Move constructor
-  constexpr Storage(Storage&& other) noexcept
-    : Storage(other.release())
-  {
-  }
-
-  constexpr Storage(const StorageRef& other) = delete;
-
-  constexpr Storage(StorageRef&& other) = delete;
-
-  /**
-   * Opens up a read-only container for the application's filesystem.
-   *
-   * By default, OpenTitleStorage uses the generic storage implementation. When
-   * the path override is not provided, the generic implementation will use the
-   * output of GetBasePath as the base path.
-   *
-   * @param override a path to override the backend's default title root.
-   * @param props a property list that may contain backend-specific information.
-   * @post a title storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa OpenUserStorage
-   * @sa ReadStorageFile
-   */
-  Storage(StringParam override, PropertiesRef props);
-
-  /**
-   * Opens up a container for a user's unique read/write filesystem.
-   *
-   * While title storage can generally be kept open throughout runtime, user
-   * storage should only be opened when the client is ready to read/write files.
-   * This allows the backend to properly batch file operations and flush them
-   * when the container has been closed; ensuring safe and optimal save I/O.
-   *
-   * @param org the name of your organization.
-   * @param app the name of your application.
-   * @param props a property list that may contain backend-specific information.
-   * @post a user storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa GetStorageSpaceRemaining
-   * @sa OpenTitleStorage
-   * @sa ReadStorageFile
-   * @sa StorageReady
-   * @sa WriteStorageFile
-   */
-  Storage(StringParam org, StringParam app, PropertiesRef props);
-
-  /**
-   * Opens up a container for local filesystem storage.
-   *
-   * This is provided for development and tools. Portable applications should
-   * use OpenTitleStorage() for access to game data and OpenUserStorage() for
-   * access to user data.
-   *
-   * @param path the base path prepended to all storage paths, or nullptr for no
-   *             base path.
-   * @post a filesystem storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa GetStorageSpaceRemaining
-   * @sa OpenTitleStorage
-   * @sa OpenUserStorage
-   * @sa ReadStorageFile
-   * @sa WriteStorageFile
-   */
-  Storage(StringParam path);
-
-  /**
-   * Opens up a container using a client-provided storage interface.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own Storage implementation. If you just need an Storage, you should
-   * use the built-in implementations in SDL, like OpenTitleStorage() or
-   * OpenUserStorage().
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this storage, initialized using
-   *              InitInterface().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @post a storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa GetStorageSpaceRemaining
-   * @sa InitInterface
-   * @sa ReadStorageFile
-   * @sa StorageReady
-   * @sa WriteStorageFile
-   */
-  Storage(const StorageInterface& iface, void* userdata);
-
-  /// Destructor
-  ~Storage() { CheckError(SDL_CloseStorage(get())); }
-
-  /// Assignment operator.
-  constexpr Storage& operator=(Storage&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Storage& operator=(const Storage& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Closes and frees a storage container.
@@ -41056,6 +40922,150 @@ struct Storage : ResourceBase<StorageRaw>
 };
 
 /**
+ * An abstract interface for filesystem access.
+ *
+ * This is an opaque datatype. One can create this object using standard SDL
+ * functions like OpenTitleStorage or OpenUserStorage, etc, or create an object
+ * with a custom implementation using OpenStorage.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Storage : StorageBase
+{
+  using StorageBase::StorageBase;
+
+  /**
+   * Constructs from raw Storage.
+   *
+   * @param resource a StorageRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Storage(StorageRaw resource) noexcept
+    : StorageBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Storage(Storage&& other) noexcept
+    : Storage(other.release())
+  {
+  }
+
+  /**
+   * Opens up a read-only container for the application's filesystem.
+   *
+   * By default, OpenTitleStorage uses the generic storage implementation. When
+   * the path override is not provided, the generic implementation will use the
+   * output of GetBasePath as the base path.
+   *
+   * @param override a path to override the backend's default title root.
+   * @param props a property list that may contain backend-specific information.
+   * @post a title storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa OpenUserStorage
+   * @sa ReadStorageFile
+   */
+  Storage(StringParam override, PropertiesRef props);
+
+  /**
+   * Opens up a container for a user's unique read/write filesystem.
+   *
+   * While title storage can generally be kept open throughout runtime, user
+   * storage should only be opened when the client is ready to read/write files.
+   * This allows the backend to properly batch file operations and flush them
+   * when the container has been closed; ensuring safe and optimal save I/O.
+   *
+   * @param org the name of your organization.
+   * @param app the name of your application.
+   * @param props a property list that may contain backend-specific information.
+   * @post a user storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
+   * @sa OpenTitleStorage
+   * @sa ReadStorageFile
+   * @sa StorageReady
+   * @sa WriteStorageFile
+   */
+  Storage(StringParam org, StringParam app, PropertiesRef props);
+
+  /**
+   * Opens up a container for local filesystem storage.
+   *
+   * This is provided for development and tools. Portable applications should
+   * use OpenTitleStorage() for access to game data and OpenUserStorage() for
+   * access to user data.
+   *
+   * @param path the base path prepended to all storage paths, or nullptr for no
+   *             base path.
+   * @post a filesystem storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
+   * @sa OpenTitleStorage
+   * @sa OpenUserStorage
+   * @sa ReadStorageFile
+   * @sa WriteStorageFile
+   */
+  Storage(StringParam path);
+
+  /**
+   * Opens up a container using a client-provided storage interface.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own Storage implementation. If you just need an Storage, you should
+   * use the built-in implementations in SDL, like OpenTitleStorage() or
+   * OpenUserStorage().
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this storage, initialized using
+   *              InitInterface().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @post a storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
+   * @sa InitInterface
+   * @sa ReadStorageFile
+   * @sa StorageReady
+   * @sa WriteStorageFile
+   */
+  Storage(const StorageInterface& iface, void* userdata);
+
+  /// Destructor
+  ~Storage() { CheckError(SDL_CloseStorage(get())); }
+
+  /// Assignment operator.
+  constexpr Storage& operator=(Storage&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Opens up a read-only container for the application's filesystem.
  *
  * By default, OpenTitleStorage uses the generic storage implementation. When
@@ -41210,7 +41220,7 @@ inline bool CloseStorage(StorageRaw storage)
   return SDL_CloseStorage(storage);
 }
 
-inline bool Storage::Close() { return CloseStorage(release()); }
+inline bool StorageBase::Close() { return CloseStorage(release()); }
 
 /**
  * Checks if the storage container is ready to use.
@@ -41230,7 +41240,7 @@ inline bool StorageReady(StorageRef storage)
   return SDL_StorageReady(storage);
 }
 
-inline bool Storage::Ready() { return SDL::StorageReady(get()); }
+inline bool StorageBase::Ready() { return SDL::StorageReady(get()); }
 
 /**
  * Query the size of a file within a storage container.
@@ -41254,7 +41264,7 @@ inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
   return {};
 }
 
-inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
+inline std::optional<Uint64> StorageBase::GetFileSize(StringParam path)
 {
   return SDL::GetStorageFileSize(get(), std::move(path));
 }
@@ -41311,12 +41321,12 @@ inline std::string ReadStorageFile(StorageRef storage, StringParam path)
   return buffer;
 }
 
-inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
+inline bool StorageBase::ReadFile(StringParam path, TargetBytes destination)
 {
   return SDL::ReadStorageFile(get(), std::move(path), std::move(destination));
 }
 
-inline std::string Storage::ReadFile(StringParam path)
+inline std::string StorageBase::ReadFile(StringParam path)
 {
   return SDL::ReadStorageFile(get(), std::move(path));
 }
@@ -41347,7 +41357,7 @@ inline std::vector<T> ReadStorageFileAs(StorageRef storage, StringParam path)
 }
 
 template<class T>
-inline std::vector<T> Storage::ReadFileAs(StringParam path)
+inline std::vector<T> StorageBase::ReadFileAs(StringParam path)
 {
   return SDL::ReadStorageFileAs<T>(get(), std::move(path));
 }
@@ -41374,7 +41384,7 @@ inline void WriteStorageFile(StorageRef storage,
     SDL_WriteStorageFile(storage, path, source.data(), source.size_bytes()));
 }
 
-inline void Storage::WriteFile(StringParam path, SourceBytes source)
+inline void StorageBase::WriteFile(StringParam path, SourceBytes source)
 {
   SDL::WriteStorageFile(get(), std::move(path), std::move(source));
 }
@@ -41395,7 +41405,7 @@ inline void CreateStorageDirectory(StorageRef storage, StringParam path)
   CheckError(SDL_CreateStorageDirectory(storage, path));
 }
 
-inline void Storage::CreateDirectory(StringParam path)
+inline void StorageBase::CreateDirectory(StringParam path)
 {
   SDL::CreateStorageDirectory(get(), std::move(path));
 }
@@ -41504,20 +41514,20 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
   return r;
 }
 
-inline void Storage::EnumerateDirectory(StringParam path,
-                                        EnumerateDirectoryCallback callback,
-                                        void* userdata)
+inline void StorageBase::EnumerateDirectory(StringParam path,
+                                            EnumerateDirectoryCallback callback,
+                                            void* userdata)
 {
   SDL::EnumerateStorageDirectory(get(), std::move(path), callback, userdata);
 }
 
-inline std::vector<Path> Storage::EnumerateDirectory(StringParam path)
+inline std::vector<Path> StorageBase::EnumerateDirectory(StringParam path)
 {
   return SDL::EnumerateStorageDirectory(get(), std::move(path));
 }
 
-inline void Storage::EnumerateDirectory(StringParam path,
-                                        EnumerateDirectoryCB callback)
+inline void StorageBase::EnumerateDirectory(StringParam path,
+                                            EnumerateDirectoryCB callback)
 {
   SDL::EnumerateStorageDirectory(get(), std::move(path), callback);
 }
@@ -41538,7 +41548,7 @@ inline void RemoveStoragePath(StorageRef storage, StringParam path)
   CheckError(SDL_RemoveStoragePath(storage, path));
 }
 
-inline void Storage::RemovePath(StringParam path)
+inline void StorageBase::RemovePath(StringParam path)
 {
   SDL::RemoveStoragePath(get(), std::move(path));
 }
@@ -41562,7 +41572,7 @@ inline void RenameStoragePath(StorageRef storage,
   CheckError(SDL_RenameStoragePath(storage, oldpath, newpath));
 }
 
-inline void Storage::RenamePath(StringParam oldpath, StringParam newpath)
+inline void StorageBase::RenamePath(StringParam oldpath, StringParam newpath)
 {
   SDL::RenameStoragePath(get(), std::move(oldpath), std::move(newpath));
 }
@@ -41586,7 +41596,7 @@ inline void CopyStorageFile(StorageRef storage,
   CheckError(SDL_CopyStorageFile(storage, oldpath, newpath));
 }
 
-inline void Storage::CopyFile(StringParam oldpath, StringParam newpath)
+inline void StorageBase::CopyFile(StringParam oldpath, StringParam newpath)
 {
   SDL::CopyStorageFile(get(), std::move(oldpath), std::move(newpath));
 }
@@ -41611,7 +41621,7 @@ inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
   return {};
 }
 
-inline PathInfo Storage::GetPathInfo(StringParam path)
+inline PathInfo StorageBase::GetPathInfo(StringParam path)
 {
   return SDL::GetStoragePathInfo(get(), std::move(path));
 }
@@ -41632,7 +41642,7 @@ inline Uint64 GetStorageSpaceRemaining(StorageRef storage)
   return SDL_GetStorageSpaceRemaining(storage);
 }
 
-inline Uint64 Storage::GetSpaceRemaining()
+inline Uint64 StorageBase::GetSpaceRemaining()
 {
   return SDL::GetStorageSpaceRemaining(get());
 }
@@ -41681,9 +41691,9 @@ inline OwnArray<char*> GlobStorageDirectory(StorageRef storage,
   return OwnArray<char*>{data, size_t(count)};
 }
 
-inline OwnArray<char*> Storage::GlobDirectory(StringParam path,
-                                              StringParam pattern,
-                                              GlobFlags flags)
+inline OwnArray<char*> StorageBase::GlobDirectory(StringParam path,
+                                                  StringParam pattern,
+                                                  GlobFlags flags)
 {
   return SDL::GlobStorageDirectory(
     get(), std::move(path), std::move(pattern), flags);
@@ -41714,6 +41724,9 @@ inline OwnArray<char*> Storage::GlobDirectory(StringParam path,
  */
 
 // Forward decl
+struct SurfaceBase;
+
+// Forward decl
 struct Surface;
 
 /// Alias to raw representation for Surface.
@@ -41727,7 +41740,7 @@ using SurfaceRawConst = const SDL_Surface*;
  *
  * This does not take ownership!
  */
-using SurfaceRef = ResourceRef<Surface>;
+using SurfaceRef = ResourceRefT<SurfaceBase>;
 
 /// Safely wrap Surface for non owning const parameters
 using SurfaceConstRef = ResourceConstRef<SurfaceRaw, SurfaceRawConst>;
@@ -41817,235 +41830,16 @@ constexpr FlipMode FLIP_HORIZONTAL_AND_VERTICAL =
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * A collection of pixels used in software blitting.
+ * Base class to Surface.
  *
- * Pixels are arranged in memory in rows, with the top row first. Each row
- * occupies an amount of memory given by the pitch (sometimes known as the row
- * stride in non-SDL APIs).
- *
- * Within each row, pixels are arranged from left to right until the width is
- * reached. Each pixel occupies a number of bits appropriate for its format,
- * with most formats representing each pixel as one or more whole bytes (in some
- * indexed formats, instead multiple pixels are packed into each byte), and a
- * byte order given by the format. After encoding all pixels, any remaining
- * bytes to reach the pitch are used as padding to reach a desired alignment,
- * and have undefined contents.
- *
- * When a surface holds YUV format data, the planes are assumed to be contiguous
- * without padding between them, e.g. a 32x32 surface in NV12 format with a
- * pitch of 32 would consist of 32x32 bytes of Y plane followed by 32x16 bytes
- * of UV plane.
- *
- * When a surface holds MJPG format data, pixels points at the compressed JPEG
- * image and pitch is the length of that data.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa CreateSurface
- * @sa DestroySurface
- *
- * @cat resource
+ * @see Surface
  */
-struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
+struct SurfaceBase : ResourceBaseT<SurfaceRaw, SurfaceRawConst>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Surface.
-   *
-   * @param resource a SurfaceRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Surface(SurfaceRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Surface(const Surface& other)
-    : Surface(other.get())
-  {
-    if (auto res = get()) ++res->refcount;
-  }
-
-  /// Move constructor
-  constexpr Surface(Surface&& other) noexcept
-    : Surface(other.release())
-  {
-  }
-
-  /**
-   * Allocate a new surface with a specific pixel format.
-   *
-   * The pixels of the new surface are initialized to zero.
-   *
-   * @param size the width and height of the surface.
-   * @param format the PixelFormat for the new surface's pixel format.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateSurfaceFrom
-   * @sa DestroySurface
-   */
-  Surface(const PointRaw& size, PixelFormat format);
-
-  /**
-   * Allocate a new surface with a specific pixel format and existing pixel
-   * data.
-   *
-   * No copy is made of the pixel data. Pixel data is not managed automatically;
-   * you must free the surface before you free the pixel data.
-   *
-   * Pitch is the offset in bytes from one row of pixels to the next, e.g.
-   * `width*4` for `PIXELFORMAT_RGBA8888`.
-   *
-   * You may pass nullptr for pixels and 0 for pitch to create a surface that
-   * you will fill in with valid values later.
-   *
-   * @param size the width and height of the surface.
-   * @param format the PixelFormat for the new surface's pixel format.
-   * @param pixels a pointer to existing pixel data.
-   * @param pitch the number of bytes between each row, including padding.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateSurface
-   * @sa DestroySurface
-   */
-  Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch);
-
-  /**
-   * Load an image from a filesystem path into a software surface.
-   *
-   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
-   * if you plan to hand the data to something else or manipulate it further in
-   * code.
-   *
-   * There are no guarantees about what format the new Surface data will be; in
-   * many cases, SDL_image will attempt to supply a surface that exactly matches
-   * the provided image, but in others it might have to convert (either because
-   * the image is in a format that SDL doesn't directly support or because it's
-   * compressed data that could reasonably uncompress to various formats and
-   * SDL_image had to pick one). You can inspect an Surface for its specifics,
-   * and use ConvertSurface to then migrate to any supported format.
-   *
-   * If the image format supports a transparent pixel, SDL will set the colorkey
-   * for the surface. You can enable RLE acceleration on the surface afterwards
-   * by calling: SetSurfaceColorKey(image, SDL_RLEACCEL,
-   * image->format->colorkey);
-   *
-   * There is a separate function to read files from an IOStream, if you need an
-   * i/o abstraction to provide data from anywhere instead of a simple
-   * filesystem read; that function is LoadSurface_IO().
-   *
-   * If you are using SDL's 2D rendering API, there is an equivalent call to
-   * load images directly into an Texture for use by the GPU without using a
-   * software surface: call LoadTexture() instead.
-   *
-   * @param file a path on the filesystem to load an image from.
-   * @post a new SDL surface, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa LoadSurfaceTyped_IO
-   * @sa LoadSurface_IO
-   */
-  Surface(StringParam file);
-
-  /**
-   * Load an image from an SDL data source into a software surface.
-   *
-   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
-   * if you plan to hand the data to something else or manipulate it further in
-   * code.
-   *
-   * There are no guarantees about what format the new Surface data will be; in
-   * many cases, SDL_image will attempt to supply a surface that exactly matches
-   * the provided image, but in others it might have to convert (either because
-   * the image is in a format that SDL doesn't directly support or because it's
-   * compressed data that could reasonably uncompress to various formats and
-   * SDL_image had to pick one). You can inspect an Surface for its specifics,
-   * and use ConvertSurface to then migrate to any supported format.
-   *
-   * If the image format supports a transparent pixel, SDL will set the colorkey
-   * for the surface. You can enable RLE acceleration on the surface afterwards
-   * by calling: SetSurfaceColorKey(image, SDL_RLEACCEL,
-   * image->format->colorkey);
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
-   * There is a separate function to read files from disk without having to deal
-   * with IOStream: `LoadSurface("filename.jpg")` will call this function and
-   * manage those details for you, determining the file type from the filename's
-   * extension.
-   *
-   * There is also LoadSurfaceTyped_IO(), which is equivalent to this function
-   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
-   * SDL_image cannot autodetect the file format.
-   *
-   * If you are using SDL's 2D rendering API, there is an equivalent call to
-   * load images directly into an Texture for use by the GPU without using a
-   * software surface: call LoadTexture_IO() instead.
-   *
-   * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
-   * @post a new SDL surface, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa LoadSurface
-   * @sa LoadSurfaceTyped_IO
-   */
-  Surface(IOStreamRef src, bool closeio = false);
-
-  /**
-   * Safely borrows the from SurfaceRaw.
-   *
-   * @param resource a SurfaceRaw.
-   *
-   * This does not takes ownership!
-   */
-  static Surface Borrow(SurfaceRaw resource)
-  {
-    if (resource) {
-      ++resource->refcount;
-      return Surface(resource);
-    }
-    return {};
-  }
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to SurfaceConstRef
   constexpr operator SurfaceConstRef() const noexcept { return get(); }
-
-  /// Destructor
-  ~Surface() { SDL_DestroySurface(get()); }
-
-  /// Assignment operator.
-  constexpr Surface& operator=(Surface&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Surface& operator=(const Surface& other)
-  {
-    if (get() != other.get()) {
-      Surface tmp(other);
-      swap(*this, tmp);
-    }
-    return *this;
-  }
 
   /**
    * Free this surface.
@@ -43536,6 +43330,234 @@ struct Surface : ResourceBase<SurfaceRaw, SurfaceRawConst>
 };
 
 /**
+ * A collection of pixels used in software blitting.
+ *
+ * Pixels are arranged in memory in rows, with the top row first. Each row
+ * occupies an amount of memory given by the pitch (sometimes known as the row
+ * stride in non-SDL APIs).
+ *
+ * Within each row, pixels are arranged from left to right until the width is
+ * reached. Each pixel occupies a number of bits appropriate for its format,
+ * with most formats representing each pixel as one or more whole bytes (in some
+ * indexed formats, instead multiple pixels are packed into each byte), and a
+ * byte order given by the format. After encoding all pixels, any remaining
+ * bytes to reach the pitch are used as padding to reach a desired alignment,
+ * and have undefined contents.
+ *
+ * When a surface holds YUV format data, the planes are assumed to be contiguous
+ * without padding between them, e.g. a 32x32 surface in NV12 format with a
+ * pitch of 32 would consist of 32x32 bytes of Y plane followed by 32x16 bytes
+ * of UV plane.
+ *
+ * When a surface holds MJPG format data, pixels points at the compressed JPEG
+ * image and pitch is the length of that data.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa CreateSurface
+ * @sa DestroySurface
+ *
+ * @cat resource
+ */
+struct Surface : SurfaceBase
+{
+  using SurfaceBase::SurfaceBase;
+
+  /**
+   * Constructs from raw Surface.
+   *
+   * @param resource a SurfaceRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Surface(SurfaceRaw resource) noexcept
+    : SurfaceBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Surface(const Surface& other)
+    : Surface(borrow(other.get()))
+  {
+  }
+
+  /// Move constructor
+  constexpr Surface(Surface&& other) noexcept
+    : Surface(other.release())
+  {
+  }
+
+  /**
+   * Allocate a new surface with a specific pixel format.
+   *
+   * The pixels of the new surface are initialized to zero.
+   *
+   * @param size the width and height of the surface.
+   * @param format the PixelFormat for the new surface's pixel format.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateSurfaceFrom
+   * @sa DestroySurface
+   */
+  Surface(const PointRaw& size, PixelFormat format);
+
+  /**
+   * Allocate a new surface with a specific pixel format and existing pixel
+   * data.
+   *
+   * No copy is made of the pixel data. Pixel data is not managed automatically;
+   * you must free the surface before you free the pixel data.
+   *
+   * Pitch is the offset in bytes from one row of pixels to the next, e.g.
+   * `width*4` for `PIXELFORMAT_RGBA8888`.
+   *
+   * You may pass nullptr for pixels and 0 for pitch to create a surface that
+   * you will fill in with valid values later.
+   *
+   * @param size the width and height of the surface.
+   * @param format the PixelFormat for the new surface's pixel format.
+   * @param pixels a pointer to existing pixel data.
+   * @param pitch the number of bytes between each row, including padding.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateSurface
+   * @sa DestroySurface
+   */
+  Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch);
+
+  /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
+   * if you plan to hand the data to something else or manipulate it further in
+   * code.
+   *
+   * There are no guarantees about what format the new Surface data will be; in
+   * many cases, SDL_image will attempt to supply a surface that exactly matches
+   * the provided image, but in others it might have to convert (either because
+   * the image is in a format that SDL doesn't directly support or because it's
+   * compressed data that could reasonably uncompress to various formats and
+   * SDL_image had to pick one). You can inspect an Surface for its specifics,
+   * and use ConvertSurface to then migrate to any supported format.
+   *
+   * If the image format supports a transparent pixel, SDL will set the colorkey
+   * for the surface. You can enable RLE acceleration on the surface afterwards
+   * by calling: SetSurfaceColorKey(image, SDL_RLEACCEL,
+   * image->format->colorkey);
+   *
+   * There is a separate function to read files from an IOStream, if you need an
+   * i/o abstraction to provide data from anywhere instead of a simple
+   * filesystem read; that function is LoadSurface_IO().
+   *
+   * If you are using SDL's 2D rendering API, there is an equivalent call to
+   * load images directly into an Texture for use by the GPU without using a
+   * software surface: call LoadTexture() instead.
+   *
+   * @param file a path on the filesystem to load an image from.
+   * @post a new SDL surface, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa LoadSurfaceTyped_IO
+   * @sa LoadSurface_IO
+   */
+  Surface(StringParam file);
+
+  /**
+   * Load an image from an SDL data source into a software surface.
+   *
+   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
+   * if you plan to hand the data to something else or manipulate it further in
+   * code.
+   *
+   * There are no guarantees about what format the new Surface data will be; in
+   * many cases, SDL_image will attempt to supply a surface that exactly matches
+   * the provided image, but in others it might have to convert (either because
+   * the image is in a format that SDL doesn't directly support or because it's
+   * compressed data that could reasonably uncompress to various formats and
+   * SDL_image had to pick one). You can inspect an Surface for its specifics,
+   * and use ConvertSurface to then migrate to any supported format.
+   *
+   * If the image format supports a transparent pixel, SDL will set the colorkey
+   * for the surface. You can enable RLE acceleration on the surface afterwards
+   * by calling: SetSurfaceColorKey(image, SDL_RLEACCEL,
+   * image->format->colorkey);
+   *
+   * If `closeio` is true, `src` will be closed before returning, whether this
+   * function succeeds or not. SDL_image reads everything it needs from `src`
+   * during this call in any case.
+   *
+   * There is a separate function to read files from disk without having to deal
+   * with IOStream: `LoadSurface("filename.jpg")` will call this function and
+   * manage those details for you, determining the file type from the filename's
+   * extension.
+   *
+   * There is also LoadSurfaceTyped_IO(), which is equivalent to this function
+   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
+   * SDL_image cannot autodetect the file format.
+   *
+   * If you are using SDL's 2D rendering API, there is an equivalent call to
+   * load images directly into an Texture for use by the GPU without using a
+   * software surface: call LoadTexture_IO() instead.
+   *
+   * @param src an IOStream that data will be read from.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
+   * @post a new SDL surface, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa LoadSurface
+   * @sa LoadSurfaceTyped_IO
+   */
+  Surface(IOStreamRef src, bool closeio = false);
+
+  /**
+   * Safely borrows the from SurfaceRaw.
+   *
+   * @param resource a SurfaceRaw.
+   *
+   * This does not takes ownership!
+   */
+  static Surface borrow(SurfaceRaw resource)
+  {
+    if (resource) {
+      ++resource->refcount;
+      return Surface(resource);
+    }
+    return {};
+  }
+
+  /// Destructor
+  ~Surface() { SDL_DestroySurface(get()); }
+
+  /// Assignment operator.
+  constexpr Surface& operator=(Surface&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Surface& operator=(const Surface& other)
+  {
+    if (get() != other.get()) {
+      Surface tmp(other);
+      swap(*this, tmp);
+    }
+    return *this;
+  }
+};
+
+/**
  * Set up a surface for directly accessing the pixels.
  *
  * Between calls to LockSurface() / UnlockSurface(), you can write to and read
@@ -43887,7 +43909,7 @@ inline Surface CreateSurfaceFrom(const PointRaw& size,
  */
 inline void DestroySurface(SurfaceRaw surface) { SDL_DestroySurface(surface); }
 
-inline void Surface::Destroy() { DestroySurface(release()); }
+inline void SurfaceBase::Destroy() { DestroySurface(release()); }
 
 /**
  * Get the properties associated with a surface.
@@ -43928,10 +43950,10 @@ inline void Surface::Destroy() { DestroySurface(release()); }
  */
 inline PropertiesRef GetSurfaceProperties(SurfaceConstRef surface)
 {
-  return {CheckError(SDL_GetSurfaceProperties(surface))};
+  return CheckError(SDL_GetSurfaceProperties(surface));
 }
 
-inline PropertiesRef Surface::GetProperties() const
+inline PropertiesRef SurfaceBase::GetProperties() const
 {
   return SDL::GetSurfaceProperties(get());
 }
@@ -44000,7 +44022,7 @@ inline void SetSurfaceColorspace(SurfaceRef surface, Colorspace colorspace)
   CheckError(SDL_SetSurfaceColorspace(surface, colorspace));
 }
 
-inline void Surface::SetColorspace(Colorspace colorspace)
+inline void SurfaceBase::SetColorspace(Colorspace colorspace)
 {
   SDL::SetSurfaceColorspace(get(), colorspace);
 }
@@ -44028,7 +44050,7 @@ inline Colorspace GetSurfaceColorspace(SurfaceConstRef surface)
   return SDL_GetSurfaceColorspace(surface);
 }
 
-inline Colorspace Surface::GetColorspace() const
+inline Colorspace SurfaceBase::GetColorspace() const
 {
   return SDL::GetSurfaceColorspace(get());
 }
@@ -44062,10 +44084,10 @@ inline Colorspace Surface::GetColorspace() const
  */
 inline Palette CreateSurfacePalette(SurfaceRef surface)
 {
-  return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
+  return Palette::borrow(CheckError(SDL_CreateSurfacePalette(surface)));
 }
 
-inline Palette Surface::CreatePalette()
+inline Palette SurfaceBase::CreatePalette()
 {
   return SDL::CreateSurfacePalette(get());
 }
@@ -44095,7 +44117,7 @@ inline void SetSurfacePalette(SurfaceRef surface, PaletteRef palette)
   CheckError(SDL_SetSurfacePalette(surface, palette));
 }
 
-inline void Surface::SetPalette(PaletteRef palette)
+inline void SurfaceBase::SetPalette(PaletteRef palette)
 {
   SDL::SetSurfacePalette(get(), palette);
 }
@@ -44115,10 +44137,10 @@ inline void Surface::SetPalette(PaletteRef palette)
  */
 inline Palette GetSurfacePalette(SurfaceConstRef surface)
 {
-  return Palette::Borrow(SDL_GetSurfacePalette(surface));
+  return Palette::borrow(SDL_GetSurfacePalette(surface));
 }
 
-inline Palette Surface::GetPalette() const
+inline Palette SurfaceBase::GetPalette() const
 {
   return SDL::GetSurfacePalette(get());
 }
@@ -44153,7 +44175,7 @@ inline void AddSurfaceAlternateImage(SurfaceRef surface, SurfaceRef image)
   CheckError(SDL_AddSurfaceAlternateImage(surface, image));
 }
 
-inline void Surface::AddAlternateImage(SurfaceRef image)
+inline void SurfaceBase::AddAlternateImage(SurfaceRef image)
 {
   SDL::AddSurfaceAlternateImage(get(), image);
 }
@@ -44177,7 +44199,7 @@ inline bool SurfaceHasAlternateImages(SurfaceConstRef surface)
   return SDL_SurfaceHasAlternateImages(surface);
 }
 
-inline bool Surface::HasAlternateImages() const
+inline bool SurfaceBase::HasAlternateImages() const
 {
   return SDL::SurfaceHasAlternateImages(get());
 }
@@ -44212,7 +44234,7 @@ inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstRef surface)
   return OwnArray<SurfaceRaw>(CheckError(data), count);
 }
 
-inline OwnArray<SurfaceRaw> Surface::GetImages() const
+inline OwnArray<SurfaceRaw> SurfaceBase::GetImages() const
 {
   return SDL::GetSurfaceImages(get());
 }
@@ -44239,7 +44261,7 @@ inline void RemoveSurfaceAlternateImages(SurfaceRef surface)
   SDL_RemoveSurfaceAlternateImages(surface);
 }
 
-inline void Surface::RemoveAlternateImages()
+inline void SurfaceBase::RemoveAlternateImages()
 {
   SDL::RemoveSurfaceAlternateImages(get());
 }
@@ -44274,7 +44296,7 @@ inline void LockSurface(SurfaceRef surface)
   CheckError(SDL_LockSurface(surface));
 }
 
-inline SurfaceLock Surface::Lock() { return {SurfaceRef(*this)}; }
+inline SurfaceLock SurfaceBase::Lock() { return {SurfaceRef(*this)}; }
 
 inline SurfaceLock::SurfaceLock(SurfaceRef resource)
   : m_lock(resource)
@@ -44297,7 +44319,7 @@ inline SurfaceLock::SurfaceLock(SurfaceRef resource)
  */
 inline void UnlockSurface(SurfaceRef surface) { SDL_UnlockSurface(surface); }
 
-inline void Surface::Unlock(SurfaceLock&& lock)
+inline void SurfaceBase::Unlock(SurfaceLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -44430,7 +44452,7 @@ inline void SaveBMP_IO(SurfaceConstRef surface,
   CheckError(SDL_SaveBMP_IO(surface, dst, closeio));
 }
 
-inline void Surface::SaveBMP_IO(IOStreamRef dst, bool closeio) const
+inline void SurfaceBase::SaveBMP_IO(IOStreamRef dst, bool closeio) const
 {
   SDL::SaveBMP_IO(get(), dst, closeio);
 }
@@ -44461,7 +44483,7 @@ inline void SaveBMP(SurfaceConstRef surface, StringParam file)
   CheckError(SDL_SaveBMP(surface, file));
 }
 
-inline void Surface::SaveBMP(StringParam file) const
+inline void SurfaceBase::SaveBMP(StringParam file) const
 {
   SDL::SaveBMP(get(), std::move(file));
 }
@@ -44621,7 +44643,7 @@ inline void SetSurfaceRLE(SurfaceRef surface, bool enabled)
   CheckError(SDL_SetSurfaceRLE(surface, enabled));
 }
 
-inline void Surface::SetRLE(bool enabled)
+inline void SurfaceBase::SetRLE(bool enabled)
 {
   SDL::SetSurfaceRLE(get(), enabled);
 }
@@ -44645,7 +44667,7 @@ inline bool SurfaceHasRLE(SurfaceConstRef surface)
   return SDL_SurfaceHasRLE(surface);
 }
 
-inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(get()); }
+inline bool SurfaceBase::HasRLE() const { return SDL::SurfaceHasRLE(get()); }
 
 /**
  * Set the color key (transparent pixel) in a surface.
@@ -44674,7 +44696,7 @@ inline void SetSurfaceColorKey(SurfaceRef surface, std::optional<Uint32> key)
   CheckError(SDL_SetSurfaceColorKey(surface, key.has_value(), key.value_or(0)));
 }
 
-inline void Surface::SetColorKey(std::optional<Uint32> key)
+inline void SurfaceBase::SetColorKey(std::optional<Uint32> key)
 {
   SDL::SetSurfaceColorKey(get(), key);
 }
@@ -44694,7 +44716,7 @@ inline void ClearSurfaceColorKey(SurfaceRef surface)
   SetSurfaceColorKey(surface, std::nullopt);
 }
 
-inline void Surface::ClearColorKey() { SDL::ClearSurfaceColorKey(get()); }
+inline void SurfaceBase::ClearColorKey() { SDL::ClearSurfaceColorKey(get()); }
 
 /**
  * Returns whether the surface has a color key.
@@ -44716,7 +44738,7 @@ inline bool SurfaceHasColorKey(SurfaceConstRef surface)
   return SDL_SurfaceHasColorKey(surface);
 }
 
-inline bool Surface::HasColorKey() const
+inline bool SurfaceBase::HasColorKey() const
 {
   return SDL::SurfaceHasColorKey(get());
 }
@@ -44746,7 +44768,7 @@ inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstRef surface)
   return std::nullopt;
 }
 
-inline std::optional<Uint32> Surface::GetColorKey() const
+inline std::optional<Uint32> SurfaceBase::GetColorKey() const
 {
   return SDL::GetSurfaceColorKey(get());
 }
@@ -44779,7 +44801,7 @@ inline void SetSurfaceColorMod(SurfaceRef surface, Uint8 r, Uint8 g, Uint8 b)
   CheckError(SDL_SetSurfaceColorMod(surface, r, g, b));
 }
 
-inline void Surface::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+inline void SurfaceBase::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
 {
   SDL::SetSurfaceColorMod(get(), r, g, b);
 }
@@ -44809,7 +44831,7 @@ inline void GetSurfaceColorMod(SurfaceConstRef surface,
   CheckError(SDL_GetSurfaceColorMod(surface, r, g, b));
 }
 
-inline void Surface::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+inline void SurfaceBase::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
 {
   SDL::GetSurfaceColorMod(get(), r, g, b);
 }
@@ -44839,7 +44861,7 @@ inline void SetSurfaceAlphaMod(SurfaceRef surface, Uint8 alpha)
   CheckError(SDL_SetSurfaceAlphaMod(surface, alpha));
 }
 
-inline void Surface::SetAlphaMod(Uint8 alpha)
+inline void SurfaceBase::SetAlphaMod(Uint8 alpha)
 {
   SDL::SetSurfaceAlphaMod(get(), alpha);
 }
@@ -44865,7 +44887,7 @@ inline Uint8 GetSurfaceAlphaMod(SurfaceConstRef surface)
   return alpha;
 }
 
-inline Uint8 Surface::GetAlphaMod() const
+inline Uint8 SurfaceBase::GetAlphaMod() const
 {
   return SDL::GetSurfaceAlphaMod(get());
 }
@@ -44891,7 +44913,7 @@ inline void SetSurfaceMod(SurfaceRef surface, Color color)
   SetSurfaceAlphaMod(surface, color.a);
 }
 
-inline void Surface::SetMod(Color color) { SetSurfaceMod(get(), color); }
+inline void SurfaceBase::SetMod(Color color) { SetSurfaceMod(get(), color); }
 
 /**
  * Get the additional color and alpha value multiplied into blit
@@ -44909,7 +44931,7 @@ inline Color GetSurfaceMod(SurfaceConstRef surface)
   return c;
 }
 
-inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(get()); }
+inline Color SurfaceBase::GetMod() const { return GetSurfaceMod(get()); }
 
 /**
  * Set the blend mode used for blit operations.
@@ -44934,7 +44956,7 @@ inline void SetSurfaceBlendMode(SurfaceRef surface, BlendMode blendMode)
   CheckError(SDL_SetSurfaceBlendMode(surface, blendMode));
 }
 
-inline void Surface::SetBlendMode(BlendMode blendMode)
+inline void SurfaceBase::SetBlendMode(BlendMode blendMode)
 {
   SDL::SetSurfaceBlendMode(get(), blendMode);
 }
@@ -44959,7 +44981,7 @@ inline BlendMode GetSurfaceBlendMode(SurfaceConstRef surface)
   return blendmode;
 }
 
-inline BlendMode Surface::GetBlendMode() const
+inline BlendMode SurfaceBase::GetBlendMode() const
 {
   return SDL::GetSurfaceBlendMode(get());
 }
@@ -44993,7 +45015,7 @@ inline bool SetSurfaceClipRect(SurfaceRef surface,
   return SDL_SetSurfaceClipRect(surface, rect);
 }
 
-inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
+inline bool SurfaceBase::SetClipRect(OptionalRef<const RectRaw> rect)
 {
   return SDL::SetSurfaceClipRect(get(), rect);
 }
@@ -45008,7 +45030,7 @@ inline void ResetSurfaceClipRect(SurfaceRef surface)
   SetSurfaceClipRect(surface, std::nullopt);
 }
 
-inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(get()); }
+inline void SurfaceBase::ResetClipRect() { SDL::ResetSurfaceClipRect(get()); }
 
 /**
  * Get the clipping rectangle for a surface.
@@ -45035,7 +45057,7 @@ inline Rect GetSurfaceClipRect(SurfaceConstRef surface)
   return r;
 }
 
-inline Rect Surface::GetClipRect() const
+inline Rect SurfaceBase::GetClipRect() const
 {
   return SDL::GetSurfaceClipRect(get());
 }
@@ -45057,7 +45079,7 @@ inline void FlipSurface(SurfaceRef surface, FlipMode flip)
   CheckError(SDL_FlipSurface(surface, flip));
 }
 
-inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(get(), flip); }
+inline void SurfaceBase::Flip(FlipMode flip) { SDL::FlipSurface(get(), flip); }
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -45093,7 +45115,7 @@ inline Surface RotateSurface(SurfaceRef surface, float angle)
   return Surface{SDL_RotateSurface(surface, angle)};
 }
 
-inline Surface Surface::Rotate(float angle)
+inline Surface SurfaceBase::Rotate(float angle)
 {
   return SDL::RotateSurface(get(), angle);
 }
@@ -45124,7 +45146,7 @@ inline Surface DuplicateSurface(SurfaceConstRef surface)
   return Surface(SDL_DuplicateSurface(surface));
 }
 
-inline Surface Surface::Duplicate() const
+inline Surface SurfaceBase::Duplicate() const
 {
   return SDL::DuplicateSurface(get());
 }
@@ -45155,7 +45177,8 @@ inline Surface ScaleSurface(SurfaceConstRef surface,
   return Surface(SDL_ScaleSurface(surface, size.x, size.y, scaleMode));
 }
 
-inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
+inline Surface SurfaceBase::Scale(const PointRaw& size,
+                                  ScaleMode scaleMode) const
 {
   return SDL::ScaleSurface(get(), size, scaleMode);
 }
@@ -45192,7 +45215,7 @@ inline Surface ConvertSurface(SurfaceConstRef surface, PixelFormat format)
   return Surface(SDL_ConvertSurface(surface, format));
 }
 
-inline Surface Surface::Convert(PixelFormat format) const
+inline Surface SurfaceBase::Convert(PixelFormat format) const
 {
   return SDL::ConvertSurface(get(), format);
 }
@@ -45235,10 +45258,10 @@ inline Surface ConvertSurfaceAndColorspace(SurfaceConstRef surface,
     surface, format, palette, colorspace, props)};
 }
 
-inline Surface Surface::Convert(PixelFormat format,
-                                PaletteRef palette,
-                                Colorspace colorspace,
-                                PropertiesRef props) const
+inline Surface SurfaceBase::Convert(PixelFormat format,
+                                    PaletteRef palette,
+                                    Colorspace colorspace,
+                                    PropertiesRef props) const
 {
   return SDL::ConvertSurfaceAndColorspace(
     get(), format, palette, colorspace, props);
@@ -45393,7 +45416,7 @@ inline void PremultiplySurfaceAlpha(SurfaceRef surface, bool linear)
   CheckError(SDL_PremultiplySurfaceAlpha(surface, linear));
 }
 
-inline void Surface::PremultiplyAlpha(bool linear)
+inline void SurfaceBase::PremultiplyAlpha(bool linear)
 {
   SDL::PremultiplySurfaceAlpha(get(), linear);
 }
@@ -45420,7 +45443,7 @@ inline void ClearSurface(SurfaceRef surface, const FColorRaw& c)
   CheckError(SDL_ClearSurface(surface, c.r, c.g, c.b, c.a));
 }
 
-inline void Surface::Clear(const FColorRaw& c) { SDL::ClearSurface(get(), c); }
+inline void SurfaceBase::Clear(const FColorRaw& c) { ClearSurface(get(), c); }
 
 /**
  * Perform a fast fill of a rectangle with a specific color.
@@ -45454,7 +45477,7 @@ inline void FillSurfaceRect(SurfaceRef dst,
   CheckError(SDL_FillSurfaceRect(dst, rect, color));
 }
 
-inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
+inline void SurfaceBase::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
 {
   SDL::FillSurfaceRect(get(), rect, color);
 }
@@ -45475,7 +45498,7 @@ inline void FillSurface(SurfaceRef dst, Uint32 color)
   FillSurfaceRect(dst, std::nullopt, color);
 }
 
-inline void Surface::Fill(Uint32 color) { SDL::FillSurface(get(), color); }
+inline void SurfaceBase::Fill(Uint32 color) { FillSurface(get(), color); }
 
 /**
  * Perform a fast fill of a set of rectangles with a specific color.
@@ -45509,7 +45532,7 @@ inline void FillSurfaceRects(SurfaceRef dst,
     SDL_FillSurfaceRects(dst, rects.data(), narrowS32(rects.size()), color));
 }
 
-inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
+inline void SurfaceBase::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
 {
   SDL::FillSurfaceRects(get(), rects, color);
 }
@@ -45592,16 +45615,16 @@ inline void BlitSurface(SurfaceRef src,
   CheckError(SDL_BlitSurface(src, srcrect, dst, dstrect));
 }
 
-inline void Surface::Blit(SurfaceRef src,
-                          OptionalRef<const RectRaw> srcrect,
-                          OptionalRef<const RectRaw> dstrect)
+inline void SurfaceBase::Blit(SurfaceRef src,
+                              OptionalRef<const RectRaw> srcrect,
+                              OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurface(src, srcrect, get(), dstrect);
 }
 
-inline void Surface::BlitAt(SurfaceRef src,
-                            OptionalRef<const RectRaw> srcrect,
-                            const PointRaw& dstpos)
+inline void SurfaceBase::BlitAt(SurfaceRef src,
+                                OptionalRef<const RectRaw> srcrect,
+                                const PointRaw& dstpos)
 {
   Blit(src, srcrect, Rect{dstpos, {}});
 }
@@ -45671,7 +45694,7 @@ inline void Surface::BlitAt(SurfaceRef src,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Surface.BlitSurface
+ * @sa BlitSurface
  */
 inline void BlitSurfaceAt(SurfaceRef src,
                           OptionalRef<const RectRaw> srcrect,
@@ -45710,9 +45733,9 @@ inline void BlitSurfaceUnchecked(SurfaceRef src,
   CheckError(SDL_BlitSurfaceUnchecked(src, &srcrect, dst, &dstrect));
 }
 
-inline void Surface::BlitUnchecked(SurfaceRef src,
-                                   const RectRaw& srcrect,
-                                   const RectRaw& dstrect)
+inline void SurfaceBase::BlitUnchecked(SurfaceRef src,
+                                       const RectRaw& srcrect,
+                                       const RectRaw& dstrect)
 {
   SDL::BlitSurfaceUnchecked(src, srcrect, get(), dstrect);
 }
@@ -45747,10 +45770,10 @@ inline void BlitSurfaceScaled(SurfaceRef src,
   CheckError(SDL_BlitSurfaceScaled(src, srcrect, dst, dstrect, scaleMode));
 }
 
-inline void Surface::BlitScaled(SurfaceRef src,
-                                OptionalRef<const RectRaw> srcrect,
-                                OptionalRef<const RectRaw> dstrect,
-                                ScaleMode scaleMode)
+inline void SurfaceBase::BlitScaled(SurfaceRef src,
+                                    OptionalRef<const RectRaw> srcrect,
+                                    OptionalRef<const RectRaw> dstrect,
+                                    ScaleMode scaleMode)
 {
   SDL::BlitSurfaceScaled(src, srcrect, get(), dstrect, scaleMode);
 }
@@ -45787,10 +45810,10 @@ inline void BlitSurfaceUncheckedScaled(SurfaceRef src,
     SDL_BlitSurfaceUncheckedScaled(src, &srcrect, dst, &dstrect, scaleMode));
 }
 
-inline void Surface::BlitUncheckedScaled(SurfaceRef src,
-                                         const RectRaw& srcrect,
-                                         const RectRaw& dstrect,
-                                         ScaleMode scaleMode)
+inline void SurfaceBase::BlitUncheckedScaled(SurfaceRef src,
+                                             const RectRaw& srcrect,
+                                             const RectRaw& dstrect,
+                                             ScaleMode scaleMode)
 {
   SDL::BlitSurfaceUncheckedScaled(src, srcrect, get(), dstrect, scaleMode);
 }
@@ -45826,10 +45849,10 @@ inline void StretchSurface(SurfaceRef src,
   CheckError(SDL_StretchSurface(src, srcrect, dst, dstrect, scaleMode));
 }
 
-inline void Surface::Stretch(SurfaceRef src,
-                             OptionalRef<RectRaw> srcrect,
-                             OptionalRef<RectRaw> dstrect,
-                             ScaleMode scaleMode)
+inline void SurfaceBase::Stretch(SurfaceRef src,
+                                 OptionalRef<RectRaw> srcrect,
+                                 OptionalRef<RectRaw> dstrect,
+                                 ScaleMode scaleMode)
 {
   SDL::StretchSurface(src, srcrect, get(), dstrect, scaleMode);
 }
@@ -45866,9 +45889,9 @@ inline void BlitSurfaceTiled(SurfaceRef src,
   CheckError(SDL_BlitSurfaceTiled(src, srcrect, dst, dstrect));
 }
 
-inline void Surface::BlitTiled(SurfaceRef src,
-                               OptionalRef<const RectRaw> srcrect,
-                               OptionalRef<const RectRaw> dstrect)
+inline void SurfaceBase::BlitTiled(SurfaceRef src,
+                                   OptionalRef<const RectRaw> srcrect,
+                                   OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurfaceTiled(src, srcrect, get(), dstrect);
 }
@@ -45910,11 +45933,11 @@ inline void BlitSurfaceTiledWithScale(SurfaceRef src,
     src, srcrect, scale, scaleMode, dst, dstrect));
 }
 
-inline void Surface::BlitTiledWithScale(SurfaceRef src,
-                                        OptionalRef<const RectRaw> srcrect,
-                                        float scale,
-                                        ScaleMode scaleMode,
-                                        OptionalRef<const RectRaw> dstrect)
+inline void SurfaceBase::BlitTiledWithScale(SurfaceRef src,
+                                            OptionalRef<const RectRaw> srcrect,
+                                            float scale,
+                                            ScaleMode scaleMode,
+                                            OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurfaceTiledWithScale(
     src, srcrect, scale, scaleMode, get(), dstrect);
@@ -45976,15 +45999,15 @@ inline void BlitSurface9Grid(SurfaceRef src,
                                   dstrect));
 }
 
-inline void Surface::Blit9Grid(SurfaceRef src,
-                               OptionalRef<const RectRaw> srcrect,
-                               int left_width,
-                               int right_width,
-                               int top_height,
-                               int bottom_height,
-                               OptionalRef<const RectRaw> dstrect,
-                               float scale,
-                               ScaleMode scaleMode)
+inline void SurfaceBase::Blit9Grid(SurfaceRef src,
+                                   OptionalRef<const RectRaw> srcrect,
+                                   int left_width,
+                                   int right_width,
+                                   int top_height,
+                                   int bottom_height,
+                                   OptionalRef<const RectRaw> dstrect,
+                                   float scale,
+                                   ScaleMode scaleMode)
 {
   SDL::BlitSurface9Grid(src,
                         srcrect,
@@ -46034,7 +46057,7 @@ inline Uint32 MapSurfaceRGB(SurfaceConstRef surface, Uint8 r, Uint8 g, Uint8 b)
   return SDL_MapSurfaceRGB(surface, r, g, b);
 }
 
-inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
+inline Uint32 SurfaceBase::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
 {
   return SDL::MapSurfaceRGB(get(), r, g, b);
 }
@@ -46073,7 +46096,7 @@ inline Uint32 MapSurfaceRGBA(SurfaceConstRef surface, ColorRaw c)
   return SDL_MapSurfaceRGBA(surface, c.r, c.g, c.b, c.a);
 }
 
-inline Uint32 Surface::MapRGBA(ColorRaw c) const
+inline Uint32 SurfaceBase::MapRGBA(ColorRaw c) const
 {
   return SDL::MapSurfaceRGBA(get(), c);
 }
@@ -46200,16 +46223,16 @@ inline Color ReadSurfacePixel(const SurfaceLock& lock, const PointRaw& p)
   return lock.ReadPixel(p);
 }
 
-inline void Surface::ReadPixel(const PointRaw& p,
-                               Uint8* r,
-                               Uint8* g,
-                               Uint8* b,
-                               Uint8* a) const
+inline void SurfaceBase::ReadPixel(const PointRaw& p,
+                                   Uint8* r,
+                                   Uint8* g,
+                                   Uint8* b,
+                                   Uint8* a) const
 {
   SDL::ReadSurfacePixel(get(), p, r, g, b, a);
 }
 
-inline Color Surface::ReadPixel(const PointRaw& p) const
+inline Color SurfaceBase::ReadPixel(const PointRaw& p) const
 {
   return SDL::ReadSurfacePixel(get(), p);
 }
@@ -46324,16 +46347,16 @@ inline FColor ReadSurfacePixelFloat(const SurfaceLock& lock, const PointRaw& p)
   return lock.ReadPixelFloat(p);
 }
 
-inline void Surface::ReadPixelFloat(const PointRaw& p,
-                                    float* r,
-                                    float* g,
-                                    float* b,
-                                    float* a) const
+inline void SurfaceBase::ReadPixelFloat(const PointRaw& p,
+                                        float* r,
+                                        float* g,
+                                        float* b,
+                                        float* a) const
 {
   SDL::ReadSurfacePixelFloat(get(), p, r, g, b, a);
 }
 
-inline FColor Surface::ReadPixelFloat(const PointRaw& p) const
+inline FColor SurfaceBase::ReadPixelFloat(const PointRaw& p) const
 {
   return SDL::ReadSurfacePixelFloat(get(), p);
 }
@@ -46386,7 +46409,7 @@ inline void WriteSurfacePixel(SurfaceLock& lock, const PointRaw& p, ColorRaw c)
   lock.WritePixel(p, c);
 }
 
-inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
+inline void SurfaceBase::WritePixel(const PointRaw& p, ColorRaw c)
 {
   SDL::WriteSurfacePixel(get(), p, c);
 }
@@ -46437,7 +46460,7 @@ inline void WriteSurfacePixelFloat(SurfaceLock& lock,
   lock.WritePixelFloat(p, c);
 }
 
-inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
+inline void SurfaceBase::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
 {
   SDL::WriteSurfacePixelFloat(get(), p, c);
 }
@@ -46451,7 +46474,7 @@ constexpr int GetSurfaceWidth(const SurfaceLock& lock)
   return lock.GetWidth();
 }
 
-constexpr int Surface::GetWidth() const { return SDL::GetSurfaceWidth(get()); }
+constexpr int SurfaceBase::GetWidth() const { return GetSurfaceWidth(get()); }
 
 /// Get the height in pixels.
 constexpr int GetSurfaceHeight(SurfaceConstRef surface) { return surface->h; }
@@ -46462,10 +46485,7 @@ constexpr int GetSurfaceHeight(const SurfaceLock& lock)
   return lock.GetHeight();
 }
 
-constexpr int Surface::GetHeight() const
-{
-  return SDL::GetSurfaceHeight(get());
-}
+constexpr int SurfaceBase::GetHeight() const { return GetSurfaceHeight(get()); }
 
 /// Get the size in pixels.
 constexpr Point GetSurfaceSize(SurfaceConstRef surface)
@@ -46479,7 +46499,7 @@ constexpr Point GetSurfaceSize(const SurfaceLock& lock)
   return lock.GetSize();
 }
 
-constexpr Point Surface::GetSize() const { return SDL::GetSurfaceSize(get()); }
+constexpr Point SurfaceBase::GetSize() const { return GetSurfaceSize(get()); }
 
 /// Get pitch in bytes.
 constexpr int GetSurfacePitch(SurfaceConstRef surface)
@@ -46493,7 +46513,7 @@ constexpr int GetSurfacePitch(const SurfaceLock& lock)
   return lock.GetPitch();
 }
 
-constexpr int Surface::GetPitch() const { return SDL::GetSurfacePitch(get()); }
+constexpr int SurfaceBase::GetPitch() const { return GetSurfacePitch(get()); }
 
 /// Get the pixel format.
 constexpr PixelFormat GetSurfaceFormat(SurfaceConstRef surface)
@@ -46507,7 +46527,7 @@ constexpr PixelFormat GetSurfaceFormat(const SurfaceLock& lock)
   return lock.GetFormat();
 }
 
-constexpr PixelFormat Surface::GetFormat() const
+constexpr PixelFormat SurfaceBase::GetFormat() const
 {
   return SDL::GetSurfaceFormat(get());
 }
@@ -46524,7 +46544,7 @@ constexpr void* GetSurfacePixels(const SurfaceLock& lock)
   return lock.GetPixels();
 }
 
-constexpr void* Surface::GetPixels() const
+constexpr void* SurfaceBase::GetPixels() const
 {
   return SDL::GetSurfacePixels(get());
 }
@@ -46553,6 +46573,9 @@ constexpr void* Surface::GetPixels() const
  */
 
 // Forward decl
+struct ThreadBase;
+
+// Forward decl
 struct Thread;
 
 /// Alias to raw representation for Thread.
@@ -46563,7 +46586,7 @@ using ThreadRaw = SDL_Thread*;
  *
  * This does not take ownership!
  */
-using ThreadRef = ResourceRef<Thread>;
+using ThreadRef = ResourceRefT<ThreadBase>;
 
 /**
  * The SDL thread priority.
@@ -46661,6 +46684,147 @@ using ThreadCB = std::function<int()>;
 using TLSDestructorCallback = void(SDLCALL*)(void* value);
 
 /**
+ * Base class to Thread.
+ *
+ * @see Thread
+ */
+struct ThreadBase : ResourceBaseT<ThreadRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Let a thread clean up on exit without intervention.
+   *
+   * A thread may be "detached" to signify that it should not remain until
+   * another thread has called WaitThread() on it. Detaching a thread is useful
+   * for long-running threads that nothing needs to synchronize with or further
+   * manage. When a detached thread is done, it simply goes away.
+   *
+   * There is no way to recover the return code of a detached thread. If you
+   * need this, don't detach the thread and instead use WaitThread().
+   *
+   * Once a thread is detached, you should usually assume the Thread isn't safe
+   * to reference again, as it will become invalid immediately upon the detached
+   * thread's exit, instead of remaining until someone has called WaitThread()
+   * to finally clean it up. As such, don't detach the same thread more than
+   * once.
+   *
+   * If a thread has already exited when passed to DetachThread(), it will stop
+   * waiting for a call to WaitThread() and clean up immediately. It is not safe
+   * to detach a thread that might be used with WaitThread().
+   *
+   * You may not call WaitThread() on a thread that has been detached. Use
+   * either that function or this one, but not both, or behavior is undefined.
+   *
+   * It is safe to pass nullptr to this function; it is a no-op.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateThread
+   * @sa WaitThread
+   */
+  void Detach();
+
+  /**
+   * Get the thread name as it was specified in CreateThread().
+   *
+   * @returns a pointer to a UTF-8 string that names the specified thread, or
+   *          nullptr if it doesn't have a name.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  const char* GetName() const;
+
+  /**
+   * Get the thread identifier for the specified thread.
+   *
+   * This thread identifier is as reported by the underlying operating system.
+   * If SDL is running on a platform that does not support threads the return
+   * value will always be zero.
+   *
+   * @returns the ID of the specified thread, or the ID of the current thread if
+   *          `thread` is nullptr.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCurrentThreadID
+   */
+  ThreadID GetID() const;
+
+  /**
+   * Set the priority for the current thread.
+   *
+   * Note that some platforms will not let you alter the priority (or at least,
+   * promote the thread to a higher priority) at all, and some require you to be
+   * an administrator account. Be prepared for this to fail.
+   *
+   * @param priority the ThreadPriority to set.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static void SetCurrentPriority(ThreadPriority priority);
+
+  /**
+   * Wait for a thread to finish.
+   *
+   * Threads that haven't been detached will remain until this function cleans
+   * them up. Not doing so is a resource leak.
+   *
+   * Once a thread has been cleaned up through this function, the Thread that
+   * references it becomes invalid and should not be referenced again. As such,
+   * only one thread may call WaitThread() on another.
+   *
+   * The return code from the thread function is placed in the area pointed to
+   * by `status`, if `status` is not nullptr.
+   *
+   * You may not wait on a thread that has been used in a call to
+   * DetachThread(). Use either that function or this one, but not both, or
+   * behavior is undefined.
+   *
+   * It is safe to pass a nullptr thread to this function; it is a no-op.
+   *
+   * Note that the thread pointer is freed by this function and is not valid
+   * afterward.
+   *
+   * @param status a pointer filled in with the value returned from the thread
+   *               function by its 'return', or -1 if the thread has been
+   *               detached or isn't valid, may be nullptr.
+   *
+   * @threadsafety It is safe to call this function from any thread, but only a
+   *               single thread can wait any specific thread to finish.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateThread
+   * @sa DetachThread
+   */
+  void Wait(int* status);
+
+  /**
+   * Get the current state of a thread.
+   *
+   * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
+   *          isn't valid.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadState
+   */
+  ThreadState GetState() const;
+};
+
+/**
  * The SDL thread object.
  *
  * These are opaque data.
@@ -46672,9 +46836,9 @@ using TLSDestructorCallback = void(SDLCALL*)(void* value);
  *
  * @cat resource
  */
-struct Thread : ResourceBase<ThreadRaw>
+struct Thread : ThreadBase
 {
-  using ResourceBase::ResourceBase;
+  using ThreadBase::ThreadBase;
 
   /**
    * Constructs from raw Thread.
@@ -46684,22 +46848,15 @@ struct Thread : ResourceBase<ThreadRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Thread(ThreadRaw resource) noexcept
-    : ResourceBase(resource)
+    : ThreadBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Thread(const Thread& other) = delete;
 
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())
   {
   }
-
-  constexpr Thread(const ThreadRef& other) = delete;
-
-  constexpr Thread(ThreadRef&& other) = delete;
 
   /**
    * Create a new thread with a default stack size.
@@ -46843,140 +47000,6 @@ struct Thread : ResourceBase<ThreadRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Thread& operator=(const Thread& other) = delete;
-
-  /**
-   * Let a thread clean up on exit without intervention.
-   *
-   * A thread may be "detached" to signify that it should not remain until
-   * another thread has called WaitThread() on it. Detaching a thread is useful
-   * for long-running threads that nothing needs to synchronize with or further
-   * manage. When a detached thread is done, it simply goes away.
-   *
-   * There is no way to recover the return code of a detached thread. If you
-   * need this, don't detach the thread and instead use WaitThread().
-   *
-   * Once a thread is detached, you should usually assume the Thread isn't safe
-   * to reference again, as it will become invalid immediately upon the detached
-   * thread's exit, instead of remaining until someone has called WaitThread()
-   * to finally clean it up. As such, don't detach the same thread more than
-   * once.
-   *
-   * If a thread has already exited when passed to DetachThread(), it will stop
-   * waiting for a call to WaitThread() and clean up immediately. It is not safe
-   * to detach a thread that might be used with WaitThread().
-   *
-   * You may not call WaitThread() on a thread that has been detached. Use
-   * either that function or this one, but not both, or behavior is undefined.
-   *
-   * It is safe to pass nullptr to this function; it is a no-op.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateThread
-   * @sa WaitThread
-   */
-  void Detach();
-
-  /**
-   * Get the thread name as it was specified in CreateThread().
-   *
-   * @returns a pointer to a UTF-8 string that names the specified thread, or
-   *          nullptr if it doesn't have a name.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  const char* GetName() const;
-
-  /**
-   * Get the thread identifier for the specified thread.
-   *
-   * This thread identifier is as reported by the underlying operating system.
-   * If SDL is running on a platform that does not support threads the return
-   * value will always be zero.
-   *
-   * @returns the ID of the specified thread, or the ID of the current thread if
-   *          `thread` is nullptr.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCurrentThreadID
-   */
-  ThreadID GetID() const;
-
-  /**
-   * Set the priority for the current thread.
-   *
-   * Note that some platforms will not let you alter the priority (or at least,
-   * promote the thread to a higher priority) at all, and some require you to be
-   * an administrator account. Be prepared for this to fail.
-   *
-   * @param priority the ThreadPriority to set.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  static void SetCurrentPriority(ThreadPriority priority);
-
-  /**
-   * Wait for a thread to finish.
-   *
-   * Threads that haven't been detached will remain until this function cleans
-   * them up. Not doing so is a resource leak.
-   *
-   * Once a thread has been cleaned up through this function, the Thread that
-   * references it becomes invalid and should not be referenced again. As such,
-   * only one thread may call WaitThread() on another.
-   *
-   * The return code from the thread function is placed in the area pointed to
-   * by `status`, if `status` is not nullptr.
-   *
-   * You may not wait on a thread that has been used in a call to
-   * DetachThread(). Use either that function or this one, but not both, or
-   * behavior is undefined.
-   *
-   * It is safe to pass a nullptr thread to this function; it is a no-op.
-   *
-   * Note that the thread pointer is freed by this function and is not valid
-   * afterward.
-   *
-   * @param status a pointer filled in with the value returned from the thread
-   *               function by its 'return', or -1 if the thread has been
-   *               detached or isn't valid, may be nullptr.
-   *
-   * @threadsafety It is safe to call this function from any thread, but only a
-   *               single thread can wait any specific thread to finish.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateThread
-   * @sa DetachThread
-   */
-  void Wait(int* status);
-
-  /**
-   * Get the current state of a thread.
-   *
-   * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
-   *          isn't valid.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadState
-   */
-  ThreadState GetState() const;
 };
 
 /**
@@ -47192,7 +47215,10 @@ inline const char* GetThreadName(ThreadRef thread)
   return SDL_GetThreadName(thread);
 }
 
-inline const char* Thread::GetName() const { return SDL::GetThreadName(get()); }
+inline const char* ThreadBase::GetName() const
+{
+  return SDL::GetThreadName(get());
+}
 
 /**
  * Get the thread identifier for the current thread.
@@ -47236,7 +47262,7 @@ inline ThreadID GetThreadID(ThreadRef thread)
   return SDL_GetThreadID(thread);
 }
 
-inline ThreadID Thread::GetID() const { return SDL::GetThreadID(get()); }
+inline ThreadID ThreadBase::GetID() const { return SDL::GetThreadID(get()); }
 
 /**
  * Set the priority for the current thread.
@@ -47257,7 +47283,7 @@ inline void SetCurrentThreadPriority(ThreadPriority priority)
   CheckError(SDL_SetCurrentThreadPriority(priority));
 }
 
-inline void Thread::SetCurrentPriority(ThreadPriority priority)
+inline void ThreadBase::SetCurrentPriority(ThreadPriority priority)
 {
   SDL::SetCurrentThreadPriority(priority);
 }
@@ -47302,7 +47328,7 @@ inline void WaitThread(ThreadRef thread, int* status)
   SDL_WaitThread(thread, status);
 }
 
-inline void Thread::Wait(int* status) { SDL::WaitThread(get(), status); }
+inline void ThreadBase::Wait(int* status) { SDL::WaitThread(get(), status); }
 
 /**
  * Get the current state of a thread.
@@ -47322,7 +47348,7 @@ inline ThreadState GetThreadState(ThreadRef thread)
   return SDL_GetThreadState(thread);
 }
 
-inline ThreadState Thread::GetState() const
+inline ThreadState ThreadBase::GetState() const
 {
   return SDL::GetThreadState(get());
 }
@@ -47364,7 +47390,7 @@ inline ThreadState Thread::GetState() const
  */
 inline void DetachThread(ThreadRaw thread) { SDL_DetachThread(thread); }
 
-inline void Thread::Detach() { DetachThread(release()); }
+inline void ThreadBase::Detach() { DetachThread(release()); }
 
 /**
  * Get the current thread's value associated with a thread local storage ID.
@@ -47476,6 +47502,9 @@ inline void CleanupTLS() { SDL_CleanupTLS(); }
  */
 
 // Forward decl
+struct CameraBase;
+
+// Forward decl
 struct Camera;
 
 /// Alias to raw representation for Camera.
@@ -47486,7 +47515,7 @@ using CameraRaw = SDL_Camera*;
  *
  * This does not take ownership!
  */
-using CameraRef = ResourceRef<Camera>;
+using CameraRef = ResourceRefT<CameraBase>;
 
 // Forward decl
 struct CameraFrame;
@@ -47569,99 +47598,13 @@ using CameraPermissionState = int;
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * The opaque structure used to identify an opened SDL camera.
+ * Base class to Camera.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Camera
  */
-struct Camera : ResourceBase<CameraRaw>
+struct CameraBase : ResourceBaseT<CameraRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Camera.
-   *
-   * @param resource a CameraRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Camera(CameraRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Camera(const Camera& other) = delete;
-
-  /// Move constructor
-  constexpr Camera(Camera&& other) noexcept
-    : Camera(other.release())
-  {
-  }
-
-  constexpr Camera(const CameraRef& other) = delete;
-
-  constexpr Camera(CameraRef&& other) = delete;
-
-  /**
-   * Open a video recording device (a "camera").
-   *
-   * You can open the device with any reasonable spec, and if the hardware can't
-   * directly support it, it will convert data seamlessly to the requested
-   * format. This might incur overhead, including scaling of image data.
-   *
-   * If you would rather accept whatever format the device offers, you can pass
-   * a nullptr spec here and it will choose one for you (and you can use
-   * Surface's conversion/scaling functions directly if necessary).
-   *
-   * You can call GetCameraFormat() to get the actual data format if passing a
-   * nullptr spec here. You can see the exact specs a device can support without
-   * conversion with GetCameraSupportedFormats().
-   *
-   * SDL will not attempt to emulate framerate; it will try to set the hardware
-   * to the rate closest to the requested speed, but it won't attempt to limit
-   * or duplicate frames artificially; call GetCameraFormat() to see the actual
-   * framerate of the opened the device, and check your timestamps if this is
-   * crucial to your app!
-   *
-   * Note that the camera is not usable until the user approves its use! On some
-   * platforms, the operating system will prompt the user to permit access to
-   * the camera, and they can choose Yes or No at that point. Until they do, the
-   * camera will not be usable. The app should either wait for an
-   * EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll
-   * GetCameraPermissionState() occasionally until it returns non-zero. On
-   * platforms that don't require explicit user approval (and perhaps in places
-   * where the user previously permitted access), the approval event might come
-   * immediately, but it might come seconds, minutes, or hours later!
-   *
-   * @param instance_id the camera device instance ID.
-   * @param spec the desired format for data the device will provide. Can be
-   *             std::nullopt.
-   * @post an Camera object on success..
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCameras
-   * @sa GetCameraFormat
-   */
-  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
-
-  /// Destructor
-  ~Camera() { SDL_CloseCamera(get()); }
-
-  /// Assignment operator.
-  constexpr Camera& operator=(Camera&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Camera& operator=(const Camera& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Use this function to shut down camera processing and close the camera
@@ -47826,6 +47769,92 @@ struct Camera : ResourceBase<CameraRaw>
    * @sa AcquireCameraFrame
    */
   void ReleaseFrame(CameraFrame&& lock);
+};
+
+/**
+ * The opaque structure used to identify an opened SDL camera.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Camera : CameraBase
+{
+  using CameraBase::CameraBase;
+
+  /**
+   * Constructs from raw Camera.
+   *
+   * @param resource a CameraRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Camera(CameraRaw resource) noexcept
+    : CameraBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Camera(Camera&& other) noexcept
+    : Camera(other.release())
+  {
+  }
+
+  /**
+   * Open a video recording device (a "camera").
+   *
+   * You can open the device with any reasonable spec, and if the hardware can't
+   * directly support it, it will convert data seamlessly to the requested
+   * format. This might incur overhead, including scaling of image data.
+   *
+   * If you would rather accept whatever format the device offers, you can pass
+   * a nullptr spec here and it will choose one for you (and you can use
+   * Surface's conversion/scaling functions directly if necessary).
+   *
+   * You can call GetCameraFormat() to get the actual data format if passing a
+   * nullptr spec here. You can see the exact specs a device can support without
+   * conversion with GetCameraSupportedFormats().
+   *
+   * SDL will not attempt to emulate framerate; it will try to set the hardware
+   * to the rate closest to the requested speed, but it won't attempt to limit
+   * or duplicate frames artificially; call GetCameraFormat() to see the actual
+   * framerate of the opened the device, and check your timestamps if this is
+   * crucial to your app!
+   *
+   * Note that the camera is not usable until the user approves its use! On some
+   * platforms, the operating system will prompt the user to permit access to
+   * the camera, and they can choose Yes or No at that point. Until they do, the
+   * camera will not be usable. The app should either wait for an
+   * EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll
+   * GetCameraPermissionState() occasionally until it returns non-zero. On
+   * platforms that don't require explicit user approval (and perhaps in places
+   * where the user previously permitted access), the approval event might come
+   * immediately, but it might come seconds, minutes, or hours later!
+   *
+   * @param instance_id the camera device instance ID.
+   * @param spec the desired format for data the device will provide. Can be
+   *             std::nullopt.
+   * @post an Camera object on success..
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCameras
+   * @sa GetCameraFormat
+   */
+  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
+
+  /// Destructor
+  ~Camera() { SDL_CloseCamera(get()); }
+
+  /// Assignment operator.
+  constexpr Camera& operator=(Camera&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /// Camera Frame.
@@ -48209,7 +48238,7 @@ inline CameraPermissionState GetCameraPermissionState(CameraRef camera)
   return SDL_GetCameraPermissionState(camera);
 }
 
-inline CameraPermissionState Camera::GetPermissionState()
+inline CameraPermissionState CameraBase::GetPermissionState()
 {
   return SDL::GetCameraPermissionState(get());
 }
@@ -48232,7 +48261,7 @@ inline CameraID GetCameraID(CameraRef camera)
   return CheckError(SDL_GetCameraID(camera));
 }
 
-inline CameraID Camera::GetID() { return SDL::GetCameraID(get()); }
+inline CameraID CameraBase::GetID() { return SDL::GetCameraID(get()); }
 
 /**
  * Get the properties associated with an opened camera.
@@ -48250,7 +48279,7 @@ inline PropertiesRef GetCameraProperties(CameraRef camera)
   return {CheckError(SDL_GetCameraProperties(camera))};
 }
 
-inline PropertiesRef Camera::GetProperties()
+inline PropertiesRef CameraBase::GetProperties()
 {
   return SDL::GetCameraProperties(get());
 }
@@ -48282,7 +48311,7 @@ inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
   return std::nullopt;
 }
 
-inline std::optional<CameraSpec> Camera::GetFormat()
+inline std::optional<CameraSpec> CameraBase::GetFormat()
 {
   return SDL::GetCameraFormat(get());
 }
@@ -48330,10 +48359,10 @@ inline std::optional<CameraSpec> Camera::GetFormat()
 inline Surface AcquireCameraFrame(CameraRef camera,
                                   Uint64* timestampNS = nullptr)
 {
-  return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
+  return Surface::borrow(SDL_AcquireCameraFrame(camera, timestampNS));
 }
 
-inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
+inline CameraFrame CameraBase::AcquireFrame(Uint64* timestampNS)
 {
   return {CameraRef(*this), timestampNS};
 }
@@ -48376,7 +48405,7 @@ inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
   SDL_ReleaseCameraFrame(camera, frame);
 }
 
-inline void Camera::ReleaseFrame(CameraFrame&& lock)
+inline void CameraBase::ReleaseFrame(CameraFrame&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -48403,7 +48432,7 @@ inline void CameraFrame::reset()
  */
 inline void CloseCamera(CameraRaw camera) { SDL_CloseCamera(camera); }
 
-inline void Camera::Close() { CloseCamera(release()); }
+inline void CameraBase::Close() { CloseCamera(release()); }
 
 /// @}
 
@@ -48428,6 +48457,9 @@ inline void Camera::Close() { CloseCamera(release()); }
  */
 
 // Forward decl
+struct MutexBase;
+
+// Forward decl
 struct Mutex;
 
 /// Alias to raw representation for Mutex.
@@ -48438,7 +48470,10 @@ using MutexRaw = SDL_Mutex*;
  *
  * This does not take ownership!
  */
-using MutexRef = ResourceRef<Mutex>;
+using MutexRef = ResourceRefT<MutexBase>;
+
+// Forward decl
+struct RWLockBase;
 
 // Forward decl
 struct RWLock;
@@ -48451,7 +48486,10 @@ using RWLockRaw = SDL_RWLock*;
  *
  * This does not take ownership!
  */
-using RWLockRef = ResourceRef<RWLock>;
+using RWLockRef = ResourceRefT<RWLockBase>;
+
+// Forward decl
+struct SemaphoreBase;
 
 // Forward decl
 struct Semaphore;
@@ -48464,7 +48502,10 @@ using SemaphoreRaw = SDL_Semaphore*;
  *
  * This does not take ownership!
  */
-using SemaphoreRef = ResourceRef<Semaphore>;
+using SemaphoreRef = ResourceRefT<SemaphoreBase>;
+
+// Forward decl
+struct ConditionBase;
 
 // Forward decl
 struct Condition;
@@ -48477,7 +48518,7 @@ using ConditionRaw = SDL_Condition*;
  *
  * This does not take ownership!
  */
-using ConditionRef = ResourceRef<Condition>;
+using ConditionRef = ResourceRefT<ConditionBase>;
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -48486,84 +48527,13 @@ using InitStateRaw = SDL_InitState;
 struct InitState;
 
 /**
- * A means to serialize access to a resource between threads.
+ * Base class to Mutex.
  *
- * Mutexes (short for "mutual exclusion") are a synchronization primitive that
- * allows exactly one thread to proceed at a time.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Mutex
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Mutex
  */
-struct Mutex : ResourceBase<MutexRaw>
+struct MutexBase : ResourceBaseT<MutexRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Mutex.
-   *
-   * @param resource a MutexRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Mutex(MutexRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Mutex(const Mutex& other) = delete;
-
-  /// Move constructor
-  constexpr Mutex(Mutex&& other) noexcept
-    : Mutex(other.release())
-  {
-  }
-
-  constexpr Mutex(const MutexRef& other) = delete;
-
-  constexpr Mutex(MutexRef&& other) = delete;
-
-  /**
-   * Create a new mutex.
-   *
-   * All newly-created mutexes begin in the _unlocked_ state.
-   *
-   * Calls to LockMutex() will not return while the mutex is locked by another
-   * thread. See TryLockMutex() to attempt to lock without blocking.
-   *
-   * SDL mutexes are reentrant.
-   *
-   * @post the initialized and unlocked mutex or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyMutex
-   * @sa LockMutex
-   * @sa TryLockMutex
-   * @sa UnlockMutex
-   */
-  Mutex();
-
-  /// Destructor
-  ~Mutex() { SDL_DestroyMutex(get()); }
-
-  /// Assignment operator.
-  constexpr Mutex& operator=(Mutex&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Mutex& operator=(const Mutex& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a mutex created with CreateMutex().
@@ -48650,6 +48620,77 @@ struct Mutex : ResourceBase<MutexRaw>
 };
 
 /**
+ * A means to serialize access to a resource between threads.
+ *
+ * Mutexes (short for "mutual exclusion") are a synchronization primitive that
+ * allows exactly one thread to proceed at a time.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Mutex
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Mutex : MutexBase
+{
+  using MutexBase::MutexBase;
+
+  /**
+   * Constructs from raw Mutex.
+   *
+   * @param resource a MutexRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Mutex(MutexRaw resource) noexcept
+    : MutexBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Mutex(Mutex&& other) noexcept
+    : Mutex(other.release())
+  {
+  }
+
+  /**
+   * Create a new mutex.
+   *
+   * All newly-created mutexes begin in the _unlocked_ state.
+   *
+   * Calls to LockMutex() will not return while the mutex is locked by another
+   * thread. See TryLockMutex() to attempt to lock without blocking.
+   *
+   * SDL mutexes are reentrant.
+   *
+   * @post the initialized and unlocked mutex or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyMutex
+   * @sa LockMutex
+   * @sa TryLockMutex
+   * @sa UnlockMutex
+   */
+  Mutex();
+
+  /// Destructor
+  ~Mutex() { SDL_DestroyMutex(get()); }
+
+  /// Assignment operator.
+  constexpr Mutex& operator=(Mutex&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Create a new mutex.
  *
  * All newly-created mutexes begin in the _unlocked_ state.
@@ -48704,7 +48745,7 @@ inline Mutex::Mutex()
  */
 inline void LockMutex(MutexRef mutex) { SDL_LockMutex(mutex); }
 
-inline void Mutex::Lock() { SDL::LockMutex(get()); }
+inline void MutexBase::Lock() { SDL::LockMutex(get()); }
 
 /**
  * Try to lock a mutex without blocking.
@@ -48729,7 +48770,7 @@ inline void Mutex::Lock() { SDL::LockMutex(get()); }
  */
 inline bool TryLockMutex(MutexRef mutex) { return SDL_TryLockMutex(mutex); }
 
-inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
+inline bool MutexBase::TryLock() { return SDL::TryLockMutex(get()); }
 
 /**
  * Unlock the mutex.
@@ -48753,7 +48794,7 @@ inline bool Mutex::TryLock() { return SDL::TryLockMutex(get()); }
  */
 inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 
-inline void Mutex::Unlock() { SDL::UnlockMutex(get()); }
+inline void MutexBase::Unlock() { SDL::UnlockMutex(get()); }
 
 /**
  * Destroy a mutex created with CreateMutex().
@@ -48774,113 +48815,16 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(get()); }
  */
 inline void DestroyMutex(MutexRaw mutex) { SDL_DestroyMutex(mutex); }
 
-inline void Mutex::Destroy() { DestroyMutex(release()); }
+inline void MutexBase::Destroy() { DestroyMutex(release()); }
 
 /**
- * A mutex that allows read-only threads to run in parallel.
+ * Base class to RWLock.
  *
- * A rwlock is roughly the same concept as Mutex, but allows threads that
- * request read-only access to all hold the lock at the same time. If a thread
- * requests write access, it will block until all read-only threads have
- * released the lock, and no one else can hold the thread (for reading or
- * writing) at the same time as the writing thread.
- *
- * This can be more efficient in cases where several threads need to access data
- * frequently, but changes to that data are rare.
- *
- * There are other rules that apply to rwlocks that don't apply to mutexes,
- * about how threads are scheduled and when they can be recursively locked.
- * These are documented in the other rwlock functions.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see RWLock
  */
-struct RWLock : ResourceBase<RWLockRaw>
+struct RWLockBase : ResourceBaseT<RWLockRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw RWLock.
-   *
-   * @param resource a RWLockRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit RWLock(RWLockRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr RWLock(const RWLock& other) = delete;
-
-  /// Move constructor
-  constexpr RWLock(RWLock&& other) noexcept
-    : RWLock(other.release())
-  {
-  }
-
-  constexpr RWLock(const RWLockRef& other) = delete;
-
-  constexpr RWLock(RWLockRef&& other) = delete;
-
-  /**
-   * Create a new read/write lock.
-   *
-   * A read/write lock is useful for situations where you have multiple threads
-   * trying to access a resource that is rarely updated. All threads requesting
-   * a read-only lock will be allowed to run in parallel; if a thread requests a
-   * write lock, it will be provided exclusive access. This makes it safe for
-   * multiple threads to use a resource at the same time if they promise not to
-   * change it, and when it has to be changed, the rwlock will serve as a
-   * gateway to make sure those changes can be made safely.
-   *
-   * In the right situation, a rwlock can be more efficient than a mutex, which
-   * only lets a single thread proceed at a time, even if it won't be modifying
-   * the data.
-   *
-   * All newly-created read/write locks begin in the _unlocked_ state.
-   *
-   * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
-   * while the rwlock is locked _for writing_ by another thread. See
-   * TryLockRWLockForReading() and TryLockRWLockForWriting() to attempt to lock
-   * without blocking.
-   *
-   * SDL read/write locks are only recursive for read-only locks! They are not
-   * guaranteed to be fair, or provide access in a FIFO manner! They are not
-   * guaranteed to favor writers. You may not lock a rwlock for both read-only
-   * and write access at the same time from the same thread (so you can't
-   * promote your read-only lock to a write lock without unlocking first).
-   *
-   * @post the initialized and unlocked read/write lock or nullptr on failure;
-   *       call GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyRWLock
-   * @sa LockRWLockForReading
-   * @sa LockRWLockForWriting
-   * @sa TryLockRWLockForReading
-   * @sa TryLockRWLockForWriting
-   * @sa UnlockRWLock
-   */
-  RWLock();
-
-  /// Destructor
-  ~RWLock() { SDL_DestroyRWLock(get()); }
-
-  /// Assignment operator.
-  constexpr RWLock& operator=(RWLock&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  RWLock& operator=(const RWLock& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a read/write lock created with CreateRWLock().
@@ -49052,6 +48996,103 @@ struct RWLock : ResourceBase<RWLockRaw>
 };
 
 /**
+ * A mutex that allows read-only threads to run in parallel.
+ *
+ * A rwlock is roughly the same concept as Mutex, but allows threads that
+ * request read-only access to all hold the lock at the same time. If a thread
+ * requests write access, it will block until all read-only threads have
+ * released the lock, and no one else can hold the thread (for reading or
+ * writing) at the same time as the writing thread.
+ *
+ * This can be more efficient in cases where several threads need to access data
+ * frequently, but changes to that data are rare.
+ *
+ * There are other rules that apply to rwlocks that don't apply to mutexes,
+ * about how threads are scheduled and when they can be recursively locked.
+ * These are documented in the other rwlock functions.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct RWLock : RWLockBase
+{
+  using RWLockBase::RWLockBase;
+
+  /**
+   * Constructs from raw RWLock.
+   *
+   * @param resource a RWLockRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit RWLock(RWLockRaw resource) noexcept
+    : RWLockBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr RWLock(RWLock&& other) noexcept
+    : RWLock(other.release())
+  {
+  }
+
+  /**
+   * Create a new read/write lock.
+   *
+   * A read/write lock is useful for situations where you have multiple threads
+   * trying to access a resource that is rarely updated. All threads requesting
+   * a read-only lock will be allowed to run in parallel; if a thread requests a
+   * write lock, it will be provided exclusive access. This makes it safe for
+   * multiple threads to use a resource at the same time if they promise not to
+   * change it, and when it has to be changed, the rwlock will serve as a
+   * gateway to make sure those changes can be made safely.
+   *
+   * In the right situation, a rwlock can be more efficient than a mutex, which
+   * only lets a single thread proceed at a time, even if it won't be modifying
+   * the data.
+   *
+   * All newly-created read/write locks begin in the _unlocked_ state.
+   *
+   * Calls to LockRWLockForReading() and LockRWLockForWriting will not return
+   * while the rwlock is locked _for writing_ by another thread. See
+   * TryLockRWLockForReading() and TryLockRWLockForWriting() to attempt to lock
+   * without blocking.
+   *
+   * SDL read/write locks are only recursive for read-only locks! They are not
+   * guaranteed to be fair, or provide access in a FIFO manner! They are not
+   * guaranteed to favor writers. You may not lock a rwlock for both read-only
+   * and write access at the same time from the same thread (so you can't
+   * promote your read-only lock to a write lock without unlocking first).
+   *
+   * @post the initialized and unlocked read/write lock or nullptr on failure;
+   *       call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyRWLock
+   * @sa LockRWLockForReading
+   * @sa LockRWLockForWriting
+   * @sa TryLockRWLockForReading
+   * @sa TryLockRWLockForWriting
+   * @sa UnlockRWLock
+   */
+  RWLock();
+
+  /// Destructor
+  ~RWLock() { SDL_DestroyRWLock(get()); }
+
+  /// Assignment operator.
+  constexpr RWLock& operator=(RWLock&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Create a new read/write lock.
  *
  * A read/write lock is useful for situations where you have multiple threads
@@ -49142,7 +49183,7 @@ inline void LockRWLockForReading(RWLockRef rwlock)
   SDL_LockRWLockForReading(rwlock);
 }
 
-inline void RWLock::LockForReading() { SDL::LockRWLockForReading(get()); }
+inline void RWLockBase::LockForReading() { SDL::LockRWLockForReading(get()); }
 
 /**
  * Lock the read/write lock for _write_ operations.
@@ -49180,7 +49221,7 @@ inline void LockRWLockForWriting(RWLockRef rwlock)
   SDL_LockRWLockForWriting(rwlock);
 }
 
-inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(get()); }
+inline void RWLockBase::LockForWriting() { SDL::LockRWLockForWriting(get()); }
 
 /**
  * Try to lock a read/write lock _for reading_ without blocking.
@@ -49212,7 +49253,7 @@ inline bool TryLockRWLockForReading(RWLockRef rwlock)
   return SDL_TryLockRWLockForReading(rwlock);
 }
 
-inline bool RWLock::TryLockForReading()
+inline bool RWLockBase::TryLockForReading()
 {
   return SDL::TryLockRWLockForReading(get());
 }
@@ -49252,7 +49293,7 @@ inline bool TryLockRWLockForWriting(RWLockRef rwlock)
   return SDL_TryLockRWLockForWriting(rwlock);
 }
 
-inline bool RWLock::TryLockForWriting()
+inline bool RWLockBase::TryLockForWriting()
 {
   return SDL::TryLockRWLockForWriting(get());
 }
@@ -49285,7 +49326,7 @@ inline bool RWLock::TryLockForWriting()
  */
 inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 
-inline void RWLock::Unlock() { SDL::UnlockRWLock(get()); }
+inline void RWLockBase::Unlock() { SDL::UnlockRWLock(get()); }
 
 /**
  * Destroy a read/write lock created with CreateRWLock().
@@ -49306,91 +49347,16 @@ inline void RWLock::Unlock() { SDL::UnlockRWLock(get()); }
  */
 inline void DestroyRWLock(RWLockRaw rwlock) { SDL_DestroyRWLock(rwlock); }
 
-inline void RWLock::Destroy() { DestroyRWLock(release()); }
+inline void RWLockBase::Destroy() { DestroyRWLock(release()); }
 
 /**
- * A means to manage access to a resource, by count, between threads.
+ * Base class to Semaphore.
  *
- * Semaphores (specifically, "counting semaphores"), let X number of threads
- * request access at the same time, each thread granted access decrementing a
- * counter. When the counter reaches zero, future requests block until a prior
- * thread releases their request, incrementing the counter again.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Semaphore_(programming)
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Semaphore
  */
-struct Semaphore : ResourceBase<SemaphoreRaw>
+struct SemaphoreBase : ResourceBaseT<SemaphoreRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Semaphore.
-   *
-   * @param resource a SemaphoreRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) = delete;
-
-  /// Move constructor
-  constexpr Semaphore(Semaphore&& other) noexcept
-    : Semaphore(other.release())
-  {
-  }
-
-  constexpr Semaphore(const SemaphoreRef& other) = delete;
-
-  constexpr Semaphore(SemaphoreRef&& other) = delete;
-
-  /**
-   * Create a semaphore.
-   *
-   * This function creates a new semaphore and initializes it with the value
-   * `initial_value`. Each wait operation on the semaphore will atomically
-   * decrement the semaphore value and potentially block if the semaphore value
-   * is 0. Each post operation will atomically increment the semaphore value and
-   * wake waiting threads and allow them to retry the wait operation.
-   *
-   * @param initial_value the starting value of the semaphore.
-   * @post a new semaphore or nullptr on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroySemaphore
-   * @sa SignalSemaphore
-   * @sa TryWaitSemaphore
-   * @sa GetSemaphoreValue
-   * @sa WaitSemaphore
-   * @sa WaitSemaphoreTimeout
-   */
-  Semaphore(Uint32 initial_value);
-
-  /// Destructor
-  ~Semaphore() { SDL_DestroySemaphore(get()); }
-
-  /// Assignment operator.
-  constexpr Semaphore& operator=(Semaphore&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Semaphore& operator=(const Semaphore& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a semaphore.
@@ -49493,6 +49459,81 @@ struct Semaphore : ResourceBase<SemaphoreRaw>
 };
 
 /**
+ * A means to manage access to a resource, by count, between threads.
+ *
+ * Semaphores (specifically, "counting semaphores"), let X number of threads
+ * request access at the same time, each thread granted access decrementing a
+ * counter. When the counter reaches zero, future requests block until a prior
+ * thread releases their request, incrementing the counter again.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Semaphore_(programming)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Semaphore : SemaphoreBase
+{
+  using SemaphoreBase::SemaphoreBase;
+
+  /**
+   * Constructs from raw Semaphore.
+   *
+   * @param resource a SemaphoreRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Semaphore(SemaphoreRaw resource) noexcept
+    : SemaphoreBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Semaphore(Semaphore&& other) noexcept
+    : Semaphore(other.release())
+  {
+  }
+
+  /**
+   * Create a semaphore.
+   *
+   * This function creates a new semaphore and initializes it with the value
+   * `initial_value`. Each wait operation on the semaphore will atomically
+   * decrement the semaphore value and potentially block if the semaphore value
+   * is 0. Each post operation will atomically increment the semaphore value and
+   * wake waiting threads and allow them to retry the wait operation.
+   *
+   * @param initial_value the starting value of the semaphore.
+   * @post a new semaphore or nullptr on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroySemaphore
+   * @sa SignalSemaphore
+   * @sa TryWaitSemaphore
+   * @sa GetSemaphoreValue
+   * @sa WaitSemaphore
+   * @sa WaitSemaphoreTimeout
+   */
+  Semaphore(Uint32 initial_value);
+
+  /// Destructor
+  ~Semaphore() { SDL_DestroySemaphore(get()); }
+
+  /// Assignment operator.
+  constexpr Semaphore& operator=(Semaphore&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Create a semaphore.
  *
  * This function creates a new semaphore and initializes it with the value
@@ -49542,7 +49583,7 @@ inline Semaphore::Semaphore(Uint32 initial_value)
  */
 inline void DestroySemaphore(SemaphoreRaw sem) { SDL_DestroySemaphore(sem); }
 
-inline void Semaphore::Destroy() { DestroySemaphore(release()); }
+inline void SemaphoreBase::Destroy() { DestroySemaphore(release()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -49566,7 +49607,7 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  */
 inline void WaitSemaphore(SemaphoreRef sem) { SDL_WaitSemaphore(sem); }
 
-inline void Semaphore::Wait() { SDL::WaitSemaphore(get()); }
+inline void SemaphoreBase::Wait() { SDL::WaitSemaphore(get()); }
 
 /**
  * See if a semaphore has a positive value and decrement it if it does.
@@ -49592,7 +49633,7 @@ inline bool TryWaitSemaphore(SemaphoreRef sem)
   return SDL_TryWaitSemaphore(sem);
 }
 
-inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(get()); }
+inline bool SemaphoreBase::TryWait() { return SDL::TryWaitSemaphore(get()); }
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -49620,7 +49661,7 @@ inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
   return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
 }
 
-inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
+inline bool SemaphoreBase::WaitTimeout(std::chrono::milliseconds timeout)
 {
   return SDL::WaitSemaphoreTimeout(get(), timeout);
 }
@@ -49640,7 +49681,7 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  */
 inline void SignalSemaphore(SemaphoreRef sem) { SDL_SignalSemaphore(sem); }
 
-inline void Semaphore::Signal() { SDL::SignalSemaphore(get()); }
+inline void SemaphoreBase::Signal() { SDL::SignalSemaphore(get()); }
 
 /**
  * Get the current value of a semaphore.
@@ -49657,85 +49698,19 @@ inline Uint32 GetSemaphoreValue(SemaphoreRef sem)
   return SDL_GetSemaphoreValue(sem);
 }
 
-inline Uint32 Semaphore::GetValue() const
+inline Uint32 SemaphoreBase::GetValue() const
 {
   return SDL::GetSemaphoreValue(get());
 }
 
 /**
- * A means to block multiple threads until a condition is satisfied.
+ * Base class to Condition.
  *
- * Condition variables, paired with an Mutex, let an app halt multiple threads
- * until a condition has occurred, at which time the app can release one or all
- * waiting threads.
- *
- * Wikipedia has a thorough explanation of the concept:
- *
- * https://en.wikipedia.org/wiki/Condition_variable
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Condition
  */
-struct Condition : ResourceBase<ConditionRaw>
+struct ConditionBase : ResourceBaseT<ConditionRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Condition.
-   *
-   * @param resource a ConditionRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Condition(ConditionRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Condition(const Condition& other) = delete;
-
-  /// Move constructor
-  constexpr Condition(Condition&& other) noexcept
-    : Condition(other.release())
-  {
-  }
-
-  constexpr Condition(const ConditionRef& other) = delete;
-
-  constexpr Condition(ConditionRef&& other) = delete;
-
-  /**
-   * Create a condition variable.
-   *
-   * @post a new condition variable or nullptr on failure; call GetError() for
-   *       more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa BroadcastCondition
-   * @sa SignalCondition
-   * @sa WaitCondition
-   * @sa WaitConditionTimeout
-   * @sa DestroyCondition
-   */
-  Condition();
-
-  /// Destructor
-  ~Condition() { SDL_DestroyCondition(get()); }
-
-  /// Assignment operator.
-  constexpr Condition& operator=(Condition&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Condition& operator=(const Condition& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a condition variable.
@@ -49832,6 +49807,72 @@ struct Condition : ResourceBase<ConditionRaw>
 };
 
 /**
+ * A means to block multiple threads until a condition is satisfied.
+ *
+ * Condition variables, paired with an Mutex, let an app halt multiple threads
+ * until a condition has occurred, at which time the app can release one or all
+ * waiting threads.
+ *
+ * Wikipedia has a thorough explanation of the concept:
+ *
+ * https://en.wikipedia.org/wiki/Condition_variable
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Condition : ConditionBase
+{
+  using ConditionBase::ConditionBase;
+
+  /**
+   * Constructs from raw Condition.
+   *
+   * @param resource a ConditionRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Condition(ConditionRaw resource) noexcept
+    : ConditionBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Condition(Condition&& other) noexcept
+    : Condition(other.release())
+  {
+  }
+
+  /**
+   * Create a condition variable.
+   *
+   * @post a new condition variable or nullptr on failure; call GetError() for
+   *       more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa BroadcastCondition
+   * @sa SignalCondition
+   * @sa WaitCondition
+   * @sa WaitConditionTimeout
+   * @sa DestroyCondition
+   */
+  Condition();
+
+  /// Destructor
+  ~Condition() { SDL_DestroyCondition(get()); }
+
+  /// Assignment operator.
+  constexpr Condition& operator=(Condition&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Create a condition variable.
  *
  * @returns a new condition variable or nullptr on failure; call GetError() for
@@ -49867,7 +49908,7 @@ inline Condition::Condition()
  */
 inline void DestroyCondition(ConditionRaw cond) { SDL_DestroyCondition(cond); }
 
-inline void Condition::Destroy() { DestroyCondition(release()); }
+inline void ConditionBase::Destroy() { DestroyCondition(release()); }
 
 /**
  * Restart one of the threads that are waiting on the condition variable.
@@ -49884,7 +49925,7 @@ inline void Condition::Destroy() { DestroyCondition(release()); }
  */
 inline void SignalCondition(ConditionRef cond) { SDL_SignalCondition(cond); }
 
-inline void Condition::Signal() { SDL::SignalCondition(get()); }
+inline void ConditionBase::Signal() { SDL::SignalCondition(get()); }
 
 /**
  * Restart all threads that are waiting on the condition variable.
@@ -49904,7 +49945,7 @@ inline void BroadcastCondition(ConditionRef cond)
   SDL_BroadcastCondition(cond);
 }
 
-inline void Condition::Broadcast() { SDL::BroadcastCondition(get()); }
+inline void ConditionBase::Broadcast() { SDL::BroadcastCondition(get()); }
 
 /**
  * Wait until a condition variable is signaled.
@@ -49937,7 +49978,7 @@ inline void WaitCondition(ConditionRef cond, MutexRef mutex)
   SDL_WaitCondition(cond, mutex);
 }
 
-inline void Condition::Wait(MutexRef mutex)
+inline void ConditionBase::Wait(MutexRef mutex)
 {
   SDL::WaitCondition(get(), mutex);
 }
@@ -49977,8 +50018,8 @@ inline bool WaitConditionTimeout(ConditionRef cond,
   return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
 }
 
-inline bool Condition::WaitTimeout(MutexRef mutex,
-                                   std::chrono::milliseconds timeout)
+inline bool ConditionBase::WaitTimeout(MutexRef mutex,
+                                       std::chrono::milliseconds timeout)
 {
   return SDL::WaitConditionTimeout(get(), mutex, timeout);
 }
@@ -50216,6 +50257,9 @@ inline void InitState::SetInitialized(bool initialized)
  */
 
 // Forward decl
+struct TrayBase;
+
+// Forward decl
 struct Tray;
 
 /// Alias to raw representation for Tray.
@@ -50226,7 +50270,7 @@ using TrayRaw = SDL_Tray*;
  *
  * This does not take ownership!
  */
-using TrayRef = ResourceRef<Tray>;
+using TrayRef = ResourceRefT<TrayBase>;
 
 /// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
@@ -50243,7 +50287,11 @@ using TrayEntryRaw = SDL_TrayEntry*;
 // Forward decl
 struct TrayEntryScoped;
 
-/// Alias to TrayEntry for non owning parameters.
+/**
+ * Reference for TrayEntry.
+ *
+ * This does not take ownership!
+ */
 using TrayEntryRef = TrayEntry;
 
 /**
@@ -50301,78 +50349,13 @@ using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
 using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
 
 /**
- * An opaque handle representing a toplevel system tray object.
+ * Base class to Tray.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Tray
  */
-struct Tray : ResourceBase<TrayRaw>
+struct TrayBase : ResourceBaseT<TrayRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Tray.
-   *
-   * @param resource a TrayRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Tray(TrayRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Tray(const Tray& other) = delete;
-
-  /// Move constructor
-  constexpr Tray(Tray&& other) noexcept
-    : Tray(other.release())
-  {
-  }
-
-  constexpr Tray(const TrayRef& other) = delete;
-
-  constexpr Tray(TrayRef&& other) = delete;
-
-  /**
-   * Create an icon to be placed in the operating system's tray, or equivalent.
-   *
-   * Many platforms advise not using a system tray unless persistence is a
-   * necessary feature. Avoid needlessly creating a tray icon, as the user may
-   * feel like it clutters their interface.
-   *
-   * Using tray icons require the video subsystem.
-   *
-   * @param icon a surface to be used as icon. May be nullptr.
-   * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
-   *                UTF-8 encoding. Not supported on all platforms. May be
-   *                nullptr.
-   * @post The newly created system tray icon.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateTrayMenu
-   * @sa GetTrayMenu
-   * @sa DestroyTray
-   */
-  Tray(SurfaceRef icon, StringParam tooltip);
-
-  /// Destructor
-  ~Tray() { SDL_DestroyTray(get()); }
-
-  /// Assignment operator.
-  constexpr Tray& operator=(Tray&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Tray& operator=(const Tray& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroys a tray object.
@@ -50461,6 +50444,71 @@ struct Tray : ResourceBase<TrayRaw>
    * @sa CreateTrayMenu
    */
   TrayMenu GetMenu() const;
+};
+
+/**
+ * An opaque handle representing a toplevel system tray object.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Tray : TrayBase
+{
+  using TrayBase::TrayBase;
+
+  /**
+   * Constructs from raw Tray.
+   *
+   * @param resource a TrayRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Tray(TrayRaw resource) noexcept
+    : TrayBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Tray(Tray&& other) noexcept
+    : Tray(other.release())
+  {
+  }
+
+  /**
+   * Create an icon to be placed in the operating system's tray, or equivalent.
+   *
+   * Many platforms advise not using a system tray unless persistence is a
+   * necessary feature. Avoid needlessly creating a tray icon, as the user may
+   * feel like it clutters their interface.
+   *
+   * Using tray icons require the video subsystem.
+   *
+   * @param icon a surface to be used as icon. May be nullptr.
+   * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
+   *                UTF-8 encoding. Not supported on all platforms. May be
+   *                nullptr.
+   * @post The newly created system tray icon.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateTrayMenu
+   * @sa GetTrayMenu
+   * @sa DestroyTray
+   */
+  Tray(SurfaceRef icon, StringParam tooltip);
+
+  /// Destructor
+  ~Tray() { SDL_DestroyTray(get()); }
+
+  /// Assignment operator.
+  constexpr Tray& operator=(Tray&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /**
@@ -50606,9 +50654,9 @@ public:
  *
  * @cat resource
  */
-struct TrayEntry : ResourceBase<TrayEntryRaw>
+struct TrayEntry : ResourceBaseT<TrayEntryRaw>
 {
-  using ResourceBase::ResourceBase;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Insert a tray entry at a given position.
@@ -50965,7 +51013,10 @@ inline void SetTrayIcon(TrayRef tray, SurfaceRef icon)
   SDL_SetTrayIcon(tray, icon);
 }
 
-inline void Tray::SetIcon(SurfaceRef icon) { SDL::SetTrayIcon(get(), icon); }
+inline void TrayBase::SetIcon(SurfaceRef icon)
+{
+  SDL::SetTrayIcon(get(), icon);
+}
 
 /**
  * Updates the system tray icon's tooltip.
@@ -50985,7 +51036,7 @@ inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
   SDL_SetTrayTooltip(tray, tooltip);
 }
 
-inline void Tray::SetTooltip(StringParam tooltip)
+inline void TrayBase::SetTooltip(StringParam tooltip)
 {
   SDL::SetTrayTooltip(get(), std::move(tooltip));
 }
@@ -51017,7 +51068,7 @@ inline TrayMenu CreateTrayMenu(TrayRef tray)
   return SDL_CreateTrayMenu(tray);
 }
 
-inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(get()); }
+inline TrayMenu TrayBase::CreateMenu() { return SDL::CreateTrayMenu(get()); }
 
 /**
  * Create a submenu for a system tray entry.
@@ -51075,7 +51126,7 @@ inline TrayMenu TrayEntry::CreateSubmenu()
  */
 inline TrayMenu GetTrayMenu(TrayRef tray) { return SDL_GetTrayMenu(tray); }
 
-inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(get()); }
+inline TrayMenu TrayBase::GetMenu() const { return SDL::GetTrayMenu(get()); }
 
 /**
  * Gets a previously created tray entry submenu.
@@ -51488,7 +51539,7 @@ inline void TrayEntry::Click() { SDL::ClickTrayEntry(get()); }
  */
 inline void DestroyTray(TrayRaw tray) { SDL_DestroyTray(tray); }
 
-inline void Tray::Destroy() { DestroyTray(release()); }
+inline void TrayBase::Destroy() { DestroyTray(release()); }
 
 /**
  * Gets the menu containing a certain tray entry.
@@ -51616,6 +51667,9 @@ using DisplayID = SDL_DisplayID;
 struct Display;
 
 // Forward decl
+struct WindowBase;
+
+// Forward decl
 struct Window;
 
 /// Alias to raw representation for Window.
@@ -51626,7 +51680,7 @@ using WindowRaw = SDL_Window*;
  *
  * This does not take ownership!
  */
-using WindowRef = ResourceRef<Window>;
+using WindowRef = ResourceRefT<WindowBase>;
 
 // Forward decl
 struct GLContext;
@@ -51637,17 +51691,22 @@ using GLContextRaw = SDL_GLContext;
 // Forward decl
 struct GLContextScoped;
 
-/// Alias to GLContext for non owning parameters.
+/**
+ * Reference for GLContext.
+ *
+ * This does not take ownership!
+ */
 using GLContextRef = GLContext;
 
-struct Renderer;
+// Forward decl
+struct RendererBase;
 
 /**
  * Reference for Renderer.
  *
  * This does not take ownership!
  */
-using RendererRef = ResourceRef<Renderer>;
+using RendererRef = ResourceRefT<RendererBase>;
 
 /**
  * Display orientation values; the way a display is rotated.
@@ -52311,386 +52370,13 @@ constexpr ProgressState PROGRESS_STATE_ERROR = SDL_PROGRESS_STATE_ERROR;
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * The struct used as an opaque handle to a window.
+ * Base class to Window.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
- *
- * @sa CreateWindow
+ * @see Window
  */
-struct Window : ResourceBase<WindowRaw>
+struct WindowBase : ResourceBaseT<WindowRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Window.
-   *
-   * @param resource a WindowRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Window(WindowRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Window(const Window& other) = delete;
-
-  /// Move constructor
-  constexpr Window(Window&& other) noexcept
-    : Window(other.release())
-  {
-  }
-
-  constexpr Window(const WindowRef& other) = delete;
-
-  constexpr Window(WindowRef&& other) = delete;
-
-  /**
-   * Create a window and default renderer.
-   *
-   * @param title the title of the window, in UTF-8 encoding.
-   * @param size the width and height of the window.
-   * @param window_flags the flags used to create the window (see
-   *                     CreateWindow()).
-   * @param renderer a pointer filled with the renderer.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateRenderer
-   * @sa CreateWindow
-   */
-  Window(StringParam title,
-         const PointRaw& size,
-         WindowFlags window_flags,
-         RendererRef* renderer);
-
-  /**
-   * Create a window with the specified dimensions and flags.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * `flags` may be any of the following OR'd together:
-   *
-   * - `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution
-   * - `WINDOW_OPENGL`: window usable with an OpenGL context
-   * - `WINDOW_HIDDEN`: window is not visible
-   * - `WINDOW_BORDERLESS`: no window decoration
-   * - `WINDOW_RESIZABLE`: window can be resized
-   * - `WINDOW_MINIMIZED`: window is minimized
-   * - `WINDOW_MAXIMIZED`: window is maximized
-   * - `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus
-   * - `WINDOW_INPUT_FOCUS`: window has input focus
-   * - `WINDOW_MOUSE_FOCUS`: window has mouse focus
-   * - `WINDOW_EXTERNAL`: window not created by SDL
-   * - `WINDOW_MODAL`: window is modal
-   * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back buffer
-   *   if possible
-   * - `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to
-   *   MOUSE_GRABBED)
-   * - `WINDOW_ALWAYS_ON_TOP`: window should always be above others
-   * - `WINDOW_UTILITY`: window should be treated as a utility window, not
-   *   showing in the task bar and window list
-   * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not get
-   *   mouse or keyboard focus, requires a parent window
-   * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu, requires a
-   *   parent window
-   * - `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input
-   * - `WINDOW_VULKAN`: window usable with a Vulkan instance
-   * - `WINDOW_METAL`: window usable with a Metal instance
-   * - `WINDOW_TRANSPARENT`: window with transparent buffer
-   * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
-   *
-   * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation
-   * time, ShowWindow() can be used to show it later.
-   *
-   * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
-   * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
-   *
-   * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use GetWindowSize() to query the
-   * client area's size in window coordinates, and GetWindowSizeInPixels() or
-   * GetRenderOutputSize() to query the drawable size in pixels. Note that the
-   * drawable size can vary after the window is created and should be queried
-   * again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
-   *
-   * If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN
-   * flags, then the corresponding LoadLibrary function (GL_LoadLibrary or
-   * Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function
-   * is called by DestroyWindow().
-   *
-   * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.
-   *
-   * If WINDOW_METAL is specified on an OS that does not support Metal,
-   * CreateWindow() will fail.
-   *
-   * If you intend to use this window with an Renderer, you should use
-   * CreateWindowAndRenderer() instead of this function, to avoid window
-   * flicker.
-   *
-   * On non-Apple devices, SDL requires you to either not link to the Vulkan
-   * loader or link to a dynamic library version. This limitation may be removed
-   * in a future version of SDL.
-   *
-   * @param title the title of the window, in UTF-8 encoding.
-   * @param size the width and height of the window.
-   * @param flags 0, or one or more WindowFlags OR'd together.
-   * @post the window that was created or nullptr on failure; call GetError()
-   *       for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateWindowAndRenderer
-   * @sa CreatePopupWindow
-   * @sa CreateWindowWithProperties
-   * @sa DestroyWindow
-   */
-  Window(StringParam title, const PointRaw& size, WindowFlags flags = 0);
-
-  /**
-   * Create a child popup window of the specified parent window.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * The flags parameter **must** contain at least one of the following:
-   *
-   * - `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any
-   *   input events.
-   * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost popup
-   *   menu will implicitly gain the keyboard focus.
-   *
-   * The following flags are not relevant to popup window creation and will be
-   * ignored:
-   *
-   * - `WINDOW_MINIMIZED`
-   * - `WINDOW_MAXIMIZED`
-   * - `WINDOW_FULLSCREEN`
-   * - `WINDOW_BORDERLESS`
-   *
-   * The following flags are incompatible with popup window creation and will
-   * cause it to fail:
-   *
-   * - `WINDOW_UTILITY`
-   * - `WINDOW_MODAL`
-   *
-   * The parent parameter **must** be non-null and a valid window. The parent of
-   * a popup window can be either a regular, toplevel window, or another popup
-   * window.
-   *
-   * Popup windows cannot be minimized, maximized, made fullscreen, raised,
-   * flash, be made a modal window, be the parent of a toplevel window, or grab
-   * the mouse and/or keyboard. Attempts to do so will fail.
-   *
-   * Popup windows implicitly do not have a border/decorations and do not appear
-   * on the taskbar/dock or in lists of windows such as alt-tab menus.
-   *
-   * By default, popup window positions will automatically be constrained to
-   * keep the entire window within display bounds. This can be overridden with
-   * the `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN` property.
-   *
-   * By default, popup menus will automatically grab keyboard focus from the
-   * parent when shown. This behavior can be overridden by setting the
-   * `WINDOW_NOT_FOCUSABLE` flag, setting the
-   * `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it
-   * after creation via the `SetWindowFocusable()` function.
-   *
-   * If a parent window is hidden or destroyed, any child popup windows will be
-   * recursively hidden or destroyed as well. Child popup windows not explicitly
-   * hidden will be restored when the parent is shown.
-   *
-   * @param parent the parent of the window, must not be nullptr.
-   * @param offset the x, y position of the popup window relative to the origin
-   *               of the parent.
-   * @param size the width and height of the window.
-   * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
-   *              additional WindowFlags OR'd together.
-   * @post the window that was created or nullptr on failure; call GetError()
-   *       for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateWindow
-   * @sa CreateWindowWithProperties
-   * @sa DestroyWindow
-   * @sa GetWindowParent
-   */
-  Window(WindowRef parent,
-         const PointRaw& offset,
-         const PointRaw& size,
-         WindowFlags flags = 0);
-
-  /**
-   * Create a window with the specified properties.
-   *
-   * The window size is a request and may be different than expected based on
-   * the desktop layout and window manager policies. Your application should be
-   * prepared to handle a window of any size.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.Window.Create.ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
-   *   always on top
-   * - `prop.Window.Create.BORDERLESS_BOOLEAN`: true if the window has no window
-   *   decoration
-   * - `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
-   *   "menu" window types should be automatically constrained to be entirely
-   *   within display bounds (default), false if no constraints on the position
-   *   are desired.
-   * - `prop.Window.Create.EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
-   *   window will be used with an externally managed graphics context.
-   * - `prop.Window.Create.FOCUSABLE_BOOLEAN`: true if the window should accept
-   *   keyboard input (defaults true)
-   * - `prop.Window.Create.FULLSCREEN_BOOLEAN`: true if the window should start
-   *   in fullscreen mode at desktop resolution
-   * - `prop.Window.Create.HEIGHT_NUMBER`: the height of the window
-   * - `prop.Window.Create.HIDDEN_BOOLEAN`: true if the window should start
-   *   hidden
-   * - `prop.Window.Create.HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
-   *   a high pixel density buffer if possible
-   * - `prop.Window.Create.MAXIMIZED_BOOLEAN`: true if the window should start
-   *   maximized
-   * - `prop.Window.Create.MENU_BOOLEAN`: true if the window is a popup menu
-   * - `prop.Window.Create.METAL_BOOLEAN`: true if the window will be used with
-   *   Metal rendering
-   * - `prop.Window.Create.MINIMIZED_BOOLEAN`: true if the window should start
-   *   minimized
-   * - `prop.Window.Create.MODAL_BOOLEAN`: true if the window is modal to its
-   *   parent
-   * - `prop.Window.Create.MOUSE_GRABBED_BOOLEAN`: true if the window starts
-   *   with grabbed mouse focus
-   * - `prop.Window.Create.OPENGL_BOOLEAN`: true if the window will be used with
-   *   OpenGL rendering
-   * - `prop.Window.Create.PARENT_POINTER`: an Window that will be the parent of
-   *   this window, required for windows with the "tooltip", "menu", and "modal"
-   *   properties
-   * - `prop.Window.Create.RESIZABLE_BOOLEAN`: true if the window should be
-   *   resizable
-   * - `prop.Window.Create.TITLE_STRING`: the title of the window, in UTF-8
-   *   encoding
-   * - `prop.Window.Create.TRANSPARENT_BOOLEAN`: true if the window show
-   *   transparent in the areas with alpha of 0
-   * - `prop.Window.Create.TOOLTIP_BOOLEAN`: true if the window is a tooltip
-   * - `prop.Window.Create.UTILITY_BOOLEAN`: true if the window is a utility
-   *   window, not showing in the task bar and window list
-   * - `prop.Window.Create.VULKAN_BOOLEAN`: true if the window will be used with
-   *   Vulkan rendering
-   * - `prop.Window.Create.WIDTH_NUMBER`: the width of the window
-   * - `prop.Window.Create.X_NUMBER`: the x position of the window, or
-   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
-   *   to the parent for windows with the "tooltip" or "menu" property set.
-   * - `prop.Window.Create.Y_NUMBER`: the y position of the window, or
-   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
-   *   to the parent for windows with the "tooltip" or "menu" property set.
-   *
-   * These are additional supported properties on macOS:
-   *
-   * - `prop.Window.Create.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
-   *   NSWindow associated with the window, if you want to wrap an existing
-   *   window.
-   * - `prop.Window.Create.COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
-   *   NSView associated with the window, defaults to `[window contentView]`
-   *
-   * These are additional supported properties on iOS, tvOS, and visionOS:
-   *
-   * - `prop.Window.Create.WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
-   *   UIWindowScene associated with the window, defaults to the active window
-   *   scene.
-   *
-   * These are additional supported properties on Wayland:
-   *
-   * - `prop.Window.Create.WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
-   *   application wants to use the Wayland surface for a custom role and does
-   *   not want it attached to an XDG toplevel window. See
-   *   [README-wayland](README-wayland) for more information on using custom
-   *   surfaces.
-   * - `prop.Window.Create.WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
-   *   application wants an associated `wl_egl_window` object to be created and
-   *   attached to the window, even if the window does not have the OpenGL
-   *   property or `WINDOW_OPENGL` flag set.
-   * - `prop.Window.Create.WAYLAND_WL_SURFACE_POINTER` - the wl_surface
-   *   associated with the window, if you want to wrap an existing window. See
-   *   [README-wayland](README-wayland) for more information.
-   *
-   * These are additional supported properties on Windows:
-   *
-   * - `prop.Window.Create.WIN32_HWND_POINTER`: the HWND associated with the
-   *   window, if you want to wrap an existing window.
-   * - `prop.Window.Create.WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
-   *   window to share pixel format with, useful for OpenGL windows
-   *
-   * These are additional supported properties with X11:
-   *
-   * - `prop.Window.Create.X11_WINDOW_NUMBER`: the X11 Window associated with
-   *   the window, if you want to wrap an existing window.
-   *
-   * The window is implicitly shown if the "hidden" property is not set.
-   *
-   * These are additional supported properties with Emscripten:
-   *
-   * - `prop.Window.Create.EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
-   *   canvas element. This should start with a '#' sign
-   * - `prop.Window.Create.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
-   *   binding element for keyboard inputs for this canvas. The variable can be
-   *   one of:
-   * - "#window": the javascript window object (default)
-   * - "#document": the javascript document object
-   * - "#screen": the javascript window.screen object
-   * - "#canvas": the WebGL canvas element
-   * - "#none": Don't bind anything at all
-   * - any other string without a leading # sign applies to the element on the
-   *   page with that ID. Windows with the "tooltip" and "menu" properties are
-   *   popup windows and have the behaviors and guidelines outlined in
-   *   CreatePopupWindow().
-   *
-   * If this window is being created to be used with an Renderer, you should not
-   * add a graphics API specific property (`prop.Window.Create.OPENGL_BOOLEAN`,
-   * etc), as SDL will handle that internally when it chooses a renderer.
-   * However, SDL might need to recreate your window at that point, which may
-   * cause the window to appear briefly, and then flicker as it is recreated.
-   * The correct approach to this is to create the window with the
-   * `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the
-   * renderer, then show the window with ShowWindow().
-   *
-   * @param props the properties to use.
-   * @post the window that was created or nullptr on failure; call GetError()
-   *       for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateProperties
-   * @sa CreateWindow
-   * @sa DestroyWindow
-   */
-  Window(PropertiesRef props);
-
-  /// Destructor
-  ~Window() { SDL_DestroyWindow(get()); }
-
-  /// Assignment operator.
-  constexpr Window& operator=(Window&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Window& operator=(const Window& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a window.
@@ -54410,7 +54096,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * This function will enable text input (EVENT_TEXT_INPUT and
    * EVENT_TEXT_EDITING events) in the specified window. Please use this
-   * function paired with Window.StopTextInput().
+   * function paired with StopTextInput().
    *
    * Text input events are not received by default.
    *
@@ -54424,10 +54110,10 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetTextInputArea
-   * @sa Window.StartTextInput
-   * @sa Window.StopTextInput
-   * @sa Window.IsTextInputActive
+   * @sa SetTextInputArea
+   * @sa StartTextInputWithProperties
+   * @sa StopTextInput
+   * @sa TextInputActive
    */
   void StartTextInput();
 
@@ -54437,7 +54123,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * This function will enable text input (EVENT_TEXT_INPUT and
    * EVENT_TEXT_EDITING events) in the specified window. Please use this
-   * function paired with Window.StopTextInput().
+   * function paired with StopTextInput().
    *
    * Text input events are not received by default.
    *
@@ -54474,12 +54160,12 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetTextInputArea
-   * @sa Window.StartTextInput
-   * @sa Window.StopTextInput
-   * @sa Window.IsTextInputActive
+   * @sa SetTextInputArea
+   * @sa StartTextInput
+   * @sa StopTextInput
+   * @sa TextInputActive
    */
-  void StartTextInput(PropertiesRef props);
+  void StartTextInputWithProperties(PropertiesRef props);
 
   /**
    * Check whether or not Unicode text input events are enabled for a window.
@@ -54490,15 +54176,14 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.StartTextInput
+   * @sa StartTextInput
    */
   bool IsTextInputActive() const;
 
   /**
    * Stop receiving any text input events in a window.
    *
-   * If Window.StartTextInput() showed the screen keyboard, this function will
-   * hide it.
+   * If StartTextInput() showed the screen keyboard, this function will hide it.
    *
    * @throws Error on failure.
    *
@@ -54506,7 +54191,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.StartTextInput
+   * @sa StartTextInput
    */
   void StopTextInput();
 
@@ -54519,8 +54204,8 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.StartTextInput
-   * @sa Window.StopTextInput
+   * @sa StartTextInput
+   * @sa StopTextInput
    */
   void ClearComposition();
 
@@ -54540,15 +54225,15 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetTextInputArea
-   * @sa Window.StartTextInput
+   * @sa GetTextInputArea
+   * @sa StartTextInput
    */
   void SetTextInputArea(const RectRaw& rect, int cursor);
 
   /**
    * Get the area used to type Unicode text input.
    *
-   * This returns the values previously set by Window.SetTextInputArea().
+   * This returns the values previously set by SetTextInputArea().
    *
    * @param rect a pointer to an Rect filled in with the text input area, may be
    *             nullptr.
@@ -54560,9 +54245,9 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetTextInputArea
+   * @sa SetTextInputArea
    */
-  void GetTextInputArea(RectRaw* rect, int* cursor);
+  void GetTextInputArea(RectRaw* rect, int* cursor) const;
 
   /**
    * Check whether the screen keyboard is shown for given window.
@@ -54607,7 +54292,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * If you'd like to keep the mouse position fixed while in relative mode you
    * can use SetWindowMouseRect(). If you'd like the cursor to be at a specific
-   * location when relative mode ends, you should use Window.WarpMouse() before
+   * location when relative mode ends, you should use WarpMouseInWindow() before
    * disabling relative mode.
    *
    * This function will flush any pending mouse motion for this window.
@@ -54619,7 +54304,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetRelativeMouseMode
+   * @sa GetWindowRelativeMouseMode
    */
   void SetRelativeMouseMode(bool enabled);
 
@@ -54632,7 +54317,7 @@ struct Window : ResourceBase<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetRelativeMouseMode
+   * @sa SetWindowRelativeMouseMode
    */
   bool GetRelativeMouseMode() const;
 
@@ -54647,6 +54332,379 @@ struct Window : ResourceBase<WindowRaw>
    * @since This function is available since SDL 3.2.0.
    */
   RendererRef GetRenderer() const;
+};
+
+/**
+ * The struct used as an opaque handle to a window.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ *
+ * @sa CreateWindow
+ */
+struct Window : WindowBase
+{
+  using WindowBase::WindowBase;
+
+  /**
+   * Constructs from raw Window.
+   *
+   * @param resource a WindowRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Window(WindowRaw resource) noexcept
+    : WindowBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Window(Window&& other) noexcept
+    : Window(other.release())
+  {
+  }
+
+  /**
+   * Create a window and default renderer.
+   *
+   * @param title the title of the window, in UTF-8 encoding.
+   * @param size the width and height of the window.
+   * @param window_flags the flags used to create the window (see
+   *                     CreateWindow()).
+   * @param renderer a pointer filled with the renderer.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateRenderer
+   * @sa CreateWindow
+   */
+  Window(StringParam title,
+         const PointRaw& size,
+         WindowFlags window_flags,
+         RendererBase* renderer);
+
+  /**
+   * Create a window with the specified dimensions and flags.
+   *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
+   * `flags` may be any of the following OR'd together:
+   *
+   * - `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution
+   * - `WINDOW_OPENGL`: window usable with an OpenGL context
+   * - `WINDOW_HIDDEN`: window is not visible
+   * - `WINDOW_BORDERLESS`: no window decoration
+   * - `WINDOW_RESIZABLE`: window can be resized
+   * - `WINDOW_MINIMIZED`: window is minimized
+   * - `WINDOW_MAXIMIZED`: window is maximized
+   * - `WINDOW_MOUSE_GRABBED`: window has grabbed mouse focus
+   * - `WINDOW_INPUT_FOCUS`: window has input focus
+   * - `WINDOW_MOUSE_FOCUS`: window has mouse focus
+   * - `WINDOW_EXTERNAL`: window not created by SDL
+   * - `WINDOW_MODAL`: window is modal
+   * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back buffer
+   *   if possible
+   * - `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to
+   *   MOUSE_GRABBED)
+   * - `WINDOW_ALWAYS_ON_TOP`: window should always be above others
+   * - `WINDOW_UTILITY`: window should be treated as a utility window, not
+   *   showing in the task bar and window list
+   * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not get
+   *   mouse or keyboard focus, requires a parent window
+   * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu, requires a
+   *   parent window
+   * - `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input
+   * - `WINDOW_VULKAN`: window usable with a Vulkan instance
+   * - `WINDOW_METAL`: window usable with a Metal instance
+   * - `WINDOW_TRANSPARENT`: window with transparent buffer
+   * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
+   *
+   * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation
+   * time, ShowWindow() can be used to show it later.
+   *
+   * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
+   * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
+   *
+   * The window pixel size may differ from its window coordinate size if the
+   * window is on a high pixel density display. Use GetWindowSize() to query the
+   * client area's size in window coordinates, and GetWindowSizeInPixels() or
+   * GetRenderOutputSize() to query the drawable size in pixels. Note that the
+   * drawable size can vary after the window is created and should be queried
+   * again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
+   *
+   * If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN
+   * flags, then the corresponding LoadLibrary function (GL_LoadLibrary or
+   * Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function
+   * is called by DestroyWindow().
+   *
+   * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
+   * CreateWindow() will fail, because Vulkan_LoadLibrary() will fail.
+   *
+   * If WINDOW_METAL is specified on an OS that does not support Metal,
+   * CreateWindow() will fail.
+   *
+   * If you intend to use this window with an Renderer, you should use
+   * CreateWindowAndRenderer() instead of this function, to avoid window
+   * flicker.
+   *
+   * On non-Apple devices, SDL requires you to either not link to the Vulkan
+   * loader or link to a dynamic library version. This limitation may be removed
+   * in a future version of SDL.
+   *
+   * @param title the title of the window, in UTF-8 encoding.
+   * @param size the width and height of the window.
+   * @param flags 0, or one or more WindowFlags OR'd together.
+   * @post the window that was created or nullptr on failure; call GetError()
+   *       for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateWindowAndRenderer
+   * @sa CreatePopupWindow
+   * @sa CreateWindowWithProperties
+   * @sa DestroyWindow
+   */
+  Window(StringParam title, const PointRaw& size, WindowFlags flags = 0);
+
+  /**
+   * Create a child popup window of the specified parent window.
+   *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
+   * The flags parameter **must** contain at least one of the following:
+   *
+   * - `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any
+   *   input events.
+   * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost popup
+   *   menu will implicitly gain the keyboard focus.
+   *
+   * The following flags are not relevant to popup window creation and will be
+   * ignored:
+   *
+   * - `WINDOW_MINIMIZED`
+   * - `WINDOW_MAXIMIZED`
+   * - `WINDOW_FULLSCREEN`
+   * - `WINDOW_BORDERLESS`
+   *
+   * The following flags are incompatible with popup window creation and will
+   * cause it to fail:
+   *
+   * - `WINDOW_UTILITY`
+   * - `WINDOW_MODAL`
+   *
+   * The parent parameter **must** be non-null and a valid window. The parent of
+   * a popup window can be either a regular, toplevel window, or another popup
+   * window.
+   *
+   * Popup windows cannot be minimized, maximized, made fullscreen, raised,
+   * flash, be made a modal window, be the parent of a toplevel window, or grab
+   * the mouse and/or keyboard. Attempts to do so will fail.
+   *
+   * Popup windows implicitly do not have a border/decorations and do not appear
+   * on the taskbar/dock or in lists of windows such as alt-tab menus.
+   *
+   * By default, popup window positions will automatically be constrained to
+   * keep the entire window within display bounds. This can be overridden with
+   * the `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN` property.
+   *
+   * By default, popup menus will automatically grab keyboard focus from the
+   * parent when shown. This behavior can be overridden by setting the
+   * `WINDOW_NOT_FOCUSABLE` flag, setting the
+   * `prop.Window.Create.FOCUSABLE_BOOLEAN` property to false, or toggling it
+   * after creation via the `SetWindowFocusable()` function.
+   *
+   * If a parent window is hidden or destroyed, any child popup windows will be
+   * recursively hidden or destroyed as well. Child popup windows not explicitly
+   * hidden will be restored when the parent is shown.
+   *
+   * @param parent the parent of the window, must not be nullptr.
+   * @param offset the x, y position of the popup window relative to the origin
+   *               of the parent.
+   * @param size the width and height of the window.
+   * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
+   *              additional WindowFlags OR'd together.
+   * @post the window that was created or nullptr on failure; call GetError()
+   *       for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateWindow
+   * @sa CreateWindowWithProperties
+   * @sa DestroyWindow
+   * @sa GetWindowParent
+   */
+  Window(WindowRef parent,
+         const PointRaw& offset,
+         const PointRaw& size,
+         WindowFlags flags = 0);
+
+  /**
+   * Create a window with the specified properties.
+   *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.Window.Create.ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
+   *   always on top
+   * - `prop.Window.Create.BORDERLESS_BOOLEAN`: true if the window has no window
+   *   decoration
+   * - `prop.Window.Create.CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+   *   "menu" window types should be automatically constrained to be entirely
+   *   within display bounds (default), false if no constraints on the position
+   *   are desired.
+   * - `prop.Window.Create.EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
+   *   window will be used with an externally managed graphics context.
+   * - `prop.Window.Create.FOCUSABLE_BOOLEAN`: true if the window should accept
+   *   keyboard input (defaults true)
+   * - `prop.Window.Create.FULLSCREEN_BOOLEAN`: true if the window should start
+   *   in fullscreen mode at desktop resolution
+   * - `prop.Window.Create.HEIGHT_NUMBER`: the height of the window
+   * - `prop.Window.Create.HIDDEN_BOOLEAN`: true if the window should start
+   *   hidden
+   * - `prop.Window.Create.HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
+   *   a high pixel density buffer if possible
+   * - `prop.Window.Create.MAXIMIZED_BOOLEAN`: true if the window should start
+   *   maximized
+   * - `prop.Window.Create.MENU_BOOLEAN`: true if the window is a popup menu
+   * - `prop.Window.Create.METAL_BOOLEAN`: true if the window will be used with
+   *   Metal rendering
+   * - `prop.Window.Create.MINIMIZED_BOOLEAN`: true if the window should start
+   *   minimized
+   * - `prop.Window.Create.MODAL_BOOLEAN`: true if the window is modal to its
+   *   parent
+   * - `prop.Window.Create.MOUSE_GRABBED_BOOLEAN`: true if the window starts
+   *   with grabbed mouse focus
+   * - `prop.Window.Create.OPENGL_BOOLEAN`: true if the window will be used with
+   *   OpenGL rendering
+   * - `prop.Window.Create.PARENT_POINTER`: an Window that will be the parent of
+   *   this window, required for windows with the "tooltip", "menu", and "modal"
+   *   properties
+   * - `prop.Window.Create.RESIZABLE_BOOLEAN`: true if the window should be
+   *   resizable
+   * - `prop.Window.Create.TITLE_STRING`: the title of the window, in UTF-8
+   *   encoding
+   * - `prop.Window.Create.TRANSPARENT_BOOLEAN`: true if the window show
+   *   transparent in the areas with alpha of 0
+   * - `prop.Window.Create.TOOLTIP_BOOLEAN`: true if the window is a tooltip
+   * - `prop.Window.Create.UTILITY_BOOLEAN`: true if the window is a utility
+   *   window, not showing in the task bar and window list
+   * - `prop.Window.Create.VULKAN_BOOLEAN`: true if the window will be used with
+   *   Vulkan rendering
+   * - `prop.Window.Create.WIDTH_NUMBER`: the width of the window
+   * - `prop.Window.Create.X_NUMBER`: the x position of the window, or
+   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
+   *   to the parent for windows with the "tooltip" or "menu" property set.
+   * - `prop.Window.Create.Y_NUMBER`: the y position of the window, or
+   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
+   *   to the parent for windows with the "tooltip" or "menu" property set.
+   *
+   * These are additional supported properties on macOS:
+   *
+   * - `prop.Window.Create.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+   *   NSWindow associated with the window, if you want to wrap an existing
+   *   window.
+   * - `prop.Window.Create.COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
+   *   NSView associated with the window, defaults to `[window contentView]`
+   *
+   * These are additional supported properties on iOS, tvOS, and visionOS:
+   *
+   * - `prop.Window.Create.WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+   *   UIWindowScene associated with the window, defaults to the active window
+   *   scene.
+   *
+   * These are additional supported properties on Wayland:
+   *
+   * - `prop.Window.Create.WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
+   *   application wants to use the Wayland surface for a custom role and does
+   *   not want it attached to an XDG toplevel window. See
+   *   [README-wayland](README-wayland) for more information on using custom
+   *   surfaces.
+   * - `prop.Window.Create.WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+   *   application wants an associated `wl_egl_window` object to be created and
+   *   attached to the window, even if the window does not have the OpenGL
+   *   property or `WINDOW_OPENGL` flag set.
+   * - `prop.Window.Create.WAYLAND_WL_SURFACE_POINTER` - the wl_surface
+   *   associated with the window, if you want to wrap an existing window. See
+   *   [README-wayland](README-wayland) for more information.
+   *
+   * These are additional supported properties on Windows:
+   *
+   * - `prop.Window.Create.WIN32_HWND_POINTER`: the HWND associated with the
+   *   window, if you want to wrap an existing window.
+   * - `prop.Window.Create.WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
+   *   window to share pixel format with, useful for OpenGL windows
+   *
+   * These are additional supported properties with X11:
+   *
+   * - `prop.Window.Create.X11_WINDOW_NUMBER`: the X11 Window associated with
+   *   the window, if you want to wrap an existing window.
+   *
+   * The window is implicitly shown if the "hidden" property is not set.
+   *
+   * These are additional supported properties with Emscripten:
+   *
+   * - `prop.Window.Create.EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
+   *   canvas element. This should start with a '#' sign
+   * - `prop.Window.Create.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
+   *   binding element for keyboard inputs for this canvas. The variable can be
+   *   one of:
+   * - "#window": the javascript window object (default)
+   * - "#document": the javascript document object
+   * - "#screen": the javascript window.screen object
+   * - "#canvas": the WebGL canvas element
+   * - "#none": Don't bind anything at all
+   * - any other string without a leading # sign applies to the element on the
+   *   page with that ID. Windows with the "tooltip" and "menu" properties are
+   *   popup windows and have the behaviors and guidelines outlined in
+   *   CreatePopupWindow().
+   *
+   * If this window is being created to be used with an Renderer, you should not
+   * add a graphics API specific property (`prop.Window.Create.OPENGL_BOOLEAN`,
+   * etc), as SDL will handle that internally when it chooses a renderer.
+   * However, SDL might need to recreate your window at that point, which may
+   * cause the window to appear briefly, and then flicker as it is recreated.
+   * The correct approach to this is to create the window with the
+   * `prop.Window.Create.HIDDEN_BOOLEAN` property set to true, then create the
+   * renderer, then show the window with ShowWindow().
+   *
+   * @param props the properties to use.
+   * @post the window that was created or nullptr on failure; call GetError()
+   *       for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateProperties
+   * @sa CreateWindow
+   * @sa DestroyWindow
+   */
+  Window(PropertiesRef props);
+
+  /// Destructor
+  ~Window() { SDL_DestroyWindow(get()); }
+
+  /// Assignment operator.
+  constexpr Window& operator=(Window&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /**
@@ -54769,9 +54827,9 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  *
  * @cat resource
  */
-struct GLContext : ResourceBase<GLContextRaw>
+struct GLContext : ResourceBaseT<GLContextRaw>
 {
-  using ResourceBase::ResourceBase;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -55301,7 +55359,7 @@ inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
  */
 inline PropertiesRef GetDisplayProperties(DisplayID displayID)
 {
-  return {CheckError(SDL_GetDisplayProperties(displayID))};
+  return CheckError(SDL_GetDisplayProperties(displayID));
 }
 
 inline PropertiesRef Display::GetProperties() const
@@ -55714,7 +55772,7 @@ inline Display GetDisplayForWindow(WindowRef window)
   return CheckError(SDL_GetDisplayForWindow(window));
 }
 
-inline Display Window::GetDisplay() const
+inline Display WindowBase::GetDisplay() const
 {
   return SDL::GetDisplayForWindow(get());
 }
@@ -55741,7 +55799,7 @@ inline float GetWindowPixelDensity(WindowRef window)
   return SDL_GetWindowPixelDensity(window);
 }
 
-inline float Window::GetPixelDensity() const
+inline float WindowBase::GetPixelDensity() const
 {
   return SDL::GetWindowPixelDensity(get());
 }
@@ -55772,7 +55830,7 @@ inline float GetWindowDisplayScale(WindowRef window)
   return SDL_GetWindowDisplayScale(window);
 }
 
-inline float Window::GetDisplayScale() const
+inline float WindowBase::GetDisplayScale() const
 {
   return SDL::GetWindowDisplayScale(get());
 }
@@ -55814,7 +55872,7 @@ inline void SetWindowFullscreenMode(WindowRef window,
   CheckError(SDL_SetWindowFullscreenMode(window, mode));
 }
 
-inline void Window::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
+inline void WindowBase::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
 {
   SDL::SetWindowFullscreenMode(get(), mode);
 }
@@ -55838,7 +55896,7 @@ inline const DisplayMode& GetWindowFullscreenMode(WindowRef window)
   return *SDL_GetWindowFullscreenMode(window);
 }
 
-inline const DisplayMode& Window::GetFullscreenMode() const
+inline const DisplayMode& WindowBase::GetFullscreenMode() const
 {
   return SDL::GetWindowFullscreenMode(get());
 }
@@ -55860,7 +55918,7 @@ inline OwnPtr<void> GetWindowICCProfile(WindowRef window)
   return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(window, &size))};
 }
 
-inline OwnPtr<void> Window::GetICCProfile() const
+inline OwnPtr<void> WindowBase::GetICCProfile() const
 {
   return SDL::GetWindowICCProfile(get());
 }
@@ -55881,7 +55939,7 @@ inline PixelFormat GetWindowPixelFormat(WindowRef window)
   return CheckError(SDL_GetWindowPixelFormat(window));
 }
 
-inline PixelFormat Window::GetPixelFormat() const
+inline PixelFormat WindowBase::GetPixelFormat() const
 {
   return SDL::GetWindowPixelFormat(get());
 }
@@ -56411,7 +56469,7 @@ inline WindowID GetWindowID(WindowRef window)
   return CheckError(SDL_GetWindowID(window));
 }
 
-inline WindowID Window::GetID() const { return SDL::GetWindowID(get()); }
+inline WindowID WindowBase::GetID() const { return SDL::GetWindowID(get()); }
 
 /**
  * Get a window from a stored ID.
@@ -56434,7 +56492,7 @@ inline WindowRef GetWindowFromID(WindowID id)
   return SDL_GetWindowFromID(id);
 }
 
-inline WindowRef Window::FromID(WindowID id)
+inline WindowRef WindowBase::FromID(WindowID id)
 {
   return SDL::GetWindowFromID(id);
 }
@@ -56457,7 +56515,7 @@ inline WindowRef GetWindowParent(WindowRef window)
   return SDL_GetWindowParent(window);
 }
 
-inline WindowRef Window::GetParent() const
+inline WindowRef WindowBase::GetParent() const
 {
   return SDL::GetWindowParent(get());
 }
@@ -56591,7 +56649,7 @@ inline PropertiesRef GetWindowProperties(WindowRef window)
   return CheckError(SDL_GetWindowProperties(window));
 }
 
-inline PropertiesRef Window::GetProperties() const
+inline PropertiesRef WindowBase::GetProperties() const
 {
   return SDL::GetWindowProperties(get());
 }
@@ -56774,7 +56832,7 @@ inline WindowFlags GetWindowFlags(WindowRef window)
   return SDL_GetWindowFlags(window);
 }
 
-inline WindowFlags Window::GetFlags() const
+inline WindowFlags WindowBase::GetFlags() const
 {
   return SDL::GetWindowFlags(get());
 }
@@ -56799,7 +56857,7 @@ inline void SetWindowTitle(WindowRef window, StringParam title)
   CheckError(SDL_SetWindowTitle(window, title));
 }
 
-inline void Window::SetTitle(StringParam title)
+inline void WindowBase::SetTitle(StringParam title)
 {
   SDL::SetWindowTitle(get(), std::move(title));
 }
@@ -56821,7 +56879,7 @@ inline const char* GetWindowTitle(WindowRef window)
   return SDL_GetWindowTitle(window);
 }
 
-inline const char* Window::GetTitle() const
+inline const char* WindowBase::GetTitle() const
 {
   return SDL::GetWindowTitle(get());
 }
@@ -56854,7 +56912,7 @@ inline void SetWindowIcon(WindowRef window, SurfaceRef icon)
   CheckError(SDL_SetWindowIcon(window, icon));
 }
 
-inline void Window::SetIcon(SurfaceRef icon)
+inline void WindowBase::SetIcon(SurfaceRef icon)
 {
   SDL::SetWindowIcon(get(), icon);
 }
@@ -56899,7 +56957,7 @@ inline void SetWindowPosition(WindowRef window, const PointRaw& p)
   CheckError(SDL_SetWindowPosition(window, p.x, p.y));
 }
 
-inline void Window::SetPosition(const PointRaw& p)
+inline void WindowBase::SetPosition(const PointRaw& p)
 {
   SDL::SetWindowPosition(get(), p);
 }
@@ -56957,12 +57015,12 @@ inline Point GetWindowPosition(WindowRef window)
   return p;
 }
 
-inline void Window::GetPosition(int* x, int* y) const
+inline void WindowBase::GetPosition(int* x, int* y) const
 {
   SDL::GetWindowPosition(get(), x, y);
 }
 
-inline Point Window::GetPosition() const
+inline Point WindowBase::GetPosition() const
 {
   return SDL::GetWindowPosition(get());
 }
@@ -57005,7 +57063,7 @@ inline void SetWindowSize(WindowRef window, const PointRaw& size)
   CheckError(SDL_SetWindowSize(window, size.x, size.y));
 }
 
-inline void Window::SetSize(const PointRaw& size)
+inline void WindowBase::SetSize(const PointRaw& size)
 {
   SDL::SetWindowSize(get(), size);
 }
@@ -57063,12 +57121,12 @@ inline Point GetWindowSize(WindowRef window)
   return p;
 }
 
-inline void Window::GetSize(int* w, int* h) const
+inline void WindowBase::GetSize(int* w, int* h) const
 {
   SDL::GetWindowSize(get(), w, h);
 }
 
-inline Point Window::GetSize() const { return SDL::GetWindowSize(get()); }
+inline Point WindowBase::GetSize() const { return SDL::GetWindowSize(get()); }
 
 /**
  * @brief Request the window's position and size to be set.
@@ -57088,7 +57146,7 @@ inline void SetWindowRect(WindowRef window, Rect rect)
   SetWindowSize(window, rect.GetSize());
 }
 
-inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(get(), rect); }
+inline void WindowBase::SetRect(Rect rect) { SDL::SetWindowRect(get(), rect); }
 
 /**
  * Get the position and client size of a window.
@@ -57109,7 +57167,7 @@ inline Rect GetWindowRect(WindowRef window)
   return Rect{GetWindowPosition(window), GetWindowSize(window)};
 }
 
-inline Rect Window::GetRect() const { return SDL::GetWindowRect(get()); }
+inline Rect WindowBase::GetRect() const { return SDL::GetWindowRect(get()); }
 
 /**
  * Get the safe area for this window.
@@ -57135,7 +57193,7 @@ inline Rect GetWindowSafeArea(WindowRef window)
   return rect;
 }
 
-inline Rect Window::GetSafeArea() const
+inline Rect WindowBase::GetSafeArea() const
 {
   return SDL::GetWindowSafeArea(get());
 }
@@ -57184,7 +57242,7 @@ inline void SetWindowAspectRatio(WindowRef window,
   CheckError(SDL_SetWindowAspectRatio(window, min_aspect, max_aspect));
 }
 
-inline void Window::SetAspectRatio(float min_aspect, float max_aspect)
+inline void WindowBase::SetAspectRatio(float min_aspect, float max_aspect)
 {
   SDL::SetWindowAspectRatio(get(), min_aspect, max_aspect);
 }
@@ -57212,7 +57270,8 @@ inline void GetWindowAspectRatio(WindowRef window,
   CheckError(SDL_GetWindowAspectRatio(window, min_aspect, max_aspect));
 }
 
-inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
+inline void WindowBase::GetAspectRatio(float* min_aspect,
+                                       float* max_aspect) const
 {
   SDL::GetWindowAspectRatio(get(), min_aspect, max_aspect);
 }
@@ -57259,10 +57318,10 @@ inline void GetWindowBordersSize(WindowRef window,
   CheckError(SDL_GetWindowBordersSize(window, top, left, bottom, right));
 }
 
-inline void Window::GetBordersSize(int* top,
-                                   int* left,
-                                   int* bottom,
-                                   int* right) const
+inline void WindowBase::GetBordersSize(int* top,
+                                       int* left,
+                                       int* bottom,
+                                       int* right) const
 {
   SDL::GetWindowBordersSize(get(), top, left, bottom, right);
 }
@@ -57311,12 +57370,12 @@ inline Point GetWindowSizeInPixels(WindowRef window)
   return p;
 }
 
-inline void Window::GetSizeInPixels(int* w, int* h) const
+inline void WindowBase::GetSizeInPixels(int* w, int* h) const
 {
   SDL::GetWindowSizeInPixels(get(), w, h);
 }
 
-inline Point Window::GetSizeInPixels() const
+inline Point WindowBase::GetSizeInPixels() const
 {
   return SDL::GetWindowSizeInPixels(get());
 }
@@ -57340,7 +57399,7 @@ inline void SetWindowMinimumSize(WindowRef window, const PointRaw& p)
   CheckError(SDL_SetWindowMinimumSize(window, p.x, p.y));
 }
 
-inline void Window::SetMinimumSize(const PointRaw& p)
+inline void WindowBase::SetMinimumSize(const PointRaw& p)
 {
   SDL::SetWindowMinimumSize(get(), p);
 }
@@ -57367,7 +57426,7 @@ inline void GetWindowMinimumSize(WindowRef window, int* w, int* h)
   CheckError(SDL_GetWindowMinimumSize(window, w, h));
 }
 
-inline void Window::GetMinimumSize(int* w, int* h) const
+inline void WindowBase::GetMinimumSize(int* w, int* h) const
 {
   SDL::GetWindowMinimumSize(get(), w, h);
 }
@@ -57391,7 +57450,7 @@ inline void SetWindowMaximumSize(WindowRef window, const PointRaw& p)
   CheckError(SDL_SetWindowMaximumSize(window, p.x, p.y));
 }
 
-inline void Window::SetMaximumSize(const PointRaw& p)
+inline void WindowBase::SetMaximumSize(const PointRaw& p)
 {
   SDL::SetWindowMaximumSize(get(), p);
 }
@@ -57418,7 +57477,7 @@ inline void GetWindowMaximumSize(WindowRef window, int* w, int* h)
   CheckError(SDL_GetWindowMaximumSize(window, w, h));
 }
 
-inline void Window::GetMaximumSize(int* w, int* h) const
+inline void WindowBase::GetMaximumSize(int* w, int* h) const
 {
   SDL::GetWindowMaximumSize(get(), w, h);
 }
@@ -57447,7 +57506,7 @@ inline void SetWindowBordered(WindowRef window, bool bordered)
   CheckError(SDL_SetWindowBordered(window, bordered));
 }
 
-inline void Window::SetBordered(bool bordered)
+inline void WindowBase::SetBordered(bool bordered)
 {
   SDL::SetWindowBordered(get(), bordered);
 }
@@ -57476,7 +57535,7 @@ inline void SetWindowResizable(WindowRef window, bool resizable)
   CheckError(SDL_SetWindowResizable(window, resizable));
 }
 
-inline void Window::SetResizable(bool resizable)
+inline void WindowBase::SetResizable(bool resizable)
 {
   SDL::SetWindowResizable(get(), resizable);
 }
@@ -57502,7 +57561,7 @@ inline void SetWindowAlwaysOnTop(WindowRef window, bool on_top)
   CheckError(SDL_SetWindowAlwaysOnTop(window, on_top));
 }
 
-inline void Window::SetAlwaysOnTop(bool on_top)
+inline void WindowBase::SetAlwaysOnTop(bool on_top)
 {
   SDL::SetWindowAlwaysOnTop(get(), on_top);
 }
@@ -57542,7 +57601,7 @@ inline void SetWindowFillDocument(WindowRef window, bool fill)
   CheckError(SDL_SetWindowFillDocument(window, fill));
 }
 
-inline void Window::SetFillDocument(bool fill)
+inline void WindowBase::SetFillDocument(bool fill)
 {
   SDL::SetWindowFillDocument(get(), fill);
 }
@@ -57564,7 +57623,7 @@ inline void Window::SetFillDocument(bool fill)
  */
 inline void ShowWindow(WindowRef window) { CheckError(SDL_ShowWindow(window)); }
 
-inline void Window::Show() { SDL::ShowWindow(get()); }
+inline void WindowBase::Show() { SDL::ShowWindow(get()); }
 
 /**
  * Hide a window.
@@ -57581,7 +57640,7 @@ inline void Window::Show() { SDL::ShowWindow(get()); }
  */
 inline void HideWindow(WindowRef window) { CheckError(SDL_HideWindow(window)); }
 
-inline void Window::Hide() { SDL::HideWindow(get()); }
+inline void WindowBase::Hide() { SDL::HideWindow(get()); }
 
 /**
  * Request that a window be raised above other windows and gain the input focus.
@@ -57604,7 +57663,7 @@ inline void RaiseWindow(WindowRef window)
   CheckError(SDL_RaiseWindow(window));
 }
 
-inline void Window::Raise() { SDL::RaiseWindow(get()); }
+inline void WindowBase::Raise() { SDL::RaiseWindow(get()); }
 
 /**
  * Request that the window be made as large as possible.
@@ -57642,7 +57701,7 @@ inline void MaximizeWindow(WindowRef window)
   CheckError(SDL_MaximizeWindow(window));
 }
 
-inline void Window::Maximize() { SDL::MaximizeWindow(get()); }
+inline void WindowBase::Maximize() { SDL::MaximizeWindow(get()); }
 
 /**
  * Request that the window be minimized to an iconic representation.
@@ -57675,7 +57734,7 @@ inline void MinimizeWindow(WindowRef window)
   CheckError(SDL_MinimizeWindow(window));
 }
 
-inline void Window::Minimize() { SDL::MinimizeWindow(get()); }
+inline void WindowBase::Minimize() { SDL::MinimizeWindow(get()); }
 
 /**
  * Request that the size and position of a minimized or maximized window be
@@ -57709,7 +57768,7 @@ inline void RestoreWindow(WindowRef window)
   CheckError(SDL_RestoreWindow(window));
 }
 
-inline void Window::Restore() { SDL::RestoreWindow(get()); }
+inline void WindowBase::Restore() { SDL::RestoreWindow(get()); }
 
 /**
  * Request that the window's fullscreen state be changed.
@@ -57745,7 +57804,7 @@ inline void SetWindowFullscreen(WindowRef window, bool fullscreen)
   CheckError(SDL_SetWindowFullscreen(window, fullscreen));
 }
 
-inline void Window::SetFullscreen(bool fullscreen)
+inline void WindowBase::SetFullscreen(bool fullscreen)
 {
   SDL::SetWindowFullscreen(get(), fullscreen);
 }
@@ -57781,7 +57840,7 @@ inline void Window::SetFullscreen(bool fullscreen)
  */
 inline bool SyncWindow(WindowRef window) { return SDL_SyncWindow(window); }
 
-inline bool Window::Sync() { return SDL::SyncWindow(get()); }
+inline bool WindowBase::Sync() { return SDL::SyncWindow(get()); }
 
 /**
  * Return whether the window has a surface associated with it.
@@ -57801,7 +57860,10 @@ inline bool WindowHasSurface(WindowRef window)
   return SDL_WindowHasSurface(window);
 }
 
-inline bool Window::HasSurface() const { return SDL::WindowHasSurface(get()); }
+inline bool WindowBase::HasSurface() const
+{
+  return SDL::WindowHasSurface(get());
+}
 
 /**
  * Get the SDL surface associated with the window.
@@ -57832,10 +57894,10 @@ inline bool Window::HasSurface() const { return SDL::WindowHasSurface(get()); }
  */
 inline Surface GetWindowSurface(WindowRef window)
 {
-  return Surface::Borrow(CheckError(SDL_GetWindowSurface(window)));
+  return Surface::borrow(CheckError(SDL_GetWindowSurface(window)));
 }
 
-inline Surface Window::GetSurface() { return SDL::GetWindowSurface(get()); }
+inline Surface WindowBase::GetSurface() { return SDL::GetWindowSurface(get()); }
 
 /**
  * Toggle VSync for the window surface.
@@ -57865,7 +57927,7 @@ inline void SetWindowSurfaceVSync(WindowRef window, int vsync)
   CheckError(SDL_SetWindowSurfaceVSync(window, vsync));
 }
 
-inline void Window::SetSurfaceVSync(int vsync)
+inline void WindowBase::SetSurfaceVSync(int vsync)
 {
   SDL::SetWindowSurfaceVSync(get(), vsync);
 }
@@ -57897,7 +57959,7 @@ inline int GetWindowSurfaceVSync(WindowRef window)
   return vsync;
 }
 
-inline int Window::GetSurfaceVSync() const
+inline int WindowBase::GetSurfaceVSync() const
 {
   return SDL::GetWindowSurfaceVSync(get());
 }
@@ -57925,7 +57987,7 @@ inline void UpdateWindowSurface(WindowRef window)
   CheckError(SDL_UpdateWindowSurface(window));
 }
 
-inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(get()); }
+inline void WindowBase::UpdateSurface() { SDL::UpdateWindowSurface(get()); }
 
 /**
  * Copy areas of the window surface to the screen.
@@ -57959,7 +58021,7 @@ inline void UpdateWindowSurfaceRects(WindowRef window,
     window, rects.data(), narrowS32(rects.size())));
 }
 
-inline void Window::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
+inline void WindowBase::UpdateSurfaceRects(SpanRef<const RectRaw> rects)
 {
   SDL::UpdateWindowSurfaceRects(get(), rects);
 }
@@ -57982,7 +58044,7 @@ inline void DestroyWindowSurface(WindowRef window)
   CheckError(SDL_DestroyWindowSurface(window));
 }
 
-inline void Window::DestroySurface() { SDL::DestroyWindowSurface(get()); }
+inline void WindowBase::DestroySurface() { SDL::DestroyWindowSurface(get()); }
 
 /**
  * Set a window's keyboard grab mode.
@@ -58018,7 +58080,7 @@ inline void SetWindowKeyboardGrab(WindowRef window, bool grabbed)
   CheckError(SDL_SetWindowKeyboardGrab(window, grabbed));
 }
 
-inline void Window::SetKeyboardGrab(bool grabbed)
+inline void WindowBase::SetKeyboardGrab(bool grabbed)
 {
   SDL::SetWindowKeyboardGrab(get(), grabbed);
 }
@@ -58045,7 +58107,7 @@ inline void SetWindowMouseGrab(WindowRef window, bool grabbed)
   CheckError(SDL_SetWindowMouseGrab(window, grabbed));
 }
 
-inline void Window::SetMouseGrab(bool grabbed)
+inline void WindowBase::SetMouseGrab(bool grabbed)
 {
   SDL::SetWindowMouseGrab(get(), grabbed);
 }
@@ -58067,7 +58129,7 @@ inline bool GetWindowKeyboardGrab(WindowRef window)
   return SDL_GetWindowKeyboardGrab(window);
 }
 
-inline bool Window::GetKeyboardGrab() const
+inline bool WindowBase::GetKeyboardGrab() const
 {
   return SDL::GetWindowKeyboardGrab(get());
 }
@@ -58092,7 +58154,7 @@ inline bool GetWindowMouseGrab(WindowRef window)
   return SDL_GetWindowMouseGrab(window);
 }
 
-inline bool Window::GetMouseGrab() const
+inline bool WindowBase::GetMouseGrab() const
 {
   return SDL::GetWindowMouseGrab(get());
 }
@@ -58111,7 +58173,7 @@ inline bool Window::GetMouseGrab() const
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 
-inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
+inline WindowRef WindowBase::GetGrabbed() { return SDL::GetGrabbedWindow(); }
 
 /**
  * Confines the cursor to the specified area of a window.
@@ -58137,7 +58199,7 @@ inline void SetWindowMouseRect(WindowRef window, const RectRaw& rect)
   CheckError(SDL_SetWindowMouseRect(window, &rect));
 }
 
-inline void Window::SetMouseRect(const RectRaw& rect)
+inline void WindowBase::SetMouseRect(const RectRaw& rect)
 {
   SDL::SetWindowMouseRect(get(), rect);
 }
@@ -58162,7 +58224,7 @@ inline const RectRaw* GetWindowMouseRect(WindowRef window)
   return SDL_GetWindowMouseRect(window);
 }
 
-inline const RectRaw* Window::GetMouseRect() const
+inline const RectRaw* WindowBase::GetMouseRect() const
 {
   return SDL::GetWindowMouseRect(get());
 }
@@ -58190,7 +58252,7 @@ inline void SetWindowOpacity(WindowRef window, float opacity)
   CheckError(SDL_SetWindowOpacity(window, opacity));
 }
 
-inline void Window::SetOpacity(float opacity)
+inline void WindowBase::SetOpacity(float opacity)
 {
   SDL::SetWindowOpacity(get(), opacity);
 }
@@ -58216,7 +58278,10 @@ inline float GetWindowOpacity(WindowRef window)
   return SDL_GetWindowOpacity(window);
 }
 
-inline float Window::GetOpacity() const { return SDL::GetWindowOpacity(get()); }
+inline float WindowBase::GetOpacity() const
+{
+  return SDL::GetWindowOpacity(get());
+}
 
 /**
  * Set the window as a child of a parent window.
@@ -58254,7 +58319,7 @@ inline void SetWindowParent(WindowRef window, WindowRef parent)
   CheckError(SDL_SetWindowParent(window, parent));
 }
 
-inline void Window::SetParent(WindowRef parent)
+inline void WindowBase::SetParent(WindowRef parent)
 {
   SDL::SetWindowParent(get(), parent);
 }
@@ -58281,7 +58346,10 @@ inline void SetWindowModal(WindowRef window, bool modal)
   CheckError(SDL_SetWindowModal(window, modal));
 }
 
-inline void Window::SetModal(bool modal) { SDL::SetWindowModal(get(), modal); }
+inline void WindowBase::SetModal(bool modal)
+{
+  SDL::SetWindowModal(get(), modal);
+}
 
 /**
  * Set whether the window may have input focus.
@@ -58299,7 +58367,7 @@ inline void SetWindowFocusable(WindowRef window, bool focusable)
   CheckError(SDL_SetWindowFocusable(window, focusable));
 }
 
-inline void Window::SetFocusable(bool focusable)
+inline void WindowBase::SetFocusable(bool focusable)
 {
   SDL::SetWindowFocusable(get(), focusable);
 }
@@ -58329,7 +58397,7 @@ inline void ShowWindowSystemMenu(WindowRef window, const PointRaw& p)
   CheckError(SDL_ShowWindowSystemMenu(window, p.x, p.y));
 }
 
-inline void Window::ShowSystemMenu(const PointRaw& p)
+inline void WindowBase::ShowSystemMenu(const PointRaw& p)
 {
   SDL::ShowWindowSystemMenu(get(), p);
 }
@@ -58427,12 +58495,12 @@ inline void SetWindowHitTest(WindowRef window, HitTestCB callback)
   SetWindowHitTest(window, callback.wrapper, callback.data);
 }
 
-inline void Window::SetHitTest(HitTest callback, void* callback_data)
+inline void WindowBase::SetHitTest(HitTest callback, void* callback_data)
 {
   SDL::SetWindowHitTest(get(), callback, callback_data);
 }
 
-inline void Window::SetHitTest(HitTestCB callback)
+inline void WindowBase::SetHitTest(HitTestCB callback)
 {
   SDL::SetWindowHitTest(get(), callback);
 }
@@ -58466,7 +58534,7 @@ inline void SetWindowShape(WindowRef window, SurfaceRef shape)
   CheckError(SDL_SetWindowShape(window, shape));
 }
 
-inline void Window::SetShape(SurfaceRef shape)
+inline void WindowBase::SetShape(SurfaceRef shape)
 {
   SDL::SetWindowShape(get(), shape);
 }
@@ -58487,7 +58555,7 @@ inline void FlashWindow(WindowRef window, FlashOperation operation)
   CheckError(SDL_FlashWindow(window, operation));
 }
 
-inline void Window::Flash(FlashOperation operation)
+inline void WindowBase::Flash(FlashOperation operation)
 {
   SDL::FlashWindow(get(), operation);
 }
@@ -58498,8 +58566,8 @@ inline void Window::Flash(FlashOperation operation)
  * Sets the state of the progress bar for the given window’s taskbar icon.
  *
  * @param window the window whose progress state is to be modified.
- * @param state the progress state. `PROGRESS_STATE_NONE` stops displaying
- *              the progress bar.
+ * @param state the progress state. `PROGRESS_STATE_NONE` stops displaying the
+ *              progress bar.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -58511,7 +58579,7 @@ inline void SetWindowProgressState(WindowRef window, ProgressState state)
   CheckError(SDL_SetWindowProgressState(window, state));
 }
 
-inline void Window::SetProgressState(ProgressState state)
+inline void WindowBase::SetProgressState(ProgressState state)
 {
   SDL::SetWindowProgressState(get(), state);
 }
@@ -58532,7 +58600,7 @@ inline ProgressState GetWindowProgressState(WindowRef window)
   return SDL_GetWindowProgressState(window);
 }
 
-inline ProgressState Window::GetProgressState()
+inline ProgressState WindowBase::GetProgressState()
 {
   return SDL::GetWindowProgressState(get());
 }
@@ -58554,7 +58622,7 @@ inline void SetWindowProgressValue(WindowRef window, float value)
   CheckError(SDL_SetWindowProgressValue(window, value));
 }
 
-inline void Window::SetProgressValue(float value)
+inline void WindowBase::SetProgressValue(float value)
 {
   SDL::SetWindowProgressValue(get(), value);
 }
@@ -58575,7 +58643,7 @@ inline float GetWindowProgressValue(WindowRef window)
   return SDL_GetWindowProgressValue(window);
 }
 
-inline float Window::GetProgressValue()
+inline float WindowBase::GetProgressValue()
 {
   return SDL::GetWindowProgressValue(get());
 }
@@ -58603,7 +58671,7 @@ inline float Window::GetProgressValue()
  */
 inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
 
-inline void Window::Destroy() { DestroyWindow(release()); }
+inline void WindowBase::Destroy() { DestroyWindow(release()); }
 
 /**
  * Check whether the screensaver is currently enabled.
@@ -58888,7 +58956,7 @@ inline GLContext GL_CreateContext(WindowRef window)
   return GLContext(window);
 }
 
-inline GLContext Window::CreateGLContext() { return GLContext(get()); }
+inline GLContext WindowBase::CreateGLContext() { return GLContext(get()); }
 
 inline GLContext::GLContext(WindowRef window)
   : GLContext(SDL_GL_CreateContext(window))
@@ -58912,17 +58980,17 @@ inline GLContext::GLContext(WindowRef window)
  */
 inline void GL_MakeCurrent(WindowRef window, GLContext context)
 {
-  CheckError(SDL_GL_MakeCurrent(window, context.get()));
+  CheckError(SDL_GL_MakeCurrent(window, context));
 }
 
-inline void Window::MakeCurrent(GLContext context)
+inline void WindowBase::MakeCurrent(GLContext context)
 {
   SDL::GL_MakeCurrent(get(), context);
 }
 
 inline void GLContext::MakeCurrent(WindowRef window)
 {
-  SDL::GL_MakeCurrent(window, get());
+  GL_MakeCurrent(window, get());
 }
 
 /**
@@ -58938,7 +59006,7 @@ inline void GLContext::MakeCurrent(WindowRef window)
  */
 inline WindowRef GL_GetCurrentWindow()
 {
-  return {CheckError(SDL_GL_GetCurrentWindow())};
+  return CheckError(SDL_GL_GetCurrentWindow());
 }
 
 /**
@@ -58998,7 +59066,7 @@ inline EGLSurface EGL_GetWindowSurface(WindowRef window)
   return SDL_EGL_GetWindowSurface(window);
 }
 
-inline EGLSurface Window::GetEGLSurface()
+inline EGLSurface WindowBase::GetEGLSurface()
 {
   return SDL::EGL_GetWindowSurface(get());
 }
@@ -59113,7 +59181,7 @@ inline void GL_SwapWindow(WindowRef window)
   CheckError(SDL_GL_SwapWindow(window));
 }
 
-inline void Window::GL_Swap() { SDL::GL_SwapWindow(get()); }
+inline void WindowBase::GL_Swap() { SDL::GL_SwapWindow(get()); }
 
 /**
  * Delete an OpenGL context.
@@ -60312,12 +60380,12 @@ using TextEditingCandidatesEvent = SDL_TextEditingCandidatesEvent;
  * Keyboard text input event structure (event.text.*)
  *
  * This event will never be delivered unless text input is enabled by calling
- * Window.StartTextInput(). Text input is disabled by default!
+ * StartTextInput(). Text input is disabled by default!
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
- * @sa Window.StopTextInput
+ * @sa StartTextInput
+ * @sa StopTextInput
  */
 using TextInputEvent = SDL_TextInputEvent;
 
@@ -61976,6 +62044,9 @@ inline std::string GetEventDescription(const Event& event)
  */
 
 // Forward decl
+struct GPUDeviceBase;
+
+// Forward decl
 struct GPUDevice;
 
 /// Alias to raw representation for GPUDevice.
@@ -61986,7 +62057,7 @@ using GPUDeviceRaw = SDL_GPUDevice*;
  *
  * This does not take ownership!
  */
-using GPUDeviceRef = ResourceRef<GPUDevice>;
+using GPUDeviceRef = ResourceRefT<GPUDeviceBase>;
 
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
@@ -64642,194 +64713,13 @@ constexpr GPUSampleCount GPU_SAMPLECOUNT_4 = SDL_GPU_SAMPLECOUNT_4; ///< MSAA 4x
 constexpr GPUSampleCount GPU_SAMPLECOUNT_8 = SDL_GPU_SAMPLECOUNT_8; ///< MSAA 8x
 
 /**
- * An opaque handle representing the SDL_GPU context.
+ * Base class to GPUDevice.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see GPUDevice
  */
-struct GPUDevice : ResourceBase<GPUDeviceRaw>
+struct GPUDeviceBase : ResourceBaseT<GPUDeviceRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw GPUDevice.
-   *
-   * @param resource a GPUDeviceRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit GPUDevice(GPUDeviceRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) = delete;
-
-  /// Move constructor
-  constexpr GPUDevice(GPUDevice&& other) noexcept
-    : GPUDevice(other.release())
-  {
-  }
-
-  constexpr GPUDevice(const GPUDeviceRef& other) = delete;
-
-  constexpr GPUDevice(GPUDeviceRef&& other) = delete;
-
-  /**
-   * Creates a GPU context.
-   *
-   * The GPU driver name can be one of the following:
-   *
-   * - "vulkan": [Vulkan](CategoryGPU#vulkan)
-   * - "direct3d12": [D3D12](CategoryGPU#d3d12)
-   * - "metal": [Metal](CategoryGPU#metal)
-   * - nullptr: let SDL pick the optimal driver
-   *
-   * @param format_flags a bitflag indicating which shader formats the app is
-   *                     able to provide.
-   * @param debug_mode enable debug mode properties and validations.
-   * @param name the preferred GPU driver, or nullptr to let SDL pick the
-   *             optimal driver.
-   * @post a GPU context on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateGPUDeviceWithProperties
-   * @sa GetGPUShaderFormats
-   * @sa GetGPUDeviceDriver
-   * @sa DestroyGPUDevice
-   * @sa GPUSupportsShaderFormats
-   */
-  GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name);
-
-  /**
-   * Creates a GPU context.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.GPUDevice.Create.DEBUGMODE_BOOLEAN`: enable debug mode properties
-   *   and validations, defaults to true.
-   * - `prop.GPUDevice.Create.PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
-   *   efficiency over maximum GPU performance, defaults to false.
-   * - `prop.GPUDevice.Create.VERBOSE_BOOLEAN`: enable to automatically log
-   *   useful debug information on device creation, defaults to true.
-   * - `prop.GPUDevice.Create.NAME_STRING`: the name of the GPU driver to use,
-   *   if a specific one is desired.
-   * - `prop.GPUDevice.Create.FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
-   *   device feature shaderClipDistance. If disabled, clip distances are not
-   *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
-   *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
-   *   Metal. Disabling optional features allows the application to run on some
-   *   older Android devices. Defaults to true.
-   * - `prop.GPUDevice.Create.FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
-   *   device feature depthClamp. If disabled, there is no depth clamp support
-   *   and enable_depth_clip in GPURasterizerState must always be set to true.
-   *   Disabling optional features allows the application to run on some older
-   *   Android devices. Defaults to true.
-   * - `prop.GPUDevice.Create.FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
-   *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
-   *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
-   *   Disabling optional features allows the application to run on some older
-   *   Android devices. Defaults to true.
-   * - `prop.GPUDevice.Create.FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
-   *   feature samplerAnisotropy. If disabled, enable_anisotropy of
-   *   GPUSamplerCreateInfo must be set to false. Disabling optional features
-   *   allows the application to run on some older Android devices. Defaults to
-   *   true.
-   *
-   * These are the current shader format properties:
-   *
-   * - `prop.GPUDevice.Create.SHADERS_PRIVATE_BOOLEAN`: The app is able to
-   *   provide shaders for an NDA platform.
-   * - `prop.GPUDevice.Create.SHADERS_SPIRV_BOOLEAN`: The app is able to provide
-   *   SPIR-V shaders if applicable.
-   * - `prop.GPUDevice.Create.SHADERS_DXBC_BOOLEAN`: The app is able to provide
-   *   DXBC shaders if applicable
-   * - `prop.GPUDevice.Create.SHADERS_DXIL_BOOLEAN`: The app is able to provide
-   *   DXIL shaders if applicable.
-   * - `prop.GPUDevice.Create.SHADERS_MSL_BOOLEAN`: The app is able to provide
-   *   MSL shaders if applicable.
-   * - `prop.GPUDevice.Create.SHADERS_METALLIB_BOOLEAN`: The app is able to
-   *   provide Metal shader libraries if applicable.
-   *
-   * With the D3D12 backend:
-   *
-   * - `prop.GPUDevice.Create.D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
-   *   all vertex semantics, default is "TEXCOORD".
-   * - `prop.GPUDevice.Create.D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
-   *   default, Resourcing Binding Tier 2 is required for D3D12 support.
-   *   However, an application can set this property to true to enable Tier 1
-   *   support, if (and only if) the application uses 8 or fewer storage
-   *   resources across all shader stages. As of writing, this property is
-   *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
-   *   either supports Tier 2 Resource Binding or does not support D3D12 in any
-   *   capacity. Defaults to false.
-   * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
-   *   checks are only possible on Windows 11 by default. By setting this
-   *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING` and
-   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
-   *   feature checks possible on older platforms. The version you provide must
-   *   match the one given in the DLL.
-   * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
-   *   checks are only possible on Windows 11 by default. By setting this
-   *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER` and
-   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
-   *   feature checks possible on older platforms. The path you provide must be
-   *   relative to the executable path of your app. Be sure not to put the DLL
-   *   in the same directory as the exe; Microsoft strongly advises against
-   *   this!
-   *
-   * With the Vulkan backend:
-   *
-   * - `prop.GPUDevice.Create.VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
-   *   default, Vulkan device enumeration includes drivers of all types,
-   *   including software renderers (for example, the Lavapipe Mesa driver).
-   *   This can be useful if your application _requires_ SDL_GPU, but if you can
-   *   provide your own fallback renderer (for example, an OpenGL renderer) this
-   *   property can be set to true. Defaults to false.
-   * - `prop.GPUDevice.Create.VULKAN_OPTIONS_POINTER`: a pointer to an
-   *   GPUVulkanOptions structure to be processed during device creation. This
-   *   allows configuring a variety of Vulkan-specific options such as
-   *   increasing the API version and opting into extensions aside from the
-   *   minimal set SDL requires.
-   *
-   * With the Metal backend: -
-   * `prop.GPUDevice.Create.METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
-   * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
-   * However, an application can set this property to true to enable support for
-   * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not
-   * write to sRGB textures. (For history's sake: MacFamily1 also does not
-   * support indirect command buffers, MSAA depth resolve, and stencil
-   * resolve/feedback, but these are not exposed features in SDL_GPU.)
-   *
-   * @param props the properties to use.
-   * @post a GPU context on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetGPUShaderFormats
-   * @sa GetGPUDeviceDriver
-   * @sa DestroyGPUDevice
-   * @sa GPUSupportsProperties
-   */
-  GPUDevice(PropertiesRef props);
-
-  /// Destructor
-  ~GPUDevice() { SDL_DestroyGPUDevice(get()); }
-
-  /// Assignment operator.
-  constexpr GPUDevice& operator=(GPUDevice&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  GPUDevice& operator=(const GPUDevice& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroys a GPU context previously returned by CreateGPUDevice.
@@ -65684,6 +65574,187 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
   void GDKResumeGPU();
 
 #endif /* SDL_PLATFORM_GDK */
+};
+
+/**
+ * An opaque handle representing the SDL_GPU context.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct GPUDevice : GPUDeviceBase
+{
+  using GPUDeviceBase::GPUDeviceBase;
+
+  /**
+   * Constructs from raw GPUDevice.
+   *
+   * @param resource a GPUDeviceRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit GPUDevice(GPUDeviceRaw resource) noexcept
+    : GPUDeviceBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr GPUDevice(GPUDevice&& other) noexcept
+    : GPUDevice(other.release())
+  {
+  }
+
+  /**
+   * Creates a GPU context.
+   *
+   * The GPU driver name can be one of the following:
+   *
+   * - "vulkan": [Vulkan](CategoryGPU#vulkan)
+   * - "direct3d12": [D3D12](CategoryGPU#d3d12)
+   * - "metal": [Metal](CategoryGPU#metal)
+   * - nullptr: let SDL pick the optimal driver
+   *
+   * @param format_flags a bitflag indicating which shader formats the app is
+   *                     able to provide.
+   * @param debug_mode enable debug mode properties and validations.
+   * @param name the preferred GPU driver, or nullptr to let SDL pick the
+   *             optimal driver.
+   * @post a GPU context on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateGPUDeviceWithProperties
+   * @sa GetGPUShaderFormats
+   * @sa GetGPUDeviceDriver
+   * @sa DestroyGPUDevice
+   * @sa GPUSupportsShaderFormats
+   */
+  GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name);
+
+  /**
+   * Creates a GPU context.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.GPUDevice.Create.DEBUGMODE_BOOLEAN`: enable debug mode properties
+   *   and validations, defaults to true.
+   * - `prop.GPUDevice.Create.PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
+   *   efficiency over maximum GPU performance, defaults to false.
+   * - `prop.GPUDevice.Create.VERBOSE_BOOLEAN`: enable to automatically log
+   *   useful debug information on device creation, defaults to true.
+   * - `prop.GPUDevice.Create.NAME_STRING`: the name of the GPU driver to use,
+   *   if a specific one is desired.
+   * - `prop.GPUDevice.Create.FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
+   *   device feature shaderClipDistance. If disabled, clip distances are not
+   *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
+   *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
+   *   Metal. Disabling optional features allows the application to run on some
+   *   older Android devices. Defaults to true.
+   * - `prop.GPUDevice.Create.FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+   *   device feature depthClamp. If disabled, there is no depth clamp support
+   *   and enable_depth_clip in GPURasterizerState must always be set to true.
+   *   Disabling optional features allows the application to run on some older
+   *   Android devices. Defaults to true.
+   * - `prop.GPUDevice.Create.FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+   *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
+   *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
+   *   Disabling optional features allows the application to run on some older
+   *   Android devices. Defaults to true.
+   * - `prop.GPUDevice.Create.FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+   *   feature samplerAnisotropy. If disabled, enable_anisotropy of
+   *   GPUSamplerCreateInfo must be set to false. Disabling optional features
+   *   allows the application to run on some older Android devices. Defaults to
+   *   true.
+   *
+   * These are the current shader format properties:
+   *
+   * - `prop.GPUDevice.Create.SHADERS_PRIVATE_BOOLEAN`: The app is able to
+   *   provide shaders for an NDA platform.
+   * - `prop.GPUDevice.Create.SHADERS_SPIRV_BOOLEAN`: The app is able to provide
+   *   SPIR-V shaders if applicable.
+   * - `prop.GPUDevice.Create.SHADERS_DXBC_BOOLEAN`: The app is able to provide
+   *   DXBC shaders if applicable
+   * - `prop.GPUDevice.Create.SHADERS_DXIL_BOOLEAN`: The app is able to provide
+   *   DXIL shaders if applicable.
+   * - `prop.GPUDevice.Create.SHADERS_MSL_BOOLEAN`: The app is able to provide
+   *   MSL shaders if applicable.
+   * - `prop.GPUDevice.Create.SHADERS_METALLIB_BOOLEAN`: The app is able to
+   *   provide Metal shader libraries if applicable.
+   *
+   * With the D3D12 backend:
+   *
+   * - `prop.GPUDevice.Create.D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
+   *   all vertex semantics, default is "TEXCOORD".
+   * - `prop.GPUDevice.Create.D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+   *   default, Resourcing Binding Tier 2 is required for D3D12 support.
+   *   However, an application can set this property to true to enable Tier 1
+   *   support, if (and only if) the application uses 8 or fewer storage
+   *   resources across all shader stages. As of writing, this property is
+   *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
+   *   either supports Tier 2 Resource Binding or does not support D3D12 in any
+   *   capacity. Defaults to false.
+   * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
+   *   checks are only possible on Windows 11 by default. By setting this
+   *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING` and
+   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+   *   feature checks possible on older platforms. The version you provide must
+   *   match the one given in the DLL.
+   * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+   *   checks are only possible on Windows 11 by default. By setting this
+   *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER` and
+   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+   *   feature checks possible on older platforms. The path you provide must be
+   *   relative to the executable path of your app. Be sure not to put the DLL
+   *   in the same directory as the exe; Microsoft strongly advises against
+   *   this!
+   *
+   * With the Vulkan backend:
+   *
+   * - `prop.GPUDevice.Create.VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+   *   default, Vulkan device enumeration includes drivers of all types,
+   *   including software renderers (for example, the Lavapipe Mesa driver).
+   *   This can be useful if your application _requires_ SDL_GPU, but if you can
+   *   provide your own fallback renderer (for example, an OpenGL renderer) this
+   *   property can be set to true. Defaults to false.
+   * - `prop.GPUDevice.Create.VULKAN_OPTIONS_POINTER`: a pointer to an
+   *   GPUVulkanOptions structure to be processed during device creation. This
+   *   allows configuring a variety of Vulkan-specific options such as
+   *   increasing the API version and opting into extensions aside from the
+   *   minimal set SDL requires.
+   *
+   * With the Metal backend: -
+   * `prop.GPUDevice.Create.METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+   * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
+   * However, an application can set this property to true to enable support for
+   * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not
+   * write to sRGB textures. (For history's sake: MacFamily1 also does not
+   * support indirect command buffers, MSAA depth resolve, and stencil
+   * resolve/feedback, but these are not exposed features in SDL_GPU.)
+   *
+   * @param props the properties to use.
+   * @post a GPU context on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetGPUShaderFormats
+   * @sa GetGPUDeviceDriver
+   * @sa DestroyGPUDevice
+   * @sa GPUSupportsProperties
+   */
+  GPUDevice(PropertiesRef props);
+
+  /// Destructor
+  ~GPUDevice() { SDL_DestroyGPUDevice(get()); }
+
+  /// Assignment operator.
+  constexpr GPUDevice& operator=(GPUDevice&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /**
@@ -66813,7 +66884,7 @@ inline void DestroyGPUDevice(GPUDeviceRaw device)
   SDL_DestroyGPUDevice(device);
 }
 
-inline void GPUDevice::Destroy() { DestroyGPUDevice(release()); }
+inline void GPUDeviceBase::Destroy() { DestroyGPUDevice(release()); }
 
 /**
  * Get the number of GPU drivers compiled into SDL.
@@ -66858,7 +66929,7 @@ inline const char* GetGPUDeviceDriver(GPUDeviceRef device)
   return SDL_GetGPUDeviceDriver(device);
 }
 
-inline const char* GPUDevice::GetDriver()
+inline const char* GPUDeviceBase::GetDriver()
 {
   return SDL::GetGPUDeviceDriver(get());
 }
@@ -66877,7 +66948,7 @@ inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceRef device)
   return SDL_GetGPUShaderFormats(device);
 }
 
-inline GPUShaderFormat GPUDevice::GetShaderFormats()
+inline GPUShaderFormat GPUDeviceBase::GetShaderFormats()
 {
   return SDL::GetGPUShaderFormats(get());
 }
@@ -66990,7 +67061,7 @@ inline PropertiesRef GetGPUDeviceProperties(GPUDeviceRef device)
   return CheckError(SDL_GetGPUDeviceProperties(device));
 }
 
-inline PropertiesRef GPUDevice::GetProperties()
+inline PropertiesRef GPUDeviceBase::GetProperties()
 {
   return SDL::GetGPUDeviceProperties(get());
 }
@@ -67077,7 +67148,7 @@ inline GPUComputePipeline CreateGPUComputePipeline(
   return GPUComputePipeline(device, createinfo);
 }
 
-inline GPUComputePipeline GPUDevice::CreateComputePipeline(
+inline GPUComputePipeline GPUDeviceBase::CreateComputePipeline(
   const GPUComputePipelineCreateInfo& createinfo)
 {
   return GPUComputePipeline(get(), createinfo);
@@ -67131,7 +67202,7 @@ inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
   return GPUGraphicsPipeline(device, createinfo);
 }
 
-inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
+inline GPUGraphicsPipeline GPUDeviceBase::CreateGraphicsPipeline(
   const GPUGraphicsPipelineCreateInfo& createinfo)
 {
   return GPUGraphicsPipeline(get(), createinfo);
@@ -67184,7 +67255,7 @@ inline GPUSampler CreateGPUSampler(GPUDeviceRef device,
   return GPUSampler(device, createinfo);
 }
 
-inline GPUSampler GPUDevice::CreateSampler(
+inline GPUSampler GPUDeviceBase::CreateSampler(
   const GPUSamplerCreateInfo& createinfo)
 {
   return GPUSampler(get(), createinfo);
@@ -67285,7 +67356,8 @@ inline GPUShader CreateGPUShader(GPUDeviceRef device,
   return GPUShader(device, createinfo);
 }
 
-inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
+inline GPUShader GPUDeviceBase::CreateShader(
+  const GPUShaderCreateInfo& createinfo)
 {
   return GPUShader(get(), createinfo);
 }
@@ -67372,7 +67444,7 @@ inline GPUTexture CreateGPUTexture(GPUDeviceRef device,
   return GPUTexture(device, createinfo);
 }
 
-inline GPUTexture GPUDevice::CreateTexture(
+inline GPUTexture GPUDeviceBase::CreateTexture(
   const GPUTextureCreateInfo& createinfo)
 {
   return GPUTexture(get(), createinfo);
@@ -67469,7 +67541,8 @@ inline GPUBuffer CreateGPUBuffer(GPUDeviceRef device,
   return GPUBuffer(device, createinfo);
 }
 
-inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
+inline GPUBuffer GPUDeviceBase::CreateBuffer(
+  const GPUBufferCreateInfo& createinfo)
 {
   return GPUBuffer(get(), createinfo);
 }
@@ -67526,7 +67599,7 @@ inline GPUTransferBuffer CreateGPUTransferBuffer(
   return GPUTransferBuffer(device, createinfo);
 }
 
-inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
+inline GPUTransferBuffer GPUDeviceBase::CreateTransferBuffer(
   const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(get(), createinfo);
@@ -67576,7 +67649,7 @@ inline void SetGPUBufferName(GPUDeviceRef device,
   SDL_SetGPUBufferName(device, buffer, text);
 }
 
-inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
+inline void GPUDeviceBase::SetBufferName(GPUBuffer buffer, StringParam text)
 {
   SDL::SetGPUBufferName(get(), buffer, std::move(text));
 }
@@ -67605,7 +67678,7 @@ inline void SetGPUTextureName(GPUDeviceRef device,
   SDL_SetGPUTextureName(device, texture, text);
 }
 
-inline void GPUDevice::SetTextureName(GPUTexture texture, StringParam text)
+inline void GPUDeviceBase::SetTextureName(GPUTexture texture, StringParam text)
 {
   SDL::SetGPUTextureName(get(), texture, std::move(text));
 }
@@ -67711,7 +67784,7 @@ inline void ReleaseGPUTexture(GPUDeviceRef device, GPUTexture texture)
   SDL_ReleaseGPUTexture(device, texture);
 }
 
-inline void GPUDevice::ReleaseTexture(GPUTexture texture)
+inline void GPUDeviceBase::ReleaseTexture(GPUTexture texture)
 {
   SDL::ReleaseGPUTexture(get(), texture);
 }
@@ -67731,7 +67804,7 @@ inline void ReleaseGPUSampler(GPUDeviceRef device, GPUSampler sampler)
   SDL_ReleaseGPUSampler(device, sampler);
 }
 
-inline void GPUDevice::ReleaseSampler(GPUSampler sampler)
+inline void GPUDeviceBase::ReleaseSampler(GPUSampler sampler)
 {
   SDL::ReleaseGPUSampler(get(), sampler);
 }
@@ -67751,7 +67824,7 @@ inline void ReleaseGPUBuffer(GPUDeviceRef device, GPUBuffer buffer)
   SDL_ReleaseGPUBuffer(device, buffer);
 }
 
-inline void GPUDevice::ReleaseBuffer(GPUBuffer buffer)
+inline void GPUDeviceBase::ReleaseBuffer(GPUBuffer buffer)
 {
   SDL::ReleaseGPUBuffer(get(), buffer);
 }
@@ -67772,7 +67845,8 @@ inline void ReleaseGPUTransferBuffer(GPUDeviceRef device,
   SDL_ReleaseGPUTransferBuffer(device, transfer_buffer);
 }
 
-inline void GPUDevice::ReleaseTransferBuffer(GPUTransferBuffer transfer_buffer)
+inline void GPUDeviceBase::ReleaseTransferBuffer(
+  GPUTransferBuffer transfer_buffer)
 {
   SDL::ReleaseGPUTransferBuffer(get(), transfer_buffer);
 }
@@ -67793,7 +67867,7 @@ inline void ReleaseGPUComputePipeline(GPUDeviceRef device,
   SDL_ReleaseGPUComputePipeline(device, compute_pipeline);
 }
 
-inline void GPUDevice::ReleaseComputePipeline(
+inline void GPUDeviceBase::ReleaseComputePipeline(
   GPUComputePipeline compute_pipeline)
 {
   SDL::ReleaseGPUComputePipeline(get(), compute_pipeline);
@@ -67814,7 +67888,7 @@ inline void ReleaseGPUShader(GPUDeviceRef device, GPUShader shader)
   SDL_ReleaseGPUShader(device, shader);
 }
 
-inline void GPUDevice::ReleaseShader(GPUShader shader)
+inline void GPUDeviceBase::ReleaseShader(GPUShader shader)
 {
   SDL::ReleaseGPUShader(get(), shader);
 }
@@ -67835,7 +67909,7 @@ inline void ReleaseGPUGraphicsPipeline(GPUDeviceRef device,
   SDL_ReleaseGPUGraphicsPipeline(device, graphics_pipeline);
 }
 
-inline void GPUDevice::ReleaseGraphicsPipeline(
+inline void GPUDeviceBase::ReleaseGraphicsPipeline(
   GPUGraphicsPipeline graphics_pipeline)
 {
   SDL::ReleaseGPUGraphicsPipeline(get(), graphics_pipeline);
@@ -67870,7 +67944,7 @@ inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceRef device)
   return CheckError(SDL_AcquireGPUCommandBuffer(device));
 }
 
-inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
+inline GPUCommandBuffer GPUDeviceBase::AcquireCommandBuffer()
 {
   return SDL::AcquireGPUCommandBuffer(get());
 }
@@ -68834,8 +68908,8 @@ inline void* MapGPUTransferBuffer(GPUDeviceRef device,
   return CheckError(SDL_MapGPUTransferBuffer(device, transfer_buffer, cycle));
 }
 
-inline void* GPUDevice::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
-                                          bool cycle)
+inline void* GPUDeviceBase::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
+                                              bool cycle)
 {
   return SDL::MapGPUTransferBuffer(get(), transfer_buffer, cycle);
 }
@@ -68854,7 +68928,8 @@ inline void UnmapGPUTransferBuffer(GPUDeviceRef device,
   SDL_UnmapGPUTransferBuffer(device, transfer_buffer);
 }
 
-inline void GPUDevice::UnmapTransferBuffer(GPUTransferBuffer transfer_buffer)
+inline void GPUDeviceBase::UnmapTransferBuffer(
+  GPUTransferBuffer transfer_buffer)
 {
   SDL::UnmapGPUTransferBuffer(get(), transfer_buffer);
 }
@@ -69152,7 +69227,7 @@ inline bool WindowSupportsGPUSwapchainComposition(
     device, window, swapchain_composition);
 }
 
-inline bool GPUDevice::WindowSupportsSwapchainComposition(
+inline bool GPUDeviceBase::WindowSupportsSwapchainComposition(
   WindowRef window,
   GPUSwapchainComposition swapchain_composition)
 {
@@ -69181,8 +69256,9 @@ inline bool WindowSupportsGPUPresentMode(GPUDeviceRef device,
   return SDL_WindowSupportsGPUPresentMode(device, window, present_mode);
 }
 
-inline bool GPUDevice::WindowSupportsPresentMode(WindowRef window,
-                                                 GPUPresentMode present_mode)
+inline bool GPUDeviceBase::WindowSupportsPresentMode(
+  WindowRef window,
+  GPUPresentMode present_mode)
 {
   return SDL::WindowSupportsGPUPresentMode(get(), window, present_mode);
 }
@@ -69217,7 +69293,7 @@ inline void ClaimWindowForGPUDevice(GPUDeviceRef device, WindowRef window)
   CheckError(SDL_ClaimWindowForGPUDevice(device, window));
 }
 
-inline void GPUDevice::ClaimWindow(WindowRef window)
+inline void GPUDeviceBase::ClaimWindow(WindowRef window)
 {
   SDL::ClaimWindowForGPUDevice(get(), window);
 }
@@ -69237,7 +69313,7 @@ inline void ReleaseWindowFromGPUDevice(GPUDeviceRef device, WindowRef window)
   SDL_ReleaseWindowFromGPUDevice(device, window);
 }
 
-inline void GPUDevice::ReleaseWindow(WindowRef window)
+inline void GPUDeviceBase::ReleaseWindow(WindowRef window)
 {
   SDL::ReleaseWindowFromGPUDevice(get(), window);
 }
@@ -69274,7 +69350,7 @@ inline bool SetGPUSwapchainParameters(
     device, window, swapchain_composition, present_mode);
 }
 
-inline bool GPUDevice::SetSwapchainParameters(
+inline bool GPUDeviceBase::SetSwapchainParameters(
   WindowRef window,
   GPUSwapchainComposition swapchain_composition,
   GPUPresentMode present_mode)
@@ -69314,7 +69390,8 @@ inline bool SetGPUAllowedFramesInFlight(GPUDeviceRef device,
   return SDL_SetGPUAllowedFramesInFlight(device, allowed_frames_in_flight);
 }
 
-inline bool GPUDevice::SetAllowedFramesInFlight(Uint32 allowed_frames_in_flight)
+inline bool GPUDeviceBase::SetAllowedFramesInFlight(
+  Uint32 allowed_frames_in_flight)
 {
   return SDL::SetGPUAllowedFramesInFlight(get(), allowed_frames_in_flight);
 }
@@ -69336,7 +69413,8 @@ inline GPUTextureFormat GetGPUSwapchainTextureFormat(GPUDeviceRef device,
   return SDL_GetGPUSwapchainTextureFormat(device, window);
 }
 
-inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowRef window)
+inline GPUTextureFormat GPUDeviceBase::GetSwapchainTextureFormat(
+  WindowRef window)
 {
   return SDL::GetGPUSwapchainTextureFormat(get(), window);
 }
@@ -69434,7 +69512,7 @@ inline void WaitForGPUSwapchain(GPUDeviceRef device, WindowRef window)
   CheckError(SDL_WaitForGPUSwapchain(device, window));
 }
 
-inline void GPUDevice::WaitForSwapchain(WindowRef window)
+inline void GPUDeviceBase::WaitForSwapchain(WindowRef window)
 {
   SDL::WaitForGPUSwapchain(get(), window);
 }
@@ -69616,7 +69694,7 @@ inline void WaitForGPUIdle(GPUDeviceRef device)
   CheckError(SDL_WaitForGPUIdle(device));
 }
 
-inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(get()); }
+inline void GPUDeviceBase::WaitForIdle() { SDL::WaitForGPUIdle(get()); }
 
 /**
  * Blocks the thread until the given fences are signaled.
@@ -69640,8 +69718,8 @@ inline void WaitForGPUFences(GPUDeviceRef device,
     device, wait_all, fences.data(), narrowU32(fences.size())));
 }
 
-inline void GPUDevice::WaitForFences(bool wait_all,
-                                     std::span<GPUFence* const> fences)
+inline void GPUDeviceBase::WaitForFences(bool wait_all,
+                                         std::span<GPUFence* const> fences)
 {
   SDL::WaitForGPUFences(get(), wait_all, fences);
 }
@@ -69662,7 +69740,7 @@ inline bool QueryGPUFence(GPUDeviceRef device, GPUFence* fence)
   return SDL_QueryGPUFence(device, fence);
 }
 
-inline bool GPUDevice::QueryFence(GPUFence* fence)
+inline bool GPUDeviceBase::QueryFence(GPUFence* fence)
 {
   return SDL::QueryGPUFence(get(), fence);
 }
@@ -69684,7 +69762,7 @@ inline void ReleaseGPUFence(GPUDeviceRef device, GPUFence* fence)
   SDL_ReleaseGPUFence(device, fence);
 }
 
-inline void GPUDevice::ReleaseFence(GPUFence* fence)
+inline void GPUDeviceBase::ReleaseFence(GPUFence* fence)
 {
   SDL::ReleaseGPUFence(get(), fence);
 }
@@ -69723,9 +69801,9 @@ inline bool GPUTextureSupportsFormat(GPUDeviceRef device,
   return SDL_GPUTextureSupportsFormat(device, format, type, usage);
 }
 
-inline bool GPUDevice::TextureSupportsFormat(GPUTextureFormat format,
-                                             GPUTextureType type,
-                                             GPUTextureUsageFlags usage)
+inline bool GPUDeviceBase::TextureSupportsFormat(GPUTextureFormat format,
+                                                 GPUTextureType type,
+                                                 GPUTextureUsageFlags usage)
 {
   return SDL::GPUTextureSupportsFormat(get(), format, type, usage);
 }
@@ -69747,8 +69825,9 @@ inline bool GPUTextureSupportsSampleCount(GPUDeviceRef device,
   return SDL_GPUTextureSupportsSampleCount(device, format, sample_count);
 }
 
-inline bool GPUDevice::TextureSupportsSampleCount(GPUTextureFormat format,
-                                                  GPUSampleCount sample_count)
+inline bool GPUDeviceBase::TextureSupportsSampleCount(
+  GPUTextureFormat format,
+  GPUSampleCount sample_count)
 {
   return SDL::GPUTextureSupportsSampleCount(get(), format, sample_count);
 }
@@ -69822,7 +69901,7 @@ inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
  */
 inline void GDKSuspendGPU(GPUDeviceRef device) { SDL_GDKSuspendGPU(device); }
 
-inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(get()); }
+inline void GPUDeviceBase::GDKSuspendGPU() { SDL::GDKSuspendGPU(get()); }
 
 /**
  * Call this to resume GPU operation on Xbox when you receive the
@@ -69839,7 +69918,7 @@ inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(get()); }
  */
 inline void GDKResumeGPU(GPUDeviceRef device) { SDL_GDKResumeGPU(device); }
 
-inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(get()); }
+inline void GPUDeviceBase::GDKResumeGPU() { SDL::GDKResumeGPU(get()); }
 
 #endif /* SDL_PLATFORM_GDK */
 
@@ -69887,6 +69966,9 @@ inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(get()); }
  */
 
 // Forward decl
+struct JoystickBase;
+
+// Forward decl
 struct Joystick;
 
 /// Alias to raw representation for Joystick.
@@ -69897,7 +69979,7 @@ using JoystickRaw = SDL_Joystick*;
  *
  * This does not take ownership!
  */
-using JoystickRef = ResourceRef<Joystick>;
+using JoystickRef = ResourceRefT<JoystickBase>;
 
 /// Alias to raw representation for JoystickID.
 using JoystickIDRaw = SDL_JoystickID;
@@ -70231,72 +70313,13 @@ constexpr Uint8 HAT_LEFTUP = SDL_HAT_LEFTUP; ///< LEFTUP
 constexpr Uint8 HAT_LEFTDOWN = SDL_HAT_LEFTDOWN; ///< LEFTDOWN
 
 /**
- * The joystick structure used to identify an SDL joystick.
+ * Base class to Joystick.
  *
- * This is opaque data.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Joystick
  */
-struct Joystick : ResourceBase<JoystickRaw>
+struct JoystickBase : ResourceBaseT<JoystickRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Joystick.
-   *
-   * @param resource a JoystickRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Joystick(JoystickRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Joystick(const Joystick& other) = delete;
-
-  /// Move constructor
-  constexpr Joystick(Joystick&& other) noexcept
-    : Joystick(other.release())
-  {
-  }
-
-  constexpr Joystick(const JoystickRef& other) = delete;
-
-  constexpr Joystick(JoystickRef&& other) = delete;
-
-  /**
-   * Open a joystick for use.
-   *
-   * The joystick subsystem must be initialized before a joystick can be opened
-   * for use.
-   *
-   * @param instance_id the joystick instance ID.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseJoystick
-   */
-  Joystick(JoystickID instance_id);
-
-  /// Destructor
-  ~Joystick() { SDL_CloseJoystick(get()); }
-
-  /// Assignment operator.
-  constexpr Joystick& operator=(Joystick&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Joystick& operator=(const Joystick& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close a joystick previously opened with OpenJoystick().
@@ -70981,6 +71004,65 @@ struct Joystick : ResourceBase<JoystickRaw>
 };
 
 /**
+ * The joystick structure used to identify an SDL joystick.
+ *
+ * This is opaque data.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Joystick : JoystickBase
+{
+  using JoystickBase::JoystickBase;
+
+  /**
+   * Constructs from raw Joystick.
+   *
+   * @param resource a JoystickRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Joystick(JoystickRaw resource) noexcept
+    : JoystickBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Joystick(Joystick&& other) noexcept
+    : Joystick(other.release())
+  {
+  }
+
+  /**
+   * Open a joystick for use.
+   *
+   * The joystick subsystem must be initialized before a joystick can be opened
+   * for use.
+   *
+   * @param instance_id the joystick instance ID.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseJoystick
+   */
+  Joystick(JoystickID instance_id);
+
+  /// Destructor
+  ~Joystick() { SDL_CloseJoystick(get()); }
+
+  /// Assignment operator.
+  constexpr Joystick& operator=(Joystick&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * The largest value an Joystick's axis can report.
  *
  * @since This constant is available since SDL 3.2.0.
@@ -71395,7 +71477,7 @@ inline Joystick JoystickID::OpenJoystick() { return Joystick(m_joystickID); }
  */
 inline JoystickRef GetJoystickFromID(JoystickID instance_id)
 {
-  return {CheckError(SDL_GetJoystickFromID(instance_id))};
+  return CheckError(SDL_GetJoystickFromID(instance_id));
 }
 
 inline JoystickRef JoystickID::GetJoystickFromID()
@@ -71419,7 +71501,7 @@ inline JoystickRef JoystickID::GetJoystickFromID()
  */
 inline JoystickRef GetJoystickFromPlayerIndex(int player_index)
 {
-  return {CheckError(SDL_GetJoystickFromPlayerIndex(player_index))};
+  return CheckError(SDL_GetJoystickFromPlayerIndex(player_index));
 }
 
 /**
@@ -71565,7 +71647,7 @@ inline void SetJoystickVirtualAxis(JoystickRef joystick, int axis, Sint16 value)
   CheckError(SDL_SetJoystickVirtualAxis(joystick, axis, value));
 }
 
-inline void Joystick::SetVirtualAxis(int axis, Sint16 value)
+inline void JoystickBase::SetVirtualAxis(int axis, Sint16 value)
 {
   SDL::SetJoystickVirtualAxis(get(), axis, value);
 }
@@ -71602,7 +71684,7 @@ inline void SetJoystickVirtualBall(JoystickRef joystick,
   CheckError(SDL_SetJoystickVirtualBall(joystick, ball, xrel, yrel));
 }
 
-inline void Joystick::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
+inline void JoystickBase::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
 {
   SDL::SetJoystickVirtualBall(get(), ball, xrel, yrel);
 }
@@ -71637,7 +71719,7 @@ inline void SetJoystickVirtualButton(JoystickRef joystick,
   CheckError(SDL_SetJoystickVirtualButton(joystick, button, down));
 }
 
-inline void Joystick::SetVirtualButton(int button, bool down)
+inline void JoystickBase::SetVirtualButton(int button, bool down)
 {
   SDL::SetJoystickVirtualButton(get(), button, down);
 }
@@ -71670,7 +71752,7 @@ inline void SetJoystickVirtualHat(JoystickRef joystick, int hat, Uint8 value)
   CheckError(SDL_SetJoystickVirtualHat(joystick, hat, value));
 }
 
-inline void Joystick::SetVirtualHat(int hat, Uint8 value)
+inline void JoystickBase::SetVirtualHat(int hat, Uint8 value)
 {
   SDL::SetJoystickVirtualHat(get(), hat, value);
 }
@@ -71713,11 +71795,11 @@ inline void SetJoystickVirtualTouchpad(JoystickRef joystick,
     joystick, touchpad, finger, down, p.x, p.y, pressure));
 }
 
-inline void Joystick::SetVirtualTouchpad(int touchpad,
-                                         int finger,
-                                         bool down,
-                                         const FPointRaw& p,
-                                         float pressure)
+inline void JoystickBase::SetVirtualTouchpad(int touchpad,
+                                             int finger,
+                                             bool down,
+                                             const FPointRaw& p,
+                                             float pressure)
 {
   SDL::SetJoystickVirtualTouchpad(get(), touchpad, finger, down, p, pressure);
 }
@@ -71758,10 +71840,10 @@ inline void SendJoystickVirtualSensorData(JoystickRef joystick,
     joystick, type, sensor_timestamp, data, num_values));
 }
 
-inline void Joystick::SendVirtualSensorData(SensorType type,
-                                            Uint64 sensor_timestamp,
-                                            const float* data,
-                                            int num_values)
+inline void JoystickBase::SendVirtualSensorData(SensorType type,
+                                                Uint64 sensor_timestamp,
+                                                const float* data,
+                                                int num_values)
 {
   SDL::SendJoystickVirtualSensorData(
     get(), type, sensor_timestamp, data, num_values);
@@ -71793,10 +71875,10 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
  */
 inline PropertiesRef GetJoystickProperties(JoystickRef joystick)
 {
-  return {CheckError(SDL_GetJoystickProperties(joystick))};
+  return CheckError(SDL_GetJoystickProperties(joystick));
 }
 
-inline PropertiesRef Joystick::GetProperties()
+inline PropertiesRef JoystickBase::GetProperties()
 {
   return SDL::GetJoystickProperties(get());
 }
@@ -71848,7 +71930,10 @@ inline const char* GetJoystickName(JoystickRef joystick)
   return SDL_GetJoystickName(joystick);
 }
 
-inline const char* Joystick::GetName() { return SDL::GetJoystickName(get()); }
+inline const char* JoystickBase::GetName()
+{
+  return SDL::GetJoystickName(get());
+}
 
 /**
  * Get the implementation dependent path of a joystick.
@@ -71868,7 +71953,10 @@ inline const char* GetJoystickPath(JoystickRef joystick)
   return SDL_GetJoystickPath(joystick);
 }
 
-inline const char* Joystick::GetPath() { return SDL::GetJoystickPath(get()); }
+inline const char* JoystickBase::GetPath()
+{
+  return SDL::GetJoystickPath(get());
+}
 
 /**
  * Get the player index of an opened joystick.
@@ -71890,7 +71978,7 @@ inline int GetJoystickPlayerIndex(JoystickRef joystick)
   return SDL_GetJoystickPlayerIndex(joystick);
 }
 
-inline int Joystick::GetPlayerIndex()
+inline int JoystickBase::GetPlayerIndex()
 {
   return SDL::GetJoystickPlayerIndex(get());
 }
@@ -71914,7 +72002,7 @@ inline void SetJoystickPlayerIndex(JoystickRef joystick, int player_index)
   CheckError(SDL_SetJoystickPlayerIndex(joystick, player_index));
 }
 
-inline void Joystick::SetPlayerIndex(int player_index)
+inline void JoystickBase::SetPlayerIndex(int player_index)
 {
   SDL::SetJoystickPlayerIndex(get(), player_index);
 }
@@ -71940,7 +72028,7 @@ inline GUID GetJoystickGUID(JoystickRef joystick)
   return SDL_GetJoystickGUID(joystick);
 }
 
-inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(get()); }
+inline GUID JoystickBase::GetGUID() { return SDL::GetJoystickGUID(get()); }
 
 /**
  * Get the USB vendor ID of an opened joystick, if available.
@@ -71961,7 +72049,10 @@ inline Uint16 GetJoystickVendor(JoystickRef joystick)
   return SDL_GetJoystickVendor(joystick);
 }
 
-inline Uint16 Joystick::GetVendor() { return SDL::GetJoystickVendor(get()); }
+inline Uint16 JoystickBase::GetVendor()
+{
+  return SDL::GetJoystickVendor(get());
+}
 
 /**
  * Get the USB product ID of an opened joystick, if available.
@@ -71982,7 +72073,10 @@ inline Uint16 GetJoystickProduct(JoystickRef joystick)
   return SDL_GetJoystickProduct(joystick);
 }
 
-inline Uint16 Joystick::GetProduct() { return SDL::GetJoystickProduct(get()); }
+inline Uint16 JoystickBase::GetProduct()
+{
+  return SDL::GetJoystickProduct(get());
+}
 
 /**
  * Get the product version of an opened joystick, if available.
@@ -72003,7 +72097,7 @@ inline Uint16 GetJoystickProductVersion(JoystickRef joystick)
   return SDL_GetJoystickProductVersion(joystick);
 }
 
-inline Uint16 Joystick::GetProductVersion()
+inline Uint16 JoystickBase::GetProductVersion()
 {
   return SDL::GetJoystickProductVersion(get());
 }
@@ -72025,7 +72119,7 @@ inline Uint16 GetJoystickFirmwareVersion(JoystickRef joystick)
   return SDL_GetJoystickFirmwareVersion(joystick);
 }
 
-inline Uint16 Joystick::GetFirmwareVersion()
+inline Uint16 JoystickBase::GetFirmwareVersion()
 {
   return SDL::GetJoystickFirmwareVersion(get());
 }
@@ -72048,7 +72142,7 @@ inline const char* GetJoystickSerial(JoystickRef joystick)
   return SDL_GetJoystickSerial(joystick);
 }
 
-inline const char* Joystick::GetSerial()
+inline const char* JoystickBase::GetSerial()
 {
   return SDL::GetJoystickSerial(get());
 }
@@ -72070,7 +72164,10 @@ inline JoystickType GetJoystickType(JoystickRef joystick)
   return SDL_GetJoystickType(joystick);
 }
 
-inline JoystickType Joystick::GetType() { return SDL::GetJoystickType(get()); }
+inline JoystickType JoystickBase::GetType()
+{
+  return SDL::GetJoystickType(get());
+}
 
 /**
  * Get the device information encoded in a GUID structure.
@@ -72115,7 +72212,7 @@ inline bool JoystickConnected(JoystickRef joystick)
   return SDL_JoystickConnected(joystick);
 }
 
-inline bool Joystick::Connected() { return SDL::JoystickConnected(get()); }
+inline bool JoystickBase::Connected() { return SDL::JoystickConnected(get()); }
 
 /**
  * Get the instance ID of an opened joystick.
@@ -72133,7 +72230,7 @@ inline JoystickID GetJoystickID(JoystickRef joystick)
   return CheckError(SDL_GetJoystickID(joystick));
 }
 
-inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(get()); }
+inline JoystickID JoystickBase::GetID() { return SDL::GetJoystickID(get()); }
 
 /**
  * Get the number of general axis controls on a joystick.
@@ -72160,7 +72257,7 @@ inline int GetNumJoystickAxes(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickAxes(joystick));
 }
 
-inline int Joystick::GetNumAxes() { return SDL::GetNumJoystickAxes(get()); }
+inline int JoystickBase::GetNumAxes() { return SDL::GetNumJoystickAxes(get()); }
 
 /**
  * Get the number of trackballs on a joystick.
@@ -72188,7 +72285,10 @@ inline int GetNumJoystickBalls(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickBalls(joystick));
 }
 
-inline int Joystick::GetNumBalls() { return SDL::GetNumJoystickBalls(get()); }
+inline int JoystickBase::GetNumBalls()
+{
+  return SDL::GetNumJoystickBalls(get());
+}
 
 /**
  * Get the number of POV hats on a joystick.
@@ -72211,7 +72311,7 @@ inline int GetNumJoystickHats(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickHats(joystick));
 }
 
-inline int Joystick::GetNumHats() { return SDL::GetNumJoystickHats(get()); }
+inline int JoystickBase::GetNumHats() { return SDL::GetNumJoystickHats(get()); }
 
 /**
  * Get the number of buttons on a joystick.
@@ -72234,7 +72334,7 @@ inline int GetNumJoystickButtons(JoystickRef joystick)
   return CheckError(SDL_GetNumJoystickButtons(joystick));
 }
 
-inline int Joystick::GetNumButtons()
+inline int JoystickBase::GetNumButtons()
 {
   return SDL::GetNumJoystickButtons(get());
 }
@@ -72316,7 +72416,7 @@ inline Sint16 GetJoystickAxis(JoystickRef joystick, int axis)
   return SDL_GetJoystickAxis(joystick, axis);
 }
 
-inline Sint16 Joystick::GetAxis(int axis)
+inline Sint16 JoystickBase::GetAxis(int axis)
 {
   return SDL::GetJoystickAxis(get(), axis);
 }
@@ -72344,7 +72444,7 @@ inline bool GetJoystickAxisInitialState(JoystickRef joystick,
   return SDL_GetJoystickAxisInitialState(joystick, axis, state);
 }
 
-inline bool Joystick::GetAxisInitialState(int axis, Sint16* state)
+inline bool JoystickBase::GetAxisInitialState(int axis, Sint16* state)
 {
   return SDL::GetJoystickAxisInitialState(get(), axis, state);
 }
@@ -72374,7 +72474,7 @@ inline void GetJoystickBall(JoystickRef joystick, int ball, int* dx, int* dy)
   CheckError(SDL_GetJoystickBall(joystick, ball, dx, dy));
 }
 
-inline void Joystick::GetBall(int ball, int* dx, int* dy)
+inline void JoystickBase::GetBall(int ball, int* dx, int* dy)
 {
   SDL::GetJoystickBall(get(), ball, dx, dy);
 }
@@ -72399,7 +72499,7 @@ inline Uint8 GetJoystickHat(JoystickRef joystick, int hat)
   return SDL_GetJoystickHat(joystick, hat);
 }
 
-inline Uint8 Joystick::GetHat(int hat)
+inline Uint8 JoystickBase::GetHat(int hat)
 {
   return SDL::GetJoystickHat(get(), hat);
 }
@@ -72423,7 +72523,7 @@ inline bool GetJoystickButton(JoystickRef joystick, int button)
   return SDL_GetJoystickButton(joystick, button);
 }
 
-inline bool Joystick::GetButton(int button)
+inline bool JoystickBase::GetButton(int button)
 {
   return SDL::GetJoystickButton(get(), button);
 }
@@ -72458,9 +72558,9 @@ inline bool RumbleJoystick(JoystickRef joystick,
     joystick, low_frequency_rumble, high_frequency_rumble, duration_ms);
 }
 
-inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
-                             Uint16 high_frequency_rumble,
-                             Uint32 duration_ms)
+inline bool JoystickBase::Rumble(Uint16 low_frequency_rumble,
+                                 Uint16 high_frequency_rumble,
+                                 Uint32 duration_ms)
 {
   return SDL::RumbleJoystick(
     get(), low_frequency_rumble, high_frequency_rumble, duration_ms);
@@ -72502,9 +72602,9 @@ inline void RumbleJoystickTriggers(JoystickRef joystick,
     joystick, left_rumble, right_rumble, duration_ms));
 }
 
-inline void Joystick::RumbleTriggers(Uint16 left_rumble,
-                                     Uint16 right_rumble,
-                                     Uint32 duration_ms)
+inline void JoystickBase::RumbleTriggers(Uint16 left_rumble,
+                                         Uint16 right_rumble,
+                                         Uint32 duration_ms)
 {
   SDL::RumbleJoystickTriggers(get(), left_rumble, right_rumble, duration_ms);
 }
@@ -72536,7 +72636,7 @@ inline void SetJoystickLED(JoystickRef joystick,
   CheckError(SDL_SetJoystickLED(joystick, red, green, blue));
 }
 
-inline void Joystick::SetLED(Uint8 red, Uint8 green, Uint8 blue)
+inline void JoystickBase::SetLED(Uint8 red, Uint8 green, Uint8 blue)
 {
   SDL::SetJoystickLED(get(), red, green, blue);
 }
@@ -72558,7 +72658,7 @@ inline void SendJoystickEffect(JoystickRef joystick, const void* data, int size)
   CheckError(SDL_SendJoystickEffect(joystick, data, size));
 }
 
-inline void Joystick::SendEffect(const void* data, int size)
+inline void JoystickBase::SendEffect(const void* data, int size)
 {
   SDL::SendJoystickEffect(get(), data, size);
 }
@@ -72576,7 +72676,7 @@ inline void Joystick::SendEffect(const void* data, int size)
  */
 inline void CloseJoystick(JoystickRaw joystick) { SDL_CloseJoystick(joystick); }
 
-inline void Joystick::Close() { CloseJoystick(release()); }
+inline void JoystickBase::Close() { CloseJoystick(release()); }
 
 /**
  * Get the connection state of a joystick.
@@ -72594,7 +72694,7 @@ inline JoystickConnectionState GetJoystickConnectionState(JoystickRef joystick)
   return CheckError(SDL_GetJoystickConnectionState(joystick));
 }
 
-inline JoystickConnectionState Joystick::GetConnectionState()
+inline JoystickConnectionState JoystickBase::GetConnectionState()
 {
   return SDL::GetJoystickConnectionState(get());
 }
@@ -72624,7 +72724,7 @@ inline PowerState GetJoystickPowerInfo(JoystickRef joystick, int* percent)
   return SDL_GetJoystickPowerInfo(joystick, percent);
 }
 
-inline PowerState Joystick::GetPowerInfo(int* percent)
+inline PowerState JoystickBase::GetPowerInfo(int* percent)
 {
   return SDL::GetJoystickPowerInfo(get(), percent);
 }
@@ -72845,12 +72945,37 @@ inline const char* Keycode::GetName() const
   return SDL_GetKeyName(m_keycode);
 }
 
-inline void Window::StartTextInput() { CheckError(SDL_StartTextInput(get())); }
-
-inline void Window::StartTextInput(PropertiesRef props)
+/**
+ * Start accepting Unicode text input events in a window.
+ *
+ * This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING
+ * events) in the specified window. Please use this function paired with
+ * StopTextInput().
+ *
+ * Text input events are not received by default.
+ *
+ * On some platforms using this function shows the screen keyboard and/or
+ * activates an IME, which can prevent some key press events from being passed
+ * through.
+ *
+ * @param window the window to enable text input.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetTextInputArea
+ * @sa StartTextInputWithProperties
+ * @sa StopTextInput
+ * @sa TextInputActive
+ */
+inline void StartTextInput(WindowRef window)
 {
-  CheckError(SDL_StartTextInputWithProperties(get(), props));
+  CheckError(SDL_StartTextInput(window));
 }
+
+inline void WindowBase::StartTextInput() { SDL::StartTextInput(get()); }
 
 /**
  * Text input type.
@@ -72861,7 +72986,7 @@ inline void Window::StartTextInput(PropertiesRef props)
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
+ * @sa StartTextInputWithProperties
  */
 using TextInputType = SDL_TextInputType;
 
@@ -72905,7 +73030,7 @@ constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
+ * @sa StartTextInputWithProperties
  */
 using Capitalization = SDL_Capitalization;
 
@@ -72923,9 +73048,66 @@ constexpr Capitalization CAPITALIZE_LETTERS =
   SDL_CAPITALIZE_LETTERS; ///< All letters will be capitalized
 
 /**
- * Properties for text input to be used on Window.StartTextInput.
+ * Start accepting Unicode text input events in a window, with properties
+ * describing the input.
  *
- * @sa Window.StartTextInput
+ * This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING
+ * events) in the specified window. Please use this function paired with
+ * StopTextInput().
+ *
+ * Text input events are not received by default.
+ *
+ * On some platforms using this function shows the screen keyboard and/or
+ * activates an IME, which can prevent some key press events from being passed
+ * through.
+ *
+ * These are the supported properties:
+ *
+ * - `prop.TextInput.TYPE_NUMBER` - an TextInputType value that describes text
+ *   being input, defaults to TEXTINPUT_TYPE_TEXT.
+ * - `prop.TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that
+ *   describes how text should be capitalized, defaults to CAPITALIZE_SENTENCES
+ *   for normal text entry, CAPITALIZE_WORDS for TEXTINPUT_TYPE_TEXT_NAME, and
+ *   CAPITALIZE_NONE for e-mail addresses, usernames, and passwords.
+ * - `prop.TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion and
+ *   auto correction, defaults to true.
+ * - `prop.TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are
+ *   allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is "0" or
+ *   is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME is "1".
+ *
+ * On Android you can directly specify the input type:
+ *
+ * - `prop.TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use,
+ *   overriding other properties. This is documented at
+ *   https://developer.android.com/reference/android/text/InputType
+ *
+ * @param window the window to enable text input.
+ * @param props the properties to use.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetTextInputArea
+ * @sa StartTextInput
+ * @sa StopTextInput
+ * @sa TextInputActive
+ */
+inline void StartTextInputWithProperties(WindowRef window, PropertiesRef props)
+{
+  CheckError(SDL_StartTextInputWithProperties(window, props));
+}
+
+inline void WindowBase::StartTextInputWithProperties(PropertiesRef props)
+{
+  SDL::StartTextInputWithProperties(get(), props);
+}
+
+/**
+ * Properties for text input to be used on StartTextInputWithProperties.
+ *
+ * @sa StartTextInputWithProperties
  */
 namespace prop::TextInput {
 
@@ -72955,26 +73137,126 @@ constexpr auto ANDROID_INPUTTYPE_NUMBER =
 
 } // namespace prop::TextInput
 
-inline bool Window::IsTextInputActive() const
+/**
+ * Check whether or not Unicode text input events are enabled for a window.
+ *
+ * @param window the window to check.
+ * @returns true if text input events are enabled else false.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa StartTextInput
+ */
+inline bool TextInputActive(WindowRef window)
 {
-  return SDL_TextInputActive(get());
+  return SDL_TextInputActive(window);
 }
 
-inline void Window::StopTextInput() { CheckError(SDL_StopTextInput(get())); }
-
-inline void Window::ClearComposition()
+inline bool WindowBase::IsTextInputActive() const
 {
-  CheckError(SDL_ClearComposition(get()));
+  return TextInputActive(get());
 }
 
-inline void Window::SetTextInputArea(const RectRaw& rect, int cursor)
+/**
+ * Stop receiving any text input events in a window.
+ *
+ * If StartTextInput() showed the screen keyboard, this function will hide it.
+ *
+ * @param window the window to disable text input.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa StartTextInput
+ * @sa StartTextInputWithProperties
+ */
+inline void StopTextInput(WindowRef window)
 {
-  CheckError(SDL_SetTextInputArea(get(), &rect, cursor));
+  CheckError(SDL_StopTextInput(window));
 }
 
-inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)
+inline void WindowBase::StopTextInput() { SDL::StopTextInput(get()); }
+
+/**
+ * Dismiss the composition window/IME without disabling the subsystem.
+ *
+ * @param window the window to affect.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa StartTextInput
+ * @sa StopTextInput
+ */
+inline void ClearComposition(WindowRef window)
 {
-  CheckError(SDL_GetTextInputArea(get(), rect, cursor));
+  CheckError(SDL_ClearComposition(window));
+}
+
+inline void WindowBase::ClearComposition() { SDL::ClearComposition(get()); }
+
+/**
+ * Set the area used to type Unicode text input.
+ *
+ * Native input methods may place a window with word suggestions near the
+ * cursor, without covering the text being entered.
+ *
+ * @param window the window for which to set the text input area.
+ * @param rect the Rect representing the text input area, in window coordinates,
+ *             or nullptr to clear it.
+ * @param cursor the offset of the current cursor location relative to
+ *               `rect->x`, in window coordinates.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetTextInputArea
+ * @sa StartTextInput
+ */
+inline void SetTextInputArea(WindowRef window, const RectRaw& rect, int cursor)
+{
+  CheckError(SDL_SetTextInputArea(window, &rect, cursor));
+}
+
+inline void WindowBase::SetTextInputArea(const RectRaw& rect, int cursor)
+{
+  SDL::SetTextInputArea(get(), rect, cursor);
+}
+
+/**
+ * Get the area used to type Unicode text input.
+ *
+ * This returns the values previously set by SetTextInputArea().
+ *
+ * @param window the window for which to query the text input area.
+ * @param rect a pointer to an Rect filled in with the text input area, may be
+ *             nullptr.
+ * @param cursor a pointer to the offset of the current cursor location relative
+ *               to `rect->x`, may be nullptr.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetTextInputArea
+ */
+inline void GetTextInputArea(WindowRef window, RectRaw* rect, int* cursor)
+{
+  CheckError(SDL_GetTextInputArea(window, rect, cursor));
+}
+
+inline void WindowBase::GetTextInputArea(RectRaw* rect, int* cursor) const
+{
+  SDL::GetTextInputArea(get(), rect, cursor);
 }
 
 /**
@@ -72987,17 +73269,34 @@ inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
- * @sa Window.IsScreenKeyboardShown
+ * @sa StartTextInput
+ * @sa ScreenKeyboardShown
  */
 inline bool HasScreenKeyboardSupport()
 {
   return SDL_HasScreenKeyboardSupport();
 }
 
-inline bool Window::IsScreenKeyboardShown() const
+/**
+ * Check whether the screen keyboard is shown for given window.
+ *
+ * @param window the window for which screen keyboard should be queried.
+ * @returns true if screen keyboard is shown or false if not.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasScreenKeyboardSupport
+ */
+inline bool ScreenKeyboardShown(WindowRef window)
 {
-  return SDL_ScreenKeyboardShown(get());
+  return SDL_ScreenKeyboardShown(window);
+}
+
+inline bool WindowBase::IsScreenKeyboardShown() const
+{
+  return ScreenKeyboardShown(get());
 }
 
 /// @}
@@ -73461,6 +73760,9 @@ inline void ShowSimpleMessageBox(MessageBoxFlags flags,
  */
 
 // Forward decl
+struct MetalViewBase;
+
+// Forward decl
 struct MetalView;
 
 /// Alias to raw representation for MetalView.
@@ -73471,7 +73773,42 @@ using MetalViewRaw = SDL_MetalView;
  *
  * This does not take ownership!
  */
-using MetalViewRef = ResourceRef<MetalView>;
+using MetalViewRef = ResourceRefT<MetalViewBase>;
+
+/**
+ * Base class to MetalView.
+ *
+ * @see MetalView
+ */
+struct MetalViewBase : ResourceBaseT<MetalViewRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Destroy an existing MetalView object.
+   *
+   * This should be called before DestroyWindow, if Metal_CreateView was called
+   * after CreateWindow.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Metal_CreateView
+   */
+  void Destroy();
+
+  /**
+   * Get a pointer to the backing CAMetalLayer for the given view.
+   *
+   * @returns a pointer.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void* GetLayer();
+};
 
 /**
  * A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
@@ -73480,9 +73817,9 @@ using MetalViewRef = ResourceRef<MetalView>;
  *
  * @cat resource
  */
-struct MetalView : ResourceBase<MetalViewRaw>
+struct MetalView : MetalViewBase
 {
-  using ResourceBase::ResourceBase;
+  using MetalViewBase::MetalViewBase;
 
   /**
    * Constructs from raw MetalView.
@@ -73492,22 +73829,15 @@ struct MetalView : ResourceBase<MetalViewRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit MetalView(MetalViewRaw resource) noexcept
-    : ResourceBase(resource)
+    : MetalViewBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr MetalView(const MetalView& other) = delete;
 
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())
   {
   }
-
-  constexpr MetalView(const MetalViewRef& other) = delete;
-
-  constexpr MetalView(MetalViewRef&& other) = delete;
 
   /**
    * Create a CAMetalLayer-backed NSView/UIView and attach it to the specified
@@ -73540,34 +73870,6 @@ struct MetalView : ResourceBase<MetalViewRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  MetalView& operator=(const MetalView& other) = delete;
-
-  /**
-   * Destroy an existing MetalView object.
-   *
-   * This should be called before DestroyWindow, if Metal_CreateView was called
-   * after CreateWindow.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Metal_CreateView
-   */
-  void Destroy();
-
-  /**
-   * Get a pointer to the backing CAMetalLayer for the given view.
-   *
-   * @returns a pointer.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void* GetLayer();
 };
 
 /**
@@ -73619,7 +73921,7 @@ inline void Metal_DestroyView(MetalViewRaw view)
   SDL_Metal_DestroyView(view);
 }
 
-inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }
+inline void MetalViewBase::Destroy() { Metal_DestroyView(release()); }
 
 /**
  * Get a pointer to the backing CAMetalLayer for the given view.
@@ -73636,7 +73938,7 @@ inline void* Metal_GetLayer(MetalViewRef view)
   return SDL_Metal_GetLayer(view);
 }
 
-inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(get()); }
+inline void* MetalViewBase::GetLayer() { return SDL::Metal_GetLayer(get()); }
 
 /// @}
 
@@ -73654,7 +73956,7 @@ inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(get()); }
  * For certain games, it's useful to disassociate the mouse cursor from mouse
  * input. An FPS, for example, would not want the player's motion to stop as the
  * mouse hits the edge of the window. For these scenarios, use
- * Window.SetRelativeMouseMode(), which hides the cursor, grabs mouse input to
+ * SetWindowRelativeMouseMode(), which hides the cursor, grabs mouse input to
  * the window, and reads mouse input no matter how far it moves.
  *
  * Games that want the system to track the mouse but want to draw their own
@@ -73678,6 +73980,9 @@ inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(get()); }
  */
 
 // Forward decl
+struct CursorBase;
+
+// Forward decl
 struct Cursor;
 
 /// Alias to raw representation for Cursor.
@@ -73688,7 +73993,7 @@ using CursorRaw = SDL_Cursor*;
  *
  * This does not take ownership!
  */
-using CursorRef = ResourceRef<Cursor>;
+using CursorRef = ResourceRefT<CursorBase>;
 
 /**
  * Cursor types for CreateSystemCursor().
@@ -73780,6 +74085,51 @@ constexpr SystemCursor SYSTEM_CURSOR_COUNT = SDL_SYSTEM_CURSOR_COUNT; ///< COUNT
 using MouseID = SDL_MouseID;
 
 /**
+ * Base class to Cursor.
+ *
+ * @see Cursor
+ */
+struct CursorBase : ResourceBaseT<CursorRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Free a previously-created cursor.
+   *
+   * Use this function to free cursor resources created with CreateCursor(),
+   * CreateColorCursor() or CreateSystemCursor().
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateAnimatedCursor
+   * @sa CreateColorCursor
+   * @sa CreateCursor
+   * @sa CreateSystemCursor
+   */
+  void Destroy();
+
+  /**
+   * Set the active cursor.
+   *
+   * This function sets the currently active cursor to the specified one. If the
+   * cursor is currently visible, the change will be immediately represented on
+   * the display. SetCursor(nullptr) can be used to force cursor redraw, if this
+   * is desired for any reason.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCursor
+   */
+  void Set();
+};
+
+/**
  * The structure used to identify an SDL cursor.
  *
  * This is opaque data.
@@ -73788,9 +74138,9 @@ using MouseID = SDL_MouseID;
  *
  * @cat resource
  */
-struct Cursor : ResourceBase<CursorRaw>
+struct Cursor : CursorBase
 {
-  using ResourceBase::ResourceBase;
+  using CursorBase::CursorBase;
 
   /**
    * Constructs from raw Cursor.
@@ -73800,22 +74150,15 @@ struct Cursor : ResourceBase<CursorRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Cursor(CursorRaw resource) noexcept
-    : ResourceBase(resource)
+    : CursorBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Cursor(const Cursor& other) = delete;
 
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
   {
   }
-
-  constexpr Cursor(const CursorRef& other) = delete;
-
-  constexpr Cursor(CursorRef&& other) = delete;
 
   /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
@@ -73921,44 +74264,6 @@ struct Cursor : ResourceBase<CursorRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Cursor& operator=(const Cursor& other) = delete;
-
-  /**
-   * Free a previously-created cursor.
-   *
-   * Use this function to free cursor resources created with CreateCursor(),
-   * CreateColorCursor() or CreateSystemCursor().
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateAnimatedCursor
-   * @sa CreateColorCursor
-   * @sa CreateCursor
-   * @sa CreateSystemCursor
-   */
-  void Destroy();
-
-  /**
-   * Set the active cursor.
-   *
-   * This function sets the currently active cursor to the specified one. If the
-   * cursor is currently visible, the change will be immediately represented on
-   * the display. SetCursor(nullptr) can be used to force cursor redraw, if this
-   * is desired for any reason.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCursor
-   */
-  void Set();
 };
 
 /**
@@ -74294,9 +74599,34 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
   return SDL_GetRelativeMouseState(x, y);
 }
 
-inline void Window::WarpMouse(const FPointRaw& p)
+/**
+ * Move the mouse cursor to the given position within the window.
+ *
+ * This function generates a mouse motion event if relative mode is not enabled.
+ * If relative mode is enabled, you can force mouse events for the warp by
+ * setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
+ *
+ * Note that this function will appear to succeed, but not actually move the
+ * mouse when used over Microsoft Remote Desktop.
+ *
+ * @param window the window to move the mouse into, or nullptr for the current
+ *               mouse focus.
+ * @param p the x, y coordinates within the window.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WarpMouse
+ */
+inline void WarpMouseInWindow(WindowRef window, const FPointRaw& p)
 {
-  SDL_WarpMouseInWindow(get(), p.x, p.y);
+  SDL_WarpMouseInWindow(window, p.x, p.y);
+}
+
+inline void WindowBase::WarpMouse(const FPointRaw& p)
+{
+  WarpMouseInWindow(get(), p);
 }
 
 /**
@@ -74317,7 +74647,7 @@ inline void Window::WarpMouse(const FPointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.WarpMouse
+ * @sa WarpMouseInWindow
  */
 inline void WarpMouse(const FPointRaw& p)
 {
@@ -74368,14 +74698,61 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-inline void Window::SetRelativeMouseMode(bool enabled)
+/**
+ * Set relative mouse mode for a window.
+ *
+ * While the window has focus and relative mouse mode is enabled, the cursor is
+ * hidden, the mouse position is constrained to the window, and SDL will report
+ * continuous relative mouse motion even if the mouse is at the edge of the
+ * window.
+ *
+ * If you'd like to keep the mouse position fixed while in relative mode you can
+ * use SetWindowMouseRect(). If you'd like the cursor to be at a specific
+ * location when relative mode ends, you should use WarpMouseInWindow() before
+ * disabling relative mode.
+ *
+ * This function will flush any pending mouse motion for this window.
+ *
+ * @param window the window to change.
+ * @param enabled true to enable relative mode, false to disable.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetWindowRelativeMouseMode
+ */
+inline void SetWindowRelativeMouseMode(WindowRef window, bool enabled)
 {
-  CheckError(SDL_SetWindowRelativeMouseMode(get(), enabled));
+  CheckError(SDL_SetWindowRelativeMouseMode(window, enabled));
 }
 
-inline bool Window::GetRelativeMouseMode() const
+inline void WindowBase::SetRelativeMouseMode(bool enabled)
 {
-  return SDL_GetWindowRelativeMouseMode(get());
+  SetWindowRelativeMouseMode(get(), enabled);
+}
+
+/**
+ * Query whether relative mouse mode is enabled for a window.
+ *
+ * @param window the window to query.
+ * @returns true if relative mode is enabled for a window or false otherwise.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetWindowRelativeMouseMode
+ */
+inline bool GetWindowRelativeMouseMode(WindowRef window)
+{
+  return SDL_GetWindowRelativeMouseMode(window);
+}
+
+inline bool WindowBase::GetRelativeMouseMode() const
+{
+  return GetWindowRelativeMouseMode(get());
 }
 
 /**
@@ -74393,7 +74770,7 @@ inline bool Window::GetRelativeMouseMode() const
  * mouse while the user is dragging something, until the user releases a mouse
  * button. It is not recommended that you capture the mouse for long periods of
  * time, such as the entire time your app is running. For that, you should
- * probably use Window.SetRelativeMouseMode() or SetWindowMouseGrab(), depending
+ * probably use SetWindowRelativeMouseMode() or SetWindowMouseGrab(), depending
  * on your goals.
  *
  * While captured, mouse events still report coordinates relative to the current
@@ -74622,7 +74999,7 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  */
 inline void SetCursor(CursorRef cursor) { CheckError(SDL_SetCursor(cursor)); }
 
-inline void Cursor::Set() { SDL::SetCursor(get()); }
+inline void CursorBase::Set() { SDL::SetCursor(get()); }
 
 /**
  * Get the active cursor.
@@ -74678,7 +75055,7 @@ inline CursorRef GetDefaultCursor()
  */
 inline void DestroyCursor(CursorRaw cursor) { SDL_DestroyCursor(cursor); }
 
-inline void Cursor::Destroy() { DestroyCursor(release()); }
+inline void CursorBase::Destroy() { DestroyCursor(release()); }
 
 /**
  * Show the cursor.
@@ -74781,6 +75158,9 @@ inline bool CursorVisible() { return SDL_CursorVisible(); }
  */
 
 // Forward decl
+struct GamepadBase;
+
+// Forward decl
 struct Gamepad;
 
 /// Alias to raw representation for Gamepad.
@@ -74791,7 +75171,7 @@ using GamepadRaw = SDL_Gamepad*;
  *
  * This does not take ownership!
  */
-using GamepadRef = ResourceRef<Gamepad>;
+using GamepadRef = ResourceRefT<GamepadBase>;
 
 /**
  * Standard gamepad types.
@@ -75097,69 +75477,13 @@ constexpr GamepadBindingType GAMEPAD_BINDTYPE_HAT =
 using GamepadBinding = SDL_GamepadBinding;
 
 /**
- * The structure used to identify an SDL gamepad
+ * Base class to Gamepad.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Gamepad
  */
-struct Gamepad : ResourceBase<GamepadRaw>
+struct GamepadBase : ResourceBaseT<GamepadRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Gamepad.
-   *
-   * @param resource a GamepadRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Gamepad(GamepadRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) = delete;
-
-  /// Move constructor
-  constexpr Gamepad(Gamepad&& other) noexcept
-    : Gamepad(other.release())
-  {
-  }
-
-  constexpr Gamepad(const GamepadRef& other) = delete;
-
-  constexpr Gamepad(GamepadRef&& other) = delete;
-
-  /**
-   * Open a gamepad for use.
-   *
-   * @param instance_id the joystick instance ID.
-   * @post a gamepad identifier or nullptr if an error occurred; call GetError()
-   *       for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseGamepad
-   * @sa IsGamepad
-   */
-  Gamepad(JoystickID instance_id);
-
-  /// Destructor
-  ~Gamepad() { SDL_CloseGamepad(get()); }
-
-  /// Assignment operator.
-  constexpr Gamepad& operator=(Gamepad&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Gamepad& operator=(const Gamepad& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close a gamepad previously opened with OpenGamepad().
@@ -75819,6 +76143,62 @@ struct Gamepad : ResourceBase<GamepadRaw>
 };
 
 /**
+ * The structure used to identify an SDL gamepad
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Gamepad : GamepadBase
+{
+  using GamepadBase::GamepadBase;
+
+  /**
+   * Constructs from raw Gamepad.
+   *
+   * @param resource a GamepadRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Gamepad(GamepadRaw resource) noexcept
+    : GamepadBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Gamepad(Gamepad&& other) noexcept
+    : Gamepad(other.release())
+  {
+  }
+
+  /**
+   * Open a gamepad for use.
+   *
+   * @param instance_id the joystick instance ID.
+   * @post a gamepad identifier or nullptr if an error occurred; call GetError()
+   *       for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseGamepad
+   * @sa IsGamepad
+   */
+  Gamepad(JoystickID instance_id);
+
+  /// Destructor
+  ~Gamepad() { SDL_CloseGamepad(get()); }
+
+  /// Assignment operator.
+  constexpr Gamepad& operator=(Gamepad&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Add support for gamepads that SDL is unaware of or change the binding of an
  * existing gamepad.
  *
@@ -76017,7 +76397,7 @@ inline StringResult GetGamepadMapping(GamepadRef gamepad)
   return StringResult(SDL_GetGamepadMapping(gamepad));
 }
 
-inline StringResult Gamepad::GetMapping()
+inline StringResult GamepadBase::GetMapping()
 {
   return SDL::GetGamepadMapping(get());
 }
@@ -76397,7 +76777,7 @@ inline PropertiesRef GetGamepadProperties(GamepadRef gamepad)
   return {CheckError(SDL_GetGamepadProperties(gamepad))};
 }
 
-inline PropertiesRef Gamepad::GetProperties()
+inline PropertiesRef GamepadBase::GetProperties()
 {
   return SDL::GetGamepadProperties(get());
 }
@@ -76447,7 +76827,7 @@ inline JoystickID GetGamepadID(GamepadRef gamepad)
   return CheckError(SDL_GetGamepadID(gamepad));
 }
 
-inline JoystickID Gamepad::GetID() { return SDL::GetGamepadID(get()); }
+inline JoystickID GamepadBase::GetID() { return SDL::GetGamepadID(get()); }
 
 /**
  * Get the implementation-dependent name for an opened gamepad.
@@ -76467,7 +76847,7 @@ inline const char* GetGamepadName(GamepadRef gamepad)
   return SDL_GetGamepadName(gamepad);
 }
 
-inline const char* Gamepad::GetName() { return SDL::GetGamepadName(get()); }
+inline const char* GamepadBase::GetName() { return SDL::GetGamepadName(get()); }
 
 /**
  * Get the implementation-dependent path for an opened gamepad.
@@ -76487,7 +76867,7 @@ inline const char* GetGamepadPath(GamepadRef gamepad)
   return SDL_GetGamepadPath(gamepad);
 }
 
-inline const char* Gamepad::GetPath() { return SDL::GetGamepadPath(get()); }
+inline const char* GamepadBase::GetPath() { return SDL::GetGamepadPath(get()); }
 
 /**
  * Get the type of an opened gamepad.
@@ -76506,7 +76886,7 @@ inline GamepadType GetGamepadType(GamepadRef gamepad)
   return SDL_GetGamepadType(gamepad);
 }
 
-inline GamepadType Gamepad::GetType() { return SDL::GetGamepadType(get()); }
+inline GamepadType GamepadBase::GetType() { return SDL::GetGamepadType(get()); }
 
 /**
  * Get the type of an opened gamepad, ignoring any mapping override.
@@ -76525,7 +76905,7 @@ inline GamepadType GetRealGamepadType(GamepadRef gamepad)
   return SDL_GetRealGamepadType(gamepad);
 }
 
-inline GamepadType Gamepad::GetRealType()
+inline GamepadType GamepadBase::GetRealType()
 {
   return SDL::GetRealGamepadType(get());
 }
@@ -76549,7 +76929,7 @@ inline int GetGamepadPlayerIndex(GamepadRef gamepad)
   return SDL_GetGamepadPlayerIndex(gamepad);
 }
 
-inline int Gamepad::GetPlayerIndex()
+inline int GamepadBase::GetPlayerIndex()
 {
   return SDL::GetGamepadPlayerIndex(get());
 }
@@ -76573,7 +76953,7 @@ inline void SetGamepadPlayerIndex(GamepadRef gamepad, int player_index)
   CheckError(SDL_SetGamepadPlayerIndex(gamepad, player_index));
 }
 
-inline void Gamepad::SetPlayerIndex(int player_index)
+inline void GamepadBase::SetPlayerIndex(int player_index)
 {
   SDL::SetGamepadPlayerIndex(get(), player_index);
 }
@@ -76597,7 +76977,7 @@ inline Uint16 GetGamepadVendor(GamepadRef gamepad)
   return SDL_GetGamepadVendor(gamepad);
 }
 
-inline Uint16 Gamepad::GetVendor() { return SDL::GetGamepadVendor(get()); }
+inline Uint16 GamepadBase::GetVendor() { return SDL::GetGamepadVendor(get()); }
 
 /**
  * Get the USB product ID of an opened gamepad, if available.
@@ -76618,7 +76998,10 @@ inline Uint16 GetGamepadProduct(GamepadRef gamepad)
   return SDL_GetGamepadProduct(gamepad);
 }
 
-inline Uint16 Gamepad::GetProduct() { return SDL::GetGamepadProduct(get()); }
+inline Uint16 GamepadBase::GetProduct()
+{
+  return SDL::GetGamepadProduct(get());
+}
 
 /**
  * Get the product version of an opened gamepad, if available.
@@ -76639,7 +77022,7 @@ inline Uint16 GetGamepadProductVersion(GamepadRef gamepad)
   return SDL_GetGamepadProductVersion(gamepad);
 }
 
-inline Uint16 Gamepad::GetProductVersion()
+inline Uint16 GamepadBase::GetProductVersion()
 {
   return SDL::GetGamepadProductVersion(get());
 }
@@ -76661,7 +77044,7 @@ inline Uint16 GetGamepadFirmwareVersion(GamepadRef gamepad)
   return SDL_GetGamepadFirmwareVersion(gamepad);
 }
 
-inline Uint16 Gamepad::GetFirmwareVersion()
+inline Uint16 GamepadBase::GetFirmwareVersion()
 {
   return SDL::GetGamepadFirmwareVersion(get());
 }
@@ -76683,7 +77066,10 @@ inline const char* GetGamepadSerial(GamepadRef gamepad)
   return SDL_GetGamepadSerial(gamepad);
 }
 
-inline const char* Gamepad::GetSerial() { return SDL::GetGamepadSerial(get()); }
+inline const char* GamepadBase::GetSerial()
+{
+  return SDL::GetGamepadSerial(get());
+}
 
 /**
  * Get the Steam Input handle of an opened gamepad, if available.
@@ -76703,7 +77089,7 @@ inline Uint64 GetGamepadSteamHandle(GamepadRef gamepad)
   return SDL_GetGamepadSteamHandle(gamepad);
 }
 
-inline Uint64 Gamepad::GetSteamHandle()
+inline Uint64 GamepadBase::GetSteamHandle()
 {
   return SDL::GetGamepadSteamHandle(get());
 }
@@ -76724,7 +77110,7 @@ inline JoystickConnectionState GetGamepadConnectionState(GamepadRef gamepad)
   return CheckError(SDL_GetGamepadConnectionState(gamepad));
 }
 
-inline JoystickConnectionState Gamepad::GetConnectionState()
+inline JoystickConnectionState GamepadBase::GetConnectionState()
 {
   return SDL::GetGamepadConnectionState(get());
 }
@@ -76753,7 +77139,7 @@ inline PowerState GetGamepadPowerInfo(GamepadRef gamepad, int* percent)
   return SDL_GetGamepadPowerInfo(gamepad, percent);
 }
 
-inline PowerState Gamepad::GetPowerInfo(int* percent)
+inline PowerState GamepadBase::GetPowerInfo(int* percent)
 {
   return SDL::GetGamepadPowerInfo(get(), percent);
 }
@@ -76774,7 +77160,7 @@ inline bool GamepadConnected(GamepadRef gamepad)
   return SDL_GamepadConnected(gamepad);
 }
 
-inline bool Gamepad::Connected() { return SDL::GamepadConnected(get()); }
+inline bool GamepadBase::Connected() { return SDL::GamepadConnected(get()); }
 
 /**
  * Get the underlying joystick from a gamepad.
@@ -76801,7 +77187,7 @@ inline JoystickRef GetGamepadJoystick(GamepadRef gamepad)
   return CheckError(SDL_GetGamepadJoystick(gamepad));
 }
 
-inline JoystickRef Gamepad::GetJoystick()
+inline JoystickRef GamepadBase::GetJoystick()
 {
   return SDL::GetGamepadJoystick(get());
 }
@@ -76860,7 +77246,7 @@ inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadRef gamepad)
   return OwnArray<GamepadBinding*>(r, count);
 }
 
-inline OwnArray<GamepadBinding*> Gamepad::GetBindings()
+inline OwnArray<GamepadBinding*> GamepadBase::GetBindings()
 {
   return SDL::GetGamepadBindings(get());
 }
@@ -76987,7 +77373,7 @@ inline bool GamepadHasAxis(GamepadRef gamepad, GamepadAxis axis)
   return SDL_GamepadHasAxis(gamepad, axis);
 }
 
-inline bool Gamepad::HasAxis(GamepadAxis axis)
+inline bool GamepadBase::HasAxis(GamepadAxis axis)
 {
   return SDL::GamepadHasAxis(get(), axis);
 }
@@ -77023,7 +77409,7 @@ inline Sint16 GetGamepadAxis(GamepadRef gamepad, GamepadAxis axis)
   return SDL_GetGamepadAxis(gamepad, axis);
 }
 
-inline Sint16 Gamepad::GetAxis(GamepadAxis axis)
+inline Sint16 GamepadBase::GetAxis(GamepadAxis axis)
 {
   return SDL::GetGamepadAxis(get(), axis);
 }
@@ -77091,7 +77477,7 @@ inline bool GamepadHasButton(GamepadRef gamepad, GamepadButton button)
   return SDL_GamepadHasButton(gamepad, button);
 }
 
-inline bool Gamepad::HasButton(GamepadButton button)
+inline bool GamepadBase::HasButton(GamepadButton button)
 {
   return SDL::GamepadHasButton(get(), button);
 }
@@ -77115,7 +77501,7 @@ inline bool GetGamepadButton(GamepadRef gamepad, GamepadButton button)
   return SDL_GetGamepadButton(gamepad, button);
 }
 
-inline bool Gamepad::GetButton(GamepadButton button)
+inline bool GamepadBase::GetButton(GamepadButton button)
 {
   return SDL::GetGamepadButton(get(), button);
 }
@@ -77158,7 +77544,7 @@ inline GamepadButtonLabel GetGamepadButtonLabel(GamepadRef gamepad,
   return SDL_GetGamepadButtonLabel(gamepad, button);
 }
 
-inline GamepadButtonLabel Gamepad::GetButtonLabel(GamepadButton button)
+inline GamepadButtonLabel GamepadBase::GetButtonLabel(GamepadButton button)
 {
   return SDL::GetGamepadButtonLabel(get(), button);
 }
@@ -77180,7 +77566,7 @@ inline int GetNumGamepadTouchpads(GamepadRef gamepad)
   return SDL_GetNumGamepadTouchpads(gamepad);
 }
 
-inline int Gamepad::GetNumTouchpads()
+inline int GamepadBase::GetNumTouchpads()
 {
   return SDL::GetNumGamepadTouchpads(get());
 }
@@ -77205,7 +77591,7 @@ inline int GetNumGamepadTouchpadFingers(GamepadRef gamepad, int touchpad)
   return SDL_GetNumGamepadTouchpadFingers(gamepad, touchpad);
 }
 
-inline int Gamepad::GetNumTouchpadFingers(int touchpad)
+inline int GamepadBase::GetNumTouchpadFingers(int touchpad)
 {
   return SDL::GetNumGamepadTouchpadFingers(get(), touchpad);
 }
@@ -77243,12 +77629,12 @@ inline void GetGamepadTouchpadFinger(GamepadRef gamepad,
     gamepad, touchpad, finger, down, x, y, pressure));
 }
 
-inline void Gamepad::GetTouchpadFinger(int touchpad,
-                                       int finger,
-                                       bool* down,
-                                       float* x,
-                                       float* y,
-                                       float* pressure)
+inline void GamepadBase::GetTouchpadFinger(int touchpad,
+                                           int finger,
+                                           bool* down,
+                                           float* x,
+                                           float* y,
+                                           float* pressure)
 {
   SDL::GetGamepadTouchpadFinger(get(), touchpad, finger, down, x, y, pressure);
 }
@@ -77273,7 +77659,7 @@ inline bool GamepadHasSensor(GamepadRef gamepad, SensorType type)
   return SDL_GamepadHasSensor(gamepad, type);
 }
 
-inline bool Gamepad::HasSensor(SensorType type)
+inline bool GamepadBase::HasSensor(SensorType type)
 {
   return SDL::GamepadHasSensor(get(), type);
 }
@@ -77300,7 +77686,7 @@ inline void SetGamepadSensorEnabled(GamepadRef gamepad,
   CheckError(SDL_SetGamepadSensorEnabled(gamepad, type, enabled));
 }
 
-inline void Gamepad::SetSensorEnabled(SensorType type, bool enabled)
+inline void GamepadBase::SetSensorEnabled(SensorType type, bool enabled)
 {
   SDL::SetGamepadSensorEnabled(get(), type, enabled);
 }
@@ -77323,7 +77709,7 @@ inline bool GamepadSensorEnabled(GamepadRef gamepad, SensorType type)
   return SDL_GamepadSensorEnabled(gamepad, type);
 }
 
-inline bool Gamepad::SensorEnabled(SensorType type)
+inline bool GamepadBase::SensorEnabled(SensorType type)
 {
   return SDL::GamepadSensorEnabled(get(), type);
 }
@@ -77344,7 +77730,7 @@ inline float GetGamepadSensorDataRate(GamepadRef gamepad, SensorType type)
   return SDL_GetGamepadSensorDataRate(gamepad, type);
 }
 
-inline float Gamepad::GetSensorDataRate(SensorType type)
+inline float GamepadBase::GetSensorDataRate(SensorType type)
 {
   return SDL::GetGamepadSensorDataRate(get(), type);
 }
@@ -77373,7 +77759,9 @@ inline void GetGamepadSensorData(GamepadRef gamepad,
   CheckError(SDL_GetGamepadSensorData(gamepad, type, data, num_values));
 }
 
-inline void Gamepad::GetSensorData(SensorType type, float* data, int num_values)
+inline void GamepadBase::GetSensorData(SensorType type,
+                                       float* data,
+                                       int num_values)
 {
   SDL::GetGamepadSensorData(get(), type, data, num_values);
 }
@@ -77408,9 +77796,9 @@ inline void RumbleGamepad(GamepadRef gamepad,
     gamepad, low_frequency_rumble, high_frequency_rumble, duration_ms));
 }
 
-inline void Gamepad::Rumble(Uint16 low_frequency_rumble,
-                            Uint16 high_frequency_rumble,
-                            Uint32 duration_ms)
+inline void GamepadBase::Rumble(Uint16 low_frequency_rumble,
+                                Uint16 high_frequency_rumble,
+                                Uint32 duration_ms)
 {
   SDL::RumbleGamepad(
     get(), low_frequency_rumble, high_frequency_rumble, duration_ms);
@@ -77452,9 +77840,9 @@ inline void RumbleGamepadTriggers(GamepadRef gamepad,
     SDL_RumbleGamepadTriggers(gamepad, left_rumble, right_rumble, duration_ms));
 }
 
-inline void Gamepad::RumbleTriggers(Uint16 left_rumble,
-                                    Uint16 right_rumble,
-                                    Uint32 duration_ms)
+inline void GamepadBase::RumbleTriggers(Uint16 left_rumble,
+                                        Uint16 right_rumble,
+                                        Uint32 duration_ms)
 {
   SDL::RumbleGamepadTriggers(get(), left_rumble, right_rumble, duration_ms);
 }
@@ -77486,7 +77874,7 @@ inline void SetGamepadLED(GamepadRef gamepad,
   CheckError(SDL_SetGamepadLED(gamepad, red, green, blue));
 }
 
-inline void Gamepad::SetLED(Uint8 red, Uint8 green, Uint8 blue)
+inline void GamepadBase::SetLED(Uint8 red, Uint8 green, Uint8 blue)
 {
   SDL::SetGamepadLED(get(), red, green, blue);
 }
@@ -77508,7 +77896,7 @@ inline void SendGamepadEffect(GamepadRef gamepad, const void* data, int size)
   CheckError(SDL_SendGamepadEffect(gamepad, data, size));
 }
 
-inline void Gamepad::SendEffect(const void* data, int size)
+inline void GamepadBase::SendEffect(const void* data, int size)
 {
   SDL::SendGamepadEffect(get(), data, size);
 }
@@ -77526,7 +77914,7 @@ inline void Gamepad::SendEffect(const void* data, int size)
  */
 inline void CloseGamepad(GamepadRaw gamepad) { SDL_CloseGamepad(gamepad); }
 
-inline void Gamepad::Close() { CloseGamepad(release()); }
+inline void GamepadBase::Close() { CloseGamepad(release()); }
 
 /**
  * Return the sfSymbolsName for a given button on a gamepad on Apple platforms.
@@ -77547,7 +77935,8 @@ inline const char* GetGamepadAppleSFSymbolsNameForButton(GamepadRef gamepad,
   return SDL_GetGamepadAppleSFSymbolsNameForButton(gamepad, button);
 }
 
-inline const char* Gamepad::GetAppleSFSymbolsNameForButton(GamepadButton button)
+inline const char* GamepadBase::GetAppleSFSymbolsNameForButton(
+  GamepadButton button)
 {
   return SDL::GetGamepadAppleSFSymbolsNameForButton(get(), button);
 }
@@ -77571,7 +77960,7 @@ inline const char* GetGamepadAppleSFSymbolsNameForAxis(GamepadRef gamepad,
   return SDL_GetGamepadAppleSFSymbolsNameForAxis(gamepad, axis);
 }
 
-inline const char* Gamepad::GetAppleSFSymbolsNameForAxis(GamepadAxis axis)
+inline const char* GamepadBase::GetAppleSFSymbolsNameForAxis(GamepadAxis axis)
 {
   return SDL::GetGamepadAppleSFSymbolsNameForAxis(get(), axis);
 }
@@ -77675,6 +78064,9 @@ inline const char* Gamepad::GetAppleSFSymbolsNameForAxis(GamepadAxis axis)
  */
 
 // Forward decl
+struct HapticBase;
+
+// Forward decl
 struct Haptic;
 
 /// Alias to raw representation for Haptic.
@@ -77685,7 +78077,7 @@ using HapticRaw = SDL_Haptic*;
  *
  * This does not take ownership!
  */
-using HapticRef = ResourceRef<Haptic>;
+using HapticRef = ResourceRefT<HapticBase>;
 
 /**
  * @name Haptic effects
@@ -78327,117 +78719,13 @@ using HapticEffect = SDL_HapticEffect;
 using HapticID = SDL_HapticID;
 
 /**
- * The haptic structure used to identify an SDL haptic.
+ * Base class to Haptic.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa OpenHaptic
- * @sa OpenHapticFromJoystick
- * @sa CloseHaptic
- *
- * @cat resource
+ * @see Haptic
  */
-struct Haptic : ResourceBase<HapticRaw>
+struct HapticBase : ResourceBaseT<HapticRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Haptic.
-   *
-   * @param resource a HapticRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Haptic(HapticRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Haptic(const Haptic& other) = delete;
-
-  /// Move constructor
-  constexpr Haptic(Haptic&& other) noexcept
-    : Haptic(other.release())
-  {
-  }
-
-  constexpr Haptic(const HapticRef& other) = delete;
-
-  constexpr Haptic(HapticRef&& other) = delete;
-
-  /**
-   * Open a haptic device for use.
-   *
-   * The index passed as an argument refers to the N'th haptic device on this
-   * system.
-   *
-   * When opening a haptic device, its gain will be set to maximum and
-   * autocenter will be disabled. To modify these values use SetHapticGain() and
-   * SetHapticAutocenter().
-   *
-   * @param instance_id the haptic device instance ID.
-   * @post the device identifier or nullptr on failure; call GetError() for more
-   *       information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseHaptic
-   * @sa GetHaptics
-   * @sa OpenHapticFromJoystick
-   * @sa OpenHapticFromMouse
-   * @sa SetHapticAutocenter
-   * @sa SetHapticGain
-   */
-  Haptic(HapticID instance_id);
-
-  /**
-   * Open a haptic device for use from a joystick device.
-   *
-   * You must still close the haptic device separately. It will not be closed
-   * with the joystick.
-   *
-   * When opened from a joystick you should first close the haptic device before
-   * closing the joystick device. If not, on some implementations the haptic
-   * device will also get unallocated and you'll be unable to use force feedback
-   * on that device.
-   *
-   * @param joystick the Joystick to create a haptic device from.
-   * @post a valid haptic device identifier on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseHaptic
-   * @sa IsJoystickHaptic
-   */
-  Haptic(JoystickRef joystick);
-
-  /**
-   * Try to open a haptic device from the current mouse.
-   *
-   * @returns the haptic device identifier or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseHaptic
-   * @sa IsMouseHaptic
-   */
-  static Haptic OpenFromMouse();
-
-  /// Destructor
-  ~Haptic() { SDL_CloseHaptic(get()); }
-
-  /// Assignment operator.
-  constexpr Haptic& operator=(Haptic&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Haptic& operator=(const Haptic& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close a haptic device previously opened with OpenHaptic().
@@ -78772,6 +79060,110 @@ struct Haptic : ResourceBase<HapticRaw>
 };
 
 /**
+ * The haptic structure used to identify an SDL haptic.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa OpenHaptic
+ * @sa OpenHapticFromJoystick
+ * @sa CloseHaptic
+ *
+ * @cat resource
+ */
+struct Haptic : HapticBase
+{
+  using HapticBase::HapticBase;
+
+  /**
+   * Constructs from raw Haptic.
+   *
+   * @param resource a HapticRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Haptic(HapticRaw resource) noexcept
+    : HapticBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Haptic(Haptic&& other) noexcept
+    : Haptic(other.release())
+  {
+  }
+
+  /**
+   * Open a haptic device for use.
+   *
+   * The index passed as an argument refers to the N'th haptic device on this
+   * system.
+   *
+   * When opening a haptic device, its gain will be set to maximum and
+   * autocenter will be disabled. To modify these values use SetHapticGain() and
+   * SetHapticAutocenter().
+   *
+   * @param instance_id the haptic device instance ID.
+   * @post the device identifier or nullptr on failure; call GetError() for more
+   *       information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseHaptic
+   * @sa GetHaptics
+   * @sa OpenHapticFromJoystick
+   * @sa OpenHapticFromMouse
+   * @sa SetHapticAutocenter
+   * @sa SetHapticGain
+   */
+  Haptic(HapticID instance_id);
+
+  /**
+   * Open a haptic device for use from a joystick device.
+   *
+   * You must still close the haptic device separately. It will not be closed
+   * with the joystick.
+   *
+   * When opened from a joystick you should first close the haptic device before
+   * closing the joystick device. If not, on some implementations the haptic
+   * device will also get unallocated and you'll be unable to use force feedback
+   * on that device.
+   *
+   * @param joystick the Joystick to create a haptic device from.
+   * @post a valid haptic device identifier on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseHaptic
+   * @sa IsJoystickHaptic
+   */
+  Haptic(JoystickRef joystick);
+
+  /**
+   * Try to open a haptic device from the current mouse.
+   *
+   * @returns the haptic device identifier or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseHaptic
+   * @sa IsMouseHaptic
+   */
+  static Haptic OpenFromMouse();
+
+  /// Destructor
+  ~Haptic() { SDL_CloseHaptic(get()); }
+
+  /// Assignment operator.
+  constexpr Haptic& operator=(Haptic&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Get a list of currently connected haptic devices.
  *
  * @returns a 0 terminated array of haptic device instance IDs or nullptr on
@@ -78870,7 +79262,7 @@ inline HapticID GetHapticID(HapticRef haptic)
   return CheckError(SDL_GetHapticID(haptic));
 }
 
-inline HapticID Haptic::GetID() { return SDL::GetHapticID(get()); }
+inline HapticID HapticBase::GetID() { return SDL::GetHapticID(get()); }
 
 /**
  * Get the implementation dependent name of a haptic device.
@@ -78888,7 +79280,7 @@ inline const char* GetHapticName(HapticRef haptic)
   return SDL_GetHapticName(haptic);
 }
 
-inline const char* Haptic::GetName() { return SDL::GetHapticName(get()); }
+inline const char* HapticBase::GetName() { return SDL::GetHapticName(get()); }
 
 /**
  * Query whether or not the current mouse has haptic capabilities.
@@ -78970,7 +79362,7 @@ inline Haptic OpenHapticFromJoystick(JoystickRef joystick)
  */
 inline void CloseHaptic(HapticRaw haptic) { SDL_CloseHaptic(haptic); }
 
-inline void Haptic::Close() { CloseHaptic(release()); }
+inline void HapticBase::Close() { CloseHaptic(release()); }
 
 /**
  * Get the number of effects a haptic device can store.
@@ -78993,7 +79385,10 @@ inline int GetMaxHapticEffects(HapticRef haptic)
   return SDL_GetMaxHapticEffects(haptic);
 }
 
-inline int Haptic::GetMaxEffects() { return SDL::GetMaxHapticEffects(get()); }
+inline int HapticBase::GetMaxEffects()
+{
+  return SDL::GetMaxHapticEffects(get());
+}
 
 /**
  * Get the number of effects a haptic device can play at the same time.
@@ -79014,7 +79409,7 @@ inline int GetMaxHapticEffectsPlaying(HapticRef haptic)
   return SDL_GetMaxHapticEffectsPlaying(haptic);
 }
 
-inline int Haptic::GetMaxEffectsPlaying()
+inline int HapticBase::GetMaxEffectsPlaying()
 {
   return SDL::GetMaxHapticEffectsPlaying(get());
 }
@@ -79037,7 +79432,10 @@ inline Uint32 GetHapticFeatures(HapticRef haptic)
   return CheckError(SDL_GetHapticFeatures(haptic));
 }
 
-inline Uint32 Haptic::GetFeatures() { return SDL::GetHapticFeatures(get()); }
+inline Uint32 HapticBase::GetFeatures()
+{
+  return SDL::GetHapticFeatures(get());
+}
 
 /**
  * Get the number of haptic axes the device has.
@@ -79056,7 +79454,7 @@ inline int GetNumHapticAxes(HapticRef haptic)
   return CheckError(SDL_GetNumHapticAxes(haptic));
 }
 
-inline int Haptic::GetNumAxes() { return SDL::GetNumHapticAxes(get()); }
+inline int HapticBase::GetNumAxes() { return SDL::GetNumHapticAxes(get()); }
 
 /**
  * Check to see if an effect is supported by a haptic device.
@@ -79075,7 +79473,7 @@ inline bool HapticEffectSupported(HapticRef haptic, const HapticEffect& effect)
   return SDL_HapticEffectSupported(haptic, &effect);
 }
 
-inline bool Haptic::EffectSupported(const HapticEffect& effect)
+inline bool HapticBase::EffectSupported(const HapticEffect& effect)
 {
   return SDL::HapticEffectSupported(get(), effect);
 }
@@ -79101,7 +79499,7 @@ inline HapticEffectID CreateHapticEffect(HapticRef haptic,
   return CheckError(SDL_CreateHapticEffect(haptic, &effect));
 }
 
-inline HapticEffectID Haptic::CreateEffect(const HapticEffect& effect)
+inline HapticEffectID HapticBase::CreateEffect(const HapticEffect& effect)
 {
   return SDL::CreateHapticEffect(get(), effect);
 }
@@ -79132,8 +79530,8 @@ inline void UpdateHapticEffect(HapticRef haptic,
   CheckError(SDL_UpdateHapticEffect(haptic, effect, &data));
 }
 
-inline void Haptic::UpdateEffect(HapticEffectID effect,
-                                 const HapticEffect& data)
+inline void HapticBase::UpdateEffect(HapticEffectID effect,
+                                     const HapticEffect& data)
 {
   SDL::UpdateHapticEffect(get(), effect, data);
 }
@@ -79165,7 +79563,7 @@ inline void RunHapticEffect(HapticRef haptic,
   CheckError(SDL_RunHapticEffect(haptic, effect, iterations));
 }
 
-inline void Haptic::RunEffect(HapticEffectID effect, Uint32 iterations)
+inline void HapticBase::RunEffect(HapticEffectID effect, Uint32 iterations)
 {
   SDL::RunHapticEffect(get(), effect, iterations);
 }
@@ -79187,7 +79585,7 @@ inline void StopHapticEffect(HapticRef haptic, HapticEffectID effect)
   CheckError(SDL_StopHapticEffect(haptic, effect));
 }
 
-inline void Haptic::StopEffect(HapticEffectID effect)
+inline void HapticBase::StopEffect(HapticEffectID effect)
 {
   SDL::StopHapticEffect(get(), effect);
 }
@@ -79210,7 +79608,7 @@ inline void DestroyHapticEffect(HapticRef haptic, HapticEffectID effect)
   SDL_DestroyHapticEffect(haptic, effect);
 }
 
-inline void Haptic::DestroyEffect(HapticEffectID effect)
+inline void HapticBase::DestroyEffect(HapticEffectID effect)
 {
   SDL::DestroyHapticEffect(get(), effect);
 }
@@ -79234,7 +79632,7 @@ inline bool GetHapticEffectStatus(HapticRef haptic, HapticEffectID effect)
   return SDL_GetHapticEffectStatus(haptic, effect);
 }
 
-inline bool Haptic::GetEffectStatus(HapticEffectID effect)
+inline bool HapticBase::GetEffectStatus(HapticEffectID effect)
 {
   return SDL::GetHapticEffectStatus(get(), effect);
 }
@@ -79262,7 +79660,7 @@ inline void SetHapticGain(HapticRef haptic, int gain)
   CheckError(SDL_SetHapticGain(haptic, gain));
 }
 
-inline void Haptic::SetGain(int gain) { SDL::SetHapticGain(get(), gain); }
+inline void HapticBase::SetGain(int gain) { SDL::SetHapticGain(get(), gain); }
 
 /**
  * Set the global autocenter of the device.
@@ -79285,7 +79683,7 @@ inline void SetHapticAutocenter(HapticRef haptic, int autocenter)
   CheckError(SDL_SetHapticAutocenter(haptic, autocenter));
 }
 
-inline void Haptic::SetAutocenter(int autocenter)
+inline void HapticBase::SetAutocenter(int autocenter)
 {
   SDL::SetHapticAutocenter(get(), autocenter);
 }
@@ -79311,7 +79709,7 @@ inline void PauseHaptic(HapticRef haptic)
   CheckError(SDL_PauseHaptic(haptic));
 }
 
-inline void Haptic::Pause() { SDL::PauseHaptic(get()); }
+inline void HapticBase::Pause() { SDL::PauseHaptic(get()); }
 
 /**
  * Resume a haptic device.
@@ -79330,7 +79728,7 @@ inline void ResumeHaptic(HapticRef haptic)
   CheckError(SDL_ResumeHaptic(haptic));
 }
 
-inline void Haptic::Resume() { SDL::ResumeHaptic(get()); }
+inline void HapticBase::Resume() { SDL::ResumeHaptic(get()); }
 
 /**
  * Stop all the currently playing effects on a haptic device.
@@ -79348,7 +79746,7 @@ inline void StopHapticEffects(HapticRef haptic)
   CheckError(SDL_StopHapticEffects(haptic));
 }
 
-inline void Haptic::StopEffects() { SDL::StopHapticEffects(get()); }
+inline void HapticBase::StopEffects() { SDL::StopHapticEffects(get()); }
 
 /**
  * Check whether rumble is supported on a haptic device.
@@ -79365,7 +79763,7 @@ inline bool HapticRumbleSupported(HapticRef haptic)
   return SDL_HapticRumbleSupported(haptic);
 }
 
-inline bool Haptic::RumbleSupported()
+inline bool HapticBase::RumbleSupported()
 {
   return SDL::HapticRumbleSupported(get());
 }
@@ -79387,7 +79785,7 @@ inline void InitHapticRumble(HapticRef haptic)
   CheckError(SDL_InitHapticRumble(haptic));
 }
 
-inline void Haptic::InitRumble() { SDL::InitHapticRumble(get()); }
+inline void HapticBase::InitRumble() { SDL::InitHapticRumble(get()); }
 
 /**
  * Run a simple rumble effect on a haptic device.
@@ -79407,7 +79805,7 @@ inline void PlayHapticRumble(HapticRef haptic, float strength, Uint32 length)
   CheckError(SDL_PlayHapticRumble(haptic, strength, length));
 }
 
-inline void Haptic::PlayRumble(float strength, Uint32 length)
+inline void HapticBase::PlayRumble(float strength, Uint32 length)
 {
   SDL::PlayHapticRumble(get(), strength, length);
 }
@@ -79427,7 +79825,7 @@ inline void StopHapticRumble(HapticRef haptic)
   CheckError(SDL_StopHapticRumble(haptic));
 }
 
-inline void Haptic::StopRumble() { SDL::StopHapticRumble(get()); }
+inline void HapticBase::StopRumble() { SDL::StopHapticRumble(get()); }
 
 /// @}
 
@@ -80277,10 +80675,16 @@ inline void QuitClass(T* state, AppResult result)
  */
 
 // Forward decl
+struct RendererBase;
+
+// Forward decl
 struct Renderer;
 
 /// Alias to raw representation for Renderer.
 using RendererRaw = SDL_Renderer*;
+
+// Forward decl
+struct TextureBase;
 
 // Forward decl
 struct Texture;
@@ -80296,12 +80700,15 @@ using TextureRawConst = const SDL_Texture*;
  *
  * This does not take ownership!
  */
-using TextureRef = ResourceRef<Texture>;
+using TextureRef = ResourceRefT<TextureBase>;
 
 /// Safely wrap Texture for non owning const parameters
 using TextureConstRef = ResourceConstRef<TextureRaw, TextureRawConst>;
 
 #if SDL_VERSION_ATLEAST(3, 3, 6)
+
+// Forward decl
+struct GPURenderStateBase;
 
 // Forward decl
 struct GPURenderState;
@@ -80314,7 +80721,7 @@ using GPURenderStateRaw = SDL_GPURenderState*;
  *
  * This does not take ownership!
  */
-using GPURenderStateRef = ResourceRef<GPURenderState>;
+using GPURenderStateRef = ResourceRefT<GPURenderStateBase>;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
@@ -80446,170 +80853,13 @@ using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * A structure representing rendering state
+ * Base class to Renderer.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Renderer
  */
-struct Renderer : ResourceBase<RendererRaw>
+struct RendererBase : ResourceBaseT<RendererRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Renderer.
-   *
-   * @param resource a RendererRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Renderer(RendererRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Renderer(const Renderer& other) = delete;
-
-  /// Move constructor
-  constexpr Renderer(Renderer&& other) noexcept
-    : Renderer(other.release())
-  {
-  }
-
-  constexpr Renderer(const RendererRef& other) = delete;
-
-  constexpr Renderer(RendererRef&& other) = delete;
-
-  /**
-   * Create a 2D rendering context for a window.
-   *
-   * If you want a specific renderer, you can specify its name here. A list of
-   * available renderers can be obtained by calling GetRenderDriver() multiple
-   * times, with indices from 0 to GetNumRenderDrivers()-1. If you don't need a
-   * specific renderer, specify nullptr and SDL will attempt to choose the best
-   * option for you, based on what is available on the user's system.
-   *
-   * If `name` is a comma-separated list, SDL will try each name, in the order
-   * listed, until one succeeds or all of them fail.
-   *
-   * By default the rendering size matches the window size in pixels, but you
-   * can call SetRenderLogicalPresentation() to change the content size and
-   * scaling options.
-   *
-   * @param window the window where rendering is displayed.
-   * @param name the name of the rendering driver to initialize, or nullptr to
-   *             let SDL choose one.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateRendererWithProperties
-   * @sa CreateSoftwareRenderer
-   * @sa DestroyRenderer
-   * @sa GetNumRenderDrivers
-   * @sa GetRenderDriver
-   * @sa GetRendererName
-   */
-  Renderer(WindowRef window, StringParam name = nullptr);
-
-  /**
-   * Create a 2D rendering context for a window, with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.Renderer.Create.NAME_STRING`: the name of the rendering driver to
-   *   use, if a specific one is desired
-   * - `prop.Renderer.Create.WINDOW_POINTER`: the window where rendering is
-   *   displayed, required if this isn't a software renderer using a surface
-   * - `prop.Renderer.Create.SURFACE_POINTER`: the surface where rendering is
-   *   displayed, if you want a software renderer without a window
-   * - `prop.Renderer.Create.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
-   *   describing the colorspace for output to the display, defaults to
-   *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support
-   *   COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR
-   *   output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB
-   *   colorspace, but values can go beyond 1.0 and float (linear) format
-   *   textures can be used for HDR content.
-   * - `prop.Renderer.Create.PRESENT_VSYNC_NUMBER`: non-zero if you want present
-   *   synchronized with the refresh rate. This property can take any value that
-   *   is supported by SetRenderVSync() for the renderer.
-   *
-   * With the SDL GPU renderer (since SDL 3.4.0):
-   *
-   * - `prop.Renderer.Create.GPU_DEVICE_POINTER`: the device to use with the
-   *   renderer, optional.
-   * - `prop.Renderer.Create.GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
-   *   provide SPIR-V shaders to GPURenderState, optional.
-   * - `prop.Renderer.Create.GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
-   *   provide DXIL shaders to GPURenderState, optional.
-   * - `prop.Renderer.Create.GPU_SHADERS_MSL_BOOLEAN`: the app is able to
-   *   provide MSL shaders to GPURenderState, optional.
-   *
-   * With the vulkan renderer:
-   *
-   * - `prop.Renderer.Create.VULKAN_INSTANCE_POINTER`: the VkInstance to use
-   *   with the renderer, optional.
-   * - `prop.Renderer.Create.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
-   *   with the renderer, optional.
-   * - `prop.Renderer.Create.VULKAN_PHYSICAL_DEVICE_POINTER`: the
-   *   VkPhysicalDevice to use with the renderer, optional.
-   * - `prop.Renderer.Create.VULKAN_DEVICE_POINTER`: the VkDevice to use with
-   *   the renderer, optional.
-   * - `prop.Renderer.Create.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
-   *   queue family index used for rendering.
-   * - `prop.Renderer.Create.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
-   *   queue family index used for presentation.
-   *
-   * @param props the properties to use.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateProperties
-   * @sa CreateRenderer
-   * @sa CreateSoftwareRenderer
-   * @sa DestroyRenderer
-   * @sa GetRendererName
-   */
-  Renderer(PropertiesRef props);
-
-  /**
-   * Create a 2D software rendering context for a surface.
-   *
-   * Two other API which can be used to create Renderer: CreateRenderer() and
-   * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
-   * they are intended to be used with an Window as the final destination and
-   * not an Surface.
-   *
-   * @param surface the Surface structure representing the surface where
-   *                rendering is done.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyRenderer
-   */
-  Renderer(SurfaceRef surface);
-
-  /// Destructor
-  ~Renderer() { SDL_DestroyRenderer(get()); }
-
-  /// Assignment operator.
-  constexpr Renderer& operator=(Renderer&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Renderer& operator=(const Renderer& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy the rendering context for a window and free all associated
@@ -82467,206 +82717,116 @@ struct Renderer : ResourceBase<RendererRaw>
 };
 
 /**
- * An efficient driver-specific representation of pixel data
+ * A structure representing rendering state
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa CreateTexture
- * @sa CreateTextureFromSurface
- * @sa CreateTextureWithProperties
- * @sa DestroyTexture
- *
  * @cat resource
  */
-struct Texture : ResourceBase<TextureRaw, TextureRawConst>
+struct Renderer : RendererBase
 {
-  using ResourceBase::ResourceBase;
+  using RendererBase::RendererBase;
 
   /**
-   * Constructs from raw Texture.
+   * Constructs from raw Renderer.
    *
-   * @param resource a TextureRaw to be wrapped.
+   * @param resource a RendererRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Texture(TextureRaw resource) noexcept
-    : ResourceBase(resource)
+  constexpr explicit Renderer(RendererRaw resource) noexcept
+    : RendererBase(resource)
   {
-  }
-
-  /// Copy constructor
-  constexpr Texture(const Texture& other)
-    : Texture(other.get())
-  {
-    if (auto res = get()) ++res->refcount;
   }
 
   /// Move constructor
-  constexpr Texture(Texture&& other) noexcept
-    : Texture(other.release())
+  constexpr Renderer(Renderer&& other) noexcept
+    : Renderer(other.release())
   {
   }
 
   /**
-   * Create a texture for a rendering context.
+   * Create a 2D rendering context for a window.
    *
-   * The contents of a texture when first created are not defined.
+   * If you want a specific renderer, you can specify its name here. A list of
+   * available renderers can be obtained by calling GetRenderDriver() multiple
+   * times, with indices from 0 to GetNumRenderDrivers()-1. If you don't need a
+   * specific renderer, specify nullptr and SDL will attempt to choose the best
+   * option for you, based on what is available on the user's system.
    *
-   * @param renderer the rendering context.
-   * @param format one of the enumerated values in PixelFormat.
-   * @param access one of the enumerated values in TextureAccess.
-   * @param size the width and height of the texture in pixels.
+   * If `name` is a comma-separated list, SDL will try each name, in the order
+   * listed, until one succeeds or all of them fail.
+   *
+   * By default the rendering size matches the window size in pixels, but you
+   * can call SetRenderLogicalPresentation() to change the content size and
+   * scaling options.
+   *
+   * @param window the window where rendering is displayed.
+   * @param name the name of the rendering driver to initialize, or nullptr to
+   *             let SDL choose one.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa CreateTextureFromSurface
-   * @sa CreateTextureWithProperties
-   * @sa DestroyTexture
-   * @sa GetTextureSize
-   * @sa UpdateTexture
+   * @sa CreateRendererWithProperties
+   * @sa CreateSoftwareRenderer
+   * @sa DestroyRenderer
+   * @sa GetNumRenderDrivers
+   * @sa GetRenderDriver
+   * @sa GetRendererName
    */
-  Texture(RendererRef renderer,
-          PixelFormat format,
-          TextureAccess access,
-          const PointRaw& size);
+  Renderer(WindowRef window, StringParam name = nullptr);
 
   /**
-   * Create a texture from an existing surface.
-   *
-   * The surface is not modified or freed by this function.
-   *
-   * The TextureAccess hint for the created texture is `TEXTUREACCESS_STATIC`.
-   *
-   * The pixel format of the created texture may be different from the pixel
-   * format of the surface, and can be queried using the
-   * prop.Texture.FORMAT_NUMBER property.
-   *
-   * @param renderer the rendering context.
-   * @param surface the Surface structure containing pixel data used to fill the
-   *                texture.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateTexture
-   * @sa CreateTextureWithProperties
-   * @sa DestroyTexture
-   */
-  Texture(RendererRef renderer, SurfaceRef surface);
-
-  /**
-   * Create a texture for a rendering context with the specified properties.
+   * Create a 2D rendering context for a window, with the specified properties.
    *
    * These are the supported properties:
    *
-   * - `prop.Texture.Create.COLORSPACE_NUMBER`: an Colorspace value describing
-   *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
-   *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
-   *   other RGB textures and COLORSPACE_JPEG for YUV textures.
-   * - `prop.Texture.Create.FORMAT_NUMBER`: one of the enumerated values in
-   *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop.Texture.Create.ACCESS_NUMBER`: one of the enumerated values in
-   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop.Texture.Create.WIDTH_NUMBER`: the width of the texture in pixels,
-   *   required
-   * - `prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels,
-   *   required
-   * - `prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized
-   *   texture formats. This can be set later with SetTexturePalette()
-   * - `prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
-   *   textures, this defines the value of 100% diffuse white, with higher
-   *   values being displayed in the High Dynamic Range headroom. This defaults
-   *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop.Texture.Create.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
-   *   textures, this defines the maximum dynamic range used by the content, in
-   *   terms of the SDR white point. This would be equivalent to maxCLL /
-   *   prop.Texture.Create.SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
-   *   defined, any values outside the range supported by the display will be
-   *   scaled into the available HDR headroom, otherwise they are clipped.
+   * - `prop.Renderer.Create.NAME_STRING`: the name of the rendering driver to
+   *   use, if a specific one is desired
+   * - `prop.Renderer.Create.WINDOW_POINTER`: the window where rendering is
+   *   displayed, required if this isn't a software renderer using a surface
+   * - `prop.Renderer.Create.SURFACE_POINTER`: the surface where rendering is
+   *   displayed, if you want a software renderer without a window
+   * - `prop.Renderer.Create.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
+   *   describing the colorspace for output to the display, defaults to
+   *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support
+   *   COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR
+   *   output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB
+   *   colorspace, but values can go beyond 1.0 and float (linear) format
+   *   textures can be used for HDR content.
+   * - `prop.Renderer.Create.PRESENT_VSYNC_NUMBER`: non-zero if you want present
+   *   synchronized with the refresh rate. This property can take any value that
+   *   is supported by SetRenderVSync() for the renderer.
    *
-   * With the direct3d11 renderer:
+   * With the SDL GPU renderer (since SDL 3.4.0):
    *
-   * - `prop.Texture.Create.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.Create.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the direct3d12 renderer:
-   *
-   * - `prop.Texture.Create.D3D12_TEXTURE_POINTER`: the ID3D12Resource
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.Create.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the metal renderer:
-   *
-   * - `prop.Texture.Create.METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
-   *   associated with the texture, if you want to create a texture from an
-   *   existing pixel buffer.
-   *
-   * With the opengl renderer:
-   *
-   * - `prop.Texture.Create.OPENGL_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.Create.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the opengles2 renderer:
-   *
-   * - `prop.Texture.Create.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.Create.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop.Texture.Create.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
+   * - `prop.Renderer.Create.GPU_DEVICE_POINTER`: the device to use with the
+   *   renderer, optional.
+   * - `prop.Renderer.Create.GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+   *   provide SPIR-V shaders to GPURenderState, optional.
+   * - `prop.Renderer.Create.GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
+   *   provide DXIL shaders to GPURenderState, optional.
+   * - `prop.Renderer.Create.GPU_SHADERS_MSL_BOOLEAN`: the app is able to
+   *   provide MSL shaders to GPURenderState, optional.
    *
    * With the vulkan renderer:
    *
-   * - `prop.Texture.Create.VULKAN_TEXTURE_NUMBER`: the VkImage associated with
-   *   the texture, if you want to wrap an existing texture.
-   * - `prop.Texture.Create.VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
-   *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+   * - `prop.Renderer.Create.VULKAN_INSTANCE_POINTER`: the VkInstance to use
+   *   with the renderer, optional.
+   * - `prop.Renderer.Create.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
+   *   with the renderer, optional.
+   * - `prop.Renderer.Create.VULKAN_PHYSICAL_DEVICE_POINTER`: the
+   *   VkPhysicalDevice to use with the renderer, optional.
+   * - `prop.Renderer.Create.VULKAN_DEVICE_POINTER`: the VkDevice to use with
+   *   the renderer, optional.
+   * - `prop.Renderer.Create.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
+   *   queue family index used for rendering.
+   * - `prop.Renderer.Create.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
+   *   queue family index used for presentation.
    *
-   * With the GPU renderer:
-   *
-   * - `prop.Texture.Create.GPU_TEXTURE_POINTER`: the GPUTexture associated with
-   *   the texture, if you want to wrap an existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
-   *   with the U plane of a YUV texture, if you want to wrap an existing
-   *   texture.
-   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
-   *   with the V plane of a YUV texture, if you want to wrap an existing
-   *   texture.
-   *
-   * @param renderer the rendering context.
    * @param props the properties to use.
    * @throws Error on failure.
    *
@@ -82675,125 +82835,55 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
    * @since This function is available since SDL 3.2.0.
    *
    * @sa CreateProperties
-   * @sa CreateTexture
-   * @sa CreateTextureFromSurface
-   * @sa DestroyTexture
-   * @sa GetTextureSize
-   * @sa UpdateTexture
+   * @sa CreateRenderer
+   * @sa CreateSoftwareRenderer
+   * @sa DestroyRenderer
+   * @sa GetRendererName
    */
-  Texture(RendererRef renderer, PropertiesRef props);
+  Renderer(PropertiesRef props);
 
   /**
-   * Load an image from a filesystem path into a texture.
+   * Create a 2D software rendering context for a surface.
    *
-   * An Texture represents an image in GPU memory, usable by SDL's 2D Render
-   * API. This can be significantly more efficient than using a CPU-bound
-   * Surface if you don't need to manipulate the image directly after loading
-   * it.
+   * Two other API which can be used to create Renderer: CreateRenderer() and
+   * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
+   * they are intended to be used with an Window as the final destination and
+   * not an Surface.
    *
-   * If the loaded image has transparency or a colorkey, a texture with an alpha
-   * channel will be created. Otherwise, SDL_image will attempt to create an
-   * Texture in the most format that most reasonably represents the image data
-   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
+   * @param surface the Surface structure representing the surface where
+   *                rendering is done.
+   * @throws Error on failure.
    *
-   * There is a separate function to read files from an IOStream, if you need an
-   * i/o abstraction to provide data from anywhere instead of a simple
-   * filesystem read; that function is LoadTexture_IO().
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * If you would rather decode an image to an Surface (a buffer of pixels in
-   * CPU memory), call LoadSurface() instead.
+   * @since This function is available since SDL 3.2.0.
    *
-   * @param renderer the Renderer to use to create the texture.
-   * @param file a path on the filesystem to load an image from.
-   * @post a new texture, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa LoadTextureTyped_IO
-   * @sa LoadTexture_IO
+   * @sa DestroyRenderer
    */
-  Texture(RendererRef renderer, StringParam file);
-
-  /**
-   * Load an image from an SDL data source into a texture.
-   *
-   * An Texture represents an image in GPU memory, usable by SDL's 2D Render
-   * API. This can be significantly more efficient than using a CPU-bound
-   * Surface if you don't need to manipulate the image directly after loading
-   * it.
-   *
-   * If the loaded image has transparency or a colorkey, a texture with an alpha
-   * channel will be created. Otherwise, SDL_image will attempt to create an
-   * Texture in the most format that most reasonably represents the image data
-   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
-   * There is a separate function to read files from disk without having to deal
-   * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
-   * function and manage those details for you, determining the file type from
-   * the filename's extension.
-   *
-   * There is also LoadTextureTyped_IO(), which is equivalent to this function
-   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
-   * SDL_image cannot autodetect the file format.
-   *
-   * If you would rather decode an image to an Surface (a buffer of pixels in
-   * CPU memory), call LoadSurface() instead.
-   *
-   * @param renderer the Renderer to use to create the texture.
-   * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
-   * @post a new texture, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa LoadTexture
-   * @sa LoadTextureTyped_IO
-   */
-  Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
-
-  /**
-   * Safely borrows the from TextureRaw.
-   *
-   * @param resource a TextureRaw.
-   *
-   * This does not takes ownership!
-   */
-  static Texture Borrow(TextureRaw resource)
-  {
-    if (resource) {
-      ++resource->refcount;
-      return Texture(resource);
-    }
-    return {};
-  }
-
-  /// Converts to TextureConstRef
-  constexpr operator TextureConstRef() const noexcept { return get(); }
+  Renderer(SurfaceRef surface);
 
   /// Destructor
-  ~Texture() { SDL_DestroyTexture(get()); }
+  ~Renderer() { SDL_DestroyRenderer(get()); }
 
   /// Assignment operator.
-  constexpr Texture& operator=(Texture&& other) noexcept
+  constexpr Renderer& operator=(Renderer&& other) noexcept
   {
     swap(*this, other);
     return *this;
   }
+};
 
-  /// Assignment operator.
-  Texture& operator=(const Texture& other)
-  {
-    if (get() != other.get()) {
-      Texture tmp(other);
-      swap(*this, tmp);
-    }
-    return *this;
-  }
+/**
+ * Base class to Texture.
+ *
+ * @see Texture
+ */
+struct TextureBase : ResourceBaseT<TextureRaw, TextureRawConst>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /// Converts to TextureConstRef
+  constexpr operator TextureConstRef() const noexcept { return get(); }
 
   /**
    * Destroy the specified texture.
@@ -83528,6 +83618,332 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
 };
 
 /**
+ * An efficient driver-specific representation of pixel data
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa CreateTexture
+ * @sa CreateTextureFromSurface
+ * @sa CreateTextureWithProperties
+ * @sa DestroyTexture
+ *
+ * @cat resource
+ */
+struct Texture : TextureBase
+{
+  using TextureBase::TextureBase;
+
+  /**
+   * Constructs from raw Texture.
+   *
+   * @param resource a TextureRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Texture(TextureRaw resource) noexcept
+    : TextureBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Texture(const Texture& other)
+    : Texture(borrow(other.get()))
+  {
+  }
+
+  /// Move constructor
+  constexpr Texture(Texture&& other) noexcept
+    : Texture(other.release())
+  {
+  }
+
+  /**
+   * Create a texture for a rendering context.
+   *
+   * The contents of a texture when first created are not defined.
+   *
+   * @param renderer the rendering context.
+   * @param format one of the enumerated values in PixelFormat.
+   * @param access one of the enumerated values in TextureAccess.
+   * @param size the width and height of the texture in pixels.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateTextureFromSurface
+   * @sa CreateTextureWithProperties
+   * @sa DestroyTexture
+   * @sa GetTextureSize
+   * @sa UpdateTexture
+   */
+  Texture(RendererRef renderer,
+          PixelFormat format,
+          TextureAccess access,
+          const PointRaw& size);
+
+  /**
+   * Create a texture from an existing surface.
+   *
+   * The surface is not modified or freed by this function.
+   *
+   * The TextureAccess hint for the created texture is `TEXTUREACCESS_STATIC`.
+   *
+   * The pixel format of the created texture may be different from the pixel
+   * format of the surface, and can be queried using the
+   * prop.Texture.FORMAT_NUMBER property.
+   *
+   * @param renderer the rendering context.
+   * @param surface the Surface structure containing pixel data used to fill the
+   *                texture.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateTexture
+   * @sa CreateTextureWithProperties
+   * @sa DestroyTexture
+   */
+  Texture(RendererRef renderer, SurfaceRef surface);
+
+  /**
+   * Create a texture for a rendering context with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.Texture.Create.COLORSPACE_NUMBER`: an Colorspace value describing
+   *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
+   *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
+   *   other RGB textures and COLORSPACE_JPEG for YUV textures.
+   * - `prop.Texture.Create.FORMAT_NUMBER`: one of the enumerated values in
+   *   PixelFormat, defaults to the best RGBA format for the renderer
+   * - `prop.Texture.Create.ACCESS_NUMBER`: one of the enumerated values in
+   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
+   * - `prop.Texture.Create.WIDTH_NUMBER`: the width of the texture in pixels,
+   *   required
+   * - `prop.Texture.Create.HEIGHT_NUMBER`: the height of the texture in pixels,
+   *   required
+   * - `prop.Texture.Create.PALETTE_POINTER`: an Palette to use with palettized
+   *   texture formats. This can be set later with SetTexturePalette()
+   * - `prop.Texture.Create.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+   *   textures, this defines the value of 100% diffuse white, with higher
+   *   values being displayed in the High Dynamic Range headroom. This defaults
+   *   to 100 for HDR10 textures and 1.0 for floating point textures.
+   * - `prop.Texture.Create.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   *   textures, this defines the maximum dynamic range used by the content, in
+   *   terms of the SDR white point. This would be equivalent to maxCLL /
+   *   prop.Texture.Create.SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+   *   defined, any values outside the range supported by the display will be
+   *   scaled into the available HDR headroom, otherwise they are clipped.
+   *
+   * With the direct3d11 renderer:
+   *
+   * - `prop.Texture.Create.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.Create.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the direct3d12 renderer:
+   *
+   * - `prop.Texture.Create.D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.Create.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the metal renderer:
+   *
+   * - `prop.Texture.Create.METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   *   associated with the texture, if you want to create a texture from an
+   *   existing pixel buffer.
+   *
+   * With the opengl renderer:
+   *
+   * - `prop.Texture.Create.OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.Create.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the opengles2 renderer:
+   *
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop.Texture.Create.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the vulkan renderer:
+   *
+   * - `prop.Texture.Create.VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   *   the texture, if you want to wrap an existing texture.
+   * - `prop.Texture.Create.VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+   *
+   * With the GPU renderer:
+   *
+   * - `prop.Texture.Create.GPU_TEXTURE_POINTER`: the GPUTexture associated with
+   *   the texture, if you want to wrap an existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+   *   with the U plane of a YUV texture, if you want to wrap an existing
+   *   texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+   *   with the V plane of a YUV texture, if you want to wrap an existing
+   *   texture.
+   *
+   * @param renderer the rendering context.
+   * @param props the properties to use.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateProperties
+   * @sa CreateTexture
+   * @sa CreateTextureFromSurface
+   * @sa DestroyTexture
+   * @sa GetTextureSize
+   * @sa UpdateTexture
+   */
+  Texture(RendererRef renderer, PropertiesRef props);
+
+  /**
+   * Load an image from a filesystem path into a texture.
+   *
+   * An Texture represents an image in GPU memory, usable by SDL's 2D Render
+   * API. This can be significantly more efficient than using a CPU-bound
+   * Surface if you don't need to manipulate the image directly after loading
+   * it.
+   *
+   * If the loaded image has transparency or a colorkey, a texture with an alpha
+   * channel will be created. Otherwise, SDL_image will attempt to create an
+   * Texture in the most format that most reasonably represents the image data
+   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
+   *
+   * There is a separate function to read files from an IOStream, if you need an
+   * i/o abstraction to provide data from anywhere instead of a simple
+   * filesystem read; that function is LoadTexture_IO().
+   *
+   * If you would rather decode an image to an Surface (a buffer of pixels in
+   * CPU memory), call LoadSurface() instead.
+   *
+   * @param renderer the Renderer to use to create the texture.
+   * @param file a path on the filesystem to load an image from.
+   * @post a new texture, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa LoadTextureTyped_IO
+   * @sa LoadTexture_IO
+   */
+  Texture(RendererRef renderer, StringParam file);
+
+  /**
+   * Load an image from an SDL data source into a texture.
+   *
+   * An Texture represents an image in GPU memory, usable by SDL's 2D Render
+   * API. This can be significantly more efficient than using a CPU-bound
+   * Surface if you don't need to manipulate the image directly after loading
+   * it.
+   *
+   * If the loaded image has transparency or a colorkey, a texture with an alpha
+   * channel will be created. Otherwise, SDL_image will attempt to create an
+   * Texture in the most format that most reasonably represents the image data
+   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
+   *
+   * If `closeio` is true, `src` will be closed before returning, whether this
+   * function succeeds or not. SDL_image reads everything it needs from `src`
+   * during this call in any case.
+   *
+   * There is a separate function to read files from disk without having to deal
+   * with IOStream: `LoadTexture(renderer, "filename.jpg")` will call this
+   * function and manage those details for you, determining the file type from
+   * the filename's extension.
+   *
+   * There is also LoadTextureTyped_IO(), which is equivalent to this function
+   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
+   * SDL_image cannot autodetect the file format.
+   *
+   * If you would rather decode an image to an Surface (a buffer of pixels in
+   * CPU memory), call LoadSurface() instead.
+   *
+   * @param renderer the Renderer to use to create the texture.
+   * @param src an IOStream that data will be read from.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
+   * @post a new texture, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa LoadTexture
+   * @sa LoadTextureTyped_IO
+   */
+  Texture(RendererRef renderer, IOStreamRef src, bool closeio = false);
+
+  /**
+   * Safely borrows the from TextureRaw.
+   *
+   * @param resource a TextureRaw.
+   *
+   * This does not takes ownership!
+   */
+  static Texture borrow(TextureRaw resource)
+  {
+    if (resource) {
+      ++resource->refcount;
+      return Texture(resource);
+    }
+    return {};
+  }
+
+  /// Destructor
+  ~Texture() { SDL_DestroyTexture(get()); }
+
+  /// Assignment operator.
+  constexpr Texture& operator=(Texture&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Texture& operator=(const Texture& other)
+  {
+    if (get() != other.get()) {
+      Texture tmp(other);
+      swap(*this, tmp);
+    }
+    return *this;
+  }
+};
+
+/**
  * Lock a portion of the texture for **write-only** pixel access.
  *
  * As an optimization, the pixels made available for editing don't necessarily
@@ -83537,19 +83953,6 @@ struct Texture : ResourceBase<TextureRaw, TextureRawConst>
  *
  * You must use UnlockTexture() to unlock the pixels and apply any changes.
  *
- * @param texture the texture to lock for access, which was created with
- *                `TEXTUREACCESS_STREAMING`.
- * @param rect an Rect structure representing the area to lock for access;
- *             nullptr to lock the entire texture.
- * @param pixels this is filled in with a pointer to the locked pixels,
- *               appropriately offset by the locked area.
- * @param pitch this is filled in with the pitch of the locked pixels; the pitch
- *              is the length of one row in bytes.
- * @returns true on success or false if the texture is not valid or was not
- *          created with `TEXTUREACCESS_STREAMING`; call GetError() for more
- *          information.
- *
- * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -83881,7 +84284,7 @@ inline void CreateWindowAndRenderer(StringParam title,
                                     const PointRaw& size,
                                     WindowFlags window_flags,
                                     Window* window,
-                                    Renderer* renderer)
+                                    RendererBase* renderer)
 {
   SDL_Window* windowRaw = nullptr;
   SDL_Renderer* rendererRaw = nullptr;
@@ -83939,18 +84342,20 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 inline Window CreateWindowAndRenderer(StringParam title,
                                       const PointRaw& size,
                                       WindowFlags window_flags,
-                                      Renderer* renderer)
+                                      RendererBase* renderer)
 {
   Window window;
+  Renderer rendererT;
   CreateWindowAndRenderer(
-    std::move(title), size, window_flags, &window, renderer);
+    std::move(title), size, window_flags, &window, &rendererT);
+  if (renderer) *renderer = rendererT;
   return window;
 }
 
 inline Window::Window(StringParam title,
                       const PointRaw& size,
                       WindowFlags window_flags,
-                      RendererRef* renderer)
+                      RendererBase* renderer)
   : Window(
       CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))
 {
@@ -84205,7 +84610,7 @@ inline GPUDeviceRef GetGPURendererDevice(RendererRef renderer)
   return SDL_GetGPURendererDevice(renderer);
 }
 
-inline GPUDeviceRef Renderer::GetGPUDevice()
+inline GPUDeviceRef RendererBase::GetGPUDevice()
 {
   return SDL::GetGPURendererDevice(get());
 }
@@ -84236,9 +84641,25 @@ inline Renderer CreateSoftwareRenderer(SurfaceRef surface)
   return Renderer(surface);
 }
 
-inline RendererRef Window::GetRenderer() const
+/**
+ * Get the renderer associated with a window.
+ *
+ * @param window the window to query.
+ * @returns the rendering context on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline RendererRef GetRenderer(WindowRef window)
 {
-  return CheckError(SDL_GetRenderer(get()));
+  return CheckError(SDL_GetRenderer(window));
+}
+
+inline RendererRef WindowBase::GetRenderer() const
+{
+  return SDL::GetRenderer(get());
 }
 
 /**
@@ -84257,7 +84678,10 @@ inline WindowRef GetRenderWindow(RendererRef renderer)
   return CheckError(SDL_GetRenderWindow(renderer));
 }
 
-inline WindowRef Renderer::GetWindow() { return SDL::GetRenderWindow(get()); }
+inline WindowRef RendererBase::GetWindow()
+{
+  return SDL::GetRenderWindow(get());
+}
 
 /**
  * Get the name of a renderer.
@@ -84278,7 +84702,7 @@ inline const char* GetRendererName(RendererRef renderer)
   return CheckError(SDL_GetRendererName(renderer));
 }
 
-inline const char* Renderer::GetName() const
+inline const char* RendererBase::GetName() const
 {
   return SDL::GetRendererName(get());
 }
@@ -84373,7 +84797,7 @@ inline PropertiesRef GetRendererProperties(RendererRef renderer)
   return CheckError(SDL_GetRendererProperties(renderer));
 }
 
-inline PropertiesRef Renderer::GetProperties() const
+inline PropertiesRef RendererBase::GetProperties() const
 {
   return SDL::GetRendererProperties(get());
 }
@@ -84532,12 +84956,12 @@ inline Point GetRenderOutputSize(RendererRef renderer)
   return p;
 }
 
-inline void Renderer::GetOutputSize(int* w, int* h) const
+inline void RendererBase::GetOutputSize(int* w, int* h) const
 {
   SDL::GetRenderOutputSize(get(), w, h);
 }
 
-inline Point Renderer::GetOutputSize() const
+inline Point RendererBase::GetOutputSize() const
 {
   return SDL::GetRenderOutputSize(get());
 }
@@ -84593,12 +85017,12 @@ inline Point GetCurrentRenderOutputSize(RendererRef renderer)
   return p;
 }
 
-inline void Renderer::GetCurrentOutputSize(int* w, int* h) const
+inline void RendererBase::GetCurrentOutputSize(int* w, int* h) const
 {
   SDL::GetCurrentRenderOutputSize(get(), w, h);
 }
 
-inline Point Renderer::GetCurrentOutputSize() const
+inline Point RendererBase::GetCurrentOutputSize() const
 {
   return SDL::GetCurrentRenderOutputSize(get());
 }
@@ -84633,9 +85057,9 @@ inline Texture CreateTexture(RendererRef renderer,
   return Texture(renderer, format, access, size);
 }
 
-inline Texture Renderer::CreateTexture(PixelFormat format,
-                                       TextureAccess access,
-                                       const PointRaw& size)
+inline Texture RendererBase::CreateTexture(PixelFormat format,
+                                           TextureAccess access,
+                                           const PointRaw& size)
 {
   return Texture(get(), format, access, size);
 }
@@ -84689,7 +85113,7 @@ inline Texture CreateTextureFromSurface(RendererRef renderer,
   return Texture(renderer, surface);
 }
 
-inline Texture Renderer::CreateTextureFromSurface(SurfaceRef surface)
+inline Texture RendererBase::CreateTextureFromSurface(SurfaceRef surface)
 {
   return Texture(get(), surface);
 }
@@ -84821,7 +85245,7 @@ inline Texture CreateTextureWithProperties(RendererRef renderer,
   return Texture(renderer, props);
 }
 
-inline Texture Renderer::CreateTextureWithProperties(PropertiesRef props)
+inline Texture RendererBase::CreateTextureWithProperties(PropertiesRef props)
 {
   return Texture(get(), props);
 }
@@ -85044,7 +85468,7 @@ inline PropertiesRef GetTextureProperties(TextureConstRef texture)
   return CheckError(SDL_GetTextureProperties(texture));
 }
 
-inline PropertiesRef Texture::GetProperties() const
+inline PropertiesRef TextureBase::GetProperties() const
 {
   return SDL::GetTextureProperties(get());
 }
@@ -85178,7 +85602,7 @@ inline RendererRef GetRendererFromTexture(TextureConstRef texture)
   return CheckError(SDL_GetRendererFromTexture(texture));
 }
 
-inline RendererRef Texture::GetRenderer() const
+inline RendererRef TextureBase::GetRenderer() const
 {
   return SDL::GetRendererFromTexture(get());
 }
@@ -85208,12 +85632,12 @@ inline Point GetTextureSize(TextureConstRef texture)
   return Point(texture->w, texture->h);
 }
 
-inline void Texture::GetSize(float* w, float* h) const
+inline void TextureBase::GetSize(float* w, float* h) const
 {
   SDL::GetTextureSize(get(), w, h);
 }
 
-inline Point Texture::GetSize() const { return SDL::GetTextureSize(get()); }
+inline Point TextureBase::GetSize() const { return SDL::GetTextureSize(get()); }
 
 /// Get the size of a texture, as floating point values.
 inline FPoint GetTextureSizeFloat(TextureConstRef texture)
@@ -85223,7 +85647,7 @@ inline FPoint GetTextureSizeFloat(TextureConstRef texture)
   return p;
 }
 
-inline FPoint Texture::GetSizeFloat() const
+inline FPoint TextureBase::GetSizeFloat() const
 {
   return SDL::GetTextureSizeFloat(get());
 }
@@ -85231,12 +85655,12 @@ inline FPoint Texture::GetSizeFloat() const
 /// Get the width in pixels.
 inline int GetTextureWidth(TextureConstRef texture) { return texture->w; }
 
-inline int Texture::GetWidth() const { return SDL::GetTextureWidth(get()); }
+inline int TextureBase::GetWidth() const { return SDL::GetTextureWidth(get()); }
 
 /// Get the height in pixels.
 inline int GetTextureHeight(TextureConstRef texture) { return texture->h; }
 
-inline int Texture::GetHeight() const { return SDL::GetTextureHeight(get()); }
+inline int TextureBase::GetHeight() const { return GetTextureHeight(get()); }
 
 /// Get the pixel format.
 inline PixelFormat GetTextureFormat(TextureConstRef texture)
@@ -85244,7 +85668,7 @@ inline PixelFormat GetTextureFormat(TextureConstRef texture)
   return texture->format;
 }
 
-inline PixelFormat Texture::GetFormat() const
+inline PixelFormat TextureBase::GetFormat() const
 {
   return SDL::GetTextureFormat(get());
 }
@@ -85275,7 +85699,7 @@ inline void SetTexturePalette(TextureRef texture, PaletteRef palette)
   CheckError(SDL_SetTexturePalette(texture, palette));
 }
 
-inline void Texture::SetPalette(PaletteRef palette)
+inline void TextureBase::SetPalette(PaletteRef palette)
 {
   SDL::SetTexturePalette(get(), palette);
 }
@@ -85295,10 +85719,10 @@ inline void Texture::SetPalette(PaletteRef palette)
  */
 inline Palette GetTexturePalette(TextureRef texture)
 {
-  return Palette::Borrow(SDL_GetTexturePalette(texture));
+  return Palette::borrow(SDL_GetTexturePalette(texture));
 }
 
-inline Palette Texture::GetPalette() { return SDL::GetTexturePalette(get()); }
+inline Palette TextureBase::GetPalette() { return GetTexturePalette(get()); }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -85333,7 +85757,7 @@ inline void SetTextureColorMod(TextureRef texture, Uint8 r, Uint8 g, Uint8 b)
   CheckError(SDL_SetTextureColorMod(texture, r, g, b));
 }
 
-inline void Texture::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
+inline void TextureBase::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
 {
   SDL::SetTextureColorMod(get(), r, g, b);
 }
@@ -85372,7 +85796,7 @@ inline void SetTextureColorModFloat(TextureRef texture,
   CheckError(SDL_SetTextureColorModFloat(texture, r, g, b));
 }
 
-inline void Texture::SetColorModFloat(float r, float g, float b)
+inline void TextureBase::SetColorModFloat(float r, float g, float b)
 {
   SDL::SetTextureColorModFloat(get(), r, g, b);
 }
@@ -85402,7 +85826,7 @@ inline void GetTextureColorMod(TextureConstRef texture,
   CheckError(SDL_GetTextureColorMod(texture, r, g, b));
 }
 
-inline void Texture::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
+inline void TextureBase::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
 {
   SDL::GetTextureColorMod(get(), r, g, b);
 }
@@ -85432,7 +85856,7 @@ inline void GetTextureColorModFloat(TextureConstRef texture,
   CheckError(SDL_GetTextureColorModFloat(texture, r, g, b));
 }
 
-inline void Texture::GetColorModFloat(float* r, float* g, float* b) const
+inline void TextureBase::GetColorModFloat(float* r, float* g, float* b) const
 {
   SDL::GetTextureColorModFloat(get(), r, g, b);
 }
@@ -85465,7 +85889,7 @@ inline void SetTextureAlphaMod(TextureRef texture, Uint8 alpha)
   CheckError(SDL_SetTextureAlphaMod(texture, alpha));
 }
 
-inline void Texture::SetAlphaMod(Uint8 alpha)
+inline void TextureBase::SetAlphaMod(Uint8 alpha)
 {
   SDL::SetTextureAlphaMod(get(), alpha);
 }
@@ -85498,7 +85922,7 @@ inline void SetTextureAlphaModFloat(TextureRef texture, float alpha)
   CheckError(SDL_SetTextureAlphaModFloat(texture, alpha));
 }
 
-inline void Texture::SetAlphaModFloat(float alpha)
+inline void TextureBase::SetAlphaModFloat(float alpha)
 {
   SDL::SetTextureAlphaModFloat(get(), alpha);
 }
@@ -85525,7 +85949,7 @@ inline Uint8 GetTextureAlphaMod(TextureConstRef texture)
   return alpha;
 }
 
-inline Uint8 Texture::GetAlphaMod() const
+inline Uint8 TextureBase::GetAlphaMod() const
 {
   return SDL::GetTextureAlphaMod(get());
 }
@@ -85552,7 +85976,7 @@ inline float GetTextureAlphaModFloat(TextureConstRef texture)
   return alpha;
 }
 
-inline float Texture::GetAlphaModFloat() const
+inline float TextureBase::GetAlphaModFloat() const
 {
   return SDL::GetTextureAlphaModFloat(get());
 }
@@ -85586,7 +86010,7 @@ inline void SetTextureMod(TextureRef texture, Color c)
   SetTextureAlphaMod(texture, c.a);
 }
 
-inline void Texture::SetMod(Color c) { SDL::SetTextureMod(get(), c); }
+inline void TextureBase::SetMod(Color c) { SDL::SetTextureMod(get(), c); }
 
 /**
  * Set an additional color and alpha values multiplied into render copy
@@ -85617,7 +86041,7 @@ inline void SetTextureModFloat(TextureRef texture, FColor c)
   SetTextureAlphaModFloat(texture, c.a);
 }
 
-inline void Texture::SetModFloat(FColor c)
+inline void TextureBase::SetModFloat(FColor c)
 {
   SDL::SetTextureModFloat(get(), c);
 }
@@ -85644,7 +86068,7 @@ inline Color GetTextureMod(TextureConstRef texture)
   return c;
 }
 
-inline Color Texture::GetMod() const { return SDL::GetTextureMod(get()); }
+inline Color TextureBase::GetMod() const { return SDL::GetTextureMod(get()); }
 
 /**
  * Get the additional color value multiplied into render copy operations.
@@ -85668,7 +86092,7 @@ inline FColor GetTextureModFloat(TextureConstRef texture)
   return c;
 }
 
-inline FColor Texture::GetModFloat() const
+inline FColor TextureBase::GetModFloat() const
 {
   return SDL::GetTextureModFloat(get());
 }
@@ -85694,7 +86118,7 @@ inline void SetTextureBlendMode(TextureRef texture, BlendMode blendMode)
   CheckError(SDL_SetTextureBlendMode(texture, blendMode));
 }
 
-inline void Texture::SetBlendMode(BlendMode blendMode)
+inline void TextureBase::SetBlendMode(BlendMode blendMode)
 {
   SDL::SetTextureBlendMode(get(), blendMode);
 }
@@ -85719,7 +86143,7 @@ inline BlendMode GetTextureBlendMode(TextureConstRef texture)
   return blendMode;
 }
 
-inline BlendMode Texture::GetBlendMode() const
+inline BlendMode TextureBase::GetBlendMode() const
 {
   return SDL::GetTextureBlendMode(get());
 }
@@ -85746,7 +86170,7 @@ inline void SetTextureScaleMode(TextureRef texture, ScaleMode scaleMode)
   CheckError(SDL_SetTextureScaleMode(texture, scaleMode));
 }
 
-inline void Texture::SetScaleMode(ScaleMode scaleMode)
+inline void TextureBase::SetScaleMode(ScaleMode scaleMode)
 {
   SDL::SetTextureScaleMode(get(), scaleMode);
 }
@@ -85771,7 +86195,7 @@ inline ScaleMode GetTextureScaleMode(TextureConstRef texture)
   return scaleMode;
 }
 
-inline ScaleMode Texture::GetScaleMode() const
+inline ScaleMode TextureBase::GetScaleMode() const
 {
   return SDL::GetTextureScaleMode(get());
 }
@@ -85852,15 +86276,15 @@ inline void UpdateTexture(TextureRef texture,
   UpdateTexture(texture, rect, surface->pixels, surface->pitch);
 }
 
-inline void Texture::Update(OptionalRef<const RectRaw> rect,
-                            const void* pixels,
-                            int pitch)
+inline void TextureBase::Update(OptionalRef<const RectRaw> rect,
+                                const void* pixels,
+                                int pitch)
 {
   SDL::UpdateTexture(get(), rect, pixels, pitch);
 }
 
-inline void Texture::Update(SurfaceConstRef surface,
-                            OptionalRef<const RectRaw> rect)
+inline void TextureBase::Update(SurfaceConstRef surface,
+                                OptionalRef<const RectRaw> rect)
 {
   SDL::UpdateTexture(get(), surface, rect);
 }
@@ -85903,13 +86327,13 @@ inline void UpdateYUVTexture(TextureRef texture,
     texture, rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch));
 }
 
-inline void Texture::UpdateYUV(OptionalRef<const RectRaw> rect,
-                               const Uint8* Yplane,
-                               int Ypitch,
-                               const Uint8* Uplane,
-                               int Upitch,
-                               const Uint8* Vplane,
-                               int Vpitch)
+inline void TextureBase::UpdateYUV(OptionalRef<const RectRaw> rect,
+                                   const Uint8* Yplane,
+                                   int Ypitch,
+                                   const Uint8* Uplane,
+                                   int Upitch,
+                                   const Uint8* Vplane,
+                                   int Vpitch)
 {
   SDL::UpdateYUVTexture(
     get(), rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch);
@@ -85950,11 +86374,11 @@ inline void UpdateNVTexture(TextureRef texture,
     SDL_UpdateNVTexture(texture, rect, Yplane, Ypitch, UVplane, UVpitch));
 }
 
-inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
-                              const Uint8* Yplane,
-                              int Ypitch,
-                              const Uint8* UVplane,
-                              int UVpitch)
+inline void TextureBase::UpdateNV(OptionalRef<const RectRaw> rect,
+                                  const Uint8* Yplane,
+                                  int Ypitch,
+                                  const Uint8* UVplane,
+                                  int UVpitch)
 {
   SDL::UpdateNVTexture(get(), rect, Yplane, Ypitch, UVplane, UVpitch);
 }
@@ -85994,9 +86418,9 @@ inline void LockTexture(TextureRef texture,
   CheckError(SDL_LockTexture(texture, rect, pixels, pitch));
 }
 
-inline TextureLock Texture::Lock(OptionalRef<const RectRaw> rect,
-                                 void** pixels,
-                                 int* pitch)
+inline TextureLock TextureBase::Lock(OptionalRef<const RectRaw> rect,
+                                     void** pixels,
+                                     int* pitch)
 {
   return {TextureRef(*this), rect, pixels, pitch};
 }
@@ -86047,10 +86471,10 @@ inline Surface LockTextureToSurface(
 {
   SurfaceRaw surface = nullptr;
   CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
-  return Surface::Borrow(surface);
+  return Surface::borrow(surface);
 }
 
-inline TextureSurfaceLock Texture::LockToSurface(
+inline TextureSurfaceLock TextureBase::LockToSurface(
   OptionalRef<const RectRaw> rect)
 {
   return {TextureRef(*this), rect};
@@ -86084,13 +86508,13 @@ inline TextureSurfaceLock::TextureSurfaceLock(TextureRef resource,
  */
 inline void UnlockTexture(TextureRef texture) { SDL_UnlockTexture(texture); }
 
-inline void Texture::Unlock(TextureLock&& lock)
+inline void TextureBase::Unlock(TextureLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
 }
 
-inline void Texture::Unlock(TextureSurfaceLock&& lock)
+inline void TextureBase::Unlock(TextureSurfaceLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -86139,7 +86563,7 @@ inline void SetRenderTarget(RendererRef renderer, TextureRef texture)
   CheckError(SDL_SetRenderTarget(renderer, texture));
 }
 
-inline void Renderer::SetTarget(TextureRef texture)
+inline void RendererBase::SetTarget(TextureRef texture)
 {
   SDL::SetRenderTarget(get(), texture);
 }
@@ -86164,7 +86588,7 @@ inline void ResetRenderTarget(RendererRef renderer)
   SetRenderTarget(renderer, nullptr);
 }
 
-inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(get()); }
+inline void RendererBase::ResetTarget() { SDL::ResetRenderTarget(get()); }
 
 /**
  * Get the current render target.
@@ -86184,11 +86608,11 @@ inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(get()); }
 inline Texture GetRenderTarget(RendererRef renderer)
 {
   if (auto texture = SDL_GetRenderTarget(renderer))
-    return Texture::Borrow(texture);
+    return Texture::borrow(texture);
   return {};
 }
 
-inline Texture Renderer::GetTarget() const
+inline Texture RendererBase::GetTarget() const
 {
   return SDL::GetRenderTarget(get());
 }
@@ -86243,8 +86667,9 @@ inline void SetRenderLogicalPresentation(RendererRef renderer,
   CheckError(SDL_SetRenderLogicalPresentation(renderer, size.x, size.y, mode));
 }
 
-inline void Renderer::SetLogicalPresentation(const PointRaw& size,
-                                             RendererLogicalPresentation mode)
+inline void RendererBase::SetLogicalPresentation(
+  const PointRaw& size,
+  RendererLogicalPresentation mode)
 {
   SDL::SetRenderLogicalPresentation(get(), size, mode);
 }
@@ -86309,7 +86734,7 @@ inline void GetRenderLogicalPresentation(RendererRef renderer,
   return GetRenderLogicalPresentation(renderer, nullptr, nullptr, mode);
 }
 
-inline void Renderer::GetLogicalPresentation(
+inline void RendererBase::GetLogicalPresentation(
   int* w,
   int* h,
   RendererLogicalPresentation* mode) const
@@ -86317,8 +86742,9 @@ inline void Renderer::GetLogicalPresentation(
   SDL::GetRenderLogicalPresentation(get(), w, h, mode);
 }
 
-inline void Renderer::GetLogicalPresentation(PointRaw* size,
-                                             RendererLogicalPresentation* mode)
+inline void RendererBase::GetLogicalPresentation(
+  PointRaw* size,
+  RendererLogicalPresentation* mode)
 {
   SDL::GetRenderLogicalPresentation(get(), size, mode);
 }
@@ -86350,7 +86776,7 @@ inline FRect GetRenderLogicalPresentationRect(RendererRef renderer)
   return rect;
 }
 
-inline FRect Renderer::GetLogicalPresentationRect() const
+inline FRect RendererBase::GetLogicalPresentationRect() const
 {
   return SDL::GetRenderLogicalPresentationRect(get());
 }
@@ -86386,7 +86812,7 @@ inline FPoint RenderCoordinatesFromWindow(RendererRef renderer,
   return p;
 }
 
-inline FPoint Renderer::RenderCoordinatesFromWindow(
+inline FPoint RendererBase::RenderCoordinatesFromWindow(
   const FPointRaw& window_coord) const
 {
   return SDL::RenderCoordinatesFromWindow(get(), window_coord);
@@ -86424,7 +86850,8 @@ inline FPoint RenderCoordinatesToWindow(RendererRef renderer,
   return p;
 }
 
-inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
+inline FPoint RendererBase::RenderCoordinatesToWindow(
+  const FPointRaw& coord) const
 {
   return SDL::RenderCoordinatesToWindow(get(), coord);
 }
@@ -86466,7 +86893,7 @@ inline void ConvertEventToRenderCoordinates(RendererRef renderer, Event* event)
   CheckError(SDL_ConvertEventToRenderCoordinates(renderer, event));
 }
 
-inline void Renderer::ConvertEventToRenderCoordinates(Event* event) const
+inline void RendererBase::ConvertEventToRenderCoordinates(Event* event) const
 {
   SDL::ConvertEventToRenderCoordinates(get(), event);
 }
@@ -86501,7 +86928,7 @@ inline void SetRenderViewport(RendererRef renderer,
   CheckError(SDL_SetRenderViewport(renderer, rect));
 }
 
-inline void Renderer::SetViewport(OptionalRef<const RectRaw> rect)
+inline void RendererBase::SetViewport(OptionalRef<const RectRaw> rect)
 {
   SDL::SetRenderViewport(get(), rect);
 }
@@ -86527,7 +86954,7 @@ inline void ResetRenderViewport(RendererRef renderer)
   SetRenderViewport(renderer, std::nullopt);
 }
 
-inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(get()); }
+inline void RendererBase::ResetViewport() { SDL::ResetRenderViewport(get()); }
 
 /**
  * Get the drawing area for the current target.
@@ -86553,7 +86980,7 @@ inline Rect GetRenderViewport(RendererRef renderer)
   return rect;
 }
 
-inline Rect Renderer::GetViewport() const
+inline Rect RendererBase::GetViewport() const
 {
   return SDL::GetRenderViewport(get());
 }
@@ -86583,7 +87010,7 @@ inline bool RenderViewportSet(RendererRef renderer)
   return SDL_RenderViewportSet(renderer);
 }
 
-inline bool Renderer::ViewportSet() const
+inline bool RendererBase::ViewportSet() const
 {
   return SDL::RenderViewportSet(get());
 }
@@ -86613,7 +87040,7 @@ inline Rect GetRenderSafeArea(RendererRef renderer)
   return rect;
 }
 
-inline Rect Renderer::GetSafeArea() const
+inline Rect RendererBase::GetSafeArea() const
 {
   return SDL::GetRenderSafeArea(get());
 }
@@ -86643,7 +87070,7 @@ inline void SetRenderClipRect(RendererRef renderer,
   CheckError(SDL_SetRenderClipRect(renderer, rect));
 }
 
-inline void Renderer::SetClipRect(OptionalRef<const RectRaw> rect)
+inline void RendererBase::SetClipRect(OptionalRef<const RectRaw> rect)
 {
   SDL::SetRenderClipRect(get(), rect);
 }
@@ -86669,7 +87096,7 @@ inline void ResetRenderClipRect(RendererRef renderer)
   SetRenderClipRect(renderer, std::nullopt);
 }
 
-inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(get()); }
+inline void RendererBase::ResetClipRect() { SDL::ResetRenderClipRect(get()); }
 
 /**
  * Get the clip rectangle for the current target.
@@ -86696,7 +87123,7 @@ inline Rect GetRenderClipRect(RendererRef renderer)
   return rect;
 }
 
-inline Rect Renderer::GetClipRect() const
+inline Rect RendererBase::GetClipRect() const
 {
   return SDL::GetRenderClipRect(get());
 }
@@ -86723,7 +87150,7 @@ inline bool RenderClipEnabled(RendererRef renderer)
   return SDL_RenderClipEnabled(renderer);
 }
 
-inline bool Renderer::IsClipEnabled() const
+inline bool RendererBase::IsClipEnabled() const
 {
   return SDL::RenderClipEnabled(get());
 }
@@ -86757,7 +87184,7 @@ inline void SetRenderScale(RendererRef renderer, const FPointRaw& scale)
   CheckError(SDL_SetRenderScale(renderer, scale.x, scale.y));
 }
 
-inline void Renderer::SetScale(const FPointRaw& scale)
+inline void RendererBase::SetScale(const FPointRaw& scale)
 {
   SDL::SetRenderScale(get(), scale);
 }
@@ -86806,12 +87233,15 @@ inline FPoint GetRenderScale(RendererRef renderer)
   return p;
 }
 
-inline void Renderer::GetScale(float* scaleX, float* scaleY) const
+inline void RendererBase::GetScale(float* scaleX, float* scaleY) const
 {
   SDL::GetRenderScale(get(), scaleX, scaleY);
 }
 
-inline FPoint Renderer::GetScale() const { return SDL::GetRenderScale(get()); }
+inline FPoint RendererBase::GetScale() const
+{
+  return SDL::GetRenderScale(get());
+}
 
 /**
  * Set the color used for drawing operations.
@@ -86835,7 +87265,7 @@ inline void SetRenderDrawColor(RendererRef renderer, ColorRaw c)
   CheckError(SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a));
 }
 
-inline void Renderer::SetDrawColor(ColorRaw c)
+inline void RendererBase::SetDrawColor(ColorRaw c)
 {
   SDL::SetRenderDrawColor(get(), c);
 }
@@ -86862,7 +87292,7 @@ inline void SetRenderDrawColorFloat(RendererRef renderer, const FColorRaw& c)
   CheckError(SDL_SetRenderDrawColorFloat(renderer, c.r, c.g, c.b, c.a));
 }
 
-inline void Renderer::SetDrawColorFloat(const FColorRaw& c)
+inline void RendererBase::SetDrawColorFloat(const FColorRaw& c)
 {
   SDL::SetRenderDrawColorFloat(get(), c);
 }
@@ -86918,12 +87348,15 @@ inline Color GetRenderDrawColor(RendererRef renderer)
   return c;
 }
 
-inline void Renderer::GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+inline void RendererBase::GetDrawColor(Uint8* r,
+                                       Uint8* g,
+                                       Uint8* b,
+                                       Uint8* a) const
 {
   SDL::GetRenderDrawColor(get(), r, g, b, a);
 }
 
-inline Color Renderer::GetDrawColor() const
+inline Color RendererBase::GetDrawColor() const
 {
   return SDL::GetRenderDrawColor(get());
 }
@@ -86979,15 +87412,15 @@ inline FColor GetRenderDrawColorFloat(RendererRef renderer)
   return c;
 }
 
-inline void Renderer::GetDrawColorFloat(float* r,
-                                        float* g,
-                                        float* b,
-                                        float* a) const
+inline void RendererBase::GetDrawColorFloat(float* r,
+                                            float* g,
+                                            float* b,
+                                            float* a) const
 {
   SDL::GetRenderDrawColorFloat(get(), r, g, b, a);
 }
 
-inline FColor Renderer::GetDrawColorFloat() const
+inline FColor RendererBase::GetDrawColorFloat() const
 {
   return SDL::GetRenderDrawColorFloat(get());
 }
@@ -87017,7 +87450,7 @@ inline void SetRenderColorScale(RendererRef renderer, float scale)
   CheckError(SDL_SetRenderColorScale(renderer, scale));
 }
 
-inline void Renderer::SetColorScale(float scale)
+inline void RendererBase::SetColorScale(float scale)
 {
   SDL::SetRenderColorScale(get(), scale);
 }
@@ -87042,7 +87475,7 @@ inline float GetRenderColorScale(RendererRef renderer)
   return scale;
 }
 
-inline float Renderer::GetColorScale() const
+inline float RendererBase::GetColorScale() const
 {
   return SDL::GetRenderColorScale(get());
 }
@@ -87067,7 +87500,7 @@ inline void SetRenderDrawBlendMode(RendererRef renderer, BlendMode blendMode)
   CheckError(SDL_SetRenderDrawBlendMode(renderer, blendMode));
 }
 
-inline void Renderer::SetDrawBlendMode(BlendMode blendMode)
+inline void RendererBase::SetDrawBlendMode(BlendMode blendMode)
 {
   SDL::SetRenderDrawBlendMode(get(), blendMode);
 }
@@ -87092,7 +87525,7 @@ inline BlendMode GetRenderDrawBlendMode(RendererRef renderer)
   return blendMode;
 }
 
-inline BlendMode Renderer::GetDrawBlendMode() const
+inline BlendMode RendererBase::GetDrawBlendMode() const
 {
   return SDL::GetRenderDrawBlendMode(get());
 }
@@ -87119,7 +87552,7 @@ inline void RenderClear(RendererRef renderer)
   CheckError(SDL_RenderClear(renderer));
 }
 
-inline void Renderer::RenderClear() { SDL::RenderClear(get()); }
+inline void RendererBase::RenderClear() { SDL::RenderClear(get()); }
 
 /**
  * Draw a point on the current rendering target at subpixel precision.
@@ -87139,7 +87572,7 @@ inline void RenderPoint(RendererRef renderer, const FPointRaw& p)
   CheckError(SDL_RenderPoint(renderer, p.x, p.y));
 }
 
-inline void Renderer::RenderPoint(const FPointRaw& p)
+inline void RendererBase::RenderPoint(const FPointRaw& p)
 {
   SDL::RenderPoint(get(), p);
 }
@@ -87163,7 +87596,7 @@ inline void RenderPoints(RendererRef renderer, SpanRef<const FPointRaw> points)
     SDL_RenderPoints(renderer, points.data(), narrowS32(points.size())));
 }
 
-inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
+inline void RendererBase::RenderPoints(SpanRef<const FPointRaw> points)
 {
   SDL::RenderPoints(get(), points);
 }
@@ -87189,7 +87622,7 @@ inline void RenderLine(RendererRef renderer,
   CheckError(SDL_RenderLine(renderer, p1.x, p1.y, p2.x, p2.y));
 }
 
-inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
+inline void RendererBase::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
 {
   SDL::RenderLine(get(), p1, p2);
 }
@@ -87214,7 +87647,7 @@ inline void RenderLines(RendererRef renderer, SpanRef<const FPointRaw> points)
     SDL_RenderLines(renderer, points.data(), narrowS32(points.size())));
 }
 
-inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
+inline void RendererBase::RenderLines(SpanRef<const FPointRaw> points)
 {
   SDL::RenderLines(get(), points);
 }
@@ -87238,7 +87671,7 @@ inline void RenderRect(RendererRef renderer, OptionalRef<const FRectRaw> rect)
   CheckError(SDL_RenderRect(renderer, rect));
 }
 
-inline void Renderer::RenderRect(OptionalRef<const FRectRaw> rect)
+inline void RendererBase::RenderRect(OptionalRef<const FRectRaw> rect)
 {
   SDL::RenderRect(get(), rect);
 }
@@ -87262,7 +87695,7 @@ inline void RenderRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
   CheckError(SDL_RenderRects(renderer, rects.data(), narrowS32(rects.size())));
 }
 
-inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
+inline void RendererBase::RenderRects(SpanRef<const FRectRaw> rects)
 {
   SDL::RenderRects(get(), rects);
 }
@@ -87288,7 +87721,7 @@ inline void RenderFillRect(RendererRef renderer,
   CheckError(SDL_RenderFillRect(renderer, rect));
 }
 
-inline void Renderer::RenderFillRect(OptionalRef<const FRectRaw> rect)
+inline void RendererBase::RenderFillRect(OptionalRef<const FRectRaw> rect)
 {
   SDL::RenderFillRect(get(), rect);
 }
@@ -87313,7 +87746,7 @@ inline void RenderFillRects(RendererRef renderer, SpanRef<const FRectRaw> rects)
     SDL_RenderFillRects(renderer, rects.data(), narrowS32(rects.size())));
 }
 
-inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
+inline void RendererBase::RenderFillRects(SpanRef<const FRectRaw> rects)
 {
   SDL::RenderFillRects(get(), rects);
 }
@@ -87345,9 +87778,9 @@ inline void RenderTexture(RendererRef renderer,
   CheckError(SDL_RenderTexture(renderer, texture, srcrect, dstrect));
 }
 
-inline void Renderer::RenderTexture(TextureRef texture,
-                                    OptionalRef<const FRectRaw> srcrect,
-                                    OptionalRef<const FRectRaw> dstrect)
+inline void RendererBase::RenderTexture(TextureRef texture,
+                                        OptionalRef<const FRectRaw> srcrect,
+                                        OptionalRef<const FRectRaw> dstrect)
 {
   SDL::RenderTexture(get(), texture, srcrect, dstrect);
 }
@@ -87389,12 +87822,13 @@ inline void RenderTextureRotated(RendererRef renderer,
     renderer, texture, srcrect, dstrect, angle, center, flip));
 }
 
-inline void Renderer::RenderTextureRotated(TextureRef texture,
-                                           OptionalRef<const FRectRaw> srcrect,
-                                           OptionalRef<const FRectRaw> dstrect,
-                                           double angle,
-                                           OptionalRef<const FPointRaw> center,
-                                           FlipMode flip)
+inline void RendererBase::RenderTextureRotated(
+  TextureRef texture,
+  OptionalRef<const FRectRaw> srcrect,
+  OptionalRef<const FRectRaw> dstrect,
+  double angle,
+  OptionalRef<const FPointRaw> center,
+  FlipMode flip)
 {
   SDL::RenderTextureRotated(
     get(), texture, srcrect, dstrect, angle, center, flip);
@@ -87436,11 +87870,12 @@ inline void RenderTextureAffine(RendererRef renderer,
     SDL_RenderTextureAffine(renderer, texture, srcrect, origin, right, down));
 }
 
-inline void Renderer::RenderTextureAffine(TextureRef texture,
-                                          OptionalRef<const FRectRaw> srcrect,
-                                          OptionalRef<const FPointRaw> origin,
-                                          OptionalRef<const FPointRaw> right,
-                                          OptionalRef<const FPointRaw> down)
+inline void RendererBase::RenderTextureAffine(
+  TextureRef texture,
+  OptionalRef<const FRectRaw> srcrect,
+  OptionalRef<const FPointRaw> origin,
+  OptionalRef<const FPointRaw> right,
+  OptionalRef<const FPointRaw> down)
 {
   SDL::RenderTextureAffine(get(), texture, srcrect, origin, right, down);
 }
@@ -87479,10 +87914,11 @@ inline void RenderTextureTiled(RendererRef renderer,
     SDL_RenderTextureTiled(renderer, texture, srcrect, scale, dstrect));
 }
 
-inline void Renderer::RenderTextureTiled(TextureRef texture,
-                                         OptionalRef<const FRectRaw> srcrect,
-                                         float scale,
-                                         OptionalRef<const FRectRaw> dstrect)
+inline void RendererBase::RenderTextureTiled(
+  TextureRef texture,
+  OptionalRef<const FRectRaw> srcrect,
+  float scale,
+  OptionalRef<const FRectRaw> dstrect)
 {
   SDL::RenderTextureTiled(get(), texture, srcrect, scale, dstrect);
 }
@@ -87540,14 +87976,15 @@ inline void RenderTexture9Grid(RendererRef renderer,
                                     dstrect));
 }
 
-inline void Renderer::RenderTexture9Grid(TextureRef texture,
-                                         OptionalRef<const FRectRaw> srcrect,
-                                         float left_width,
-                                         float right_width,
-                                         float top_height,
-                                         float bottom_height,
-                                         float scale,
-                                         OptionalRef<const FRectRaw> dstrect)
+inline void RendererBase::RenderTexture9Grid(
+  TextureRef texture,
+  OptionalRef<const FRectRaw> srcrect,
+  float left_width,
+  float right_width,
+  float top_height,
+  float bottom_height,
+  float scale,
+  OptionalRef<const FRectRaw> dstrect)
 {
   SDL::RenderTexture9Grid(get(),
                           texture,
@@ -87620,15 +88057,15 @@ inline void RenderTexture9GridTiled(RendererRef renderer,
                                          tileScale));
 }
 
-inline void Renderer::RenderTexture9GridTiled(TextureRef texture,
-                                              const FRectRaw& srcrect,
-                                              float left_width,
-                                              float right_width,
-                                              float top_height,
-                                              float bottom_height,
-                                              float scale,
-                                              const FRectRaw& dstrect,
-                                              float tileScale)
+inline void RendererBase::RenderTexture9GridTiled(TextureRef texture,
+                                                  const FRectRaw& srcrect,
+                                                  float left_width,
+                                                  float right_width,
+                                                  float top_height,
+                                                  float bottom_height,
+                                                  float scale,
+                                                  const FRectRaw& dstrect,
+                                                  float tileScale)
 {
   SDL::RenderTexture9GridTiled(get(),
                                texture,
@@ -87677,9 +88114,9 @@ inline void RenderGeometry(RendererRef renderer,
                                 narrowS32(indices.size())));
 }
 
-inline void Renderer::RenderGeometry(TextureRef texture,
-                                     std::span<const Vertex> vertices,
-                                     std::span<const int> indices)
+inline void RendererBase::RenderGeometry(TextureRef texture,
+                                         std::span<const Vertex> vertices,
+                                         std::span<const int> indices)
 {
   SDL::RenderGeometry(get(), texture, vertices, indices);
 }
@@ -87738,17 +88175,17 @@ inline void RenderGeometryRaw(RendererRef renderer,
                                    size_indices));
 }
 
-inline void Renderer::RenderGeometryRaw(TextureRef texture,
-                                        const float* xy,
-                                        int xy_stride,
-                                        const FColor* color,
-                                        int color_stride,
-                                        const float* uv,
-                                        int uv_stride,
-                                        int num_vertices,
-                                        const void* indices,
-                                        int num_indices,
-                                        int size_indices)
+inline void RendererBase::RenderGeometryRaw(TextureRef texture,
+                                            const float* xy,
+                                            int xy_stride,
+                                            const FColor* color,
+                                            int color_stride,
+                                            const float* uv,
+                                            int uv_stride,
+                                            int num_vertices,
+                                            const void* indices,
+                                            int num_indices,
+                                            int size_indices)
 {
   SDL::RenderGeometryRaw(get(),
                          texture,
@@ -87791,8 +88228,8 @@ inline void SetRenderTextureAddressMode(RendererRef renderer,
   CheckError(SDL_SetRenderTextureAddressMode(renderer, u_mode, v_mode));
 }
 
-inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
-                                                  TextureAddressMode v_mode)
+inline void RendererBase::SetRenderTextureAddressMode(TextureAddressMode u_mode,
+                                                      TextureAddressMode v_mode)
 {
   SDL::SetRenderTextureAddressMode(get(), u_mode, v_mode);
 }
@@ -87822,8 +88259,9 @@ inline void GetRenderTextureAddressMode(RendererRef renderer,
   CheckError(SDL_GetRenderTextureAddressMode(renderer, u_mode, v_mode));
 }
 
-inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
-                                                  TextureAddressMode* v_mode)
+inline void RendererBase::GetRenderTextureAddressMode(
+  TextureAddressMode* u_mode,
+  TextureAddressMode* v_mode)
 {
   SDL::GetRenderTextureAddressMode(get(), u_mode, v_mode);
 }
@@ -87858,7 +88296,7 @@ inline Surface RenderReadPixels(RendererRef renderer,
   return Surface{CheckError(SDL_RenderReadPixels(renderer, rect))};
 }
 
-inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
+inline Surface RendererBase::ReadPixels(OptionalRef<const RectRaw> rect) const
 {
   return SDL::RenderReadPixels(get(), rect);
 }
@@ -87913,7 +88351,7 @@ inline void RenderPresent(RendererRef renderer)
   CheckError(SDL_RenderPresent(renderer));
 }
 
-inline void Renderer::Present() { SDL::RenderPresent(get()); }
+inline void RendererBase::Present() { SDL::RenderPresent(get()); }
 
 /**
  * Destroy the specified texture.
@@ -87932,7 +88370,7 @@ inline void Renderer::Present() { SDL::RenderPresent(get()); }
  */
 inline void DestroyTexture(TextureRaw texture) { SDL_DestroyTexture(texture); }
 
-inline void Texture::Destroy() { DestroyTexture(release()); }
+inline void TextureBase::Destroy() { DestroyTexture(release()); }
 
 /**
  * Destroy the rendering context for a window and free all associated textures.
@@ -87952,7 +88390,7 @@ inline void DestroyRenderer(RendererRaw renderer)
   SDL_DestroyRenderer(renderer);
 }
 
-inline void Renderer::Destroy() { DestroyRenderer(release()); }
+inline void RendererBase::Destroy() { DestroyRenderer(release()); }
 
 /**
  * Force the rendering context to flush any pending commands and state.
@@ -87989,7 +88427,7 @@ inline void FlushRenderer(RendererRef renderer)
   CheckError(SDL_FlushRenderer(renderer));
 }
 
-inline void Renderer::Flush() { SDL::FlushRenderer(get()); }
+inline void RendererBase::Flush() { SDL::FlushRenderer(get()); }
 
 /**
  * Get the CAMetalLayer associated with the given Metal renderer.
@@ -88012,7 +88450,7 @@ inline void* GetRenderMetalLayer(RendererRef renderer)
   return SDL_GetRenderMetalLayer(renderer);
 }
 
-inline void* Renderer::GetRenderMetalLayer()
+inline void* RendererBase::GetRenderMetalLayer()
 {
   return SDL::GetRenderMetalLayer(get());
 }
@@ -88043,7 +88481,7 @@ inline void* GetRenderMetalCommandEncoder(RendererRef renderer)
   return SDL_GetRenderMetalCommandEncoder(renderer);
 }
 
-inline void* Renderer::GetRenderMetalCommandEncoder()
+inline void* RendererBase::GetRenderMetalCommandEncoder()
 {
   return SDL::GetRenderMetalCommandEncoder(get());
 }
@@ -88083,9 +88521,9 @@ inline void AddVulkanRenderSemaphores(RendererRef renderer,
     renderer, wait_stage_mask, wait_semaphore, signal_semaphore));
 }
 
-inline void Renderer::AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
-                                                Sint64 wait_semaphore,
-                                                Sint64 signal_semaphore)
+inline void RendererBase::AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
+                                                    Sint64 wait_semaphore,
+                                                    Sint64 signal_semaphore)
 {
   SDL::AddVulkanRenderSemaphores(
     get(), wait_stage_mask, wait_semaphore, signal_semaphore);
@@ -88118,7 +88556,10 @@ inline void SetRenderVSync(RendererRef renderer, int vsync)
   CheckError(SDL_SetRenderVSync(renderer, vsync));
 }
 
-inline void Renderer::SetVSync(int vsync) { SDL::SetRenderVSync(get(), vsync); }
+inline void RendererBase::SetVSync(int vsync)
+{
+  SDL::SetRenderVSync(get(), vsync);
+}
 
 /// Constant for disabling renderer vsync
 constexpr int RENDERER_VSYNC_DISABLED = SDL_RENDERER_VSYNC_DISABLED;
@@ -88147,7 +88588,7 @@ inline int GetRenderVSync(RendererRef renderer)
   return vsync;
 }
 
-inline int Renderer::GetVSync() const { return SDL::GetRenderVSync(get()); }
+inline int RendererBase::GetVSync() const { return SDL::GetRenderVSync(get()); }
 
 /**
  * The size, in pixels, of a single RenderDebugText() character.
@@ -88205,7 +88646,7 @@ inline void RenderDebugText(RendererRef renderer,
   CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
 }
 
-inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
+inline void RendererBase::RenderDebugText(const FPointRaw& p, StringParam str)
 {
   SDL::RenderDebugText(get(), p, std::move(str));
 }
@@ -88224,7 +88665,7 @@ inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
  * @param p the x,y coordinate where the top-left corner of the text will draw.
  * @param fmt the format string to draw.
  * @param args additional parameters matching % tokens in the `fmt` string, if
- *            any.
+ *             any.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -88245,9 +88686,9 @@ inline void RenderDebugTextFormat(RendererRef renderer,
 }
 
 template<class... ARGS>
-inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
-                                            std::string_view fmt,
-                                            ARGS... args)
+inline void RendererBase::RenderDebugTextFormat(const FPointRaw& p,
+                                                std::string_view fmt,
+                                                ARGS... args)
 {
   SDL::RenderDebugTextFormat(get(), p, fmt, args...);
 }
@@ -88275,7 +88716,7 @@ inline void SetDefaultTextureScaleMode(RendererRef renderer,
   CheckError(SDL_SetDefaultTextureScaleMode(renderer, scale_mode));
 }
 
-inline void Renderer::SetDefaultTextureScaleMode(ScaleMode scale_mode)
+inline void RendererBase::SetDefaultTextureScaleMode(ScaleMode scale_mode)
 {
   SDL::SetDefaultTextureScaleMode(get(), scale_mode);
 }
@@ -88300,88 +88741,22 @@ inline void GetDefaultTextureScaleMode(RendererRef renderer,
   CheckError(SDL_GetDefaultTextureScaleMode(renderer, scale_mode));
 }
 
-inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
+inline void RendererBase::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
 {
   SDL::GetDefaultTextureScaleMode(get(), scale_mode);
 }
 
 /**
- * A custom GPU render state.
+ * Base class to GPURenderState.
  *
- * @since This struct is available since SDL 3.4.0.
- *
- * @sa CreateGPURenderState
- * @sa SetGPURenderStateFragmentUniforms
- * @sa SetGPURenderState
- * @sa DestroyGPURenderState
- *
- * @cat resource
+ * @see GPURenderState
  */
-struct GPURenderState : ResourceBase<GPURenderStateRaw>
+struct GPURenderStateBase : ResourceBaseT<GPURenderStateRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw GPURenderState.
-   *
-   * @param resource a GPURenderStateRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit GPURenderState(GPURenderStateRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) = delete;
-
-  /// Move constructor
-  constexpr GPURenderState(GPURenderState&& other) noexcept
-    : GPURenderState(other.release())
-  {
-  }
-
-  constexpr GPURenderState(const GPURenderStateRef& other) = delete;
-
-  constexpr GPURenderState(GPURenderStateRef&& other) = delete;
-
-  /**
-   * Create custom GPU render state.
-   *
-   * @param renderer the renderer to use.
-   * @param createinfo a struct describing the GPU render state to create.
-   * @post a custom GPU render state or nullptr on failure; call GetError() for
-   *       more information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               renderer.
-   *
-   * @since This function is available since SDL 3.4.0.
-   *
-   * @sa SetGPURenderStateFragmentUniforms
-   * @sa SetGPURenderState
-   * @sa DestroyGPURenderState
-   */
-  GPURenderState(RendererRef renderer,
-                 const GPURenderStateCreateInfo& createinfo);
-
-  /// Destructor
-  ~GPURenderState() { SDL_DestroyGPURenderState(get()); }
-
-  /// Assignment operator.
-  constexpr GPURenderState& operator=(GPURenderState&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  GPURenderState& operator=(const GPURenderState& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy custom GPU render state.
-   *
    *
    * @threadsafety This function should be called on the thread that created the
    *               renderer.
@@ -88412,6 +88787,71 @@ struct GPURenderState : ResourceBase<GPURenderStateRaw>
 };
 
 /**
+ * A custom GPU render state.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ *
+ * @sa CreateGPURenderState
+ * @sa SetGPURenderStateFragmentUniforms
+ * @sa SetGPURenderState
+ * @sa DestroyGPURenderState
+ *
+ * @cat resource
+ */
+struct GPURenderState : GPURenderStateBase
+{
+  using GPURenderStateBase::GPURenderStateBase;
+
+  /**
+   * Constructs from raw GPURenderState.
+   *
+   * @param resource a GPURenderStateRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit GPURenderState(GPURenderStateRaw resource) noexcept
+    : GPURenderStateBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr GPURenderState(GPURenderState&& other) noexcept
+    : GPURenderState(other.release())
+  {
+  }
+
+  /**
+   * Create custom GPU render state.
+   *
+   * @param renderer the renderer to use.
+   * @param createinfo a struct describing the GPU render state to create.
+   * @post a custom GPU render state or nullptr on failure; call GetError() for
+   *       more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SetGPURenderStateFragmentUniforms
+   * @sa SetGPURenderState
+   * @sa DestroyGPURenderState
+   */
+  GPURenderState(RendererRef renderer,
+                 const GPURenderStateCreateInfo& createinfo);
+
+  /// Destructor
+  ~GPURenderState() { SDL_DestroyGPURenderState(get()); }
+
+  /// Assignment operator.
+  constexpr GPURenderState& operator=(GPURenderState&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Create custom GPU render state.
  *
  * @param renderer the renderer to use.
@@ -88435,7 +88875,7 @@ inline GPURenderState CreateGPURenderState(
   return GPURenderState(renderer, createinfo);
 }
 
-inline GPURenderState Renderer::CreateGPURenderState(
+inline GPURenderState RendererBase::CreateGPURenderState(
   const GPURenderStateCreateInfo& createinfo)
 {
   return GPURenderState(get(), createinfo);
@@ -88474,9 +88914,9 @@ inline void SetGPURenderStateFragmentUniforms(GPURenderStateRef state,
     SDL_SetGPURenderStateFragmentUniforms(state, slot_index, data, length));
 }
 
-inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
-                                                const void* data,
-                                                Uint32 length)
+inline void GPURenderStateBase::SetFragmentUniforms(Uint32 slot_index,
+                                                    const void* data,
+                                                    Uint32 length)
 {
   SDL::SetGPURenderStateFragmentUniforms(get(), slot_index, data, length);
 }
@@ -88502,7 +88942,7 @@ inline void SetGPURenderState(RendererRef renderer, GPURenderStateRef state)
   CheckError(SDL_SetGPURenderState(renderer, state));
 }
 
-inline void Renderer::SetGPURenderState(GPURenderStateRef state)
+inline void RendererBase::SetGPURenderState(GPURenderStateRef state)
 {
   SDL::SetGPURenderState(get(), state);
 }
@@ -88524,7 +88964,7 @@ inline void DestroyGPURenderState(GPURenderStateRaw state)
   SDL_DestroyGPURenderState(state);
 }
 
-inline void GPURenderState::Destroy() { DestroyGPURenderState(release()); }
+inline void GPURenderStateBase::Destroy() { DestroyGPURenderState(release()); }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -90045,6 +90485,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct AddressBase;
+
+// Forward decl
 struct Address;
 
 /// Alias to raw representation for Address.
@@ -90055,7 +90498,10 @@ using AddressRaw = NET_Address*;
  *
  * This does not take ownership!
  */
-using AddressRef = ResourceRef<Address>;
+using AddressRef = ResourceRefT<AddressBase>;
+
+// Forward decl
+struct StreamSocketBase;
 
 // Forward decl
 struct StreamSocket;
@@ -90068,7 +90514,10 @@ using StreamSocketRaw = NET_StreamSocket*;
  *
  * This does not take ownership!
  */
-using StreamSocketRef = ResourceRef<StreamSocket>;
+using StreamSocketRef = ResourceRefT<StreamSocketBase>;
+
+// Forward decl
+struct ServerBase;
 
 // Forward decl
 struct Server;
@@ -90081,7 +90530,10 @@ using ServerRaw = NET_Server*;
  *
  * This does not take ownership!
  */
-using ServerRef = ResourceRef<Server>;
+using ServerRef = ResourceRefT<ServerBase>;
+
+// Forward decl
+struct DatagramSocketBase;
 
 // Forward decl
 struct DatagramSocket;
@@ -90094,7 +90546,10 @@ using DatagramSocketRaw = NET_DatagramSocket*;
  *
  * This does not take ownership!
  */
-using DatagramSocketRef = ResourceRef<DatagramSocket>;
+using DatagramSocketRef = ResourceRefT<DatagramSocketBase>;
+
+// Forward decl
+struct DatagramBase;
 
 // Forward decl
 struct Datagram;
@@ -90110,7 +90565,7 @@ using DatagramRawConst = const NET_Datagram*;
  *
  * This does not take ownership!
  */
-using DatagramRef = ResourceRef<Datagram>;
+using DatagramRef = ResourceRefT<DatagramBase>;
 
 /// Safely wrap Datagram for non owning const parameters
 using DatagramConstRef = ResourceConstRef<DatagramRaw, DatagramRawConst>;
@@ -90254,159 +90709,13 @@ constexpr Status SUCCESS =
   NET_SUCCESS; ///< Async operation complete, result was success.
 
 /**
- * Opaque representation of a computer-readable network address.
+ * Base class to Address.
  *
- * This is an opaque datatype, to be treated by the app as a handle.
- *
- * SDL_net uses these to identify other servers; you use them to connect to a
- * remote machine, and you use them to find out who connected to you. They are
- * also used to decide what network interface to use when creating a server.
- *
- * These are intended to be protocol-independent; a given address might be for
- * IPv4, IPv6, or something more esoteric. SDL_net attempts to hide the
- * differences.
- *
- * @since This datatype is available since SDL_net 3.0.0.
- *
- * @sa ResolveHostname
- * @sa GetLocalAddresses
- * @sa CompareAddresses
- *
- * @cat resource
+ * @see Address
  */
-struct Address : ResourceBase<AddressRaw>
+struct AddressBase : ResourceBaseT<AddressRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Address.
-   *
-   * @param resource a AddressRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Address(AddressRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr Address(Address&& other) noexcept
-    : Address(other.release())
-  {
-  }
-
-  /**
-   * Resolve a human-readable hostname.
-   *
-   * SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org`
-   * but on computer-readable addresses. This function converts from one to the
-   * other. This process is known as "resolving" an address.
-   *
-   * You can also use this to turn IP address strings (like "159.203.69.7") into
-   * Address objects.
-   *
-   * Note that resolving an address is an asynchronous operation, since the
-   * library will need to ask a server on the internet to get the information it
-   * needs, and this can take time (and possibly fail later). This function will
-   * not block. It either returns nullptr (catastrophic failure) or an
-   * unresolved Address. Until the address resolves, it can't be used.
-   *
-   * If you want to block until the resolution is finished, you can call
-   * WaitUntilResolved(). Otherwise, you can do a non-blocking check with
-   * GetAddressStatus().
-   *
-   * When you are done with the returned Address, call UnrefAddress() to dispose
-   * of it. You need to do this even if resolution later fails asynchronously.
-   *
-   * @param host The hostname to resolve.
-   * @post A new Address on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa WaitUntilResolved
-   * @sa GetAddressStatus
-   * @sa RefAddress
-   * @sa UnrefAddress
-   */
-  Address(StringParam host);
-
-  /**
-   * Add a reference to an Address.
-   *
-   * Since several pieces of the library might share a single Address, including
-   * a background thread that's working on resolving, these objects are
-   * referenced counted. This allows everything that's using it to declare they
-   * still want it, and drop their reference to the address when they are done
-   * with it. The object's resources are freed when the last reference is
-   * dropped.
-   *
-   * This function adds a reference to an Address, increasing its reference
-   * count by one.
-   *
-   * The documentation will tell you when the app has to explicitly unref an
-   * address. For example, ResolveHostname() creates addresses that are already
-   * referenced, so the caller needs to unref it when done.
-   *
-   * Generally you only have to explicit ref an address when you have different
-   * parts of your own app that will be sharing an address. In normal usage, you
-   * only have to unref things you've created once (like you might free()
-   * something), but you are free to add extra refs if it makes sense.
-   *
-   * This returns the same address passed as a parameter, which makes it easy to
-   * ref and assign in one step:
-   *
-   * ```c
-   * myAddr = RefAddress(yourAddr);
-   * ```
-   *
-   * @param address The Address to add a reference to.
-   * @post the same address that was passed as a parameter.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   */
-  Address(const Address& address);
-
-  /**
-   * Safely borrows the from AddressRaw.
-   *
-   * @param resource a AddressRaw.
-   *
-   * This does not takes ownership!
-   */
-  static Address Borrow(AddressRaw resource)
-  {
-    if (resource) {
-      NET_RefAddress(resource);
-      return Address(resource);
-    }
-    return {};
-  }
-
-  /// Destructor
-  ~Address() { NET_UnrefAddress(get()); }
-
-  /// Assignment operator.
-  constexpr Address& operator=(Address&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Address& operator=(const Address& other)
-  {
-    if (get() != other.get()) {
-      Address tmp(other);
-      swap(*this, tmp);
-    }
-    return *this;
-  }
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Drop a reference to an Address.
@@ -90550,14 +90859,14 @@ struct Address : ResourceBase<AddressRaw>
    * Compares two addresses for equality. Returns true if they are the same,
    * false otherwise.
    */
-  bool operator==(AddressRef other) const;
+  bool operator==(const AddressBase& other) const;
 
   /**
    * Compares two addresses. Returns std::strong_ordering::less if this address
    * is less than the other, std::strong_ordering::greater if this address is
    * greater than the other, and std::strong_ordering::equal if they are equal.
    */
-  auto operator<=>(AddressRef other) const;
+  auto operator<=>(const AddressBase& other) const;
 
   /**
    * Begin connecting a socket as a client to a remote server.
@@ -90766,6 +91075,162 @@ struct Address : ResourceBase<AddressRaw>
 };
 
 /**
+ * Opaque representation of a computer-readable network address.
+ *
+ * This is an opaque datatype, to be treated by the app as a handle.
+ *
+ * SDL_net uses these to identify other servers; you use them to connect to a
+ * remote machine, and you use them to find out who connected to you. They are
+ * also used to decide what network interface to use when creating a server.
+ *
+ * These are intended to be protocol-independent; a given address might be for
+ * IPv4, IPv6, or something more esoteric. SDL_net attempts to hide the
+ * differences.
+ *
+ * @since This datatype is available since SDL_net 3.0.0.
+ *
+ * @sa ResolveHostname
+ * @sa GetLocalAddresses
+ * @sa CompareAddresses
+ *
+ * @cat resource
+ */
+struct Address : AddressBase
+{
+  using AddressBase::AddressBase;
+
+  /**
+   * Constructs from raw Address.
+   *
+   * @param resource a AddressRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Address(AddressRaw resource) noexcept
+    : AddressBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Address(Address&& other) noexcept
+    : Address(other.release())
+  {
+  }
+
+  /**
+   * Resolve a human-readable hostname.
+   *
+   * SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org`
+   * but on computer-readable addresses. This function converts from one to the
+   * other. This process is known as "resolving" an address.
+   *
+   * You can also use this to turn IP address strings (like "159.203.69.7") into
+   * Address objects.
+   *
+   * Note that resolving an address is an asynchronous operation, since the
+   * library will need to ask a server on the internet to get the information it
+   * needs, and this can take time (and possibly fail later). This function will
+   * not block. It either returns nullptr (catastrophic failure) or an
+   * unresolved Address. Until the address resolves, it can't be used.
+   *
+   * If you want to block until the resolution is finished, you can call
+   * WaitUntilResolved(). Otherwise, you can do a non-blocking check with
+   * GetAddressStatus().
+   *
+   * When you are done with the returned Address, call UnrefAddress() to dispose
+   * of it. You need to do this even if resolution later fails asynchronously.
+   *
+   * @param host The hostname to resolve.
+   * @post A new Address on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa WaitUntilResolved
+   * @sa GetAddressStatus
+   * @sa RefAddress
+   * @sa UnrefAddress
+   */
+  Address(StringParam host);
+
+  /**
+   * Add a reference to an Address.
+   *
+   * Since several pieces of the library might share a single Address, including
+   * a background thread that's working on resolving, these objects are
+   * referenced counted. This allows everything that's using it to declare they
+   * still want it, and drop their reference to the address when they are done
+   * with it. The object's resources are freed when the last reference is
+   * dropped.
+   *
+   * This function adds a reference to an Address, increasing its reference
+   * count by one.
+   *
+   * The documentation will tell you when the app has to explicitly unref an
+   * address. For example, ResolveHostname() creates addresses that are already
+   * referenced, so the caller needs to unref it when done.
+   *
+   * Generally you only have to explicit ref an address when you have different
+   * parts of your own app that will be sharing an address. In normal usage, you
+   * only have to unref things you've created once (like you might free()
+   * something), but you are free to add extra refs if it makes sense.
+   *
+   * This returns the same address passed as a parameter, which makes it easy to
+   * ref and assign in one step:
+   *
+   * ```c
+   * myAddr = RefAddress(yourAddr);
+   * ```
+   *
+   * @param address The Address to add a reference to.
+   * @post the same address that was passed as a parameter.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   */
+  Address(const Address& address);
+
+  /**
+   * Safely borrows the from AddressRaw.
+   *
+   * @param resource a AddressRaw.
+   *
+   * This does not takes ownership!
+   */
+  static Address borrow(AddressRaw resource)
+  {
+    if (resource) {
+      NET_RefAddress(resource);
+      return Address(resource);
+    }
+    return {};
+  }
+
+  /// Destructor
+  ~Address() { NET_UnrefAddress(get()); }
+
+  /// Assignment operator.
+  constexpr Address& operator=(Address&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Address& operator=(const Address& other)
+  {
+    if (get() != other.get()) {
+      Address tmp(other);
+      swap(*this, tmp);
+    }
+    return *this;
+  }
+};
+
+/**
  * Resolve a human-readable hostname.
  *
  * SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org`
@@ -90861,7 +91326,7 @@ inline Status WaitUntilResolved(AddressRef address, Sint32 timeout)
   return NET_WaitUntilResolved(address, timeout);
 }
 
-inline Status Address::WaitUntilResolved(Sint32 timeout)
+inline Status AddressBase::WaitUntilResolved(Sint32 timeout)
 {
   return SDL::WaitUntilResolved(get(), timeout);
 }
@@ -90898,7 +91363,7 @@ inline Status GetAddressStatus(AddressRef address)
   return NET_GetAddressStatus(address);
 }
 
-inline Status Address::GetStatus() { return SDL::GetAddressStatus(get()); }
+inline Status AddressBase::GetStatus() { return SDL::GetAddressStatus(get()); }
 
 /**
  * Get a human-readable string from a resolved address.
@@ -90933,7 +91398,10 @@ inline const char* GetAddressString(AddressRef address)
   return CheckError(NET_GetAddressString(address));
 }
 
-inline const char* Address::GetString() { return SDL::GetAddressString(get()); }
+inline const char* AddressBase::GetString()
+{
+  return SDL::GetAddressString(get());
+}
 
 /**
  * Add a reference to an Address.
@@ -90996,7 +91464,7 @@ inline Address RefAddress(AddressRef address) { return Address(address); }
  */
 inline void UnrefAddress(AddressRaw address) { NET_UnrefAddress(address); }
 
-inline void Address::Unref() { UnrefAddress(release()); }
+inline void AddressBase::Unref() { UnrefAddress(release()); }
 
 /**
  * Enable simulated address resolution failures.
@@ -91052,17 +91520,17 @@ inline int CompareAddresses(AddressRef a, AddressRef b)
   return NET_CompareAddresses(a, b);
 }
 
-inline int Address::Compare(AddressRef b) const
+inline int AddressBase::Compare(AddressRef b) const
 {
   return SDL::CompareAddresses(get(), b);
 }
 
-inline bool Address::operator==(AddressRef other) const
+inline bool AddressBase::operator==(const AddressBase& other) const
 {
   return Compare(other) == 0;
 }
 
-inline auto Address::operator<=>(AddressRef other) const
+inline auto AddressBase::operator<=>(const AddressBase& other) const
 {
   return Compare(other) <=> 0;
 }
@@ -91146,122 +91614,13 @@ inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
 }
 
 /**
- * An object that represents a streaming connection to another system.
+ * Base class to StreamSocket.
  *
- * This is meant to be a reliable, stream-oriented connection, such as TCP.
- *
- * Each StreamSocket represents a single connection between systems. Usually, a
- * client app will have one connection to a server app on a different computer,
- * and the server app might have many connections from different clients. Each
- * of these connections communicate over a separate stream socket.
- *
- * @since This datatype is available since SDL_net 3.0.0.
- *
- * @sa CreateClient
- * @sa WriteToStreamSocket
- * @sa ReadFromStreamSocket
- *
- * @cat resource
+ * @see StreamSocket
  */
-struct StreamSocket : ResourceBase<StreamSocketRaw>
+struct StreamSocketBase : ResourceBaseT<StreamSocketRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw StreamSocket.
-   *
-   * @param resource a StreamSocketRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit StreamSocket(StreamSocketRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr StreamSocket(const StreamSocket& other) = delete;
-
-  /// Move constructor
-  constexpr StreamSocket(StreamSocket&& other) noexcept
-    : StreamSocket(other.release())
-  {
-  }
-
-  constexpr StreamSocket(const StreamSocketRef& other) = delete;
-
-  constexpr StreamSocket(StreamSocketRef&& other) = delete;
-
-  /**
-   * Begin connecting a socket as a client to a remote server.
-   *
-   * Each StreamSocket represents a single connection between systems. Usually,
-   * a client app will have one connection to a server app on a different
-   * computer, and the server app might have many connections from different
-   * clients. Each of these connections communicate over a separate stream
-   * socket.
-   *
-   * Connecting is an asynchronous operation; this function does not block, and
-   * will return before the connection is complete. One has to then use
-   * WaitUntilConnected() or GetConnectionStatus() to see when the operation has
-   * completed, and if it was successful.
-   *
-   * Once connected, you can read and write data to the returned socket. Stream
-   * sockets are a mode of _reliable_ transmission, which means data will be
-   * received as a stream of bytes in the order you sent it. If there are
-   * problems in transmission, the system will deal with protocol negotiation
-   * and retransmission as necessary, transparent to your app, but this means
-   * until data is available in the order sent, the remote side will not get any
-   * new data. This is the tradeoff vs datagram sockets, where data can arrive
-   * in any order, or not arrive at all, without waiting, but the sender will
-   * not know.
-   *
-   * Stream sockets don't employ any protocol (above the TCP level), so they can
-   * connect to servers that aren't using SDL_net, but if you want to speak any
-   * protocol beyond an abritrary stream of bytes, such as HTTP, you'll have to
-   * implement that yourself on top of the stream socket.
-   *
-   * This function will fail if `address` is not finished resolving.
-   *
-   * When you are done with this connection (whether it failed to connect or
-   * not), you must dispose of it with DestroyStreamSocket().
-   *
-   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
-   * you do not have to byteswap it into "network order," as the library will
-   * handle that for you.
-   *
-   * There are currently no extra properties for creating a client, so `props`
-   * should be zero. A future revision of SDL_net may add additional (optional)
-   * properties.
-   *
-   * @param address the address of the remote server to connect to.
-   * @param port the port on the remote server to connect to.
-   * @param props properties of the new client. Specify zero for defaults.
-   * @post  pending connection on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa WaitUntilConnected
-   * @sa GetConnectionStatus
-   * @sa DestroyStreamSocket
-   */
-  StreamSocket(AddressRef address, Uint16 port, PropertiesRef props);
-
-  /// Destructor
-  ~StreamSocket() { NET_DestroyStreamSocket(get()); }
-
-  /// Assignment operator.
-  constexpr StreamSocket& operator=(StreamSocket&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  StreamSocket& operator=(const StreamSocket& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Dispose of a previously-created stream socket.
@@ -91593,6 +91952,115 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
 };
 
 /**
+ * An object that represents a streaming connection to another system.
+ *
+ * This is meant to be a reliable, stream-oriented connection, such as TCP.
+ *
+ * Each StreamSocket represents a single connection between systems. Usually, a
+ * client app will have one connection to a server app on a different computer,
+ * and the server app might have many connections from different clients. Each
+ * of these connections communicate over a separate stream socket.
+ *
+ * @since This datatype is available since SDL_net 3.0.0.
+ *
+ * @sa CreateClient
+ * @sa WriteToStreamSocket
+ * @sa ReadFromStreamSocket
+ *
+ * @cat resource
+ */
+struct StreamSocket : StreamSocketBase
+{
+  using StreamSocketBase::StreamSocketBase;
+
+  /**
+   * Constructs from raw StreamSocket.
+   *
+   * @param resource a StreamSocketRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit StreamSocket(StreamSocketRaw resource) noexcept
+    : StreamSocketBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr StreamSocket(StreamSocket&& other) noexcept
+    : StreamSocket(other.release())
+  {
+  }
+
+  /**
+   * Begin connecting a socket as a client to a remote server.
+   *
+   * Each StreamSocket represents a single connection between systems. Usually,
+   * a client app will have one connection to a server app on a different
+   * computer, and the server app might have many connections from different
+   * clients. Each of these connections communicate over a separate stream
+   * socket.
+   *
+   * Connecting is an asynchronous operation; this function does not block, and
+   * will return before the connection is complete. One has to then use
+   * WaitUntilConnected() or GetConnectionStatus() to see when the operation has
+   * completed, and if it was successful.
+   *
+   * Once connected, you can read and write data to the returned socket. Stream
+   * sockets are a mode of _reliable_ transmission, which means data will be
+   * received as a stream of bytes in the order you sent it. If there are
+   * problems in transmission, the system will deal with protocol negotiation
+   * and retransmission as necessary, transparent to your app, but this means
+   * until data is available in the order sent, the remote side will not get any
+   * new data. This is the tradeoff vs datagram sockets, where data can arrive
+   * in any order, or not arrive at all, without waiting, but the sender will
+   * not know.
+   *
+   * Stream sockets don't employ any protocol (above the TCP level), so they can
+   * connect to servers that aren't using SDL_net, but if you want to speak any
+   * protocol beyond an abritrary stream of bytes, such as HTTP, you'll have to
+   * implement that yourself on top of the stream socket.
+   *
+   * This function will fail if `address` is not finished resolving.
+   *
+   * When you are done with this connection (whether it failed to connect or
+   * not), you must dispose of it with DestroyStreamSocket().
+   *
+   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
+   * you do not have to byteswap it into "network order," as the library will
+   * handle that for you.
+   *
+   * There are currently no extra properties for creating a client, so `props`
+   * should be zero. A future revision of SDL_net may add additional (optional)
+   * properties.
+   *
+   * @param address the address of the remote server to connect to.
+   * @param port the port on the remote server to connect to.
+   * @param props properties of the new client. Specify zero for defaults.
+   * @post  pending connection on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa WaitUntilConnected
+   * @sa GetConnectionStatus
+   * @sa DestroyStreamSocket
+   */
+  StreamSocket(AddressRef address, Uint16 port, PropertiesRef props);
+
+  /// Destructor
+  ~StreamSocket() { NET_DestroyStreamSocket(get()); }
+
+  /// Assignment operator.
+  constexpr StreamSocket& operator=(StreamSocket&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Begin connecting a socket as a client to a remote server.
  *
  * Each StreamSocket represents a single connection between systems. Usually, a
@@ -91653,7 +92121,7 @@ inline StreamSocket CreateClient(AddressRef address,
   return StreamSocket(address, port, props);
 }
 
-inline StreamSocket Address::CreateClient(Uint16 port, PropertiesRef props)
+inline StreamSocket AddressBase::CreateClient(Uint16 port, PropertiesRef props)
 {
   return StreamSocket(get(), port, props);
 }
@@ -91712,10 +92180,80 @@ inline Status WaitUntilConnected(StreamSocketRef sock, Sint32 timeout)
   return NET_WaitUntilConnected(sock, timeout);
 }
 
-inline Status StreamSocket::WaitUntilConnected(Sint32 timeout)
+inline Status StreamSocketBase::WaitUntilConnected(Sint32 timeout)
 {
   return SDL::WaitUntilConnected(get(), timeout);
 }
+
+/**
+ * Base class to Server.
+ *
+ * @see Server
+ */
+struct ServerBase : ResourceBaseT<ServerRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Dispose of a previously-created server.
+   *
+   * This will immediately disconnect any pending client connections that had
+   * not yet been accepted, but will not disconnect any existing accepted
+   * connections (which can still be used and must be destroyed separately).
+   * Further attempts to make new connections to this server will fail on the
+   * client side.
+   *
+   * @threadsafety You should not operate on the same server from multiple
+   *               threads at the same time without supplying a serialization
+   *               mechanism. However, different threads may access different
+   *               servers at the same time without problems.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa CreateServer
+   */
+  void Destroy();
+
+  /**
+   * Create a stream socket for the next pending client connection.
+   *
+   * When a client connects to a server, their connection will be pending until
+   * the server _accepts_ the connection. Once accepted, the server will be
+   * given a stream socket to communicate with the client, and they can send
+   * data to, and receive data from, each other.
+   *
+   * Unlike CreateClient, stream sockets returned from this function are already
+   * connected and do not have to wait for the connection to complete, as server
+   * acceptance is the final step of connecting.
+   *
+   * This function does not block. If there are no new connections pending, this
+   * function will return true (for success, but `*client_stream` will be set to
+   * nullptr. This is not an error and a common condition the app should expect.
+   * In fact, this function should be called in a loop until this condition
+   * occurs, so all pending connections are accepted in a single batch.
+   *
+   * If you want the server to sleep until there's a new connection, you can use
+   * WaitUntilInputAvailable().
+   *
+   * When done with the newly-accepted client, you can disconnect and dispose of
+   * the stream socket by calling DestroyStreamSocket().
+   *
+   * @param client_stream Will be set to a new stream socket if a connection was
+   *                      pending, nullptr otherwise.
+   * @throws Error on failure.
+   *
+   * @threadsafety You should not operate on the same server from multiple
+   *               threads at the same time without supplying a serialization
+   *               mechanism. However, different threads may access different
+   *               servers at the same time without problems.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa WaitUntilInputAvailable
+   * @sa DestroyStreamSocket
+   */
+  void AcceptClient(NET_StreamSocket** client_stream);
+};
 
 /**
  * The receiving end of a stream connection.
@@ -91733,9 +92271,9 @@ inline Status StreamSocket::WaitUntilConnected(Sint32 timeout)
  *
  * @cat resource
  */
-struct Server : ResourceBase<ServerRaw>
+struct Server : ServerBase
 {
-  using ResourceBase::ResourceBase;
+  using ServerBase::ServerBase;
 
   /**
    * Constructs from raw Server.
@@ -91745,22 +92283,15 @@ struct Server : ResourceBase<ServerRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Server(ServerRaw resource) noexcept
-    : ResourceBase(resource)
+    : ServerBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Server(const Server& other) = delete;
 
   /// Move constructor
   constexpr Server(Server&& other) noexcept
     : Server(other.release())
   {
   }
-
-  constexpr Server(const ServerRef& other) = delete;
-
-  constexpr Server(ServerRef&& other) = delete;
 
   /**
    * Create a server, which listens for connections to accept.
@@ -91835,69 +92366,6 @@ struct Server : ResourceBase<ServerRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Server& operator=(const Server& other) = delete;
-
-  /**
-   * Dispose of a previously-created server.
-   *
-   * This will immediately disconnect any pending client connections that had
-   * not yet been accepted, but will not disconnect any existing accepted
-   * connections (which can still be used and must be destroyed separately).
-   * Further attempts to make new connections to this server will fail on the
-   * client side.
-   *
-   * @threadsafety You should not operate on the same server from multiple
-   *               threads at the same time without supplying a serialization
-   *               mechanism. However, different threads may access different
-   *               servers at the same time without problems.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa CreateServer
-   */
-  void Destroy();
-
-  /**
-   * Create a stream socket for the next pending client connection.
-   *
-   * When a client connects to a server, their connection will be pending until
-   * the server _accepts_ the connection. Once accepted, the server will be
-   * given a stream socket to communicate with the client, and they can send
-   * data to, and receive data from, each other.
-   *
-   * Unlike CreateClient, stream sockets returned from this function are already
-   * connected and do not have to wait for the connection to complete, as server
-   * acceptance is the final step of connecting.
-   *
-   * This function does not block. If there are no new connections pending, this
-   * function will return true (for success, but `*client_stream` will be set to
-   * nullptr. This is not an error and a common condition the app should expect.
-   * In fact, this function should be called in a loop until this condition
-   * occurs, so all pending connections are accepted in a single batch.
-   *
-   * If you want the server to sleep until there's a new connection, you can use
-   * WaitUntilInputAvailable().
-   *
-   * When done with the newly-accepted client, you can disconnect and dispose of
-   * the stream socket by calling DestroyStreamSocket().
-   *
-   * @param client_stream Will be set to a new stream socket if a connection was
-   *                      pending, nullptr otherwise.
-   * @throws Error on failure.
-   *
-   * @threadsafety You should not operate on the same server from multiple
-   *               threads at the same time without supplying a serialization
-   *               mechanism. However, different threads may access different
-   *               servers at the same time without problems.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa WaitUntilInputAvailable
-   * @sa DestroyStreamSocket
-   */
-  void AcceptClient(NET_StreamSocket** client_stream);
 };
 
 /**
@@ -91967,7 +92435,7 @@ inline Server CreateServer(AddressRef addr, Uint16 port, PropertiesRef props)
   return Server(addr, port, props);
 }
 
-inline Server Address::CreateServer(Uint16 port, PropertiesRef props)
+inline Server AddressBase::CreateServer(Uint16 port, PropertiesRef props)
 {
   return Server(get(), port, props);
 }
@@ -92028,7 +92496,7 @@ inline void AcceptClient(ServerRef server, NET_StreamSocket** client_stream)
   CheckError(NET_AcceptClient(server, client_stream));
 }
 
-inline void Server::AcceptClient(NET_StreamSocket** client_stream)
+inline void ServerBase::AcceptClient(NET_StreamSocket** client_stream)
 {
   SDL::AcceptClient(get(), client_stream);
 }
@@ -92054,7 +92522,7 @@ inline void Server::AcceptClient(NET_StreamSocket** client_stream)
  */
 inline void DestroyServer(ServerRaw server) { NET_DestroyServer(server); }
 
-inline void Server::Destroy() { DestroyServer(release()); }
+inline void ServerBase::Destroy() { DestroyServer(release()); }
 
 /**
  * Get the remote address of a stream socket.
@@ -92078,7 +92546,7 @@ inline Address GetStreamSocketAddress(StreamSocketRef sock)
   return Address(CheckError(NET_GetStreamSocketAddress(sock)));
 }
 
-inline Address StreamSocket::GetAddress()
+inline Address StreamSocketBase::GetAddress()
 {
   return SDL::GetStreamSocketAddress(get());
 }
@@ -92123,7 +92591,7 @@ inline Status GetConnectionStatus(StreamSocketRef sock)
   return NET_GetConnectionStatus(sock);
 }
 
-inline Status StreamSocket::GetConnectionStatus()
+inline Status StreamSocketBase::GetConnectionStatus()
 {
   return SDL::GetConnectionStatus(get());
 }
@@ -92180,7 +92648,7 @@ inline bool WriteToStreamSocket(StreamSocketRef sock,
   return NET_WriteToStreamSocket(sock, buf, buflen);
 }
 
-inline bool StreamSocket::WriteTo(const void* buf, int buflen)
+inline bool StreamSocketBase::WriteTo(const void* buf, int buflen)
 {
   return SDL::WriteToStreamSocket(get(), buf, buflen);
 }
@@ -92220,7 +92688,7 @@ inline int GetStreamSocketPendingWrites(StreamSocketRef sock)
   return NET_GetStreamSocketPendingWrites(sock);
 }
 
-inline int StreamSocket::GetPendingWrites()
+inline int StreamSocketBase::GetPendingWrites()
 {
   return SDL::GetStreamSocketPendingWrites(get());
 }
@@ -92268,7 +92736,7 @@ inline int WaitUntilStreamSocketDrained(StreamSocketRef sock, Sint32 timeout)
   return NET_WaitUntilStreamSocketDrained(sock, timeout);
 }
 
-inline int StreamSocket::WaitUntilDrained(Sint32 timeout)
+inline int StreamSocketBase::WaitUntilDrained(Sint32 timeout)
 {
   return SDL::WaitUntilStreamSocketDrained(get(), timeout);
 }
@@ -92326,7 +92794,7 @@ inline int ReadFromStreamSocket(StreamSocketRef sock, void* buf, int buflen)
   return NET_ReadFromStreamSocket(sock, buf, buflen);
 }
 
-inline int StreamSocket::ReadFrom(void* buf, int buflen)
+inline int StreamSocketBase::ReadFrom(void* buf, int buflen)
 {
   return SDL::ReadFromStreamSocket(get(), buf, buflen);
 }
@@ -92373,7 +92841,7 @@ inline void SimulateStreamPacketLoss(StreamSocketRef sock, int percent_loss)
   NET_SimulateStreamPacketLoss(sock, percent_loss);
 }
 
-inline void StreamSocket::SimulateStreamPacketLoss(int percent_loss)
+inline void StreamSocketBase::SimulateStreamPacketLoss(int percent_loss)
 {
   SDL::SimulateStreamPacketLoss(get(), percent_loss);
 }
@@ -92410,161 +92878,16 @@ inline void DestroyStreamSocket(StreamSocketRaw sock)
   NET_DestroyStreamSocket(sock);
 }
 
-inline void StreamSocket::Destroy() { DestroyStreamSocket(release()); }
+inline void StreamSocketBase::Destroy() { DestroyStreamSocket(release()); }
 
 /**
- * An object that represents a datagram connection to another system.
+ * Base class to DatagramSocket.
  *
- * This is meant to be an unreliable, packet-oriented connection, such as UDP.
- *
- * Datagram sockets follow different rules than stream sockets. They are not a
- * reliable stream of bytes but rather packets, they are not limited to talking
- * to a single other remote system, they do not maintain a single "connection"
- * that can be dropped, and they are more nimble about network failures at the
- * expense of being more complex to use. What makes sense for your app depends
- * entirely on what your app is trying to accomplish.
- *
- * Generally the idea of a datagram socket is that you send data one chunk
- * ("packet") at a time to any address you want, and it arrives whenever it gets
- * there, even if later packets get there first, and maybe it doesn't get there
- * at all, and you don't know when anything of this happens by default.
- *
- * @since This datatype is available since SDL_net 3.0.0.
- *
- * @sa CreateDatagramSocket
- * @sa SendDatagram
- * @sa ReceiveDatagram
- *
- * @cat resource
+ * @see DatagramSocket
  */
-struct DatagramSocket : ResourceBase<DatagramSocketRaw>
+struct DatagramSocketBase : ResourceBaseT<DatagramSocketRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw DatagramSocket.
-   *
-   * @param resource a DatagramSocketRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit DatagramSocket(DatagramSocketRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr DatagramSocket(const DatagramSocket& other) = delete;
-
-  /// Move constructor
-  constexpr DatagramSocket(DatagramSocket&& other) noexcept
-    : DatagramSocket(other.release())
-  {
-  }
-
-  constexpr DatagramSocket(const DatagramSocketRef& other) = delete;
-
-  constexpr DatagramSocket(DatagramSocketRef&& other) = delete;
-
-  /**
-   * Create and bind a new datagram socket.
-   *
-   * Datagram sockets follow different rules than stream sockets. They are not a
-   * reliable stream of bytes but rather packets, they are not limited to
-   * talking to a single other remote system, they do not maintain a single
-   * "connection" that can be dropped, and they are more nimble about network
-   * failures at the expense of being more complex to use. What makes sense for
-   * your app depends entirely on what your app is trying to accomplish.
-   *
-   * Generally the idea of a datagram socket is that you send data one chunk
-   * ("packet") at a time to any address you want, and it arrives whenever it
-   * gets there, even if later packets get there first, and maybe it doesn't get
-   * there at all, and you don't know when anything of this happens by default.
-   *
-   * This function creates a new datagram socket.
-   *
-   * This function does not block, and is not asynchronous, as the system can
-   * decide immediately if it can create a socket or not. If this returns
-   * success, you can immediately start talking to the network.
-   *
-   * You can specify an address to listen for connections on; this address must
-   * be local to the system, and probably one returned by GetLocalAddresses(),
-   * but almost always you just want to specify nullptr here, to listen on any
-   * address available to the app.
-   *
-   * If you need to bind to a specific port (like a server), you should specify
-   * it in the `port` argument; datagram servers should do this, so they can be
-   * reached at a well-known port. If you only plan to initiate communications
-   * (like a client), you should specify 0 and let the system pick an unused
-   * port. Only one process can bind to a specific port at a time, so if you
-   * aren't acting as a server, you should choose 0. Datagram sockets can send
-   * individual packets to any port, so this just declares where data will
-   * arrive for your socket.
-   *
-   * Datagram sockets don't employ any protocol (above the UDP level), so they
-   * can talk to apps that aren't using SDL_net, but if you want to speak any
-   * protocol beyond arbitrary packets of bytes, such as WebRTC, you'll have to
-   * implement that yourself on top of the stream socket.
-   *
-   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
-   * you do not have to byteswap it into "network order," as the library will
-   * handle that for you.
-   *
-   * The caller may supply properties to customize behavior. This is optional,
-   * and a value of zero for `props` will request defaults for all properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be
-   *   created even if a previous socket has recently used this address. For
-   *   various reasons, networks prefer that there be some delay between apps
-   *   reusing the same address, but this can be problematic when iterating
-   *   quickly, for software development purposes or just restarting a crashed
-   *   service. This property defaults to true (although it should be noted
-   *   that, at the operating system level, this defaults to false!). If this
-   *   property is false and the OS feels that not enough time has elapsed,
-   *   socket creation will fail and this function will report an error.
-   * - `prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should
-   *   allow broadcasting. At the lower level, this will set `SO_BROADCAST` for
-   *   IPv4 sockets, to allow sending to the subnet's broadcast address at the
-   *   OS level. For IPv6, it'll join the all-nodes link-local multicast group,
-   *   ff02::1, allowing sending and receiving there, more or less simulating
-   *   the usual IPv4 broadcast semantics. Other protocols take similar
-   *   approaches. If you do not intend to send or receive broadcast packets on
-   *   this socket, set this property to false, or omit it, as it defaults to
-   *   false. Note: IPv4 will still be able to receive broadcast packets without
-   *   this option, but IPv6 will not. Also see notes about sending to a
-   *   broadcast address in SendDatagram().
-   *
-   * @param addr the local address to listen for connections on, or nullptr to
-   *             listen on all available local addresses.
-   * @param port the port on the local address to listen for connections on, or
-   *             zero for the system to decide.
-   * @param props properties of the new socket. Specify zero for defaults.
-   * @post a new DatagramSocket on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa GetLocalAddresses
-   * @sa DestroyDatagramSocket
-   */
-  DatagramSocket(AddressRef addr, Uint16 port, PropertiesRef props);
-
-  /// Destructor
-  ~DatagramSocket() { NET_DestroyDatagramSocket(get()); }
-
-  /// Assignment operator.
-  constexpr DatagramSocket& operator=(DatagramSocket&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  DatagramSocket& operator=(const DatagramSocket& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Dispose of a previously-created datagram socket.
@@ -92801,106 +93124,161 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
 };
 
 /**
- * The data provided for new incoming packets from ReceiveDatagram().
+ * An object that represents a datagram connection to another system.
+ *
+ * This is meant to be an unreliable, packet-oriented connection, such as UDP.
+ *
+ * Datagram sockets follow different rules than stream sockets. They are not a
+ * reliable stream of bytes but rather packets, they are not limited to talking
+ * to a single other remote system, they do not maintain a single "connection"
+ * that can be dropped, and they are more nimble about network failures at the
+ * expense of being more complex to use. What makes sense for your app depends
+ * entirely on what your app is trying to accomplish.
+ *
+ * Generally the idea of a datagram socket is that you send data one chunk
+ * ("packet") at a time to any address you want, and it arrives whenever it gets
+ * there, even if later packets get there first, and maybe it doesn't get there
+ * at all, and you don't know when anything of this happens by default.
  *
  * @since This datatype is available since SDL_net 3.0.0.
  *
+ * @sa CreateDatagramSocket
+ * @sa SendDatagram
  * @sa ReceiveDatagram
- * @sa DestroyDatagram
  *
  * @cat resource
  */
-struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
+struct DatagramSocket : DatagramSocketBase
 {
-  using ResourceBase::ResourceBase;
+  using DatagramSocketBase::DatagramSocketBase;
 
   /**
-   * Constructs from raw Datagram.
+   * Constructs from raw DatagramSocket.
    *
-   * @param resource a DatagramRaw to be wrapped.
+   * @param resource a DatagramSocketRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Datagram(DatagramRaw resource) noexcept
-    : ResourceBase(resource)
+  constexpr explicit DatagramSocket(DatagramSocketRaw resource) noexcept
+    : DatagramSocketBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Datagram(const Datagram& other) = delete;
 
   /// Move constructor
-  constexpr Datagram(Datagram&& other) noexcept
-    : Datagram(other.release())
+  constexpr DatagramSocket(DatagramSocket&& other) noexcept
+    : DatagramSocket(other.release())
   {
   }
 
-  constexpr Datagram(const DatagramRef& other) = delete;
-
-  constexpr Datagram(DatagramRef&& other) = delete;
-
   /**
-   * Receive a new packet that a remote system sent to a datagram socket.
+   * Create and bind a new datagram socket.
    *
-   * Datagram sockets send packets of data. They either arrive as complete
-   * packets or they don't arrive at all, so you'll never receive half a packet.
+   * Datagram sockets follow different rules than stream sockets. They are not a
+   * reliable stream of bytes but rather packets, they are not limited to
+   * talking to a single other remote system, they do not maintain a single
+   * "connection" that can be dropped, and they are more nimble about network
+   * failures at the expense of being more complex to use. What makes sense for
+   * your app depends entirely on what your app is trying to accomplish.
    *
-   * This call never blocks; if no new data is available at the time of the
-   * call, it returns true immediately. The caller can try again later.
+   * Generally the idea of a datagram socket is that you send data one chunk
+   * ("packet") at a time to any address you want, and it arrives whenever it
+   * gets there, even if later packets get there first, and maybe it doesn't get
+   * there at all, and you don't know when anything of this happens by default.
    *
-   * On a successful call to this function, it returns true, even if no new
-   * packets are available, so you should check for a successful return and a
-   * non-nullptr value in `*dgram` to decide if a new packet is available.
+   * This function creates a new datagram socket.
    *
-   * You must pass received packets to DestroyDatagram when you are done with
-   * them. If you want to save the sender's address past this time, it is safe
-   * to call RefAddress() on the address and hold onto the pointer, so long as
-   * you call UnrefAddress() on it when you are done with it.
+   * This function does not block, and is not asynchronous, as the system can
+   * decide immediately if it can create a socket or not. If this returns
+   * success, you can immediately start talking to the network.
    *
-   * Since datagrams can arrive from any address or port on the network without
-   * prior warning, this information is available in the Datagram object that is
-   * provided by this function, and this is the only way to know who to reply
-   * to. Even if you aren't acting as a "server," packets can still arrive at
-   * your socket if someone sends one.
+   * You can specify an address to listen for connections on; this address must
+   * be local to the system, and probably one returned by GetLocalAddresses(),
+   * but almost always you just want to specify nullptr here, to listen on any
+   * address available to the app.
    *
-   * If there's a fatal error, this function will return false. Datagram sockets
-   * generally won't report failures, because there is no state like a
-   * "connection" to fail at this level, but may report failure for
-   * unrecoverable system-level conditions; once a datagram socket fails, you
-   * should assume it is no longer usable and should destroy it with
-   * DestroyDatagramSocket().
+   * If you need to bind to a specific port (like a server), you should specify
+   * it in the `port` argument; datagram servers should do this, so they can be
+   * reached at a well-known port. If you only plan to initiate communications
+   * (like a client), you should specify 0 and let the system pick an unused
+   * port. Only one process can bind to a specific port at a time, so if you
+   * aren't acting as a server, you should choose 0. Datagram sockets can send
+   * individual packets to any port, so this just declares where data will
+   * arrive for your socket.
    *
-   * @param sock the datagram socket to send data through.
-   * @post a valid Datagram object if data sent or queued for transmission,
-   *       nullptr on failure; call GetError() for details.
+   * Datagram sockets don't employ any protocol (above the UDP level), so they
+   * can talk to apps that aren't using SDL_net, but if you want to speak any
+   * protocol beyond arbitrary packets of bytes, such as WebRTC, you'll have to
+   * implement that yourself on top of the stream socket.
    *
-   * @threadsafety You should not operate on the same socket from multiple
-   *               threads at the same time without supplying a serialization
-   *               mechanism. However, different threads may access different
-   *               sockets at the same time without problems.
+   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
+   * you do not have to byteswap it into "network order," as the library will
+   * handle that for you.
+   *
+   * The caller may supply properties to customize behavior. This is optional,
+   * and a value of zero for `props` will request defaults for all properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be
+   *   created even if a previous socket has recently used this address. For
+   *   various reasons, networks prefer that there be some delay between apps
+   *   reusing the same address, but this can be problematic when iterating
+   *   quickly, for software development purposes or just restarting a crashed
+   *   service. This property defaults to true (although it should be noted
+   *   that, at the operating system level, this defaults to false!). If this
+   *   property is false and the OS feels that not enough time has elapsed,
+   *   socket creation will fail and this function will report an error.
+   * - `prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should
+   *   allow broadcasting. At the lower level, this will set `SO_BROADCAST` for
+   *   IPv4 sockets, to allow sending to the subnet's broadcast address at the
+   *   OS level. For IPv6, it'll join the all-nodes link-local multicast group,
+   *   ff02::1, allowing sending and receiving there, more or less simulating
+   *   the usual IPv4 broadcast semantics. Other protocols take similar
+   *   approaches. If you do not intend to send or receive broadcast packets on
+   *   this socket, set this property to false, or omit it, as it defaults to
+   *   false. Note: IPv4 will still be able to receive broadcast packets without
+   *   this option, but IPv6 will not. Also see notes about sending to a
+   *   broadcast address in SendDatagram().
+   *
+   * @param addr the local address to listen for connections on, or nullptr to
+   *             listen on all available local addresses.
+   * @param port the port on the local address to listen for connections on, or
+   *             zero for the system to decide.
+   * @param props properties of the new socket. Specify zero for defaults.
+   * @post a new DatagramSocket on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa SendDatagram
-   * @sa DestroyDatagram
+   * @sa GetLocalAddresses
+   * @sa DestroyDatagramSocket
    */
-  Datagram(DatagramSocketRef sock);
-
-  /// Converts to DatagramConstRef
-  constexpr operator DatagramConstRef() const noexcept { return get(); }
+  DatagramSocket(AddressRef addr, Uint16 port, PropertiesRef props);
 
   /// Destructor
-  ~Datagram() { NET_DestroyDatagram(get()); }
+  ~DatagramSocket() { NET_DestroyDatagramSocket(get()); }
 
   /// Assignment operator.
-  constexpr Datagram& operator=(Datagram&& other) noexcept
+  constexpr DatagramSocket& operator=(DatagramSocket&& other) noexcept
   {
     swap(*this, other);
     return *this;
   }
+};
 
-  /// Assignment operator.
-  Datagram& operator=(const Datagram& other) = delete;
+/**
+ * Base class to Datagram.
+ *
+ * @see Datagram
+ */
+struct DatagramBase : ResourceBaseT<DatagramRaw, DatagramRawConst>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /// Converts to DatagramConstRef
+  constexpr operator DatagramConstRef() const noexcept { return get(); }
 
   /**
    * Dispose of a datagram packet previously received.
@@ -92968,6 +93346,96 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
    * @sa DestroyDatagram
    */
   bool Receive(DatagramSocketRef sock);
+};
+
+/**
+ * The data provided for new incoming packets from ReceiveDatagram().
+ *
+ * @since This datatype is available since SDL_net 3.0.0.
+ *
+ * @sa ReceiveDatagram
+ * @sa DestroyDatagram
+ *
+ * @cat resource
+ */
+struct Datagram : DatagramBase
+{
+  using DatagramBase::DatagramBase;
+
+  /**
+   * Constructs from raw Datagram.
+   *
+   * @param resource a DatagramRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Datagram(DatagramRaw resource) noexcept
+    : DatagramBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Datagram(Datagram&& other) noexcept
+    : Datagram(other.release())
+  {
+  }
+
+  /**
+   * Receive a new packet that a remote system sent to a datagram socket.
+   *
+   * Datagram sockets send packets of data. They either arrive as complete
+   * packets or they don't arrive at all, so you'll never receive half a packet.
+   *
+   * This call never blocks; if no new data is available at the time of the
+   * call, it returns true immediately. The caller can try again later.
+   *
+   * On a successful call to this function, it returns true, even if no new
+   * packets are available, so you should check for a successful return and a
+   * non-nullptr value in `*dgram` to decide if a new packet is available.
+   *
+   * You must pass received packets to DestroyDatagram when you are done with
+   * them. If you want to save the sender's address past this time, it is safe
+   * to call RefAddress() on the address and hold onto the pointer, so long as
+   * you call UnrefAddress() on it when you are done with it.
+   *
+   * Since datagrams can arrive from any address or port on the network without
+   * prior warning, this information is available in the Datagram object that is
+   * provided by this function, and this is the only way to know who to reply
+   * to. Even if you aren't acting as a "server," packets can still arrive at
+   * your socket if someone sends one.
+   *
+   * If there's a fatal error, this function will return false. Datagram sockets
+   * generally won't report failures, because there is no state like a
+   * "connection" to fail at this level, but may report failure for
+   * unrecoverable system-level conditions; once a datagram socket fails, you
+   * should assume it is no longer usable and should destroy it with
+   * DestroyDatagramSocket().
+   *
+   * @param sock the datagram socket to send data through.
+   * @post a valid Datagram object if data sent or queued for transmission,
+   *       nullptr on failure; call GetError() for details.
+   *
+   * @threadsafety You should not operate on the same socket from multiple
+   *               threads at the same time without supplying a serialization
+   *               mechanism. However, different threads may access different
+   *               sockets at the same time without problems.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa SendDatagram
+   * @sa DestroyDatagram
+   */
+  Datagram(DatagramSocketRef sock);
+
+  /// Destructor
+  ~Datagram() { NET_DestroyDatagram(get()); }
+
+  /// Assignment operator.
+  constexpr Datagram& operator=(Datagram&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /**
@@ -93062,8 +93530,8 @@ inline DatagramSocket CreateDatagramSocket(AddressRef addr,
   return DatagramSocket(addr, port, props);
 }
 
-inline DatagramSocket Address::CreateDatagramSocket(Uint16 port,
-                                                    PropertiesRef props)
+inline DatagramSocket AddressBase::CreateDatagramSocket(Uint16 port,
+                                                        PropertiesRef props)
 {
   return DatagramSocket(get(), port, props);
 }
@@ -93173,10 +93641,10 @@ inline bool SendDatagram(DatagramSocketRef sock,
   return NET_SendDatagram(sock, address, port, buf, buflen);
 }
 
-inline bool DatagramSocket::SendDatagram(AddressRef address,
-                                         Uint16 port,
-                                         const void* buf,
-                                         int buflen)
+inline bool DatagramSocketBase::SendDatagram(AddressRef address,
+                                             Uint16 port,
+                                             const void* buf,
+                                             int buflen)
 {
   return SDL::SendDatagram(get(), address, port, buf, buflen);
 }
@@ -93282,12 +93750,12 @@ inline Datagram ReceiveDatagram(DatagramSocketRef sock)
   return dgram;
 }
 
-inline bool DatagramSocket::ReceiveDatagram(Datagram& dgram)
+inline bool DatagramSocketBase::ReceiveDatagram(Datagram& dgram)
 {
   return dgram.Receive(*this);
 }
 
-inline Datagram DatagramSocket::ReceiveDatagram()
+inline Datagram DatagramSocketBase::ReceiveDatagram()
 {
   return SDL::ReceiveDatagram(get());
 }
@@ -93297,7 +93765,7 @@ inline Datagram::Datagram(DatagramSocketRef sock)
 {
 }
 
-inline bool Datagram::Receive(DatagramSocketRef sock)
+inline bool DatagramBase::Receive(DatagramSocketRef sock)
 {
   DatagramRaw dgram;
   if (!NET_ReceiveDatagram(sock, &dgram)) return false;
@@ -93327,7 +93795,7 @@ inline bool Datagram::Receive(DatagramSocketRef sock)
  */
 inline void DestroyDatagram(DatagramRaw dgram) { NET_DestroyDatagram(dgram); }
 
-inline void Datagram::Destroy() { DestroyDatagram(release()); }
+inline void DatagramBase::Destroy() { DestroyDatagram(release()); }
 
 /**
  * Enable simulated datagram socket failures.
@@ -93364,7 +93832,7 @@ inline void SimulateDatagramPacketLoss(DatagramSocketRef sock, int percent_loss)
   NET_SimulateDatagramPacketLoss(sock, percent_loss);
 }
 
-inline void DatagramSocket::SimulateDatagramPacketLoss(int percent_loss)
+inline void DatagramSocketBase::SimulateDatagramPacketLoss(int percent_loss)
 {
   SDL::SimulateDatagramPacketLoss(get(), percent_loss);
 }
@@ -93399,7 +93867,7 @@ inline void DestroyDatagramSocket(DatagramSocketRaw sock)
   NET_DestroyDatagramSocket(sock);
 }
 
-inline void DatagramSocket::Destroy() { DestroyDatagramSocket(release()); }
+inline void DatagramSocketBase::Destroy() { DestroyDatagramSocket(release()); }
 
 /**
  * Block on multiple sockets until at least one has data available.
@@ -93566,6 +94034,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct MixerBase;
+
+// Forward decl
 struct Mixer;
 
 /// Alias to raw representation for Mixer.
@@ -93576,7 +94047,10 @@ using MixerRaw = MIX_Mixer*;
  *
  * This does not take ownership!
  */
-using MixerRef = ResourceRef<Mixer>;
+using MixerRef = ResourceRefT<MixerBase>;
+
+// Forward decl
+struct AudioBase;
 
 // Forward decl
 struct Audio;
@@ -93589,7 +94063,10 @@ using AudioRaw = MIX_Audio*;
  *
  * This does not take ownership!
  */
-using AudioRef = ResourceRef<Audio>;
+using AudioRef = ResourceRefT<AudioBase>;
+
+// Forward decl
+struct TrackBase;
 
 // Forward decl
 struct Track;
@@ -93602,7 +94079,10 @@ using TrackRaw = MIX_Track*;
  *
  * This does not take ownership!
  */
-using TrackRef = ResourceRef<Track>;
+using TrackRef = ResourceRefT<TrackBase>;
+
+// Forward decl
+struct GroupBase;
 
 // Forward decl
 struct Group;
@@ -93615,7 +94095,10 @@ using GroupRaw = MIX_Group*;
  *
  * This does not take ownership!
  */
-using GroupRef = ResourceRef<Group>;
+using GroupRef = ResourceRefT<GroupBase>;
+
+// Forward decl
+struct AudioDecoderBase;
 
 // Forward decl
 struct AudioDecoder;
@@ -93628,7 +94111,7 @@ using AudioDecoderRaw = MIX_AudioDecoder*;
  *
  * This does not take ownership!
  */
-using AudioDecoderRef = ResourceRef<AudioDecoder>;
+using AudioDecoderRef = ResourceRefT<AudioDecoderBase>;
 
 // Forward decl
 struct MixerLock;
@@ -93710,139 +94193,13 @@ using PostMixCB = MakeFrontCallback<
   void(MixerRaw mixer, const AudioSpec* spec, float* pcm, int samples)>;
 
 /**
- * An opaque object that represents a mixer.
+ * Base class to Mixer.
  *
- * The Mixer is the toplevel object for this library. To use SDL_mixer, you must
- * have at least one, but are allowed to have several. Each mixer is responsible
- * for generating a single output stream of mixed audio, usually to an audio
- * device for realtime playback.
- *
- * Mixers are either created to feed an audio device (through
- * CreateMixerDevice()), or to generate audio to a buffer in memory, where it
- * can be used for anything (through CreateMixer()).
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @cat resource
+ * @see Mixer
  */
-struct Mixer : ResourceBase<MixerRaw>
+struct MixerBase : ResourceBaseT<MixerRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Mixer.
-   *
-   * @param resource a MixerRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Mixer(MixerRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Mixer(const Mixer& other) = delete;
-
-  /// Move constructor
-  constexpr Mixer(Mixer&& other) noexcept
-    : Mixer(other.release())
-  {
-  }
-
-  constexpr Mixer(const MixerRef& other) = delete;
-
-  constexpr Mixer(MixerRef&& other) = delete;
-
-  /**
-   * Create a mixer that plays sound directly to an audio device.
-   *
-   * This is usually the function you want, vs CreateMixer().
-   *
-   * You can choose a specific device ID to open, following SDL's usual rules,
-   * but often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK
-   * and let SDL figure out what device to use (and seamlessly transition you to
-   * new hardware if the default changes).
-   *
-   * Only playback devices make sense here. Attempting to open a recording
-   * device will fail.
-   *
-   * This will call Init(INIT_AUDIO) internally; it's safe to call Init() before
-   * this call, too, if you intend to enumerate audio devices to choose one to
-   * open here.
-   *
-   * An audio format can be requested, and the system will try to set the
-   * hardware to those specifications, or as close as possible, but this is just
-   * a hint. SDL_mixer will handle all data conversion behind the scenes in any
-   * case, and specifying a nullptr spec is a reasonable choice. The best reason
-   * to specify a format is because you know all your data is in that format and
-   * it might save some unnecessary CPU time on conversion.
-   *
-   * The actual device format chosen is available through GetMixerFormat().
-   *
-   * Once a mixer is created, next steps are usually to load audio (through
-   * LoadAudio() and friends), create a track (CreateTrack()), and play that
-   * audio through that track.
-   *
-   * When done with the mixer, it can be destroyed with DestroyMixer().
-   *
-   * @param devid the device to open for playback, or
-   *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
-   * @param spec the audio format to request from the device. May be
-   *             std::nullopt.
-   * @post a mixer that can be used to play audio on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa CreateMixer
-   * @sa DestroyMixer
-   */
-  Mixer(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec = std::nullopt);
-
-  /**
-   * Create a mixer that generates audio to a memory buffer.
-   *
-   * Usually you want CreateMixerDevice() instead of this function. The mixer
-   * created here can be used with Generate() to produce more data on demand, as
-   * fast as desired.
-   *
-   * An audio format must be specified. This is the format it will output in.
-   * This cannot be nullptr.
-   *
-   * Once a mixer is created, next steps are usually to load audio (through
-   * LoadAudio() and friends), create a track (CreateTrack()), and play that
-   * audio through that track.
-   *
-   * When done with the mixer, it can be destroyed with DestroyMixer().
-   *
-   * @param spec the audio format that mixer will generate.
-   * @post a mixer that can be used to generate audio on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa CreateMixerDevice
-   * @sa DestroyMixer
-   */
-  Mixer(const AudioSpec& spec);
-
-  /// Destructor
-  ~Mixer() { MIX_DestroyMixer(get()); }
-
-  /// Assignment operator.
-  constexpr Mixer& operator=(Mixer&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Mixer& operator=(const Mixer& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Free a mixer.
@@ -94801,6 +95158,132 @@ struct Mixer : ResourceBase<MixerRaw>
 };
 
 /**
+ * An opaque object that represents a mixer.
+ *
+ * The Mixer is the toplevel object for this library. To use SDL_mixer, you must
+ * have at least one, but are allowed to have several. Each mixer is responsible
+ * for generating a single output stream of mixed audio, usually to an audio
+ * device for realtime playback.
+ *
+ * Mixers are either created to feed an audio device (through
+ * CreateMixerDevice()), or to generate audio to a buffer in memory, where it
+ * can be used for anything (through CreateMixer()).
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @cat resource
+ */
+struct Mixer : MixerBase
+{
+  using MixerBase::MixerBase;
+
+  /**
+   * Constructs from raw Mixer.
+   *
+   * @param resource a MixerRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Mixer(MixerRaw resource) noexcept
+    : MixerBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Mixer(Mixer&& other) noexcept
+    : Mixer(other.release())
+  {
+  }
+
+  /**
+   * Create a mixer that plays sound directly to an audio device.
+   *
+   * This is usually the function you want, vs CreateMixer().
+   *
+   * You can choose a specific device ID to open, following SDL's usual rules,
+   * but often the correct choice is to specify AUDIO_DEVICE_DEFAULT_PLAYBACK
+   * and let SDL figure out what device to use (and seamlessly transition you to
+   * new hardware if the default changes).
+   *
+   * Only playback devices make sense here. Attempting to open a recording
+   * device will fail.
+   *
+   * This will call Init(INIT_AUDIO) internally; it's safe to call Init() before
+   * this call, too, if you intend to enumerate audio devices to choose one to
+   * open here.
+   *
+   * An audio format can be requested, and the system will try to set the
+   * hardware to those specifications, or as close as possible, but this is just
+   * a hint. SDL_mixer will handle all data conversion behind the scenes in any
+   * case, and specifying a nullptr spec is a reasonable choice. The best reason
+   * to specify a format is because you know all your data is in that format and
+   * it might save some unnecessary CPU time on conversion.
+   *
+   * The actual device format chosen is available through GetMixerFormat().
+   *
+   * Once a mixer is created, next steps are usually to load audio (through
+   * LoadAudio() and friends), create a track (CreateTrack()), and play that
+   * audio through that track.
+   *
+   * When done with the mixer, it can be destroyed with DestroyMixer().
+   *
+   * @param devid the device to open for playback, or
+   *              AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
+   * @param spec the audio format to request from the device. May be
+   *             std::nullopt.
+   * @post a mixer that can be used to play audio on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa CreateMixer
+   * @sa DestroyMixer
+   */
+  Mixer(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec = std::nullopt);
+
+  /**
+   * Create a mixer that generates audio to a memory buffer.
+   *
+   * Usually you want CreateMixerDevice() instead of this function. The mixer
+   * created here can be used with Generate() to produce more data on demand, as
+   * fast as desired.
+   *
+   * An audio format must be specified. This is the format it will output in.
+   * This cannot be nullptr.
+   *
+   * Once a mixer is created, next steps are usually to load audio (through
+   * LoadAudio() and friends), create a track (CreateTrack()), and play that
+   * audio through that track.
+   *
+   * When done with the mixer, it can be destroyed with DestroyMixer().
+   *
+   * @param spec the audio format that mixer will generate.
+   * @post a mixer that can be used to generate audio on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa CreateMixerDevice
+   * @sa DestroyMixer
+   */
+  Mixer(const AudioSpec& spec);
+
+  /// Destructor
+  ~Mixer() { MIX_DestroyMixer(get()); }
+
+  /// Assignment operator.
+  constexpr Mixer& operator=(Mixer&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Lock a mixer by obtaining its internal mutex.
  *
  * While locked, the mixer will not be able to mix more audio or change its
@@ -94964,6 +95447,175 @@ public:
 };
 
 /**
+ * Base class to Audio.
+ *
+ * @see Audio
+ */
+struct AudioBase : ResourceBaseT<AudioRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Destroy the specified audio.
+   *
+   * Audio is reference-counted internally, so this function only unrefs it. If
+   * doing so causes the reference count to drop to zero, the Audio will be
+   * deallocated. This allows the system to safely operate if the audio is still
+   * assigned to a Track at the time of destruction. The actual destroying will
+   * happen when the track stops using it.
+   *
+   * But from the caller's perspective, once this function is called, it should
+   * assume the `audio` pointer has become invalid.
+   *
+   * Destroying a nullptr Audio is a legal no-op.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  void Destroy();
+
+  /**
+   * Get the properties associated with a Audio.
+   *
+   * SDL_mixer offers some properties of its own, but this can also be a
+   * convenient place to store app-specific data.
+   *
+   * A Properties is created the first time this function is called for a given
+   * Audio, if necessary.
+   *
+   * The following read-only properties are provided by SDL_mixer:
+   *
+   * - `prop.Audio.Metadata.TITLE_STRING`: the audio's title ("Smells Like Teen
+   *   Spirit").
+   * - `prop.Audio.Metadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
+   * - `prop.Audio.Metadata.ALBUM_STRING`: the audio's album name ("Nevermind").
+   * - `prop.Audio.Metadata.COPYRIGHT_STRING`: the audio's copyright info
+   *   ("Copyright (c) 1991")
+   * - `prop.Audio.Metadata.TRACK_NUMBER`: the audio's track number on the album
+   *   (1)
+   * - `prop.Audio.Metadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album
+   *   (13)
+   * - `prop.Audio.Metadata.YEAR_NUMBER`: the year the audio was released (1991)
+   * - `prop.Audio.Metadata.DURATION_FRAMES_NUMBER`: The sample frames worth of
+   *   PCM data that comprise this audio. It might be off by a little if the
+   *   decoder only knows the duration as a unit of time.
+   * - `prop.Audio.Metadata.DURATION_INFINITE_BOOLEAN`: if true, audio never
+   *   runs out of sound to generate. This isn't necessarily always known to
+   *   SDL_mixer, though.
+   *
+   * Other properties, documented with LoadAudioWithProperties(), may also be
+   * present.
+   *
+   * Note that the metadata properties are whatever SDL_mixer finds in things
+   * like ID3 tags, and they often have very little standardized formatting, may
+   * be missing, and can be completely wrong if the original data is
+   * untrustworthy (like an MP3 from a P2P file sharing service).
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  PropertiesRef GetProperties();
+
+  /**
+   * Get the length of a Audio's playback in sample frames.
+   *
+   * This information is also available via the
+   * prop.Audio.Metadata.DURATION_FRAMES_NUMBER property, but it's common enough
+   * to provide a simple accessor function.
+   *
+   * This reports the length of the data in _sample frames_, so sample-perfect
+   * mixing can be possible. Sample frames are only meaningful as a measure of
+   * time if the sample rate (frequency) is also known. To convert from sample
+   * frames to milliseconds, use AudioFramesToMS().
+   *
+   * Not all audio file formats can report the complete length of the data they
+   * will produce through decoding: some can't calculate it, some might produce
+   * infinite audio.
+   *
+   * Also, some file formats can only report duration as a unit of time, which
+   * means SDL_mixer might have to estimate sample frames from that information.
+   * With less precision, the reported duration might be off by a few sample
+   * frames in either direction.
+   *
+   * This will return a value >= 0 if a duration is known. It might also return
+   * DURATION_UNKNOWN or DURATION_INFINITE.
+   *
+   * @returns the length of the audio in sample frames, or DURATION_UNKNOWN or
+   *          DURATION_INFINITE.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  Sint64 GetDuration();
+
+  /**
+   * Query the initial audio format of a Audio.
+   *
+   * Note that some audio files can change format in the middle; some explicitly
+   * support this, but a more common example is two MP3 files concatenated
+   * together. In many cases, SDL_mixer will correctly handle these sort of
+   * files, but this function will only report the initial format a file uses.
+   *
+   * @param spec on success, audio format details will be stored here.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  void GetFormat(AudioSpec* spec);
+
+  /**
+   * Convert milliseconds to sample frames for a Audio's format.
+   *
+   * This calculates time based on the audio's initial format, even if the
+   * format would change mid-stream.
+   *
+   * If `ms` is < 0, this returns -1.
+   *
+   * @param ms the milliseconds to convert to audio-specific sample frames.
+   * @returns Converted number of sample frames, or -1 for errors/no input; call
+   *          GetError() for details.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa AudioFramesToMS
+   */
+  Sint64 MSToFrames(Milliseconds ms);
+
+  /**
+   * Convert sample frames for a Audio's format to milliseconds.
+   *
+   * This calculates time based on the audio's initial format, even if the
+   * format would change mid-stream.
+   *
+   * Sample frames are more precise than milliseconds, so out of necessity, this
+   * function will approximate by rounding down to the closest full millisecond.
+   *
+   * If `frames` is < 0, this returns -1.
+   *
+   * @param frames the audio-specific sample frames to convert to milliseconds.
+   * @returns Converted number of milliseconds, or -1 for errors/no input; call
+   *          GetError() for details.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa AudioMSToFrames
+   */
+  Milliseconds FramesToMS(Sint64 frames);
+};
+
+/**
  * An opaque object that represents audio data.
  *
  * Generally you load audio data (in whatever file format) into SDL_mixer with
@@ -94979,9 +95631,9 @@ public:
  *
  * @cat resource
  */
-struct Audio : ResourceBase<AudioRaw>
+struct Audio : AudioBase
 {
-  using ResourceBase::ResourceBase;
+  using AudioBase::AudioBase;
 
   /**
    * Constructs from raw Audio.
@@ -94991,22 +95643,15 @@ struct Audio : ResourceBase<AudioRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Audio(AudioRaw resource) noexcept
-    : ResourceBase(resource)
+    : AudioBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Audio(const Audio& other) = delete;
 
   /// Move constructor
   constexpr Audio(Audio&& other) noexcept
     : Audio(other.release())
   {
   }
-
-  constexpr Audio(const AudioRef& other) = delete;
-
-  constexpr Audio(AudioRef&& other) = delete;
 
   /**
    * Load audio for playback from an IOStream.
@@ -95230,168 +95875,6 @@ struct Audio : ResourceBase<AudioRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Audio& operator=(const Audio& other) = delete;
-
-  /**
-   * Destroy the specified audio.
-   *
-   * Audio is reference-counted internally, so this function only unrefs it. If
-   * doing so causes the reference count to drop to zero, the Audio will be
-   * deallocated. This allows the system to safely operate if the audio is still
-   * assigned to a Track at the time of destruction. The actual destroying will
-   * happen when the track stops using it.
-   *
-   * But from the caller's perspective, once this function is called, it should
-   * assume the `audio` pointer has become invalid.
-   *
-   * Destroying a nullptr Audio is a legal no-op.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  void Destroy();
-
-  /**
-   * Get the properties associated with a Audio.
-   *
-   * SDL_mixer offers some properties of its own, but this can also be a
-   * convenient place to store app-specific data.
-   *
-   * A Properties is created the first time this function is called for a given
-   * Audio, if necessary.
-   *
-   * The following read-only properties are provided by SDL_mixer:
-   *
-   * - `prop.Audio.Metadata.TITLE_STRING`: the audio's title ("Smells Like Teen
-   *   Spirit").
-   * - `prop.Audio.Metadata.ARTIST_STRING`: the audio's artist name ("Nirvana").
-   * - `prop.Audio.Metadata.ALBUM_STRING`: the audio's album name ("Nevermind").
-   * - `prop.Audio.Metadata.COPYRIGHT_STRING`: the audio's copyright info
-   *   ("Copyright (c) 1991")
-   * - `prop.Audio.Metadata.TRACK_NUMBER`: the audio's track number on the album
-   *   (1)
-   * - `prop.Audio.Metadata.TOTAL_TRACKS_NUMBER`: the total tracks on the album
-   *   (13)
-   * - `prop.Audio.Metadata.YEAR_NUMBER`: the year the audio was released (1991)
-   * - `prop.Audio.Metadata.DURATION_FRAMES_NUMBER`: The sample frames worth of
-   *   PCM data that comprise this audio. It might be off by a little if the
-   *   decoder only knows the duration as a unit of time.
-   * - `prop.Audio.Metadata.DURATION_INFINITE_BOOLEAN`: if true, audio never
-   *   runs out of sound to generate. This isn't necessarily always known to
-   *   SDL_mixer, though.
-   *
-   * Other properties, documented with LoadAudioWithProperties(), may also be
-   * present.
-   *
-   * Note that the metadata properties are whatever SDL_mixer finds in things
-   * like ID3 tags, and they often have very little standardized formatting, may
-   * be missing, and can be completely wrong if the original data is
-   * untrustworthy (like an MP3 from a P2P file sharing service).
-   *
-   * @returns a valid property ID on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  PropertiesRef GetProperties();
-
-  /**
-   * Get the length of a Audio's playback in sample frames.
-   *
-   * This information is also available via the
-   * prop.Audio.Metadata.DURATION_FRAMES_NUMBER property, but it's common enough
-   * to provide a simple accessor function.
-   *
-   * This reports the length of the data in _sample frames_, so sample-perfect
-   * mixing can be possible. Sample frames are only meaningful as a measure of
-   * time if the sample rate (frequency) is also known. To convert from sample
-   * frames to milliseconds, use AudioFramesToMS().
-   *
-   * Not all audio file formats can report the complete length of the data they
-   * will produce through decoding: some can't calculate it, some might produce
-   * infinite audio.
-   *
-   * Also, some file formats can only report duration as a unit of time, which
-   * means SDL_mixer might have to estimate sample frames from that information.
-   * With less precision, the reported duration might be off by a few sample
-   * frames in either direction.
-   *
-   * This will return a value >= 0 if a duration is known. It might also return
-   * DURATION_UNKNOWN or DURATION_INFINITE.
-   *
-   * @returns the length of the audio in sample frames, or DURATION_UNKNOWN or
-   *          DURATION_INFINITE.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  Sint64 GetDuration();
-
-  /**
-   * Query the initial audio format of a Audio.
-   *
-   * Note that some audio files can change format in the middle; some explicitly
-   * support this, but a more common example is two MP3 files concatenated
-   * together. In many cases, SDL_mixer will correctly handle these sort of
-   * files, but this function will only report the initial format a file uses.
-   *
-   * @param spec on success, audio format details will be stored here.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  void GetFormat(AudioSpec* spec);
-
-  /**
-   * Convert milliseconds to sample frames for a Audio's format.
-   *
-   * This calculates time based on the audio's initial format, even if the
-   * format would change mid-stream.
-   *
-   * If `ms` is < 0, this returns -1.
-   *
-   * @param ms the milliseconds to convert to audio-specific sample frames.
-   * @returns Converted number of sample frames, or -1 for errors/no input; call
-   *          GetError() for details.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa AudioFramesToMS
-   */
-  Sint64 MSToFrames(Milliseconds ms);
-
-  /**
-   * Convert sample frames for a Audio's format to milliseconds.
-   *
-   * This calculates time based on the audio's initial format, even if the
-   * format would change mid-stream.
-   *
-   * Sample frames are more precise than milliseconds, so out of necessity, this
-   * function will approximate by rounding down to the closest full millisecond.
-   *
-   * If `frames` is < 0, this returns -1.
-   *
-   * @param frames the audio-specific sample frames to convert to milliseconds.
-   * @returns Converted number of milliseconds, or -1 for errors/no input; call
-   *          GetError() for details.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa AudioMSToFrames
-   */
-  Milliseconds FramesToMS(Sint64 frames);
 };
 
 /**
@@ -95553,86 +96036,13 @@ using TrackMixCB = MakeFrontCallback<
   void(TrackRaw track, const AudioSpec* spec, float* pcm, int samples)>;
 
 /**
- * An opaque object that represents a source of sound output to be mixed.
+ * Base class to Track.
  *
- * A Mixer has an arbitrary number of tracks, and each track manages its own
- * unique audio to be mixed together.
- *
- * Tracks also have other properties: gain, loop points, fading, 3D position,
- * and other attributes that alter the produced sound; many can be altered
- * during playback.
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @cat resource
+ * @see Track
  */
-struct Track : ResourceBase<TrackRaw>
+struct TrackBase : ResourceBaseT<TrackRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Track.
-   *
-   * @param resource a TrackRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Track(TrackRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Track(const Track& other) = delete;
-
-  /// Move constructor
-  constexpr Track(Track&& other) noexcept
-    : Track(other.release())
-  {
-  }
-
-  constexpr Track(const TrackRef& other) = delete;
-
-  constexpr Track(TrackRef&& other) = delete;
-
-  /**
-   * Create a new track on a mixer.
-   *
-   * A track provides a single source of audio. All currently-playing tracks
-   * will be processed and mixed together to form the final output from the
-   * mixer.
-   *
-   * There are no limits to the number of tracks one may create, beyond running
-   * out of memory, but in normal practice there are a small number of tracks
-   * that are reused between all loaded audio as appropriate.
-   *
-   * Tracks are unique to a specific Mixer and can't be transferred between
-   * them.
-   *
-   * @param mixer the mixer on which to create this track.
-   * @post a new Track on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa DestroyTrack
-   */
-  Track(MixerRef mixer);
-
-  /// Destructor
-  ~Track() { MIX_DestroyTrack(get()); }
-
-  /// Assignment operator.
-  constexpr Track& operator=(Track&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Track& operator=(const Track& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy the specified track.
@@ -96869,6 +97279,79 @@ struct Track : ResourceBase<TrackRaw>
 };
 
 /**
+ * An opaque object that represents a source of sound output to be mixed.
+ *
+ * A Mixer has an arbitrary number of tracks, and each track manages its own
+ * unique audio to be mixed together.
+ *
+ * Tracks also have other properties: gain, loop points, fading, 3D position,
+ * and other attributes that alter the produced sound; many can be altered
+ * during playback.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @cat resource
+ */
+struct Track : TrackBase
+{
+  using TrackBase::TrackBase;
+
+  /**
+   * Constructs from raw Track.
+   *
+   * @param resource a TrackRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Track(TrackRaw resource) noexcept
+    : TrackBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Track(Track&& other) noexcept
+    : Track(other.release())
+  {
+  }
+
+  /**
+   * Create a new track on a mixer.
+   *
+   * A track provides a single source of audio. All currently-playing tracks
+   * will be processed and mixed together to form the final output from the
+   * mixer.
+   *
+   * There are no limits to the number of tracks one may create, beyond running
+   * out of memory, but in normal practice there are a small number of tracks
+   * that are reused between all loaded audio as appropriate.
+   *
+   * Tracks are unique to a specific Mixer and can't be transferred between
+   * them.
+   *
+   * @param mixer the mixer on which to create this track.
+   * @post a new Track on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa DestroyTrack
+   */
+  Track(MixerRef mixer);
+
+  /// Destructor
+  ~Track() { MIX_DestroyTrack(get()); }
+
+  /// Assignment operator.
+  constexpr Track& operator=(Track&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * A callback that fires when a Group has completed mixing.
  *
  * This callback is fired when a mixing group has finished mixing: all tracks in
@@ -96943,95 +97426,13 @@ using GroupMixCB = MakeFrontCallback<
   void(GroupRaw group, const AudioSpec* spec, float* pcm, int samples)>;
 
 /**
- * An opaque object that represents a grouping of tracks.
+ * Base class to Group.
  *
- * SDL_mixer offers callbacks at various stages of the mixing pipeline to allow
- * apps to view and manipulate data as it is transformed. Sometimes it is useful
- * to hook in at a point where several tracks--but not all tracks-- have been
- * mixed. For example, when a game is in some options menu, perhaps adjusting
- * game audio but not UI sounds could be useful.
- *
- * SDL_mixer allows you to assign several tracks to a group, and receive a
- * callback when that group has finished mixing, with a buffer of just that
- * group's mixed audio, before it mixes into the final output.
- *
- * @since This datatype is available since SDL_mixer 3.0.0.
- *
- * @cat resource
+ * @see Group
  */
-struct Group : ResourceBase<GroupRaw>
+struct GroupBase : ResourceBaseT<GroupRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Group.
-   *
-   * @param resource a GroupRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Group(GroupRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Group(const Group& other) = delete;
-
-  /// Move constructor
-  constexpr Group(Group&& other) noexcept
-    : Group(other.release())
-  {
-  }
-
-  constexpr Group(const GroupRef& other) = delete;
-
-  constexpr Group(GroupRef&& other) = delete;
-
-  /**
-   * Create a mixing group.
-   *
-   * Tracks are assigned to a mixing group (or if unassigned, they live in a
-   * mixer's internal default group). All tracks in a group are mixed together
-   * and the app can access this mixed data before it is mixed with all other
-   * groups to produce the final output.
-   *
-   * This can be a useful feature, but is completely optional; apps can ignore
-   * mixing groups entirely and still have a full experience with SDL_mixer.
-   *
-   * After creating a group, assign tracks to it with SetTrackGroup(). Use
-   * SetGroupPostMixCallback() to access the group's mixed data.
-   *
-   * A mixing group can be destroyed with DestroyGroup() when no longer needed.
-   * Destroying the mixer will also destroy all its still-existing mixing
-   * groups.
-   *
-   * @param mixer the mixer on which to create a mixing group.
-   * @post a newly-created mixing group on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa DestroyGroup
-   * @sa SetTrackGroup
-   * @sa SetGroupPostMixCallback
-   */
-  Group(MixerRef mixer);
-
-  /// Destructor
-  ~Group() { MIX_DestroyGroup(get()); }
-
-  /// Assignment operator.
-  constexpr Group& operator=(Group&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Group& operator=(const Group& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a mixing group.
@@ -97105,6 +97506,88 @@ struct Group : ResourceBase<GroupRaw>
    * @sa GroupMixCallback
    */
   void SetPostMixCallback(GroupMixCallback cb, void* userdata);
+};
+
+/**
+ * An opaque object that represents a grouping of tracks.
+ *
+ * SDL_mixer offers callbacks at various stages of the mixing pipeline to allow
+ * apps to view and manipulate data as it is transformed. Sometimes it is useful
+ * to hook in at a point where several tracks--but not all tracks-- have been
+ * mixed. For example, when a game is in some options menu, perhaps adjusting
+ * game audio but not UI sounds could be useful.
+ *
+ * SDL_mixer allows you to assign several tracks to a group, and receive a
+ * callback when that group has finished mixing, with a buffer of just that
+ * group's mixed audio, before it mixes into the final output.
+ *
+ * @since This datatype is available since SDL_mixer 3.0.0.
+ *
+ * @cat resource
+ */
+struct Group : GroupBase
+{
+  using GroupBase::GroupBase;
+
+  /**
+   * Constructs from raw Group.
+   *
+   * @param resource a GroupRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Group(GroupRaw resource) noexcept
+    : GroupBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Group(Group&& other) noexcept
+    : Group(other.release())
+  {
+  }
+
+  /**
+   * Create a mixing group.
+   *
+   * Tracks are assigned to a mixing group (or if unassigned, they live in a
+   * mixer's internal default group). All tracks in a group are mixed together
+   * and the app can access this mixed data before it is mixed with all other
+   * groups to produce the final output.
+   *
+   * This can be a useful feature, but is completely optional; apps can ignore
+   * mixing groups entirely and still have a full experience with SDL_mixer.
+   *
+   * After creating a group, assign tracks to it with SetTrackGroup(). Use
+   * SetGroupPostMixCallback() to access the group's mixed data.
+   *
+   * A mixing group can be destroyed with DestroyGroup() when no longer needed.
+   * Destroying the mixer will also destroy all its still-existing mixing
+   * groups.
+   *
+   * @param mixer the mixer on which to create a mixing group.
+   * @post a newly-created mixing group on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa DestroyGroup
+   * @sa SetTrackGroup
+   * @sa SetGroupPostMixCallback
+   */
+  Group(MixerRef mixer);
+
+  /// Destructor
+  ~Group() { MIX_DestroyGroup(get()); }
+
+  /// Assignment operator.
+  constexpr Group& operator=(Group&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 #ifdef SDL3PP_DOC
@@ -97409,7 +97892,7 @@ inline Mixer CreateMixer(const AudioSpec& spec) { return Mixer(spec); }
  */
 inline void DestroyMixer(MixerRaw mixer) { MIX_DestroyMixer(mixer); }
 
-inline void Mixer::Destroy() { DestroyMixer(release()); }
+inline void MixerBase::Destroy() { DestroyMixer(release()); }
 
 /**
  * Get the properties associated with a mixer.
@@ -97433,7 +97916,7 @@ inline PropertiesRef GetMixerProperties(MixerRef mixer)
   return CheckError(MIX_GetMixerProperties(mixer));
 }
 
-inline PropertiesRef Mixer::GetProperties()
+inline PropertiesRef MixerBase::GetProperties()
 {
   return SDL::GetMixerProperties(get());
 }
@@ -97481,7 +97964,7 @@ inline void GetMixerFormat(MixerRef mixer, AudioSpec* spec)
   CheckError(MIX_GetMixerFormat(mixer, spec));
 }
 
-inline void Mixer::GetFormat(AudioSpec* spec)
+inline void MixerBase::GetFormat(AudioSpec* spec)
 {
   SDL::GetMixerFormat(get(), spec);
 }
@@ -97531,7 +98014,7 @@ inline void Mixer::GetFormat(AudioSpec* spec)
  */
 inline void LockMixer(MixerRef mixer) { MIX_LockMixer(mixer); }
 
-inline MixerLock Mixer::Lock() { return {MixerRef(*this)}; }
+inline MixerLock MixerBase::Lock() { return {MixerRef(*this)}; }
 
 inline MixerLock::MixerLock(MixerRef resource)
   : m_lock(std::move(resource))
@@ -97563,7 +98046,7 @@ inline MixerLock::MixerLock(MixerRef resource)
  */
 inline void UnlockMixer(MixerRef mixer) { MIX_UnlockMixer(mixer); }
 
-inline void Mixer::Unlock(MixerLock&& lock)
+inline void MixerBase::Unlock(MixerLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -97640,7 +98123,9 @@ inline Audio LoadAudio_IO(MixerRef mixer,
   return Audio(mixer, io, predecode, closeio);
 }
 
-inline Audio Mixer::LoadAudio_IO(IOStreamRef io, bool predecode, bool closeio)
+inline Audio MixerBase::LoadAudio_IO(IOStreamRef io,
+                                     bool predecode,
+                                     bool closeio)
 {
   return Audio(get(), io, predecode, closeio);
 }
@@ -97710,7 +98195,7 @@ inline Audio LoadAudio(MixerRef mixer, StringParam path, bool predecode)
   return Audio(mixer, std::move(path), predecode);
 }
 
-inline Audio Mixer::LoadAudio(StringParam path, bool predecode)
+inline Audio MixerBase::LoadAudio(StringParam path, bool predecode)
 {
   return Audio(get(), std::move(path), predecode);
 }
@@ -97779,7 +98264,7 @@ inline Audio LoadAudioNoCopy(MixerRef mixer,
     mixer, data.data(), data.size_bytes(), free_when_done)));
 }
 
-inline Audio Mixer::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
+inline Audio MixerBase::LoadAudioNoCopy(SourceBytes data, bool free_when_done)
 {
   return SDL::LoadAudioNoCopy(get(), std::move(data), free_when_done);
 }
@@ -97906,9 +98391,9 @@ inline Audio LoadRawAudio_IO(MixerRef mixer,
   return Audio(mixer, io, spec, closeio);
 }
 
-inline Audio Mixer::LoadRawAudio_IO(IOStreamRef io,
-                                    const AudioSpec& spec,
-                                    bool closeio)
+inline Audio MixerBase::LoadRawAudio_IO(IOStreamRef io,
+                                        const AudioSpec& spec,
+                                        bool closeio)
 {
   return Audio(get(), io, spec, closeio);
 }
@@ -97954,7 +98439,7 @@ inline Audio LoadRawAudio(MixerRef mixer,
   return Audio(mixer, std::move(data), spec);
 }
 
-inline Audio Mixer::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
+inline Audio MixerBase::LoadRawAudio(SourceBytes data, const AudioSpec& spec)
 {
   return Audio(get(), std::move(data), spec);
 }
@@ -98008,9 +98493,9 @@ inline Audio LoadRawAudioNoCopy(MixerRef mixer,
     mixer, data.data(), data.size_bytes(), &spec, free_when_done)));
 }
 
-inline Audio Mixer::LoadRawAudioNoCopy(SourceBytes data,
-                                       const AudioSpec& spec,
-                                       bool free_when_done)
+inline Audio MixerBase::LoadRawAudioNoCopy(SourceBytes data,
+                                           const AudioSpec& spec,
+                                           bool free_when_done)
 {
   return SDL::LoadRawAudioNoCopy(get(), std::move(data), spec, free_when_done);
 }
@@ -98059,7 +98544,7 @@ inline Audio CreateSineWaveAudio(MixerRef mixer,
   return Audio(CheckError(MIX_CreateSineWaveAudio(mixer, hz, amplitude, ms)));
 }
 
-inline Audio Mixer::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
+inline Audio MixerBase::CreateSineWaveAudio(int hz, float amplitude, Sint64 ms)
 {
   return SDL::CreateSineWaveAudio(get(), hz, amplitude, ms);
 }
@@ -98114,7 +98599,7 @@ inline PropertiesRef GetAudioProperties(AudioRef audio)
   return CheckError(MIX_GetAudioProperties(audio));
 }
 
-inline PropertiesRef Audio::GetProperties()
+inline PropertiesRef AudioBase::GetProperties()
 {
   return SDL::GetAudioProperties(get());
 }
@@ -98192,7 +98677,7 @@ inline Sint64 GetAudioDuration(AudioRef audio)
   return MIX_GetAudioDuration(audio);
 }
 
-inline Sint64 Audio::GetDuration() { return SDL::GetAudioDuration(get()); }
+inline Sint64 AudioBase::GetDuration() { return SDL::GetAudioDuration(get()); }
 
 /// Unknown duration, when the length of the audio can't be determined.
 constexpr Sint64 DURATION_UNKNOWN = MIX_DURATION_UNKNOWN;
@@ -98221,7 +98706,7 @@ inline void GetAudioFormat(AudioRef audio, AudioSpec* spec)
   CheckError(MIX_GetAudioFormat(audio, spec));
 }
 
-inline void Audio::GetFormat(AudioSpec* spec)
+inline void AudioBase::GetFormat(AudioSpec* spec)
 {
   SDL::GetAudioFormat(get(), spec);
 }
@@ -98248,7 +98733,7 @@ inline void Audio::GetFormat(AudioSpec* spec)
  */
 inline void DestroyAudio(AudioRaw audio) { MIX_DestroyAudio(audio); }
 
-inline void Audio::Destroy() { DestroyAudio(release()); }
+inline void AudioBase::Destroy() { DestroyAudio(release()); }
 
 /**
  * Create a new track on a mixer.
@@ -98274,7 +98759,7 @@ inline void Audio::Destroy() { DestroyAudio(release()); }
  */
 inline Track CreateTrack(MixerRef mixer) { return Track(mixer); }
 
-inline TrackRef Mixer::CreateTrack() { return Track(get()); }
+inline TrackRef MixerBase::CreateTrack() { return Track(get()); }
 
 inline Track::Track(MixerRef mixer)
   : Track(CheckError(MIX_CreateTrack(mixer)))
@@ -98304,7 +98789,7 @@ inline Track::Track(MixerRef mixer)
  */
 inline void DestroyTrack(TrackRaw track) { MIX_DestroyTrack(track); }
 
-inline void Track::Destroy() { DestroyTrack(release()); }
+inline void TrackBase::Destroy() { DestroyTrack(release()); }
 
 /**
  * Get the properties associated with a track.
@@ -98328,7 +98813,7 @@ inline PropertiesRef GetTrackProperties(TrackRef track)
   return CheckError(MIX_GetTrackProperties(track));
 }
 
-inline PropertiesRef Track::GetProperties()
+inline PropertiesRef TrackBase::GetProperties()
 {
   return SDL::GetTrackProperties(get());
 }
@@ -98351,7 +98836,7 @@ inline MixerRef GetTrackMixer(TrackRef track)
   return CheckError(MIX_GetTrackMixer(track));
 }
 
-inline MixerRef Track::GetMixer() { return SDL::GetTrackMixer(get()); }
+inline MixerRef TrackBase::GetMixer() { return SDL::GetTrackMixer(get()); }
 
 /**
  * Set a Track's input to a Audio.
@@ -98389,7 +98874,7 @@ inline void SetTrackAudio(TrackRef track, AudioRef audio)
   CheckError(MIX_SetTrackAudio(track, audio));
 }
 
-inline void Track::SetAudio(AudioRef audio)
+inline void TrackBase::SetAudio(AudioRef audio)
 {
   SDL::SetTrackAudio(get(), audio);
 }
@@ -98439,7 +98924,7 @@ inline void SetTrackAudioStream(TrackRef track, AudioStreamRef stream)
   CheckError(MIX_SetTrackAudioStream(track, stream));
 }
 
-inline void Track::SetAudioStream(AudioStreamRef stream)
+inline void TrackBase::SetAudioStream(AudioStreamRef stream)
 {
   SDL::SetTrackAudioStream(get(), stream);
 }
@@ -98498,7 +98983,7 @@ inline void SetTrackIOStream(TrackRef track,
   CheckError(MIX_SetTrackIOStream(track, io, closeio));
 }
 
-inline void Track::SetIOStream(IOStreamRef io, bool closeio)
+inline void TrackBase::SetIOStream(IOStreamRef io, bool closeio)
 {
   SDL::SetTrackIOStream(get(), io, closeio);
 }
@@ -98559,9 +99044,9 @@ inline void SetTrackRawIOStream(TrackRef track,
   CheckError(MIX_SetTrackRawIOStream(track, io, &spec, closeio));
 }
 
-inline void Track::SetRawIOStream(IOStreamRef io,
-                                  const AudioSpec& spec,
-                                  bool closeio)
+inline void TrackBase::SetRawIOStream(IOStreamRef io,
+                                      const AudioSpec& spec,
+                                      bool closeio)
 {
   SDL::SetTrackRawIOStream(get(), io, spec, closeio);
 }
@@ -98598,7 +99083,7 @@ inline void TagTrack(TrackRef track, StringParam tag)
   CheckError(MIX_TagTrack(track, tag));
 }
 
-inline void Track::Tag(StringParam tag)
+inline void TrackBase::Tag(StringParam tag)
 {
   SDL::TagTrack(get(), std::move(tag));
 }
@@ -98631,7 +99116,7 @@ inline void UntagTrack(TrackRef track, StringParam tag)
   MIX_UntagTrack(track, tag);
 }
 
-inline void Track::Untag(StringParam tag)
+inline void TrackBase::Untag(StringParam tag)
 {
   SDL::UntagTrack(get(), std::move(tag));
 }
@@ -98656,7 +99141,7 @@ inline OwnArray<char*> GetTrackTags(TrackRef track)
   return OwnArray<char*>(result, count);
 }
 
-inline OwnArray<char*> Track::GetTags() { return SDL::GetTrackTags(get()); }
+inline OwnArray<char*> TrackBase::GetTags() { return SDL::GetTrackTags(get()); }
 
 /**
  * Get all tracks with a specific tag.
@@ -98679,7 +99164,7 @@ inline OwnArray<TrackRef> GetTaggedTracks(MixerRef mixer, StringParam tag)
   return OwnArray<TrackRef>(reinterpret_cast<TrackRef*>(result), count);
 }
 
-inline OwnArray<TrackRef> Mixer::GetTaggedTracks(StringParam tag)
+inline OwnArray<TrackRef> MixerBase::GetTaggedTracks(StringParam tag)
 {
   return SDL::GetTaggedTracks(get(), std::move(tag));
 }
@@ -98724,7 +99209,7 @@ inline void SetTrackPlaybackPosition(TrackRef track, Sint64 frames)
   CheckError(MIX_SetTrackPlaybackPosition(track, frames));
 }
 
-inline void Track::SetPlaybackPosition(Sint64 frames)
+inline void TrackBase::SetPlaybackPosition(Sint64 frames)
 {
   SDL::SetTrackPlaybackPosition(get(), frames);
 }
@@ -98757,7 +99242,7 @@ inline Sint64 GetTrackPlaybackPosition(TrackRef track)
   return MIX_GetTrackPlaybackPosition(track);
 }
 
-inline Sint64 Track::GetPlaybackPosition()
+inline Sint64 TrackBase::GetPlaybackPosition()
 {
   return SDL::GetTrackPlaybackPosition(get());
 }
@@ -98789,7 +99274,10 @@ inline Sint64 GetTrackFadeFrames(TrackRef track)
   return MIX_GetTrackFadeFrames(track);
 }
 
-inline Sint64 Track::GetFadeFrames() { return SDL::GetTrackFadeFrames(get()); }
+inline Sint64 TrackBase::GetFadeFrames()
+{
+  return SDL::GetTrackFadeFrames(get());
+}
 
 /**
  * Query how many loops remain for a given track.
@@ -98819,7 +99307,7 @@ inline Sint64 Track::GetFadeFrames() { return SDL::GetTrackFadeFrames(get()); }
  */
 inline int GetTrackLoops(TrackRef track) { return MIX_GetTrackLoops(track); }
 
-inline int Track::GetLoops() { return SDL::GetTrackLoops(get()); }
+inline int TrackBase::GetLoops() { return SDL::GetTrackLoops(get()); }
 
 /**
  * Change the number of times a currently-playing track will loop.
@@ -98854,7 +99342,7 @@ inline void SetTrackLoops(TrackRef track, int num_loops)
   CheckError(MIX_SetTrackLoops(track, num_loops));
 }
 
-inline void Track::SetLoops(int num_loops)
+inline void TrackBase::SetLoops(int num_loops)
 {
   SDL::SetTrackLoops(get(), num_loops);
 }
@@ -98884,7 +99372,7 @@ inline AudioRef GetTrackAudio(TrackRef track)
   return MIX_GetTrackAudio(track);
 }
 
-inline AudioRef Track::GetAudio() { return SDL::GetTrackAudio(get()); }
+inline AudioRef TrackBase::GetAudio() { return SDL::GetTrackAudio(get()); }
 
 /**
  * Query the AudioStream assigned to a track.
@@ -98912,7 +99400,7 @@ inline AudioStreamRef GetTrackAudioStream(TrackRef track)
   return MIX_GetTrackAudioStream(track);
 }
 
-inline AudioStreamRef Track::GetAudioStream()
+inline AudioStreamRef TrackBase::GetAudioStream()
 {
   return SDL::GetTrackAudioStream(get());
 }
@@ -98947,7 +99435,10 @@ inline Sint64 GetTrackRemaining(TrackRef track)
   return MIX_GetTrackRemaining(track);
 }
 
-inline Sint64 Track::GetRemaining() { return SDL::GetTrackRemaining(get()); }
+inline Sint64 TrackBase::GetRemaining()
+{
+  return SDL::GetTrackRemaining(get());
+}
 
 /**
  * Convert milliseconds to sample frames for a track's current format.
@@ -98976,7 +99467,7 @@ inline Sint64 TrackMSToFrames(TrackRef track, Milliseconds ms)
   return MIX_TrackMSToFrames(track, ms.count());
 }
 
-inline Sint64 Track::MSToFrames(Milliseconds ms)
+inline Sint64 TrackBase::MSToFrames(Milliseconds ms)
 {
   return SDL::TrackMSToFrames(get(), ms);
 }
@@ -99011,7 +99502,7 @@ inline Milliseconds TrackFramesToMS(TrackRef track, Sint64 frames)
   return Milliseconds(MIX_TrackFramesToMS(track, frames));
 }
 
-inline Milliseconds Track::FramesToMS(Sint64 frames)
+inline Milliseconds TrackBase::FramesToMS(Sint64 frames)
 {
   return SDL::TrackFramesToMS(get(), frames);
 }
@@ -99040,7 +99531,7 @@ inline Sint64 AudioMSToFrames(AudioRef audio, Milliseconds ms)
   return MIX_AudioMSToFrames(audio, ms.count());
 }
 
-inline Sint64 Audio::MSToFrames(Milliseconds ms)
+inline Sint64 AudioBase::MSToFrames(Milliseconds ms)
 {
   return SDL::AudioMSToFrames(get(), ms);
 }
@@ -99072,7 +99563,7 @@ inline Milliseconds AudioFramesToMS(AudioRef audio, Sint64 frames)
   return Milliseconds(MIX_AudioFramesToMS(audio, frames));
 }
 
-inline Milliseconds Audio::FramesToMS(Sint64 frames)
+inline Milliseconds AudioBase::FramesToMS(Sint64 frames)
 {
   return SDL::AudioFramesToMS(get(), frames);
 }
@@ -99245,7 +99736,7 @@ inline void PlayTrack(TrackRef track, PropertiesRef options = nullptr)
   CheckError(MIX_PlayTrack(track, options));
 }
 
-inline void Track::Play(PropertiesRef options)
+inline void TrackBase::Play(PropertiesRef options)
 {
   SDL::PlayTrack(get(), options);
 }
@@ -99347,7 +99838,7 @@ inline void PlayTag(MixerRef mixer, StringParam tag, PropertiesRef options)
   CheckError(MIX_PlayTag(mixer, tag, options));
 }
 
-inline void Mixer::PlayTag(StringParam tag, PropertiesRef options)
+inline void MixerBase::PlayTag(StringParam tag, PropertiesRef options)
 {
   SDL::PlayTag(get(), std::move(tag), options);
 }
@@ -99387,7 +99878,7 @@ inline bool PlayAudio(MixerRef mixer, AudioRef audio)
   return MIX_PlayAudio(mixer, audio);
 }
 
-inline bool Mixer::PlayAudio(AudioRef audio)
+inline bool MixerBase::PlayAudio(AudioRef audio)
 {
   return SDL::PlayAudio(get(), audio);
 }
@@ -99429,7 +99920,7 @@ inline bool StopTrack(TrackRef track, Sint64 fade_out_frames)
   return MIX_StopTrack(track, fade_out_frames);
 }
 
-inline bool Track::Stop(Sint64 fade_out_frames)
+inline bool TrackBase::Stop(Sint64 fade_out_frames)
 {
   return SDL::StopTrack(get(), fade_out_frames);
 }
@@ -99471,7 +99962,7 @@ inline void StopAllTracks(MixerRef mixer, Sint64 fade_out_ms)
   CheckError(MIX_StopAllTracks(mixer, fade_out_ms));
 }
 
-inline void Mixer::StopAllTracks(Sint64 fade_out_ms)
+inline void MixerBase::StopAllTracks(Sint64 fade_out_ms)
 {
   SDL::StopAllTracks(get(), fade_out_ms);
 }
@@ -99512,7 +100003,7 @@ inline void StopTag(MixerRef mixer, StringParam tag, Sint64 fade_out_ms)
   CheckError(MIX_StopTag(mixer, tag, fade_out_ms));
 }
 
-inline void Mixer::StopTag(StringParam tag, Sint64 fade_out_ms)
+inline void MixerBase::StopTag(StringParam tag, Sint64 fade_out_ms)
 {
   SDL::StopTag(get(), std::move(tag), fade_out_ms);
 }
@@ -99541,7 +100032,7 @@ inline void Mixer::StopTag(StringParam tag, Sint64 fade_out_ms)
  */
 inline bool PauseTrack(TrackRef track) { return MIX_PauseTrack(track); }
 
-inline bool Track::Pause() { return SDL::PauseTrack(get()); }
+inline bool TrackBase::Pause() { return SDL::PauseTrack(get()); }
 
 /**
  * Pause all currently-playing tracks.
@@ -99568,7 +100059,7 @@ inline void PauseAllTracks(MixerRef mixer)
   CheckError(MIX_PauseAllTracks(mixer));
 }
 
-inline void Mixer::PauseAllTracks() { SDL::PauseAllTracks(get()); }
+inline void MixerBase::PauseAllTracks() { SDL::PauseAllTracks(get()); }
 
 /**
  * Pause all tracks with a specific tag.
@@ -99601,7 +100092,7 @@ inline void PauseTag(MixerRef mixer, StringParam tag)
   CheckError(MIX_PauseTag(mixer, tag));
 }
 
-inline void Mixer::PauseTag(StringParam tag)
+inline void MixerBase::PauseTag(StringParam tag)
 {
   SDL::PauseTag(get(), std::move(tag));
 }
@@ -99630,7 +100121,7 @@ inline void Mixer::PauseTag(StringParam tag)
  */
 inline bool ResumeTrack(TrackRef track) { return MIX_ResumeTrack(track); }
 
-inline bool Track::Resume() { return SDL::ResumeTrack(get()); }
+inline bool TrackBase::Resume() { return SDL::ResumeTrack(get()); }
 
 /**
  * Resume all currently-paused tracks.
@@ -99657,7 +100148,7 @@ inline void ResumeAllTracks(MixerRef mixer)
   CheckError(MIX_ResumeAllTracks(mixer));
 }
 
-inline void Mixer::ResumeAllTracks() { SDL::ResumeAllTracks(get()); }
+inline void MixerBase::ResumeAllTracks() { SDL::ResumeAllTracks(get()); }
 
 /**
  * Resume all tracks with a specific tag.
@@ -99689,7 +100180,7 @@ inline void ResumeTag(MixerRef mixer, StringParam tag)
   CheckError(MIX_ResumeTag(mixer, tag));
 }
 
-inline void Mixer::ResumeTag(StringParam tag)
+inline void MixerBase::ResumeTag(StringParam tag)
 {
   SDL::ResumeTag(get(), std::move(tag));
 }
@@ -99719,7 +100210,7 @@ inline void Mixer::ResumeTag(StringParam tag)
  */
 inline bool TrackPlaying(TrackRef track) { return MIX_TrackPlaying(track); }
 
-inline bool Track::Playing() { return SDL::TrackPlaying(get()); }
+inline bool TrackBase::Playing() { return SDL::TrackPlaying(get()); }
 
 /**
  * Query if a track is currently paused.
@@ -99746,7 +100237,7 @@ inline bool Track::Playing() { return SDL::TrackPlaying(get()); }
  */
 inline bool TrackPaused(TrackRef track) { return MIX_TrackPaused(track); }
 
-inline bool Track::Paused() { return SDL::TrackPaused(get()); }
+inline bool TrackBase::Paused() { return SDL::TrackPaused(get()); }
 
 /**
  * Set a mixer's master gain control.
@@ -99778,7 +100269,7 @@ inline void SetMixerGain(MixerRef mixer, float gain)
   CheckError(MIX_SetMixerGain(mixer, gain));
 }
 
-inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
+inline void MixerBase::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
 
 /**
  * Get a mixer's master gain control.
@@ -99798,7 +100289,7 @@ inline void Mixer::SetGain(float gain) { SDL::SetMixerGain(get(), gain); }
  */
 inline float GetMixerGain(MixerRef mixer) { return MIX_GetMixerGain(mixer); }
 
-inline float Mixer::GetGain() { return SDL::GetMixerGain(get()); }
+inline float MixerBase::GetGain() { return SDL::GetMixerGain(get()); }
 
 /**
  * Set a track's gain control.
@@ -99830,7 +100321,7 @@ inline void SetTrackGain(TrackRef track, float gain)
   CheckError(MIX_SetTrackGain(track, gain));
 }
 
-inline void Track::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
+inline void TrackBase::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
 
 /**
  * Get a track's gain control.
@@ -99850,7 +100341,7 @@ inline void Track::SetGain(float gain) { SDL::SetTrackGain(get(), gain); }
  */
 inline float GetTrackGain(TrackRef track) { return MIX_GetTrackGain(track); }
 
-inline float Track::GetGain() { return SDL::GetTrackGain(get()); }
+inline float TrackBase::GetGain() { return SDL::GetTrackGain(get()); }
 
 /**
  * Set the gain control of all tracks with a specific tag.
@@ -99891,7 +100382,7 @@ inline void SetTagGain(MixerRef mixer, StringParam tag, float gain)
   CheckError(MIX_SetTagGain(mixer, tag, gain));
 }
 
-inline void Mixer::SetTagGain(StringParam tag, float gain)
+inline void MixerBase::SetTagGain(StringParam tag, float gain)
 {
   SDL::SetTagGain(get(), std::move(tag), gain);
 }
@@ -99928,7 +100419,7 @@ inline void SetMixerFrequencyRatio(MixerRef mixer, float ratio)
   CheckError(MIX_SetMixerFrequencyRatio(mixer, ratio));
 }
 
-inline void Mixer::SetFrequencyRatio(float ratio)
+inline void MixerBase::SetFrequencyRatio(float ratio)
 {
   SDL::SetMixerFrequencyRatio(get(), ratio);
 }
@@ -99954,7 +100445,7 @@ inline float GetMixerFrequencyRatio(MixerRef mixer)
   return MIX_GetMixerFrequencyRatio(mixer);
 }
 
-inline float Mixer::GetFrequencyRatio()
+inline float MixerBase::GetFrequencyRatio()
 {
   return SDL::GetMixerFrequencyRatio(get());
 }
@@ -99987,7 +100478,7 @@ inline void SetTrackFrequencyRatio(TrackRef track, float ratio)
   CheckError(MIX_SetTrackFrequencyRatio(track, ratio));
 }
 
-inline void Track::SetFrequencyRatio(float ratio)
+inline void TrackBase::SetFrequencyRatio(float ratio)
 {
   SDL::SetTrackFrequencyRatio(get(), ratio);
 }
@@ -100022,7 +100513,7 @@ inline float GetTrackFrequencyRatio(TrackRef track)
   return MIX_GetTrackFrequencyRatio(track);
 }
 
-inline float Track::GetFrequencyRatio()
+inline float TrackBase::GetFrequencyRatio()
 {
   return SDL::GetTrackFrequencyRatio(get());
 }
@@ -100068,7 +100559,7 @@ inline void SetTrackOutputChannelMap(TrackRef track, std::span<const int> chmap)
     MIX_SetTrackOutputChannelMap(track, chmap.data(), narrowS32(chmap.size())));
 }
 
-inline void Track::SetOutputChannelMap(std::span<const int> chmap)
+inline void TrackBase::SetOutputChannelMap(std::span<const int> chmap)
 {
   SDL::SetTrackOutputChannelMap(get(), chmap);
 }
@@ -100108,7 +100599,7 @@ inline void SetTrackStereo(TrackRef track, const StereoGains& gains)
   CheckError(MIX_SetTrackStereo(track, &gains));
 }
 
-inline void Track::SetStereo(const StereoGains& gains)
+inline void TrackBase::SetStereo(const StereoGains& gains)
 {
   SDL::SetTrackStereo(get(), gains);
 }
@@ -100160,7 +100651,7 @@ inline void SetTrack3DPosition(TrackRef track, const Point3D& position)
   CheckError(MIX_SetTrack3DPosition(track, &position));
 }
 
-inline void Track::Set3DPosition(const Point3D& position)
+inline void TrackBase::Set3DPosition(const Point3D& position)
 {
   SDL::SetTrack3DPosition(get(), position);
 }
@@ -100188,7 +100679,10 @@ inline Point3D GetTrack3DPosition(TrackRef track)
   return position;
 }
 
-inline Point3D Track::Get3DPosition() { return SDL::GetTrack3DPosition(get()); }
+inline Point3D TrackBase::Get3DPosition()
+{
+  return SDL::GetTrack3DPosition(get());
+}
 
 /**
  * Create a mixing group.
@@ -100221,7 +100715,7 @@ inline Point3D Track::Get3DPosition() { return SDL::GetTrack3DPosition(get()); }
  */
 inline Group CreateGroup(MixerRef mixer) { return Group(mixer); }
 
-inline GroupRef Mixer::CreateGroup() { return Group(get()); }
+inline GroupRef MixerBase::CreateGroup() { return Group(get()); }
 
 inline Group::Group(MixerRef mixer)
   : Group(CheckError(MIX_CreateGroup(mixer)))
@@ -100244,7 +100738,7 @@ inline Group::Group(MixerRef mixer)
  */
 inline void DestroyGroup(GroupRaw group) { MIX_DestroyGroup(group); }
 
-inline void Group::Destroy() { DestroyGroup(release()); }
+inline void GroupBase::Destroy() { DestroyGroup(release()); }
 
 /**
  * Get the properties associated with a group.
@@ -100268,7 +100762,7 @@ inline PropertiesRef GetGroupProperties(GroupRef group)
   return CheckError(MIX_GetGroupProperties(group));
 }
 
-inline PropertiesRef Group::GetProperties()
+inline PropertiesRef GroupBase::GetProperties()
 {
   return SDL::GetGroupProperties(get());
 }
@@ -100291,7 +100785,7 @@ inline MixerRef GetGroupMixer(GroupRef group)
   return CheckError(MIX_GetGroupMixer(group));
 }
 
-inline MixerRef Group::GetMixer() { return SDL::GetGroupMixer(get()); }
+inline MixerRef GroupBase::GetMixer() { return SDL::GetGroupMixer(get()); }
 
 /**
  * Assign a track to a mixing group.
@@ -100321,7 +100815,7 @@ inline void SetTrackGroup(TrackRef track, GroupRef group)
   CheckError(MIX_SetTrackGroup(track, group));
 }
 
-inline void Track::SetGroup(GroupRef group)
+inline void TrackBase::SetGroup(GroupRef group)
 {
   SDL::SetTrackGroup(get(), group);
 }
@@ -100394,12 +100888,13 @@ inline void SetTrackStoppedCallback(TrackRef track, TrackStoppedCB cb)
   SetTrackStoppedCallback(track, cb.wrapper, cb.data);
 }
 
-inline void Track::SetStoppedCallback(TrackStoppedCallback cb, void* userdata)
+inline void TrackBase::SetStoppedCallback(TrackStoppedCallback cb,
+                                          void* userdata)
 {
   SDL::SetTrackStoppedCallback(get(), cb, userdata);
 }
 
-inline void Track::SetStoppedCallback(TrackStoppedCB cb)
+inline void TrackBase::SetStoppedCallback(TrackStoppedCB cb)
 {
   SDL::SetTrackStoppedCallback(get(), cb);
 }
@@ -100472,12 +100967,12 @@ inline void SetTrackRawCallback(TrackRef track, TrackMixCB cb)
   SetTrackRawCallback(track, cb.wrapper, cb.data);
 }
 
-inline void Track::SetRawCallback(TrackMixCallback cb, void* userdata)
+inline void TrackBase::SetRawCallback(TrackMixCallback cb, void* userdata)
 {
   SDL::SetTrackRawCallback(get(), cb, userdata);
 }
 
-inline void Track::SetRawCallback(TrackMixCB cb)
+inline void TrackBase::SetRawCallback(TrackMixCB cb)
 {
   SDL::SetTrackRawCallback(get(), cb);
 }
@@ -100556,12 +101051,12 @@ inline void SetTrackCookedCallback(TrackRef track, TrackMixCB cb)
   SetTrackCookedCallback(track, cb.wrapper, cb.data);
 }
 
-inline void Track::SetCookedCallback(TrackMixCallback cb, void* userdata)
+inline void TrackBase::SetCookedCallback(TrackMixCallback cb, void* userdata)
 {
   SDL::SetTrackCookedCallback(get(), cb, userdata);
 }
 
-inline void Track::SetCookedCallback(TrackMixCB cb)
+inline void TrackBase::SetCookedCallback(TrackMixCB cb)
 {
   SDL::SetTrackCookedCallback(get(), cb);
 }
@@ -100626,7 +101121,7 @@ inline void SetGroupPostMixCallback(GroupRef group, GroupMixCB cb)
   SetGroupPostMixCallback(group, cb.wrapper, cb.data);
 }
 
-inline void Group::SetPostMixCallback(GroupMixCallback cb, void* userdata)
+inline void GroupBase::SetPostMixCallback(GroupMixCallback cb, void* userdata)
 {
   SDL::SetGroupPostMixCallback(get(), cb, userdata);
 }
@@ -100687,12 +101182,12 @@ inline void SetPostMixCallback(MixerRef mixer, PostMixCB cb)
   SetPostMixCallback(mixer, cb.wrapper, cb.data);
 }
 
-inline void Mixer::SetPostMixCallback(PostMixCallback cb, void* userdata)
+inline void MixerBase::SetPostMixCallback(PostMixCallback cb, void* userdata)
 {
   SDL::SetPostMixCallback(get(), cb, userdata);
 }
 
-inline void Mixer::SetPostMixCallback(PostMixCB cb)
+inline void MixerBase::SetPostMixCallback(PostMixCB cb)
 {
   SDL::SetPostMixCallback(get(), cb);
 }
@@ -100754,10 +101249,94 @@ inline int Generate(MixerRef mixer, TargetBytes buffer)
     MIX_Generate(mixer, buffer.data(), narrowS32(buffer.size_bytes())), -1);
 }
 
-inline int Mixer::Generate(TargetBytes buffer)
+inline int MixerBase::Generate(TargetBytes buffer)
 {
   return SDL::Generate(get(), std::move(buffer));
 }
+
+/**
+ * Base class to AudioDecoder.
+ *
+ * @see AudioDecoder
+ */
+struct AudioDecoderBase : ResourceBaseT<AudioDecoderRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Destroy the specified audio decoder.
+   *
+   * Destroying a nullptr AudioDecoder is a legal no-op.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  void Destroy();
+
+  /**
+   * Get the properties associated with a AudioDecoder.
+   *
+   * SDL_mixer offers some properties of its own, but this can also be a
+   * convenient place to store app-specific data.
+   *
+   * A Properties is created the first time this function is called for a given
+   * AudioDecoder, if necessary.
+   *
+   * The file-specific metadata exposed through this function is identical to
+   * those available through GetAudioProperties(). Please refer to that
+   * function's documentation for details.
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   *
+   * @sa GetAudioProperties
+   */
+  PropertiesRef GetProperties();
+
+  /**
+   * Query the initial audio format of a AudioDecoder.
+   *
+   * Note that some audio files can change format in the middle; some explicitly
+   * support this, but a more common example is two MP3 files concatenated
+   * together. In many cases, SDL_mixer will correctly handle these sort of
+   * files, but this function will only report the initial format a file uses.
+   *
+   * @param spec on success, audio format details will be stored here.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  void GetFormat(AudioSpec* spec);
+
+  /**
+   * Decode more audio from a AudioDecoder.
+   *
+   * Data is decoded on demand in whatever format is requested. The format is
+   * permitted to change between calls.
+   *
+   * This function will return the number of bytes decoded, which may be less
+   * than requested if there was an error or end-of-file. A return value of zero
+   * means the entire file was decoded, -1 means an unrecoverable error
+   * happened.
+   *
+   * @param buffer the memory buffer to store decoded audio.
+   * @param spec the format that audio data will be stored to `buffer`.
+   * @returns number of bytes decoded, or -1 on error; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_mixer 3.0.0.
+   */
+  int DecodeAudio(TargetBytes buffer, const AudioSpec& spec);
+};
 
 /**
  * An opaque object that represents an audio decoder.
@@ -100774,9 +101353,9 @@ inline int Mixer::Generate(TargetBytes buffer)
  *
  * @cat resource
  */
-struct AudioDecoder : ResourceBase<AudioDecoderRaw>
+struct AudioDecoder : AudioDecoderBase
 {
-  using ResourceBase::ResourceBase;
+  using AudioDecoderBase::AudioDecoderBase;
 
   /**
    * Constructs from raw AudioDecoder.
@@ -100786,22 +101365,15 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AudioDecoder(AudioDecoderRaw resource) noexcept
-    : ResourceBase(resource)
+    : AudioDecoderBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) = delete;
 
   /// Move constructor
   constexpr AudioDecoder(AudioDecoder&& other) noexcept
     : AudioDecoder(other.release())
   {
   }
-
-  constexpr AudioDecoder(const AudioDecoderRef& other) = delete;
-
-  constexpr AudioDecoder(AudioDecoderRef&& other) = delete;
 
   /**
    * Create a AudioDecoder from a path on the filesystem.
@@ -100886,83 +101458,6 @@ struct AudioDecoder : ResourceBase<AudioDecoderRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AudioDecoder& operator=(const AudioDecoder& other) = delete;
-
-  /**
-   * Destroy the specified audio decoder.
-   *
-   * Destroying a nullptr AudioDecoder is a legal no-op.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  void Destroy();
-
-  /**
-   * Get the properties associated with a AudioDecoder.
-   *
-   * SDL_mixer offers some properties of its own, but this can also be a
-   * convenient place to store app-specific data.
-   *
-   * A Properties is created the first time this function is called for a given
-   * AudioDecoder, if necessary.
-   *
-   * The file-specific metadata exposed through this function is identical to
-   * those available through GetAudioProperties(). Please refer to that
-   * function's documentation for details.
-   *
-   * @returns a valid property ID on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   *
-   * @sa GetAudioProperties
-   */
-  PropertiesRef GetProperties();
-
-  /**
-   * Query the initial audio format of a AudioDecoder.
-   *
-   * Note that some audio files can change format in the middle; some explicitly
-   * support this, but a more common example is two MP3 files concatenated
-   * together. In many cases, SDL_mixer will correctly handle these sort of
-   * files, but this function will only report the initial format a file uses.
-   *
-   * @param spec on success, audio format details will be stored here.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  void GetFormat(AudioSpec* spec);
-
-  /**
-   * Decode more audio from a AudioDecoder.
-   *
-   * Data is decoded on demand in whatever format is requested. The format is
-   * permitted to change between calls.
-   *
-   * This function will return the number of bytes decoded, which may be less
-   * than requested if there was an error or end-of-file. A return value of zero
-   * means the entire file was decoded, -1 means an unrecoverable error
-   * happened.
-   *
-   * @param buffer the memory buffer to store decoded audio.
-   * @param spec the format that audio data will be stored to `buffer`.
-   * @returns number of bytes decoded on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_mixer 3.0.0.
-   */
-  int DecodeAudio(TargetBytes buffer, const AudioSpec& spec);
 };
 
 /**
@@ -101074,7 +101569,7 @@ inline void DestroyAudioDecoder(AudioDecoderRaw audiodecoder)
   MIX_DestroyAudioDecoder(audiodecoder);
 }
 
-inline void AudioDecoder::Destroy() { DestroyAudioDecoder(release()); }
+inline void AudioDecoderBase::Destroy() { DestroyAudioDecoder(release()); }
 
 /**
  * Get the properties associated with a AudioDecoder.
@@ -101104,7 +101599,7 @@ inline PropertiesRef GetAudioDecoderProperties(AudioDecoderRef audiodecoder)
   return CheckError(MIX_GetAudioDecoderProperties(audiodecoder));
 }
 
-inline PropertiesRef AudioDecoder::GetProperties()
+inline PropertiesRef AudioDecoderBase::GetProperties()
 {
   return SDL::GetAudioDecoderProperties(get());
 }
@@ -101130,7 +101625,7 @@ inline void GetAudioDecoderFormat(AudioDecoderRef audiodecoder, AudioSpec* spec)
   CheckError(MIX_GetAudioDecoderFormat(audiodecoder, spec));
 }
 
-inline void AudioDecoder::GetFormat(AudioSpec* spec)
+inline void AudioDecoderBase::GetFormat(AudioSpec* spec)
 {
   SDL::GetAudioDecoderFormat(get(), spec);
 }
@@ -101165,7 +101660,8 @@ inline int DecodeAudio(AudioDecoderRef audiodecoder,
     -1);
 }
 
-inline int AudioDecoder::DecodeAudio(TargetBytes buffer, const AudioSpec& spec)
+inline int AudioDecoderBase::DecodeAudio(TargetBytes buffer,
+                                         const AudioSpec& spec)
 {
   return SDL::DecodeAudio(get(), std::move(buffer), spec);
 }
@@ -101193,6 +101689,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct AnimationBase;
+
+// Forward decl
 struct Animation;
 
 /// Alias to raw representation for Animation.
@@ -101206,12 +101705,15 @@ using AnimationRawConst = const IMG_Animation*;
  *
  * This does not take ownership!
  */
-using AnimationRef = ResourceRef<Animation>;
+using AnimationRef = ResourceRefT<AnimationBase>;
 
 /// Safely wrap Animation for non owning const parameters
 using AnimationConstRef = ResourceConstRef<AnimationRaw, AnimationRawConst>;
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+// Forward decl
+struct AnimationEncoderBase;
 
 // Forward decl
 struct AnimationEncoder;
@@ -101224,7 +101726,10 @@ using AnimationEncoderRaw = IMG_AnimationEncoder*;
  *
  * This does not take ownership!
  */
-using AnimationEncoderRef = ResourceRef<AnimationEncoder>;
+using AnimationEncoderRef = ResourceRefT<AnimationEncoderBase>;
+
+// Forward decl
+struct AnimationDecoderBase;
 
 // Forward decl
 struct AnimationDecoder;
@@ -101237,7 +101742,7 @@ using AnimationDecoderRaw = IMG_AnimationDecoder*;
  *
  * This does not take ownership!
  */
-using AnimationDecoderRef = ResourceRef<AnimationDecoder>;
+using AnimationDecoderRef = ResourceRefT<AnimationDecoderBase>;
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -103404,7 +103909,7 @@ inline void Save(SurfaceConstRef surface, StringParam file)
   CheckError(IMG_Save(surface, file));
 }
 
-inline void Surface::Save(StringParam filename) const
+inline void SurfaceBase::Save(StringParam filename) const
 {
   SDL::Save(*this, std::move(filename));
 }
@@ -103448,9 +103953,9 @@ inline void SaveTyped_IO(SurfaceConstRef surface,
   CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
 }
 
-inline void Surface::SaveTyped_IO(IOStreamRef dst,
-                                  StringParam type,
-                                  bool closeio) const
+inline void SurfaceBase::SaveTyped_IO(IOStreamRef dst,
+                                      StringParam type,
+                                      bool closeio) const
 {
   SDL::SaveTyped_IO(*this, dst, std::move(type), closeio);
 }
@@ -103704,7 +104209,7 @@ inline void SavePNG(SurfaceRef surface, StringParam file)
   CheckError(IMG_SavePNG(surface, file));
 }
 
-inline void Surface::SavePNG(StringParam file) const
+inline void SurfaceBase::SavePNG(StringParam file) const
 {
   SDL::SavePNG(get(), std::move(file));
 }
@@ -103734,7 +104239,7 @@ inline void SavePNG_IO(SurfaceRef surface,
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
 }
 
-inline void Surface::SavePNG_IO(IOStreamRef dst, bool closeio) const
+inline void SurfaceBase::SavePNG_IO(IOStreamRef dst, bool closeio) const
 {
   SDL::SavePNG_IO(get(), dst, closeio);
 }
@@ -103839,100 +104344,16 @@ inline void SaveWEBP_IO(SurfaceRef surface,
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * Animated image support
+ * Base class to Animation.
  *
- * @cat resource
+ * @see Animation
  */
-struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
+struct AnimationBase : ResourceBaseT<AnimationRaw, AnimationRawConst>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Animation.
-   *
-   * @param resource a AnimationRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Animation(AnimationRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Animation(const Animation& other) = delete;
-
-  /// Move constructor
-  constexpr Animation(Animation&& other) noexcept
-    : Animation(other.release())
-  {
-  }
-
-  constexpr Animation(const AnimationRef& other) = delete;
-
-  constexpr Animation(AnimationRef&& other) = delete;
-
-  /**
-   * Load an animation from a file.
-   *
-   * @param file path on the filesystem containing an animated image.
-   * @post a new Animation, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa CreateAnimatedCursor
-   * @sa LoadAnimation_IO
-   * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation_IO
-   * @sa LoadAPNGAnimation_IO
-   * @sa LoadAVIFAnimation_IO
-   * @sa LoadGIFAnimation_IO
-   * @sa LoadWEBPAnimation_IO
-   * @sa FreeAnimation
-   */
-  Animation(StringParam file);
-
-  /**
-   * Load an animation from an IOStream.
-   *
-   * If `closeio` is true, `src` will be closed before returning, whether this
-   * function succeeds or not. SDL_image reads everything it needs from `src`
-   * during this call in any case.
-   *
-   * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false to
-   *                leave it open.
-   * @post a new Animation, or nullptr on error.
-   *
-   * @since This function is available since SDL_image 3.0.0.
-   *
-   * @sa CreateAnimatedCursor
-   * @sa LoadAnimation
-   * @sa LoadAnimationTyped_IO
-   * @sa LoadANIAnimation_IO
-   * @sa LoadAPNGAnimation_IO
-   * @sa LoadAVIFAnimation_IO
-   * @sa LoadGIFAnimation_IO
-   * @sa LoadWEBPAnimation_IO
-   * @sa FreeAnimation
-   */
-  Animation(IOStreamRef src, bool closeio = false);
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to AnimationConstRef
   constexpr operator AnimationConstRef() const noexcept { return get(); }
-
-  /// Destructor
-  ~Animation() { IMG_FreeAnimation(get()); }
-
-  /// Assignment operator.
-  constexpr Animation& operator=(Animation&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Animation& operator=(const Animation& other) = delete;
 
   /**
    * Dispose of an Animation and free its resources.
@@ -104161,15 +104582,102 @@ struct Animation : ResourceBase<AnimationRaw, AnimationRawConst>
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
+/**
+ * Animated image support
+ *
+ * @cat resource
+ */
+struct Animation : AnimationBase
+{
+  using AnimationBase::AnimationBase;
+
+  /**
+   * Constructs from raw Animation.
+   *
+   * @param resource a AnimationRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Animation(AnimationRaw resource) noexcept
+    : AnimationBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Animation(Animation&& other) noexcept
+    : Animation(other.release())
+  {
+  }
+
+  /**
+   * Load an animation from a file.
+   *
+   * @param file path on the filesystem containing an animated image.
+   * @post a new Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa CreateAnimatedCursor
+   * @sa LoadAnimation_IO
+   * @sa LoadAnimationTyped_IO
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
+   * @sa FreeAnimation
+   */
+  Animation(StringParam file);
+
+  /**
+   * Load an animation from an IOStream.
+   *
+   * If `closeio` is true, `src` will be closed before returning, whether this
+   * function succeeds or not. SDL_image reads everything it needs from `src`
+   * during this call in any case.
+   *
+   * @param src an IOStream that data will be read from.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
+   * @post a new Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa CreateAnimatedCursor
+   * @sa LoadAnimation
+   * @sa LoadAnimationTyped_IO
+   * @sa LoadANIAnimation_IO
+   * @sa LoadAPNGAnimation_IO
+   * @sa LoadAVIFAnimation_IO
+   * @sa LoadGIFAnimation_IO
+   * @sa LoadWEBPAnimation_IO
+   * @sa FreeAnimation
+   */
+  Animation(IOStreamRef src, bool closeio = false);
+
+  /// Destructor
+  ~Animation() { IMG_FreeAnimation(get()); }
+
+  /// Assignment operator.
+  constexpr Animation& operator=(Animation&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
 /// Get the width in pixels.
 inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
 
-inline int Animation::GetWidth() const { return SDL::GetAnimationWidth(get()); }
+inline int AnimationBase::GetWidth() const
+{
+  return SDL::GetAnimationWidth(get());
+}
 
 /// Get the height in pixels.
 inline int GetAnimationHeight(AnimationConstRef anim) { return anim->h; }
 
-inline int Animation::GetHeight() const
+inline int AnimationBase::GetHeight() const
 {
   return SDL::GetAnimationHeight(get());
 }
@@ -104180,12 +104688,18 @@ inline Point GetAnimationSize(AnimationConstRef anim)
   return {anim->w, anim->h};
 }
 
-inline Point Animation::GetSize() const { return SDL::GetAnimationSize(get()); }
+inline Point AnimationBase::GetSize() const
+{
+  return SDL::GetAnimationSize(get());
+}
 
 /// Return the number of frames.
 inline int GetAnimationCount(AnimationConstRef anim) { return anim->count; }
 
-inline int Animation::GetCount() const { return SDL::GetAnimationCount(get()); }
+inline int AnimationBase::GetCount() const
+{
+  return SDL::GetAnimationCount(get());
+}
 
 /**
  * Return the frame image under given index.
@@ -104195,10 +104709,10 @@ inline int Animation::GetCount() const { return SDL::GetAnimationCount(get()); }
  */
 inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
 {
-  return Surface::Borrow(anim->frames[index]);
+  return Surface::borrow(anim->frames[index]);
 }
 
-inline Surface Animation::GetFrame(int index) const
+inline Surface AnimationBase::GetFrame(int index) const
 {
   return SDL::GetAnimationFrame(get(), index);
 }
@@ -104214,7 +104728,7 @@ inline int GetAnimationDelay(AnimationConstRef anim, int index)
   return anim->delays[index];
 }
 
-inline int Animation::GetDelay(int index) const
+inline int AnimationBase::GetDelay(int index) const
 {
   return SDL::GetAnimationDelay(get(), index);
 }
@@ -104488,7 +105002,7 @@ inline void SaveAnimation(AnimationRef anim, StringParam file)
   CheckError(IMG_SaveAnimation(anim, file));
 }
 
-inline void Animation::Save(StringParam file)
+inline void AnimationBase::Save(StringParam file)
 {
   SDL::SaveAnimation(get(), std::move(file));
 }
@@ -104527,9 +105041,9 @@ inline void SaveAnimationTyped_IO(AnimationRef anim,
   CheckError(IMG_SaveAnimationTyped_IO(anim, dst, closeio, type));
 }
 
-inline void Animation::SaveTyped_IO(IOStreamRef dst,
-                                    StringParam type,
-                                    bool closeio)
+inline void AnimationBase::SaveTyped_IO(IOStreamRef dst,
+                                        StringParam type,
+                                        bool closeio)
 {
   SDL::SaveAnimationTyped_IO(get(), dst, std::move(type), closeio);
 }
@@ -104562,7 +105076,7 @@ inline void SaveANIAnimation_IO(AnimationRef anim,
   CheckError(IMG_SaveANIAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveANI_IO(IOStreamRef dst, bool closeio)
+inline void AnimationBase::SaveANI_IO(IOStreamRef dst, bool closeio)
 {
   SDL::SaveANIAnimation_IO(get(), dst, closeio);
 }
@@ -104595,7 +105109,7 @@ inline void SaveAPNGAnimation_IO(AnimationRef anim,
   CheckError(IMG_SaveAPNGAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveAPNG_IO(IOStreamRef dst, bool closeio)
+inline void AnimationBase::SaveAPNG_IO(IOStreamRef dst, bool closeio)
 {
   SDL::SaveAPNGAnimation_IO(get(), dst, closeio);
 }
@@ -104631,7 +105145,9 @@ inline void SaveAVIFAnimation_IO(AnimationRef anim,
   CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, closeio, quality));
 }
 
-inline void Animation::SaveAVIF_IO(IOStreamRef dst, int quality, bool closeio)
+inline void AnimationBase::SaveAVIF_IO(IOStreamRef dst,
+                                       int quality,
+                                       bool closeio)
 {
   SDL::SaveAVIFAnimation_IO(get(), dst, quality, closeio);
 }
@@ -104664,7 +105180,7 @@ inline void SaveGIFAnimation_IO(AnimationRef anim,
   CheckError(IMG_SaveGIFAnimation_IO(anim, dst, closeio));
 }
 
-inline void Animation::SaveGIF_IO(IOStreamRef dst, bool closeio)
+inline void AnimationBase::SaveGIF_IO(IOStreamRef dst, bool closeio)
 {
   SDL::SaveGIFAnimation_IO(get(), dst, closeio);
 }
@@ -104702,7 +105218,9 @@ inline void SaveWEBPAnimation_IO(AnimationRef anim,
   CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, closeio, quality));
 }
 
-inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
+inline void AnimationBase::SaveWEBP_IO(IOStreamRef dst,
+                                       int quality,
+                                       bool closeio)
 {
   SDL::SaveWEBPAnimation_IO(get(), dst, quality, closeio);
 }
@@ -104723,11 +105241,11 @@ inline void Animation::SaveWEBP_IO(IOStreamRef dst, int quality, bool closeio)
  */
 inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
 {
-  return Cursor{
-    CheckError(IMG_CreateAnimatedCursor(anim, hotspot.x, hotspot.y))};
+  return Cursor(
+    CheckError(IMG_CreateAnimatedCursor(anim, hotspot.x, hotspot.y)));
 }
 
-inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
+inline Cursor AnimationBase::CreateCursor(const PointRaw& hotspot)
 {
   return SDL::CreateAnimatedCursor(get(), hotspot);
 }
@@ -104754,18 +105272,63 @@ inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
  */
 inline void FreeAnimation(AnimationRaw anim) { IMG_FreeAnimation(anim); }
 
-inline void Animation::Free() { FreeAnimation(release()); }
+inline void AnimationBase::Free() { FreeAnimation(release()); }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Base class to AnimationEncoder.
+ *
+ * @see AnimationEncoder
+ */
+struct AnimationEncoderBase : ResourceBaseT<AnimationEncoderRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Close an animation encoder, finishing any encoding.
+   *
+   * Calling this function frees the animation encoder, and returns the final
+   * status of the encoding process.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoder_IO
+   * @sa CreateAnimationEncoderWithProperties
+   */
+  void Close();
+
+  /**
+   * Add a frame to an animation encoder.
+   *
+   * @param surface the surface to add as the next frame in the animation.
+   * @param duration the duration of the frame, usually in milliseconds but can
+   *                 be other units if the
+   *                 `prop.AnimationEncoder.Create.TIMEBASE_DENOMINATOR_NUMBER`
+   *                 property is set when creating the encoder.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationEncoder
+   * @sa CreateAnimationEncoder_IO
+   * @sa CreateAnimationEncoderWithProperties
+   * @sa CloseAnimationEncoder
+   */
+  void AddFrame(SurfaceRef surface, Uint64 duration);
+};
 
 /**
  * An object representing the encoder context.
  *
  * @cat resource
  */
-struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
+struct AnimationEncoder : AnimationEncoderBase
 {
-  using ResourceBase::ResourceBase;
+  using AnimationEncoderBase::AnimationEncoderBase;
 
   /**
    * Constructs from raw AnimationEncoder.
@@ -104775,22 +105338,15 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AnimationEncoder(AnimationEncoderRaw resource) noexcept
-    : ResourceBase(resource)
+    : AnimationEncoderBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) = delete;
 
   /// Move constructor
   constexpr AnimationEncoder(AnimationEncoder&& other) noexcept
     : AnimationEncoder(other.release())
   {
   }
-
-  constexpr AnimationEncoder(const AnimationEncoderRef& other) = delete;
-
-  constexpr AnimationEncoder(AnimationEncoderRef&& other) = delete;
 
   /**
    * Create an encoder to save a series of images to a file.
@@ -104908,44 +105464,6 @@ struct AnimationEncoder : ResourceBase<AnimationEncoderRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
-
-  /**
-   * Close an animation encoder, finishing any encoding.
-   *
-   * Calling this function frees the animation encoder, and returns the final
-   * status of the encoding process.
-   *
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationEncoder
-   * @sa CreateAnimationEncoder_IO
-   * @sa CreateAnimationEncoderWithProperties
-   */
-  void Close();
-
-  /**
-   * Add a frame to an animation encoder.
-   *
-   * @param surface the surface to add as the next frame in the animation.
-   * @param duration the duration of the frame, usually in milliseconds but can
-   *                 be other units if the
-   *                 `prop.AnimationEncoder.Create.TIMEBASE_DENOMINATOR_NUMBER`
-   *                 property is set when creating the encoder.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationEncoder
-   * @sa CreateAnimationEncoder_IO
-   * @sa CreateAnimationEncoderWithProperties
-   * @sa CloseAnimationEncoder
-   */
-  void AddFrame(SurfaceRef surface, Uint64 duration);
 };
 
 /**
@@ -105159,7 +105677,7 @@ inline void AddAnimationEncoderFrame(AnimationEncoderRef encoder,
   CheckError(IMG_AddAnimationEncoderFrame(encoder, surface, duration));
 }
 
-inline void AnimationEncoder::AddFrame(SurfaceRef surface, Uint64 duration)
+inline void AnimationEncoderBase::AddFrame(SurfaceRef surface, Uint64 duration)
 {
   SDL::AddAnimationEncoderFrame(get(), surface, duration);
 }
@@ -105184,7 +105702,7 @@ inline void CloseAnimationEncoder(AnimationEncoderRaw encoder)
   CheckError(IMG_CloseAnimationEncoder(encoder));
 }
 
-inline void AnimationEncoder::Close() { CloseAnimationEncoder(release()); }
+inline void AnimationEncoderBase::Close() { CloseAnimationEncoder(release()); }
 
 /**
  * An enum representing the status of an animation decoder.
@@ -105207,13 +105725,117 @@ constexpr AnimationDecoderStatus DECODER_STATUS_COMPLETE =
   IMG_DECODER_STATUS_COMPLETE; ///< No more frames available
 
 /**
+ * Base class to AnimationDecoder.
+ *
+ * @see AnimationDecoder
+ */
+struct AnimationDecoderBase : ResourceBaseT<AnimationDecoderRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Close an animation decoder, finishing any decoding.
+   *
+   * Calling this function frees the animation decoder, and returns the final
+   * status of the decoding process.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
+   */
+  void Close();
+
+  /**
+   * Get the properties of an animation decoder.
+   *
+   * This function returns the properties of the animation decoder, which holds
+   * information about the underlying image such as description, copyright text
+   * and loop count.
+   *
+   * `prop.AnimationDecoder.Metadata.LOOP_COUNT_NUMBER`, if present, specifies
+   * the number of times to play the animation, with 0 meaning loop
+   * continuously.
+   *
+   * @returns the properties ID of the animation decoder, or 0 if there are no
+   *          properties; call GetError() for more information.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
+   */
+  PropertiesRef GetProperties();
+
+  /**
+   * Get the next frame in an animation decoder.
+   *
+   * This function decodes the next frame in the animation decoder, returning it
+   * as an Surface. The returned surface should be freed with SDL_FreeSurface()
+   * when no longer needed.
+   *
+   * @param duration the duration of the frame, usually in milliseconds but can
+   *                 be other units if the
+   *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+   *                 property is set when creating the decoder.
+   * @returns the Surface for the next frame in the animation.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
+   * @sa GetAnimationDecoderStatus
+   * @sa ResetAnimationDecoder
+   * @sa CloseAnimationDecoder
+   */
+  Surface GetFrame(Uint64* duration);
+
+  /**
+   * Get the decoder status indicating the current state of the decoder.
+   *
+   * @returns the status of the underlying decoder, or DECODER_STATUS_INVALID if
+   *          the given decoder is invalid.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa GetAnimationDecoderFrame
+   */
+  AnimationDecoderStatus GetStatus();
+
+  /**
+   * Reset an animation decoder.
+   *
+   * Calling this function resets the animation decoder, allowing it to start
+   * from the beginning again. This is useful if you want to decode the frame
+   * sequence again without creating a new decoder.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL_image 3.4.0.
+   *
+   * @sa CreateAnimationDecoder
+   * @sa CreateAnimationDecoder_IO
+   * @sa CreateAnimationDecoderWithProperties
+   * @sa GetAnimationDecoderFrame
+   * @sa CloseAnimationDecoder
+   */
+  void Reset();
+};
+
+/**
  * An object representing animation decoder.
  *
  * @cat resource
  */
-struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
+struct AnimationDecoder : AnimationDecoderBase
 {
-  using ResourceBase::ResourceBase;
+  using AnimationDecoderBase::AnimationDecoderBase;
 
   /**
    * Constructs from raw AnimationDecoder.
@@ -105223,22 +105845,15 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit AnimationDecoder(AnimationDecoderRaw resource) noexcept
-    : ResourceBase(resource)
+    : AnimationDecoderBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) = delete;
 
   /// Move constructor
   constexpr AnimationDecoder(AnimationDecoder&& other) noexcept
     : AnimationDecoder(other.release())
   {
   }
-
-  constexpr AnimationDecoder(const AnimationDecoderRef& other) = delete;
-
-  constexpr AnimationDecoder(AnimationDecoderRef&& other) = delete;
 
   /**
    * Create a decoder to read a series of images from a file.
@@ -105349,103 +105964,6 @@ struct AnimationDecoder : ResourceBase<AnimationDecoderRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
-
-  /**
-   * Close an animation decoder, finishing any decoding.
-   *
-   * Calling this function frees the animation decoder, and returns the final
-   * status of the decoding process.
-   *
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationDecoder
-   * @sa CreateAnimationDecoder_IO
-   * @sa CreateAnimationDecoderWithProperties
-   */
-  void Close();
-
-  /**
-   * Get the properties of an animation decoder.
-   *
-   * This function returns the properties of the animation decoder, which holds
-   * information about the underlying image such as description, copyright text
-   * and loop count.
-   *
-   * `prop.AnimationDecoder.Metadata.LOOP_COUNT_NUMBER`, if present, specifies
-   * the number of times to play the animation, with 0 meaning loop
-   * continuously.
-   *
-   * @returns the properties ID of the animation decoder, or 0 if there are no
-   *          properties; call GetError() for more information.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationDecoder
-   * @sa CreateAnimationDecoder_IO
-   * @sa CreateAnimationDecoderWithProperties
-   */
-  PropertiesRef GetProperties();
-
-  /**
-   * Get the next frame in an animation decoder.
-   *
-   * This function decodes the next frame in the animation decoder, returning it
-   * as an Surface. The returned surface should be freed with SDL_FreeSurface()
-   * when no longer needed.
-   *
-   * @param duration the duration of the frame, usually in milliseconds but can
-   *                 be other units if the
-   *                 `prop.AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
-   *                 property is set when creating the decoder.
-   * @returns the Surface for the next frame in the animation.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationDecoder
-   * @sa CreateAnimationDecoder_IO
-   * @sa CreateAnimationDecoderWithProperties
-   * @sa GetAnimationDecoderStatus
-   * @sa ResetAnimationDecoder
-   * @sa CloseAnimationDecoder
-   */
-  Surface GetFrame(Uint64* duration);
-
-  /**
-   * Get the decoder status indicating the current state of the decoder.
-   *
-   * @returns the status of the underlying decoder, or DECODER_STATUS_INVALID if
-   *          the given decoder is invalid.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa GetAnimationDecoderFrame
-   */
-  AnimationDecoderStatus GetStatus();
-
-  /**
-   * Reset an animation decoder.
-   *
-   * Calling this function resets the animation decoder, allowing it to start
-   * from the beginning again. This is useful if you want to decode the frame
-   * sequence again without creating a new decoder.
-   *
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL_image 3.4.0.
-   *
-   * @sa CreateAnimationDecoder
-   * @sa CreateAnimationDecoder_IO
-   * @sa CreateAnimationDecoderWithProperties
-   * @sa GetAnimationDecoderFrame
-   * @sa CloseAnimationDecoder
-   */
-  void Reset();
 };
 
 /**
@@ -105664,7 +106182,7 @@ inline PropertiesRef GetAnimationDecoderProperties(AnimationDecoderRef decoder)
   return IMG_GetAnimationDecoderProperties(decoder);
 }
 
-inline PropertiesRef AnimationDecoder::GetProperties()
+inline PropertiesRef AnimationDecoderBase::GetProperties()
 {
   return SDL::GetAnimationDecoderProperties(get());
 }
@@ -105731,10 +106249,10 @@ inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
 {
   SDL_Surface* frame = nullptr;
   CheckError(IMG_GetAnimationDecoderFrame(decoder, &frame, duration));
-  return Surface::Borrow(frame);
+  return Surface::borrow(frame);
 }
 
-inline Surface AnimationDecoder::GetFrame(Uint64* duration)
+inline Surface AnimationDecoderBase::GetFrame(Uint64* duration)
 {
   return SDL::GetAnimationDecoderFrame(get(), duration);
 }
@@ -105756,7 +106274,7 @@ inline AnimationDecoderStatus GetAnimationDecoderStatus(
   return IMG_GetAnimationDecoderStatus(decoder);
 }
 
-inline AnimationDecoderStatus AnimationDecoder::GetStatus()
+inline AnimationDecoderStatus AnimationDecoderBase::GetStatus()
 {
   return SDL::GetAnimationDecoderStatus(get());
 }
@@ -105784,7 +106302,7 @@ inline void ResetAnimationDecoder(AnimationDecoderRef decoder)
   CheckError(IMG_ResetAnimationDecoder(decoder));
 }
 
-inline void AnimationDecoder::Reset() { SDL::ResetAnimationDecoder(get()); }
+inline void AnimationDecoderBase::Reset() { SDL::ResetAnimationDecoder(get()); }
 
 /**
  * Close an animation decoder, finishing any decoding.
@@ -105806,7 +106324,7 @@ inline void CloseAnimationDecoder(AnimationDecoderRaw decoder)
   CheckError(IMG_CloseAnimationDecoder(decoder));
 }
 
-inline void AnimationDecoder::Close() { CloseAnimationDecoder(release()); }
+inline void AnimationDecoderBase::Close() { CloseAnimationDecoder(release()); }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -105860,6 +106378,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct FontBase;
+
+// Forward decl
 struct Font;
 
 /// Alias to raw representation for Font.
@@ -105870,7 +106391,7 @@ using FontRaw = TTF_Font*;
  *
  * This does not take ownership!
  */
-using FontRef = ResourceRef<Font>;
+using FontRef = ResourceRefT<FontBase>;
 
 // Forward decl
 struct TextEngine;
@@ -105883,7 +106404,10 @@ using TextEngineRaw = TTF_TextEngine*;
  *
  * This does not take ownership!
  */
-using TextEngineRef = ResourceLegacyRef<TextEngineRaw>;
+using TextEngineRef = ResourceRefT<TextEngine>;
+
+// Forward decl
+struct TextBase;
 
 // Forward decl
 struct Text;
@@ -105899,7 +106423,7 @@ using TextRawConst = const TTF_Text*;
  *
  * This does not take ownership!
  */
-using TextRef = ResourceRef<Text>;
+using TextRef = ResourceRefT<TextBase>;
 
 /// Safely wrap Text for non owning const parameters
 using TextConstRef = ResourceConstRef<TextRaw, TextRawConst>;
@@ -106178,142 +106702,13 @@ constexpr ImageType IMAGE_COLOR =
 constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
 
 /**
- * The internal structure containing font information.
+ * Base class to Font.
  *
- * Opaque data!
- *
- * @cat resource
+ * @see Font
  */
-struct Font : ResourceBase<FontRaw>
+struct FontBase : ResourceBaseT<FontRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Font.
-   *
-   * @param resource a FontRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Font(FontRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Font(const Font& other) = delete;
-
-  /// Move constructor
-  constexpr Font(Font&& other) noexcept
-    : Font(other.release())
-  {
-  }
-
-  constexpr Font(const FontRef& other) = delete;
-
-  constexpr Font(FontRef&& other) = delete;
-
-  /**
-   * Create a font from a file, using a specified point size.
-   *
-   * Some .fon fonts will have several sizes embedded in the file, so the point
-   * size becomes the index of choosing which size. If the value is too high,
-   * the last indexed size will be the default.
-   *
-   * @param file path to font file.
-   * @param ptsize point size to use for the newly-opened font.
-   * @post a valid Font on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa CloseFont
-   */
-  Font(StringParam file, float ptsize);
-
-  /**
-   * Create a font from an IOStream, using a specified point size.
-   *
-   * Some .fon fonts will have several sizes embedded in the file, so the point
-   * size becomes the index of choosing which size. If the value is too high,
-   * the last indexed size will be the default.
-   *
-   * If `closeio` is true, `src` will be automatically closed once the font is
-   * closed. Otherwise you should keep `src` open until the font is closed.
-   *
-   * @param src an IOStream to provide a font file's data.
-   * @param ptsize point size to use for the newly-opened font.
-   * @param closeio true to close `src` when the font is closed, false to leave
-   *                it open.
-   * @post a valid Font on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa CloseFont
-   */
-  Font(IOStreamRef src, float ptsize, bool closeio = false);
-
-  /**
-   * Create a font with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.Font.Create.FILENAME_STRING`: the font file to open, if an IOStream
-   *   isn't being used. This is required if `prop.Font.Create.IOSTREAM_POINTER`
-   *   and `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
-   * - `prop.Font.Create.IOSTREAM_POINTER`: an IOStream containing the font to
-   *   be opened. This should not be closed until the font is closed. This is
-   *   required if `prop.Font.Create.FILENAME_STRING` and
-   *   `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
-   * - `prop.Font.Create.IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
-   *   the beginning of the font, defaults to 0.
-   * - `prop.Font.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
-   *   should also close the associated IOStream.
-   * - `prop.Font.Create.SIZE_FLOAT`: the point size of the font. Some .fon
-   *   fonts will have several sizes embedded in the file, so the point size
-   *   becomes the index of choosing which size. If the value is too high, the
-   *   last indexed size will be the default.
-   * - `prop.Font.Create.FACE_NUMBER`: the face index of the font, if the font
-   *   contains multiple font faces.
-   * - `prop.Font.Create.HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
-   *   font rendering, defaults to `prop.Font.Create.VERTICAL_DPI_NUMBER` if
-   *   set, or 72 otherwise.
-   * - `prop.Font.Create.VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
-   *   rendering, defaults to `prop.Font.Create.HORIZONTAL_DPI_NUMBER` if set,
-   *   or 72 otherwise.
-   * - `prop.Font.Create.EXISTING_FONT_POINTER`: an optional Font that, if set,
-   *   will be used as the font data source and the initial size and style of
-   *   the new font.
-   *
-   * @param props the properties to use.
-   * @post a valid Font on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa CloseFont
-   */
-  Font(PropertiesRef props);
-
-  /// Destructor
-  ~Font() { TTF_CloseFont(get()); }
-
-  /// Assignment operator.
-  constexpr Font& operator=(Font&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Font& operator=(const Font& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Dispose of a previously-created font.
@@ -107631,6 +108026,135 @@ struct Font : ResourceBase<FontRaw>
 };
 
 /**
+ * The internal structure containing font information.
+ *
+ * Opaque data!
+ *
+ * @cat resource
+ */
+struct Font : FontBase
+{
+  using FontBase::FontBase;
+
+  /**
+   * Constructs from raw Font.
+   *
+   * @param resource a FontRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Font(FontRaw resource) noexcept
+    : FontBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Font(Font&& other) noexcept
+    : Font(other.release())
+  {
+  }
+
+  /**
+   * Create a font from a file, using a specified point size.
+   *
+   * Some .fon fonts will have several sizes embedded in the file, so the point
+   * size becomes the index of choosing which size. If the value is too high,
+   * the last indexed size will be the default.
+   *
+   * @param file path to font file.
+   * @param ptsize point size to use for the newly-opened font.
+   * @post a valid Font on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa CloseFont
+   */
+  Font(StringParam file, float ptsize);
+
+  /**
+   * Create a font from an IOStream, using a specified point size.
+   *
+   * Some .fon fonts will have several sizes embedded in the file, so the point
+   * size becomes the index of choosing which size. If the value is too high,
+   * the last indexed size will be the default.
+   *
+   * If `closeio` is true, `src` will be automatically closed once the font is
+   * closed. Otherwise you should keep `src` open until the font is closed.
+   *
+   * @param src an IOStream to provide a font file's data.
+   * @param ptsize point size to use for the newly-opened font.
+   * @param closeio true to close `src` when the font is closed, false to leave
+   *                it open.
+   * @post a valid Font on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa CloseFont
+   */
+  Font(IOStreamRef src, float ptsize, bool closeio = false);
+
+  /**
+   * Create a font with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.Font.Create.FILENAME_STRING`: the font file to open, if an IOStream
+   *   isn't being used. This is required if `prop.Font.Create.IOSTREAM_POINTER`
+   *   and `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
+   * - `prop.Font.Create.IOSTREAM_POINTER`: an IOStream containing the font to
+   *   be opened. This should not be closed until the font is closed. This is
+   *   required if `prop.Font.Create.FILENAME_STRING` and
+   *   `prop.Font.Create.EXISTING_FONT_POINTER` aren't set.
+   * - `prop.Font.Create.IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
+   *   the beginning of the font, defaults to 0.
+   * - `prop.Font.Create.IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
+   *   should also close the associated IOStream.
+   * - `prop.Font.Create.SIZE_FLOAT`: the point size of the font. Some .fon
+   *   fonts will have several sizes embedded in the file, so the point size
+   *   becomes the index of choosing which size. If the value is too high, the
+   *   last indexed size will be the default.
+   * - `prop.Font.Create.FACE_NUMBER`: the face index of the font, if the font
+   *   contains multiple font faces.
+   * - `prop.Font.Create.HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use for
+   *   font rendering, defaults to `prop.Font.Create.VERTICAL_DPI_NUMBER` if
+   *   set, or 72 otherwise.
+   * - `prop.Font.Create.VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
+   *   rendering, defaults to `prop.Font.Create.HORIZONTAL_DPI_NUMBER` if set,
+   *   or 72 otherwise.
+   * - `prop.Font.Create.EXISTING_FONT_POINTER`: an optional Font that, if set,
+   *   will be used as the font data source and the initial size and style of
+   *   the new font.
+   *
+   * @param props the properties to use.
+   * @post a valid Font on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa CloseFont
+   */
+  Font(PropertiesRef props);
+
+  /// Destructor
+  ~Font() { TTF_CloseFont(get()); }
+
+  /// Assignment operator.
+  constexpr Font& operator=(Font&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Create a font from a file, using a specified point size.
  *
  * Some .fon fonts will have several sizes embedded in the file, so the point
@@ -107809,7 +108333,7 @@ inline Font CopyFont(FontRef existing_font)
   return Font(CheckError(TTF_CopyFont(existing_font)));
 }
 
-inline Font Font::Copy() const { return SDL::CopyFont(get()); }
+inline Font FontBase::Copy() const { return SDL::CopyFont(get()); }
 
 /**
  * Get the properties associated with a font.
@@ -107836,7 +108360,7 @@ inline PropertiesRef GetFontProperties(FontRef font)
   return CheckError(TTF_GetFontProperties(font));
 }
 
-inline PropertiesRef Font::GetProperties()
+inline PropertiesRef FontBase::GetProperties()
 {
   return SDL::GetFontProperties(get());
 }
@@ -107884,7 +108408,7 @@ inline Uint32 GetFontGeneration(FontRef font)
   return TTF_GetFontGeneration(font);
 }
 
-inline Uint32 Font::GetGeneration() const
+inline Uint32 FontBase::GetGeneration() const
 {
   return SDL::GetFontGeneration(get());
 }
@@ -107916,7 +108440,7 @@ inline void AddFallbackFont(FontRef font, FontRef fallback)
   CheckError(TTF_AddFallbackFont(font, fallback));
 }
 
-inline void Font::AddFallback(FontRef fallback)
+inline void FontBase::AddFallback(FontRef fallback)
 {
   SDL::AddFallbackFont(get(), fallback);
 }
@@ -107942,7 +108466,7 @@ inline void RemoveFallbackFont(FontRef font, FontRef fallback)
   TTF_RemoveFallbackFont(font, fallback);
 }
 
-inline void Font::RemoveFallback(FontRef fallback)
+inline void FontBase::RemoveFallback(FontRef fallback)
 {
   SDL::RemoveFallbackFont(get(), fallback);
 }
@@ -107964,7 +108488,7 @@ inline void Font::RemoveFallback(FontRef fallback)
  */
 inline void ClearFallbackFonts(FontRef font) { TTF_ClearFallbackFonts(font); }
 
-inline void Font::ClearFallbacks() { SDL::ClearFallbackFonts(get()); }
+inline void FontBase::ClearFallbacks() { SDL::ClearFallbackFonts(get()); }
 
 /**
  * Set a font's size dynamically.
@@ -107988,7 +108512,7 @@ inline void SetFontSize(FontRef font, float ptsize)
   CheckError(TTF_SetFontSize(font, ptsize));
 }
 
-inline void Font::SetSize(float ptsize) { SDL::SetFontSize(get(), ptsize); }
+inline void FontBase::SetSize(float ptsize) { SDL::SetFontSize(get(), ptsize); }
 
 /**
  * Set font size dynamically with target resolutions, in dots per inch.
@@ -108015,7 +108539,7 @@ inline void SetFontSizeDPI(FontRef font, float ptsize, int hdpi, int vdpi)
   CheckError(TTF_SetFontSizeDPI(font, ptsize, hdpi, vdpi));
 }
 
-inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
+inline void FontBase::SetSizeDPI(float ptsize, int hdpi, int vdpi)
 {
   SDL::SetFontSizeDPI(get(), ptsize, hdpi, vdpi);
 }
@@ -108037,7 +108561,7 @@ inline void Font::SetSizeDPI(float ptsize, int hdpi, int vdpi)
  */
 inline float GetFontSize(FontRef font) { return TTF_GetFontSize(font); }
 
-inline float Font::GetSize() const { return SDL::GetFontSize(get()); }
+inline float FontBase::GetSize() const { return SDL::GetFontSize(get()); }
 
 /**
  * Get font target resolutions, in dots per inch.
@@ -108059,7 +108583,7 @@ inline void GetFontDPI(FontRef font, int* hdpi, int* vdpi)
   CheckError(TTF_GetFontDPI(font, hdpi, vdpi));
 }
 
-inline void Font::GetDPI(int* hdpi, int* vdpi) const
+inline void FontBase::GetDPI(int* hdpi, int* vdpi) const
 {
   SDL::GetFontDPI(get(), hdpi, vdpi);
 }
@@ -108093,7 +108617,7 @@ inline void SetFontStyle(FontRef font, FontStyleFlags style)
   TTF_SetFontStyle(font, style);
 }
 
-inline void Font::SetStyle(FontStyleFlags style)
+inline void FontBase::SetStyle(FontStyleFlags style)
 {
   SDL::SetFontStyle(get(), style);
 }
@@ -108123,7 +108647,7 @@ inline FontStyleFlags GetFontStyle(FontRef font)
   return TTF_GetFontStyle(font);
 }
 
-inline FontStyleFlags Font::GetStyle() const
+inline FontStyleFlags FontBase::GetStyle() const
 {
   return SDL::GetFontStyle(get());
 }
@@ -108154,7 +108678,7 @@ inline void SetFontOutline(FontRef font, int outline)
   CheckError(TTF_SetFontOutline(font, outline));
 }
 
-inline void Font::SetOutline(int outline)
+inline void FontBase::SetOutline(int outline)
 {
   SDL::SetFontOutline(get(), outline);
 }
@@ -108173,7 +108697,7 @@ inline void Font::SetOutline(int outline)
  */
 inline int GetFontOutline(FontRef font) { return TTF_GetFontOutline(font); }
 
-inline int Font::GetOutline() const { return SDL::GetFontOutline(get()); }
+inline int FontBase::GetOutline() const { return SDL::GetFontOutline(get()); }
 
 /**
  * Set a font's current hinter setting.
@@ -108204,7 +108728,7 @@ inline void SetFontHinting(FontRef font, HintingFlags hinting)
   TTF_SetFontHinting(font, hinting);
 }
 
-inline void Font::SetHinting(HintingFlags hinting)
+inline void FontBase::SetHinting(HintingFlags hinting)
 {
   SDL::SetFontHinting(get(), hinting);
 }
@@ -108221,7 +108745,7 @@ inline void Font::SetHinting(HintingFlags hinting)
  */
 inline int GetNumFontFaces(FontRef font) { return TTF_GetNumFontFaces(font); }
 
-inline int Font::GetNumFaces() const { return SDL::GetNumFontFaces(get()); }
+inline int FontBase::GetNumFaces() const { return SDL::GetNumFontFaces(get()); }
 
 /**
  * Query a font's current FreeType hinter setting.
@@ -108249,7 +108773,7 @@ inline HintingFlags GetFontHinting(FontRef font)
   return TTF_GetFontHinting(font);
 }
 
-inline HintingFlags Font::GetHinting() const
+inline HintingFlags FontBase::GetHinting() const
 {
   return SDL::GetFontHinting(get());
 }
@@ -108282,7 +108806,7 @@ inline void SetFontSDF(FontRef font, bool enabled)
   CheckError(TTF_SetFontSDF(font, enabled));
 }
 
-inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(get(), enabled); }
+inline void FontBase::SetSDF(bool enabled) { SDL::SetFontSDF(get(), enabled); }
 
 /**
  * Query whether Signed Distance Field rendering is enabled for a font.
@@ -108298,7 +108822,7 @@ inline void Font::SetSDF(bool enabled) { SDL::SetFontSDF(get(), enabled); }
  */
 inline bool GetFontSDF(FontRef font) { return TTF_GetFontSDF(font); }
 
-inline bool Font::GetSDF() const { return SDL::GetFontSDF(get()); }
+inline bool FontBase::GetSDF() const { return SDL::GetFontSDF(get()); }
 
 #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
@@ -108315,7 +108839,7 @@ inline bool Font::GetSDF() const { return SDL::GetFontSDF(get()); }
  */
 inline int GetFontWeight(FontRef font) { return TTF_GetFontWeight(font); }
 
-inline int Font::GetWeight() const { return SDL::GetFontWeight(get()); }
+inline int FontBase::GetWeight() const { return SDL::GetFontWeight(get()); }
 
 constexpr int FONT_WEIGHT_THIN =
   TTF_FONT_WEIGHT_THIN; ///< Thin (100) named font weight value
@@ -108369,7 +108893,7 @@ inline void SetFontWrapAlignment(FontRef font, HorizontalAlignment align)
   TTF_SetFontWrapAlignment(font, align);
 }
 
-inline void Font::SetWrapAlignment(HorizontalAlignment align)
+inline void FontBase::SetWrapAlignment(HorizontalAlignment align)
 {
   SDL::SetFontWrapAlignment(get(), align);
 }
@@ -108391,7 +108915,7 @@ inline HorizontalAlignment GetFontWrapAlignment(FontRef font)
   return TTF_GetFontWrapAlignment(font);
 }
 
-inline HorizontalAlignment Font::GetWrapAlignment() const
+inline HorizontalAlignment FontBase::GetWrapAlignment() const
 {
   return SDL::GetFontWrapAlignment(get());
 }
@@ -108410,7 +108934,7 @@ inline HorizontalAlignment Font::GetWrapAlignment() const
  */
 inline int GetFontHeight(FontRef font) { return TTF_GetFontHeight(font); }
 
-inline int Font::GetHeight() const { return SDL::GetFontHeight(get()); }
+inline int FontBase::GetHeight() const { return SDL::GetFontHeight(get()); }
 
 /**
  * Query the offset from the baseline to the top of a font.
@@ -108426,7 +108950,7 @@ inline int Font::GetHeight() const { return SDL::GetFontHeight(get()); }
  */
 inline int GetFontAscent(FontRef font) { return TTF_GetFontAscent(font); }
 
-inline int Font::GetAscent() const { return SDL::GetFontAscent(get()); }
+inline int FontBase::GetAscent() const { return SDL::GetFontAscent(get()); }
 
 /**
  * Query the offset from the baseline to the bottom of a font.
@@ -108442,7 +108966,7 @@ inline int Font::GetAscent() const { return SDL::GetFontAscent(get()); }
  */
 inline int GetFontDescent(FontRef font) { return TTF_GetFontDescent(font); }
 
-inline int Font::GetDescent() const { return SDL::GetFontDescent(get()); }
+inline int FontBase::GetDescent() const { return SDL::GetFontDescent(get()); }
 
 /**
  * Set the spacing between lines of text for a font.
@@ -108464,7 +108988,7 @@ inline void SetFontLineSkip(FontRef font, int lineskip)
   TTF_SetFontLineSkip(font, lineskip);
 }
 
-inline void Font::SetLineSkip(int lineskip)
+inline void FontBase::SetLineSkip(int lineskip)
 {
   SDL::SetFontLineSkip(get(), lineskip);
 }
@@ -108483,7 +109007,7 @@ inline void Font::SetLineSkip(int lineskip)
  */
 inline int GetFontLineSkip(FontRef font) { return TTF_GetFontLineSkip(font); }
 
-inline int Font::GetLineSkip() const { return SDL::GetFontLineSkip(get()); }
+inline int FontBase::GetLineSkip() const { return SDL::GetFontLineSkip(get()); }
 
 /**
  * Set if kerning is enabled for a font.
@@ -108510,7 +109034,7 @@ inline void SetFontKerning(FontRef font, bool enabled)
   TTF_SetFontKerning(font, enabled);
 }
 
-inline void Font::SetKerning(bool enabled)
+inline void FontBase::SetKerning(bool enabled)
 {
   SDL::SetFontKerning(get(), enabled);
 }
@@ -108529,7 +109053,7 @@ inline void Font::SetKerning(bool enabled)
  */
 inline bool GetFontKerning(FontRef font) { return TTF_GetFontKerning(font); }
 
-inline bool Font::GetKerning() const { return SDL::GetFontKerning(get()); }
+inline bool FontBase::GetKerning() const { return SDL::GetFontKerning(get()); }
 
 /**
  * Query whether a font is fixed-width.
@@ -108552,7 +109076,10 @@ inline bool FontIsFixedWidth(FontRef font)
   return TTF_FontIsFixedWidth(font);
 }
 
-inline bool Font::IsFixedWidth() const { return SDL::FontIsFixedWidth(get()); }
+inline bool FontBase::IsFixedWidth() const
+{
+  return SDL::FontIsFixedWidth(get());
+}
 
 /**
  * Query whether a font is scalable or not.
@@ -108570,7 +109097,7 @@ inline bool Font::IsFixedWidth() const { return SDL::FontIsFixedWidth(get()); }
  */
 inline bool FontIsScalable(FontRef font) { return TTF_FontIsScalable(font); }
 
-inline bool Font::IsScalable() const { return SDL::FontIsScalable(get()); }
+inline bool FontBase::IsScalable() const { return SDL::FontIsScalable(get()); }
 
 /**
  * Query a font's family name.
@@ -108593,7 +109120,7 @@ inline const char* GetFontFamilyName(FontRef font)
   return TTF_GetFontFamilyName(font);
 }
 
-inline const char* Font::GetFamilyName() const
+inline const char* FontBase::GetFamilyName() const
 {
   return SDL::GetFontFamilyName(get());
 }
@@ -108619,7 +109146,7 @@ inline const char* GetFontStyleName(FontRef font)
   return TTF_GetFontStyleName(font);
 }
 
-inline const char* Font::GetStyleName() const
+inline const char* FontBase::GetStyleName() const
 {
   return SDL::GetFontStyleName(get());
 }
@@ -108646,7 +109173,7 @@ inline void SetFontDirection(FontRef font, Direction direction)
   CheckError(TTF_SetFontDirection(font, direction));
 }
 
-inline void Font::SetDirection(Direction direction)
+inline void FontBase::SetDirection(Direction direction)
 {
   SDL::SetFontDirection(get(), direction);
 }
@@ -108669,7 +109196,7 @@ inline Direction GetFontDirection(FontRef font)
   return TTF_GetFontDirection(font);
 }
 
-inline Direction Font::GetDirection() const
+inline Direction FontBase::GetDirection() const
 {
   return SDL::GetFontDirection(get());
 }
@@ -108735,7 +109262,7 @@ inline void SetFontScript(FontRef font, Uint32 script)
   CheckError(TTF_SetFontScript(font, script));
 }
 
-inline void Font::SetScript(Uint32 script)
+inline void FontBase::SetScript(Uint32 script)
 {
   SDL::SetFontScript(get(), script);
 }
@@ -108757,7 +109284,7 @@ inline void Font::SetScript(Uint32 script)
  */
 inline Uint32 GetFontScript(FontRef font) { return TTF_GetFontScript(font); }
 
-inline Uint32 Font::GetScript() const { return SDL::GetFontScript(get()); }
+inline Uint32 FontBase::GetScript() const { return SDL::GetFontScript(get()); }
 
 /**
  * Get the script used by a 32-bit codepoint.
@@ -108778,7 +109305,7 @@ inline Uint32 GetGlyphScript(Uint32 ch)
   return CheckError(TTF_GetGlyphScript(ch));
 }
 
-inline Uint32 Font::GetGlyphScript(Uint32 ch)
+inline Uint32 FontBase::GetGlyphScript(Uint32 ch)
 {
   return SDL::GetGlyphScript(ch);
 }
@@ -108805,7 +109332,7 @@ inline void SetFontLanguage(FontRef font, StringParam language_bcp47)
   CheckError(TTF_SetFontLanguage(font, language_bcp47));
 }
 
-inline void Font::SetLanguage(StringParam language_bcp47)
+inline void FontBase::SetLanguage(StringParam language_bcp47)
 {
   SDL::SetFontLanguage(get(), std::move(language_bcp47));
 }
@@ -108827,7 +109354,7 @@ inline bool FontHasGlyph(FontRef font, Uint32 ch)
   return TTF_FontHasGlyph(font, ch);
 }
 
-inline bool Font::HasGlyph(Uint32 ch) const
+inline bool FontBase::HasGlyph(Uint32 ch) const
 {
   return SDL::FontHasGlyph(get(), ch);
 }
@@ -108852,7 +109379,7 @@ inline Surface GetGlyphImage(FontRef font, Uint32 ch, ImageType* image_type)
   return Surface{CheckError(TTF_GetGlyphImage(font, ch, image_type))};
 }
 
-inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
+inline Surface FontBase::GetGlyphImage(Uint32 ch, ImageType* image_type) const
 {
   return SDL::GetGlyphImage(get(), ch, image_type);
 }
@@ -108883,8 +109410,8 @@ inline Surface GetGlyphImageForIndex(FontRef font,
     CheckError(TTF_GetGlyphImageForIndex(font, glyph_index, image_type)));
 }
 
-inline Surface Font::GetGlyphImageForIndex(Uint32 glyph_index,
-                                           ImageType* image_type) const
+inline Surface FontBase::GetGlyphImageForIndex(Uint32 glyph_index,
+                                               ImageType* image_type) const
 {
   return SDL::GetGlyphImageForIndex(get(), glyph_index, image_type);
 }
@@ -108928,12 +109455,12 @@ inline void GetGlyphMetrics(FontRef font,
   CheckError(TTF_GetGlyphMetrics(font, ch, minx, maxx, miny, maxy, advance));
 }
 
-inline void Font::GetGlyphMetrics(Uint32 ch,
-                                  int* minx,
-                                  int* maxx,
-                                  int* miny,
-                                  int* maxy,
-                                  int* advance) const
+inline void FontBase::GetGlyphMetrics(Uint32 ch,
+                                      int* minx,
+                                      int* maxx,
+                                      int* miny,
+                                      int* maxy,
+                                      int* advance) const
 {
   SDL::GetGlyphMetrics(get(), ch, minx, maxx, miny, maxy, advance);
 }
@@ -108958,7 +109485,7 @@ inline int GetGlyphKerning(FontRef font, Uint32 previous_ch, Uint32 ch)
   throw Error();
 }
 
-inline int Font::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
+inline int FontBase::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
 {
   return SDL::GetGlyphKerning(get(), previous_ch, ch);
 }
@@ -108985,7 +109512,7 @@ inline void GetStringSize(FontRef font, std::string_view text, int* w, int* h)
   CheckError(TTF_GetStringSize(font, text.data(), text.size(), w, h));
 }
 
-inline void Font::GetStringSize(std::string_view text, int* w, int* h) const
+inline void FontBase::GetStringSize(std::string_view text, int* w, int* h) const
 {
   SDL::GetStringSize(get(), text, w, h);
 }
@@ -109023,10 +109550,10 @@ inline void GetStringSizeWrapped(FontRef font,
     TTF_GetStringSizeWrapped(font, text.data(), text.size(), wrap_width, w, h));
 }
 
-inline void Font::GetStringSizeWrapped(std::string_view text,
-                                       int wrap_width,
-                                       int* w,
-                                       int* h) const
+inline void FontBase::GetStringSizeWrapped(std::string_view text,
+                                           int wrap_width,
+                                           int* w,
+                                           int* h) const
 {
   SDL::GetStringSizeWrapped(get(), text, wrap_width, w, h);
 }
@@ -109068,10 +109595,10 @@ inline void MeasureString(FontRef font,
                                measured_length));
 }
 
-inline void Font::MeasureString(std::string_view text,
-                                int max_width,
-                                int* measured_width,
-                                size_t* measured_length) const
+inline void FontBase::MeasureString(std::string_view text,
+                                    int max_width,
+                                    int* measured_width,
+                                    size_t* measured_length) const
 {
   SDL::MeasureString(get(), text, max_width, measured_width, measured_length);
 }
@@ -109114,7 +109641,7 @@ inline Surface RenderText_Solid(FontRef font, std::string_view text, Color fg)
   return Surface{TTF_RenderText_Solid(font, text.data(), text.size(), fg)};
 }
 
-inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
+inline Surface FontBase::RenderText_Solid(std::string_view text, Color fg) const
 {
   return SDL::RenderText_Solid(get(), text, fg);
 }
@@ -109160,9 +109687,9 @@ inline Surface RenderText_Solid_Wrapped(FontRef font,
     font, text.data(), text.size(), fg, wrapLength));
 }
 
-inline Surface Font::RenderText_Solid_Wrapped(std::string_view text,
-                                              Color fg,
-                                              int wrapLength) const
+inline Surface FontBase::RenderText_Solid_Wrapped(std::string_view text,
+                                                  Color fg,
+                                                  int wrapLength) const
 {
   return SDL::RenderText_Solid_Wrapped(get(), text, fg, wrapLength);
 }
@@ -109199,7 +109726,7 @@ inline Surface RenderGlyph_Solid(FontRef font, Uint32 ch, ColorRaw fg)
   return Surface(TTF_RenderGlyph_Solid(font, ch, fg));
 }
 
-inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
+inline Surface FontBase::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
 {
   return SDL::RenderGlyph_Solid(get(), ch, fg);
 }
@@ -109246,9 +109773,9 @@ inline Surface RenderText_Shaded(FontRef font,
   return Surface(TTF_RenderText_Shaded(font, text.data(), text.size(), fg, bg));
 }
 
-inline Surface Font::RenderText_Shaded(std::string_view text,
-                                       Color fg,
-                                       Color bg) const
+inline Surface FontBase::RenderText_Shaded(std::string_view text,
+                                           Color fg,
+                                           Color bg) const
 {
   return SDL::RenderText_Shaded(get(), text, fg, bg);
 }
@@ -109297,10 +109824,10 @@ inline Surface RenderText_Shaded_Wrapped(FontRef font,
     font, text.data(), text.size(), fg, bg, wrap_width));
 }
 
-inline Surface Font::RenderText_Shaded_Wrapped(std::string_view text,
-                                               Color fg,
-                                               Color bg,
-                                               int wrap_width) const
+inline Surface FontBase::RenderText_Shaded_Wrapped(std::string_view text,
+                                                   Color fg,
+                                                   Color bg,
+                                                   int wrap_width) const
 {
   return SDL::RenderText_Shaded_Wrapped(get(), text, fg, bg, wrap_width);
 }
@@ -109342,9 +109869,9 @@ inline Surface RenderGlyph_Shaded(FontRef font,
   return Surface(TTF_RenderGlyph_Shaded(font, ch, fg, bg));
 }
 
-inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
-                                        ColorRaw fg,
-                                        ColorRaw bg) const
+inline Surface FontBase::RenderGlyph_Shaded(Uint32 ch,
+                                            ColorRaw fg,
+                                            ColorRaw bg) const
 {
   return SDL::RenderGlyph_Shaded(get(), ch, fg, bg);
 }
@@ -109386,7 +109913,8 @@ inline Surface RenderText_Blended(FontRef font, std::string_view text, Color fg)
   return Surface(TTF_RenderText_Blended(font, text.data(), text.size(), fg));
 }
 
-inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
+inline Surface FontBase::RenderText_Blended(std::string_view text,
+                                            Color fg) const
 {
   return SDL::RenderText_Blended(get(), text, fg);
 }
@@ -109432,9 +109960,9 @@ inline Surface RenderText_Blended_Wrapped(FontRef font,
     font, text.data(), text.size(), fg, wrap_width));
 }
 
-inline Surface Font::RenderText_Blended_Wrapped(std::string_view text,
-                                                Color fg,
-                                                int wrap_width) const
+inline Surface FontBase::RenderText_Blended_Wrapped(std::string_view text,
+                                                    Color fg,
+                                                    int wrap_width) const
 {
   return SDL::RenderText_Blended_Wrapped(get(), text, fg, wrap_width);
 }
@@ -109471,7 +109999,7 @@ inline Surface RenderGlyph_Blended(FontRef font, Uint32 ch, ColorRaw fg)
   return Surface(TTF_RenderGlyph_Blended(font, ch, fg));
 }
 
-inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
+inline Surface FontBase::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
 {
   return SDL::RenderGlyph_Blended(get(), ch, fg);
 }
@@ -109516,9 +110044,9 @@ inline Surface RenderText_LCD(FontRef font,
   return Surface(TTF_RenderText_LCD(font, text.data(), text.size(), fg, bg));
 }
 
-inline Surface Font::RenderText_LCD(std::string_view text,
-                                    Color fg,
-                                    Color bg) const
+inline Surface FontBase::RenderText_LCD(std::string_view text,
+                                        Color fg,
+                                        Color bg) const
 {
   return SDL::RenderText_LCD(get(), text, fg, bg);
 }
@@ -109566,10 +110094,10 @@ inline Surface RenderText_LCD_Wrapped(FontRef font,
     font, text.data(), text.size(), fg, bg, wrap_width));
 }
 
-inline Surface Font::RenderText_LCD_Wrapped(std::string_view text,
-                                            Color fg,
-                                            Color bg,
-                                            int wrap_width) const
+inline Surface FontBase::RenderText_LCD_Wrapped(std::string_view text,
+                                                Color fg,
+                                                Color bg,
+                                                int wrap_width) const
 {
   return SDL::RenderText_LCD_Wrapped(get(), text, fg, bg, wrap_width);
 }
@@ -109611,7 +110139,9 @@ inline Surface RenderGlyph_LCD(FontRef font,
   return Surface(TTF_RenderGlyph_LCD(font, ch, fg, bg));
 }
 
-inline Surface Font::RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const
+inline Surface FontBase::RenderGlyph_LCD(Uint32 ch,
+                                         ColorRaw fg,
+                                         ColorRaw bg) const
 {
   return SDL::RenderGlyph_LCD(get(), ch, fg, bg);
 }
@@ -109675,46 +110205,9 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
  *
  * @cat resource
  */
-struct TextEngine : ResourceBase<TextEngineRaw>
+struct TextEngine : ResourceBaseT<TextEngineRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw TextEngine.
-   *
-   * @param resource a TextEngineRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit TextEngine(TextEngineRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) = delete;
-
-  /// Move constructor
-  constexpr TextEngine(TextEngine&& other) noexcept
-    : TextEngine(other.release())
-  {
-  }
-
-  /// Destructor
-  virtual ~TextEngine() { SDL_assert_paranoid(!get()); }
-
-  /// Assignment operator.
-  constexpr TextEngine& operator=(TextEngine&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  TextEngine& operator=(const TextEngine& other) = delete;
-
-  /// frees up textEngine. Pure virtual
-  virtual void Destroy() = 0;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Create a text object from UTF-8 text and a text engine.
@@ -109737,6 +110230,33 @@ struct TextEngine : ResourceBase<TextEngineRaw>
 /// A surface based text engine
 struct SurfaceTextEngine : TextEngine
 {
+  using TextEngine::TextEngine;
+
+  /**
+   * Constructs from raw TextEngine.
+   *
+   * @param resource a TextEngineRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit SurfaceTextEngine(TextEngineRaw resource) noexcept
+    : TextEngine(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr SurfaceTextEngine(SurfaceTextEngine&& other) noexcept
+    : TextEngine(other.release())
+  {
+  }
+
+  /// Move assignment operator
+  constexpr SurfaceTextEngine& operator=(SurfaceTextEngine&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
   /**
    * Create a text engine for drawing text on SDL surfaces.
    *
@@ -109752,11 +110272,8 @@ struct SurfaceTextEngine : TextEngine
    */
   SurfaceTextEngine();
 
-  SurfaceTextEngine(const SurfaceTextEngine&) = delete;
-
-  SurfaceTextEngine& operator=(const SurfaceTextEngine&) = delete;
-
-  ~SurfaceTextEngine() final { Destroy(); }
+  /// Destructor
+  ~SurfaceTextEngine() { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on SDL surfaces.
@@ -109771,12 +110288,39 @@ struct SurfaceTextEngine : TextEngine
    *
    * @sa CreateSurfaceTextEngine
    */
-  void Destroy() final;
+  void Destroy();
 };
 
 /// A renderer based text engine
 struct RendererTextEngine : TextEngine
 {
+  using TextEngine::TextEngine;
+
+  /**
+   * Constructs from raw TextEngine.
+   *
+   * @param resource a TextEngineRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit RendererTextEngine(TextEngineRaw resource) noexcept
+    : TextEngine(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr RendererTextEngine(RendererTextEngine&& other) noexcept
+    : TextEngine(other.release())
+  {
+  }
+
+  /// Move assignment operator
+  constexpr RendererTextEngine& operator=(RendererTextEngine&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
   /**
    * Create a text engine for drawing text on an SDL renderer.
    *
@@ -109821,11 +110365,8 @@ struct RendererTextEngine : TextEngine
    */
   RendererTextEngine(PropertiesRef props);
 
-  RendererTextEngine(const RendererTextEngine&) = delete;
-
-  RendererTextEngine& operator=(const RendererTextEngine&) = delete;
-
-  ~RendererTextEngine() final { Destroy(); }
+  /// Destructor
+  ~RendererTextEngine() { Destroy(); }
 
   /**
    * Destroy a text engine created for drawing text on an SDL renderer.
@@ -109840,12 +110381,39 @@ struct RendererTextEngine : TextEngine
    *
    * @sa CreateRendererTextEngine
    */
-  void Destroy() final;
+  void Destroy();
 };
 
 /// A GPU based text engine
 struct GPUTextEngine : TextEngine
 {
+  using TextEngine::TextEngine;
+
+  /**
+   * Constructs from raw TextEngine.
+   *
+   * @param resource a TextEngineRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit GPUTextEngine(TextEngineRaw resource) noexcept
+    : TextEngine(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr GPUTextEngine(GPUTextEngine&& other) noexcept
+    : TextEngine(other.release())
+  {
+  }
+
+  /// Move assignment operator
+  constexpr GPUTextEngine& operator=(GPUTextEngine&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
   /**
    * Create a text engine for drawing text with the SDL GPU API.
    *
@@ -109890,11 +110458,8 @@ struct GPUTextEngine : TextEngine
    */
   GPUTextEngine(PropertiesRef props);
 
-  GPUTextEngine(const GPUTextEngine&) = delete;
-
-  GPUTextEngine& operator=(const GPUTextEngine&) = delete;
-
-  ~GPUTextEngine() final { Destroy(); }
+  /// Destructor
+  ~GPUTextEngine() { Destroy(); }
 
   /**
    * Sets the winding order of the vertices returned by GetGPUTextDrawData for a
@@ -109940,7 +110505,7 @@ struct GPUTextEngine : TextEngine
    *
    * @sa CreateGPUTextEngine
    */
-  void Destroy() final;
+  void Destroy();
 };
 
 /**
@@ -109977,79 +110542,16 @@ struct SubStringIterator;
 using TextData = TTF_TextData;
 
 /**
- * Text created with CreateText()
+ * Base class to Text.
  *
- * @since This struct is available since SDL_ttf 3.0.0.
- *
- * @sa CreateText
- * @sa GetTextProperties
- * @sa DestroyText
- *
- * @cat resource
+ * @see Text
  */
-struct Text : ResourceBase<TextRaw, TextRawConst>
+struct TextBase : ResourceBaseT<TextRaw, TextRawConst>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Text.
-   *
-   * @param resource a TextRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Text(TextRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Text(const Text& other) = delete;
-
-  /// Move constructor
-  constexpr Text(Text&& other) noexcept
-    : Text(other.release())
-  {
-  }
-
-  constexpr Text(const TextRef& other) = delete;
-
-  constexpr Text(TextRef&& other) = delete;
-
-  /**
-   * Create a text object from UTF-8 text and a text engine.
-   *
-   * @param engine the text engine to use when creating the text object, may be
-   *               nullptr.
-   * @param font the font to render with.
-   * @param text the text to use, in UTF-8 encoding.
-   * @post a Text object or nullptr on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               font and text engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa DestroyText
-   */
-  Text(TextEngineRef engine, FontRef font, std::string_view text);
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to TextConstRef
   constexpr operator TextConstRef() const noexcept { return get(); }
-
-  /// Destructor
-  ~Text() { TTF_DestroyText(get()); }
-
-  /// Assignment operator.
-  constexpr Text& operator=(Text&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Text& operator=(const Text& other) = delete;
 
   /**
    * Destroy a text object created by a text engine.
@@ -110843,6 +111345,69 @@ struct Text : ResourceBase<TextRaw, TextRawConst>
 };
 
 /**
+ * Text created with CreateText()
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ *
+ * @sa CreateText
+ * @sa GetTextProperties
+ * @sa DestroyText
+ *
+ * @cat resource
+ */
+struct Text : TextBase
+{
+  using TextBase::TextBase;
+
+  /**
+   * Constructs from raw Text.
+   *
+   * @param resource a TextRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Text(TextRaw resource) noexcept
+    : TextBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Text(Text&& other) noexcept
+    : Text(other.release())
+  {
+  }
+
+  /**
+   * Create a text object from UTF-8 text and a text engine.
+   *
+   * @param engine the text engine to use when creating the text object, may be
+   *               nullptr.
+   * @param font the font to render with.
+   * @param text the text to use, in UTF-8 encoding.
+   * @post a Text object or nullptr on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               font and text engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa DestroyText
+   */
+  Text(TextEngineRef engine, FontRef font, std::string_view text);
+
+  /// Destructor
+  ~Text() { TTF_DestroyText(get()); }
+
+  /// Assignment operator.
+  constexpr Text& operator=(Text&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Iterator for substrings
  *
  */
@@ -110961,7 +111526,7 @@ inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceRef surface)
   CheckError(TTF_DrawSurfaceText(text, p.x, p.y, surface));
 }
 
-inline void Text::DrawSurface(Point p, SurfaceRef surface) const
+inline void TextBase::DrawSurface(Point p, SurfaceRef surface) const
 {
   SDL::DrawSurfaceText(get(), p, surface);
 }
@@ -111096,7 +111661,7 @@ inline void DrawRendererText(TextConstRef text, FPoint p)
   CheckError(TTF_DrawRendererText(text, p.x, p.y));
 }
 
-inline void Text::DrawRenderer(FPoint p) const
+inline void TextBase::DrawRenderer(FPoint p) const
 {
   SDL::DrawRendererText(get(), p);
 }
@@ -111235,7 +111800,7 @@ inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstRef text)
   return TTF_GetGPUTextDrawData(text);
 }
 
-inline GPUAtlasDrawSequence* Text::GetGPUDrawData() const
+inline GPUAtlasDrawSequence* TextBase::GetGPUDrawData() const
 {
   return SDL::GetGPUTextDrawData(get());
 }
@@ -111365,7 +111930,7 @@ inline PropertiesRef GetTextProperties(TextConstRef text)
   return {CheckError(TTF_GetTextProperties(text))};
 }
 
-inline PropertiesRef Text::GetProperties() const
+inline PropertiesRef TextBase::GetProperties() const
 {
   return SDL::GetTextProperties(get());
 }
@@ -111391,7 +111956,7 @@ inline void SetTextEngine(TextRef text, TextEngineRef engine)
   CheckError(TTF_SetTextEngine(text, engine));
 }
 
-inline void Text::SetEngine(TextEngineRef engine)
+inline void TextBase::SetEngine(TextEngineRef engine)
 {
   SDL::SetTextEngine(get(), engine);
 }
@@ -111415,7 +111980,7 @@ inline TextEngineRef GetTextEngine(TextConstRef text)
   return CheckError(TTF_GetTextEngine(text));
 }
 
-inline TextEngineRef Text::GetEngine() const
+inline TextEngineRef TextBase::GetEngine() const
 {
   return SDL::GetTextEngine(get());
 }
@@ -111446,7 +112011,7 @@ inline bool SetTextFont(TextRef text, FontRef font)
   return TTF_SetTextFont(text, font);
 }
 
-inline bool Text::SetFont(FontRef font)
+inline bool TextBase::SetFont(FontRef font)
 {
   return SDL::SetTextFont(get(), font);
 }
@@ -111467,10 +112032,10 @@ inline bool Text::SetFont(FontRef font)
  */
 inline FontRef GetTextFont(TextConstRef text)
 {
-  return {CheckError(TTF_GetTextFont(text))};
+  return CheckError(TTF_GetTextFont(text));
 }
 
-inline FontRef Text::GetFont() const { return SDL::GetTextFont(get()); }
+inline FontRef TextBase::GetFont() const { return SDL::GetTextFont(get()); }
 
 /**
  * Set the direction to be used for text shaping a text object.
@@ -111492,7 +112057,7 @@ inline void SetTextDirection(TextRef text, Direction direction)
   CheckError(TTF_SetTextDirection(text, direction));
 }
 
-inline void Text::SetDirection(Direction direction)
+inline void TextBase::SetDirection(Direction direction)
 {
   SDL::SetTextDirection(get(), direction);
 }
@@ -111515,7 +112080,7 @@ inline Direction GetTextDirection(TextConstRef text)
   return TTF_GetTextDirection(text);
 }
 
-inline Direction Text::GetDirection() const
+inline Direction TextBase::GetDirection() const
 {
   return SDL::GetTextDirection(get());
 }
@@ -111542,7 +112107,7 @@ inline void SetTextScript(TextRef text, Uint32 script)
   CheckError(TTF_SetTextScript(text, script));
 }
 
-inline void Text::SetScript(Uint32 script)
+inline void TextBase::SetScript(Uint32 script)
 {
   SDL::SetTextScript(get(), script);
 }
@@ -111569,7 +112134,7 @@ inline Uint32 GetTextScript(TextConstRef text)
   return TTF_GetTextScript(text);
 }
 
-inline Uint32 Text::GetScript() const { return SDL::GetTextScript(get()); }
+inline Uint32 TextBase::GetScript() const { return SDL::GetTextScript(get()); }
 
 /**
  * Set the color of a text object.
@@ -111593,7 +112158,7 @@ inline void SetTextColor(TextRef text, Color c)
   CheckError(TTF_SetTextColor(text, c.r, c.g, c.b, c.a));
 }
 
-inline void Text::SetColor(Color c) { SDL::SetTextColor(get(), c); }
+inline void TextBase::SetColor(Color c) { SDL::SetTextColor(get(), c); }
 
 /**
  * Set the color of a text object.
@@ -111617,7 +112182,7 @@ inline void SetTextColorFloat(TextRef text, FColor c)
   CheckError(TTF_SetTextColorFloat(text, c.r, c.g, c.b, c.a));
 }
 
-inline void Text::SetColorFloat(FColor c) { SDL::SetTextColorFloat(get(), c); }
+inline void TextBase::SetColorFloat(FColor c) { SetTextColorFloat(get(), c); }
 
 /**
  * Get the color of a text object.
@@ -111672,12 +112237,12 @@ inline Color GetTextColor(TextRef text)
   return c;
 }
 
-inline void Text::GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
+inline void TextBase::GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
 {
   SDL::GetTextColor(get(), r, g, b, a);
 }
 
-inline Color Text::GetColor() const { return SDL::GetTextColor(get()); }
+inline Color TextBase::GetColor() const { return SDL::GetTextColor(get()); }
 
 /**
  * Get the color of a text object.
@@ -111732,12 +112297,15 @@ inline FColor GetTextColorFloat(TextRef text)
   return c;
 }
 
-inline void Text::GetColorFloat(float* r, float* g, float* b, float* a) const
+inline void TextBase::GetColorFloat(float* r,
+                                    float* g,
+                                    float* b,
+                                    float* a) const
 {
   SDL::GetTextColorFloat(get(), r, g, b, a);
 }
 
-inline FColor Text::GetColorFloat() const
+inline FColor TextBase::GetColorFloat() const
 {
   return SDL::GetTextColorFloat(get());
 }
@@ -111766,7 +112334,7 @@ inline void SetTextPosition(TextRef text, const PointRaw& p)
   CheckError(TTF_SetTextPosition(text, p.x, p.y));
 }
 
-inline void Text::SetPosition(const PointRaw& p)
+inline void TextBase::SetPosition(const PointRaw& p)
 {
   SDL::SetTextPosition(get(), p);
 }
@@ -111815,12 +112383,12 @@ inline Point GetTextPosition(TextRef text)
   return p;
 }
 
-inline void Text::GetPosition(int* x, int* y) const
+inline void TextBase::GetPosition(int* x, int* y) const
 {
   SDL::GetTextPosition(get(), x, y);
 }
 
-inline Point Text::GetPosition() const { return SDL::GetTextPosition(get()); }
+inline Point TextBase::GetPosition() const { return GetTextPosition(get()); }
 
 /**
  * Set whether wrapping is enabled on a text object.
@@ -111844,7 +112412,7 @@ inline void SetTextWrapWidth(TextRef text, int wrap_width)
   CheckError(TTF_SetTextWrapWidth(text, wrap_width));
 }
 
-inline void Text::SetWrapWidth(int wrap_width)
+inline void TextBase::SetWrapWidth(int wrap_width)
 {
   SDL::SetTextWrapWidth(get(), wrap_width);
 }
@@ -111871,7 +112439,7 @@ inline int GetTextWrapWidth(TextConstRef text)
   return w;
 }
 
-inline int Text::GetWrapWidth() const { return SDL::GetTextWrapWidth(get()); }
+inline int TextBase::GetWrapWidth() const { return GetTextWrapWidth(get()); }
 
 /**
  * Set whether whitespace should be visible when wrapping a text object.
@@ -111898,7 +112466,7 @@ inline void SetTextWrapWhitespaceVisible(TextRef text, bool visible)
   CheckError(TTF_SetTextWrapWhitespaceVisible(text, visible));
 }
 
-inline void Text::SetWrapWhitespaceVisible(bool visible)
+inline void TextBase::SetWrapWhitespaceVisible(bool visible)
 {
   SDL::SetTextWrapWhitespaceVisible(get(), visible);
 }
@@ -111921,7 +112489,7 @@ inline bool TextWrapWhitespaceVisible(TextConstRef text)
   return TTF_TextWrapWhitespaceVisible(text);
 }
 
-inline bool Text::IsWrapWhitespaceVisible() const
+inline bool TextBase::IsWrapWhitespaceVisible() const
 {
   return SDL::TextWrapWhitespaceVisible(get());
 }
@@ -111949,7 +112517,7 @@ inline void SetTextString(TextRef text, std::string_view string)
   CheckError(TTF_SetTextString(text, string.data(), string.size()));
 }
 
-inline void Text::SetString(std::string_view string)
+inline void TextBase::SetString(std::string_view string)
 {
   SDL::SetTextString(get(), string);
 }
@@ -111981,7 +112549,7 @@ inline void InsertTextString(TextRef text, int offset, std::string_view string)
   CheckError(TTF_InsertTextString(text, offset, string.data(), string.size()));
 }
 
-inline void Text::InsertString(int offset, std::string_view string)
+inline void TextBase::InsertString(int offset, std::string_view string)
 {
   SDL::InsertTextString(get(), offset, string);
 }
@@ -112009,7 +112577,7 @@ inline void AppendTextString(TextRef text, std::string_view string)
   CheckError(TTF_AppendTextString(text, string.data(), string.size()));
 }
 
-inline void Text::AppendString(std::string_view string)
+inline void TextBase::AppendString(std::string_view string)
 {
   SDL::AppendTextString(get(), string);
 }
@@ -112042,7 +112610,7 @@ inline void DeleteTextString(TextRef text, int offset, int length)
   CheckError(TTF_DeleteTextString(text, offset, length));
 }
 
-inline void Text::DeleteString(int offset, int length)
+inline void TextBase::DeleteString(int offset, int length)
 {
   SDL::DeleteTextString(get(), offset, length);
 }
@@ -112091,12 +112659,12 @@ inline Point GetTextSize(TextRef text)
   return p;
 }
 
-inline void Text::GetSize(int* w, int* h) const
+inline void TextBase::GetSize(int* w, int* h) const
 {
   SDL::GetTextSize(get(), w, h);
 }
 
-inline Point Text::GetSize() const { return SDL::GetTextSize(get()); }
+inline Point TextBase::GetSize() const { return GetTextSize(get()); }
 
 /**
  * Get the substring of a text object that surrounds a text offset.
@@ -112125,7 +112693,7 @@ inline void GetTextSubString(TextConstRef text,
   CheckError(TTF_GetTextSubString(text, offset, substring));
 }
 
-inline void Text::GetSubString(int offset, SubString* substring) const
+inline void TextBase::GetSubString(int offset, SubString* substring) const
 {
   SDL::GetTextSubString(get(), offset, substring);
 }
@@ -112156,7 +112724,7 @@ inline void GetTextSubStringForLine(TextConstRef text,
   CheckError(TTF_GetTextSubStringForLine(text, line, substring));
 }
 
-inline void Text::GetSubStringForLine(int line, SubString* substring) const
+inline void TextBase::GetSubStringForLine(int line, SubString* substring) const
 {
   SDL::GetTextSubStringForLine(get(), line, substring);
 }
@@ -112185,8 +112753,8 @@ inline OwnArray<SubString*> GetTextSubStringsForRange(TextConstRef text,
   return OwnArray<SubString*>{data, size_t(count)};
 }
 
-inline OwnArray<SubString*> Text::GetSubStringsForRange(int offset,
-                                                        int length) const
+inline OwnArray<SubString*> TextBase::GetSubStringsForRange(int offset,
+                                                            int length) const
 {
   return SDL::GetTextSubStringsForRange(get(), offset, length);
 }
@@ -112215,7 +112783,7 @@ inline void GetTextSubStringForPoint(TextConstRef text,
   CheckError(TTF_GetTextSubStringForPoint(text, p.x, p.y, substring));
 }
 
-inline void Text::GetSubStringForPoint(Point p, SubString* substring) const
+inline void TextBase::GetSubStringForPoint(Point p, SubString* substring) const
 {
   SDL::GetTextSubStringForPoint(get(), p, substring);
 }
@@ -112244,8 +112812,8 @@ inline void GetPreviousTextSubString(TextConstRef text,
   CheckError(TTF_GetPreviousTextSubString(text, &substring, previous));
 }
 
-inline void Text::GetPreviousSubString(const SubString& substring,
-                                       SubString* previous) const
+inline void TextBase::GetPreviousSubString(const SubString& substring,
+                                           SubString* previous) const
 {
   SDL::GetPreviousTextSubString(get(), substring, previous);
 }
@@ -112273,8 +112841,8 @@ inline void GetNextTextSubString(TextConstRef text,
   CheckError(TTF_GetNextTextSubString(text, &substring, next));
 }
 
-inline void Text::GetNextSubString(const SubString& substring,
-                                   SubString* next) const
+inline void TextBase::GetNextSubString(const SubString& substring,
+                                       SubString* next) const
 {
   SDL::GetNextTextSubString(get(), substring, next);
 }
@@ -112296,7 +112864,7 @@ inline void Text::GetNextSubString(const SubString& substring,
  */
 inline void UpdateText(TextRef text) { CheckError(TTF_UpdateText(text)); }
 
-inline void Text::Update() { SDL::UpdateText(get()); }
+inline void TextBase::Update() { SDL::UpdateText(get()); }
 
 /**
  * Destroy a text object created by a text engine.
@@ -112312,7 +112880,7 @@ inline void Text::Update() { SDL::UpdateText(get()); }
  */
 inline void DestroyText(TextRaw text) { TTF_DestroyText(text); }
 
-inline void Text::Destroy() { DestroyText(release()); }
+inline void TextBase::Destroy() { DestroyText(release()); }
 
 /**
  * Dispose of a previously-created font.
@@ -112338,7 +112906,7 @@ inline void Text::Destroy() { DestroyText(release()); }
  */
 inline void CloseFont(FontRaw font) { TTF_CloseFont(font); }
 
-inline void Font::Close() { CloseFont(release()); }
+inline void FontBase::Close() { CloseFont(release()); }
 
 /// @}
 

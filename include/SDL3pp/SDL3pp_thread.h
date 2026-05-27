@@ -30,6 +30,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct ThreadBase;
+
+// Forward decl
 struct Thread;
 
 /// Alias to raw representation for Thread.
@@ -40,7 +43,7 @@ using ThreadRaw = SDL_Thread*;
  *
  * This does not take ownership!
  */
-using ThreadRef = ResourceRef<Thread>;
+using ThreadRef = ResourceRefT<ThreadBase>;
 
 /**
  * The SDL thread priority.
@@ -138,6 +141,147 @@ using ThreadCB = std::function<int()>;
 using TLSDestructorCallback = void(SDLCALL*)(void* value);
 
 /**
+ * Base class to Thread.
+ *
+ * @see Thread
+ */
+struct ThreadBase : ResourceBaseT<ThreadRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Let a thread clean up on exit without intervention.
+   *
+   * A thread may be "detached" to signify that it should not remain until
+   * another thread has called WaitThread() on it. Detaching a thread is useful
+   * for long-running threads that nothing needs to synchronize with or further
+   * manage. When a detached thread is done, it simply goes away.
+   *
+   * There is no way to recover the return code of a detached thread. If you
+   * need this, don't detach the thread and instead use WaitThread().
+   *
+   * Once a thread is detached, you should usually assume the Thread isn't safe
+   * to reference again, as it will become invalid immediately upon the detached
+   * thread's exit, instead of remaining until someone has called WaitThread()
+   * to finally clean it up. As such, don't detach the same thread more than
+   * once.
+   *
+   * If a thread has already exited when passed to DetachThread(), it will stop
+   * waiting for a call to WaitThread() and clean up immediately. It is not safe
+   * to detach a thread that might be used with WaitThread().
+   *
+   * You may not call WaitThread() on a thread that has been detached. Use
+   * either that function or this one, but not both, or behavior is undefined.
+   *
+   * It is safe to pass nullptr to this function; it is a no-op.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateThread
+   * @sa WaitThread
+   */
+  void Detach();
+
+  /**
+   * Get the thread name as it was specified in CreateThread().
+   *
+   * @returns a pointer to a UTF-8 string that names the specified thread, or
+   *          nullptr if it doesn't have a name.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  const char* GetName() const;
+
+  /**
+   * Get the thread identifier for the specified thread.
+   *
+   * This thread identifier is as reported by the underlying operating system.
+   * If SDL is running on a platform that does not support threads the return
+   * value will always be zero.
+   *
+   * @returns the ID of the specified thread, or the ID of the current thread if
+   *          `thread` is nullptr.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCurrentThreadID
+   */
+  ThreadID GetID() const;
+
+  /**
+   * Set the priority for the current thread.
+   *
+   * Note that some platforms will not let you alter the priority (or at least,
+   * promote the thread to a higher priority) at all, and some require you to be
+   * an administrator account. Be prepared for this to fail.
+   *
+   * @param priority the ThreadPriority to set.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static void SetCurrentPriority(ThreadPriority priority);
+
+  /**
+   * Wait for a thread to finish.
+   *
+   * Threads that haven't been detached will remain until this function cleans
+   * them up. Not doing so is a resource leak.
+   *
+   * Once a thread has been cleaned up through this function, the Thread that
+   * references it becomes invalid and should not be referenced again. As such,
+   * only one thread may call WaitThread() on another.
+   *
+   * The return code from the thread function is placed in the area pointed to
+   * by `status`, if `status` is not nullptr.
+   *
+   * You may not wait on a thread that has been used in a call to
+   * DetachThread(). Use either that function or this one, but not both, or
+   * behavior is undefined.
+   *
+   * It is safe to pass a nullptr thread to this function; it is a no-op.
+   *
+   * Note that the thread pointer is freed by this function and is not valid
+   * afterward.
+   *
+   * @param status a pointer filled in with the value returned from the thread
+   *               function by its 'return', or -1 if the thread has been
+   *               detached or isn't valid, may be nullptr.
+   *
+   * @threadsafety It is safe to call this function from any thread, but only a
+   *               single thread can wait any specific thread to finish.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateThread
+   * @sa DetachThread
+   */
+  void Wait(int* status);
+
+  /**
+   * Get the current state of a thread.
+   *
+   * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
+   *          isn't valid.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ThreadState
+   */
+  ThreadState GetState() const;
+};
+
+/**
  * The SDL thread object.
  *
  * These are opaque data.
@@ -149,9 +293,9 @@ using TLSDestructorCallback = void(SDLCALL*)(void* value);
  *
  * @cat resource
  */
-struct Thread : ResourceBase<ThreadRaw>
+struct Thread : ThreadBase
 {
-  using ResourceBase::ResourceBase;
+  using ThreadBase::ThreadBase;
 
   /**
    * Constructs from raw Thread.
@@ -161,22 +305,15 @@ struct Thread : ResourceBase<ThreadRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Thread(ThreadRaw resource) noexcept
-    : ResourceBase(resource)
+    : ThreadBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Thread(const Thread& other) = delete;
 
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())
   {
   }
-
-  constexpr Thread(const ThreadRef& other) = delete;
-
-  constexpr Thread(ThreadRef&& other) = delete;
 
   /**
    * Create a new thread with a default stack size.
@@ -320,140 +457,6 @@ struct Thread : ResourceBase<ThreadRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Thread& operator=(const Thread& other) = delete;
-
-  /**
-   * Let a thread clean up on exit without intervention.
-   *
-   * A thread may be "detached" to signify that it should not remain until
-   * another thread has called WaitThread() on it. Detaching a thread is useful
-   * for long-running threads that nothing needs to synchronize with or further
-   * manage. When a detached thread is done, it simply goes away.
-   *
-   * There is no way to recover the return code of a detached thread. If you
-   * need this, don't detach the thread and instead use WaitThread().
-   *
-   * Once a thread is detached, you should usually assume the Thread isn't safe
-   * to reference again, as it will become invalid immediately upon the detached
-   * thread's exit, instead of remaining until someone has called WaitThread()
-   * to finally clean it up. As such, don't detach the same thread more than
-   * once.
-   *
-   * If a thread has already exited when passed to DetachThread(), it will stop
-   * waiting for a call to WaitThread() and clean up immediately. It is not safe
-   * to detach a thread that might be used with WaitThread().
-   *
-   * You may not call WaitThread() on a thread that has been detached. Use
-   * either that function or this one, but not both, or behavior is undefined.
-   *
-   * It is safe to pass nullptr to this function; it is a no-op.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateThread
-   * @sa WaitThread
-   */
-  void Detach();
-
-  /**
-   * Get the thread name as it was specified in CreateThread().
-   *
-   * @returns a pointer to a UTF-8 string that names the specified thread, or
-   *          nullptr if it doesn't have a name.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  const char* GetName() const;
-
-  /**
-   * Get the thread identifier for the specified thread.
-   *
-   * This thread identifier is as reported by the underlying operating system.
-   * If SDL is running on a platform that does not support threads the return
-   * value will always be zero.
-   *
-   * @returns the ID of the specified thread, or the ID of the current thread if
-   *          `thread` is nullptr.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCurrentThreadID
-   */
-  ThreadID GetID() const;
-
-  /**
-   * Set the priority for the current thread.
-   *
-   * Note that some platforms will not let you alter the priority (or at least,
-   * promote the thread to a higher priority) at all, and some require you to be
-   * an administrator account. Be prepared for this to fail.
-   *
-   * @param priority the ThreadPriority to set.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  static void SetCurrentPriority(ThreadPriority priority);
-
-  /**
-   * Wait for a thread to finish.
-   *
-   * Threads that haven't been detached will remain until this function cleans
-   * them up. Not doing so is a resource leak.
-   *
-   * Once a thread has been cleaned up through this function, the Thread that
-   * references it becomes invalid and should not be referenced again. As such,
-   * only one thread may call WaitThread() on another.
-   *
-   * The return code from the thread function is placed in the area pointed to
-   * by `status`, if `status` is not nullptr.
-   *
-   * You may not wait on a thread that has been used in a call to
-   * DetachThread(). Use either that function or this one, but not both, or
-   * behavior is undefined.
-   *
-   * It is safe to pass a nullptr thread to this function; it is a no-op.
-   *
-   * Note that the thread pointer is freed by this function and is not valid
-   * afterward.
-   *
-   * @param status a pointer filled in with the value returned from the thread
-   *               function by its 'return', or -1 if the thread has been
-   *               detached or isn't valid, may be nullptr.
-   *
-   * @threadsafety It is safe to call this function from any thread, but only a
-   *               single thread can wait any specific thread to finish.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateThread
-   * @sa DetachThread
-   */
-  void Wait(int* status);
-
-  /**
-   * Get the current state of a thread.
-   *
-   * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
-   *          isn't valid.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ThreadState
-   */
-  ThreadState GetState() const;
 };
 
 /**
@@ -669,7 +672,10 @@ inline const char* GetThreadName(ThreadRef thread)
   return SDL_GetThreadName(thread);
 }
 
-inline const char* Thread::GetName() const { return SDL::GetThreadName(get()); }
+inline const char* ThreadBase::GetName() const
+{
+  return SDL::GetThreadName(get());
+}
 
 /**
  * Get the thread identifier for the current thread.
@@ -713,7 +719,7 @@ inline ThreadID GetThreadID(ThreadRef thread)
   return SDL_GetThreadID(thread);
 }
 
-inline ThreadID Thread::GetID() const { return SDL::GetThreadID(get()); }
+inline ThreadID ThreadBase::GetID() const { return SDL::GetThreadID(get()); }
 
 /**
  * Set the priority for the current thread.
@@ -734,7 +740,7 @@ inline void SetCurrentThreadPriority(ThreadPriority priority)
   CheckError(SDL_SetCurrentThreadPriority(priority));
 }
 
-inline void Thread::SetCurrentPriority(ThreadPriority priority)
+inline void ThreadBase::SetCurrentPriority(ThreadPriority priority)
 {
   SDL::SetCurrentThreadPriority(priority);
 }
@@ -779,7 +785,7 @@ inline void WaitThread(ThreadRef thread, int* status)
   SDL_WaitThread(thread, status);
 }
 
-inline void Thread::Wait(int* status) { SDL::WaitThread(get(), status); }
+inline void ThreadBase::Wait(int* status) { SDL::WaitThread(get(), status); }
 
 /**
  * Get the current state of a thread.
@@ -799,7 +805,7 @@ inline ThreadState GetThreadState(ThreadRef thread)
   return SDL_GetThreadState(thread);
 }
 
-inline ThreadState Thread::GetState() const
+inline ThreadState ThreadBase::GetState() const
 {
   return SDL::GetThreadState(get());
 }
@@ -841,7 +847,7 @@ inline ThreadState Thread::GetState() const
  */
 inline void DetachThread(ThreadRaw thread) { SDL_DetachThread(thread); }
 
-inline void Thread::Detach() { DetachThread(release()); }
+inline void ThreadBase::Detach() { DetachThread(release()); }
 
 /**
  * Get the current thread's value associated with a thread local storage ID.

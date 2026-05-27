@@ -46,6 +46,9 @@ using TimeRaw = SDL_Time;
 struct Time;
 
 // Forward decl
+struct EnvironmentBase;
+
+// Forward decl
 struct Environment;
 
 /// Alias to raw representation for Environment.
@@ -56,7 +59,10 @@ using EnvironmentRaw = SDL_Environment*;
  *
  * This does not take ownership!
  */
-using EnvironmentRef = ResourceRef<Environment>;
+using EnvironmentRef = ResourceRefT<EnvironmentBase>;
+
+// Forward decl
+struct IConvBase;
 
 // Forward decl
 struct IConv;
@@ -69,7 +75,7 @@ using IConvRaw = SDL_iconv_t;
  *
  * This does not take ownership!
  */
-using IConvRef = ResourceRef<IConv>;
+using IConvRef = ResourceRefT<IConvBase>;
 
 #ifdef SDL3PP_DOC
 
@@ -908,83 +914,13 @@ inline void aligned_free(void* mem) { SDL_aligned_free(mem); }
 inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
 
 /**
- * A thread-safe set of environment variables
+ * Base class to Environment.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GetEnvironment
- * @sa CreateEnvironment
- * @sa GetEnvironmentVariable
- * @sa GetEnvironmentVariables
- * @sa SetEnvironmentVariable
- * @sa UnsetEnvironmentVariable
- * @sa DestroyEnvironment
- *
- * @cat resource
+ * @see Environment
  */
-struct Environment : ResourceBase<EnvironmentRaw>
+struct EnvironmentBase : ResourceBaseT<EnvironmentRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Environment.
-   *
-   * @param resource a EnvironmentRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Environment(EnvironmentRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Environment(const Environment& other) = delete;
-
-  /// Move constructor
-  constexpr Environment(Environment&& other) noexcept
-    : Environment(other.release())
-  {
-  }
-
-  constexpr Environment(const EnvironmentRef& other) = delete;
-
-  constexpr Environment(EnvironmentRef&& other) = delete;
-
-  /**
-   * Create a set of environment variables
-   *
-   * @param populated true to initialize it from the C runtime environment,
-   *                  false to create an empty environment.
-   * @post a pointer to the new environment or nullptr on failure; call
-   *       GetError() for more information.
-   *
-   * @threadsafety If `populated` is false, it is safe to call this function
-   *               from any thread, otherwise it is safe if no other threads are
-   *               calling setenv() or unsetenv()
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetEnvironmentVariable
-   * @sa GetEnvironmentVariables
-   * @sa SetEnvironmentVariable
-   * @sa UnsetEnvironmentVariable
-   * @sa DestroyEnvironment
-   */
-  Environment(bool populated);
-
-  /// Destructor
-  ~Environment() { SDL_DestroyEnvironment(get()); }
-
-  /// Assignment operator.
-  constexpr Environment& operator=(Environment&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Environment& operator=(const Environment& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a set of environment variables.
@@ -1090,6 +1026,76 @@ struct Environment : ResourceBase<EnvironmentRaw>
 };
 
 /**
+ * A thread-safe set of environment variables
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GetEnvironment
+ * @sa CreateEnvironment
+ * @sa GetEnvironmentVariable
+ * @sa GetEnvironmentVariables
+ * @sa SetEnvironmentVariable
+ * @sa UnsetEnvironmentVariable
+ * @sa DestroyEnvironment
+ *
+ * @cat resource
+ */
+struct Environment : EnvironmentBase
+{
+  using EnvironmentBase::EnvironmentBase;
+
+  /**
+   * Constructs from raw Environment.
+   *
+   * @param resource a EnvironmentRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Environment(EnvironmentRaw resource) noexcept
+    : EnvironmentBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Environment(Environment&& other) noexcept
+    : Environment(other.release())
+  {
+  }
+
+  /**
+   * Create a set of environment variables
+   *
+   * @param populated true to initialize it from the C runtime environment,
+   *                  false to create an empty environment.
+   * @post a pointer to the new environment or nullptr on failure; call
+   *       GetError() for more information.
+   *
+   * @threadsafety If `populated` is false, it is safe to call this function
+   *               from any thread, otherwise it is safe if no other threads are
+   *               calling setenv() or unsetenv()
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetEnvironmentVariable
+   * @sa GetEnvironmentVariables
+   * @sa SetEnvironmentVariable
+   * @sa UnsetEnvironmentVariable
+   * @sa DestroyEnvironment
+   */
+  Environment(bool populated);
+
+  /// Destructor
+  ~Environment() { SDL_DestroyEnvironment(get()); }
+
+  /// Assignment operator.
+  constexpr Environment& operator=(Environment&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Get the process environment.
  *
  * This is initialized at application start and is not affected by setenv() and
@@ -1165,7 +1171,7 @@ inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
   return SDL_GetEnvironmentVariable(env, name);
 }
 
-inline const char* Environment::GetVariable(StringParam name)
+inline const char* EnvironmentBase::GetVariable(StringParam name)
 {
   return SDL::GetEnvironmentVariable(get(), std::move(name));
 }
@@ -1194,7 +1200,7 @@ inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
 }
 
-inline OwnArray<char*> Environment::GetVariables()
+inline OwnArray<char*> EnvironmentBase::GetVariables()
 {
   return SDL::GetEnvironmentVariables(get());
 }
@@ -1227,9 +1233,9 @@ inline void SetEnvironmentVariable(EnvironmentRef env,
   CheckError(SDL_SetEnvironmentVariable(env, name, value, overwrite));
 }
 
-inline void Environment::SetVariable(StringParam name,
-                                     StringParam value,
-                                     bool overwrite)
+inline void EnvironmentBase::SetVariable(StringParam name,
+                                         StringParam value,
+                                         bool overwrite)
 {
   SDL::SetEnvironmentVariable(
     get(), std::move(name), std::move(value), overwrite);
@@ -1258,7 +1264,7 @@ inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
   CheckError(SDL_UnsetEnvironmentVariable(env, name));
 }
 
-inline void Environment::UnsetVariable(StringParam name)
+inline void EnvironmentBase::UnsetVariable(StringParam name)
 {
   SDL::UnsetEnvironmentVariable(get(), std::move(name));
 }
@@ -1280,7 +1286,7 @@ inline void DestroyEnvironment(EnvironmentRaw env)
   SDL_DestroyEnvironment(env);
 }
 
-inline void Environment::Destroy() { DestroyEnvironment(release()); }
+inline void EnvironmentBase::Destroy() { DestroyEnvironment(release()); }
 
 /**
  * Get the value of a variable in the environment.
@@ -5830,80 +5836,13 @@ inline double tan(double x) { return SDL_tan(x); }
 inline float tan(float x) { return SDL_tanf(x); }
 
 /**
- * An opaque handle representing string encoding conversion state.
+ * Base class to IConv.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- *
- * @cat resource
- *
- * @sa iconv_open
+ * @see IConv
  */
-struct IConv : ResourceBase<IConvRaw>
+struct IConvBase : ResourceBaseT<IConvRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /// Default ctor
-  IConv(std::nullptr_t = nullptr) noexcept
-    : IConv(IConvRaw(SDL_ICONV_ERROR))
-  {
-  }
-
-  /**
-   * Constructs from raw IConv.
-   *
-   * @param resource a IConvRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit IConv(IConvRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr IConv(const IConv& other) = delete;
-
-  /// Move constructor
-  constexpr IConv(IConv&& other) noexcept
-    : IConv(other.release())
-  {
-  }
-
-  constexpr IConv(const IConvRef& other) = delete;
-
-  constexpr IConv(IConvRef&& other) = delete;
-
-  /**
-   * This function allocates a context for the specified character set
-   * conversion.
-   *
-   * @param tocode The target character encoding, must not be nullptr.
-   * @param fromcode The source character encoding, must not be nullptr.
-   * @post a valid handle or falsy on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa iconv
-   * @sa iconv_close
-   * @sa iconv_string
-   */
-  IConv(StringParam tocode, StringParam fromcode);
-
-  /// Destructor
-  ~IConv() { SDL_iconv_close(get()); }
-
-  /// Assignment operator.
-  constexpr IConv& operator=(IConv&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  IConv& operator=(const IConv& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to bool
   explicit operator bool() const noexcept
@@ -5969,6 +5908,73 @@ struct IConv : ResourceBase<IConvRaw>
 };
 
 /**
+ * An opaque handle representing string encoding conversion state.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ *
+ * @cat resource
+ *
+ * @sa iconv_open
+ */
+struct IConv : IConvBase
+{
+  using IConvBase::IConvBase;
+
+  /// Default ctor
+  IConv(std::nullptr_t = nullptr) noexcept
+    : IConv(IConvRaw(SDL_ICONV_ERROR))
+  {
+  }
+
+  /**
+   * Constructs from raw IConv.
+   *
+   * @param resource a IConvRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit IConv(IConvRaw resource) noexcept
+    : IConvBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr IConv(IConv&& other) noexcept
+    : IConv(other.release())
+  {
+  }
+
+  /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be nullptr.
+   * @param fromcode The source character encoding, must not be nullptr.
+   * @post a valid handle or falsy on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa iconv
+   * @sa iconv_close
+   * @sa iconv_string
+   */
+  IConv(StringParam tocode, StringParam fromcode);
+
+  /// Destructor
+  ~IConv() { SDL_iconv_close(get()); }
+
+  /// Assignment operator.
+  constexpr IConv& operator=(IConv&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * This function allocates a context for the specified character set conversion.
  *
  * @param tocode The target character encoding, must not be nullptr.
@@ -6011,7 +6017,7 @@ inline IConv::IConv(StringParam tocode, StringParam fromcode)
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
 
-inline int IConv::close() { return iconv_close(release()); }
+inline int IConvBase::close() { return iconv_close(release()); }
 
 /**
  * This function converts text between encodings, reading from and writing to a
@@ -6049,7 +6055,7 @@ inline int IConv::close() { return iconv_close(release()); }
  * @sa iconv_close
  * @sa iconv_string
  */
-inline size_t iconv(IConvRaw cd,
+inline size_t iconv(IConvRef cd,
                     const char** inbuf,
                     size_t* inbytesleft,
                     char** outbuf,
@@ -6058,10 +6064,10 @@ inline size_t iconv(IConvRaw cd,
   return CheckError(SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft));
 }
 
-inline size_t IConv::iconv(const char** inbuf,
-                           size_t* inbytesleft,
-                           char** outbuf,
-                           size_t* outbytesleft) const
+inline size_t IConvBase::iconv(const char** inbuf,
+                               size_t* inbytesleft,
+                               char** outbuf,
+                               size_t* outbytesleft) const
 {
   return SDL::iconv(get(), inbuf, inbytesleft, outbuf, outbytesleft);
 }

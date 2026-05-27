@@ -789,7 +789,7 @@ namespace SDL {
  * - "0": Do not show the on-screen keyboard.
  * - "1": Show the on-screen keyboard, if available.
  *
- * This hint must be set before Window.StartTextInput() is called
+ * This hint must be set before StartTextInput() is called
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -994,7 +994,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling Window.StartTextInput()
+ * This hint should be set before calling StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -1005,7 +1005,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling Window.StartTextInput()
+ * This hint should be set before calling StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -1020,7 +1020,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling Window.StartTextInput()
+ * This hint should be set before calling StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -1035,7 +1035,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling Window.StartTextInput()
+ * This hint should be set before calling StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -1046,7 +1046,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling Window.StartTextInput()
+ * This hint should be set before calling StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */

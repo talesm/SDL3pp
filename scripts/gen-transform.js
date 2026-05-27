@@ -2618,31 +2618,104 @@ const transform = {
         "SDL_GetKeyFromName": {
           "name": "Keycode::Keycode"
         },
-        "SDL_StartTextInput": {
-          name: "Window::StartTextInput",
+        "WindowBase::StartTextInput": {
+          after: "SDL_StartTextInput",
+          kind: "function",
+          type: "void",
+          parameters: [],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::StartTextInput",
+            copyDoc: "SDL_StartTextInput",
+          },
         },
-        "SDL_StartTextInputWithProperties": {
-          name: "Window::StartTextInput",
+        "WindowBase::StartTextInputWithProperties": {
+          after: "SDL_StartTextInputWithProperties",
+          kind: "function",
+          type: "void",
+          static: false,
+          parameters: [{ name: "props", type: "PropertiesRef" }],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::StartTextInputWithProperties",
+            copyDoc: "SDL_StartTextInputWithProperties",
+          },
         },
-        "SDL_TextInputActive": {
-          name: "Window::IsTextInputActive",
+        "WindowBase::IsTextInputActive": {
+          after: "SDL_TextInputActive",
+          kind: "function",
           immutable: true,
+          type: "bool",
+          parameters: [],
+          hints: {
+            delegate: "TextInputActive",
+            copyDoc: "SDL_TextInputActive",
+          },
         },
-        "SDL_StopTextInput": {
-          name: "Window::StopTextInput",
+        "WindowBase::StopTextInput": {
+          after: "SDL_StopTextInput",
+          kind: "function",
+          type: "void",
+          parameters: [],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::StopTextInput",
+            copyDoc: "SDL_StopTextInput",
+          },
         },
-        "SDL_ClearComposition": {
-          name: "Window::ClearComposition",
+        "WindowBase::ClearComposition": {
+          after: "SDL_ClearComposition",
+          kind: "function",
+          type: "void",
+          parameters: [],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::ClearComposition",
+            copyDoc: "SDL_ClearComposition",
+          },
         },
-        "SDL_SetTextInputArea": {
-          name: "Window::SetTextInputArea",
+        "WindowBase::SetTextInputArea": {
+          after: "SDL_SetTextInputArea",
+          kind: "function",
+          type: "void",
+          static: false,
+          parameters: [{
+            name: "rect", type: "const RectRaw &"
+          }, {
+            name: "cursor", type: "int"
+          }],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::SetTextInputArea",
+            copyDoc: "SDL_SetTextInputArea",
+          },
         },
-        "SDL_GetTextInputArea": {
-          name: "Window::GetTextInputArea",
-        },
-        "SDL_ScreenKeyboardShown": {
-          name: "Window::IsScreenKeyboardShown",
+        "WindowBase::GetTextInputArea": {
+          after: "SDL_GetTextInputArea",
+          kind: "function",
           immutable: true,
+          type: "void",
+          parameters: [{
+            name: "rect", type: "RectRaw *"
+          }, {
+            name: "cursor", type: "int *"
+          }],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::GetTextInputArea",
+            copyDoc: "SDL_GetTextInputArea",
+          },
+        },
+        "WindowBase::IsScreenKeyboardShown": {
+          after: "SDL_ScreenKeyboardShown",
+          kind: "function",
+          immutable: true,
+          type: "bool",
+          parameters: [],
+          hints: {
+            delegate: "ScreenKeyboardShown",
+            copyDoc: "SDL_ScreenKeyboardShown",
+          },
         }
       }
     },
@@ -3179,9 +3252,8 @@ const transform = {
     "SDL_metal.h": {
       localIncludes: ["SDL3pp_video.h"],
       transform: {
-        "SDL_Metal_GetLayer": {
-          hints: { methodName: "GetLayer" }
-        },
+        "SDL_Metal_GetLayer": { hints: { methodName: "GetLayer" } },
+        "SDL_Metal_DestroyView": { hints: { methodName: "Destroy" } },
       }
     },
     "SDL_mouse.h": {
@@ -3268,8 +3340,16 @@ const transform = {
           type: "OwnArray<MouseID>",
           parameters: []
         },
-        "SDL_WarpMouseInWindow": {
-          name: "Window::WarpMouse"
+        "WindowBase::WarpMouse": {
+          after: "SDL_WarpMouseInWindow",
+          kind: "function",
+          static: false,
+          type: "void",
+          parameters: [{ type: "const FPointRaw &", name: "p" }],
+          hints: {
+            copyDoc: "SDL_WarpMouseInWindow",
+            delegate: "WarpMouseInWindow",
+          },
         },
         "SDL_WarpMouseGlobal": {
           name: "WarpMouse"
@@ -3281,12 +3361,27 @@ const transform = {
           type: "void",
           parameters: [{ type: "MouseMotionTransformCB", name: "callback" }],
         },
-        "SDL_SetWindowRelativeMouseMode": {
-          name: "Window::SetRelativeMouseMode"
+        "WindowBase::SetRelativeMouseMode": {
+          after: "SDL_SetWindowRelativeMouseMode",
+          kind: "function",
+          static: false,
+          type: "void",
+          parameters: [{ type: "bool", name: "enabled" }],
+          hints: {
+            copyDoc: "SDL_SetWindowRelativeMouseMode",
+            delegate: "SetWindowRelativeMouseMode",
+          },
         },
-        "SDL_GetWindowRelativeMouseMode": {
-          name: "Window::GetRelativeMouseMode",
+        "WindowBase::GetRelativeMouseMode": {
+          after: "SDL_GetWindowRelativeMouseMode",
+          kind: "function",
           immutable: true,
+          type: "bool",
+          parameters: [],
+          hints: {
+            copyDoc: "SDL_GetWindowRelativeMouseMode",
+            delegate: "GetWindowRelativeMouseMode",
+          },
         }
       }
     },
@@ -4088,14 +4183,11 @@ const transform = {
             unlockFunc: "SDL_UnlockProperties",
           },
           resource: {
-            ctors: ["SDL_CreateProperties"],
             free: "SDL_DestroyProperties",
             rawName: "PropertiesID",
           },
           entries: {
-            "SDL_CreateProperties": {
-              name: "Create",
-            },
+            "SDL_CreateProperties": "ctor",
           },
         },
         "SDL_PROP_NAME_STRING": { kind: "var" },
@@ -4745,7 +4837,7 @@ const transform = {
         "SDL_RENDERER_VSYNC_ADAPTIVE": { kind: "var", constexpr: true, type: "int" },
         "SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE": { kind: "var", constexpr: true, type: "int" },
         "SDL_GPURenderStateCreateInfo": {
-          before: "Renderer",
+          before: "RendererBase",
         },
         "SDL_Renderer": {
           resource: true,
@@ -4801,7 +4893,7 @@ const transform = {
             name: "window"
           },
           {
-            type: "Renderer *",
+            type: "RendererBase *",
             name: "renderer"
           }],
         },
@@ -4839,7 +4931,7 @@ const transform = {
             name: "window_flags"
           },
           {
-            type: "Renderer *",
+            type: "RendererBase *",
             name: "renderer"
           }]
         },
@@ -4859,7 +4951,7 @@ const transform = {
             name: "window_flags"
           },
           {
-            type: "RendererRef *",
+            type: "RendererBase *",
             name: "renderer"
           }],
           hints: {
@@ -4868,9 +4960,16 @@ const transform = {
             copyDoc: "SDL_CreateWindowAndRenderer",
           },
         },
-        "SDL_GetRenderer": {
-          name: "Window::GetRenderer",
+        "WindowBase::GetRenderer": {
+          after: "SDL_GetRenderer",
+          kind: "function",
           immutable: true,
+          type: "RendererRef",
+          parameters: [],
+          hints: {
+            copyDoc: "SDL_GetRenderer",
+            delegate: "SDL::GetRenderer"
+          },
         },
         "SDL_GetRenderWindow": {
           kind: "function",
@@ -5560,7 +5659,7 @@ const transform = {
           type: "TextureSurfaceLock",
         },
         "SDL_UnlockTexture": {},
-        "Texture::Unlock": {
+        "TextureBase::Unlock": {
           kind: "function",
           type: "void",
           static: false,
@@ -6870,7 +6969,7 @@ const transform = {
             }
           ]
         },
-        "Surface::SDL_BlitSurface": {
+        "SurfaceBase::SDL_BlitSurface": {
           parameters: [
             {
             },
@@ -6906,7 +7005,7 @@ const transform = {
             name: "dstrect"
           }]
         },
-        "Surface::BlitAt": {
+        "SurfaceBase::BlitAt": {
           kind: "function",
           type: "void",
           static: false,
@@ -6945,7 +7044,7 @@ const transform = {
             name: "dstpos"
           }]
         },
-        "Surface::SDL_BlitSurfaceUnchecked": {
+        "SurfaceBase::SDL_BlitSurfaceUnchecked": {
           parameters: [
             {
             },
@@ -6981,7 +7080,7 @@ const transform = {
             name: "dstrect"
           }]
         },
-        "Surface::SDL_BlitSurfaceScaled": {
+        "SurfaceBase::SDL_BlitSurfaceScaled": {
           parameters: [
             {
             },
@@ -7025,7 +7124,7 @@ const transform = {
             name: "scaleMode"
           }]
         },
-        "Surface::SDL_BlitSurfaceUncheckedScaled": {
+        "SurfaceBase::SDL_BlitSurfaceUncheckedScaled": {
           parameters: [
             {
             },
@@ -7069,7 +7168,7 @@ const transform = {
             name: "scaleMode"
           }]
         },
-        "Surface::SDL_StretchSurface": {
+        "SurfaceBase::SDL_StretchSurface": {
           parameters: [
             {
             },
@@ -7113,7 +7212,7 @@ const transform = {
             name: "scaleMode"
           }]
         },
-        "Surface::SDL_BlitSurfaceTiled": {
+        "SurfaceBase::SDL_BlitSurfaceTiled": {
           parameters: [
             {
             },
@@ -7149,7 +7248,7 @@ const transform = {
             name: "dstrect"
           }]
         },
-        "Surface::SDL_BlitSurfaceTiledWithScale": {
+        "SurfaceBase::SDL_BlitSurfaceTiledWithScale": {
           parameters: [
             {
             },
@@ -7201,7 +7300,7 @@ const transform = {
             name: "dstrect"
           }]
         },
-        "Surface::SDL_BlitSurface9Grid": {
+        "SurfaceBase::SDL_BlitSurface9Grid": {
           parameters: [{
           },
           {
@@ -7939,10 +8038,10 @@ const transform = {
         "SDL_PROP_WINDOW_": "prop::Window"
       },
       transform: {
-        "Renderer": { kind: "forward" },
+        "RendererBase": { kind: "forward" },
         "RendererRef": {
           kind: "alias",
-          type: "ResourceRef<Renderer>",
+          type: "ResourceRefT<RendererBase>",
           doc: [
             "Reference for Renderer.",
             "This does not take ownership!"
@@ -8461,7 +8560,7 @@ const transform = {
         "IMG_Save": {
           parameters: [{ type: "SurfaceConstRef" }, {}],
         },
-        "Surface::Save": {
+        "SurfaceBase::Save": {
           kind: "function",
           type: "void",
           immutable: true,
@@ -8484,7 +8583,7 @@ const transform = {
             default: "false"
           }],
         },
-        "Surface::SaveTyped_IO": {
+        "SurfaceBase::SaveTyped_IO": {
           kind: "function",
           type: "void",
           immutable: true,
@@ -8658,6 +8757,9 @@ const transform = {
           parameters: [{}, { type: "const PointRaw &", name: "hotspot" }],
           hints: { methodName: "CreateCursor" },
         },
+        "IMG_AnimationEncoder": {
+          since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
+        },
         "IMG_CreateAnimationEncoder_IO": {
           parameters: [{}, {
             type: "StringParam",
@@ -8667,6 +8769,9 @@ const transform = {
             type: "bool",
             default: "false"
           }],
+        },
+        "IMG_AnimationDecoder": {
+          since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
         },
         "IMG_CreateAnimationDecoder_IO": {
           parameters: [{}, {
@@ -8888,20 +8993,20 @@ const transform = {
           }
         },
         "NET_CompareAddresses": { hints: { methodName: "Compare" } },
-        "Address::operator==": {
+        "AddressBase::operator==": {
           kind: "function",
           static: false,
           immutable: true,
           type: "bool",
-          parameters: [{ type: "AddressRef", name: "other" }],
+          parameters: [{ type: "const AddressBase &", name: "other" }],
           doc: ["Compares two addresses for equality. Returns true if they are the same, false otherwise."]
         },
-        "Address::operator<=>": {
+        "AddressBase::operator<=>": {
           kind: "function",
           static: false,
           immutable: true,
           type: "auto",
-          parameters: [{ type: "AddressRef", name: "other" }],
+          parameters: [{ type: "const AddressBase &", name: "other" }],
           doc: ["Compares two addresses. Returns std::strong_ordering::less if this address is less than the other, std::strong_ordering::greater if this address is greater than the other, and std::strong_ordering::equal if they are equal."]
         },
         "LocalAddressesArrayDeleter": {
@@ -8949,7 +9054,7 @@ const transform = {
           parameters: [{ type: "DatagramSocketRef", name: "sock" }],
           hints: { copyDoc: "NET_ReceiveDatagram" },
         },
-        "Datagram::Receive": {
+        "DatagramBase::Receive": {
           kind: "function",
           type: "bool",
           static: false,

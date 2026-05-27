@@ -9,7 +9,7 @@
   *
   * Functions to creating Metal layers and views on SDL windows.
   *
-@@ -114,7 +114,7 @@
+@@ -55,7 +55,7 @@
     *
     * @sa Metal_CreateView
     */
@@ -18,12 +18,19 @@
  
    /**
     * Get a pointer to the backing CAMetalLayer for the given view.
-@@ -177,7 +177,7 @@
-   SDL_Metal_DestroyView(view);
+@@ -175,12 +175,12 @@
+  *
+  * @sa Metal_CreateView
+  */
+-inline void Metal_DestroyView(MetalViewRef view, MetalViewRef view)
++inline void Metal_DestroyView(MetalViewRaw view)
+ {
+-  Metal_DestroyView(release());
++  SDL_Metal_DestroyView(view);
  }
  
--inline void MetalView::Metal_DestroyView() { Metal_DestroyView(release()); }
-+inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }
+-inline void MetalViewBase::Metal_DestroyView() { Metal_DestroyView(release()); }
++inline void MetalViewBase::Destroy() { Metal_DestroyView(release()); }
  
  /**
   * Get a pointer to the backing CAMetalLayer for the given view.

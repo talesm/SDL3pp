@@ -2,6 +2,7 @@
 #define SDL3PP_RESOURCE_H_
 
 #include <cstdlib>
+#include <utility>
 
 namespace SDL {
 
@@ -16,7 +17,7 @@ namespace SDL {
 
 /// Base class for resources.
 template<typename RAW_POINTER, typename RAW_CONST_POINTER = RAW_POINTER>
-class ResourceBase
+class ResourceBaseT
 {
 public:
   /// The underlying raw pointer type.
@@ -25,23 +26,23 @@ public:
   /// The underlying const raw pointer type.
   using RawConstPointer = RAW_CONST_POINTER;
 
+  /// Default constructor, creates null/invalid resource.
+  constexpr ResourceBaseT() = default;
+
   /// Constructs from resource pointer.
-  constexpr ResourceBase(RawPointer resource)
+  constexpr ResourceBaseT(RawPointer resource)
     : m_resource(resource)
   {
   }
 
   /// Constructs null/invalid
-  constexpr ResourceBase(std::nullptr_t = nullptr)
-    : m_resource{}
-  {
-  }
+  constexpr ResourceBaseT(std::nullptr_t) {}
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Comparison
-  constexpr auto operator<=>(const ResourceBase& other) const = default;
+  constexpr auto operator<=>(const ResourceBaseT& other) const = default;
 
   /// member access to underlying resource pointer.
   constexpr RawConstPointer operator->() const noexcept { return m_resource; }
@@ -60,49 +61,52 @@ public:
     return r;
   }
 
-  friend constexpr void swap(ResourceBase& lhs, ResourceBase& rhs) noexcept
+  /// Swaps the underlying resource pointers.
+  friend constexpr void swap(ResourceBaseT& lhs, ResourceBaseT& rhs) noexcept
   {
     std::swap(lhs.m_resource, rhs.m_resource);
   }
 
+protected:
+  /// Destructor
+  constexpr ~ResourceBaseT() = default;
+
+  /// Copy constructor.
+  constexpr ResourceBaseT(const ResourceBaseT&) = default;
+
+  /// Move constructor.
+  constexpr ResourceBaseT(ResourceBaseT&&) noexcept = default;
+
+  /// Assignment operator.
+  constexpr ResourceBaseT& operator=(const ResourceBaseT&) = default;
+
+  /// Assignment operator.
+  constexpr ResourceBaseT& operator=(ResourceBaseT&&) noexcept = default;
+
 private:
-  RawPointer m_resource; ///< parameter's RawPointer
+  RawPointer m_resource = {}; ///< parameter's RawPointer
 };
 
-/// Reference wrapper for a given resource,
-template<typename RAW_POINTER>
-class ResourceLegacyRef
+/// A non-owning reference wrapper for a given resource
+template<typename BASE>
+struct ResourceRefT : BASE
 {
-public:
+  using BASE::BASE;
+
   /// The underlying raw pointer type.
-  using RawPointer = RAW_POINTER;
+  using RawPointer = BASE::RawPointer;
 
-  /// Constructs from RawPointer
-  constexpr ResourceLegacyRef(RawPointer resource)
-    : m_resource(resource)
+  /// The underlying const raw pointer type.
+  using RawConstPointer = BASE::RawConstPointer;
+
+  /// Constructs from resource.
+  constexpr ResourceRefT(const BASE& resource) noexcept
+    : BASE(resource.get())
   {
   }
 
-  /// Constructs null/invalid
-  constexpr ResourceLegacyRef(std::nullptr_t = nullptr)
-    : m_resource(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ResourceLegacyRef& other) const = default;
-
-  /// Converts to underlying RawPointer
-  constexpr operator RawPointer() const { return m_resource; }
-
-  /// member access to underlying type.
-  constexpr auto operator->() const { return m_resource; }
-
-private:
-  RawPointer m_resource; ///< parameter's RawPointer
+  /// Converts to raw pointer.
+  constexpr operator RawPointer() const noexcept { return this->get(); }
 };
 
 /// Const reference wrapper for a given resource,
@@ -148,81 +152,6 @@ public:
 
 private:
   RawConstPointer m_resource; ///< parameter's Surface
-};
-
-/// A non-owning reference wrapper for a given resource
-template<typename RESOURCE>
-struct ResourceRef : RESOURCE
-{
-  using RESOURCE::RESOURCE;
-
-  /// The underlying raw pointer type.
-  using RawPointer = RESOURCE::RawPointer;
-
-  /// The underlying const raw pointer type.
-  using RawConstPointer = RESOURCE::RawConstPointer;
-
-  /**
-   * Constructs from raw resource.
-   *
-   * @param resource a raw pointer.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ResourceRef(RawPointer resource) noexcept
-    : RESOURCE(resource)
-  {
-  }
-
-  /**
-   * Constructs from resource.
-   *
-   * @param resource a RESOURCE.
-   *
-   * This does not takes ownership!
-   */
-  constexpr ResourceRef(const RESOURCE& resource) noexcept
-    : RESOURCE(resource.get())
-  {
-  }
-
-  /**
-   * Constructs from RESOURCE.
-   *
-   * @param resource a RESOURCE.
-   *
-   * This will release the ownership from resource!
-   */
-  constexpr ResourceRef(RESOURCE&& resource) noexcept
-    : RESOURCE(std::move(resource).release())
-  {
-  }
-
-  /// Copy constructor.
-  constexpr ResourceRef(const ResourceRef& other) noexcept
-    : RESOURCE(other.get())
-  {
-  }
-
-  /// Move constructor.
-  constexpr ResourceRef(ResourceRef&& other) noexcept
-    : RESOURCE(other.get())
-  {
-  }
-
-  /// Destructor
-  ~ResourceRef() { this->release(); }
-
-  /// Assignment operator.
-  ResourceRef& operator=(const ResourceRef& other) noexcept
-  {
-    this->release();
-    RESOURCE::operator=(RESOURCE(other.get()));
-    return *this;
-  }
-
-  /// Converts to raw pointer.
-  constexpr operator RawPointer() const noexcept { return this->get(); }
 };
 
 /// @}

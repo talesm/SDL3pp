@@ -223,12 +223,37 @@ inline const char* Keycode::GetName() const
   return SDL_GetKeyName(m_keycode);
 }
 
-inline void Window::StartTextInput() { CheckError(SDL_StartTextInput(get())); }
-
-inline void Window::StartTextInput(PropertiesRef props)
+/**
+ * Start accepting Unicode text input events in a window.
+ *
+ * This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING
+ * events) in the specified window. Please use this function paired with
+ * StopTextInput().
+ *
+ * Text input events are not received by default.
+ *
+ * On some platforms using this function shows the screen keyboard and/or
+ * activates an IME, which can prevent some key press events from being passed
+ * through.
+ *
+ * @param window the window to enable text input.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetTextInputArea
+ * @sa StartTextInputWithProperties
+ * @sa StopTextInput
+ * @sa TextInputActive
+ */
+inline void StartTextInput(WindowRef window)
 {
-  CheckError(SDL_StartTextInputWithProperties(get(), props));
+  CheckError(SDL_StartTextInput(window));
 }
+
+inline void WindowBase::StartTextInput() { SDL::StartTextInput(get()); }
 
 /**
  * Text input type.
@@ -239,7 +264,7 @@ inline void Window::StartTextInput(PropertiesRef props)
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
+ * @sa StartTextInputWithProperties
  */
 using TextInputType = SDL_TextInputType;
 
@@ -283,7 +308,7 @@ constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
+ * @sa StartTextInputWithProperties
  */
 using Capitalization = SDL_Capitalization;
 
@@ -301,9 +326,66 @@ constexpr Capitalization CAPITALIZE_LETTERS =
   SDL_CAPITALIZE_LETTERS; ///< All letters will be capitalized
 
 /**
- * Properties for text input to be used on Window.StartTextInput.
+ * Start accepting Unicode text input events in a window, with properties
+ * describing the input.
  *
- * @sa Window.StartTextInput
+ * This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING
+ * events) in the specified window. Please use this function paired with
+ * StopTextInput().
+ *
+ * Text input events are not received by default.
+ *
+ * On some platforms using this function shows the screen keyboard and/or
+ * activates an IME, which can prevent some key press events from being passed
+ * through.
+ *
+ * These are the supported properties:
+ *
+ * - `prop.TextInput.TYPE_NUMBER` - an TextInputType value that describes text
+ *   being input, defaults to TEXTINPUT_TYPE_TEXT.
+ * - `prop.TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that
+ *   describes how text should be capitalized, defaults to CAPITALIZE_SENTENCES
+ *   for normal text entry, CAPITALIZE_WORDS for TEXTINPUT_TYPE_TEXT_NAME, and
+ *   CAPITALIZE_NONE for e-mail addresses, usernames, and passwords.
+ * - `prop.TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion and
+ *   auto correction, defaults to true.
+ * - `prop.TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are
+ *   allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is "0" or
+ *   is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME is "1".
+ *
+ * On Android you can directly specify the input type:
+ *
+ * - `prop.TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use,
+ *   overriding other properties. This is documented at
+ *   https://developer.android.com/reference/android/text/InputType
+ *
+ * @param window the window to enable text input.
+ * @param props the properties to use.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetTextInputArea
+ * @sa StartTextInput
+ * @sa StopTextInput
+ * @sa TextInputActive
+ */
+inline void StartTextInputWithProperties(WindowRef window, PropertiesRef props)
+{
+  CheckError(SDL_StartTextInputWithProperties(window, props));
+}
+
+inline void WindowBase::StartTextInputWithProperties(PropertiesRef props)
+{
+  SDL::StartTextInputWithProperties(get(), props);
+}
+
+/**
+ * Properties for text input to be used on StartTextInputWithProperties.
+ *
+ * @sa StartTextInputWithProperties
  */
 namespace prop::TextInput {
 
@@ -333,26 +415,126 @@ constexpr auto ANDROID_INPUTTYPE_NUMBER =
 
 } // namespace prop::TextInput
 
-inline bool Window::IsTextInputActive() const
+/**
+ * Check whether or not Unicode text input events are enabled for a window.
+ *
+ * @param window the window to check.
+ * @returns true if text input events are enabled else false.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa StartTextInput
+ */
+inline bool TextInputActive(WindowRef window)
 {
-  return SDL_TextInputActive(get());
+  return SDL_TextInputActive(window);
 }
 
-inline void Window::StopTextInput() { CheckError(SDL_StopTextInput(get())); }
-
-inline void Window::ClearComposition()
+inline bool WindowBase::IsTextInputActive() const
 {
-  CheckError(SDL_ClearComposition(get()));
+  return TextInputActive(get());
 }
 
-inline void Window::SetTextInputArea(const RectRaw& rect, int cursor)
+/**
+ * Stop receiving any text input events in a window.
+ *
+ * If StartTextInput() showed the screen keyboard, this function will hide it.
+ *
+ * @param window the window to disable text input.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa StartTextInput
+ * @sa StartTextInputWithProperties
+ */
+inline void StopTextInput(WindowRef window)
 {
-  CheckError(SDL_SetTextInputArea(get(), &rect, cursor));
+  CheckError(SDL_StopTextInput(window));
 }
 
-inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)
+inline void WindowBase::StopTextInput() { SDL::StopTextInput(get()); }
+
+/**
+ * Dismiss the composition window/IME without disabling the subsystem.
+ *
+ * @param window the window to affect.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa StartTextInput
+ * @sa StopTextInput
+ */
+inline void ClearComposition(WindowRef window)
 {
-  CheckError(SDL_GetTextInputArea(get(), rect, cursor));
+  CheckError(SDL_ClearComposition(window));
+}
+
+inline void WindowBase::ClearComposition() { SDL::ClearComposition(get()); }
+
+/**
+ * Set the area used to type Unicode text input.
+ *
+ * Native input methods may place a window with word suggestions near the
+ * cursor, without covering the text being entered.
+ *
+ * @param window the window for which to set the text input area.
+ * @param rect the Rect representing the text input area, in window coordinates,
+ *             or nullptr to clear it.
+ * @param cursor the offset of the current cursor location relative to
+ *               `rect->x`, in window coordinates.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetTextInputArea
+ * @sa StartTextInput
+ */
+inline void SetTextInputArea(WindowRef window, const RectRaw& rect, int cursor)
+{
+  CheckError(SDL_SetTextInputArea(window, &rect, cursor));
+}
+
+inline void WindowBase::SetTextInputArea(const RectRaw& rect, int cursor)
+{
+  SDL::SetTextInputArea(get(), rect, cursor);
+}
+
+/**
+ * Get the area used to type Unicode text input.
+ *
+ * This returns the values previously set by SetTextInputArea().
+ *
+ * @param window the window for which to query the text input area.
+ * @param rect a pointer to an Rect filled in with the text input area, may be
+ *             nullptr.
+ * @param cursor a pointer to the offset of the current cursor location relative
+ *               to `rect->x`, may be nullptr.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetTextInputArea
+ */
+inline void GetTextInputArea(WindowRef window, RectRaw* rect, int* cursor)
+{
+  CheckError(SDL_GetTextInputArea(window, rect, cursor));
+}
+
+inline void WindowBase::GetTextInputArea(RectRaw* rect, int* cursor) const
+{
+  SDL::GetTextInputArea(get(), rect, cursor);
 }
 
 /**
@@ -365,17 +547,34 @@ inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.StartTextInput
- * @sa Window.IsScreenKeyboardShown
+ * @sa StartTextInput
+ * @sa ScreenKeyboardShown
  */
 inline bool HasScreenKeyboardSupport()
 {
   return SDL_HasScreenKeyboardSupport();
 }
 
-inline bool Window::IsScreenKeyboardShown() const
+/**
+ * Check whether the screen keyboard is shown for given window.
+ *
+ * @param window the window for which screen keyboard should be queried.
+ * @returns true if screen keyboard is shown or false if not.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasScreenKeyboardSupport
+ */
+inline bool ScreenKeyboardShown(WindowRef window)
 {
-  return SDL_ScreenKeyboardShown(get());
+  return SDL_ScreenKeyboardShown(window);
+}
+
+inline bool WindowBase::IsScreenKeyboardShown() const
+{
+  return ScreenKeyboardShown(get());
 }
 
 /// @}

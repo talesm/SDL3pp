@@ -9,7 +9,7 @@
   *
   * SDL offers several thread synchronization primitives. This document can't
   * cover the complicated topic of thread safety, but reading up on what each of
-@@ -1053,8 +1053,8 @@
+@@ -990,8 +990,8 @@
     * pointed to by `sem` has a positive value or the specified time has elapsed.
     * If the call is successful it will atomically decrement the semaphore value.
     *
@@ -20,7 +20,7 @@
     * @returns true if the wait succeeds or false if the wait times out.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -1202,8 +1202,8 @@
+@@ -1214,8 +1214,8 @@
   * call is successful it will atomically decrement the semaphore value.
   *
   * @param sem the semaphore to wait on.
@@ -31,7 +31,7 @@
   * @returns true if the wait succeeds or false if the wait times out.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1217,7 +1217,7 @@
+@@ -1229,7 +1229,7 @@
  inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                   std::chrono::milliseconds timeout)
  {
@@ -39,8 +39,8 @@
 +  return SDL_WaitSemaphoreTimeout(sem, narrowS32(timeout.count()));
  }
  
- inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
-@@ -1415,8 +1415,8 @@
+ inline bool SemaphoreBase::WaitTimeout(std::chrono::milliseconds timeout)
+@@ -1361,8 +1361,8 @@
     * behavior.
     *
     * @param mutex the mutex used to coordinate thread access.
@@ -51,7 +51,7 @@
     * @returns true if the condition variable is signaled, false if the condition
     *          is not signaled in the allotted time.
     *
-@@ -1557,8 +1557,8 @@
+@@ -1569,8 +1569,8 @@
   *
   * @param cond the condition variable to wait on.
   * @param mutex the mutex used to coordinate thread access.
@@ -62,7 +62,7 @@
   * @returns true if the condition variable is signaled, false if the condition
   *          is not signaled in the allotted time.
   *
-@@ -1574,7 +1574,7 @@
+@@ -1586,7 +1586,7 @@
                                   MutexRef mutex,
                                   std::chrono::milliseconds timeout)
  {
@@ -70,8 +70,8 @@
 +  return SDL_WaitConditionTimeout(cond, mutex, narrowS32(timeout.count()));
  }
  
- inline bool Condition::WaitTimeout(MutexRef mutex,
-@@ -1607,8 +1607,8 @@
+ inline bool ConditionBase::WaitTimeout(MutexRef mutex,
+@@ -1619,8 +1619,8 @@
   *
   * Here is an example of using this:
   *
@@ -82,7 +82,7 @@
   *
   *    bool InitSystem(void)
   *    {
-@@ -1662,7 +1662,7 @@
+@@ -1674,7 +1674,7 @@
  struct InitState : InitStateRaw
  {
    constexpr InitState()

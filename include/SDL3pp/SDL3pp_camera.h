@@ -58,6 +58,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct CameraBase;
+
+// Forward decl
 struct Camera;
 
 /// Alias to raw representation for Camera.
@@ -68,7 +71,7 @@ using CameraRaw = SDL_Camera*;
  *
  * This does not take ownership!
  */
-using CameraRef = ResourceRef<Camera>;
+using CameraRef = ResourceRefT<CameraBase>;
 
 // Forward decl
 struct CameraFrame;
@@ -151,99 +154,13 @@ using CameraPermissionState = int;
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * The opaque structure used to identify an opened SDL camera.
+ * Base class to Camera.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Camera
  */
-struct Camera : ResourceBase<CameraRaw>
+struct CameraBase : ResourceBaseT<CameraRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Camera.
-   *
-   * @param resource a CameraRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Camera(CameraRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Camera(const Camera& other) = delete;
-
-  /// Move constructor
-  constexpr Camera(Camera&& other) noexcept
-    : Camera(other.release())
-  {
-  }
-
-  constexpr Camera(const CameraRef& other) = delete;
-
-  constexpr Camera(CameraRef&& other) = delete;
-
-  /**
-   * Open a video recording device (a "camera").
-   *
-   * You can open the device with any reasonable spec, and if the hardware can't
-   * directly support it, it will convert data seamlessly to the requested
-   * format. This might incur overhead, including scaling of image data.
-   *
-   * If you would rather accept whatever format the device offers, you can pass
-   * a nullptr spec here and it will choose one for you (and you can use
-   * Surface's conversion/scaling functions directly if necessary).
-   *
-   * You can call GetCameraFormat() to get the actual data format if passing a
-   * nullptr spec here. You can see the exact specs a device can support without
-   * conversion with GetCameraSupportedFormats().
-   *
-   * SDL will not attempt to emulate framerate; it will try to set the hardware
-   * to the rate closest to the requested speed, but it won't attempt to limit
-   * or duplicate frames artificially; call GetCameraFormat() to see the actual
-   * framerate of the opened the device, and check your timestamps if this is
-   * crucial to your app!
-   *
-   * Note that the camera is not usable until the user approves its use! On some
-   * platforms, the operating system will prompt the user to permit access to
-   * the camera, and they can choose Yes or No at that point. Until they do, the
-   * camera will not be usable. The app should either wait for an
-   * EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll
-   * GetCameraPermissionState() occasionally until it returns non-zero. On
-   * platforms that don't require explicit user approval (and perhaps in places
-   * where the user previously permitted access), the approval event might come
-   * immediately, but it might come seconds, minutes, or hours later!
-   *
-   * @param instance_id the camera device instance ID.
-   * @param spec the desired format for data the device will provide. Can be
-   *             std::nullopt.
-   * @post an Camera object on success..
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCameras
-   * @sa GetCameraFormat
-   */
-  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
-
-  /// Destructor
-  ~Camera() { SDL_CloseCamera(get()); }
-
-  /// Assignment operator.
-  constexpr Camera& operator=(Camera&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Camera& operator=(const Camera& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Use this function to shut down camera processing and close the camera
@@ -408,6 +325,92 @@ struct Camera : ResourceBase<CameraRaw>
    * @sa AcquireCameraFrame
    */
   void ReleaseFrame(CameraFrame&& lock);
+};
+
+/**
+ * The opaque structure used to identify an opened SDL camera.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Camera : CameraBase
+{
+  using CameraBase::CameraBase;
+
+  /**
+   * Constructs from raw Camera.
+   *
+   * @param resource a CameraRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Camera(CameraRaw resource) noexcept
+    : CameraBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Camera(Camera&& other) noexcept
+    : Camera(other.release())
+  {
+  }
+
+  /**
+   * Open a video recording device (a "camera").
+   *
+   * You can open the device with any reasonable spec, and if the hardware can't
+   * directly support it, it will convert data seamlessly to the requested
+   * format. This might incur overhead, including scaling of image data.
+   *
+   * If you would rather accept whatever format the device offers, you can pass
+   * a nullptr spec here and it will choose one for you (and you can use
+   * Surface's conversion/scaling functions directly if necessary).
+   *
+   * You can call GetCameraFormat() to get the actual data format if passing a
+   * nullptr spec here. You can see the exact specs a device can support without
+   * conversion with GetCameraSupportedFormats().
+   *
+   * SDL will not attempt to emulate framerate; it will try to set the hardware
+   * to the rate closest to the requested speed, but it won't attempt to limit
+   * or duplicate frames artificially; call GetCameraFormat() to see the actual
+   * framerate of the opened the device, and check your timestamps if this is
+   * crucial to your app!
+   *
+   * Note that the camera is not usable until the user approves its use! On some
+   * platforms, the operating system will prompt the user to permit access to
+   * the camera, and they can choose Yes or No at that point. Until they do, the
+   * camera will not be usable. The app should either wait for an
+   * EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event, or poll
+   * GetCameraPermissionState() occasionally until it returns non-zero. On
+   * platforms that don't require explicit user approval (and perhaps in places
+   * where the user previously permitted access), the approval event might come
+   * immediately, but it might come seconds, minutes, or hours later!
+   *
+   * @param instance_id the camera device instance ID.
+   * @param spec the desired format for data the device will provide. Can be
+   *             std::nullopt.
+   * @post an Camera object on success..
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCameras
+   * @sa GetCameraFormat
+   */
+  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
+
+  /// Destructor
+  ~Camera() { SDL_CloseCamera(get()); }
+
+  /// Assignment operator.
+  constexpr Camera& operator=(Camera&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /// Camera Frame.
@@ -791,7 +794,7 @@ inline CameraPermissionState GetCameraPermissionState(CameraRef camera)
   return SDL_GetCameraPermissionState(camera);
 }
 
-inline CameraPermissionState Camera::GetPermissionState()
+inline CameraPermissionState CameraBase::GetPermissionState()
 {
   return SDL::GetCameraPermissionState(get());
 }
@@ -814,7 +817,7 @@ inline CameraID GetCameraID(CameraRef camera)
   return CheckError(SDL_GetCameraID(camera));
 }
 
-inline CameraID Camera::GetID() { return SDL::GetCameraID(get()); }
+inline CameraID CameraBase::GetID() { return SDL::GetCameraID(get()); }
 
 /**
  * Get the properties associated with an opened camera.
@@ -832,7 +835,7 @@ inline PropertiesRef GetCameraProperties(CameraRef camera)
   return {CheckError(SDL_GetCameraProperties(camera))};
 }
 
-inline PropertiesRef Camera::GetProperties()
+inline PropertiesRef CameraBase::GetProperties()
 {
   return SDL::GetCameraProperties(get());
 }
@@ -864,7 +867,7 @@ inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
   return std::nullopt;
 }
 
-inline std::optional<CameraSpec> Camera::GetFormat()
+inline std::optional<CameraSpec> CameraBase::GetFormat()
 {
   return SDL::GetCameraFormat(get());
 }
@@ -912,10 +915,10 @@ inline std::optional<CameraSpec> Camera::GetFormat()
 inline Surface AcquireCameraFrame(CameraRef camera,
                                   Uint64* timestampNS = nullptr)
 {
-  return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
+  return Surface::borrow(SDL_AcquireCameraFrame(camera, timestampNS));
 }
 
-inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
+inline CameraFrame CameraBase::AcquireFrame(Uint64* timestampNS)
 {
   return {CameraRef(*this), timestampNS};
 }
@@ -958,7 +961,7 @@ inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
   SDL_ReleaseCameraFrame(camera, frame);
 }
 
-inline void Camera::ReleaseFrame(CameraFrame&& lock)
+inline void CameraBase::ReleaseFrame(CameraFrame&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -985,7 +988,7 @@ inline void CameraFrame::reset()
  */
 inline void CloseCamera(CameraRaw camera) { SDL_CloseCamera(camera); }
 
-inline void Camera::Close() { CloseCamera(release()); }
+inline void CameraBase::Close() { CloseCamera(release()); }
 
 /// @}
 

@@ -371,6 +371,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct GPUDeviceBase;
+
+// Forward decl
 struct GPUDevice;
 
 /// Alias to raw representation for GPUDevice.
@@ -381,7 +384,7 @@ using GPUDeviceRaw = SDL_GPUDevice*;
  *
  * This does not take ownership!
  */
-using GPUDeviceRef = ResourceRef<GPUDevice>;
+using GPUDeviceRef = ResourceRefT<GPUDeviceBase>;
 
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
@@ -3037,194 +3040,13 @@ constexpr GPUSampleCount GPU_SAMPLECOUNT_4 = SDL_GPU_SAMPLECOUNT_4; ///< MSAA 4x
 constexpr GPUSampleCount GPU_SAMPLECOUNT_8 = SDL_GPU_SAMPLECOUNT_8; ///< MSAA 8x
 
 /**
- * An opaque handle representing the SDL_GPU context.
+ * Base class to GPUDevice.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see GPUDevice
  */
-struct GPUDevice : ResourceBase<GPUDeviceRaw>
+struct GPUDeviceBase : ResourceBaseT<GPUDeviceRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw GPUDevice.
-   *
-   * @param resource a GPUDeviceRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit GPUDevice(GPUDeviceRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) = delete;
-
-  /// Move constructor
-  constexpr GPUDevice(GPUDevice&& other) noexcept
-    : GPUDevice(other.release())
-  {
-  }
-
-  constexpr GPUDevice(const GPUDeviceRef& other) = delete;
-
-  constexpr GPUDevice(GPUDeviceRef&& other) = delete;
-
-  /**
-   * Creates a GPU context.
-   *
-   * The GPU driver name can be one of the following:
-   *
-   * - "vulkan": [Vulkan](CategoryGPU#vulkan)
-   * - "direct3d12": [D3D12](CategoryGPU#d3d12)
-   * - "metal": [Metal](CategoryGPU#metal)
-   * - nullptr: let SDL pick the optimal driver
-   *
-   * @param format_flags a bitflag indicating which shader formats the app is
-   *                     able to provide.
-   * @param debug_mode enable debug mode properties and validations.
-   * @param name the preferred GPU driver, or nullptr to let SDL pick the
-   *             optimal driver.
-   * @post a GPU context on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateGPUDeviceWithProperties
-   * @sa GetGPUShaderFormats
-   * @sa GetGPUDeviceDriver
-   * @sa DestroyGPUDevice
-   * @sa GPUSupportsShaderFormats
-   */
-  GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name);
-
-  /**
-   * Creates a GPU context.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.GPUDevice.Create.DEBUGMODE_BOOLEAN`: enable debug mode properties
-   *   and validations, defaults to true.
-   * - `prop.GPUDevice.Create.PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
-   *   efficiency over maximum GPU performance, defaults to false.
-   * - `prop.GPUDevice.Create.VERBOSE_BOOLEAN`: enable to automatically log
-   *   useful debug information on device creation, defaults to true.
-   * - `prop.GPUDevice.Create.NAME_STRING`: the name of the GPU driver to use,
-   *   if a specific one is desired.
-   * - `prop.GPUDevice.Create.FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
-   *   device feature shaderClipDistance. If disabled, clip distances are not
-   *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
-   *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
-   *   Metal. Disabling optional features allows the application to run on some
-   *   older Android devices. Defaults to true.
-   * - `prop.GPUDevice.Create.FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
-   *   device feature depthClamp. If disabled, there is no depth clamp support
-   *   and enable_depth_clip in GPURasterizerState must always be set to true.
-   *   Disabling optional features allows the application to run on some older
-   *   Android devices. Defaults to true.
-   * - `prop.GPUDevice.Create.FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
-   *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
-   *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
-   *   Disabling optional features allows the application to run on some older
-   *   Android devices. Defaults to true.
-   * - `prop.GPUDevice.Create.FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
-   *   feature samplerAnisotropy. If disabled, enable_anisotropy of
-   *   GPUSamplerCreateInfo must be set to false. Disabling optional features
-   *   allows the application to run on some older Android devices. Defaults to
-   *   true.
-   *
-   * These are the current shader format properties:
-   *
-   * - `prop.GPUDevice.Create.SHADERS_PRIVATE_BOOLEAN`: The app is able to
-   *   provide shaders for an NDA platform.
-   * - `prop.GPUDevice.Create.SHADERS_SPIRV_BOOLEAN`: The app is able to provide
-   *   SPIR-V shaders if applicable.
-   * - `prop.GPUDevice.Create.SHADERS_DXBC_BOOLEAN`: The app is able to provide
-   *   DXBC shaders if applicable
-   * - `prop.GPUDevice.Create.SHADERS_DXIL_BOOLEAN`: The app is able to provide
-   *   DXIL shaders if applicable.
-   * - `prop.GPUDevice.Create.SHADERS_MSL_BOOLEAN`: The app is able to provide
-   *   MSL shaders if applicable.
-   * - `prop.GPUDevice.Create.SHADERS_METALLIB_BOOLEAN`: The app is able to
-   *   provide Metal shader libraries if applicable.
-   *
-   * With the D3D12 backend:
-   *
-   * - `prop.GPUDevice.Create.D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
-   *   all vertex semantics, default is "TEXCOORD".
-   * - `prop.GPUDevice.Create.D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
-   *   default, Resourcing Binding Tier 2 is required for D3D12 support.
-   *   However, an application can set this property to true to enable Tier 1
-   *   support, if (and only if) the application uses 8 or fewer storage
-   *   resources across all shader stages. As of writing, this property is
-   *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
-   *   either supports Tier 2 Resource Binding or does not support D3D12 in any
-   *   capacity. Defaults to false.
-   * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
-   *   checks are only possible on Windows 11 by default. By setting this
-   *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING` and
-   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
-   *   feature checks possible on older platforms. The version you provide must
-   *   match the one given in the DLL.
-   * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
-   *   checks are only possible on Windows 11 by default. By setting this
-   *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER` and
-   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
-   *   feature checks possible on older platforms. The path you provide must be
-   *   relative to the executable path of your app. Be sure not to put the DLL
-   *   in the same directory as the exe; Microsoft strongly advises against
-   *   this!
-   *
-   * With the Vulkan backend:
-   *
-   * - `prop.GPUDevice.Create.VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
-   *   default, Vulkan device enumeration includes drivers of all types,
-   *   including software renderers (for example, the Lavapipe Mesa driver).
-   *   This can be useful if your application _requires_ SDL_GPU, but if you can
-   *   provide your own fallback renderer (for example, an OpenGL renderer) this
-   *   property can be set to true. Defaults to false.
-   * - `prop.GPUDevice.Create.VULKAN_OPTIONS_POINTER`: a pointer to an
-   *   GPUVulkanOptions structure to be processed during device creation. This
-   *   allows configuring a variety of Vulkan-specific options such as
-   *   increasing the API version and opting into extensions aside from the
-   *   minimal set SDL requires.
-   *
-   * With the Metal backend: -
-   * `prop.GPUDevice.Create.METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
-   * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
-   * However, an application can set this property to true to enable support for
-   * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not
-   * write to sRGB textures. (For history's sake: MacFamily1 also does not
-   * support indirect command buffers, MSAA depth resolve, and stencil
-   * resolve/feedback, but these are not exposed features in SDL_GPU.)
-   *
-   * @param props the properties to use.
-   * @post a GPU context on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetGPUShaderFormats
-   * @sa GetGPUDeviceDriver
-   * @sa DestroyGPUDevice
-   * @sa GPUSupportsProperties
-   */
-  GPUDevice(PropertiesRef props);
-
-  /// Destructor
-  ~GPUDevice() { SDL_DestroyGPUDevice(get()); }
-
-  /// Assignment operator.
-  constexpr GPUDevice& operator=(GPUDevice&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  GPUDevice& operator=(const GPUDevice& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroys a GPU context previously returned by CreateGPUDevice.
@@ -4079,6 +3901,187 @@ struct GPUDevice : ResourceBase<GPUDeviceRaw>
   void GDKResumeGPU();
 
 #endif /* SDL_PLATFORM_GDK */
+};
+
+/**
+ * An opaque handle representing the SDL_GPU context.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct GPUDevice : GPUDeviceBase
+{
+  using GPUDeviceBase::GPUDeviceBase;
+
+  /**
+   * Constructs from raw GPUDevice.
+   *
+   * @param resource a GPUDeviceRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit GPUDevice(GPUDeviceRaw resource) noexcept
+    : GPUDeviceBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr GPUDevice(GPUDevice&& other) noexcept
+    : GPUDevice(other.release())
+  {
+  }
+
+  /**
+   * Creates a GPU context.
+   *
+   * The GPU driver name can be one of the following:
+   *
+   * - "vulkan": [Vulkan](CategoryGPU#vulkan)
+   * - "direct3d12": [D3D12](CategoryGPU#d3d12)
+   * - "metal": [Metal](CategoryGPU#metal)
+   * - nullptr: let SDL pick the optimal driver
+   *
+   * @param format_flags a bitflag indicating which shader formats the app is
+   *                     able to provide.
+   * @param debug_mode enable debug mode properties and validations.
+   * @param name the preferred GPU driver, or nullptr to let SDL pick the
+   *             optimal driver.
+   * @post a GPU context on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateGPUDeviceWithProperties
+   * @sa GetGPUShaderFormats
+   * @sa GetGPUDeviceDriver
+   * @sa DestroyGPUDevice
+   * @sa GPUSupportsShaderFormats
+   */
+  GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name);
+
+  /**
+   * Creates a GPU context.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.GPUDevice.Create.DEBUGMODE_BOOLEAN`: enable debug mode properties
+   *   and validations, defaults to true.
+   * - `prop.GPUDevice.Create.PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
+   *   efficiency over maximum GPU performance, defaults to false.
+   * - `prop.GPUDevice.Create.VERBOSE_BOOLEAN`: enable to automatically log
+   *   useful debug information on device creation, defaults to true.
+   * - `prop.GPUDevice.Create.NAME_STRING`: the name of the GPU driver to use,
+   *   if a specific one is desired.
+   * - `prop.GPUDevice.Create.FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
+   *   device feature shaderClipDistance. If disabled, clip distances are not
+   *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
+   *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
+   *   Metal. Disabling optional features allows the application to run on some
+   *   older Android devices. Defaults to true.
+   * - `prop.GPUDevice.Create.FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+   *   device feature depthClamp. If disabled, there is no depth clamp support
+   *   and enable_depth_clip in GPURasterizerState must always be set to true.
+   *   Disabling optional features allows the application to run on some older
+   *   Android devices. Defaults to true.
+   * - `prop.GPUDevice.Create.FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+   *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
+   *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
+   *   Disabling optional features allows the application to run on some older
+   *   Android devices. Defaults to true.
+   * - `prop.GPUDevice.Create.FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+   *   feature samplerAnisotropy. If disabled, enable_anisotropy of
+   *   GPUSamplerCreateInfo must be set to false. Disabling optional features
+   *   allows the application to run on some older Android devices. Defaults to
+   *   true.
+   *
+   * These are the current shader format properties:
+   *
+   * - `prop.GPUDevice.Create.SHADERS_PRIVATE_BOOLEAN`: The app is able to
+   *   provide shaders for an NDA platform.
+   * - `prop.GPUDevice.Create.SHADERS_SPIRV_BOOLEAN`: The app is able to provide
+   *   SPIR-V shaders if applicable.
+   * - `prop.GPUDevice.Create.SHADERS_DXBC_BOOLEAN`: The app is able to provide
+   *   DXBC shaders if applicable
+   * - `prop.GPUDevice.Create.SHADERS_DXIL_BOOLEAN`: The app is able to provide
+   *   DXIL shaders if applicable.
+   * - `prop.GPUDevice.Create.SHADERS_MSL_BOOLEAN`: The app is able to provide
+   *   MSL shaders if applicable.
+   * - `prop.GPUDevice.Create.SHADERS_METALLIB_BOOLEAN`: The app is able to
+   *   provide Metal shader libraries if applicable.
+   *
+   * With the D3D12 backend:
+   *
+   * - `prop.GPUDevice.Create.D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
+   *   all vertex semantics, default is "TEXCOORD".
+   * - `prop.GPUDevice.Create.D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+   *   default, Resourcing Binding Tier 2 is required for D3D12 support.
+   *   However, an application can set this property to true to enable Tier 1
+   *   support, if (and only if) the application uses 8 or fewer storage
+   *   resources across all shader stages. As of writing, this property is
+   *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
+   *   either supports Tier 2 Resource Binding or does not support D3D12 in any
+   *   capacity. Defaults to false.
+   * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
+   *   checks are only possible on Windows 11 by default. By setting this
+   *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING` and
+   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+   *   feature checks possible on older platforms. The version you provide must
+   *   match the one given in the DLL.
+   * - `prop.GPUDevice.Create.D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+   *   checks are only possible on Windows 11 by default. By setting this
+   *   alongside `prop.GPUDevice.Create.D3D12_AGILITY_SDK_VERSION_NUMBER` and
+   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+   *   feature checks possible on older platforms. The path you provide must be
+   *   relative to the executable path of your app. Be sure not to put the DLL
+   *   in the same directory as the exe; Microsoft strongly advises against
+   *   this!
+   *
+   * With the Vulkan backend:
+   *
+   * - `prop.GPUDevice.Create.VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+   *   default, Vulkan device enumeration includes drivers of all types,
+   *   including software renderers (for example, the Lavapipe Mesa driver).
+   *   This can be useful if your application _requires_ SDL_GPU, but if you can
+   *   provide your own fallback renderer (for example, an OpenGL renderer) this
+   *   property can be set to true. Defaults to false.
+   * - `prop.GPUDevice.Create.VULKAN_OPTIONS_POINTER`: a pointer to an
+   *   GPUVulkanOptions structure to be processed during device creation. This
+   *   allows configuring a variety of Vulkan-specific options such as
+   *   increasing the API version and opting into extensions aside from the
+   *   minimal set SDL requires.
+   *
+   * With the Metal backend: -
+   * `prop.GPUDevice.Create.METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+   * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
+   * However, an application can set this property to true to enable support for
+   * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not
+   * write to sRGB textures. (For history's sake: MacFamily1 also does not
+   * support indirect command buffers, MSAA depth resolve, and stencil
+   * resolve/feedback, but these are not exposed features in SDL_GPU.)
+   *
+   * @param props the properties to use.
+   * @post a GPU context on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetGPUShaderFormats
+   * @sa GetGPUDeviceDriver
+   * @sa DestroyGPUDevice
+   * @sa GPUSupportsProperties
+   */
+  GPUDevice(PropertiesRef props);
+
+  /// Destructor
+  ~GPUDevice() { SDL_DestroyGPUDevice(get()); }
+
+  /// Assignment operator.
+  constexpr GPUDevice& operator=(GPUDevice&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /**
@@ -5208,7 +5211,7 @@ inline void DestroyGPUDevice(GPUDeviceRaw device)
   SDL_DestroyGPUDevice(device);
 }
 
-inline void GPUDevice::Destroy() { DestroyGPUDevice(release()); }
+inline void GPUDeviceBase::Destroy() { DestroyGPUDevice(release()); }
 
 /**
  * Get the number of GPU drivers compiled into SDL.
@@ -5253,7 +5256,7 @@ inline const char* GetGPUDeviceDriver(GPUDeviceRef device)
   return SDL_GetGPUDeviceDriver(device);
 }
 
-inline const char* GPUDevice::GetDriver()
+inline const char* GPUDeviceBase::GetDriver()
 {
   return SDL::GetGPUDeviceDriver(get());
 }
@@ -5272,7 +5275,7 @@ inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceRef device)
   return SDL_GetGPUShaderFormats(device);
 }
 
-inline GPUShaderFormat GPUDevice::GetShaderFormats()
+inline GPUShaderFormat GPUDeviceBase::GetShaderFormats()
 {
   return SDL::GetGPUShaderFormats(get());
 }
@@ -5385,7 +5388,7 @@ inline PropertiesRef GetGPUDeviceProperties(GPUDeviceRef device)
   return CheckError(SDL_GetGPUDeviceProperties(device));
 }
 
-inline PropertiesRef GPUDevice::GetProperties()
+inline PropertiesRef GPUDeviceBase::GetProperties()
 {
   return SDL::GetGPUDeviceProperties(get());
 }
@@ -5472,7 +5475,7 @@ inline GPUComputePipeline CreateGPUComputePipeline(
   return GPUComputePipeline(device, createinfo);
 }
 
-inline GPUComputePipeline GPUDevice::CreateComputePipeline(
+inline GPUComputePipeline GPUDeviceBase::CreateComputePipeline(
   const GPUComputePipelineCreateInfo& createinfo)
 {
   return GPUComputePipeline(get(), createinfo);
@@ -5526,7 +5529,7 @@ inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
   return GPUGraphicsPipeline(device, createinfo);
 }
 
-inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
+inline GPUGraphicsPipeline GPUDeviceBase::CreateGraphicsPipeline(
   const GPUGraphicsPipelineCreateInfo& createinfo)
 {
   return GPUGraphicsPipeline(get(), createinfo);
@@ -5579,7 +5582,7 @@ inline GPUSampler CreateGPUSampler(GPUDeviceRef device,
   return GPUSampler(device, createinfo);
 }
 
-inline GPUSampler GPUDevice::CreateSampler(
+inline GPUSampler GPUDeviceBase::CreateSampler(
   const GPUSamplerCreateInfo& createinfo)
 {
   return GPUSampler(get(), createinfo);
@@ -5680,7 +5683,8 @@ inline GPUShader CreateGPUShader(GPUDeviceRef device,
   return GPUShader(device, createinfo);
 }
 
-inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
+inline GPUShader GPUDeviceBase::CreateShader(
+  const GPUShaderCreateInfo& createinfo)
 {
   return GPUShader(get(), createinfo);
 }
@@ -5767,7 +5771,7 @@ inline GPUTexture CreateGPUTexture(GPUDeviceRef device,
   return GPUTexture(device, createinfo);
 }
 
-inline GPUTexture GPUDevice::CreateTexture(
+inline GPUTexture GPUDeviceBase::CreateTexture(
   const GPUTextureCreateInfo& createinfo)
 {
   return GPUTexture(get(), createinfo);
@@ -5864,7 +5868,8 @@ inline GPUBuffer CreateGPUBuffer(GPUDeviceRef device,
   return GPUBuffer(device, createinfo);
 }
 
-inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
+inline GPUBuffer GPUDeviceBase::CreateBuffer(
+  const GPUBufferCreateInfo& createinfo)
 {
   return GPUBuffer(get(), createinfo);
 }
@@ -5921,7 +5926,7 @@ inline GPUTransferBuffer CreateGPUTransferBuffer(
   return GPUTransferBuffer(device, createinfo);
 }
 
-inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
+inline GPUTransferBuffer GPUDeviceBase::CreateTransferBuffer(
   const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(get(), createinfo);
@@ -5971,7 +5976,7 @@ inline void SetGPUBufferName(GPUDeviceRef device,
   SDL_SetGPUBufferName(device, buffer, text);
 }
 
-inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
+inline void GPUDeviceBase::SetBufferName(GPUBuffer buffer, StringParam text)
 {
   SDL::SetGPUBufferName(get(), buffer, std::move(text));
 }
@@ -6000,7 +6005,7 @@ inline void SetGPUTextureName(GPUDeviceRef device,
   SDL_SetGPUTextureName(device, texture, text);
 }
 
-inline void GPUDevice::SetTextureName(GPUTexture texture, StringParam text)
+inline void GPUDeviceBase::SetTextureName(GPUTexture texture, StringParam text)
 {
   SDL::SetGPUTextureName(get(), texture, std::move(text));
 }
@@ -6106,7 +6111,7 @@ inline void ReleaseGPUTexture(GPUDeviceRef device, GPUTexture texture)
   SDL_ReleaseGPUTexture(device, texture);
 }
 
-inline void GPUDevice::ReleaseTexture(GPUTexture texture)
+inline void GPUDeviceBase::ReleaseTexture(GPUTexture texture)
 {
   SDL::ReleaseGPUTexture(get(), texture);
 }
@@ -6126,7 +6131,7 @@ inline void ReleaseGPUSampler(GPUDeviceRef device, GPUSampler sampler)
   SDL_ReleaseGPUSampler(device, sampler);
 }
 
-inline void GPUDevice::ReleaseSampler(GPUSampler sampler)
+inline void GPUDeviceBase::ReleaseSampler(GPUSampler sampler)
 {
   SDL::ReleaseGPUSampler(get(), sampler);
 }
@@ -6146,7 +6151,7 @@ inline void ReleaseGPUBuffer(GPUDeviceRef device, GPUBuffer buffer)
   SDL_ReleaseGPUBuffer(device, buffer);
 }
 
-inline void GPUDevice::ReleaseBuffer(GPUBuffer buffer)
+inline void GPUDeviceBase::ReleaseBuffer(GPUBuffer buffer)
 {
   SDL::ReleaseGPUBuffer(get(), buffer);
 }
@@ -6167,7 +6172,8 @@ inline void ReleaseGPUTransferBuffer(GPUDeviceRef device,
   SDL_ReleaseGPUTransferBuffer(device, transfer_buffer);
 }
 
-inline void GPUDevice::ReleaseTransferBuffer(GPUTransferBuffer transfer_buffer)
+inline void GPUDeviceBase::ReleaseTransferBuffer(
+  GPUTransferBuffer transfer_buffer)
 {
   SDL::ReleaseGPUTransferBuffer(get(), transfer_buffer);
 }
@@ -6188,7 +6194,7 @@ inline void ReleaseGPUComputePipeline(GPUDeviceRef device,
   SDL_ReleaseGPUComputePipeline(device, compute_pipeline);
 }
 
-inline void GPUDevice::ReleaseComputePipeline(
+inline void GPUDeviceBase::ReleaseComputePipeline(
   GPUComputePipeline compute_pipeline)
 {
   SDL::ReleaseGPUComputePipeline(get(), compute_pipeline);
@@ -6209,7 +6215,7 @@ inline void ReleaseGPUShader(GPUDeviceRef device, GPUShader shader)
   SDL_ReleaseGPUShader(device, shader);
 }
 
-inline void GPUDevice::ReleaseShader(GPUShader shader)
+inline void GPUDeviceBase::ReleaseShader(GPUShader shader)
 {
   SDL::ReleaseGPUShader(get(), shader);
 }
@@ -6230,7 +6236,7 @@ inline void ReleaseGPUGraphicsPipeline(GPUDeviceRef device,
   SDL_ReleaseGPUGraphicsPipeline(device, graphics_pipeline);
 }
 
-inline void GPUDevice::ReleaseGraphicsPipeline(
+inline void GPUDeviceBase::ReleaseGraphicsPipeline(
   GPUGraphicsPipeline graphics_pipeline)
 {
   SDL::ReleaseGPUGraphicsPipeline(get(), graphics_pipeline);
@@ -6265,7 +6271,7 @@ inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceRef device)
   return CheckError(SDL_AcquireGPUCommandBuffer(device));
 }
 
-inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
+inline GPUCommandBuffer GPUDeviceBase::AcquireCommandBuffer()
 {
   return SDL::AcquireGPUCommandBuffer(get());
 }
@@ -7229,8 +7235,8 @@ inline void* MapGPUTransferBuffer(GPUDeviceRef device,
   return CheckError(SDL_MapGPUTransferBuffer(device, transfer_buffer, cycle));
 }
 
-inline void* GPUDevice::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
-                                          bool cycle)
+inline void* GPUDeviceBase::MapTransferBuffer(GPUTransferBuffer transfer_buffer,
+                                              bool cycle)
 {
   return SDL::MapGPUTransferBuffer(get(), transfer_buffer, cycle);
 }
@@ -7249,7 +7255,8 @@ inline void UnmapGPUTransferBuffer(GPUDeviceRef device,
   SDL_UnmapGPUTransferBuffer(device, transfer_buffer);
 }
 
-inline void GPUDevice::UnmapTransferBuffer(GPUTransferBuffer transfer_buffer)
+inline void GPUDeviceBase::UnmapTransferBuffer(
+  GPUTransferBuffer transfer_buffer)
 {
   SDL::UnmapGPUTransferBuffer(get(), transfer_buffer);
 }
@@ -7547,7 +7554,7 @@ inline bool WindowSupportsGPUSwapchainComposition(
     device, window, swapchain_composition);
 }
 
-inline bool GPUDevice::WindowSupportsSwapchainComposition(
+inline bool GPUDeviceBase::WindowSupportsSwapchainComposition(
   WindowRef window,
   GPUSwapchainComposition swapchain_composition)
 {
@@ -7576,8 +7583,9 @@ inline bool WindowSupportsGPUPresentMode(GPUDeviceRef device,
   return SDL_WindowSupportsGPUPresentMode(device, window, present_mode);
 }
 
-inline bool GPUDevice::WindowSupportsPresentMode(WindowRef window,
-                                                 GPUPresentMode present_mode)
+inline bool GPUDeviceBase::WindowSupportsPresentMode(
+  WindowRef window,
+  GPUPresentMode present_mode)
 {
   return SDL::WindowSupportsGPUPresentMode(get(), window, present_mode);
 }
@@ -7612,7 +7620,7 @@ inline void ClaimWindowForGPUDevice(GPUDeviceRef device, WindowRef window)
   CheckError(SDL_ClaimWindowForGPUDevice(device, window));
 }
 
-inline void GPUDevice::ClaimWindow(WindowRef window)
+inline void GPUDeviceBase::ClaimWindow(WindowRef window)
 {
   SDL::ClaimWindowForGPUDevice(get(), window);
 }
@@ -7632,7 +7640,7 @@ inline void ReleaseWindowFromGPUDevice(GPUDeviceRef device, WindowRef window)
   SDL_ReleaseWindowFromGPUDevice(device, window);
 }
 
-inline void GPUDevice::ReleaseWindow(WindowRef window)
+inline void GPUDeviceBase::ReleaseWindow(WindowRef window)
 {
   SDL::ReleaseWindowFromGPUDevice(get(), window);
 }
@@ -7669,7 +7677,7 @@ inline bool SetGPUSwapchainParameters(
     device, window, swapchain_composition, present_mode);
 }
 
-inline bool GPUDevice::SetSwapchainParameters(
+inline bool GPUDeviceBase::SetSwapchainParameters(
   WindowRef window,
   GPUSwapchainComposition swapchain_composition,
   GPUPresentMode present_mode)
@@ -7709,7 +7717,8 @@ inline bool SetGPUAllowedFramesInFlight(GPUDeviceRef device,
   return SDL_SetGPUAllowedFramesInFlight(device, allowed_frames_in_flight);
 }
 
-inline bool GPUDevice::SetAllowedFramesInFlight(Uint32 allowed_frames_in_flight)
+inline bool GPUDeviceBase::SetAllowedFramesInFlight(
+  Uint32 allowed_frames_in_flight)
 {
   return SDL::SetGPUAllowedFramesInFlight(get(), allowed_frames_in_flight);
 }
@@ -7731,7 +7740,8 @@ inline GPUTextureFormat GetGPUSwapchainTextureFormat(GPUDeviceRef device,
   return SDL_GetGPUSwapchainTextureFormat(device, window);
 }
 
-inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowRef window)
+inline GPUTextureFormat GPUDeviceBase::GetSwapchainTextureFormat(
+  WindowRef window)
 {
   return SDL::GetGPUSwapchainTextureFormat(get(), window);
 }
@@ -7829,7 +7839,7 @@ inline void WaitForGPUSwapchain(GPUDeviceRef device, WindowRef window)
   CheckError(SDL_WaitForGPUSwapchain(device, window));
 }
 
-inline void GPUDevice::WaitForSwapchain(WindowRef window)
+inline void GPUDeviceBase::WaitForSwapchain(WindowRef window)
 {
   SDL::WaitForGPUSwapchain(get(), window);
 }
@@ -8011,7 +8021,7 @@ inline void WaitForGPUIdle(GPUDeviceRef device)
   CheckError(SDL_WaitForGPUIdle(device));
 }
 
-inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(get()); }
+inline void GPUDeviceBase::WaitForIdle() { SDL::WaitForGPUIdle(get()); }
 
 /**
  * Blocks the thread until the given fences are signaled.
@@ -8035,8 +8045,8 @@ inline void WaitForGPUFences(GPUDeviceRef device,
     device, wait_all, fences.data(), narrowU32(fences.size())));
 }
 
-inline void GPUDevice::WaitForFences(bool wait_all,
-                                     std::span<GPUFence* const> fences)
+inline void GPUDeviceBase::WaitForFences(bool wait_all,
+                                         std::span<GPUFence* const> fences)
 {
   SDL::WaitForGPUFences(get(), wait_all, fences);
 }
@@ -8057,7 +8067,7 @@ inline bool QueryGPUFence(GPUDeviceRef device, GPUFence* fence)
   return SDL_QueryGPUFence(device, fence);
 }
 
-inline bool GPUDevice::QueryFence(GPUFence* fence)
+inline bool GPUDeviceBase::QueryFence(GPUFence* fence)
 {
   return SDL::QueryGPUFence(get(), fence);
 }
@@ -8079,7 +8089,7 @@ inline void ReleaseGPUFence(GPUDeviceRef device, GPUFence* fence)
   SDL_ReleaseGPUFence(device, fence);
 }
 
-inline void GPUDevice::ReleaseFence(GPUFence* fence)
+inline void GPUDeviceBase::ReleaseFence(GPUFence* fence)
 {
   SDL::ReleaseGPUFence(get(), fence);
 }
@@ -8118,9 +8128,9 @@ inline bool GPUTextureSupportsFormat(GPUDeviceRef device,
   return SDL_GPUTextureSupportsFormat(device, format, type, usage);
 }
 
-inline bool GPUDevice::TextureSupportsFormat(GPUTextureFormat format,
-                                             GPUTextureType type,
-                                             GPUTextureUsageFlags usage)
+inline bool GPUDeviceBase::TextureSupportsFormat(GPUTextureFormat format,
+                                                 GPUTextureType type,
+                                                 GPUTextureUsageFlags usage)
 {
   return SDL::GPUTextureSupportsFormat(get(), format, type, usage);
 }
@@ -8142,8 +8152,9 @@ inline bool GPUTextureSupportsSampleCount(GPUDeviceRef device,
   return SDL_GPUTextureSupportsSampleCount(device, format, sample_count);
 }
 
-inline bool GPUDevice::TextureSupportsSampleCount(GPUTextureFormat format,
-                                                  GPUSampleCount sample_count)
+inline bool GPUDeviceBase::TextureSupportsSampleCount(
+  GPUTextureFormat format,
+  GPUSampleCount sample_count)
 {
   return SDL::GPUTextureSupportsSampleCount(get(), format, sample_count);
 }
@@ -8217,7 +8228,7 @@ inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
  */
 inline void GDKSuspendGPU(GPUDeviceRef device) { SDL_GDKSuspendGPU(device); }
 
-inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(get()); }
+inline void GPUDeviceBase::GDKSuspendGPU() { SDL::GDKSuspendGPU(get()); }
 
 /**
  * Call this to resume GPU operation on Xbox when you receive the
@@ -8234,7 +8245,7 @@ inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(get()); }
  */
 inline void GDKResumeGPU(GPUDeviceRef device) { SDL_GDKResumeGPU(device); }
 
-inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(get()); }
+inline void GPUDeviceBase::GDKResumeGPU() { SDL::GDKResumeGPU(get()); }
 
 #endif /* SDL_PLATFORM_GDK */
 

@@ -37,6 +37,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct PropertiesBase;
+
+// Forward decl
 struct Properties;
 
 /// Alias to raw representation for Properties.
@@ -47,7 +50,7 @@ using PropertiesID = SDL_PropertiesID;
  *
  * This does not take ownership!
  */
-using PropertiesRef = ResourceRef<Properties>;
+using PropertiesRef = ResourceRefT<PropertiesBase>;
 
 // Forward decl
 struct PropertiesLock;
@@ -168,73 +171,13 @@ using CleanupPropertyCallback = void(SDLCALL*)(void* userdata, void* value);
 using CleanupPropertyCB = std::function<void(void* value)>;
 
 /**
- * An ID that represents a properties set.
+ * Base class to Properties.
  *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat resource
- *
- * @sa Properties.Create
- * @sa prop
+ * @see Properties
  */
-struct Properties : ResourceBase<PropertiesID>
+struct PropertiesBase : ResourceBaseT<PropertiesID>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Properties.
-   *
-   * @param resource a PropertiesID to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Properties(PropertiesID resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Properties(const Properties& other) = delete;
-
-  /// Move constructor
-  constexpr Properties(Properties&& other) noexcept
-    : Properties(other.release())
-  {
-  }
-
-  constexpr Properties(const PropertiesRef& other) = delete;
-
-  constexpr Properties(PropertiesRef&& other) = delete;
-
-  /**
-   * Create a group of properties.
-   *
-   * All properties are automatically destroyed when Quit() is called.
-   *
-   * @returns an ID for a new group of properties on success.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyProperties
-   */
-  static Properties Create();
-
-  /// Destructor
-  ~Properties() { SDL_DestroyProperties(get()); }
-
-  /// Assignment operator.
-  constexpr Properties& operator=(Properties&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Properties& operator=(const Properties& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a group of properties.
@@ -653,6 +596,66 @@ struct Properties : ResourceBase<PropertiesID>
 };
 
 /**
+ * An ID that represents a properties set.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat resource
+ *
+ * @sa Properties.Create
+ * @sa prop
+ */
+struct Properties : PropertiesBase
+{
+  using PropertiesBase::PropertiesBase;
+
+  /**
+   * Constructs from raw Properties.
+   *
+   * @param resource a PropertiesID to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Properties(PropertiesID resource) noexcept
+    : PropertiesBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Properties(Properties&& other) noexcept
+    : Properties(other.release())
+  {
+  }
+
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when Quit() is called.
+   *
+   * @post an ID for a new group of properties on success.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyProperties
+   */
+  Properties();
+
+  /// Destructor
+  ~Properties() { SDL_DestroyProperties(get()); }
+
+  /// Assignment operator.
+  constexpr Properties& operator=(Properties&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Lock a group of properties.
  *
  * Obtain a multi-threaded lock for these properties. Other threads will wait
@@ -812,12 +815,12 @@ inline PropertiesRef GetGlobalProperties()
  *
  * @sa DestroyProperties
  */
-inline Properties CreateProperties()
-{
-  return Properties(CheckError(SDL_CreateProperties()));
-}
+inline Properties CreateProperties() { return Properties(); }
 
-inline Properties Properties::Create() { return SDL::CreateProperties(); }
+inline Properties::Properties()
+  : Properties(CheckError(SDL_CreateProperties()))
+{
+}
 
 /**
  * Copy a group of properties.
@@ -842,7 +845,7 @@ inline void CopyProperties(PropertiesRef src, PropertiesRef dst)
   CheckError(SDL_CopyProperties(src, dst));
 }
 
-inline void Properties::Copy(PropertiesRef dst)
+inline void PropertiesBase::Copy(PropertiesRef dst)
 {
   SDL::CopyProperties(get(), dst);
 }
@@ -873,7 +876,7 @@ inline void LockProperties(PropertiesRef props)
   CheckError(SDL_LockProperties(props));
 }
 
-inline PropertiesLock Properties::Lock() { return {PropertiesRef(*this)}; }
+inline PropertiesLock PropertiesBase::Lock() { return {PropertiesRef(*this)}; }
 
 inline PropertiesLock::PropertiesLock(PropertiesRef resource)
   : m_lock(std::move(resource))
@@ -897,7 +900,7 @@ inline void UnlockProperties(PropertiesRef props)
   SDL_UnlockProperties(props);
 }
 
-inline void Properties::Unlock(PropertiesLock&& lock)
+inline void PropertiesBase::Unlock(PropertiesLock&& lock)
 {
   SDL_assert_paranoid(lock.resource() == *this);
   std::move(lock).reset();
@@ -990,7 +993,7 @@ inline void SetPointerPropertyWithCleanup(PropertiesRef props,
                                     Wrapper::Wrap(std::move(cleanup)));
 }
 
-inline void Properties::SetPointerPropertyWithCleanup(
+inline void PropertiesBase::SetPointerPropertyWithCleanup(
   StringParam name,
   void* value,
   CleanupPropertyCallback cleanup,
@@ -1000,9 +1003,10 @@ inline void Properties::SetPointerPropertyWithCleanup(
     get(), std::move(name), value, cleanup, userdata);
 }
 
-inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
-                                                      void* value,
-                                                      CleanupPropertyCB cleanup)
+inline void PropertiesBase::SetPointerPropertyWithCleanup(
+  StringParam name,
+  void* value,
+  CleanupPropertyCB cleanup)
 {
   SDL::SetPointerPropertyWithCleanup(
     get(), std::move(name), value, std::move(cleanup));
@@ -1036,7 +1040,7 @@ inline void SetPointerProperty(PropertiesRef props,
   CheckError(SDL_SetPointerProperty(props, name, value));
 }
 
-inline void Properties::SetPointerProperty(StringParam name, void* value)
+inline void PropertiesBase::SetPointerProperty(StringParam name, void* value)
 {
   SDL::SetPointerProperty(get(), std::move(name), value);
 }
@@ -1066,7 +1070,8 @@ inline void SetStringProperty(PropertiesRef props,
   CheckError(SDL_SetStringProperty(props, name, value));
 }
 
-inline void Properties::SetStringProperty(StringParam name, StringParam value)
+inline void PropertiesBase::SetStringProperty(StringParam name,
+                                              StringParam value)
 {
   SDL::SetStringProperty(get(), std::move(name), std::move(value));
 }
@@ -1092,7 +1097,7 @@ inline void SetNumberProperty(PropertiesRef props,
   CheckError(SDL_SetNumberProperty(props, name, value));
 }
 
-inline void Properties::SetNumberProperty(StringParam name, Sint64 value)
+inline void PropertiesBase::SetNumberProperty(StringParam name, Sint64 value)
 {
   SDL::SetNumberProperty(get(), std::move(name), value);
 }
@@ -1116,7 +1121,7 @@ inline void SetFloatProperty(PropertiesRef props, StringParam name, float value)
   CheckError(SDL_SetFloatProperty(props, name, value));
 }
 
-inline void Properties::SetFloatProperty(StringParam name, float value)
+inline void PropertiesBase::SetFloatProperty(StringParam name, float value)
 {
   SDL::SetFloatProperty(get(), std::move(name), value);
 }
@@ -1142,7 +1147,7 @@ inline void SetBooleanProperty(PropertiesRef props,
   CheckError(SDL_SetBooleanProperty(props, name, value));
 }
 
-inline void Properties::SetBooleanProperty(StringParam name, bool value)
+inline void PropertiesBase::SetBooleanProperty(StringParam name, bool value)
 {
   SDL::SetBooleanProperty(get(), std::move(name), value);
 }
@@ -1165,7 +1170,7 @@ inline bool HasProperty(PropertiesRef props, StringParam name)
   return SDL_HasProperty(props, name);
 }
 
-inline bool Properties::HasProperty(StringParam name)
+inline bool PropertiesBase::HasProperty(StringParam name)
 {
   return SDL::HasProperty(get(), std::move(name));
 }
@@ -1188,7 +1193,7 @@ inline PropertyType GetPropertyType(PropertiesRef props, StringParam name)
   return SDL_GetPropertyType(props, name);
 }
 
-inline PropertyType Properties::GetPropertyType(StringParam name)
+inline PropertyType PropertiesBase::GetPropertyType(StringParam name)
 {
   return SDL::GetPropertyType(get(), std::move(name));
 }
@@ -1230,8 +1235,8 @@ inline void* GetPointerProperty(PropertiesRef props,
   return SDL_GetPointerProperty(props, name, default_value);
 }
 
-inline void* Properties::GetPointerProperty(StringParam name,
-                                            void* default_value)
+inline void* PropertiesBase::GetPointerProperty(StringParam name,
+                                                void* default_value)
 {
   return SDL::GetPointerProperty(get(), std::move(name), default_value);
 }
@@ -1264,8 +1269,8 @@ inline const char* GetStringProperty(PropertiesRef props,
   return SDL_GetStringProperty(props, name, default_value);
 }
 
-inline const char* Properties::GetStringProperty(StringParam name,
-                                                 StringParam default_value)
+inline const char* PropertiesBase::GetStringProperty(StringParam name,
+                                                     StringParam default_value)
 {
   return SDL::GetStringProperty(
     get(), std::move(name), std::move(default_value));
@@ -1298,8 +1303,8 @@ inline Sint64 GetNumberProperty(PropertiesRef props,
   return SDL_GetNumberProperty(props, name, default_value);
 }
 
-inline Sint64 Properties::GetNumberProperty(StringParam name,
-                                            Sint64 default_value)
+inline Sint64 PropertiesBase::GetNumberProperty(StringParam name,
+                                                Sint64 default_value)
 {
   return SDL::GetNumberProperty(get(), std::move(name), default_value);
 }
@@ -1331,7 +1336,8 @@ inline float GetFloatProperty(PropertiesRef props,
   return SDL_GetFloatProperty(props, name, default_value);
 }
 
-inline float Properties::GetFloatProperty(StringParam name, float default_value)
+inline float PropertiesBase::GetFloatProperty(StringParam name,
+                                              float default_value)
 {
   return SDL::GetFloatProperty(get(), std::move(name), default_value);
 }
@@ -1363,7 +1369,8 @@ inline bool GetBooleanProperty(PropertiesRef props,
   return SDL_GetBooleanProperty(props, name, default_value);
 }
 
-inline bool Properties::GetBooleanProperty(StringParam name, bool default_value)
+inline bool PropertiesBase::GetBooleanProperty(StringParam name,
+                                               bool default_value)
 {
   return SDL::GetBooleanProperty(get(), std::move(name), default_value);
 }
@@ -1384,7 +1391,7 @@ inline void ClearProperty(PropertiesRef props, StringParam name)
   CheckError(SDL_ClearProperty(props, name));
 }
 
-inline void Properties::ClearProperty(StringParam name)
+inline void PropertiesBase::ClearProperty(StringParam name)
 {
   SDL::ClearProperty(get(), std::move(name));
 }
@@ -1437,13 +1444,13 @@ inline void EnumerateProperties(PropertiesRef props,
     &callback);
 }
 
-inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-                                  void* userdata)
+inline void PropertiesBase::Enumerate(EnumeratePropertiesCallback callback,
+                                      void* userdata)
 {
   SDL::EnumerateProperties(get(), callback, userdata);
 }
 
-inline void Properties::Enumerate(EnumeratePropertiesCB callback)
+inline void PropertiesBase::Enumerate(EnumeratePropertiesCB callback)
 {
   SDL::EnumerateProperties(get(), std::move(callback));
 }
@@ -1463,7 +1470,7 @@ inline Uint64 CountProperties(PropertiesRef props)
   return count;
 }
 
-inline Uint64 Properties::GetCount() { return SDL::CountProperties(get()); }
+inline Uint64 PropertiesBase::GetCount() { return SDL::CountProperties(get()); }
 
 /**
  * Destroy a group of properties.
@@ -1486,7 +1493,7 @@ inline void DestroyProperties(PropertiesID props)
   SDL_DestroyProperties(props);
 }
 
-inline void Properties::Destroy() { DestroyProperties(release()); }
+inline void PropertiesBase::Destroy() { DestroyProperties(release()); }
 
 /// @}
 

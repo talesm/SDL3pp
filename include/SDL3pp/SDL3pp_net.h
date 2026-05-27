@@ -99,6 +99,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct AddressBase;
+
+// Forward decl
 struct Address;
 
 /// Alias to raw representation for Address.
@@ -109,7 +112,10 @@ using AddressRaw = NET_Address*;
  *
  * This does not take ownership!
  */
-using AddressRef = ResourceRef<Address>;
+using AddressRef = ResourceRefT<AddressBase>;
+
+// Forward decl
+struct StreamSocketBase;
 
 // Forward decl
 struct StreamSocket;
@@ -122,7 +128,10 @@ using StreamSocketRaw = NET_StreamSocket*;
  *
  * This does not take ownership!
  */
-using StreamSocketRef = ResourceRef<StreamSocket>;
+using StreamSocketRef = ResourceRefT<StreamSocketBase>;
+
+// Forward decl
+struct ServerBase;
 
 // Forward decl
 struct Server;
@@ -135,7 +144,10 @@ using ServerRaw = NET_Server*;
  *
  * This does not take ownership!
  */
-using ServerRef = ResourceRef<Server>;
+using ServerRef = ResourceRefT<ServerBase>;
+
+// Forward decl
+struct DatagramSocketBase;
 
 // Forward decl
 struct DatagramSocket;
@@ -148,7 +160,10 @@ using DatagramSocketRaw = NET_DatagramSocket*;
  *
  * This does not take ownership!
  */
-using DatagramSocketRef = ResourceRef<DatagramSocket>;
+using DatagramSocketRef = ResourceRefT<DatagramSocketBase>;
+
+// Forward decl
+struct DatagramBase;
 
 // Forward decl
 struct Datagram;
@@ -164,7 +179,7 @@ using DatagramRawConst = const NET_Datagram*;
  *
  * This does not take ownership!
  */
-using DatagramRef = ResourceRef<Datagram>;
+using DatagramRef = ResourceRefT<DatagramBase>;
 
 /// Safely wrap Datagram for non owning const parameters
 using DatagramConstRef = ResourceConstRef<DatagramRaw, DatagramRawConst>;
@@ -308,159 +323,13 @@ constexpr Status SUCCESS =
   NET_SUCCESS; ///< Async operation complete, result was success.
 
 /**
- * Opaque representation of a computer-readable network address.
+ * Base class to Address.
  *
- * This is an opaque datatype, to be treated by the app as a handle.
- *
- * SDL_net uses these to identify other servers; you use them to connect to a
- * remote machine, and you use them to find out who connected to you. They are
- * also used to decide what network interface to use when creating a server.
- *
- * These are intended to be protocol-independent; a given address might be for
- * IPv4, IPv6, or something more esoteric. SDL_net attempts to hide the
- * differences.
- *
- * @since This datatype is available since SDL_net 3.0.0.
- *
- * @sa ResolveHostname
- * @sa GetLocalAddresses
- * @sa CompareAddresses
- *
- * @cat resource
+ * @see Address
  */
-struct Address : ResourceBase<AddressRaw>
+struct AddressBase : ResourceBaseT<AddressRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Address.
-   *
-   * @param resource a AddressRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Address(AddressRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Move constructor
-  constexpr Address(Address&& other) noexcept
-    : Address(other.release())
-  {
-  }
-
-  /**
-   * Resolve a human-readable hostname.
-   *
-   * SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org`
-   * but on computer-readable addresses. This function converts from one to the
-   * other. This process is known as "resolving" an address.
-   *
-   * You can also use this to turn IP address strings (like "159.203.69.7") into
-   * Address objects.
-   *
-   * Note that resolving an address is an asynchronous operation, since the
-   * library will need to ask a server on the internet to get the information it
-   * needs, and this can take time (and possibly fail later). This function will
-   * not block. It either returns nullptr (catastrophic failure) or an
-   * unresolved Address. Until the address resolves, it can't be used.
-   *
-   * If you want to block until the resolution is finished, you can call
-   * WaitUntilResolved(). Otherwise, you can do a non-blocking check with
-   * GetAddressStatus().
-   *
-   * When you are done with the returned Address, call UnrefAddress() to dispose
-   * of it. You need to do this even if resolution later fails asynchronously.
-   *
-   * @param host The hostname to resolve.
-   * @post A new Address on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa WaitUntilResolved
-   * @sa GetAddressStatus
-   * @sa RefAddress
-   * @sa UnrefAddress
-   */
-  Address(StringParam host);
-
-  /**
-   * Add a reference to an Address.
-   *
-   * Since several pieces of the library might share a single Address, including
-   * a background thread that's working on resolving, these objects are
-   * referenced counted. This allows everything that's using it to declare they
-   * still want it, and drop their reference to the address when they are done
-   * with it. The object's resources are freed when the last reference is
-   * dropped.
-   *
-   * This function adds a reference to an Address, increasing its reference
-   * count by one.
-   *
-   * The documentation will tell you when the app has to explicitly unref an
-   * address. For example, ResolveHostname() creates addresses that are already
-   * referenced, so the caller needs to unref it when done.
-   *
-   * Generally you only have to explicit ref an address when you have different
-   * parts of your own app that will be sharing an address. In normal usage, you
-   * only have to unref things you've created once (like you might free()
-   * something), but you are free to add extra refs if it makes sense.
-   *
-   * This returns the same address passed as a parameter, which makes it easy to
-   * ref and assign in one step:
-   *
-   * ```c
-   * myAddr = RefAddress(yourAddr);
-   * ```
-   *
-   * @param address The Address to add a reference to.
-   * @post the same address that was passed as a parameter.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   */
-  Address(const Address& address);
-
-  /**
-   * Safely borrows the from AddressRaw.
-   *
-   * @param resource a AddressRaw.
-   *
-   * This does not takes ownership!
-   */
-  static Address Borrow(AddressRaw resource)
-  {
-    if (resource) {
-      NET_RefAddress(resource);
-      return Address(resource);
-    }
-    return {};
-  }
-
-  /// Destructor
-  ~Address() { NET_UnrefAddress(get()); }
-
-  /// Assignment operator.
-  constexpr Address& operator=(Address&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Address& operator=(const Address& other)
-  {
-    if (get() != other.get()) {
-      Address tmp(other);
-      swap(*this, tmp);
-    }
-    return *this;
-  }
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Drop a reference to an Address.
@@ -604,14 +473,14 @@ struct Address : ResourceBase<AddressRaw>
    * Compares two addresses for equality. Returns true if they are the same,
    * false otherwise.
    */
-  bool operator==(AddressRef other) const;
+  bool operator==(const AddressBase& other) const;
 
   /**
    * Compares two addresses. Returns std::strong_ordering::less if this address
    * is less than the other, std::strong_ordering::greater if this address is
    * greater than the other, and std::strong_ordering::equal if they are equal.
    */
-  auto operator<=>(AddressRef other) const;
+  auto operator<=>(const AddressBase& other) const;
 
   /**
    * Begin connecting a socket as a client to a remote server.
@@ -820,6 +689,162 @@ struct Address : ResourceBase<AddressRaw>
 };
 
 /**
+ * Opaque representation of a computer-readable network address.
+ *
+ * This is an opaque datatype, to be treated by the app as a handle.
+ *
+ * SDL_net uses these to identify other servers; you use them to connect to a
+ * remote machine, and you use them to find out who connected to you. They are
+ * also used to decide what network interface to use when creating a server.
+ *
+ * These are intended to be protocol-independent; a given address might be for
+ * IPv4, IPv6, or something more esoteric. SDL_net attempts to hide the
+ * differences.
+ *
+ * @since This datatype is available since SDL_net 3.0.0.
+ *
+ * @sa ResolveHostname
+ * @sa GetLocalAddresses
+ * @sa CompareAddresses
+ *
+ * @cat resource
+ */
+struct Address : AddressBase
+{
+  using AddressBase::AddressBase;
+
+  /**
+   * Constructs from raw Address.
+   *
+   * @param resource a AddressRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Address(AddressRaw resource) noexcept
+    : AddressBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Address(Address&& other) noexcept
+    : Address(other.release())
+  {
+  }
+
+  /**
+   * Resolve a human-readable hostname.
+   *
+   * SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org`
+   * but on computer-readable addresses. This function converts from one to the
+   * other. This process is known as "resolving" an address.
+   *
+   * You can also use this to turn IP address strings (like "159.203.69.7") into
+   * Address objects.
+   *
+   * Note that resolving an address is an asynchronous operation, since the
+   * library will need to ask a server on the internet to get the information it
+   * needs, and this can take time (and possibly fail later). This function will
+   * not block. It either returns nullptr (catastrophic failure) or an
+   * unresolved Address. Until the address resolves, it can't be used.
+   *
+   * If you want to block until the resolution is finished, you can call
+   * WaitUntilResolved(). Otherwise, you can do a non-blocking check with
+   * GetAddressStatus().
+   *
+   * When you are done with the returned Address, call UnrefAddress() to dispose
+   * of it. You need to do this even if resolution later fails asynchronously.
+   *
+   * @param host The hostname to resolve.
+   * @post A new Address on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa WaitUntilResolved
+   * @sa GetAddressStatus
+   * @sa RefAddress
+   * @sa UnrefAddress
+   */
+  Address(StringParam host);
+
+  /**
+   * Add a reference to an Address.
+   *
+   * Since several pieces of the library might share a single Address, including
+   * a background thread that's working on resolving, these objects are
+   * referenced counted. This allows everything that's using it to declare they
+   * still want it, and drop their reference to the address when they are done
+   * with it. The object's resources are freed when the last reference is
+   * dropped.
+   *
+   * This function adds a reference to an Address, increasing its reference
+   * count by one.
+   *
+   * The documentation will tell you when the app has to explicitly unref an
+   * address. For example, ResolveHostname() creates addresses that are already
+   * referenced, so the caller needs to unref it when done.
+   *
+   * Generally you only have to explicit ref an address when you have different
+   * parts of your own app that will be sharing an address. In normal usage, you
+   * only have to unref things you've created once (like you might free()
+   * something), but you are free to add extra refs if it makes sense.
+   *
+   * This returns the same address passed as a parameter, which makes it easy to
+   * ref and assign in one step:
+   *
+   * ```c
+   * myAddr = RefAddress(yourAddr);
+   * ```
+   *
+   * @param address The Address to add a reference to.
+   * @post the same address that was passed as a parameter.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   */
+  Address(const Address& address);
+
+  /**
+   * Safely borrows the from AddressRaw.
+   *
+   * @param resource a AddressRaw.
+   *
+   * This does not takes ownership!
+   */
+  static Address borrow(AddressRaw resource)
+  {
+    if (resource) {
+      NET_RefAddress(resource);
+      return Address(resource);
+    }
+    return {};
+  }
+
+  /// Destructor
+  ~Address() { NET_UnrefAddress(get()); }
+
+  /// Assignment operator.
+  constexpr Address& operator=(Address&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Address& operator=(const Address& other)
+  {
+    if (get() != other.get()) {
+      Address tmp(other);
+      swap(*this, tmp);
+    }
+    return *this;
+  }
+};
+
+/**
  * Resolve a human-readable hostname.
  *
  * SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org`
@@ -915,7 +940,7 @@ inline Status WaitUntilResolved(AddressRef address, Sint32 timeout)
   return NET_WaitUntilResolved(address, timeout);
 }
 
-inline Status Address::WaitUntilResolved(Sint32 timeout)
+inline Status AddressBase::WaitUntilResolved(Sint32 timeout)
 {
   return SDL::WaitUntilResolved(get(), timeout);
 }
@@ -952,7 +977,7 @@ inline Status GetAddressStatus(AddressRef address)
   return NET_GetAddressStatus(address);
 }
 
-inline Status Address::GetStatus() { return SDL::GetAddressStatus(get()); }
+inline Status AddressBase::GetStatus() { return SDL::GetAddressStatus(get()); }
 
 /**
  * Get a human-readable string from a resolved address.
@@ -987,7 +1012,10 @@ inline const char* GetAddressString(AddressRef address)
   return CheckError(NET_GetAddressString(address));
 }
 
-inline const char* Address::GetString() { return SDL::GetAddressString(get()); }
+inline const char* AddressBase::GetString()
+{
+  return SDL::GetAddressString(get());
+}
 
 /**
  * Add a reference to an Address.
@@ -1050,7 +1078,7 @@ inline Address RefAddress(AddressRef address) { return Address(address); }
  */
 inline void UnrefAddress(AddressRaw address) { NET_UnrefAddress(address); }
 
-inline void Address::Unref() { UnrefAddress(release()); }
+inline void AddressBase::Unref() { UnrefAddress(release()); }
 
 /**
  * Enable simulated address resolution failures.
@@ -1106,17 +1134,17 @@ inline int CompareAddresses(AddressRef a, AddressRef b)
   return NET_CompareAddresses(a, b);
 }
 
-inline int Address::Compare(AddressRef b) const
+inline int AddressBase::Compare(AddressRef b) const
 {
   return SDL::CompareAddresses(get(), b);
 }
 
-inline bool Address::operator==(AddressRef other) const
+inline bool AddressBase::operator==(const AddressBase& other) const
 {
   return Compare(other) == 0;
 }
 
-inline auto Address::operator<=>(AddressRef other) const
+inline auto AddressBase::operator<=>(const AddressBase& other) const
 {
   return Compare(other) <=> 0;
 }
@@ -1200,122 +1228,13 @@ inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
 }
 
 /**
- * An object that represents a streaming connection to another system.
+ * Base class to StreamSocket.
  *
- * This is meant to be a reliable, stream-oriented connection, such as TCP.
- *
- * Each StreamSocket represents a single connection between systems. Usually, a
- * client app will have one connection to a server app on a different computer,
- * and the server app might have many connections from different clients. Each
- * of these connections communicate over a separate stream socket.
- *
- * @since This datatype is available since SDL_net 3.0.0.
- *
- * @sa CreateClient
- * @sa WriteToStreamSocket
- * @sa ReadFromStreamSocket
- *
- * @cat resource
+ * @see StreamSocket
  */
-struct StreamSocket : ResourceBase<StreamSocketRaw>
+struct StreamSocketBase : ResourceBaseT<StreamSocketRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw StreamSocket.
-   *
-   * @param resource a StreamSocketRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit StreamSocket(StreamSocketRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr StreamSocket(const StreamSocket& other) = delete;
-
-  /// Move constructor
-  constexpr StreamSocket(StreamSocket&& other) noexcept
-    : StreamSocket(other.release())
-  {
-  }
-
-  constexpr StreamSocket(const StreamSocketRef& other) = delete;
-
-  constexpr StreamSocket(StreamSocketRef&& other) = delete;
-
-  /**
-   * Begin connecting a socket as a client to a remote server.
-   *
-   * Each StreamSocket represents a single connection between systems. Usually,
-   * a client app will have one connection to a server app on a different
-   * computer, and the server app might have many connections from different
-   * clients. Each of these connections communicate over a separate stream
-   * socket.
-   *
-   * Connecting is an asynchronous operation; this function does not block, and
-   * will return before the connection is complete. One has to then use
-   * WaitUntilConnected() or GetConnectionStatus() to see when the operation has
-   * completed, and if it was successful.
-   *
-   * Once connected, you can read and write data to the returned socket. Stream
-   * sockets are a mode of _reliable_ transmission, which means data will be
-   * received as a stream of bytes in the order you sent it. If there are
-   * problems in transmission, the system will deal with protocol negotiation
-   * and retransmission as necessary, transparent to your app, but this means
-   * until data is available in the order sent, the remote side will not get any
-   * new data. This is the tradeoff vs datagram sockets, where data can arrive
-   * in any order, or not arrive at all, without waiting, but the sender will
-   * not know.
-   *
-   * Stream sockets don't employ any protocol (above the TCP level), so they can
-   * connect to servers that aren't using SDL_net, but if you want to speak any
-   * protocol beyond an abritrary stream of bytes, such as HTTP, you'll have to
-   * implement that yourself on top of the stream socket.
-   *
-   * This function will fail if `address` is not finished resolving.
-   *
-   * When you are done with this connection (whether it failed to connect or
-   * not), you must dispose of it with DestroyStreamSocket().
-   *
-   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
-   * you do not have to byteswap it into "network order," as the library will
-   * handle that for you.
-   *
-   * There are currently no extra properties for creating a client, so `props`
-   * should be zero. A future revision of SDL_net may add additional (optional)
-   * properties.
-   *
-   * @param address the address of the remote server to connect to.
-   * @param port the port on the remote server to connect to.
-   * @param props properties of the new client. Specify zero for defaults.
-   * @post  pending connection on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa WaitUntilConnected
-   * @sa GetConnectionStatus
-   * @sa DestroyStreamSocket
-   */
-  StreamSocket(AddressRef address, Uint16 port, PropertiesRef props);
-
-  /// Destructor
-  ~StreamSocket() { NET_DestroyStreamSocket(get()); }
-
-  /// Assignment operator.
-  constexpr StreamSocket& operator=(StreamSocket&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  StreamSocket& operator=(const StreamSocket& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Dispose of a previously-created stream socket.
@@ -1647,6 +1566,115 @@ struct StreamSocket : ResourceBase<StreamSocketRaw>
 };
 
 /**
+ * An object that represents a streaming connection to another system.
+ *
+ * This is meant to be a reliable, stream-oriented connection, such as TCP.
+ *
+ * Each StreamSocket represents a single connection between systems. Usually, a
+ * client app will have one connection to a server app on a different computer,
+ * and the server app might have many connections from different clients. Each
+ * of these connections communicate over a separate stream socket.
+ *
+ * @since This datatype is available since SDL_net 3.0.0.
+ *
+ * @sa CreateClient
+ * @sa WriteToStreamSocket
+ * @sa ReadFromStreamSocket
+ *
+ * @cat resource
+ */
+struct StreamSocket : StreamSocketBase
+{
+  using StreamSocketBase::StreamSocketBase;
+
+  /**
+   * Constructs from raw StreamSocket.
+   *
+   * @param resource a StreamSocketRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit StreamSocket(StreamSocketRaw resource) noexcept
+    : StreamSocketBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr StreamSocket(StreamSocket&& other) noexcept
+    : StreamSocket(other.release())
+  {
+  }
+
+  /**
+   * Begin connecting a socket as a client to a remote server.
+   *
+   * Each StreamSocket represents a single connection between systems. Usually,
+   * a client app will have one connection to a server app on a different
+   * computer, and the server app might have many connections from different
+   * clients. Each of these connections communicate over a separate stream
+   * socket.
+   *
+   * Connecting is an asynchronous operation; this function does not block, and
+   * will return before the connection is complete. One has to then use
+   * WaitUntilConnected() or GetConnectionStatus() to see when the operation has
+   * completed, and if it was successful.
+   *
+   * Once connected, you can read and write data to the returned socket. Stream
+   * sockets are a mode of _reliable_ transmission, which means data will be
+   * received as a stream of bytes in the order you sent it. If there are
+   * problems in transmission, the system will deal with protocol negotiation
+   * and retransmission as necessary, transparent to your app, but this means
+   * until data is available in the order sent, the remote side will not get any
+   * new data. This is the tradeoff vs datagram sockets, where data can arrive
+   * in any order, or not arrive at all, without waiting, but the sender will
+   * not know.
+   *
+   * Stream sockets don't employ any protocol (above the TCP level), so they can
+   * connect to servers that aren't using SDL_net, but if you want to speak any
+   * protocol beyond an abritrary stream of bytes, such as HTTP, you'll have to
+   * implement that yourself on top of the stream socket.
+   *
+   * This function will fail if `address` is not finished resolving.
+   *
+   * When you are done with this connection (whether it failed to connect or
+   * not), you must dispose of it with DestroyStreamSocket().
+   *
+   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
+   * you do not have to byteswap it into "network order," as the library will
+   * handle that for you.
+   *
+   * There are currently no extra properties for creating a client, so `props`
+   * should be zero. A future revision of SDL_net may add additional (optional)
+   * properties.
+   *
+   * @param address the address of the remote server to connect to.
+   * @param port the port on the remote server to connect to.
+   * @param props properties of the new client. Specify zero for defaults.
+   * @post  pending connection on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa WaitUntilConnected
+   * @sa GetConnectionStatus
+   * @sa DestroyStreamSocket
+   */
+  StreamSocket(AddressRef address, Uint16 port, PropertiesRef props);
+
+  /// Destructor
+  ~StreamSocket() { NET_DestroyStreamSocket(get()); }
+
+  /// Assignment operator.
+  constexpr StreamSocket& operator=(StreamSocket&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Begin connecting a socket as a client to a remote server.
  *
  * Each StreamSocket represents a single connection between systems. Usually, a
@@ -1707,7 +1735,7 @@ inline StreamSocket CreateClient(AddressRef address,
   return StreamSocket(address, port, props);
 }
 
-inline StreamSocket Address::CreateClient(Uint16 port, PropertiesRef props)
+inline StreamSocket AddressBase::CreateClient(Uint16 port, PropertiesRef props)
 {
   return StreamSocket(get(), port, props);
 }
@@ -1766,10 +1794,80 @@ inline Status WaitUntilConnected(StreamSocketRef sock, Sint32 timeout)
   return NET_WaitUntilConnected(sock, timeout);
 }
 
-inline Status StreamSocket::WaitUntilConnected(Sint32 timeout)
+inline Status StreamSocketBase::WaitUntilConnected(Sint32 timeout)
 {
   return SDL::WaitUntilConnected(get(), timeout);
 }
+
+/**
+ * Base class to Server.
+ *
+ * @see Server
+ */
+struct ServerBase : ResourceBaseT<ServerRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Dispose of a previously-created server.
+   *
+   * This will immediately disconnect any pending client connections that had
+   * not yet been accepted, but will not disconnect any existing accepted
+   * connections (which can still be used and must be destroyed separately).
+   * Further attempts to make new connections to this server will fail on the
+   * client side.
+   *
+   * @threadsafety You should not operate on the same server from multiple
+   *               threads at the same time without supplying a serialization
+   *               mechanism. However, different threads may access different
+   *               servers at the same time without problems.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa CreateServer
+   */
+  void Destroy();
+
+  /**
+   * Create a stream socket for the next pending client connection.
+   *
+   * When a client connects to a server, their connection will be pending until
+   * the server _accepts_ the connection. Once accepted, the server will be
+   * given a stream socket to communicate with the client, and they can send
+   * data to, and receive data from, each other.
+   *
+   * Unlike CreateClient, stream sockets returned from this function are already
+   * connected and do not have to wait for the connection to complete, as server
+   * acceptance is the final step of connecting.
+   *
+   * This function does not block. If there are no new connections pending, this
+   * function will return true (for success, but `*client_stream` will be set to
+   * nullptr. This is not an error and a common condition the app should expect.
+   * In fact, this function should be called in a loop until this condition
+   * occurs, so all pending connections are accepted in a single batch.
+   *
+   * If you want the server to sleep until there's a new connection, you can use
+   * WaitUntilInputAvailable().
+   *
+   * When done with the newly-accepted client, you can disconnect and dispose of
+   * the stream socket by calling DestroyStreamSocket().
+   *
+   * @param client_stream Will be set to a new stream socket if a connection was
+   *                      pending, nullptr otherwise.
+   * @throws Error on failure.
+   *
+   * @threadsafety You should not operate on the same server from multiple
+   *               threads at the same time without supplying a serialization
+   *               mechanism. However, different threads may access different
+   *               servers at the same time without problems.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa WaitUntilInputAvailable
+   * @sa DestroyStreamSocket
+   */
+  void AcceptClient(NET_StreamSocket** client_stream);
+};
 
 /**
  * The receiving end of a stream connection.
@@ -1787,9 +1885,9 @@ inline Status StreamSocket::WaitUntilConnected(Sint32 timeout)
  *
  * @cat resource
  */
-struct Server : ResourceBase<ServerRaw>
+struct Server : ServerBase
 {
-  using ResourceBase::ResourceBase;
+  using ServerBase::ServerBase;
 
   /**
    * Constructs from raw Server.
@@ -1799,22 +1897,15 @@ struct Server : ResourceBase<ServerRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Server(ServerRaw resource) noexcept
-    : ResourceBase(resource)
+    : ServerBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Server(const Server& other) = delete;
 
   /// Move constructor
   constexpr Server(Server&& other) noexcept
     : Server(other.release())
   {
   }
-
-  constexpr Server(const ServerRef& other) = delete;
-
-  constexpr Server(ServerRef&& other) = delete;
 
   /**
    * Create a server, which listens for connections to accept.
@@ -1889,69 +1980,6 @@ struct Server : ResourceBase<ServerRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Server& operator=(const Server& other) = delete;
-
-  /**
-   * Dispose of a previously-created server.
-   *
-   * This will immediately disconnect any pending client connections that had
-   * not yet been accepted, but will not disconnect any existing accepted
-   * connections (which can still be used and must be destroyed separately).
-   * Further attempts to make new connections to this server will fail on the
-   * client side.
-   *
-   * @threadsafety You should not operate on the same server from multiple
-   *               threads at the same time without supplying a serialization
-   *               mechanism. However, different threads may access different
-   *               servers at the same time without problems.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa CreateServer
-   */
-  void Destroy();
-
-  /**
-   * Create a stream socket for the next pending client connection.
-   *
-   * When a client connects to a server, their connection will be pending until
-   * the server _accepts_ the connection. Once accepted, the server will be
-   * given a stream socket to communicate with the client, and they can send
-   * data to, and receive data from, each other.
-   *
-   * Unlike CreateClient, stream sockets returned from this function are already
-   * connected and do not have to wait for the connection to complete, as server
-   * acceptance is the final step of connecting.
-   *
-   * This function does not block. If there are no new connections pending, this
-   * function will return true (for success, but `*client_stream` will be set to
-   * nullptr. This is not an error and a common condition the app should expect.
-   * In fact, this function should be called in a loop until this condition
-   * occurs, so all pending connections are accepted in a single batch.
-   *
-   * If you want the server to sleep until there's a new connection, you can use
-   * WaitUntilInputAvailable().
-   *
-   * When done with the newly-accepted client, you can disconnect and dispose of
-   * the stream socket by calling DestroyStreamSocket().
-   *
-   * @param client_stream Will be set to a new stream socket if a connection was
-   *                      pending, nullptr otherwise.
-   * @throws Error on failure.
-   *
-   * @threadsafety You should not operate on the same server from multiple
-   *               threads at the same time without supplying a serialization
-   *               mechanism. However, different threads may access different
-   *               servers at the same time without problems.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa WaitUntilInputAvailable
-   * @sa DestroyStreamSocket
-   */
-  void AcceptClient(NET_StreamSocket** client_stream);
 };
 
 /**
@@ -2021,7 +2049,7 @@ inline Server CreateServer(AddressRef addr, Uint16 port, PropertiesRef props)
   return Server(addr, port, props);
 }
 
-inline Server Address::CreateServer(Uint16 port, PropertiesRef props)
+inline Server AddressBase::CreateServer(Uint16 port, PropertiesRef props)
 {
   return Server(get(), port, props);
 }
@@ -2082,7 +2110,7 @@ inline void AcceptClient(ServerRef server, NET_StreamSocket** client_stream)
   CheckError(NET_AcceptClient(server, client_stream));
 }
 
-inline void Server::AcceptClient(NET_StreamSocket** client_stream)
+inline void ServerBase::AcceptClient(NET_StreamSocket** client_stream)
 {
   SDL::AcceptClient(get(), client_stream);
 }
@@ -2108,7 +2136,7 @@ inline void Server::AcceptClient(NET_StreamSocket** client_stream)
  */
 inline void DestroyServer(ServerRaw server) { NET_DestroyServer(server); }
 
-inline void Server::Destroy() { DestroyServer(release()); }
+inline void ServerBase::Destroy() { DestroyServer(release()); }
 
 /**
  * Get the remote address of a stream socket.
@@ -2132,7 +2160,7 @@ inline Address GetStreamSocketAddress(StreamSocketRef sock)
   return Address(CheckError(NET_GetStreamSocketAddress(sock)));
 }
 
-inline Address StreamSocket::GetAddress()
+inline Address StreamSocketBase::GetAddress()
 {
   return SDL::GetStreamSocketAddress(get());
 }
@@ -2177,7 +2205,7 @@ inline Status GetConnectionStatus(StreamSocketRef sock)
   return NET_GetConnectionStatus(sock);
 }
 
-inline Status StreamSocket::GetConnectionStatus()
+inline Status StreamSocketBase::GetConnectionStatus()
 {
   return SDL::GetConnectionStatus(get());
 }
@@ -2234,7 +2262,7 @@ inline bool WriteToStreamSocket(StreamSocketRef sock,
   return NET_WriteToStreamSocket(sock, buf, buflen);
 }
 
-inline bool StreamSocket::WriteTo(const void* buf, int buflen)
+inline bool StreamSocketBase::WriteTo(const void* buf, int buflen)
 {
   return SDL::WriteToStreamSocket(get(), buf, buflen);
 }
@@ -2274,7 +2302,7 @@ inline int GetStreamSocketPendingWrites(StreamSocketRef sock)
   return NET_GetStreamSocketPendingWrites(sock);
 }
 
-inline int StreamSocket::GetPendingWrites()
+inline int StreamSocketBase::GetPendingWrites()
 {
   return SDL::GetStreamSocketPendingWrites(get());
 }
@@ -2322,7 +2350,7 @@ inline int WaitUntilStreamSocketDrained(StreamSocketRef sock, Sint32 timeout)
   return NET_WaitUntilStreamSocketDrained(sock, timeout);
 }
 
-inline int StreamSocket::WaitUntilDrained(Sint32 timeout)
+inline int StreamSocketBase::WaitUntilDrained(Sint32 timeout)
 {
   return SDL::WaitUntilStreamSocketDrained(get(), timeout);
 }
@@ -2380,7 +2408,7 @@ inline int ReadFromStreamSocket(StreamSocketRef sock, void* buf, int buflen)
   return NET_ReadFromStreamSocket(sock, buf, buflen);
 }
 
-inline int StreamSocket::ReadFrom(void* buf, int buflen)
+inline int StreamSocketBase::ReadFrom(void* buf, int buflen)
 {
   return SDL::ReadFromStreamSocket(get(), buf, buflen);
 }
@@ -2427,7 +2455,7 @@ inline void SimulateStreamPacketLoss(StreamSocketRef sock, int percent_loss)
   NET_SimulateStreamPacketLoss(sock, percent_loss);
 }
 
-inline void StreamSocket::SimulateStreamPacketLoss(int percent_loss)
+inline void StreamSocketBase::SimulateStreamPacketLoss(int percent_loss)
 {
   SDL::SimulateStreamPacketLoss(get(), percent_loss);
 }
@@ -2464,161 +2492,16 @@ inline void DestroyStreamSocket(StreamSocketRaw sock)
   NET_DestroyStreamSocket(sock);
 }
 
-inline void StreamSocket::Destroy() { DestroyStreamSocket(release()); }
+inline void StreamSocketBase::Destroy() { DestroyStreamSocket(release()); }
 
 /**
- * An object that represents a datagram connection to another system.
+ * Base class to DatagramSocket.
  *
- * This is meant to be an unreliable, packet-oriented connection, such as UDP.
- *
- * Datagram sockets follow different rules than stream sockets. They are not a
- * reliable stream of bytes but rather packets, they are not limited to talking
- * to a single other remote system, they do not maintain a single "connection"
- * that can be dropped, and they are more nimble about network failures at the
- * expense of being more complex to use. What makes sense for your app depends
- * entirely on what your app is trying to accomplish.
- *
- * Generally the idea of a datagram socket is that you send data one chunk
- * ("packet") at a time to any address you want, and it arrives whenever it gets
- * there, even if later packets get there first, and maybe it doesn't get there
- * at all, and you don't know when anything of this happens by default.
- *
- * @since This datatype is available since SDL_net 3.0.0.
- *
- * @sa CreateDatagramSocket
- * @sa SendDatagram
- * @sa ReceiveDatagram
- *
- * @cat resource
+ * @see DatagramSocket
  */
-struct DatagramSocket : ResourceBase<DatagramSocketRaw>
+struct DatagramSocketBase : ResourceBaseT<DatagramSocketRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw DatagramSocket.
-   *
-   * @param resource a DatagramSocketRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit DatagramSocket(DatagramSocketRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr DatagramSocket(const DatagramSocket& other) = delete;
-
-  /// Move constructor
-  constexpr DatagramSocket(DatagramSocket&& other) noexcept
-    : DatagramSocket(other.release())
-  {
-  }
-
-  constexpr DatagramSocket(const DatagramSocketRef& other) = delete;
-
-  constexpr DatagramSocket(DatagramSocketRef&& other) = delete;
-
-  /**
-   * Create and bind a new datagram socket.
-   *
-   * Datagram sockets follow different rules than stream sockets. They are not a
-   * reliable stream of bytes but rather packets, they are not limited to
-   * talking to a single other remote system, they do not maintain a single
-   * "connection" that can be dropped, and they are more nimble about network
-   * failures at the expense of being more complex to use. What makes sense for
-   * your app depends entirely on what your app is trying to accomplish.
-   *
-   * Generally the idea of a datagram socket is that you send data one chunk
-   * ("packet") at a time to any address you want, and it arrives whenever it
-   * gets there, even if later packets get there first, and maybe it doesn't get
-   * there at all, and you don't know when anything of this happens by default.
-   *
-   * This function creates a new datagram socket.
-   *
-   * This function does not block, and is not asynchronous, as the system can
-   * decide immediately if it can create a socket or not. If this returns
-   * success, you can immediately start talking to the network.
-   *
-   * You can specify an address to listen for connections on; this address must
-   * be local to the system, and probably one returned by GetLocalAddresses(),
-   * but almost always you just want to specify nullptr here, to listen on any
-   * address available to the app.
-   *
-   * If you need to bind to a specific port (like a server), you should specify
-   * it in the `port` argument; datagram servers should do this, so they can be
-   * reached at a well-known port. If you only plan to initiate communications
-   * (like a client), you should specify 0 and let the system pick an unused
-   * port. Only one process can bind to a specific port at a time, so if you
-   * aren't acting as a server, you should choose 0. Datagram sockets can send
-   * individual packets to any port, so this just declares where data will
-   * arrive for your socket.
-   *
-   * Datagram sockets don't employ any protocol (above the UDP level), so they
-   * can talk to apps that aren't using SDL_net, but if you want to speak any
-   * protocol beyond arbitrary packets of bytes, such as WebRTC, you'll have to
-   * implement that yourself on top of the stream socket.
-   *
-   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
-   * you do not have to byteswap it into "network order," as the library will
-   * handle that for you.
-   *
-   * The caller may supply properties to customize behavior. This is optional,
-   * and a value of zero for `props` will request defaults for all properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be
-   *   created even if a previous socket has recently used this address. For
-   *   various reasons, networks prefer that there be some delay between apps
-   *   reusing the same address, but this can be problematic when iterating
-   *   quickly, for software development purposes or just restarting a crashed
-   *   service. This property defaults to true (although it should be noted
-   *   that, at the operating system level, this defaults to false!). If this
-   *   property is false and the OS feels that not enough time has elapsed,
-   *   socket creation will fail and this function will report an error.
-   * - `prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should
-   *   allow broadcasting. At the lower level, this will set `SO_BROADCAST` for
-   *   IPv4 sockets, to allow sending to the subnet's broadcast address at the
-   *   OS level. For IPv6, it'll join the all-nodes link-local multicast group,
-   *   ff02::1, allowing sending and receiving there, more or less simulating
-   *   the usual IPv4 broadcast semantics. Other protocols take similar
-   *   approaches. If you do not intend to send or receive broadcast packets on
-   *   this socket, set this property to false, or omit it, as it defaults to
-   *   false. Note: IPv4 will still be able to receive broadcast packets without
-   *   this option, but IPv6 will not. Also see notes about sending to a
-   *   broadcast address in SendDatagram().
-   *
-   * @param addr the local address to listen for connections on, or nullptr to
-   *             listen on all available local addresses.
-   * @param port the port on the local address to listen for connections on, or
-   *             zero for the system to decide.
-   * @param props properties of the new socket. Specify zero for defaults.
-   * @post a new DatagramSocket on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_net 3.0.0.
-   *
-   * @sa GetLocalAddresses
-   * @sa DestroyDatagramSocket
-   */
-  DatagramSocket(AddressRef addr, Uint16 port, PropertiesRef props);
-
-  /// Destructor
-  ~DatagramSocket() { NET_DestroyDatagramSocket(get()); }
-
-  /// Assignment operator.
-  constexpr DatagramSocket& operator=(DatagramSocket&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  DatagramSocket& operator=(const DatagramSocket& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Dispose of a previously-created datagram socket.
@@ -2855,106 +2738,161 @@ struct DatagramSocket : ResourceBase<DatagramSocketRaw>
 };
 
 /**
- * The data provided for new incoming packets from ReceiveDatagram().
+ * An object that represents a datagram connection to another system.
+ *
+ * This is meant to be an unreliable, packet-oriented connection, such as UDP.
+ *
+ * Datagram sockets follow different rules than stream sockets. They are not a
+ * reliable stream of bytes but rather packets, they are not limited to talking
+ * to a single other remote system, they do not maintain a single "connection"
+ * that can be dropped, and they are more nimble about network failures at the
+ * expense of being more complex to use. What makes sense for your app depends
+ * entirely on what your app is trying to accomplish.
+ *
+ * Generally the idea of a datagram socket is that you send data one chunk
+ * ("packet") at a time to any address you want, and it arrives whenever it gets
+ * there, even if later packets get there first, and maybe it doesn't get there
+ * at all, and you don't know when anything of this happens by default.
  *
  * @since This datatype is available since SDL_net 3.0.0.
  *
+ * @sa CreateDatagramSocket
+ * @sa SendDatagram
  * @sa ReceiveDatagram
- * @sa DestroyDatagram
  *
  * @cat resource
  */
-struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
+struct DatagramSocket : DatagramSocketBase
 {
-  using ResourceBase::ResourceBase;
+  using DatagramSocketBase::DatagramSocketBase;
 
   /**
-   * Constructs from raw Datagram.
+   * Constructs from raw DatagramSocket.
    *
-   * @param resource a DatagramRaw to be wrapped.
+   * @param resource a DatagramSocketRaw to be wrapped.
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Datagram(DatagramRaw resource) noexcept
-    : ResourceBase(resource)
+  constexpr explicit DatagramSocket(DatagramSocketRaw resource) noexcept
+    : DatagramSocketBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Datagram(const Datagram& other) = delete;
 
   /// Move constructor
-  constexpr Datagram(Datagram&& other) noexcept
-    : Datagram(other.release())
+  constexpr DatagramSocket(DatagramSocket&& other) noexcept
+    : DatagramSocket(other.release())
   {
   }
 
-  constexpr Datagram(const DatagramRef& other) = delete;
-
-  constexpr Datagram(DatagramRef&& other) = delete;
-
   /**
-   * Receive a new packet that a remote system sent to a datagram socket.
+   * Create and bind a new datagram socket.
    *
-   * Datagram sockets send packets of data. They either arrive as complete
-   * packets or they don't arrive at all, so you'll never receive half a packet.
+   * Datagram sockets follow different rules than stream sockets. They are not a
+   * reliable stream of bytes but rather packets, they are not limited to
+   * talking to a single other remote system, they do not maintain a single
+   * "connection" that can be dropped, and they are more nimble about network
+   * failures at the expense of being more complex to use. What makes sense for
+   * your app depends entirely on what your app is trying to accomplish.
    *
-   * This call never blocks; if no new data is available at the time of the
-   * call, it returns true immediately. The caller can try again later.
+   * Generally the idea of a datagram socket is that you send data one chunk
+   * ("packet") at a time to any address you want, and it arrives whenever it
+   * gets there, even if later packets get there first, and maybe it doesn't get
+   * there at all, and you don't know when anything of this happens by default.
    *
-   * On a successful call to this function, it returns true, even if no new
-   * packets are available, so you should check for a successful return and a
-   * non-nullptr value in `*dgram` to decide if a new packet is available.
+   * This function creates a new datagram socket.
    *
-   * You must pass received packets to DestroyDatagram when you are done with
-   * them. If you want to save the sender's address past this time, it is safe
-   * to call RefAddress() on the address and hold onto the pointer, so long as
-   * you call UnrefAddress() on it when you are done with it.
+   * This function does not block, and is not asynchronous, as the system can
+   * decide immediately if it can create a socket or not. If this returns
+   * success, you can immediately start talking to the network.
    *
-   * Since datagrams can arrive from any address or port on the network without
-   * prior warning, this information is available in the Datagram object that is
-   * provided by this function, and this is the only way to know who to reply
-   * to. Even if you aren't acting as a "server," packets can still arrive at
-   * your socket if someone sends one.
+   * You can specify an address to listen for connections on; this address must
+   * be local to the system, and probably one returned by GetLocalAddresses(),
+   * but almost always you just want to specify nullptr here, to listen on any
+   * address available to the app.
    *
-   * If there's a fatal error, this function will return false. Datagram sockets
-   * generally won't report failures, because there is no state like a
-   * "connection" to fail at this level, but may report failure for
-   * unrecoverable system-level conditions; once a datagram socket fails, you
-   * should assume it is no longer usable and should destroy it with
-   * DestroyDatagramSocket().
+   * If you need to bind to a specific port (like a server), you should specify
+   * it in the `port` argument; datagram servers should do this, so they can be
+   * reached at a well-known port. If you only plan to initiate communications
+   * (like a client), you should specify 0 and let the system pick an unused
+   * port. Only one process can bind to a specific port at a time, so if you
+   * aren't acting as a server, you should choose 0. Datagram sockets can send
+   * individual packets to any port, so this just declares where data will
+   * arrive for your socket.
    *
-   * @param sock the datagram socket to send data through.
-   * @post a valid Datagram object if data sent or queued for transmission,
-   *       nullptr on failure; call GetError() for details.
+   * Datagram sockets don't employ any protocol (above the UDP level), so they
+   * can talk to apps that aren't using SDL_net, but if you want to speak any
+   * protocol beyond arbitrary packets of bytes, such as WebRTC, you'll have to
+   * implement that yourself on top of the stream socket.
    *
-   * @threadsafety You should not operate on the same socket from multiple
-   *               threads at the same time without supplying a serialization
-   *               mechanism. However, different threads may access different
-   *               sockets at the same time without problems.
+   * Unlike BSD sockets or WinSock, you specify the port as a normal integer;
+   * you do not have to byteswap it into "network order," as the library will
+   * handle that for you.
+   *
+   * The caller may supply properties to customize behavior. This is optional,
+   * and a value of zero for `props` will request defaults for all properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop.DatagramSocket.REUSEADDR_BOOLEAN`: true if the socket should be
+   *   created even if a previous socket has recently used this address. For
+   *   various reasons, networks prefer that there be some delay between apps
+   *   reusing the same address, but this can be problematic when iterating
+   *   quickly, for software development purposes or just restarting a crashed
+   *   service. This property defaults to true (although it should be noted
+   *   that, at the operating system level, this defaults to false!). If this
+   *   property is false and the OS feels that not enough time has elapsed,
+   *   socket creation will fail and this function will report an error.
+   * - `prop.DatagramSocket.ALLOW_BROADCAST_BOOLEAN`: true if the socket should
+   *   allow broadcasting. At the lower level, this will set `SO_BROADCAST` for
+   *   IPv4 sockets, to allow sending to the subnet's broadcast address at the
+   *   OS level. For IPv6, it'll join the all-nodes link-local multicast group,
+   *   ff02::1, allowing sending and receiving there, more or less simulating
+   *   the usual IPv4 broadcast semantics. Other protocols take similar
+   *   approaches. If you do not intend to send or receive broadcast packets on
+   *   this socket, set this property to false, or omit it, as it defaults to
+   *   false. Note: IPv4 will still be able to receive broadcast packets without
+   *   this option, but IPv6 will not. Also see notes about sending to a
+   *   broadcast address in SendDatagram().
+   *
+   * @param addr the local address to listen for connections on, or nullptr to
+   *             listen on all available local addresses.
+   * @param port the port on the local address to listen for connections on, or
+   *             zero for the system to decide.
+   * @param props properties of the new socket. Specify zero for defaults.
+   * @post a new DatagramSocket on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_net 3.0.0.
    *
-   * @sa SendDatagram
-   * @sa DestroyDatagram
+   * @sa GetLocalAddresses
+   * @sa DestroyDatagramSocket
    */
-  Datagram(DatagramSocketRef sock);
-
-  /// Converts to DatagramConstRef
-  constexpr operator DatagramConstRef() const noexcept { return get(); }
+  DatagramSocket(AddressRef addr, Uint16 port, PropertiesRef props);
 
   /// Destructor
-  ~Datagram() { NET_DestroyDatagram(get()); }
+  ~DatagramSocket() { NET_DestroyDatagramSocket(get()); }
 
   /// Assignment operator.
-  constexpr Datagram& operator=(Datagram&& other) noexcept
+  constexpr DatagramSocket& operator=(DatagramSocket&& other) noexcept
   {
     swap(*this, other);
     return *this;
   }
+};
 
-  /// Assignment operator.
-  Datagram& operator=(const Datagram& other) = delete;
+/**
+ * Base class to Datagram.
+ *
+ * @see Datagram
+ */
+struct DatagramBase : ResourceBaseT<DatagramRaw, DatagramRawConst>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /// Converts to DatagramConstRef
+  constexpr operator DatagramConstRef() const noexcept { return get(); }
 
   /**
    * Dispose of a datagram packet previously received.
@@ -3022,6 +2960,96 @@ struct Datagram : ResourceBase<DatagramRaw, DatagramRawConst>
    * @sa DestroyDatagram
    */
   bool Receive(DatagramSocketRef sock);
+};
+
+/**
+ * The data provided for new incoming packets from ReceiveDatagram().
+ *
+ * @since This datatype is available since SDL_net 3.0.0.
+ *
+ * @sa ReceiveDatagram
+ * @sa DestroyDatagram
+ *
+ * @cat resource
+ */
+struct Datagram : DatagramBase
+{
+  using DatagramBase::DatagramBase;
+
+  /**
+   * Constructs from raw Datagram.
+   *
+   * @param resource a DatagramRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Datagram(DatagramRaw resource) noexcept
+    : DatagramBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Datagram(Datagram&& other) noexcept
+    : Datagram(other.release())
+  {
+  }
+
+  /**
+   * Receive a new packet that a remote system sent to a datagram socket.
+   *
+   * Datagram sockets send packets of data. They either arrive as complete
+   * packets or they don't arrive at all, so you'll never receive half a packet.
+   *
+   * This call never blocks; if no new data is available at the time of the
+   * call, it returns true immediately. The caller can try again later.
+   *
+   * On a successful call to this function, it returns true, even if no new
+   * packets are available, so you should check for a successful return and a
+   * non-nullptr value in `*dgram` to decide if a new packet is available.
+   *
+   * You must pass received packets to DestroyDatagram when you are done with
+   * them. If you want to save the sender's address past this time, it is safe
+   * to call RefAddress() on the address and hold onto the pointer, so long as
+   * you call UnrefAddress() on it when you are done with it.
+   *
+   * Since datagrams can arrive from any address or port on the network without
+   * prior warning, this information is available in the Datagram object that is
+   * provided by this function, and this is the only way to know who to reply
+   * to. Even if you aren't acting as a "server," packets can still arrive at
+   * your socket if someone sends one.
+   *
+   * If there's a fatal error, this function will return false. Datagram sockets
+   * generally won't report failures, because there is no state like a
+   * "connection" to fail at this level, but may report failure for
+   * unrecoverable system-level conditions; once a datagram socket fails, you
+   * should assume it is no longer usable and should destroy it with
+   * DestroyDatagramSocket().
+   *
+   * @param sock the datagram socket to send data through.
+   * @post a valid Datagram object if data sent or queued for transmission,
+   *       nullptr on failure; call GetError() for details.
+   *
+   * @threadsafety You should not operate on the same socket from multiple
+   *               threads at the same time without supplying a serialization
+   *               mechanism. However, different threads may access different
+   *               sockets at the same time without problems.
+   *
+   * @since This function is available since SDL_net 3.0.0.
+   *
+   * @sa SendDatagram
+   * @sa DestroyDatagram
+   */
+  Datagram(DatagramSocketRef sock);
+
+  /// Destructor
+  ~Datagram() { NET_DestroyDatagram(get()); }
+
+  /// Assignment operator.
+  constexpr Datagram& operator=(Datagram&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
 };
 
 /**
@@ -3116,8 +3144,8 @@ inline DatagramSocket CreateDatagramSocket(AddressRef addr,
   return DatagramSocket(addr, port, props);
 }
 
-inline DatagramSocket Address::CreateDatagramSocket(Uint16 port,
-                                                    PropertiesRef props)
+inline DatagramSocket AddressBase::CreateDatagramSocket(Uint16 port,
+                                                        PropertiesRef props)
 {
   return DatagramSocket(get(), port, props);
 }
@@ -3227,10 +3255,10 @@ inline bool SendDatagram(DatagramSocketRef sock,
   return NET_SendDatagram(sock, address, port, buf, buflen);
 }
 
-inline bool DatagramSocket::SendDatagram(AddressRef address,
-                                         Uint16 port,
-                                         const void* buf,
-                                         int buflen)
+inline bool DatagramSocketBase::SendDatagram(AddressRef address,
+                                             Uint16 port,
+                                             const void* buf,
+                                             int buflen)
 {
   return SDL::SendDatagram(get(), address, port, buf, buflen);
 }
@@ -3336,12 +3364,12 @@ inline Datagram ReceiveDatagram(DatagramSocketRef sock)
   return dgram;
 }
 
-inline bool DatagramSocket::ReceiveDatagram(Datagram& dgram)
+inline bool DatagramSocketBase::ReceiveDatagram(Datagram& dgram)
 {
   return dgram.Receive(*this);
 }
 
-inline Datagram DatagramSocket::ReceiveDatagram()
+inline Datagram DatagramSocketBase::ReceiveDatagram()
 {
   return SDL::ReceiveDatagram(get());
 }
@@ -3351,7 +3379,7 @@ inline Datagram::Datagram(DatagramSocketRef sock)
 {
 }
 
-inline bool Datagram::Receive(DatagramSocketRef sock)
+inline bool DatagramBase::Receive(DatagramSocketRef sock)
 {
   DatagramRaw dgram;
   if (!NET_ReceiveDatagram(sock, &dgram)) return false;
@@ -3381,7 +3409,7 @@ inline bool Datagram::Receive(DatagramSocketRef sock)
  */
 inline void DestroyDatagram(DatagramRaw dgram) { NET_DestroyDatagram(dgram); }
 
-inline void Datagram::Destroy() { DestroyDatagram(release()); }
+inline void DatagramBase::Destroy() { DestroyDatagram(release()); }
 
 /**
  * Enable simulated datagram socket failures.
@@ -3418,7 +3446,7 @@ inline void SimulateDatagramPacketLoss(DatagramSocketRef sock, int percent_loss)
   NET_SimulateDatagramPacketLoss(sock, percent_loss);
 }
 
-inline void DatagramSocket::SimulateDatagramPacketLoss(int percent_loss)
+inline void DatagramSocketBase::SimulateDatagramPacketLoss(int percent_loss)
 {
   SDL::SimulateDatagramPacketLoss(get(), percent_loss);
 }
@@ -3453,7 +3481,7 @@ inline void DestroyDatagramSocket(DatagramSocketRaw sock)
   NET_DestroyDatagramSocket(sock);
 }
 
-inline void DatagramSocket::Destroy() { DestroyDatagramSocket(release()); }
+inline void DatagramSocketBase::Destroy() { DestroyDatagramSocket(release()); }
 
 /**
  * Block on multiple sockets until at least one has data available.

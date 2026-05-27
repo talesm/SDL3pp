@@ -86,6 +86,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct AsyncIOBase;
+
+// Forward decl
 struct AsyncIO;
 
 /// Alias to raw representation for AsyncIO.
@@ -96,7 +99,10 @@ using AsyncIORaw = SDL_AsyncIO*;
  *
  * This does not take ownership!
  */
-using AsyncIORef = ResourceRef<AsyncIO>;
+using AsyncIORef = ResourceRefT<AsyncIOBase>;
+
+// Forward decl
+struct AsyncIOQueueBase;
 
 // Forward decl
 struct AsyncIOQueue;
@@ -109,108 +115,16 @@ using AsyncIOQueueRaw = SDL_AsyncIOQueue*;
  *
  * This does not take ownership!
  */
-using AsyncIOQueueRef = ResourceRef<AsyncIOQueue>;
+using AsyncIOQueueRef = ResourceRefT<AsyncIOQueueBase>;
 
 /**
- * The asynchronous I/O operation structure.
+ * Base class to AsyncIO.
  *
- * This operates as an opaque handle. One can then request read or write
- * operations on it.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa AsyncIOFromFile
- *
- * @cat resource
+ * @see AsyncIO
  */
-struct AsyncIO : ResourceBase<AsyncIORaw>
+struct AsyncIOBase : ResourceBaseT<AsyncIORaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw AsyncIO.
-   *
-   * @param resource a AsyncIORaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit AsyncIO(AsyncIORaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) = delete;
-
-  /// Move constructor
-  constexpr AsyncIO(AsyncIO&& other) noexcept
-    : AsyncIO(other.release())
-  {
-  }
-
-  constexpr AsyncIO(const AsyncIORef& other) = delete;
-
-  constexpr AsyncIO(AsyncIORef&& other) = delete;
-
-  /**
-   * Use this function to create a new AsyncIO object for reading from and/or
-   * writing to a named file.
-   *
-   * The `mode` string understands the following values:
-   *
-   * - "r": Open a file for reading only. It must exist.
-   * - "w": Open a file for writing only. It will create missing files or
-   *   truncate existing ones.
-   * - "r+": Open a file for update both reading and writing. The file must
-   *   exist.
-   * - "w+": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists its content is erased and the file is
-   *   treated as a new empty file.
-   *
-   * There is no "b" mode, as there is only "binary" style I/O, and no "a" mode
-   * for appending, since you specify the position when starting a task.
-   *
-   * This function supports Unicode filenames, but they must be encoded in UTF-8
-   * format, regardless of the underlying operating system.
-   *
-   * This call is _not_ asynchronous; it will open the file before returning,
-   * under the assumption that doing so is generally a fast operation. Future
-   * reads and writes to the opened file will be async, however.
-   *
-   * @param file a UTF-8 string representing the filename to open.
-   * @param mode an ASCII string representing the mode to be used for opening
-   *             the file.
-   * @post a pointer to the AsyncIO structure that is created or nullptr on
-   *       failure; call GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseAsyncIO
-   * @sa ReadAsyncIO
-   * @sa WriteAsyncIO
-   */
-  AsyncIO(StringParam file, StringParam mode);
-
-  /// Destructor
-  ~AsyncIO()
-  {
-    if (get()) {
-      LOG_CATEGORY_ERROR.LogDebug("AsyncIO ID was not properly Destroyed: {}",
-                                  (void*)(get()));
-    }
-  }
-
-  /// Assignment operator.
-  constexpr AsyncIO& operator=(AsyncIO&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  AsyncIO& operator=(const AsyncIO& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Close and free any allocated resources for an async I/O object.
@@ -356,6 +270,98 @@ struct AsyncIO : ResourceBase<AsyncIORaw>
 };
 
 /**
+ * The asynchronous I/O operation structure.
+ *
+ * This operates as an opaque handle. One can then request read or write
+ * operations on it.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa AsyncIOFromFile
+ *
+ * @cat resource
+ */
+struct AsyncIO : AsyncIOBase
+{
+  using AsyncIOBase::AsyncIOBase;
+
+  /**
+   * Constructs from raw AsyncIO.
+   *
+   * @param resource a AsyncIORaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit AsyncIO(AsyncIORaw resource) noexcept
+    : AsyncIOBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr AsyncIO(AsyncIO&& other) noexcept
+    : AsyncIO(other.release())
+  {
+  }
+
+  /**
+   * Use this function to create a new AsyncIO object for reading from and/or
+   * writing to a named file.
+   *
+   * The `mode` string understands the following values:
+   *
+   * - "r": Open a file for reading only. It must exist.
+   * - "w": Open a file for writing only. It will create missing files or
+   *   truncate existing ones.
+   * - "r+": Open a file for update both reading and writing. The file must
+   *   exist.
+   * - "w+": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists its content is erased and the file is
+   *   treated as a new empty file.
+   *
+   * There is no "b" mode, as there is only "binary" style I/O, and no "a" mode
+   * for appending, since you specify the position when starting a task.
+   *
+   * This function supports Unicode filenames, but they must be encoded in UTF-8
+   * format, regardless of the underlying operating system.
+   *
+   * This call is _not_ asynchronous; it will open the file before returning,
+   * under the assumption that doing so is generally a fast operation. Future
+   * reads and writes to the opened file will be async, however.
+   *
+   * @param file a UTF-8 string representing the filename to open.
+   * @param mode an ASCII string representing the mode to be used for opening
+   *             the file.
+   * @post a pointer to the AsyncIO structure that is created or nullptr on
+   *       failure; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseAsyncIO
+   * @sa ReadAsyncIO
+   * @sa WriteAsyncIO
+   */
+  AsyncIO(StringParam file, StringParam mode);
+
+  /// Destructor
+  ~AsyncIO()
+  {
+    if (get()) {
+      LOG_CATEGORY_ERROR.LogDebug("AsyncIO ID was not properly Destroyed: {}",
+                                  (void*)(get()));
+    }
+  }
+
+  /// Assignment operator.
+  constexpr AsyncIO& operator=(AsyncIO&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Types of asynchronous I/O tasks.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -395,83 +401,13 @@ constexpr AsyncIOResult ASYNCIO_CANCELED =
 using AsyncIOOutcome = SDL_AsyncIOOutcome;
 
 /**
- * A queue of completed asynchronous I/O tasks.
+ * Base class to AsyncIOQueue.
  *
- * When starting an asynchronous operation, you specify a queue for the new
- * task. A queue can be asked later if any tasks in it have completed, allowing
- * an app to manage multiple pending tasks in one place, in whatever order they
- * complete.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa CreateAsyncIOQueue
- * @sa ReadAsyncIO
- * @sa WriteAsyncIO
- * @sa GetAsyncIOResult
- * @sa WaitAsyncIOResult
- *
- * @cat resource
+ * @see AsyncIOQueue
  */
-struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
+struct AsyncIOQueueBase : ResourceBaseT<AsyncIOQueueRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw AsyncIOQueue.
-   *
-   * @param resource a AsyncIOQueueRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit AsyncIOQueue(AsyncIOQueueRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
-
-  /// Move constructor
-  constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
-    : AsyncIOQueue(other.release())
-  {
-  }
-
-  constexpr AsyncIOQueue(const AsyncIOQueueRef& other) = delete;
-
-  constexpr AsyncIOQueue(AsyncIOQueueRef&& other) = delete;
-
-  /**
-   * Create a task queue for tracking multiple I/O operations.
-   *
-   * Async I/O operations are assigned to a queue when started. The queue can be
-   * checked for completed tasks thereafter.
-   *
-   * @post a new task queue object or nullptr if there was an error; call
-   *       GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyAsyncIOQueue
-   * @sa GetAsyncIOResult
-   * @sa WaitAsyncIOResult
-   */
-  AsyncIOQueue();
-
-  /// Destructor
-  ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(get()); }
-
-  /// Assignment operator.
-  constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  AsyncIOQueue& operator=(const AsyncIOQueue& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Destroy a previously-created async I/O task queue.
@@ -629,6 +565,76 @@ struct AsyncIOQueue : ResourceBase<AsyncIOQueueRaw>
 };
 
 /**
+ * A queue of completed asynchronous I/O tasks.
+ *
+ * When starting an asynchronous operation, you specify a queue for the new
+ * task. A queue can be asked later if any tasks in it have completed, allowing
+ * an app to manage multiple pending tasks in one place, in whatever order they
+ * complete.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa CreateAsyncIOQueue
+ * @sa ReadAsyncIO
+ * @sa WriteAsyncIO
+ * @sa GetAsyncIOResult
+ * @sa WaitAsyncIOResult
+ *
+ * @cat resource
+ */
+struct AsyncIOQueue : AsyncIOQueueBase
+{
+  using AsyncIOQueueBase::AsyncIOQueueBase;
+
+  /**
+   * Constructs from raw AsyncIOQueue.
+   *
+   * @param resource a AsyncIOQueueRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit AsyncIOQueue(AsyncIOQueueRaw resource) noexcept
+    : AsyncIOQueueBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
+    : AsyncIOQueue(other.release())
+  {
+  }
+
+  /**
+   * Create a task queue for tracking multiple I/O operations.
+   *
+   * Async I/O operations are assigned to a queue when started. The queue can be
+   * checked for completed tasks thereafter.
+   *
+   * @post a new task queue object or nullptr if there was an error; call
+   *       GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyAsyncIOQueue
+   * @sa GetAsyncIOResult
+   * @sa WaitAsyncIOResult
+   */
+  AsyncIOQueue();
+
+  /// Destructor
+  ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(get()); }
+
+  /// Assignment operator.
+  constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Use this function to create a new AsyncIO object for reading from and/or
  * writing to a named file.
  *
@@ -695,7 +701,7 @@ inline Sint64 GetAsyncIOSize(AsyncIORef asyncio)
   return CheckError(SDL_GetAsyncIOSize(asyncio));
 }
 
-inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(get()); }
+inline Sint64 AsyncIOBase::GetSize() { return SDL::GetAsyncIOSize(get()); }
 
 /**
  * Start an async read.
@@ -742,11 +748,11 @@ inline void ReadAsyncIO(AsyncIORef asyncio,
   CheckError(SDL_ReadAsyncIO(asyncio, ptr, offset, size, queue, userdata));
 }
 
-inline void AsyncIO::Read(void* ptr,
-                          Uint64 offset,
-                          Uint64 size,
-                          AsyncIOQueueRef queue,
-                          void* userdata)
+inline void AsyncIOBase::Read(void* ptr,
+                              Uint64 offset,
+                              Uint64 size,
+                              AsyncIOQueueRef queue,
+                              void* userdata)
 {
   SDL::ReadAsyncIO(get(), ptr, offset, size, queue, userdata);
 }
@@ -795,11 +801,11 @@ inline void WriteAsyncIO(AsyncIORef asyncio,
   CheckError(SDL_WriteAsyncIO(asyncio, ptr, offset, size, queue, userdata));
 }
 
-inline void AsyncIO::Write(void* ptr,
-                           Uint64 offset,
-                           Uint64 size,
-                           AsyncIOQueueRef queue,
-                           void* userdata)
+inline void AsyncIOBase::Write(void* ptr,
+                               Uint64 offset,
+                               Uint64 size,
+                               AsyncIOQueueRef queue,
+                               void* userdata)
 {
   SDL::WriteAsyncIO(get(), ptr, offset, size, queue, userdata);
 }
@@ -858,7 +864,9 @@ inline bool CloseAsyncIO(AsyncIORaw asyncio,
   return SDL_CloseAsyncIO(asyncio, flush, queue, userdata);
 }
 
-inline bool AsyncIO::Close(bool flush, AsyncIOQueueRef queue, void* userdata)
+inline bool AsyncIOBase::Close(bool flush,
+                               AsyncIOQueueRef queue,
+                               void* userdata)
 {
   return CloseAsyncIO(release(), flush, queue, userdata);
 }
@@ -918,7 +926,7 @@ inline void DestroyAsyncIOQueue(AsyncIOQueueRaw queue)
   SDL_DestroyAsyncIOQueue(queue);
 }
 
-inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
+inline void AsyncIOQueueBase::Destroy() { DestroyAsyncIOQueue(release()); }
 
 /**
  * Query an async I/O task queue for completed tasks.
@@ -951,7 +959,7 @@ inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueRef queue)
   return std::nullopt;
 }
 
-inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
+inline std::optional<AsyncIOOutcome> AsyncIOQueueBase::GetResult()
 {
   return SDL::GetAsyncIOResult(get());
 }
@@ -1051,13 +1059,13 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueRef queue)
   return std::nullopt;
 }
 
-inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult(
+inline std::optional<AsyncIOOutcome> AsyncIOQueueBase::WaitResult(
   Milliseconds timeout)
 {
   return SDL::WaitAsyncIOResult(get(), timeout);
 }
 
-inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
+inline std::optional<AsyncIOOutcome> AsyncIOQueueBase::WaitResult()
 {
   return SDL::WaitAsyncIOResult(get());
 }
@@ -1089,7 +1097,7 @@ inline void SignalAsyncIOQueue(AsyncIOQueueRef queue)
   SDL_SignalAsyncIOQueue(queue);
 }
 
-inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(get()); }
+inline void AsyncIOQueueBase::Signal() { SDL::SignalAsyncIOQueue(get()); }
 
 /**
  * Load all the data from a file path, asynchronously.

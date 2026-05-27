@@ -92,6 +92,9 @@ using FColorRaw = SDL_FColor;
 struct FColor;
 
 // Forward decl
+struct PaletteBase;
+
+// Forward decl
 struct Palette;
 
 /// Alias to raw representation for Palette.
@@ -105,7 +108,7 @@ using PaletteRawConst = const SDL_Palette*;
  *
  * This does not take ownership!
  */
-using PaletteRef = ResourceRef<Palette>;
+using PaletteRef = ResourceRefT<PaletteBase>;
 
 /// Safely wrap Palette for non owning const parameters
 using PaletteConstRef = ResourceConstRef<PaletteRaw, PaletteRawConst>;
@@ -2424,100 +2427,16 @@ public:
 };
 
 /**
- * A set of indexed colors representing a palette.
+ * Base class to Palette.
  *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa SetPaletteColors
- *
- * @cat resource
+ * @see Palette
  */
-struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
+struct PaletteBase : ResourceBaseT<PaletteRaw, PaletteRawConst>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Palette.
-   *
-   * @param resource a PaletteRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Palette(PaletteRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Palette(const Palette& other)
-    : Palette(other.get())
-  {
-    if (auto res = get()) ++res->refcount;
-  }
-
-  /// Move constructor
-  constexpr Palette(Palette&& other) noexcept
-    : Palette(other.release())
-  {
-  }
-
-  /**
-   * Create a palette structure with the specified number of color entries.
-   *
-   * The palette entries are initialized to white.
-   *
-   * @param ncolors represents the number of color entries in the color palette.
-   * @post a new Palette structure on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa DestroyPalette
-   * @sa SetPaletteColors
-   * @sa SetSurfacePalette
-   */
-  Palette(int ncolors);
-
-  /**
-   * Safely borrows the from PaletteRaw.
-   *
-   * @param resource a PaletteRaw.
-   *
-   * This does not takes ownership!
-   */
-  static Palette Borrow(PaletteRaw resource)
-  {
-    if (resource) {
-      ++resource->refcount;
-      return Palette(resource);
-    }
-    return {};
-  }
+  using ResourceBaseT::ResourceBaseT;
 
   /// Converts to PaletteConstRef
   constexpr operator PaletteConstRef() const noexcept { return get(); }
-
-  /// Destructor
-  ~Palette() { SDL_DestroyPalette(get()); }
-
-  /// Assignment operator.
-  constexpr Palette& operator=(Palette&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Palette& operator=(const Palette& other)
-  {
-    if (get() != other.get()) {
-      Palette tmp(other);
-      swap(*this, tmp);
-    }
-    return *this;
-  }
 
   /**
    * Free a palette created with CreatePalette().
@@ -2564,6 +2483,99 @@ struct Palette : ResourceBase<PaletteRaw, PaletteRawConst>
    * @sa Palette.Palette
    */
   void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
+};
+
+/**
+ * A set of indexed colors representing a palette.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa SetPaletteColors
+ *
+ * @cat resource
+ */
+struct Palette : PaletteBase
+{
+  using PaletteBase::PaletteBase;
+
+  /**
+   * Constructs from raw Palette.
+   *
+   * @param resource a PaletteRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Palette(PaletteRaw resource) noexcept
+    : PaletteBase(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Palette(const Palette& other)
+    : Palette(borrow(other.get()))
+  {
+  }
+
+  /// Move constructor
+  constexpr Palette(Palette&& other) noexcept
+    : Palette(other.release())
+  {
+  }
+
+  /**
+   * Create a palette structure with the specified number of color entries.
+   *
+   * The palette entries are initialized to white.
+   *
+   * @param ncolors represents the number of color entries in the color palette.
+   * @post a new Palette structure on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa DestroyPalette
+   * @sa SetPaletteColors
+   * @sa SetSurfacePalette
+   */
+  Palette(int ncolors);
+
+  /**
+   * Safely borrows the from PaletteRaw.
+   *
+   * @param resource a PaletteRaw.
+   *
+   * This does not takes ownership!
+   */
+  static Palette borrow(PaletteRaw resource)
+  {
+    if (resource) {
+      ++resource->refcount;
+      return Palette(resource);
+    }
+    return {};
+  }
+
+  /// Destructor
+  ~Palette() { SDL_DestroyPalette(get()); }
+
+  /// Assignment operator.
+  constexpr Palette& operator=(Palette&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+
+  /// Assignment operator.
+  Palette& operator=(const Palette& other)
+  {
+    if (get() != other.get()) {
+      Palette tmp(other);
+      swap(*this, tmp);
+    }
+    return *this;
+  }
 };
 
 /**
@@ -2736,7 +2748,8 @@ inline void SetPaletteColors(PaletteRef palette,
     palette, colors.data(), firstcolor, narrowS32(colors.size())));
 }
 
-inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
+inline void PaletteBase::SetColors(SpanRef<const ColorRaw> colors,
+                                   int firstcolor)
 {
   SDL::SetPaletteColors(get(), colors, firstcolor);
 }
@@ -2761,7 +2774,7 @@ inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
  */
 inline void DestroyPalette(PaletteRaw palette) { SDL_DestroyPalette(palette); }
 
-inline void Palette::Destroy() { DestroyPalette(release()); }
+inline void PaletteBase::Destroy() { DestroyPalette(release()); }
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.

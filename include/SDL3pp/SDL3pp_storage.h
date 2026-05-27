@@ -224,6 +224,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct StorageBase;
+
+// Forward decl
 struct Storage;
 
 /// Alias to raw representation for Storage.
@@ -234,7 +237,7 @@ using StorageRaw = SDL_Storage*;
  *
  * This does not take ownership!
  */
-using StorageRef = ResourceRef<Storage>;
+using StorageRef = ResourceRefT<StorageBase>;
 
 /**
  * Function interface for Storage.
@@ -255,157 +258,13 @@ using StorageRef = ResourceRef<Storage>;
 using StorageInterface = SDL_StorageInterface;
 
 /**
- * An abstract interface for filesystem access.
+ * Base class to Storage.
  *
- * This is an opaque datatype. One can create this object using standard SDL
- * functions like OpenTitleStorage or OpenUserStorage, etc, or create an object
- * with a custom implementation using OpenStorage.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
+ * @see Storage
  */
-struct Storage : ResourceBase<StorageRaw>
+struct StorageBase : ResourceBaseT<StorageRaw>
 {
-  using ResourceBase::ResourceBase;
-
-  /**
-   * Constructs from raw Storage.
-   *
-   * @param resource a StorageRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit Storage(StorageRaw resource) noexcept
-    : ResourceBase(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr Storage(const Storage& other) = delete;
-
-  /// Move constructor
-  constexpr Storage(Storage&& other) noexcept
-    : Storage(other.release())
-  {
-  }
-
-  constexpr Storage(const StorageRef& other) = delete;
-
-  constexpr Storage(StorageRef&& other) = delete;
-
-  /**
-   * Opens up a read-only container for the application's filesystem.
-   *
-   * By default, OpenTitleStorage uses the generic storage implementation. When
-   * the path override is not provided, the generic implementation will use the
-   * output of GetBasePath as the base path.
-   *
-   * @param override a path to override the backend's default title root.
-   * @param props a property list that may contain backend-specific information.
-   * @post a title storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa OpenUserStorage
-   * @sa ReadStorageFile
-   */
-  Storage(StringParam override, PropertiesRef props);
-
-  /**
-   * Opens up a container for a user's unique read/write filesystem.
-   *
-   * While title storage can generally be kept open throughout runtime, user
-   * storage should only be opened when the client is ready to read/write files.
-   * This allows the backend to properly batch file operations and flush them
-   * when the container has been closed; ensuring safe and optimal save I/O.
-   *
-   * @param org the name of your organization.
-   * @param app the name of your application.
-   * @param props a property list that may contain backend-specific information.
-   * @post a user storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa GetStorageSpaceRemaining
-   * @sa OpenTitleStorage
-   * @sa ReadStorageFile
-   * @sa StorageReady
-   * @sa WriteStorageFile
-   */
-  Storage(StringParam org, StringParam app, PropertiesRef props);
-
-  /**
-   * Opens up a container for local filesystem storage.
-   *
-   * This is provided for development and tools. Portable applications should
-   * use OpenTitleStorage() for access to game data and OpenUserStorage() for
-   * access to user data.
-   *
-   * @param path the base path prepended to all storage paths, or nullptr for no
-   *             base path.
-   * @post a filesystem storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa GetStorageSpaceRemaining
-   * @sa OpenTitleStorage
-   * @sa OpenUserStorage
-   * @sa ReadStorageFile
-   * @sa WriteStorageFile
-   */
-  Storage(StringParam path);
-
-  /**
-   * Opens up a container using a client-provided storage interface.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own Storage implementation. If you just need an Storage, you should
-   * use the built-in implementations in SDL, like OpenTitleStorage() or
-   * OpenUserStorage().
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this storage, initialized using
-   *              InitInterface().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @post a storage container on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CloseStorage
-   * @sa GetStorageFileSize
-   * @sa GetStorageSpaceRemaining
-   * @sa InitInterface
-   * @sa ReadStorageFile
-   * @sa StorageReady
-   * @sa WriteStorageFile
-   */
-  Storage(const StorageInterface& iface, void* userdata);
-
-  /// Destructor
-  ~Storage() { CheckError(SDL_CloseStorage(get())); }
-
-  /// Assignment operator.
-  constexpr Storage& operator=(Storage&& other) noexcept
-  {
-    swap(*this, other);
-    return *this;
-  }
-
-  /// Assignment operator.
-  Storage& operator=(const Storage& other) = delete;
+  using ResourceBaseT::ResourceBaseT;
 
   /**
    * Closes and frees a storage container.
@@ -724,6 +583,150 @@ struct Storage : ResourceBase<StorageRaw>
 };
 
 /**
+ * An abstract interface for filesystem access.
+ *
+ * This is an opaque datatype. One can create this object using standard SDL
+ * functions like OpenTitleStorage or OpenUserStorage, etc, or create an object
+ * with a custom implementation using OpenStorage.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+struct Storage : StorageBase
+{
+  using StorageBase::StorageBase;
+
+  /**
+   * Constructs from raw Storage.
+   *
+   * @param resource a StorageRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Storage(StorageRaw resource) noexcept
+    : StorageBase(resource)
+  {
+  }
+
+  /// Move constructor
+  constexpr Storage(Storage&& other) noexcept
+    : Storage(other.release())
+  {
+  }
+
+  /**
+   * Opens up a read-only container for the application's filesystem.
+   *
+   * By default, OpenTitleStorage uses the generic storage implementation. When
+   * the path override is not provided, the generic implementation will use the
+   * output of GetBasePath as the base path.
+   *
+   * @param override a path to override the backend's default title root.
+   * @param props a property list that may contain backend-specific information.
+   * @post a title storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa OpenUserStorage
+   * @sa ReadStorageFile
+   */
+  Storage(StringParam override, PropertiesRef props);
+
+  /**
+   * Opens up a container for a user's unique read/write filesystem.
+   *
+   * While title storage can generally be kept open throughout runtime, user
+   * storage should only be opened when the client is ready to read/write files.
+   * This allows the backend to properly batch file operations and flush them
+   * when the container has been closed; ensuring safe and optimal save I/O.
+   *
+   * @param org the name of your organization.
+   * @param app the name of your application.
+   * @param props a property list that may contain backend-specific information.
+   * @post a user storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
+   * @sa OpenTitleStorage
+   * @sa ReadStorageFile
+   * @sa StorageReady
+   * @sa WriteStorageFile
+   */
+  Storage(StringParam org, StringParam app, PropertiesRef props);
+
+  /**
+   * Opens up a container for local filesystem storage.
+   *
+   * This is provided for development and tools. Portable applications should
+   * use OpenTitleStorage() for access to game data and OpenUserStorage() for
+   * access to user data.
+   *
+   * @param path the base path prepended to all storage paths, or nullptr for no
+   *             base path.
+   * @post a filesystem storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
+   * @sa OpenTitleStorage
+   * @sa OpenUserStorage
+   * @sa ReadStorageFile
+   * @sa WriteStorageFile
+   */
+  Storage(StringParam path);
+
+  /**
+   * Opens up a container using a client-provided storage interface.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own Storage implementation. If you just need an Storage, you should
+   * use the built-in implementations in SDL, like OpenTitleStorage() or
+   * OpenUserStorage().
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this storage, initialized using
+   *              InitInterface().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @post a storage container on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CloseStorage
+   * @sa GetStorageFileSize
+   * @sa GetStorageSpaceRemaining
+   * @sa InitInterface
+   * @sa ReadStorageFile
+   * @sa StorageReady
+   * @sa WriteStorageFile
+   */
+  Storage(const StorageInterface& iface, void* userdata);
+
+  /// Destructor
+  ~Storage() { CheckError(SDL_CloseStorage(get())); }
+
+  /// Assignment operator.
+  constexpr Storage& operator=(Storage&& other) noexcept
+  {
+    swap(*this, other);
+    return *this;
+  }
+};
+
+/**
  * Opens up a read-only container for the application's filesystem.
  *
  * By default, OpenTitleStorage uses the generic storage implementation. When
@@ -878,7 +881,7 @@ inline bool CloseStorage(StorageRaw storage)
   return SDL_CloseStorage(storage);
 }
 
-inline bool Storage::Close() { return CloseStorage(release()); }
+inline bool StorageBase::Close() { return CloseStorage(release()); }
 
 /**
  * Checks if the storage container is ready to use.
@@ -898,7 +901,7 @@ inline bool StorageReady(StorageRef storage)
   return SDL_StorageReady(storage);
 }
 
-inline bool Storage::Ready() { return SDL::StorageReady(get()); }
+inline bool StorageBase::Ready() { return SDL::StorageReady(get()); }
 
 /**
  * Query the size of a file within a storage container.
@@ -922,7 +925,7 @@ inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
   return {};
 }
 
-inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
+inline std::optional<Uint64> StorageBase::GetFileSize(StringParam path)
 {
   return SDL::GetStorageFileSize(get(), std::move(path));
 }
@@ -979,12 +982,12 @@ inline std::string ReadStorageFile(StorageRef storage, StringParam path)
   return buffer;
 }
 
-inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
+inline bool StorageBase::ReadFile(StringParam path, TargetBytes destination)
 {
   return SDL::ReadStorageFile(get(), std::move(path), std::move(destination));
 }
 
-inline std::string Storage::ReadFile(StringParam path)
+inline std::string StorageBase::ReadFile(StringParam path)
 {
   return SDL::ReadStorageFile(get(), std::move(path));
 }
@@ -1015,7 +1018,7 @@ inline std::vector<T> ReadStorageFileAs(StorageRef storage, StringParam path)
 }
 
 template<class T>
-inline std::vector<T> Storage::ReadFileAs(StringParam path)
+inline std::vector<T> StorageBase::ReadFileAs(StringParam path)
 {
   return SDL::ReadStorageFileAs<T>(get(), std::move(path));
 }
@@ -1042,7 +1045,7 @@ inline void WriteStorageFile(StorageRef storage,
     SDL_WriteStorageFile(storage, path, source.data(), source.size_bytes()));
 }
 
-inline void Storage::WriteFile(StringParam path, SourceBytes source)
+inline void StorageBase::WriteFile(StringParam path, SourceBytes source)
 {
   SDL::WriteStorageFile(get(), std::move(path), std::move(source));
 }
@@ -1063,7 +1066,7 @@ inline void CreateStorageDirectory(StorageRef storage, StringParam path)
   CheckError(SDL_CreateStorageDirectory(storage, path));
 }
 
-inline void Storage::CreateDirectory(StringParam path)
+inline void StorageBase::CreateDirectory(StringParam path)
 {
   SDL::CreateStorageDirectory(get(), std::move(path));
 }
@@ -1172,20 +1175,20 @@ inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
   return r;
 }
 
-inline void Storage::EnumerateDirectory(StringParam path,
-                                        EnumerateDirectoryCallback callback,
-                                        void* userdata)
+inline void StorageBase::EnumerateDirectory(StringParam path,
+                                            EnumerateDirectoryCallback callback,
+                                            void* userdata)
 {
   SDL::EnumerateStorageDirectory(get(), std::move(path), callback, userdata);
 }
 
-inline std::vector<Path> Storage::EnumerateDirectory(StringParam path)
+inline std::vector<Path> StorageBase::EnumerateDirectory(StringParam path)
 {
   return SDL::EnumerateStorageDirectory(get(), std::move(path));
 }
 
-inline void Storage::EnumerateDirectory(StringParam path,
-                                        EnumerateDirectoryCB callback)
+inline void StorageBase::EnumerateDirectory(StringParam path,
+                                            EnumerateDirectoryCB callback)
 {
   SDL::EnumerateStorageDirectory(get(), std::move(path), callback);
 }
@@ -1206,7 +1209,7 @@ inline void RemoveStoragePath(StorageRef storage, StringParam path)
   CheckError(SDL_RemoveStoragePath(storage, path));
 }
 
-inline void Storage::RemovePath(StringParam path)
+inline void StorageBase::RemovePath(StringParam path)
 {
   SDL::RemoveStoragePath(get(), std::move(path));
 }
@@ -1230,7 +1233,7 @@ inline void RenameStoragePath(StorageRef storage,
   CheckError(SDL_RenameStoragePath(storage, oldpath, newpath));
 }
 
-inline void Storage::RenamePath(StringParam oldpath, StringParam newpath)
+inline void StorageBase::RenamePath(StringParam oldpath, StringParam newpath)
 {
   SDL::RenameStoragePath(get(), std::move(oldpath), std::move(newpath));
 }
@@ -1254,7 +1257,7 @@ inline void CopyStorageFile(StorageRef storage,
   CheckError(SDL_CopyStorageFile(storage, oldpath, newpath));
 }
 
-inline void Storage::CopyFile(StringParam oldpath, StringParam newpath)
+inline void StorageBase::CopyFile(StringParam oldpath, StringParam newpath)
 {
   SDL::CopyStorageFile(get(), std::move(oldpath), std::move(newpath));
 }
@@ -1279,7 +1282,7 @@ inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
   return {};
 }
 
-inline PathInfo Storage::GetPathInfo(StringParam path)
+inline PathInfo StorageBase::GetPathInfo(StringParam path)
 {
   return SDL::GetStoragePathInfo(get(), std::move(path));
 }
@@ -1300,7 +1303,7 @@ inline Uint64 GetStorageSpaceRemaining(StorageRef storage)
   return SDL_GetStorageSpaceRemaining(storage);
 }
 
-inline Uint64 Storage::GetSpaceRemaining()
+inline Uint64 StorageBase::GetSpaceRemaining()
 {
   return SDL::GetStorageSpaceRemaining(get());
 }
@@ -1349,9 +1352,9 @@ inline OwnArray<char*> GlobStorageDirectory(StorageRef storage,
   return OwnArray<char*>{data, size_t(count)};
 }
 
-inline OwnArray<char*> Storage::GlobDirectory(StringParam path,
-                                              StringParam pattern,
-                                              GlobFlags flags)
+inline OwnArray<char*> StorageBase::GlobDirectory(StringParam path,
+                                                  StringParam pattern,
+                                                  GlobFlags flags)
 {
   return SDL::GlobStorageDirectory(
     get(), std::move(path), std::move(pattern), flags);

@@ -15,7 +15,7 @@
  namespace SDL {
  
  /**
-@@ -166,6 +169,8 @@
+@@ -181,6 +184,8 @@
  /// Safely wrap Datagram for non owning const parameters
  using DatagramConstRef = ResourceConstRef<DatagramRaw, DatagramRawConst>;
  
@@ -24,7 +24,7 @@
  /**
   * The current major version of the SDL_net headers.
   *
-@@ -215,6 +220,8 @@
+@@ -230,6 +235,8 @@
     (SDL_NET_MAJOR_VERSION > X || SDL_NET_MINOR_VERSION > Y ||                  \
      SDL_NET_MICRO_VERSION >= Z))
  
@@ -33,21 +33,20 @@
  namespace NET {
  
  /**
-@@ -337,13 +344,6 @@
+@@ -718,12 +725,6 @@
    {
    }
  
 -  /// Copy constructor
 -  constexpr Address(const Address& other)
--    : Address(other.get())
+-    : Address(borrow(other.get()))
 -  {
--    if (auto res = get()) ++res->NET_RefAddress;
 -  }
 -
    /// Move constructor
    constexpr Address(Address&& other) noexcept
      : Address(other.release())
-@@ -424,7 +424,7 @@
+@@ -804,7 +805,7 @@
     *
     * @since This function is available since SDL_net 3.0.0.
     */
@@ -56,8 +55,8 @@
  
    /**
     * Safely borrows the from AddressRaw.
-@@ -436,7 +436,7 @@
-   static Address Borrow(AddressRaw resource)
+@@ -816,7 +817,7 @@
+   static Address borrow(AddressRaw resource)
    {
      if (resource) {
 -      ++resource->NET_RefAddress;
@@ -65,7 +64,7 @@
        return Address(resource);
      }
      return {};
-@@ -865,8 +865,8 @@
+@@ -889,8 +890,8 @@
  {
  }
  
@@ -76,22 +75,22 @@
  {
  }
  
-@@ -1113,12 +1113,12 @@
+@@ -1140,12 +1141,12 @@
  
- inline bool Address::operator==(AddressRef other) const
+ inline bool AddressBase::operator==(const AddressBase& other) const
  {
 -  static_assert(false, "Not implemented");
 +  return Compare(other) == 0;
  }
  
- inline auto Address::operator<=>(AddressRef other) const
+ inline auto AddressBase::operator<=>(const AddressBase& other) const
  {
 -  static_assert(false, "Not implemented");
 +  return Compare(other) <=> 0;
  }
  
  /// @private
-@@ -1152,10 +1152,6 @@
+@@ -1179,10 +1180,6 @@
   * nullptr-terminated. You can also pass a pointer to an int, which will return
   * the final count, not counting the nullptr at the end of the array.
   *
@@ -102,7 +101,7 @@
   * @param num_addresses on exit, will be set to the number of addresses
   *                      returned. Can be nullptr.
   * @returns  one for each bindable address on the system on success.
-@@ -1183,15 +1179,19 @@
+@@ -1210,15 +1207,19 @@
   *
   * It is safe to pass a nullptr in here, it will be ignored.
   *
@@ -124,7 +123,7 @@
  }
  
  inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
-@@ -2129,7 +2129,7 @@
+@@ -2156,7 +2157,7 @@
   */
  inline Address GetStreamSocketAddress(StreamSocketRef sock)
  {
@@ -132,8 +131,8 @@
 +  return Address(CheckError(NET_GetStreamSocketAddress(sock)));
  }
  
- inline Address StreamSocket::GetAddress()
-@@ -2760,7 +2760,7 @@
+ inline Address StreamSocketBase::GetAddress()
+@@ -2642,7 +2643,7 @@
     * should assume it is no longer usable and should destroy it with
     * SDL_DestroyDatagramSocket().
     *
@@ -142,7 +141,7 @@
     * @returns true if data sent or queued for transmission, false on failure;
     *          call GetError() for details.
     *
-@@ -2807,9 +2807,8 @@
+@@ -2689,9 +2690,8 @@
     * should assume it is no longer usable and should destroy it with
     * SDL_DestroyDatagramSocket().
     *
@@ -154,7 +153,15 @@
     *
     * @threadsafety You should not operate on the same socket from multiple
     *               threads at the same time without supplying a serialization
-@@ -2923,12 +2922,11 @@
+@@ -2946,7 +2946,6 @@
+    * SDL_DestroyDatagramSocket().
+    *
+    * @param sock the datagram socket to send data through.
+-   * @param dgram a pointer to the datagram packet pointer.
+    * @returns true if data sent or queued for transmission, false on failure;
+    *          call GetError() for details.
+    *
+@@ -3024,12 +3023,11 @@
     * "connection" to fail at this level, but may report failure for
     * unrecoverable system-level conditions; once a datagram socket fails, you
     * should assume it is no longer usable and should destroy it with
@@ -170,15 +177,7 @@
     *
     * @threadsafety You should not operate on the same socket from multiple
     *               threads at the same time without supplying a serialization
-@@ -3010,7 +3008,6 @@
-    * SDL_DestroyDatagramSocket().
-    *
-    * @param sock the datagram socket to send data through.
--   * @param dgram a pointer to the datagram packet pointer.
-    * @returns true if data sent or queued for transmission, false on failure;
-    *          call GetError() for details.
-    *
-@@ -3319,9 +3316,8 @@
+@@ -3346,9 +3344,8 @@
   * is no longer usable and should destroy it with SDL_DestroyDatagramSocket().
   *
   * @param sock the datagram socket to send data through.
@@ -190,16 +189,16 @@
   *
   * @threadsafety You should not operate on the same socket from multiple threads
   *               at the same time without supplying a serialization mechanism.
-@@ -3342,7 +3338,7 @@
+@@ -3369,7 +3366,7 @@
  
- inline bool DatagramSocket::ReceiveDatagram(Datagram& dgram)
+ inline bool DatagramSocketBase::ReceiveDatagram(Datagram& dgram)
  {
 -  return dgram.Receive(sock);
 +  return dgram.Receive(*this);
  }
  
- inline Datagram DatagramSocket::ReceiveDatagram()
-@@ -3350,11 +3346,17 @@
+ inline Datagram DatagramSocketBase::ReceiveDatagram()
+@@ -3377,11 +3374,17 @@
    return SDL::ReceiveDatagram(get());
  }
  
@@ -209,7 +208,7 @@
 +{
 +}
  
- inline bool Datagram::Receive(DatagramSocketRef sock)
+ inline bool DatagramBase::Receive(DatagramSocketRef sock)
  {
 -  static_assert(false, "Not implemented");
 +  DatagramRaw dgram;
@@ -219,7 +218,7 @@
  }
  
  /**
-@@ -3514,4 +3516,6 @@
+@@ -3541,4 +3544,6 @@
  
  } // namespace SDL
  

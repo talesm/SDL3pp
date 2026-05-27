@@ -21,7 +21,7 @@ namespace SDL {
  * For certain games, it's useful to disassociate the mouse cursor from mouse
  * input. An FPS, for example, would not want the player's motion to stop as the
  * mouse hits the edge of the window. For these scenarios, use
- * Window.SetRelativeMouseMode(), which hides the cursor, grabs mouse input to
+ * SetWindowRelativeMouseMode(), which hides the cursor, grabs mouse input to
  * the window, and reads mouse input no matter how far it moves.
  *
  * Games that want the system to track the mouse but want to draw their own
@@ -45,6 +45,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct CursorBase;
+
+// Forward decl
 struct Cursor;
 
 /// Alias to raw representation for Cursor.
@@ -55,7 +58,7 @@ using CursorRaw = SDL_Cursor*;
  *
  * This does not take ownership!
  */
-using CursorRef = ResourceRef<Cursor>;
+using CursorRef = ResourceRefT<CursorBase>;
 
 /**
  * Cursor types for CreateSystemCursor().
@@ -147,6 +150,51 @@ constexpr SystemCursor SYSTEM_CURSOR_COUNT = SDL_SYSTEM_CURSOR_COUNT; ///< COUNT
 using MouseID = SDL_MouseID;
 
 /**
+ * Base class to Cursor.
+ *
+ * @see Cursor
+ */
+struct CursorBase : ResourceBaseT<CursorRaw>
+{
+  using ResourceBaseT::ResourceBaseT;
+
+  /**
+   * Free a previously-created cursor.
+   *
+   * Use this function to free cursor resources created with CreateCursor(),
+   * CreateColorCursor() or CreateSystemCursor().
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateAnimatedCursor
+   * @sa CreateColorCursor
+   * @sa CreateCursor
+   * @sa CreateSystemCursor
+   */
+  void Destroy();
+
+  /**
+   * Set the active cursor.
+   *
+   * This function sets the currently active cursor to the specified one. If the
+   * cursor is currently visible, the change will be immediately represented on
+   * the display. SetCursor(nullptr) can be used to force cursor redraw, if this
+   * is desired for any reason.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCursor
+   */
+  void Set();
+};
+
+/**
  * The structure used to identify an SDL cursor.
  *
  * This is opaque data.
@@ -155,9 +203,9 @@ using MouseID = SDL_MouseID;
  *
  * @cat resource
  */
-struct Cursor : ResourceBase<CursorRaw>
+struct Cursor : CursorBase
 {
-  using ResourceBase::ResourceBase;
+  using CursorBase::CursorBase;
 
   /**
    * Constructs from raw Cursor.
@@ -167,22 +215,15 @@ struct Cursor : ResourceBase<CursorRaw>
    * This assumes the ownership, call release() if you need to take back.
    */
   constexpr explicit Cursor(CursorRaw resource) noexcept
-    : ResourceBase(resource)
+    : CursorBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Cursor(const Cursor& other) = delete;
 
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
   {
   }
-
-  constexpr Cursor(const CursorRef& other) = delete;
-
-  constexpr Cursor(CursorRef&& other) = delete;
 
   /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
@@ -288,44 +329,6 @@ struct Cursor : ResourceBase<CursorRaw>
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Cursor& operator=(const Cursor& other) = delete;
-
-  /**
-   * Free a previously-created cursor.
-   *
-   * Use this function to free cursor resources created with CreateCursor(),
-   * CreateColorCursor() or CreateSystemCursor().
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa CreateAnimatedCursor
-   * @sa CreateColorCursor
-   * @sa CreateCursor
-   * @sa CreateSystemCursor
-   */
-  void Destroy();
-
-  /**
-   * Set the active cursor.
-   *
-   * This function sets the currently active cursor to the specified one. If the
-   * cursor is currently visible, the change will be immediately represented on
-   * the display. SetCursor(nullptr) can be used to force cursor redraw, if this
-   * is desired for any reason.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetCursor
-   */
-  void Set();
 };
 
 /**
@@ -661,9 +664,34 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
   return SDL_GetRelativeMouseState(x, y);
 }
 
-inline void Window::WarpMouse(const FPointRaw& p)
+/**
+ * Move the mouse cursor to the given position within the window.
+ *
+ * This function generates a mouse motion event if relative mode is not enabled.
+ * If relative mode is enabled, you can force mouse events for the warp by
+ * setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
+ *
+ * Note that this function will appear to succeed, but not actually move the
+ * mouse when used over Microsoft Remote Desktop.
+ *
+ * @param window the window to move the mouse into, or nullptr for the current
+ *               mouse focus.
+ * @param p the x, y coordinates within the window.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WarpMouse
+ */
+inline void WarpMouseInWindow(WindowRef window, const FPointRaw& p)
 {
-  SDL_WarpMouseInWindow(get(), p.x, p.y);
+  SDL_WarpMouseInWindow(window, p.x, p.y);
+}
+
+inline void WindowBase::WarpMouse(const FPointRaw& p)
+{
+  WarpMouseInWindow(get(), p);
 }
 
 /**
@@ -684,7 +712,7 @@ inline void Window::WarpMouse(const FPointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Window.WarpMouse
+ * @sa WarpMouseInWindow
  */
 inline void WarpMouse(const FPointRaw& p)
 {
@@ -735,14 +763,61 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-inline void Window::SetRelativeMouseMode(bool enabled)
+/**
+ * Set relative mouse mode for a window.
+ *
+ * While the window has focus and relative mouse mode is enabled, the cursor is
+ * hidden, the mouse position is constrained to the window, and SDL will report
+ * continuous relative mouse motion even if the mouse is at the edge of the
+ * window.
+ *
+ * If you'd like to keep the mouse position fixed while in relative mode you can
+ * use SetWindowMouseRect(). If you'd like the cursor to be at a specific
+ * location when relative mode ends, you should use WarpMouseInWindow() before
+ * disabling relative mode.
+ *
+ * This function will flush any pending mouse motion for this window.
+ *
+ * @param window the window to change.
+ * @param enabled true to enable relative mode, false to disable.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetWindowRelativeMouseMode
+ */
+inline void SetWindowRelativeMouseMode(WindowRef window, bool enabled)
 {
-  CheckError(SDL_SetWindowRelativeMouseMode(get(), enabled));
+  CheckError(SDL_SetWindowRelativeMouseMode(window, enabled));
 }
 
-inline bool Window::GetRelativeMouseMode() const
+inline void WindowBase::SetRelativeMouseMode(bool enabled)
 {
-  return SDL_GetWindowRelativeMouseMode(get());
+  SetWindowRelativeMouseMode(get(), enabled);
+}
+
+/**
+ * Query whether relative mouse mode is enabled for a window.
+ *
+ * @param window the window to query.
+ * @returns true if relative mode is enabled for a window or false otherwise.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetWindowRelativeMouseMode
+ */
+inline bool GetWindowRelativeMouseMode(WindowRef window)
+{
+  return SDL_GetWindowRelativeMouseMode(window);
+}
+
+inline bool WindowBase::GetRelativeMouseMode() const
+{
+  return GetWindowRelativeMouseMode(get());
 }
 
 /**
@@ -760,7 +835,7 @@ inline bool Window::GetRelativeMouseMode() const
  * mouse while the user is dragging something, until the user releases a mouse
  * button. It is not recommended that you capture the mouse for long periods of
  * time, such as the entire time your app is running. For that, you should
- * probably use Window.SetRelativeMouseMode() or SetWindowMouseGrab(), depending
+ * probably use SetWindowRelativeMouseMode() or SetWindowMouseGrab(), depending
  * on your goals.
  *
  * While captured, mouse events still report coordinates relative to the current
@@ -989,7 +1064,7 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  */
 inline void SetCursor(CursorRef cursor) { CheckError(SDL_SetCursor(cursor)); }
 
-inline void Cursor::Set() { SDL::SetCursor(get()); }
+inline void CursorBase::Set() { SDL::SetCursor(get()); }
 
 /**
  * Get the active cursor.
@@ -1045,7 +1120,7 @@ inline CursorRef GetDefaultCursor()
  */
 inline void DestroyCursor(CursorRaw cursor) { SDL_DestroyCursor(cursor); }
 
-inline void Cursor::Destroy() { DestroyCursor(release()); }
+inline void CursorBase::Destroy() { DestroyCursor(release()); }
 
 /**
  * Show the cursor.
