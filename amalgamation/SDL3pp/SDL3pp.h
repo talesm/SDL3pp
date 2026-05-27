@@ -1402,97 +1402,6 @@ struct ResourceRefT : BASE
   constexpr operator RawPointer() const noexcept { return this->get(); }
 };
 
-/// Base class for resources.
-template<typename RAW_POINTER, typename RAW_CONST_POINTER = RAW_POINTER>
-class ResourceBase
-{
-public:
-  /// The underlying raw pointer type.
-  using RawPointer = RAW_POINTER;
-
-  /// The underlying const raw pointer type.
-  using RawConstPointer = RAW_CONST_POINTER;
-
-  /// Constructs from resource pointer.
-  constexpr ResourceBase(RawPointer resource)
-    : m_resource(resource)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ResourceBase(std::nullptr_t = nullptr)
-    : m_resource{}
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ResourceBase& other) const = default;
-
-  /// member access to underlying resource pointer.
-  constexpr RawConstPointer operator->() const noexcept { return m_resource; }
-
-  /// member access to underlying resource pointer.
-  constexpr RawPointer operator->() noexcept { return m_resource; }
-
-  /// Retrieves underlying resource pointer.
-  constexpr RawPointer get() const noexcept { return m_resource; }
-
-  /// Retrieves underlying resource pointer and clear this.
-  constexpr RawPointer release() noexcept
-  {
-    auto r = m_resource;
-    m_resource = {};
-    return r;
-  }
-
-  friend constexpr void swap(ResourceBase& lhs, ResourceBase& rhs) noexcept
-  {
-    std::swap(lhs.m_resource, rhs.m_resource);
-  }
-
-private:
-  RawPointer m_resource; ///< parameter's RawPointer
-};
-
-/// Reference wrapper for a given resource,
-template<typename RAW_POINTER>
-class ResourceLegacyRef
-{
-public:
-  /// The underlying raw pointer type.
-  using RawPointer = RAW_POINTER;
-
-  /// Constructs from RawPointer
-  constexpr ResourceLegacyRef(RawPointer resource)
-    : m_resource(resource)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ResourceLegacyRef(std::nullptr_t = nullptr)
-    : m_resource(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ResourceLegacyRef& other) const = default;
-
-  /// Converts to underlying RawPointer
-  constexpr operator RawPointer() const { return m_resource; }
-
-  /// member access to underlying type.
-  constexpr auto operator->() const { return m_resource; }
-
-private:
-  RawPointer m_resource; ///< parameter's RawPointer
-};
-
 /// Const reference wrapper for a given resource,
 template<typename RAW_POINTER, typename RAW_CONST_POINTER>
 class ResourceConstRef
@@ -50569,7 +50478,11 @@ using TrayEntryRaw = SDL_TrayEntry*;
 // Forward decl
 struct TrayEntryScoped;
 
-/// Alias to TrayEntry for non owning parameters.
+/**
+ * Reference for TrayEntry.
+ *
+ * This does not take ownership!
+ */
 using TrayEntryRef = TrayEntry;
 
 /**
@@ -51975,7 +51888,11 @@ using GLContextRaw = SDL_GLContext;
 // Forward decl
 struct GLContextScoped;
 
-/// Alias to GLContext for non owning parameters.
+/**
+ * Reference for GLContext.
+ *
+ * This does not take ownership!
+ */
 using GLContextRef = GLContext;
 
 // Forward decl
@@ -106811,7 +106728,7 @@ using TextEngineRaw = TTF_TextEngine*;
  *
  * This does not take ownership!
  */
-using TextEngineRef = ResourceLegacyRef<TextEngineRaw>;
+using TextEngineRef = ResourceRef<TextEngine>;
 
 // Forward decl
 struct TextBase;

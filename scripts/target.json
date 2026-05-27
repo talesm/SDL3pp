@@ -165918,12 +165918,13 @@
           "kind": "forward"
         },
         "TrayEntryRef": {
-          "kind": "alias",
           "name": "TrayEntryRef",
-          "type": "TrayEntry",
+          "kind": "alias",
           "doc": [
-            "Alias to TrayEntry for non owning parameters."
-          ]
+            "Reference for TrayEntry.",
+            "This does not take ownership!"
+          ],
+          "type": "TrayEntry"
         },
         "TrayEntryFlags": {
           "name": "TrayEntryFlags",
@@ -169568,12 +169569,13 @@
           "kind": "forward"
         },
         "GLContextRef": {
-          "kind": "alias",
           "name": "GLContextRef",
-          "type": "GLContext",
+          "kind": "alias",
           "doc": [
-            "Alias to GLContext for non owning parameters."
-          ]
+            "Reference for GLContext.",
+            "This does not take ownership!"
+          ],
+          "type": "GLContext"
         },
         "RendererBase-forward": {
           "kind": "forward",
@@ -217897,7 +217899,7 @@
             "Reference for TextEngine.",
             "This does not take ownership!"
           ],
-          "type": "ResourceLegacyRef<TextEngineRaw>"
+          "type": "TextEngine"
         },
         "TextBase-forward": {
           "name": "TextBase",

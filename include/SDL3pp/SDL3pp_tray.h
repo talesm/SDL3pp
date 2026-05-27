@@ -49,7 +49,11 @@ using TrayEntryRaw = SDL_TrayEntry*;
 // Forward decl
 struct TrayEntryScoped;
 
-/// Alias to TrayEntry for non owning parameters.
+/**
+ * Reference for TrayEntry.
+ *
+ * This does not take ownership!
+ */
 using TrayEntryRef = TrayEntry;
 
 /**

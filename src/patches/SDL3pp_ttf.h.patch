@@ -23,6 +23,15 @@
   *
   * Header file for SDL_ttf library
   *
+@@ -48,7 +51,7 @@
+  *
+  * This does not take ownership!
+  */
+-using TextEngineRef = TextEngine;
++using TextEngineRef = ResourceRef<TextEngine>;
+ 
+ // Forward decl
+ struct TextBase;
 @@ -72,25 +75,39 @@
  /// Safely wrap Text for non owning const parameters
  using TextConstRef = ResourceConstRef<TextRaw, TextRawConst>;

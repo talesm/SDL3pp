@@ -51,7 +51,7 @@ using TextEngineRaw = TTF_TextEngine*;
  *
  * This does not take ownership!
  */
-using TextEngineRef = ResourceLegacyRef<TextEngineRaw>;
+using TextEngineRef = ResourceRef<TextEngine>;
 
 // Forward decl
 struct TextBase;

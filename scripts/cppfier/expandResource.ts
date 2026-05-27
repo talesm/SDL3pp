@@ -66,23 +66,12 @@ export function expandResource(
     : `ResourceBaseT<${rawName}>`;
   const since =
     targetEntry.since ?? resolveVersionDoc(sourceEntry.doc, context);
-  const isNew = true;
-  if (isNew) {
-    system.log(
-      `Expanding resource ${sourceName} to ${targetName} in new format...`,
-    );
-    targetEntry.type = hasRef ? baseName : baseType;
-  } else if (!targetEntry.type) {
-    targetEntry.type = enableConstParam
-      ? `ResourceBase<${rawName}, ${constRawName}>`
-      : `ResourceBase<${rawName}>`;
-  }
+  targetEntry.type = hasRef ? baseName : baseType;
   context.addName(sourceName, targetName);
   context.addCallbackType(isStruct ? `${sourceName} *` : sourceName, rawName);
 
   const referenceAliases: ApiEntryTransform[] = [];
-  if (isNew && hasRef)
-    referenceAliases.push({ name: baseName, kind: "forward" });
+  if (hasRef) referenceAliases.push({ name: baseName, kind: "forward" });
   referenceAliases.push(
     { name: targetName, kind: "forward" },
     {
@@ -110,18 +99,7 @@ export function expandResource(
     hasLock,
   );
 
-  if (hasScoped) {
-    referenceAliases.push({
-      kind: "alias",
-      name: refName,
-      type: targetName,
-      doc: [`Alias to ${targetName} for non owning parameters.`],
-    });
-  } else {
-    referenceAliases.push(
-      createParam(refName, targetName, rawName, baseName, hasRef, isNew),
-    );
-  }
+  referenceAliases.push(createParam(refName, targetName, baseName, hasRef));
 
   if (enableConstParam) {
     referenceAliases.push(
@@ -144,14 +122,7 @@ export function expandResource(
     constRawName,
   );
 
-  const ctors = createBaselineCtors(
-    hasScoped,
-    targetName,
-    shared,
-    hasRef ? refName : undefined,
-    rawName,
-    isNew,
-  );
+  const ctors = createBaselineCtors(hasScoped, targetName, shared, rawName);
   const subEntries = targetEntry.entries || {};
 
   wrapCustomCtors(subEntries, targetName, ctors);
@@ -199,7 +170,7 @@ export function expandResource(
       refName,
       constParamType,
       blockedNames,
-      isNew ? baseName : targetName,
+      hasScoped ? targetName : baseName,
     );
     mirrorMethods(
       sourceEntries,
@@ -227,14 +198,12 @@ export function expandResource(
     hasShared,
     targetEntry,
     rawName,
-    isNew,
     ctors,
     targetName,
     destroyFunction,
-    isNew && hasRef ? {} : subEntries,
-    enableConstParam && !isNew ? constParamType : undefined,
+    hasRef ? {} : subEntries,
   );
-  if (hasRef && isNew) {
+  if (hasRef) {
     context.includeBefore(
       createBaseEntry(
         baseName,
@@ -265,20 +234,14 @@ export function expandResource(
 function createParam(
   paramType: string,
   targetName: string,
-  rawName: string,
   baseName: string,
   targetAsBase = false,
-  isNew = false,
 ): ApiEntryTransform {
   return {
     name: paramType,
     kind: "alias",
     doc: [`Reference for ${targetName}.`, "This does not take ownership!"],
-    type: targetAsBase
-      ? isNew
-        ? `ResourceRefT<${baseName}>`
-        : `ResourceRef<${targetName}>`
-      : `ResourceLegacyRef<${rawName}>`,
+    type: targetAsBase ? `ResourceRefT<${baseName}>` : targetName,
   };
 }
 
@@ -336,9 +299,7 @@ function createBaselineCtors(
   hasScoped: boolean,
   targetName: string,
   shared: boolean | string,
-  refName: string | undefined,
   rawName: string,
-  isNew: boolean,
 ) {
   if (hasScoped) return {};
   const ctors: Dict<ApiEntryTransform> = {
@@ -349,7 +310,7 @@ function createBaselineCtors(
       explicit: true,
       parameters: [{ name: "resource", type: rawName }],
       hints: {
-        init: [`${isNew ? targetName + "Base" : "ResourceBase"}(resource)`],
+        init: [`${targetName}Base(resource)`],
         noexcept: true,
       },
       doc: [
@@ -382,11 +343,7 @@ function createBaselineCtors(
       doc: ["Move constructor"],
     },
   };
-  if (shared) {
-    addBorrowFunction(ctors, targetName, shared, rawName);
-  } else if (refName && !isNew) {
-    deleteCtorsFromRef(ctors, refName, targetName);
-  }
+  if (shared) addBorrowFunction(ctors, targetName, shared, rawName);
   return ctors;
 }
 
@@ -647,24 +604,12 @@ function populateTargetEntry(
   hasShared: boolean,
   targetEntry: ApiEntryTransform,
   rawName: string,
-  isNew: boolean,
   ctors: Dict<ApiEntryTransform>,
   targetName: string,
   freeFunction: ApiEntry,
   subEntries: ApiEntryTransformMap,
-  constParamType: string,
 ) {
-  if (constParamType) {
-    ctors[`operator ${constParamType}`] = {
-      kind: "function",
-      type: "",
-      immutable: true,
-      constexpr: true,
-      parameters: [],
-      hints: { body: "return get();", noexcept: true },
-      doc: [`Converts to ${constParamType}`],
-    };
-  } else if (hasScoped) {
+  if (hasScoped) {
     ctors[`operator ${rawName}`] = {
       kind: "function",
       type: "",
@@ -675,7 +620,7 @@ function populateTargetEntry(
       doc: [`Converts to underlying ${rawName}.`],
     };
   }
-  const baseName = isNew ? targetEntry.type : "ResourceBase";
+  const baseName = targetEntry.type;
   const parentAlias = `${baseName}::${baseName}`.replaceAll(/<[^>]*>/g, "");
   const entries: ApiEntryTransformMap = {
     [parentAlias]: "alias",
@@ -717,11 +662,12 @@ function populateTargetEntry(
     [freeFunction.name]: "plc",
     ...subEntries,
   };
-  if (isNew && !hasScoped) delete entries[freeFunction.name];
   if (hasScoped) {
     delete entries[`~${targetName}`];
     delete entries["operator="];
     delete entries["operator=#2"];
+  } else {
+    delete entries[freeFunction.name];
   }
   addHints(targetEntry, {
     self: "get()",

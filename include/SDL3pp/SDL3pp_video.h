@@ -65,7 +65,11 @@ using GLContextRaw = SDL_GLContext;
 // Forward decl
 struct GLContextScoped;
 
-/// Alias to GLContext for non owning parameters.
+/**
+ * Reference for GLContext.
+ *
+ * This does not take ownership!
+ */
 using GLContextRef = GLContext;
 
 // Forward decl
