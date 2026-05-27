@@ -4014,9 +4014,25 @@ inline Renderer CreateSoftwareRenderer(SurfaceRef surface)
   return Renderer(surface);
 }
 
+/**
+ * Get the renderer associated with a window.
+ *
+ * @param window the window to query.
+ * @returns the rendering context on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline RendererRef GetRenderer(WindowRef window)
+{
+  return CheckError(SDL_GetRenderer(window));
+}
+
 inline RendererRef WindowBase::GetRenderer() const
 {
-  return CheckError(SDL_GetRenderer(get()));
+  return SDL::GetRenderer(get());
 }
 
 /**

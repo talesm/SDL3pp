@@ -66,14 +66,14 @@
  }
  
  /**
-@@ -299,13 +303,26 @@
- constexpr Capitalization CAPITALIZE_LETTERS =
-   SDL_CAPITALIZE_LETTERS; ///< All letters will be capitalized
+@@ -378,13 +382,26 @@
+   SDL::StartTextInputWithProperties(get(), props);
+ }
  
 +/**
-+ * Properties for text input to be used on Window.StartTextInput.
++ * Properties for text input to be used on StartTextInputWithProperties.
 + *
-+ * @sa Window.StartTextInput
++ * @sa StartTextInputWithProperties
 + */
  namespace prop::TextInput {
  
@@ -97,12 +97,20 @@
  
  constexpr auto AUTOCORRECT_BOOLEAN =
    SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN; ///< Autocorrect enabled.
-@@ -336,7 +353,7 @@
- 
- inline void WindowBase::SetTextInputArea(const RectRaw& rect, int cursor)
+@@ -433,6 +450,7 @@
+  * @since This function is available since SDL 3.2.0.
+  *
+  * @sa StartTextInput
++ * @sa StartTextInputWithProperties
+  */
+ inline void StopTextInput(WindowRef window)
  {
--  CheckError(SDL_SetTextInputArea(get(), rect, cursor));
-+  CheckError(SDL_SetTextInputArea(get(), &rect, cursor));
+@@ -483,7 +501,7 @@
+  */
+ inline void SetTextInputArea(WindowRef window, const RectRaw& rect, int cursor)
+ {
+-  CheckError(SDL_SetTextInputArea(window, rect, cursor));
++  CheckError(SDL_SetTextInputArea(window, &rect, cursor));
  }
  
- inline void WindowBase::GetTextInputArea(RectRaw* rect, int* cursor)
+ inline void WindowBase::SetTextInputArea(const RectRaw& rect, int cursor)

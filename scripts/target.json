@@ -21005,7 +21005,7 @@
         "TextInputEvent": {
           "doc": [
             "Keyboard text input event structure (event.text.*)",
-            "This event will never be delivered unless text input is enabled by calling WindowBase.StartTextInput(). Text input is disabled by default!",
+            "This event will never be delivered unless text input is enabled by calling StartTextInput(). Text input is disabled by default!",
             {
               "tag": "@since",
               "content": "This struct is available since SDL 3.2.0."
@@ -21013,11 +21013,11 @@
             [
               {
                 "tag": "@sa",
-                "content": "WindowBase.StartTextInput"
+                "content": "StartTextInput"
               },
               {
                 "tag": "@sa",
-                "content": "WindowBase.StopTextInput"
+                "content": "StopTextInput"
               }
             ]
           ],
@@ -57001,7 +57001,7 @@
                 "content": "\"1\": Show the on-screen keyboard, if available."
               }
             ],
-            "This hint must be set before WindowBase.StartTextInput() is called",
+            "This hint must be set before StartTextInput() is called",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -57257,7 +57257,7 @@
           "doc": [
             "This variable sets the default text of the TextInput window on GDK platforms.",
             "This hint is available only if SDL_GDK_TEXTINPUT defined.",
-            "This hint should be set before calling WindowBase.StartTextInput()",
+            "This hint should be set before calling StartTextInput()",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -57272,7 +57272,7 @@
           "doc": [
             "This variable sets the description of the TextInput window on GDK platforms.",
             "This hint is available only if SDL_GDK_TEXTINPUT defined.",
-            "This hint should be set before calling WindowBase.StartTextInput()",
+            "This hint should be set before calling StartTextInput()",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -57288,7 +57288,7 @@
             "This variable sets the maximum input length of the TextInput window on GDK platforms.",
             "The value must be a stringified integer, for example \"10\" to allow for up to 10 characters of text input.",
             "This hint is available only if SDL_GDK_TEXTINPUT defined.",
-            "This hint should be set before calling WindowBase.StartTextInput()",
+            "This hint should be set before calling StartTextInput()",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -57304,7 +57304,7 @@
             "This variable sets the input scope of the TextInput window on GDK platforms.",
             "Set this hint to change the XGameUiTextEntryInputScope value that will be passed to the window creation function. The value must be a stringified integer, for example \"0\" for XGameUiTextEntryInputScope::Default.",
             "This hint is available only if SDL_GDK_TEXTINPUT defined.",
-            "This hint should be set before calling WindowBase.StartTextInput()",
+            "This hint should be set before calling StartTextInput()",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -57319,7 +57319,7 @@
           "doc": [
             "This variable sets the title of the TextInput window on GDK platforms.",
             "This hint is available only if SDL_GDK_TEXTINPUT defined.",
-            "This hint should be set before calling WindowBase.StartTextInput()",
+            "This hint should be set before calling StartTextInput()",
             {
               "tag": "@since",
               "content": "This hint is available since SDL 3.2.0."
@@ -77475,32 +77475,73 @@
             "private": true
           }
         },
+        "StartTextInput": {
+          "doc": [
+            "Start accepting Unicode text input events in a window.",
+            "This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with StopTextInput().",
+            "Text input events are not received by default.",
+            "On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some key press events from being passed through.",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window to enable text input."
+              },
+              {
+                "tag": "@throws",
+                "content": "Error on failure."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "SetTextInputArea"
+              },
+              {
+                "tag": "@sa",
+                "content": "StartTextInputWithProperties"
+              },
+              {
+                "tag": "@sa",
+                "content": "StopTextInput"
+              },
+              {
+                "tag": "@sa",
+                "content": "TextInputActive"
+              }
+            ]
+          ],
+          "name": "StartTextInput",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "sourceName": "SDL_StartTextInput",
+          "hints": {
+            "mayFail": true
+          }
+        },
         "WindowBase::StartTextInput": {
-          "name": "WindowBase::StartTextInput",
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "sourceName": "SDL_StartTextInput",
           "hints": {
             "self": "get()",
-            "mayFail": true
+            "mayFail": true,
+            "delegate": "SDL::StartTextInput"
           },
-          "overload": {
-            "name": "WindowBase::StartTextInput",
-            "kind": "function",
-            "type": "void",
-            "parameters": [
-              {
-                "name": "props",
-                "type": "PropertiesRef"
-              }
-            ],
-            "sourceName": "SDL_StartTextInputWithProperties",
-            "hints": {
-              "self": "get()",
-              "mayFail": true
-            }
-          }
+          "name": "WindowBase::StartTextInput"
         },
         "TextInputType": {
           "doc": [
@@ -77512,7 +77553,7 @@
             },
             {
               "tag": "@sa",
-              "content": "WindowBase.StartTextInput"
+              "content": "StartTextInputWithProperties"
             }
           ],
           "name": "TextInputType",
@@ -77620,7 +77661,7 @@
             },
             {
               "tag": "@sa",
-              "content": "WindowBase.StartTextInput"
+              "content": "StartTextInputWithProperties"
             }
           ],
           "name": "Capitalization",
@@ -77667,6 +77708,111 @@
             "All letters will be capitalized"
           ],
           "sourceName": "SDL_CAPITALIZE_LETTERS"
+        },
+        "StartTextInputWithProperties": {
+          "doc": [
+            "Start accepting Unicode text input events in a window, with properties describing the input.",
+            "This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with StopTextInput().",
+            "Text input events are not received by default.",
+            "On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some key press events from being passed through.",
+            "These are the supported properties:",
+            [
+              {
+                "tag": "-",
+                "content": "`prop.TextInput.TYPE_NUMBER` - an TextInputType value that describes text being input, defaults to TEXTINPUT_TYPE_TEXT."
+              },
+              {
+                "tag": "-",
+                "content": "`prop.TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that describes how text should be capitalized, defaults to CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail addresses, usernames, and passwords."
+              },
+              {
+                "tag": "-",
+                "content": "`prop.TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion and auto correction, defaults to true."
+              },
+              {
+                "tag": "-",
+                "content": "`prop.TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME is \"1\"."
+              }
+            ],
+            "On Android you can directly specify the input type:",
+            {
+              "tag": "-",
+              "content": "`prop.TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use, overriding other properties. This is documented at https://developer.android.com/reference/android/text/InputType"
+            },
+            [
+              {
+                "tag": "@param window",
+                "content": "the window to enable text input."
+              },
+              {
+                "tag": "@param props",
+                "content": "the properties to use."
+              },
+              {
+                "tag": "@throws",
+                "content": "Error on failure."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "SetTextInputArea"
+              },
+              {
+                "tag": "@sa",
+                "content": "StartTextInput"
+              },
+              {
+                "tag": "@sa",
+                "content": "StopTextInput"
+              },
+              {
+                "tag": "@sa",
+                "content": "TextInputActive"
+              }
+            ]
+          ],
+          "name": "StartTextInputWithProperties",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "name": "props",
+              "type": "PropertiesRef"
+            }
+          ],
+          "sourceName": "SDL_StartTextInputWithProperties",
+          "hints": {
+            "mayFail": true
+          }
+        },
+        "WindowBase::StartTextInputWithProperties": {
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "PropertiesRef"
+            }
+          ],
+          "hints": {
+            "self": "get()",
+            "mayFail": true,
+            "delegate": "SDL::StartTextInputWithProperties"
+          },
+          "name": "WindowBase::StartTextInputWithProperties"
         },
         "prop::TextInput": {
           "kind": "ns",
@@ -77729,41 +77875,227 @@
             }
           }
         },
-        "WindowBase::IsTextInputActive": {
-          "name": "WindowBase::IsTextInputActive",
+        "TextInputActive": {
+          "doc": [
+            "Check whether or not Unicode text input events are enabled for a window.",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window to check."
+              },
+              {
+                "tag": "@returns",
+                "content": "true if text input events are enabled else false."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "StartTextInput"
+            }
+          ],
+          "name": "TextInputActive",
           "kind": "function",
           "type": "bool",
-          "parameters": [],
-          "sourceName": "SDL_TextInputActive",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "sourceName": "SDL_TextInputActive"
+        },
+        "WindowBase::IsTextInputActive": {
+          "kind": "function",
           "immutable": true,
+          "type": "bool",
+          "parameters": [],
           "hints": {
-            "self": "get()"
+            "self": "get()",
+            "delegate": "TextInputActive"
+          },
+          "name": "WindowBase::IsTextInputActive"
+        },
+        "StopTextInput": {
+          "doc": [
+            "Stop receiving any text input events in a window.",
+            "If StartTextInput() showed the screen keyboard, this function will hide it.",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window to disable text input."
+              },
+              {
+                "tag": "@throws",
+                "content": "Error on failure."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "StartTextInput"
+            }
+          ],
+          "name": "StopTextInput",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "sourceName": "SDL_StopTextInput",
+          "hints": {
+            "mayFail": true
           }
         },
         "WindowBase::StopTextInput": {
-          "name": "WindowBase::StopTextInput",
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "sourceName": "SDL_StopTextInput",
           "hints": {
             "self": "get()",
+            "mayFail": true,
+            "delegate": "SDL::StopTextInput"
+          },
+          "name": "WindowBase::StopTextInput"
+        },
+        "ClearComposition": {
+          "doc": [
+            "Dismiss the composition window/IME without disabling the subsystem.",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window to affect."
+              },
+              {
+                "tag": "@throws",
+                "content": "Error on failure."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "StartTextInput"
+              },
+              {
+                "tag": "@sa",
+                "content": "StopTextInput"
+              }
+            ]
+          ],
+          "name": "ClearComposition",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "sourceName": "SDL_ClearComposition",
+          "hints": {
             "mayFail": true
           }
         },
         "WindowBase::ClearComposition": {
-          "name": "WindowBase::ClearComposition",
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "sourceName": "SDL_ClearComposition",
           "hints": {
             "self": "get()",
+            "mayFail": true,
+            "delegate": "SDL::ClearComposition"
+          },
+          "name": "WindowBase::ClearComposition"
+        },
+        "SetTextInputArea": {
+          "doc": [
+            "Set the area used to type Unicode text input.",
+            "Native input methods may place a window with word suggestions near the cursor, without covering the text being entered.",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window for which to set the text input area."
+              },
+              {
+                "tag": "@param rect",
+                "content": "the Rect representing the text input area, in window coordinates, or nullptr to clear it."
+              },
+              {
+                "tag": "@param cursor",
+                "content": "the offset of the current cursor location relative to `rect->x`, in window coordinates."
+              },
+              {
+                "tag": "@throws",
+                "content": "Error on failure."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "@sa",
+                "content": "GetTextInputArea"
+              },
+              {
+                "tag": "@sa",
+                "content": "StartTextInput"
+              }
+            ]
+          ],
+          "name": "SetTextInputArea",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "name": "rect",
+              "type": "const RectRaw &"
+            },
+            {
+              "name": "cursor",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_SetTextInputArea",
+          "hints": {
             "mayFail": true
           }
         },
         "WindowBase::SetTextInputArea": {
-          "name": "WindowBase::SetTextInputArea",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -77776,17 +78108,56 @@
               "type": "int"
             }
           ],
-          "sourceName": "SDL_SetTextInputArea",
           "hints": {
             "self": "get()",
-            "mayFail": true
-          }
+            "mayFail": true,
+            "delegate": "SDL::SetTextInputArea"
+          },
+          "name": "WindowBase::SetTextInputArea"
         },
-        "WindowBase::GetTextInputArea": {
-          "name": "WindowBase::GetTextInputArea",
+        "GetTextInputArea": {
+          "doc": [
+            "Get the area used to type Unicode text input.",
+            "This returns the values previously set by SetTextInputArea().",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window for which to query the text input area."
+              },
+              {
+                "tag": "@param rect",
+                "content": "a pointer to an Rect filled in with the text input area, may be nullptr."
+              },
+              {
+                "tag": "@param cursor",
+                "content": "a pointer to the offset of the current cursor location relative to `rect->x`, may be nullptr."
+              },
+              {
+                "tag": "@throws",
+                "content": "Error on failure."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "SetTextInputArea"
+            }
+          ],
+          "name": "GetTextInputArea",
           "kind": "function",
           "type": "void",
           "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
             {
               "name": "rect",
               "type": "RectRaw *"
@@ -77798,9 +78169,29 @@
           ],
           "sourceName": "SDL_GetTextInputArea",
           "hints": {
-            "self": "get()",
             "mayFail": true
           }
+        },
+        "WindowBase::GetTextInputArea": {
+          "kind": "function",
+          "immutable": true,
+          "type": "void",
+          "parameters": [
+            {
+              "name": "rect",
+              "type": "RectRaw *"
+            },
+            {
+              "name": "cursor",
+              "type": "int *"
+            }
+          ],
+          "hints": {
+            "self": "get()",
+            "mayFail": true,
+            "delegate": "SDL::GetTextInputArea"
+          },
+          "name": "WindowBase::GetTextInputArea"
         },
         "HasScreenKeyboardSupport": {
           "doc": [
@@ -77820,11 +78211,11 @@
             [
               {
                 "tag": "@sa",
-                "content": "WindowBase.StartTextInput"
+                "content": "StartTextInput"
               },
               {
                 "tag": "@sa",
-                "content": "WindowBase.IsScreenKeyboardShown"
+                "content": "ScreenKeyboardShown"
               }
             ]
           ],
@@ -77834,16 +78225,53 @@
           "parameters": [],
           "sourceName": "SDL_HasScreenKeyboardSupport"
         },
-        "WindowBase::IsScreenKeyboardShown": {
-          "name": "WindowBase::IsScreenKeyboardShown",
+        "ScreenKeyboardShown": {
+          "doc": [
+            "Check whether the screen keyboard is shown for given window.",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window for which screen keyboard should be queried."
+              },
+              {
+                "tag": "@returns",
+                "content": "true if screen keyboard is shown or false if not."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "HasScreenKeyboardSupport"
+            }
+          ],
+          "name": "ScreenKeyboardShown",
           "kind": "function",
           "type": "bool",
-          "parameters": [],
-          "sourceName": "SDL_ScreenKeyboardShown",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "sourceName": "SDL_ScreenKeyboardShown"
+        },
+        "WindowBase::IsScreenKeyboardShown": {
+          "kind": "function",
           "immutable": true,
+          "type": "bool",
+          "parameters": [],
           "hints": {
-            "self": "get()"
-          }
+            "self": "get()",
+            "delegate": "ScreenKeyboardShown"
+          },
+          "name": "WindowBase::IsScreenKeyboardShown"
         }
       },
       "includes": [
@@ -86576,7 +87004,7 @@
         },
         "Any GUI application has to deal with the mouse, and SDL provides functions to manage mouse input and the displayed cursor.",
         "Most interactions with the mouse will come through the event subsystem. Moving a mouse generates an EVENT_MOUSE_MOTION event, pushing a button generates EVENT_MOUSE_BUTTON_DOWN, etc, but one can also query the current state of the mouse at any time with GetMouseState().",
-        "For certain games, it's useful to disassociate the mouse cursor from mouse input. An FPS, for example, would not want the player's motion to stop as the mouse hits the edge of the window. For these scenarios, use WindowBase.SetRelativeMouseMode(), which hides the cursor, grabs mouse input to the window, and reads mouse input no matter how far it moves.",
+        "For certain games, it's useful to disassociate the mouse cursor from mouse input. An FPS, for example, would not want the player's motion to stop as the mouse hits the edge of the window. For these scenarios, use SetWindowRelativeMouseMode(), which hides the cursor, grabs mouse input to the window, and reads mouse input no matter how far it moves.",
         "Games that want the system to track the mouse but want to draw their own cursor can use HideCursor() and ShowCursor(). It might be more efficient to let the system manage the cursor, if possible, using SetCursor() with a custom image made through CreateColorCursor(), or perhaps just a specific system cursor from CreateSystemCursor().",
         "SDL can, on many platforms, differentiate between multiple connected mice, allowing for interesting input scenarios and multiplayer games. They can be enumerated with GetMice(), and SDL will send EVENT_MOUSE_ADDED and EVENT_MOUSE_REMOVED events as they are connected and unplugged.",
         "Since many apps only care about basic mouse input, SDL offers a virtual mouse device for touch and pen input, which often can make a desktop application work on a touchscreen phone without any code changes. Apps that care about touch/pen separately from mouse input should filter out events with a `which` field of TOUCH_MOUSEID/PEN_MOUSEID."
@@ -87963,8 +88391,54 @@
           ],
           "sourceName": "SDL_GetRelativeMouseState"
         },
+        "WarpMouseInWindow": {
+          "doc": [
+            "Move the mouse cursor to the given position within the window.",
+            "This function generates a mouse motion event if relative mode is not enabled. If relative mode is enabled, you can force mouse events for the warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.",
+            "Note that this function will appear to succeed, but not actually move the mouse when used over Microsoft Remote Desktop.",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window to move the mouse into, or nullptr for the current mouse focus."
+              },
+              {
+                "tag": "@param x",
+                "content": "the x coordinate within the window."
+              },
+              {
+                "tag": "@param y",
+                "content": "the y coordinate within the window."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "WarpMouse"
+            }
+          ],
+          "name": "WarpMouseInWindow",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "type": "const FPointRaw &",
+              "name": "p"
+            }
+          ],
+          "sourceName": "SDL_WarpMouseInWindow"
+        },
         "WindowBase::WarpMouse": {
-          "name": "WindowBase::WarpMouse",
           "kind": "function",
           "type": "void",
           "parameters": [
@@ -87973,10 +88447,11 @@
               "name": "p"
             }
           ],
-          "sourceName": "SDL_WarpMouseInWindow",
           "hints": {
-            "self": "get()"
-          }
+            "self": "get()",
+            "delegate": "WarpMouseInWindow"
+          },
+          "name": "WindowBase::WarpMouse"
         },
         "WarpMouse": {
           "doc": [
@@ -88008,7 +88483,7 @@
             },
             {
               "tag": "@sa",
-              "content": "WindowBase.WarpMouse"
+              "content": "WarpMouseInWindow"
             }
           ],
           "name": "WarpMouse",
@@ -88119,11 +88594,47 @@
             "patch": 0
           }
         },
-        "WindowBase::SetRelativeMouseMode": {
-          "name": "WindowBase::SetRelativeMouseMode",
+        "SetWindowRelativeMouseMode": {
+          "doc": [
+            "Set relative mouse mode for a window.",
+            "While the window has focus and relative mouse mode is enabled, the cursor is hidden, the mouse position is constrained to the window, and SDL will report continuous relative mouse motion even if the mouse is at the edge of the window.",
+            "If you'd like to keep the mouse position fixed while in relative mode you can use SetWindowMouseRect(). If you'd like the cursor to be at a specific location when relative mode ends, you should use WarpMouseInWindow() before disabling relative mode.",
+            "This function will flush any pending mouse motion for this window.",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window to change."
+              },
+              {
+                "tag": "@param enabled",
+                "content": "true to enable relative mode, false to disable."
+              },
+              {
+                "tag": "@throws",
+                "content": "Error on failure."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "GetWindowRelativeMouseMode"
+            }
+          ],
+          "name": "SetWindowRelativeMouseMode",
           "kind": "function",
           "type": "void",
           "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
             {
               "name": "enabled",
               "type": "bool"
@@ -88131,26 +88642,77 @@
           ],
           "sourceName": "SDL_SetWindowRelativeMouseMode",
           "hints": {
-            "self": "get()",
             "mayFail": true
           }
         },
-        "WindowBase::GetRelativeMouseMode": {
-          "name": "WindowBase::GetRelativeMouseMode",
+        "WindowBase::SetRelativeMouseMode": {
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "bool",
+              "name": "enabled"
+            }
+          ],
+          "hints": {
+            "self": "get()",
+            "delegate": "SetWindowRelativeMouseMode"
+          },
+          "name": "WindowBase::SetRelativeMouseMode"
+        },
+        "GetWindowRelativeMouseMode": {
+          "doc": [
+            "Query whether relative mouse mode is enabled for a window.",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window to query."
+              },
+              {
+                "tag": "@returns",
+                "content": "true if relative mode is enabled for a window or false otherwise."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "@sa",
+              "content": "SetWindowRelativeMouseMode"
+            }
+          ],
+          "name": "GetWindowRelativeMouseMode",
           "kind": "function",
           "type": "bool",
-          "parameters": [],
-          "sourceName": "SDL_GetWindowRelativeMouseMode",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "sourceName": "SDL_GetWindowRelativeMouseMode"
+        },
+        "WindowBase::GetRelativeMouseMode": {
+          "kind": "function",
           "immutable": true,
+          "type": "bool",
+          "parameters": [],
           "hints": {
-            "self": "get()"
-          }
+            "self": "get()",
+            "delegate": "GetWindowRelativeMouseMode"
+          },
+          "name": "WindowBase::GetRelativeMouseMode"
         },
         "CaptureMouse": {
           "doc": [
             "Capture the mouse and to track input outside an SDL window.",
             "Capturing enables your app to obtain mouse events globally, instead of just within your window. Not all video targets support this function. When capturing is enabled, the current window will get all mouse events, but unlike relative mode, no change is made to the cursor and it is not restrained to your window.",
-            "This function may also deny mouse input to other windows--both those in your application and others on the system--so you should use this function sparingly, and in small bursts. For example, you might want to track the mouse while the user is dragging something, until the user releases a mouse button. It is not recommended that you capture the mouse for long periods of time, such as the entire time your app is running. For that, you should probably use WindowBase.SetRelativeMouseMode() or SetWindowMouseGrab(), depending on your goals.",
+            "This function may also deny mouse input to other windows--both those in your application and others on the system--so you should use this function sparingly, and in small bursts. For example, you might want to track the mouse while the user is dragging something, until the user releases a mouse button. It is not recommended that you capture the mouse for long periods of time, such as the entire time your app is running. For that, you should probably use SetWindowRelativeMouseMode() or SetWindowMouseGrab(), depending on your goals.",
             "While captured, mouse events still report coordinates relative to the current (foreground) window, but those coordinates may be outside the bounds of the window (including negative values). Capturing is only allowed for the foreground window. If the window loses focus while capturing, the capture will be disabled automatically.",
             "While capturing is enabled, the current window will have the `WINDOW_MOUSE_CAPTURE` flag set.",
             "Please note that SDL will attempt to \"auto capture\" the mouse while the user is pressing a button; this is to try and make mouse behavior more consistent between platforms, and deal with the common case of a user dragging the mouse outside of the window. This means that if you are calling CaptureMouse() only to deal with this situation, you do not have to (although it is safe to do so). If this causes problems for your app, you can disable auto capture by setting the `SDL_HINT_MOUSE_AUTO_CAPTURE` hint to zero.",
@@ -118842,17 +119404,56 @@
             "delegate": "Renderer"
           }
         },
-        "WindowBase::GetRenderer": {
-          "name": "WindowBase::GetRenderer",
+        "GetRenderer": {
+          "doc": [
+            "Get the renderer associated with a window.",
+            [
+              {
+                "tag": "@param window",
+                "content": "the window to query."
+              },
+              {
+                "tag": "@returns",
+                "content": "the rendering context on success."
+              },
+              {
+                "tag": "@throws",
+                "content": "Error on failure."
+              }
+            ],
+            {
+              "tag": "@threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "@since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
+          "name": "GetRenderer",
           "kind": "function",
           "type": "RendererRef",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
           "sourceName": "SDL_GetRenderer",
           "hints": {
-            "self": "get()",
             "mayFail": true
+          }
+        },
+        "WindowBase::GetRenderer": {
+          "kind": "function",
+          "immutable": true,
+          "type": "RendererRef",
+          "parameters": [],
+          "hints": {
+            "self": "get()",
+            "delegate": "SDL::GetRenderer"
           },
-          "immutable": true
+          "name": "WindowBase::GetRenderer"
         },
         "GetRenderWindow": {
           "doc": [
@@ -174214,15 +174815,27 @@
               "proto": true
             },
             "StartTextInput": {
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "hints": {
+                "mayFail": true,
+                "delegate": "SDL::StartTextInput"
+              },
+              "name": "StartTextInput",
               "doc": [
                 "Start accepting Unicode text input events in a window.",
-                "This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with WindowBase.StopTextInput().",
+                "This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with StopTextInput().",
                 "Text input events are not received by default.",
                 "On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some key press events from being passed through.",
                 [
                   {
-                    "tag": "@throws",
-                    "content": "Error on failure."
+                    "tag": "@param window",
+                    "content": "the window to enable text input."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "true on success or false on failure; call GetError() for more information."
                   }
                 ],
                 {
@@ -174236,118 +174849,127 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "WindowBase.SetTextInputArea"
+                    "content": "SetTextInputArea"
                   },
                   {
                     "tag": "@sa",
-                    "content": "WindowBase.StartTextInput"
+                    "content": "StartTextInputWithProperties"
                   },
                   {
                     "tag": "@sa",
-                    "content": "WindowBase.StopTextInput"
+                    "content": "StopTextInput"
                   },
                   {
                     "tag": "@sa",
-                    "content": "WindowBase.IsTextInputActive"
+                    "content": "TextInputActive"
                   }
                 ]
               ],
-              "name": "StartTextInput",
+              "proto": true
+            },
+            "StartTextInputWithProperties": {
               "kind": "function",
               "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_StartTextInput",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "props",
+                  "type": "PropertiesRef"
+                }
+              ],
               "hints": {
-                "mayFail": true
+                "mayFail": true,
+                "delegate": "SDL::StartTextInputWithProperties"
               },
-              "overload": {
-                "doc": [
-                  "Start accepting Unicode text input events in a window, with properties describing the input.",
-                  "This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with WindowBase.StopTextInput().",
-                  "Text input events are not received by default.",
-                  "On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some key press events from being passed through.",
-                  "These are the supported properties:",
-                  [
-                    {
-                      "tag": "-",
-                      "content": "`prop.TextInput.TYPE_NUMBER` - an TextInputType value that describes text being input, defaults to TEXTINPUT_TYPE_TEXT."
-                    },
-                    {
-                      "tag": "-",
-                      "content": "`prop.TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that describes how text should be capitalized, defaults to CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail addresses, usernames, and passwords."
-                    },
-                    {
-                      "tag": "-",
-                      "content": "`prop.TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion and auto correction, defaults to true."
-                    },
-                    {
-                      "tag": "-",
-                      "content": "`prop.TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME is \"1\"."
-                    }
-                  ],
-                  "On Android you can directly specify the input type:",
+              "name": "StartTextInputWithProperties",
+              "doc": [
+                "Start accepting Unicode text input events in a window, with properties describing the input.",
+                "This function will enable text input (EVENT_TEXT_INPUT and EVENT_TEXT_EDITING events) in the specified window. Please use this function paired with StopTextInput().",
+                "Text input events are not received by default.",
+                "On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some key press events from being passed through.",
+                "These are the supported properties:",
+                [
                   {
                     "tag": "-",
-                    "content": "`prop.TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use, overriding other properties. This is documented at https://developer.android.com/reference/android/text/InputType"
-                  },
-                  [
-                    {
-                      "tag": "@param props",
-                      "content": "the properties to use."
-                    },
-                    {
-                      "tag": "@throws",
-                      "content": "Error on failure."
-                    }
-                  ],
-                  {
-                    "tag": "@threadsafety",
-                    "content": "This function should only be called on the main thread."
+                    "content": "`prop.TextInput.TYPE_NUMBER` - an TextInputType value that describes text being input, defaults to TEXTINPUT_TYPE_TEXT."
                   },
                   {
-                    "tag": "@since",
-                    "content": "This function is available since SDL 3.2.0."
+                    "tag": "-",
+                    "content": "`prop.TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that describes how text should be capitalized, defaults to CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail addresses, usernames, and passwords."
                   },
-                  [
-                    {
-                      "tag": "@sa",
-                      "content": "WindowBase.SetTextInputArea"
-                    },
-                    {
-                      "tag": "@sa",
-                      "content": "WindowBase.StartTextInput"
-                    },
-                    {
-                      "tag": "@sa",
-                      "content": "WindowBase.StopTextInput"
-                    },
-                    {
-                      "tag": "@sa",
-                      "content": "WindowBase.IsTextInputActive"
-                    }
-                  ]
-                ],
-                "name": "StartTextInput",
-                "kind": "function",
-                "type": "void",
-                "parameters": [
                   {
-                    "name": "props",
-                    "type": "PropertiesRef"
+                    "tag": "-",
+                    "content": "`prop.TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion and auto correction, defaults to true."
+                  },
+                  {
+                    "tag": "-",
+                    "content": "`prop.TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME is \"1\"."
                   }
                 ],
-                "sourceName": "SDL_StartTextInputWithProperties",
-                "hints": {
-                  "mayFail": true
+                "On Android you can directly specify the input type:",
+                {
+                  "tag": "-",
+                  "content": "`prop.TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use, overriding other properties. This is documented at https://developer.android.com/reference/android/text/InputType"
                 },
-                "proto": true
-              },
+                [
+                  {
+                    "tag": "@param window",
+                    "content": "the window to enable text input."
+                  },
+                  {
+                    "tag": "@param props",
+                    "content": "the properties to use."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "true on success or false on failure; call GetError() for more information."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "This function should only be called on the main thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "SetTextInputArea"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "StartTextInput"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "StopTextInput"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "TextInputActive"
+                  }
+                ]
+              ],
               "proto": true
             },
             "IsTextInputActive": {
+              "kind": "function",
+              "immutable": true,
+              "type": "bool",
+              "parameters": [],
+              "hints": {
+                "delegate": "TextInputActive"
+              },
+              "name": "IsTextInputActive",
               "doc": [
                 "Check whether or not Unicode text input events are enabled for a window.",
                 [
+                  {
+                    "tag": "@param window",
+                    "content": "the window to check."
+                  },
                   {
                     "tag": "@returns",
                     "content": "true if text input events are enabled else false."
@@ -174363,25 +174985,31 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "WindowBase.StartTextInput"
+                  "content": "StartTextInput"
                 }
               ],
-              "name": "IsTextInputActive",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [],
-              "sourceName": "SDL_TextInputActive",
-              "immutable": true,
               "proto": true
             },
             "StopTextInput": {
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "hints": {
+                "mayFail": true,
+                "delegate": "SDL::StopTextInput"
+              },
+              "name": "StopTextInput",
               "doc": [
                 "Stop receiving any text input events in a window.",
-                "If WindowBase.StartTextInput() showed the screen keyboard, this function will hide it.",
+                "If StartTextInput() showed the screen keyboard, this function will hide it.",
                 [
                   {
-                    "tag": "@throws",
-                    "content": "Error on failure."
+                    "tag": "@param window",
+                    "content": "the window to disable text input."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "true on success or false on failure; call GetError() for more information."
                   }
                 ],
                 {
@@ -174394,26 +175022,30 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "WindowBase.StartTextInput"
+                  "content": "StartTextInput"
                 }
               ],
-              "name": "StopTextInput",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_StopTextInput",
-              "hints": {
-                "mayFail": true
-              },
               "proto": true
             },
             "ClearComposition": {
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "hints": {
+                "mayFail": true,
+                "delegate": "SDL::ClearComposition"
+              },
+              "name": "ClearComposition",
               "doc": [
                 "Dismiss the composition window/IME without disabling the subsystem.",
                 [
                   {
-                    "tag": "@throws",
-                    "content": "Error on failure."
+                    "tag": "@param window",
+                    "content": "the window to affect."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "true on success or false on failure; call GetError() for more information."
                   }
                 ],
                 {
@@ -174427,64 +175059,20 @@
                 [
                   {
                     "tag": "@sa",
-                    "content": "WindowBase.StartTextInput"
+                    "content": "StartTextInput"
                   },
                   {
                     "tag": "@sa",
-                    "content": "WindowBase.StopTextInput"
+                    "content": "StopTextInput"
                   }
                 ]
               ],
-              "name": "ClearComposition",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_ClearComposition",
-              "hints": {
-                "mayFail": true
-              },
               "proto": true
             },
             "SetTextInputArea": {
-              "doc": [
-                "Set the area used to type Unicode text input.",
-                "Native input methods may place a window with word suggestions near the cursor, without covering the text being entered.",
-                [
-                  {
-                    "tag": "@param rect",
-                    "content": "the Rect representing the text input area, in window coordinates, or nullptr to clear it."
-                  },
-                  {
-                    "tag": "@param cursor",
-                    "content": "the offset of the current cursor location relative to `rect->x`, in window coordinates."
-                  },
-                  {
-                    "tag": "@throws",
-                    "content": "Error on failure."
-                  }
-                ],
-                {
-                  "tag": "@threadsafety",
-                  "content": "This function should only be called on the main thread."
-                },
-                {
-                  "tag": "@since",
-                  "content": "This function is available since SDL 3.2.0."
-                },
-                [
-                  {
-                    "tag": "@sa",
-                    "content": "WindowBase.GetTextInputArea"
-                  },
-                  {
-                    "tag": "@sa",
-                    "content": "WindowBase.StartTextInput"
-                  }
-                ]
-              ],
-              "name": "SetTextInputArea",
               "kind": "function",
               "type": "void",
+              "static": false,
               "parameters": [
                 {
                   "name": "rect",
@@ -174495,28 +175083,30 @@
                   "type": "int"
                 }
               ],
-              "sourceName": "SDL_SetTextInputArea",
               "hints": {
-                "mayFail": true
+                "mayFail": true,
+                "delegate": "SDL::SetTextInputArea"
               },
-              "proto": true
-            },
-            "GetTextInputArea": {
+              "name": "SetTextInputArea",
               "doc": [
-                "Get the area used to type Unicode text input.",
-                "This returns the values previously set by WindowBase.SetTextInputArea().",
+                "Set the area used to type Unicode text input.",
+                "Native input methods may place a window with word suggestions near the cursor, without covering the text being entered.",
                 [
                   {
+                    "tag": "@param window",
+                    "content": "the window for which to set the text input area."
+                  },
+                  {
                     "tag": "@param rect",
-                    "content": "a pointer to an Rect filled in with the text input area, may be nullptr."
+                    "content": "the Rect representing the text input area, in window coordinates, or nullptr to clear it."
                   },
                   {
                     "tag": "@param cursor",
-                    "content": "a pointer to the offset of the current cursor location relative to `rect->x`, may be nullptr."
+                    "content": "the offset of the current cursor location relative to `rect->x`, in window coordinates."
                   },
                   {
-                    "tag": "@throws",
-                    "content": "Error on failure."
+                    "tag": "@returns",
+                    "content": "true on success or false on failure; call GetError() for more information."
                   }
                 ],
                 {
@@ -174527,13 +175117,22 @@
                   "tag": "@since",
                   "content": "This function is available since SDL 3.2.0."
                 },
-                {
-                  "tag": "@sa",
-                  "content": "WindowBase.SetTextInputArea"
-                }
+                [
+                  {
+                    "tag": "@sa",
+                    "content": "GetTextInputArea"
+                  },
+                  {
+                    "tag": "@sa",
+                    "content": "StartTextInput"
+                  }
+                ]
               ],
-              "name": "GetTextInputArea",
+              "proto": true
+            },
+            "GetTextInputArea": {
               "kind": "function",
+              "immutable": true,
               "type": "void",
               "parameters": [
                 {
@@ -174545,16 +175144,64 @@
                   "type": "int *"
                 }
               ],
-              "sourceName": "SDL_GetTextInputArea",
               "hints": {
-                "mayFail": true
+                "mayFail": true,
+                "delegate": "SDL::GetTextInputArea"
               },
+              "name": "GetTextInputArea",
+              "doc": [
+                "Get the area used to type Unicode text input.",
+                "This returns the values previously set by SetTextInputArea().",
+                [
+                  {
+                    "tag": "@param window",
+                    "content": "the window for which to query the text input area."
+                  },
+                  {
+                    "tag": "@param rect",
+                    "content": "a pointer to an Rect filled in with the text input area, may be nullptr."
+                  },
+                  {
+                    "tag": "@param cursor",
+                    "content": "a pointer to the offset of the current cursor location relative to `rect->x`, may be nullptr."
+                  },
+                  {
+                    "tag": "@returns",
+                    "content": "true on success or false on failure; call GetError() for more information."
+                  }
+                ],
+                {
+                  "tag": "@threadsafety",
+                  "content": "This function should only be called on the main thread."
+                },
+                {
+                  "tag": "@since",
+                  "content": "This function is available since SDL 3.2.0."
+                },
+                {
+                  "tag": "@sa",
+                  "content": "SetTextInputArea"
+                }
+              ],
+              "static": false,
               "proto": true
             },
             "IsScreenKeyboardShown": {
+              "kind": "function",
+              "immutable": true,
+              "type": "bool",
+              "parameters": [],
+              "hints": {
+                "delegate": "ScreenKeyboardShown"
+              },
+              "name": "IsScreenKeyboardShown",
               "doc": [
                 "Check whether the screen keyboard is shown for given window.",
                 [
+                  {
+                    "tag": "@param window",
+                    "content": "the window for which screen keyboard should be queried."
+                  },
                   {
                     "tag": "@returns",
                     "content": "true if screen keyboard is shown or false if not."
@@ -174573,20 +175220,31 @@
                   "content": "HasScreenKeyboardSupport"
                 }
               ],
-              "name": "IsScreenKeyboardShown",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [],
-              "sourceName": "SDL_ScreenKeyboardShown",
-              "immutable": true,
               "proto": true
             },
             "WarpMouse": {
+              "kind": "function",
+              "static": false,
+              "type": "void",
+              "parameters": [
+                {
+                  "type": "const FPointRaw &",
+                  "name": "p"
+                }
+              ],
+              "hints": {
+                "delegate": "WarpMouseInWindow"
+              },
+              "name": "WarpMouse",
               "doc": [
                 "Move the mouse cursor to the given position within the window.",
                 "This function generates a mouse motion event if relative mode is not enabled. If relative mode is enabled, you can force mouse events for the warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.",
                 "Note that this function will appear to succeed, but not actually move the mouse when used over Microsoft Remote Desktop.",
                 [
+                  {
+                    "tag": "@param window",
+                    "content": "the window to move the mouse into, or nullptr for the current mouse focus."
+                  },
                   {
                     "tag": "@param x",
                     "content": "the x coordinate within the window."
@@ -174609,32 +175267,39 @@
                   "content": "WarpMouse"
                 }
               ],
-              "name": "WarpMouse",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "type": "const FPointRaw &",
-                  "name": "p"
-                }
-              ],
-              "sourceName": "SDL_WarpMouseInWindow",
               "proto": true
             },
             "SetRelativeMouseMode": {
+              "kind": "function",
+              "static": false,
+              "type": "void",
+              "parameters": [
+                {
+                  "type": "bool",
+                  "name": "enabled"
+                }
+              ],
+              "hints": {
+                "delegate": "SetWindowRelativeMouseMode"
+              },
+              "name": "SetRelativeMouseMode",
               "doc": [
                 "Set relative mouse mode for a window.",
                 "While the window has focus and relative mouse mode is enabled, the cursor is hidden, the mouse position is constrained to the window, and SDL will report continuous relative mouse motion even if the mouse is at the edge of the window.",
-                "If you'd like to keep the mouse position fixed while in relative mode you can use SetWindowMouseRect(). If you'd like the cursor to be at a specific location when relative mode ends, you should use WindowBase.WarpMouse() before disabling relative mode.",
+                "If you'd like to keep the mouse position fixed while in relative mode you can use SetWindowMouseRect(). If you'd like the cursor to be at a specific location when relative mode ends, you should use WarpMouseInWindow() before disabling relative mode.",
                 "This function will flush any pending mouse motion for this window.",
                 [
+                  {
+                    "tag": "@param window",
+                    "content": "the window to change."
+                  },
                   {
                     "tag": "@param enabled",
                     "content": "true to enable relative mode, false to disable."
                   },
                   {
-                    "tag": "@throws",
-                    "content": "Error on failure."
+                    "tag": "@returns",
+                    "content": "true on success or false on failure; call GetError() for more information."
                   }
                 ],
                 {
@@ -174647,28 +175312,27 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "WindowBase.GetRelativeMouseMode"
+                  "content": "GetWindowRelativeMouseMode"
                 }
               ],
-              "name": "SetRelativeMouseMode",
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "enabled",
-                  "type": "bool"
-                }
-              ],
-              "sourceName": "SDL_SetWindowRelativeMouseMode",
-              "hints": {
-                "mayFail": true
-              },
               "proto": true
             },
             "GetRelativeMouseMode": {
+              "kind": "function",
+              "immutable": true,
+              "type": "bool",
+              "parameters": [],
+              "hints": {
+                "delegate": "GetWindowRelativeMouseMode"
+              },
+              "name": "GetRelativeMouseMode",
               "doc": [
                 "Query whether relative mouse mode is enabled for a window.",
                 [
+                  {
+                    "tag": "@param window",
+                    "content": "the window to query."
+                  },
                   {
                     "tag": "@returns",
                     "content": "true if relative mode is enabled for a window or false otherwise."
@@ -174684,28 +175348,30 @@
                 },
                 {
                   "tag": "@sa",
-                  "content": "WindowBase.SetRelativeMouseMode"
+                  "content": "SetWindowRelativeMouseMode"
                 }
               ],
-              "name": "GetRelativeMouseMode",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [],
-              "sourceName": "SDL_GetWindowRelativeMouseMode",
-              "immutable": true,
               "proto": true
             },
             "GetRenderer": {
+              "kind": "function",
+              "immutable": true,
+              "type": "RendererRef",
+              "parameters": [],
+              "hints": {
+                "delegate": "SDL::GetRenderer"
+              },
+              "name": "GetRenderer",
               "doc": [
                 "Get the renderer associated with a window.",
                 [
                   {
-                    "tag": "@returns",
-                    "content": "the rendering context on success."
+                    "tag": "@param window",
+                    "content": "the window to query."
                   },
                   {
-                    "tag": "@throws",
-                    "content": "Error on failure."
+                    "tag": "@returns",
+                    "content": "the rendering context on success or nullptr on failure; call GetError() for more information."
                   }
                 ],
                 {
@@ -174717,15 +175383,6 @@
                   "content": "This function is available since SDL 3.2.0."
                 }
               ],
-              "name": "GetRenderer",
-              "kind": "function",
-              "type": "RendererRef",
-              "parameters": [],
-              "sourceName": "SDL_GetRenderer",
-              "hints": {
-                "mayFail": true
-              },
-              "immutable": true,
               "proto": true
             }
           },

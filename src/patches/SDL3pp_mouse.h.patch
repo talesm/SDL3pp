@@ -107,16 +107,26 @@
  
  /**
   * Query SDL's cache for the synchronous mouse button state and the
-@@ -669,7 +672,7 @@
- 
- inline void WindowBase::WarpMouse(const FPointRaw& p)
+@@ -679,8 +682,7 @@
+  *
+  * @param window the window to move the mouse into, or nullptr for the current
+  *               mouse focus.
+- * @param x the x coordinate within the window.
+- * @param y the y coordinate within the window.
++ * @param p the x, y coordinates within the window.
+  *
+  * @threadsafety This function should only be called on the main thread.
+  *
+@@ -690,7 +692,7 @@
+  */
+ inline void WarpMouseInWindow(WindowRef window, const FPointRaw& p)
  {
--  SDL_WarpMouseInWindow(get(), p);
-+  SDL_WarpMouseInWindow(get(), p.x, p.y);
+-  SDL_WarpMouseInWindow(window, p);
++  SDL_WarpMouseInWindow(window, p.x, p.y);
  }
  
- /**
-@@ -683,8 +686,7 @@
+ inline void WindowBase::WarpMouse(const FPointRaw& p)
+@@ -709,8 +711,7 @@
   * Note that this function will appear to succeed, but not actually move the
   * mouse when used over Microsoft Remote Desktop.
   *
@@ -126,7 +136,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -695,7 +697,7 @@
+@@ -721,7 +722,7 @@
   */
  inline void WarpMouse(const FPointRaw& p)
  {
@@ -135,7 +145,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -729,7 +731,6 @@
+@@ -755,7 +756,6 @@
   *
   * @param callback a callback used to transform relative mouse motion, or
   *                 nullptr for default behavior.
@@ -143,7 +153,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -738,7 +739,7 @@
+@@ -764,7 +764,7 @@
   */
  inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
  {
@@ -152,7 +162,7 @@
  }
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -828,12 +829,9 @@
+@@ -901,12 +901,9 @@
   *
   * @param data the color value for each pixel of the cursor.
   * @param mask the mask value for each pixel of the cursor.
@@ -168,7 +178,7 @@
   * @returns a new cursor with the specified parameters on success.
   * @throws Error on failure.
   *
-@@ -859,12 +857,13 @@
+@@ -932,12 +929,13 @@
                        const Uint8* mask,
                        const PointRaw& size,
                        const PointRaw& hot)
@@ -184,7 +194,7 @@
  {
  }
  
-@@ -888,8 +887,7 @@
+@@ -961,8 +959,7 @@
   * upscaled and be used instead.
   *
   * @param surface an Surface structure representing the cursor image.
@@ -194,7 +204,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -1016,7 +1014,7 @@
+@@ -1089,7 +1086,7 @@
   *
   * @sa SetCursor
   */
@@ -203,7 +213,7 @@
  
  /**
   * Get the default cursor.
-@@ -1034,7 +1032,7 @@
+@@ -1107,7 +1104,7 @@
   */
  inline CursorRef GetDefaultCursor()
  {

@@ -2466,7 +2466,7 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * This function will enable text input (EVENT_TEXT_INPUT and
    * EVENT_TEXT_EDITING events) in the specified window. Please use this
-   * function paired with WindowBase.StopTextInput().
+   * function paired with StopTextInput().
    *
    * Text input events are not received by default.
    *
@@ -2480,10 +2480,10 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetTextInputArea
-   * @sa WindowBase.StartTextInput
-   * @sa WindowBase.StopTextInput
-   * @sa WindowBase.IsTextInputActive
+   * @sa SetTextInputArea
+   * @sa StartTextInputWithProperties
+   * @sa StopTextInput
+   * @sa TextInputActive
    */
   void StartTextInput();
 
@@ -2493,7 +2493,7 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * This function will enable text input (EVENT_TEXT_INPUT and
    * EVENT_TEXT_EDITING events) in the specified window. Please use this
-   * function paired with WindowBase.StopTextInput().
+   * function paired with StopTextInput().
    *
    * Text input events are not received by default.
    *
@@ -2530,12 +2530,12 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetTextInputArea
-   * @sa WindowBase.StartTextInput
-   * @sa WindowBase.StopTextInput
-   * @sa WindowBase.IsTextInputActive
+   * @sa SetTextInputArea
+   * @sa StartTextInput
+   * @sa StopTextInput
+   * @sa TextInputActive
    */
-  void StartTextInput(PropertiesRef props);
+  void StartTextInputWithProperties(PropertiesRef props);
 
   /**
    * Check whether or not Unicode text input events are enabled for a window.
@@ -2546,15 +2546,14 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.StartTextInput
+   * @sa StartTextInput
    */
   bool IsTextInputActive() const;
 
   /**
    * Stop receiving any text input events in a window.
    *
-   * If WindowBase.StartTextInput() showed the screen keyboard, this function
-   * will hide it.
+   * If StartTextInput() showed the screen keyboard, this function will hide it.
    *
    * @throws Error on failure.
    *
@@ -2562,7 +2561,7 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.StartTextInput
+   * @sa StartTextInput
    */
   void StopTextInput();
 
@@ -2575,8 +2574,8 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.StartTextInput
-   * @sa WindowBase.StopTextInput
+   * @sa StartTextInput
+   * @sa StopTextInput
    */
   void ClearComposition();
 
@@ -2596,15 +2595,15 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetTextInputArea
-   * @sa WindowBase.StartTextInput
+   * @sa GetTextInputArea
+   * @sa StartTextInput
    */
   void SetTextInputArea(const RectRaw& rect, int cursor);
 
   /**
    * Get the area used to type Unicode text input.
    *
-   * This returns the values previously set by WindowBase.SetTextInputArea().
+   * This returns the values previously set by SetTextInputArea().
    *
    * @param rect a pointer to an Rect filled in with the text input area, may be
    *             nullptr.
@@ -2616,9 +2615,9 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetTextInputArea
+   * @sa SetTextInputArea
    */
-  void GetTextInputArea(RectRaw* rect, int* cursor);
+  void GetTextInputArea(RectRaw* rect, int* cursor) const;
 
   /**
    * Check whether the screen keyboard is shown for given window.
@@ -2663,8 +2662,8 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * If you'd like to keep the mouse position fixed while in relative mode you
    * can use SetWindowMouseRect(). If you'd like the cursor to be at a specific
-   * location when relative mode ends, you should use WindowBase.WarpMouse()
-   * before disabling relative mode.
+   * location when relative mode ends, you should use WarpMouseInWindow() before
+   * disabling relative mode.
    *
    * This function will flush any pending mouse motion for this window.
    *
@@ -2675,7 +2674,7 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.GetRelativeMouseMode
+   * @sa GetWindowRelativeMouseMode
    */
   void SetRelativeMouseMode(bool enabled);
 
@@ -2688,7 +2687,7 @@ struct WindowBase : ResourceBaseT<WindowRaw>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa WindowBase.SetRelativeMouseMode
+   * @sa SetWindowRelativeMouseMode
    */
   bool GetRelativeMouseMode() const;
 

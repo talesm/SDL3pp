@@ -21,8 +21,8 @@ namespace SDL {
  * For certain games, it's useful to disassociate the mouse cursor from mouse
  * input. An FPS, for example, would not want the player's motion to stop as the
  * mouse hits the edge of the window. For these scenarios, use
- * WindowBase.SetRelativeMouseMode(), which hides the cursor, grabs mouse input
- * to the window, and reads mouse input no matter how far it moves.
+ * SetWindowRelativeMouseMode(), which hides the cursor, grabs mouse input to
+ * the window, and reads mouse input no matter how far it moves.
  *
  * Games that want the system to track the mouse but want to draw their own
  * cursor can use HideCursor() and ShowCursor(). It might be more efficient to
@@ -670,9 +670,34 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
   return SDL_GetRelativeMouseState(x, y);
 }
 
+/**
+ * Move the mouse cursor to the given position within the window.
+ *
+ * This function generates a mouse motion event if relative mode is not enabled.
+ * If relative mode is enabled, you can force mouse events for the warp by
+ * setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
+ *
+ * Note that this function will appear to succeed, but not actually move the
+ * mouse when used over Microsoft Remote Desktop.
+ *
+ * @param window the window to move the mouse into, or nullptr for the current
+ *               mouse focus.
+ * @param p the x, y coordinates within the window.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WarpMouse
+ */
+inline void WarpMouseInWindow(WindowRef window, const FPointRaw& p)
+{
+  SDL_WarpMouseInWindow(window, p.x, p.y);
+}
+
 inline void WindowBase::WarpMouse(const FPointRaw& p)
 {
-  SDL_WarpMouseInWindow(get(), p.x, p.y);
+  WarpMouseInWindow(get(), p);
 }
 
 /**
@@ -693,7 +718,7 @@ inline void WindowBase::WarpMouse(const FPointRaw& p)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase.WarpMouse
+ * @sa WarpMouseInWindow
  */
 inline void WarpMouse(const FPointRaw& p)
 {
@@ -744,14 +769,61 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
+/**
+ * Set relative mouse mode for a window.
+ *
+ * While the window has focus and relative mouse mode is enabled, the cursor is
+ * hidden, the mouse position is constrained to the window, and SDL will report
+ * continuous relative mouse motion even if the mouse is at the edge of the
+ * window.
+ *
+ * If you'd like to keep the mouse position fixed while in relative mode you can
+ * use SetWindowMouseRect(). If you'd like the cursor to be at a specific
+ * location when relative mode ends, you should use WarpMouseInWindow() before
+ * disabling relative mode.
+ *
+ * This function will flush any pending mouse motion for this window.
+ *
+ * @param window the window to change.
+ * @param enabled true to enable relative mode, false to disable.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetWindowRelativeMouseMode
+ */
+inline void SetWindowRelativeMouseMode(WindowRef window, bool enabled)
+{
+  CheckError(SDL_SetWindowRelativeMouseMode(window, enabled));
+}
+
 inline void WindowBase::SetRelativeMouseMode(bool enabled)
 {
-  CheckError(SDL_SetWindowRelativeMouseMode(get(), enabled));
+  SetWindowRelativeMouseMode(get(), enabled);
+}
+
+/**
+ * Query whether relative mouse mode is enabled for a window.
+ *
+ * @param window the window to query.
+ * @returns true if relative mode is enabled for a window or false otherwise.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetWindowRelativeMouseMode
+ */
+inline bool GetWindowRelativeMouseMode(WindowRef window)
+{
+  return SDL_GetWindowRelativeMouseMode(window);
 }
 
 inline bool WindowBase::GetRelativeMouseMode() const
 {
-  return SDL_GetWindowRelativeMouseMode(get());
+  return GetWindowRelativeMouseMode(get());
 }
 
 /**
@@ -769,8 +841,8 @@ inline bool WindowBase::GetRelativeMouseMode() const
  * mouse while the user is dragging something, until the user releases a mouse
  * button. It is not recommended that you capture the mouse for long periods of
  * time, such as the entire time your app is running. For that, you should
- * probably use WindowBase.SetRelativeMouseMode() or SetWindowMouseGrab(),
- * depending on your goals.
+ * probably use SetWindowRelativeMouseMode() or SetWindowMouseGrab(), depending
+ * on your goals.
  *
  * While captured, mouse events still report coordinates relative to the current
  * (foreground) window, but those coordinates may be outside the bounds of the

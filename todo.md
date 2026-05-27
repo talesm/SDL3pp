@@ -1,7 +1,6 @@
 Todo for next version
 =====================
 
-
 Breaking changes:
 
 - [ ] Remove old entry point (break compat);
@@ -17,11 +16,27 @@ Breaking changes:
     - Can be also constructed from Any const ResourceBase &;
     - Can be converted to raw resource;
   - [x] New ResourceRefT becomes template to new ResourceRef
+- [x] Rename StartTextInput overload with properties to
+  StartTextInputWithProperties;
 
 Non-breaking changes
 
 - [x] Document refers to free functions instead of method versions;
-- [ ] Fix ObjectRef(nullptr).
+- [x] Fix ObjectRef(nullptr).
+- [x] Add standalone functions for window related methods defined in different
+  files:
+  - [x] StartTextInput();
+  - [x] StartTextInputWithProperties();
+  - [x] TextInputActive();
+  - [x] StopTextInput();
+  - [x] ClearComposition();
+  - [x] SetTextInputArea();
+  - [x] GetTextInputArea();
+  - [x] ScreenKeyboardShown
+  - [x] WarpMouseInWindow();
+  - [x] SetWindowRelativeMouseMode();
+  - [x] GetWindowRelativeMouseMode();
+  - [x] GetRenderer();
 
 Backlog
 -------

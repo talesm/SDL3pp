@@ -2618,31 +2618,104 @@ const transform = {
         "SDL_GetKeyFromName": {
           "name": "Keycode::Keycode"
         },
-        "SDL_StartTextInput": {
-          name: "WindowBase::StartTextInput",
+        "WindowBase::StartTextInput": {
+          after: "SDL_StartTextInput",
+          kind: "function",
+          type: "void",
+          parameters: [],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::StartTextInput",
+            copyDoc: "SDL_StartTextInput",
+          },
         },
-        "SDL_StartTextInputWithProperties": {
-          name: "WindowBase::StartTextInput",
+        "WindowBase::StartTextInputWithProperties": {
+          after: "SDL_StartTextInputWithProperties",
+          kind: "function",
+          type: "void",
+          static: false,
+          parameters: [{ name: "props", type: "PropertiesRef" }],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::StartTextInputWithProperties",
+            copyDoc: "SDL_StartTextInputWithProperties",
+          },
         },
-        "SDL_TextInputActive": {
-          name: "WindowBase::IsTextInputActive",
+        "WindowBase::IsTextInputActive": {
+          after: "SDL_TextInputActive",
+          kind: "function",
           immutable: true,
+          type: "bool",
+          parameters: [],
+          hints: {
+            delegate: "TextInputActive",
+            copyDoc: "SDL_TextInputActive",
+          },
         },
-        "SDL_StopTextInput": {
-          name: "WindowBase::StopTextInput",
+        "WindowBase::StopTextInput": {
+          after: "SDL_StopTextInput",
+          kind: "function",
+          type: "void",
+          parameters: [],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::StopTextInput",
+            copyDoc: "SDL_StopTextInput",
+          },
         },
-        "SDL_ClearComposition": {
-          name: "WindowBase::ClearComposition",
+        "WindowBase::ClearComposition": {
+          after: "SDL_ClearComposition",
+          kind: "function",
+          type: "void",
+          parameters: [],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::ClearComposition",
+            copyDoc: "SDL_ClearComposition",
+          },
         },
-        "SDL_SetTextInputArea": {
-          name: "WindowBase::SetTextInputArea",
+        "WindowBase::SetTextInputArea": {
+          after: "SDL_SetTextInputArea",
+          kind: "function",
+          type: "void",
+          static: false,
+          parameters: [{
+            name: "rect", type: "const RectRaw &"
+          }, {
+            name: "cursor", type: "int"
+          }],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::SetTextInputArea",
+            copyDoc: "SDL_SetTextInputArea",
+          },
         },
-        "SDL_GetTextInputArea": {
-          name: "WindowBase::GetTextInputArea",
-        },
-        "SDL_ScreenKeyboardShown": {
-          name: "WindowBase::IsScreenKeyboardShown",
+        "WindowBase::GetTextInputArea": {
+          after: "SDL_GetTextInputArea",
+          kind: "function",
           immutable: true,
+          type: "void",
+          parameters: [{
+            name: "rect", type: "RectRaw *"
+          }, {
+            name: "cursor", type: "int *"
+          }],
+          hints: {
+            mayFail: true,
+            delegate: "SDL::GetTextInputArea",
+            copyDoc: "SDL_GetTextInputArea",
+          },
+        },
+        "WindowBase::IsScreenKeyboardShown": {
+          after: "SDL_ScreenKeyboardShown",
+          kind: "function",
+          immutable: true,
+          type: "bool",
+          parameters: [],
+          hints: {
+            delegate: "ScreenKeyboardShown",
+            copyDoc: "SDL_ScreenKeyboardShown",
+          },
         }
       }
     },
@@ -3267,8 +3340,16 @@ const transform = {
           type: "OwnArray<MouseID>",
           parameters: []
         },
-        "SDL_WarpMouseInWindow": {
-          name: "WindowBase::WarpMouse"
+        "WindowBase::WarpMouse": {
+          after: "SDL_WarpMouseInWindow",
+          kind: "function",
+          static: false,
+          type: "void",
+          parameters: [{ type: "const FPointRaw &", name: "p" }],
+          hints: {
+            copyDoc: "SDL_WarpMouseInWindow",
+            delegate: "WarpMouseInWindow",
+          },
         },
         "SDL_WarpMouseGlobal": {
           name: "WarpMouse"
@@ -3280,12 +3361,27 @@ const transform = {
           type: "void",
           parameters: [{ type: "MouseMotionTransformCB", name: "callback" }],
         },
-        "SDL_SetWindowRelativeMouseMode": {
-          name: "WindowBase::SetRelativeMouseMode"
+        "WindowBase::SetRelativeMouseMode": {
+          after: "SDL_SetWindowRelativeMouseMode",
+          kind: "function",
+          static: false,
+          type: "void",
+          parameters: [{ type: "bool", name: "enabled" }],
+          hints: {
+            copyDoc: "SDL_SetWindowRelativeMouseMode",
+            delegate: "SetWindowRelativeMouseMode",
+          },
         },
-        "SDL_GetWindowRelativeMouseMode": {
-          name: "WindowBase::GetRelativeMouseMode",
+        "WindowBase::GetRelativeMouseMode": {
+          after: "SDL_GetWindowRelativeMouseMode",
+          kind: "function",
           immutable: true,
+          type: "bool",
+          parameters: [],
+          hints: {
+            copyDoc: "SDL_GetWindowRelativeMouseMode",
+            delegate: "GetWindowRelativeMouseMode",
+          },
         }
       }
     },
@@ -4864,9 +4960,16 @@ const transform = {
             copyDoc: "SDL_CreateWindowAndRenderer",
           },
         },
-        "SDL_GetRenderer": {
-          name: "WindowBase::GetRenderer",
+        "WindowBase::GetRenderer": {
+          after: "SDL_GetRenderer",
+          kind: "function",
           immutable: true,
+          type: "RendererRef",
+          parameters: [],
+          hints: {
+            copyDoc: "SDL_GetRenderer",
+            delegate: "SDL::GetRenderer"
+          },
         },
         "SDL_GetRenderWindow": {
           kind: "function",
