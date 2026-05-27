@@ -123,7 +123,7 @@
  }
  
  inline void LocalAddressesArrayDeleter::operator()(AddressRef* addresses)
-@@ -2168,7 +2169,7 @@
+@@ -2156,7 +2157,7 @@
   */
  inline Address GetStreamSocketAddress(StreamSocketRef sock)
  {
@@ -132,7 +132,7 @@
  }
  
  inline Address StreamSocketBase::GetAddress()
-@@ -2654,7 +2655,7 @@
+@@ -2642,7 +2643,7 @@
     * should assume it is no longer usable and should destroy it with
     * SDL_DestroyDatagramSocket().
     *
@@ -141,7 +141,7 @@
     * @returns true if data sent or queued for transmission, false on failure;
     *          call GetError() for details.
     *
-@@ -2701,9 +2702,8 @@
+@@ -2689,9 +2690,8 @@
     * should assume it is no longer usable and should destroy it with
     * SDL_DestroyDatagramSocket().
     *
@@ -153,7 +153,7 @@
     *
     * @threadsafety You should not operate on the same socket from multiple
     *               threads at the same time without supplying a serialization
-@@ -2964,7 +2964,6 @@
+@@ -2946,7 +2946,6 @@
     * SDL_DestroyDatagramSocket().
     *
     * @param sock the datagram socket to send data through.
@@ -161,7 +161,7 @@
     * @returns true if data sent or queued for transmission, false on failure;
     *          call GetError() for details.
     *
-@@ -3045,12 +3044,11 @@
+@@ -3024,12 +3023,11 @@
     * "connection" to fail at this level, but may report failure for
     * unrecoverable system-level conditions; once a datagram socket fails, you
     * should assume it is no longer usable and should destroy it with
@@ -177,7 +177,7 @@
     *
     * @threadsafety You should not operate on the same socket from multiple
     *               threads at the same time without supplying a serialization
-@@ -3370,9 +3368,8 @@
+@@ -3346,9 +3344,8 @@
   * is no longer usable and should destroy it with SDL_DestroyDatagramSocket().
   *
   * @param sock the datagram socket to send data through.
@@ -189,7 +189,7 @@
   *
   * @threadsafety You should not operate on the same socket from multiple threads
   *               at the same time without supplying a serialization mechanism.
-@@ -3393,7 +3390,7 @@
+@@ -3369,7 +3366,7 @@
  
  inline bool DatagramSocketBase::ReceiveDatagram(Datagram& dgram)
  {
@@ -198,7 +198,7 @@
  }
  
  inline Datagram DatagramSocketBase::ReceiveDatagram()
-@@ -3401,11 +3398,17 @@
+@@ -3377,11 +3374,17 @@
    return SDL::ReceiveDatagram(get());
  }
  
@@ -218,7 +218,7 @@
  }
  
  /**
-@@ -3565,4 +3568,6 @@
+@@ -3541,4 +3544,6 @@
  
  } // namespace SDL
  

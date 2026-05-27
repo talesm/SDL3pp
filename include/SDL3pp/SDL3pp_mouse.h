@@ -219,9 +219,6 @@ struct Cursor : CursorBase
   {
   }
 
-  /// Copy constructor
-  constexpr Cursor(const Cursor& other) = delete;
-
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
@@ -332,9 +329,6 @@ struct Cursor : CursorBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Cursor& operator=(const Cursor& other) = delete;
 };
 
 /**

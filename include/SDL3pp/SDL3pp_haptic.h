@@ -1127,9 +1127,6 @@ struct Haptic : HapticBase
   {
   }
 
-  /// Copy constructor
-  constexpr Haptic(const Haptic& other) = delete;
-
   /// Move constructor
   constexpr Haptic(Haptic&& other) noexcept
     : Haptic(other.release())
@@ -1205,9 +1202,6 @@ struct Haptic : HapticBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Haptic& operator=(const Haptic& other) = delete;
 };
 
 /**

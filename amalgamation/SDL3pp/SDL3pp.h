@@ -9775,9 +9775,6 @@ struct Properties : PropertiesBase
   {
   }
 
-  /// Copy constructor
-  constexpr Properties(const Properties& other) = delete;
-
   /// Move constructor
   constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())
@@ -9810,9 +9807,6 @@ struct Properties : PropertiesBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Properties& operator=(const Properties& other) = delete;
 };
 
 /**
@@ -11710,9 +11704,6 @@ struct Environment : EnvironmentBase
   {
   }
 
-  /// Copy constructor
-  constexpr Environment(const Environment& other) = delete;
-
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
@@ -11750,9 +11741,6 @@ struct Environment : EnvironmentBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Environment& operator=(const Environment& other) = delete;
 };
 
 /**
@@ -16599,9 +16587,6 @@ struct IConv : IConvBase
   {
   }
 
-  /// Copy constructor
-  constexpr IConv(const IConv& other) = delete;
-
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())
@@ -16635,9 +16620,6 @@ struct IConv : IConvBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  IConv& operator=(const IConv& other) = delete;
 };
 
 /**
@@ -17235,9 +17217,6 @@ struct AsyncIO : AsyncIOBase
   {
   }
 
-  /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) = delete;
-
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
     : AsyncIO(other.release())
@@ -17300,9 +17279,6 @@ struct AsyncIO : AsyncIOBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AsyncIO& operator=(const AsyncIO& other) = delete;
 };
 
 /**
@@ -17542,9 +17518,6 @@ struct AsyncIOQueue : AsyncIOQueueBase
   {
   }
 
-  /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
-
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
     : AsyncIOQueue(other.release())
@@ -17579,9 +17552,6 @@ struct AsyncIOQueue : AsyncIOQueueBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AsyncIOQueue& operator=(const AsyncIOQueue& other) = delete;
 };
 
 /**
@@ -21166,9 +21136,6 @@ struct HidDevice : HidDeviceBase
   {
   }
 
-  /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) = delete;
-
   /// Move constructor
   constexpr HidDevice(HidDevice&& other) noexcept
     : HidDevice(other.release())
@@ -21216,9 +21183,6 @@ struct HidDevice : HidDeviceBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  HidDevice& operator=(const HidDevice& other) = delete;
 };
 
 /**
@@ -23124,9 +23088,6 @@ struct IOStream : IOStreamBase
   {
   }
 
-  /// Copy constructor
-  constexpr IOStream(const IOStream& other) = delete;
-
   /// Move constructor
   constexpr IOStream(IOStream&& other) noexcept
     : IOStream(other.release())
@@ -23379,9 +23340,6 @@ struct IOStream : IOStreamBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  IOStream& operator=(const IOStream& other) = delete;
 };
 
 /**
@@ -25014,9 +24972,6 @@ struct SharedObject : SharedObjectBase
   {
   }
 
-  /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) = delete;
-
   /// Move constructor
   constexpr SharedObject(SharedObject&& other) noexcept
     : SharedObject(other.release())
@@ -25048,9 +25003,6 @@ struct SharedObject : SharedObjectBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  SharedObject& operator=(const SharedObject& other) = delete;
 };
 
 /**
@@ -31916,9 +31868,6 @@ struct Sensor : SensorBase
   {
   }
 
-  /// Copy constructor
-  constexpr Sensor(const Sensor& other) = delete;
-
   /// Move constructor
   constexpr Sensor(Sensor&& other) noexcept
     : Sensor(other.release())
@@ -31945,9 +31894,6 @@ struct Sensor : SensorBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Sensor& operator=(const Sensor& other) = delete;
 };
 
 /**
@@ -34453,9 +34399,6 @@ struct AudioDevice : AudioDeviceBase
   {
   }
 
-  /// Copy constructor
-  constexpr AudioDevice(const AudioDevice& other) = delete;
-
   /// Move constructor
   constexpr AudioDevice(AudioDevice&& other) noexcept
     : AudioDevice(other.release())
@@ -34544,9 +34487,6 @@ struct AudioDevice : AudioDeviceBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AudioDevice& operator=(const AudioDevice& other) = delete;
 };
 
 /**
@@ -35759,9 +35699,6 @@ struct AudioStream : AudioStreamBase
   {
   }
 
-  /// Copy constructor
-  constexpr AudioStream(const AudioStream& other) = delete;
-
   /// Move constructor
   constexpr AudioStream(AudioStream&& other) noexcept
     : AudioStream(other.release())
@@ -35919,9 +35856,6 @@ struct AudioStream : AudioStreamBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AudioStream& operator=(const AudioStream& other) = delete;
 };
 
 /**
@@ -39838,9 +39772,6 @@ struct Process : ProcessBase
   {
   }
 
-  /// Copy constructor
-  constexpr Process(const Process& other) = delete;
-
   /// Move constructor
   constexpr Process(Process&& other) noexcept
     : Process(other.release())
@@ -39969,9 +39900,6 @@ struct Process : ProcessBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Process& operator=(const Process& other) = delete;
 };
 
 /**
@@ -41020,9 +40948,6 @@ struct Storage : StorageBase
   {
   }
 
-  /// Copy constructor
-  constexpr Storage(const Storage& other) = delete;
-
   /// Move constructor
   constexpr Storage(Storage&& other) noexcept
     : Storage(other.release())
@@ -41138,9 +41063,6 @@ struct Storage : StorageBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Storage& operator=(const Storage& other) = delete;
 };
 
 /**
@@ -46930,9 +46852,6 @@ struct Thread : ThreadBase
   {
   }
 
-  /// Copy constructor
-  constexpr Thread(const Thread& other) = delete;
-
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())
@@ -47081,9 +47000,6 @@ struct Thread : ThreadBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Thread& operator=(const Thread& other) = delete;
 };
 
 /**
@@ -47878,9 +47794,6 @@ struct Camera : CameraBase
   {
   }
 
-  /// Copy constructor
-  constexpr Camera(const Camera& other) = delete;
-
   /// Move constructor
   constexpr Camera(Camera&& other) noexcept
     : Camera(other.release())
@@ -47942,9 +47855,6 @@ struct Camera : CameraBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Camera& operator=(const Camera& other) = delete;
 };
 
 /// Camera Frame.
@@ -48739,9 +48649,6 @@ struct Mutex : MutexBase
   {
   }
 
-  /// Copy constructor
-  constexpr Mutex(const Mutex& other) = delete;
-
   /// Move constructor
   constexpr Mutex(Mutex&& other) noexcept
     : Mutex(other.release())
@@ -48781,9 +48688,6 @@ struct Mutex : MutexBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Mutex& operator=(const Mutex& other) = delete;
 };
 
 /**
@@ -49127,9 +49031,6 @@ struct RWLock : RWLockBase
   {
   }
 
-  /// Copy constructor
-  constexpr RWLock(const RWLock& other) = delete;
-
   /// Move constructor
   constexpr RWLock(RWLock&& other) noexcept
     : RWLock(other.release())
@@ -49189,9 +49090,6 @@ struct RWLock : RWLockBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  RWLock& operator=(const RWLock& other) = delete;
 };
 
 /**
@@ -49592,9 +49490,6 @@ struct Semaphore : SemaphoreBase
   {
   }
 
-  /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) = delete;
-
   /// Move constructor
   constexpr Semaphore(Semaphore&& other) noexcept
     : Semaphore(other.release())
@@ -49636,9 +49531,6 @@ struct Semaphore : SemaphoreBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Semaphore& operator=(const Semaphore& other) = delete;
 };
 
 /**
@@ -49945,9 +49837,6 @@ struct Condition : ConditionBase
   {
   }
 
-  /// Copy constructor
-  constexpr Condition(const Condition& other) = delete;
-
   /// Move constructor
   constexpr Condition(Condition&& other) noexcept
     : Condition(other.release())
@@ -49981,9 +49870,6 @@ struct Condition : ConditionBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Condition& operator=(const Condition& other) = delete;
 };
 
 /**
@@ -50583,9 +50469,6 @@ struct Tray : TrayBase
   {
   }
 
-  /// Copy constructor
-  constexpr Tray(const Tray& other) = delete;
-
   /// Move constructor
   constexpr Tray(Tray&& other) noexcept
     : Tray(other.release())
@@ -50626,9 +50509,6 @@ struct Tray : TrayBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Tray& operator=(const Tray& other) = delete;
 };
 
 /**
@@ -54479,9 +54359,6 @@ struct Window : WindowBase
   {
   }
 
-  /// Copy constructor
-  constexpr Window(const Window& other) = delete;
-
   /// Move constructor
   constexpr Window(Window&& other) noexcept
     : Window(other.release())
@@ -54828,9 +54705,6 @@ struct Window : WindowBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Window& operator=(const Window& other) = delete;
 };
 
 /**
@@ -65725,9 +65599,6 @@ struct GPUDevice : GPUDeviceBase
   {
   }
 
-  /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) = delete;
-
   /// Move constructor
   constexpr GPUDevice(GPUDevice&& other) noexcept
     : GPUDevice(other.release())
@@ -65884,9 +65755,6 @@ struct GPUDevice : GPUDeviceBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  GPUDevice& operator=(const GPUDevice& other) = delete;
 };
 
 /**
@@ -71160,9 +71028,6 @@ struct Joystick : JoystickBase
   {
   }
 
-  /// Copy constructor
-  constexpr Joystick(const Joystick& other) = delete;
-
   /// Move constructor
   constexpr Joystick(Joystick&& other) noexcept
     : Joystick(other.release())
@@ -71195,9 +71060,6 @@ struct Joystick : JoystickBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Joystick& operator=(const Joystick& other) = delete;
 };
 
 /**
@@ -73971,9 +73833,6 @@ struct MetalView : MetalViewBase
   {
   }
 
-  /// Copy constructor
-  constexpr MetalView(const MetalView& other) = delete;
-
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())
@@ -74011,9 +73870,6 @@ struct MetalView : MetalViewBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  MetalView& operator=(const MetalView& other) = delete;
 };
 
 /**
@@ -74298,9 +74154,6 @@ struct Cursor : CursorBase
   {
   }
 
-  /// Copy constructor
-  constexpr Cursor(const Cursor& other) = delete;
-
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
@@ -74411,9 +74264,6 @@ struct Cursor : CursorBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Cursor& operator=(const Cursor& other) = delete;
 };
 
 /**
@@ -76315,9 +76165,6 @@ struct Gamepad : GamepadBase
   {
   }
 
-  /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) = delete;
-
   /// Move constructor
   constexpr Gamepad(Gamepad&& other) noexcept
     : Gamepad(other.release())
@@ -76349,9 +76196,6 @@ struct Gamepad : GamepadBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Gamepad& operator=(const Gamepad& other) = delete;
 };
 
 /**
@@ -79242,9 +79086,6 @@ struct Haptic : HapticBase
   {
   }
 
-  /// Copy constructor
-  constexpr Haptic(const Haptic& other) = delete;
-
   /// Move constructor
   constexpr Haptic(Haptic&& other) noexcept
     : Haptic(other.release())
@@ -79320,9 +79161,6 @@ struct Haptic : HapticBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Haptic& operator=(const Haptic& other) = delete;
 };
 
 /**
@@ -82901,9 +82739,6 @@ struct Renderer : RendererBase
   {
   }
 
-  /// Copy constructor
-  constexpr Renderer(const Renderer& other) = delete;
-
   /// Move constructor
   constexpr Renderer(Renderer&& other) noexcept
     : Renderer(other.release())
@@ -83036,9 +82871,6 @@ struct Renderer : RendererBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Renderer& operator=(const Renderer& other) = delete;
 };
 
 /**
@@ -88982,9 +88814,6 @@ struct GPURenderState : GPURenderStateBase
   {
   }
 
-  /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) = delete;
-
   /// Move constructor
   constexpr GPURenderState(GPURenderState&& other) noexcept
     : GPURenderState(other.release())
@@ -89020,9 +88849,6 @@ struct GPURenderState : GPURenderStateBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  GPURenderState& operator=(const GPURenderState& other) = delete;
 };
 
 /**
@@ -92159,9 +91985,6 @@ struct StreamSocket : StreamSocketBase
   {
   }
 
-  /// Copy constructor
-  constexpr StreamSocket(const StreamSocket& other) = delete;
-
   /// Move constructor
   constexpr StreamSocket(StreamSocket&& other) noexcept
     : StreamSocket(other.release())
@@ -92235,9 +92058,6 @@ struct StreamSocket : StreamSocketBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  StreamSocket& operator=(const StreamSocket& other) = delete;
 };
 
 /**
@@ -92467,9 +92287,6 @@ struct Server : ServerBase
   {
   }
 
-  /// Copy constructor
-  constexpr Server(const Server& other) = delete;
-
   /// Move constructor
   constexpr Server(Server&& other) noexcept
     : Server(other.release())
@@ -92549,9 +92366,6 @@ struct Server : ServerBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Server& operator=(const Server& other) = delete;
 };
 
 /**
@@ -93350,9 +93164,6 @@ struct DatagramSocket : DatagramSocketBase
   {
   }
 
-  /// Copy constructor
-  constexpr DatagramSocket(const DatagramSocket& other) = delete;
-
   /// Move constructor
   constexpr DatagramSocket(DatagramSocket&& other) noexcept
     : DatagramSocket(other.release())
@@ -93455,9 +93266,6 @@ struct DatagramSocket : DatagramSocketBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  DatagramSocket& operator=(const DatagramSocket& other) = delete;
 };
 
 /**
@@ -93566,9 +93374,6 @@ struct Datagram : DatagramBase
   {
   }
 
-  /// Copy constructor
-  constexpr Datagram(const Datagram& other) = delete;
-
   /// Move constructor
   constexpr Datagram(Datagram&& other) noexcept
     : Datagram(other.release())
@@ -93631,9 +93436,6 @@ struct Datagram : DatagramBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Datagram& operator=(const Datagram& other) = delete;
 };
 
 /**
@@ -95387,9 +95189,6 @@ struct Mixer : MixerBase
   {
   }
 
-  /// Copy constructor
-  constexpr Mixer(const Mixer& other) = delete;
-
   /// Move constructor
   constexpr Mixer(Mixer&& other) noexcept
     : Mixer(other.release())
@@ -95482,9 +95281,6 @@ struct Mixer : MixerBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Mixer& operator=(const Mixer& other) = delete;
 };
 
 /**
@@ -95851,9 +95647,6 @@ struct Audio : AudioBase
   {
   }
 
-  /// Copy constructor
-  constexpr Audio(const Audio& other) = delete;
-
   /// Move constructor
   constexpr Audio(Audio&& other) noexcept
     : Audio(other.release())
@@ -96082,9 +95875,6 @@ struct Audio : AudioBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Audio& operator=(const Audio& other) = delete;
 };
 
 /**
@@ -97518,9 +97308,6 @@ struct Track : TrackBase
   {
   }
 
-  /// Copy constructor
-  constexpr Track(const Track& other) = delete;
-
   /// Move constructor
   constexpr Track(Track&& other) noexcept
     : Track(other.release())
@@ -97562,9 +97349,6 @@ struct Track : TrackBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Track& operator=(const Track& other) = delete;
 };
 
 /**
@@ -97757,9 +97541,6 @@ struct Group : GroupBase
   {
   }
 
-  /// Copy constructor
-  constexpr Group(const Group& other) = delete;
-
   /// Move constructor
   constexpr Group(Group&& other) noexcept
     : Group(other.release())
@@ -97807,9 +97588,6 @@ struct Group : GroupBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Group& operator=(const Group& other) = delete;
 };
 
 #ifdef SDL3PP_DOC
@@ -101591,9 +101369,6 @@ struct AudioDecoder : AudioDecoderBase
   {
   }
 
-  /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) = delete;
-
   /// Move constructor
   constexpr AudioDecoder(AudioDecoder&& other) noexcept
     : AudioDecoder(other.release())
@@ -101683,9 +101458,6 @@ struct AudioDecoder : AudioDecoderBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AudioDecoder& operator=(const AudioDecoder& other) = delete;
 };
 
 /**
@@ -104831,9 +104603,6 @@ struct Animation : AnimationBase
   {
   }
 
-  /// Copy constructor
-  constexpr Animation(const Animation& other) = delete;
-
   /// Move constructor
   constexpr Animation(Animation&& other) noexcept
     : Animation(other.release())
@@ -104895,9 +104664,6 @@ struct Animation : AnimationBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Animation& operator=(const Animation& other) = delete;
 };
 
 /// Get the width in pixels.
@@ -105576,9 +105342,6 @@ struct AnimationEncoder : AnimationEncoderBase
   {
   }
 
-  /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) = delete;
-
   /// Move constructor
   constexpr AnimationEncoder(AnimationEncoder&& other) noexcept
     : AnimationEncoder(other.release())
@@ -105701,9 +105464,6 @@ struct AnimationEncoder : AnimationEncoderBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
 };
 
 /**
@@ -106089,9 +105849,6 @@ struct AnimationDecoder : AnimationDecoderBase
   {
   }
 
-  /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) = delete;
-
   /// Move constructor
   constexpr AnimationDecoder(AnimationDecoder&& other) noexcept
     : AnimationDecoder(other.release())
@@ -106207,9 +105964,6 @@ struct AnimationDecoder : AnimationDecoderBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
 };
 
 /**
@@ -108294,9 +108048,6 @@ struct Font : FontBase
   {
   }
 
-  /// Copy constructor
-  constexpr Font(const Font& other) = delete;
-
   /// Move constructor
   constexpr Font(Font&& other) noexcept
     : Font(other.release())
@@ -108401,9 +108152,6 @@ struct Font : FontBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Font& operator=(const Font& other) = delete;
 };
 
 /**
@@ -111622,9 +111370,6 @@ struct Text : TextBase
     : TextBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Text(const Text& other) = delete;
 
   /// Move constructor
   constexpr Text(Text&& other) noexcept

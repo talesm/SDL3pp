@@ -2733,9 +2733,6 @@ struct Window : WindowBase
   {
   }
 
-  /// Copy constructor
-  constexpr Window(const Window& other) = delete;
-
   /// Move constructor
   constexpr Window(Window&& other) noexcept
     : Window(other.release())
@@ -3082,9 +3079,6 @@ struct Window : WindowBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Window& operator=(const Window& other) = delete;
 };
 
 /**

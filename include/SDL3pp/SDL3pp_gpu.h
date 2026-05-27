@@ -3926,9 +3926,6 @@ struct GPUDevice : GPUDeviceBase
   {
   }
 
-  /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) = delete;
-
   /// Move constructor
   constexpr GPUDevice(GPUDevice&& other) noexcept
     : GPUDevice(other.release())
@@ -4085,9 +4082,6 @@ struct GPUDevice : GPUDeviceBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  GPUDevice& operator=(const GPUDevice& other) = delete;
 };
 
 /**

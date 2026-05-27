@@ -26,7 +26,7 @@
   * @returns a value that can be reported through WaitThread().
   *
   * @since This datatype is available since SDL 3.2.0.
-@@ -374,7 +373,6 @@
+@@ -371,7 +370,6 @@
     *
     * @param fn the ThreadFunction function to call in the new thread.
     * @param name the name of the thread.
@@ -34,7 +34,7 @@
     * @post an opaque pointer to the new thread object on success.
     * @throws Error on failure.
     *
-@@ -538,7 +536,6 @@
+@@ -532,7 +530,6 @@
   *
   * @param fn the ThreadFunction function to call in the new thread.
   * @param name the name of the thread.
@@ -42,7 +42,7 @@
   * @returns an opaque pointer to the new thread object on success.
   * @throws Error on failure.
   *
-@@ -551,7 +548,7 @@
+@@ -545,7 +542,7 @@
   */
  inline Thread CreateThread(ThreadCB fn, StringParam name)
  {
@@ -51,7 +51,7 @@
  }
  
  inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
-@@ -559,7 +556,12 @@
+@@ -553,7 +550,12 @@
  {
  }
  
@@ -65,7 +65,7 @@
  
  inline Thread::Thread(PropertiesRef props)
    : Thread(CheckError(SDL_CreateThreadWithProperties(props)))
-@@ -635,6 +637,15 @@
+@@ -629,6 +631,15 @@
    return Thread(props);
  }
  

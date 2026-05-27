@@ -1117,9 +1117,6 @@ struct Joystick : JoystickBase
   {
   }
 
-  /// Copy constructor
-  constexpr Joystick(const Joystick& other) = delete;
-
   /// Move constructor
   constexpr Joystick(Joystick&& other) noexcept
     : Joystick(other.release())
@@ -1152,9 +1149,6 @@ struct Joystick : JoystickBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Joystick& operator=(const Joystick& other) = delete;
 };
 
 /**

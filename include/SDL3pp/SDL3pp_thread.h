@@ -309,9 +309,6 @@ struct Thread : ThreadBase
   {
   }
 
-  /// Copy constructor
-  constexpr Thread(const Thread& other) = delete;
-
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())
@@ -460,9 +457,6 @@ struct Thread : ThreadBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Thread& operator=(const Thread& other) = delete;
 };
 
 /**

@@ -1056,9 +1056,6 @@ struct Environment : EnvironmentBase
   {
   }
 
-  /// Copy constructor
-  constexpr Environment(const Environment& other) = delete;
-
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
@@ -1096,9 +1093,6 @@ struct Environment : EnvironmentBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Environment& operator=(const Environment& other) = delete;
 };
 
 /**
@@ -5945,9 +5939,6 @@ struct IConv : IConvBase
   {
   }
 
-  /// Copy constructor
-  constexpr IConv(const IConv& other) = delete;
-
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())
@@ -5981,9 +5972,6 @@ struct IConv : IConvBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  IConv& operator=(const IConv& other) = delete;
 };
 
 /**

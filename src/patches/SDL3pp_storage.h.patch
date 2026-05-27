@@ -207,7 +207,7 @@
     * @returns an array of strings on success.
     * @throws Error on failure.
     *
-@@ -718,7 +719,7 @@
+@@ -715,7 +716,7 @@
    Storage(const StorageInterface& iface, void* userdata);
  
    /// Destructor
@@ -216,7 +216,7 @@
  
    /// Assignment operator.
    constexpr Storage& operator=(Storage&& other) noexcept
-@@ -913,8 +914,7 @@
+@@ -907,8 +908,7 @@
   *
   * @param storage a storage container to query.
   * @param path the relative path of the file to query.
@@ -226,7 +226,7 @@
   *          GetError() for more information.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -925,7 +925,10 @@
+@@ -919,7 +919,10 @@
  inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
                                                  StringParam path)
  {
@@ -238,7 +238,7 @@
  }
  
  inline std::optional<Uint64> StorageBase::GetFileSize(StringParam path)
-@@ -937,14 +940,13 @@
+@@ -931,14 +934,13 @@
   * Synchronously read a file from a storage container into a client-provided
   * buffer.
   *
@@ -256,7 +256,7 @@
   * @returns true if the file was read or false on failure; call GetError() for
   *          more information.
   *
-@@ -966,16 +968,10 @@
+@@ -960,16 +962,10 @@
   * Synchronously read a file from a storage container into a client-provided
   * buffer.
   *
@@ -275,7 +275,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -985,7 +981,11 @@
+@@ -979,7 +975,11 @@
   */
  inline std::string ReadStorageFile(StorageRef storage, StringParam path)
  {
@@ -288,7 +288,7 @@
  }
  
  inline bool StorageBase::ReadFile(StringParam path, TargetBytes destination)
-@@ -998,16 +998,35 @@
+@@ -992,16 +992,35 @@
    return SDL::ReadStorageFile(get(), std::move(path));
  }
  
@@ -326,7 +326,7 @@
  }
  
  /**
-@@ -1016,9 +1035,7 @@
+@@ -1010,9 +1029,7 @@
   * @param storage a storage container to write to.
   * @param path the relative path of the file to write.
   * @param source a client-provided buffer to write from.
@@ -337,7 +337,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1030,7 +1047,8 @@
+@@ -1024,7 +1041,8 @@
                               StringParam path,
                               SourceBytes source)
  {
@@ -347,7 +347,7 @@
  }
  
  inline void StorageBase::WriteFile(StringParam path, SourceBytes source)
-@@ -1108,7 +1126,6 @@
+@@ -1102,7 +1120,6 @@
   * @param storage a storage container.
   * @param path the path of the directory to enumerate, or nullptr for the root.
   * @param callback a function that is called for each entry in the directory.
@@ -355,7 +355,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -1119,7 +1136,14 @@
+@@ -1113,7 +1130,14 @@
                                        StringParam path,
                                        EnumerateDirectoryCB callback)
  {
@@ -371,7 +371,7 @@
  }
  
  /**
-@@ -1138,8 +1162,7 @@
+@@ -1132,8 +1156,7 @@
   *
   * @param storage a storage container.
   * @param path the path of the directory to enumerate, or nullptr for the root.
@@ -381,7 +381,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -1149,7 +1172,13 @@
+@@ -1143,7 +1166,13 @@
  inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                     StringParam path)
  {
@@ -396,7 +396,7 @@
  }
  
  inline void StorageBase::EnumerateDirectory(StringParam path,
-@@ -1244,9 +1273,8 @@
+@@ -1238,9 +1267,8 @@
   *
   * @param storage a storage container.
   * @param path the path to query.
@@ -408,7 +408,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1254,7 +1282,10 @@
+@@ -1248,7 +1276,10 @@
   */
  inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
  {
@@ -420,7 +420,7 @@
  }
  
  inline PathInfo StorageBase::GetPathInfo(StringParam path)
-@@ -1308,8 +1339,6 @@
+@@ -1302,8 +1333,6 @@
   * @param pattern the pattern that files in the directory must match. Can be
   *                nullptr.
   * @param flags `SDL_GLOB_*` bitflags that affect this search.
@@ -429,7 +429,7 @@
   * @returns an array of strings on success.
   * @throws Error on failure.
   *
-@@ -1323,7 +1352,10 @@
+@@ -1317,7 +1346,10 @@
                                              StringParam pattern,
                                              GlobFlags flags)
  {

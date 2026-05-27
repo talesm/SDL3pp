@@ -1344,9 +1344,6 @@ struct IOStream : IOStreamBase
   {
   }
 
-  /// Copy constructor
-  constexpr IOStream(const IOStream& other) = delete;
-
   /// Move constructor
   constexpr IOStream(IOStream&& other) noexcept
     : IOStream(other.release())
@@ -1599,9 +1596,6 @@ struct IOStream : IOStreamBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  IOStream& operator=(const IOStream& other) = delete;
 };
 
 /**

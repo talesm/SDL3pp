@@ -2940,9 +2940,6 @@ struct Animation : AnimationBase
   {
   }
 
-  /// Copy constructor
-  constexpr Animation(const Animation& other) = delete;
-
   /// Move constructor
   constexpr Animation(Animation&& other) noexcept
     : Animation(other.release())
@@ -3004,9 +3001,6 @@ struct Animation : AnimationBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Animation& operator=(const Animation& other) = delete;
 };
 
 /// Get the width in pixels.
@@ -3685,9 +3679,6 @@ struct AnimationEncoder : AnimationEncoderBase
   {
   }
 
-  /// Copy constructor
-  constexpr AnimationEncoder(const AnimationEncoder& other) = delete;
-
   /// Move constructor
   constexpr AnimationEncoder(AnimationEncoder&& other) noexcept
     : AnimationEncoder(other.release())
@@ -3810,9 +3801,6 @@ struct AnimationEncoder : AnimationEncoderBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AnimationEncoder& operator=(const AnimationEncoder& other) = delete;
 };
 
 /**
@@ -4198,9 +4186,6 @@ struct AnimationDecoder : AnimationDecoderBase
   {
   }
 
-  /// Copy constructor
-  constexpr AnimationDecoder(const AnimationDecoder& other) = delete;
-
   /// Move constructor
   constexpr AnimationDecoder(AnimationDecoder&& other) noexcept
     : AnimationDecoder(other.release())
@@ -4316,9 +4301,6 @@ struct AnimationDecoder : AnimationDecoderBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AnimationDecoder& operator=(const AnimationDecoder& other) = delete;
 };
 
 /**

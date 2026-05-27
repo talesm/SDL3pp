@@ -350,9 +350,6 @@ struct Camera : CameraBase
   {
   }
 
-  /// Copy constructor
-  constexpr Camera(const Camera& other) = delete;
-
   /// Move constructor
   constexpr Camera(Camera&& other) noexcept
     : Camera(other.release())
@@ -414,9 +411,6 @@ struct Camera : CameraBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Camera& operator=(const Camera& other) = delete;
 };
 
 /// Camera Frame.

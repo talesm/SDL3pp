@@ -233,9 +233,6 @@ struct Sensor : SensorBase
   {
   }
 
-  /// Copy constructor
-  constexpr Sensor(const Sensor& other) = delete;
-
   /// Move constructor
   constexpr Sensor(Sensor&& other) noexcept
     : Sensor(other.release())
@@ -262,9 +259,6 @@ struct Sensor : SensorBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Sensor& operator=(const Sensor& other) = delete;
 };
 
 /**

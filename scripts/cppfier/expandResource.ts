@@ -325,8 +325,8 @@ function createBaselineCtors(
       constexpr: true,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
-        delete: shared ? undefined : true,
-        init: shared ? [`${targetName}(borrow(other.get()))`] : undefined,
+        delete: undefined,
+        init: [`${targetName}(borrow(other.get()))`],
       },
       doc: ["Copy constructor"],
     },
@@ -342,7 +342,11 @@ function createBaselineCtors(
       doc: ["Move constructor"],
     },
   };
-  if (shared) addBorrowFunction(ctors, targetName, shared, rawName);
+  if (shared) {
+    addBorrowFunction(ctors, targetName, shared, rawName);
+  } else {
+    delete ctors[`${targetName}#3`];
+  }
   return ctors;
 }
 
@@ -651,10 +655,7 @@ function populateTargetEntry(
       type: `${targetName} &`,
       parameters: [{ name: "other", type: `const ${targetName} &` }],
       hints: {
-        delete: !hasShared,
-        body: hasShared
-          ? `if (get() != other.get()) {\n  ${targetName} tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;`
-          : undefined,
+        body: `if (get() != other.get()) {\n  ${targetName} tmp(other);\n  swap(*this, tmp);\n}\nreturn *this;`,
       },
       doc: ["Assignment operator."],
     },
@@ -667,6 +668,7 @@ function populateTargetEntry(
     delete entries["operator=#2"];
   } else {
     delete entries[freeFunction.name];
+    if (!hasShared) delete entries["operator=#2"];
   }
   addHints(targetEntry, {
     self: "get()",

@@ -2105,9 +2105,6 @@ struct Renderer : RendererBase
   {
   }
 
-  /// Copy constructor
-  constexpr Renderer(const Renderer& other) = delete;
-
   /// Move constructor
   constexpr Renderer(Renderer&& other) noexcept
     : Renderer(other.release())
@@ -2240,9 +2237,6 @@ struct Renderer : RendererBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Renderer& operator=(const Renderer& other) = delete;
 };
 
 /**
@@ -8186,9 +8180,6 @@ struct GPURenderState : GPURenderStateBase
   {
   }
 
-  /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) = delete;
-
   /// Move constructor
   constexpr GPURenderState(GPURenderState&& other) noexcept
     : GPURenderState(other.release())
@@ -8224,9 +8215,6 @@ struct GPURenderState : GPURenderStateBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  GPURenderState& operator=(const GPURenderState& other) = delete;
 };
 
 /**

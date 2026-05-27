@@ -18,7 +18,7 @@
  
    /**
     * Get a pointer to the backing CAMetalLayer for the given view.
-@@ -181,12 +181,12 @@
+@@ -175,12 +175,12 @@
   *
   * @sa Metal_CreateView
   */

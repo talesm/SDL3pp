@@ -1076,9 +1076,6 @@ struct Gamepad : GamepadBase
   {
   }
 
-  /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) = delete;
-
   /// Move constructor
   constexpr Gamepad(Gamepad&& other) noexcept
     : Gamepad(other.release())
@@ -1110,9 +1107,6 @@ struct Gamepad : GamepadBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Gamepad& operator=(const Gamepad& other) = delete;
 };
 
 /**

@@ -1695,9 +1695,6 @@ struct Font : FontBase
   {
   }
 
-  /// Copy constructor
-  constexpr Font(const Font& other) = delete;
-
   /// Move constructor
   constexpr Font(Font&& other) noexcept
     : Font(other.release())
@@ -1802,9 +1799,6 @@ struct Font : FontBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Font& operator=(const Font& other) = delete;
 };
 
 /**
@@ -5023,9 +5017,6 @@ struct Text : TextBase
     : TextBase(resource)
   {
   }
-
-  /// Copy constructor
-  constexpr Text(const Text& other) = delete;
 
   /// Move constructor
   constexpr Text(Text&& other) noexcept

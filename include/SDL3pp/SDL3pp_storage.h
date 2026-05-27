@@ -609,9 +609,6 @@ struct Storage : StorageBase
   {
   }
 
-  /// Copy constructor
-  constexpr Storage(const Storage& other) = delete;
-
   /// Move constructor
   constexpr Storage(Storage&& other) noexcept
     : Storage(other.release())
@@ -727,9 +724,6 @@ struct Storage : StorageBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Storage& operator=(const Storage& other) = delete;
 };
 
 /**

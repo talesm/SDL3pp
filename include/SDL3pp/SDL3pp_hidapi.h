@@ -370,9 +370,6 @@ struct HidDevice : HidDeviceBase
   {
   }
 
-  /// Copy constructor
-  constexpr HidDevice(const HidDevice& other) = delete;
-
   /// Move constructor
   constexpr HidDevice(HidDevice&& other) noexcept
     : HidDevice(other.release())
@@ -420,9 +417,6 @@ struct HidDevice : HidDeviceBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  HidDevice& operator=(const HidDevice& other) = delete;
 };
 
 /**

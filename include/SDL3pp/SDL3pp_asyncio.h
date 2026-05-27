@@ -297,9 +297,6 @@ struct AsyncIO : AsyncIOBase
   {
   }
 
-  /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) = delete;
-
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
     : AsyncIO(other.release())
@@ -362,9 +359,6 @@ struct AsyncIO : AsyncIOBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AsyncIO& operator=(const AsyncIO& other) = delete;
 };
 
 /**
@@ -604,9 +598,6 @@ struct AsyncIOQueue : AsyncIOQueueBase
   {
   }
 
-  /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
-
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
     : AsyncIOQueue(other.release())
@@ -641,9 +632,6 @@ struct AsyncIOQueue : AsyncIOQueueBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AsyncIOQueue& operator=(const AsyncIOQueue& other) = delete;
 };
 
 /**

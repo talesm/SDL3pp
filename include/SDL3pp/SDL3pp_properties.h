@@ -621,9 +621,6 @@ struct Properties : PropertiesBase
   {
   }
 
-  /// Copy constructor
-  constexpr Properties(const Properties& other) = delete;
-
   /// Move constructor
   constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())
@@ -656,9 +653,6 @@ struct Properties : PropertiesBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Properties& operator=(const Properties& other) = delete;
 };
 
 /**

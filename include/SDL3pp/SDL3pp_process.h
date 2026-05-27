@@ -346,9 +346,6 @@ struct Process : ProcessBase
   {
   }
 
-  /// Copy constructor
-  constexpr Process(const Process& other) = delete;
-
   /// Move constructor
   constexpr Process(Process&& other) noexcept
     : Process(other.release())
@@ -477,9 +474,6 @@ struct Process : ProcessBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Process& operator=(const Process& other) = delete;
 };
 
 /**

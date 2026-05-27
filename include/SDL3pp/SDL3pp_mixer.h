@@ -1261,9 +1261,6 @@ struct Mixer : MixerBase
   {
   }
 
-  /// Copy constructor
-  constexpr Mixer(const Mixer& other) = delete;
-
   /// Move constructor
   constexpr Mixer(Mixer&& other) noexcept
     : Mixer(other.release())
@@ -1356,9 +1353,6 @@ struct Mixer : MixerBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Mixer& operator=(const Mixer& other) = delete;
 };
 
 /**
@@ -1725,9 +1719,6 @@ struct Audio : AudioBase
   {
   }
 
-  /// Copy constructor
-  constexpr Audio(const Audio& other) = delete;
-
   /// Move constructor
   constexpr Audio(Audio&& other) noexcept
     : Audio(other.release())
@@ -1956,9 +1947,6 @@ struct Audio : AudioBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Audio& operator=(const Audio& other) = delete;
 };
 
 /**
@@ -3392,9 +3380,6 @@ struct Track : TrackBase
   {
   }
 
-  /// Copy constructor
-  constexpr Track(const Track& other) = delete;
-
   /// Move constructor
   constexpr Track(Track&& other) noexcept
     : Track(other.release())
@@ -3436,9 +3421,6 @@ struct Track : TrackBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Track& operator=(const Track& other) = delete;
 };
 
 /**
@@ -3631,9 +3613,6 @@ struct Group : GroupBase
   {
   }
 
-  /// Copy constructor
-  constexpr Group(const Group& other) = delete;
-
   /// Move constructor
   constexpr Group(Group&& other) noexcept
     : Group(other.release())
@@ -3681,9 +3660,6 @@ struct Group : GroupBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Group& operator=(const Group& other) = delete;
 };
 
 #ifdef SDL3PP_DOC
@@ -7465,9 +7441,6 @@ struct AudioDecoder : AudioDecoderBase
   {
   }
 
-  /// Copy constructor
-  constexpr AudioDecoder(const AudioDecoder& other) = delete;
-
   /// Move constructor
   constexpr AudioDecoder(AudioDecoder&& other) noexcept
     : AudioDecoder(other.release())
@@ -7557,9 +7530,6 @@ struct AudioDecoder : AudioDecoderBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AudioDecoder& operator=(const AudioDecoder& other) = delete;
 };
 
 /**

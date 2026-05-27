@@ -1364,9 +1364,6 @@ struct AudioDevice : AudioDeviceBase
   {
   }
 
-  /// Copy constructor
-  constexpr AudioDevice(const AudioDevice& other) = delete;
-
   /// Move constructor
   constexpr AudioDevice(AudioDevice&& other) noexcept
     : AudioDevice(other.release())
@@ -1455,9 +1452,6 @@ struct AudioDevice : AudioDeviceBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AudioDevice& operator=(const AudioDevice& other) = delete;
 };
 
 /**
@@ -2670,9 +2664,6 @@ struct AudioStream : AudioStreamBase
   {
   }
 
-  /// Copy constructor
-  constexpr AudioStream(const AudioStream& other) = delete;
-
   /// Move constructor
   constexpr AudioStream(AudioStream&& other) noexcept
     : AudioStream(other.release())
@@ -2830,9 +2821,6 @@ struct AudioStream : AudioStreamBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  AudioStream& operator=(const AudioStream& other) = delete;
 };
 
 /**

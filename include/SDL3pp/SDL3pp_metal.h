@@ -92,9 +92,6 @@ struct MetalView : MetalViewBase
   {
   }
 
-  /// Copy constructor
-  constexpr MetalView(const MetalView& other) = delete;
-
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())
@@ -132,9 +129,6 @@ struct MetalView : MetalViewBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  MetalView& operator=(const MetalView& other) = delete;
 };
 
 /**

@@ -133,9 +133,6 @@ struct SharedObject : SharedObjectBase
   {
   }
 
-  /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) = delete;
-
   /// Move constructor
   constexpr SharedObject(SharedObject&& other) noexcept
     : SharedObject(other.release())
@@ -167,9 +164,6 @@ struct SharedObject : SharedObjectBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  SharedObject& operator=(const SharedObject& other) = delete;
 };
 
 /**

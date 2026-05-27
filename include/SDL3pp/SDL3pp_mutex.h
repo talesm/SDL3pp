@@ -220,9 +220,6 @@ struct Mutex : MutexBase
   {
   }
 
-  /// Copy constructor
-  constexpr Mutex(const Mutex& other) = delete;
-
   /// Move constructor
   constexpr Mutex(Mutex&& other) noexcept
     : Mutex(other.release())
@@ -262,9 +259,6 @@ struct Mutex : MutexBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Mutex& operator=(const Mutex& other) = delete;
 };
 
 /**
@@ -608,9 +602,6 @@ struct RWLock : RWLockBase
   {
   }
 
-  /// Copy constructor
-  constexpr RWLock(const RWLock& other) = delete;
-
   /// Move constructor
   constexpr RWLock(RWLock&& other) noexcept
     : RWLock(other.release())
@@ -670,9 +661,6 @@ struct RWLock : RWLockBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  RWLock& operator=(const RWLock& other) = delete;
 };
 
 /**
@@ -1073,9 +1061,6 @@ struct Semaphore : SemaphoreBase
   {
   }
 
-  /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) = delete;
-
   /// Move constructor
   constexpr Semaphore(Semaphore&& other) noexcept
     : Semaphore(other.release())
@@ -1117,9 +1102,6 @@ struct Semaphore : SemaphoreBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Semaphore& operator=(const Semaphore& other) = delete;
 };
 
 /**
@@ -1426,9 +1408,6 @@ struct Condition : ConditionBase
   {
   }
 
-  /// Copy constructor
-  constexpr Condition(const Condition& other) = delete;
-
   /// Move constructor
   constexpr Condition(Condition&& other) noexcept
     : Condition(other.release())
@@ -1462,9 +1441,6 @@ struct Condition : ConditionBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Condition& operator=(const Condition& other) = delete;
 };
 
 /**

@@ -1599,9 +1599,6 @@ struct StreamSocket : StreamSocketBase
   {
   }
 
-  /// Copy constructor
-  constexpr StreamSocket(const StreamSocket& other) = delete;
-
   /// Move constructor
   constexpr StreamSocket(StreamSocket&& other) noexcept
     : StreamSocket(other.release())
@@ -1675,9 +1672,6 @@ struct StreamSocket : StreamSocketBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  StreamSocket& operator=(const StreamSocket& other) = delete;
 };
 
 /**
@@ -1907,9 +1901,6 @@ struct Server : ServerBase
   {
   }
 
-  /// Copy constructor
-  constexpr Server(const Server& other) = delete;
-
   /// Move constructor
   constexpr Server(Server&& other) noexcept
     : Server(other.release())
@@ -1989,9 +1980,6 @@ struct Server : ServerBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Server& operator=(const Server& other) = delete;
 };
 
 /**
@@ -2790,9 +2778,6 @@ struct DatagramSocket : DatagramSocketBase
   {
   }
 
-  /// Copy constructor
-  constexpr DatagramSocket(const DatagramSocket& other) = delete;
-
   /// Move constructor
   constexpr DatagramSocket(DatagramSocket&& other) noexcept
     : DatagramSocket(other.release())
@@ -2895,9 +2880,6 @@ struct DatagramSocket : DatagramSocketBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  DatagramSocket& operator=(const DatagramSocket& other) = delete;
 };
 
 /**
@@ -3006,9 +2988,6 @@ struct Datagram : DatagramBase
   {
   }
 
-  /// Copy constructor
-  constexpr Datagram(const Datagram& other) = delete;
-
   /// Move constructor
   constexpr Datagram(Datagram&& other) noexcept
     : Datagram(other.release())
@@ -3071,9 +3050,6 @@ struct Datagram : DatagramBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Datagram& operator=(const Datagram& other) = delete;
 };
 
 /**

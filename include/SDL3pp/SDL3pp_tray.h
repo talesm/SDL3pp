@@ -231,9 +231,6 @@ struct Tray : TrayBase
   {
   }
 
-  /// Copy constructor
-  constexpr Tray(const Tray& other) = delete;
-
   /// Move constructor
   constexpr Tray(Tray&& other) noexcept
     : Tray(other.release())
@@ -274,9 +271,6 @@ struct Tray : TrayBase
     swap(*this, other);
     return *this;
   }
-
-  /// Assignment operator.
-  Tray& operator=(const Tray& other) = delete;
 };
 
 /**
