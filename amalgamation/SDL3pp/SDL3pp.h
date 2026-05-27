@@ -1319,6 +1319,9 @@ public:
   /// The underlying const raw pointer type.
   using RawConstPointer = RAW_CONST_POINTER;
 
+  /// Default constructor, creates null/invalid resource.
+  constexpr ResourceBaseT() = default;
+
   /// Constructs from resource pointer.
   constexpr ResourceBaseT(RawPointer resource)
     : m_resource(resource)
@@ -1326,10 +1329,7 @@ public:
   }
 
   /// Constructs null/invalid
-  constexpr ResourceBaseT(std::nullptr_t = nullptr)
-    : m_resource{}
-  {
-  }
+  constexpr ResourceBaseT(std::nullptr_t) {}
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
@@ -1377,7 +1377,7 @@ protected:
   constexpr ResourceBaseT& operator=(ResourceBaseT&&) noexcept = default;
 
 private:
-  RawPointer m_resource; ///< parameter's RawPointer
+  RawPointer m_resource = {}; ///< parameter's RawPointer
 };
 
 /// A non-owning reference wrapper for a given resource
